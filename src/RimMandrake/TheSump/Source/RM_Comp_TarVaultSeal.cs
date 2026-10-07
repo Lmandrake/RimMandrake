@@ -102,15 +102,15 @@ namespace RimMandrake.TheSump
         // other way, or the vault itself is deconstructed) still gets its
         // rot resumed rather than staying frozen forever as an orphaned
         // reference.
-        private List<Thing> sealedThings = new List<Thing>();
+        private readonly RM_VaultLedger<Thing> ledger = new RM_VaultLedger<Thing>();
 
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Collections.Look(ref sealedThings, "sealedThings", LookMode.Reference);
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && sealedThings == null)
+            Scribe_Collections.Look(ref ledger.sealedThings, "sealedThings", LookMode.Reference);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && ledger.sealedThings == null)
             {
-                sealedThings = new List<Thing>();
+                ledger.sealedThings = new List<Thing>();
             }
         }
 
@@ -118,12 +118,7 @@ namespace RimMandrake.TheSump
         {
             base.CompTick();
 
-            if (!RM_TheSumpSettings.tarVaultEnabled)
-            {
-                return;
-            }
-
-            if (Props.scanIntervalTicks <= 0 || Find.TickManager.TicksGame % Props.scanIntervalTicks != 0)
+            if (!RM_VaultLedger<Thing>.ScanDue(RM_TheSumpSettings.tarVaultEnabled, Props.scanIntervalTicks, Find.TickManager.TicksGame))
             {
                 return;
             }
@@ -137,7 +132,7 @@ namespace RimMandrake.TheSump
             Scan();
         }
 
-        public bool IsSealed(Thing t) => sealedThings.Contains(t);
+        public bool IsSealed(Thing t) => ledger.IsSealed(t);
 
         private void Scan()
         {
@@ -148,45 +143,12 @@ namespace RimMandrake.TheSump
 
             List<Thing> present = storage.slotGroup.HeldThings.ToList();
 
-            // Freshly arrived: seal it (freeze rot, forbid ordinary hauling
-            // so a passing colonist cannot simply re-haul it out and defeat
-            // the whole solvent gate).
-            for (int i = 0; i < present.Count; i++)
-            {
-                Thing t = present[i];
-                if (sealedThings.Contains(t))
-                {
-                    continue;
-                }
-
-                sealedThings.Add(t);
-                Seal(t);
-            }
-
-            // No longer present (extracted through ExtractOne, hauled out
-            // some other way, or destroyed): stop tracking it. ExtractOne
-            // itself already unseals the CLEAN path before the item leaves
-            // slotGroup.HeldThings; this is the safety net for every other
-            // way a sealed thing can stop being here (deconstruction,
-            // debug spawn removal, a mod interaction this pass did not
-            // anticipate) — a Thing this comp cannot re-find is either
-            // destroyed already (Unseal no-ops safely on a dead Thing,
-            // Destroyed guarded below) or no longer this building's
-            // concern either way.
-            for (int i = sealedThings.Count - 1; i >= 0; i--)
-            {
-                Thing t = sealedThings[i];
-                if (t != null && !t.Destroyed && present.Contains(t))
-                {
-                    continue;
-                }
-
-                sealedThings.RemoveAt(i);
-                if (t != null && !t.Destroyed)
-                {
-                    Unseal(t);
-                }
-            }
+            // Freshly arrived: seal it (freeze rot, forbid ordinary hauling so a passing colonist cannot simply re-haul it out and
+            // defeat the whole solvent gate). No longer present (extracted through ExtractOne, hauled out some other way, or
+            // destroyed): stop tracking it; ExtractOne itself already unseals the CLEAN path before the item leaves
+            // slotGroup.HeldThings, so this is the safety net for every other way a sealed thing can stop being here. A Thing this
+            // comp cannot re-find is either destroyed already (Unseal no-ops safely on a dead Thing) or no longer this building's concern.
+            ledger.Scan(present, t => t.Destroyed, Seal, Unseal);
         }
 
         private static void Seal(Thing t)
@@ -270,7 +232,7 @@ namespace RimMandrake.TheSump
             }
 
             List<Thing> sealedPresent = storage.slotGroup.HeldThings
-                .Where(t => sealedThings.Contains(t))
+                .Where(t => ledger.IsSealed(t))
                 .ToList();
 
             if (sealedPresent.Count == 0)
@@ -303,7 +265,7 @@ namespace RimMandrake.TheSump
         // against.
         public void ExtractOne(Thing target)
         {
-            if (target == null || target.Destroyed || !sealedThings.Contains(target))
+            if (ledger.Plan(target, target != null && target.Destroyed, false) == ExtractPlan.Ignore)
             {
                 return;
             }
@@ -312,9 +274,10 @@ namespace RimMandrake.TheSump
             IntVec3 pos = target.Position;
 
             Thing solvent = FindAnySolvent(map);
-            sealedThings.Remove(target);
+            ExtractPlan plan = ledger.Plan(target, false, solvent != null);
+            ledger.Forget(target);
 
-            if (solvent != null)
+            if (plan == ExtractPlan.Clean)
             {
                 solvent.SplitOff(1).Destroy();
                 Unseal(target);
@@ -332,7 +295,7 @@ namespace RimMandrake.TheSump
             if (ruinedDef != null && map != null)
             {
                 Thing ruined = ThingMaker.MakeThing(ruinedDef);
-                ruined.stackCount = Mathf.Max(1, count);
+                ruined.stackCount = RM_VaultLedger<Thing>.RuinedStack(count);
                 GenPlace.TryPlaceThing(ruined, pos, map, ThingPlaceMode.Near);
             }
 

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    EmpirePursuit offline fuzz, Approach B (same shape as Scarlands / Bazaar). Plain net8.0, zero RimWorld/Unity references:
+    ../../Kernel/EmpireLadderKernel.cs and ../../EmpireLadderMath.cs are the PRODUCTION files the mod compiles, pulled in
+    directly. A `using Verse;` landing in either breaks this build - that is the guard rail working.
+    (The older example-based check is ../EmpireLadder.SelfTest.csproj; this one is the seeded fuzz.)
+    Run (builds on Windows via winbuild staging, then runs the exe):
+      python3 src/RimMandrake/Utils/selftest_empirepursuit_fuzz.py [fuzz knobs]
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>EmpirePursuit.Fuzz</AssemblyName>
+    <RootNamespace>RuthlessPursuingMechanoids.Fuzz</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Kernel\EmpireLadderKernel.cs" />
+    <Compile Include="..\..\EmpireLadderMath.cs" />
+    <Compile Include="EmpirePursuitFuzz.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

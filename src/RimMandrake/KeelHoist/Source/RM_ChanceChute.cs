@@ -56,20 +56,12 @@ namespace RimMandrake.KeelHoist
 
         public static float RollMultiplier()
         {
-            float r = Rand.Value;
-            if (r < KeelHoistSettings.chuteJackpotChance)
-            {
-                return 3f;
-            }
-            if (r < KeelHoistSettings.chuteJackpotChance + KeelHoistSettings.chuteBustChance)
-            {
-                return 0.3f;
-            }
-            return Rand.Range(0.7f, 1.1f);
+            return RM_HoistKernel.RollMultiplier(Rand.Value, KeelHoistSettings.chuteJackpotChance, KeelHoistSettings.chuteBustChance,
+                () => Rand.Range(0.7f, 1.1f));
         }
 
         /// <summary>What a stake of this value returns, after the house's cut, for one roll.</summary>
-        public static float PayoutFor(float stake, float multiplier) => stake * (1f - KeelHoistSettings.chuteHouseCut) * multiplier;
+        public static float PayoutFor(float stake, float multiplier) => RM_HoistKernel.Payout(stake, KeelHoistSettings.chuteHouseCut, multiplier);
 
         protected override string ReceiveBelow(Thing t)
         {
@@ -96,17 +88,14 @@ namespace RimMandrake.KeelHoist
                     t.Destroy();
                 }
             }
-            if (rollAt < 0)
-            {
-                rollAt = Find.TickManager.TicksGame + Mathf.RoundToInt(KeelHoistSettings.chuteHours * GenDate.TicksPerHour);
-            }
+            rollAt = RM_HoistKernel.NextRollAt(rollAt, Find.TickManager.TicksGame, Mathf.RoundToInt(KeelHoistSettings.chuteHours * GenDate.TicksPerHour));
             return "the house (" + Mathf.RoundToInt(stakeValue) + " staked)";
         }
 
         protected override void Tick()
         {
             base.Tick();
-            if (rollAt >= 0 && Find.TickManager.TicksGame >= rollAt)
+            if (RM_HoistKernel.RollDue(rollAt, Find.TickManager.TicksGame))
             {
                 Roll();
             }
@@ -130,10 +119,7 @@ namespace RimMandrake.KeelHoist
                 staked = string.Join(", ", stakedLabels),
             };
             rolls.Add(roll);
-            if (rolls.Count > 50)
-            {
-                rolls.RemoveAt(0);
-            }
+            RM_HoistKernel.CapList(rolls, RM_HoistKernel.RollsCap);
             string pawns = stakedPawns.Count == 0 ? "" :
                 "\n\nThe house keeps what was staked alive: " + string.Join(", ", stakedPawns.Select(p => p.LabelShortCap)) + " now belong to "
                 + (Faction?.Name ?? "the house") + ".";
@@ -152,11 +138,11 @@ namespace RimMandrake.KeelHoist
         public static List<Thing> MakeCrate(float value, Faction maker)
         {
             var things = new List<Thing>();
-            if (value < 1f)
+            if (RM_HoistKernel.CrateIsEmpty(value))
             {
                 return things;
             }
-            if (value >= 150f)
+            if (RM_HoistKernel.CrateNeedsItemSet(value))
             {
                 var parms = default(ThingSetMakerParams);
                 parms.totalMarketValueRange = new FloatRange(value * 0.9f, value);
@@ -165,7 +151,7 @@ namespace RimMandrake.KeelHoist
                 things = ThingSetMakerDefOf.Reward_ItemsStandard.root.Generate(parms);
             }
             float got = things.Sum(t => t.MarketValue * t.stackCount);
-            int rest = Mathf.FloorToInt(value - got);
+            int rest = RM_HoistKernel.CrateSilver(value, got);
             while (rest > 0)
             {
                 Thing silver = ThingMaker.MakeThing(ThingDefOf.Silver);

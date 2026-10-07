@@ -38,10 +38,7 @@ namespace RimMandrake.ExplosiveGrowth
         // 🄸 INVENTED: an irrigated cell stays soaked a day after its last
         // re-read; a full grid sweep takes 8 passes (2000 ticks).
         private const int IrrigationSoakTicks = GenDate.TicksPerDay;
-        private const int SliceCount = 8;
         // 🄸 INVENTED: the band of the fresh side that blooms in a surge.
-        private const float SurgeFreshMin = 0.25f;
-        private const float SurgeFreshMax = 0.48f;
         private const int SurgeSoakTicks = GenDate.TicksPerDay;
         private const int WeatherSoakTicks = GenDate.TicksPerDay / 2;
 
@@ -117,10 +114,8 @@ namespace RimMandrake.ExplosiveGrowth
 
             int n = depth.Length;
             if (fill.Length != n) return;
-            int slice = (n + SliceCount - 1) / SliceCount;
-            int start = (comp.irrigationCursor % SliceCount) * slice;
-            int end = Math.Min(n, start + slice);
-            comp.irrigationCursor = (comp.irrigationCursor + 1) % SliceCount;
+            RM_ExplosiveGrowthKernel.SliceRange(n, comp.irrigationCursor, out int start, out int end);
+            comp.irrigationCursor = RM_ExplosiveGrowthKernel.NextCursor(comp.irrigationCursor);
 
             CellIndices idx = map.cellIndices;
             for (int i = start; i < end; i++)
@@ -144,16 +139,14 @@ namespace RimMandrake.ExplosiveGrowth
             if (!(salinityField?.GetValue(axis) is float[] sal)) return;
 
             int n = sal.Length;
-            int slice = (n + SliceCount - 1) / SliceCount;
-            int start = (comp.surgeCursor % SliceCount) * slice;
-            int end = Math.Min(n, start + slice);
-            comp.surgeCursor = (comp.surgeCursor + 1) % SliceCount;
+            RM_ExplosiveGrowthKernel.SliceRange(n, comp.surgeCursor, out int start, out int end);
+            comp.surgeCursor = RM_ExplosiveGrowthKernel.NextCursor(comp.surgeCursor);
 
             CellIndices idx = map.cellIndices;
             for (int i = start; i < end; i++)
             {
                 float s = sal[i];
-                if (s < SurgeFreshMin || s > SurgeFreshMax) continue;
+                if (!RM_ExplosiveGrowthKernel.InSurgeBand(s)) continue;
                 comp.TrySoak(idx.IndexToCell(i), SurgeSoakTicks);
             }
         }

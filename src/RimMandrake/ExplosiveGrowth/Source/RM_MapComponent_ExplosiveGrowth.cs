@@ -6,17 +6,10 @@ using Verse.Sound;
 
 namespace RimMandrake.ExplosiveGrowth
 {
-    /// <summary>One charging plant. Keyed by cell in the component, but only
-    /// valid while the plant standing there is still <see cref="plantId"/>.</summary>
-    public class RM_ChargeRecord : IExposable
+    /// <summary>The Scribe half of the charge record; the fields and the tell ladder enum live in
+    /// Kernel/RM_ExplosiveGrowthKernel.cs.</summary>
+    public partial class RM_ChargeRecord : IExposable
     {
-        public int plantId;
-        public float charge;
-        public RM_TellStage stage;
-        // Per-plant ±10% on the charge clock so a soaked field goes up in
-        // waves, "like popcorn over an afternoon" (§3), not one frame.
-        public float clockFactor = 1f;
-
         public void ExposeData()
         {
             Scribe_Values.Look(ref plantId, "plantId", 0);
@@ -24,20 +17,6 @@ namespace RimMandrake.ExplosiveGrowth
             Scribe_Values.Look(ref stage, "stage", RM_TellStage.None);
             Scribe_Values.Look(ref clockFactor, "clockFactor", 1f);
         }
-    }
-
-    /// <summary>The §2 tell ladder, in its ruled fixed order: ground before
-    /// sky — ground darkens and sprouts, the plant swells, its hue shifts
-    /// wrong, it trembles, it creaks, and the last moment is silent.</summary>
-    public enum RM_TellStage : byte
-    {
-        None = 0,
-        Ground = 1,
-        Swell = 2,
-        Hue = 3,
-        Tremble = 4,
-        Creak = 5,
-        Silence = 6,
     }
 
     /// <summary>An active rupture cloud: pawns inside without a full vacuum
@@ -73,20 +52,19 @@ namespace RimMandrake.ExplosiveGrowth
     // ════════════════════════════════════════════════════════════════════
     public class RM_MapComponent_ExplosiveGrowth : MapComponent
     {
-        public const int PassInterval = GenTicks.TickRareInterval;
+        public const int PassInterval = RM_ExplosiveGrowthKernel.PassInterval;   // == GenTicks.TickRareInterval (250)
 
         // Tell thresholds on charge 0..1. 🄸 INVENTED spacing; order is ruled.
-        public const float SwellAt = 0.15f;
-        public const float HueAt = 0.45f;
-        public const float TrembleAt = 0.70f;
-        public const float CreakAt = 0.85f;
-        public const float SilenceAt = 0.95f;
+        public const float SwellAt = RM_ExplosiveGrowthKernel.SwellAt;
+        public const float HueAt = RM_ExplosiveGrowthKernel.HueAt;
+        public const float TrembleAt = RM_ExplosiveGrowthKernel.TrembleAt;
+        public const float CreakAt = RM_ExplosiveGrowthKernel.CreakAt;
+        public const float SilenceAt = RM_ExplosiveGrowthKernel.SilenceAt;
 
-        public const float MatureGrowth = 0.999f;
+        public const float MatureGrowth = RM_ExplosiveGrowthKernel.MatureGrowth;
 
-        private Dictionary<IntVec3, int> soakUntil = new Dictionary<IntVec3, int>();
-        private Dictionary<IntVec3, int> suppressedUntil = new Dictionary<IntVec3, int>();
-        private Dictionary<IntVec3, RM_ChargeRecord> charges = new Dictionary<IntVec3, RM_ChargeRecord>();
+        // The soak / suppression / charge ledger and its pass live in the Verse-free kernel (fuzzed offline).
+        private readonly RM_EgLedger<IntVec3> ledger = new RM_EgLedger<IntVec3>();
         private List<RM_RuptureZone> ruptures = new List<RM_RuptureZone>();
 
         private int nextPassTick = -1;
@@ -98,7 +76,7 @@ namespace RimMandrake.ExplosiveGrowth
         public int irrigationCursor;
         public int surgeCursor;
 
-        private readonly List<IntVec3> tmpCells = new List<IntVec3>();
+        private readonly Sink sink;
         private List<IntVec3> tmpKeys;
         private List<int> tmpInts;
         private List<RM_ChargeRecord> tmpRecs;
@@ -108,6 +86,7 @@ namespace RimMandrake.ExplosiveGrowth
 
         public RM_MapComponent_ExplosiveGrowth(Map map) : base(map)
         {
+            sink = new Sink(this);
         }
 
         public static RM_MapComponent_ExplosiveGrowth For(Map map)
@@ -119,11 +98,11 @@ namespace RimMandrake.ExplosiveGrowth
             return cachedComp;
         }
 
-        public int SoakedCount => soakUntil.Count;
-        public int ChargingCount => charges.Count;
-        public int SuppressedCount => suppressedUntil.Count;
-        public IEnumerable<IntVec3> SoakedCells => soakUntil.Keys;
-        public bool AnyCharging => charges.Count > 0;
+        public int SoakedCount => ledger.soakUntil.Count;
+        public int ChargingCount => ledger.charges.Count;
+        public int SuppressedCount => ledger.suppressedUntil.Count;
+        public IEnumerable<IntVec3> SoakedCells => ledger.soakUntil.Keys;
+        public bool AnyCharging => ledger.charges.Count > 0;
 
         // ── the soak ─────────────────────────────────────────────────────
 
@@ -132,33 +111,23 @@ namespace RimMandrake.ExplosiveGrowth
         /// carve-out biome (terminator, deep desert — design doc §3).</summary>
         public bool TrySoak(IntVec3 c, int ticks)
         {
-            if (!ExplosiveGrowthSettings.enabled || !c.InBounds(map)) return false;
-            if (RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome)) return false;
-            int now = Find.TickManager.TicksGame;
-            if (IsSuppressed(c, now)) return false;
-            int until = now + Mathf.Max(1, ticks);
-            if (!soakUntil.TryGetValue(c, out int prior) || prior < until)
-            {
-                soakUntil[c] = until;
-            }
-            return true;
+            bool allowed = ExplosiveGrowthSettings.enabled && c.InBounds(map)
+                && !RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome);
+            return ledger.TrySoak(c, Find.TickManager.TicksGame, ticks, allowed);
         }
 
         public bool IsSoaked(IntVec3 c)
         {
-            return soakUntil.Count != 0 && soakUntil.TryGetValue(c, out int until)
-                && Find.TickManager.TicksGame < until;
+            return ledger.IsSoaked(c, Find.TickManager.TicksGame);
         }
 
         /// <summary>The soak multiplier for a plant, or 1. Called from the
         /// GrowthRate postfix; never allocates.</summary>
         public float GrowthFactorFor(Plant plant)
         {
-            if (soakUntil.Count == 0) return 1f;
-            if (!soakUntil.TryGetValue(plant.Position, out int until) || Find.TickManager.TicksGame >= until) return 1f;
+            if (ledger.soakUntil.Count == 0) return 1f;
             RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(plant.def);
-            if (prof == null || !prof.Soaks) return 1f;
-            return Mathf.Max(1f, ExplosiveGrowthSettings.soakMultiplier);
+            return ledger.GrowthFactor(plant.Position, Find.TickManager.TicksGame, prof != null && prof.Soaks, ExplosiveGrowthSettings.soakMultiplier);
         }
 
         // ── suppression (Greentide kit M10 grazing, M2 dry-air blower) ────
@@ -170,18 +139,17 @@ namespace RimMandrake.ExplosiveGrowth
         public void Suppress(IntVec3 center, int radius, int ticks)
         {
             if (!ExplosiveGrowthSettings.suppressionEnabled) return;
-            int until = Find.TickManager.TicksGame + Mathf.Max(1, ticks);
+            var cells = new List<IntVec3>();
             foreach (IntVec3 c in GenRadial.RadialCellsAround(center, Mathf.Max(0, radius) + 0.5f, true))
             {
-                if (!c.InBounds(map)) continue;
-                if (!suppressedUntil.TryGetValue(c, out int prior) || prior < until) suppressedUntil[c] = until;
-                soakUntil.Remove(c);
+                if (c.InBounds(map)) cells.Add(c);
             }
+            ledger.Suppress(cells, Find.TickManager.TicksGame, ticks);
         }
 
         public bool IsSuppressed(IntVec3 c, int now)
         {
-            return suppressedUntil.Count != 0 && suppressedUntil.TryGetValue(c, out int until) && now < until;
+            return ledger.IsSuppressed(c, now);
         }
 
         // ── the charge, read by the visuals ──────────────────────────────
@@ -189,32 +157,22 @@ namespace RimMandrake.ExplosiveGrowth
         public bool TryGetCharge(Plant plant, out RM_ChargeRecord rec)
         {
             rec = null;
-            if (charges.Count == 0 || plant == null || !plant.Spawned) return false;
-            if (!charges.TryGetValue(plant.Position, out rec)) return false;
-            if (rec.plantId != plant.thingIDNumber) { rec = null; return false; }
-            return true;
+            if (ledger.charges.Count == 0 || plant == null || !plant.Spawned) return false;
+            return ledger.TryGetCharge(plant.Position, plant.thingIDNumber, out rec);
         }
 
         public float VisualScaleFor(Plant plant)
         {
-            if (!TryGetCharge(plant, out RM_ChargeRecord rec) || rec.charge <= SwellAt) return 1f;
-            float s = 1f + (ExplosiveGrowthSettings.maxOvergrowthScale - 1f) * Mathf.InverseLerp(SwellAt, 1f, rec.charge);
-            // The tremble, staged: alternate ±3.5% per re-print while trembling,
-            // stopped for the silent last moment.
-            if (rec.charge >= TrembleAt && rec.charge < SilenceAt)
-            {
-                s *= wobbleParity ? 1.035f : 0.965f;
-            }
-            return s;
+            if (!TryGetCharge(plant, out RM_ChargeRecord rec)) return 1f;
+            return RM_ExplosiveGrowthKernel.VisualScale(rec.charge, ExplosiveGrowthSettings.maxOvergrowthScale, wobbleParity);
         }
 
         /// <summary>0 = natural colour, 1 = fully wrong. Quantised to quarters
         /// so the tinted-graphic cache stays tiny.</summary>
         public float HueFor(Plant plant)
         {
-            if (!TryGetCharge(plant, out RM_ChargeRecord rec) || rec.charge <= HueAt) return 0f;
-            float h = Mathf.InverseLerp(HueAt, 1f, rec.charge);
-            return Mathf.Ceil(h * 4f) / 4f;
+            if (!TryGetCharge(plant, out RM_ChargeRecord rec)) return 0f;
+            return RM_ExplosiveGrowthKernel.Hue(rec.charge);
         }
 
         /// <summary>Removes the charge and returns it, for the harvest/cut
@@ -222,40 +180,20 @@ namespace RimMandrake.ExplosiveGrowth
         public float TakeCharge(Plant plant)
         {
             if (!TryGetCharge(plant, out RM_ChargeRecord rec)) return 0f;
-            charges.Remove(plant.Position);
-            return rec.charge;
+            return ledger.TakeCharge(plant.Position, plant.thingIDNumber);
         }
 
         public float ChargeOf(Plant plant) => TryGetCharge(plant, out RM_ChargeRecord rec) ? rec.charge : 0f;
 
         /// <summary>The tell ladder for a charge (pure; UpdateTells and the proof both read it).</summary>
-        public static RM_TellStage StageFor(float charge)
-        {
-            return charge >= SilenceAt ? RM_TellStage.Silence
-                : charge >= CreakAt ? RM_TellStage.Creak
-                : charge >= TrembleAt ? RM_TellStage.Tremble
-                : charge >= HueAt ? RM_TellStage.Hue
-                : charge >= SwellAt ? RM_TellStage.Swell
-                : RM_TellStage.Ground;
-        }
+        public static RM_TellStage StageFor(float charge) => RM_ExplosiveGrowthKernel.StageFor(charge);
 
         /// <summary>EXPLOSIVE_GROWTH_PROBE_TOOL_1: put one plant at an exact charge (stage follows, no side effects).
         /// 0 removes its record.</summary>
         public void DebugSetCharge(Plant plant, float value)
         {
             if (plant == null || !plant.Spawned) return;
-            if (value <= 0f)
-            {
-                charges.Remove(plant.Position);
-                return;
-            }
-            charges[plant.Position] = new RM_ChargeRecord
-            {
-                plantId = plant.thingIDNumber,
-                charge = value,
-                stage = StageFor(value),
-                clockFactor = 1f,
-            };
+            ledger.DebugSetCharge(plant.Position, plant.thingIDNumber, value);
         }
 
         public void AddRupture(IntVec3 center, float radius, int ticks)
@@ -265,15 +203,7 @@ namespace RimMandrake.ExplosiveGrowth
 
         /// <summary>Debug / BloomBurst: jump every charging or soaked mature
         /// plant's charge to at least <paramref name="value"/>.</summary>
-        public int DebugForceCharge(float value)
-        {
-            int n = 0;
-            foreach (RM_ChargeRecord rec in charges.Values)
-            {
-                if (rec.charge < value) { rec.charge = value; n++; }
-            }
-            return n;
-        }
+        public int DebugForceCharge(float value) => ledger.DebugForceCharge(value);
 
         // ── the pass ─────────────────────────────────────────────────────
 
@@ -287,14 +217,14 @@ namespace RimMandrake.ExplosiveGrowth
                 lastPassTick = now;
                 return;
             }
-            int dt = lastPassTick < 0 ? PassInterval : Mathf.Clamp(now - lastPassTick, 1, PassInterval * 8);
+            int dt = RM_ExplosiveGrowthKernel.PassDelta(now, lastPassTick);
             lastPassTick = now;
             Pass(now, dt);
         }
 
         private void Pass(int now, int dt)
         {
-            PruneExpired(now);
+            ledger.PruneExpired(now);
             RM_SoakSources.Pulse(this, now);
 
             bool reprint = now >= nextReprintTick;
@@ -304,152 +234,66 @@ namespace RimMandrake.ExplosiveGrowth
                 wobbleParity = !wobbleParity;
             }
 
-            // 1. Soaked ground: grow visibly, and arm what is fully grown.
-            if (soakUntil.Count > 0)
-            {
-                tmpCells.Clear();
-                tmpCells.AddRange(soakUntil.Keys);
-                for (int i = 0; i < tmpCells.Count; i++)
-                {
-                    IntVec3 c = tmpCells[i];
-                    Plant plant = c.GetPlant(map);
-                    if (plant == null || plant.Destroyed) continue;
-                    RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(plant.def);
-                    if (prof == null || !prof.Soaks) continue;
-
-                    if (plant.Growth < MatureGrowth)
-                    {
-                        // Vanilla only re-prints a WILD plant's mesh when it
-                        // matures (Plant.TickLong dirties only cultivated
-                        // plants per growth step) — that, not the growth rate,
-                        // is the steppiness the item warned about. Staged
-                        // re-print is design doc §5 option 1.
-                        if (reprint) Dirty(c);
-                        continue;
-                    }
-                    // Only a plant that can grow RIGHT NOW arms. A dormant one
-                    // (frozen, out of season, no fertility, blighted: vanilla
-                    // GrowthRate == 0) waits, soaked, until it can — and does
-                    // not re-fire the ground tell every pass while it waits.
-                    if (!charges.ContainsKey(c) && plant.GrowthRate > 0f) StartCharge(c, plant, prof);
-                }
-            }
-
-            // 2. The charge.
-            if (charges.Count > 0)
-            {
-                float chargeTicks = Mathf.Max(250f, ExplosiveGrowthSettings.chargeHours * GenDate.TicksPerHour);
-                tmpCells.Clear();
-                tmpCells.AddRange(charges.Keys);
-                for (int i = 0; i < tmpCells.Count; i++)
-                {
-                    IntVec3 c = tmpCells[i];
-                    RM_ChargeRecord rec = charges[c];
-                    Plant plant = c.GetPlant(map);
-                    if (plant == null || plant.Destroyed || plant.thingIDNumber != rec.plantId)
-                    {
-                        charges.Remove(c);
-                        continue;
-                    }
-                    RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(plant.def);
-                    if (prof == null || !prof.Soaks)
-                    {
-                        charges.Remove(c);
-                        Dirty(c);
-                        continue;
-                    }
-
-                    bool wet = soakUntil.TryGetValue(c, out int until) && now < until && !IsSuppressed(c, now);
-                    rec.charge = StepCharge(rec.charge, wet, plant.GrowthRate > 0f, dt, chargeTicks, rec.clockFactor);
-
-                    if (rec.charge <= 0f)
-                    {
-                        charges.Remove(c);
-                        Dirty(c);
-                        continue;
-                    }
-
-                    UpdateTells(c, plant, rec);
-
-                    if (rec.charge >= 1f)
-                    {
-                        charges.Remove(c);
-                        RM_TopResolver.Fire(plant, prof, this);
-                        continue;
-                    }
-
-                    if (reprint) Dirty(c);
-                }
-            }
+            // Arm what is soaked and mature, then run the charge (kernel; this component answers through Sink).
+            float chargeTicks = RM_ExplosiveGrowthKernel.ChargeTicks(ExplosiveGrowthSettings.chargeHours);
+            ledger.Pass(sink, now, dt, reprint, chargeTicks, ExplosiveGrowthSettings.tellSoundsEnabled);
 
             // 3. Rupture clouds.
             if (ruptures.Count > 0) TickRuptures(now);
         }
 
-        /// <summary>
-        /// One pass of the charge clock, pure so it can be self-tested
-        /// (RM_ChargeSelfTest runs at startup).
-        ///   wet + growing   advances: 1.0 after chargeTicks*clockFactor ticks.
-        ///   wet + dormant   HOLDS. A soaked plant that cannot grow this moment
-        ///                   (cold, night-dormant season, no fertility) keeps its
-        ///                   charge; it is still loaded, just paused.
-        ///   dry             decays — drying out defuses (SURVIVE: "keep ground
-        ///                   dry"). 🄸 INVENTED: twice as fast as it charged.
-        /// 2026-09-26 live-found defect: dormant used to fall into the decay
-        /// branch, so on a cold map a freshly started charge (0.0001) lost
-        /// 250/7500 = 0.033 in the SAME pass that created it and was removed —
-        /// every pass, forever: charging read 0 on a soaked, mature plant.
-        /// </summary>
-        public static float StepCharge(float charge, bool wet, bool growing, int dt, float chargeTicks, float clockFactor)
+        /// <summary>What the kernel pass needs from the live map, and what it asks the game to do.</summary>
+        private sealed class Sink : IEgSink<IntVec3>
         {
-            if (wet && growing) return charge + dt / (chargeTicks * clockFactor);
-            if (wet) return charge;
-            return charge - dt / (chargeTicks * 0.5f);
-        }
+            private readonly RM_MapComponent_ExplosiveGrowth comp;
+            public Sink(RM_MapComponent_ExplosiveGrowth comp) { this.comp = comp; }
 
-        private void StartCharge(IntVec3 c, Plant plant, RM_PlantProfile prof)
-        {
-            var rec = new RM_ChargeRecord
+            public bool TryGetPlant(IntVec3 c, out int plantId, out float growth, out bool soaks)
             {
-                plantId = plant.thingIDNumber,
-                charge = 0.0001f,
-                stage = RM_TellStage.Ground,
-                clockFactor = Rand.Range(0.9f, 1.1f),
-            };
-            charges[c] = rec;
+                plantId = 0; growth = 0f; soaks = false;
+                Plant plant = c.GetPlant(comp.map);
+                if (plant == null || plant.Destroyed) return false;
+                RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(plant.def);
+                plantId = plant.thingIDNumber;
+                growth = plant.Growth;
+                // A top the settings have switched off (a disabled Churn is None) must not charge: the plant relaxes back to
+                // normal size instead of arming, swelling and "firing" nothing, over and over.
+                soaks = prof != null && prof.Soaks && RM_TopResolver.Effective(prof.top) != RM_GrowthTop.None;
+                return true;
+            }
 
-            // Tell 1 — the ground darkens and sprouts (§2, "ground before sky").
-            if (ExplosiveGrowthSettings.groundTellEnabled)
+            public float GrowthRate(IntVec3 c) { return c.GetPlant(comp.map).GrowthRate; }
+            public float NewClockFactor(IntVec3 c) { return Rand.Range(0.9f, 1.1f); }
+            public void OnDirty(IntVec3 c) { comp.Dirty(c); }
+
+            // Tell 1 - the ground darkens and sprouts (section 2, "ground before sky").
+            public void OnArmed(IntVec3 c)
             {
-                FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_Water);
+                Plant plant = c.GetPlant(comp.map);
+                RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(plant.def);
+                if (!ExplosiveGrowthSettings.groundTellEnabled) return;
+                FilthMaker.TryMakeFilth(c, comp.map, ThingDefOf.Filth_Water);
                 if (prof.top == RM_GrowthTop.Churn || prof.top == RM_GrowthTop.Burst || prof.top == RM_GrowthTop.Tinder)
                 {
-                    RM_SproutRing.Sow(map, c, plant.def, 1.5f, 1, respectBuiltGround: true, this, growth: 0.05f);
+                    RM_SproutRing.Sow(comp.map, c, plant.def, 1.5f, 1, respectBuiltGround: true, comp, growth: 0.05f);
                 }
+            }
+
+            public void OnCreak(IntVec3 c) { RM_ExplosiveGrowthDefOf.RM_EG_Creak?.PlayOneShot(new TargetInfo(c, comp.map)); }
+            public void OnTellPuff(IntVec3 c) { if (Rand.Chance(0.5f)) FleckMaker.ThrowDustPuff(c, comp.map, 0.6f); }
+
+            public void OnFire(IntVec3 c)
+            {
+                Plant plant = c.GetPlant(comp.map);
+                RM_TopResolver.Fire(plant, RM_ExplosiveGrowthRegistry.For(plant.def), comp);
             }
         }
 
-        private void UpdateTells(IntVec3 c, Plant plant, RM_ChargeRecord rec)
-        {
-            RM_TellStage want = StageFor(rec.charge);
-
-            if (want > rec.stage)
-            {
-                if (want >= RM_TellStage.Creak && rec.stage < RM_TellStage.Creak && ExplosiveGrowthSettings.tellSoundsEnabled)
-                {
-                    RM_ExplosiveGrowthDefOf.RM_EG_Creak?.PlayOneShot(new TargetInfo(c, map));
-                }
-                rec.stage = want;
-                Dirty(c);
-            }
-
-            // The tremble's visible half, every pass while it lasts; the last
-            // moment before the top is silent and still.
-            if (rec.stage == RM_TellStage.Tremble || rec.stage == RM_TellStage.Creak)
-            {
-                if (Rand.Chance(0.5f)) FleckMaker.ThrowDustPuff(c, map, 0.6f);
-            }
-        }
+        /// <summary>The pure charge clock (kernel; RM_ChargeSelfTest runs it at startup). See
+        /// RM_ExplosiveGrowthKernel.StepCharge. 2026-09-26 live-found defect: dormant used to fall into the decay
+        /// branch, so a freshly started charge was removed in the pass that created it.</summary>
+        public static float StepCharge(float charge, bool wet, bool growing, int dt, float chargeTicks, float clockFactor)
+            => RM_ExplosiveGrowthKernel.StepCharge(charge, wet, growing, dt, chargeTicks, clockFactor);
 
         private void TickRuptures(int now)
         {
@@ -465,23 +309,6 @@ namespace RimMandrake.ExplosiveGrowth
             }
         }
 
-        private void PruneExpired(int now)
-        {
-            PruneDict(soakUntil, now);
-            PruneDict(suppressedUntil, now);
-        }
-
-        private void PruneDict(Dictionary<IntVec3, int> d, int now)
-        {
-            if (d.Count == 0) return;
-            tmpCells.Clear();
-            foreach (KeyValuePair<IntVec3, int> kv in d)
-            {
-                if (kv.Value <= now) tmpCells.Add(kv.Key);
-            }
-            for (int i = 0; i < tmpCells.Count; i++) d.Remove(tmpCells[i]);
-        }
-
         public void Dirty(IntVec3 c)
         {
             map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Things);
@@ -492,14 +319,14 @@ namespace RimMandrake.ExplosiveGrowth
             // Why a soaked plant is NOT charging, counted live — the question the
             // 2026-09-26 verify could not answer from "charging=0" alone.
             int immature = 0, dormant = 0, noSoakTop = 0, armed = 0;
-            foreach (IntVec3 c in soakUntil.Keys)
+            foreach (IntVec3 c in ledger.soakUntil.Keys)
             {
                 Plant p = c.GetPlant(map);
                 if (p == null) continue;
                 RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(p.def);
                 if (prof == null || !prof.Soaks) noSoakTop++;
                 else if (p.Growth < MatureGrowth) immature++;
-                else if (charges.ContainsKey(c)) armed++;
+                else if (ledger.charges.ContainsKey(c)) armed++;
                 else if (p.GrowthRate <= 0f) dormant++;
             }
             string why = string.Format(" | soaked plants: immature={0} matureDormant(GrowthRate 0)={1} charging={2} topNone/exempt={3}",
@@ -510,7 +337,7 @@ namespace RimMandrake.ExplosiveGrowth
         private string Report()
         {
             return string.Format("soaked={0} charging={1} suppressed={2} ruptures={3} biomeRefusesSoak={4} registry: soaking={5} none={6} rosterRows resolved={7} missing={8}",
-                soakUntil.Count, charges.Count, suppressedUntil.Count, ruptures.Count,
+                ledger.soakUntil.Count, ledger.charges.Count, ledger.suppressedUntil.Count, ruptures.Count,
                 RM_ExplosiveGrowthRegistry.BiomeRefusesSoak(map.Biome),
                 RM_ExplosiveGrowthRegistry.CountSoaking, RM_ExplosiveGrowthRegistry.CountNone,
                 RM_ExplosiveGrowthRegistry.RosterResolved, RM_ExplosiveGrowthRegistry.RosterMissing);
@@ -519,17 +346,17 @@ namespace RimMandrake.ExplosiveGrowth
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Collections.Look(ref soakUntil, "soakUntil", LookMode.Value, LookMode.Value, ref tmpKeys, ref tmpInts);
-            Scribe_Collections.Look(ref suppressedUntil, "suppressedUntil", LookMode.Value, LookMode.Value, ref tmpKeys, ref tmpInts);
-            Scribe_Collections.Look(ref charges, "charges", LookMode.Value, LookMode.Deep, ref tmpKeys, ref tmpRecs);
+            Scribe_Collections.Look(ref ledger.soakUntil, "soakUntil", LookMode.Value, LookMode.Value, ref tmpKeys, ref tmpInts);
+            Scribe_Collections.Look(ref ledger.suppressedUntil, "suppressedUntil", LookMode.Value, LookMode.Value, ref tmpKeys, ref tmpInts);
+            Scribe_Collections.Look(ref ledger.charges, "charges", LookMode.Value, LookMode.Deep, ref tmpKeys, ref tmpRecs);
             Scribe_Collections.Look(ref ruptures, "ruptures", LookMode.Deep);
             Scribe_Values.Look(ref irrigationCursor, "irrigationCursor", 0);
             Scribe_Values.Look(ref surgeCursor, "surgeCursor", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                if (soakUntil == null) soakUntil = new Dictionary<IntVec3, int>();
-                if (suppressedUntil == null) suppressedUntil = new Dictionary<IntVec3, int>();
-                if (charges == null) charges = new Dictionary<IntVec3, RM_ChargeRecord>();
+                if (ledger.soakUntil == null) ledger.soakUntil = new Dictionary<IntVec3, int>();
+                if (ledger.suppressedUntil == null) ledger.suppressedUntil = new Dictionary<IntVec3, int>();
+                if (ledger.charges == null) ledger.charges = new Dictionary<IntVec3, RM_ChargeRecord>();
                 if (ruptures == null) ruptures = new List<RM_RuptureZone>();
                 cachedMap = null;
                 cachedComp = null;

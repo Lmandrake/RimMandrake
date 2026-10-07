@@ -88,6 +88,9 @@ def source_rules(t):
         proj = _src("RM_KeelHoist.csproj")
         missing = [f for f in os.listdir(os.path.join(HERE, "Source"))
                    if f.endswith(".cs") and 'Compile Include="%s"' % f not in proj]
+        kd = os.path.join(HERE, "Source", "Kernel")
+        if os.path.isdir(kd):
+            missing += ["Kernel\\" + f for f in os.listdir(kd) if f.endswith(".cs") and 'Compile Include="Kernel\\%s"' % f not in proj]
         if missing:
             raise ExpectationFailed("compiled into nothing (EnableDefaultCompileItems false): %s" % missing)
 
@@ -174,9 +177,10 @@ def hutt_slave_pit(t):
         holder, patches = _src("RM_HoistFrame.cs"), _src("KeelHoistPatches.cs")
         can = holder[holder.index("public virtual bool CanAccept"):holder.index("public bool Accept(")]
         acc = holder[holder.index("public bool Accept("):holder.index("public List<Pawn> TakeAll()")]
-        if "p.IsColonist && !p.IsSlave" not in can or acc.find("CanAccept") < 0 or acc.find("CanAccept") > acc.find("DeSpawn"):
+        refusal = method_body(_src(os.path.join("Kernel", "RM_HoistKernel.cs")), r"public static string HolderRefusal\(") or ""
+        if "HolderRefusal(" not in can or "isColonist && !isSlave" not in refusal or acc.find("CanAccept") < 0 or acc.find("CanAccept") > acc.find("DeSpawn"):
             raise ExpectationFailed("a colonist can reach the pit before the refusal")
-        if "IsColonist && !p.IsSlave" not in patches:
+        if "DialogHidesPawn(" not in patches or "buyerOrChute && isColonist && !isSlave" not in (method_body(_src(os.path.join("Kernel", "RM_HoistKernel.cs")), r"public static bool DialogHidesPawn\(") or ""):
             raise ExpectationFailed("the lowering dialog still lists free colonists for a buyer pit")
     with t.component("pit_laid_out_with_frame_and_keepers", toggle="pitSites"):
         text = _proof(t, "ProofLayOut", "RUT_HuttSlavePit")
@@ -284,7 +288,13 @@ def _proof_cls(t, cls, method, arg):
 
 def load_srcs():
     d = os.path.join(HERE, "Source")
-    return dict((f, _src(f)) for f in sorted(os.listdir(d)) if f.endswith(".cs"))
+    out = dict((f, _src(f)) for f in sorted(os.listdir(d)) if f.endswith(".cs"))
+    kd = os.path.join(d, "Kernel")   # the Verse-free kernel (RM_HoistKernel.cs) holds the gate arithmetic the fuzz exercises
+    if os.path.isdir(kd):
+        for f in sorted(os.listdir(kd)):
+            if f.endswith(".cs"):
+                out[f] = _src(os.path.join("Kernel", f))
+    return out
 
 
 def method_body(src, header_re):
@@ -307,22 +317,28 @@ def method_body(src, header_re):
 
 
 # setting -> (file, method header regex, how the OFF arm must degrade). 'guard' = an early-out `if (... !setting ...) {... return}`
-# that precedes anything else; 'used' = the setting is read inside the method.
+# that precedes anything else; 'used' = the setting is read inside the method. 'kguard' / 'kused' are the same two tests on a
+# KERNEL function (Source/Kernel/RM_HoistKernel.cs), where the setting arrives as a parameter of the same name.
 GATES = [
-    ("masterEnabled", "RM_KeelHoist.cs", r"public override bool IsEnterable\(", "guard"),
+    ("masterEnabled", "RM_KeelHoist.cs", r"public override bool IsEnterable\(", "used"),
+    ("masterEnabled", "RM_HoistKernel.cs", r"public static string EnterRefusal\(", "kguard"),
     ("masterEnabled", "RM_KeelHoist.cs", r"public override IEnumerable<Gizmo> GetGizmos\(\)", "used"),
     ("masterEnabled", "RM_HoistFrame.cs", r"public override void Generate\(Map map", "guard"),
     ("requireGravEngine", "PlaceWorker_NeedsGravEngine.cs", r"public override AcceptanceReport AllowsPlacing\(", "guard"),
-    ("tetherLock", "KeelHoistPatches.cs", r"public static void Postfix\(Building_GravEngine", "guard"),
+    ("tetherLock", "KeelHoistPatches.cs", r"public static void Postfix\(Building_GravEngine", "used"),
+    ("tetherLock", "RM_HoistKernel.cs", r"public static bool TetherBlocksLaunch\(", "kused"),
     ("colonistsMayRide", "RM_KeelHoist.cs", r"public override void OnEntered\(", "used"),
     ("colonistsMayRide", "KeelHoistPatches.cs", r"public static void Postfix\(Dialog_EnterPortal", "used"),
-    ("downedStrangersAndBeasts", "RM_KeelHoist.cs", r"public static bool TryCapture\(", "guard"),
+    ("downedStrangersAndBeasts", "RM_KeelHoist.cs", r"public static bool TryCapture\(", "used"),
+    ("downedStrangersAndBeasts", "RM_HoistKernel.cs", r"public static CaptureKind CaptureFor\(", "kguard"),
     ("downedStrangersAndBeasts", "KeelHoistPatches.cs", r"public static void Postfix\(Dialog_EnterPortal", "used"),
-    ("openLineMeter", "KeelHoistPatches.cs", r"public override void MapComponentTick\(\)", "guard"),
+    ("openLineMeter", "KeelHoistPatches.cs", r"public override void MapComponentTick\(\)", "used"),
+    ("openLineMeter", "RM_HoistKernel.cs", r"public static bool OpenLineStepsNow\(", "kused"),
     ("cycleTimeMultiplier", "RM_KeelHoist.cs", r"public static int CycleTicksFor\(", "used"),
     ("cableRange", "RM_KeelHoist.cs", r"public bool IsValidCableTarget\(", "used"),
     ("restraintHours", "RM_KeelHoist.cs", r"public static bool TryCapture\(", "used"),
     ("pitSales", "RM_HoistFrame.cs", r"public bool KeepersBuying", "used"),
+    ("pitSales", "RM_HoistKernel.cs", r"public static bool KeepersBuying\(", "kused"),
 ]
 
 
@@ -332,6 +348,12 @@ def gate_findings(srcs):
         body = method_body(srcs.get(fn, ""), header)
         if body is None:
             out.append("%s: cannot read %s in %s (gate check blind)" % (setting, header, fn))
+            continue
+        if kind.startswith("k"):
+            if not re.search(r"\b%s\b" % setting, body):
+                out.append("%s is never read in %s %s: the toggle does nothing there" % (setting, fn, header))
+            elif kind == "kguard" and not re.search(r"if\s*\(\s*!%s\b[^{};]*\)\s*(?:\{[^{}]*)?\breturn\b" % setting, body):
+                out.append("%s: no early-out guard `if (!%s ...) return` in %s" % (setting, setting, fn))
             continue
         if ("KeelHoistSettings." + setting) not in body:
             out.append("%s is never read in %s %s: the toggle does nothing there" % (setting, fn, header))
@@ -381,12 +403,14 @@ def settings_findings(srcs):
 
 def cycle_formula(srcs):
     """(base, floor, mass_divisor) parsed from CycleTicksFor and BaseCycleTicks, or None."""
-    base = re.search(r"public const int BaseCycleTicks = (\d+);", srcs.get("RM_KeelHoist.cs", ""))
-    body = method_body(srcs.get("RM_KeelHoist.cs", ""), r"public static int CycleTicksFor\(") or ""
-    f = re.search(r"Mathf\.Max\((\d+), Mathf\.RoundToInt\(BaseCycleTicks \* KeelHoistSettings\.cycleTimeMultiplier \* \(1f \+ mass / (\d+)f\)\)\)", body)
-    if not base or not f:
+    kern = srcs.get("RM_HoistKernel.cs", "")
+    base = re.search(r"public const int BaseCycleTicks = (\d+);", kern)
+    floor = re.search(r"public const int MinCycleTicks = (\d+);", kern)
+    body = method_body(kern, r"public static int CycleTicks\(") or ""
+    f = re.search(r"Math\.Max\(MinCycleTicks, \(int\)Math\.Round\(BaseCycleTicks \* cycleTimeMultiplier \* \(1f \+ mass / (\d+)f\)\)\)", body)
+    if not base or not floor or not f:
         return None
-    return int(base.group(1)), int(f.group(1)), int(f.group(2))
+    return int(base.group(1)), int(floor.group(1)), int(f.group(1))
 
 
 def cycle_ticks(formula, mass, mult):
@@ -395,8 +419,8 @@ def cycle_ticks(formula, mass, mult):
 
 
 def open_line_step(srcs, level, cable_open):
-    rise = re.search(r"RisePerHour = ([0-9.]+)f;", srcs.get("KeelHoistPatches.cs", ""))
-    fall = re.search(r"FallPerHour = ([0-9.]+)f;", srcs.get("KeelHoistPatches.cs", ""))
+    rise = re.search(r"OpenLineRisePerHour = ([0-9.]+)f;", srcs.get("RM_HoistKernel.cs", ""))
+    fall = re.search(r"OpenLineFallPerHour = ([0-9.]+)f;", srcs.get("RM_HoistKernel.cs", ""))
     if not rise or not fall:
         return None
     return level + float(rise.group(1)) if cable_open else max(0.0, level - float(fall.group(1)))
@@ -441,11 +465,12 @@ def formula_findings(srcs, hediff_root):
             down = open_line_step(srcs, down, False)
         if up != 10.0 or open_line_step(srcs, 0.3, False) != 0.0 or down != 0.0 or open_line_step(srcs, 2.0, False) != 1.5:
             out.append("Open Line meter arithmetic: 10 open hours -> %s (want 10), fall from 2.0 -> %s (want 1.5), floor 0" % (up, open_line_step(srcs, 2.0, False)))
-    if "TicksGame % GenDate.TicksPerHour != 137" not in srcs.get("KeelHoistPatches.cs", ""):
+    if "ticksGame % TicksPerHour == OpenLineMinute" not in srcs.get("RM_HoistKernel.cs", "") or "OpenLineMinute = 137" not in srcs.get("RM_HoistKernel.cs", ""):
         out.append("Open Line meter is not stepped once per hour")
     # restraint: ticksToDisappear = restraintHours * 2500, and the shipped default 24 h equals the hediff's own 60000
     cap = method_body(srcs.get("RM_KeelHoist.cs", ""), r"public static bool TryCapture\(") or ""
-    if "Mathf.RoundToInt(KeelHoistSettings.restraintHours * GenDate.TicksPerHour)" not in cap or "ticksToDisappear" not in cap:
+    rt = method_body(srcs.get("RM_HoistKernel.cs", ""), r"public static int RestraintTicks\(") or ""
+    if "RestraintTicks(KeelHoistSettings.restraintHours)" not in cap or "ticksToDisappear" not in cap or "restraintHours * TicksPerHour" not in rt:
         out.append("restraint duration is not restraintHours x TicksPerHour written to ticksToDisappear")
     mod = srcs.get("KeelHoistMod.cs", "")
     rh = re.search(r"public static float restraintHours = ([0-9.]+)f;", mod)

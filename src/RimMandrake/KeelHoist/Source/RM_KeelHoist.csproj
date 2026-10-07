@@ -43,6 +43,7 @@
     <Compile Include="RM_HoistFrame.cs" />
     <Compile Include="RM_PitBuyer.cs" />
     <Compile Include="RM_ChanceChute.cs" />
+    <Compile Include="Kernel\RM_HoistKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

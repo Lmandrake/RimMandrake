@@ -527,13 +527,11 @@ namespace RuthlessPursuingMechanoids
             }
             MapComponent_EmpireSearch search = MapComponent_EmpireSearch.For(map);
             float factor = ShadowMultiplier(map) * LadderFactor(map);
-            int raw = Math.Max(RaidDelayRange.RandomInRange, TickInterval);
             int now = Find.TickManager.TicksGame;
-            mapRaidTimers[map] = now + Math.Max(Mathf.RoundToInt(raw * factor), TickInterval);
             float warnHours = search?.NextRungDef()?.warningHours ?? 0f;
-            mapWarningTimers[map] = warnHours > 0f
-                ? Math.Max(now + TickInterval, mapRaidTimers[map] - Mathf.RoundToInt(warnHours * GenDate.TicksPerHour))
-                : mapRaidTimers[map];
+            EmpireLadderTimers.Schedule(now, RaidDelayRange.RandomInRange, factor, warnHours, out int raidTimer, out int warnTimer);
+            mapRaidTimers[map] = raidTimer;
+            mapWarningTimers[map] = warnTimer;
             alertCached = null;
             DebugUtility.DebugLog($"[Ladder] {map} next rung {search?.nextRung} at {mapRaidTimers[map]} (factor {factor:F2}), warning {mapWarningTimers[map]}");
         }
@@ -556,11 +554,11 @@ namespace RuthlessPursuingMechanoids
 
         private int TimerIntervalTick(int timer)
         {
-            return (timer + TickInterval - 1) / TickInterval * TickInterval;
+            return EmpireLadderTimers.TimerIntervalTick(timer);
         }
         private int TimerInterval(int interval)
         {
-            return (interval / TickInterval) * TickInterval;
+            return EmpireLadderTimers.TimerInterval(interval);
         }
 
         public override void Tick()
@@ -682,13 +680,11 @@ namespace RuthlessPursuingMechanoids
             }
             search.EnsureInit();
             int now = Find.TickManager.TicksGame;
-            int warnTick = TimerIntervalTick(mapWarningTimers[map]);
-            int raidTick = TimerIntervalTick(mapRaidTimers[map]);
-            if (!search.ContactLive && !search.terminal && now == warnTick && warnTick != raidTick)
+            if (EmpireLadderTimers.ShouldWarn(search.ContactLive, search.terminal, now, mapWarningTimers[map], mapRaidTimers[map]))
             {
                 search.SendWarningLetter(PursuitFaction);
             }
-            if (!search.ContactLive && !search.terminal && now == raidTick)
+            if (EmpireLadderTimers.ShouldFire(search.ContactLive, search.terminal, now, mapRaidTimers[map]))
             {
                 int postpone = search.FireNextRung(PursuitFaction);
                 if (postpone > 0)
@@ -697,8 +693,7 @@ namespace RuthlessPursuingMechanoids
                     mapWarningTimers[map] = mapRaidTimers[map];
                 }
             }
-            if (search.terminal && RFPSettings.endlessAfterTop && !disableEndlessWaves &&
-                now % TimerInterval(EndlessRaidInterval) == 0)
+            if (EmpireLadderTimers.ShouldEndless(search.terminal, RFPSettings.endlessAfterTop, disableEndlessWaves, now, EndlessRaidInterval))
             {
                 FireRaid_NewTemp(map, EndlessRaidMultiplier, EndlessRaidFloor);
             }
