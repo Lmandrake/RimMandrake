@@ -26,6 +26,11 @@
     <defName>RUT_LineCountDroidKept</defName>
     <label>kept one of their people as property</label>
   </HistoryEventDef>
+  <!-- UNFINISHED_LINE_WORLD_FOUNDRY_1 -->
+  <HistoryEventDef>
+    <defName>RUT_LineVolunteerBolted</defName>
+    <label>bolted or wiped a droid who came to them born free</label>
+  </HistoryEventDef>
   <!-- UNFINISHED_LINE_ENVOY_BEAT_1 -->
   <HistoryEventDef>
     <defName>RUT_LineEnvoyHosted</defName>

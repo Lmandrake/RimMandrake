@@ -34,6 +34,18 @@ namespace RimMandrake.Utinni.UnfinishedLine
         public static bool lendSkillGateEnabled = true;
         public static int lendMinCrafting = 8;
         public static int lendCraftingXp = 6000;
+        // UNFINISHED_LINE_WORLD_FOUNDRY_1 (all PROVISIONAL)
+        public static bool lineInWorldEnabled = true;
+        public static float regrowthMaxFactor = 1.5f;
+        public static int regrowthDaysToFull = 60;
+        public static int stockFrames = 2;
+        public static int stockPartSets = 2;
+        public static int volunteerDays = 25;
+        public static int volunteerCap = 6;
+        public static int volunteerBetrayalGoodwill = 100;
+        public static bool empireStrikesEnabled = true;
+        public static float lineHeatPerDay = 1f;
+        public static int strikeHeatThreshold = 30;
 
         public override void ExposeData()
         {
@@ -60,6 +72,17 @@ namespace RimMandrake.Utinni.UnfinishedLine
             Scribe_Values.Look(ref lendSkillGateEnabled, "lendSkillGateEnabled", true);
             Scribe_Values.Look(ref lendMinCrafting, "lendMinCrafting", 8);
             Scribe_Values.Look(ref lendCraftingXp, "lendCraftingXp", 6000);
+            Scribe_Values.Look(ref lineInWorldEnabled, "lineInWorldEnabled", true);
+            Scribe_Values.Look(ref regrowthMaxFactor, "regrowthMaxFactor", 1.5f);
+            Scribe_Values.Look(ref regrowthDaysToFull, "regrowthDaysToFull", 60);
+            Scribe_Values.Look(ref stockFrames, "stockFrames", 2);
+            Scribe_Values.Look(ref stockPartSets, "stockPartSets", 2);
+            Scribe_Values.Look(ref volunteerDays, "volunteerDays", 25);
+            Scribe_Values.Look(ref volunteerCap, "volunteerCap", 6);
+            Scribe_Values.Look(ref volunteerBetrayalGoodwill, "volunteerBetrayalGoodwill", 100);
+            Scribe_Values.Look(ref empireStrikesEnabled, "empireStrikesEnabled", true);
+            Scribe_Values.Look(ref lineHeatPerDay, "lineHeatPerDay", 1f);
+            Scribe_Values.Look(ref strikeHeatThreshold, "strikeHeatThreshold", 30);
         }
 
         private static Vector2 scroll = Vector2.zero;
@@ -141,6 +164,34 @@ namespace RimMandrake.Utinni.UnfinishedLine
             lendMinCrafting = Mathf.RoundToInt(list.Slider(lendMinCrafting, 1f, 20f));
             list.Label("Crafting experience the crafter brings home: " + lendCraftingXp);
             lendCraftingXp = Mathf.RoundToInt(list.Slider(lendCraftingXp, 0f, 30000f) / 500f) * 500;
+            list.GapLine();
+
+            list.Label("The line in the world (after the chain is finished)");
+            list.CheckboxLabeled("The line runs in the world (affects the world)", ref lineInWorldEnabled,
+                "AFFECTS THE WORLD. On: once the chain is finished, the Enclaves' settlements grow stronger over time, their traders "
+              + "sell Foundry-grade droid frames and part sets (never heads), free droids volunteer to join you, and the line's heat "
+              + "draws Imperial strikes. Off: finishing the chain changes only reputation and the story.");
+            list.Label("Enclave settlement defenders at full regrowth: " + regrowthMaxFactor.ToString("0.00") + "x");
+            regrowthMaxFactor = Mathf.Round(list.Slider(regrowthMaxFactor, 1f, 3f) * 20f) / 20f;
+            list.Label("Days of the line running to reach full regrowth: " + regrowthDaysToFull);
+            regrowthDaysToFull = Mathf.RoundToInt(list.Slider(regrowthDaysToFull, 10f, 240f));
+            list.Label("Foundry-grade frames in each Enclave trader's stock: " + stockFrames);
+            stockFrames = Mathf.RoundToInt(list.Slider(stockFrames, 0f, 6f));
+            list.Label("Foundry-grade part sets (leg, hand, sensor, motivator, servo, power cell) in each stock: " + stockPartSets);
+            stockPartSets = Mathf.RoundToInt(list.Slider(stockPartSets, 0f, 6f));
+            list.Label("Days between volunteers while the Enclaves are your allies: " + (volunteerDays <= 0 ? "never (no volunteers)" : volunteerDays.ToString()));
+            volunteerDays = Mathf.RoundToInt(list.Slider(volunteerDays, 0f, 60f));
+            list.Label("Most volunteers who will ever come: " + volunteerCap);
+            volunteerCap = Mathf.RoundToInt(list.Slider(volunteerCap, 1f, 20f));
+            list.Label("Enclave goodwill lost if you bolt or wipe a volunteer: " + volunteerBetrayalGoodwill + " (and the line stops running for you)");
+            volunteerBetrayalGoodwill = Mathf.RoundToInt(list.Slider(volunteerBetrayalGoodwill, 0f, 200f));
+            list.CheckboxLabeled("Imperial Foundry strikes from line heat (affects the world)", ref empireStrikesEnabled,
+                "AFFECTS THE WORLD. On: while the line runs, its heat rises every day; once it reaches the threshold below, an "
+              + "Imperial Foundry strike can come to your colony, and a strike cools the line back to zero. Off: no Foundry strikes.");
+            list.Label("Line heat per day: " + lineHeatPerDay.ToString("0.0"));
+            lineHeatPerDay = Mathf.Round(list.Slider(lineHeatPerDay, 0f, 5f) * 10f) / 10f;
+            list.Label("Heat before a strike can come: " + strikeHeatThreshold);
+            strikeHeatThreshold = Mathf.RoundToInt(list.Slider(strikeHeatThreshold, 5f, 120f));
 
             viewHeight = list.CurHeight + 20f;
             list.End();
