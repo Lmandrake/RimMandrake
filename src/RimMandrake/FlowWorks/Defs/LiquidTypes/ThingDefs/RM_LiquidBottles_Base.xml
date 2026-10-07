@@ -116,13 +116,15 @@
          capacityFactor multiplies the liquid's units per container (rounded, min 1);
          holdsHot=false refuses a LiquidDef with hot=true (boiling water);
          holdsAcid=false refuses an acid (corrodes apparel, AcidBurn, or pH 4 and below).
+         Acid (owner typed 2026-10-07: "Actually even metal can't do acid."): only glass holds it.
+         Plasteel holdsAcid=false is PROVISIONAL, the safe default while the owner decides; flip it here.
          Asserted by the FlowWorks selftest (Source/SelfTest/Program.cs). -->
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialsExtension">
         <materials>
           <li><material>Leather</material><capacityFactor>1.0</capacityFactor><holdsHot>false</holdsHot><holdsAcid>false</holdsAcid></li>
           <li><material>Glass</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
-          <li><material>Metal</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Metal</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
         </materials>
       </li>
     </modExtensions>
@@ -203,12 +205,14 @@
          capacityFactor multiplies the liquid's units per container (rounded, min 1);
          holdsHot=false refuses a LiquidDef with hot=true (boiling water);
          holdsAcid=false refuses an acid (corrodes apparel, AcidBurn, or pH 4 and below).
+         Acid (owner typed 2026-10-07: "Actually even metal can't do acid."): only glass holds it.
+         Plasteel holdsAcid=false is PROVISIONAL, the safe default while the owner decides; flip it here.
          Asserted by the FlowWorks selftest (Source/SelfTest/Program.cs). -->
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialsExtension">
         <materials>
           <li><material>Wood</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
-          <li><material>Metal</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Metal</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
           <li><material>Leather</material><capacityFactor>0.8</capacityFactor><holdsHot>false</holdsHot><holdsAcid>false</holdsAcid></li>
         </materials>
       </li>
@@ -292,13 +296,15 @@
          capacityFactor multiplies the liquid's units per container (rounded, min 1);
          holdsHot=false refuses a LiquidDef with hot=true (boiling water);
          holdsAcid=false refuses an acid (corrodes apparel, AcidBurn, or pH 4 and below).
+         Acid (owner typed 2026-10-07: "Actually even metal can't do acid."): only glass holds it.
+         Plasteel holdsAcid=false is PROVISIONAL, the safe default while the owner decides; flip it here.
          Asserted by the FlowWorks selftest (Source/SelfTest/Program.cs). -->
     <modExtensions>
       <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialsExtension">
         <materials>
           <li><material>Wood</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
-          <li><material>Metal</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
-          <li><material>Plasteel</material><capacityFactor>1.6</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Metal</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
+          <li><material>Plasteel</material><capacityFactor>1.6</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
         </materials>
       </li>
     </modExtensions>
