@@ -1,0 +1,15 @@
+[
+  {"item": "EMPIRE_ESCALATION_LADDER_1", "criterion": "A4", "level": "L1", "mode": "unmapped",
+   "components": [],
+   "notes": "ladder_rungs_resolve/six_rungs_load_in_order covers the six rungs loading with rungIndex/kind, but the criterion also demands no ConfigErrors in Player.log and no component reads the log. Mapping it would over-claim."},
+  {"item": "EMPIRE_ESCALATION_LADDER_1", "criterion": "A5", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Probe-rung gauntlet; ladder_toggle_flips only flips settings."},
+  {"item": "EMPIRE_ESCALATION_LADDER_1", "criterion": "A6", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Spotter/strike/breach gauntlet; no component."},
+  {"item": "EMPIRE_ESCALATION_LADDER_1", "criterion": "A7", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Cordon gauntlet; no component."},
+  {"item": "EMPIRE_ESCALATION_LADDER_1", "criterion": "A8", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Bombardment gauntlet; no component."},
+  {"item": "EMPIRE_ESCALATION_LADDER_1", "criterion": "A9", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Storyteller spacing; no component."}
+]

@@ -1,0 +1,11 @@
+[
+  {"item": "FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1", "criterion": "A2", "level": "L1", "mode": "all",
+   "components": ["defs/all_defs_resolve"],
+   "notes": "Criterion: RUT_FeralSurvivor and RUT_Hediff_FeralScar resolve live. defs/all_defs_resolve asks get_defs for both (validation.py line ~82) among others."},
+  {"item": "FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1", "criterion": "A3", "level": "L2", "mode": "unmapped",
+   "components": [],
+   "notes": "Capture-to-slave keeps the scar and a memwipe cannot remove it: no component captures, enslaves or memwipes."},
+  {"item": "FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1", "criterion": "A4", "level": "L2", "mode": "unmapped",
+   "components": [],
+   "notes": "survivors/survivor_drifts_in_feral fires RUT_FallSurvivor and reads a factionless feral pawn, but does not show the wreck-arrival route the criterion names."}
+]

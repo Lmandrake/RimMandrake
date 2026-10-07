@@ -1,0 +1,8 @@
+[
+  {"item": "PYRELANDS_MECHANICS_FIRST_SCRIPT_1", "criterion": "A2", "level": "GREEN-MIN", "mode": "all",
+   "components": ["@run"],
+   "notes": "Criterion text: one live run on the minimal list produced a results JSON."},
+  {"item": "PYRELANDS_MECHANICS_FIRST_SCRIPT_1", "criterion": "A3", "level": "GREEN-MIN", "mode": "all", "accept": ["PASS", "UNMEASURED"],
+   "components": ["unproven_bars/arson_debt_past_threshold_fires_fireraid", "unproven_bars/flameharvest_needs_flameHarvestMinFires"],
+   "notes": "Criterion text: the known-unproven bars are either proven or recorded as unmeasured. These two components ARE those bars; UNMEASURED is the recorded-as-unmeasured outcome the wording accepts. A FAIL still fails."}
+]
