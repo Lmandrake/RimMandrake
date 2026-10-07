@@ -426,3 +426,15 @@ ground.
   edge becomes ours. Kept only for the 1-cell staging option.
 - *Excluding inventory mass is "a balance choice"* — agreed it is a choice; I keep JecsTools' rule (worn
   gear counts, backpack does not) because a loaded hauler should not become immovable. Not a defect.
+
+## 11. Owner decisions, 2026-10-06 19:05 (question cards)
+
+All taken by question card unless quoted.
+- Q1 scope: **everywhere** — every blast throws pawns; pits are one consequence.
+- Q2 weapons: **explosions only** — owner typed: *"(1) because melee weapons often already have blowback"*.
+- Q3 cover: **thrown over sandbags and barricades.**
+- Q4 items: **everything light** — items and corpses are thrown too.
+- Q5 pit cover: **a blast on a cover always breaks it.**
+- Q6 carried hose: **drops where the carrier stood.**
+- Q7 strength: **3 cells** for a mortar shell beside a human (a Mod Setting scales it).
+- Q8 packaging: **its own mod**, `mandrake.rm.explosiveknockback`.
