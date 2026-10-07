@@ -1215,3 +1215,6 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH: restart on minimal list with new JawaBench DLL; time playtest runner pilot (A) + player mission canal (C)","ts":"2026-10-06T17:39:53Z","tsn":1791308393383853256}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-06T17:52:56Z","tsn":1791309176489150519}
 {"seat":"BENCH","event":"file","id":"FLOWWORKS_PLAYTEST_CAMPAIGN_1","title":"FlowWorks bugs via new test methods + rich-screenshot art pre-review; method-per-bug-class data","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-10-06T18:26:12Z","tsn":1791311172381110374}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH live round 2: FlowWorks fixes + full playtest scenes","ts":"2026-10-06T19:01:31Z","tsn":1791313291375899253}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-06T19:31:49Z","tsn":1791315109192648414}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-07T01:01:04Z","tsn":1791334864086517178}
