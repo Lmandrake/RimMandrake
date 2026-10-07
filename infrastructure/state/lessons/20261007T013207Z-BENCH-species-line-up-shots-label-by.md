@@ -1,0 +1,1 @@
+Species line-up shots: label by race not pawn name, DRAFT subjects (faces camera + holds still; rotation lock froze away-facing), clear strays first, Baseliner human beside them, open the image for the owner. Owner 2026-10-06; skills/rimworld-live-review 8d.

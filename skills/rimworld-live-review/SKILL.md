@@ -385,6 +385,29 @@ Umbaran carry exactly 1, so only those three are honestly judged from a single p
 Spawn **4+ per species in a labelled column**, or the reviewer rules on one random draw
 believing it is the species.
 
+## 8d. A line-up the owner must RECOGNISE — his five corrections (owner, 2026-10-06)
+
+The 2026-10-06 xenotype grid failed review on all five counts. Each one is now built into
+`stage_xenotype_grid.py`, and each applies to any line-up of species, creatures or kinds:
+
+1. **Label by what he recognises: the race or species, never the pawn's random name.**
+   *"you should have labeled each of them by the Race I'm supposed to recognize, not by
+   random names."* Rename every subject (`jawa/set_pawn_identity single=<race>`) and pin a
+   `jawa/review_label` above it.
+2. **Face the camera.** *"they are looking away from the camera."* DRAFT the subjects. A
+   drafted pawn is turned to South every tick and stands still. `set_pawn_rotation`'s lock
+   froze whatever facing a pawn had mid-walk, and the whole grid faced north.
+3. **Clear strays first.** *"there are at least two or three individuals not part of this
+   set that should have been removed."* Record the pawn ids before spawning, then remove
+   every non-subject in the frame and assert the count is 0.
+4. **Hold them in place.** *"all of them should have been drafted so they stayed in one
+   place."* Drafting does it (same call as 2).
+5. **Stand a standard human beside them for comparison.** *"they should be next to a
+   standard human for comparison."* A Baseliner goes first in the grid.
+
+And **open the image for him when you refer to it** (`powershell.exe Start-Process
+'<windows path>'`); never hand him a bare link. Read it yourself first.
+
 ## 9. When a shot still comes out wrong — the checklist
 
 Before concluding the subject looks bad, rule out the frame:

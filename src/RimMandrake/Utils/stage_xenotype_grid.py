@@ -24,8 +24,10 @@ WHAT IT DOES, in the order the traps demand
        number-one review defect;
     4. STRIP apparel, because a clothed pawn shows no skin and this is a skin
        review;
-    5. face south and LOCK the rotation -- south is the front view toward the
-       camera, and an unlocked pawn turns back;
+    5. remove every stray pawn in the frame, name each subject by its RACE, and
+       DRAFT them -- drafted pawns hold still and face south (toward the camera);
+       a rotation lock froze mid-walk facings and the 2026-10-06 grid faced away;
+       a standard human (Baseliner) stands first, for comparison;
     6. unfog, clear the UI, frame the rect, shoot.
 
 ⚠️ The screenshot is a CACHE, not an observation. Nobody has reviewed anything
@@ -57,6 +59,7 @@ for _s in (sys.stdout, sys.stderr):
 # The thirteen species of the appearance pass. Order is the grid's reading order,
 # so keep it stable: the owner reads the shot against a key printed by this script.
 DEFAULT_XENOTYPES = [
+    "Baseliner",                       # a standard human, for scale and colour (owner 2026-10-06)
     "RSW_RimMandrakeIthorian",
     "RSW_RimMandrakeBith",
     "RSW_RimMandrakeZygerrian",
@@ -84,6 +87,18 @@ def ok(res):
     if "success" in res:
         return bool(res["success"])
     return False
+
+
+def race_label(xeno):
+    """The name the owner RECOGNISES -- the race, never the pawn's random name.
+
+    Owner, 2026-10-06: *"you should have labeled each of them by the Race I'm supposed
+    to recognize, not by random names."*
+    """
+    if xeno == "Baseliner":
+        return "Human"
+    name = xeno.replace("RSW_RimMandrake", "")
+    return {"ChadraFan": "Chadra-Fan"}.get(name, name)
 
 
 class Stage(object):
@@ -208,11 +223,13 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--at", default="125,125", help="grid centre cell x,z")
-    ap.add_argument("--spread", type=int, default=7, help="cells between subjects")
+    ap.add_argument("--spread", type=int, default=9, help="cells between subjects")
     ap.add_argument("--cols", type=int, default=5)
     ap.add_argument("--shot", default="xeno_grid", help="screenshot name (no .png)")
     ap.add_argument("--kind", default="Colonist", help="PawnKindDef to carry the xenotype")
     ap.add_argument("--xenotypes", default="", help="comma list; default is the 13")
+    ap.add_argument("--per", type=int, default=3,
+                    help="pawns per race, side by side (skill §8c: one pawn is one skin roll)")
     ap.add_argument("--no-strip", action="store_true",
                     help="keep apparel (default strips it -- this is a SKIN review)")
     ap.add_argument("--dry-run", action="store_true", help="plan only, no writes")
@@ -251,40 +268,89 @@ def main():
             st.say("dry run: nothing written")
             return 0
 
+        # Every pawn already on the map is NOT a subject. Record them now so the grid
+        # can be cleared of strays after spawning (owner, 2026-10-06: "there are at
+        # least two or three individuals not part of this set that should have been
+        # removed first").
+        before = {p.get("id") for p in
+                  (st.call("jawa/list_pawns", {}).get("pawns") or [])}
+
         spawned = []
         for xeno, cell in zip(xenos, cells):
             if cell is None:
                 continue
             x, z = cell
-            res = st.call("jawa/spawn_pawn", {
-                "kindDef": args.kind, "x": x, "z": z,
-                "faction": "player", "count": 1, "xenotype": xeno})
-            if not ok(res):
-                st.say("SPAWN FAILED %s: %s" % (xeno, res.get("message")))
-                continue
-            spawned.append((xeno, cell))
+            # §8c: one pawn is one random skin roll, not the species. `--per` copies
+            # stand side by side, 2 cells apart, under one race label.
+            for k in range(args.per):
+                dx = (k - (args.per - 1) // 2) * 2
+                res = st.call("jawa/spawn_pawn", {
+                    "kindDef": args.kind, "x": x + dx, "z": z,
+                    "faction": "player", "count": 1, "xenotype": xeno})
+                if not ok(res):
+                    st.say("SPAWN FAILED %s #%d: %s" % (xeno, k, res.get("message")))
+                    continue
+                spawned.append((xeno, (x + dx, z)))
 
         st.say("spawned %d of %d" % (len(spawned), len(xenos)))
 
-        # Re-read the map: what is actually STANDING there is the only truth.
+        # Ours = whatever is new since `before`. Matching on xenotype alone misses the
+        # Baseliner (it reads null) and catches any stray that shares a race.
         pawns = st.call("jawa/list_pawns", {}).get("pawns") or []
-        mine = [p for p in pawns if (p.get("xenotype") or "") in xenos]
-        st.say("verified on map: %d pawns carrying a target xenotype" % len(mine))
-
-        for p in mine:
-            pid = p.get("id")
-            if pid is None:
-                continue
-            if not args.no_strip:
-                st.call("jawa/pawn_gear",
-                        {"pawn": str(pid), "action": "clear", "clearWhat": "apparel"})
-            st.call("jawa/set_pawn_rotation",
-                    {"pawnId": str(pid), "dir": "south", "lockRotation": True})
+        mine = [p for p in pawns if p.get("id") not in before]
+        st.say("verified on map: %d new pawns" % len(mine))
 
         rows = (len(xenos) + args.cols - 1) // args.cols
         rw = (args.cols + 1) * args.spread
         rh = (rows + 1) * args.spread
         rx, rz = cx - rw // 2, cz - rh // 2
+
+        # Strays inside the shot: bomb them, then clear their corpses and our
+        # subjects' stripped apparel with one Item sweep below.
+        mine_ids = {p.get("id") for p in mine}
+        strays = [p for p in pawns if p.get("id") not in mine_ids and not p.get("dead")
+                  and p.get("x") is not None
+                  and rx - 3 <= p["x"] < rx + rw + 3 and rz - 3 <= p["z"] < rz + rh + 3]
+        for p in strays:
+            st.call("jawa/damage", {"thingId": p.get("id"), "damageDef": "Bomb",
+                                    "amount": 9999})
+        st.say("strays removed from the frame: %d" % len(strays))
+
+        label_ops, labelled = [], set()
+        for p in mine:
+            pid = p.get("id")
+            if pid is None:
+                continue
+            xeno = p.get("xenotype") or "Baseliner"
+            label = race_label(xeno)
+            if not args.no_strip:
+                st.call("jawa/pawn_gear",
+                        {"pawn": str(pid), "action": "clear", "clearWhat": "apparel"})
+            st.call("jawa/set_pawn_identity", {"pawn": str(pid), "single": label})
+            # DRAFTED, not rotation-locked: a drafted pawn stands still AND the engine
+            # turns it to South (toward the camera) every tick. The old lock froze
+            # whatever facing a pawn had mid-walk -- the 2026-10-06 grid faced AWAY.
+            st.call("jawa/set_draft", {"pawnId": str(pid), "drafted": True})
+            if label not in labelled:
+                labelled.add(label)
+                cell = dict(zip(xenos, cells)).get(xeno if xeno in xenos else "Baseliner")
+                lx, lz = cell if cell else (p["x"], p["z"])
+                label_ops.append("%d|%d|%s" % (lx, lz + 2, label))
+
+        st.call("jawa/destroy_batch", {"rects": "%d,%d,%d,%d" % (rx - 3, rz - 3, rw + 6, rh + 6),
+                                       "categories": "Item"})
+        st.call("jawa/review_label", {"action": "clear", "tag": "xeno_grid"})
+        st.call("jawa/review_label", {"action": "add", "tag": "xeno_grid",
+                                      "ops": "\n".join(label_ops)})
+
+        # Prove it: every subject drafted, nobody else in frame.
+        time.sleep(0.5)
+        after = st.call("jawa/list_pawns", {}).get("pawns") or []
+        inframe = [p for p in after if not p.get("dead") and p.get("x") is not None
+                   and rx - 3 <= p["x"] < rx + rw + 3 and rz - 3 <= p["z"] < rz + rh + 3]
+        extra = [p.get("name") for p in inframe if p.get("id") not in mine_ids]
+        st.say("in frame: %d pawns, %d not subjects %s"
+               % (len(inframe), len(extra), extra if extra else ""))
 
         st.call("jawa/set_fog", {"mode": "unfog", "x": rx, "z": rz,
                                  "width": rw, "height": rh})
