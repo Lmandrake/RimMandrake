@@ -51,6 +51,7 @@ SETTINGS = {
         "superdeepCaptureEnabled": True, "superdeepCapturesOwnFaction": False,
         "ladderRequiredToExitEnabled": True, "ladderPrisonDoorEnabled": True,
         "superdeepShootingRuleEnabled": True,
+        "blastsBreakPitCovers": True,          # owner Q5/Q9 2026-10-06 (Explosive Knockback build)
         "pitWidthBodySizeMultiplier": 1.0,
         # PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsSettings, rehoused here
         "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,

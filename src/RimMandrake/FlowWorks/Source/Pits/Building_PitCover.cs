@@ -220,6 +220,39 @@ namespace RimMandrake.FlowWorks.Pits
         }
     }
 
+    /// <summary>Owner, 2026-10-06 (cards Q5 + Q9): a blast that reaches a pit cover breaks it: damaging blasts (bombs,
+    /// grenades, mortars) AND fire/incendiary; EMP, smoke, stun, firefoam and tox gas do not (harmsHealth false). The
+    /// whole deck springs and everyone standing on it falls. FlowWorks' own rule, so it holds without Explosive Knockback.</summary>
+    [HarmonyPatch(typeof(DamageWorker), nameof(DamageWorker.ExplosionAffectCell))]
+    public static class RM_Patch_ExplosionBreaksPitCover
+    {
+        public static void Postfix(Explosion explosion, IntVec3 c)
+        {
+            Map map = explosion?.Map;
+            if (!RimMandrakeFlowWorksSettings.blastsBreakPitCovers || map == null || explosion.damType == null || !explosion.damType.harmsHealth)
+            {
+                return;
+            }
+            Building_PitCover cover = RM_PitCoverUtility.CoverAt(map, c);
+            if (cover == null)
+            {
+                return;
+            }
+            var fallers = new List<Pawn>();
+            foreach (Building_PitCover d in RM_PitCoverUtility.Deck(cover))
+            {
+                foreach (Thing t in d.Position.GetThingList(map))
+                {
+                    if (t is Pawn p)
+                    {
+                        fallers.Add(p);
+                    }
+                }
+            }
+            cover.Spring(fallers);
+        }
+    }
+
     /// <summary>A cover belongs over a superdeep (D=4) cell; anywhere else it would hide nothing.</summary>
     public class PlaceWorker_PitCoverOnSuperdeep : PlaceWorker
     {
