@@ -338,8 +338,10 @@ def _get_defs(t, specs, fields="", deep=False):
 
 
 def _field(t, spec, name):
-    """One deep field of one def, or UNMEASURED when the tool cannot serialise it."""
-    rows, missing = _get_defs(t, [spec], fields=name, deep=True)
+    """One field of one def, or UNMEASURED when the tool cannot serialise it. modExtensions is read NON-deep:
+    deep=True serialises each extension as a field dict with no class name (measured live 2026-10-07), so
+    _has() could never see DuneFieldExtension / WastelandStormBiomeExtension; non-deep returns the class names."""
+    rows, missing = _get_defs(t, [spec], fields=name, deep=(name != "modExtensions"))
     if not _live(t):
         return None
     if missing or not rows:
@@ -436,6 +438,8 @@ def _set(t, **vals):
     for k, v in vals.items():
         if k not in DEFAULTS:
             _fail("script bug: %s is not a Wasteland setting" % k)
+        if isinstance(DEFAULTS[k], int) and not isinstance(DEFAULTS[k], bool):
+            v = int(v)                              # an Int32 field refuses "3.0"
         t.set_setting(SETTINGS, {k: v})
 
 
@@ -692,7 +696,12 @@ def settings_roundtrip(t):
             old = _get()
             if old is None:
                 _fail("%s: get returned no value" % field)
-            new = (not (str(old).lower() == "true")) if isinstance(default, bool) else float(str(old)) + 1.0
+            if isinstance(default, bool):
+                new = not (str(old).lower() == "true")
+            elif isinstance(default, int):
+                new = int(float(str(old))) + 1      # an Int32 field refuses "3.0" (LIVE 2026-10-07)
+            else:
+                new = float(str(old)) + 1.0
             try:
                 t.set_setting(SETTINGS, {field: new})
                 if not _same(_get(), new):
