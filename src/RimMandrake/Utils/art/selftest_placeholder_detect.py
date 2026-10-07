@@ -62,9 +62,22 @@ def run() -> int:
     check(not b("AA_Thing", "fauna", "Things/Pawn/Animal/Other/Other", sh), "a donor-prefixed def is not judged by name")
     # part 2: sanity probe on real files
     base = P.SRC / "RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal"
-    flat = [base / f"RM_{n}/RM_{n}.png" for n in ("Corrik", "Grusk", "Haarn", "Karrud", "Nissik", "Oomal")]
-    flat = [f for f in flat if f.is_file()]
-    check(len(flat) >= 3, "probe can see the Grey Sea placeholder files", len(flat))
+    # The Grey Sea's script-drawn placeholders were retired from src when the owner's sheet
+    # picks replaced them (2026-10-06); their bytes stay in the art store, so probe those.
+    import artledger as L
+    flat_shas = {"Corrik": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
+                 "Grusk": "5a57a36031d4427dd08c5aa266e5d09efb884ac56925b70fc7ff760e633359d3",
+                 "Haarn": "ef333852c0fbd8cc81ebea9dd2115eadafe1c489bd032e44b997bbb246d2489f",
+                 "Karrud": "882eef22f486a2e6673129751ae977a25e1326cb839206441e32dc6f88acdd11",
+                 "Nissik": "ccc6c1368a1e20604c4f5d8c757bf7a547af76c1540140f05fb42cb4cf36f20c",
+                 "Oomal": "20151c64451ac9fddbf882d943fcf52e1a335902aa25d1ded6bee0be2c32e100"}
+    pd = Path(tempfile.mkdtemp(prefix="ph_probe_"))
+    flat = []
+    for n, sha in flat_shas.items():
+        if L.store_has(sha):
+            (pd / f"RM_{n}.png").write_bytes(L.store_get(sha))
+            flat.append(pd / f"RM_{n}.png")
+    check(len(flat) >= 3, "probe can see the Grey Sea placeholder bytes (art store)", len(flat))
     check(all(P.is_flat(P.pixel_metrics(f)) for f in flat), "Grey Sea script-drawn shapes classify FLAT")
     real = sorted(glob.glob(str(base / "RM_Orruhmu/*.png")))
     check(len(real) >= 3, "probe can see the installed Orruhmu render", len(real))
