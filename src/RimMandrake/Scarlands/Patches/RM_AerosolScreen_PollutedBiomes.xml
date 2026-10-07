@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_AEROSOL_SCREEN_1 part 2: Wasteland, Cauldron and Contagion read as polluted to RM_PollutionSense.
+     Patched in here (not carried in those mods) because RM_PollutedBiomeExtension lives in the Warscar assembly;
+     a def naming a type from an absent assembly is discarded whole. A patch whose target biome is absent matches nothing. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]/modExtensions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]/modExtensions</xpath>
+      <value>
+        <li Class="RimMandrake.Scarlands.RM_PollutedBiomeExtension" />
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Wasteland"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.Scarlands.RM_PollutedBiomeExtension" />
+        </modExtensions>
+      </value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/modExtensions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]/modExtensions</xpath>
+      <value>
+        <li Class="RimMandrake.Scarlands.RM_PollutedBiomeExtension" />
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Cauldron"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.Scarlands.RM_PollutedBiomeExtension" />
+        </modExtensions>
+      </value>
+    </nomatch>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_Contagion"]/modExtensions</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Contagion"]/modExtensions</xpath>
+      <value>
+        <li Class="RimMandrake.Scarlands.RM_PollutedBiomeExtension" />
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_Contagion"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.Scarlands.RM_PollutedBiomeExtension" />
+        </modExtensions>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>
