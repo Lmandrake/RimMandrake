@@ -1,10 +1,10 @@
+using RimMandrake.Scarlands;
 using Verse;
 
 namespace RimMandrake.Utinni.ShipShields
 {
-    public class CompProperties_ShieldParticulateScreen : CompProperties
+    public class CompProperties_ShieldParticulateScreen : RM_CompProperties_AerosolScreen
     {
-        public float radius = 9.9f;
         public int intervalTicks = 250;
 
         // shd:particulate-screen, remaining half: "repels small animals" and
@@ -17,6 +17,8 @@ namespace RimMandrake.Utinni.ShipShields
 
         public CompProperties_ShieldParticulateScreen()
         {
+            radius = 9.9f;
+            drawDome = false; // the generator already draws its own field
             compClass = typeof(CompShieldParticulateScreen);
         }
     }

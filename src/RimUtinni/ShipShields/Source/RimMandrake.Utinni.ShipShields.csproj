@@ -70,6 +70,10 @@
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="RimMandrake.Warscar">
+      <HintPath>..\..\..\RimMandrake\Scarlands\Assemblies\RimMandrake.Warscar.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
       <Private>false</Private>

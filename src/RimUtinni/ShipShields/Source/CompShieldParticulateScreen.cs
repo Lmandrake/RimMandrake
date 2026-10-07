@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimMandrake.Scarlands;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -13,61 +14,24 @@ namespace RimMandrake.Utinni.ShipShields
     // are NOT modeled as direct HP damage anywhere in vanilla RimWorld (they
     // only affect accuracy/move speed/mood), so there is no damage source
     // for those to negate; see the item file for the precise accounting.
-    public class CompShieldParticulateScreen : ThingComp
+    public class CompShieldParticulateScreen : RM_CompAerosolScreen
     {
-        private static readonly List<CompShieldParticulateScreen> ActiveScreens = new List<CompShieldParticulateScreen>();
-
-        public CompProperties_ShieldParticulateScreen Props => (CompProperties_ShieldParticulateScreen)props;
+        public new CompProperties_ShieldParticulateScreen Props => (CompProperties_ShieldParticulateScreen)props;
 
         private CompShieldModuleSwitch ModuleSwitch => parent.GetComp<CompShieldModuleSwitch>();
-        private CompPowerTrader PowerTrader => parent.GetComp<CompPowerTrader>();
 
+        // Field-mode and power gate for this generator's own effects (filth sweep, animal repulsion).
         private bool IsLive =>
             parent.Spawned
             && (ModuleSwitch == null || ModuleSwitch.CurrentMode == ShieldFieldMode.Particulate)
             && (PowerTrader == null || PowerTrader.PowerOn);
 
-        public override void PostSpawnSetup(bool respawningAfterLoad)
-        {
-            base.PostSpawnSetup(respawningAfterLoad);
-            if (!ActiveScreens.Contains(this))
-            {
-                ActiveScreens.Add(this);
-            }
-        }
+        // The aerosol-screen effect (toxic exposure, Settling film, ...) runs only in particulate
+        // mode, powered, and with the weather-damage-negation setting on.
+        public override bool IsScreenLive =>
+            ShipShieldsSettings.particulateWeatherDamageNegationEnabled && IsLive;
 
-        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
-        {
-            ActiveScreens.Remove(this);
-            base.PostDeSpawn(map, mode);
-        }
-
-        // Read by HarmonyPatches.cs's toxic-fallout prefixes. Cheap: a colony
-        // carries at most a handful of these generators, never a per-tick
-        // hot path over the whole map.
-        public static bool IsPositionProtected(IntVec3 c, Map map)
-        {
-            if (!ShipShieldsSettings.particulateWeatherDamageNegationEnabled)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < ActiveScreens.Count; i++)
-            {
-                CompShieldParticulateScreen screen = ActiveScreens[i];
-                if (screen?.parent == null || screen.parent.Map != map || !screen.IsLive)
-                {
-                    continue;
-                }
-
-                if (c.DistanceTo(screen.parent.Position) <= screen.Props.radius)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public override float Radius => IsLive ? base.Radius : 0f;
 
         public override void CompTick()
         {
@@ -100,7 +64,7 @@ namespace RimMandrake.Utinni.ShipShields
 
         private void SweepFilth(Map map)
         {
-            foreach (IntVec3 cell in GenRadial.RadialCellsAround(parent.Position, Props.radius, true))
+            foreach (IntVec3 cell in GenRadial.RadialCellsAround(parent.Position, Radius, true))
             {
                 if (!cell.InBounds(map))
                 {
@@ -134,7 +98,7 @@ namespace RimMandrake.Utinni.ShipShields
                     continue;
                 }
 
-                if (animal.Position.DistanceTo(parent.Position) > Props.radius)
+                if (animal.Position.DistanceTo(parent.Position) > Radius)
                 {
                     continue;
                 }

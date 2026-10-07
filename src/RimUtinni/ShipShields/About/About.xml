@@ -83,9 +83,14 @@ research/Jawa/shield_mods_survey_2026-09-02.md.</description>
       <packageId>Ludeon.RimWorld.Odyssey</packageId>
       <displayName>Odyssey</displayName>
     </li>
+    <li>
+      <packageId>mandrake.rm.warscar</packageId>
+      <displayName>RimMandrake: Warscar</displayName>
+    </li>
   </modDependencies>
 
   <loadAfter>
     <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rm.warscar</li>
   </loadAfter>
 </ModMetaData>
