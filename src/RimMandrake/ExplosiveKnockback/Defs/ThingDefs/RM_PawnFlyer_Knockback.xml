@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The thrown pawn (design 4.2): copied from Core's PawnFlyer_Stun (the engine's own thrown fleshbeast) with a
+       short, low arc. thingClass stays vanilla PawnFlyer so FlowWorks' RM_Patch_PawnFlyer_LandInPit (a postfix on
+       the base RespawnPawn) catches a landing in an open pit. CheckDestination's redirect is skipped for this def
+       only (RM_Patch_PawnFlyer_KnockbackNoRedirect). stunDurationTicksRange is overwritten from Mod Settings. -->
+  <ThingDef ParentName="PawnFlyerBase">
+    <defName>RM_PawnFlyer_Knockback</defName>
+    <label>thrown</label>
+    <thingClass>PawnFlyer</thingClass>
+    <category>Ethereal</category>
+    <altitudeLayer>Skyfaller</altitudeLayer>
+    <drawerType>RealtimeOnly</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>false</useHitPoints>
+    <pawnFlyer>
+      <flightDurationMin>0.3</flightDurationMin>
+      <flightSpeed>12</flightSpeed>
+      <workerClass>PawnFlyerWorker</workerClass>
+      <heightFactor>0.6</heightFactor>
+      <progressCurve>
+        <points>
+          <li>(0, 0)</li>
+          <li>(0.1, 0.2)</li>
+          <li>(1, 1)</li>
+        </points>
+      </progressCurve>
+      <stunDurationTicksRange>60~120</stunDurationTicksRange>
+    </pawnFlyer>
+  </ThingDef>
+</Defs>

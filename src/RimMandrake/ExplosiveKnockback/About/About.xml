@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.explosiveknockback</packageId>
+  <name>RimMandrake: Explosive Knockback</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.flowworks</li>
+    <li>mandrake.rm.gimmesomeslack</li>
+  </loadAfter>
+  <description>Every blast throws everything light near it - people, animals, mechanoids, items and corpses - straight away from its centre. A mortar shell beside a person throws them three cells; lighter things fly farther, heavier things less, and anything too big (body size 2.5+) or too heavy (items and corpses over 75 kg) stays put.
+
+Thrown pawns fly over sandbags and barricades, stop early against walls, closed doors and other pawns (taking impact damage for the distance they did not travel), and land stunned. Items on shelves stay on the shelf.
+
+With FlowWorks: anything thrown into an open pit lands on the pit floor, and a person thrown in takes the fall and is held like anyone else who falls in. People already in a pit are never thrown out. (Blasts breaking pit covers is FlowWorks' own setting.)
+
+With Gimme Some Slack: a colonist carrying a hose end drops it where they stood.
+
+Explosions only: Bomb (grenades, mortars, IEDs) throws; fire, EMP, smoke, firefoam and tox gas do not. Explosions from other mods throw only if patched with RimMandrake.ExplosiveKnockback.RM_KnockbackExtension, or by the "unpatched explosions" setting (default 0%).
+
+Every part has a Mod Settings toggle; all off is vanilla. Design: design/RimMandrake/explosive_knockback_design_2026-10-06.md.</description>
+</ModMetaData>
