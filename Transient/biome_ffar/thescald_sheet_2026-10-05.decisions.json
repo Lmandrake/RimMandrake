@@ -43,16 +43,20 @@
       "purgeTouched": true
     },
     "RM_Doss": {
-      "at": "2026-10-06T03:47:37.848Z",
-      "decidedAt": "2026-10-06T03:47:33.328Z",
-      "decision": "redo",
+      "at": "2026-10-07T14:38:15.744Z",
+      "decidedAt": "2026-10-07T14:38:13.852Z",
+      "decision": "C",
       "note": "Too cartoonish, try again",
       "prefill": "A",
       "purge": [
         "e13906b0c20350cba187db4856cf6acc11db9be2279ca76de0a2b9f1806d79d3",
         "4956f595461cb83db285905e6ee1fb32775e46b7dadbd9df55e984e718977a43"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-07T14:38:15.744Z"
     },
     "RM_DossCatch": {
       "at": "2026-10-06T03:53:37.541Z",
@@ -219,10 +223,10 @@
     "evidence": "sidecar savedBy review-sheet-sidecar, savedAt 2026-10-05T20:53:45-0700; 17 rows carry an owner 'at' stamp 20:46-20:53; owner typed \"Finished with the scald sheet\" (BENCH relay)",
     "state": "ruled"
   },
-  "savedAt": "2026-10-05T20:53:45-0700",
+  "savedAt": "2026-10-07T07:38:16-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "thescald_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/thescald_sheet_2026-10-05.snapshot.json",
   "snapshotId": "3e970bb2e9f3ce82",
-  "writeCount": 74
+  "writeCount": 76
 }
