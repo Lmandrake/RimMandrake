@@ -1,0 +1,9 @@
+{
+  "source": "question card, typed by owner 2026-10-07 ~08:35 PDT; sheet Transient/biome_ffar/twilightsea_sheet_2026-10-05.decisions.json",
+  "owner_said": "Bith use b and c is valid variant",
+  "reading": "Both the floor creature and the catch use render B; C stays a valid variant. Agent reading of the typed words.",
+  "decisions": {
+    "RM_Nuudal": {"decision": "B", "render": "twilightsea_nuudal_v2 (a60853f4a9d7 south, d1d1bffa9d0c east, 91a4434b80c6 north)", "note": "already live; sheet column C (single-image history, sha 9ad77b19928c) was purged and its bytes are gone, so no creature variant exists to wire"},
+    "RM_NuudalCatch": {"decision": "B", "render": "phreg_RM_NuudalCatch_v1 (b819842072776ab3)", "variant_kept": "C = twilightsea_nuudal_v1 (2efb4de65c84 east, 0bb78436b4b2 north, 292ac98987cf south), previously live on the catch; not wired as a variant"}
+  }
+}
