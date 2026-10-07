@@ -18,6 +18,12 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 ## Haiku struck 2026-10-01 — no Haiku model on the gateway (but see the correction below:
 ## the ALIAS resolves to Sonnet 5 and works; `fable` is the name that actually 400s)
 
+> **Re-measured 2026-10-07 (GovCloud `/v1/models`):** the gateway now also serves `opus-5-5`; there
+> is no Sonnet 5.5, so `sonnet` = Sonnet 5; `ANTHROPIC_DEFAULT_HAIKU_MODEL` now maps to **Sonnet
+> 4.5**, not Sonnet 5 — so haiku is no longer even the same weights as sonnet, just older ones.
+> Read "Sonnet 5.5" below as Sonnet 5 on this account. Ladder source of truth:
+> `~/dev/Lodestar/claude/global/45-subagents.md`.
+
 > The owner asked for **Opus 5.5 for design work and complex code generation, Sonnet 5.5 for
 > well-defined coding tasks with checkable outcomes, and the most recent Haiku only for
 > OS-level searches.** Fable is dropped from the ladder entirely (decision taken by question
