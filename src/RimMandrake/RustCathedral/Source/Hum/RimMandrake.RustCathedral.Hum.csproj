@@ -50,6 +50,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="RM_AttitudeKernel.cs" />
     <Compile Include="RM_BiomeAttitudeDef.cs" />
     <Compile Include="RM_MapComponent_BiomeAttitude.cs" />
     <Compile Include="RM_JobGiver_ResonantDance.cs" />

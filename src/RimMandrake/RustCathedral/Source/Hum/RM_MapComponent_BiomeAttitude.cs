@@ -162,11 +162,11 @@ namespace RimMandrake.RustCathedral.Hum
 		/// meter: irritation and standing are untouched, only what the hum shows moves.</summary>
 		public static int DroppedBand(int band, RM_BiomeAttitudeDef def)
 		{
-			if (band <= 0 || def == null || band >= def.WorstBand)
+			if (def == null)
 			{
 				return band;
 			}
-			return band - 1;
+			return RM_AttitudeKernel.DroppedBand(band, def.WorstBand);
 		}
 
 		public static void SetLineCycleDrop(Map map, bool on)
@@ -198,7 +198,7 @@ namespace RimMandrake.RustCathedral.Hum
 
 		public void Notify_Irritation(float amount)
 		{
-			irritation = Mathf.Max(0f, irritation + amount);
+			irritation = RM_AttitudeKernel.IrritationAfter(irritation, amount);
 		}
 
 		/// <summary>The Cathedral's standing with the player on this map ([-100, 100]), or null if the biome has no attitude def.</summary>
@@ -225,7 +225,7 @@ namespace RimMandrake.RustCathedral.Hum
 
 		public void Notify_Standing(int delta)
 		{
-			standing = Mathf.Clamp(Standing + delta, -100, 100);
+			standing = RM_AttitudeKernel.StandingAfter(Standing, delta);
 		}
 
 		private int Standing
@@ -235,7 +235,7 @@ namespace RimMandrake.RustCathedral.Hum
 				if (!standingInitialized)
 				{
 					RM_BiomeAttitudeDef def = GetDef();
-					standing = def != null ? Mathf.Clamp(def.standingStart, -100, 100) : 0;
+					standing = def != null ? RM_AttitudeKernel.StandingStartValue(def.standingStart) : 0;
 					standingInitialized = true;
 				}
 				return standing;
@@ -277,7 +277,7 @@ namespace RimMandrake.RustCathedral.Hum
 		{
 			RM_StageAttitudeParams sp = def.GetStageParams(stage);
 			int ceiling = sp?.bandCeiling ?? def.WorstBand;
-			return Mathf.Clamp(rawBand, 0, ceiling);
+			return RM_AttitudeKernel.ClampToCeiling(rawBand, ceiling);
 		}
 
 		// ---- proof hooks (RM_RustCathedralHumProof, RUSTCATHEDRAL_COVERAGE_GAPS_1) ----
@@ -291,7 +291,7 @@ namespace RimMandrake.RustCathedral.Hum
 		/// <summary>Sets standing directly (proof restore only).</summary>
 		public void ProofSetStanding(int value)
 		{
-			standing = Mathf.Clamp(value, -100, 100);
+			standing = RM_AttitudeKernel.StandingAfter(value, 0);
 			standingInitialized = true;
 		}
 
@@ -389,49 +389,14 @@ namespace RimMandrake.RustCathedral.Hum
 			}
 			RM_StageAttitudeParams stageParams = def.GetStageParams(stage);
 			float stageDecayMultiplier = stageParams?.decayRateMultiplier ?? 1f;
-			float halfLifeDays = Mathf.Max(0.01f, def.irritationDecayHalfLifeDays
-				/ Mathf.Max(0.01f, RustCathedralHumSettings.irritationDecayRateMultiplier * stageDecayMultiplier));
-			float halfLifeTicks = halfLifeDays * GenDate.TicksPerDay;
-			float intervalTicks = def.checkIntervalTicks;
-			float decayFactor = Mathf.Pow(0.5f, intervalTicks / halfLifeTicks);
-			irritation *= decayFactor;
-			if (irritation < 0.05f)
-			{
-				irritation = 0f;
-			}
+			irritation = RM_AttitudeKernel.DecayedIrritation(irritation, def.irritationDecayHalfLifeDays,
+				RustCathedralHumSettings.irritationDecayRateMultiplier, stageDecayMultiplier, def.checkIntervalTicks, GenDate.TicksPerDay);
 		}
 
 		private int ComputeBand(RM_BiomeAttitudeDef def)
 		{
-			float composite = Mathf.Clamp(irritation - Standing * def.goodwillCompositeWeight, 0f, 100f);
-
-			int previousBand = currentBand < 0 ? 0 : currentBand;
-			int rawBand = 0;
-			for (int i = 0; i < def.bandThresholds.Count; i++)
-			{
-				if (composite >= def.bandThresholds[i])
-				{
-					rawBand = i + 1;
-				}
-			}
-
-			if (rawBand >= previousBand)
-			{
-				// Escalation is immediate -- no hysteresis on the way up.
-				return rawBand;
-			}
-
-			// De-escalation only takes effect once composite has fallen the
-			// hysteresis margin below the threshold that put us in the
-			// PREVIOUS band, so composite hovering at a cutoff doesn't
-			// chatter the band every check.
-			int thresholdIndexForPreviousBand = previousBand - 1;
-			if (thresholdIndexForPreviousBand < 0 || thresholdIndexForPreviousBand >= def.bandThresholds.Count)
-			{
-				return rawBand;
-			}
-			float holdLine = def.bandThresholds[thresholdIndexForPreviousBand] - def.bandHysteresisMargin;
-			return composite < holdLine ? rawBand : previousBand;
+			float composite = RM_AttitudeKernel.Composite(irritation, Standing, def.goodwillCompositeWeight);
+			return RM_AttitudeKernel.BandFor(composite, currentBand, def.bandThresholds, def.bandHysteresisMargin);
 		}
 
 		private void SyncSustainers(RM_BiomeAttitudeDef def, int band)
@@ -440,19 +405,7 @@ namespace RimMandrake.RustCathedral.Hum
 			// rising one layer per band up to the layer list length, and
 			// SILENCE (0 layers) at the worst band -- the sheet's own
 			// survival tell that the hum has "dropped".
-			int desiredLayers;
-			if (band >= def.WorstBand)
-			{
-				desiredLayers = 0;
-			}
-			else
-			{
-				desiredLayers = Mathf.Clamp(band + 1, 0, def.humLayers.Count);
-				if (lineCycleDrop)
-				{
-					desiredLayers = Mathf.Max(0, desiredLayers - 1);
-				}
-			}
+			int desiredLayers = RM_AttitudeKernel.DesiredLayers(band, def.WorstBand, def.humLayers.Count, lineCycleDrop);
 
 			while (activeSustainers.Count > desiredLayers)
 			{
@@ -540,37 +493,14 @@ namespace RimMandrake.RustCathedral.Hum
 				return;
 			}
 			int nowTick = Find.TickManager.TicksGame;
-			if (nowTick - goodwillDrainDayAnchorTick >= GenDate.TicksPerDay)
-			{
-				goodwillDrainDayAnchorTick = nowTick;
-				goodwillDrainedToday = 0;
-			}
-			if (goodwillDrainedToday <= def.worstBandGoodwillCapPerDay)
-			{
-				return; // already at (or past) today's cap
-			}
-
 			int intervalTicks = Mathf.RoundToInt(def.worstBandGoodwillTickIntervalHours * GenDate.TicksPerHour);
-			if (nowTick - worstBandGoodwillLastTickGametime < intervalTicks)
+			int delta = RM_AttitudeKernel.DrainDelta(nowTick, ref goodwillDrainDayAnchorTick, ref goodwillDrainedToday,
+				ref worstBandGoodwillLastTickGametime, intervalTicks, def.worstBandGoodwillTickAmount,
+				def.worstBandGoodwillCapPerDay, GenDate.TicksPerDay);
+			if (delta < 0)
 			{
-				return;
+				Notify_Standing(delta);
 			}
-			worstBandGoodwillLastTickGametime = nowTick;
-
-			int amount = def.worstBandGoodwillTickAmount;
-			// Never drain past the day's cap in one tick.
-			int remainingBudget = def.worstBandGoodwillCapPerDay - goodwillDrainedToday;
-			if (amount < remainingBudget)
-			{
-				amount = remainingBudget;
-			}
-			if (amount >= 0)
-			{
-				return;
-			}
-
-			Notify_Standing(amount);
-			goodwillDrainedToday += amount;
 		}
 	}
 }

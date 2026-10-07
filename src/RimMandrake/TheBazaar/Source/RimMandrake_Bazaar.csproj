@@ -49,6 +49,7 @@
     <Compile Include="Defs\RM_BazaarBadgeDef.cs" />
     <Compile Include="Defs\RM_BazaarTabDef.cs" />
     <Compile Include="Defs\RM_BazaarIntelLayerDef.cs" />
+    <Compile Include="Economy\RM_BazaarKernel.cs" />
     <Compile Include="Economy\RM_BazaarEconomy.cs" />
     <Compile Include="Economy\RM_BazaarSeedRuleDef.cs" />
     <Compile Include="Economy\RM_BazaarTags.cs" />

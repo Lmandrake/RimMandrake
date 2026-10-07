@@ -26,9 +26,9 @@ namespace RimMandrake.Bazaar
     /// </summary>
     public class RM_BazaarEconomy : WorldComponent
     {
-        public const float BandMin = 0.25f;
-        public const float BandMax = 4.0f;
-        public const int HistorySize = 32;
+        public const float BandMin = RM_BazaarKernel.BandMin;
+        public const float BandMax = RM_BazaarKernel.BandMax;
+        public const int HistorySize = RM_BazaarKernel.HistorySize;
         public const int MaxVisits = 64;
         public const int MaxStockPerVisit = 40;
 
@@ -37,10 +37,10 @@ namespace RimMandrake.Bazaar
 
         /// <summary>Per drift step: pull toward target, random walk, and the
         /// largest relative move allowed in one day.</summary>
-        public const float ReversionRate = 0.2f;
-        public const float DailyNoise = 0.04f;
-        public const float MaxDailyStep = 0.10f;
-        public const float NudgeDecay = 0.8f;
+        public const float ReversionRate = RM_BazaarKernel.ReversionRate;
+        public const float DailyNoise = RM_BazaarKernel.DailyNoise;
+        public const float MaxDailyStep = RM_BazaarKernel.MaxDailyStep;
+        public const float NudgeDecay = RM_BazaarKernel.NudgeDecay;
 
         /// <summary>Procedural locality spread for untagged settlements (design §3: "mild").</summary>
         public static readonly FloatRange ProceduralRange = new FloatRange(0.85f, 1.2f);
@@ -231,7 +231,7 @@ namespace RimMandrake.Bazaar
             int day = Day;
             foreach (KeyValuePair<string, float> kv in targets)
             {
-                float m = Mathf.Clamp(kv.Value, BandMin, BandMax);
+                float m = RM_BazaarKernel.SeedLevel(kv.Value);
                 RM_BazaarBucket b = new RM_BazaarBucket { tile = tile, key = kv.Key, multiplier = m, target = m };
                 b.Record(day, m, -1f);
                 buckets.Add(b);
@@ -256,7 +256,7 @@ namespace RimMandrake.Bazaar
         {
             int h = Gen.HashCombineInt(seed, GenText.StableStringHash(key));
             h = Gen.HashCombineInt(h, GenText.StableStringHash(salt));
-            return (uint)h / 4294967296f;
+            return RM_BazaarKernel.ToUnit(h);
         }
 
         // ─────────────────────────── drift ───────────────────────────
@@ -283,14 +283,8 @@ namespace RimMandrake.Bazaar
             for (int i = 0; i < buckets.Count; i++)
             {
                 RM_BazaarBucket b = buckets[i];
-                float target = Mathf.Clamp(b.target * (1f + b.nudge), BandMin, BandMax);
-                float noise = (Hash01(Gen.HashCombineInt(b.tile, day), b.key, "drift") * 2f - 1f) * DailyNoise;
-                float step = (target - b.multiplier) * ReversionRate + b.multiplier * noise;
-                float cap = b.multiplier * MaxDailyStep;
-                step = Mathf.Clamp(step, -cap, cap);
-                b.multiplier = Mathf.Clamp(b.multiplier + step, BandMin, BandMax);
-                b.nudge *= NudgeDecay;
-                if (Mathf.Abs(b.nudge) < 0.001f) b.nudge = 0f;
+                float noiseU = Hash01(Gen.HashCombineInt(b.tile, day), b.key, "drift");
+                b.multiplier = RM_BazaarKernel.DriftStep(b.multiplier, b.target, ref b.nudge, noiseU);
                 b.Record(day, b.multiplier, -1f);
             }
         }
@@ -300,7 +294,7 @@ namespace RimMandrake.Bazaar
         public void Nudge(int tile, ThingDef def, float fraction)
         {
             RM_BazaarBucket b = BucketFor(tile, def);
-            if (b != null) b.nudge = Mathf.Clamp(b.nudge + fraction, -0.75f, 3f);
+            if (b != null) b.nudge = RM_BazaarKernel.NudgeBy(b.nudge, fraction);
         }
 
         // ─────────────────────── session observations ───────────────────────
@@ -396,26 +390,12 @@ namespace RimMandrake.Bazaar
         public void Record(int day, float mult, float observedOffer)
         {
             RM_BazaarHistoryEntry e = new RM_BazaarHistoryEntry { day = day, multiplier = mult, observedOffer = observedOffer };
-            if (history.Count < RM_BazaarEconomy.HistorySize)
-            {
-                history.Add(e);
-                head = history.Count % RM_BazaarEconomy.HistorySize;
-            }
-            else
-            {
-                history[head] = e;
-                head = (head + 1) % RM_BazaarEconomy.HistorySize;
-            }
+            RM_BazaarKernel.RingPush(history, ref head, e);
         }
 
         public IEnumerable<RM_BazaarHistoryEntry> HistoryOldestFirst()
         {
-            if (history.Count < RM_BazaarEconomy.HistorySize)
-            {
-                for (int i = 0; i < history.Count; i++) yield return history[i];
-                yield break;
-            }
-            for (int i = 0; i < history.Count; i++) yield return history[(head + i) % history.Count];
+            return RM_BazaarKernel.RingOldestFirst(history, head);
         }
 
         /// <summary>"Typical" for L1/L2: the mean multiplier across the ring.</summary>
@@ -443,9 +423,7 @@ namespace RimMandrake.Bazaar
             {
                 if (history == null) history = new List<RM_BazaarHistoryEntry>();
                 history.RemoveAll(h => h == null);
-                if (history.Count > RM_BazaarEconomy.HistorySize)
-                    history.RemoveRange(RM_BazaarEconomy.HistorySize, history.Count - RM_BazaarEconomy.HistorySize);
-                head = history.Count == 0 ? 0 : Mathf.Clamp(head, 0, history.Count - 1);
+                head = RM_BazaarKernel.RingRepair(history, head);
             }
         }
     }
