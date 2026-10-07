@@ -363,6 +363,8 @@ namespace RimMandrake.Ninefold.SelfTest
                 foreach (var m in fails) Console.WriteLine("FAIL " + m);
                 if (fails.Count > 0) ok = false;
             }
+            if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
+            if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"coverage: {Fires} introductions ({Pops} from the queue, {Queued} queued), {Flips} front flips");
             Console.WriteLine($"ninefold fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;

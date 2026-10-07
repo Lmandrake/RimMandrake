@@ -233,6 +233,8 @@ namespace RimMandrake.Ninefold
         // the event's own authored weight, not a tuning slider.
         private void MaybeFlipFrontOnViolentSwing(God god, float rawAmount)
         {
+            // cheap gate first, exactly as before: LoudestGod() allocates and sorts, so it is not run on every small event
+            if (!RM_NinefoldKernel.IsViolentSwing(frontReckoned, rawAmount, EventMagnitude.Large)) return;
             God loudest = LoudestGod();
             God flipped = (God)RM_NinefoldKernel.FrontAfterSwing(frontReckoned, (int)frontGod, rawAmount, EventMagnitude.Large, (int)loudest);
             if (flipped == frontGod) return; // no landing yet, a small event, or already the loudest
