@@ -663,6 +663,9 @@ namespace JawaBench.BridgeTools
         }
 
         // ════════════════════════════════════════════════════════════════ hose bend (the 9 live FAILs)
+        // 2026-10-06, owner decision by question card (straight lead-out): the hose leaves the nozzle straight for
+        // HoseMath.LeadOutStraight cells, then joins the laid hose by a curve never under the minimum radius; a target with no
+        // room for that is REFUSED (HoseMath.LeadOutBlocked), which this scene counts as a refusal, not a bar failure.
 
         private static double GMinBendAt(IList<GCore.V2> X, double skip, out double sAt)
         {
@@ -696,7 +699,7 @@ namespace JawaBench.BridgeTools
             c.ev["lays"] = rows;
             GHose.HoseShapeParams sp = GHose.HoseSettings.Shape();
             sp.MaxLength = rc.MaxLength;
-            double st = GHose.HoseReelRect.OutletStraight, bl = 2 * Math.Max(0.45, sp.MinBendRadius);
+            double st = GHose.HoseMath.LeadOutStraight(sp);
             c.Phase("exec");
             foreach (int rad in new[] { 8, 14 })
                 for (int k = 0; k < (rad == 8 ? 8 : 4); k++)
@@ -705,15 +708,16 @@ namespace JawaBench.BridgeTools
                     var tgt = new IntVec3(at.x + (int)Math.Round(rad * Math.Cos(ang)), 0, at.z + (int)Math.Round(rad * Math.Sin(ang)));
                     string why = rc.DevLayInstant(tgt);
                     GHose.HoseLay lay = why == null ? hc.EnsureLay(rc) : null;
-                    var row = PD("target", PCell(tgt), "bearingDeg", Math.Round(ang * 180 / Math.PI), "refused", why);
+                    var row = PD("target", PCell(tgt), "bearingDeg", Math.Round(ang * 180 / Math.PI), "refused", why ?? (lay == null ? rc.lastLayReason : null));
                     if (lay != null)
                     {
                         double mb = GMinBendAt(lay.Flat, GHose.HoseMath.EndSkip, out double sAt);
-                        double beyond = Math.Min(GHose.HoseMath.MinBendRadius(lay.Flat, GHose.HoseMath.OutletLead(sp) + 0.5), GHose.HoseMath.MinBendRadius(lay.Plump, GHose.HoseMath.OutletLead(sp) + 0.5));
+                        double beyond = Math.Min(GHose.HoseMath.MinBendRadius(lay.Flat, lay.LeadOutLen + 0.5), GHose.HoseMath.MinBendRadius(lay.Plump, lay.LeadOutLen + 0.5));
                         // counterfactual: the same ends, no outlet (EnsureLay's own call minus startOutward)
                         GCore.CordWorld w = hc.World();
                         GHose.HoseLay free = GHose.HoseMath.LayAlong(w, GHose.RM_MapComponent_Hoses.Start(rc), rc.TrailCells(), new GCore.Cell(tgt.x, tgt.z).Centre, sp, rc.Seed);
-                        string zone = sAt < 0 ? "none" : sAt <= st ? "straight" : sAt <= st + bl + 0.25 ? "blend" : "beyond";
+                        string zone = sAt < 0 ? "none" : sAt <= st ? "straight" : sAt <= lay.LeadOutLen + 0.25 ? "blend" : "beyond";
+                        row["leadOutLen"] = Math.Round(lay.LeadOutLen, 2);
                         row["outlet"] = lay.Outlet; row["minBendFlat"] = Math.Round(lay.MinBendFlat, 3); row["minBendPlump"] = Math.Round(lay.MinBendPlump, 3);
                         row["minBendAtS"] = Math.Round(sAt, 2); row["zone"] = zone; row["minBendBeyondBlend"] = Math.Round(beyond, 3);
                         row["flatLen"] = Math.Round(lay.FlatLen, 2); row["maxLength"] = rc.MaxLength; row["overLength"] = lay.FlatLen > rc.MaxLength + 1e-6;
@@ -738,6 +742,7 @@ namespace JawaBench.BridgeTools
                     : "NOT confirmed as sole cause: " + inBlend + "/" + bad.Count + " in the outlet zone, " + beyondOk + "/" + bad.Count + " fine beyond it, " + freeOk + "/" + bad.Count + " fine without the outlet";
             c.ev["hypothesisOutletBend"] = hyp;
             c.ev["laid"] = laid.Count; c.ev["underBar"] = bad.Count; c.ev["overLength"] = over;
+            c.ev["refusedNoLeadOut"] = rows.Count(x => (x["refused"] as string) == GHose.HoseMath.LeadOutBlocked);
             if (laid.Count == 0) { c.Invalid("no lay succeeded"); yield break; }
             if (bad.Count == 0 && over == 0) c.Pass("all " + laid.Count + " lays hold >= 95% of the minimum bend radius and the hose length");
             else c.Defect(bad.Count + "/" + laid.Count + " lays bend under 95% of " + minR.ToString("0.00") + " (worst " +

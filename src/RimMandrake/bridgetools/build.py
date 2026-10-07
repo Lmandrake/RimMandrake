@@ -108,7 +108,7 @@ def build_staged(clean, gm):
         shutil.rmtree(ARTIFACT_DIR)
     extra = ["--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false")]
     extra_dirs, late = [], []
-    for env, prop in (("ORACLE_MOD_DIR", "OracleModDir"), ("INHABITED_MOD_DIR", "InhabitedModDir")):
+    for env, prop in (("ORACLE_MOD_DIR", "OracleModDir"), ("INHABITED_MOD_DIR", "InhabitedModDir"), ("GSS_MOD_DIR", "GssModDir")):
         v = os.environ.get(env)
         if not v:
             continue

@@ -192,8 +192,8 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             HoseLay lay;
             try { lay = HoseMath.LayAlong(w, Start(r), r.TrailCells(), end, sp, r.Seed, inward, outward); }
             finally { foreach (var kv in held) w.SetBlocked(kv.Key, kv.Value); }
-            // no clear way out of the outlet (a wall hard against it): lay it as before rather than not at all
-            if (!lay.Ok && outward.HasValue) lay = HoseMath.LayAlong(w, Start(r), r.TrailCells(), end, sp, r.Seed, inward);
+            // owner decision by question card 2026-10-06 (straight lead-out): no clear lead-out from the nozzle = refused with
+            // the reason (HoseMath.LeadOutBlocked); the old fallback laid it without the outlet
             LastLayMs = (int)sw.ElapsedMilliseconds;
             Relays++;
             r.lay = lay.Ok ? lay : null;
