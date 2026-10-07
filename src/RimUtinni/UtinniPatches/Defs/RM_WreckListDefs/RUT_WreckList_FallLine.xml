@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 9 / design §3e: the Fall Line's fresh-wreck list (the RUT_FallWreck
+  list RM_WreckLists.xml points here). mandrake.rsw.injections adds the canon TIE panel and landspeeder
+  rows (Patches/WreckList_FallLine.xml there). Rows are element-name-as-key, never <li>.
+  Weights PROVISIONAL.
+-->
+<Defs>
+
+  <RimMandrake.Wreckage.RM_WreckListDef MayRequire="mandrake.rm.biomes">
+    <defName>RUT_WreckList_FallLine</defName>
+    <label>Fall Line wreckage</label>
+    <description>What the Imperial lanes overhead drop on the Fall Line: fresh, whole, and nobody's yet.</description>
+    <wrecks>
+      <RUT_FallLineWreckHull>2</RUT_FallLineWreckHull>
+      <RUT_FallLineWreckCarapace>1</RUT_FallLineWreckCarapace>
+    </wrecks>
+  </RimMandrake.Wreckage.RM_WreckListDef>
+
+</Defs>

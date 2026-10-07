@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 9 (design §3c, §5): the Star Wars loot rows. The RM tier's rare
+  tables carry vanilla stand-ins only (Q11a: the RM tier stays franchise-free); this layer adds canon
+  droid parts from mandrake.rsw.droidworks as an extra option on each rare table, so an RM wreck stripped
+  in a Star Wars game can give up an intact droid part (design §3c "an intact droid part").
+  PatchOperationConditional on the table AND the part (a top-level MayRequire on <Operation> is inert in
+  1.6): with mandrake.rm.biomes or droidworks absent nothing happens. Chances PROVISIONAL.
+  All parts in one option are one pick (ThingSetMaker_StackCount picks one allowed def).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_DW_Part_PowerCell"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingSetMakerDef[defName="RM_SalvageLoot_Hull_Rare"]/root/options</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingSetMakerDef[defName="RM_SalvageLoot_Hull_Rare"]/root/options</xpath>
+        <value>
+          <li>
+            <chance>0.3</chance>
+            <thingSetMaker Class="ThingSetMaker_StackCount">
+              <fixedParams>
+                <filter>
+                  <thingDefs>
+                        <li>RSW_DW_Part_PowerCell</li>
+                        <li>RSW_DW_Part_Servo</li>
+                  </thingDefs>
+                </filter>
+                <countRange>1</countRange>
+              </fixedParams>
+            </thingSetMaker>
+          </li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_DW_Part_PowerCell"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingSetMakerDef[defName="RM_SalvageLoot_Tank_Rare"]/root/options</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingSetMakerDef[defName="RM_SalvageLoot_Tank_Rare"]/root/options</xpath>
+        <value>
+          <li>
+            <chance>0.2</chance>
+            <thingSetMaker Class="ThingSetMaker_StackCount">
+              <fixedParams>
+                <filter>
+                  <thingDefs>
+                        <li>RSW_DW_Part_PowerCell</li>
+                  </thingDefs>
+                </filter>
+                <countRange>1</countRange>
+              </fixedParams>
+            </thingSetMaker>
+          </li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_DW_Part_Motivator"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingSetMakerDef[defName="RM_SalvageLoot_Carapace_Rare"]/root/options</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingSetMakerDef[defName="RM_SalvageLoot_Carapace_Rare"]/root/options</xpath>
+        <value>
+          <li>
+            <chance>0.6</chance>
+            <thingSetMaker Class="ThingSetMaker_StackCount">
+              <fixedParams>
+                <filter>
+                  <thingDefs>
+                        <li>RSW_DW_Part_Motivator</li>
+                        <li>RSW_DW_Part_Servo</li>
+                        <li>RSW_DW_Part_Sensor</li>
+                        <li>RSW_DW_Part_Manipulator</li>
+                  </thingDefs>
+                </filter>
+                <countRange>1</countRange>
+              </fixedParams>
+            </thingSetMaker>
+          </li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_DW_Part_Motivator"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingSetMakerDef[defName="RM_SalvageLoot_Sealed_Rare"]/root/options</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingSetMakerDef[defName="RM_SalvageLoot_Sealed_Rare"]/root/options</xpath>
+        <value>
+          <li>
+            <chance>0.5</chance>
+            <thingSetMaker Class="ThingSetMaker_StackCount">
+              <fixedParams>
+                <filter>
+                  <thingDefs>
+                        <li>RSW_DW_Part_Motivator</li>
+                        <li>RSW_DW_Part_Sensor</li>
+                        <li>RSW_DW_Part_PowerCell</li>
+                  </thingDefs>
+                </filter>
+                <countRange>1~2</countRange>
+              </fixedParams>
+            </thingSetMaker>
+          </li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

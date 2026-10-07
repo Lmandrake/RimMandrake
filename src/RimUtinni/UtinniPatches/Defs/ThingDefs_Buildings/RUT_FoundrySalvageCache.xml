@@ -6,55 +6,48 @@
     RUT_FoundrySalvageCache             UtinniPatches · FORGE_MECHANICS_1 F4
     ============================================================================
     forge_kit_spec.md F4 player-experience line: "forge-tech salvage as the
-    prize." This pass ships the SHELL only, same explicit scope every other
-    F4 piece carries here — a visible, inert set-piece marker at the site
-    where a real lootable stash belongs, not a populated loot table. Real
-    contents (a ThingSetMaker / storage comp with actual forge-tech items)
-    are items-pass work, owed — marking a spot without inventing salvage
-    economy content this task was never scoped to author.
-
-    Shape follows this mod's own RUT_CrecheMarker.xml precedent (read in
-    full before writing this) for the destroyable/useHitPoints/Flammability
-    pairing — ThingDef.ConfigErrors flags Flammability > 0 paired with
-    useHitPoints false as an error, so both are zeroed/false together, same
-    as that def's own header already explains. Unlike CrecheMarker this one
-    IS drawn (drawerType left at its BuildingBase default) — a "prize"
-    should be visibly present, not textually invisible ground-memory.
+    prize." The F4 pass shipped an inert marker; SALVAGE_WRECKAGE_EVERYWHERE_1
+    gave it the shared wreck-family salvage (loot on careful deconstruction).
 
     Spawned via RM_GenStep_PlacedSetPieces / RM_SetPieceElement_SpawnMarker
     (Defs/MapGeneration/RUT_FoundryFloor_SalvageCache.xml), same shared
     marker-spawn element every sibling kit in this mod already reuses.
 
-    PLACEHOLDER ART, DEPLOY_HOLD'd (src/DEPLOY_HOLD.txt) — no sprite yet.
+    Art wired f94585748 (2026-09-29). Loot: SALVAGE_WRECKAGE_EVERYWHERE_1, below.
     ============================================================================
   -->
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes">
+  <!-- SALVAGE_WRECKAGE_EVERYWHERE_1 (design §4 The Forge row: "Salvage cache (built shell) ... Forge-warm
+       x1.0, RUT_FoundrySalvage extra table, gets the §3c comp and art"). The cache is now a child of the
+       shared Carapace wreck family (mandrake.rm.wreckage, composed in mandrake.rm.biomes, which the
+       MayRequire guards): careful deconstruction gives its costList, a Carapace roll and the foundry's own
+       RUT_SalvageLoot_Foundry roll; smashing gives slag. Everything the old marker set that the family
+       would change is restated here: the 1x1 single sprite, pass-through floor heap, tickerType (the
+       spunstone-study patch replaces it). Destroyable now, because deconstruction destroys. -->
+  <ThingDef ParentName="RM_WreckFamily_Carapace" MayRequire="mandrake.rm.biomes">
     <defName>RUT_FoundrySalvageCache</defName>
     <label>forge-tech salvage</label>
-    <description>A heap of scavenged forge-tech, still warm, wedged against the melt channel wall. Whoever — whatever — stacked it here clearly meant to come back.</description>
-    <thingClass>Building</thingClass>
-    <category>Building</category>
+    <description>A heap of scavenged forge-tech, still warm, wedged against the melt channel wall. Whoever, or whatever, stacked it here clearly meant to come back. Deconstruct it carefully for what the foundry made.</description>
     <size>(1,1)</size>
     <rotatable>false</rotatable>
-    <selectable>true</selectable>
-    <useHitPoints>false</useHitPoints>
-    <destroyable>false</destroyable>
     <tickerType>Never</tickerType>
     <passability>PassThroughOnly</passability>
     <fillPercent>0.2</fillPercent>
-    <!-- PLACEHOLDER ART, DEPLOY_HOLD'd — no sprite yet; real loot content is
-         items-pass work, also owed. -->
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
       <texPath>Things/Building/Production/RUT_FoundrySalvageCache</texPath>
       <drawSize>(1,1)</drawSize>
     </graphicData>
-    <altitudeLayer>FloorEmplacement</altitudeLayer>
     <statBases>
       <Flammability>0</Flammability>
       <Beauty>0</Beauty>
     </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RUT_WreckWeathering_ForgeWarm</weathering>
+      </li>
+    </modExtensions>
   </ThingDef>
 
 </Defs>

@@ -564,6 +564,92 @@ def _wave2_checks(bad, children, fields):
             bad.append("%s lacks %s" % (f, needle))
 
 
+LAYER_ROOTS = [os.path.normpath(os.path.join(SRC_ROOT, "..", d)) for d in ("RimUtinni", "RimStarWars")]
+LAYER_CHILDREN = {"RUT_FoundrySalvageCache": ("RM_WreckFamily_Carapace", "RUT_WreckWeathering_ForgeWarm"),
+                  "RUT_FallLineWreckHull": ("RM_WreckFamily_Hull", "RUT_WreckWeathering_FallLine"),
+                  "RUT_FallLineWreckCarapace": ("RM_WreckFamily_Carapace", "RUT_WreckWeathering_FallLine"),
+                  "RSW_FreshTIEPanelWreck": ("RM_WreckFamily_Hull", "RM_WreckWeathering_Fresh"),
+                  "RSW_FreshLandspeederWreck": ("RM_WreckFamily_Speeder", "RM_WreckWeathering_Fresh")}
+
+
+def _layer_checks(bad):
+    """Step 9 + the Forge cache: the RUT/RSW layers' children, rows, lists and loot patches."""
+    things, rows, lists, tsm, incidents, patches = {}, {}, {}, set(), {}, []
+    for base in [SRC_ROOT] + LAYER_ROOTS:
+        for dp, dns, fns in os.walk(base):
+            dns[:] = [d for d in dns if d not in (".git", "obj", "bin", "__pycache__", "Textures", "Assemblies")]
+            for fn in fns:
+                if not fn.endswith(".xml"):
+                    continue
+                path = os.path.join(dp, fn)
+                try:
+                    root = ET.parse(path).getroot()
+                except ET.ParseError:
+                    continue
+                if root.tag == "Patch":
+                    patches.append((path, open(path, encoding="utf-8").read()))
+                for e in root:
+                    dn = e.findtext("defName")
+                    if not dn:
+                        continue
+                    if e.tag == "ThingDef":
+                        things[dn] = e
+                    elif e.tag == WDEF_TAG:
+                        rows[dn] = e
+                    elif e.tag == "RimMandrake.Wreckage.RM_WreckListDef":
+                        lists[dn] = e
+                    elif e.tag == "ThingSetMakerDef":
+                        tsm.add(dn)
+                    elif e.tag == "IncidentDef":
+                        incidents[dn] = e
+    if "RSW_WreckedSkiff" not in things or "RM_SalvageLoot_Hull" not in tsm:
+        bad.append("layer sweep cannot see RSW_WreckedSkiff / RM_SalvageLoot_Hull: the sweep is blind")
+        return
+    for dn, (fam, w) in LAYER_CHILDREN.items():
+        e = things.get(dn)
+        if e is None:
+            bad.append("layer child %s missing" % dn)
+            continue
+        if e.get("ParentName") != fam:
+            bad.append("%s parent %s, want %s" % (dn, e.get("ParentName"), fam))
+        if e.get("MayRequire") != "mandrake.rm.biomes":
+            bad.append("%s lacks MayRequire mandrake.rm.biomes (its family is in that mod)" % dn)
+        got = [li.findtext("weathering") for li in e.findall("modExtensions/li") if li.get("Class") == EXT_CLASS]
+        if got != [w]:
+            bad.append("%s weathering %s, want [%s]" % (dn, got, w))
+        if w not in rows:
+            bad.append("%s names weathering %s, which no row defines" % (dn, w))
+    for dn, r in rows.items():
+        x = r.findtext("extraLoot")
+        if x and x not in tsm:
+            bad.append("weathering %s names extraLoot %s, not defined" % (dn, x))
+        if dn.startswith("RUT_") and r.get("MayRequire") != "mandrake.rm.biomes":
+            bad.append("RUT weathering %s lacks MayRequire mandrake.rm.biomes" % dn)
+    cache = things.get("RUT_FoundrySalvageCache")
+    if cache is not None and (cache.findtext("tickerType") is None or cache.findtext("destroyable") == "false"):
+        bad.append("RUT_FoundrySalvageCache must restate tickerType (the spunstone patch replaces it) and be destroyable")
+    fl = lists.get("RUT_WreckList_FallLine")
+    if fl is None or fl.find("wrecks") is None:
+        bad.append("RUT_WreckList_FallLine missing")
+    else:
+        for r in fl.find("wrecks"):
+            if r.tag not in things:
+                bad.append("RUT_WreckList_FallLine row %s is no ThingDef" % r.tag)
+    inc = incidents.get("RUT_FallLineWreckFall")
+    if inc is None or inc.findtext("modExtensions/li/wreckList") != "RUT_WreckList_FallLine":
+        bad.append("RUT_FallLineWreckFall missing or not reading RUT_WreckList_FallLine")
+    ptxt = "\n".join(t for _p, t in patches)
+    for needle in ('RM_WreckListDef[defName="RUT_WreckList_FallLine"]', 'RM_WreckListDef[defName="RM_WreckList_CrawlerRoad"]'):
+        if needle not in ptxt:
+            bad.append("no RSW patch adds rows to %s" % needle)
+    for table in ("Hull", "Tank", "Carapace", "Sealed"):
+        if 'ThingSetMakerDef[defName="RM_SalvageLoot_%s_Rare"]' % table not in ptxt:
+            bad.append("no Star Wars loot row patched onto RM_SalvageLoot_%s_Rare (design §3c)" % table)
+    for m in re.findall(r'ThingSetMakerDef\[defName="([^"]+)"\]', ptxt):
+        if m.startswith("RM_SalvageLoot") and m not in tsm:
+            bad.append("a patch targets loot table %s, which does not exist" % m)
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -627,6 +713,7 @@ def static_checks():
     _field_checks(bad, weathers)
     _planet_checks(bad, fams, weathers, got)
     _wreckfall_checks(bad)
+    _layer_checks(bad)
     src_dir = os.path.join(HERE, "Source")
     proj = open(os.path.join(src_dir, "RM_Wreckage.csproj"), encoding="utf-8").read()
     for f in os.listdir(src_dir):

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1: campaign-only weathering rows (design §4, §5: campaign registers live in
+  the RUT layer). The def type is mandrake.rm.wreckage's, composed in mandrake.rm.biomes, so each row
+  carries MayRequire on that mod. ALL NUMBERS PROVISIONAL.
+-->
+<Defs>
+
+  <!-- The Forge (design §4 "Forge-warm: x1.0, RUT_FoundrySalvage extra table"): the foundry towers'
+       salvage caches. Never corroded, no tier shift; the extra roll is the forge-tech itself. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef MayRequire="mandrake.rm.biomes">
+    <defName>RUT_WreckWeathering_ForgeWarm</defName>
+    <label>forge-warm</label>
+    <description>Kept warm and dry by the foundry's own heat. Nothing has rusted; the forge-tech inside is as it was made.</description>
+    <yieldFactor>1.0</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>forge-warm</labelPrefix>
+    <extraLoot>RUT_SalvageLoot_Foundry</extraLoot>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- The Fall Line (design §4 "Fresh: x1.0, +1 tier ... Imperial parts"; "Nothing here is old"): the
+       Imperial register of the fresh row. Same numbers as RM_WreckWeathering_Fresh plus the Imperial
+       extra roll. The "live power on 1 in 10" half is not built. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef MayRequire="mandrake.rm.biomes">
+    <defName>RUT_WreckWeathering_FallLine</defName>
+    <label>fresh-fallen</label>
+    <description>Down from the Imperial lanes overhead within the season. Scorched, but whole, and stamped with the Empire's marks; nobody has had time to pick it over.</description>
+    <yieldFactor>1.0</yieldFactor>
+    <lootTierShift>1</lootTierShift>
+    <labelPrefix>fresh-fallen</labelPrefix>
+    <extraLoot>RUT_SalvageLoot_Imperial</extraLoot>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+</Defs>

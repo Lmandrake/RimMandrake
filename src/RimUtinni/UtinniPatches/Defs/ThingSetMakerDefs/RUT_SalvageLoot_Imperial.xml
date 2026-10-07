@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 9 (design §4 Fall Line "loot Hull/Carapace; Imperial parts"): the
+  Fall Line's extra roll (RUT_WreckWeathering_FallLine.extraLoot). Imperial-grade parts: plasteel, an
+  advanced component, an Imperial droid's sensor or power cell (MayRequire on the Droidworks rows).
+  INVENTED, PROVISIONAL.
+-->
+<Defs>
+
+  <ThingSetMakerDef>
+    <defName>RUT_SalvageLoot_Imperial</defName>
+    <root Class="ThingSetMaker_Sum">
+      <options>
+        <li>
+          <chance>0.7</chance>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>Plasteel</li>
+                </thingDefs>
+              </filter>
+              <countRange>4~12</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <chance>0.2</chance>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>ComponentSpacer</li>
+                </thingDefs>
+              </filter>
+              <countRange>1</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <chance>0.25</chance>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li MayRequire="mandrake.rsw.droidworks">RSW_DW_Part_Sensor</li>
+                  <li MayRequire="mandrake.rsw.droidworks">RSW_DW_Part_PowerCell</li>
+                  <li>ComponentIndustrial</li>
+                </thingDefs>
+              </filter>
+              <countRange>1</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 9: the canon hulls join the Fall Line's fresh-wreck list
+  (RUT_WreckList_FallLine, mandrake.rut.patches). Conditional on the list, so with the campaign layer
+  absent nothing happens. Weights PROVISIONAL.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/RimMandrake.Wreckage.RM_WreckListDef[defName="RUT_WreckList_FallLine"]/wrecks</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/RimMandrake.Wreckage.RM_WreckListDef[defName="RUT_WreckList_FallLine"]/wrecks</xpath>
+      <value>
+        <RSW_FreshTIEPanelWreck>1</RSW_FreshTIEPanelWreck>
+        <RSW_FreshLandspeederWreck>1</RSW_FreshLandspeederWreck>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
