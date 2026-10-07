@@ -47,6 +47,28 @@ namespace RimMandrake.FlowWorks
 			return quad;
 		}
 
+		/// <summary>Half the drawn sprite's width (x) and height (y), in cells. An animal's real body graphic
+		/// drawSize, never less than the body-size estimate; humanlikes keep the estimate. The estimate alone
+		/// (sqrt(bodySize) x 1.2) under-reads big animals — a muffalo draws 3 cells wide against an estimated
+		/// 1.86, so the cover stopped short of its flanks and showed as a hard-edged dirt rectangle across its
+		/// middle (PIT_LIP_OCCLUDES_OUTSIDE_1). Over plain ground a wider cover is invisible: terrain materials
+		/// are world-aligned, so the cover matches the ground it lies on.</summary>
+		private static Vector2 HalfExtent(Pawn p)
+		{
+			float est = 0.5f * Mathf.Clamp(Mathf.Sqrt(Mathf.Max(p.BodySize, 0.2f)) * 1.2f, 0.6f, 2.4f);
+			Vector2 h = new Vector2(est, est);
+			if (p.RaceProps != null && !p.RaceProps.Humanlike)
+			{
+				GraphicData g = p.ageTracker?.CurKindLifeStage?.bodyGraphicData;
+				if (g != null)
+				{
+					h.x = Mathf.Max(h.x, 0.5f * g.drawSize.x);
+					h.y = Mathf.Max(h.y, 0.5f * g.drawSize.y);
+				}
+			}
+			return h;
+		}
+
 		private bool HitsShallowerPawn(RM_MapComponent_Excavation eng, Pawn sunk, int sunkDepth, float left, float right, float a, float b)
 		{
 			foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
@@ -56,8 +78,8 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				Vector3 qp = q.DrawPos;
-				float qh = 0.5f * Mathf.Clamp(Mathf.Sqrt(Mathf.Max(q.BodySize, 0.2f)) * 1.2f, 0.6f, 2.4f);
-				if (RM_WallFaceMath.CoverPieceHitsShallowerPawn(left, right, a, b, qp.x - qh, qp.x + qh, qp.z - qh, qp.z + qh,
+				Vector2 qh = HalfExtent(q);
+				if (RM_WallFaceMath.CoverPieceHitsShallowerPawn(left, right, a, b, qp.x - qh.x, qp.x + qh.x, qp.z - qh.y, qp.z + qh.y,
 					eng.ExcavatedDepthAt(q.Position), sunkDepth))
 				{
 					return true;
@@ -102,9 +124,10 @@ namespace RimMandrake.FlowWorks
 					continue;
 				}
 				Vector3 dp = p.DrawPos;
-				float half = 0.5f * Mathf.Clamp(Mathf.Sqrt(Mathf.Max(p.BodySize, 0.2f)) * 1.2f, 0.6f, 2.4f);
-				float bottom = dp.z - half;
-				float top = dp.z + half;
+				Vector2 ext = HalfExtent(p);
+				float half = ext.x;
+				float bottom = dp.z - ext.y;
+				float top = dp.z + ext.y;
 				if (bottom >= p.Position.z)
 				{
 					continue;   // nothing hangs below the pawn's own cell
