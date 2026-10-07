@@ -153,6 +153,7 @@
           <texPath>Things/Pawn/Animal/RM_Nissik/RM_Nissik</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.16</drawSize>
+          <shadowData><volume>(0.099, 0.35, 0.029)</volume><offset>(0, 0, -0.035)</offset></shadowData>
         </bodyGraphicData>
       </li>
       <li>
@@ -160,6 +161,7 @@
           <texPath>Things/Pawn/Animal/RM_Nissik/RM_Nissik</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.22</drawSize>
+          <shadowData><volume>(0.137, 0.35, 0.04)</volume><offset>(0, 0, -0.048)</offset></shadowData>
         </bodyGraphicData>
       </li>
       <li>
@@ -167,6 +169,7 @@
           <texPath>Things/Pawn/Animal/RM_Nissik/RM_Nissik</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.3</drawSize>
+          <shadowData><volume>(0.186, 0.35, 0.055)</volume><offset>(0, 0, -0.066)</offset></shadowData>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -243,6 +246,7 @@
           <texPath>Things/Pawn/Animal/RM_Thollim/RM_Thollim</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.2</drawSize>
+          <shadowData><volume>(0.131, 0.35, 0.044)</volume><offset>(0, 0, -0.06)</offset></shadowData>
         </bodyGraphicData>
       </li>
       <li>
@@ -250,6 +254,7 @@
           <texPath>Things/Pawn/Animal/RM_Thollim/RM_Thollim</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.3</drawSize>
+          <shadowData><volume>(0.197, 0.35, 0.066)</volume><offset>(0, 0, -0.09)</offset></shadowData>
         </bodyGraphicData>
       </li>
       <li>
@@ -257,6 +262,7 @@
           <texPath>Things/Pawn/Animal/RM_Thollim/RM_Thollim</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.4</drawSize>
+          <shadowData><volume>(0.263, 0.35, 0.089)</volume><offset>(0, 0, -0.12)</offset></shadowData>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -338,6 +344,7 @@
           <texPath>Things/Pawn/Animal/RM_Grusk/RM_Grusk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.18</drawSize>
+          <shadowData><volume>(0.106, 0.35, 0.047)</volume><offset>(0, 0, -0.061)</offset></shadowData>
         </bodyGraphicData>
       </li>
       <li>
@@ -345,6 +352,7 @@
           <texPath>Things/Pawn/Animal/RM_Grusk/RM_Grusk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.25</drawSize>
+          <shadowData><volume>(0.147, 0.35, 0.065)</volume><offset>(0, 0, -0.085)</offset></shadowData>
         </bodyGraphicData>
       </li>
       <li>
@@ -352,6 +360,7 @@
           <texPath>Things/Pawn/Animal/RM_Grusk/RM_Grusk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.34</drawSize>
+          <shadowData><volume>(0.2, 0.35, 0.088)</volume><offset>(0, 0, -0.116)</offset></shadowData>
         </bodyGraphicData>
       </li>
     </lifeStages>

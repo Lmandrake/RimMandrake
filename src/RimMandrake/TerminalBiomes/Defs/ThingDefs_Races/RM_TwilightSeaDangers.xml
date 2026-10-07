@@ -100,6 +100,7 @@
           <texPath>Things/Pawn/Animal/RM_Suulk/RM_Suulk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.9</drawSize>
+          <shadowData><volume>(0.55, 0.35, 0.174)</volume><offset>(0, 0, -0.131)</offset></shadowData>
         </bodyGraphicData>
       </li>
       <li>
@@ -107,6 +108,7 @@
           <texPath>Things/Pawn/Animal/RM_Suulk/RM_Suulk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.15</drawSize>
+          <shadowData><volume>(0.703, 0.35, 0.222)</volume><offset>(0, 0, -0.167)</offset></shadowData>
         </bodyGraphicData>
       </li>
       <li>
@@ -114,6 +116,7 @@
           <texPath>Things/Pawn/Animal/RM_Suulk/RM_Suulk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.4</drawSize>
+          <shadowData><volume>(0.856, 0.35, 0.271)</volume><offset>(0, 0, -0.203)</offset></shadowData>
         </bodyGraphicData>
       </li>
     </lifeStages>
@@ -213,6 +216,7 @@
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.5</drawSize>
           <colorTwo>(212,178,74)</colorTwo>
+          <shadowData><volume>(0.995, 0.35, 0.339)</volume><offset>(0, 0, -0.385)</offset></shadowData>
         </bodyGraphicData>
       </li>
     </lifeStages>
