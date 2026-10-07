@@ -94,6 +94,87 @@ namespace RimMandrake.Stillsand
     {
         public RM_GiantSkeletonExtension Ext => def.GetModExtension<RM_GiantSkeletonExtension>();
 
+        // ── §2 dune burial (STILLSAND_SKELETONS_REMAINDER_1) ──
+        // The sand grid under the footprint is sampled every BurialCheckInterval ticks; the
+        // hysteresis lives in RM_SkeletonBurialLogic (offline selftest). Buried: drawn sand-tinted,
+        // harp silent, inspect line says so. Never hidden, never removed (no silent vanishing).
+        public const int BurialCheckInterval = 2500;
+        private static readonly Color DriftColor = new Color(0.86f, 0.76f, 0.56f);
+
+        private bool buried;
+        private float driftDepth;
+
+        public bool Buried => buried;
+        public float DriftDepth => driftDepth;
+
+        protected override void Tick()
+        {
+            base.Tick();
+            if (this.IsHashIntervalTick(BurialCheckInterval))
+            {
+                UpdateBurial();
+            }
+        }
+
+        /// <summary>Re-reads the drift under the footprint. Public so a dev/bridge state read can force
+        /// it. Returns true when the buried state changed.</summary>
+        public bool UpdateBurial()
+        {
+            if (!Spawned)
+            {
+                return false;
+            }
+            float before = RM_SkeletonBurialLogic.SandTint(buried, driftDepth);
+            bool wasBuried = buried;
+            if (!RM_SkeletonSettings.duneBurialEnabled || Map.sandGrid == null)
+            {
+                buried = false;
+                driftDepth = 0f;
+            }
+            else
+            {
+                CellRect rect = this.OccupiedRect();
+                float[] depths = new float[rect.Area];
+                int i = 0;
+                foreach (IntVec3 c in rect)
+                {
+                    depths[i++] = c.InBounds(Map) ? Map.sandGrid.GetDepth(c) : 0f;
+                }
+                driftDepth = RM_SkeletonBurialLogic.MeanDepth(depths);
+                buried = RM_SkeletonBurialLogic.NextBuried(buried, driftDepth);
+            }
+            if (Mathf.Abs(RM_SkeletonBurialLogic.SandTint(buried, driftDepth) - before) > 0.04f || wasBuried != buried)
+            {
+                Notify_ColorChanged();
+            }
+            if (wasBuried != buried && Map != null)
+            {
+                Messages.Message(buried
+                        ? def.LabelCap + ": the dunes have buried it to its top arcs."
+                        : def.LabelCap + ": the dunes have stripped it clean again.",
+                    new TargetInfo(Position, Map), MessageTypeDefOf.NeutralEvent, historical: false);
+            }
+            return wasBuried != buried;
+        }
+
+        public override Color DrawColor
+        {
+            get
+            {
+                Color c = base.DrawColor;
+                float t = RM_SkeletonBurialLogic.SandTint(buried, driftDepth);
+                return t <= 0f ? c : Color.Lerp(c, DriftColor, t * 0.7f);
+            }
+            set => base.DrawColor = value;
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref buried, "rmDuneBuried", false);
+            Scribe_Values.Look(ref driftDepth, "rmDuneDrift", 0f);
+        }
+
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             Map map = MapHeld;
@@ -123,6 +204,15 @@ namespace RimMandrake.Stillsand
         public override string GetInspectString()
         {
             StringBuilder sb = new StringBuilder(base.GetInspectString());
+            string drift = RM_SkeletonBurialLogic.DriftLine(buried, driftDepth);
+            if (drift != null)
+            {
+                if (sb.Length > 0)
+                {
+                    sb.AppendLine();
+                }
+                sb.Append(drift);
+            }
             RM_GiantSkeletonExtension ext = Ext;
             if (ext != null && ext.leavings.Any(l => l.thing != null))
             {
@@ -181,7 +271,8 @@ namespace RimMandrake.Stillsand
         public override void CompTick()
         {
             base.CompTick();
-            if (!RM_SkeletonSettings.boneHarpEnabled || Props.sound == null || !parent.Spawned)
+            if (!RM_SkeletonSettings.boneHarpEnabled || Props.sound == null || !parent.Spawned
+                || (parent is Building_GiantSkeleton sk && sk.Buried))
             {
                 EndSustainer();
                 return;

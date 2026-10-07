@@ -14,8 +14,11 @@ dust warning, and their Mod Settings ("Stillsand: skeletons and horizon"). Code:
    (`Patches/RM_TrackSurface_Stillsand.xml`), the dunes eraser is `Source/RM_DuneTrackEraser.cs`, and
    the wake (`RM_SandWake`) and oommok print (`RM_OommokPrint`) sprites are wired
    (`STILLSAND_SKELETON_ART_TRACKS_WIRING_1`, 2655f315f). The sandcrawler tread art has no walking race.
-2. **Dune burial (parent §4)** — the dunes engine should bury a ribcage to its top arcs and later
-   strip it. Needs a hook in `MapComponent_DuneField`; not started.
+2. **Dune burial (parent §4)** — BUILT offline 2026-10-07, never loaded. `Building_GiantSkeleton` samples
+   `Map.sandGrid` (which the dunes engine writes) under its footprint every 2500 ticks; the bury/strip
+   hysteresis (bury at mean 0.6, strip at 0.3, PROVISIONAL) is `Source/RM_SkeletonBurialLogic.cs`. Buried:
+   drawn sand-tinted, bone harp silent, inspect line, a message on each change; scribed. Toggle
+   `duneBurialEnabled`. L0: `Utils/selftest_skeleton_burial.py` (C#, 28 checks, mutation-tested).
 3. **Art** — DONE: the seven skeleton sprites are wired (2655f315f) and `RM_GiantSkull` has its own sprite
    (requeued job landed, wired).
 4. **Giant bone** — add the one bone material to each skeleton's `leavings`
@@ -23,11 +26,14 @@ dust warning, and their Mod Settings ("Stillsand: skeletons and horizon"). Code:
 5. **Ribs' rendered shadow** — DONE: `staticSunShadowHeight 0.5` on `RM_GiantSkeletonBase`. No shade-grid
    change was needed: `RM_MapComponent_ShadeGrid.CasterHeight` already skips any building carrying the
    shade-gear comp (since 2026-09-29), so the rendered shadow never turns into full cast shade.
-6. **Wandering giants on the horizon** — herd migrations and thrumbo-style passes choose their own
-   cells and ignore `parms.spawnCenter`, so the horizon warning covers raids and neutral groups
-   only. Giants need their own hook.
+6. **Wandering giants on the horizon** — BUILT offline 2026-10-07, never loaded. `RM_HorizonWarning.cs`
+   now delays HerdMigration/ThrumboPasses workers too, and a one-shot `[ThreadStatic]` entry cell armed
+   in an `IncidentWorker.TryExecute` prefix answers the worker's first `RCellFinder.TryFindRandomPawnEntryCell`,
+   so they enter from the announced bearing (`PassersHonoured` counts it). Toggle `horizonPassersEnabled`.
 8. **Live proof** (game-up, the parent's criteria): a Stillsand quicktest map carries 0–2
    skeletons; `RM_MapComponent_ShadeGrid.ShadeAt` reads 1 inside a skull; a dev-killed oommok
    becomes its skeleton (`RM_MapComponent_SkeletonRemains.Scan(ignoreDelay: true)` returns 1);
    a dev raid on a Stillsand map raises the "Dust on the horizon" letter and arrives from that
-   bearing after the configured hours.
+   bearing after the configured hours; a dev herd migration does the same and `PassersHonoured` rises;
+   sand piled over a skeleton's footprint (`sandGrid.SetDepth` to 0.7, then `UpdateBurial()`) reads
+   Buried and its harp stops, and clearing it strips it.

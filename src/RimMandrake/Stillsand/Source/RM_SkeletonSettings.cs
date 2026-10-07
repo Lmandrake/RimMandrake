@@ -22,6 +22,8 @@ namespace RimMandrake.Stillsand
         public static bool boneHarpEnabled = true;
         public static bool horizonWarningsEnabled = true;
         public static float horizonWarningHours = 3f;
+        public static bool horizonPassersEnabled = true;
+        public static bool duneBurialEnabled = true;
 
         public override void ExposeData()
         {
@@ -33,6 +35,8 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref boneHarpEnabled, "boneHarpEnabled", true);
             Scribe_Values.Look(ref horizonWarningsEnabled, "horizonWarningsEnabled", true);
             Scribe_Values.Look(ref horizonWarningHours, "horizonWarningHours", 3f);
+            Scribe_Values.Look(ref horizonPassersEnabled, "horizonPassersEnabled", true);
+            Scribe_Values.Look(ref duneBurialEnabled, "duneBurialEnabled", true);
         }
 
         private static Vector2 settingsScroll;
@@ -73,6 +77,12 @@ namespace RimMandrake.Stillsand
                 + "one by ear. Off: skeletons are silent.");
             list.Gap(6f);
 
+            list.CheckboxLabeled("Dunes bury and strip skeletons", ref duneBurialEnabled,
+                "Where the moving dunes pile drift over a skeleton it is buried to its top arcs: drawn sand-coloured, "
+                + "its harp silent. When the sand moves on it is stripped clean again, with a message each time. "
+                + "Off: skeletons stay clean whatever the sand does. Safe mid-game.");
+            list.Gap(6f);
+
             list.CheckboxLabeled("Dust on the horizon", ref horizonWarningsEnabled,
                 "On open sand nothing hides: raids and caravans are seen hours before they arrive, as a dust "
                 + "plume at the map edge and a letter giving the bearing. Off: they arrive as in vanilla.");
@@ -80,6 +90,9 @@ namespace RimMandrake.Stillsand
             {
                 list.Label("Hours of warning: " + horizonWarningHours.ToString("0.0"));
                 horizonWarningHours = Mathf.Round(list.Slider(horizonWarningHours, 0.5f, 8f) * 2f) / 2f;
+                list.CheckboxLabeled("  ...and wandering giants", ref horizonPassersEnabled,
+                    "Herd migrations and passing giants (thrumbo-style passes) are seen coming too: the same letter, "
+                    + "plume and bearing, and they really enter from that bearing. Off: they arrive unannounced.");
             }
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
