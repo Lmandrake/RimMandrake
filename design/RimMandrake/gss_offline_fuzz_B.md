@@ -38,6 +38,17 @@ Measured at the default case counts, 2026-10-06. Reproduce with `--fuzz-only hos
 | G4 | plump hose longer than flat by more than 1% | 7/1445 outlet, 1/1250 free | seed 229: 19.73 vs 19.36 |
 | G5 | flat hose crosses itself (design: no loops) | 1/1445 outlet | seed 745, 7 walls |
 | C1 | **incremental != fresh beyond the corridor margin**: the per-edge cache re-plans a cord only when a cell inside its strands' bounding box + 3 changes walkability, but the sprawl probes up to `Cap` (2.6) cells either side of the *planned* path. A wall or rock 4-6 cells from a cord leaves the cached cord standing where a fresh build lays it differently | 2/1200 cases | seed 790: `Build(6,6) Wall(5,10)` (junction:5,6 - terminal:6,6); seed 967: `Rock(10,3)` |
+| G6 | **a fitting route is refused for a cheaper, longer one** (GPT source read B2): `RouteCells` minimises step + ExtraCost (water 3/cell) but `CheckInstall` judges by length | fixed scene | dog-legged water corridor needs 37.4 of a 40 hose; the search returns a 59.0 dry detour -> "route too long" (`CostVsLengthProbe`) |
+
+
+**G2 located (2026-10-06, `OutletBendProbe` / `OutletBendReport`, printed with the hose family).** Of 965 tight outlet lays
+the tightest bend sits in the outlet straight run 10x, **in the blend 951x**, beyond it 4x; the same seeds laid without the
+outlet hold 95% of the radius in 964/965; the failing hoses must turn a median 133 deg across the blend (passing 36 deg)
+and their radius is <= blend length / turn in 965/965 (worst: seed 1353, 0.02 at s=1.93, just past the 1.6 straight run,
+turn 172 deg). So the 9 live MX_H FAILs (bend ~0.19 vs 1.14) are this: `LayOn` stiffens, then `StraightenStart` drags the
+first 1.6 + 2R cells onto the outlet line by position interpolation, with no curvature bound - a U-turn out of a
+west-facing nozzle cannot hold the radius inside a 2R blend. The live `hose_bend` scene (JawaBenchGssPlaytest.cs)
+re-tests it on the real map, with and without the outlet.
 
 C1 is a trade-off, not an oversight: raising the margin to 7 clears every case but breaks the shipped check "unrelated edit re-plans only
 the touched edge" (planned 3, reused 11), so it was not changed. Whether stale-until-next-edit is acceptable is a design call.
