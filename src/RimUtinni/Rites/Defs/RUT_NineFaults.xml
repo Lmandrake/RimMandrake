@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_NineFaults.xml               mandrake.rut.rites - NINEFOLD_FAVOUR_ODDS_BUILD_1
+
+  Nine Faults, Zizzik's burnt offering: the clan breaks a machine it has JUST FOUND.
+  Spec (ruled by the owner 2026-10-01): design/Jawa/nine_faults_permanent_rite_2026-10-01.md §2.
+  Replaces the Gift of Working Things (ruled; no def of that devotion existed in src/).
+
+  XML only. Every worker is the RM tier's engine in mandrake.rm.ninefold
+  (Source/NineFaults.cs, Source/Offerings.cs), which never names a faith; the faith
+  is data here, the same split as UtinniPatches' RUT_TheReturn over Stillsand.
+
+    RUT_Ritual_NineFaults     the precept. Always startable while a fresh find stands.
+    RUT_FreshFind             the target: a machine taken on this map, never run
+                              (the fresh-find mark, cleared on first use or departure).
+    RUT_NineFaultsOutcome     burns the find out (slag hulk left), moves favour from
+                              Rekko to Zizzik by market value; Poor starts a fire,
+                              Good/Excellent leave a memory, Excellent an art tale.
+
+  Gates: mandrake.rm.ninefold (every worker) and Ideology (every ritual def type).
+  Not wired into The Salvation's ideoligion here: adding the precept to the
+  campaign ideo is a .rid / save step.
+-->
+<Defs>
+
+  <ThoughtDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+    <defName>RUT_GaveTheFirstSpark</defName>
+    <thoughtClass>Thought_AttendedRitual</thoughtClass>
+    <durationDays>6</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li>
+        <label>we gave him the first spark</label>
+        <description>We found it, and before it ever ran we gave it the nine faults. The bulbs went out one by one. Whatever comes apart next, it was paid for.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <TaleDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+    <defName>RUT_GaveTheNineFaults</defName>
+    <label>gave a machine the nine faults</label>
+    <taleClass>Tale_SinglePawn</taleClass>
+    <type>Volatile</type>
+    <baseInterest>1.5</baseInterest>
+    <rulePack>
+      <rulesStrings>
+        <li>tale_noun->[PAWN_nameDef] giving a found machine the nine faults</li>
+        <li>image->[PAWN_nameFull] crossing the last of nine wires inside a salvaged machine, [circumstance_group]</li>
+        <li>image->[PAWN_nameFull] standing before a found machine as its nine bulbs fail one by one, [circumstance_group]</li>
+        <li>image->[PAWN_nameFull] watching a burnt-out hulk smoke where a machine stood, [circumstance_group]</li>
+        <li>circumstance_phrase->while the smoke curls against the draft</li>
+        <li>circumstance_phrase->with [PAWN_possessive] hood drawn low over glowing eyes</li>
+        <li>circumstance_phrase->as the clan watches in a close ring</li>
+        <li>desc_sentence->Nine bulbs are carved along the top of the scene, each one darker than the last.</li>
+        <li>desc_sentence->The worshippers stand shoulder to shoulder around the machine.</li>
+        <li>desc_sentence->A single spark leaps from the machine toward the sky.</li>
+      </rulesStrings>
+    </rulePack>
+  </TaleDef>
+
+  <PreceptDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+    <defName>RUT_Ritual_NineFaults</defName>
+    <label>Nine Faults</label>
+    <description>The first spark through a found machine is Zizzik's. A thing just dragged out of a ruin has been no one's yet: not Ohm's, who wakes machines, nor Rekko's, who restores them. Worshippers surround a machine the clan has found on this ground and never run, and miswire it, nine faults in sequence, until the ninth burns it out. It is lost forever, and a slag hulk stands where it was.</description>
+    <issue>Ritual</issue>
+    <impact>Medium</impact>
+    <iconPath>UI/Icons/Rituals/RitualScarification</iconPath>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>RUT_NineFaultsPattern</ritualPatternBase>
+    <allowDuplicates>false</allowDuplicates>
+    <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+    <canGenerateAsSpecialPrecept>false</canGenerateAsSpecialPrecept>
+    <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+    <notifyPlayerOnOpportunity>false</notifyPlayerOnOpportunity>
+  </PreceptDef>
+
+  <RitualPatternDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+    <defName>RUT_NineFaultsPattern</defName>
+    <ritualBehavior>RUT_NineFaultsBehavior</ritualBehavior>
+    <ritualObligationTargetFilter>RUT_FreshFind</ritualObligationTargetFilter>
+    <ritualOutcomeEffect>RUT_NineFaultsOutcome</ritualOutcomeEffect>
+    <canStartAnytime>true</canStartAnytime>
+    <alwaysStartAnytime>true</alwaysStartAnytime>
+    <shortDescOverride>Nine Faults</shortDescOverride>
+    <descOverride>Worshippers miswire a machine the clan has just found, nine faults in sequence, until it burns out.</descOverride>
+    <ritualExplanation>Select a machine the clan found on this ground and has never run: claimed from a ruin, or installed from a find. Switching it on or working at it spends the chance, and so does departure. The machine is destroyed.</ritualExplanation>
+  </RitualPatternDef>
+
+  <RitualObligationTargetFilterDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+    <defName>RUT_FreshFind</defName>
+    <workerClass>RimMandrake.Ninefold.RM_RitualObligationTargetWorker_FreshFind</workerClass>
+  </RitualObligationTargetFilterDef>
+
+  <RitualBehaviorDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+    <defName>RUT_NineFaultsBehavior</defName>
+    <durationTicks>2500</durationTicks>
+    <spectatorsLabel>Witnesses</spectatorsLabel>
+    <spectatorGerund>witness</spectatorGerund>
+    <stages>
+      <li>
+        <defaultDuty>Spectate</defaultDuty>
+        <essential>True</essential>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1</percentage>
+          </li>
+        </endTriggers>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualOutcomeEffectDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
+    <defName>RUT_NineFaultsOutcome</defName>
+    <description>The ninth fault burns the found machine out; a slag hulk is left where it stood. A poor rite catches fire early.</description>
+    <workerClass>RimMandrake.Ninefold.RM_RitualOutcomeEffectWorker_NineFaults</workerClass>
+    <startingQuality>0.3</startingQuality>
+    <comps>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>witnesses</label>
+        <curve>
+          <points>
+            <li>(1, 0.0)</li>
+            <li>(4, 0.3)</li>
+            <li>(8, 0.5)</li>
+          </points>
+        </curve>
+      </li>
+    </comps>
+    <outcomeChances>
+      <li>
+        <chance>0.2</chance>
+        <label>Poor</label>
+        <description>The {0} went badly. The miswiring caught early.</description>
+        <positivityIndex>-1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.4</chance>
+        <label>Fair</label>
+        <description>The {0} ran true. Nine faults, in order.</description>
+        <positivityIndex>1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.3</chance>
+        <label>Good</label>
+        <description>The {0} ran true, and everyone saw it.</description>
+        <memory>RUT_GaveTheFirstSpark</memory>
+        <positivityIndex>2</positivityIndex>
+      </li>
+      <li>
+        <chance>0.1</chance>
+        <label>Excellent</label>
+        <description>The {0} will be told of. Nine faults, nine bulbs, and not one spark wasted.</description>
+        <memory>RUT_GaveTheFirstSpark</memory>
+        <positivityIndex>3</positivityIndex>
+      </li>
+    </outcomeChances>
+    <modExtensions>
+      <li Class="RimMandrake.Ninefold.RM_NineFaultsExtension">
+        <hulkDef>ChunkSlagSteel</hulkDef>
+        <excellentTale>RUT_GaveTheNineFaults</excellentTale>
+        <poorFireSize>0.6</poorFireSize>
+        <poorFactor>0.5</poorFactor>
+        <fairFactor>1</fairFactor>
+        <goodFactor>1.25</goodFactor>
+        <excellentFactor>1.5</excellentFactor>
+      </li>
+    </modExtensions>
+  </RitualOutcomeEffectDef>
+
+</Defs>

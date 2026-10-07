@@ -57,6 +57,19 @@ namespace RimMandrake.Ninefold
         // same source comment.
         public static float moodWalkMultiplier = 1f;
 
+        // NINEFOLD_FAVOUR_ODDS_BUILD_1 (design/Jawa/nine_faults_permanent_rite_2026-10-01.md
+        // §4/§5): a god's band tilts the odds of a few incidents and
+        // weathers in his domain. Off: every tilt reads x1, the vector still
+        // moves. Strength scales each tilt's distance from x1 (0 = none,
+        // 1 = the ruled table, 2 = double).
+        public static bool favourOddsEnabled = true;
+        public static float favourStrength = 1f;
+
+        // The two offerings (Nine Faults' fresh-find mark and the Left
+        // Behind's "Leave behind" toggle). Off: no gizmo, no mark, the rite
+        // finds no eligible machine, departure moves no favour.
+        public static bool offeringsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -64,6 +77,9 @@ namespace RimMandrake.Ninefold
             Scribe_Values.Look(ref firstContactLettersEnabled, "firstContactLettersEnabled", true);
             Scribe_Values.Look(ref eventMagnitudeMultiplier, "eventMagnitudeMultiplier", 1f);
             Scribe_Values.Look(ref moodWalkMultiplier, "moodWalkMultiplier", 1f);
+            Scribe_Values.Look(ref favourOddsEnabled, "favourOddsEnabled", true);
+            Scribe_Values.Look(ref favourStrength, "favourStrength", 1f);
+            Scribe_Values.Look(ref offeringsEnabled, "offeringsEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -97,6 +113,25 @@ namespace RimMandrake.Ninefold
                   + "elsewhere in the campaign. 1.0x is the shipped default; 0x freezes Mood "
                   + "wherever it last sat.");
                 moodWalkMultiplier = list.Slider(moodWalkMultiplier, 0f, 3f);
+                list.GapLine();
+
+                list.CheckboxLabeled("Favour tilts the odds", ref favourOddsEnabled,
+                    "A pleased or angered god makes a few things in his domain a little more "
+                  + "or less likely on your home map: certain incidents, traders, finds and "
+                  + "weather. Never labelled. Off: every chance is vanilla.");
+                if (favourOddsEnabled)
+                {
+                    list.Label("Favour strength: " + favourStrength.ToString("0.00") + "x");
+                    list.Label("How far a god's standing bends the odds. 1.0x is the shipped "
+                      + "table (x0.7 to x1.35); 0x is no effect.");
+                    favourStrength = list.Slider(favourStrength, 0f, 2f);
+                }
+                list.Gap();
+
+                list.CheckboxLabeled("Offerings (Nine Faults, the Left Behind)", ref offeringsEnabled,
+                    "Machines the clan has just found are marked as fresh finds the Nine Faults "
+                  + "rite may burn out, and a working building can be marked to leave behind at "
+                  + "gravship departure. Off: no marks, no toggle, no favour moved by either.");
             }
             else
             {
