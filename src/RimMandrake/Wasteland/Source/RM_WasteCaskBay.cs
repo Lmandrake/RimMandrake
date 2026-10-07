@@ -175,7 +175,8 @@ namespace RimMandrake.Wasteland
             }
             else if (Breached)
             {
-                sb.AppendInNewLine("Breached, but held by a sealed cask bay.");
+                RM_CompWasteContainment heldBy = Bay;
+                sb.AppendInNewLine(heldBy != null && heldBy.Contained ? "Breached, but held by a sealed cask bay." : "Breached.");
             }
             if (reburyMarked)
             {
