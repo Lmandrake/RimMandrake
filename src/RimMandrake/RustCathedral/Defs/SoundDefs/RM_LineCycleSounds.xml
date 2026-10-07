@@ -12,6 +12,7 @@
     <context>MapOnly</context>
     <sustain>true</sustain>
     <maxSimultaneous>1</maxSimultaneous>
+    <priorityMode>PrioritizeNearest</priorityMode>
     <subSounds>
       <li>
         <grains>

@@ -129,13 +129,11 @@
          ambient roamer — a static wildAnimals commonality would make it
          spawn year-round, contradicting "outside flood-weeks the biome shows
          zero irqit and that is correct." -->
+    <!-- Franchise rows (RUT_SealedSleeper, RUT_EmperorVulture, RSW_SandLeaper, RSW_SandPillar,
+         RSW_Creature_Mantrap, RSW_MutagenicNorphea) live ONLY in the Utinni layer:
+         UtinniPatches/Patches/WildAnimals_CrackedLands.xml Op 2. Naming them here
+         raised unresolved cross-references + a ConfigErrors NRE on the free tier. -->
     <wildAnimals>
-      <RUT_SealedSleeper>0.2</RUT_SealedSleeper>  <!-- the Sealed, signature -->
-      <RUT_EmperorVulture>0.15</RUT_EmperorVulture>  <!-- the Patient, sky -->
-      <RSW_SandLeaper>0.2</RSW_SandLeaper>  <!-- the Spenders, invented exotic -->
-      <RSW_SandPillar>0.5</RSW_SandPillar>  <!-- small, invented exotic -->
-      <RSW_Creature_Mantrap>0.15</RSW_Creature_Mantrap>  <!-- the Patient, labelled "fang leaf" on its own def -->
-      <RSW_MutagenicNorphea>0.4</RSW_MutagenicNorphea>  <!-- the Sealed -->
       <RM_Muttavaq>0.03</RM_Muttavaq>  <!-- the pan giant - one per pan, very rare -->
       <RM_Uttaqar>0.05</RM_Uttaqar>  <!-- the crag giant (rock troll) - rare -->
       <RM_Tarruq>0.12</RM_Tarruq>  <!-- the voice - year-round Patient resident -->
