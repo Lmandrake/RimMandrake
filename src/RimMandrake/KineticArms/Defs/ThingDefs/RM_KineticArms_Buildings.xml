@@ -94,6 +94,8 @@
       <li>
         <verbClass>Verb_Shoot</verbClass>
         <defaultProjectile>RM_Proj_PulseWave</defaultProjectile>
+        <!-- bolts are Projectile_Explosive subclasses, so VerbProperties.ConfigErrors wants forcedMissRadius > 0; <= 0.5 never forces a miss (Verb_LaunchProjectile), so aim stays a normal accuracy roll (vanilla precedent: Anomaly pack 0.1) -->
+        <forcedMissRadius>0.1</forcedMissRadius>
         <warmupTime>1</warmupTime>
         <range>22.9</range>
         <burstShotCount>1</burstShotCount>

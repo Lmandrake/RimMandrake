@@ -24,3 +24,7 @@ Card 23:28. (1) Factions, owner typed: "Mostly ruins only, but rare on raids tha
 - 111ac3588 rarity tiers (RuinsWeights 30/20/15/10/12/15/5/3, grav-ram rarest) + RM_ThingSetMaker_KineticComplex on 3 ancient-complex tables, toggle foundInComplexes; kernel 49/49, STATIC+MOCK pass, DLL rebuilt
 - kineticarms tier added to modset_builder.py (13 mods, all 5 DLC; plan only, not applied)
 - deployed KineticArms (3 files VERIFIED); selftests 220/222 (fails: rimflow items_glob_live, UtinniPatches dump - not Kinetic); item prose + rimflow note
+
+## 2026-10-07 live-bug fixes
+- started: reading KA/EK source + live results (thump_cannon 2 cells, repulsor injures, gravram_big_body, looted_pirates, forcedMiss/smelt, stillness/kicker_west runner defects)
+- cause found live (bridge, ka_diag.py journal): looted_pirates = ReGrowth 2 sets Inherit=False on PirateWaster/modExtensions, dropping the Pirate-parent marker; load errors = bolt projectiles derive Projectile_Explosive with forcedMissRadius 0, loot-only guns smeltable with no costList. Fix: looters patched by name; forcedMissRadius 0.1 (<=0.5 never forces a miss); smeltable false. STATIC repro rows added (12 findings -> 0)

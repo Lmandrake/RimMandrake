@@ -38,7 +38,7 @@
     <thingCategories>
       <li>Grenades</li>
     </thingCategories>
-    <smeltable>true</smeltable>
+    <smeltable>false</smeltable>
     <verbs>
       <li>
         <label>throw thudder grenade</label>
@@ -78,6 +78,8 @@
 
   <ThingDef ParentName="BaseGunWithQuality">
     <defName>RM_Gun_PalmThumper</defName>
+    <!-- found, never crafted (design §9): no costList, so smelting would yield nothing -->
+    <smeltable>false</smeltable>
     <label>palm thumper</label>
     <description>A stubby, flared-muzzle sidearm. Its bolt bursts into a short cone of pressure that shoves one target straight away from the shooter, wounding nothing. Pure control: push a charging brawler back, or off a ledge.</description>
     <techLevel>Industrial</techLevel>
@@ -106,6 +108,8 @@
         <verbClass>Verb_Shoot</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
         <defaultProjectile>RM_Proj_PalmThump</defaultProjectile>
+        <!-- bolts are Projectile_Explosive subclasses, so VerbProperties.ConfigErrors wants forcedMissRadius > 0; <= 0.5 never forces a miss (Verb_LaunchProjectile), so aim stays a normal accuracy roll (vanilla precedent: Anomaly pack 0.1) -->
+        <forcedMissRadius>0.1</forcedMissRadius>
         <warmupTime>0.6</warmupTime>
         <range>12.9</range>
         <soundCast>ThumpCannon_Fire</soundCast>
@@ -151,6 +155,8 @@
 
   <ThingDef ParentName="BaseGunWithQuality">
     <defName>RM_Gun_SlamLauncher</defName>
+    <!-- found, never crafted (design §9): no costList, so smelting would yield nothing -->
+    <smeltable>false</smeltable>
     <label>slam launcher</label>
     <description>A fat, two-handed single-shot launcher that lobs a padded kinetic charge into the enemy's second rank, throwing everyone around the impact several cells. It bruises; it does not maim.</description>
     <techLevel>Industrial</techLevel>
@@ -224,6 +230,8 @@
 
   <ThingDef ParentName="BaseGunWithQuality">
     <defName>RM_Gun_RepulsorRifle</defName>
+    <!-- found, never crafted (design §9): no costList, so smelting would yield nothing -->
+    <smeltable>false</smeltable>
     <label>repulsor rifle</label>
     <description>A sleek ancient rifle whose muzzle is a stack of finned emitter plates. Every hit drives a cone of pressure through the target and shoves it back along the line of fire, so a firing line of repulsors pushes an assault backwards step by step - into whatever lies behind it.</description>
     <techLevel>Spacer</techLevel>
@@ -252,6 +260,8 @@
         <verbClass>Verb_Shoot</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
         <defaultProjectile>RM_Proj_RepulsorBolt</defaultProjectile>
+        <!-- bolts are Projectile_Explosive subclasses, so VerbProperties.ConfigErrors wants forcedMissRadius > 0; <= 0.5 never forces a miss (Verb_LaunchProjectile), so aim stays a normal accuracy roll (vanilla precedent: Anomaly pack 0.1) -->
+        <forcedMissRadius>0.1</forcedMissRadius>
         <warmupTime>1.2</warmupTime>
         <range>25.9</range>
         <soundCast>Shot_ChargeRifle</soundCast>
@@ -297,6 +307,8 @@
 
   <ThingDef ParentName="BaseGunWithQuality">
     <defName>RM_Gun_GravRam</defName>
+    <!-- found, never crafted (design §9): no costList, so smelting would yield nothing -->
+    <smeltable>false</smeltable>
     <label>grav-ram</label>
     <description>A massive two-handed gravitic weapon wrapped in dark gravlite panels. Its pulse bends space in a wide cone ahead of the impact and throws whatever stands there harder than any other weapon known.</description>
     <techLevel>Ultra</techLevel>
@@ -331,6 +343,8 @@
         <verbClass>Verb_Shoot</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
         <defaultProjectile>RM_Proj_GravRamPulse</defaultProjectile>
+        <!-- bolts are Projectile_Explosive subclasses, so VerbProperties.ConfigErrors wants forcedMissRadius > 0; <= 0.5 never forces a miss (Verb_LaunchProjectile), so aim stays a normal accuracy roll (vanilla precedent: Anomaly pack 0.1) -->
+        <forcedMissRadius>0.1</forcedMissRadius>
         <warmupTime>2</warmupTime>
         <range>19.9</range>
         <soundCast>ThumpCannon_Fire</soundCast>
