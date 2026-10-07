@@ -262,6 +262,10 @@ def view_sections(world, seat, target="v1", ctx=None):
     offtarget = sorted((i for i in rest if i.id not in waiting_ids), key=by_age)
     proposed = sorted((i for i in mine if i.state == "proposed" and not i.blocked),
                       key=by_age)
+    # step 2: built work leaves NEXT/IN PROGRESS for its own section, so "built, owes
+    # live proof" is never again indistinguishable from "unstarted" (system doc §3.6).
+    built = sorted((i for i in mine if i.state in ("built", "validated")
+                    and not i.blocked), key=by_age)
 
     return ranked, [
         ("IN PROGRESS", doing,
@@ -282,12 +286,60 @@ def view_sections(world, seat, target="v1", ctx=None):
         ("NOT THIS TARGET", offtarget,
          "Ready, but aimed at another version. A planning decision, not a defect.",
          None),
+        ("BUILT — published, acceptance owed (never offered as build work)", built,
+         "`rimflow next --acceptance` groups these by the cheapest level they owe for a "
+         "sitting; `rimflow verify <ID> --criterion <C> --result pass` advances them.",
+         acceptance_lines),
         ("PROPOSED — filed, not yet taken", proposed,
          "Claim one to work it. Any item can be claimed and started; the prose "
          "sections are good practice, never a precondition.",
          lambda i: ["thin:     %s" % (", ".join("no ## " + m for m in model._missing(i))
                                       or "spec, verify and criteria all present")]),
     ]
+
+
+def acceptance_lines(it):
+    """The lines a built/validated item carries in any view."""
+    owed = [c for c in it.criteria if c["id"] in it.outstanding]
+    out = ["built:    %s%s at %s, level reached %s"
+           % (it.built_sha or "?", (" on %s" % it.built_ref) if it.built_ref else "",
+              it.built_at or "?", it.level_reached or "L0"),
+           "owes:     %s" % (", ".join("%s %s" % (c["id"], c["level"]) for c in owed)
+                             or "nothing")]
+    for c in owed[:6]:
+        if c.get("text"):
+            out.append("  %-6s %-10s %s" % (c["id"], c["level"], c["text"][:110]))
+    return out
+
+
+def acceptance_view(world, seat=None, target="v1"):
+    """-> text: built/validated items grouped by cheapest owed level, for a sitting.
+    `priority.acceptance` decides membership and order; this only prints it."""
+    groups = priority.acceptance(world, seat, target)
+    L = ["# ACCEPTANCE%s — built work by the cheapest level it owes"
+         % (" for %s" % seat if seat else ""),
+         "(game %s, bridge %s)" % (world.game, world.bridge_holder or "free"), ""]
+    if not groups:
+        L.append("_none._ Nothing built is waiting on a level %s sits."
+                 % (seat or "anyone"))
+        return "\n".join(L) + "\n"
+    for lv, items in groups:
+        L.append("## %s  — %d item%s, needs %s%s" % (
+            lv, len(items), "" if len(items) == 1 else "s", model.LEVEL_NEEDS[lv],
+            {"GREEN-FULL": " + the FULL list (one cold load covers the group)",
+             "L4": " — one review environment, never one card per item",
+             "L3": " + an Opus evaluator"}.get(lv, " on the minimal list"
+                                                if lv in ("L1", "L2", "GREEN-MIN") else "")))
+        for it in items:
+            L.append("%s   [%s, owner %s%s]  %s" % (
+                it.id, it.state, it.owner, ", BLOCKED" if it.blocked else "",
+                it.title or ""))
+            for line in acceptance_lines(it):
+                L.append("    " + line)
+        L.append("")
+    L.append("-> rimflow verify <ID> --criterion <C> --result pass|fail --config <min-13|"
+             "full-…> --evidence <path>")
+    return "\n".join(L).rstrip() + "\n"
 
 
 def _ids_from_sections(ranked, sections):

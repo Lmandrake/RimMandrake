@@ -160,6 +160,12 @@ def state_reason(it):
                 % ", ".join("## " + m for m in miss)) if miss else ""
         return ("state is `proposed` — nobody has claimed it yet. `rimflow claim %s` "
                 "makes it yours and offerable.%s" % (it.id, thin))
+    if it.state in ("built", "validated"):
+        return ("state is `%s` — published at %s; it owes %s. Built work is never "
+                "offered as implementation; it is ACCEPTANCE work: "
+                "`rimflow next --acceptance`." % (
+                    it.state, it.built_sha or "?",
+                    ", ".join(it.owed_levels()) or "nothing"))
     if it.state == "done":
         return ("closed at %s. It will never be offered again — that is the "
                 "point of an append-only record." % (it.closed_sha or "?"))
@@ -237,3 +243,41 @@ def why_not(world, seat, iid, target="v1", ctx=None):
     if not satisfiable(it, world, ctx, seat):
         out.append(needs_reason(it, world, seat, ctx))
     return out or ["It IS being offered. Check `rimflow next --seat %s`." % seat]
+
+
+# ---------------------------------------------------------------------------
+# ACCEPTANCE — built work, grouped for a sitting (rimflow redesign step 2)
+# ---------------------------------------------------------------------------
+# 🔑 Who sits which level — owner, 2026-10-06: *"Foundry is supposed to own automated
+# processes. Bench is about human interaction, design work, and emergency response."*
+# FOUNDRY sits L0..GREEN-FULL and L3; BENCH only L4. OWNER sees every group.
+ACCEPTANCE_SEAT = {"L4": "BENCH"}
+ACCEPTANCE_DEFAULT_SEAT = "FOUNDRY"
+
+
+def acceptance_seat(level):
+    return ACCEPTANCE_SEAT.get(level, ACCEPTANCE_DEFAULT_SEAT)
+
+
+def acceptance(world, seat=None, target="v1"):
+    """-> [(level, [Item])], cheapest level first: every `built`/`validated` item, of
+    ANY owner, grouped by the CHEAPEST level it still owes — one bridge sitting sweeps a
+    whole group (addendum rec. 3). `seat` keeps only the groups that seat sits (see
+    ACCEPTANCE_SEAT); any other seat (OWNER, None) keeps all. Blocked items are listed too: a sitting
+    should see them, and `blocked` is shown beside each. Pure; oldest build first."""
+    groups = {}
+    for it in world.items.values():
+        if it.state not in ("built", "validated"):
+            continue
+        if target and it.target not in (None, target):
+            continue
+        lv = it.next_level()
+        if lv is None:
+            continue
+        if seat in ("BENCH", "FOUNDRY") and acceptance_seat(lv) != seat:
+            continue
+        groups.setdefault(lv, []).append(it)
+    out = []
+    for lv in sorted(groups, key=model.level_rank):
+        out.append((lv, sorted(groups[lv], key=lambda i: (i.built_at or "", i.id))))
+    return out

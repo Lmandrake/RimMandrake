@@ -341,6 +341,8 @@ def cmd_queue(args, seat):
     first, and this verb is how a person or an agent does that. (`queue/HUMAN.md` is
     the owner's hand-written inbox, not a view — it stays tracked and is never rendered.)
     """
+    if getattr(args, "acceptance", False):
+        return _print_acceptance(args, seat)
     which = (args.which or seat or "").upper()
     try:
         from . import render as _render
@@ -827,6 +829,8 @@ def cmd_bench(args, seat):
 def cmd_next(args, seat):
     if getattr(args, "bench", False):
         return cmd_bench(args, seat)
+    if getattr(args, "acceptance", False):
+        return _print_acceptance(args, seat)
     peek = bool(getattr(args, "peek", False))
     _, w = load()
     # 🔴 MEASURE BEFORE OFFERING. `next` decides what a seat may work on, and half of
@@ -924,6 +928,19 @@ def cmd_next(args, seat):
                  "" if len(also) <= 4 else ", +%d" % (len(also) - 4)))
         print("    filed for you by another seat. `rimflow claim <ID>` to take one.")
     _print_skipped(skipped)
+    return 0
+
+
+def _print_acceptance(args, seat):
+    """`next --acceptance` / `queue --acceptance`: built work for a sitting. READ-ONLY —
+    it measures nothing and writes nothing (a sitting decides its own game state)."""
+    _, w = load()
+    try:
+        from . import render as _render
+    except ImportError:
+        from rimflow import render as _render
+    which = (getattr(args, "which", None) or seat or "").upper() or None
+    sys.stdout.write(_render.acceptance_view(w, which, args.target))
     return 0
 
 
@@ -1132,6 +1149,13 @@ def cmd_show(args, seat):
         print("closed at %s" % it.closed_sha)
     if it.superseded_by:
         print("superseded by %s" % it.superseded_by)
+    if it.built_sha:
+        try:
+            from . import render as _render
+        except ImportError:
+            from rimflow import render as _render
+        for line in _render.acceptance_lines(it):
+            print(line)
     if not it.closed_sha:
         undoc = _undocumented_work_warning(it.id)
         if undoc:
@@ -1461,6 +1485,15 @@ def cmd_close(args, seat):
     # attributable on the screen as well as in the ledger.
     it = w.items.get(args.id)
     holder = getattr(it, "owner", None)
+    owed = [c for c in getattr(it, "criteria", []) if c["id"] in getattr(it, "outstanding", [])]
+    if owed:
+        # ⚠️ A WARNING, not a refusal (step 2 leaves `close` as it was). A close that
+        # skips owed criteria is the shortcut the review says to guard — step 3's call.
+        sys.stderr.write("⚠️  %s still OWES %s — closing anyway skips them. If they "
+                         "passed, record each:\n      rimflow verify %s --criterion <C> "
+                         "--result pass --config <cfg> --evidence <path>\n"
+                         % (args.id, ", ".join("%s %s" % (c["id"], c["level"])
+                                               for c in owed), args.id))
     ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
     if args.reason:
         ev["reason"] = args.reason
@@ -1566,6 +1599,115 @@ def cmd_reconcile(args, seat):
     return 0
 
 
+def _published(sha, idx):
+    """-> (full_sha, ref) when `sha` is an ancestor of the published ref, else None.
+
+    The git index (`reconcile.load_index`, origin/main — or the test fixture behind
+    `RIMFLOW_GITINDEX`) answers first: it holds every commit on the ref. With no index
+    (git unknown, or a redirected ledger with no fixture) it asks git directly with
+    `merge-base --is-ancestor`, against THIS clone's origin/main — which is only as fresh
+    as the last fetch, and the refusal says so."""
+    ref = gitindex_ref()
+    if idx is not None:
+        m = idx.resolve(sha)
+        return (m.sha, idx.ref or ref) if m is not None else None
+    full = git("rev-parse", "--verify", "-q", sha + "^{commit}")
+    if not full:
+        return None
+    try:
+        subprocess.check_call(("git", "merge-base", "--is-ancestor", full, ref),
+                              cwd=model.ROOT, stdout=subprocess.DEVNULL,
+                              stderr=subprocess.DEVNULL)
+    except (subprocess.CalledProcessError, OSError):
+        return None
+    return full, ref
+
+
+def _manifest(args, iid):
+    """-> (criteria, source) or `die`. From --criteria-file, else the item's
+    `## criteria` section. Every bullet must carry a level tag; none at all is refused
+    unless --none-owed says so out loud."""
+    if args.criteria_file:
+        try:
+            with open(args.criteria_file, encoding="utf-8") as fh:
+                text = fh.read()
+        except OSError as e:
+            die("implemented: cannot read --criteria-file %s: %s" % (args.criteria_file, e))
+        source = args.criteria_file
+        # In a dedicated file EVERY non-blank, non-comment line is a criterion.
+        crit, untagged = model.parse_criteria(text)
+        untagged += [l.strip() for l in text.splitlines()
+                     if l.strip() and not l.lstrip().startswith("#")
+                     and not model.CRITERION_LINE_RE.match(l)
+                     and not model.BULLET_RE.match(l)]
+    else:
+        text = "\n".join(b for n, b in read_prose(iid) if n.lower() == "criteria")
+        source = "items/%s.md ## criteria" % iid
+        crit, untagged = model.parse_criteria(text)
+    if untagged:
+        die("implemented: %d criterion line(s) in %s carry no level tag, so nothing can "
+            "route them\nand the item could reach `done` still owing them:\n%s\n\n"
+            "Tag each: `- A1 L1: <what is observed>` — levels %s.\n"
+            "L0 = offline (attested by this event); the rest are OWED and decide `needs`."
+            % (len(untagged), source,
+               "\n".join("    " + l[:120] for l in untagged[:10]),
+               " ".join(model.LEVELS)))
+    if not crit and not args.none_owed:
+        die("implemented: %s has no level-tagged criteria (%s). Without a manifest this "
+            "would go straight\nto `done`. Either tag the criteria (`- A1 L1: …`), pass "
+            "--criteria-file, or say\n--none-owed if nothing beyond L0 is owed." % (iid, source))
+    if crit and args.none_owed:
+        owed = [c for c in crit if c["level"] != "L0"]
+        if owed:
+            die("implemented: --none-owed, but the manifest owes %s."
+                % ", ".join("%s %s" % (c["id"], c["level"]) for c in owed))
+    return crit, source
+
+
+def cmd_implemented(args, seat):
+    """`rimflow implemented <ID> --sha <sha> [--criteria-file F | --none-owed]`
+
+    ONE event: published sha + the level-tagged manifest + the `needs` derived from the
+    cheapest owed level. -> `built`, or `done` when nothing beyond L0 is owed."""
+    _, w = load()
+    it = w.items.get(args.id)
+    if it is None:
+        die("implemented: %s has never been filed." % args.id)
+    sha = args.sha.strip().lower()
+    if not model.SHA_RE.match(sha):
+        die("implemented: --sha %r is not a commit sha (7-40 lowercase hex)." % args.sha)
+    idx = reconcile.load_index()
+    pub = _published(sha, idx)
+    if pub is None:
+        die("implemented: %s is not an ancestor of %s (or does not resolve here).\n\n"
+            "`built` means PUBLISHED — a local or unpushed commit is not built.\n"
+            "  push it:   git pull --rebase origin main && git push origin HEAD:main\n"
+            "  or fetch:  git fetch origin   (this clone's %s may be stale)\n"
+            "then run this again." % (sha, gitindex_ref(), gitindex_ref()))
+    full, ref = pub
+    crit, source = _manifest(args, args.id)
+    owed = [c for c in crit if c["level"] != "L0"]
+    needs = model.needs_for_levels([c["level"] for c in owed])
+    ev = {"seat": seat, "event": "implemented", "id": args.id, "sha": full[:12],
+          "ref": ref, "criteria": crit, "needs": needs}
+    _emit(ev, w, quiet=True)
+    after = _replay_now().items[args.id]
+    print("%s implemented at %s (%s) -> %s" % (args.id, full[:12], ref, after.state))
+    print("  manifest from %s: %d criteria, %d L0 attested, %d owed"
+          % (source, len(crit), len(crit) - len(owed), len(owed)))
+    if after.state == "done":
+        _announce_unblocks(args.id)
+        moved = _move_prose_to_closed(args.id)
+        if moved:
+            print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+        return 0
+    print("  owes %s; cheapest %s -> needs %s"
+          % (", ".join("%s %s" % (c["id"], c["level"]) for c in owed),
+             after.next_level(), after.needs))
+    print("  never offered as build work again; listed by `rimflow next --acceptance`.")
+    return 0
+
+
 def cmd_verify(args, seat):
     _, w = load()
     dead = _dead_evidence(args.evidence)
@@ -1577,13 +1719,36 @@ def cmd_verify(args, seat):
               "the file NOW while\n   you still have it — Player.log rotates on the next "
               "launch and is then gone for\n   good. If it truly cannot be kept, put the "
               "numbers themselves in --evidence so\n   they survive without it.\n")
+    before = w.items.get(args.id)
+    # A criterion run defaults its sha to the BUILT sha — the artifact under test — not
+    # to this clone's HEAD, which may be anything (addendum rec. 4).
+    sha = args.sha or (getattr(before, "built_sha", None) if args.criterion else None) \
+        or head_sha()
+    # The run carries its LEVEL on the ledger (addendum rec. 4), taken from the
+    # manifest when only the criterion was named; the model refuses a contradiction.
+    level = args.level or next((c["level"] for c in getattr(before, "criteria", [])
+                                if c["id"] == args.criterion), None)
     _emit({"seat": seat, "event": "verify", "id": args.id, "result": args.result,
-           "config": args.config, "evidence": args.evidence,
-           "sha": args.sha or head_sha()}, w, quiet=True)
+           "config": args.config, "evidence": args.evidence, "sha": sha,
+           "level": level, "criterion": args.criterion}, w, quiet=True)
     it = _replay_now().items[args.id]
     r = it.runs[-1]
-    print("%s recorded, result %s. IMMUTABLE — %s is not reopened."
-          % (r.name, r.result, args.id))
+    print("%s recorded, result %s%s. IMMUTABLE — %s is not reopened."
+          % (r.name, r.result,
+             (" for %s %s" % (r.criterion, r.level)) if r.criterion else
+             (" at %s" % r.level) if r.level else "", args.id))
+    if r.level and not r.criterion:
+        print("ℹ️  --level without --criterion is recorded on the run and drops nothing; "
+              "name the criterion to advance the item.")
+    if r.criterion and before is not None and it.state != before.state:
+        print("%s: %s -> %s" % (args.id, before.state, it.state))
+    if r.criterion and it.state in ("built", "validated"):
+        print("  still owes %s (needs %s)" % (", ".join(it.owed_levels()), it.needs))
+    if r.criterion and it.state == "done" and before is not None and before.state != "done":
+        _announce_unblocks(args.id)
+        moved = _move_prose_to_closed(args.id)
+        if moved:
+            print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
     return 0
 
 
@@ -2297,6 +2462,23 @@ def build_parser():
     s.add_argument("--peek", action="store_true",
                    help="read-only: writes nothing (no measured game-state stamp, no "
                         "git-index cache write); shows the recorded game state")
+    s.add_argument("--acceptance", action="store_true",
+                   help="read-only: built/validated items grouped by the cheapest level "
+                        "they owe, for an acceptance sitting (FOUNDRY: L0-GREEN-FULL, "
+                        "L3; BENCH: L4; OWNER: all)")
+
+    s = add("implemented", "the implementation is PUBLISHED at --sha (refused unless on "
+            "origin/main) and every L0 criterion passes: records the level-tagged "
+            "manifest + derived needs in ONE event -> built (or done if nothing owed)",
+            cmd_implemented)
+    s.add_argument("id")
+    s.add_argument("--sha", required=True, help="the published commit (an ancestor of "
+                                                "origin/main)")
+    s.add_argument("--criteria-file", dest="criteria_file",
+                   help="one criterion per line: `A1 L1: what is observed`. Default: "
+                        "the item's `## criteria` section, every bullet level-tagged")
+    s.add_argument("--none-owed", dest="none_owed", action="store_true",
+                   help="say out loud that nothing beyond L0 is owed (-> done)")
 
     s = add("reconcile", "judge commits that name an item: complete|partial|unrelated. "
             "Changes NO state; stops `next` re-offering those commits", cmd_reconcile)
@@ -2361,7 +2543,13 @@ def build_parser():
     s.add_argument("--result", required=True, choices=("pass", "fail", "partial"))
     s.add_argument("--config", required=True, help="e.g. full-578 or min-13")
     s.add_argument("--evidence", help="path to the log, dump or screenshot")
-    s.add_argument("--sha", help="defaults to git HEAD")
+    s.add_argument("--sha", help="defaults to the built sha with --criterion, else "
+                                 "git HEAD")
+    s.add_argument("--level", choices=model.LEVELS,
+                   help="the validation level this run exercised")
+    s.add_argument("--criterion", help="the outstanding criterion this run tests; a "
+                   "pass drops it (built -> validated; the last one -> done). Any seat "
+                   "may record one on a built item")
 
     s = add("finding", "name what a run found", cmd_finding)
     s.add_argument("--from", dest="from_", required=True,
@@ -2502,6 +2690,9 @@ def build_parser():
                    help="BENCH or FOUNDRY (default: this seat)")
     s.add_argument("--path", action="store_true",
                    help="render, then print only the view's path")
+    s.add_argument("--acceptance", action="store_true",
+                   help="print built/validated work grouped by cheapest owed level "
+                        "(same as `next --acceptance`); renders nothing")
     s = add("render", "rebuild queue/*.md (owned by render.py)",
             _delegate("render"))
     s.add_argument("rest", nargs=argparse.REMAINDER,
