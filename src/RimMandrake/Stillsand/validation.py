@@ -998,6 +998,19 @@ def _sun(t, cells):
     return r
 
 
+def _settle_shade(t):
+    """Step past the shade grid's next rebuild. RM_MapComponent_ShadeGrid.Recompute runs only when
+    TicksGame % 2000 == 0 (CreatureBehaviors RM_MapComponent_ShadeGrid.cs, RecomputeIntervalTicks; no
+    dirty events), so a pad _prep just cleared of rock / overhead-mountain roof still reads the OLD shade
+    (shade 1.0, exposure 0) until then. Every sun consumer reads that cached grid: the sun tables
+    (RM_SunPower.FactorAt -> ShadeAt), the loomma clock (ShadeDrivenSeverity -> ShadeAt), glare
+    (ExposureAt). Call AFTER the chain's own roofs are set, BEFORE anything reads or ticks the sun."""
+    if not _live(t):
+        return
+    now = int(_ok(t.bridge_call("jawa/time_clock"), "time_clock")["ticksGame"])
+    t.wait_ticks(2000 - now % 2000 + 5)
+
+
 def _exposure(r, x, z):
     for c in (r.get("cells") or []):
         if c.get("x") == x and c.get("z") == z and c.get("inBounds"):
@@ -1248,12 +1261,23 @@ def loomma_chain(t):
     rect = _rect(t)
     x, z = t.anchor
     roof = (x + 2, z - 5, 9, 9)
+    # RULED OUT: night / time of day zeroed the sun — the Stillsand sun is pinned (sun_pinned_no_night PASS,
+    #   skyGlow 1.0 twelve hours on); RM_SunPower.Intensity reads the pinned elevation, never the clock.
+    # RULED OUT: startingHediffs not applied by spawn_pawn — PawnGenerator.cs:1269 adds kindDef.startingHediffs
+    #   for every non-newborn; the hediff was REMOVED, not never added: 0.03 start, -20/day in shade is
+    #   -0.067 per 200-tick interval (HediffComp_SeverityModifierBase), so one interval in the STALE shade grid
+    #   (pad prepped at 45731, grid rebuilt only at 46000) deleted it (Hediff.ShouldRemove: Severity <= 0)
+    #   and nothing re-adds it. Fixed: _settle_shade before the spawn; the def now carries minSeverity so the
+    #   clock can never be deleted (RM_Stillsand_Fillout.xml).
+    # Wait 600, not 1500: at +40/day a loomma in full sun goes 0.03 -> lethal 1.0 in ~1455 ticks, so a
+    #   1500-tick read finds corpses (read as "left the pad"). 600 ticks = 3 intervals = ~+0.4.
     with _comp(t, "loomma_sunstruck_open_vs_roofed"):
         if _live(t):
             t.bridge_call("jawa/set_roof_batch", ops=_rs(roof), roofDef="RoofConstructed")
+            _settle_shade(t)
             opn = [_spawn(t, "RM_Loomma", x - 9 + i, z) for i in range(3)]
             shd = [_spawn(t, "RM_Loomma", roof[0] + 3 + i, roof[1] + 4) for i in range(3)]
-            t.wait_ticks(1500)
+            t.wait_ticks(600)
             rows = _rows(t, rect=_rs(rect), health=True)
             so = [_sev(rows.get(p), "RM_LoommaSunstruck") for p in opn if p in rows]
             ss = [_sev(rows.get(p), "RM_LoommaSunstruck") for p in shd if p in rows]
@@ -1261,7 +1285,7 @@ def loomma_chain(t):
             if not so or not ss:
                 _unmeasured(t, "loommas left the pad before they could be read")
             if max(so) <= 0.0:
-                _fail("an open-sand loomma never gained RM_LoommaSunstruck in 1500 ticks")
+                _fail("an open-sand loomma never gained RM_LoommaSunstruck in 600 ticks")
             if sum(so) / len(so) <= sum(ss) / len(ss) + 0.02:
                 _fail("sunstruck is no worse in the open (%s) than under a roof (%s): the clock ignores shade"
                       % (so, ss))
@@ -1373,7 +1397,16 @@ def glass_chain(t):
                                "%d outside)" % (len(under), len(open_)))
             ids["roofed"], ids["open"] = under[0]["id"], open_[0]["id"]
             ids["RM_SunFurnace"] = ids["open"]
+            _settle_shade(t)
 
+    # RULED OUT: night / the loomma chain ticking the clock into darkness — the sun is pinned (no night);
+    #   the line read "in shade (sun 0%)", which FactorAt only writes when Intensity > 0 and the cached
+    #   ShadeAt >= 0.5 (night would read "no sun"). The cell was not roofed (FactorAt checks Roofed live
+    #   first). Cause: the shade grid was stale — pad prepped and read at tick 50231, last rebuild 50000
+    #   (RecomputeIntervalTicks 2000). The glare pad read shade 1.0 / exposure 0.0 the same way.
+    # RULED OUT: the StatDef patch matched nothing — thing_stats lists RM_StatPart_SunPowered in statParts.
+    #   0.10 open = roofed = x2 is the WorkTableWorkSpeedFactor minValue 0.1 clamping max(0.05, sun 0)
+    #   (StatDef minValue 0.1, RimSage Stats_Building_Special.xml): all three glass FAILs are one stale read.
     with _comp(t, "sun_table_reads_sun_in_open"):
         if _live(t):
             txt = _table_state(t, ids["open"])
@@ -1619,6 +1652,7 @@ def glare_chain(t):
     st = {}
     with _comp(t, "glare_site_ready", poison=True):
         if _live(t):
+            _settle_shade(t)    # the pad's old rock/roof shade lingers until the grid rebuilds
             r = _sun(t, "%d,%d" % (x, z))
             ex = _exposure(r, x, z)
             if not isinstance(ex, (int, float)) or ex < 0.6:
@@ -2002,8 +2036,28 @@ def horizon_chain(t):
                 _fail("a neutral group fired on the Stillsand with no 'Dust on the horizon' letter")
             if early:
                 _fail("the warned group arrived at once (%d pawns): the incident was not delayed" % len(early))
+            # RULED OUT (as proven): "lost in the queue". IncidentQueue.IncidentQueueTick runs every tick and
+            #   re-calls Storyteller.TryFire(queued: true), which our prefix passes straight through; TryFire
+            #   is CanFireNow && Worker.TryExecute. In run 20261007T094214Z the vanilla arm (toggle off, no
+            #   queue, no prefix) ALSO refused TraderCaravanArrival 4000 ticks later: canFireNow true, fired
+            #   false -> vanilla TryExecute itself refuses on this site (faction/traderKind/zero pawns from
+            #   GeneratePawns, warnOnZeroResults false = silent). So before blaming the queue, read the
+            #   queue and run the same incident through vanilla as a control.
             if not late:
-                _fail("the warned group never arrived after the warning delay (it was lost in the queue)")
+                q = t.bridge_call("jawa/incident_queue_peek")
+                mine = [row for row in ((q or {}).get("queue") or []) if row.get("defName") == "TraderCaravanArrival"]
+                _note(t, "incident queue after the delay (TraderCaravanArrival rows)", mine)
+                with _setting(t, "horizonWarningsEnabled", False):
+                    ctl = t.bridge_call("jawa/storyteller_fire", incidentDef="TraderCaravanArrival", dryRun=False)
+                    _close_dialogs(t, ctl)
+                _note(t, "vanilla control fire (toggle off)", {k: (ctl or {}).get(k) for k in
+                                                              ("fired", "canFireNow", "note")})
+                if not (ctl or {}).get("fired"):
+                    _unmeasured(t, "vanilla TraderCaravanArrival also refuses on this site with the horizon off "
+                                   "(canFireNow %r, TryExecute false): the delayed fire failed for the same "
+                                   "vanilla reason, not in the queue" % (ctl or {}).get("canFireNow"))
+                _fail("the warned group never arrived after the warning delay, while vanilla fires the same "
+                      "incident at once (queue rows %r)" % mine)
             _STATE["horizon_new"] = list(late)
 
     with _comp(t, "horizon_toggle_off_vanilla", toggle="horizonWarningsEnabled"):

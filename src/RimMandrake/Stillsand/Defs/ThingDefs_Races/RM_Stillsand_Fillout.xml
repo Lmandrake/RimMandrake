@@ -680,6 +680,9 @@
     <isBad>true</isBad>
     <everCurableByItem>false</everCurableByItem>
     <initialSeverity>0.01</initialSeverity>
+    <!-- Floor above 0: Hediff.ShouldRemove is Severity <= 0, and nothing re-adds this hediff, so
+         without a floor one stretch of shade deleted the clock for good (MEASURED live 2026-10-07). -->
+    <minSeverity>0.001</minSeverity>
     <maxSeverity>1.0</maxSeverity>
     <lethalSeverity>1.0</lethalSeverity>
     <stages>
