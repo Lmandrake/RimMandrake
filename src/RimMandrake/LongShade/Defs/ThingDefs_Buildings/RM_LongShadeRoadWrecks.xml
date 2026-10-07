@@ -15,6 +15,8 @@
     <label>sun-baked speeder</label>
     <description>A light repulsor speeder that died crossing the open sand and was left where it dropped. The paint has gone to chalk and the canopy has crazed white, but it throws a shadow long enough to rest in. Deconstruct it for valuable resources.</description>
     <staticSunShadowHeight>0.6</staticSunShadowHeight>
+    <!-- Engine rule: a def with a static sun shadow height may not also draw graphic shadow data. -->
+    <graphicData><shadowData IsNull="True"/></graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_SunBaked</weathering>
