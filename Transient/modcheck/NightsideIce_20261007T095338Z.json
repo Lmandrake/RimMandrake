@@ -1,0 +1,1867 @@
+{
+ "mod": "NightsideIce",
+ "stamp": "20261007T095338Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "BiomeDef/RM_NightsideIceNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_NightsideIceNoSuchDef_ZZ",
+           "found": false,
+           "defType": "BiomeDef",
+           "defName": "RM_NightsideIceNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_54674a0c75e64bc8b70eb702fc817c5c",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:52:59.9854579+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:00.0350132+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_shipped_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "12 of 12 def(s) resolved",
+         "requested": 12,
+         "foundCount": 12,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_NightsideIce",
+           "found": true,
+           "defName": "RM_NightsideIce",
+           "defType": "BiomeDef",
+           "label": "the Sleeping Ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NightsideIce"
+           }
+          },
+          {
+           "requested": "FleckDef/RM_ShivvenTell",
+           "found": true,
+           "defName": "RM_ShivvenTell",
+           "defType": "FleckDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShivvenTell"
+           }
+          },
+          {
+           "requested": "GenStepDef/RM_WreckField_NightsideIce",
+           "found": true,
+           "defName": "RM_WreckField_NightsideIce",
+           "defType": "GenStepDef",
+           "label": "Nightside Ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WreckField_NightsideIce"
+           }
+          },
+          {
+           "requested": "HediffDef/RM_ShivvenUnderIce",
+           "found": true,
+           "defName": "RM_ShivvenUnderIce",
+           "defType": "HediffDef",
+           "label": "in the ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShivvenUnderIce"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_Shivven",
+           "found": true,
+           "defName": "RM_Shivven",
+           "defType": "PawnKindDef",
+           "label": "shivven",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Shivven"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_ShivvenBreach",
+           "found": true,
+           "defName": "RM_ShivvenBreach",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShivvenBreach"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_ShivvenRumble",
+           "found": true,
+           "defName": "RM_ShivvenRumble",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShivvenRumble"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_BreachCrack",
+           "found": true,
+           "defName": "RM_BreachCrack",
+           "defType": "ThingDef",
+           "label": "crack in the ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_BreachCrack"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_NightsideExpeditionRig",
+           "found": true,
+           "defName": "RM_NightsideExpeditionRig",
+           "defType": "ThingDef",
+           "label": "abandoned expedition rig",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NightsideExpeditionRig"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_NightsideWreckHull",
+           "found": true,
+           "defName": "RM_NightsideWreckHull",
+           "defType": "ThingDef",
+           "label": "frost-locked hull section",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NightsideWreckHull"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_NightsideWreckTank",
+           "found": true,
+           "defName": "RM_NightsideWreckTank",
+           "defType": "ThingDef",
+           "label": "frost-locked tank",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NightsideWreckTank"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Shivven",
+           "found": true,
+           "defName": "RM_Shivven",
+           "defType": "ThingDef",
+           "label": "shivven",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Shivven"
+           }
+          }
+         ],
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_14893c66954140e188d44805509f25b5",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:00.0360134+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:00.0845556+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breachEnabled_round_trips",
+      "toggle": "breachEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breachFirstCountdownHours_round_trips",
+      "toggle": "breachFirstCountdownHours",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breachFrequencyScale_round_trips",
+      "toggle": "breachFrequencyScale",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breachWarnings_round_trips",
+      "toggle": "breachWarnings",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "heatDialAlert_round_trips",
+      "toggle": "heatDialAlert",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "heatDialAlertThreshold_round_trips",
+      "toggle": "heatDialAlertThreshold",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "heatDialEnabled_round_trips",
+      "toggle": "heatDialEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "heatDialScale_round_trips",
+      "toggle": "heatDialScale",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "masterEnabled_round_trips",
+      "toggle": "masterEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shivvenHeatSeek_round_trips",
+      "toggle": "shivvenHeatSeek",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shivvenIceOnly_round_trips",
+      "toggle": "shivvenIceOnly",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shivvenSenseRange_round_trips",
+      "toggle": "shivvenSenseRange",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shivvenStrikeHeaters_round_trips",
+      "toggle": "shivvenStrikeHeaters",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "biome_doctrine",
+    "components": [
+     {
+      "name": "flags_and_worker_match_the_sheet",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: get_defs cannot read BiomeDef.workerClass (Type-valued fields read '(no such field)'); the density and flag checks above passed",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "animalDensity",
+          "plantDensity",
+          "allowRoads",
+          "allowRivers",
+          "allowFarmingCamps",
+          "isExtremeBiome",
+          "workerClass"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_NightsideIce",
+           "found": true,
+           "defName": "RM_NightsideIce",
+           "defType": "BiomeDef",
+           "label": "the Sleeping Ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "allowRoads": true,
+            "allowRivers": false,
+            "allowFarmingCamps": false,
+            "animalDensity": 0.2,
+            "plantDensity": 0.0,
+            "isExtremeBiome": true,
+            "workerClass": "(no such field)"
+           }
+          }
+         ],
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_47795bad0917479592ed957d15fa41f4",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:03.3606725+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:03.4024655+00:00",
+          "DurationMs": 41,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "biome_roster",
+    "components": [
+     {
+      "name": "biome_probe_ready",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/biome_probe",
+        "result": {
+         "success": true,
+         "message": "1 biome(s) probed; searched for 1 name(s) \u2014 read `findResults` per biome, and note that present-at-commonality-0 is NOT absent.",
+         "biomesProbed": 1,
+         "notFound": [],
+         "searched": [
+          "RM_NightsideIceNoSuchCreature_ZZ"
+         ],
+         "absentFromEveryProbedBiome": [
+          "RM_NightsideIceNoSuchCreature_ZZ"
+         ],
+         "biomes": [
+          {
+           "defName": "RM_NightsideIce",
+           "label": "the Sleeping Ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "implemented": true,
+           "generatesNaturally": true,
+           "canBuildBase": true,
+           "canAutoChoose": true,
+           "isExtremeBiome": true,
+           "isWaterBiome": false,
+           "impassable": false,
+           "animalDensity": 0.2,
+           "plantDensity": 0.0,
+           "diseaseMtbDays": 90.0,
+           "forageability": 0.0,
+           "foragedFood": null,
+           "settlementSelectionWeight": 1.0,
+           "wildAnimalCount": 0,
+           "wildPlantCount": 0,
+           "animalsListed": 0,
+           "plantsListed": 0,
+           "animals": [],
+           "plants": [],
+           "findResults": [
+            {
+             "defName": "RM_NightsideIceNoSuchCreature_ZZ",
+             "present": false,
+             "state": "absent",
+             "declared": false,
+             "where": null,
+             "commonality": 0.0,
+             "declaredCommonality": 0.0
+            }
+           ]
+          }
+         ],
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_a420d965fe9245f4b04c057dafaf6a03",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:03.4107809+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:03.4510158+00:00",
+          "DurationMs": 40,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "no_wild_plants",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "animal_rows_carry_source_commonality",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "site",
+    "components": [
+     {
+      "name": "site_nightside_ice_map",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/map_info",
+        "result": {
+         "success": true,
+         "tile": 89672,
+         "tileValid": true,
+         "mapId": 6,
+         "sizeX": 250,
+         "sizeZ": 250,
+         "cellCount": 62500,
+         "tileInfo": {
+          "biome": "RM_Stillsand",
+          "hilliness": "Flat",
+          "hillinessInt": 1,
+          "elevation": 979.654,
+          "rainfall": 2161.193,
+          "swampiness": 0.0,
+          "temperature": 15.0,
+          "pollution": 0.0,
+          "waterCovered": false,
+          "isSurfaceTile": true,
+          "fieldErrors": null
+         },
+         "mapBiome": "RM_Stillsand",
+         "mapBiomeLabel": "the Stillsand",
+         "outdoorTempNow": 18.4295464,
+         "latitude": 32.438343,
+         "longitude": 14.4772415,
+         "season": "Spring",
+         "mapParent": {
+          "defName": "Settlement",
+          "label": "Colony",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals"
+         },
+         "playerSettlementsOnThisTile": 1,
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_8a0181af22fd40e18af2d77681d8e00b",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:03.4520176+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:03.5010611+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/world_tile_set",
+        "result": {
+         "success": true,
+         "written": 1,
+         "requested": 1,
+         "errors": [],
+         "clamped": [],
+         "note": "Nothing is visible until jawa/world_commit runs.",
+         "tiles": [
+          {
+           "tile": 89672,
+           "biome": "RM_NightsideIce",
+           "elevation": 979.654,
+           "hilliness": "Flat",
+           "hillinessInt": 1,
+           "temperature": -40.0,
+           "rainfall": 2161.193,
+           "swampiness": 0.0,
+           "pollution": 0.0,
+           "riverDist": 72,
+           "feature": "Pebi Mountains",
+           "featureId": 33,
+           "waterCovered": false,
+           "roadCount": 0,
+           "riverCount": 2,
+           "mutatorCount": 3
+          }
+         ],
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_cb191c3cb2e14a3aac7fdc0e16107ac0",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/world-tile-set",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:03.5020615+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:03.5512991+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/world_commit",
+        "result": {
+         "success": true,
+         "failedSteps": 0,
+         "lazy": false,
+         "warning": "Tile's own private caches (HillinessLabel, Min/MaxTemperature, Biomes) have no reset anywhere in RimWorld and survive this. Read raw fields.",
+         "steps": [
+          {
+           "step": "WorldDrawLayer_Terrain.RegenerateNow",
+           "status": "ok"
+          },
+          {
+           "step": "WorldDrawLayer_Hills.RegenerateNow",
+           "status": "ok"
+          },
+          {
+           "step": "WorldDrawLayer_Landmarks.RegenerateNow",
+           "status": "ok"
+          },
+          {
+           "step": "WorldDrawLayer_Roads.RegenerateNow",
+           "status": "ok"
+          },
+          {
+           "step": "WorldDrawLayer_Rivers.RegenerateNow",
+           "status": "ok"
+          },
+          {
+           "step": "FastTileFinder.DirtyCache",
+           "status": "ok"
+          },
+          {
+           "step": "WorldReachability.ClearCache",
+           "status": "ok"
+          },
+          {
+           "step": "WorldPathGrid.RecalculateLayerPerceivedPathCosts",
+           "status": "ok"
+          }
+         ],
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_dda7a6faf0ba47f1949a2f13314a11dc",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/world-commit",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:03.5523002+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:04.0249541+00:00",
+          "DurationMs": 472,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/execute_debug_action",
+        "result": {
+         "success": true,
+         "path": "Actions\\Regenerate Current Map",
+         "node": {
+          "path": "Actions\\Regenerate Current Map",
+          "parentPath": "Actions",
+          "label": "Regenerate Current Map",
+          "category": "Map",
+          "actionType": "Action",
+          "isRoot": false,
+          "visible": true,
+          "active": true,
+          "on": false,
+          "displayPriority": 0,
+          "tabId": "actions",
+          "tabTitle": "Actions/tools",
+          "tabRootPath": "Actions",
+          "tabDefName": null,
+          "hasChildren": false,
+          "childCount": 0,
+          "visibleChildCount": 0,
+          "hasDirectAction": true,
+          "hasPawnAction": false,
+          "hasSettingsToggle": false,
+          "execution": {
+           "kind": "Direct",
+           "supported": true,
+           "reason": null,
+           "requiredTargetKind": null
+          },
+          "source": {
+           "name": null,
+           "category": "Map",
+           "allowedGameStates": "Playing",
+           "hideInSubMenu": false,
+           "requiresRoyalty": false,
+           "requiresIdeology": false,
+           "requiresBiotech": false,
+           "requiresAnomaly": false,
+           "requiresOdyssey": false
+          }
+         },
+         "targetPawn": null,
+         "mapTarget": null,
+         "stateBefore": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_6",
+          "currentMapIndex": 0,
+          "mapCount": 1,
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "screenFading": false,
+          "fadeOverlayAlpha": 0.0,
+          "gameDataReady": true,
+          "mapDataReady": true,
+          "currentMapReady": true,
+          "screenFadeClear": true,
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true
+         },
+         "stateAfter": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_7",
+          "currentMapIndex": 0,
+          "mapCount": 1,
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "screenFading": false,
+          "fadeOverlayAlpha": 0.0,
+          "gameDataReady": true,
+          "mapDataReady": true,
+          "currentMapReady": true,
+          "screenFadeClear": true,
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true
+         },
+         "effects": {
+          "logCount": 1,
+          "logs": [
+           {
+            "sequence": 104,
+            "level": "error",
+            "message": "Error in GenStep: System.ArgumentNullException: Value cannot be null.\r\nParameter name: source\r\n[Ref 48B6ABE2]\nSystem.Linq.OrderedEnumerable`2[[RimWorld.Planet.SurfaceTile+RiverLink, Assembly-CSharp, Version=1.6.9676.17735, Culture=neutral, PublicKeyToken=null],[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]..ctor(IEnumerable`1 source, Func`2 keySelector, IComparer`1 comparer, Boolean descending, OrderedEnumerable`1 parent)\n  at System.Linq.Enumerable.OrderBy[TSource,TKey] (System.Collections.Generic.IEnumerable`1[T] source, System.Func`2[T,TResult] keySelector) [0x00000] in <1f993cbf88314b1baa1e10ca917bdc64>:0 \n  at RimWorld.TileMutatorWorker_River.GenerateRiverGraph (Verse.Map map) [0x00016] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.TileMutatorWorker_River.GeneratePostTerrain (Verse.Map map) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.GenStep_MutatorPostTerrain.Generate (Verse.Map map, Verse.GenStepParams parms) [0x00022] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.MapGenerator.GenerateContentsIntoMap (System.Collections.Generic.IEnumerable`1[T] genStepDefs, Verse.Map map, System.Int32 seed, System.Boolean stepDebugger) [0x0016a] in <61e4173561894da49d210260257b5097>:0 ",
+            "source": "unity",
+            "repeatCount": 1,
+            "timestampUtc": "2026-10-07T09:53:05.8260162+00:00"
+           }
+          ],
+          "windowCountDelta": 0,
+          "openedWindowTypes": [],
+          "closedWindowTypes": [],
+          "debugToolActiveBefore": false,
+          "debugToolActiveAfter": false,
+          "debugToolChanged": false
+         },
+         "followUp": null,
+         "operation": {
+          "OperationId": "op_69f23030b7114662bb8ebfb11b281ded",
+          "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:04.0269531+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:07.4974806+00:00",
+          "DurationMs": 3470,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimbridge/get_bridge_status",
+        "result": {
+         "success": true,
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_7",
+          "currentMapIndex": 0,
+          "mapCount": 1,
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "screenFading": false,
+          "fadeOverlayAlpha": 0.0,
+          "gameDataReady": true,
+          "mapDataReady": true,
+          "currentMapReady": true,
+          "screenFadeClear": true,
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true
+         },
+         "version": {
+          "bridgeVersion": "2.1.1+ca5997c9e02f53609358223a673834e35a1d1ee1",
+          "bridgeAssemblyVersion": "2.1.1.0",
+          "sdkVersion": "2.1.1.0",
+          "sdkInformationalVersion": "2.1.1+ca5997c9e02f53609358223a673834e35a1d1ee1"
+         },
+         "sdk": {
+          "sdkAssembly": "RimBridgeServer.Sdk",
+          "sdkVersion": "2.1.1.0",
+          "sdkInformationalVersion": "2.1.1+ca5997c9e02f53609358223a673834e35a1d1ee1",
+          "companionCount": 1,
+          "companionWarningCount": 0,
+          "companionErrorCount": 0
+         },
+         "companions": {
+          "totalCount": 1,
+          "registeredToolCount": 383,
+          "diagnostics": [
+           {
+            "AssemblyPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools\\JawaBench\\JawaBench.BridgeTools.dll",
+            "AssemblyName": "JawaBench.BridgeTools",
+            "AssemblyVersion": "0.1.0.0",
+            "BridgeToolsRoot": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools",
+            "BundleDirectory": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools\\JawaBench",
+            "OwnerId": "global",
+            "RootKind": "Global",
+            "IsBundled": true,
+            "ProviderId": "extension.global/global/jawa-bench.-bridge-tools",
+            "Status": "registered",
+            "Success": true,
+            "HostSdkVersion": "2.1.1.0",
+            "HostSdkInformationalVersion": "2.1.1+ca5997c9e02f53609358223a673834e35a1d1ee1",
+            "ReferencedSdkVersion": "2.1.1.0",
+            "ToolClassCount": 1,
+            "ToolCount": 383,
+            "LocalSdkPaths": [],
+            "Warnings": [],
+            "Errors": [],
+            "UpdatedAtUtc": "2026-10-07T09:19:56.464141+00:00"
+           }
+          ]
+         },
+         "patches": {
+          "applied": true,
+          "essentialApplied": true,
+          "optionalPatchAttemptCount": 56,
+          "optionalPatchSuccessCount": 56,
+          "optionalPatchFailureCount": 0,
+          "optionalPatchFailures": [],
+          "lateInputPatches": {
+           "applied": true,
+           "attemptCount": 6,
+           "successCount": 6,
+           "failureCount": 0,
+           "failures": []
+          }
+         },
+         "recentOperationCount": 1000,
+         "trackedOperationCount": 1000,
+         "operationJournalCapacity": 1000,
+         "retainedResultCount": 50,
+         "retainedResultCapacity": 50,
+         "recentEventCount": 5000,
+         "eventJournalCapacity": 5000,
+         "recentLogCount": 72,
+         "logJournalCapacity": 2000,
+         "latestOperationEventSequence": 8901,
+         "latestLogSequence": 105,
+         "operation": {
+          "OperationId": "op_a426821736db4354a7da8cb48f3c2d64",
+          "CapabilityId": "rimbridge.core/diagnostics/get-bridge-status",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:12.4984298+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:12.5114205+00:00",
+          "DurationMs": 12,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/map_info",
+        "result": {
+         "success": true,
+         "tile": 89672,
+         "tileValid": true,
+         "mapId": 7,
+         "sizeX": 250,
+         "sizeZ": 250,
+         "cellCount": 62500,
+         "tileInfo": {
+          "biome": "RM_NightsideIce",
+          "hilliness": "Flat",
+          "hillinessInt": 1,
+          "elevation": 979.654,
+          "rainfall": 2161.193,
+          "swampiness": 0.0,
+          "temperature": -40.0,
+          "pollution": 0.0,
+          "waterCovered": false,
+          "isSurfaceTile": true,
+          "fieldErrors": null
+         },
+         "mapBiome": "RM_NightsideIce",
+         "mapBiomeLabel": "the Sleeping Ice",
+         "outdoorTempNow": 18.4295464,
+         "latitude": 32.438343,
+         "longitude": 14.4772415,
+         "season": "Spring",
+         "mapParent": {
+          "defName": "Settlement",
+          "label": "Colony",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals"
+         },
+         "playerSettlementsOnThisTile": 1,
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_8176240022f94780a6bee48c3b34264f",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:12.5124281+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:12.5613927+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "heat_dial",
+    "components": [
+     {
+      "name": "dial_reads",
+      "toggle": "heatDialEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofDial(Verse.Map)",
+         "result": "DIAL 0.00 raw 0.0 heaters 0.0 fires 0.0 power 0.0 rooms 0.0 applies=True biome=RM_NightsideIce",
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_7931869701224ccc98556510e98d3809",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:12.6309516+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:12.6769893+00:00",
+          "DurationMs": 46,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "fire_raises_the_dial",
+      "toggle": "heatDialEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofFireRaisesDial(Verse.Map)",
+         "result": "BEFORE raw 0.0 AFTER raw 20.0 rose=True",
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_4124629da5704448b1319023f4713eca",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:12.6784916+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:12.7275338+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "shivven",
+    "components": [
+     {
+      "name": "site_powered_heater",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/map_info",
+        "result": {
+         "success": true,
+         "tile": 89672,
+         "tileValid": true,
+         "mapId": 7,
+         "sizeX": 250,
+         "sizeZ": 250,
+         "cellCount": 62500,
+         "tileInfo": {
+          "biome": "RM_NightsideIce",
+          "hilliness": "Flat",
+          "hillinessInt": 1,
+          "elevation": 979.654,
+          "rainfall": 2161.193,
+          "swampiness": 0.0,
+          "temperature": -40.0,
+          "pollution": 0.0,
+          "waterCovered": false,
+          "isSurfaceTile": true,
+          "fieldErrors": null
+         },
+         "mapBiome": "RM_NightsideIce",
+         "mapBiomeLabel": "the Sleeping Ice",
+         "outdoorTempNow": 18.4295464,
+         "latitude": 32.438343,
+         "longitude": 14.4772415,
+         "season": "Spring",
+         "mapParent": {
+          "defName": "Settlement",
+          "label": "Colony",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals"
+         },
+         "playerSettlementsOnThisTile": 1,
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_851d288cd4e04803b5a4581db053b505",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:12.7290381+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:12.7770888+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/make_empty_room",
+        "result": {
+         "success": true,
+         "rect": {
+          "x": 135,
+          "z": 135,
+          "w": 13,
+          "h": 13
+         },
+         "wallDef": "Wall",
+         "floorDef": "Soil",
+         "doorAt": {
+          "x": 135,
+          "z": 146
+         },
+         "cellsWalled": 48,
+         "cellsFloored": 169,
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_6c7cb603c58449bc94f0f7739139459e",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/make-empty-room",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:12.778592+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:12.8456574+00:00",
+          "DurationMs": 67,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/build_batch",
+        "result": {
+         "success": true,
+         "placed": 1,
+         "survived": 1,
+         "lostToLaterOps": 0,
+         "failedCount": 0,
+         "failed": [],
+         "displacedCount": 0,
+         "displaced": [],
+         "placeWorkerWarningsCount": 0,
+         "placeWorkerWarnings": [],
+         "qualityIgnoredForDefs": [],
+         "message": "1 placed.",
+         "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+         "things": [
+          {
+           "def": "Campfire",
+           "stuff": null,
+           "x": 141,
+           "z": 141,
+           "rot": 0,
+           "faction": "PlayerColony",
+           "hitPoints": 80,
+           "maxHitPoints": 80,
+           "quality": null,
+           "destroyed": false
+          }
+         ],
+         "ticksGame": 227293,
+         "operation": {
+          "OperationId": "op_4fbd3656787d45c5a5966155e60b1825",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/build-batch",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:12.846658+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:12.8768901+00:00",
+          "DurationMs": 30,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/step_game_ticks",
+        "result": {
+         "success": true,
+         "stepId": "step_26a74e9aa49548b8acf439de0de96a28",
+         "status": "completed",
+         "requestedTicks": 300,
+         "completedTicks": 300,
+         "remainingTicks": 0,
+         "startTicksGame": 227293,
+         "endTicksGame": 227593,
+         "advancedTicks": 300,
+         "initialFrame": 109461,
+         "lastFrame": 109760,
+         "advancedFrames": 300,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T09:53:12.8949052+00:00",
+         "completedAtUtc": "2026-10-07T09:53:18.0009899+00:00",
+         "message": "Advanced 300 game tick(s) across 300 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_7",
+          "currentMapIndex": 0,
+          "mapCount": 1,
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "screenFading": false,
+          "fadeOverlayAlpha": 0.0,
+          "gameDataReady": true,
+          "mapDataReady": true,
+          "currentMapReady": true,
+          "screenFadeClear": true,
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true
+         },
+         "operation": {
+          "OperationId": "op_724668f569874c1b9404245e7b6dbdac",
+          "CapabilityId": "rimbridge.core/lifecycle/step-game-ticks",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:12.8783928+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:18.0164976+00:00",
+          "DurationMs": 5138,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofDial(Verse.Map)",
+         "result": "DIAL 0.27 raw 46.7 heaters 21.0 fires 0.0 power 0.0 rooms 25.7 applies=True biome=RM_NightsideIce",
+         "ticksGame": 227593,
+         "operation": {
+          "OperationId": "op_02f4033197bb43d48137a5e25dad10a9",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:18.0174941+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:18.0666116+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "seeks_heater_under_ice",
+      "toggle": "shivvenHeatSeek",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofSeek(Verse.Map)",
+         "result": "state=seeking job=Goto submerged=False terrain=Ice source=Campfire dist=5 laid=20",
+         "ticksGame": 227593,
+         "operation": {
+          "OperationId": "op_1ef7d21ec4e64b3d80ccaabe7a4f451b",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:18.0676113+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:18.1166697+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "stays_on_ice",
+      "toggle": "shivvenIceOnly",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call rimworld/step_game_ticks",
+        "result": {
+         "success": true,
+         "stepId": "step_4b1cfa8a18414b59b34feb4dc6a049d7",
+         "status": "completed",
+         "requestedTicks": 1200,
+         "completedTicks": 1200,
+         "remainingTicks": 0,
+         "startTicksGame": 227593,
+         "endTicksGame": 228793,
+         "advancedTicks": 1200,
+         "initialFrame": 109768,
+         "lastFrame": 110967,
+         "advancedFrames": 1200,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T09:53:18.1326939+00:00",
+         "completedAtUtc": "2026-10-07T09:53:38.1173525+00:00",
+         "message": "Advanced 1200 game tick(s) across 1200 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_7",
+          "currentMapIndex": 0,
+          "mapCount": 1,
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "screenFading": false,
+          "fadeOverlayAlpha": 0.0,
+          "gameDataReady": true,
+          "mapDataReady": true,
+          "currentMapReady": true,
+          "screenFadeClear": true,
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true
+         },
+         "operation": {
+          "OperationId": "op_00b8f96cbaae46e9b92c60080583a3f3",
+          "CapabilityId": "rimbridge.core/lifecycle/step-game-ticks",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:18.1176657+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:38.1323722+00:00",
+          "DurationMs": 20014,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofState(Verse.Map)",
+         "result": "state=seeking job=Wait_Wander submerged=True terrain=Ice source=Campfire dist=4",
+         "ticksGame": 228793,
+         "operation": {
+          "OperationId": "op_14a92afa74e4433d9245e41e18095966",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:38.133372+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:38.1829215+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "breach_cracks",
+    "components": [
+     {
+      "name": "first_crack_on_open_ice_taught",
+      "toggle": "breachEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofOpen(Verse.Map)",
+         "result": "OPEN cell=(148, 0, 132) terrain=Ice roofed=False floor=False taught=True hours=24 shivven=6",
+         "ticksGame": 228793,
+         "operation": {
+          "OperationId": "op_f353ed4d675b4ba58a48df0a87131b10",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:38.1839229+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:38.2330396+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "crack_releases_shivven",
+      "toggle": "breachEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofRelease(Verse.Map)",
+         "result": "RELEASED 6 crackGone=True",
+         "ticksGame": 228793,
+         "operation": {
+          "OperationId": "op_305209cd9564488ab5c1809365d8d17d",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:38.2340414+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:38.2836932+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "destroyed_crack_stops_breach",
+      "toggle": "breachEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofDestroyStops(Verse.Map)",
+         "result": "STOPPED shivvenBefore=7 after=7 secondTaught=False",
+         "ticksGame": 228793,
+         "operation": {
+          "OperationId": "op_769a9aad40044412942a65aab3f3be4d",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:38.2836932+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:38.3332153+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "map_mechanics",
+    "components": [
+     {
+      "name": "generated_map_is_all_ice_without_water",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/map_info",
+        "result": {
+         "success": true,
+         "tile": 89672,
+         "tileValid": true,
+         "mapId": 7,
+         "sizeX": 250,
+         "sizeZ": 250,
+         "cellCount": 62500,
+         "tileInfo": {
+          "biome": "RM_NightsideIce",
+          "hilliness": "Flat",
+          "hillinessInt": 1,
+          "elevation": 979.654,
+          "rainfall": 2161.193,
+          "swampiness": 0.0,
+          "temperature": -40.0,
+          "pollution": 0.0,
+          "waterCovered": false,
+          "isSurfaceTile": true,
+          "fieldErrors": null
+         },
+         "mapBiome": "RM_NightsideIce",
+         "mapBiomeLabel": "the Sleeping Ice",
+         "outdoorTempNow": -37.2822342,
+         "latitude": 32.438343,
+         "longitude": 14.4772415,
+         "season": "Spring",
+         "mapParent": {
+          "defName": "Settlement",
+          "label": "Colony",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals"
+         },
+         "playerSettlementsOnThisTile": 1,
+         "ticksGame": 228793,
+         "operation": {
+          "OperationId": "op_a175a08ab001426e9c1b4d97b0dbf05d",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:38.3342127+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:38.3827634+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_terrain_batch",
+        "result": {
+         "success": true,
+         "message": "Read 62500 cell(s) as 19 distinct terrain(s) in 3239 run(s).",
+         "layer": "top",
+         "ops": "Ice:0,0,14,1;Gravel:14,0,3,1;Ice:17,0,7,1;Gravel:24,0,3,1;Slate_Rough:27,0,38,1;Gravel:65,0,3,1;Ice:68,0,89,1;Gravel:157,0,3,1;Granite_Rough:160,0,24,1;Slate_Rough:184,0,2,1;Granite_Rough:186,0,1,1;Gravel:187,0,2,1;Ice:189,0,10,1;Gravel:199,0,2,1;Limestone_Rough:201,0,4,1;Granite_Rough:205,0,21,1;Limestone_Rough:226,0,21,1;Granite_Rough:247,0,3,1;Ice:0,1,12,1;Gravel:12,1,5,1;Ice:17,1,7,1;Gravel:24,1,3,1;Slate_Rough:27,1,3,1;Gravel:30,1,2,1;Slate_Rough:32,1,28,1;Gravel:60,1,7,1;Ice:67,1,59,1;Gravel:126,1,6,1;Ice:132,1,25,1;Gravel:157,1,3,1;Granite_Rough:160,1,22,1;Slate_Rough:182,1,4,1;Granite_Rough:186,1,2,1;Gravel:188,1,2,1;Ice:190,1,8,1;Gravel:198,1,2,1;Granite_Rough:200,1,3,1;Limestone_Rough:203,1,1,1;Granite_Rough:204,1,24,1;Limestone_Rough:228,1,20,1;Granite_Rough:248,1,2,1;Ice:0,2,11,1;Gravel:11,2,6,1;Ice:17,2,7,1;Gravel:24,2,2,1;Slate_Rough:26,2,3,1;Gravel:29,2,5,1;Slate_Rough:34,2,23,1;Gravel:57,2,5,1;Ice:62,2,2,1;Gravel:64,2,1,1;Ice:65,2,61,1;Gravel:126,2,2,1;Granite_Rough:128,2,2,1;Gravel:130,2,3,1;Ice:133,2,24,1;Gravel:157,2,4,1;Granite_Rough:161,2,18,1;Slate_Rough:179,2,7,1;Granite_Rough:186,2,2,1;Gravel:188,2,11,1;Granite_Rough:199,2,30,1;Limestone_Rough:229,2,20,1;Granite_Rough:249,2,1,1;Ice:0,3,10,1;Gravel:10,3,7,1;Ice:17,3,8,1;Gravel:25,3,1,1;Slate_Rough:26,3,3,1;Gravel:29,3,7,1;Slate_Rough:36,3,19,1;Gravel:55,3,6,1;Ice:61,3,65,1;Gravel:126,3,1,1;Granite_Rough:127,3,5,1;Gravel:132,3,2,1;Ice:134,3,24,1;Gravel:158,3,3,1;Granite_Rough:161,3,17,1;Slate_Rough:178,3,8,1;Granite_Rough:186,3,3,1;Gravel:189,3,9,1;Granite_Rough:198,3,32,1;Limestone_Rough:230,3,19,1;Granite_Rough:249,3,1,1;Ice:0,4,9,1;Gravel:9,4,8,1;Ice:17,4,8,1;Gravel:25,4,1,1;Slate_Rough:26,4,2,1;Gravel:28,4,18,1;Slate_Rough:46,4,4,1;Gravel:50,4,7,1;Ice:57,4,69,1;Gravel:126,4,1,1;Granite_Rough:127,4,6,1;Gravel:133,4,1,1;Ice:134,4,25,1;Gravel:159,4,2,1;Granite_Rough:161,4,17,1;Slate_Rough:178,4,8,1;Granite_Rough:186,4,4,1;Gravel:190,4,4,1;Granite_Rough:194,4,1,1;Slate_Rough:195,4,6,1;Granite_Rough:201,4,29,1;Limestone_Rough:230,4,20,1;Ice:0,5,8,1;Gravel:8,5,9,1;Ice:17,5,9,1;Gravel:26,5,1,1;Slate_Rough:27,5,2,1;Gravel:29,5,3,1;Ice:32,5,13,1;Gravel:45,5,10,1;Ice:55,5,71,1;Gravel:126,5,1,1;Granite_Rough:127,5,7,1;Ice:134,5,25,1;Gravel:159,5,2,1;Granite_Rough:161,5,16,1;Slate_Rough:177,5,9,1;Granite_Rough:186,5,5,1;Gravel:191,5,2,1;Granite_Rough:193,5,1,1;Slate_Rough:194,5,9,1;Granite_Rough:203,5,26,1;Limestone_Rough:229,5,21,1;Gravel:0,6,2,1;Ice:2,6,5,1;Gravel:7,6,10,1;Ice:17,6,9,1;Gravel:26,6,2,1;Slate_Rough:28,6,1,1;Gravel:29,6,2,1;Ice:31,6,16,1;Gravel:47,6,5,1;Ice:52,6,73,1;Gravel:125,6,2,1;Granite_Rough:127,6,7,1;Ice:134,6,25,1;Gravel:159,6,2,1;Granite_Rough:161,6,15,1;Slate_Rough:176,6,11,1;Granite_Rough:187,6,4,1;Gravel:191,6,2,1;Slate_Rough:193,6,11,1;Granite_Rough:204,6,25,1;Limestone_Rough:229,6,21,1;Gravel:0,7,2,1;Ice:2,7,5,1;Gravel:7,7,10,1;Ice:17,7,10,1;Gravel:27,7,4,1;Ice:31,7,94,1;Gravel:125,7,1,1;Granite_Rough:126,7,8,1;Ice:134,7,25,1;Gravel:159,7,2,1;Granite_Rough:161,7,15,1;Slate_Rough:176,7,14,1;Granite_Rough:190,7,2,1;Slate_Rough:192,7,12,1;Granite_Rough:204,7,24,1;Limestone_Rough:228,7,22,1;Gravel:0,8,2,1;Ice:2,8,5,1;Gravel:7,8,6,1;Ice:13,8,15,1;Gravel:28,8,4,1;Ice:32,8,92,1;Gravel:124,8,2,1;Granite_Rough:126,8,8,1;Ice:134,8,25,1;Gravel:159,8,2,1;Granite_Rough:161,8,15,1;Slate_Rough:176,8,28,1;Granite_Rough:204,8,23,1;Limestone_Rough:227,8,23,1;Gravel:0,9,1,1;Ice:1,9,6,1;Gravel:7,9,4,1;Ice:11,9,17,1;Gravel:28,9,3,1;Ice:31,9,93,1;Gravel:124,9,1,1;Granite_Rough:125,9,9,1;Gravel:134,9,1,1;Ice:135,9,24,1;Gravel:159,9,2,1;Granite_Rough:161,9,15,1;Slate_Rough:176,9,28,1;Granite_Rough:204,9,22,1;Limestone_Rough:226,9,24,1;Gravel:0,10,1,1;Ice:1,10,6,1;Gravel:7,10,3,1;Ice:10,10,19,1;Gravel:29,10,2,1;Ice:31,10,92,1;Gravel:123,10,2,1;Granite_Rough:125,10,9,1;Gravel:134,10,2,1;Ice:136,10,23,1;Gravel:159,10,2,1;Granite_Rough:161,10,14,1;Slate_Rough:175,10,29,1;Granite_Rough:204,10,21,1;Limestone_Rough:225,10,25,1;Gravel:0,11,1,1;Ice:1,11,6,1;Gravel:7,11,3,1;Ice:10,11,20,1;Gravel:30,11,1,1;Ice:31,11,91,1;Gravel:122,11,2,1;Granite_Rough:124,11,10,1;Gravel:134,11,3,1;Ice:137,11,23,1;Gravel:160,11,2,1;Granite_Rough:162,11,11,1;Slate_Rough:173,11,31,1;Granite_Rough:204,11,21,1;Limestone_Rough:225,11,25,1;Ice:0,12,6,1;Gravel:6,12,3,1;Ice:9,12,111,1;Gravel:120,12,4,1;Granite_Rough:124,12,9,1;Gravel:133,12,3,1;Ice:136,12,25,1;Gravel:161,12,2,1;Granite_Rough:163,12,8,1;Slate_Rough:171,12,7,1;Gravel:178,12,5,1;Slate_Rough:183,12,21,1;Granite_Rough:204,12,21,1;Limestone_Rough:225,12,25,1;Ice:0,13,6,1;Gravel:6,13,2,1;Ice:8,13,112,1;Gravel:120,13,3,1;Granite_Rough:123,13,8,1;Gravel:131,13,5,1;Ice:136,13,26,1;Gravel:162,13,8,1;Slate_Rough:170,13,6,1;Gravel:176,13,9,1;Slate_Rough:185,13,20,1;Granite_Rough:205,13,2,1;Slate_Rough:207,13,1,1;Granite_Rough:208,13,5,1;Slate_Rough:213,13,8,1;Granite_Rough:221,13,4,1;Limestone_Rough:225,13,25,1;Ice:0,14,6,1;Gravel:6,14,1,1;Ice:7,14,112,1;Gravel:119,14,2,1;Granite_Rough:121,14,6,1;Gravel:127,14,8,1;Ice:135,14,26,1;OuterRim_BrickRoadPatterned_Permacrete:161,14,1,1;Ice:162,14,7,1;Gravel:169,14,11,1;Ice:180,14,2,1;Gravel:182,14,4,1;Slate_Rough:186,14,37,1;Granite_Rough:223,14,2,1;Limestone_Rough:225,14,22,1;Granite_Rough:247,14,3,1;Ice:0,15,6,1;Gravel:6,15,1,1;Ice:7,15,112,1;Gravel:119,15,2,1;Granite_Rough:121,15,4,1;Gravel:125,15,9,1;Ice:134,15,25,1;OuterRim_BrickRoadPatterned_Permacrete:159,15,5,1;Ice:164,15,6,1;Gravel:170,15,7,1;Ice:177,15,7,1;Gravel:184,15,3,1;Slate_Rough:187,15,38,1;Limestone_Rough:225,15,14,1;Granite_Rough:239,15,11,1;Ice:0,16,119,1;Gravel:119,16,2,1;Granite_Rough:121,16,3,1;Gravel:124,16,9,1;Ice:133,16,25,1;OuterRim_BrickRoadPatterned_Permacrete:158,16,5,1;Ice:163,16,1,1;OuterRim_BrickRoadPatterned_Permacrete:164,16,3,1;Ice:167,16,7,1;Gravel:174,16,1,1;Ice:175,16,10,1;Gravel:185,16,1,1;Slate_Rough:186,16,39,1;Limestone_Rough:225,16,13,1;Granite_Rough:238,16,12,1;Ice:0,17,119,1;Gravel:119,17,13,1;Ice:132,17,24,1;OuterRim_BrickRoadPatterned_Permacrete:156,17,8,1;Ice:164,17,21,1;Gravel:185,17,1,1;Slate_Rough:186,17,39,1;Limestone_Rough:225,17,11,1;Granite_Rough:236,17,14,1;Ice:0,18,120,1;Gravel:120,18,7,1;Ice:127,18,29,1;OuterRim_BrickRoadPatterned_Permacrete:156,18,4,1;Ice:160,18,1,1;OuterRim_BrickRoadPatterned_Permacrete:161,18,1,1;Ice:162,18,23,1;Gravel:185,18,1,1;Slate_Rough:186,18,40,1;Limestone_Rough:226,18,10,1;Granite_Rough:236,18,14,1;Ice:0,19,156,1;OuterRim_BrickRoadPatterned_Permacrete:156,19,4,1;Ice:160,19,1,1;OuterRim_BrickRoadPatterned_Permacrete:161,19,3,1;Ice:164,19,20,1;Gravel:184,19,1,1;Slate_Rough:185,19,41,1;Limestone_Rough:226,19,9,1;Granite_Rough:235,19,15,1;Ice:0,20,78,1;AncientConcrete:78,20,4,1;Ice:82,20,1,1;AncientConcrete:83,20,4,1;Ice:87,20,71,1;OuterRim_BrickRoadPatterned_Permacrete:158,20,2,1;Ice:160,20,2,1;OuterRim_BrickRoadPatterned_Permacrete:162,20,2,1;Ice:164,20,20,1;Gravel:184,20,1,1;Slate_Rough:185,20,41,1;Limestone_Rough:226,20,9,1;Granite_Rough:235,20,15,1;Ice:0,21,78,1;AncientConcrete:78,21,9,1;Ice:87,21,70,1;OuterRim_BrickRoadPatterned_Permacrete:157,21,2,1;Ice:159,21,2,1;OuterRim_BrickRoadPatterned_Permacrete:161,21,1,1;Ice:162,21,3,1;OuterRim_BrickRoadPatterned_Permacrete:165,21,1,1;Ice:166,21,18,1;Gravel:184,21,1,1;Slate_Rough:185,21,42,1;Limestone_Rough:227,21,7,1;Granite_Rough:234,21,16,1;Ice:0,22,77,1;AncientConcrete:77,22,1,1;Ice:78,22,2,1;AncientConcrete:80,22,7,1;Ice:87,22,69,1;OuterRim_BrickRoadPatterned_Permacrete:156,22,1,1;Ice:157,22,1,1;OuterRim_BrickRoadPatterned_Permacrete:158,22,1,1;Ice:159,22,2,1;OuterRim_BrickRoadPatterned_Permacrete:161,22,1,1;Ice:162,22,22,1;Gravel:184,22,1,1;Slate_Rough:185,22,42,1;Limestone_Rough:227,22,6,1;Granite_Rough:233,22,17,1;Ice:0,23,78,1;AncientConcrete:78,23,9,1;Ice:87,23,72,1;OuterRim_BrickRoadPatterned_Permacrete:159,23,1,1;Ice:160,23,1,1;OuterRim_BrickRoadPatterned_Permacrete:161,23,2,1;Ice:163,23,21,1;Gravel:184,23,1,1;Slate_Rough:185,23,43,1;Limestone_Rough:228,23,5,1;Granite_Rough:233,23,17,1;Ice:0,24,77,1;AncientConcrete:77,24,1,1;Ice:78,24,2,1;AncientConcrete:80,24,7,1;Ice:87,24,97,1;Gravel:184,24,1,1;Slate_Rough:185,24,44,1;Limestone_Rough:229,24,3,1;Granite_Rough:232,24,18,1;Ice:0,25,16,1;Gravel:16,25,4,1;Ice:20,25,57,1;AncientConcrete:77,25,10,1;Ice:87,25,97,1;Gravel:184,25,1,1;Slate_Rough:185,25,45,1;Limestone_Rough:230,25,1,1;Granite_Rough:231,25,19,1;Ice:0,26,14,1;Gravel:14,26,6,1;Ice:20,26,57,1;AncientConcrete:77,26,1,1;Ice:78,26,1,1;AncientConcrete:79,26,8,1;Ice:87,26,97,1;Gravel:184,26,1,1;Slate_Rough:185,26,46,1;Granite_Rough:231,26,19,1;Ice:0,27,12,1;Gravel:12,27,9,1;Ice:21,27,56,1;AncientConcrete:77,27,10,1;Ice:87,27,97,1;Gravel:184,27,1,1;Slate_Rough:185,27,47,1;Granite_Rough:232,27,18,1;Ice:0,28,11,1;Gravel:11,28,11,1;Ice:22,28,55,1;AncientConcrete:77,28,2,1;Ice:79,28,1,1;AncientConcrete:80,28,7,1;Ice:87,28,87,1;Gravel:174,28,4,1;Ice:178,28,6,1;Gravel:184,28,1,1;Slate_Rough:185,28,48,1;Granite_Rough:233,28,17,1;Ice:0,29,10,1;Gravel:10,29,12,1;Ice:22,29,55,1;AncientConcrete:77,29,1,1;Ice:78,29,2,1;AncientConcrete:80,29,7,1;Ice:87,29,87,1;Gravel:174,29,12,1;Slate_Rough:186,29,47,1;Granite_Rough:233,29,17,1;Ice:0,30,9,1;Gravel:9,30,14,1;Ice:23,30,54,1;AncientConcrete:77,30,1,1;Ice:78,30,1,1;AncientConcrete:79,30,8,1;Ice:87,30,87,1;Gravel:174,30,7,1;Slate_Rough:181,30,2,1;Gravel:183,30,3,1;Slate_Rough:186,30,47,1;Granite_Rough:233,30,17,1;Ice:0,31,9,1;Gravel:9,31,14,1;Ice:23,31,152,1;Gravel:175,31,2,1;Slate_Rough:177,31,56,1;Granite_Rough:233,31,17,1;Ice:0,32,8,1;Gravel:8,32,3,1;Limestone_Rough:11,32,3,1;Gravel:14,32,8,1;Ice:22,32,153,1;Gravel:175,32,2,1;Slate_Rough:177,32,56,1;Granite_Rough:233,32,17,1;Ice:0,33,8,1;Gravel:8,33,3,1;Limestone_Rough:11,33,3,1;Gravel:14,33,7,1;Ice:21,33,154,1;Gravel:175,33,2,1;Slate_Rough:177,33,56,1;Granite_Rough:233,33,17,1;Ice:0,34,8,1;Gravel:8,34,2,1;Limestone_Rough:10,34,4,1;Gravel:14,34,3,1;Ice:17,34,157,1;Gravel:174,34,3,1;Slate_Rough:177,34,57,1;Granite_Rough:234,34,16,1;Ice:0,35,8,1;Gravel:8,35,2,1;Limestone_Rough:10,35,4,1;Gravel:14,35,3,1;Ice:17,35,14,1;TileSlate:31,35,5,1;Ice:36,35,138,1;Gravel:174,35,4,1;Slate_Rough:178,35,56,1;Granite_Rough:234,35,16,1;Ice:0,36,8,1;Gravel:8,36,1,1;Limestone_Rough:9,36,5,1;Gravel:14,36,3,1;Ice:17,36,13,1;TileSlate:30,36,4,1;Ice:34,36,1,1;TileSlate:35,36,1,1;Ice:36,36,137,1;Gravel:173,36,4,1;Slate_Rough:177,36,58,1;Granite_Rough:235,36,15,1;Ice:0,37,6,1;Gravel:6,37,3,1;Limestone_Rough:9,37,5,1;Gravel:14,37,3,1;Ice:17,37,13,1;TileSlate:30,37,4,1;Ice:34,37,139,1;Gravel:173,37,4,1;Slate_Rough:177,37,58,1;Granite_Rough:235,37,15,1;Ice:0,38,5,1;Gravel:5,38,2,1;Limestone_Rough:7,38,7,1;Gravel:14,38,3,1;Ice:17,38,12,1;TileSlate:29,38,1,1;Ice:30,38,1,1;TileSlate:31,38,2,1;Ice:33,38,139,1;Gravel:172,38,4,1;Slate_Rough:176,38,59,1;Granite_Rough:235,38,15,1;Ice:0,39,5,1;Gravel:5,39,2,1;Limestone_Rough:7,39,7,1;Gravel:14,39,4,1;Ice:18,39,11,1;TileSlate:29,39,2,1;Ice:31,39,1,1;TileSlate:32,39,1,1;Ice:33,39,138,1;Gravel:171,39,4,1;Slate_Rough:175,39,61,1;Granite_Rough:236,39,14,1;Ice:0,40,4,1;Gravel:4,40,2,1;Limestone_Rough:6,40,9,1;Gravel:15,40,3,1;Ice:18,40,12,1;TileSlate:30,40,2,1;Ice:32,40,135,1;Gravel:167,40,6,1;Slate_Rough:173,40,63,1;Granite_Rough:236,40,14,1;Ice:0,41,3,1;Gravel:3,41,2,1;Limestone_Rough:5,41,11,1;Gravel:16,41,3,1;Ice:19,41,146,1;Gravel:165,41,6,1;Slate_Rough:171,41,65,1;Granite_Rough:236,41,14,1;Ice:0,42,2,1;Gravel:2,42,1,1;Limestone_Rough:3,42,14,1;Gravel:17,42,2,1;Ice:19,42,145,1;Gravel:164,42,4,1;Slate_Rough:168,42,68,1;Granite_Rough:236,42,14,1;Gravel:0,43,3,1;Limestone_Rough:3,43,14,1;Gravel:17,43,2,1;Ice:19,43,145,1;Gravel:164,43,2,1;Slate_Rough:166,43,71,1;Granite_Rough:237,43,13,1;Gravel:0,44,2,1;Limestone_Rough:2,44,16,1;Gravel:18,44,2,1;Ice:20,44,144,1;Gravel:164,44,1,1;Slate_Rough:165,44,72,1;Granite_Rough:237,44,13,1;Limestone_Rough:0,45,18,1;Gravel:18,45,2,1;Ice:20,45,143,1;Gravel:163,45,2,1;Slate_Rough:165,45,73,1;Granite_Rough:238,45,12,1;Limestone_Rough:0,46,18,1;Gravel:18,46,2,1;Ice:20,46,143,1;Gravel:163,46,2,1;Slate_Rough:165,46,74,1;Granite_Rough:239,46,11,1;Limestone_Rough:0,47,19,1;Gravel:19,47,1,1;Ice:20,47,142,1;Gravel:162,47,2,1;Slate_Rough:164,47,76,1;Granite_Rough:240,47,9,1;Slate_Rough:249,47,1,1;Limestone_Rough:0,48,19,1;Gravel:19,48,1,1;Ice:20,48,142,1;Gravel:162,48,2,1;Slate_Rough:164,48,80,1;Granite_Rough:244,48,5,1;Slate_Rough:249,48,1,1;Limestone_Rough:0,49,19,1;Gravel:19,49,2,1;Ice:21,49,140,1;Gravel:161,49,2,1;Slate_Rough:163,49,87,1;Limestone_Rough:0,50,19,1;Gravel:19,50,2,1;Ice:21,50,140,1;Gravel:161,50,2,1;Slate_Rough:163,50,87,1;Limestone_Rough:0,51,19,1;Gravel:19,51,3,1;Ice:22,51,31,1;TileSandstone:53,51,1,1;Ice:54,51,1,1;TileSandstone:55,51,9,1;Ice:64,51,97,1;Gravel:161,51,1,1;Slate_Rough:162,51,88,1;Limestone_Rough:0,52,17,1;Gravel:17,52,5,1;Ice:22,52,32,1;TileSandstone:54,52,8,1;Ice:62,52,98,1;Gravel:160,52,2,1;Slate_Rough:162,52,88,1;Limestone_Rough:0,53,17,1;Gravel:17,53,6,1;Ice:23,53,31,1;TileSandstone:54,53,9,1;Ice:63,53,97,1;Gravel:160,53,2,1;Slate_Rough:162,53,88,1;Limestone_Rough:0,54,18,1;Gravel:18,54,5,1;Ice:23,54,30,1;TileSandstone:53,54,1,1;Ice:54,54,1,1;TileSandstone:55,54,7,1;Ice:62,54,1,1;TileSandstone:63,54,1,1;Ice:64,54,95,1;Gravel:159,54,3,1;Slate_Rough:162,54,3,1;Gravel:165,54,6,1;Slate_Rough:171,54,79,1;Limestone_Rough:0,55,18,1;Gravel:18,55,5,1;Ice:23,55,29,1;TileSandstone:52,55,2,1;Ice:54,55,1,1;TileSandstone:55,55,1,1;Ice:56,55,1,1;TileSandstone:57,55,1,1;Ice:58,55,1,1;TileSandstone:59,55,1,1;Ice:60,55,1,1;TileSandstone:61,55,2,1;Ice:63,55,1,1;TileSandstone:64,55,1,1;Ice:65,55,94,1;Gravel:159,55,15,1;Slate_Rough:174,55,76,1;Limestone_Rough:0,56,18,1;Gravel:18,56,4,1;Ice:22,56,31,1;TileSandstone:53,56,2,1;Ice:55,56,1,1;TileSandstone:56,56,1,1;Ice:57,56,5,1;TileSandstone:62,56,3,1;Ice:65,56,95,1;Gravel:160,56,4,1;Ice:164,56,8,1;Gravel:172,56,3,1;Slate_Rough:175,56,75,1;Limestone_Rough:0,57,18,1;Gravel:18,57,4,1;Ice:22,57,31,1;TileSandstone:53,57,1,1;Ice:54,57,1,1;TileSandstone:55,57,2,1;Ice:57,57,4,1;TileSandstone:61,57,4,1;Ice:65,57,97,1;Gravel:162,57,1,1;Ice:163,57,10,1;Gravel:173,57,6,1;Slate_Rough:179,57,71,1;Limestone_Rough:0,58,18,1;Gravel:18,58,4,1;Ice:22,58,32,1;TileSandstone:54,58,1,1;Ice:55,58,4,1;TileSandstone:59,58,1,1;Ice:60,58,2,1;TileSandstone:62,58,1,1;Ice:63,58,113,1;Gravel:176,58,3,1;Slate_Rough:179,58,71,1;Limestone_Rough:0,59,18,1;Gravel:18,59,4,1;Ice:22,59,30,1;TileSandstone:52,59,2,1;Ice:54,59,1,1;TileSandstone:55,59,1,1;Ice:56,59,5,1;TileSandstone:61,59,1,1;Ice:62,59,1,1;TileSandstone:63,59,1,1;Ice:64,59,113,1;Gravel:177,59,2,1;Slate_Rough:179,59,71,1;Limestone_Rough:0,60,18,1;Gravel:18,60,4,1;Ice:22,60,31,1;TileSandstone:53,60,4,1;Ice:57,60,3,1;TileSandstone:60,60,1,1;Ice:61,60,3,1;TileSandstone:64,60,1,1;Ice:65,60,113,1;Gravel:178,60,1,1;Slate_Rough:179,60,71,1;Gravel:0,61,1,1;Limestone_Rough:1,61,17,1;Gravel:18,61,4,1;Ice:22,61,32,1;TileSandstone:54,61,2,1;Ice:56,61,122,1;Gravel:178,61,1,1;Slate_Rough:179,61,71,1;Gravel:0,62,3,1;Limestone_Rough:3,62,15,1;Gravel:18,62,4,1;Ice:22,62,38,1;TileSandstone:60,62,1,1;Ice:61,62,117,1;Gravel:178,62,1,1;Slate_Rough:179,62,71,1;Gravel:0,63,4,1;Limestone_Rough:4,63,13,1;Gravel:17,63,5,1;Ice:22,63,32,1;TileSandstone:54,63,1,1;Ice:55,63,7,1;TileSandstone:62,63,2,1;Ice:64,63,60,1;Gravel:124,63,3,1;Ice:127,63,51,1;Gravel:178,63,2,1;Slate_Rough:180,63,70,1;Gravel:0,64,6,1;Limestone_Rough:6,64,11,1;Gravel:17,64,5,1;Ice:22,64,100,1;Gravel:122,64,6,1;Ice:128,64,51,1;Gravel:179,64,1,1;Slate_Rough:180,64,70,1;Gravel:0,65,7,1;Limestone_Rough:7,65,10,1;Gravel:17,65,3,1;Ice:20,65,101,1;Gravel:121,65,8,1;Ice:129,65,50,1;Gravel:179,65,1,1;Slate_Rough:180,65,70,1;Gravel:0,66,8,1;Limestone_Rough:8,66,8,1;Gravel:16,66,3,1;Ice:19,66,101,1;Gravel:120,66,3,1;Slate_Rough:123,66,3,1;Gravel:126,66,5,1;Ice:131,66,48,1;Gravel:179,66,2,1;Slate_Rough:181,66,69,1;Gravel:0,67,9,1;Limestone_Rough:9,67,2,1;Gravel:11,67,7,1;Ice:18,67,57,1;Gravel:75,67,1,1;Ice:76,67,42,1;Gravel:118,67,5,1;Slate_Rough:123,67,4,1;Gravel:127,67,4,1;Ice:131,67,48,1;Gravel:179,67,2,1;Slate_Rough:181,67,69,1;Ice:0,68,4,1;Gravel:4,68,13,1;Ice:17,68,57,1;Gravel:74,68,3,1;Ice:77,68,31,1;Gravel:108,68,8,1;Ice:116,68,1,1;Gravel:117,68,6,1;Slate_Rough:123,68,5,1;Gravel:128,68,4,1;Ice:132,68,47,1;Gravel:179,68,2,1;Slate_Rough:181,68,69,1;Ice:0,69,9,1;Gravel:9,69,7,1;Ice:16,69,58,1;Gravel:74,69,3,1;Ice:77,69,30,1;Gravel:107,69,1,1;Slate_Rough:108,69,6,1;Gravel:114,69,9,1;Slate_Rough:123,69,6,1;Gravel:129,69,4,1;Ice:133,69,47,1;Gravel:180,69,1,1;Slate_Rough:181,69,69,1;Ice:0,70,71,1;Gravel:71,70,7,1;Ice:78,70,27,1;Gravel:105,70,2,1;Slate_Rough:107,70,8,1;Gravel:115,70,8,1;Slate_Rough:123,70,8,1;Gravel:131,70,3,1;Ice:134,70,46,1;Gravel:180,70,2,1;Slate_Rough:182,70,68,1;Ice:0,71,68,1;Gravel:68,71,11,1;Ice:79,71,24,1;Gravel:103,71,2,1;Slate_Rough:105,71,12,1;Gravel:117,71,2,1;Slate_Rough:119,71,13,1;Gravel:132,71,3,1;Ice:135,71,46,1;Gravel:181,71,1,1;Slate_Rough:182,71,68,1;Ice:0,72,67,1;Gravel:67,72,14,1;Ice:81,72,20,1;Gravel:101,72,2,1;Slate_Rough:103,72,28,1;Gravel:131,72,4,1;Ice:135,72,46,1;Gravel:181,72,2,1;Slate_Rough:183,72,67,1;Ice:0,73,66,1;Gravel:66,73,17,1;Ice:83,73,13,1;Gravel:96,73,6,1;Slate_Rough:102,73,27,1;Gravel:129,73,6,1;Ice:135,73,46,1;Gravel:181,73,2,1;Slate_Rough:183,73,67,1;Ice:0,74,1,1;Gravel:1,74,3,1;Ice:4,74,62,1;Gravel:66,74,17,1;Ice:83,74,11,1;Gravel:94,74,7,1;Slate_Rough:101,74,24,1;Gravel:125,74,10,1;Ice:135,74,46,1;Gravel:181,74,2,1;Slate_Rough:183,74,67,1;Gravel:0,75,3,1;Ice:3,75,7,1;Gravel:10,75,3,1;Ice:13,75,53,1;Gravel:66,75,18,1;Ice:84,75,8,1;Gravel:92,75,3,1;Slate_Rough:95,75,2,1;Gravel:97,75,3,1;Slate_Rough:100,75,25,1;Gravel:125,75,9,1;Ice:134,75,47,1;Gravel:181,75,3,1;Slate_Rough:184,75,66,1;Gravel:0,76,2,1;Ice:2,76,7,1;Gravel:9,76,4,1;Ice:13,76,53,1;Gravel:66,76,18,1;BrokenAsphalt:84,76,2,1;Ice:86,76,5,1;Gravel:91,76,2,1;Slate_Rough:93,76,32,1;Gravel:125,76,9,1;Ice:134,76,48,1;Gravel:182,76,3,1;Slate_Rough:185,76,65,1;Ice:0,77,7,1;Gravel:7,77,2,1;Slate_Rough:9,77,2,1;Gravel:11,77,3,1;Ice:14,77,52,1;Gravel:66,77,14,1;Slate_Rough:80,77,1,1;BrokenAsphalt:81,77,5,1;Gravel:86,77,6,1;Slate_Rough:92,77,34,1;Gravel:126,77,6,1;Ice:132,77,50,1;Gravel:182,77,6,1;Slate_Rough:188,77,61,1;Limestone_Rough:249,77,1,1;Ice:0,78,6,1;Gravel:6,78,2,1;Slate_Rough:8,78,3,1;Gravel:11,78,3,1;Ice:14,78,52,1;Gravel:66,78,13,1;Slate_Rough:79,78,2,1;BrokenAsphalt:81,78,5,1;Gravel:86,78,5,1;Slate_Rough:91,78,35,1;Gravel:126,78,6,1;Ice:132,78,51,1;Gravel:183,78,7,1;Slate_Rough:190,78,58,1;Limestone_Rough:248,78,2,1;Ice:0,79,6,1;Gravel:6,79,1,1;Slate_Rough:7,79,4,1;Gravel:11,79,2,1;Ice:13,79,53,1;Gravel:66,79,11,1;Slate_Rough:77,79,4,1;BrokenAsphalt:81,79,6,1;Gravel:87,79,3,1;Slate_Rough:90,79,36,1;Gravel:126,79,5,1;Ice:131,79,38,1;Gravel:169,79,1,1;Ice:170,79,14,1;Gravel:184,79,6,1;Slate_Rough:190,79,58,1;Limestone_Rough:248,79,2,1;Ice:0,80,5,1;Gravel:5,80,2,1;Slate_Rough:7,80,3,1;Gravel:10,80,3,1;Ice:13,80,52,1;Gravel:65,80,11,1;Slate_Rough:76,80,5,1;BrokenAsphalt:81,80,6,1;Gravel:87,80,2,1;Slate_Rough:89,80,37,1;Gravel:126,80,2,1;Ice:128,80,41,1;Gravel:169,80,3,1;Ice:172,80,12,1;Gravel:184,80,6,1;Slate_Rough:190,80,57,1;Limestone_Rough:247,80,3,1;Ice:0,81,3,1;Gravel:3,81,3,1;Slate_Rough:6,81,3,1;Gravel:9,81,4,1;Ice:13,81,51,1;Gravel:64,81,10,1;Slate_Rough:74,81,7,1;BrokenAsphalt:81,81,6,1;Slate_Rough:87,81,39,1;Gravel:126,81,2,1;Ice:128,81,42,1;Gravel:170,81,1,1;Ice:171,81,13,1;Gravel:184,81,6,1;Slate_Rough:190,81,57,1;Limestone_Rough:247,81,3,1;Ice:0,82,1,1;Gravel:1,82,5,1;Slate_Rough:6,82,2,1;Gravel:8,82,4,1;Ice:12,82,51,1;Gravel:63,82,5,1;Slate_Rough:68,82,18,1;RM_LanternstoneFloorConstructed:86,82,1,1;Slate_Rough:87,82,3,1;RM_LanternstoneFloorConstructed:90,82,1,1;Slate_Rough:91,82,35,1;Gravel:126,82,2,1;Ice:128,82,51,1;Gravel:179,82,10,1;Slate_Rough:189,82,58,1;Limestone_Rough:247,82,3,1;Gravel:0,83,5,1;Slate_Rough:5,83,1,1;Gravel:6,83,6,1;Ice:12,83,51,1;Gravel:63,83,4,1;Slate_Rough:67,83,19,1;RM_LanternstoneFloorConstructed:86,83,2,1;Slate_Rough:88,83,1,1;RM_LanternstoneFloorConstructed:89,83,1,1;Slate_Rough:90,83,36,1;Gravel:126,83,2,1;Ice:128,83,50,1;Gravel:178,83,10,1;Slate_Rough:188,83,59,1;Limestone_Rough:247,83,3,1;Gravel:0,84,11,1;Ice:11,84,51,1;Gravel:62,84,4,1;Slate_Rough:66,84,21,1;RM_LanternstoneFloorConstructed:87,84,3,1;Slate_Rough:90,84,36,1;Gravel:126,84,2,1;Ice:128,84,50,1;Gravel:178,84,5,1;Slate_Rough:183,84,2,1;Gravel:185,84,1,1;Slate_Rough:186,84,60,1;Limestone_Rough:246,84,4,1;Gravel:0,85,11,1;Ice:11,85,50,1;Gravel:61,85,4,1;Slate_Rough:65,85,22,1;RM_LanternstoneFloorConstructed:87,85,2,1;Slate_Rough:89,85,34,1;Gravel:123,85,5,1;Ice:128,85,50,1;Gravel:178,85,3,1;Slate_Rough:181,85,65,1;Limestone_Rough:246,85,4,1;Gravel:0,86,10,1;Ice:10,86,50,1;Gravel:60,86,3,1;Slate_Rough:63,86,23,1;RM_LanternstoneFloorConstructed:86,86,1,1;Slate_Rough:87,86,33,1;Gravel:120,86,7,1;Ice:127,86,51,1;Gravel:178,86,3,1;Slate_Rough:181,86,64,1;Limestone_Rough:245,86,5,1;Ice:0,87,1,1;Gravel:1,87,8,1;Ice:9,87,51,1;Gravel:60,87,1,1;Slate_Rough:61,87,57,1;Gravel:118,87,9,1;Ice:127,87,50,1;Gravel:177,87,4,1;Slate_Rough:181,87,59,1;Limestone_Rough:240,87,10,1;Ice:0,88,3,1;Gravel:3,88,5,1;Ice:8,88,51,1;Gravel:59,88,2,1;Slate_Rough:61,88,56,1;Gravel:117,88,10,1;Ice:127,88,50,1;Gravel:177,88,4,1;Slate_Rough:181,88,57,1;Limestone_Rough:238,88,12,1;Ice:0,89,3,1;Gravel:3,89,4,1;Ice:7,89,52,1;Gravel:59,89,2,1;Slate_Rough:61,89,54,1;Gravel:115,89,12,1;Ice:127,89,44,1;Gravel:171,89,9,1;Slate_Rough:180,89,56,1;Limestone_Rough:236,89,14,1;Ice:0,90,3,1;Gravel:3,90,3,1;Ice:6,90,53,1;Gravel:59,90,2,1;Slate_Rough:61,90,54,1;Gravel:115,90,12,1;Ice:127,90,43,1;Gravel:170,90,10,1;Slate_Rough:180,90,55,1;Limestone_Rough:235,90,15,1;Ice:0,91,59,1;Gravel:59,91,3,1;Slate_Rough:62,91,53,1;Gravel:115,91,12,1;Ice:127,91,42,1;Gravel:169,91,9,1;Slate_Rough:178,91,54,1;Limestone_Rough:232,91,18,1;Ice:0,92,60,1;Gravel:60,92,2,1;Slate_Rough:62,92,52,1;Gravel:114,92,13,1;Ice:127,92,42,1;Gravel:169,92,7,1;Slate_Rough:176,92,50,1;Limestone_Rough:226,92,24,1;Ice:0,93,60,1;Gravel:60,93,3,1;Slate_Rough:63,93,51,1;Gravel:114,93,12,1;Ice:126,93,43,1;Gravel:169,93,5,1;Slate_Rough:174,93,51,1;Limestone_Rough:225,93,25,1;Ice:0,94,61,1;Gravel:61,94,4,1;Slate_Rough:65,94,2,1;Gravel:67,94,7,1;Slate_Rough:74,94,39,1;Gravel:113,94,12,1;Ice:125,94,25,1;TileGranite:150,94,1,1;Ice:151,94,1,1;TileGranite:152,94,1,1;Ice:153,94,15,1;Gravel:168,94,5,1;Slate_Rough:173,94,52,1;Limestone_Rough:225,94,25,1;Ice:0,95,62,1;Gravel:62,95,14,1;Slate_Rough:76,95,37,1;Gravel:113,95,12,1;Ice:125,95,23,1;TileGranite:148,95,1,1;Ice:149,95,19,1;Gravel:168,95,5,1;Slate_Rough:173,95,52,1;Limestone_Rough:225,95,25,1;Ice:0,96,64,1;Gravel:64,96,12,1;Slate_Rough:76,96,36,1;Gravel:112,96,12,1;Ice:124,96,25,1;TileGranite:149,96,2,1;Ice:151,96,1,1;TileGranite:152,96,1,1;Ice:153,96,15,1;Gravel:168,96,4,1;Slate_Rough:172,96,52,1;Limestone_Rough:224,96,26,1;Ice:0,97,67,1;Gravel:67,97,9,1;Slate_Rough:76,97,35,1;Gravel:111,97,8,1;Ice:119,97,2,1;Gravel:121,97,3,1;Ice:124,97,26,1;TileGranite:150,97,2,1;Ice:152,97,2,1;TileGranite:154,97,2,1;Ice:156,97,11,1;Gravel:167,97,4,1;Slate_Rough:171,97,51,1;Limestone_Rough:222,97,28,1;Ice:0,98,68,1;Gravel:68,98,8,1;Slate_Rough:76,98,34,1;Gravel:110,98,10,1;Ice:120,98,3,1;Gravel:123,98,1,1;Ice:124,98,23,1;TileGranite:147,98,2,1;Ice:149,98,5,1;TileGranite:154,98,1,1;Ice:155,98,8,1;Gravel:163,98,7,1;Slate_Rough:170,98,7,1;Limestone_Rough:177,98,6,1;Slate_Rough:183,98,37,1;Limestone_Rough:220,98,30,1;Ice:0,99,69,1;Gravel:69,99,7,1;Slate_Rough:76,99,34,1;Gravel:110,99,10,1;Ice:120,99,3,1;Gravel:123,99,2,1;Ice:125,99,14,1;TileGranite:139,99,7,1;Ice:146,99,1,1;TileGranite:147,99,1,1;Ice:148,99,2,1;TileGranite:150,99,2,1;Ice:152,99,1,1;TileGranite:153,99,1,1;Ice:154,99,6,1;Gravel:160,99,9,1;Slate_Rough:169,99,5,1;Limestone_Rough:174,99,13,1;Slate_Rough:187,99,22,1;Limestone_Rough:209,99,2,1;Slate_Rough:211,99,9,1;Limestone_Rough:220,99,30,1;Ice:0,100,70,1;Gravel:70,100,6,1;Slate_Rough:76,100,34,1;Gravel:110,100,10,1;Ice:120,100,2,1;Gravel:122,100,4,1;Ice:126,100,13,1;TileGranite:139,100,5,1;Ice:144,100,2,1;TileGranite:146,100,2,1;Ice:148,100,5,1;TileGranite:153,100,1,1;Ice:154,100,5,1;Gravel:159,100,3,1;Slate_Rough:162,100,8,1;Limestone_Rough:170,100,17,1;Slate_Rough:187,100,20,1;Limestone_Rough:207,100,43,1;Ice:0,101,70,1;Gravel:70,101,3,1;Ice:73,101,2,1;Gravel:75,101,2,1;Slate_Rough:77,101,33,1;Gravel:110,101,10,1;Ice:120,101,2,1;Gravel:122,101,5,1;Ice:127,101,12,1;TileGranite:139,101,3,1;Ice:142,101,1,1;TileGranite:143,101,3,1;Ice:146,101,1,1;TileGranite:147,101,4,1;Ice:151,101,6,1;Gravel:157,101,3,1;Slate_Rough:160,101,4,1;Limestone_Rough:164,101,23,1;Slate_Rough:187,101,11,1;Limestone_Rough:198,101,52,1;Ice:0,102,75,1;Gravel:75,102,2,1;Slate_Rough:77,102,33,1;Gravel:110,102,10,1;Ice:120,102,2,1;Gravel:122,102,7,1;Ice:129,102,10,1;TileGranite:139,102,7,1;Ice:146,102,2,1;TileGranite:148,102,2,1;Ice:150,102,1,1;TileGranite:151,102,1,1;Ice:152,102,3,1;Gravel:155,102,3,1;Slate_Rough:158,102,4,1;Limestone_Rough:162,102,25,1;Slate_Rough:187,102,9,1;Limestone_Rough:196,102,54,1;Ice:0,103,76,1;Gravel:76,103,1,1;Slate_Rough:77,103,33,1;Gravel:110,103,11,1;Ice:121,103,1,1;Gravel:122,103,9,1;Ice:131,103,8,1;TileGranite:139,103,7,1;Ice:146,103,1,1;TileGranite:147,103,3,1;Ice:150,103,3,1;Gravel:153,103,3,1;Slate_Rough:156,103,6,1;Limestone_Rough:162,103,26,1;Slate_Rough:188,103,7,1;Limestone_Rough:195,103,55,1;Ice:0,104,76,1;Gravel:76,104,1,1;Slate_Rough:77,104,33,1;Gravel:110,104,23,1;Ice:133,104,9,1;TileGranite:142,104,1,1;Ice:143,104,5,1;TileGranite:148,104,1,1;Ice:149,104,1,1;TileGranite:150,104,2,1;Gravel:152,104,1,1;TileGranite:153,104,1,1;Gravel:154,104,1,1;Slate_Rough:155,104,7,1;Limestone_Rough:162,104,27,1;Slate_Rough:189,104,5,1;Limestone_Rough:194,104,56,1;Ice:0,105,76,1;Gravel:76,105,2,1;Slate_Rough:78,105,32,1;Gravel:110,105,24,1;Ice:134,105,13,1;TileGranite:147,105,2,1;Gravel:149,105,1,1;TileGranite:150,105,1,1;Gravel:151,105,2,1;TileGranite:153,105,1,1;Slate_Rough:154,105,8,1;Limestone_Rough:162,105,88,1;Ice:0,106,75,1;Gravel:75,106,3,1;Slate_Rough:78,106,33,1;Gravel:111,106,25,1;Ice:136,106,11,1;Gravel:147,106,1,1;TileGranite:148,106,1,1;Gravel:149,106,1,1;TileGranite:150,106,3,1;Slate_Rough:153,106,1,1;TileGranite:154,106,1,1;Slate_Rough:155,106,7,1;Limestone_Rough:162,106,88,1;Ice:0,107,74,1;Gravel:74,107,3,1;Slate_Rough:77,107,34,1;Gravel:111,107,29,1;Ice:140,107,5,1;Gravel:145,107,3,1;TileGranite:148,107,2,1;Gravel:150,107,2,1;TileGranite:152,107,1,1;Gravel:153,107,1,1;Slate_Rough:154,107,8,1;Limestone_Rough:162,107,88,1;Ice:0,108,74,1;Gravel:74,108,2,1;Slate_Rough:76,108,26,1;Gravel:102,108,3,1;Slate_Rough:105,108,7,1;Gravel:112,108,14,1;Slate_Rough:126,108,1,1;Gravel:127,108,19,1;Slate_Rough:146,108,1,1;Gravel:147,108,2,1;TileGranite:149,108,1,1;Gravel:150,108,3,1;TileGranite:153,108,1,1;Gravel:154,108,1,1;Slate_Rough:155,108,8,1;Limestone_Rough:163,108,3,1;Slate_Rough:166,108,4,1;Limestone_Rough:170,108,80,1;Ice:0,109,73,1;Gravel:73,109,3,1;Slate_Rough:76,109,24,1;Gravel:100,109,7,1;Slate_Rough:107,109,6,1;Gravel:113,109,12,1;Slate_Rough:125,109,2,1;Gravel:127,109,17,1;Slate_Rough:144,109,3,1;Gravel:147,109,9,1;Slate_Rough:156,109,15,1;Limestone_Rough:171,109,79,1;Ice:0,110,71,1;Gravel:71,110,4,1;Limestone_Rough:75,110,2,1;Slate_Rough:77,110,22,1;Gravel:99,110,9,1;Slate_Rough:108,110,6,1;Gravel:114,110,10,1;Slate_Rough:124,110,4,1;Gravel:128,110,10,1;Ice:138,110,2,1;Gravel:140,110,17,1;Slate_Rough:157,110,14,1;Limestone_Rough:171,110,79,1;Ice:0,111,70,1;Gravel:70,111,4,1;Limestone_Rough:74,111,3,1;Slate_Rough:77,111,20,1;Gravel:97,111,11,1;Slate_Rough:108,111,7,1;Gravel:115,111,9,1;Slate_Rough:124,111,5,1;Gravel:129,111,6,1;Ice:135,111,7,1;Gravel:142,111,14,1;Slate_Rough:156,111,15,1;Limestone_Rough:171,111,79,1;Ice:0,112,69,1;Gravel:69,112,4,1;Limestone_Rough:73,112,5,1;Slate_Rough:78,112,17,1;Gravel:95,112,13,1;Slate_Rough:108,112,8,1;Gravel:116,112,8,1;Slate_Rough:124,112,5,1;Gravel:129,112,5,1;Ice:134,112,9,1;Gravel:143,112,13,1;Slate_Rough:156,112,15,1;Limestone_Rough:171,112,79,1;Ice:0,113,67,1;Gravel:67,113,5,1;Limestone_Rough:72,113,6,1;Slate_Rough:78,113,15,1;Gravel:93,113,16,1;Slate_Rough:109,113,8,1;Gravel:117,113,7,1;Slate_Rough:124,113,5,1;Gravel:129,113,5,1;Ice:134,113,10,1;Gravel:144,113,4,1;Ice:148,113,5,1;Gravel:153,113,2,1;Slate_Rough:155,113,15,1;Limestone_Rough:170,113,80,1;Ice:0,114,67,1;Gravel:67,114,4,1;Limestone_Rough:71,114,7,1;Slate_Rough:78,114,14,1;Gravel:92,114,17,1;Slate_Rough:109,114,9,1;Gravel:118,114,5,1;Slate_Rough:123,114,6,1;Gravel:129,114,4,1;Ice:133,114,19,1;Gravel:152,114,3,1;Slate_Rough:155,114,14,1;Limestone_Rough:169,114,81,1;Ice:0,115,7,1;Gravel:7,115,5,1;Ice:12,115,55,1;Gravel:67,115,3,1;Limestone_Rough:70,115,8,1;Slate_Rough:78,115,9,1;Limestone_Rough:87,115,1,1;Slate_Rough:88,115,4,1;Gravel:92,115,17,1;Slate_Rough:109,115,9,1;Gravel:118,115,4,1;Slate_Rough:122,115,7,1;Gravel:129,115,4,1;Ice:133,115,19,1;Gravel:152,115,3,1;Slate_Rough:155,115,14,1;Limestone_Rough:169,115,81,1;Ice:0,116,6,1;Gravel:6,116,7,1;Ice:13,116,54,1;Gravel:67,116,4,1;Limestone_Rough:71,116,8,1;Slate_Rough:79,116,3,1;Limestone_Rough:82,116,8,1;Gravel:90,116,19,1;Slate_Rough:109,116,20,1;Gravel:129,116,3,1;Ice:132,116,20,1;Gravel:152,116,3,1;Slate_Rough:155,116,14,1;Limestone_Rough:169,116,81,1;Ice:0,117,4,1;Gravel:4,117,11,1;Ice:15,117,7,1;Gravel:22,117,2,1;Ice:24,117,44,1;Gravel:68,117,4,1;Limestone_Rough:72,117,17,1;Gravel:89,117,15,1;Ice:104,117,2,1;Gravel:106,117,3,1;Slate_Rough:109,117,20,1;Gravel:129,117,3,1;Ice:132,117,20,1;Gravel:152,117,2,1;Slate_Rough:154,117,15,1;Limestone_Rough:169,117,81,1;Ice:0,118,2,1;Gravel:2,118,3,1;Limestone_Rough:5,118,5,1;Gravel:10,118,7,1;Ice:17,118,4,1;Gravel:21,118,5,1;Ice:26,118,43,1;Gravel:69,118,3,1;Limestone_Rough:72,118,16,1;Gravel:88,118,15,1;Ice:103,118,4,1;Gravel:107,118,3,1;Slate_Rough:110,118,19,1;Gravel:129,118,2,1;Ice:131,118,21,1;Gravel:152,118,2,1;Slate_Rough:154,118,15,1;Limestone_Rough:169,118,81,1;Ice:0,119,1,1;Gravel:1,119,4,1;Limestone_Rough:5,119,6,1;Gravel:11,119,11,1;Limestone_Rough:22,119,1,1;Gravel:23,119,3,1;Ice:26,119,44,1;Gravel:70,119,3,1;Limestone_Rough:73,119,15,1;Gravel:88,119,2,1;Ice:90,119,5,1;Gravel:95,119,8,1;Ice:103,119,4,1;Gravel:107,119,4,1;Slate_Rough:111,119,17,1;Gravel:128,119,2,1;Ice:130,119,22,1;Gravel:152,119,1,1;Slate_Rough:153,119,16,1;Limestone_Rough:169,119,81,1;Ice:0,120,1,1;Gravel:1,120,4,1;Limestone_Rough:5,120,8,1;Gravel:13,120,5,1;Limestone_Rough:18,120,5,1;Gravel:23,120,2,1;Ice:25,120,46,1;Gravel:71,120,3,1;Limestone_Rough:74,120,13,1;Gravel:87,120,1,1;Ice:88,120,21,1;Gravel:109,120,3,1;Slate_Rough:112,120,15,1;Gravel:127,120,2,1;Ice:129,120,23,1;Gravel:152,120,1,1;Slate_Rough:153,120,16,1;Limestone_Rough:169,120,81,1;Ice:0,121,1,1;Gravel:1,121,5,1;Limestone_Rough:6,121,9,1;Gravel:15,121,2,1;Limestone_Rough:17,121,6,1;Gravel:23,121,2,1;Ice:25,121,46,1;Gravel:71,121,8,1;Limestone_Rough:79,121,8,1;Gravel:87,121,1,1;Ice:88,121,22,1;Gravel:110,121,3,1;Slate_Rough:113,121,13,1;Gravel:126,121,2,1;Ice:128,121,24,1;Gravel:152,121,1,1;Slate_Rough:153,121,2,1;Gravel:155,121,1,1;Slate_Rough:156,121,12,1;Limestone_Rough:168,121,7,1;InsectSludge:175,121,1,1;Limestone_Rough:176,121,6,1;Gravel:182,121,3,1;Limestone_Rough:185,121,65,1;Gravel:0,122,6,1;Limestone_Rough:6,122,16,1;Gravel:22,122,2,1;Ice:24,122,46,1;Gravel:70,122,10,1;Limestone_Rough:80,122,7,1;Gravel:87,122,1,1;Ice:88,122,23,1;Gravel:111,122,3,1;Slate_Rough:114,122,11,1;Gravel:125,122,2,1;Ice:127,122,25,1;Gravel:152,122,2,1;Slate_Rough:154,122,14,1;Limestone_Rough:168,122,6,1;InsectSludge:174,122,3,1;Limestone_Rough:177,122,2,1;Gravel:179,122,1,1;Limestone_Rough:180,122,2,1;Gravel:182,122,3,1;Limestone_Rough:185,122,65,1;Gravel:0,123,6,1;Limestone_Rough:6,123,16,1;Gravel:22,123,2,1;Ice:24,123,46,1;Gravel:70,123,6,1;Ice:76,123,2,1;Gravel:78,123,3,1;Limestone_Rough:81,123,5,1;Gravel:86,123,2,1;Ice:88,123,25,1;Gravel:113,123,14,1;Ice:127,123,26,1;Gravel:153,123,1,1;Slate_Rough:154,123,13,1;Limestone_Rough:167,123,7,1;InsectSludge:174,123,4,1;WaterShallow:178,123,2,1;Limestone_Rough:180,123,3,1;Gravel:183,123,1,1;Limestone_Rough:184,123,66,1;Gravel:0,124,6,1;Limestone_Rough:6,124,16,1;Gravel:22,124,2,1;Ice:24,124,45,1;Gravel:69,124,4,1;Ice:73,124,5,1;Gravel:78,124,3,1;Limestone_Rough:81,124,4,1;Gravel:85,124,2,1;Ice:87,124,28,1;Gravel:115,124,1,1;Ice:116,124,37,1;Gravel:153,124,2,1;Slate_Rough:155,124,12,1;Limestone_Rough:167,124,7,1;InsectSludge:174,124,4,1;Limestone_Rough:178,124,72,1;Gravel:0,125,5,1;Limestone_Rough:5,125,17,1;Gravel:22,125,2,1;Ice:24,125,44,1;Gravel:68,125,4,1;Ice:72,125,7,1;Gravel:79,125,3,1;Limestone_Rough:82,125,2,1;Gravel:84,125,3,1;Ice:87,125,67,1;Gravel:154,125,1,1;Slate_Rough:155,125,12,1;Limestone_Rough:167,125,6,1;InsectSludge:173,125,2,1;Limestone_Rough:175,125,75,1;Gravel:0,126,4,1;Limestone_Rough:4,126,18,1;Gravel:22,126,2,1;Ice:24,126,44,1;Gravel:68,126,4,1;Ice:72,126,7,1;Gravel:79,126,8,1;Ice:87,126,67,1;Gravel:154,126,1,1;Slate_Rough:155,126,12,1;Limestone_Rough:167,126,6,1;InsectSludge:173,126,1,1;Limestone_Rough:174,126,76,1;Gravel:0,127,4,1;Limestone_Rough:4,127,18,1;Gravel:22,127,1,1;Ice:23,127,44,1;Gravel:67,127,5,1;Ice:72,127,7,1;Gravel:79,127,7,1;Ice:86,127,68,1;Gravel:154,127,1,1;Slate_Rough:155,127,11,1;Limestone_Rough:166,127,84,1;Gravel:0,128,3,1;Limestone_Rough:3,128,19,1;Gravel:22,128,1,1;Ice:23,128,42,1;Gravel:65,128,7,1;Ice:72,128,8,1;Gravel:80,128,6,1;Ice:86,128,68,1;Gravel:154,128,1,1;Slate_Rough:155,128,11,1;Limestone_Rough:166,128,84,1;Gravel:0,129,3,1;Limestone_Rough:3,129,19,1;Gravel:22,129,2,1;Ice:24,129,41,1;Gravel:65,129,8,1;Ice:73,129,8,1;Gravel:81,129,5,1;Ice:86,129,68,1;Gravel:154,129,1,1;Slate_Rough:155,129,11,1;Limestone_Rough:166,129,84,1;Gravel:0,130,2,1;Limestone_Rough:2,130,20,1;Gravel:22,130,2,1;Ice:24,130,40,1;Gravel:64,130,10,1;Ice:74,130,7,1;Gravel:81,130,5,1;Ice:86,130,30,1;AncientConcrete:116,130,16,1;Ice:132,130,22,1;Gravel:154,130,1,1;Slate_Rough:155,130,10,1;Limestone_Rough:165,130,85,1;Gravel:0,131,1,1;Limestone_Rough:1,131,21,1;Gravel:22,131,2,1;Ice:24,131,39,1;Gravel:63,131,12,1;Ice:75,131,6,1;Gravel:81,131,5,1;Ice:86,131,30,1;AncientConcrete:116,131,3,1;Ice:119,131,1,1;AncientConcrete:120,131,12,1;Ice:132,131,22,1;Gravel:154,131,1,1;Slate_Rough:155,131,10,1;Limestone_Rough:165,131,85,1;Limestone_Rough:0,132,22,1;Gravel:22,132,2,1;Ice:24,132,37,1;Gravel:61,132,3,1;Limestone_Rough:64,132,5,1;Gravel:69,132,7,1;Ice:76,132,7,1;Gravel:83,132,2,1;Ice:85,132,31,1;AncientConcrete:116,132,2,1;Ice:118,132,1,1;AncientConcrete:119,132,2,1;Ice:121,132,1,1;AncientConcrete:122,132,10,1;Ice:132,132,22,1;Gravel:154,132,1,1;Slate_Rough:155,132,9,1;Limestone_Rough:164,132,28,1;WaterShallow:192,132,3,1;Limestone_Rough:195,132,55,1;Limestone_Rough:0,133,21,1;Gravel:21,133,3,1;Ice:24,133,36,1;Gravel:60,133,2,1;Limestone_Rough:62,133,7,1;Gravel:69,133,8,1;Ice:77,133,7,1;Gravel:84,133,1,1;Ice:85,133,31,1;AncientConcrete:116,133,1,1;Ice:117,133,1,1;AncientConcrete:118,133,14,1;Ice:132,133,22,1;Gravel:154,133,1,1;Slate_Rough:155,133,9,1;Limestone_Rough:164,133,29,1;WaterShallow:193,133,2,1;Limestone_Rough:195,133,55,1;Gravel:0,134,1,1;Limestone_Rough:1,134,19,1;Gravel:20,134,3,1;Ice:23,134,36,1;Gravel:59,134,2,1;Limestone_Rough:61,134,7,1;Gravel:68,134,9,1;Ice:77,134,39,1;AncientConcrete:116,134,1,1;Ice:117,134,1,1;AncientConcrete:118,134,14,1;Ice:132,134,21,1;Gravel:153,134,1,1;Slate_Rough:154,134,9,1;Limestone_Rough:163,134,30,1;WaterShallow:193,134,2,1;Limestone_Rough:195,134,55,1;Gravel:0,135,2,1;Limestone_Rough:2,135,18,1;Gravel:20,135,3,1;Ice:23,135,36,1;Gravel:59,135,2,1;Limestone_Rough:61,135,6,1;Gravel:67,135,11,1;Ice:78,135,38,1;AncientConcrete:116,135,2,1;Ice:118,135,1,1;AncientConcrete:119,135,13,1;Ice:132,135,3,1;Soil:135,135,13,1;Ice:148,135,5,1;Gravel:153,135,1,1;Slate_Rough:154,135,8,1;Limestone_Rough:162,135,88,1;Gravel:0,136,3,1;Limestone_Rough:3,136,17,1;Gravel:20,136,2,1;Ice:22,136,37,1;Gravel:59,136,2,1;Limestone_Rough:61,136,5,1;Gravel:66,136,12,1;Ice:78,136,38,1;AncientConcrete:116,136,7,1;Ice:123,136,1,1;AncientConcrete:124,136,8,1;Ice:132,136,3,1;Soil:135,136,6,1;Ice:141,136,1,1;Soil:142,136,6,1;Ice:148,136,4,1;Gravel:152,136,2,1;Slate_Rough:154,136,8,1;Limestone_Rough:162,136,88,1;Gravel:0,137,5,1;Limestone_Rough:5,137,15,1;Gravel:20,137,2,1;Ice:22,137,36,1;Gravel:58,137,2,1;Limestone_Rough:60,137,7,1;Gravel:67,137,11,1;Ice:78,137,38,1;AncientConcrete:116,137,1,1;Ice:117,137,1,1;AncientConcrete:118,137,3,1;Ice:121,137,1,1;AncientConcrete:122,137,4,1;Ice:126,137,3,1;AncientConcrete:129,137,1,1;Ice:130,137,1,1;AncientConcrete:131,137,1,1;Ice:132,137,3,1;Soil:135,137,6,1;Ice:141,137,1,1;Soil:142,137,6,1;Ice:148,137,4,1;Gravel:152,137,1,1;Slate_Rough:153,137,9,1;Limestone_Rough:162,137,88,1;Ice:0,138,1,1;Gravel:1,138,5,1;Limestone_Rough:6,138,13,1;Gravel:19,138,3,1;Ice:22,138,36,1;Gravel:58,138,2,1;Limestone_Rough:60,138,7,1;Gravel:67,138,11,1;Ice:78,138,40,1;AncientConcrete:118,138,1,1;Ice:119,138,1,1;AncientConcrete:120,138,1,1;Ice:121,138,1,1;AncientConcrete:122,138,2,1;Ice:124,138,3,1;AncientConcrete:127,138,1,1;Ice:128,138,3,1;AncientConcrete:131,138,1,1;Ice:132,138,3,1;Soil:135,138,6,1;Ice:141,138,1,1;Soil:142,138,6,1;Ice:148,138,3,1;Gravel:151,138,1,1;Slate_Rough:152,138,9,1;Limestone_Rough:161,138,89,1;Ice:0,139,3,1;Gravel:3,139,4,1;Limestone_Rough:7,139,12,1;Gravel:19,139,2,1;Ice:21,139,37,1;Gravel:58,139,2,1;Limestone_Rough:60,139,8,1;Gravel:68,139,10,1;Ice:78,139,40,1;AncientConcrete:118,139,11,1;Ice:129,139,1,1;AncientConcrete:130,139,2,1;Ice:132,139,3,1;Soil:135,139,6,1;Ice:141,139,1,1;Soil:142,139,6,1;Ice:148,139,3,1;Gravel:151,139,1,1;Slate_Rough:152,139,7,1;Limestone_Rough:159,139,56,1;Gravel:215,139,3,1;Limestone_Rough:218,139,32,1;Ice:0,140,3,1;Gravel:3,140,5,1;Limestone_Rough:8,140,11,1;Gravel:19,140,2,1;Ice:21,140,38,1;Gravel:59,140,2,1;Limestone_Rough:61,140,7,1;Gravel:68,140,10,1;Ice:78,140,38,1;AncientConcrete:116,140,1,1;Ice:117,140,3,1;AncientConcrete:120,140,3,1;Ice:123,140,1,1;AncientConcrete:124,140,1,1;Ice:125,140,1,1;AncientConcrete:126,140,1,1;Ice:127,140,3,1;AncientConcrete:130,140,1,1;Ice:131,140,4,1;Soil:135,140,6,1;Ice:141,140,1,1;Soil:142,140,6,1;Ice:148,140,3,1;Gravel:151,140,1,1;Slate_Rough:152,140,5,1;Limestone_Rough:157,140,59,1;Gravel:216,140,1,1;Limestone_Rough:217,140,33,1;Ice:0,141,4,1;Gravel:4,141,4,1;Limestone_Rough:8,141,11,1;Gravel:19,141,2,1;Ice:21,141,37,1;Gravel:58,141,3,1;Limestone_Rough:61,141,7,1;Gravel:68,141,3,1;Ice:71,141,3,1;Gravel:74,141,3,1;Ice:77,141,39,1;AncientConcrete:116,141,2,1;Ice:118,141,1,1;AncientConcrete:119,141,4,1;Ice:123,141,3,1;AncientConcrete:126,141,1,1;Ice:127,141,3,1;AncientConcrete:130,141,2,1;Ice:132,141,3,1;Soil:135,141,1,1;Ice:136,141,5,1;Soil:141,141,1,1;Ice:142,141,5,1;Soil:147,141,1,1;Ice:148,141,2,1;Gravel:150,141,1,1;Slate_Rough:151,141,5,1;Limestone_Rough:156,141,94,1;Ice:0,142,6,1;Gravel:6,142,3,1;Limestone_Rough:9,142,10,1;Gravel:19,142,2,1;Ice:21,142,36,1;Gravel:57,142,3,1;Limestone_Rough:60,142,7,1;Gravel:67,142,3,1;Ice:70,142,46,1;AncientConcrete:116,142,2,1;Ice:118,142,7,1;AncientConcrete:125,142,1,1;Ice:126,142,3,1;AncientConcrete:129,142,1,1;Ice:130,142,1,1;AncientConcrete:131,142,1,1;Ice:132,142,3,1;Soil:135,142,6,1;Ice:141,142,1,1;Soil:142,142,6,1;Ice:148,142,1,1;Gravel:149,142,2,1;Slate_Rough:151,142,5,1;Limestone_Rough:156,142,94,1;Ice:0,143,6,1;Gravel:6,143,3,1;Limestone_Rough:9,143,10,1;Gravel:19,143,2,1;Ice:21,143,36,1;Gravel:57,143,3,1;Limestone_Rough:60,143,7,1;Gravel:67,143,3,1;Ice:70,143,46,1;AncientConcrete:116,143,1,1;Ice:117,143,2,1;AncientConcrete:119,143,1,1;Ice:120,143,1,1;AncientConcrete:121,143,1,1;Ice:122,143,3,1;AncientConcrete:125,143,1,1;Ice:126,143,3,1;AncientConcrete:129,143,2,1;Ice:131,143,4,1;Soil:135,143,6,1;Ice:141,143,1,1;Soil:142,143,6,1;Gravel:148,143,2,1;Slate_Rough:150,143,7,1;Limestone_Rough:157,143,93,1;Ice:0,144,7,1;Gravel:7,144,2,1;Limestone_Rough:9,144,9,1;Gravel:18,144,3,1;Ice:21,144,16,1;OuterRim_BrickRoadPatterned_Limestone:37,144,1,1;Ice:38,144,19,1;Gravel:57,144,3,1;Limestone_Rough:60,144,7,1;Gravel:67,144,3,1;Ice:70,144,47,1;AncientConcrete:117,144,1,1;Ice:118,144,2,1;AncientConcrete:120,144,1,1;Ice:121,144,1,1;AncientConcrete:122,144,2,1;Ice:124,144,2,1;AncientConcrete:126,144,2,1;Ice:128,144,7,1;Soil:135,144,6,1;Ice:141,144,1,1;Soil:142,144,6,1;Slate_Rough:148,144,11,1;Limestone_Rough:159,144,91,1;Ice:0,145,7,1;Gravel:7,145,2,1;Limestone_Rough:9,145,9,1;Gravel:18,145,3,1;Ice:21,145,13,1;OuterRim_BrickRoadPatterned_Limestone:34,145,4,1;Ice:38,145,1,1;OuterRim_BrickRoadPatterned_Limestone:39,145,2,1;Ice:41,145,6,1;OuterRim_BrickRoadPatterned_Limestone:47,145,1,1;Ice:48,145,1,1;OuterRim_BrickRoadPatterned_Limestone:49,145,1,1;Ice:50,145,7,1;Gravel:57,145,2,1;Limestone_Rough:59,145,8,1;Gravel:67,145,4,1;Ice:71,145,64,1;Soil:135,145,6,1;Ice:141,145,1,1;Soil:142,145,6,1;Slate_Rough:148,145,13,1;Limestone_Rough:161,145,89,1;Ice:0,146,8,1;Gravel:8,146,2,1;Limestone_Rough:10,146,8,1;Gravel:18,146,3,1;Ice:21,146,13,1;OuterRim_BrickRoadPatterned_Limestone:34,146,4,1;Ice:38,146,1,1;OuterRim_BrickRoadPatterned_Limestone:39,146,3,1;Ice:42,146,3,1;OuterRim_BrickRoadPatterned_Limestone:45,146,1,1;Ice:46,146,3,1;OuterRim_BrickRoadPatterned_Limestone:49,146,1,1;Ice:50,146,7,1;Gravel:57,146,2,1;Limestone_Rough:59,146,8,1;Gravel:67,146,3,1;Ice:70,146,65,1;Soil:135,146,6,1;Ice:141,146,1,1;Soil:142,146,6,1;Slate_Rough:148,146,14,1;Limestone_Rough:162,146,88,1;Ice:0,147,8,1;Gravel:8,147,3,1;Limestone_Rough:11,147,7,1;Gravel:18,147,4,1;Ice:22,147,12,1;OuterRim_BrickRoadPatterned_Limestone:34,147,8,1;Ice:42,147,1,1;OuterRim_BrickRoadPatterned_Limestone:43,147,1,1;Ice:44,147,1,1;OuterRim_BrickRoadPatterned_Limestone:45,147,2,1;Ice:47,147,9,1;Gravel:56,147,3,1;Limestone_Rough:59,147,7,1;Gravel:66,147,4,1;Ice:70,147,65,1;Soil:135,147,13,1;Slate_Rough:148,147,15,1;Limestone_Rough:163,147,45,1;Gravel:208,147,1,1;Limestone_Rough:209,147,41,1;Ice:0,148,8,1;Gravel:8,148,5,1;Limestone_Rough:13,148,5,1;Gravel:18,148,4,1;Ice:22,148,12,1;OuterRim_BrickRoadPatterned_Limestone:34,148,7,1;Ice:41,148,2,1;OuterRim_BrickRoadPatterned_Limestone:43,148,4,1;Ice:47,148,8,1;Gravel:55,148,3,1;Limestone_Rough:58,148,8,1;Gravel:66,148,4,1;Ice:70,148,73,1;Gravel:143,148,1,1;Slate_Rough:144,148,20,1;Limestone_Rough:164,148,15,1;Slate_Rough:179,148,2,1;Limestone_Rough:181,148,69,1;Ice:0,149,9,1;Gravel:9,149,7,1;Limestone_Rough:16,149,2,1;Gravel:18,149,5,1;Ice:23,149,11,1;OuterRim_BrickRoadPatterned_Limestone:34,149,2,1;Ice:36,149,1,1;OuterRim_BrickRoadPatterned_Limestone:37,149,1,1;Ice:38,149,1,1;OuterRim_BrickRoadPatterned_Limestone:39,149,6,1;Ice:45,149,1,1;OuterRim_BrickRoadPatterned_Limestone:46,149,1,1;Ice:47,149,1,1;OuterRim_BrickRoadPatterned_Limestone:48,149,1,1;Ice:49,149,1,1;OuterRim_BrickRoadPatterned_Limestone:50,149,1,1;Ice:51,149,3,1;Gravel:54,149,3,1;Limestone_Rough:57,149,8,1;Gravel:65,149,4,1;Ice:69,149,74,1;Gravel:143,149,1,1;Slate_Rough:144,149,22,1;Limestone_Rough:166,149,11,1;Slate_Rough:177,149,7,1;Limestone_Rough:184,149,66,1;Ice:0,150,10,1;Gravel:10,150,13,1;Ice:23,150,11,1;OuterRim_BrickRoadPatterned_Limestone:34,150,5,1;Ice:39,150,2,1;OuterRim_BrickRoadPatterned_Limestone:41,150,3,1;Ice:44,150,9,1;Gravel:53,150,3,1;Limestone_Rough:56,150,9,1;Gravel:65,150,4,1;Ice:69,150,75,1;Slate_Rough:144,150,24,1;Limestone_Rough:168,150,7,1;Slate_Rough:175,150,10,1;Limestone_Rough:185,150,65,1;Ice:0,151,11,1;Gravel:11,151,13,1;Ice:24,151,10,1;OuterRim_BrickRoadPatterned_Limestone:34,151,6,1;Ice:40,151,1,1;OuterRim_BrickRoadPatterned_Limestone:41,151,1,1;Ice:42,151,2,1;OuterRim_BrickRoadPatterned_Limestone:44,151,1,1;Ice:45,151,4,1;OuterRim_BrickRoadPatterned_Limestone:49,151,1,1;Ice:50,151,3,1;Gravel:53,151,2,1;Limestone_Rough:55,151,9,1;Gravel:64,151,4,1;Ice:68,151,76,1;Slate_Rough:144,151,25,1;Limestone_Rough:169,151,5,1;Slate_Rough:174,151,12,1;Limestone_Rough:186,151,64,1;Ice:0,152,12,1;Gravel:12,152,12,1;Ice:24,152,10,1;OuterRim_BrickRoadPatterned_Limestone:34,152,6,1;Ice:40,152,1,1;OuterRim_BrickRoadPatterned_Limestone:41,152,3,1;Ice:44,152,1,1;OuterRim_BrickRoadPatterned_Limestone:45,152,1,1;Ice:46,152,1,1;OuterRim_BrickRoadPatterned_Limestone:47,152,1,1;Ice:48,152,4,1;Gravel:52,152,2,1;Limestone_Rough:54,152,9,1;Gravel:63,152,5,1;Ice:68,152,75,1;Gravel:143,152,1,1;Slate_Rough:144,152,26,1;Limestone_Rough:170,152,3,1;Slate_Rough:173,152,15,1;Limestone_Rough:188,152,62,1;Ice:0,153,14,1;Gravel:14,153,9,1;Ice:23,153,11,1;OuterRim_BrickRoadPatterned_Limestone:34,153,4,1;Ice:38,153,1,1;OuterRim_BrickRoadPatterned_Limestone:39,153,1,1;Ice:40,153,1,1;OuterRim_BrickRoadPatterned_Limestone:41,153,1,1;Ice:42,153,2,1;OuterRim_BrickRoadPatterned_Limestone:44,153,1,1;Ice:45,153,1,1;OuterRim_BrickRoadPatterned_Limestone:46,153,1,1;Ice:47,153,5,1;Gravel:52,153,2,1;Limestone_Rough:54,153,8,1;Gravel:62,153,6,1;Ice:68,153,75,1;Gravel:143,153,1,1;Slate_Rough:144,153,45,1;Limestone_Rough:189,153,61,1;Ice:0,154,15,1;Gravel:15,154,3,1;Ice:18,154,16,1;OuterRim_BrickRoadPatterned_Limestone:34,154,1,1;Ice:35,154,1,1;OuterRim_BrickRoadPatterned_Limestone:36,154,5,1;Ice:41,154,2,1;OuterRim_BrickRoadPatterned_Limestone:43,154,3,1;Ice:46,154,1,1;OuterRim_BrickRoadPatterned_Limestone:47,154,3,1;Ice:50,154,2,1;Gravel:52,154,2,1;Limestone_Rough:54,154,8,1;Gravel:62,154,5,1;Ice:67,154,76,1;Gravel:143,154,1,1;Slate_Rough:144,154,47,1;Limestone_Rough:191,154,59,1;Ice:0,155,34,1;OuterRim_BrickRoadPatterned_Limestone:34,155,7,1;Ice:41,155,3,1;OuterRim_BrickRoadPatterned_Limestone:44,155,4,1;Ice:48,155,3,1;Gravel:51,155,3,1;Limestone_Rough:54,155,8,1;Gravel:62,155,4,1;Ice:66,155,77,1;Gravel:143,155,1,1;Slate_Rough:144,155,49,1;Limestone_Rough:193,155,57,1;Ice:0,156,34,1;OuterRim_BrickRoadPatterned_Limestone:34,156,2,1;Ice:36,156,1,1;OuterRim_BrickRoadPatterned_Limestone:37,156,5,1;Ice:42,156,1,1;OuterRim_BrickRoadPatterned_Limestone:43,156,1,1;Ice:44,156,6,1;Gravel:50,156,3,1;Limestone_Rough:53,156,9,1;Gravel:62,156,4,1;Ice:66,156,77,1;Gravel:143,156,2,1;Slate_Rough:145,156,50,1;Limestone_Rough:195,156,13,1;Gravel:208,156,1,1;Limestone_Rough:209,156,41,1;Ice:0,157,28,1;Gravel:28,157,2,1;Ice:30,157,4,1;OuterRim_BrickRoadPatterned_Limestone:34,157,7,1;Ice:41,157,3,1;OuterRim_BrickRoadPatterned_Limestone:44,157,1,1;Ice:45,157,5,1;Gravel:50,157,2,1;Limestone_Rough:52,157,10,1;Gravel:62,157,4,1;Ice:66,157,77,1;Gravel:143,157,2,1;Slate_Rough:145,157,48,1;AncientTile:193,157,4,1;OuterRim_BrickRoadPatterned_Slate:197,157,2,1;Limestone_Rough:199,157,51,1;Ice:0,158,28,1;Gravel:28,158,2,1;Ice:30,158,4,1;OuterRim_BrickRoadPatterned_Limestone:34,158,8,1;Ice:42,158,4,1;OuterRim_BrickRoadPatterned_Limestone:46,158,1,1;Ice:47,158,2,1;Gravel:49,158,2,1;Limestone_Rough:51,158,8,1;Gravel:59,158,7,1;Ice:66,158,77,1;Gravel:143,158,1,1;Slate_Rough:144,158,49,1;AncientTile:193,158,1,1;AncientConcrete:194,158,2,1;AncientTile:196,158,1,1;OuterRim_BrickRoadPatterned_Slate:197,158,2,1;Slate_Rough:199,158,2,1;Limestone_Rough:201,158,9,1;Gravel:210,158,1,1;Limestone_Rough:211,158,39,1;Ice:0,159,23,1;Gravel:23,159,6,1;Ice:29,159,19,1;Gravel:48,159,2,1;Limestone_Rough:50,159,8,1;Gravel:58,159,9,1;Ice:67,159,76,1;Gravel:143,159,1,1;Slate_Rough:144,159,48,1;OuterRim_BrickRoadPatterned_Slate:192,159,1,1;AncientTile:193,159,4,1;OuterRim_BrickRoadPatterned_Slate:197,159,2,1;Slate_Rough:199,159,4,1;Limestone_Rough:203,159,7,1;Gravel:210,159,2,1;Limestone_Rough:212,159,38,1;Ice:0,160,23,1;Gravel:23,160,5,1;Ice:28,160,20,1;Gravel:48,160,2,1;Limestone_Rough:50,160,7,1;Gravel:57,160,9,1;Ice:66,160,76,1;Gravel:142,160,1,1;Slate_Rough:143,160,50,1;OuterRim_BrickRoadPatterned_Slate:193,160,6,1;Slate_Rough:199,160,4,1;Limestone_Rough:203,160,8,1;Gravel:211,160,2,1;Limestone_Rough:213,160,37,1;Ice:0,161,22,1;Gravel:22,161,5,1;Ice:27,161,20,1;Gravel:47,161,4,1;Limestone_Rough:51,161,4,1;Gravel:55,161,11,1;Ice:66,161,76,1;Gravel:142,161,1,1;Slate_Rough:143,161,47,1;OuterRim_BrickRoadPatterned_Slate:190,161,1,1;Slate_Rough:191,161,2,1;OuterRim_BrickRoadPatterned_Slate:193,161,6,1;Slate_Rough:199,161,5,1;Limestone_Rough:204,161,46,1;Ice:0,162,21,1;Gravel:21,162,6,1;Ice:27,162,20,1;Gravel:47,162,19,1;Ice:66,162,75,1;Gravel:141,162,1,1;Slate_Rough:142,162,45,1;OuterRim_BrickRoadPatterned_Slate:187,162,12,1;Slate_Rough:199,162,6,1;Limestone_Rough:205,162,45,1;Ice:0,163,21,1;Gravel:21,163,5,1;Ice:26,163,20,1;Gravel:46,163,15,1;Ice:61,163,3,1;Gravel:64,163,1,1;Ice:65,163,75,1;Gravel:140,163,2,1;Slate_Rough:142,163,44,1;OuterRim_BrickRoadPatterned_Slate:186,163,13,1;Slate_Rough:199,163,6,1;Limestone_Rough:205,163,45,1;Ice:0,164,22,1;Gravel:22,164,3,1;Ice:25,164,21,1;Gravel:46,164,14,1;Ice:60,164,80,1;Gravel:140,164,1,1;Slate_Rough:141,164,45,1;OuterRim_BrickRoadPatterned_Slate:186,164,13,1;Slate_Rough:199,164,6,1;Limestone_Rough:205,164,45,1;Ice:0,165,23,1;Gravel:23,165,1,1;Ice:24,165,21,1;Gravel:45,165,14,1;Ice:59,165,10,1;Gravel:69,165,3,1;Ice:72,165,67,1;Gravel:139,165,2,1;Slate_Rough:141,165,46,1;OuterRim_BrickRoadPatterned_Slate:187,165,12,1;Slate_Rough:199,165,7,1;Limestone_Rough:206,165,44,1;Ice:0,166,44,1;Gravel:44,166,14,1;Ice:58,166,10,1;Gravel:68,166,5,1;Ice:73,166,65,1;Gravel:138,166,3,1;Slate_Rough:141,166,49,1;OuterRim_BrickRoadPatterned_Slate:190,166,1,1;Slate_Rough:191,166,2,1;OuterRim_BrickRoadPatterned_Slate:193,166,6,1;Slate_Rough:199,166,7,1;Limestone_Rough:206,166,44,1;Ice:0,167,44,1;Gravel:44,167,13,1;Ice:57,167,11,1;Gravel:68,167,2,1;Slate_Rough:70,167,2,1;Gravel:72,167,2,1;Ice:74,167,64,1;Gravel:138,167,2,1;Slate_Rough:140,167,53,1;OuterRim_BrickRoadPatterned_Slate:193,167,6,1;Slate_Rough:199,167,6,1;Limestone_Rough:205,167,45,1;Ice:0,168,43,1;Gravel:43,168,13,1;Ice:56,168,11,1;Gravel:67,168,3,1;Slate_Rough:70,168,3,1;Gravel:73,168,2,1;Ice:75,168,63,1;Gravel:138,168,2,1;Slate_Rough:140,168,52,1;OuterRim_BrickRoadPatterned_Slate:192,168,7,1;Slate_Rough:199,168,6,1;Limestone_Rough:205,168,45,1;Ice:0,169,42,1;Gravel:42,169,14,1;Ice:56,169,11,1;Gravel:67,169,3,1;Slate_Rough:70,169,3,1;Gravel:73,169,3,1;Ice:76,169,62,1;Gravel:138,169,2,1;Slate_Rough:140,169,53,1;OuterRim_BrickRoadPatterned_Slate:193,169,6,1;Slate_Rough:199,169,6,1;Limestone_Rough:205,169,45,1;Ice:0,170,41,1;Gravel:41,170,15,1;Ice:56,170,10,1;Gravel:66,170,3,1;Slate_Rough:69,170,5,1;Gravel:74,170,3,1;Ice:77,170,60,1;Gravel:137,170,3,1;Slate_Rough:140,170,53,1;OuterRim_BrickRoadPatterned_Slate:193,170,6,1;Slate_Rough:199,170,6,1;Limestone_Rough:205,170,45,1;Ice:0,171,41,1;Gravel:41,171,15,1;Ice:56,171,9,1;Gravel:65,171,4,1;Slate_Rough:69,171,5,1;Gravel:74,171,3,1;Ice:77,171,60,1;Gravel:137,171,3,1;Slate_Rough:140,171,64,1;Limestone_Rough:204,171,46,1;Ice:0,172,41,1;Gravel:41,172,16,1;Ice:57,172,7,1;Gravel:64,172,5,1;Slate_Rough:69,172,5,1;Gravel:74,172,2,1;Ice:76,172,61,1;Gravel:137,172,2,1;Slate_Rough:139,172,65,1;Limestone_Rough:204,172,46,1;Ice:0,173,41,1;Gravel:41,173,16,1;Ice:57,173,6,1;Gravel:63,173,7,1;Slate_Rough:70,173,4,1;Gravel:74,173,2,1;Ice:76,173,60,1;Gravel:136,173,3,1;Slate_Rough:139,173,65,1;Limestone_Rough:204,173,46,1;Ice:0,174,42,1;Gravel:42,174,16,1;Ice:58,174,4,1;Gravel:62,174,8,1;Slate_Rough:70,174,2,1;Gravel:72,174,4,1;Ice:76,174,59,1;Gravel:135,174,3,1;Slate_Rough:138,174,65,1;Limestone_Rough:203,174,47,1;Ice:0,175,43,1;Gravel:43,175,16,1;Ice:59,175,3,1;Gravel:62,175,14,1;Ice:76,175,58,1;Gravel:134,175,4,1;Slate_Rough:138,175,65,1;Limestone_Rough:203,175,47,1;Ice:0,176,44,1;Gravel:44,176,1,1;Ice:45,176,1,1;Gravel:46,176,3,1;Ice:49,176,1,1;Gravel:50,176,8,1;Ice:58,176,3,1;Gravel:61,176,14,1;Ice:75,176,58,1;Gravel:133,176,5,1;Slate_Rough:138,176,64,1;Limestone_Rough:202,176,48,1;Ice:0,177,50,1;Gravel:50,177,8,1;Ice:58,177,2,1;Gravel:60,177,10,1;Ice:70,177,2,1;Gravel:72,177,1,1;Ice:73,177,60,1;Gravel:133,177,1,1;Slate_Rough:134,177,2,1;Gravel:136,177,2,1;Slate_Rough:138,177,64,1;Limestone_Rough:202,177,48,1;Ice:0,178,51,1;Gravel:51,178,1,1;Ice:52,178,9,1;Gravel:61,178,3,1;Ice:64,178,4,1;Gravel:68,178,1,1;Ice:69,178,63,1;Gravel:132,178,2,1;Slate_Rough:134,178,67,1;Limestone_Rough:201,178,49,1;Ice:0,179,130,1;Gravel:130,179,3,1;Slate_Rough:133,179,68,1;Limestone_Rough:201,179,49,1;Ice:0,180,120,1;Gravel:120,180,1,1;Ice:121,180,1,1;Gravel:122,180,3,1;Ice:125,180,3,1;Gravel:128,180,3,1;Slate_Rough:131,180,69,1;Limestone_Rough:200,180,50,1;Ice:0,181,119,1;Gravel:119,181,11,1;Slate_Rough:130,181,70,1;Limestone_Rough:200,181,50,1;Ice:0,182,118,1;Gravel:118,182,11,1;Slate_Rough:129,182,71,1;Limestone_Rough:200,182,50,1;Ice:0,183,117,1;Gravel:117,183,11,1;Slate_Rough:128,183,73,1;Limestone_Rough:201,183,49,1;Ice:0,184,116,1;Gravel:116,184,10,1;Slate_Rough:126,184,75,1;Limestone_Rough:201,184,49,1;Ice:0,185,114,1;Gravel:114,185,5,1;Slate_Rough:119,185,82,1;Limestone_Rough:201,185,49,1;Ice:0,186,113,1;Gravel:113,186,4,1;Slate_Rough:117,186,84,1;Limestone_Rough:201,186,49,1;Ice:0,187,113,1;Gravel:113,187,3,1;Slate_Rough:116,187,84,1;Limestone_Rough:200,187,50,1;Ice:0,188,112,1;Gravel:112,188,3,1;Slate_Rough:115,188,85,1;Limestone_Rough:200,188,50,1;Ice:0,189,111,1;Gravel:111,189,4,1;Slate_Rough:115,189,84,1;Limestone_Rough:199,189,51,1;Ice:0,190,109,1;Gravel:109,190,5,1;Slate_Rough:114,190,85,1;Limestone_Rough:199,190,51,1;Ice:0,191,109,1;Gravel:109,191,5,1;Slate_Rough:114,191,86,1;Limestone_Rough:200,191,50,1;Ice:0,192,109,1;Gravel:109,192,5,1;Slate_Rough:114,192,86,1;Limestone_Rough:200,192,50,1;Ice:0,193,110,1;Gravel:110,193,5,1;Slate_Rough:115,193,85,1;Limestone_Rough:200,193,50,1;Ice:0,194,111,1;Gravel:111,194,4,1;Slate_Rough:115,194,85,1;Limestone_Rough:200,194,50,1;Ice:0,195,111,1;Gravel:111,195,3,1;Slate_Rough:114,195,86,1;Limestone_Rough:200,195,50,1;Ice:0,196,111,1;Gravel:111,196,3,1;Slate_Rough:114,196,86,1;Limestone_Rough:200,196,50,1;Ice:0,197,110,1;Gravel:110,197,4,1;Slate_Rough:114,197,86,1;Limestone_Rough:200,197,50,1;Ice:0,198,109,1;Gravel:109,198,5,1;Slate_Rough:114,198,86,1;Limestone_Rough:200,198,50,1;Ice:0,199,108,1;Gravel:108,199,6,1;Slate_Rough:114,199,86,1;Limestone_Rough:200,199,50,1;Gravel:0,200,2,1;Ice:2,200,105,1;Gravel:107,200,5,1;Slate_Rough:112,200,89,1;Limestone_Rough:201,200,49,1;Gravel:0,201,1,1;Ice:1,201,105,1;Gravel:106,201,5,1;Slate_Rough:111,201,89,1;Limestone_Rough:200,201,50,1;Ice:0,202,104,1;Gravel:104,202,6,1;Slate_Rough:110,202,90,1;Limestone_Rough:200,202,50,1;Ice:0,203,103,1;Gravel:103,203,5,1;Slate_Rough:108,203,92,1;Limestone_Rough:200,203,50,1;Ice:0,204,104,1;Gravel:104,204,2,1;Slate_Rough:106,204,94,1;Granite_Rough:200,204,1,1;Limestone_Rough:201,204,49,1;Ice:0,205,105,1;Gravel:105,205,1,1;Slate_Rough:106,205,93,1;Granite_Rough:199,205,3,1;Limestone_Rough:202,205,48,1;Ice:0,206,52,1;Gravel:52,206,3,1;Ice:55,206,51,1;Gravel:106,206,1,1;Slate_Rough:107,206,92,1;Granite_Rough:199,206,4,1;Limestone_Rough:203,206,47,1;Ice:0,207,50,1;Gravel:50,207,8,1;Ice:58,207,49,1;Gravel:107,207,1,1;TileSandstone:108,207,1,1;Slate_Rough:109,207,89,1;Granite_Rough:198,207,6,1;Limestone_Rough:204,207,46,1;Gravel:0,208,2,1;Ice:2,208,48,1;Gravel:50,208,9,1;Ice:59,208,49,1;Gravel:108,208,1,1;Slate_Rough:109,208,89,1;Granite_Rough:198,208,6,1;Limestone_Rough:204,208,46,1;Gravel:0,209,4,1;Ice:4,209,46,1;Gravel:50,209,3,1;Slate_Rough:53,209,4,1;Gravel:57,209,3,1;Ice:60,209,47,1;TileSandstone:107,209,2,1;Gravel:109,209,1,1;Slate_Rough:110,209,87,1;Granite_Rough:197,209,8,1;Limestone_Rough:205,209,45,1;Granite_Rough:0,210,1,1;Gravel:1,210,5,1;Ice:6,210,5,1;Gravel:11,210,3,1;Ice:14,210,37,1;Gravel:51,210,3,1;Slate_Rough:54,210,4,1;Gravel:58,210,2,1;Ice:60,210,48,1;TileSandstone:108,210,2,1;Gravel:110,210,2,1;Slate_Rough:112,210,84,1;Granite_Rough:196,210,9,1;Limestone_Rough:205,210,45,1;Granite_Rough:0,211,2,1;Gravel:2,211,4,1;Ice:6,211,4,1;Gravel:10,211,4,1;Ice:14,211,38,1;Gravel:52,211,3,1;Slate_Rough:55,211,4,1;Gravel:59,211,1,1;Ice:60,211,45,1;TileSandstone:105,211,6,1;Gravel:111,211,3,1;Slate_Rough:114,211,82,1;Granite_Rough:196,211,8,1;Limestone_Rough:204,211,46,1;Granite_Rough:0,212,2,1;Gravel:2,212,5,1;Ice:7,212,2,1;Gravel:9,212,6,1;Ice:15,212,38,1;Gravel:53,212,3,1;Slate_Rough:56,212,3,1;Gravel:59,212,2,1;Ice:61,212,44,1;TileSandstone:105,212,2,1;Ice:107,212,1,1;TileSandstone:108,212,1,1;Ice:109,212,2,1;Gravel:111,212,4,1;Slate_Rough:115,212,80,1;Granite_Rough:195,212,9,1;Limestone_Rough:204,212,46,1;Slate_Rough:0,213,1,1;Granite_Rough:1,213,1,1;Gravel:2,213,13,1;Ice:15,213,39,1;Gravel:54,213,2,1;Slate_Rough:56,213,5,1;Gravel:61,213,1,1;Ice:62,213,50,1;Gravel:112,213,3,1;Slate_Rough:115,213,81,1;Granite_Rough:196,213,7,1;Limestone_Rough:203,213,47,1;Slate_Rough:0,214,2,1;Gravel:2,214,13,1;Ice:15,214,40,1;Gravel:55,214,2,1;Slate_Rough:57,214,4,1;Gravel:61,214,2,1;Ice:63,214,49,1;Gravel:112,214,3,1;Slate_Rough:115,214,81,1;Granite_Rough:196,214,7,1;Limestone_Rough:203,214,47,1;Slate_Rough:0,215,1,1;Gravel:1,215,14,1;Ice:15,215,40,1;Gravel:55,215,2,1;Slate_Rough:57,215,5,1;Gravel:62,215,2,1;Ice:64,215,49,1;Gravel:113,215,3,1;Slate_Rough:116,215,80,1;Granite_Rough:196,215,7,1;Limestone_Rough:203,215,47,1;Slate_Rough:0,216,1,1;Gravel:1,216,15,1;Ice:16,216,40,1;Gravel:56,216,1,1;Slate_Rough:57,216,6,1;Gravel:63,216,1,1;Ice:64,216,8,1;Gravel:72,216,5,1;Ice:77,216,36,1;Gravel:113,216,3,1;Slate_Rough:116,216,80,1;Granite_Rough:196,216,7,1;Limestone_Rough:203,216,47,1;Slate_Rough:0,217,1,1;Gravel:1,217,15,1;Ice:16,217,40,1;Gravel:56,217,2,1;Slate_Rough:58,217,6,1;Gravel:64,217,3,1;Ice:67,217,3,1;Gravel:70,217,2,1;Slate_Rough:72,217,5,1;Gravel:77,217,1,1;Ice:78,217,35,1;Gravel:113,217,4,1;Slate_Rough:117,217,78,1;Granite_Rough:195,217,8,1;Limestone_Rough:203,217,47,1;Slate_Rough:0,218,2,1;Gravel:2,218,15,1;Ice:17,218,39,1;Gravel:56,218,2,1;Slate_Rough:58,218,10,1;Gravel:68,218,3,1;Slate_Rough:71,218,7,1;Gravel:78,218,1,1;Ice:79,218,35,1;Gravel:114,218,3,1;Slate_Rough:117,218,78,1;Granite_Rough:195,218,9,1;Limestone_Rough:204,218,46,1;Slate_Rough:0,219,2,1;Gravel:2,219,15,1;Ice:17,219,40,1;Gravel:57,219,1,1;Slate_Rough:58,219,21,1;Gravel:79,219,2,1;Ice:81,219,35,1;Gravel:116,219,2,1;Slate_Rough:118,219,77,1;Granite_Rough:195,219,17,1;Limestone_Rough:212,219,38,1;Slate_Rough:0,220,3,1;Gravel:3,220,14,1;Ice:17,220,41,1;Gravel:58,220,1,1;Slate_Rough:59,220,8,1;Gravel:67,220,1,1;Slate_Rough:68,220,13,1;Gravel:81,220,1,1;Ice:82,220,35,1;Gravel:117,220,2,1;Slate_Rough:119,220,76,1;Granite_Rough:195,220,18,1;Limestone_Rough:213,220,37,1;Slate_Rough:0,221,3,1;Gravel:3,221,14,1;Ice:17,221,41,1;Gravel:58,221,1,1;Slate_Rough:59,221,8,1;Gravel:67,221,1,1;Slate_Rough:68,221,14,1;Gravel:82,221,1,1;Ice:83,221,35,1;Gravel:118,221,4,1;Slate_Rough:122,221,73,1;Granite_Rough:195,221,19,1;Limestone_Rough:214,221,36,1;Slate_Rough:0,222,5,1;Granite_Rough:5,222,2,1;Gravel:7,222,10,1;Ice:17,222,41,1;Gravel:58,222,1,1;Slate_Rough:59,222,23,1;Gravel:82,222,1,1;Ice:83,222,36,1;Gravel:119,222,4,1;Slate_Rough:123,222,72,1;Granite_Rough:195,222,19,1;Limestone_Rough:214,222,36,1;Slate_Rough:0,223,6,1;Granite_Rough:6,223,6,1;Gravel:12,223,5,1;Ice:17,223,41,1;Gravel:58,223,2,1;Slate_Rough:60,223,23,1;Gravel:83,223,1,1;Ice:84,223,38,1;Gravel:122,223,1,1;Slate_Rough:123,223,72,1;Granite_Rough:195,223,19,1;Limestone_Rough:214,223,36,1;Slate_Rough:0,224,7,1;Granite_Rough:7,224,7,1;Gravel:14,224,4,1;Ice:18,224,40,1;Gravel:58,224,2,1;Slate_Rough:60,224,23,1;Gravel:83,224,2,1;Ice:85,224,13,1;Gravel:98,224,5,1;Ice:103,224,19,1;Gravel:122,224,2,1;Slate_Rough:124,224,71,1;Granite_Rough:195,224,19,1;Limestone_Rough:214,224,36,1;Slate_Rough:0,225,9,1;Granite_Rough:9,225,6,1;Gravel:15,225,6,1;Ice:21,225,37,1;Gravel:58,225,1,1;Slate_Rough:59,225,25,1;Gravel:84,225,2,1;Ice:86,225,8,1;Gravel:94,225,12,1;Ice:106,225,17,1;Gravel:123,225,3,1;Slate_Rough:126,225,68,1;Granite_Rough:194,225,20,1;Limestone_Rough:214,225,36,1;Slate_Rough:0,226,12,1;Granite_Rough:12,226,5,1;Gravel:17,226,6,1;Ice:23,226,34,1;Gravel:57,226,2,1;Slate_Rough:59,226,25,1;Gravel:84,226,3,1;Ice:87,226,7,1;Gravel:94,226,4,1;Slate_Rough:98,226,7,1;Gravel:105,226,2,1;Ice:107,226,17,1;Gravel:124,226,3,1;Slate_Rough:127,226,66,1;Granite_Rough:193,226,21,1;Limestone_Rough:214,226,36,1;Slate_Rough:0,227,14,1;Granite_Rough:14,227,5,1;Gravel:19,227,5,1;Ice:24,227,33,1;Gravel:57,227,2,1;Slate_Rough:59,227,9,1;WaterShallow:68,227,1,1;Slate_Rough:69,227,16,1;Gravel:85,227,2,1;Ice:87,227,5,1;Gravel:92,227,5,1;Slate_Rough:97,227,9,1;Gravel:106,227,2,1;Ice:108,227,17,1;Gravel:125,227,3,1;Slate_Rough:128,227,65,1;Granite_Rough:193,227,13,1;Limestone_Rough:206,227,4,1;Granite_Rough:210,227,3,1;Limestone_Rough:213,227,37,1;Slate_Rough:0,228,16,1;Granite_Rough:16,228,4,1;Gravel:20,228,4,1;Ice:24,228,33,1;Gravel:57,228,2,1;Slate_Rough:59,228,8,1;WaterShallow:67,228,2,1;Slate_Rough:69,228,16,1;Gravel:85,228,3,1;Ice:88,228,4,1;Gravel:92,228,4,1;Slate_Rough:96,228,11,1;Gravel:107,228,2,1;Ice:109,228,17,1;Gravel:126,228,3,1;Slate_Rough:129,228,63,1;Granite_Rough:192,228,14,1;Limestone_Rough:206,228,44,1;Slate_Rough:0,229,18,1;Granite_Rough:18,229,2,1;Gravel:20,229,4,1;Ice:24,229,33,1;Gravel:57,229,2,1;Slate_Rough:59,229,7,1;WaterShallow:66,229,3,1;Slate_Rough:69,229,17,1;Gravel:86,229,2,1;Ice:88,229,3,1;Gravel:91,229,5,1;Slate_Rough:96,229,12,1;Gravel:108,229,2,1;Ice:110,229,17,1;Gravel:127,229,3,1;Slate_Rough:130,229,62,1;Granite_Rough:192,229,14,1;Limestone_Rough:206,229,44,1;Slate_Rough:0,230,18,1;Granite_Rough:18,230,3,1;Gravel:21,230,4,1;Ice:25,230,22,1;FlagstoneLimestone:47,230,1,1;Ice:48,230,9,1;Gravel:57,230,2,1;Slate_Rough:59,230,27,1;Gravel:86,230,1,1;Ice:87,230,4,1;Gravel:91,230,4,1;Slate_Rough:95,230,13,1;Gravel:108,230,2,1;Ice:110,230,19,1;Gravel:129,230,2,1;Slate_Rough:131,230,61,1;Granite_Rough:192,230,15,1;Limestone_Rough:207,230,43,1;Slate_Rough:0,231,18,1;Granite_Rough:18,231,5,1;Gravel:23,231,2,1;Ice:25,231,22,1;FlagstoneLimestone:47,231,2,1;Ice:49,231,8,1;Gravel:57,231,3,1;Slate_Rough:60,231,26,1;Gravel:86,231,1,1;Ice:87,231,4,1;Gravel:91,231,4,1;Slate_Rough:95,231,14,1;Gravel:109,231,2,1;Ice:111,231,19,1;Gravel:130,231,2,1;Slate_Rough:132,231,60,1;Granite_Rough:192,231,16,1;Limestone_Rough:208,231,42,1;Slate_Rough:0,232,19,1;Granite_Rough:19,232,4,1;Gravel:23,232,3,1;Ice:26,232,17,1;FlagstoneLimestone:43,232,1,1;Ice:44,232,1,1;FlagstoneLimestone:45,232,1,1;Ice:46,232,1,1;FlagstoneLimestone:47,232,1,1;Ice:48,232,10,1;Gravel:58,232,3,1;Slate_Rough:61,232,24,1;Gravel:85,232,2,1;Ice:87,232,3,1;Gravel:90,232,5,1;Slate_Rough:95,232,14,1;Gravel:109,232,2,1;Ice:111,232,19,1;Gravel:130,232,2,1;Slate_Rough:132,232,60,1;Granite_Rough:192,232,16,1;Limestone_Rough:208,232,42,1;Slate_Rough:0,233,19,1;Granite_Rough:19,233,5,1;Gravel:24,233,2,1;Ice:26,233,16,1;Gravel:42,233,2,1;Ice:44,233,2,1;FlagstoneLimestone:46,233,3,1;Ice:49,233,10,1;Gravel:59,233,2,1;Slate_Rough:61,233,24,1;Gravel:85,233,3,1;Ice:88,233,2,1;Gravel:90,233,5,1;Slate_Rough:95,233,15,1;Gravel:110,233,2,1;Ice:112,233,18,1;Gravel:130,233,3,1;Slate_Rough:133,233,60,1;Granite_Rough:193,233,16,1;Limestone_Rough:209,233,41,1;Slate_Rough:0,234,20,1;Granite_Rough:20,234,4,1;Gravel:24,234,3,1;Ice:27,234,15,1;Gravel:42,234,3,1;FlagstoneLimestone:45,234,3,1;Ice:48,234,11,1;Gravel:59,234,2,1;Slate_Rough:61,234,24,1;Gravel:85,234,3,1;Ice:88,234,2,1;Gravel:90,234,5,1;Slate_Rough:95,234,15,1;Gravel:110,234,2,1;Ice:112,234,20,1;Gravel:132,234,2,1;Slate_Rough:134,234,60,1;Granite_Rough:194,234,15,1;Limestone_Rough:209,234,41,1;Slate_Rough:0,235,20,1;Granite_Rough:20,235,2,1;Gravel:22,235,6,1;Ice:28,235,13,1;Gravel:41,235,2,1;FlagstoneLimestone:43,235,1,1;Gravel:44,235,1,1;FlagstoneLimestone:45,235,4,1;Gravel:49,235,2,1;Ice:51,235,7,1;Gravel:58,235,4,1;Slate_Rough:62,235,23,1;Gravel:85,235,3,1;Ice:88,235,2,1;Gravel:90,235,5,1;Slate_Rough:95,235,15,1;Gravel:110,235,2,1;Ice:112,235,21,1;Gravel:133,235,1,1;Slate_Rough:134,235,60,1;Granite_Rough:194,235,16,1;Limestone_Rough:210,235,40,1;Slate_Rough:0,236,21,1;Gravel:21,236,7,1;Ice:28,236,13,1;Gravel:41,236,2,1;FlagstoneLimestone:43,236,1,1;Gravel:44,236,1,1;FlagstoneLimestone:45,236,1,1;Gravel:46,236,1,1;FlagstoneLimestone:47,236,1,1;Gravel:48,236,6,1;Ice:54,236,4,1;Gravel:58,236,3,1;Slate_Rough:61,236,24,1;Gravel:85,236,3,1;Ice:88,236,2,1;Gravel:90,236,6,1;Slate_Rough:96,236,14,1;Gravel:110,236,2,1;Ice:112,236,21,1;Gravel:133,236,1,1;Slate_Rough:134,236,60,1;Granite_Rough:194,236,17,1;Limestone_Rough:211,236,39,1;Slate_Rough:0,237,21,1;Gravel:21,237,9,1;Ice:30,237,11,1;Gravel:41,237,6,1;Slate_Rough:47,237,4,1;Gravel:51,237,8,1;Slate_Rough:59,237,23,1;Gravel:82,237,6,1;Ice:88,237,4,1;Gravel:92,237,10,1;Slate_Rough:102,237,7,1;Gravel:109,237,3,1;Ice:112,237,20,1;Gravel:132,237,2,1;Slate_Rough:134,237,60,1;Granite_Rough:194,237,19,1;Limestone_Rough:213,237,37,1;Slate_Rough:0,238,21,1;Gravel:21,238,10,1;Ice:31,238,9,1;Gravel:40,238,6,1;Slate_Rough:46,238,6,1;Gravel:52,238,7,1;Slate_Rough:59,238,21,1;Gravel:80,238,7,1;Ice:87,238,16,1;Gravel:103,238,7,1;Ice:110,238,21,1;Gravel:131,238,3,1;Slate_Rough:134,238,59,1;Granite_Rough:193,238,21,1;Limestone_Rough:214,238,36,1;Slate_Rough:0,239,11,1;Gravel:11,239,2,1;Slate_Rough:13,239,1,1;Gravel:14,239,3,1;Slate_Rough:17,239,3,1;Gravel:20,239,12,1;Ice:32,239,8,1;Gravel:40,239,5,1;Slate_Rough:45,239,8,1;Gravel:53,239,5,1;Slate_Rough:58,239,22,1;Gravel:80,239,2,1;Ice:82,239,1,1;Gravel:83,239,1,1;Ice:84,239,47,1;Gravel:131,239,3,1;Slate_Rough:134,239,59,1;Granite_Rough:193,239,22,1;Limestone_Rough:215,239,35,1;Slate_Rough:0,240,2,1;Gravel:2,240,31,1;Ice:33,240,7,1;Gravel:40,240,5,1;Slate_Rough:45,240,34,1;Gravel:79,240,2,1;Ice:81,240,50,1;Gravel:131,240,3,1;Slate_Rough:134,240,59,1;Granite_Rough:193,240,22,1;Limestone_Rough:215,240,35,1;Gravel:0,241,33,1;Ice:33,241,7,1;Gravel:40,241,4,1;Slate_Rough:44,241,34,1;Gravel:78,241,3,1;Ice:81,241,50,1;Gravel:131,241,3,1;Slate_Rough:134,241,59,1;Granite_Rough:193,241,23,1;Limestone_Rough:216,241,34,1;Gravel:0,242,2,1;Ice:2,242,4,1;Gravel:6,242,19,1;Slate_Rough:25,242,3,1;Gravel:28,242,5,1;Ice:33,242,7,1;Gravel:40,242,4,1;Slate_Rough:44,242,34,1;Gravel:78,242,3,1;Ice:81,242,50,1;Gravel:131,242,3,1;Slate_Rough:134,242,58,1;Granite_Rough:192,242,25,1;Limestone_Rough:217,242,33,1;Ice:0,243,8,1;Gravel:8,243,4,1;Ice:12,243,2,1;Gravel:14,243,11,1;Slate_Rough:25,243,3,1;Gravel:28,243,4,1;Ice:32,243,8,1;Gravel:40,243,5,1;Slate_Rough:45,243,33,1;Gravel:78,243,3,1;Ice:81,243,51,1;Gravel:132,243,2,1;Slate_Rough:134,243,58,1;Granite_Rough:192,243,25,1;Limestone_Rough:217,243,33,1;Ice:0,244,15,1;Gravel:15,244,10,1;Slate_Rough:25,244,1,1;Granite_Rough:26,244,2,1;Gravel:28,244,4,1;Ice:32,244,8,1;Gravel:40,244,5,1;Slate_Rough:45,244,33,1;Gravel:78,244,3,1;Ice:81,244,50,1;Gravel:131,244,3,1;Slate_Rough:134,244,57,1;Granite_Rough:191,244,26,1;Limestone_Rough:217,244,33,1;Ice:0,245,17,1;Gravel:17,245,8,1;Limestone_Rough:25,245,1,1;Granite_Rough:26,245,2,1;Gravel:28,245,4,1;Ice:32,245,9,1;Gravel:41,245,4,1;Slate_Rough:45,245,33,1;Gravel:78,245,4,1;Ice:82,245,49,1;Gravel:131,245,3,1;Slate_Rough:134,245,57,1;Granite_Rough:191,245,27,1;Limestone_Rough:218,245,32,1;Ice:0,246,18,1;Gravel:18,246,7,1;Limestone_Rough:25,246,1,1;Granite_Rough:26,246,3,1;Gravel:29,246,4,1;Ice:33,246,8,1;Gravel:41,246,5,1;Slate_Rough:46,246,33,1;Gravel:79,246,3,1;Ice:82,246,48,1;Gravel:130,246,3,1;Slate_Rough:133,246,57,1;Granite_Rough:190,246,28,1;Limestone_Rough:218,246,32,1;Ice:0,247,19,1;Gravel:19,247,5,1;Limestone_Rough:24,247,3,1;Granite_Rough:27,247,2,1;Gravel:29,247,4,1;Ice:33,247,8,1;Gravel:41,247,6,1;Slate_Rough:47,247,33,1;Gravel:80,247,2,1;Ice:82,247,48,1;Gravel:130,247,1,1;Slate_Rough:131,247,59,1;Granite_Rough:190,247,27,1;Limestone_Rough:217,247,33,1;Ice:0,248,19,1;Gravel:19,248,5,1;Limestone_Rough:24,248,4,1;Gravel:28,248,5,1;Ice:33,248,8,1;Gravel:41,248,4,1;Slate_Rough:45,248,35,1;Gravel:80,248,2,1;Ice:82,248,47,1;Gravel:129,248,2,1;Slate_Rough:131,248,58,1;Granite_Rough:189,248,28,1;Limestone_Rough:217,248,33,1;Ice:0,249,18,1;Gravel:18,249,5,1;Limestone_Rough:23,249,5,1;Gravel:28,249,5,1;Ice:33,249,8,1;Gravel:41,249,3,1;Slate_Rough:44,249,36,1;Gravel:80,249,2,1;Ice:82,249,40,1;Gravel:122,249,4,1;Ice:126,249,1,1;Gravel:127,249,5,1;Slate_Rough:132,249,57,1;Granite_Rough:189,249,28,1;Limestone_Rough:217,249,33,1",
+         "cellsRequested": 62500,
+         "cellsRead": 62500,
+         "cellsOutOfBounds": 0,
+         "cellsNullTerrain": 0,
+         "distinctTerrains": [
+          "AncientConcrete",
+          "AncientTile",
+          "BrokenAsphalt",
+          "FlagstoneLimestone",
+          "Granite_Rough",
+          "Gravel",
+          "Ice",
+          "InsectSludge",
+          "Limestone_Rough",
+          "OuterRim_BrickRoadPatterned_Limestone",
+          "OuterRim_BrickRoadPatterned_Permacrete",
+          "OuterRim_BrickRoadPatterned_Slate",
+          "RM_LanternstoneFloorConstructed",
+          "Slate_Rough",
+          "Soil",
+          "TileGranite",
+          "TileSandstone",
+          "TileSlate",
+          "WaterShallow"
+         ],
+         "mapSize": {
+          "x": 250,
+          "z": 250
+         },
+         "mapId": 7,
+         "ticksGame": 228793,
+         "operation": {
+          "OperationId": "op_812bc4198a814e0581c4475e6029f9ae",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-terrain-batch",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:38.3837638+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:38.4449061+00:00",
+          "DurationMs": 61,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/weather_get",
+        "result": {
+         "success": true,
+         "readErrors": [],
+         "weather": {
+          "current": "Clear",
+          "last": "Clear",
+          "curWeatherAge": 53971,
+          "rainRate": 0.0,
+          "snowRate": 0.0
+         },
+         "activeConditionCount": 0,
+         "conditions": [],
+         "threatPoints": 35.0,
+         "wealth": {
+          "total": 3083.45166,
+          "items": 0.0,
+          "buildings": 3083.45166,
+          "pawns": 0.0
+         },
+         "storyteller": {
+          "def": "Cassandra",
+          "difficulty": "Rough",
+          "threatScale": 1.0,
+          "allowBigThreats": true
+         },
+         "weatherDefs": null,
+         "conditionDefs": null,
+         "note": "TransitionTo does not HOLD - WeatherDecider rerolls when the duration expires. Use jawa/weather_set lock=true.",
+         "ticksGame": 228793,
+         "operation": {
+          "OperationId": "op_1af3800141b043a4b60f57ccc4076c3a",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/weather-get",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:53:38.4479128+00:00",
+          "CompletedAtUtc": "2026-10-07T09:53:38.4829342+00:00",
+          "DurationMs": 35,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\NightsideIce.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

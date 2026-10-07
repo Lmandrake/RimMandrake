@@ -1,0 +1,2920 @@
+{
+ "mod": "RustCathedral",
+ "stamp": "20261007T100939Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RM_RustCathedralNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_RustCathedralNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RM_RustCathedralNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_4e98d1fc926941929dc70341d257a471",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:26.937606+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.0154771+00:00",
+          "DurationMs": 77,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_shipped_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "40 of 40 def(s) resolved",
+         "requested": 40,
+         "foundCount": 40,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_RustCathedral",
+           "found": true,
+           "defName": "RM_RustCathedral",
+           "defType": "BiomeDef",
+           "label": "the Rust Cathedral",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_RustCathedral"
+           }
+          },
+          {
+           "requested": "BodyDef/RM_BoltFrame",
+           "found": true,
+           "defName": "RM_BoltFrame",
+           "defType": "BodyDef",
+           "label": "bolt frame",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_BoltFrame"
+           }
+          },
+          {
+           "requested": "BodyDef/RM_RoachHex",
+           "found": true,
+           "defName": "RM_RoachHex",
+           "defType": "BodyDef",
+           "label": "roach hex-frame",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_RoachHex"
+           }
+          },
+          {
+           "requested": "GenStepDef/RM_BorehulkPlacement",
+           "found": true,
+           "defName": "RM_BorehulkPlacement",
+           "defType": "GenStepDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_BorehulkPlacement"
+           }
+          },
+          {
+           "requested": "GenStepDef/RM_CathedralSacredWallScatter",
+           "found": true,
+           "defName": "RM_CathedralSacredWallScatter",
+           "defType": "GenStepDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CathedralSacredWallScatter"
+           }
+          },
+          {
+           "requested": "GenStepDef/RM_CathedralStrays",
+           "found": true,
+           "defName": "RM_CathedralStrays",
+           "defType": "GenStepDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CathedralStrays"
+           }
+          },
+          {
+           "requested": "GenStepDef/RM_CathedralWallScatter",
+           "found": true,
+           "defName": "RM_CathedralWallScatter",
+           "defType": "GenStepDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CathedralWallScatter"
+           }
+          },
+          {
+           "requested": "GenStepDef/RM_CoolantEelSpawn",
+           "found": true,
+           "defName": "RM_CoolantEelSpawn",
+           "defType": "GenStepDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CoolantEelSpawn"
+           }
+          },
+          {
+           "requested": "HediffDef/RM_CoolantLoad",
+           "found": true,
+           "defName": "RM_CoolantLoad",
+           "defType": "HediffDef",
+           "label": "coolant load",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CoolantLoad"
+           }
+          },
+          {
+           "requested": "IncidentDef/RM_DeepDrillCathedralResponse",
+           "found": true,
+           "defName": "RM_DeepDrillCathedralResponse",
+           "defType": "IncidentDef",
+           "label": "deep signal",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_DeepDrillCathedralResponse"
+           }
+          },
+          {
+           "requested": "IncidentDef/RM_LineCycle",
+           "found": true,
+           "defName": "RM_LineCycle",
+           "defType": "IncidentDef",
+           "label": "line-cycle",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_LineCycle"
+           }
+          },
+          {
+           "requested": "JobDef/RM_HullBoltTell",
+           "found": true,
+           "defName": "RM_HullBoltTell",
+           "defType": "JobDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HullBoltTell"
+           }
+          },
+          {
+           "requested": "JobDef/RM_Job_LineCycleStill",
+           "found": true,
+           "defName": "RM_Job_LineCycleStill",
+           "defType": "JobDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Job_LineCycleStill"
+           }
+          },
+          {
+           "requested": "JobDef/RM_PryHullBolt",
+           "found": true,
+           "defName": "RM_PryHullBolt",
+           "defType": "JobDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_PryHullBolt"
+           }
+          },
+          {
+           "requested": "LetterDef/RM_HullBoltsDilemma",
+           "found": true,
+           "defName": "RM_HullBoltsDilemma",
+           "defType": "LetterDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HullBoltsDilemma"
+           }
+          },
+          {
+           "requested": "NegativeFishingOutcomeDef/RM_NegativeFishingOutcome_CoolantEel",
+           "found": true,
+           "defName": "RM_NegativeFishingOutcome_CoolantEel",
+           "defType": "NegativeFishingOutcomeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NegativeFishingOutcome_CoolantEel"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_Borehulk",
+           "found": true,
+           "defName": "RM_Borehulk",
+           "defType": "PawnKindDef",
+           "label": "borehulk",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Borehulk"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_CathedralRoach",
+           "found": true,
+           "defName": "RM_CathedralRoach",
+           "defType": "PawnKindDef",
+           "label": "cathedral roach",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CathedralRoach"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_CoolantEel",
+           "found": true,
+           "defName": "RM_CoolantEel",
+           "defType": "PawnKindDef",
+           "label": "coolant eel",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CoolantEel"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_HullBolt",
+           "found": true,
+           "defName": "RM_HullBolt",
+           "defType": "PawnKindDef",
+           "label": "hull bolt",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HullBolt"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_LivingBolt",
+           "found": true,
+           "defName": "RM_LivingBolt",
+           "defType": "PawnKindDef",
+           "label": "living bolt",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_LivingBolt"
+           }
+          },
+          {
+           "requested": "RecipeDef/RM_WriteHumPrimer",
+           "found": true,
+           "defName": "RM_WriteHumPrimer",
+           "defType": "RecipeDef",
+           "label": "write hum primer",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WriteHumPrimer"
+           }
+          },
+          {
+           "requested": "RulePackDef/RM_Description_HumPrimer",
+           "found": true,
+           "defName": "RM_Description_HumPrimer",
+           "defType": "RulePackDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Description_HumPrimer"
+           }
+          },
+          {
+           "requested": "RulePackDef/RM_Namer_HumPrimer",
+           "found": true,
+           "defName": "RM_Namer_HumPrimer",
+           "defType": "RulePackDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Namer_HumPrimer"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_BorehulkGrind",
+           "found": true,
+           "defName": "RM_BorehulkGrind",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_BorehulkGrind"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_HumLayerAlarm",
+           "found": true,
+           "defName": "RM_HumLayerAlarm",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HumLayerAlarm"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_HumLayerDrone",
+           "found": true,
+           "defName": "RM_HumLayerDrone",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HumLayerDrone"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_HumLayerTense",
+           "found": true,
+           "defName": "RM_HumLayerTense",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HumLayerTense"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_LineCycleRoll",
+           "found": true,
+           "defName": "RM_LineCycleRoll",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_LineCycleRoll"
+           }
+          },
+          {
+           "requested": "TerrainDef/RM_RustCathedral_CrackedMetalSoil",
+           "found": true,
+           "defName": "RM_RustCathedral_CrackedMetalSoil",
+           "defType": "TerrainDef",
+           "label": "soil on cracked metal",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_RustCathedral_CrackedMetalSoil"
+           }
+          },
+          {
+           "requested": "TerrainDef/RM_RustCathedral_PolymerFloor",
+           "found": true,
+           "defName": "RM_RustCathedral_PolymerFloor",
+           "defType": "TerrainDef",
+           "label": "polymer flooring",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_RustCathedral_PolymerFloor"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_BoltShedCuriosity",
+           "found": true,
+           "defName": "RM_BoltShedCuriosity",
+           "defType": "ThingDef",
+           "label": "shed curiosity",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_BoltShedCuriosity"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Borehulk",
+           "found": true,
+           "defName": "RM_Borehulk",
+           "defType": "ThingDef",
+           "label": "borehulk",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Borehulk"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_CathedralDeckPlate",
+           "found": true,
+           "defName": "RM_CathedralDeckPlate",
+           "defType": "ThingDef",
+           "label": "cathedral deck plate",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CathedralDeckPlate"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_CathedralRoach",
+           "found": true,
+           "defName": "RM_CathedralRoach",
+           "defType": "ThingDef",
+           "label": "cathedral roach",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CathedralRoach"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_CathedralRoachShell",
+           "found": true,
+           "defName": "RM_CathedralRoachShell",
+           "defType": "ThingDef",
+           "label": "roach shell plating",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CathedralRoachShell"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_CoolantEel",
+           "found": true,
+           "defName": "RM_CoolantEel",
+           "defType": "ThingDef",
+           "label": "coolant eel",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CoolantEel"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_CoolantEelCatch",
+           "found": true,
+           "defName": "RM_CoolantEelCatch",
+           "defType": "ThingDef",
+           "label": "coolant eel",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_CoolantEelCatch"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_DeadSmartsteel",
+           "found": true,
+           "defName": "RM_DeadSmartsteel",
+           "defType": "ThingDef",
+           "label": "dead smartsteel",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_DeadSmartsteel"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_HullBolt",
+           "found": true,
+           "defName": "RM_HullBolt",
+           "defType": "ThingDef",
+           "label": "hull bolt",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HullBolt"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_2edce759344247c28e190dc039c1afaa",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.0160002+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.0442566+00:00",
+          "DurationMs": 28,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "14 of 14 def(s) resolved",
+         "requested": 14,
+         "foundCount": 14,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_HumPrimer",
+           "found": true,
+           "defName": "RM_HumPrimer",
+           "defType": "ThingDef",
+           "label": "hum primer",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HumPrimer"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_LivePatternMetal",
+           "found": true,
+           "defName": "RM_LivePatternMetal",
+           "defType": "ThingDef",
+           "label": "live pattern metal",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_LivePatternMetal"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_LivingBolt",
+           "found": true,
+           "defName": "RM_LivingBolt",
+           "defType": "ThingDef",
+           "label": "living bolt",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_LivingBolt"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_MineableDeadSmartsteel",
+           "found": true,
+           "defName": "RM_MineableDeadSmartsteel",
+           "defType": "ThingDef",
+           "label": "seam of dead smartsteel",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_MineableDeadSmartsteel"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_SacredWall_Conduit",
+           "found": true,
+           "defName": "RM_SacredWall_Conduit",
+           "defType": "ThingDef",
+           "label": "sacred conduit wall",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SacredWall_Conduit"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_Borehulk",
+           "found": true,
+           "defName": "RM_ThinkTree_Borehulk",
+           "defType": "ThinkTreeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_Borehulk"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_CathedralRoach",
+           "found": true,
+           "defName": "RM_ThinkTree_CathedralRoach",
+           "defType": "ThinkTreeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_CathedralRoach"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_CoolantEel",
+           "found": true,
+           "defName": "RM_ThinkTree_CoolantEel",
+           "defType": "ThinkTreeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_CoolantEel"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_CoolantEelConstant",
+           "found": true,
+           "defName": "RM_ThinkTree_CoolantEelConstant",
+           "defType": "ThinkTreeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_CoolantEelConstant"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_HullBolt",
+           "found": true,
+           "defName": "RM_ThinkTree_HullBolt",
+           "defType": "ThinkTreeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_HullBolt"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_LivingBolt",
+           "found": true,
+           "defName": "RM_ThinkTree_LivingBolt",
+           "defType": "ThinkTreeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_LivingBolt"
+           }
+          },
+          {
+           "requested": "ThoughtDef/RM_FeltTheGroundTurn",
+           "found": true,
+           "defName": "RM_FeltTheGroundTurn",
+           "defType": "ThoughtDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_FeltTheGroundTurn"
+           }
+          },
+          {
+           "requested": "ThoughtDef/RM_HullBoltsSeen",
+           "found": true,
+           "defName": "RM_HullBoltsSeen",
+           "defType": "ThoughtDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HullBoltsSeen"
+           }
+          },
+          {
+           "requested": "TraitDef/RM_HumReader",
+           "found": true,
+           "defName": "RM_HumReader",
+           "defType": "TraitDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_HumReader"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_1b17da8e020c4ff08667f748e9ac5a57",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.0457733+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.0837053+00:00",
+          "DurationMs": 37,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "namespaced_attitude_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef/RM_RustCathedralAttitude",
+           "found": true,
+           "defName": "RM_RustCathedralAttitude",
+           "defType": "RM_BiomeAttitudeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_RustCathedralAttitude"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_04941761764648be98509fd670f3b1a7",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.0852203+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.1341924+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef/RM_Witness_ButcherBolt",
+           "found": true,
+           "defName": "RM_Witness_ButcherBolt",
+           "defType": "RM_CathedralWitnessDef",
+           "label": "broke down a bolt",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Witness_ButcherBolt"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_ccd29707cd684e0e825add0b45713d15",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.1352049+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.18421+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef/RM_Witness_DestroyHullBolt",
+           "found": true,
+           "defName": "RM_Witness_DestroyHullBolt",
+           "defType": "RM_CathedralWitnessDef",
+           "label": "destroyed a hull bolt",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Witness_DestroyHullBolt"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_bd90503220d54df7936ed14ef86e246d",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.1852129+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.2340847+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef/RM_Witness_PryHullBolt",
+           "found": true,
+           "defName": "RM_Witness_PryHullBolt",
+           "defType": "RM_CathedralWitnessDef",
+           "label": "pried a hull bolt off",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Witness_PryHullBolt"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_b31243e4ef8b46bb8078db124bf70832",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.2345968+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.2840595+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef/RM_Witness_SellCuriosity",
+           "found": true,
+           "defName": "RM_Witness_SellCuriosity",
+           "defType": "RM_CathedralWitnessDef",
+           "label": "sold a shed curiosity",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Witness_SellCuriosity"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_356df8aee03047d293aaef91e4cdc945",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.285063+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.3338734+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef/RM_Witness_SellDeadSmartsteel",
+           "found": true,
+           "defName": "RM_Witness_SellDeadSmartsteel",
+           "defType": "RM_CathedralWitnessDef",
+           "label": "sold dead smartsteel",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Witness_SellDeadSmartsteel"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_f867e988a3cf44e1bf68b61e890e79fa",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.3353975+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.383326+00:00",
+          "DurationMs": 47,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef/RM_Witness_SellEelCatch",
+           "found": true,
+           "defName": "RM_Witness_SellEelCatch",
+           "defType": "RM_CathedralWitnessDef",
+           "label": "sold a coolant eel",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Witness_SellEelCatch"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_d72c0e35bc924d848ff8f1a0244dc214",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.384831+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.4346191+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_CathedralWitnessDef/RM_Witness_SellLivePatternMetal",
+           "found": true,
+           "defName": "RM_Witness_SellLivePatternMetal",
+           "defType": "RM_CathedralWitnessDef",
+           "label": "sold live pattern-metal",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Witness_SellLivePatternMetal"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_7016c57864cf4396a33cf0f445442606",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:27.4356241+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:27.4835109+00:00",
+          "DurationMs": 47,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields_in_all_three_classes",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_boltDanceEnabled_round_trips",
+      "toggle": "boltDanceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_boltShedEnabled_round_trips",
+      "toggle": "boltShedEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_boltWatchedPricingEnabled_round_trips",
+      "toggle": "boltWatchedPricingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_commentaryEnabled_round_trips",
+      "toggle": "commentaryEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_drillResponseEnabled_round_trips",
+      "toggle": "drillResponseEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_fishingPricingEnabled_round_trips",
+      "toggle": "fishingPricingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_goodwillDrainEnabled_round_trips",
+      "toggle": "goodwillDrainEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltBoardMax_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltBoardMin_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltEdgePull_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltIrritationCap_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltNoneChance_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltPetMemoryEnabled_round_trips",
+      "toggle": "hullBoltPetMemoryEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltRealiseDays_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltRevealDays_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltWeightScale_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltWitnessEnabled_round_trips",
+      "toggle": "hullBoltWitnessEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_hullBoltsEnabled_round_trips",
+      "toggle": "hullBoltsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_humMechanicEnabled_round_trips",
+      "toggle": "humMechanicEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_humReaderThresholdDays_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_humReadingEnabled_round_trips",
+      "toggle": "humReadingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_irritationDecayRateMultiplier_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_lineCycleEnabled_round_trips",
+      "toggle": "lineCycleEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_lineCycleMaxSeconds_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_lineCycleMinSeconds_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "HumSetti_lineCycleMtbDays_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_biomeRarityFactor_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_borehulkEnabled_round_trips",
+      "toggle": "borehulkEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_borehulkGrindEnabled_round_trips",
+      "toggle": "borehulkGrindEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_borehulkGrindMtbHours_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_borehulkSpawnChance_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_coolantEelCount_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_coolantEelsEnabled_round_trips",
+      "toggle": "coolantEelsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_crossBiomeBiomeList_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_crossBiomeCoverage_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_crossBiomeEnabled_round_trips",
+      "toggle": "crossBiomeEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_crossBiomeEverywhere_round_trips",
+      "toggle": "crossBiomeEverywhere",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_roachCleaningEnabled_round_trips",
+      "toggle": "roachCleaningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_strayCount_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "RM_Setti_straysEnabled_round_trips",
+      "toggle": "straysEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "WallsSet_livePatternMetalGateEnabled_round_trips",
+      "toggle": "livePatternMetalGateEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "WallsSet_sacredWallChanceMultiplier_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "WallsSet_sacredWallsEnabled_round_trips",
+      "toggle": "sacredWallsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "WallsSet_wallTiersEnabled_round_trips",
+      "toggle": "wallTiersEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "biome_wiring",
+    "components": [
+     {
+      "name": "animal_density_positive_and_deep_read_succeeds",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "animalDensity",
+          "plantDensity",
+          "maxFishPopulation",
+          "workerClass"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_RustCathedral",
+           "found": true,
+           "defName": "RM_RustCathedral",
+           "defType": "BiomeDef",
+           "label": "the Rust Cathedral",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "workerClass": "RM_BiomeWorker_RustCathedral",
+            "animalDensity": 0.1,
+            "plantDensity": 0.0,
+            "maxFishPopulation": 150.0
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_ef3466320fa045b4a666a2f70baf2b04",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:38.7869952+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:38.8329926+00:00",
+          "DurationMs": 45,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roster_fish_and_rock_rows_present",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "wildAnimals",
+          "fishTypes",
+          "forceRockTypes",
+          "wildPlants"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_RustCathedral",
+           "found": true,
+           "defName": "RM_RustCathedral",
+           "defType": "BiomeDef",
+           "label": "the Rust Cathedral",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "wildPlants": [],
+            "forceRockTypes": [
+             "RM_CathedralDeckPlate",
+             "RM_MineableDeadSmartsteel"
+            ],
+            "fishTypes": {
+             "freshwater_Common": [
+              {
+               "fishDef": "RM_CoolantEelCatch",
+               "chance": 1.0
+              }
+             ],
+             "saltwater_Common": [],
+             "freshwater_Uncommon": [],
+             "saltwater_Uncommon": [],
+             "rareCatchesSetMaker": null
+            },
+            "wildAnimals": "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_a5a4d4bc24b9416db9cd99ac0db91f97",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:38.8339923+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:38.8823299+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/biome_probe",
+        "result": {
+         "success": true,
+         "message": "1 biome(s) probed",
+         "biomesProbed": 1,
+         "notFound": [],
+         "searched": [],
+         "absentFromEveryProbedBiome": [],
+         "biomes": [
+          {
+           "defName": "RM_RustCathedral",
+           "label": "the Rust Cathedral",
+           "modName": "RimMandrake: Baroque Biomes",
+           "implemented": true,
+           "generatesNaturally": true,
+           "canBuildBase": true,
+           "canAutoChoose": true,
+           "isExtremeBiome": false,
+           "isWaterBiome": false,
+           "impassable": false,
+           "animalDensity": 0.1,
+           "plantDensity": 0.0,
+           "diseaseMtbDays": 90.0,
+           "forageability": 0.0,
+           "foragedFood": null,
+           "settlementSelectionWeight": 1.0,
+           "wildAnimalCount": 2,
+           "wildPlantCount": 0,
+           "animalsListed": 2,
+           "plantsListed": 0,
+           "animals": [
+            {
+             "defName": "RM_CathedralRoach",
+             "commonality": 0.12
+            },
+            {
+             "defName": "RM_LivingBolt",
+             "commonality": 0.06
+            }
+           ],
+           "plants": null,
+           "findResults": null
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_6e782ce1653346e8992002238f1ad22d",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:38.8833344+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:38.9331825+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wild_plants_stay_empty_ruled_zero",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/biome_probe",
+        "result": {
+         "success": true,
+         "message": "1 biome(s) probed",
+         "biomesProbed": 1,
+         "notFound": [],
+         "searched": [],
+         "absentFromEveryProbedBiome": [],
+         "biomes": [
+          {
+           "defName": "RM_RustCathedral",
+           "label": "the Rust Cathedral",
+           "modName": "RimMandrake: Baroque Biomes",
+           "implemented": true,
+           "generatesNaturally": true,
+           "canBuildBase": true,
+           "canAutoChoose": true,
+           "isExtremeBiome": false,
+           "isWaterBiome": false,
+           "impassable": false,
+           "animalDensity": 0.1,
+           "plantDensity": 0.0,
+           "diseaseMtbDays": 90.0,
+           "forageability": 0.0,
+           "foragedFood": null,
+           "settlementSelectionWeight": 1.0,
+           "wildAnimalCount": 2,
+           "wildPlantCount": 0,
+           "animalsListed": 2,
+           "plantsListed": 0,
+           "animals": [
+            {
+             "defName": "RM_CathedralRoach",
+             "commonality": 0.12
+            },
+            {
+             "defName": "RM_LivingBolt",
+             "commonality": 0.06
+            }
+           ],
+           "plants": null,
+           "findResults": null
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_7cc51b770b5f4c75a07bd57baa297818",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:38.9341865+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:38.9823171+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wall_scatter_steps_on_map_common_base",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: get_defs did not serialise MapCommonBase.genSteps (the patch is a plain PatchOperationAdd): {'success': True, 'message': '0 of 1 def(s) resolved; 1 not found', 'requested': 1, 'foundCount': 0, 'notFound': ['MapGeneratorDef/MapCommon",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "MapGeneratorDef/MapCommonBase"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "genSteps"
+         ],
+         "defs": [
+          {
+           "requested": "MapGeneratorDef/MapCommonBase",
+           "found": false,
+           "defType": "MapGeneratorDef",
+           "defName": "MapCommonBase"
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_74150fd08dab4676b387d09f9dd19890",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:38.9833314+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.0331631+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "hum_attitude",
+    "components": [
+     {
+      "name": "attitude_def_targets_this_biome",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "targetBiome",
+          "bandThresholds"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef/RM_RustCathedralAttitude",
+           "found": true,
+           "defName": "RM_RustCathedralAttitude",
+           "defType": "RM_BiomeAttitudeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "targetBiome": "RM_RustCathedral",
+            "bandThresholds": [
+             10.0,
+             30.0,
+             55.0,
+             80.0
+            ]
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_016c6e770abb458197605f28bc71ed5e",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.0331631+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.0822736+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "harmony_gates",
+    "components": [
+     {
+      "name": "CompDeepScanner_ChooseLumpThingDef_patched_by_rustcathedralwalls",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "CompDeepScanner",
+         "methodName": "ChooseLumpThingDef",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "ChooseLumpThingDef",
+           "declaringType": "RimWorld.CompDeepScanner",
+           "patchInfoError": null,
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.lanterndeeps",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LanternDeeps.Patch_GateLanternstoneDeep.Postfix",
+             "patchAssembly": "RimMandrake.LanternDeeps"
+            },
+            {
+             "owner": "mandrake.rut.rustcathedralwalls",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Walls.HarmonyPatch_GateLivePatternMetal.Postfix",
+             "patchAssembly": "RimMandrake.RustCathedral.Walls"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 251433,
+         "note": null,
+         "operation": {
+          "OperationId": "op_e09c42ba3fc74cd6a45d262ef7d21179",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.0833349+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.1018433+00:00",
+          "DurationMs": 18,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Pawn_Kill_patched_by_rustcathedralhum",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Pawn",
+         "methodName": "Kill",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Kill",
+           "declaringType": "Verse.Pawn",
+           "patchInfoError": null,
+           "prefixCount": 4,
+           "postfixCount": 3,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_WatchedBolts_Kill.Prefix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            },
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_HullBolts_Kill.Prefix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Pawns.VanillaExpandedFramework_Pawn_Kill.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.jawabench.eventrecorder",
+             "priority": 400,
+             "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.KillPostfix",
+             "patchAssembly": "JawaBench.BridgeTools"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 251433,
+         "note": null,
+         "operation": {
+          "OperationId": "op_7c3ef72cba574cfd86ed02b59d6bdc7f",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.1018433+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.1192532+00:00",
+          "DurationMs": 17,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "CompSpawner_TryDoSpawn_patched_by_rustcathedralhum",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "CompSpawner",
+         "methodName": "TryDoSpawn",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "TryDoSpawn",
+           "declaringType": "RimWorld.CompSpawner",
+           "patchInfoError": null,
+           "prefixCount": 1,
+           "postfixCount": 0,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_WatchedBolts_GateShed.Prefix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            }
+           ],
+           "postfixes": [],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 251433,
+         "note": null,
+         "operation": {
+          "OperationId": "op_889b1ef6a67545669f827801869ef5cb",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.1202533+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.1341061+00:00",
+          "DurationMs": 13,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "WaterBodyTracker_Notify_Fished_patched_by_rustcathedralhum",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "WaterBodyTracker",
+         "methodName": "Notify_Fished",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Notify_Fished",
+           "declaringType": "RimWorld.WaterBodyTracker",
+           "patchInfoError": null,
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_CathedralFishing_Catch.Postfix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 251433,
+         "note": null,
+         "operation": {
+          "OperationId": "op_aa7a4a4f7646465f8964690d667b041d",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.1351071+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.1512142+00:00",
+          "DurationMs": 16,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "IncidentWorker_DeepDrillInfestation_CanFireNowSub_patched_by_rustcathedralhum",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "IncidentWorker_DeepDrillInfestation",
+         "methodName": "CanFireNowSub",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CanFireNowSub",
+           "declaringType": "RimWorld.IncidentWorker_DeepDrillInfestation",
+           "patchInfoError": null,
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_CathedralResponse_GateVanillaInfestation.Postfix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 251433,
+         "note": null,
+         "operation": {
+          "OperationId": "op_0ecf9b9c807a44eb9748656dfa07aa03",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.1522129+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.1673987+00:00",
+          "DurationMs": 15,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Bill_PawnAllowedToStartAnew_patched_by_rustcathedralhum",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Bill",
+         "methodName": "PawnAllowedToStartAnew",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "PawnAllowedToStartAnew",
+           "declaringType": "RimWorld.Bill",
+           "patchInfoError": null,
+           "prefixCount": 0,
+           "postfixCount": 3,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "Neronix17.TabulaRasa.RimWorld",
+             "priority": 400,
+             "patchMethod": "TabulaRasa.Patch_Bill_PawnAllowedToStartAnew.PostFix",
+             "patchAssembly": "TabulaRasa"
+            },
+            {
+             "owner": "rimworld.erdelf.alien_race.main",
+             "priority": 400,
+             "patchMethod": "AlienRace.HarmonyPatches.PawnAllowedToStartAnewPostfix",
+             "patchAssembly": "AlienRace"
+            },
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_HumPrimer_BillNeedsTrait.Postfix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 251433,
+         "note": null,
+         "operation": {
+          "OperationId": "op_8358df29970f41febd0de4ca28b6cd91",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.1683984+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.1849238+00:00",
+          "DurationMs": 16,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Corpse_ButcherProducts_patched_by_rustcathedralhum",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Corpse",
+         "methodName": "ButcherProducts",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "ButcherProducts",
+           "declaringType": "Verse.Corpse",
+           "patchInfoError": null,
+           "prefixCount": 2,
+           "postfixCount": 0,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_CoolantEel_ButcherIsACatch.Prefix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            },
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_HullBolts_Butcher.Prefix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            }
+           ],
+           "postfixes": [],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 251433,
+         "note": null,
+         "operation": {
+          "OperationId": "op_11186b86e3a64be88ecf049866544faa",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.1859236+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.2010991+00:00",
+          "DurationMs": 15,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "roach_gate",
+    "components": [
+     {
+      "name": "think_tree_carries_cleaning_toggle_node",
+      "toggle": "roachCleaningEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: get_defs cannot read the think tree past its depth limit; the toggle node is below it",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "thinkRoot"
+         ],
+         "defs": [
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_CathedralRoach",
+           "found": true,
+           "defName": "RM_ThinkTree_CathedralRoach",
+           "defType": "ThinkTreeDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "thinkRoot": {
+             "subNodes": [
+              {
+               "subtreeNode": "(ThinkNode_ConditionalSpawned, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "subNodes": [
+                "(ThinkNode_ConditionalSpawned, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+               ],
+               "leaveJoinableLordIfIssuesJob": false,
+               "tag": null,
+               "parent": "(ThinkNode_Priority, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+              },
+              {
+               "subtreeNode": "(ThinkNode_ConditionalDowned, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "subNodes": [
+                "(ThinkNode_ConditionalDowned, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+               ],
+               "leaveJoinableLordIfIssuesJob": false,
+               "tag": null,
+               "parent": "(ThinkNode_Priority, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+              },
+              {
+               "inBedOnly": false,
+               "subNodes": [],
+               "leaveJoinableLordIfIssuesJob": false,
+               "tag": null,
+               "parent": "(ThinkNode_Priority, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+              },
+              {
+               "invert": false,
+               "subNodes": [
+                "(RM_ThinkNode_EatCleanable, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+               ],
+               "leaveJoinableLordIfIssuesJob": false,
+               "tag": null,
+               "parent": "(ThinkNode_Priority, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+              },
+              {
+               "subNodes": [
+                "(JobGiver_WanderAnywhere, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+               ],
+               "leaveJoinableLordIfIssuesJob": false,
+               "tag": null,
+               "parent": "(ThinkNode_Priority, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+              },
+              {
+               "subNodes": [],
+               "leaveJoinableLordIfIssuesJob": false,
+               "tag": null,
+               "parent": "(ThinkNode_Priority, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+              }
+             ],
+             "leaveJoinableLordIfIssuesJob": false,
+             "tag": null,
+             "parent": null
+            }
+           }
+          }
+         ],
+         "ticksGame": 251433,
+         "operation": {
+          "OperationId": "op_a48efa6de7a54bc18a1860232c6c4bde",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T10:09:39.2021008+00:00",
+          "CompletedAtUtc": "2026-10-07T10:09:39.2497137+00:00",
+          "DurationMs": 47,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "map_mechanics",
+    "components": [
+     {
+      "name": "bolts_dance_and_freeze_with_the_hum",
+      "toggle": "boltDanceEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "eel_fishing_consequence",
+      "toggle": "fishingPricingEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "deep_drill_response_replaces_infestation",
+      "toggle": "drillResponseEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wall_tiers_laid_at_mapgen",
+      "toggle": "wallTiersEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "hum_commentary_and_goodwill_drain",
+      "toggle": "goodwillDrainEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "watched_pricing_and_kill_irritation",
+      "toggle": "boltWatchedPricingEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "hum_value_ladder_and_hysteresis",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "calm_bands_reachable",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roach_eats_filth",
+      "toggle": "roachCleaningEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\RustCathedral.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

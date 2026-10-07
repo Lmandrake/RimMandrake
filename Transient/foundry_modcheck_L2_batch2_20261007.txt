@@ -1,0 +1,450 @@
+[gt] 02:56:05 shipped_defs_resolve FAIL ExpectationFailed: shipped defs did not load (a def with an unresolvable field is discarded silently): notFound=['RM_DefAliasDef/RM_GreentideTierMoveAliases'] foundCount=24 of 25
+[gt] 02:56:05 control_absent_def_reads_absent UNMEASURED upstream failed -- this chain's state is meaningless
+[gt] 02:56:06 mireEnabled_round_trips PASS 
+[gt] 02:56:06 buriedCacheEnabled_round_trips PASS 
+[gt] 02:56:06 mireSeverityMultiplier_round_trips PASS 
+[gt] 02:56:07 plantDensity_round_trips PASS 
+[gt] 02:56:07 movementDifficulty_round_trips PASS 
+[gt] 02:56:07 crossBiomeEnabled_round_trips PASS 
+[gt] 02:56:08 crossBiomeEverywhere_round_trips PASS 
+[gt] 02:56:08 crossBiomeBiomeList_round_trips PASS 
+[gt] 02:56:08 crossBiomeCoverage_round_trips PASS 
+[gt] 02:56:08 frenzyEnabled_round_trips PASS 
+[gt] 02:56:09 frenzySeverityMultiplier_round_trips PASS 
+[gt] 02:56:09 feverMarkEnabled_round_trips PASS 
+[gt] 02:56:09 feverMarkGrantsImmunity_round_trips PASS 
+[gt] 02:56:10 stenchGrenadeEnabled_round_trips PASS 
+[gt] 02:56:10 stenchGrenadeRadiusMultiplier_round_trips PASS 
+[gt] 02:56:10 canopySwarmEnabled_round_trips PASS 
+[gt] 02:56:11 vurrakAmbushEnabled_round_trips PASS 
+[gt] 02:56:11 vurrakTriggerBodySize_round_trips PASS 
+[gt] 02:56:11 vurrakFirstRevealPause_round_trips PASS 
+[gt] 02:56:11 stellockLaceEnabled_round_trips PASS 
+[gt] 02:56:12 stellockBranchChance_round_trips PASS 
+[gt] 02:56:12 stellockLaceHours_round_trips PASS 
+[gt] 02:56:12 thurrockFellingEnabled_round_trips PASS 
+[gt] 02:56:13 thurrockFellingPace_round_trips PASS 
+[gt] 02:56:13 thurrockProvokedWallDamage_round_trips PASS 
+[gt] 02:56:13 roilEnabled_round_trips PASS 
+[gt] 02:56:14 fruitfallEnabled_round_trips PASS 
+[gt] 02:56:14 greatboleShakingThreshold_round_trips PASS 
+[gt] 02:56:14 greatboleHealingThreshold_round_trips PASS 
+[gt] 02:56:14 greatboleCatastropheThreshold_round_trips PASS 
+[gt] 02:56:15 greatboleCatastropheEnabled_round_trips PASS 
+[gt] 02:56:15 greatboleSeedPlantingEnabled_round_trips PASS 
+[gt] 02:56:15 greatboleServantsEnabled_round_trips PASS 
+[gt] 02:56:21 site_ready_mire PASS 
+[gt] 02:56:21 mire_applies_on_churnmud PASS 
+[gt] 02:56:21 mire_skips_concrete_and_sealed_floor PASS 
+[gt] 02:56:25 mire_master_switch_off PASS 
+[gt] 02:56:26 site_ready_escalation PASS 
+[gt] 02:56:31 stuck_pawn_stays_stuck_alone PASS 
+[gt] 02:56:56 free_mired_job_pulls_the_pawn_out FAIL ExpectationFailed: RM_FreeMired was accepted but the stuck pawn still carries RM_Mired after 1500 ticks (240-tick job plus a walk of ~9 cells): read the helper's job before blaming the driver
+[gt] 02:56:57 site_ready_swallow PASS 
+[gt] 02:57:04 swallow_buries_on_churnmud_only FAIL ExpectationFailed: Steel left 3200 ticks on RM_GreentideChurnmud was not swallowed (RM_MapComponent_MudSwallow dead, or swallowTicks changed)
+[gt] 02:57:04 buried_cache_switch_off_keeps_items UNMEASURED upstream failed -- this chain's state is meaningless
+[gt] 02:57:04 dig_out_job_restores_the_buried_item UNMEASURED upstream failed -- this chain's state is meaningless
+[gt] 02:57:04 site_ready_dose PASS 
+[gt] 02:57:15 dose_gives_frenzy PASS 
+[gt] 02:57:25 frenzy_master_switch_off_gives_none PASS 
+[gt] 02:57:36 fever_mark_gates_the_dose PASS 
+[gt] 02:57:36 fever_mark_earned_by_surviving_the_coma UNMEASURED UNMEASURED: the mark is earned only when a tended Frenzy that reached the collapse stage ends: days of game time and a tending pawn; needs a seeded hediff at the collapse stage and a tend (a state-seeding tool is owed)
+[gt] 02:57:36 ambient_frenzy_incident UNMEASURED UNMEASURED: RM_IncidentWorker_FrenzyDisease: a dry-run fire_incident reports success=False with canFireNow=False, so it is no instrument; firing it for real needs a map the incident is eligible on
+[gt] 02:57:36 biome_carries_the_settings_density PASS 
+[gt] vurrak colonist: DISGUISED=True -> STRUCK Human331877
+[gt] 02:57:36 vurrak_bites_a_person PASS 
+[gt] vurrak hare: DISGUISED=True -> STRUCK Human331817
+[gt] 02:57:36 vurrak_hare_only_reveals FAIL ExpectationFailed: a hare (body 0.2) on a flat vurrak should reveal it without a bite: DISGUISED=True -> STRUCK Human331817
+[gt] 02:57:36 vurrak_toggle_off_refused UNMEASURED upstream failed -- this chain's state is meaningless
+[gt] 02:57:36 churnmud_seeded_once_on_a_fresh_non_greentide_map UNMEASURED UNMEASURED: WORLDGEN-AFFECTING: RM_MapComponent_CrossBiomeChurnmud runs once on a freshly generated map; needs a new map generated with crossBiomeEnabled on, which the harness cannot do on a held map
+[gt] 02:57:36 stench_smoke_radius_follows_multiplier UNMEASURED UNMEASURED: needs a thrown grenade and an explosion-radius read; no bridge reader for the smoke cloud
+[gt] 02:57:36 krannock_spawn_gate UNMEASURED UNMEASURED: canopySwarmEnabled is a deliberate no-op until the Krannock is rostered at the biome's own review sitting (About.xml)
+[gt] 02:57:36 harvest_ladder_fires_each_rung_once_and_catastrophe_is_final PASS 
+[gt] 02:57:37 spine_defs_shipped_and_wired_onto_rm_greentide PASS 
+[gt] 02:57:37 roil_lock_absent_on_a_new_map_with_roil_off UNMEASURED UNMEASURED: WORLDGEN-AFFECTING: biomeMapConditions apply in BiomeConditionMapComponent.MapGenerated, so the toggle needs a freshly generated Greentide map; the harness cannot do that on a held map
+[gt] 02:57:37 fruitfall_spawns_grubs_near_a_live_bole UNMEASURED UNMEASURED: needs a generated Greentide map with a registered greatbole and a forced RM_GreatboleFruitfall
+[gt] 02:57:38 all_settings_at_shipped_defaults PASS 
+[modcheck] Greentide: no ledger item MODCHECK_GREENTIDE_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Greentide_20261007T095739Z.html only
+[modcheck] Webwork: no ledger item MODCHECK_WEBWORK_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Webwork_20261007T095746Z.html only
+[ws-note] Player.log scan: {"lines": 632, "hits": [], "game-wide config/xref lines (instrument probe)": 82}
+[ws] 02:57:48 player_log_names_no_weepingstones_error PASS 
+[ws] 02:57:48 resolve_probe_sees_absence PASS 
+[ws] 02:57:48 defs_resolve_race_things PASS 
+[ws] 02:57:49 defs_resolve_pawnkinds PASS 
+[ws] 02:57:49 defs_resolve_items PASS 
+[ws] 02:57:49 defs_resolve_plants PASS 
+[ws] 02:57:49 defs_resolve_recipes PASS 
+[ws] 02:57:49 defs_resolve_thoughts PASS 
+[ws] 02:57:49 defs_resolve_jobs PASS 
+[ws] 02:57:49 defs_resolve_workgivers PASS 
+[ws] 02:57:49 defs_resolve_set_makers PASS 
+[ws] 02:57:49 defs_resolve_biome PASS 
+[ws] 02:57:49 defs_resolve_buildings PASS 
+[ws] 02:57:49 defs_resolve_letters PASS 
+[ws] 02:57:49 defs_pair_up_by_convention PASS 
+[ws] 02:57:49 biome_probe_ready PASS 
+[ws] 02:57:49 biome_flags_and_densities PASS 
+[ws-note] wild animals rows not asserted (their donor mod is not on this tier): []
+[ws] 02:57:49 wild_animals_wired PASS 
+[ws-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[ws] 02:57:49 wild_plants_wired PASS 
+[ws] 02:57:49 vhorrin_never_ambient_and_probe_is_honest PASS 
+[ws] 02:57:49 stocked_catch_has_living_counterpart PASS 
+[ws] 02:57:49 fish_types_wired PASS 
+[ws-note] modExtensions: ["radius", "10.0", "heatKind", "lowSun", "heatOffsetC", "14.0", "maxHeatOffsetC", "70.0", "bodySizeExponent", "0.5", "minBodySizeFactor", "0.25"]
+[ws] 02:57:49 water_truce_extension_present PASS 
+[ws] 02:57:49 sun_heat_extension_present PASS 
+[ws] 02:57:50 no_dead_windhour_text PASS 
+[ws] 02:57:50 recipes_on_both_stoves PASS 
+[ws] 02:57:50 rottable_items_tick PASS 
+[ws] 02:57:50 setting_default_on_and_assembly_loaded PASS 
+[ws-note] pen designator row: {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 19, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}
+[ws] 02:57:50 designator_listed_when_on PASS 
+[ws] 02:57:50 designator_hidden_when_off UNMEASURED UNMEASURED: pool-pen designator still listed (row visible=True) with stockedPoolsEnabled=false; source Visible reads the setting, so this is a stale deployed DLL or a cached bridge listing; redeploy and re-run, or look at the Zone tab
+[ws] 02:57:50 vhorrinOddsMultiplier_slider_roundtrip PASS 
+[ws] 02:57:51 vizhikEscapeChance_slider_roundtrip PASS 
+[ws] 02:57:51 condenserSeasonDays_slider_roundtrip PASS 
+[ws] 02:57:51 waterTruceRadius_slider_roundtrip PASS 
+[ws] 02:57:51 suppression_source_wired PASS 
+[ws] 02:57:51 suppression_toggle_default_and_roundtrip PASS 
+[ws] 02:57:51 condenser_defs_wired PASS 
+[ws] 02:57:51 dewsilk_defs_wired PASS 
+[ws] 02:57:52 dewsilk_toggle_default_and_roundtrip PASS 
+[ws] 02:57:52 tamed_mirrik_yield_cocoons UNMEASURED UNMEASURED: needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map (tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired
+[ws] 02:57:52 oasis_source_wired PASS 
+[ws-note] Oasis.workerClass not serialisable by get_defs (instrument limit): true
+[ws] 02:57:52 oasis_def_accepts_our_biome PASS 
+[ws] 02:57:52 oasis_toggle_default_and_roundtrip PASS 
+[ws] 02:57:53 oasis_map_census UNMEASURED UNMEASURED: needs a generated Weeping Stones Oasis-mutator map (census per def with jawa/list_things: zero Plant_TreePalm/Plant_RatPalm/TreePalma/VEE_Plant_DatePalm/Plant_Grass/Plant_GrayGrass, native RM_Dewblade count > 0 as the can-it-see probe, and a vanilla Desert oasis control still growing pal
+[ws] 02:57:54 site_ready_pen_zone PASS 
+[ws-note] designating dry floor: {"success": false, "dryRun": false, "designator": {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 19, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}, "requestedCellCount": 16, "a
+[ws] 02:57:54 pen_refuses_dry_floor PASS 
+[ws] 02:57:54 pen_covers_exactly_the_water PASS 
+[ws] 02:57:56 site_ready_net PASS 
+[ws] 02:59:20 net_turns_wild_pawn_into_breeding_stock FAIL ExpectationFailed: after NET: 0 wild skarrin left (want 0), 0 RM_SkarrinBreedingStock (want 1)
+[ws] 02:59:22 site_ready_stock PASS 
+[ws] 03:00:55 stock_releases_species_pawn_into_pen FAIL ExpectationFailed: after STOCK: 0 skarrin released (want 1), 0 breeding stock left (want 0)
+[ws] 03:00:57 site_ready_stock_dry PASS 
+[ws] 03:02:31 stock_outside_pen_releases_nothing PASS 
+[ws] 03:02:33 site_ready_feed PASS 
+[ws] 03:04:01 feed_consumes_food_at_the_pen PASS 
+[ws] 03:04:03 site_ready_harvest PASS 
+[ws] 03:05:32 harvest_yields_species_meat FAIL ExpectationFailed: after HARVEST: 0 skarrin left (want 0), 0 meat stacks (want >=1)
+[ws] 03:05:34 site_ready_cull PASS 
+[ws] 03:07:07 cull_yields_enormous_harvest FAIL ExpectationFailed: after CULL: 0 vhorrin left (want 0), 0 meat stacks (want >=1)
+[ws] 03:07:09 site_ready_RM_Bladderquill PASS 
+[ws-note] RM_BladderFruit stacks: []
+[ws] 03:07:52 harvest_yields_RM_BladderFruit FAIL ExpectationFailed: no RM_BladderFruit after a forced harvest of 3 RM_Bladderquill (harvestedThingDef is wired in the def; the yield never arrived)
+[ws] 03:07:53 site_ready_RM_Steamfrond PASS 
+[ws-note] RM_SeepSalt stacks: []
+[ws] 03:08:36 harvest_yields_RM_SeepSalt FAIL ExpectationFailed: no RM_SeepSalt after a forced harvest of 3 RM_Steamfrond (harvestedThingDef is wired in the def; the yield never arrived)
+[ws] 03:08:37 site_ready_RM_Dewgourd PASS 
+[ws-note] RM_DewgourdFruit stacks: []
+[ws] 03:09:20 harvest_yields_RM_DewgourdFruit FAIL ExpectationFailed: no RM_DewgourdFruit after a forced harvest of 3 RM_Dewgourd (harvestedThingDef is wired in the def; the yield never arrived)
+[modcheck] WeepingStones: no ledger item MODCHECK_WEEPINGSTONES_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\WeepingStones_20261007T100921Z.html only
+[modcheck] RustCathedral: no ledger item MODCHECK_RUSTCATHEDRAL_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\RustCathedral_20261007T100939Z.html only
+[lscrub-note] shipped defs resolved: 70
+[lscrub] 03:09:42 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 03:09:42 biome_weather_table PASS 
+[lscrub] 03:09:42 biome_density_and_flora PASS 
+[lscrub] 03:09:42 biome_lean_extension PASS 
+[lscrub] 03:09:42 rules_armed PASS 
+[lscrub] 03:09:42 thicket_smotherable PASS 
+[lscrub] 03:09:42 vissler_arm_is_rotting_meat PASS 
+[lscrub-note] refuel with dead venomvine: {"stackBefore": 20, "stackAfter": 20, "campfire": ["Fuel: 19 / 20 (1.9 days)"]}
+[lscrub] 03:11:05 dead_venomvine_fuels_fire FAIL ExpectationFailed: the colonist did not burn any dead venomvine (stack 20 -> 20): the fuel patch does not apply to the Campfire's fuel filter
+[lscrub] 03:11:08 defaults PASS 
+[lscrub] 03:11:08 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 03:11:08 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 03:11:09 leanEnabled_roundtrip PASS 
+[lscrub] 03:11:09 leanScentEnabled_roundtrip PASS 
+[lscrub] 03:11:09 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 14, "lost": []}
+[lscrub] 03:11:10 fauna_spawns PASS 
+[lscrub] 03:11:10 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 18, "lost": ["RM_Grellspine"]}
+[lscrub] 03:11:14 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub-note] Stall: path lengths (cells) over 1500 ticks: {"RM_Thornhold335378": {"alive": 7, "samples": 7, "path": 20.132840408645517}, "RM_Shirrel335379": {"alive": 7, "samples": 7, "path": 22.278820596099706}}
+[lscrub] 03:11:40 stall_freezes_small FAIL ExpectationFailed: RM_Thornhold (body 0.4 < 0.5) moved 20.1 cells in the Stall; it should hold still (control RM_Shirrel moved 22.3)
+[lscrub] 03:11:40 stall_toggle_off_wanders UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:11:40 stall_master_off_wanders UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:11:41 gale_site_ready PASS 
+[lscrub] 03:11:51 gale_deafens_outdoors PASS 
+[lscrub] 03:11:51 gale_spares_roofed FAIL ExpectationFailed: the roofed colonist was deafened too (the effect ignores the roof)
+[lscrub] 03:11:51 gale_deafen_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:11:51 gale_turbine_surge UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:11:51 gale_turbine_breakdown UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:11:52 lash_site_ready PASS 
+[lscrub] 03:11:58 lash_toggle_off_quiet FAIL ExpectationFailed: twitcherLashEnabled OFF but the colonist next to the stand gained 2 hediff(s)
+[lscrub] 03:11:58 lash_strikes_once UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:11:59 smother_site_ready PASS 
+[lscrub] 03:13:03 smother_claims_stands PASS 
+[lscrub] 03:14:03 smother_off_holds_claims FAIL ExpectationFailed: clock stalled at 259483 during a 9000-tick wait (a modal dialog pausing the game?)
+[lscrub] 03:14:03 smother_matures_to_dead_wood UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] dripping harvest: venom items / stand standing / inspect: [0, 0, []]
+[lscrub] 03:14:42 dripping_survives_harvest UNMEASURED UNMEASURED: no venom was harvested in 1200 ticks (job not done): cannot judge whether the stand survives
+[lscrub] 03:14:43 crown_site_ready PASS 
+[lscrub-note] crown trial OFF: dustflutter distances to the stand: [24.758836806279895, 54.405882034941776, 27.073972741361768]
+[lscrub] 03:15:09 crown_toggle_off_stays_away PASS 
+[lscrub-note] crown trial ON: dustflutter distances to the stand: [61.05735008989499, 63.06346010171025, 65.36818798161687]
+[lscrub] 03:15:35 crown_mob_gathers FAIL ExpectationFailed: only 0 of 3 dustflutters gathered within 6 cells of a crown stand in the Stall after 1500 ticks: [61.05735008989499, 63.06346010171025, 65.36818798161687]
+[lscrub] 03:16:11 bloom_toggle_off_quiet FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[lscrub] 03:16:11 bloom_answers_a_walker UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:16:11 bloom_sway_and_exit_hole UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] fire stamp proof (on): "UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)"
+[lscrub] 03:16:13 stamp_answers_a_blaze UNMEASURED UNMEASURED: fire stamp proof did not answer PASS/FAIL: UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)
+[lscrub-note] fire stamp proof (off): "UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)"
+[lscrub] 03:16:13 stamp_toggle_off_ignores_fire UNMEASURED UNMEASURED: fire stamp proof did not answer PASS/FAIL: UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)
+[lscrub-note] rearing proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_cddbc3e84641449fb2637575872262a7', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 rearing_acts UNMEASURED UNMEASURED: rearing proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_cddbc3e84641449fb26375
+[lscrub-note] rearing proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_c96e9c9fec9e4a69af12aa70c335d11c', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 rearing_toggle_off UNMEASURED UNMEASURED: rearing proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_c96e9c9fec9e4a69af12aa
+[lscrub-note] walking proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_15fc7e310e15481fba6f852c5fa322fa', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 walking_acts UNMEASURED UNMEASURED: walking proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_15fc7e310e15481fba6f85
+[lscrub-note] walking proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_5d8db7af5c264a849559001c504678bd', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 walking_toggle_off UNMEASURED UNMEASURED: walking proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_5d8db7af5c264a84955900
+[lscrub-note] hoard proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_50a5033ad2a94172b860b2435694ce6c', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 hoard_acts UNMEASURED UNMEASURED: hoard proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_50a5033ad2a94172b860b2
+[lscrub-note] hoard proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_6e69f10a1b8b471a8bf080ea4970b338', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 hoard_toggle_off UNMEASURED UNMEASURED: hoard proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_6e69f10a1b8b471a8bf080
+[lscrub-note] quench proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_6d77d667572846bb9b1e315a1d96e0eb', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 quench_acts UNMEASURED UNMEASURED: quench proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_6d77d667572846bb9b1e31
+[lscrub-note] quench proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_f7a6081aced34d658e035dc370bae6aa', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 quench_toggle_off UNMEASURED UNMEASURED: quench proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_f7a6081aced34d658e035d
+[lscrub-note] sworn proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_e1edf95f21884841a00cabcebae6e50e', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 sworn_acts UNMEASURED UNMEASURED: sworn proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_e1edf95f21884841a00cab
+[lscrub-note] sworn proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_f2210fbe2a0a46048f9124b302759519', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 sworn_toggle_off UNMEASURED UNMEASURED: sworn proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_f2210fbe2a0a46048f9124
+[lscrub-note] shedding proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_1eb27f2823ca499d82f58ad6c55e63ab', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 shedding_acts UNMEASURED UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_1eb27f2823ca499d82f58a
+[lscrub-note] shedding proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_32f649dc6f454609ae58de343eb53418', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:16:13 shedding_toggle_off UNMEASURED UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_32f649dc6f454609ae58de
+[lscrub] 03:16:14 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: ["RM_Barkwarden336746", "RM_Barkwarden336747", "RM_Barkwarden336748"]
+[lscrub] 03:16:14 guardians_roost_on_spawn PASS 
+[lscrub-note] sweetline label / inspect: ["Old Rhunond (sweetline tree)", ["Ready to harvest.", "Loose sweetline felt falls in 3.7 days.", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 03:16:14 station_named_and_timed PASS 
+[lscrub] 03:16:15 station_toggle_off_plain PASS 
+[lscrub-note] sweetline wool beside the tree before / after a 5.5-day jump: [0, 0]
+[lscrub] 03:16:51 station_sheds_wool FAIL ExpectationFailed: a mature sweetline tree shed 0 sweetline felt after its 5-day timer passed (expect 5)
+[lscrub] 03:16:51 scratch_toggle_off_refused UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:16:51 scratch_drops_coat UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:16:51 visitors_toggle_off_quiet UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:16:51 visitors_come_and_leave_marks UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:16:51 felt_comfort_toggle_off_plain UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:16:51 felt_furniture_comfort UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:16:51 map_step_chance_zero_plants_none UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:16:51 map_step_plants_one_or_two UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 394}
+[lscrub] 03:16:51 log_clean PASS 
+[modcheck] LeaningScrub: no ledger item MODCHECK_LEANINGSCRUB_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\LeaningScrub_20261007T101652Z.html only
+[modcheck] LongShade: no ledger item MODCHECK_LONGSHADE_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\LongShade_20261007T101657Z.html only
+[forge-note] Player.log scan: {"lines": 660, "hits": [], "log cap reached": 0, "game-wide config/xref lines (instrument probe)": 82}
+[forge] 03:17:00 player_log_names_no_forge_error PASS 
+[forge] 03:17:00 resolve_probe_sees_absence PASS 
+[forge] 03:17:00 defs_resolve_races PASS 
+[forge] 03:17:00 defs_resolve_pawnkinds PASS 
+[forge] 03:17:00 defs_resolve_plants PASS 
+[forge] 03:17:00 defs_resolve_items PASS 
+[forge] 03:17:00 defs_resolve_buildings PASS 
+[forge] 03:17:00 defs_resolve_terrain PASS 
+[forge] 03:17:00 defs_resolve_weather PASS 
+[forge] 03:17:00 defs_resolve_conditions PASS 
+[forge] 03:17:00 defs_resolve_hediffs PASS 
+[forge] 03:17:00 defs_resolve_research PASS 
+[forge] 03:17:00 defs_resolve_sounds PASS 
+[forge] 03:17:00 defs_resolve_render_trees PASS 
+[forge] 03:17:00 defs_resolve_biome PASS 
+[forge] 03:17:00 plants_mesh_count_is_perfect_square PASS 
+[forge] 03:17:00 cycle_terrains_are_temporary PASS 
+[forge] 03:17:00 scald_damage_def_resolves PASS 
+[forge] 03:17:01 native_dormancy_comps_wired PASS 
+[forge] 03:17:01 flyers_carry_flight_stat PASS 
+[forge] 03:17:01 floatstone_only_from_gardens PASS 
+[forge] 03:17:01 keel_brace_needs_spunstone_research PASS 
+[forge] 03:17:01 spunstone_parts_need_spunstone_research PASS 
+[forge] 03:17:01 engine_links_keel_brace PASS 
+[forge] 03:17:01 biome_probe_ready PASS 
+[forge] 03:17:01 biome_densities_live PASS 
+[forge-note] wild animals rows not asserted (their donor mod is not on this tier): ["AA_Aerofleet (needs sarg.alphaanimals)", "AA_ColossalAerofleet (needs sarg.alphaanimals)", "AA_CrescendoAnole (needs sarg.alphaanimals)", "AA_Metallovore (needs sarg.alphaanimals)"]
+[forge] 03:17:01 wild_animals_wired PASS 
+[forge-note] wild plants rows not asserted (their donor mod is not on this tier): ["IronScruff_Bindweed (needs IronScruff.PrimordialGeysers)", "IronScruff_PrimordialGrass (needs IronScruff.PrimordialGeysers)", "IronScruff_PrimordialTallGrass (needs IronScruff.PrimordialGeysers)"]
+[forge] 03:17:01 wild_plants_wired PASS 
+[forge] 03:17:01 natives_spawn_and_probe_is_honest PASS 
+[forge] 03:17:01 biome_map_condition_is_forge_pulse PASS 
+[forge] 03:17:01 biome_declares_ambient_heat PASS 
+[forge] 03:17:01 biome_lava_patchmakers PASS 
+[forge] 03:17:01 settings_at_shipped_defaults PASS 
+[forge] 03:17:01 scaffolding_settings_declared_and_inert PASS 
+[forge] 03:17:01 project_hidden_until_studied PASS 
+[forge] 03:17:02 study_toggle_off_shows_project PASS 
+[forge] 03:17:02 reveal_opens_project PASS 
+[forge] 03:17:02 keel_default_saving PASS 
+[forge] 03:17:02 keel_off_zeroes_saving PASS 
+[forge] 03:17:02 keel_ring_wired PASS 
+[forge] 03:17:02 dhuvvox_scuttle_wired PASS 
+[forge] 03:17:02 spunstone_parts_source_floatstone_only_and_gated PASS 
+[forge-note] spunstone parts UNMEASURED: "door speed and airtightness in play, and the menu gate after a restart: no bridge tool reads them; the defs resolving is checked in defs_resolve"
+[forge] 03:17:02 spunstone_hull_gate_keyed_on_toggle PASS 
+[forge] 03:17:08 site_ready_cycle PASS 
+[forge] 03:17:08 cycle_starts_in_still_heat PASS 
+[forge] 03:17:10 gas_wash_ignites FAIL ExpectationFailed: the gas wash lit no ground: gasIgnitions 0 -> 0 (a wave needs an unroofed flammable plant on the map)
+[forge] 03:17:10 rain_forces_boiling_weather_and_floods UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:10 rain_erupts_dhuvvox_swarm UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:10 freeze_crusts_lava UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:10 rain_end_reseals_swarm_with_signs UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:10 crust_is_walkable UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:10 growth_blooms_floatstone UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:10 cracks_drift_gardens_and_glow UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:10 melt_restores_lava_and_counts_losses UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:10 telegraph_letters_sent UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 03:17:18 site_ready_arms PASS 
+[forge] 03:17:23 gas_wash_off_no_ignitions PASS 
+[forge] 03:17:51 flooding_off_no_floods PASS 
+[forge] 03:17:51 freeze_off_closes_cycle_early PASS 
+[forge] 03:17:54 bloom_off_no_gardens PASS 
+[forge] 03:17:55 melt_gentle_spares_pawn_and_items PASS 
+[forge] 03:17:59 cycle_off_melts_back_gently PASS 
+[forge] 03:18:00 telegraph_off_sends_no_letters PASS 
+[forge] 03:18:12 cycle_gate_off_pulse_toggle_never_starts PASS 
+[forge] 03:18:24 cycle_gate_off_grand_cycle_toggle_never_starts PASS 
+[forge] 03:18:36 cycle_gate_off_master_toggle_never_starts PASS 
+[forge] 03:18:42 site_ready_hiss PASS 
+[forge] 03:18:45 hiss_not_sent_with_gas_wash_off PASS 
+[forge] 03:18:47 hiss_letter_sent_before_gas_wash PASS 
+[forge] 03:18:53 site_ready_voices PASS 
+[forge] 03:18:56 voices_off_no_cue PASS 
+[forge] 03:18:59 visual_cue_message_names_phase PASS 
+[forge] 03:19:16 site_ready_dormancy PASS 
+[forge] 03:19:16 natives_seal_in_still_heat PASS 
+[forge] 03:19:22 dormancy_off_clears_sealed_line PASS 
+[forge] 03:19:32 fresh_natives_seal PASS 
+[forge] 03:19:37 rain_wakes_all_natives PASS 
+[forge] 03:19:43 dhuvvox_clock_shows_countdown_and_slows PASS 
+[forge] 03:19:48 clock_off_removes_slowing PASS 
+[forge] 03:19:56 dry_growth_seals_dhokkur_only PASS 
+[forge] 03:19:58 site_ready_harvest PASS 
+[forge-note] RM_Floatstone stacks: []
+[forge] 03:21:15 floatstone_garden_yields_floatstone FAIL ExpectationFailed: no RM_Floatstone after a forced harvest of 2 mature garden(s)
+[forge] 03:21:24 site_ready_plume PASS 
+[forge] 03:21:26 plume_front_spawns_and_lives PASS 
+[forge] 03:21:31 plume_soaks_ground PASS 
+[forge] 03:21:37 soak_off_adds_no_puddles PASS 
+[forge] 03:21:38 fronts_off_clears_fronts PASS 
+[forge] 03:21:40 plume_source_launches_from_new_crust PASS 
+[forge] 03:21:40 plume_source_obscures_with_blind_smoke PASS 
+[forge] 03:21:40 plume_source_heat_is_ambient_temperature PASS 
+[forge] 03:21:40 plume_source_exempts_vapour_adapted PASS 
+[forge] 03:21:40 plume_source_strength_scales PASS 
+[forge-note] plume UNMEASURED: "BlindSmoke density/accuracy, AmbientTemperature offset and heatstroke rate, adapted exemption in play: no bridge tool reads them"
+[forge] 03:21:40 sky_source_grid_is_a_dirty_safe_section_layer PASS 
+[forge] 03:21:40 sky_source_spirals_are_cosmetic_flecks PASS 
+[forge] 03:21:40 sky_source_hunt_scores_columns PASS 
+[forge] 03:21:40 sky_source_jossur_stoop_uses_flight_stats PASS 
+[forge] 03:21:40 sky_source_highlight_is_selection_only PASS 
+[forge] 03:21:40 sky_source_debug_report_exists PASS 
+[forge-note] sky UNMEASURED: "the haze mesh, ash spirals, prey-score effect, a stoop in play and the outline: no bridge tool reads them and flyer flight is never live-hunted; run 'Forge sky: report' by hand for the counters"
+[modcheck] TheForge: no ledger item MODCHECK_THEFORGE_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\TheForge_20261007T102140Z.html only
+[cauldron]-note shipped defs resolved: 44
+[cauldron] 03:21:42 defs_resolve PASS 
+[cauldron] 03:21:42 acid_wiring_shape PASS 
+[cauldron] 03:21:42 flora_expansion_shape PASS 
+[cauldron] 03:21:42 fexxil_venom_shape PASS 
+[cauldron] 03:21:44 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 03:21:44 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 03:21:44 biome_roster PASS 
+[cauldron] 03:21:44 biome_worker_and_terrain PASS 
+[cauldron] 03:21:45 nettle_habitat_wired PASS 
+[cauldron] 03:21:45 vent_habitat_wired PASS 
+[cauldron] 03:21:45 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 03:21:45 weathers_selectable PASS 
+[cauldron] 03:21:47 defaults PASS 
+[cauldron] 03:21:47 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 03:21:47 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 03:21:48 ventsEnabled_roundtrip PASS 
+[cauldron] 03:21:48 ventFalterMessage_roundtrip PASS 
+[cauldron] 03:21:48 ventGardensEnabled_roundtrip PASS 
+[cauldron] 03:21:48 vexxithDoorEnabled_roundtrip PASS 
+[cauldron] 03:21:49 dewfallBeadsEnabled_roundtrip PASS 
+[cauldron] 03:21:49 dewfallSaturationEnabled_roundtrip PASS 
+[cauldron] 03:21:49 assayFlecksEnabled_roundtrip PASS 
+[cauldron] 03:21:49 vexxissPrintsEnabled_roundtrip PASS 
+[cauldron] 03:21:50 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive"], "RM_Vexxiss": ["CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour"]}
+[cauldron] 03:21:50 suush_and_vexxiss_comps PASS 
+[cauldron] 03:21:50 zisska_yields_and_toxic_meat PASS 
+[cauldron] 03:21:50 acid_site_ready PASS 
+[cauldron]-note AcidBurn 20: hp before/after: {"swall": [300, 280], "vdoor": [320, 320], "vwall": [480, 480]}
+[cauldron] 03:21:50 vexxith_acid_proof PASS 
+[cauldron]-note AcidBurn 20 with the toggle OFF: vexxith wall hp before/after: [480, 460]
+[cauldron] 03:21:51 vexxith_acid_toggle_off PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 03:21:51 fauna_spawns PASS 
+[cauldron] 03:21:51 suush_can_fly PASS 
+[cauldron] 03:21:59 suush_ignores_melee PASS 
+[cauldron]-note shot suush row / melee control still there: [null, true]
+[cauldron] 03:22:07 suush_detonates_when_shot PASS 
+[cauldron]-note flora set: {"asked": 17, "lost": []}
+[cauldron] 03:22:09 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 03:22:10 assay_grades PASS 
+[cauldron] 03:22:10 assay_toggle_off PASS 
+[cauldron] 03:22:10 assay_factor_scales PASS 
+[cauldron] 03:22:11 yield_site_ready PASS 
+[cauldron]-note martyr harvest 1 (factor 1.0): wood / steel: [0, 0]
+[cauldron] 03:23:53 harvest_pays_metal UNMEASURED UNMEASURED: no wood from the first harvest in 5000 ticks (job not done): cannot judge the metal beside it
+[cauldron] 03:23:53 yield_factor_scales UNMEASURED UNMEASURED: no factor-1.0 baseline (harvest_pays_metal did not pay)
+[cauldron] 03:23:53 yield_toggle_off UNMEASURED UNMEASURED: no steel baseline from the earlier harvests
+[cauldron]-note map-biome native / non-native herbivore picked: [null, "Deer"]
+[cauldron]-note weather transition factor after the wait: 1.0
+[cauldron] 03:25:05 bloom_site_ready PASS 
+[cauldron]-note outdoor colonist hediff: {"def": "RM_VentMetalLoad", "label": "metal load (trace)", "severity": 0.012, "part": null, "partLabel": null}
+[cauldron] 03:25:05 bloom_loads_exposed PASS 
+[cauldron] 03:25:06 bloom_no_double_tax PASS 
+[cauldron] 03:25:06 bloom_spares_roofed PASS 
+[cauldron] 03:25:06 bloom_spares_natives UNMEASURED UNMEASURED: this map's biome offers no native/non-native herbivore pair to compare
+[cauldron] 03:25:07 bloom_toggle_off PASS 
+[cauldron]-note severity at factor 2.0 vs 1.0 (ratio): [0.024, 0.012, 2.0]
+[cauldron] 03:25:08 bloom_factor_scales PASS 
+[cauldron] 03:25:09 water_site_ready PASS 
+[cauldron]-note pond A terrain after 300 ticks of a vexxiss wading: {"WaterShallow": 47, "ToxicWaterShallow": 17}
+[cauldron] 03:25:14 water_poison_on PASS 
+[cauldron] 03:25:14 water_letter_arrives PASS 
+[cauldron] 03:25:20 water_letter_cooldown PASS 
+[cauldron] 03:25:25 water_letter_toggle_off PASS 
+[cauldron] 03:25:31 water_poison_toggle_off PASS 
+[cauldron]-note vexxiss job BeatFire seen / fire polls with a fire standing: [false, 0]
+[cauldron] 03:25:50 fire_warden_beats_fire UNMEASURED UNMEASURED: no Fire thing was standing during the window
+[cauldron] 03:25:51 fire_warden_toggle_off UNMEASURED UNMEASURED: map_fire started no fire on the wood (cells refused): {'success': True, 'action': 'start', 'cellsTried': 9, 'firesStarted': 0, 'firesExtinguished': 0, 'cellsFailed': 0, 'errors': [], 'errorsTruncated': False, 'note': "9 cells refused - RimWorld's ChanceToStartFireIn gates on flammability
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 03:25:53 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 03:25:54 vent_weather_multiplier PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron]-note vent output / state once the bloom has arrived: [2.5, "breathing"]
+[cauldron] 03:27:06 vent_falter_precedes_bloom PASS 
+[cauldron]-note metal load next to the vent / 21 cells away: [0.012, 0.007876506]
+[cauldron]-note OFF arm: near / far: [0.012, 0.012]
+[cauldron] 03:28:18 vent_exposure_is_local PASS 
+[cauldron]-note wild vexxiss took RM_VexxissDrinkVent: true
+[cauldron]-note OFF arm: took the drink job: false
+[cauldron] 03:29:02 vexxiss_drinks_vent PASS 
+[cauldron]-note vent silenced by a drinking vexxiss: [true, 0.0, "silenced"]
+[cauldron]-note recovery output first / 3000 ticks later: [0.0, 0.05]
+[cauldron] 03:32:45 vent_silences_and_recovers PASS 
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 600}
+[cauldron] 03:32:46 log_clean PASS 
+[modcheck] Cauldron: no ledger item MODCHECK_CAULDRON_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Cauldron_20261007T103246Z.html only
+Greentide            RED  (state)
+Webwork              RED  (state)
+WeepingStones        RED  (state)
+RustCathedral        RED  (state)
+LeaningScrub         RED  (state)
+LongShade            RED  (state)
+TheForge             RED  (state)
+Cauldron             RED  (state)
+EXIT 1
