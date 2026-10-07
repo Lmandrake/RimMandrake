@@ -234,6 +234,52 @@ namespace RimMandrake.FlowWorks
 			return true;
 		}
 
+		// ── FLOWWORKS_LADDER_RAISE_LOWER_1: the entry veto ─────────────────
+		private static readonly Dictionary<(Map, IntVec3, int), bool> entryCache = new Dictionary<(Map, IntVec3, int), bool>();
+		private static int entryCacheTick = -1;
+
+		/// <summary>True when a pawn standing OUTSIDE the open pit cannot get to this destination because it
+		/// needs the pit floor and no ladder it may climb (lowered, prison-door rule) leads down into that pit.
+		/// Vanilla reachability knows nothing of the pit (a D = 4 cell is only a costly passable cell), so without
+		/// this a hauler is offered an item on the floor of a pit with a raised ladder, its path is then refused
+		/// (AvoidPits) and the job fails and is re-offered forever. Same test as PlanRoute's descent leg.</summary>
+		public static bool OutsiderBarredFromFloor(Pawn pawn, IntVec3 start, LocalTargetInfo dest, PathEndMode peMode)
+		{
+			if (!On || pawn == null || !pawn.Spawned || pawn.Flying || !dest.IsValid)
+			{
+				return false;
+			}
+			Map map = pawn.Map;
+			RM_MapComponent_Excavation eng = RM_SuperdeepTrap.EngineOf(map);
+			if (eng == null || eng.SuperdeepCellCount == 0 || !dest.Cell.InBounds(map) || !IsOpenPit(map, eng, dest.Cell)
+				|| IsOpenPit(map, eng, start) || !DestNeedsPit(map, eng, dest, peMode))
+			{
+				return false;
+			}
+			int now = Find.TickManager?.TicksGame ?? 0;
+			if (now != entryCacheTick || entryCache.Count > 4096)
+			{
+				entryCache.Clear();
+				entryCacheTick = now;
+			}
+			var key = (map, dest.Cell, pawn.thingIDNumber);
+			if (entryCache.TryGetValue(key, out bool barred))
+			{
+				return barred;
+			}
+			barred = !RM_PitTrapMath.PitFloorEnterable(
+				(x, z) => IsOpenPit(map, eng, new IntVec3(x, 0, z)),
+				(x, z) => RM_LadderRules.LadderLetsOut(map, new IntVec3(x, 0, z), pawn),
+				(x, z) =>
+				{
+					var c = new IntVec3(x, 0, z);
+					return c.InBounds(map) && c.Standable(map);
+				},
+				dest.Cell.x, dest.Cell.z, MaxCells);
+			entryCache[key] = barred;
+			return barred;
+		}
+
 		/// <summary>Bridge/debug read: the leg a pawn would take to a cell (jawa/static_call).</summary>
 		public static string ProofRoute(Pawn pawn, IntVec3 dest)
 		{

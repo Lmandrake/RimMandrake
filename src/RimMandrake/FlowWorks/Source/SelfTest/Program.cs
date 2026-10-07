@@ -929,6 +929,42 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(r.leg == RM_PitTrapMath.PitLeg.StepTo && (r.x, r.z) == ladder, "beside the ladder: step onto it");
             });
 
+            // ── FLOWWORKS_LADDER_RAISE_LOWER_1 (owner 2026-10-06): ladder up / ladder down ──
+            Case("Ladder_raise_lower_usable_and_entry", () =>
+            {
+                // (raiseLowerOn, raised, prisonDoorOn, mayClimb)
+                Assert(RM_PitTrapMath.LadderUsable(true, false, true, true), "lowered, colonist: climbs");
+                Assert(!RM_PitTrapMath.LadderUsable(true, false, true, false), "lowered, hostile under the prison door: stays");
+                Assert(!RM_PitTrapMath.LadderUsable(true, true, true, true), "raised: nobody, colonist included");
+                Assert(!RM_PitTrapMath.LadderUsable(true, true, false, false), "raised blocks even with the prison door off");
+                Assert(RM_PitTrapMath.LadderUsable(false, true, true, true), "raise/lower setting off: a 'raised' ladder counts as lowered");
+                Assert(RM_PitTrapMath.LadderUsable(true, false, false, false), "prison door off: a lowered ladder lets anyone climb");
+
+                // 5x5 pit (10..14, 10..14), ladder top-middle (12, 14); item on the floor at the centre.
+                var pit = PitRect(10, 10, 5, 5);
+                bool IsPit(int x, int z) => pit.Contains((x, z));
+                bool Lip(int x, int z) => !pit.Contains((x, z));
+                bool Lowered(int x, int z) => (x, z) == (12, 14);
+                bool Raised(int x, int z) => false;
+                Assert(RM_PitTrapMath.PitFloorEnterable(IsPit, Lowered, Lip, 12, 12, 4000), "lowered ladder: the floor is enterable (a hauler may fetch)");
+                Assert(!RM_PitTrapMath.PitFloorEnterable(IsPit, Raised, Lip, 12, 12, 4000), "raised ladder: the floor is not enterable");
+                Assert(!RM_PitTrapMath.PitFloorEnterable(IsPit, Lowered, Lip, 30, 30, 4000), "not a pit cell: no component, nothing to enter");
+                // A ladder in a DIFFERENT pit does not let you into this one.
+                var pitB = PitRect(20, 10, 5, 5);
+                bool IsPitAB(int x, int z) => pit.Contains((x, z)) || pitB.Contains((x, z));
+                bool LadderInB(int x, int z) => (x, z) == (22, 14);
+                Assert(!RM_PitTrapMath.PitFloorEnterable(IsPitAB, LadderInB, (x, z) => !IsPitAB(x, z), 12, 12, 4000), "a ladder in another pit does not help");
+                // An interior ladder touching no lip is no way down (matches PlanRoute's descent leg).
+                var pit7 = PitRect(0, 0, 7, 7);
+                Assert(!RM_PitTrapMath.PitFloorEnterable((x, z) => pit7.Contains((x, z)), (x, z) => (x, z) == (3, 3),
+                    (x, z) => !pit7.Contains((x, z)), 1, 1, 4000), "interior ladder: not an entry");
+                // Agreement with the pather: enterable <=> PlanRoute's descent leg is not AvoidPits.
+                var r = RM_PitTrapMath.PlanRoute(IsPit, (x, z) => false, Lowered, Lip, 12, 20, 12, 12, true, 4000);
+                Assert(r.leg != RM_PitTrapMath.PitLeg.AvoidPits, "lowered: pather plans a way down");
+                r = RM_PitTrapMath.PlanRoute(IsPit, (x, z) => false, Raised, Lip, 12, 20, 12, 12, true, 4000);
+                Assert(r.leg == RM_PitTrapMath.PitLeg.AvoidPits, "raised: pather refuses the floor");
+            });
+
             Case("PitTrap_spike_damage_scales_with_body_size", () =>
             {
                 Assert(RM_PitTrapMath.SpikeHits == 3, "three spike hits per descent");

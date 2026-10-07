@@ -133,6 +133,9 @@ namespace RimMandrake.FlowWorks
         public static bool ladderRequiredToExitEnabled = true;
         // LADDER_PRISON_DOOR_1 (owner Q1 2026-10-02): a ladder is a prison door. Off = any ladder lets anyone out.
         public static bool ladderPrisonDoorEnabled = true;
+        // FLOWWORKS_LADDER_RAISE_LOWER_1 (owner 2026-10-06): the player raises and lowers each ladder. Off = no
+        // gizmo and every ladder counts as lowered.
+        public static bool ladderRaiseLowerEnabled = true;
         public static bool superdeepShootingRuleEnabled = true;
         // Owner 2026-10-06 (Q5/Q9): a damaging or fire blast breaks any pit cover it reaches.
         public static bool blastsBreakPitCovers = true;
@@ -343,6 +346,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref superdeepCapturesOwnFaction, "superdeepCapturesOwnFaction", false);
             Scribe_Values.Look(ref ladderRequiredToExitEnabled, "ladderRequiredToExitEnabled", true);
             Scribe_Values.Look(ref ladderPrisonDoorEnabled, "ladderPrisonDoorEnabled", true);
+            Scribe_Values.Look(ref ladderRaiseLowerEnabled, "ladderRaiseLowerEnabled", true);
             Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
             Scribe_Values.Look(ref superdeepRoomsEnabled, "superdeepRoomsEnabled", true);
             Scribe_Values.Look(ref captureDownEnabled, "captureDownEnabled", true);
@@ -647,8 +651,13 @@ namespace RimMandrake.FlowWorks
 
             list.CheckboxLabeled("A ladder works like a prison door", ref ladderPrisonDoorEnabled,
                 "On, a lowered ladder lets your people and friendly visitors climb out but not trapped "
-              + "enemies or wild animals, and prisoners only during a prison break; a raised ladder lets "
-              + "nobody out, your own people included. Off: any ladder lets anyone climb out.");
+              + "enemies or wild animals, and prisoners only during a prison break. Off: any lowered ladder "
+              + "lets anyone climb out.");
+
+            list.CheckboxLabeled("Ladders can be raised and lowered", ref ladderRaiseLowerEnabled,
+                "On, each ladder has a Ladder up / Ladder down button. Lowered, people can climb down into the pit "
+              + "and back up it, and haulers fetch what lies on the pit floor. Raised, nobody climbs it either way. "
+              + "Colonists never move a ladder themselves. Off: every ladder stays lowered and has no button.");
 
             list.Label("How wide a pit must be to hold a creature (body size multiplier): "
                      + pitWidthBodySizeMultiplier.ToString("F2"), tooltip:

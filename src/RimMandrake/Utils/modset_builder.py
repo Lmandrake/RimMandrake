@@ -158,7 +158,10 @@ TIERS = {
                "automatically. REFUSES if the stale mandrake.rm.pits (22/22 "
                "defName collision) or a terrain donor (Alpha Biomes, ManyWaters) "
                "is in the closure, so a slime/tar terrain cannot come from a donor.",
-        "want": [BRIDGE, "mandrake.rm.flowworks"],
+        # GSS rides along for the TOOLING, not the test: JawaBench's FlowWorks and GSS playtest runners share one
+        # partial class (JawaBenchTerrainTools), so its compiler-generated lambda cache names GSS types and every
+        # jawa/playtest_start throws TypeLoadException (LaidPiece) without GSS loaded (live 2026-10-06).
+        "want": [BRIDGE, "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack"],
         "forbid": ["mandrake.rm.pits", "sarg.alphabiomes"],
         "forbid_substr": ["manywaters"],
         "dlc": True,

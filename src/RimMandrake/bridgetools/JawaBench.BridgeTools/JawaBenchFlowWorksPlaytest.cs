@@ -64,7 +64,7 @@ namespace JawaBench.BridgeTools
                 "FlowWorks in-game scenario runner (Approach A). Starts a run on the CURRENT map and " +
                 "returns its run id AT ONCE; the run then advances across ordinary game frames (never inside " +
                 "this call). recipe = comma list of scenes: fluids, dig, pit, depth_fill, fire, pump, river, sluice, " +
-                "pit_ladder_release, pit_fall_forced, " +
+                "pit_ladder_release, pit_fall_forced, pit_ladder_toggle, pit_ladder_haul, pit_ladder_raised_hold, " +
                 "save_reload (arms: SAVES the game, record PENDING), save_reload_b (needs resume=<runId>, after loading " +
                 "that save); pilot = fluids,dig,pit; full = every scene, save_reload last. inject appends a " +
                 "scenario that throws, proving the INCOMPLETE path. tickMode batch (default) PAUSES the game " +
@@ -204,10 +204,10 @@ namespace JawaBench.BridgeTools
         /// last because it saves the game and the launcher then loads that save for save_reload_b.</summary>
         private static readonly string[] PlaytestKnown =
             { "fluids", "dig", "pit", "depth_fill", "fire", "pump", "river", "sluice", "pit_ladder_release", "pit_fall_forced",
-              "save_reload", "save_reload_b", "inject" };
+              "pit_ladder_toggle", "pit_ladder_haul", "pit_ladder_raised_hold", "save_reload", "save_reload_b", "inject" };
         private static readonly string[] PlaytestFull =
             { "fluids", "dig", "pit", "depth_fill", "fire", "pump", "river", "sluice", "pit_ladder_release", "pit_fall_forced",
-              "save_reload" };
+              "pit_ladder_toggle", "pit_ladder_haul", "pit_ladder_raised_hold", "save_reload" };
 
         private static List<string> PlaytestParseRecipe(string recipe, out string bad)
         {
@@ -651,6 +651,9 @@ namespace JawaBench.BridgeTools
                 case "sluice": return ScnSluice(c);
                 case "pit_ladder_release": return ScnPitLadderRelease(c);
                 case "pit_fall_forced": return ScnPitFallForced(c);
+                case "pit_ladder_toggle": return ScnPitLadderToggle(c);
+                case "pit_ladder_haul": return ScnPitLadderHaul(c);
+                case "pit_ladder_raised_hold": return ScnPitLadderRaisedHold(c);
                 case "save_reload": return ScnSaveReloadA(c);
                 case "save_reload_b": return ScnSaveReloadB(c);
                 default: throw new ArgumentException("unknown scenario " + name);

@@ -317,6 +317,35 @@ namespace RimMandrake.FlowWorks
 			return new PitRoute(PitLeg.Vanilla); // trapped: reachability already vetoes
 		}
 
+		/// <summary>FLOWWORKS_LADDER_RAISE_LOWER_1 + LADDER_PRISON_DOOR_1: may this pawn climb this ladder (either
+		/// way)? A RAISED ladder is climbed by nobody while the raise/lower setting is on; a lowered one follows the
+		/// prison-door rule (<paramref name="mayClimb"/>) while that setting is on, else anyone climbs it.</summary>
+		public static bool LadderUsable(bool raiseLowerOn, bool raised, bool prisonDoorOn, bool mayClimb)
+		{
+			if (raiseLowerOn && raised)
+			{
+				return false;
+			}
+			return !prisonDoorOn || mayClimb;
+		}
+
+		/// <summary>FLOWWORKS_LADDER_RAISE_LOWER_1: from OUTSIDE the pit, can a pawn get down onto the floor cell
+		/// (dx, dz) at all? Only down a ladder it may climb that stands in that cell's open-pit component with
+		/// walkable ground beside it — the same test PlanRoute's "down a ladder or not at all" leg makes, so the
+		/// reachability veto and the pather never disagree (a hauler is not offered an item it cannot path to).</summary>
+		public static bool PitFloorEnterable(Func<int, int, bool> isPit, Func<int, int, bool> ladderFor,
+			Func<int, int, bool> lipStandable, int dx, int dz, int maxCells)
+		{
+			foreach ((int x, int z) c in PitComponent(isPit, dx, dz, maxCells))
+			{
+				if (ladderFor(c.x, c.z) && BestLip(isPit, lipStandable, c.x, c.z, c.x, c.z, out _, out _))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		/// <summary>Mass-scaled blunt fall damage, at least 1.</summary>
 		public static float FallDamage(float massKg, float multiplier)
 		{

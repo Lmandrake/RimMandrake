@@ -498,6 +498,11 @@ namespace RimMandrake.FlowWorks
 			}
 			if (!RM_SuperdeepTrap.TryGetTrapRegion(p, out HashSet<IntVec3> region))
 			{
+				// FLOWWORKS_LADDER_RAISE_LOWER_1: from outside, the pit floor only down a usable ladder.
+				if (RM_PitPathing.OutsiderBarredFromFloor(p, start, dest, peMode))
+				{
+					__result = false;
+				}
 				return;
 			}
 			if (!RM_SuperdeepTrap.AllowedDestination(region, dest, peMode))
