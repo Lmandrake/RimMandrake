@@ -1,0 +1,13 @@
+run fwpt_20261007T122418_s1  scenarios=sluice  mode=batch  driver=monobehaviour
+  sluice         XPASS      1.95s   6000 ticks  grate passes, shut sluice holds, open sluice passes (XPASS: FLOWWORKS_SLUICE_TWO_DOORS_1 looks built)
+
+scenario   status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+---------  ------  ------  -----  ------  -------  ------  ---------  -------
+sluice     XPASS   1.95    6000   35      0.02     1.93    0.01       3112   
+RUN TOTAL  done    2.04    6000   39      0.02     1.93    0.01       3112   
+tick mode batch (Paused+DoSingleTick), frame budget 50 ms, runner overhead 0.09 s, Ultrafast multiplier 150
+launcher: 2.15 s wall start->collect, 3 bridge calls
+
+RUN VERDICT PASS  (3 records)  journal C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\JawaBench\playtest\fwpt_20261007T122418_s1.jsonl  copy \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\flowworks_playtest\fwpt_20261007T122418_s1.jsonl
+
+VERDICT PASS

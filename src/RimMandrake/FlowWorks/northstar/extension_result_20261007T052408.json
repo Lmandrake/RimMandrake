@@ -1,0 +1,521 @@
+{
+ "chains": [
+  {
+   "name": "flow_doors",
+   "components": [
+    {
+     "name": "grate_passes_sluice_seals",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(2500) [watched] -> 2500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2500,
+        "requested": 2500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 127,
+         "z": 160
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 8,
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_1ff5fcc64d4d4b04b5345e848d7e90d1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 130,
+         "z": 160
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 8,
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_add1a8ca0a164b35bd062d70f4d65bd2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLiquid(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_SecurityGrateDoor open=False seals=False | depth 2 fill 2",
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_da477a68e5834728977055ae1d979f07",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLiquid(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_Sluice open=False seals=True | depth 2 fill 0",
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_05659bec7cec45b4a9c417c8b325efb0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sluice_holds_small_only",
+     "toggle": "sluiceLetsBigThroughEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOpen(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_Sluice stuff WoodLog | Human26223 OPEN held=False w=1 | Muffalo26231 OPEN held=False w=2 | Hare26232 SHUT held=False w=1",
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_8b2b6f75c873472f8d165ab1c5c65b8c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sluice_rule_off_holds",
+     "toggle": "sluiceLetsBigThroughEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'sluiceLetsBigThroughEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOpen(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_Sluice stuff WoodLog | Human26223 SHUT held=False w=1 | Muffalo26231 SHUT held=False w=2 | Hare26232 SHUT held=False w=1",
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_4563c3a8dc9a4bc383d40e786481bfa8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 13
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grate_holds_prisoner",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOpen(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_SecurityGrateDoor stuff Steel | Human26223 SHUT held=False w=1",
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_b1bb3e064b02429baa121b84d992c534",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sealed_from_pit",
+     "toggle": "flowDoorsSealedFromPitEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOpen(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_Sluice stuff WoodLog | Human26233 SHUT held=True w=1",
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_526b84659c744d24be9233816275dc67",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 159
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 78,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 0,
+        "recentDescents": [],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_747ee0f752424e7391ab32fe02d384a5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 160
+        },
+        "mapId": 0,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "room": {
+         "id": 78,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [
+         {
+          "id": "Human26233",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Souwelthor",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 0,
+        "recentDescents": [],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_27c1ea82d1314fd1b3e34fa550a15c82",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sealed_rule_off",
+     "toggle": "flowDoorsSealedFromPitEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'flowDoorsSealedFromPitEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOpen(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_Sluice stuff WoodLog | Human26233 OPEN held=True w=1",
+        "ticksGame": 2501,
+        "operation": {
+         "OperationId": "op_531a03a3ce58434498f7be7254f80b8d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2501
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 6,
+    "fed": 0,
+    "ticks_spent": 2500,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 1200,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [HumanPregnancy] (*Name)Aguilar(/Name) pregnant"
+     },
+     {
+      "tick": 1800,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [HumanPregnancy] (*Name)Aguilar(/Name) pregnant"
+     },
+     {
+      "tick": 2400,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [HumanPregnancy] (*Name)Aguilar(/Name) pregnant"
+     },
+     {
+      "tick": 2501,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [HumanPregnancy] (*Name)Aguilar(/Name) pregnant"
+     },
+     {
+      "tick": 2501,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [HumanPregnancy] (*Name)Aguilar(/Name) pregnant"
+     },
+     {
+      "tick": 2501,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 70.4,
+ "chains_run": [
+  "flow_doors"
+ ]
+}

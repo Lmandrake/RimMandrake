@@ -1,0 +1,6 @@
+[modcheck] WreckedMachines: no ledger item MODCHECK_WRECKEDMACHINES_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\WreckedMachines_20261007T112407Z.html only
+[modcheck] FallLineArrivals: no ledger item MODCHECK_FALLLINEARRIVALS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\FallLineArrivals_20261007T112517Z.html only
+[modcheck] UnfinishedLine: no ledger item MODCHECK_UNFINISHEDLINE_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\UnfinishedLine_20261007T112528Z.html only
+WreckedMachines      RED  (state)
+FallLineArrivals     RED  (state)
+UnfinishedLine       RED  (state)
