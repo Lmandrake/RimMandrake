@@ -301,6 +301,9 @@ Factory buildings need factory hoppers for input and output. Needs to be constru
         <cornerBR>Damage/Corner</cornerBR>
       </damageData>
     </graphicData>
+    <thingCategories>
+      <li>VFEFactory_FactoryCategory</li>
+    </thingCategories>
     <!-- PROVISIONAL amounts, same status as the other tiers' costLists. -->
     <costList>
       <Steel>200</Steel>
