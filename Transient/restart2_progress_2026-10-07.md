@@ -9,3 +9,10 @@
 - 04:26 FOUNDRY's tier game exited; 613 list rewritten; relaunched via Steam (PID 148624)
 - 04:39 second load killed mid-load (LoadTracer ctor 1118/1632, no crash dump, no WER event): AGENT FOUNDRY session (PID 16130, /home/mandrake/rm/foundry) ran `Stop-Process -Name RimWorldWin64 -Force` then `modset_builder.py --tier acc_biomes --apply`. FOUNDRY took the bridge at 10:47:16Z ("FOUNDRY GREEN-MIN + standalone tiers while owner AFK"), one minute before BENCH's take, and keeps cycling tier loads. Its restores write FULL.LATEST (610), which drops EK/KA/GSS. Stopped here, not racing it; live checks NOT run
 - deploy state is good (all committed mods deployed, DLLs md5-match); 613-mod snapshot committed; scripts for the checks staged in Transient/kinetic_gss_live_2026-10-07/
+
+## retry 2026-10-07
+- 06:07 pulled 7cf477ce3; deploy plans: all committed mods + composed Biomes in sync (only FlowWorks result JSONs differ, evidence not content). Killing idle 610 game PID 224144
+- 06:07 ModsConfig = FULL.LATEST 613 (ET parse, core+5 DLC); launched via steam.exe -applaunch 294100
+- 06:07:54 game PID 246780 up; 06:25:58 Bridge token -> load 18m04s on 613 mods
+- first exception (log line 82): `Exception loading from System.Xml.XmlElement: MissingMethodException: Default constructor not found for type System.String` (DirectXmlToObject, no def named; vanilla-load phase)
+- ours, red: RSW_FreshTIEPanelWreck/RSW_FreshLandspeederWreck/RUT_FallLineWreckHull/RUT_FallLineWreckCarapace "null thingClass" because parents RM_WreckFamily_Hull/Speeder/Carapace not found -> RUT_WreckList_FallLine cannot land them (fall-line wrecks deployed 04:02 are dead); KA guns forcedMiss + smeltable-no-products; RM_Gun_PulseCannonTurret forcedMiss; RM_ThurrockShatter duplicate compClass; RM_Thurrock/RM_Borehulk textures missing; RM_Urraveth_*_Wrapped, RM_YearningFruitHarvested, RM_SweetlineToken textures missing; RM_DryAirBlower tickerType Never with per-tick fuel
