@@ -406,3 +406,9 @@ Explosive Knockback is NOT edited in v1; every per-weapon behaviour is reached t
 **Still owed to Explosive Knockback (FOUNDRY):** per-projectile lookup, `maxCellsOffset`, `impactFactor` (palm thumper
 arrest), `immuneBodySizeOverride` (grav-ram vs a centipede: today the global 2.5 holds), the stun-recovery window, and
 shield absorption (Q4). **Owed to Gimme Some Slack:** kinetic blasts sway cords instead of cutting (Q3).
+
+**Art (2026-10-06):** the 16 def sprites from the `kba_` jobs are installed by `artpipe_state.py collect` (art ledger,
+`--reason artpipe-collect`). The art list asked for projectiles "pointing east", but RimWorld draws a projectile with
+its sprite's NORTH along the flight; `RM_Projectile_KineticExplosive` rotates the draw by −90° rather than regenerating.
+The 8 `kba_icon_*` and the ring fleck have no def using them yet (no research, no gizmo); `kba_icon_PulseCannon` failed
+in the daemon and was re-filed as `kba_icon_PulseCannon_r2`.
