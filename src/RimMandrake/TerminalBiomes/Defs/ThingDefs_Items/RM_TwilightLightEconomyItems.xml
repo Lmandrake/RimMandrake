@@ -48,7 +48,10 @@
     <description>An alloy-and-bladder chain, the Compact's own showcase work: light enough to haul one-handed, strong enough to hold a cage or a lamp against the current. Nothing in the constellation moves without one clipped to it, and the Compact sells them one or two at a time.</description>
     <graphicData>
       <texPath>Things/Item/RM_GreySea/RM_ElderUnknownWeapon</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <!-- Graphic_Single: the borrowed icon is ONE png, not a folder. Graphic_StackCount
+           here logged "Collection cannot init: No textures found at path
+           Things/Item/RM_GreySea/RM_ElderUnknownWeapon" and drew nothing. -->
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(70,74,80)</color>
     </graphicData>
     <soundInteract>Standard_Drop</soundInteract>

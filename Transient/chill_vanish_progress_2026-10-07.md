@@ -3,3 +3,4 @@
 - started
 - 00:56 Chill vanish cause: vanilla LeaveIfWrongSeason (comfy -150..-30) walks them off a temperate map; fix = RM_WildLeaveNotice message (CreatureBehaviors), selftest green, DLL built
 - 01:03 FeverWood: RUT_RootCauseway->RM_RootCauseway, RUT_ToxinSealant->RM_ToxinSealedFloor (per Greentide alias table)
+- 01:04 ElderUnknownWeapon: its art is present+deployed; the 'Collection cannot init' came from RM_TetherChain borrowing that single PNG as Graphic_StackCount -> Graphic_Single
