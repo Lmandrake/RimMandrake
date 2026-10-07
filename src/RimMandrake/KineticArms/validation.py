@@ -92,6 +92,15 @@ def static_checks():
         if f.endswith(".cs") and 'Include="%s"' % f not in csproj:
             bad.append("%s is not in the csproj Compile list (EnableDefaultCompileItems is false)" % f)
     bad += l0_wiring(fields)
+    # 2026-10-07 live: a pit left at a reused origin stopped thump_cannon at 2 cells (and hurt the repulsor's target);
+    # bystanders that walk fake a throw. Prepare must fill pits; every "did not move" verdict holds its pawn.
+    prep = proof.split("private static void Prepare", 1)[1].split("private static", 1)[0]
+    if "FillToSurface" not in prep:
+        bad.append("RM_KineticArmsProof.Prepare does not fill pits left by earlier scenes (FillToSurface)")
+    for scene, key in (("thump_off", "p"), ("palm_shove", "side"), ("gravram_big_body", "control"), ("strength_zero", "p")):
+        body = proof.split('case "%s":' % scene, 1)[1].split("return null;", 1)[0] if scene != "thump_off" else proof.split('case "thump_off":', 1)[1].split("case \"thudder_crowd\"", 1)[0]
+        if "Hold(" not in body or 'NotThrown(sc, "%s"' % key not in body:
+            bad.append("scene %s: bystander %s is not held (stunned) and checked with NotThrown" % (scene, key))
     if not os.path.isfile(WALK):
         bad.append("walk missing")
     else:
