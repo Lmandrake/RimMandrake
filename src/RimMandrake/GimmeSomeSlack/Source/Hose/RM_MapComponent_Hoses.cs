@@ -385,12 +385,13 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 List<V2> pts = HoseMath.Pose(lay, pi.Eased, pi.Wobbling ? pi.SinceChange : int.MaxValue / 2, T, amt);
                 bool settled = !pi.Wobbling && (pi.Blend <= 0 || pi.Blend >= 1);
                 string key = settled ? (pi.Blend >= 1 ? "P" : "F") + r.layKey + "@" + RankOf(r) : null;
-                List<int> joints = lay.Joints;
+                // rule 3: a joiner that would sit over a hose drawn beneath is left out (HoseMath.Layer)
+                List<int> joints = Layered().Joints.TryGetValue(r.parent.thingIDNumber, out List<int> kept) ? kept : lay.Joints;
                 // S4: winding in, the laid pose is cut at the wound fraction (rebuilt per frame only while winding)
                 if (r.carry == HoseCarryState.Retracting)
                 {
                     pts = HoseLive.ClipWound(pts, r.wound, TotalOf(r));
-                    joints = HoseLive.JointsWithin(lay.Joints, pts.Count);
+                    joints = HoseLive.JointsWithin(joints, pts.Count);
                     key = null;
                     lastClipDraws++;
                     lastDraw[r] = "clip";
@@ -487,9 +488,44 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         private int RankOf(CompHoseReel r)
         {
+            // MESSYCONDUIT_CABLE_PILE_LOOK_1 rule 3: reel-age order (B18), except a hose whose end fitting rests on another
+            // hose draws beneath it (HoseMath.Layer)
+            if (Layered().Rank.TryGetValue(r.parent.thingIDNumber, out int rank)) return rank;
             int k = 0;
             foreach (CompHoseReel o in reels) if (o.parent.thingIDNumber < r.parent.thingIDNumber) k++;
             return k;
+        }
+
+        private HoseMath.Layering layering;
+        private string layeringKey;
+        private int layeringFrame = -1;
+
+        /// <summary>The crossing order and drawn joiners of every reel's hose, rebuilt only when a lay or the plump setting
+        /// changes (the key holds every reel's id and layKey).</summary>
+        private HoseMath.Layering Layered()
+        {
+            // the key is rebuilt at most once a frame (RankOf runs per reel per draw)
+            if (layering != null && layeringFrame == Time.frameCount) return layering;
+            layeringFrame = Time.frameCount;
+            var sb = new System.Text.StringBuilder();
+            foreach (CompHoseReel r in reels) sb.Append(r.parent.thingIDNumber).Append(':').Append(r.lay != null ? r.layKey : "-").Append('|');
+            sb.Append(HoseSettings.plumpAmount);
+            string key = sb.ToString();
+            if (layering != null && key == layeringKey) return layering;
+            var hs = new List<HoseMath.LayeredHose>(reels.Count);
+            foreach (CompHoseReel r in reels) hs.Add(new HoseMath.LayeredHose { Id = r.parent.thingIDNumber, Lay = r.lay ?? new HoseLay() });
+            layering = HoseMath.Layer(hs, HoseMath.VisibleWidth(1, HoseSettings.plumpAmount));
+            layeringKey = key;
+            return layering;
+        }
+
+        /// <summary>Rule 3 read live (probe): fittings drawing over another hose's body under the current layering.</summary>
+        public int FittingsOnTopNow()
+        {
+            HoseMath.Layering L = Layered();
+            var hs = new List<HoseMath.LayeredHose>(reels.Count);
+            foreach (CompHoseReel r in reels) hs.Add(new HoseMath.LayeredHose { Id = r.parent.thingIDNumber, Lay = r.lay ?? new HoseLay() });
+            return HoseMath.FittingsOnTop(hs, L.Rank, L.Joints, HoseMath.VisibleWidth(1, HoseSettings.plumpAmount)).Count;
         }
 
         /// <summary>Both ends of every hose and both halves of every joiner (B22): a cloth binding wrap ~1.4 x the hose

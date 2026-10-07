@@ -170,6 +170,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
               .Append(",\"relays\":").Append(RM_MapComponent_Hoses.Relays)
               .Append(",\"lastLayMs\":").Append(RM_MapComponent_Hoses.LastLayMs)
               .Append(",\"feedDraws\":").Append(comp.lastFeedDraws).Append(",\"relayCouplings\":").Append(comp.lastRelayCouplings)
+              .Append(",\"fittingsOnTop\":").Append(comp.FittingsOnTopNow())   // MESSYCONDUIT_CABLE_PILE_LOOK_1 rule 3
               .Append(",\"queues\":{\"hose\":").Append(HoseMaterials.Queue).Append(",\"overhead\":").Append(Aerial.AerialMaterials.OverheadQueue)
               .Append(",\"spanMat\":").Append(Aerial.AerialMaterials.Span != null ? Aerial.AerialMaterials.Span.renderQueue : -1).Append('}').Append(",\"reelEndsHidden\":").Append(comp.lastReelEndHidden)
               .Append(",\"retracts\":").Append(RM_MapComponent_Hoses.Retracts)
