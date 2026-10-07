@@ -67,10 +67,9 @@
   a band, of irritation, of goodwill, of what the dance is FOR, or that
   killing one costs anything.
 
-  ART: placeholder texPaths only (not yet populated) — the sprite brief
-  ("a fat hex-headed bolt-body with too many small articulations, gear-flats
-  catching light... must read as a COMPONENT at rest") is in the commission
-  doc and belongs to the art pipe. Expect magenta in-game until then.
+  ART: body art ships (Textures/.../RM_LivingBolt_*), installed through the art
+  ledger; the owner ruled a redo (RUSTCATHEDRAL_SHEET_ART_REDO_1). No corpse
+  render exists, so the PawnKindDef carries no corpseGraphicData.
 -->
 <Defs>
 
@@ -298,18 +297,14 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <!-- placeholder: not yet generated, see file header -->
           <texPath>Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.1</drawSize>
         </bodyGraphicData>
-        <corpseGraphicData>
-          <texPath>Things/Pawn/Animal/RM_LivingBolt/RM_LivingBoltCorpse</texPath>
-          <shaderType>CutoutWithOverlay</shaderType>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.1</drawSize>
-        </corpseGraphicData>
+        <!-- No corpseGraphicData: no corpse render exists, and a texPath with no
+             PNGs draws magenta (PawnRenderNode_AnimalPart swaps to it on death).
+             Without it a dead bolt draws its body graphic. Corpse art: LIVINGBOLT_CORPSE_ART_1. -->
       </li>
     </lifeStages>
   </PawnKindDef>
