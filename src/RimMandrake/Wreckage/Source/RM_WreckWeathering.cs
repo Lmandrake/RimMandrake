@@ -33,11 +33,34 @@ namespace RimMandrake.Wreckage
         // (the Twilight Deep's picked wrecks, design §4 "Picked: x0.2, no loot roll").
         public bool noLoot;
 
+        // A regional extra roll on careful salvage, on top of the tier tables (design §3c:
+        // "Biomes may name an extra ThingSetMaker in the weathering for regional goods").
+        public ThingSetMakerDef extraLoot;
+
+        // A dose the salvager takes on careful salvage (design §4 Wasteland: "radiation on
+        // deconstruct"; §3b hazards). ToxicBuildup is scaled by the pawn's ToxicResistance.
+        // Gated by the "Wreck hazards" setting (design §6).
+        public HediffDef salvageHediff;
+        public float salvageHediffSeverity;
+
+        // A mineable shell the wreck field rings every wreck of this weathering with at map
+        // generation, so it must be mined free before it can be reached (design §4: Grey Deep
+        // "Crystal-jacketed: mine the jacket first", Blue Desert "Ice-locked: must mine free first").
+        public ThingDef jacket;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors())
             {
                 yield return e;
+            }
+            if (salvageHediff != null && salvageHediffSeverity <= 0f)
+            {
+                yield return "salvageHediff " + salvageHediff.defName + " with salvageHediffSeverity <= 0";
+            }
+            if (jacket != null && (jacket.category != ThingCategory.Building || !jacket.mineable))
+            {
+                yield return "jacket " + jacket.defName + " is not a mineable building";
             }
             if (yieldFactor <= 0f || yieldFactor > 1.5f)
             {
@@ -57,6 +80,11 @@ namespace RimMandrake.Wreckage
     public class RM_WreckWeathering : DefModExtension
     {
         public RM_WreckWeatheringDef weathering;
+
+        // Per-child shift on top of the weathering's, for the one wreck in a biome that kept
+        // more than its neighbours (design §4: the Wasteland's warcasket sarcophagus is
+        // "Carapace +1" under the shared Irradiated row).
+        public int extraTierShift;
 
         [Unsaved(false)]
         private bool applied;
@@ -107,13 +135,32 @@ namespace RimMandrake.Wreckage
                     }
                 }
             }
-            if (weathering.lootTierShift != 0 && td.comps != null)
+            if (td.comps != null)
             {
                 foreach (CompProperties cp in td.comps)
                 {
                     if (cp is RM_CompProperties_SalvageLoot loot)
                     {
-                        loot.lootTier = ShiftTier(loot.lootTier, weathering.lootTierShift);
+                        if (weathering.extraLoot != null && loot.extraLoot == null)
+                        {
+                            loot.extraLoot = weathering.extraLoot;
+                        }
+                        if (weathering.salvageHediff != null && loot.salvageHediff == null)
+                        {
+                            loot.salvageHediff = weathering.salvageHediff;
+                            loot.salvageHediffSeverity = weathering.salvageHediffSeverity;
+                        }
+                    }
+                }
+            }
+            int shift = weathering.lootTierShift + extraTierShift;
+            if (shift != 0 && td.comps != null)
+            {
+                foreach (CompProperties cp in td.comps)
+                {
+                    if (cp is RM_CompProperties_SalvageLoot loot)
+                    {
+                        loot.lootTier = ShiftTier(loot.lootTier, shift);
                         if (loot.lootTier == "Scrap")
                         {
                             loot.rareChance = 0f; // Scrap has no rare table (design §3c)

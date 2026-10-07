@@ -203,7 +203,37 @@ namespace RimMandrake.Wreckage
             }
             Thing thing = ThingMaker.MakeThing(def, def.MadeFromStuff ? GenStuff.DefaultStuffFor(def) : null);
             GenSpawn.Spawn(thing, loc, map, rot);
+            Jacket(thing, map);
             return true;
+        }
+
+        // A jacketed weathering (Crystal-jacketed, Ice-locked) rings the wreck with its mineable
+        // shell, corners included (a deconstructor may stand diagonally), so nothing can reach
+        // it until a cell is mined. Cells already holding a building, item or pawn are left: a
+        // cluster neighbour then shares its own wall, and nothing is ever wiped but plants and
+        // filth. Returns the number of jacket cells laid.
+        public static int Jacket(Thing wreck, Map map)
+        {
+            ThingDef shell = wreck.def.GetModExtension<RM_WreckWeathering>()?.weathering?.jacket;
+            if (shell == null)
+            {
+                return 0;
+            }
+            int laid = 0;
+            foreach (IntVec3 c in wreck.OccupiedRect().ExpandedBy(1).EdgeCells)
+            {
+                if (!c.InBounds(map) || c.GetEdifice(map) != null)
+                {
+                    continue;
+                }
+                if (c.GetThingList(map).Any(x => x.def.category != ThingCategory.Plant && x.def.category != ThingCategory.Filth))
+                {
+                    continue;
+                }
+                GenSpawn.Spawn(ThingMaker.MakeThing(shell), c, map, WipeMode.Vanish);
+                laid++;
+            }
+            return laid;
         }
 
         private bool CanPlace(ThingDef def, IntVec3 loc, Map map, out Rot4 rot)

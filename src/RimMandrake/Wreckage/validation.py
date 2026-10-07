@@ -23,7 +23,7 @@ from modcheck import Suite, ExpectationFailed
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCALD = os.path.join(HERE, "..", "TerminalBiomes", "Defs", "ThingDefs_Buildings", "RUT_ScaldWrecks.xml")
 suite = Suite("Wreckage")
-suite.toggles = ["salvageLoot", "lootGenerosity", "skillScalesRare", "wreckFields", "wreckDensity", "disabledFields", "wreckFalls"]
+suite.toggles = ["salvageLoot", "lootGenerosity", "skillScalesRare", "wreckFields", "wreckDensity", "disabledFields", "wreckFalls", "wreckHazards"]
 
 TIERS = ("Scrap", "Hull", "Tank", "Carapace", "Sealed")
 RARE_TIERS = ("Hull", "Tank", "Carapace", "Sealed")
@@ -61,7 +61,13 @@ WEATHER_PINNED = {"RM_WreckWeathering_Cooked": (0.75, 0), "RM_WreckWeathering_Fr
                   "RM_WreckWeathering_IceLocked": (0.9, 0), "RM_WreckWeathering_Eroded": (0.2, -2),
                   "RM_WreckWeathering_Brined": (0.7, 0), "RM_WreckWeathering_FloodBuried": (0.8, 0),
                   "RM_WreckWeathering_Overgrown": (0.8, 0), "RM_WreckWeathering_Digested": (0.6, 0),
-                  "RM_WreckWeathering_StormTorn": (0.8, 0)}
+                  "RM_WreckWeathering_StormTorn": (0.8, 0),
+                  "RM_WreckWeathering_Fresh": (1.0, 1), "RM_WreckWeathering_SunBaked": (0.8, 0)}
+# Wave 2 (design §4): jacketed rows ring their wrecks with these mineables; regional extra tables.
+JACKETS = {"RM_WreckWeathering_CrystalJacketed": "RM_BrineJacket", "RM_WreckWeathering_IceLocked": "RM_BlueIceMineable"}
+EXTRA_LOOT = {"RM_WreckWeathering_CrystalJacketed": "RM_SalvageLoot_GreyShards"}
+DOSED = {"RM_WreckWeathering_Irradiated": "ToxicBuildup"}
+SARCOPHAGUS = "RM_WastelandWarcasketSarcophagus"
 # Fields that must exist planet-wide once steps 3-4 landed (design §7): {field: registered-in}.
 PLANET_FIELDS = {"RM_WreckField_Scald": "biome", "RM_WreckField_NightsideIce": "biome",
                  "RM_WreckField_LanternDeeps": "biome", "RM_WreckField_Warscar": "biome",
@@ -469,7 +475,9 @@ def _planet_checks(bad, fams, weathers, tables):
             bad.append("%s restates the salvage comp (two rolls)" % dn)
         if w in NO_LOOT:
             continue
-        tier = _shift(fams[c.get("ParentName")][0], weathers[w][1])
+        tier = _shift(fams[c.get("ParentName")][0], weathers[w][1] + int(ext[0].findtext("extraTierShift") or "0"))
+        if dn == SARCOPHAGUS and tier != "Sealed":
+            bad.append("%s resolves to tier %s, want Sealed (design §4: Carapace +1)" % (dn, tier))
         if "RM_SalvageLoot_%s" % tier not in tables:
             bad.append("%s resolves to tier %s with no table" % (dn, tier))
     # Step 8 art: a child naming its own texPath must have Graphic_Random PNGs there and its own
@@ -489,6 +497,7 @@ def _planet_checks(bad, fams, weathers, tables):
                 bad.append("%s texPath %s has no PNG in any mod's Textures" % (dn, tp))
             if c.find("graphicData/shadowData/volume") is None:
                 bad.append("%s has its own art but no measured shadowData" % dn)
+    _wave2_checks(bad, children, fields)
     used = {c.get("ParentName") for c in children.values()}
     for fam in FAMILIES_WITH_CHILDREN:
         if fam not in used:
@@ -504,6 +513,55 @@ def _planet_checks(bad, fams, weathers, tables):
             bad.append("%s lacks %s (Picked's no-roll)" % (os.path.basename(f), needle))
     if "RM_WreckWeathering_Picked" not in NO_LOOT:
         bad.append("Picked weathering does not set noLoot (design §4: no loot roll)")
+
+
+def _wave2_checks(bad, children, fields):
+    """Wave 2: jackets, regional extra loot, the Wasteland dose and the sarcophagus."""
+    rows = {e.findtext("defName"): e for e in ET.parse(WEATHER_XML).getroot()}
+    defs_by_name, tsm = {}, set()
+    for path, root in _xml_roots():
+        if isinstance(root, ET.ParseError):
+            continue
+        for e in root:
+            dn = e.findtext("defName")
+            if e.tag == "ThingDef" and dn:
+                defs_by_name[dn] = e
+            elif e.tag == "ThingSetMakerDef" and dn:
+                tsm.add(dn)
+    if "RM_SalvageLoot_Hull" not in tsm or "RM_BrineJacket" not in defs_by_name:
+        bad.append("wave-2 sweep cannot see RM_SalvageLoot_Hull / RM_BrineJacket: the sweep is blind")
+        return
+    for w, jacket in JACKETS.items():
+        r = rows.get(w)
+        if r is None or r.findtext("jacket") != jacket:
+            bad.append("%s jacket is %r, want %s (design §4: mine it free first)" % (w, r is not None and r.findtext("jacket"), jacket))
+        j = defs_by_name.get(jacket)
+        if j is None or j.get("ParentName") != "RockBase":
+            bad.append("jacket %s is not a RockBase mineable in src/" % jacket)
+    for w, table in EXTRA_LOOT.items():
+        r = rows.get(w)
+        if r is None or r.findtext("extraLoot") != table or table not in tsm:
+            bad.append("%s extraLoot should be %s and that table must exist" % (w, table))
+    for r in rows.values():
+        x = r.findtext("extraLoot")
+        if x and x not in tsm:
+            bad.append("%s names extraLoot %s, which no ThingSetMakerDef defines" % (r.findtext("defName"), x))
+    for w, hd in DOSED.items():
+        r = rows.get(w)
+        if r is None or r.findtext("salvageHediff") != hd or float(r.findtext("salvageHediffSeverity") or "0") <= 0:
+            bad.append("%s must dose %s with a positive severity (design §4 radiation on deconstruct)" % (w, hd))
+    s = children.get(SARCOPHAGUS)
+    if s is None or s.get("ParentName") != "RM_WreckFamily_Carapace":
+        bad.append("%s missing or not a Carapace child (design §4 Wasteland)" % SARCOPHAGUS)
+    wf = fields.get("RM_WreckField_Wasteland")
+    if wf is None or wf.find("wrecks/" + SARCOPHAGUS) is None:
+        bad.append("Wasteland wreck field does not list %s" % SARCOPHAGUS)
+    cs = {f: open(os.path.join(HERE, "Source", f), encoding="utf-8").read()
+          for f in ("RM_GenStep_WreckField.cs", "RM_CompSalvageLoot.cs", "RM_WreckWeathering.cs")}
+    for f, needle in (("RM_GenStep_WreckField.cs", "Jacket(thing, map)"), ("RM_CompSalvageLoot.cs", "ApplyHazard(salvager)"),
+                      ("RM_CompSalvageLoot.cs", "Props.extraLoot.root.Generate()"), ("RM_WreckWeathering.cs", "extraTierShift")):
+        if needle not in cs[f]:
+            bad.append("%s lacks %s" % (f, needle))
 
 
 def static_checks():

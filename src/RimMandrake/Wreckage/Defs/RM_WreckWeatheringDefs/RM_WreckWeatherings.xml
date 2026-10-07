@@ -6,7 +6,9 @@
   land rows of design §4 follow: Stripped (Warscar), Irradiated (Wasteland), Sand-scoured (Deep
   Desert), Sealed (Dune Sea / Stillsand), Ice-locked (Blue Desert), Eroded (Contagion), and step 6's
   Brined (Miasma), Flood-buried (Flooded Canyon), Overgrown (Fever Wood), Digested (Rot), Storm-torn
-  (Abyss). Forge-warm waits for the Forge cache's loot (a RUT-layer def).
+  (Abyss). Wave 2: the jackets (Crystal-jacketed, Ice-locked), the Wasteland dose (Irradiated), the
+  Grey shard table, and the Fresh / Sun-baked rows. Forge-warm is campaign-only and lives in the RUT
+  layer (UtinniPatches RUT_WreckWeathering_ForgeWarm).
   Biome by-products (sand, salt, mud) are not set as extraLeavings: no row names a def for them
   yet, and the family's slag already covers smashing.
   The density law's "+1 tier" for Riddled/High places lives HERE (a tier is per-def), not on
@@ -54,8 +56,9 @@
 
   <!-- Grey Deep floor (High; design §4 "Crystal-jacketed: mine the jacket first", Hull + crystal
        shards). The design gives no yield number, so x1.0 and +1 are the High class's default
-       (§3d-i), INVENTED. KNOWN GAPS: the mineable jacket (a RockBase shell) and the crystal-shard
-       extra table are not expressible yet and arrive with the Grey Deep's floor step. -->
+       (§3d-i), INVENTED. The jacket is the Grey Sea's own RM_BrineJacket ("salt crystallised solid
+       around whatever it caught"), laid as a ring by the wreck field; the shards are
+       RM_SalvageLoot_GreyShards (Defs/ThingSetMakerDefs/RM_SalvageLoot_Regional.xml). -->
   <RimMandrake.Wreckage.RM_WreckWeatheringDef>
     <defName>RM_WreckWeathering_CrystalJacketed</defName>
     <label>crystal-jacketed</label>
@@ -63,6 +66,8 @@
     <yieldFactor>1.0</yieldFactor>
     <lootTierShift>1</lootTierShift>
     <labelPrefix>crystal-jacketed</labelPrefix>
+    <jacket>RM_BrineJacket</jacket>
+    <extraLoot>RM_SalvageLoot_GreyShards</extraLoot>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
   <!-- Warscar (Moderate; design §4 "Stripped: x0.35, -1 tier, plundered to skeletons").
@@ -77,9 +82,10 @@
     <labelPrefix>stripped</labelPrefix>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
-  <!-- Wasteland (Moderate; design §4 "Irradiated: x0.9"). The rad hazard on deconstruct is
-       the Wasteland's own hediffs and is NOT wired here (design: "radiation on deconstruct"
-       is owed with the Wasteland's step). -->
+  <!-- Wasteland (Moderate; design §4 "Irradiated: x0.9", "radiation on deconstruct"). The dose is
+       vanilla ToxicBuildup, the same dose the Wasteland's waste casks deal through tox gas (the
+       biome has no radiation hediff of its own), scaled by ToxicResistance. 0.12 per strip is
+       INVENTED: about eight careful strips to reach serious buildup unprotected. -->
   <RimMandrake.Wreckage.RM_WreckWeatheringDef>
     <defName>RM_WreckWeathering_Irradiated</defName>
     <label>irradiated</label>
@@ -87,6 +93,8 @@
     <yieldFactor>0.9</yieldFactor>
     <lootTierShift>0</lootTierShift>
     <labelPrefix>irradiated</labelPrefix>
+    <salvageHediff>ToxicBuildup</salvageHediff>
+    <salvageHediffSeverity>0.12</salvageHediffSeverity>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
   <!-- Deep Desert (Low; design §4 "Sand-scoured: x0.6"). -->
@@ -110,9 +118,8 @@
     <labelPrefix>sand-sealed</labelPrefix>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
-  <!-- Blue Desert (Moderate; design §4 "Ice-locked: x0.9, must mine free first"). KNOWN GAP:
-       the mineable ice jacket (a RockBase shell) is not expressible by a weathering row and
-       arrives with the Blue Desert's step-6 sitting, like the Grey Deep's crystal jacket. -->
+  <!-- Blue Desert (Moderate; design §4 "Ice-locked: x0.9, must mine free first"). The jacket is
+       the Blue Desert's own RM_BlueIceMineable, laid as a ring by the wreck field. -->
   <RimMandrake.Wreckage.RM_WreckWeatheringDef>
     <defName>RM_WreckWeathering_IceLocked</defName>
     <label>ice-locked</label>
@@ -120,6 +127,7 @@
     <yieldFactor>0.9</yieldFactor>
     <lootTierShift>0</lootTierShift>
     <labelPrefix>ice-locked</labelPrefix>
+    <jacket>RM_BlueIceMineable</jacket>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
   <!-- The Contagion (Eroded; design §4 "Eroded: x0.2, Scrap only, no rare roll"). -2 lands every
@@ -184,4 +192,23 @@
     <labelPrefix>storm-torn</labelPrefix>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
+  <!-- Fresh arrivals (design §3e, §4 Fall Line "Fresh: x1.0, +1 tier"): what the wreck fall delivers.
+       Nothing has picked it over. The "live power on 1 in 10" half is not built (a powered-wreck comp). -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Fresh</defName>
+    <label>fresh</label>
+    <description>It came down recently. The paint is scorched but whole, and nobody has had time to pick it over.</description>
+    <yieldFactor>1.0</yieldFactor>
+    <lootTierShift>1</lootTierShift>
+    <labelPrefix>fresh</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+  <!-- Long Shade crawler road (design §4 "Sun-baked: x0.8"): road casualties, cooked by the pinned sun. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_SunBaked</defName>
+    <label>sun-baked</label>
+    <description>Left on the open sand under a sun that never moves. The paint has gone to chalk and the seals have cracked.</description>
+    <yieldFactor>0.8</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>sun-baked</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 </Defs>
