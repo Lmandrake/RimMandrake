@@ -60,6 +60,9 @@
     <Compile Include="RM_WarscarRings.cs" />
     <Compile Include="RM_WarscarSalvage.cs" />
     <Compile Include="RM_GlowerShield.cs" />
+    <Compile Include="Kernel\RM_AerosolKernel.cs" />
+    <Compile Include="Kernel\RM_RingKernel.cs" />
+    <Compile Include="Kernel\RM_SettlingKernel.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

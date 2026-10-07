@@ -176,8 +176,8 @@ namespace RimMandrake.Scarlands
 
     public class MapComponent_Settling : MapComponent
     {
-        private const int SampleInterval = 250;
-        private const int TicksPerHour = 2500;
+        private const int SampleInterval = RM_SettlingKernel.SampleInterval;
+        private const int TicksPerHour = RM_SettlingKernel.TicksPerHour;
         private const int StepInterval = 10;
         private const int LiftFrontTicks = 1250;   // about half an hour of game time
         private const int PlainWipeTicks = 600;
@@ -280,7 +280,7 @@ namespace RimMandrake.Scarlands
                     if (HasFilm(n)) film++;
                 }
                 if (open == 0) continue;
-                bool ok = relaxed ? film >= 1 : film >= Mathf.CeilToInt(open * 0.6f);
+                bool ok = RM_SettlingKernel.RevealOk(open, film, relaxed);
                 if (!ok) continue;
                 buried.RemoveAt(i);
                 Thing shell = ThingMaker.MakeThing(RM_SettlingDefOf.RM_BuriedOrdnance);
@@ -380,13 +380,13 @@ namespace RimMandrake.Scarlands
             float wind = map.windManager.WindSpeed;
             if (cond == null)
             {
-                calmTicks = wind < RM_WarscarSettings.settlingCalmThreshold ? calmTicks + SampleInterval : 0;
-                if (calmTicks >= RM_WarscarSettings.settlingCalmHours * TicksPerHour) StartSettling();
+                calmTicks = RM_SettlingKernel.NextCalm(calmTicks, wind, RM_WarscarSettings.settlingCalmThreshold);
+                if (RM_SettlingKernel.ShouldStart(calmTicks, RM_WarscarSettings.settlingCalmHours)) StartSettling();
             }
             else
             {
-                windyTicks = wind > RM_WarscarSettings.settlingEndWind ? windyTicks + SampleInterval : 0;
-                if (windyTicks >= RM_WarscarSettings.settlingEndHours * TicksPerHour) cond.End();
+                windyTicks = RM_SettlingKernel.NextWindy(windyTicks, wind, RM_WarscarSettings.settlingEndWind);
+                if (RM_SettlingKernel.ShouldEnd(windyTicks, RM_WarscarSettings.settlingEndHours)) cond.End();
                 else RevealCheck(false);
             }
         }

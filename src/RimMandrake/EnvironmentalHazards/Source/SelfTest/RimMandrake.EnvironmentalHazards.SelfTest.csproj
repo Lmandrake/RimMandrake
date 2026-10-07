@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    EnvironmentalHazards offline fuzz (Approach B, same shape as FlowWorks/Bazaar/Ninefold). Plain net8.0, zero
+    RimWorld/Unity references: ../RM_AxisKernel.cs and ../RM_PoolKernel.cs are the PRODUCTION files the mod compiles
+    (RM_EnvironmentalHazards.csproj lists them explicitly), pulled in directly. A `using Verse;` landing in either breaks
+    this build - that is the guard rail.
+    Run (builds on Windows via winbuild staging, then runs the exe):
+      python3 src/RimMandrake/Utils/selftest_envhazards_fuzz.py [fuzz knobs]
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrake.EnvironmentalHazards.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.EnvironmentalHazards.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\RM_AxisKernel.cs" />
+    <Compile Include="..\RM_PoolKernel.cs" />
+    <Compile Include="AxisFuzz.cs" />
+    <Compile Include="PoolFuzz.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

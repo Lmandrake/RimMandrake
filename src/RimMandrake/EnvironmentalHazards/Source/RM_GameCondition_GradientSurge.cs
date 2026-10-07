@@ -69,8 +69,7 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             int frontCells = ext.frontCellsRange.RandomInRange;
-            float halfExtent = Mathf.Max(map.Size.x, map.Size.z) * 0.5f;
-            totalDelta = halfExtent > 0f ? frontCells / (2f * halfExtent) : 0f;
+            totalDelta = RM_AxisKernel.TotalDelta(frontCells, map.Size.x, map.Size.z);
 
             // Duration is the ramp-in itself — set by
             // IncidentWorker_MakeGameCondition from RUT_Surge's own
@@ -97,7 +96,7 @@ namespace RimMandrake.EnvironmentalHazards
             // quite to the old line, so no two maps age alike". Runs on the
             // MapComponent, independent of this condition's own (already
             // ending) lifetime — see this class's header.
-            float recedeDelta = -totalDelta * (1f - ext.residualFraction);
+            float recedeDelta = RM_AxisKernel.RecedeDelta(totalDelta, ext.residualFraction);
             float recedeDays = ext.recedeDaysRange.RandomInRange;
             int recedeTicks = Mathf.Max(1, Mathf.RoundToInt(recedeDays * GenDate.TicksPerDay));
             axis.ShiftAxis(recedeDelta, recedeTicks, isRecede: true);

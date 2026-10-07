@@ -20,18 +20,16 @@ namespace RimMandrake.Scarlands
         public RM_CompProperties_WarscarRing() { compClass = typeof(RM_CompWarscarRing); }
     }
 
-    public enum RingCondition { Dead = 0, Failing = 1, Working = 2 }
-
     public class RM_CompWarscarRing : RM_CompAerosolScreen
     {
-        public const float WakeRange = 40f;
+        public const float WakeRange = RM_RingKernel.WakeRange;
         private bool wakeCached;
 
         // Part 7: condition rolled at generation, saved, revealed by the evaluate job.
         private int cond = -1;
         private bool evaluated;
 
-        public RingCondition Condition => (RingCondition)Mathf.Max(cond, 0);
+        public RingCondition Condition => RM_RingKernel.Effective(cond);
         public bool Evaluated => evaluated;
         public void SetCondition(RingCondition c, bool isEvaluated) { cond = (int)c; evaluated = isEvaluated; }
         public void Evaluate() { evaluated = true; }
@@ -48,7 +46,7 @@ namespace RimMandrake.Scarlands
         {
             if (cond >= 0) return;
             // Dead def: always dead. Live def: 70% working, 30% failing. The first ring of a map is forced Working by the genstep.
-            cond = (int)(RingProps.dead ? RingCondition.Dead : (Rand.Chance(0.7f) ? RingCondition.Working : RingCondition.Failing));
+            cond = RingProps.dead ? (int)RingCondition.Dead : RM_RingKernel.RollLive(Rand.Value);
         }
 
         public RM_CompProperties_WarscarRing RingProps => (RM_CompProperties_WarscarRing)props;
@@ -59,8 +57,8 @@ namespace RimMandrake.Scarlands
         {
             get
             {
-                if (!RingProps.dead) return base.IsScreenLive && Condition == RingCondition.Working;
-                return RM_WarscarSettings.shipWakesLine && wakeCached && parent.Spawned;
+                return RM_RingKernel.IsScreenLive(RingProps.dead, !RingProps.dead && base.IsScreenLive, Condition,
+                    RM_WarscarSettings.shipWakesLine, wakeCached, parent.Spawned);
             }
         }
 
@@ -84,9 +82,8 @@ namespace RimMandrake.Scarlands
             ThingDef engine = ThingDefOf.GravEngine;
             if (engine == null) return false;
             List<Thing> engines = map.listerThings.ThingsOfDef(engine);
-            float r2 = WakeRange * WakeRange;
             for (int i = 0; i < engines.Count; i++)
-                if (engines[i].Spawned && engines[i].Position.DistanceToSquared(parent.Position) <= r2) return true;
+                if (engines[i].Spawned && RM_RingKernel.EngineWakes(engines[i].Position.x, engines[i].Position.z, parent.Position.x, parent.Position.z)) return true;
             return false;
         }
 
@@ -104,14 +101,14 @@ namespace RimMandrake.Scarlands
         {
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
             if (!parent.Spawned) yield break;
-            if (RingProps.wild && !evaluated)
+            if (RingProps.wild && RM_RingKernel.CanEvaluate(evaluated))
                 yield return Toggle(RM_RingDesignations.Evaluate, "Evaluate ring", "Have someone with Crafting 6 work out this ring's true condition.");
-            if (RM_WarscarSettings.ringSalvageEnabled && RingProps.wild && evaluated)
+            if (RM_WarscarSettings.ringSalvageEnabled && RM_RingKernel.CanSalvage(evaluated, RingProps.wild))
                 yield return Toggle(RM_RingDesignations.Salvage,
                     Condition == RingCondition.Dead ? "Strip ring" : "Uninstall ring",
                     Condition == RingCondition.Dead ? "Break the dead ring down for steel, components and perhaps a projector core."
                         : "Take the ring up and haul it home. A working ring ends its dome here when it comes out.");
-            if (RM_WarscarSettings.ringSalvageEnabled && !RingProps.wild && !RingProps.dead && Condition == RingCondition.Failing)
+            if (RM_WarscarSettings.ringSalvageEnabled && !RingProps.dead && RM_RingKernel.CanRepair(RingProps.wild, Condition))
                 yield return Toggle(RM_RingDesignations.Repair, "Repair ring", "Needs 2 industrial components and Crafting 8.");
         }
 
@@ -141,7 +138,7 @@ namespace RimMandrake.Scarlands
             IntVec3 pos = parent.Position;
             RingCondition c = Condition;
             parent.Destroy(DestroyMode.Vanish);
-            if (c == RingCondition.Dead)
+            if (RM_RingKernel.Salvage(c) == SalvageResult.Strip)
             {
                 Drop(ThingDefOf.Steel, Rand.RangeInclusive(30, 60), pos, map);
                 Drop(ThingDefOf.ComponentIndustrial, Rand.RangeInclusive(1, 3), pos, map);
@@ -156,7 +153,7 @@ namespace RimMandrake.Scarlands
             if (salvaged == null) return;
             Thing ring = ThingMaker.MakeThing(salvaged);
             RM_CompWarscarRing rc = ring.TryGetComp<RM_CompWarscarRing>();
-            if (rc != null) rc.SetCondition(c, true);
+            if (rc != null) rc.SetCondition(RM_RingKernel.SalvagedCondition(c), true);
             MinifiedThing mini = MinifyUtility.MakeMinified(ring);
             GenPlace.TryPlaceThing(mini, pos, map, ThingPlaceMode.Near);
         }
@@ -220,7 +217,7 @@ namespace RimMandrake.Scarlands
             List<IntVec3> placed = new List<IntVec3>();
             for (int n = 0; n < count; n++)
             {
-                ThingDef def = (n == 0 || Rand.Chance(0.4f)) ? live : dead;
+                ThingDef def = (n == 0 || Rand.Chance(RM_RingKernel.LiveSpawnChance)) ? live : dead;
                 for (int attempt = 0; attempt < 200; attempt++)
                 {
                     float a = Rand.Range(0f, 360f) * Mathf.Deg2Rad;
@@ -237,7 +234,7 @@ namespace RimMandrake.Scarlands
                             if (!cell.Standable(map) || cell.GetEdifice(map) != null || cell.GetFirstItem(map) != null) { ok = false; break; }
                     if (!ok) continue;
                     Thing ring = GenSpawn.Spawn(ThingMaker.MakeThing(def), c, map);
-                    if (n == 0 && def == live) ring.TryGetComp<RM_CompWarscarRing>()?.SetCondition(RingCondition.Working, false);
+                    if (RM_RingKernel.FirstLiveForcedWorking(n, def == live)) ring.TryGetComp<RM_CompWarscarRing>()?.SetCondition(RingCondition.Working, false);
                     placed.Add(c);
                     break;
                 }

@@ -67,7 +67,7 @@ namespace RimMandrake.Scarlands
         protected override DesignationDef Desig { get { return RM_RingDesignations.Evaluate; } }
         protected override JobDef JobDefToUse { get { return DefDatabase<JobDef>.GetNamed("RM_EvaluateRing"); } }
         protected override int MinCrafting { get { return 6; } }
-        protected override bool ThingOk(RM_CompWarscarRing c) { return !c.Evaluated; }
+        protected override bool ThingOk(RM_CompWarscarRing c) { return RM_RingKernel.CanEvaluate(c.Evaluated); }
     }
 
     public class RM_WorkGiver_SalvageRing : RM_WorkGiver_RingBase
@@ -76,7 +76,7 @@ namespace RimMandrake.Scarlands
         protected override JobDef JobDefToUse { get { return DefDatabase<JobDef>.GetNamed("RM_SalvageRing"); } }
         protected override int MinCrafting { get { return 6; } }
         protected override bool Gated { get { return true; } }
-        protected override bool ThingOk(RM_CompWarscarRing c) { return c.Evaluated && c.RingProps.wild; }
+        protected override bool ThingOk(RM_CompWarscarRing c) { return RM_RingKernel.CanSalvage(c.Evaluated, c.RingProps.wild); }
     }
 
     public class RM_WorkGiver_RepairRing : RM_WorkGiver_RingBase
@@ -85,7 +85,7 @@ namespace RimMandrake.Scarlands
         protected override JobDef JobDefToUse { get { return DefDatabase<JobDef>.GetNamed("RM_RepairRing"); } }
         protected override int MinCrafting { get { return 8; } }
         protected override bool Gated { get { return true; } }
-        protected override bool ThingOk(RM_CompWarscarRing c) { return !c.RingProps.wild && c.Condition == RingCondition.Failing; }
+        protected override bool ThingOk(RM_CompWarscarRing c) { return RM_RingKernel.CanRepair(c.RingProps.wild, c.Condition); }
 
         protected override Job Make(Pawn pawn, Thing t, RM_CompWarscarRing c)
         {
@@ -177,7 +177,7 @@ namespace RimMandrake.Scarlands
                 RM_CompWarscarRing c = job.targetA.Thing.TryGetComp<RM_CompWarscarRing>();
                 if (c == null) return;
                 pawn.carryTracker.DestroyCarriedThing();
-                c.SetCondition(RingCondition.Working, true);
+                c.SetCondition(RM_RingKernel.Repaired(), true);
                 Designation d = pawn.Map.designationManager.DesignationOn(job.targetA.Thing, RM_RingDesignations.Repair);
                 if (d != null) pawn.Map.designationManager.RemoveDesignation(d);
                 Messages.Message("The ring is repaired and humming.", job.targetA.Thing, MessageTypeDefOf.PositiveEvent, false);
