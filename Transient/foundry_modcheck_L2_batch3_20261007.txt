@@ -1,0 +1,99 @@
+[lscrub-note] shipped defs resolved: 70
+[lscrub] 03:33:19 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 03:33:19 biome_weather_table PASS 
+[lscrub] 03:33:19 biome_density_and_flora PASS 
+[lscrub] 03:33:19 biome_lean_extension PASS 
+[lscrub] 03:33:19 rules_armed PASS 
+[lscrub] 03:33:19 thicket_smotherable PASS 
+[lscrub] 03:33:19 vissler_arm_is_rotting_meat PASS 
+[lscrub-note] refuel with dead venomvine: {"stackBefore": 20, "stackAfter": 20, "campfire": ["Fuel: 19 / 20 (1.9 days)"]}
+[lscrub] 03:34:42 dead_venomvine_fuels_fire FAIL ExpectationFailed: the colonist did not burn any dead venomvine (stack 20 -> 20): the fuel patch does not apply to the Campfire's fuel filter
+[lscrub] 03:34:45 defaults PASS 
+[lscrub] 03:34:45 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 03:34:46 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 03:34:46 leanEnabled_roundtrip PASS 
+[lscrub] 03:34:46 leanScentEnabled_roundtrip PASS 
+[lscrub] 03:34:46 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 14, "lost": []}
+[lscrub] 03:34:47 fauna_spawns PASS 
+[lscrub] 03:34:47 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 18, "lost": ["RM_Grellspine"]}
+[lscrub] 03:34:51 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub-note] Stall: path lengths (cells) over 1500 ticks: {"RM_Thornhold352803": {"alive": 7, "samples": 7, "path": 20.132840408645517}, "RM_Shirrel352804": {"alive": 7, "samples": 7, "path": 16.278820596099706}}
+[lscrub] 03:35:18 stall_freezes_small FAIL ExpectationFailed: RM_Thornhold (body 0.4 < 0.5) moved 20.1 cells in the Stall; it should hold still (control RM_Shirrel moved 16.3)
+[lscrub] 03:35:18 stall_toggle_off_wanders UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:35:18 stall_master_off_wanders UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:35:19 gale_site_ready PASS 
+[lscrub] 03:35:29 gale_deafens_outdoors PASS 
+[lscrub] 03:35:29 gale_spares_roofed PASS 
+[lscrub] 03:35:39 gale_deafen_toggle_off PASS 
+[lscrub-note] turbine output W (on, off, on): [4485.0, 3450.0, 4485.0]
+[lscrub] 03:36:50 gale_turbine_surge PASS 
+[lscrub] 03:38:18 gale_turbine_breakdown FAIL ExpectationFailed: no breakdown on a running turbine after two rolls at a 0.01-day mean in the Gale: ['Power output: 4485 W', 'Grid excess: 4485 W (0 Wd stored)']
+[lscrub] 03:38:19 lash_site_ready PASS 
+[lscrub] 03:38:25 lash_toggle_off_quiet FAIL ExpectationFailed: twitcherLashEnabled OFF but the colonist next to the stand gained 2 hediff(s)
+[lscrub] 03:38:25 lash_strikes_once UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:38:26 smother_site_ready PASS 
+[lscrub] 03:39:30 smother_claims_stands PASS 
+[lscrub] 03:40:31 smother_off_holds_claims FAIL ExpectationFailed: clock stalled at 1034250 during a 9000-tick wait (a modal dialog pausing the game?)
+[lscrub] 03:40:31 smother_matures_to_dead_wood UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] dripping harvest: venom items / stand standing / inspect: [0, 0, []]
+[lscrub] 03:41:10 dripping_survives_harvest UNMEASURED UNMEASURED: no venom was harvested in 1200 ticks (job not done): cannot judge whether the stand survives
+[lscrub] 03:41:11 crown_site_ready PASS 
+[lscrub-note] crown trial OFF: dustflutter distances to the stand: [42.42640687119285, 65.7419196555744, 55.154328932550705]
+[lscrub] 03:41:38 crown_toggle_off_stays_away PASS 
+[lscrub-note] crown trial ON: dustflutter distances to the stand: [58.077534382926416, 23.345235059857504, 70.32780389006896]
+[lscrub] 03:42:04 crown_mob_gathers FAIL ExpectationFailed: only 0 of 3 dustflutters gathered within 6 cells of a crown stand in the Stall after 1500 ticks: [58.077534382926416, 23.345235059857504, 70.32780389006896]
+[lscrub] 03:42:40 bloom_toggle_off_quiet FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[lscrub] 03:42:40 bloom_answers_a_walker UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:42:40 bloom_sway_and_exit_hole UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] fire stamp proof (on): "UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)"
+[lscrub] 03:42:42 stamp_answers_a_blaze UNMEASURED UNMEASURED: fire stamp proof did not answer PASS/FAIL: UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)
+[lscrub-note] fire stamp proof (off): "UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)"
+[lscrub] 03:42:42 stamp_toggle_off_ignores_fire UNMEASURED UNMEASURED: fire stamp proof did not answer PASS/FAIL: UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)
+[lscrub-note] rearing proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_1599d0f121504e2794ed30b1521bc76c', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 rearing_acts UNMEASURED UNMEASURED: rearing proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_1599d0f121504e2794ed30
+[lscrub-note] rearing proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_284d12450819474889c1f1d99098b080', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 rearing_toggle_off UNMEASURED UNMEASURED: rearing proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_284d12450819474889c1f1
+[lscrub-note] walking proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_6c01b6ad4ff64152af149b82f5dbfa3b', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 walking_acts UNMEASURED UNMEASURED: walking proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_6c01b6ad4ff64152af149b
+[lscrub-note] walking proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_3e8871962ec647a682dd04760decf7d9', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 walking_toggle_off UNMEASURED UNMEASURED: walking proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_3e8871962ec647a682dd04
+[lscrub-note] hoard proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_21a24abe1daa4ade91cafe6759babe7f', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 hoard_acts UNMEASURED UNMEASURED: hoard proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_21a24abe1daa4ade91cafe
+[lscrub-note] hoard proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_82a001b916e44362b670461b3e18f61e', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 hoard_toggle_off UNMEASURED UNMEASURED: hoard proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_82a001b916e44362b67046
+[lscrub-note] quench proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_7dd6a49e23714deabce61531c449d685', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 quench_acts UNMEASURED UNMEASURED: quench proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_7dd6a49e23714deabce615
+[lscrub-note] quench proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_61f79a4833d74b2f908d93419081f0dc', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 quench_toggle_off UNMEASURED UNMEASURED: quench proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_61f79a4833d74b2f908d93
+[lscrub-note] sworn proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_b9692b1bd75d4bc2897cdb07e1178423', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 sworn_acts UNMEASURED UNMEASURED: sworn proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_b9692b1bd75d4bc2897cdb
+[lscrub-note] sworn proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_e14965f52a53418db18605aa75d919e8', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 sworn_toggle_off UNMEASURED UNMEASURED: sworn proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_e14965f52a53418db18605
+[lscrub-note] shedding proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_631013f30df2407796bbd4ac14aa3d35', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:42 shedding_acts UNMEASURED UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_631013f30df2407796bbd4
+[lscrub-note] shedding proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_d3e658d024bc4fb4b403d70466efc839', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-to"
+[lscrub] 03:42:43 shedding_toggle_off UNMEASURED UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_d3e658d024bc4fb4b403d7
+[lscrub] 03:42:44 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: ["RM_Barkwarden354044", "RM_Barkwarden354045", "RM_Barkwarden354046"]
+[lscrub] 03:42:44 guardians_roost_on_spawn PASS 
+[lscrub-note] sweetline label / inspect: ["Gomond (sweetline tree)", ["Ready to harvest.", "Loose sweetline felt falls in 14 hours.", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 03:42:44 station_named_and_timed PASS 
+[lscrub] 03:42:44 station_toggle_off_plain PASS 
+[lscrub-note] sweetline wool beside the tree before / after a 5.5-day jump: [0, 0]
+[lscrub] 03:43:20 station_sheds_wool FAIL ExpectationFailed: a mature sweetline tree shed 0 sweetline felt after its 5-day timer passed (expect 5)
+[lscrub] 03:43:20 scratch_toggle_off_refused UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:43:20 scratch_drops_coat UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:43:20 visitors_toggle_off_quiet UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:43:20 visitors_come_and_leave_marks UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:43:20 felt_comfort_toggle_off_plain UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:43:20 felt_furniture_comfort UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:43:20 map_step_chance_zero_plants_none UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 03:43:20 map_step_plants_one_or_two UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 605}
+[lscrub] 03:43:21 log_clean PASS 
+[modcheck] LeaningScrub: no ledger item MODCHECK_LEANINGSCRUB_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\LeaningScrub_20261007T104321Z.html only
+LeaningScrub         RED  (state)
+EXIT 1
