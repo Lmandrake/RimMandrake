@@ -121,7 +121,6 @@
     <researchPrerequisites>
       <li>RM_Research_TractionLance</li>
     </researchPrerequisites>
-    <constructEffect>ConstructMetal</constructEffect>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <placeWorkers>
       <li>PlaceWorker_PreventInteractionSpotOverlap</li>
