@@ -48,12 +48,21 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public void Register(CompPowerTap t) => taps.Add(t);
         public void Deregister(CompPowerTap t) => taps.Remove(t);
         public void QueueAutoLink(CompAerialAnchor a) { if (!pendingAuto.Contains(a)) pendingAuto.Add(a); }
+        public bool IsAutoLinkPending(CompAerialAnchor a) => pendingAuto.Contains(a);
 
-        public void Notify_SpansChanged() => meshes.Clear();      // local drops re-sign themselves every frame (DrawLocalDrops)
+        public void Notify_SpansChanged() => ClearSpanMeshes();      // local drops re-sign themselves every frame (DrawLocalDrops)
+
+        /// <summary>GPT source read 2026-10-06 A18: the cached span meshes are Unity objects; clearing the cache used to drop them
+        /// without Object.Destroy (a leak per span per change).</summary>
+        private void ClearSpanMeshes()
+        {
+            foreach (SpanMesh m in meshes.Values) if (m?.mesh != null) UnityEngine.Object.Destroy(m.mesh);
+            meshes.Clear();
+        }
 
         public void Notify_SettingsChanged()
         {
-            meshes.Clear();
+            ClearSpanMeshes();
             foreach (CompAerialAnchor a in Anchors) DirtyGround(a);
         }
 
@@ -85,6 +94,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 Watchdog();
                 RoofSweep();
                 PollFallen();
+                FallenGroundCheck();
             }
             Sparks(now);
             TapSparks(now);
@@ -291,7 +301,40 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             int n = f.wires > 0 ? f.wires : AerialMath.StrandCount(tips.Count, tips.Count, AerialSettings.maxStrands);
             l = AerialMath.LayFallenStrands(tips, new P2(b.x, b.z), new P2(f.toward.x + 0.5, f.toward.z + 0.5), f.length, f.seed, n, walk);
             lays[f] = l;
+            laySig[f] = (a, WalkSig(a.Position, f.length));
             return l;
+        }
+
+        // GPT source read 2026-10-06 A8: a fallen wire's lay was cached until DirtyCell, which nothing walkability-related calls,
+        // so a wall built across a fallen wire left it drawn through the wall. Each cached lay keeps a walkability signature of
+        // the ground it can reach; the 250-tick sweep re-prints when one changes.
+        private readonly Dictionary<FallenCord, (CompAerialAnchor a, ulong sig)> laySig = new Dictionary<FallenCord, (CompAerialAnchor a, ulong sig)>();
+
+        private ulong WalkSig(IntVec3 home, float length)
+        {
+            int r = Mathf.CeilToInt(length) + 2;
+            PathGrid pg = map.pathing.Normal.pathGrid;
+            ulong h = 1469598103934665603UL;
+            for (int z = home.z - r; z <= home.z + r; z++)
+                for (int x = home.x - r; x <= home.x + r; x++)
+                {
+                    var c = new IntVec3(x, 0, z);
+                    h = (h ^ (ulong)(!c.InBounds(map) ? 3 : pg.WalkableFast(c) ? 1 : 2)) * 1099511628211UL;
+                }
+            return h;
+        }
+
+        private void FallenGroundCheck()
+        {
+            var changed = new List<IntVec3>();
+            foreach (var kv in laySig.ToList())
+            {
+                if (!lays.ContainsKey(kv.Key) || !kv.Value.a.Spawned) { laySig.Remove(kv.Key); continue; }
+                if (WalkSig(kv.Value.a.Position, kv.Key.length) != kv.Value.sig) changed.Add(kv.Value.a.Position);
+            }
+            if (changed.Count == 0) return;
+            laySig.Clear();
+            foreach (IntVec3 c in changed) DirtyCell(c);      // clears every cached lay and re-prints that anchor's section
         }
 
         /// <summary>The middle fallen wire of <paramref name="f"/> (sparks, glow, the probe's single-wire fields).</summary>
@@ -626,6 +669,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt((AerialMaterials.AttachZ(a) + 7f * AerialMaterials.AttachZ(b)) * 1000f));
             sig = Gen.HashCombineInt(sig, Gen.HashCombineInt(lm.Look.GetHashCode(), (AerialMaterials.LookOf(a) + "|" + AerialMaterials.LookOf(b)).GetHashCode()));
             if (meshes.TryGetValue(key, out SpanMesh m) && m.sig == sig) return m;
+            if (m?.mesh != null) UnityEngine.Object.Destroy(m.mesh);     // A18: the stale span's mesh, replaced below
             m = SpanMesh.Build(a, b, y, sig, lm);
             meshes[key] = m;
             return m;

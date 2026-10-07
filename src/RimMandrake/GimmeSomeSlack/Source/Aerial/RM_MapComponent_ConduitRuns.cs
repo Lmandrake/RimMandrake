@@ -86,7 +86,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             CompAerialAnchor a = CompAerialAnchor.Of(t);
             if (a != null)
                 foreach (SpanLink s in a.links)
-                    if (s.other?.parent != null && s.other.Spawned) yield return s.other.parent;
+                    if (s.state == SpanState.Up && s.other?.parent != null && s.other.Spawned) yield return s.other.parent;   // GPT read A15: never across a cut span
         }
 
         /// <summary>The run containing seed (flood fill), never stepping onto an excluded member or across the cut link.</summary>
@@ -199,7 +199,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 List<Thing> run = RunOfLamp(lamp);
                 look = run == null ? null : Info(run).Look ?? StylePicker.DefaultLook;
-                if (look == null) { lastMessage = "This lamp is not hooked to a cable run."; return false; }
+                if (look == null)
+                {
+                    lastMessage = "This lamp is not hooked to a cable run.";
+                    // GPT source read 2026-10-06 A20: this used to return before any message was shown
+                    if (message && Current.ProgramState == ProgramState.Playing) Messages.Message(lastMessage, new LookTargets(lamp), MessageTypeDefOf.RejectInput, historical: false);
+                    return false;
+                }
             }
             if (!AerialStyles.IsLook(look)) return false;
             bool changed = SetStyle(lamp, look);

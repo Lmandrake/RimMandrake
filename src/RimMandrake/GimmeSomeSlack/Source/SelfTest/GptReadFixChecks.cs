@@ -39,6 +39,28 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(AerialMath.TapStolenPerTick(500, 1000 * k, 600, k, false, true, 0, false) == 0, "A2 switched-off tap takes 0");
             Check(AerialMath.TapStolenPerTick(500, 1000 * k, 600, k, false, true, 0, true) > 0, "A2 can-fail: the same tap switched on takes power");
 
+            // B11: with auto-resume off, NO interrupted order (Deploy, Move, Retract) on a dropped hose resumes unforced
+            bool any = false;
+            foreach (HosePendingOrder o in new[] { HosePendingOrder.Deploy, HosePendingOrder.Move, HosePendingOrder.Retract })
+                any |= HoseOrderRules.MayResume(HoseCarryState.Dropped, o, false, false);
+            Check(!any, "B11 auto-resume off: no dropped order resumes unforced");
+            Check(HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.Move, true, false) && HoseOrderRules.MayResume(HoseCarryState.Dropped, HosePendingOrder.Retract, false, true)
+                  && HoseOrderRules.MayResume(HoseCarryState.Laid, HosePendingOrder.Move, false, false), "B11 forced, setting on, or a laid (not dropped) hose still go");
+            Check(HosePendingOrder.Move != HosePendingOrder.Deploy, "B11 can-fail: the old rule gated Deploy only, so a dropped Move resumed");
+            // B13: a path failure on the current order clears it (before or after the grab); anything else keeps it
+            Check(!HoseOrderRules.KeepOrderAfterJob(true, true) && HoseOrderRules.KeepOrderAfterJob(false, true) && HoseOrderRules.KeepOrderAfterJob(true, false),
+                  "B13 path failure on the current order clears it; a draft or a newer order keeps it");
+            // B10: A (0) has a pending order onto B (1), nothing is laid; B's order onto A must read as a loop
+            int[] laidNext = { -1, -1 }, pendNext = { 1, -1 };
+            bool[] pend = { true, false };
+            Check(HoseRelay.WouldLoop(1, 0, i => HoseRelay.IntendedNext(laidNext[i], pend[i], pendNext[i])), "B10 two pending orders A->B, B->A read as a loop");
+            Check(!HoseRelay.WouldLoop(1, 0, i => laidNext[i]), "B10 can-fail: following laid hoses only, the ring is missed");
+            // B7/A13: a tree's route cost is part of the corridor signature
+            var tw = new CordWorld(4, 4);
+            ulong before = CordBuilder.CellSig(tw, new Cell(1, 1));
+            tw.SetExtraCost(new Cell(1, 1), 1.5f);
+            Check(CordBuilder.CellSig(tw, new Cell(1, 1)) != before, "B7/A13 planting a tree changes the cell's corridor signature");
+            Check(tw.IsWalkable(new Cell(1, 1)), "B7/A13 can-fail: the tree cell stays walkable, so the old walk+door hash could not see it");
             LeadOut();
             LayLength();
         }

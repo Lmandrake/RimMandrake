@@ -253,10 +253,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 for (int x = p.CX0; x <= p.CX1; x++)
                 {
                     var c = new Cell(x, z);
-                    h = (h ^ (ulong)(w.IsWalkable(c) ? 1 : 2) ^ (w.IsDoor(c) ? 4UL : 0UL)) * 1099511628211UL;
+                    h = (h ^ CellSig(w, c)) * 1099511628211UL;
                 }
             return h;
         }
+
+        /// <summary>One cell's part of a corridor hash: walkable, door, and (GPT source read 2026-10-06 B7/A13) the route cost
+        /// (trees 1.5, water 3), so a tree cut or planted re-plans the cords and hoses through it instead of leaving the old
+        /// route standing until a reload.</summary>
+        public static ulong CellSig(CordWorld w, Cell c) =>
+            (ulong)(w.IsWalkable(c) ? 1 : 2) ^ (w.IsDoor(c) ? 4UL : 0UL) ^ ((ulong)Math.Round(w.ExtraCost(c) * 16) << 3);
 
         /// <summary>An edge with a machine at either end is that device's lead: one cord (round 3).</summary>
         public static bool DeviceLead(CordNode a, CordNode b) => (a.IsMachine && a.Machine != null) || (b.IsMachine && b.Machine != null);
