@@ -455,6 +455,13 @@ window.artTogglePurge = (id, sha) => {
 addEventListener('DOMContentLoaded', () => {
   /* A decision click is recorded as decidedAt, so a row touched ONLY to purge or annotate
      never turns its prefill into a ruling at ingest (art_sheet.py docstring). */
+  /* Any save of a row's record first writes the defaulted variants into it, so the default is data. */
+  const origQueue = window.queue;
+  if (typeof origQueue === 'function') window.queue = function (id) {
+    const it = byId.get(id);
+    if (it && DEC[id]) window.artEnsureVariants(it, DEC[id]);
+    return origQueue.apply(this, arguments);
+  };
   const orig = window.setDecision;
   if (typeof orig === 'function') window.setDecision = function (id, key, opts) {
     orig(id, key, opts);
@@ -1002,11 +1009,30 @@ if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelector
   const fr = el.dataset.anim.split('|'), i = ((+el.dataset.i || 0) + 1) % fr.length;
   el.dataset.i = i; const im = el.querySelector('img'); if (im) im.src = fr[i];
 }), 66);
+/* Variant default (owner, 2026-10-06): a row whose record has no `variants` key starts with EVERY set that is ours
+   (not a donor original), not purged and not purgedLive marked as a variant; the owner turns off what is wrong.
+   An explicit list, even an empty one, is never overwritten. */
+window.artDefaultVariants = (it, d) => {
+  const purge = new Set((d && d.purge) || []);
+  const out = [];
+  for (const g of (it.graphics || [])) for (const c of g.cols) {
+    if (c.purgedLive || (c.kind === 'donor' && !c.ours) || out.includes(c.letter)) continue;
+    const shas = Object.values(c.faces || {});
+    if (shas.length && shas.every(x => purge.has(x))) continue;
+    out.push(c.letter);
+  }
+  return out.sort((a, b) => LETTER_ORDER.indexOf(a) - LETTER_ORDER.indexOf(b));
+};
+window.artEnsureVariants = (it, rec) => {
+  if (rec && !Object.prototype.hasOwnProperty.call(rec, 'variants')) {
+    rec.variants = window.artDefaultVariants(it, rec); rec.variantsDefault = true;
+  }
+};
 const _itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
   const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
-  const variants = new Set(d.variants || []);
+  const variants = new Set(Object.prototype.hasOwnProperty.call(d, 'variants') ? d.variants : window.artDefaultVariants(it, d));
   const cell = (c, f) => {
     const s = c.faces[f];
     if (!s) return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
@@ -1098,8 +1124,10 @@ window.artToggleVariant = (id, letter) => {
   if (frozen) return;
   const it = byId.get(id); if (!it) return;
   const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  window.artEnsureVariants(it, rec);
   const s = new Set(rec.variants || []);
   if (s.has(letter)) s.delete(letter); else s.add(letter);
+  delete rec.variantsDefault;
   rec.variants = [...s].sort((a, b) => LETTER_ORDER.indexOf(a) - LETTER_ORDER.indexOf(b));
   rec.variantsAt = new Date().toISOString();
   queue(id); patchRow(id); paintCounts();
