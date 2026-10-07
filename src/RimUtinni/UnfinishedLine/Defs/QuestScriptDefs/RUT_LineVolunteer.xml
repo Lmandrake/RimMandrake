@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_LineVolunteer — UNFINISHED_LINE_WORLD_FOUNDRY_1 (design droid_mass_production_quest_chain_2026-10-02.md §4.2
+  "Volunteers", §4.4 brake 4). Owner Q1=A, 2026-10-03.
+
+  THE SPEC (rimworld-quests §2):
+    ask       take in one free Enclave droid who has chosen to join the clan
+    reason    the line gave a fallen Enclave head a new body, and the droid wants to work among the people who
+              helped build that line
+    choice    accept a hand who must stay free, or let the offer lapse
+    failure   none inside the quest. The stake is outside it: bolting or wiping the volunteer later collapses
+              Enclave goodwill and closes the line to you (WorldComponent_RUT_EnclaveFoundry.CheckBetrayal)
+    reward    the droid itself; no silver
+    deadline  the offer window (expireDaysRange); nothing to complete after acceptance
+
+  FIRING: route 4-shaped (code). WorldComponent_RUT_EnclaveFoundry.TryOfferVolunteer generates it on its own timer
+  while the line runs, the Enclaves are allied and the cap is not reached (Mod Settings: volunteerDays,
+  volunteerCap). isRootSpecial + weight 0 so the storyteller never offers it. Dev: Debug actions -> Quests ->
+  "Unfinished Line: offer a line volunteer now".
+
+  NOT a spine beat and no epicParent: the spine (RUT_UnfinishedLine) has already ended when the line stands, and
+  epicParent is read only by QuestNode_Root_RelicHunt (RimSage, decompiled 1.6) - it would nest nothing.
+
+  SHAPE: beat 1's (RUT_UnfinishedLine_1_Count) pawn generation and QuestNode_PawnsArrive joinPlayer, without the
+  return trip. QuestNode_RUT_LineVolunteers with no inSignal arms on acceptance and hands the droid to the foundry
+  watch, which strips any bolt/wipe mark a generator left on it. The droid kinds are beat 1's four Droidworks
+  civilian kinds (the Enclave faction's own kinds still MayRequire Droid Depot).
+  PROVISIONAL: expireDaysRange 4~6, the 2500-tick settle before the quest closes.
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>RUT_LineVolunteer</defName>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <expireDaysRange>4~6</expireDaysRange>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->A hand off the line</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[volunteers0_nameDef] fell once, and [enclaveFaction_name] kept [volunteers0_possessive] head. The line you helped build has given [volunteers0_objective] a body again, and [volunteers0_nameDef] has asked to walk to your camp and work beside the Jawa.\n\nNobody is sending [volunteers0_objective]; the choice was [volunteers0_possessive] own, and the Enclaves will be watching what the choice costs. A volunteer comes free and stays free: put a restraining bolt in [volunteers0_objective], or wipe [volunteers0_possessive] memory, and the line will not run for you again.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+        <li Class="QuestNode_GetWalkInSpot" />
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_GetLineFactions">
+          <storeEnclaveAs>enclaveFaction</storeEnclaveAs>
+          <storeHiveAs>hiveFaction</storeHiveAs>
+          <storeSettlementAs>settlement</storeSettlementAs>
+        </li>
+
+        <!-- One volunteer. addToList, so [volunteers0_*] text and volunteers.* signals hang on the list var. -->
+        <li Class="QuestNode_RandomNode">
+          <nodes>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_T3UD</kindDef><faction>$enclaveFaction</faction><addToList>volunteers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_R8009UD</kindDef><faction>$enclaveFaction</faction><addToList>volunteers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_GE3LD</kindDef><faction>$enclaveFaction</faction><addToList>volunteers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidGood_3C</kindDef><faction>$enclaveFaction</faction><addToList>volunteers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+          </nodes>
+        </li>
+
+        <!-- On acceptance: the droid walks in and joins. -->
+        <li Class="QuestNode_PawnsArrive">
+          <pawns>$volunteers</pawns>
+          <joinPlayer>true</joinPlayer>
+          <customLetterLabel TKey="LetterLabelLineVolunteerArrived">A hand off the line</customLetterLabel>
+          <customLetterText TKey="LetterTextLineVolunteerArrived">[volunteers0_nameDef] has walked in from the flats in a body that still smells of the line. No bolt sits in [volunteers0_possessive] chassis, and [volunteers0_nameDef] asks for none.\n\nThe Enclaves gave this one freely. They will take everything back if you treat [volunteers0_objective] as property.</customLetterText>
+        </li>
+
+        <!-- On acceptance: hand the volunteer to the foundry watch (bolt/wipe = betrayal). -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineVolunteers">
+          <pawns>$volunteers</pawns>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>2500</delayTicks>
+          <outSignalComplete>VolunteerSettled</outSignalComplete>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>VolunteerSettled</inSignal>
+          <outcome>Success</outcome>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>InvalidPreAcceptance</outcome>
+          <signalListenMode>NotYetAcceptedOnly</signalListenMode>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

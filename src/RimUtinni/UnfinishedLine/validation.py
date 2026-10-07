@@ -23,7 +23,8 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 from modcheck import Suite, ExpectationFailed  # noqa: E402
 
 suite = Suite("UnfinishedLine")
-suite.toggles = ["chainEnabled", "brokeredTruceEnabled", "coreBrokerEnabled", "lendSkillGateEnabled"]
+suite.toggles = ["chainEnabled", "brokeredTruceEnabled", "coreBrokerEnabled", "lendSkillGateEnabled",
+                 "lineInWorldEnabled", "empireStrikesEnabled"]
 
 PROOF = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineProof"
 SETTINGS_TYPE = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings"
@@ -238,6 +239,7 @@ def static_checks():
             bad.append("the crafter's return must end The Tithe in Success")
         if not any(n.get("Class") == "QuestNode_Delay" and n.findtext("isQuestTimeout") == "true" for n in beat4.iter("li")):
             bad.append("The Tithe has no shown deadline (QuestNode_Delay isQuestTimeout)")
+    bad.extend(world_static_checks(beats))
     about = open(os.path.join(HERE, "About", "About.xml"), encoding="utf-8").read()
     if "brrainz.harmony" not in about:
         bad.append("About.xml does not depend on Harmony (the tithe's shuttle skill gate is a Harmony patch)")
@@ -267,6 +269,55 @@ def static_checks():
         tail = (r.stdout or "").strip().splitlines()[-1:] or ["(no output)"]
         if " 0 error(s)" not in tail[0]:
             bad.append("validate_quest.py: %s" % tail[0])
+    return bad
+
+
+VOLUNTEER = "RUT_LineVolunteer"
+WORLD_TOGGLES = ("lineInWorldEnabled", "empireStrikesEnabled")
+
+
+def world_static_checks(beats):
+    """UNFINISHED_LINE_WORLD_FOUNDRY_1: the volunteer quest the world component offers, and the strike incident."""
+    bad = []
+    src = open(os.path.join(HERE, "Source", "UnfinishedLineWorld.cs"), encoding="utf-8").read()
+    if 'VolunteerQuestDefName = "%s"' % VOLUNTEER not in src:
+        bad.append("UnfinishedLineWorld.cs does not offer %s by that name" % VOLUNTEER)
+    path = os.path.join(HERE, "Defs", "QuestScriptDefs", "%s.xml" % VOLUNTEER)
+    if not os.path.exists(path):
+        return bad + ["no Defs/QuestScriptDefs/%s.xml (the world component would offer nothing)" % VOLUNTEER]
+    qs = [e for e in ET.parse(path).getroot() if e.tag == "QuestScriptDef" and e.findtext("defName") == VOLUNTEER]
+    if not qs:
+        return bad + ["%s.xml holds no QuestScriptDef %s" % (VOLUNTEER, VOLUNTEER)]
+    q = qs[0]
+    if q.findtext("isRootSpecial") != "true" or q.findtext("rootSelectionWeight") != "0":
+        bad.append("%s must be isRootSpecial with weight 0 (only the world component offers it)" % VOLUNTEER)
+    if VOLUNTEER in beats:
+        bad.append("%s is on the spine; it is the world component's recurring offer, not a beat" % VOLUNTEER)
+    lis = list(q.iter("li"))
+    gens = [n for n in lis if n.get("Class") == "QuestNode_GeneratePawn"]
+    if not gens or any(n.findtext("addToList") != "volunteers" for n in gens):
+        bad.append("%s must generate its droid into the list var 'volunteers'" % VOLUNTEER)
+    if any((n.findtext("kindDef") or "").startswith("RSW_DW_Head_") for n in gens):
+        bad.append("%s generates a head; the line never makes heads" % VOLUNTEER)
+    arrive = [n for n in lis if n.get("Class") == "QuestNode_PawnsArrive"]
+    if not arrive or arrive[0].findtext("joinPlayer") != "true" or arrive[0].findtext("pawns") != "$volunteers":
+        bad.append("%s must bring $volunteers in with joinPlayer true" % VOLUNTEER)
+    watch = [n for n in lis if (n.get("Class") or "").endswith("QuestNode_RUT_LineVolunteers")]
+    if not watch or watch[0].findtext("pawns") != "$volunteers":
+        bad.append("%s must hand $volunteers to the foundry watch (QuestNode_RUT_LineVolunteers)" % VOLUNTEER)
+    elif watch[0].find("inSignal") is not None:
+        bad.append("QuestNode_RUT_LineVolunteers must arm on acceptance (no inSignal)")
+    if not any(n.get("Class") == "QuestNode_End" and n.findtext("outcome") == "Success" for n in lis):
+        bad.append("%s has no Success end" % VOLUNTEER)
+    if any(n.get("Class") == "QuestNode_End" and n.findtext("outcome") == "Fail" for n in lis):
+        bad.append("%s must not be failable: the stake is the betrayal watch, outside the quest" % VOLUNTEER)
+    inc = os.path.join(HERE, "Defs", "IncidentDefs", "RUT_FoundryStrike.xml")
+    if not os.path.exists(inc) or "IncidentWorker_RUT_FoundryStrike" not in open(inc, encoding="utf-8").read():
+        bad.append("RUT_FoundryStrike incident missing or not on IncidentWorker_RUT_FoundryStrike")
+    mod = open(os.path.join(HERE, "Source", "UnfinishedLineMod.cs"), encoding="utf-8").read()
+    for f in WORLD_TOGGLES + ("volunteerDays", "volunteerCap"):
+        if '"%s"' % f not in mod:
+            bad.append("world setting %s is not Scribed" % f)
     return bad
 
 
@@ -314,3 +365,51 @@ def tithe(t):
             t.set_setting(SETTINGS_TYPE, {"lendSkillGateEnabled": True})
         if t._guard() and "min crafting 0" not in text:
             raise ExpectationFailed("lendSkillGateEnabled OFF but a Crafting floor remains: %s" % text)
+
+
+@suite.chain("world")
+def world(t):
+    """UNFINISHED_LINE_WORLD_FOUNDRY_1: the line runs in the world. Precondition: the Enclaves are the player's ALLY
+    (volunteers need it). Not proven here: settlement regrowth on a generated Enclave map, the strike landing, the
+    betrayal on a real bolt -- first poke: ProofWorld 'stand', bolt an arrived volunteer, read 'state' for betrayed=True."""
+    tp = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineWorldProof"
+
+    def w(action):
+        r = t.bridge_call("jawa/static_call", type=tp, method="ProofWorld", args=action)
+        return str((r or {}).get("result", ""))
+
+    with t.component("line_stands", beyond_toggle=True):
+        text = w("stand")
+        if t._guard() and "runs=True" not in text:
+            raise ExpectationFailed("marking the line completed did not make it run: %s" % text)
+    with t.component("volunteer_offered", beyond_toggle=True):
+        text = w("volunteer")
+        if t._guard() and not text.startswith("VOLUNTEER OFFERED"):
+            raise ExpectationFailed("%s was not offered: %s" % (VOLUNTEER, text))
+    with t.component("foundry_stock_is_good_grade", beyond_toggle=True):
+        text = w("stock")
+        try:
+            n_f = int(text.split(" foundry ")[1].split(" ")[0])
+            n_g = int(text.split(" good ")[1].split(" ")[0])
+        except (IndexError, ValueError):
+            n_f = n_g = -1
+        if t._guard() and not (n_f > 0 and n_g == n_f):
+            raise ExpectationFailed("Enclave stock lacks Good-grade Foundry frames/parts: %s" % text)
+    with t.component("line_off_stops_it", toggle="lineInWorldEnabled"):
+        t.set_setting(SETTINGS_TYPE, {"lineInWorldEnabled": False})
+        try:
+            text = w("state")
+        finally:
+            t.set_setting(SETTINGS_TYPE, {"lineInWorldEnabled": True})
+        if t._guard() and "runs=False" not in text:
+            raise ExpectationFailed("lineInWorldEnabled OFF but the line still runs: %s" % text)
+    with t.component("strikes_off_never_ready", toggle="empireStrikesEnabled"):
+        w("heat 999")
+        t.set_setting(SETTINGS_TYPE, {"empireStrikesEnabled": False})
+        try:
+            text = w("state")
+        finally:
+            t.set_setting(SETTINGS_TYPE, {"empireStrikesEnabled": True})
+            w("heat 0")
+        if t._guard() and "strikeReady=False" not in text:
+            raise ExpectationFailed("empireStrikesEnabled OFF but a strike is ready: %s" % text)
