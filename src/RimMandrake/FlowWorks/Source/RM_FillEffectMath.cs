@@ -84,7 +84,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return 0f;
 			}
-			float a = seeThrough * (1f - 0.2f * (fill - 1));
+			float a = seeThrough * (1f - 0.18f * (fill - 1));
 			if (a < 0f) a = 0f;
 			return a > 1f ? 1f : a;
 		}

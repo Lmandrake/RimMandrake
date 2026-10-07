@@ -4,7 +4,7 @@ shipped XML (never from the generator's intentions):
 
   3  no "channel" / "excavation" / "brimming" / "half-full" in any fill or dug terrain label or description; every
      fill tier is named by depth like vanilla's shores (shallow / chest-deep / deep / very deep <liquid>).
-  2  tar is opaque dark grey: Flow shader (opaque, as the approved oil/slime), R=G=B tint, dark.
+  2  tar is opaque dark grey: Solid (plain terrain) shader over white, R=G=B tint, neutral gloss.
   4  blood, chemfuel, astrofuel, white slime, red slime are canal FluidDefs with all four fill terrains defined, a
      surface look, and a station on the review map.
   7  acid is yellow-green and bubbles; slimes bubble lightly; boiling water bubbles hard.
@@ -79,8 +79,12 @@ def main():
 
     tar = L["RM_Liquid_Tar"]
     r, g, b = tint(tar["tint"])
-    assert tar.get("shader") == "Flow", "tar must use the opaque Flow shader, not the water shader"
-    assert r == g == b and r <= 0.5, "tar tint %s is not a neutral dark grey" % tar["tint"]
+    # live 2026-10-06: the water shader read blue, the lava-flow shader read OLIVE; only the plain terrain shader
+    # over white gives exactly the tint
+    assert tar.get("shader") == "Solid" and tar.get("texture") == "White", "tar must be Solid over White"
+    assert r == g == b and r <= 0.3, "tar tint %s is not a neutral dark grey" % tar["tint"]
+    hl = tint(tar.get("highlight", "(1,1,1)"))
+    assert hl[0] == hl[1] == hl[2], "tar gloss must have no hue: %s" % tar.get("highlight")
     for name in ("RM_Liquid_SlimeRed", "RM_Liquid_SlimeGreen", "RM_Liquid_SlimeWhite", "RM_Liquid_SlimeYellow"):
         assert 0 < float(L[name].get("bubbles", 0)) <= 0.15, name + " should bubble lightly"
         assert float(L[name].get("seeThrough", 0)) == 0, name + " is opaque"

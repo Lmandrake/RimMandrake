@@ -11,3 +11,5 @@
 - 19:16 C#: look fields bubbles/bubbleColor/seeThrough, White texture, bubble emitter + RM_Fleck_LiquidBubble, settings (bubbles, see-through, pit walk, per-fluid fill toggles), driver-fill gate, RM_PitStepCost (item 9)
 - 19:17 walls layer: blast-mark starbursts (floor + rim), black patches, wider/stronger rim ring, see-through floor+drowned face for clear liquids
 - 19:19 item 11: already true (Spring destroys deck before descent; flyer landing needs open pit) — pinned by selftest_flowworks_cover_breaks.py; review map +5 liquid stations (39); selftests 107/107
+- 19:35 round 2 started: tar olive (lava shader colours its output) + water grey slab (see-through overlay too heavy)
+- 19:37 round 2 built: tar=Solid terrain shader over white (0.24 grey) + neutral gloss; see-through = faint floor + drowned walls + liquid-colour wash, black quad removed; tests pass

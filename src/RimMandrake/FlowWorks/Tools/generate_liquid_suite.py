@@ -1131,7 +1131,7 @@ LIQUID_DEF_ROWS = {
 #     cut's own floor and submerged walls show through the liquid (0 = opaque: tar, oil, slime).
 # Values [INVENTED, PROVISIONAL], tuned by LOOKING in game (RM_LiquidLookProof.Tune on the review map's liquid
 # gallery). Mod Setting liquidLooksEnabled off = every fill keeps its plain XML look.
-_WATER = {"wake": 0.0, "overlay": False, "seeThrough": 0.55}
+_WATER = {"wake": 0.0, "overlay": False, "seeThrough": 0.35}
 _FLOW = {"shader": "Flow", "texture": "Other/Perlin", "splashes": False, "wake": 0.0, "overlay": False,
          "depthDarken": 0.12, "flowSpeed": 0.03, "flowAmplitude": 0.05, "flowFrequency": 1.0, "brightness": 0.0}
 _SLIME = dict(_FLOW, flowSpeed=0.05, flowAmplitude=0.08, depthDarken=0.10, bubbles=0.08)
@@ -1147,7 +1147,8 @@ SURFACE_LOOKS = {
     "toxic":          dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp"),
     # acid: an eerie yellow-green, bubbling (owner, 2026-10-06)
     "acid":           dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp", tint="(1.05,1.30,0.30)",
-                           rippleDensity=1.6, bubbles=0.25, bubbleColor="(0.80,1.0,0.35)", seeThrough=0.35),
+                           rippleDensity=1.6, bubbles=0.25, bubbleColor="(0.80,1.0,0.35)", seeThrough=0.25,
+                           seeThroughTint="(0.55,0.75,0.15)"),
     "reactionliquor": dict(_WATER, tint="(0.95,0.88,1.08)", overlay=True, strength=0.0, sheen=0.5, scale=2.0,
                            speed=0.2),
     # propane: a medium-pale grey (owner, 2026-10-06: "Make propane a medium-pale grey"). Texture "White" (plain white, see
@@ -1161,10 +1162,13 @@ SURFACE_LOOKS = {
     # tar (owner, 2026-10-06 review: "It should not be blue, it should be dark grey no matter what. Not transparent.
     # Dirt tar should look the same as stone tar."). The vanilla WATER shader cannot do that: its texture is
     # vanilla's blue depth ramp (any tint on it stays blue) and it blends with what lies under it, so tar over soil
-    # and over granite differed. Now the opaque Flow shader (the one the approved oil and slime use) over neutral
-    # noise with an R=G=B tint: dark grey on any ground, slowly oscillating. Splash kept (owner, earlier the same day).
-    "tar":            dict(_FLOW, tint="(0.40,0.40,0.40)", depthDarken=0.08, flowSpeed=0.02, flowAmplitude=0.06,
-                           splashes=True),
+    # and over granite differed. The lava-flow shader was tried next and came out OLIVE in game (it paints its own
+    # hot colours under any tint). Now "Solid": the plain opaque terrain shader over plain white, so the colour is
+    # exactly the R=G=B tint — dark grey on any ground — with a slow neutral-grey gloss drifting over it so it still
+    # reads as a liquid ("Tar should not simply be solid black", 2026-10-05). Splash kept.
+    "tar":            dict(_WATER, shader="Solid", texture="White", tint="(0.24,0.24,0.24)", depthDarken=0.10,
+                           seeThrough=0.0, overlay=True, highlight="(0.80,0.80,0.80)", strength=0.18, scale=3.0,
+                           speed=0.05, sharpness=3.0, splashes=True),
     "slime_red":      dict(_SLIME, tint="(0.62,0.16,0.14)"),
     "slime_green":    dict(_SLIME, tint="(0.30,0.55,0.18)"),
     "slime_white":    dict(_SLIME, tint="(0.80,0.78,0.70)"),
@@ -1180,14 +1184,16 @@ FLUID_SURFACE_LOOKS = {
     # rainbow film.
     "RM_Fluid_Blood":     dict(_FLOW, tint="(0.55,0.06,0.05)", flowSpeed=0.04, flowAmplitude=0.06, depthDarken=0.12),
     "RM_Fluid_Chemfuel":  dict(_WATER, texture="White", tint="(0.62,0.48,0.22)", rippleDensity=1.2,
-                               overlay=True, strength=0.0, sheen=0.35, scale=2.0, speed=0.2, seeThrough=0.25),
+                               overlay=True, strength=0.0, sheen=0.35, scale=2.0, speed=0.2, seeThrough=0.2,
+                               seeThroughTint="(0.62,0.48,0.22)"),
     "RM_Fluid_Astrofuel": dict(_WATER, texture="White", tint="(0.45,0.70,0.80)", rippleDensity=1.4,
-                               overlay=True, strength=0.0, sheen=0.25, scale=2.0, speed=0.25, seeThrough=0.35),
+                               overlay=True, strength=0.0, sheen=0.25, scale=2.0, speed=0.25, seeThrough=0.25,
+                               seeThroughTint="(0.45,0.70,0.80)"),
 }
 _LOOK_FIELDS = ("shader", "texture", "mask", "tint", "depthDarken", "flowSpeed", "flowAmplitude", "flowFrequency",
                 "brightness", "spotScale", "spotSpeed", "spotMin", "spotMax", "rippleDensity", "rippleIntensity",
                 "fleck", "fleckChance", "splashes", "overlay", "highlight", "strength", "scale", "speed", "sharpness",
-                "stretch", "sheen", "wake", "bubbles", "bubbleColor", "seeThrough")
+                "stretch", "sheen", "wake", "bubbles", "bubbleColor", "seeThrough", "seeThroughTint")
 
 
 def _look_lines(look, indent):

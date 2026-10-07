@@ -36,7 +36,7 @@
         <tint>(0.75,1.15,0.60)</tint>
         <overlay>false</overlay>
         <wake>0.0</wake>
-        <seeThrough>0.55</seeThrough>
+        <seeThrough>0.35</seeThrough>
       </surfaceLook>
     </value>
   </Operation>
@@ -71,7 +71,8 @@
         <speed>0.2</speed>
         <sheen>0.35</sheen>
         <wake>0.0</wake>
-        <seeThrough>0.25</seeThrough>
+        <seeThrough>0.2</seeThrough>
+        <seeThroughTint>(0.62,0.48,0.22)</seeThroughTint>
       </surfaceLook>
     </value>
   </Operation>
@@ -88,7 +89,8 @@
         <speed>0.25</speed>
         <sheen>0.25</sheen>
         <wake>0.0</wake>
-        <seeThrough>0.35</seeThrough>
+        <seeThrough>0.25</seeThrough>
+        <seeThroughTint>(0.45,0.70,0.80)</seeThroughTint>
       </surfaceLook>
     </value>
   </Operation>
