@@ -11,8 +11,10 @@ for these subjects (checked 2026-10-01).
   grade itself already reads in the inspect pane, `RM_CompMetalYield`).
 - **Vexxiss footprints**: wet, mineral-ringed.
 
-## open question
+## ruled
 
-The Cauldron sheet's palette law (§6) bans green, and the spec names "green-amber" accents and
-"brilliant chemical colour". Which colours may the dew and saturation use? Owner call before any
-art job is queued.
+The green question is answered (owner, 2026-10-03): the no-green law **lifts during dewfall**. The bead placeholder
+tint is green-amber on that ruling (`RM_CauldronFilth.xml`). Which accent plants get dew variants is still the
+owner's pick. The XML ships the spec V2 default set of five (crystal flower, blood bouquet, red bugloss, keening
+cordax, giant toxic flower), each with `RM_DewfallGraphicExtension` → `Things/Plant/RM_Dewfall/<defName>_dew`.
+Trim that set when he picks. There is no dew art yet, so the swap stays dormant (`RM_DewfallSaturation`).

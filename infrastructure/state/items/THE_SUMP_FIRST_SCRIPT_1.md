@@ -9,4 +9,10 @@ First north-star script for **TheSump** (`src/RimMandrake/TheSump/`): a `validat
 Run live via `python.exe src/RimMandrake/Utils/northstar_driver/cli.py run --mod TheSump --plan <plan>` on the smallest tier that loads the mod; results JSON in `Transient/northstar/`. Each non-pass is classified harness / site / mod / unmeasured. Mod defects found are filed or fixed (bug fixes are allowed during the pause).
 
 ## criteria
-`modcheck floor` shows every bar covered; one live run recorded with its results JSON; every FAIL is a classified finding, not hidden; script committed with explicit paths.
+- A1 L0: modcheck floor shows every bar of TheSump covered
+- A2 L1: every def parsed from TheSump's Defs/ resolves live via jawa/get_defs (81 defs, none held: the DEPLOY_HOLD lift of 2026-10-03 left 0 TheSump holds), so defs_resolve is measured and held_defs_are_unmeasured_by_hold reports nothing
+- A3 GREEN-MIN: one live northstar_driver run of TheSump is recorded with its results JSON
+- A4 GREEN-MIN: every FAIL in the TheSump run is classified as harness, site, mod or unmeasured
+
+The manifest at `df8e3b7f3` said A2 was "the 35 DEPLOY_HOLD held defs are resolved". That was stale: every TheSump
+hold was lifted 2026-10-03 (`8cacbb66c`), and `validation.py` measures `HELD_DEFS` = 0 and `SHIPPED` = 81.
