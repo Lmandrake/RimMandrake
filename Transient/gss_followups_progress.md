@@ -9,3 +9,4 @@ Owner decisions 22:08 on design/RimMandrake/gss_gpt_source_read_2026-10-06.md: B
 - verdict: owner's premise false (vanilla hooks through walls, 6-cell rule, no wall test); model works only if dive point = where lead meets barrier. Dive-through NOT built; README + 11 PNGs in Transient/gss_unroutable_examples_2026-10-06/
 ## Step 3 — B9 (adapter links device->transmitter node, wire patch suppresses its cable) + A12 (sprawlCap -> loopBudget, old key read on load) coded; selftest 738/738
 ## Step 4 — source committed 7a97be555; DLL rebuilt clean
+## Step 5 — push refused (behind origin; rebase blocked by other writers' unstaged files, no stash allowed). Local shas: 931d453fc 7a97be555 
