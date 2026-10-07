@@ -27,6 +27,8 @@ namespace RimMandrake.KineticArms
         public static float kickerFuelPerKick = 10f;
         public static int pulseCapacity = 4;
         public static float pulseRechargeSeconds = 20f;
+        public static bool lootedOnRaiders = true;
+        public static float lootedChancePercent = 2f;
 
         public override void ExposeData()
         {
@@ -46,6 +48,8 @@ namespace RimMandrake.KineticArms
             Scribe_Values.Look(ref kickerFuelPerKick, "kickerFuelPerKick", 10f);
             Scribe_Values.Look(ref pulseCapacity, "pulseCapacity", 4);
             Scribe_Values.Look(ref pulseRechargeSeconds, "pulseRechargeSeconds", 20f);
+            Scribe_Values.Look(ref lootedOnRaiders, "lootedOnRaiders", true);
+            Scribe_Values.Look(ref lootedChancePercent, "lootedChancePercent", 2f);
         }
     }
 
@@ -150,7 +154,7 @@ namespace RimMandrake.KineticArms
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 20f, 720f);
+            Rect view = new Rect(0f, 0f, inRect.width - 20f, 820f);
             Widgets.BeginScrollView(inRect, ref scroll, view);
             var l = new Listing_Standard();
             l.Begin(view);
@@ -181,6 +185,12 @@ namespace RimMandrake.KineticArms
             RimMandrakeKineticArmsSettings.pulseCapacity = (int)l.Slider(RimMandrakeKineticArmsSettings.pulseCapacity, 1f, 12f);
             l.Label("Pulse cannon seconds to refill one charge (powered): " + RimMandrakeKineticArmsSettings.pulseRechargeSeconds.ToString("0", CultureInfo.InvariantCulture));
             RimMandrakeKineticArmsSettings.pulseRechargeSeconds = Mathf.Round(l.Slider(RimMandrakeKineticArmsSettings.pulseRechargeSeconds, 1f, 120f));
+            l.GapLine();
+            l.CheckboxLabeled("Pirate raiders sometimes carry kinetic weapons looted from ruins", ref RimMandrakeKineticArmsSettings.lootedOnRaiders,
+                "Off: these weapons are found in ruins only. No other faction ever carries them.");
+            l.Label("Chance a pirate gunner carries a looted one: " + RimMandrakeKineticArmsSettings.lootedChancePercent.ToString("0.0", CultureInfo.InvariantCulture)
+                + "%  (grenadiers get thudder grenades; others a weapon they could afford)");
+            RimMandrakeKineticArmsSettings.lootedChancePercent = l.Slider(RimMandrakeKineticArmsSettings.lootedChancePercent, 0f, 20f);
             l.Gap();
             if (l.ButtonText("Reset to defaults"))
             {
@@ -213,6 +223,8 @@ namespace RimMandrake.KineticArms
             RimMandrakeKineticArmsSettings.kickerFuelPerKick = 10f;
             RimMandrakeKineticArmsSettings.pulseCapacity = 4;
             RimMandrakeKineticArmsSettings.pulseRechargeSeconds = 20f;
+            RimMandrakeKineticArmsSettings.lootedOnRaiders = true;
+            RimMandrakeKineticArmsSettings.lootedChancePercent = 2f;
             ApplySettings();
         }
     }

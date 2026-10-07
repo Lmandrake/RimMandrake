@@ -39,10 +39,11 @@ SCENES = [
     ("pulse_push", "pulse", "pulse_wave_pushes_away_from_turret", "enablePulseCannon"),
     ("pulse_charge_gate", "pulse", "no_charge_no_target", "pulseCapacity"),
     ("strength_zero", "settings", "strength_zero_throws_nothing", "kineticStrength"),
+    ("looted_pirates", "factions", "pirates_only_rarely_carry_looted", "lootedChancePercent"),
 ]
 NOT_DRIVEN = [
     ("walk_on_spring", "a pawn pathing onto an armed plate (spring chance); scenes call Kick() directly"),
-    ("ai_use", "no faction carries kinetic weapons yet (design Q7 open)"),
+    ("ai_use", "pirate raiders firing them sensibly needs a live raid; looted_pirates proves only who carries them"),
 ]
 
 

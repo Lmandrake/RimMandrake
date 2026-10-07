@@ -42,6 +42,7 @@
     <Compile Include="RM_Building_KickerMine.cs" />
     <Compile Include="RM_Building_PulseCannon.cs" />
     <Compile Include="RM_KineticArmsProof.cs" />
+    <Compile Include="RM_LootedKineticWeapons.cs" />
   </ItemGroup>
 
   <ItemGroup>

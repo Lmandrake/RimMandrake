@@ -24,7 +24,8 @@ Sources: `design/RimMandrake/kinetic_blast_weapons_design_2026-10-06.md` (§3 ra
 - A pulse cannon with no stored charge picks no target; charged, it does (owner Q6). → pulse.no_charge_no_target
 - Kinetic throw strength 0: a repulsor hit throws nothing. → settings.strength_zero_throws_nothing
 - A pawn walking onto an armed kicker mine springs it (vanilla trap rules, enemies only). → not_driven.walk_on_spring (UNMEASURED: needs pathing onto the plate)
-- AI raiders and pawns use the weapons sensibly. → not_driven.ai_use (UNMEASURED: no faction carries them yet, Q7 open)
+- Only pirate-gang raiders (Pirate and its children) ever carry a looted kinetic weapon, at the settings chance (default 2% per armed pawn); grenadiers get thudders, others one they could afford; no other faction. → factions.pirates_only_rarely_carry_looted
+- AI raiders use the weapons sensibly. → not_driven.ai_use (UNMEASURED: needs a live pirate raid)
 - A shield belt absorbs the throw (owner Q4). → UNCOVERED: owed to Explosive Knockback (FOUNDRY), not built
 - Kinetic blasts sway Gimme Some Slack cords instead of cutting them (owner Q3). → UNCOVERED: owed to Gimme Some Slack, not built
 
