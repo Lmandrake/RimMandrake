@@ -125,6 +125,17 @@ namespace RimMandrake.KineticArms
             public bool enabled;
         }
 
+        /// <summary>Raiders never carry the grav-ram, however rich their kind is (Blackstar specialists and leaders, Hutt leaders).</summary>
+        public const float RaiderPriceCeiling = 1000f;
+
+        /// <summary>The money a looter pawn "could afford" for a looted weapon: his kind's weapon money, lifted to the faction's
+        /// floor (a poor faction's salvage still holds a cheap thumper), never above RaiderPriceCeiling.</summary>
+        public static float LootMoney(float kindMoneyMax, float factionFloor)
+        {
+            float m = kindMoneyMax > factionFloor ? kindMoneyMax : factionFloor;
+            return m > RaiderPriceCeiling ? RaiderPriceCeiling : m;
+        }
+
         /// <summary>Owner 2026-10-06 (typed): "Mostly ruins only, but rare on raids that stole it from said ruins
         /// (pirates/outlaws)". Index of the looted weapon a looter-faction raider carries, or -1 (keeps his own).
         /// roll1 &lt; chance gates it; a grenadier gets only grenades, anyone else only non-grenades he could afford

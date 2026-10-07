@@ -33,6 +33,7 @@
     </li>
   </modDependencies>
 <loadAfter>
+    <li>mandrake.rm.kineticarms</li>                            <!-- KineticArms_OutlawLooters.xml: the looter marker type -->
     <li>mandrake.rm.weathersuite</li>                           <!-- GeothermalDensityField.cs: WeatherGeometryUtility.ArcFromSubstellar -->
     <li>mandrake.rut.weathersuite</li>                          <!-- the actual Ash'karr PlanetGeometryDef instance -->
     <li>mandrake.rsw.starwarsraces</li>                         <!-- RimMandrake* species, name makers and rescued pawn kinds -->

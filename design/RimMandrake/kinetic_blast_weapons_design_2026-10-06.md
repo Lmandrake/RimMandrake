@@ -185,12 +185,20 @@ ruins (pirates/outlaws)"*.
   `PawnWeaponGenerator.TryGenerateWeaponFor` gives an armed pirate (one who generated with a ranged weapon) a
   **2%** chance (Mod Settings, 0–20%) to carry a looted kinetic weapon instead: a grenadier gets thudder grenades;
   anyone else a weapon his kind could afford (price ≤ `weaponMoney.max`) — Pirate/Scavenger the palm thumper,
-  Mercenary_Heavy up to the slam launcher, PirateBoss up to the repulsor rifle; the grav-ram (2400) fits no pirate.
+  Mercenary_Heavy up to the slam launcher, PirateBoss up to the repulsor rifle; the grav-ram (2400) is above the 1000 raider ceiling.
   Keyed on the **faction**, never the pawnkind: `Mercenary_Gunner`, `Mercenary_Slasher`, `Mercenary_Elite` and
   `Grenadier_Destructive` are shared with outlander factions. Melee drifters and thrashers keep their weapons.
+- **Campaign outlaws (built, Utinni layer):** owner, typed 2026-10-06 23:43: *"Junkers, Hutt Cartel, Blackstar Bounty Hunters"*.
+  Blackstar Company is the vanilla `Pirate` def reskinned, so it is already a looter; `RUT_Jawa_Junkers` inherits
+  `PirateBandBase` and gets it too; `RUT_Jawa_HuttCartel` gets it from `UtinniPatches/Patches/KineticArms_OutlawLooters.xml`
+  (guarded by `PatchOperationFindMod`). The Junkers' kinds are poor (60-420), so the patch lifts their money to 300
+  (`lootMoneyFloor`): gunners may carry a palm thumper. Every looter's money is capped at 1000, so no raider ever
+  carries the grav-ram, however rich his kind (Blackstar specialist 16500, leader 26000, Hutt leader 15600).
+  Draws: Junkers heavy/specialist palm thumper; Hutt grunt none (240 < 260), heavy/specialist palm or slam
+  (specialist also repulsor), leader palm/slam/repulsor; Blackstar grunt/heavy palm or slam, specialist/leader up to
+  the repulsor; grenadiers (a kind with a `Grenade*` weapon tag) thudder grenades. Melee-armed kinds keep their weapons.
 - **No other faction** carries them: no outlanders, empire, tribes, mechanoids. Kicker mines and pulse cannons
-  never appear in enemy bases. Which campaign factions count as "outlaws" is not yet named; such a faction would
-  get the same extension from a Utinni patch.
+  never appear in enemy bases.
 - ⚠️ **Enemy AI and pits:** AI does not aim throws at pits. That is fine and intended: the player is the one
   who builds pits. An AI repulsor line still pushes colonists back off sandbags.
 

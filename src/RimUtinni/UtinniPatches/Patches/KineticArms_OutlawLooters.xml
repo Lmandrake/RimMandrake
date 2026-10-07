@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Owner, 2026-10-06 (typed, question card): "Junkers, Hutt Cartel, Blackstar Bounty Hunters" carry kinetic weapons looted
+     from the ruins, rarely (Mod Settings chance, default 2% per armed pawn; see RimMandrake KineticArms, RM_Patch_LootedKineticWeapons).
+     - Blackstar Company is the vanilla `Pirate` def reskinned (BlackstarCompany.xml), and RM_KineticArms_PirateLooters.xml already
+       marks `Pirate`. Nothing to add here.
+     - RUT_Jawa_Junkers has ParentName PirateBandBase (= Pirate) and writes no modExtensions, so it inherits the marker. Its kinds
+       are poor (weaponMoney 60-420), so it is LIFTED to 300: its gunners count as able to afford a palm thumper (260), nothing dearer.
+     - RUT_Jawa_HuttCartel is an Outlander child, so it gets the marker here, guarded by PatchOperationFindMod because a
+       modExtension naming an absent type discards the whole def (a top-level Operation MayRequire is inert). -->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Kinetic Arms</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/FactionDef[defName="RUT_Jawa_HuttCartel"]</xpath>
+          <value>
+            <li Class="RimMandrake.KineticArms.RM_KineticLooterExtension" />
+          </value>
+        </li>
+        <!-- Inherit="False" replaces the list inherited from Pirate, so GetModExtension reads THIS entry (floor 300), not the parent's. -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/FactionDef[defName="RUT_Jawa_Junkers"]</xpath>
+          <value>
+            <modExtensions Inherit="False">
+              <li Class="RimMandrake.KineticArms.RM_KineticLooterExtension">
+                <lootMoneyFloor>300</lootMoneyFloor>
+              </li>
+            </modExtensions>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
