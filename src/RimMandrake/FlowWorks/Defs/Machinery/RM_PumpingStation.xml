@@ -5,7 +5,7 @@
   line. Same Wrecked -> Kludged -> Repaired grammar as RM_IndustrialLiquidWorks.xml (ruin scattered beside
   any registered liquid). Draw/pour gizmo as the small pump.
   PROVISIONAL: levels per cycle (kludged 2, repaired 4), reach 4, power, costs.
-  ART OWED: three tiers; placeholder vanilla PipelineSection, tinted.
+  Art: one painted sprite per tier (artpipe fwart_RM_PumpingStation_*), drawn 3x3 over the 3x2 footprint.
 -->
 <Defs>
 
@@ -14,10 +14,9 @@
     <label>wrecked pumping station</label>
     <description>What is left of a pumping station: a manifold of big-bore pipe and a dead motor the size of a cart. It can be patched back to work where it stands: build a kludged pumping station over it.</description>
     <graphicData>
-      <texPath>Things/Building/Ruins/PipelineSection</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_PumpingStation_Wrecked</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(3,2)</drawSize>
-      <color>(110,95,85)</color>
+      <drawSize>(3,3)</drawSize>
     </graphicData>
     <replaceTags>
       <li>RM_PumpingStation</li>
@@ -67,10 +66,9 @@
     <label>kludged pumping station</label>
     <description>A pumping station patched back to work with mismatched plate and a borrowed motor. It lifts liquid from up to four cells away into every tank on its hose line, or pours a tank into a dug channel. Half its old rate.</description>
     <graphicData>
-      <texPath>Things/Building/Ruins/PipelineSection</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_PumpingStation_Kludged</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(3,2)</drawSize>
-      <color>(170,150,130)</color>
+      <drawSize>(3,3)</drawSize>
     </graphicData>
     <statBases>
       <WorkToBuild>4000</WorkToBuild>
@@ -109,10 +107,9 @@
     <label>repaired pumping station</label>
     <description>A pumping station restored properly. It lifts liquid from up to four cells away into every tank on its hose line, or pours a tank into a dug channel, at its full industrial rate.</description>
     <graphicData>
-      <texPath>Things/Building/Ruins/PipelineSection</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_PumpingStation_Repaired</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(3,2)</drawSize>
-      <color>(185,195,205)</color>
+      <drawSize>(3,3)</drawSize>
     </graphicData>
     <statBases>
       <WorkToBuild>8000</WorkToBuild>

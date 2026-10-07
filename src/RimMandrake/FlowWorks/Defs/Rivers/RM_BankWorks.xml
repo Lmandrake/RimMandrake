@@ -5,8 +5,8 @@
   defines none of these. defNames kept (RM_BankStake / RM_BankWeir / RM_SiltTrap) so the sea genstep and
   saves still name them; classes live in RimMandrake.FlowWorks.Rivers (owner card 3: no save migration
   needed). Maintenance rides vanilla Repair (wear) and Haul (catch) - no new jobs.
-  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). PLACEHOLDER ART in Textures/Things/Building/FlowWorks/Rivers;
-  real art owed.
+  ALL NUMBERS PROVISIONAL (costs, HP, work, sizes). Art in Textures/Things/Building/FlowWorks/Rivers: weir and silt trap
+  from the 2026-10-06 commission; bank stake and ferry post still the earlier placeholders.
 -->
 <Defs>
 
@@ -62,7 +62,7 @@
     <graphicData>
       <texPath>Things/Building/FlowWorks/Rivers/RM_BankWeir</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1.4, 2.2)</drawSize>
+      <drawSize>(2.2,2.2)</drawSize>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>

@@ -23,17 +23,16 @@
   </RimMandrake.FlowWorks.Machinery.Kits.RM_LiquidReactionDef>
 
   <!-- The reaction vat: two tanks of reactants on its hose line (or touching it), product into a third tank or
-       dropped as items. Placeholder graphic (vanilla barrel, tinted): art owed (Transient/belt_fwkits_20261005.md). -->
+       dropped as items. Art: fwart_RM_ReactionVat. -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_ReactionVat</defName>
     <label>reaction vat</label>
     <description>A lidded, acid-proof crock with two feed lines and a vent. Liquids that react are metered into it from the tanks on its line, a little at a time; what comes off is caught as product where there is something to catch it, and vented where there is not. Stand upwind.</description>
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Production/FermentingBarrel</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_ReactionVat</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
-      <color>(110,140,95)</color>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>

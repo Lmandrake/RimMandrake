@@ -20,7 +20,7 @@ namespace RimMandrake.FlowWorks
 				+ "Liquid fills the deepest cells first and overflows into shallower ones. "
 				+ "A channel dug into the strip along the map edge is a SINK: liquid reaching "
 				+ "it leaves the map, which is how you empty a canal on purpose.";
-			icon = ContentFinder<Texture2D>.Get("UI/Designators/Mine", true);
+			icon = ContentFinder<Texture2D>.Get("UI/Designators/FlowWorks/RM_DigCanal", true);
 			useMouseIcon = true;
 			soundDragSustain = SoundDefOf.Designate_DragStandard;
 			soundDragChanged = SoundDefOf.Designate_DragStandard_Changed;

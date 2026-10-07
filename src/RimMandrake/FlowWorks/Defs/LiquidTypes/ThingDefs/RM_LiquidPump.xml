@@ -5,7 +5,7 @@
   pours from that tank into an adjacent dug channel (gizmo). Building_LiquidPump.
   Minifiable (Phase 8 slice 2): the tanker pillar's portable pump — uninstall it, carry it to a far liquid
   body with a cargo tank and a hose, pump, and fly home; a ruined works' damaged pump can be stolen the same way.
-  PROVISIONAL: power 150 W, cost, work. Art: PLACEHOLDER (vanilla moisture pump) until its own render.
+  PROVISIONAL: power 150 W, cost, work. Art: fwart_RM_LiquidPump.
 -->
 <Defs>
 
@@ -15,7 +15,7 @@
     <description>A salvaged motor driving a rotary pump, with a suction hose on one side and a delivery spout on the other. Set it beside a liquid tank and a pond, lake or dug channel. Drawing, it lifts liquid from the water beside it into the tank; pouring, it runs the tank's liquid into a dug channel beside it - the way to fill a channel no spring feeds, or keep a moat topped up with something that burns. It will not mix one liquid into another.</description>
     <thingClass>RimMandrake.FlowWorks.LiquidTypes.Building_LiquidPump</thingClass>
     <graphicData>
-      <texPath>Things/Building/Misc/MoisturePump</texPath>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidPump</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>
