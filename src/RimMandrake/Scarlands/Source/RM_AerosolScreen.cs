@@ -106,15 +106,24 @@ namespace RimMandrake.Scarlands
             }
         }
 
+        // The Map object this screen registered on. Thing.Map is Find.Maps[index], so a screen left in the static
+        // registry by a previous game (load a save, nothing despawns) would alias onto the new game's map at the
+        // same index; comparing the registered Map reference never does, and stale entries are pruned on spawn.
+        private Map registeredMap;
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            ActiveScreens.RemoveAll(s => s == null || s.registeredMap == null || !Find.Maps.Contains(s.registeredMap)
+                || !s.parent.Spawned || s.parent.Map != s.registeredMap);
+            registeredMap = parent.Map;
             if (!ActiveScreens.Contains(this)) ActiveScreens.Add(this);
         }
 
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
             ActiveScreens.Remove(this);
+            registeredMap = null;
             base.PostDeSpawn(map, mode);
         }
 
@@ -175,7 +184,7 @@ namespace RimMandrake.Scarlands
             for (int i = 0; i < ActiveScreens.Count; i++)
             {
                 RM_CompAerosolScreen s = ActiveScreens[i];
-                if (s?.parent == null || s.parent.Map != map || !s.IsScreenLive) continue;
+                if (s?.parent == null || s.registeredMap != map || !s.IsScreenLive) continue;
                 float r = s.Radius;
                 if (c.DistanceToSquared(s.parent.Position) <= r * r) return true;
             }
@@ -215,8 +224,8 @@ namespace RimMandrake.Scarlands
         }
     }
 
-    // One prefix set for every aerosol screen. Applied by this assembly's PatchAll (RM_ChotrixPatches /
-    // RM_TotchakPatches run PatchAll over the whole assembly), like RM_WarscarPatches.
+    // One prefix set for every aerosol screen. Applied by this assembly's single PatchAll (RM_ChotrixPatches
+    // runs it over the whole assembly), like RM_WarscarPatches.
     // Every airborne toxic exposure: toxic fallout, toxic weather, the Settling and its lift front.
     [HarmonyPatch(typeof(ToxicUtility), nameof(ToxicUtility.DoAirbornePawnToxicDamage))]
     public static class RM_AerosolScreenPatches_AirborneToxic
