@@ -30,6 +30,12 @@ FERAL_POOL = ("RSW_DW_OuterRim_MSEDroid", "RSW_DW_OuterRim_SalvageAssistDroid", 
               "RSW_DW_OuterRim_MuckrakerDroid", "RSW_DW_OuterRim_DestroyerDroid")
 
 
+def _gate(t):
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.FallLineArrivals.FallLineGateProof",
+                      method="ProofGate", args="")
+    return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+
 def _dry(t, incident):
     r = t.bridge_call("jawa/fire_incident", incidentDef=incident, dryRun=True)
     # LIVE 2026-10-03: a dry run that answers "cannot fire" comes back with success=False AND canFireNow=False; success is not
@@ -87,19 +93,18 @@ def defs(t):
 @suite.chain("gate")
 def gate(t):
     with t.component("off_fall_line_refused", toggle="onlyOnFallLine"):
+        # The incident's CanFireNow also waits for earliestDay (day 2) and a fresh test map is at day ~0.13, so a dry run
+        # cannot measure the gate. Ask FallLineGate itself (current map = a quicktest, which is NOT on the Fall Line).
         t.set_setting(SETTINGS_TYPE, {"onlyOnFallLine": True})
-        if _dry(t, "RUT_FallArrival") is not False:
-            raise ExpectationFailed("onlyOnFallLine ON on a quicktest (non-Fall-Line) map, but RUT_FallArrival "
-                                    "can fire")
-        if _dry(t, "RUT_LabRatFalls") is not False:
-            raise ExpectationFailed("onlyOnFallLine ON on a quicktest map, but RUT_LabRatFalls can fire")
+        v = _gate(t)
+        if t._guard() and (not v.startswith("REFUSED") or "onlyOnFallLine=True" not in v
+                           or "onFallLine=False" not in v):
+            raise ExpectationFailed("onlyOnFallLine ON off the Fall Line, but the gate did not refuse: %s" % v)
     with t.component("anywhere_allows", toggle="onlyOnFallLine"):
         t.set_setting(SETTINGS_TYPE, {"onlyOnFallLine": False})
-        # IncidentWorker.CanFireNow caches its result per TicksGame (lastCheckCanRunTick); the game is paused, so
-        # the refusal read just above would be returned again. Advance a tick so the new setting is actually asked.
-        t.wait_ticks(2)
-        if _dry(t, "RUT_FallArrival") is not True:
-            raise ExpectationFailed("onlyOnFallLine OFF but RUT_FallArrival cannot fire (no skyfaller cell?)")
+        v = _gate(t)
+        if t._guard() and (not v.startswith("ALLOWED") or "onlyOnFallLine=False" not in v):
+            raise ExpectationFailed("onlyOnFallLine OFF but the gate does not allow this map: %s" % v)
     with t.component("wrecks_toggle_off_refuses", toggle="wreckFallsEnabled"):
         t.set_setting(SETTINGS_TYPE, {"wreckFallsEnabled": False})
         t.wait_ticks(2)                                    # CanFireNow is cached per tick (see anywhere_allows)
