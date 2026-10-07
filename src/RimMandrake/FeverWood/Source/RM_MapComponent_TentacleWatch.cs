@@ -100,6 +100,11 @@ namespace RimMandrake.FeverWood
         private int sentinelCount;
         private int encounterPressure; // FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 — see class header
 
+        // FEVERWOOD_BROOD_RANSOM_1: gifts owed for young returned to a pool here.
+        private List<int> pendingGiftTicks = new List<int>();
+        private List<IntVec3> pendingGiftCells = new List<IntVec3>();
+        private const int GiftCheckIntervalTicks = 250;
+
         private List<IntVec3> poolCellsCache;
         private int poolCacheBuiltTick = -999999;
 
@@ -113,6 +118,11 @@ namespace RimMandrake.FeverWood
         public override void MapComponentTick()
         {
             base.MapComponentTick();
+
+            if (pendingGiftTicks.Count > 0 && Find.TickManager.TicksGame % GiftCheckIntervalTicks == 0)
+            {
+                TickPendingGifts();
+            }
 
             if (Find.TickManager.TicksGame % AmbientCheckIntervalTicks != 0)
             {
@@ -135,8 +145,7 @@ namespace RimMandrake.FeverWood
                 return; // no registered water on this map — nothing to do
             }
 
-            float mtb = UnityEngine.Mathf.Max(0.1f, RM_FeverWoodSettings.tentacleAmbientMtbHours);
-            if (!Rand.MTBEventOccurs(mtb, 2500f, AmbientCheckIntervalTicks))
+            if (!Rand.MTBEventOccurs(EffectiveAmbientMtbHours, 2500f, AmbientCheckIntervalTicks))
             {
                 return;
             }
@@ -150,6 +159,46 @@ namespace RimMandrake.FeverWood
             }
 
             SpawnEncounter(pools);
+        }
+
+        /// <summary>FEVERWOOD_BROOD_RANSOM_1: the ordinary ambient MTB divided
+        /// by the world's boldness multiplier (1 when the brood ransom is off,
+        /// so this is exactly the shipped MTB then).</summary>
+        public float EffectiveAmbientMtbHours =>
+            UnityEngine.Mathf.Max(0.1f, RM_FeverWoodSettings.tentacleAmbientMtbHours)
+            / UnityEngine.Mathf.Max(1f, RM_WorldComponent_DeepYoung.BoldnessMultiplier);
+
+        /// <summary>The computed per-check chance Rand.MTBEventOccurs uses for
+        /// the ordinary emergence (checkDuration / (mtb * mtbUnit), capped at
+        /// 1) — a state read, not a sampled count.</summary>
+        public float EffectiveEmergenceChancePerCheck =>
+            UnityEngine.Mathf.Min(1f, AmbientCheckIntervalTicks / (EffectiveAmbientMtbHours * 2500f));
+
+        /// <summary>The young came home to a pool here: within the hour the
+        /// deep sets down one great gift beside it.</summary>
+        public void ScheduleDeepGift(IntVec3 pool)
+        {
+            pendingGiftTicks.Add(Find.TickManager.TicksGame + Rand.RangeInclusive(600, 2200)); // INVENTED: "within an hour"
+            pendingGiftCells.Add(pool);
+        }
+
+        private void TickPendingGifts()
+        {
+            int now = Find.TickManager.TicksGame;
+            for (int i = pendingGiftTicks.Count - 1; i >= 0; i--)
+            {
+                if (now < pendingGiftTicks[i])
+                {
+                    continue;
+                }
+                IntVec3 cell = pendingGiftCells[i];
+                pendingGiftTicks.RemoveAt(i);
+                pendingGiftCells.RemoveAt(i);
+                if (RM_FeverWoodSettings.broodRansomEnabled)
+                {
+                    RM_DeepGift.Grant(map, cell);
+                }
+            }
         }
 
         /// <summary>"Large pool + many limbs" detection — see class header
@@ -257,7 +306,7 @@ namespace RimMandrake.FeverWood
                 {
                     continue;
                 }
-                total += AmbientTable[i].weight;
+                total += WeightOf(i);
             }
             if (total <= 0f)
             {
@@ -271,13 +320,25 @@ namespace RimMandrake.FeverWood
                 {
                     continue;
                 }
-                roll -= AmbientTable[i].weight;
+                roll -= WeightOf(i);
                 if (roll <= 0f)
                 {
                     return DefDatabase<ThingDef>.GetNamedSilentFail(AmbientTable[i].defName);
                 }
             }
             return null;
+        }
+
+        /// <summary>FEVERWOOD_BROOD_RANSOM_1: the snare and lash weigh more
+        /// the more young the world holds ("the snares grow bolder").</summary>
+        private static float WeightOf(int i)
+        {
+            string d = AmbientTable[i].defName;
+            if (d == "RM_Sekkulaath_Snare" || d == "RM_Sekkulaath_Lash")
+            {
+                return AmbientTable[i].weight * RM_WorldComponent_DeepYoung.BoldnessMultiplier;
+            }
+            return AmbientTable[i].weight;
         }
 
         private List<IntVec3> PoolCells()
@@ -535,6 +596,13 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref permanentlyKilled, "permanentlyKilled", false);
             Scribe_Values.Look(ref porterAngeredForever, "porterAngeredForever", false);
             Scribe_Values.Look(ref encounterPressure, "encounterPressure", 0);
+            Scribe_Collections.Look(ref pendingGiftTicks, "pendingGiftTicks", LookMode.Value);
+            Scribe_Collections.Look(ref pendingGiftCells, "pendingGiftCells", LookMode.Value);
+            if (pendingGiftTicks == null || pendingGiftCells == null || pendingGiftTicks.Count != pendingGiftCells.Count)
+            {
+                pendingGiftTicks = new List<int>();
+                pendingGiftCells = new List<IntVec3>();
+            }
             // sentinelCount is deliberately NOT scribed: every spawned
             // sentinel's own RM_CompTentacleLimb.PostSpawnSetup re-registers
             // with Notify_SentinelUp() on load too (PostSpawnSetup fires for

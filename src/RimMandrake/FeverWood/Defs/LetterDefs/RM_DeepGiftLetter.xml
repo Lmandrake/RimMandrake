@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_BROOD_RANSOM_1: the letter that names the deep's gift (a
+     state read for the criteria: "a letter of the gift letter def"). -->
+<Defs>
+
+  <LetterDef ParentName="PositiveEvent">
+    <defName>RM_DeepGiftLetter</defName>
+  </LetterDef>
+
+</Defs>

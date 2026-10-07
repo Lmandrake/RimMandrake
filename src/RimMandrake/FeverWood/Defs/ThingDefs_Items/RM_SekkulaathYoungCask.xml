@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SekkulaathYoungCask.xml                         FEVERWOOD_BROOD_RANSOM_1
+
+  A live young of the deep in a sealed water cask: the trade good of the
+  brood ransom. Counted in RM_WorldComponent_DeepYoung's tally while on a
+  player map or in a player caravan. Set down at a water's edge and opened
+  (CompUsable -> RM_CompUseEffect_ReleaseYoung), the young goes home; only a
+  Fever Wood pool answers with a gift.
+
+  Free tier stock: RM_StockGenerator_DeepYoung on the vanilla exotic traders
+  (Patches/RM_FeverWood_YoungCaskTraders.xml), chance in Mod Settings.
+  MarketValue 650 is INVENTED (the juvenile itself is 420; the cask and the
+  risk of carrying it are the rest).
+
+  PLACEHOLDER ART: reuses the prison tank's flat placeholder texture; a cask
+  sprite is owed.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SekkulaathYoungCask</defName>
+    <label>sekkulaath young-cask</label>
+    <description>A sealed, sloshing cask with something alive inside it, small and dark and tentacled, that knocks back when you knock. The towns keep these young in tanks; the traders sell them in casks. Set it down at the edge of a pool and open it, and the young goes home. The deep below the Fever Wood keeps count of its children, and pays for the ones returned.</description>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Building/RM_SekkulaathTank/RM_SekkulaathTank</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.9,0.9)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>650</MarketValue>
+      <Mass>12</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <stackLimit>1</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <tickerType>Never</tickerType>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Open the cask and let the young go</useLabel>
+        <useDuration>300</useDuration>
+      </li>
+      <li Class="CompProperties_UseEffect">
+        <compClass>RimMandrake.FeverWood.RM_CompUseEffect_ReleaseYoung</compClass>
+      </li>
+      <li Class="CompProperties_UseEffectDestroySelf" />
+    </comps>
+  </ThingDef>
+
+</Defs>
