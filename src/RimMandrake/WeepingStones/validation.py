@@ -473,6 +473,39 @@ def _order(t, pid, job, a, bx=None, bz=None, count=None):
     return r
 
 
+def _fate(t, ids):
+    """{id: row-or-None} for the chain's own pawns, read map-wide WITH corpses, so a pawn that died, wandered
+    off the pad or left AllPawnsSpawned altogether reads as which of those it was (None = despawned alive)."""
+    r = t.bridge_call("jawa/list_pawns", includeCorpses=True, includeHealth=True, limit=500)
+    if not _live(t):
+        return {}
+    rows = {p.get("id"): p for p in (_ok(r, "list_pawns(includeCorpses)").get("pawns") or [])}
+    out = {}
+    for i in ids:
+        p = rows.get(i)
+        out[i] = None if p is None else {k: p.get(k) for k in ("x", "z", "spawned", "dead", "downed", "health")}
+    _note(t, "fate of the chain's pawns", out)
+    return out
+
+
+def _need_handler(t, handler, others=()):
+    """The job proofs below presume the handler is still alive and on the map after the wait.
+    LIVE 2026-10-07 (WeepingStones_20261007T100921Z): in all 7 job/flora chains every pawn the chain spawned
+    (handler AND target) had left map.mapPawns.AllPawnsSpawned by the check (totalOnMap 13 -> 11, the 11 being
+    the map's own colonists), so "0 of everything" was read as a mechanic verdict, and FEED / STOCK-outside-pen
+    PASSED on the same disappearance (an item gone from the ground proves nothing once its carrier is gone).
+    With the handler gone the predicate measures nothing: UNMEASURED, with the fate as the evidence."""
+    if not _live(t):
+        return
+    fate = _fate(t, [handler] + [o for o in others if o])
+    h = fate.get(handler)
+    if h is None or h.get("dead") or not h.get("spawned"):
+        _unmeasured(t, "the handler %s is not alive on the map after the wait (fate %s); the job's outcome is "
+                       "not evidence. Repro: spawn the handler on the pad, order the job, step 100 ticks at a time "
+                       "and read jawa/list_pawns includeCorpses=true each step to see when and how it leaves"
+                    % (handler, json.dumps(fate, default=str)[:600]))
+
+
 # ------------------------------------------------------------------ the pen designator (UI path)
 
 def _zone_designators(t):
@@ -1258,12 +1291,10 @@ def job_net(t):
     """NET: a handler nets a wild stockable pawn and it becomes its carryable breeding-stock item
     (RM_JobDriver_NetPoolBreeder). Wild pawn gone, exactly one RM_SkarrinBreedingStock appears.
 
-    LIVE POKE 2026-10-03 (why this component is RED, a real mechanic finding not a script bug): the wild skarrin FLEES
-    the handler at flight speed (~13 cells per 100 ticks against the colonist's ~5) and leaves the map before the
-    200-tick net completes, so no stock item is ever made ("0 wild left, 0 stock": the pawn is gone because it flew
-    off, not because it was netted). FALSE THEORY ruled out: RM_SkarrinBreedingStock resolves live and the finish
-    toil's def lookup is fine. Fix belongs in the mechanic (hold/stun the target, or net from range), an owner-visible
-    design call; do not pad the test to pass."""
+    The 2026-10-03 failure (the wild skarrin fled the handler and left the map) is fixed in the driver:
+    RM_PoolBreederUtility.HoldStill stuns the target for the approach + net (WEEPINGSTONES_STOCK_JOB_LOOP_1)."""
+    # RULED OUT: a defName/counting mismatch -- the precondition reads 1 RM_Skarrin by the same kindDef key and
+    #   RM_SkarrinBreedingStock resolves live (defs_resolve PASS); LIVE 2026-10-07 the handler vanished too.
     _enter(t)
     box = {}
     try:
@@ -1279,6 +1310,7 @@ def job_net(t):
                     _fail("precondition: expected 1 wild skarrin and 0 breeding stock, got %d / %d" % (n, s))
         with _comp(t, "net_turns_wild_pawn_into_breeding_stock"):
             _run_job(t, box["handler"], "RM_NetPoolBreeder", box["wild"], 900)
+            _need_handler(t, box["handler"], [box["wild"]])
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 stock = _things(t, "RM_SkarrinBreedingStock", _pad_rect(t))
@@ -1309,6 +1341,7 @@ def job_stock(t):
         with _comp(t, "stock_releases_species_pawn_into_pen"):
             x, z = t.anchor
             _run_job(t, box["handler"], "RM_StockPoolPen", box["stock"], 1500, x, z, count=1)
+            _need_handler(t, box["handler"])
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 left = len(_things(t, "RM_SkarrinBreedingStock", _pad_rect(t)))
@@ -1339,6 +1372,7 @@ def job_stock_outside_pen(t):
         with _comp(t, "stock_outside_pen_releases_nothing"):
             x, z = t.anchor
             _run_job(t, box["handler"], "RM_StockPoolPen", box["stock"], 1500, x + 8, z + 8, count=1)
+            _need_handler(t, box["handler"])
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 on_ground = len(_things(t, "RM_SkarrinBreedingStock", _pad_rect(t)))
@@ -1369,6 +1403,7 @@ def job_feed(t):
         with _comp(t, "feed_consumes_food_at_the_pen"):
             x, z = t.anchor
             _run_job(t, box["handler"], "RM_FeedPoolPen", box["meal"], 1200, x, z, count=1)
+            _need_handler(t, box["handler"])
             if _live(t):
                 left = len(_things(t, "MealSimple", _pad_rect(t)))
                 if left != 0:
@@ -1394,6 +1429,7 @@ def job_harvest(t):
                     _fail("precondition: want 1 skarrin and no skarrin meat")
         with _comp(t, "harvest_yields_species_meat"):
             _run_job(t, box["handler"], "RM_HarvestPoolPen", box["stock"], 1200)
+            _need_handler(t, box["handler"], [box["stock"]])
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 meat = _things(t, "RM_SkarrinMeat", _pad_rect(t))
@@ -1424,6 +1460,7 @@ def job_cull(t):
                     _fail("precondition: want 1 vhorrin and no vhorrin meat")
         with _comp(t, "cull_yields_enormous_harvest"):
             _run_job(t, box["handler"], "RM_CullVhorrin", box["vhorrin"], 1500)
+            _need_handler(t, box["handler"], [box["vhorrin"]])
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Vhorrin"))
                 meat = _things(t, "RM_VhorrinMeat", _pad_rect(t))
@@ -1461,6 +1498,12 @@ def _flora_chain(plant, product):
                     t.bridge_call("jawa/ordered_job", pawnId=box["handler"], jobDef="Harvest",
                                   targetAId=pid, queue=True, waitTicks=0)   # waitTicks>0 on a paused clock burns ~17 s per order (LIVE 2026-10-03)
                 t.wait_ticks(2500)
+                # RULED OUT: harvest needs a HarvestPlant designation -- "Harvest" is JobDriver_PlantHarvest, whose
+                #   RequiredDesignation is null (only HarvestDesignated -> JobDriver_PlantHarvest_Designated needs one;
+                #   RimSage, Jobs_Work.xml + JobDriver_PlantWork.MakeNewToils).
+                # RULED OUT: growth below harvestMinGrowth -- set_plants growth=1.0 (LIVE 2026-10-07: "growth": 1.0);
+                #   harvestAfterGrowth is the regrowth point, not the gate. Yield lands via GenPlace at actor.Position.
+                _need_handler(t, box["handler"])
                 if _live(t):
                     made = _things(t, product, _pad_rect(t))
                     _note(t, "%s stacks" % product, [_stack(m) for m in made])
