@@ -70,8 +70,8 @@ namespace RimMandrake.StarWars.Droidworks
             if (map == null) return;
             if (!IsOperational) return;
 
-            float gain = Props.chargePercentPerHour * RSW_DroidworksSettings.chargeRate
-                / 100f * ScanIntervalTicks / GenDate.TicksPerHour;
+            float gain = DroidworksKernel.NimbusGainPerScan(Props.chargePercentPerHour,
+                RSW_DroidworksSettings.chargeRate, ScanIntervalTicks, GenDate.TicksPerHour);
             foreach (Thing thing in GenRadial.RadialDistinctThingsAround(parent.Position, map, Props.radius, useCenter: true))
             {
                 if (!(thing is Pawn pawn)) continue;

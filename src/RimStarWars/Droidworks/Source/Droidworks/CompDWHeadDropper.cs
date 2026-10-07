@@ -47,17 +47,16 @@ namespace RimMandrake.StarWars.Droidworks
         // 7 primitive (DROIDWORKS_PRIMITIVE_TIER_1, packet B9).
         private static ThingDef HeadDefFor(int chassisClass)
         {
-            switch (chassisClass)
+            switch (DroidworksKernel.HeadChassis(chassisClass))
             {
-                case 0: return DroidworksDefOf.RSW_DW_Head_Labour;
-                case 1: return DroidworksDefOf.RSW_DW_Head_Protocol;
-                case 2: return DroidworksDefOf.RSW_DW_Head_Astromech;
-                case 3: return DroidworksDefOf.RSW_DW_Head_Battle;
-                case 4: return DroidworksDefOf.RSW_DW_Head_Heavy;
-                case 5: return DroidworksDefOf.RSW_DW_Head_Probe;
-                case 6: return DroidworksDefOf.RSW_DW_Head_Power;
-                case 7: return DroidworksDefOf.RSW_DW_Head_Primitive;
-                default: return DroidworksDefOf.RSW_DW_Head_Labour;
+                case DroidChassis.Labour: return DroidworksDefOf.RSW_DW_Head_Labour;
+                case DroidChassis.Protocol: return DroidworksDefOf.RSW_DW_Head_Protocol;
+                case DroidChassis.Astromech: return DroidworksDefOf.RSW_DW_Head_Astromech;
+                case DroidChassis.Battle: return DroidworksDefOf.RSW_DW_Head_Battle;
+                case DroidChassis.Heavy: return DroidworksDefOf.RSW_DW_Head_Heavy;
+                case DroidChassis.Probe: return DroidworksDefOf.RSW_DW_Head_Probe;
+                case DroidChassis.Power: return DroidworksDefOf.RSW_DW_Head_Power;
+                default: return DroidworksDefOf.RSW_DW_Head_Primitive;
             }
         }
     }

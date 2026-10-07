@@ -88,32 +88,11 @@ namespace RimMandrake.Miasma
                 }
             }
 
-            int tick = Find.TickManager.TicksGame;
-            if (nextCheckTick < 0)
-            {
-                nextCheckTick = tick + Props.checkIntervalTicksRange.RandomInRange;
-                return;
-            }
-
-            if (tick < nextCheckTick)
-            {
-                return;
-            }
-
-            nextCheckTick = tick + Props.checkIntervalTicksRange.RandomInRange;
-
-            if (!RM_MiasmaSettings.wardenSuccessionEnabled)
-            {
-                return;
-            }
-
-            RM_CompCrecheYoungLedger ledger = crecheMarker?.TryGetComp<RM_CompCrecheYoungLedger>();
-            if (ledger != null && !ledger.RecordClean)
-            {
-                return; // barred: the player has harmed one of this creche's young
-            }
-
-            if (Rand.Chance(RM_MiasmaSettings.selfTameChancePerCheck))
+            // the timer (schedule, option, broken record bars it, the chance) is RM_MiasmaKernel.SelfTameStep, offline-fuzzed
+            RM_CompCrecheYoungLedger crecheLedger = crecheMarker?.TryGetComp<RM_CompCrecheYoungLedger>();
+            if (RM_MiasmaKernel.SelfTameStep(ref nextCheckTick, Find.TickManager.TicksGame, () => Props.checkIntervalTicksRange.RandomInRange,
+                    RM_MiasmaSettings.wardenSuccessionEnabled, crecheLedger != null, crecheLedger != null && crecheLedger.RecordClean,
+                    () => Rand.Chance(RM_MiasmaSettings.selfTameChancePerCheck)))
             {
                 SelfTame(pawn);
             }
@@ -175,39 +154,12 @@ namespace RimMandrake.Miasma
             }
 
             List<Thing> markers = pawn.Map.listerThings.ThingsOfDef(markerDef);
-            Thing nearest = null;
-            float nearestDistSq = Props.crecheSearchRadius * Props.crecheSearchRadius;
-            float bestDistSq = float.MaxValue;
-            for (int i = 0; i < markers.Count; i++)
-            {
-                float distSq = (markers[i].Position - pawn.Position).LengthHorizontalSquared;
-                if (distSq <= nearestDistSq && distSq < bestDistSq)
-                {
-                    nearest = markers[i];
-                    bestDistSq = distSq;
-                }
-            }
-
-            return nearest;
+            var distSq = new List<float>(markers.Count);
+            for (int i = 0; i < markers.Count; i++) distSq.Add((markers[i].Position - pawn.Position).LengthHorizontalSquared);
+            int nearest = RM_MiasmaKernel.NearestFirstInclusive(distSq, Props.crecheSearchRadius * Props.crecheSearchRadius);
+            return nearest >= 0 ? markers[nearest] : null;
         }
 
-        // "harmed" per the roster's own deferred-work note
-        // (WARDEN_MOTHER_BEFRIENDING_1): the player harming ANY of this
-        // creche's young bars self-taming for the rest of it, not just the
-        // one hurt. HediffComp.Notify_PawnPostApplyDamage(DamageInfo,float)
-        // is the real signature — MEASURED via reflection against the
-        // installed game's Assembly-CSharp.dll this pass (an earlier attempt
-        // at this file guessed HediffComp.Notify_PawnDied(DamageInfo?) and
-        // it does not exist with that signature; the actual method takes a
-        // second Hediff culprit parameter and only fires on a death that
-        // hediff caused, so PostApplyDamage — firing on ANY damage, lethal
-        // or not — is the correct, more literal match for "harmed" anyway).
-        // "Player-caused" is read off the DamageInfo's own Instigator, the
-        // same test RM_JobGiver_AnchorDefense already applies elsewhere in
-        // this build. NOT caught here, disclosed rather than guessed past:
-        // butchering a corpse that died of natural causes, which runs as a
-        // Bill well after this pawn stopped taking damage — that would need
-        // a Harmony patch this pass does not add.
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
@@ -282,59 +234,38 @@ namespace RimMandrake.Miasma
 
     public class RM_CompCrecheYoungLedger : ThingComp
     {
-        private List<Pawn> registeredYoung = new List<Pawn>();
-        private bool recordClean = true;
+        // The bookkeeping (young list, clean record, betrayal, one succession attempt, the heir) is RM_MiasmaKernel.CrecheLedger,
+        // offline-fuzzed; this comp keeps the mother reference, the sold label and the engine reads. Scribed field for field below.
+        private readonly RM_MiasmaKernel.CrecheLedger<Pawn> ledger = new RM_MiasmaKernel.CrecheLedger<Pawn>();
         private Pawn motherPawn;
-        private Pawn heirPawn;
-        private bool successionDone;
-        private bool betrayed;
-        private int returnedCount;
         private string soldLabel;
 
         public CompProperties_CrecheYoungLedger Props => (CompProperties_CrecheYoungLedger)props;
 
-        public bool RecordClean => recordClean;
+        public bool RecordClean => ledger.recordClean;
 
         /// <summary>MIASMA_MOTHERS_PRICE_1: one of this crèche's young was sold.</summary>
-        public bool Betrayed => betrayed;
+        public bool Betrayed => ledger.betrayed;
 
-        public int ReturnedCount => returnedCount;
+        public int ReturnedCount => ledger.returnedCount;
 
-        public bool SuccessionVoid => betrayed;
+        public bool SuccessionVoid => ledger.betrayed;
 
         /// <summary>A sale: self-taming barred for good, succession void, the mother's tolerance revoked (the caller
         /// does that through RM_MothersPrice, which reaches the shared assembly's anchor comp).</summary>
         public void Betray(Pawn sold)
         {
-            betrayed = true;
-            recordClean = false;
-            successionDone = true;
-            heirPawn = null;
+            ledger.Betray();
             soldLabel = sold?.LabelShort ?? soldLabel;
         }
 
         public void NoteReturned(Pawn young)
         {
-            returnedCount++;
-            registeredYoung.Remove(young);
+            ledger.NoteReturned(young);
         }
 
-        public int YoungOwed
-        {
-            get
-            {
-                int n = 0;
-                for (int i = 0; i < registeredYoung.Count; i++)
-                {
-                    Pawn p = registeredYoung[i];
-                    if (p != null && !p.Dead && !p.Destroyed && p.Faction != Faction.OfPlayer)
-                    {
-                        n++;
-                    }
-                }
-                return n;
-            }
-        }
+        public int YoungOwed =>
+            ledger.YoungOwed(p => !p.Dead && !p.Destroyed && p.Faction != Faction.OfPlayer);
 
         public Pawn MotherNow()
         {
@@ -347,22 +278,19 @@ namespace RimMandrake.Miasma
 
         public void RegisterYoung(Pawn p)
         {
-            if (p != null && !registeredYoung.Contains(p))
-            {
-                registeredYoung.Add(p);
-            }
+            ledger.Register(p);
         }
 
         public void BreakRecord()
         {
-            recordClean = false;
+            ledger.BreakRecord();
         }
 
         public override void CompTick()
         {
             base.CompTick();
 
-            if (successionDone || !RM_MiasmaSettings.wardenSuccessionEnabled)
+            if (!ledger.PollDue(RM_MiasmaSettings.wardenSuccessionEnabled))
             {
                 return;
             }
@@ -413,27 +341,13 @@ namespace RimMandrake.Miasma
 
         private void TryPromoteSuccessor()
         {
-            Pawn chosen = null;
-            for (int i = 0; i < registeredYoung.Count; i++)
-            {
-                Pawn p = registeredYoung[i];
-                if (p == null || p.Dead || p.Destroyed || p.Faction != Faction.OfPlayer)
-                {
-                    continue;
-                }
-
-                chosen = p;
-                break;
-            }
-
-            successionDone = true; // one succession attempt per creche, ever
+            Pawn chosen = ledger.TryPromote(p => !p.Dead && !p.Destroyed && p.Faction == Faction.OfPlayer);   // one attempt per creche, ever
 
             if (chosen == null)
             {
                 return; // no clean self-tamed young survives her — "the crèche is just a place" per the roster's own "not guaranteed"
             }
 
-            heirPawn = chosen;
             Messages.Message(
                 "RUT_WardenSuccessionMessage".Translate(chosen.LabelShort),
                 chosen,
@@ -444,12 +358,12 @@ namespace RimMandrake.Miasma
         {
             // MIASMA_MOTHERS_PRICE_1: her ledger, readable.
             var lines = new List<string>();
-            if (heirPawn != null && !heirPawn.Destroyed)
+            if (ledger.heir != null && !ledger.heir.Destroyed)
             {
-                lines.Add("RUT_CrecheMarkerHeir".Translate(heirPawn.LabelShort));
+                lines.Add("RUT_CrecheMarkerHeir".Translate(ledger.heir.LabelShort));
             }
-            lines.Add("Young she is owed: " + YoungOwed + (returnedCount > 0 ? "; brought back to her: " + returnedCount : ""));
-            if (betrayed)
+            lines.Add("Young she is owed: " + YoungOwed + (ledger.returnedCount > 0 ? "; brought back to her: " + ledger.returnedCount : ""));
+            if (ledger.betrayed)
             {
                 lines.Add("Sold" + (soldLabel.NullOrEmpty() ? "" : ": " + soldLabel) + ". The crèche remembers: she will never tolerate you, and none of her young will be yours.");
             }
@@ -459,18 +373,18 @@ namespace RimMandrake.Miasma
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Collections.Look(ref registeredYoung, "registeredYoung", LookMode.Reference);
-            Scribe_Values.Look(ref recordClean, "recordClean", true);
+            Scribe_Collections.Look(ref ledger.young, "registeredYoung", LookMode.Reference);
+            Scribe_Values.Look(ref ledger.recordClean, "recordClean", true);
             Scribe_References.Look(ref motherPawn, "motherPawn");
-            Scribe_References.Look(ref heirPawn, "heirPawn");
-            Scribe_Values.Look(ref successionDone, "successionDone", false);
-            Scribe_Values.Look(ref betrayed, "betrayed", false);
-            Scribe_Values.Look(ref returnedCount, "returnedCount", 0);
+            Scribe_References.Look(ref ledger.heir, "heirPawn");
+            Scribe_Values.Look(ref ledger.successionDone, "successionDone", false);
+            Scribe_Values.Look(ref ledger.betrayed, "betrayed", false);
+            Scribe_Values.Look(ref ledger.returnedCount, "returnedCount", 0);
             Scribe_Values.Look(ref soldLabel, "soldLabel");
 
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && registeredYoung == null)
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && ledger.young == null)
             {
-                registeredYoung = new List<Pawn>();
+                ledger.young = new List<Pawn>();
             }
         }
     }

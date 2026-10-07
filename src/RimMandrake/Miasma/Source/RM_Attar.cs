@@ -37,7 +37,7 @@ namespace RimMandrake.Miasma
     // Added to the Beauty stat by Patches/RM_Attar_BeautyPart.xml.
     public class StatPart_Glazed : StatPart
     {
-        public const float Bonus = 3f;
+        public const float Bonus = RM_MiasmaKernel.GlazeBonus;
         public override void TransformValue(StatRequest req, ref float val)
         {
             if (!RM_MiasmaSettings.attarEnabled || !req.HasThing) return;
@@ -72,8 +72,8 @@ namespace RimMandrake.Miasma
         {
             Hediff_Injury scar = FirstScar(p);
             if (scar == null) return;
-            scar.Severity = Mathf.Max(0f, scar.Severity - 3f);
-            if (scar.Severity <= 0.01f) p.health.RemoveHediff(scar);
+            scar.Severity = RM_MiasmaKernel.BalmScar(scar.Severity, out bool removed);
+            if (removed) p.health.RemoveHediff(scar);
         }
     }
 

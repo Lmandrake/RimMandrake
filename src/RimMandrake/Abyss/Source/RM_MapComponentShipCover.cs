@@ -29,23 +29,12 @@ namespace RimMandrake.Abyss
 
     public class RM_MapComponent_ShipCover : MapComponent
     {
-        private const int Interval = 250;
-        private const float DaysToFullCover = 6f;
-        private const int MaxCoveredTicks = 15 * GenDate.TicksPerDay;
-        private const int CooldownTicks = 3 * GenDate.TicksPerDay;
-        public const float CoveredThreshold = 0.6f;
-        private const int FreeLamps = 4;
-
-        private const int ProbeMin = 3 * GenDate.TicksPerDay, ProbeMax = 6 * GenDate.TicksPerDay;
-        private const int ProbeStay = GenDate.TicksPerDay;
-        private const int ScanInterval = 60;
-        private const int ReportTicks = 600;
+        // The cover/cooldown/probe-schedule arithmetic is RM_CoverKernel in RM_AbyssStateKernel.cs (offline-fuzzed); this
+        // component reads the engine in, calls it, and plays the side effects. The state is Scribed field for field below.
+        public const float CoveredThreshold = RM_CoverKernel.CoveredThreshold;
         private const float SightRadius = 14f, LampSightRadius = 22f;
 
-        private float cover;
-        private int coveredTicks;
-        private int cooldownUntil = -1;
-        private int nextProbeTick = -1;
+        private CoverState state = CoverState.Fresh();
         private Pawn probe;
         private int probeSpawnTick;
         private int seenTicks;
@@ -53,15 +42,15 @@ namespace RimMandrake.Abyss
 
         public RM_MapComponent_ShipCover(Map map) : base(map) { }
 
-        public float Cover { get { return cover; } }
+        public float Cover { get { return state.cover; } }
         public static float CoverLevel(Map map)
         {
             RM_MapComponent_ShipCover c = map?.GetComponent<RM_MapComponent_ShipCover>();
-            return c == null ? 0f : c.cover;
+            return c == null ? 0f : c.state.cover;
         }
         public static bool IsCovered(Map map)
         {
-            return RM_AbyssSettings.shipCoverEnabled && CoverLevel(map) >= CoveredThreshold;
+            return RM_CoverKernel.IsCovered(RM_AbyssSettings.shipCoverEnabled, CoverLevel(map));
         }
 
         private bool Applies()
@@ -91,50 +80,16 @@ namespace RimMandrake.Abyss
         {
             int now = Find.TickManager.TicksGame;
             if (probe != null) ProbeTick(now);
-            if (now % Interval != 0) return;
+            if (now % RM_CoverKernel.Interval != 0) return;
 
-            if (!Applies() || !HasEngine())
-            {
-                Collapse(false, now);
-                return;
-            }
-            if (cooldownUntil > now) return;
-
-            lastLampCount = CountLitLamps();
-            bool quiet = lastLampCount <= FreeLamps;
-            if (cover < 1f && quiet)
-                cover = Mathf.Min(1f, cover + Interval / (DaysToFullCover * GenDate.TicksPerDay));
-            else if (!quiet)
-                cover = Mathf.Max(0f, cover - Interval / (DaysToFullCover * GenDate.TicksPerDay) * 2f);
-
-            if (cover >= CoveredThreshold)
-            {
-                coveredTicks += Interval;
-                if (coveredTicks >= MaxCoveredTicks)
-                {
-                    Collapse(true, now);
-                    Messages.Message("The cover over the ship has worn thin; the search will find it again. It can be built up again after a few days.", MessageTypeDefOf.NeutralEvent, false);
-                    return;
-                }
-                if (RM_AbyssSettings.probesEnabled)
-                {
-                    if (nextProbeTick < 0) nextProbeTick = now + Rand.Range(ProbeMin, ProbeMax);
-                    if (now >= nextProbeTick && probe == null) { SpawnProbe(now); nextProbeTick = now + Rand.Range(ProbeMin, ProbeMax); }
-                }
-            }
-            else
-            {
-                coveredTicks = 0;
-                nextProbeTick = -1;
-            }
-        }
-
-        private void Collapse(bool cooldown, int now)
-        {
-            cover = 0f;
-            coveredTicks = 0;
-            nextProbeTick = -1;
-            if (cooldown) cooldownUntil = now + CooldownTicks;
+            bool applies = Applies();
+            bool hasEngine = applies && HasEngine();
+            if (applies && hasEngine && state.cooldownUntil <= now) lastLampCount = CountLitLamps();
+            CoverEvent ev = RM_CoverKernel.Step(ref state, now, applies, hasEngine, lastLampCount, RM_AbyssSettings.probesEnabled, probe != null, Rand.Range);
+            if (ev == CoverEvent.Lapsed)
+                Messages.Message("The cover over the ship has worn thin; the search will find it again. It can be built up again after a few days.", MessageTypeDefOf.NeutralEvent, false);
+            else if (ev == CoverEvent.SpawnProbe)
+                SpawnProbe(now);
         }
 
         private void SpawnProbe(int now)
@@ -168,8 +123,8 @@ namespace RimMandrake.Abyss
                 probe = null; seenTicks = 0;
                 return;
             }
-            if (now - probeSpawnTick > ProbeStay) { Leave(); return; }
-            if (now % ScanInterval != 0) return;
+            if (RM_CoverKernel.ProbeLeaves(now, probeSpawnTick)) { Leave(); return; }
+            if (now % RM_CoverKernel.ScanInterval != 0) return;
             if (!Applies()) return;
 
             bool seen = false;
@@ -189,10 +144,10 @@ namespace RimMandrake.Abyss
                     if (g != null && g.Glows && all[i].Position.InHorDistOf(probe.Position, LampSightRadius)) seen = true;
                 }
             }
-            seenTicks = seen ? seenTicks + ScanInterval : Mathf.Max(0, seenTicks - ScanInterval);
-            if (seenTicks >= ReportTicks)
+            seenTicks = RM_CoverKernel.ProbeSeen(seenTicks, seen);
+            if (RM_CoverKernel.ProbeReports(seenTicks))
             {
-                Collapse(true, now);
+                RM_CoverKernel.Collapse(ref state, true, now);
                 Find.LetterStack.ReceiveLetter("The probe has reported", "The probe saw enough and has sent what it found. The ship's cover is gone; the search will come for it. It can be built up again after a few days.", LetterDefOf.ThreatBig, probe);
                 Leave();
             }
@@ -211,10 +166,10 @@ namespace RimMandrake.Abyss
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref cover, "cover", 0f);
-            Scribe_Values.Look(ref coveredTicks, "coveredTicks", 0);
-            Scribe_Values.Look(ref cooldownUntil, "cooldownUntil", -1);
-            Scribe_Values.Look(ref nextProbeTick, "nextProbeTick", -1);
+            Scribe_Values.Look(ref state.cover, "cover", 0f);
+            Scribe_Values.Look(ref state.coveredTicks, "coveredTicks", 0);
+            Scribe_Values.Look(ref state.cooldownUntil, "cooldownUntil", -1);
+            Scribe_Values.Look(ref state.nextProbeTick, "nextProbeTick", -1);
             Scribe_Values.Look(ref probeSpawnTick, "probeSpawnTick", 0);
             Scribe_Values.Look(ref seenTicks, "seenTicks", 0);
             Scribe_References.Look(ref probe, "probe");

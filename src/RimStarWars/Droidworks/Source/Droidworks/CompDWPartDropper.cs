@@ -76,27 +76,18 @@ namespace RimMandrake.StarWars.Droidworks
             ThingDef servoP = DroidworksDefOf.RSW_DW_Part_Servo_Primitive;
             ThingDef cellP = DroidworksDefOf.RSW_DW_Part_PowerCell_Primitive;
 
-            switch (chassisClass)
-            {
-                case 0: // Labour
-                    return new[] { leg, manip, motiv, servo, cell };
-                case 1: // Protocol
-                    return new[] { leg, manip, sensor, motiv, servo, cell };
-                case 2: // Astromech - domed, no legs or arms
-                    return new[] { sensor, motiv, servo, cell };
-                case 3: // Battle
-                    return new[] { leg, manip, sensor, motiv, servo, cell };
-                case 4: // Heavy
-                    return new[] { leg, manip, sensor, motiv, servo, cell };
-                case 5: // Probe - small hoverer, no legs or arms
-                    return new[] { sensor, motiv, servo, cell };
-                case 6: // Power (Gonk) - simple hauler, no arms or sensor
-                    return new[] { leg, motiv, servo, cell };
-                case 7: // Primitive (G2/Junker) - full limb set, claw hands, own tier
-                    return new[] { legP, manipP, sensorP, motivP, servoP, cellP };
-                default:
-                    return new[] { leg, manip, sensor, motiv, servo, cell };
-            }
+            // The slot table (which chassis sheds which parts, in drop order) is DroidworksKernel.LegalParts; this
+            // only maps a slot onto the fine or the primitive def.
+            bool primitive = DroidworksKernel.UsesPrimitiveParts(chassisClass);
+            DroidPartSlot slots = DroidworksKernel.LegalParts(chassisClass);
+            var set = new System.Collections.Generic.List<ThingDef>();
+            if ((slots & DroidPartSlot.Leg) != 0) set.Add(primitive ? legP : leg);
+            if ((slots & DroidPartSlot.Manipulator) != 0) set.Add(primitive ? manipP : manip);
+            if ((slots & DroidPartSlot.Sensor) != 0) set.Add(primitive ? sensorP : sensor);
+            if ((slots & DroidPartSlot.Motivator) != 0) set.Add(primitive ? motivP : motiv);
+            if ((slots & DroidPartSlot.Servo) != 0) set.Add(primitive ? servoP : servo);
+            if ((slots & DroidPartSlot.PowerCell) != 0) set.Add(primitive ? cellP : cell);
+            return set.ToArray();
         }
     }
 }

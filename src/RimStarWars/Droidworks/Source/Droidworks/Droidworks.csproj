@@ -71,6 +71,8 @@
     <Compile Include="DroidAssembly.cs" />
     <Compile Include="DroidEthicsExtension.cs" />
     <Compile Include="DroidFormatTier.cs" />
+    <!-- Pure rules (format ladder, drift, power, trade, salvage tables) shared with SelfTest/ - no Verse/Unity allowed. -->
+    <Compile Include="DroidworksKernel.cs" />
     <Compile Include="DroidworksBoltUtility.cs" />
     <Compile Include="DroidworksDefOf.cs" />
     <Compile Include="DroidworksHardwareQuirks.cs" />

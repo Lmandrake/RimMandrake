@@ -57,48 +57,22 @@ namespace RimMandrake.Abyss
 
         public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
         {
-            if (tile == null || tile.WaterCovered)
-            {
-                return -100f;
-            }
-
-            float rarity = RM_AbyssSettings.biomeRarityFactor;
-            if (rarity <= 0.001f)
-            {
-                return -100f;
-            }
+            if (tile == null) return RM_DarkKernel.BiomeScore(true, false, false, 0f, 0f, 0f, 0f, default(RM_DarkKernel.BiomeRanges), null);
 
             RM_AbyssBiomeRanges r = biome.GetModExtension<RM_AbyssBiomeRanges>() ?? FallbackRanges;
-
-            if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
+            var ranges = new RM_DarkKernel.BiomeRanges
             {
-                return 0f;
-            }
-            if (tile.rainfall < r.rainfall.min || tile.rainfall >= r.rainfall.max)
-            {
-                return 0f;
-            }
-            if (tile.elevation < r.elevation.min || tile.elevation > r.elevation.max)
-            {
-                return 0f;
-            }
-            // Rocky highland: real relief only, matching the twin's own
-            // hilliest-on-the-planet character.
-            if (tile.hilliness != Hilliness.LargeHills && tile.hilliness != Hilliness.Mountainous)
-            {
-                return 0f;
-            }
-
-            float gate = r.spawnChance * rarity;
-            if (gate < 1f && !Rand.ChanceSeeded(gate, planetTile.tileId ^ GateSeedSalt))
-            {
-                return 0f;
-            }
-
-            float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
-            return r.baseScore
-                 + (r.temperature.max - tile.temperature) * r.degreeWeight
-                 + (tile.rainfall - r.rainfall.min) / divisor;
+                tempMin = r.temperature.min, tempMax = r.temperature.max,
+                rainMin = r.rainfall.min, rainMax = r.rainfall.max,
+                elevMin = r.elevation.min, elevMax = r.elevation.max,
+                baseScore = r.baseScore, degreeWeight = r.degreeWeight,
+                rainfallDivisor = r.rainfallDivisor, spawnChance = r.spawnChance
+            };
+            // the scoring (water, rarity slider, ranges, hills, seeded gate, base + cold + wet bonus) is RM_DarkKernel.BiomeScore
+            return RM_DarkKernel.BiomeScore(false, tile.WaterCovered,
+                tile.hilliness == Hilliness.LargeHills || tile.hilliness == Hilliness.Mountainous,
+                RM_AbyssSettings.biomeRarityFactor, tile.temperature, tile.rainfall, tile.elevation, ranges,
+                gate => Rand.ChanceSeeded(gate, planetTile.tileId ^ GateSeedSalt));
         }
     }
 }

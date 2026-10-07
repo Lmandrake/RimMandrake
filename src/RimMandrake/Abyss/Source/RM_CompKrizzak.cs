@@ -77,7 +77,6 @@ namespace RimMandrake.Abyss
     public class RM_MapComponent_KrizzakDimming : MapComponent
     {
         private const int RecoverInterval = 250;
-        private const int RecoverAfterTicks = 600;
 
         private class Entry { public float original; public int lastFed; }
         private readonly Dictionary<CompGlower, Entry> dimmed = new Dictionary<CompGlower, Entry>();
@@ -87,24 +86,37 @@ namespace RimMandrake.Abyss
 
         public bool IsDimmed(CompGlower g) { return dimmed.ContainsKey(g); }
 
+        private RM_DarkKernel.Lamp LampOf(CompGlower g, Entry e)
+        {
+            return new RM_DarkKernel.Lamp
+            {
+                radius = g.GlowRadius,
+                kPresent = e != null,
+                kOriginal = e != null ? e.original : 0f,
+                kLastFed = e != null ? e.lastFed : 0
+            };
+        }
+
+        // The dimming arithmetic (feed floor, recovery pace, when an entry is spent) is RM_DarkKernel.Krizzak*; these read a lamp
+        // in, call it, and write the radius and the entry back.
         public bool AtFloor(CompGlower g, float minFraction)
         {
-            return dimmed.TryGetValue(g, out Entry e) && g.GlowRadius <= e.original * minFraction + 0.01f;
+            dimmed.TryGetValue(g, out Entry e);
+            return RM_DarkKernel.KrizzakAtFloor(LampOf(g, e), minFraction);
         }
 
         public void Feed(CompGlower g, float fraction, float minFraction)
         {
             if (g == null || g.parent == null || !g.parent.Spawned) return;
-            if (!dimmed.TryGetValue(g, out Entry e))
+            dimmed.TryGetValue(g, out Entry e);
+            RM_DarkKernel.Lamp lamp = LampOf(g, e);
+            bool shrank = RM_DarkKernel.KrizzakFeed(ref lamp, Find.TickManager.TicksGame, fraction, minFraction);
+            if (e == null) { e = new Entry(); dimmed[g] = e; }
+            e.original = lamp.kOriginal;
+            e.lastFed = lamp.kLastFed;
+            if (shrank)
             {
-                e = new Entry { original = g.GlowRadius };
-                dimmed[g] = e;
-            }
-            e.lastFed = Find.TickManager.TicksGame;
-            float next = Mathf.Max(e.original * minFraction, g.GlowRadius - e.original * fraction);
-            if (next < g.GlowRadius)
-            {
-                g.GlowRadius = next;
+                g.GlowRadius = lamp.radius;
                 g.ForceRegister(map);
                 RM_MapComponent_AbyssSoundscape.LampClatter(map, g.parent);   // ABYSS_SOUNDSCAPE_BUILD_1
             }
@@ -120,11 +132,14 @@ namespace RimMandrake.Abyss
             {
                 Entry e = dimmed[g];
                 if (g.parent == null || !g.parent.Spawned) { dimmed.Remove(g); continue; }
-                if (now - e.lastFed < RecoverAfterTicks) continue;
-                float next = Mathf.Min(e.original, g.GlowRadius + e.original * 0.1f);
-                g.GlowRadius = next;
-                g.ForceRegister(map);
-                if (next >= e.original - 0.01f) dimmed.Remove(g);
+                RM_DarkKernel.Lamp lamp = LampOf(g, e);
+                RM_DarkKernel.KrizzakRecover(ref lamp, now);
+                if (lamp.radius != g.GlowRadius)
+                {
+                    g.GlowRadius = lamp.radius;
+                    g.ForceRegister(map);
+                }
+                if (!lamp.kPresent) dimmed.Remove(g);
             }
         }
     }

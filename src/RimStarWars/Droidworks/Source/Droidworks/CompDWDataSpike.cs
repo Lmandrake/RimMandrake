@@ -68,10 +68,8 @@ namespace RimMandrake.StarWars.Droidworks
         /// </summary>
         public bool MatchesFaction(Pawn target)
         {
-            if (target == null) return false;
-            if (Props.factionless) return target.Faction == null;
-            if (target.Faction?.def == null || Props.spikeFaction.NullOrEmpty()) return false;
-            return target.Faction.def.defName == Props.spikeFaction;
+            return DroidworksKernel.SpikeMatchesFaction(target == null, Props.factionless,
+                target != null && target.Faction != null, target?.Faction?.def?.defName, Props.spikeFaction);
         }
 
         /// <summary>
@@ -81,10 +79,9 @@ namespace RimMandrake.StarWars.Droidworks
         /// </summary>
         public bool ValidTarget(Pawn target)
         {
-            if (target == null || target.Dead) return false;
-            if (!(target.Downed || target.IsPrisoner)) return false;
-            if (Props.requiresPrisoner && !target.IsPrisoner) return false;
-            return MatchesFaction(target);
+            if (target == null) return false;
+            return DroidworksKernel.SpikeValidTarget(false, target.Dead, target.Downed, target.IsPrisoner,
+                Props.requiresPrisoner, MatchesFaction(target));
         }
 
         /// <summary>
@@ -127,8 +124,8 @@ namespace RimMandrake.StarWars.Droidworks
                         target.kindDef?.initialResistanceRange?.RandomInRange ?? 10f;
                 }
 
-                target.guest.resistance =
-                    Mathf.Max(0f, target.guest.resistance - Props.resistancePerUse * SkillFactor(spiker));
+                target.guest.resistance = DroidworksKernel.ResistanceAfterSpike(target.guest.resistance,
+                    Props.resistancePerUse, SpikerLevel(spiker));
 
                 if (target.guest.resistance > 0f)
                 {
@@ -156,10 +153,7 @@ namespace RimMandrake.StarWars.Droidworks
         /// Will.xml's own header already rules that droids are not talked down
         /// like a human prisoner.
         /// </summary>
-        private static float SkillFactor(Pawn spiker)
-        {
-            int level = spiker?.skills?.GetSkill(SkillDefOf.Intellectual)?.Level ?? 0;
-            return 0.5f + 0.05f * level;
-        }
+        private static int SpikerLevel(Pawn spiker) =>
+            spiker?.skills?.GetSkill(SkillDefOf.Intellectual)?.Level ?? 0;
     }
 }

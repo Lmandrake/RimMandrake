@@ -28,14 +28,12 @@ namespace RimMandrake.Abyss
     // ════════════════════════════════════════════════════════════════════
     public class RM_MapComponent_AbyssSoundscape : MapComponent
     {
-        private const int RustleDelayMin = 45, RustleDelayMax = 90;
-        private const int GrainTickMin = 240, GrainTickMax = 900;
         private const int GrainSearchRadius = 14;
         private const int MaxRustles = 3;
 
-        private int lastGustCount = -1;
-        private int pendingRustleTick = -1;
-        private int nextGrainTick = -1;
+        // Which sounds are DUE (gust impact, rustle after it, grain ticks) is RM_SoundKernel in RM_AbyssStateKernel.cs
+        // (offline-fuzzed); this plays them, and only when on screen.
+        private SoundState sound = SoundState.Fresh();
 
         public int ImpactsPlayed { get; private set; }
         public int RustlesPlayed { get; private set; }
@@ -50,22 +48,11 @@ namespace RimMandrake.Abyss
             if (map.Biome == null || map.Biome.defName != "RM_Abyss" || !RM_AbyssSettings.gustSoundscapeEnabled) return;
             int now = Find.TickManager.TicksGame;
             var gust = map.GetComponent<RM_MapComponent_GustController>();
-            if (gust != null)
-            {
-                if (lastGustCount < 0) lastGustCount = gust.GustCount;
-                if (gust.GustCount != lastGustCount)
-                {
-                    lastGustCount = gust.GustCount;
-                    if (OnScreen) PlayImpact();
-                    pendingRustleTick = now + Rand.RangeInclusive(RustleDelayMin, RustleDelayMax);
-                }
-            }
-            if (pendingRustleTick >= 0 && now >= pendingRustleTick)
-            {
-                pendingRustleTick = -1;
-                if (OnScreen) PlayRustles();
-            }
-            if (now % 60 == 0) GrainTick(now);
+            SoundOut due = RM_SoundKernel.Step(ref sound, now, gust != null ? gust.GustCount : -2,
+                RM_MapComponent_Dark.GrainMultiplier(map), RM_AbyssSettings.etchfallStrength, Rand.RangeInclusive);
+            if (due.impact && OnScreen) PlayImpact();
+            if (due.rustle && OnScreen) PlayRustles();
+            if (due.grain && OnScreen) PlayGrainTick();
         }
 
         public void PlayImpact()
@@ -94,21 +81,8 @@ namespace RimMandrake.Abyss
             RustlesPlayed += played;
         }
 
-        private void GrainTick(int now)
+        private void PlayGrainTick()
         {
-            if (RM_MapComponent_Dark.GrainMultiplier(map) <= 0f || RM_AbyssSettings.etchfallStrength <= 0.001f)
-            {
-                nextGrainTick = -1;
-                return;
-            }
-            if (nextGrainTick < 0)
-            {
-                nextGrainTick = now + Rand.RangeInclusive(GrainTickMin, GrainTickMax);
-                return;
-            }
-            if (now < nextGrainTick) return;
-            nextGrainTick = now + Mathf.RoundToInt(Rand.RangeInclusive(GrainTickMin, GrainTickMax) / RM_MapComponent_Dark.GrainMultiplier(map));
-            if (!OnScreen) return;
             SoundDef s = DefDatabase<SoundDef>.GetNamedSilentFail("RM_AbyssGrainTick");
             if (s == null) return;
             IntVec3 centre = Find.CameraDriver.MapPosition;
@@ -122,7 +96,6 @@ namespace RimMandrake.Abyss
             }
         }
 
-        /// <summary>A lamp a krizzak is eating: the soft clatter on its glass. Building lamps only.</summary>
         public static void LampClatter(Map map, Thing lamp)
         {
             if (map == null || lamp == null || !RM_AbyssSettings.gustSoundscapeEnabled || Find.CurrentMap != map) return;
@@ -134,7 +107,7 @@ namespace RimMandrake.Abyss
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref lastGustCount, "lastGustCount", -1);
+            Scribe_Values.Look(ref sound.lastGustCount, "lastGustCount", -1);
         }
     }
 

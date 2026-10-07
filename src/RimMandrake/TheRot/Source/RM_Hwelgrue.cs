@@ -94,7 +94,7 @@ namespace RimMandrake.TheRot
 
         public ThingOwner GetDirectlyHeldThings() => gut;
 
-        public static int CastingIntervalTicks => Mathf.Max(2500, Mathf.RoundToInt(RM_TheRotSettings.hwelgrueCastingDays * 60000f));
+        public static int CastingIntervalTicks => RM_TheRotKernel.CastingIntervalTicks(RM_TheRotSettings.hwelgrueCastingDays);
 
         public override void CompTick()
         {
@@ -112,17 +112,11 @@ namespace RimMandrake.TheRot
                 RM_MapComponent_Hwelgrue.Get(p.Map)?.NotifySeen(p);
             }
             if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.hwelgrue) return;
-            if (gut.Count > 0)
+            // the digest clock (counts up while the gut holds something, a casting at the interval, reset when empty) is
+            // RM_TheRotKernel.GutSweep, offline-fuzzed
+            if (RM_TheRotKernel.GutSweep(ref ticksDigesting, gut.Count, Props.sweepInterval, CastingIntervalTicks))
             {
-                ticksDigesting += Props.sweepInterval;
-                if (ticksDigesting >= CastingIntervalTicks)
-                {
-                    PassCasting();
-                }
-            }
-            else
-            {
-                ticksDigesting = 0;
+                PassCasting();
             }
             if (!p.Downed && !(p.pather?.Moving ?? false))
             {
@@ -135,22 +129,18 @@ namespace RimMandrake.TheRot
         public static bool OverCap(Pawn p)
         {
             if (p.Faction != null) return false;
-            int cap = RM_TheRotSettings.theRotEnabled && RM_TheRotSettings.hwelgrue ? RM_TheRotSettings.hwelgrueMapCap : 0;
             int others = p.Map.mapPawns.AllPawnsSpawned.Count(o => o != p && o.def == p.def && !o.Dead);
-            return others >= cap;
+            return RM_TheRotKernel.OverCap(false, RM_TheRotSettings.theRotEnabled && RM_TheRotSettings.hwelgrue, RM_TheRotSettings.hwelgrueMapCap, others);
         }
 
         private void AccelerateRotAround(Pawn p)
         {
-            float extra = RM_TheRotSettings.hwelgrueRotMultiplier - 1f;
-            if (extra <= 0f) return;
+            if (RM_TheRotSettings.hwelgrueRotMultiplier - 1f <= 0f) return;
             foreach (Thing t in GenRadial.RadialDistinctThingsAround(p.Position, p.Map, Props.restRadius, true))
             {
                 CompRottable rot = t.TryGetComp<CompRottable>();
                 if (rot == null || !rot.Active) continue;
-                float rate = GenTemperature.RotRateAtTemperature(t.AmbientTemperature);
-                if (rate <= 0f) continue;
-                rot.RotProgress += rate * extra * Props.sweepInterval;
+                rot.RotProgress += RM_TheRotKernel.RotBoost(RM_TheRotSettings.hwelgrueRotMultiplier, GenTemperature.RotRateAtTemperature(t.AmbientTemperature), Props.sweepInterval);
             }
         }
 

@@ -55,23 +55,20 @@ namespace RimMandrake.Abyss
         {
             if (Props.sunburnHediff == null) return;
             Hediff h = pawn.health.hediffSet.GetFirstHediffOfDef(Props.sunburnHediff);
-            if (RM_AbyssSettings.summUVSensitive && InDaylight(pawn))
+            // the burn / cool rule is RM_DarkKernel.SunStep (offline-fuzzed); Hediff.Severity clamps the raw value to the def
+            RM_DarkKernel.SunStep(h != null, h != null ? h.Severity : 0f, RM_AbyssSettings.summUVSensitive && InDaylight(pawn),
+                Props.burnPerRareTick, Props.coolPerRareTick, Props.sunburnHediff.maxSeverity, out bool nowHas, out float next);
+            if (h == null)
             {
-                if (h == null)
-                {
-                    h = HediffMaker.MakeHediff(Props.sunburnHediff, pawn);
-                    h.Severity = Props.burnPerRareTick;
-                    pawn.health.AddHediff(h);
-                }
-                else
-                {
-                    h.Severity = Mathf.Min(h.def.maxSeverity, h.Severity + Props.burnPerRareTick);
-                }
+                if (!nowHas) return;
+                h = HediffMaker.MakeHediff(Props.sunburnHediff, pawn);
+                h.Severity = next;
+                pawn.health.AddHediff(h);
             }
-            else if (h != null)
+            else
             {
-                h.Severity -= Props.coolPerRareTick;
-                if (h.Severity <= 0.001f) pawn.health.RemoveHediff(h);
+                h.Severity = next;
+                if (!nowHas) pawn.health.RemoveHediff(h);
             }
         }
     }

@@ -43,10 +43,9 @@ namespace RimMandrake.TheRot
     public class RM_CompGutSwallow : ThingComp, IThingHolder
     {
         private ThingOwner<Thing> held;
-        private int ticksInside;
-        private int ticksToDigest;
-        private float damageSinceSwallow;
-        private int nextKnockTick = -1;
+        // The swallow's clock (digest length, knocks, belly damage) is RM_TheRotKernel.SwallowState and its rules are in the kernel
+        // (offline-fuzzed); Scribed field for field below.
+        private RM_TheRotKernel.SwallowState sw = RM_TheRotKernel.SwallowState.Fresh();
         private bool strangerRolled;
         private bool wasDrafted;
 
@@ -73,14 +72,13 @@ namespace RimMandrake.TheRot
         public bool Holding => held.Count > 0;
 
         /// <summary>Fraction of digestion time left, 1 = just swallowed, 0 = done.</summary>
-        public float TimeLeftFraction => ticksToDigest <= 0 ? 0f : Mathf.Clamp01(1f - (float)ticksInside / ticksToDigest);
+        public float TimeLeftFraction => RM_TheRotKernel.TimeLeftFraction(sw);
 
-        public int TicksLeft => Mathf.Max(0, ticksToDigest - ticksInside);
+        public int TicksLeft => RM_TheRotKernel.TicksLeft(sw);
 
         public static int DigestTicksFor(Pawn victim, CompProperties_RM_GutSwallow props)
         {
-            float hours = Mathf.Max(props?.minHoursToDigest ?? 3f, RM_TheRotSettings.swallowHoursPerBodySize * (victim?.BodySize ?? 1f));
-            return Mathf.RoundToInt(hours * 2500f);
+            return RM_TheRotKernel.DigestTicksFor(props?.minHoursToDigest ?? 3f, RM_TheRotSettings.swallowHoursPerBodySize, victim?.BodySize ?? 1f);
         }
 
         // ── finding and swallowing ──────────────────────────────────────
@@ -110,10 +108,7 @@ namespace RimMandrake.TheRot
                 GenSpawn.Spawn(victim, parent.Position, parent.Map);
                 return false;
             }
-            ticksInside = 0;
-            damageSinceSwallow = 0f;
-            ticksToDigest = DigestTicksFor(victim, Props);
-            nextKnockTick = Find.TickManager.TicksGame + 120;
+            RM_TheRotKernel.Begin(ref sw, DigestTicksFor(victim, Props), Find.TickManager.TicksGame);
             if (colony)
             {
                 Find.LetterStack.ReceiveLetter("Swallowed: " + victim.LabelShortCap,
@@ -138,19 +133,14 @@ namespace RimMandrake.TheRot
                 MaybeHoldStranger(self);
             }
             if (!Holding) return;
-            ticksInside++;
             Pawn inside = Inside;
-            if (inside == null || inside.Dead)
+            RM_TheRotKernel.SwallowEvent ev = RM_TheRotKernel.Tick(ref sw, Find.TickManager.TicksGame, inside == null || inside.Dead);
+            if (ev == RM_TheRotKernel.SwallowEvent.Finish)
             {
                 FinishDigestion();
                 return;
             }
-            if (ticksInside >= ticksToDigest)
-            {
-                FinishDigestion();
-                return;
-            }
-            if (Find.TickManager.TicksGame >= nextKnockTick)
+            if (ev == RM_TheRotKernel.SwallowEvent.Knock)
             {
                 Knock(self, inside);
             }
@@ -158,8 +148,7 @@ namespace RimMandrake.TheRot
 
         private void Knock(Pawn self, Pawn inside)
         {
-            float f = TimeLeftFraction;
-            nextKnockTick = Find.TickManager.TicksGame + Mathf.RoundToInt(Mathf.Lerp(900f, 180f, f));
+            float f = RM_TheRotKernel.KnockNext(ref sw, Find.TickManager.TicksGame);
             float vol = KnockVolume(f);
             if (vol <= 0f) return;
             SoundDef def = KnockDef(inside, f);
@@ -169,14 +158,17 @@ namespace RimMandrake.TheRot
             def.PlayOneShot(info);
         }
 
-        public static float KnockVolume(float timeLeftFraction) => Mathf.Lerp(0.25f, 1f, timeLeftFraction) * RM_TheRotSettings.swallowLoudness;
+        public static float KnockVolume(float timeLeftFraction) => RM_TheRotKernel.KnockVolume(timeLeftFraction, RM_TheRotSettings.swallowLoudness);
 
         public static SoundDef KnockDef(Pawn inside, float f)
         {
-            if (inside != null && !inside.RaceProps.Humanlike) return RM_HwelgrueDefOf.RM_GutScrabbling;
-            if (f > 0.66f) return RM_HwelgrueDefOf.RM_GutKnocking;
-            if (f > 0.33f) return RM_HwelgrueDefOf.RM_GutKnocking_Weak;
-            return RM_HwelgrueDefOf.RM_GutKnocking_Failing;
+            switch (RM_TheRotKernel.KnockKindFor(inside == null || inside.RaceProps.Humanlike, f))
+            {
+                case RM_TheRotKernel.KnockKind.Scrabbling: return RM_HwelgrueDefOf.RM_GutScrabbling;
+                case RM_TheRotKernel.KnockKind.Knocking: return RM_HwelgrueDefOf.RM_GutKnocking;
+                case RM_TheRotKernel.KnockKind.Weak: return RM_HwelgrueDefOf.RM_GutKnocking_Weak;
+                default: return RM_HwelgrueDefOf.RM_GutKnocking_Failing;
+            }
         }
 
         private void MaybeHoldStranger(Pawn self)
@@ -196,10 +188,7 @@ namespace RimMandrake.TheRot
             Pawn stranger = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, null, PawnGenerationContext.NonPlayer,
                 forceGenerateNewPawn: true, canGeneratePawnRelations: false));
             if (!held.TryAdd(stranger)) return null;
-            ticksToDigest = DigestTicksFor(stranger, Props);
-            ticksInside = Mathf.Max(0, ticksToDigest - Mathf.RoundToInt(Rand.Range(2f, 6f) * 2500f));
-            damageSinceSwallow = 0f;
-            nextKnockTick = Find.TickManager.TicksGame + 120;
+            RM_TheRotKernel.BeginStranger(ref sw, DigestTicksFor(stranger, Props), Find.TickManager.TicksGame, Mathf.RoundToInt(Rand.Range(2f, 6f) * 2500f));
             return stranger;
         }
 
@@ -223,8 +212,7 @@ namespace RimMandrake.TheRot
                 if (gut != null) gut.Digest(remains);
                 else if (!remains.Destroyed) remains.Destroy(DestroyMode.Vanish);
             }
-            ticksInside = 0;
-            ticksToDigest = 0;
+            RM_TheRotKernel.Clear(ref sw);
             if (inside != null && Self?.Spawned == true)
             {
                 Messages.Message("The knocking inside the hwelgrue has stopped.", Self, MessageTypeDefOf.NegativeEvent, false);
@@ -244,15 +232,12 @@ namespace RimMandrake.TheRot
                 if (!RCellFinder.TryFindRandomCellNearWith(at, c => c.Standable(map), map, out IntVec3 cell, 1)) return null;
                 dropped = GenSpawn.Spawn(held.Take(thing), cell, map);
             }
-            float f = TimeLeftFraction;
-            ticksInside = 0;
-            ticksToDigest = 0;
-            damageSinceSwallow = 0f;
+            float f = RM_TheRotKernel.Clear(ref sw);
             if (!(dropped is Pawn p)) return null;
             p.stances?.stunner?.StunFor(60, Self, addBattleLog: false, showMote: false);
             if (p.drafter != null) p.drafter.Drafted = wasDrafted;
             if (RM_HwelgrueDefOf.RM_SheenCoating != null) p.health.AddHediff(RM_HwelgrueDefOf.RM_SheenCoating);
-            float earned = Mathf.Lerp(60f, 5f, f);
+            float earned = RM_TheRotKernel.EarnedAcid(f);
             DamageInfo acid = new DamageInfo(DamageDefOf.AcidBurn, earned, 0f, -1f, parent);
             acid.SetApplyAllDamage(true);
             p.TakeDamage(acid);
@@ -265,8 +250,7 @@ namespace RimMandrake.TheRot
         {
             base.PostPostApplyDamage(dinfo, totalDamageDealt);
             if (!Holding || Self == null || Self.Dead) return;
-            damageSinceSwallow += totalDamageDealt;
-            if (damageSinceSwallow >= RM_TheRotSettings.swallowBellyCutDamage)
+            if (RM_TheRotKernel.BellyOpens(ref sw, totalDamageDealt, RM_TheRotSettings.swallowBellyCutDamage))
             {
                 Release(Self.MapHeld, "was cut out of the hwelgrue's belly");
             }
@@ -296,10 +280,10 @@ namespace RimMandrake.TheRot
         {
             base.PostExposeData();
             Scribe_Deep.Look(ref held, "held", this);
-            Scribe_Values.Look(ref ticksInside, "ticksInside", 0);
-            Scribe_Values.Look(ref ticksToDigest, "ticksToDigest", 0);
-            Scribe_Values.Look(ref damageSinceSwallow, "damageSinceSwallow", 0f);
-            Scribe_Values.Look(ref nextKnockTick, "nextKnockTick", -1);
+            Scribe_Values.Look(ref sw.ticksInside, "ticksInside", 0);
+            Scribe_Values.Look(ref sw.ticksToDigest, "ticksToDigest", 0);
+            Scribe_Values.Look(ref sw.damageSinceSwallow, "damageSinceSwallow", 0f);
+            Scribe_Values.Look(ref sw.nextKnockTick, "nextKnockTick", -1);
             Scribe_Values.Look(ref strangerRolled, "strangerRolled", false);
             Scribe_Values.Look(ref wasDrafted, "wasDrafted", false);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)

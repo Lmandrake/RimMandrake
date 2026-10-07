@@ -25,29 +25,19 @@ namespace RimMandrake.Abyss
     // ════════════════════════════════════════════════════════════════════
     public class RM_MapComponent_Dark : MapComponent
     {
-        public const string DarkWeather = "RM_AbyssDark";
-        public const string UnveilWeather = "RM_AbyssUnveiling";
-        public const string StormWeather = "RM_AbyssWitchfire";
+        // The Dark's arithmetic (temperature curve, murk, lamp shrink) is RM_DarkKernel and the storm-call timers are RM_StormKernel
+        // (RM_AbyssKernel.cs / RM_AbyssStateKernel.cs), so the offline fuzz drives the same code the game runs.
+        public const string DarkWeather = RM_DarkKernel.DarkWeather;
+        public const string UnveilWeather = RM_DarkKernel.UnveilWeather;
+        public const string StormWeather = RM_DarkKernel.StormWeather;
 
-        // Effective-temperature band over which the Dark thins: opaque at/below ClearStart, fully clear at/above ClearFull.
-        private const float ClearStart = 8f;
-        private const float ClearFull = 14f;
-        private const float PocketAmplitude = 10f;   // deg C swing of the outdoor pocket noise
         private const float PocketScale = 0.07f;     // cells -> noise units
         private const float PocketDrift = 0.00005f;  // noise units per tick
 
         private const int PawnInterval = 150;
         private const int LampInterval = 250;
-        private const float LampFloor = 0.3f;        // a lamp never shrinks below this share of its radius at full Dark
-        private const float MurkStep = 0.05f;
 
-        private const int RumbleMin = 3000, RumbleMax = 9000;
-        private const int FlashDelayMin = 180, FlashDelayMax = 300;
-        private const float SummChance = 0.2f;
-
-        private int nextRumbleTick = -1;
-        private int pendingFlashTick = -1;
-        private bool pendingSummCome;
+        private StormState stormCall = StormState.Fresh();   // Scribed field for field below
 
         private bool wasUnveiling;
         private bool initialised;
@@ -63,45 +53,31 @@ namespace RimMandrake.Abyss
             return map?.weatherManager?.curWeather?.defName;
         }
 
-        public static bool IsUnveiling(Map map) { return WeatherName(map) == UnveilWeather; }
+        public static bool IsUnveiling(Map map) { return RM_DarkKernel.IsUnveiling(WeatherName(map)); }
 
         /// <summary>The Dark is physically present (the Dark itself, or a Witchfire storm, which keeps it).</summary>
-        public static bool DarkPresent(Map map)
-        {
-            string w = WeatherName(map);
-            return w == DarkWeather || w == StormWeather;
-        }
+        public static bool DarkPresent(Map map) { return RM_DarkKernel.DarkPresent(WeatherName(map)); }
 
         /// <summary>Grain falling: 0 = none, 1 = the Dark / a storm, 2 = the Unveiling (the Dark collapsing to grain).</summary>
-        public static float GrainMultiplier(Map map)
-        {
-            string w = WeatherName(map);
-            if (w == UnveilWeather) return 2f;
-            return (w == DarkWeather || w == StormWeather) ? 1f : 0f;
-        }
+        public static float GrainMultiplier(Map map) { return RM_DarkKernel.GrainMultiplier(WeatherName(map)); }
 
         /// <summary>0 = clear air, 1 = fully opaque, at a cell, before the strength slider.</summary>
         public static float DarknessAt(Map map, IntVec3 c)
         {
-            if (!DarkPresent(map) || !c.InBounds(map)) return 0f;
+            string weather = WeatherName(map);
+            if (!RM_DarkKernel.DarkPresent(weather) || !c.InBounds(map)) return 0f;
             float t = c.GetTemperature(map);
-            if (!c.Roofed(map))
-            {
-                float n = Mathf.PerlinNoise(c.x * PocketScale + map.uniqueID * 17.31f,
-                                            c.z * PocketScale + Find.TickManager.TicksGame * PocketDrift);
-                t += (n - 0.5f) * 2f * PocketAmplitude;
-            }
+            bool roofed = c.Roofed(map);
+            float noise = roofed ? 0f : Mathf.PerlinNoise(c.x * PocketScale + map.uniqueID * 17.31f,
+                                                          c.z * PocketScale + Find.TickManager.TicksGame * PocketDrift);
             // ABYSS_FOLD_LAMP_BUILD_1: a lit fold-lamp's lane of warm air holds the Dark open toward its throat.
             // ABYSS_FREE_CRYPTID_1: and, very rarely, a clear pocket opens over nothing at all.
-            return DarknessForTemperature(t) * (1f - RM_MapComponent_FoldLanes.ClearanceAt(map, c))
-                * (1f - RM_MapComponent_AbyssCryptid.PhantomClearanceAt(map, c));
+            return RM_DarkKernel.DarknessAt(weather, true, t, roofed, noise,
+                RM_MapComponent_FoldLanes.ClearanceAt(map, c), RM_MapComponent_AbyssCryptid.PhantomClearanceAt(map, c));
         }
 
         /// <summary>0..1 darkness of air at an effective temperature (no lane, no slider).</summary>
-        public static float DarknessForTemperature(float t)
-        {
-            return 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(ClearStart, ClearFull, t));
-        }
+        public static float DarknessForTemperature(float t) { return RM_DarkKernel.DarknessForTemperature(t); }
 
         private static bool Active =>
             RM_AbyssSettings.darkEnabled && RM_AbyssSettings.darkStrength > 0.001f;
@@ -165,14 +141,14 @@ namespace RimMandrake.Abyss
                 Pawn p = pawns[i];
                 if (p.Dead || p.RaceProps == null || !p.RaceProps.Humanlike) continue;
                 Hediff h = p.health.hediffSet.GetFirstHediffOfDef(def);
-                float sev = on ? DarknessAt(map, p.Position) * RM_AbyssSettings.darkStrength : 0f;
-                if (sev < 0.03f)
+                float sev = RM_DarkKernel.MurkTarget(on, on ? DarknessAt(map, p.Position) : 0f, RM_AbyssSettings.darkStrength);
+                RM_DarkKernel.MurkResult r = RM_DarkKernel.MurkStepFor(h != null, h != null ? h.Severity : 0f, sev, def.initialSeverity);
+                if (r.removed) p.health.RemoveHediff(h);
+                else
                 {
-                    if (h != null) p.health.RemoveHediff(h);
-                    continue;
+                    if (r.added) h = p.health.AddHediff(def);
+                    if (r.set && h != null) h.Severity = r.severity;
                 }
-                if (h == null) h = p.health.AddHediff(def);
-                if (h != null && Mathf.Abs(h.Severity - sev) >= MurkStep) h.Severity = sev;
             }
         }
 
@@ -186,30 +162,33 @@ namespace RimMandrake.Abyss
             for (int i = 0; i < bld.Count; i++)
             {
                 CompGlower g = bld[i].TryGetComp<CompGlower>();
-                if (g == null || !g.Glows) continue;
-                if (krizzak != null && krizzak.IsDimmed(g)) continue;   // a krizzak has this one; do not fight it
-                float baseline = g.Props.glowRadius;
-                float f = on ? 1f - (1f - LampFloor) * Mathf.Clamp01(DarknessAt(map, bld[i].Position) * RM_AbyssSettings.darkStrength) : 1f;
-                float target = baseline * f;
-                if (Mathf.Abs(g.GlowRadius - target) < 0.15f) continue;
-                if (f < 0.999f) shrunk[g] = baseline;
-                g.GlowRadius = target;
-                g.ForceRegister(map);
+                if (g == null) continue;
+                // the per-lamp rule (shrink toward the floor in the Dark, restore when it is gone, leave a krizzak's lamp alone)
+                // is RM_DarkKernel.DarkLampPass; this only reads the lamp in and writes it back
+                var lamp = new RM_DarkKernel.Lamp
+                {
+                    radius = g.GlowRadius,
+                    baseline = g.Props.glowRadius,
+                    kPresent = krizzak != null && krizzak.IsDimmed(g)
+                };
+                if (shrunk.TryGetValue(g, out float shrunkBaseline)) { lamp.shrunkKnown = true; lamp.shrunkBaseline = shrunkBaseline; }
+                float darkness = on && g.Glows && !lamp.kPresent ? DarknessAt(map, bld[i].Position) : 0f;
+                bool changed = RM_DarkKernel.DarkLampPass(ref lamp, g.Glows, on, darkness, RM_AbyssSettings.darkStrength);
+                if (lamp.shrunkKnown) shrunk[g] = lamp.shrunkBaseline; else shrunk.Remove(g);
+                if (changed)
+                {
+                    g.GlowRadius = lamp.radius;
+                    g.ForceRegister(map);
+                }
             }
-            // restore any lamp we shrank that is no longer in the Dark (or whose Dark is off)
+            // forget lamps that left the map
             if (shrunk.Count == 0) return;
             scratch.Clear();
             scratch.AddRange(shrunk.Keys);
             for (int i = 0; i < scratch.Count; i++)
             {
                 CompGlower g = scratch[i];
-                if (g.parent == null || !g.parent.Spawned) { shrunk.Remove(g); continue; }
-                if (!on && g.GlowRadius < shrunk[g] - 0.01f && (krizzak == null || !krizzak.IsDimmed(g)))
-                {
-                    g.GlowRadius = shrunk[g];
-                    g.ForceRegister(map);
-                    shrunk.Remove(g);
-                }
+                if (g.parent == null || !g.parent.Spawned) shrunk.Remove(g);
             }
         }
 
@@ -217,28 +196,18 @@ namespace RimMandrake.Abyss
 
         private void StormCallTick(int now)
         {
-            bool storm = WeatherName(map) == StormWeather;
-            if (!storm || !RM_AbyssSettings.stormCallEnabled)
-            {
-                nextRumbleTick = -1; pendingFlashTick = -1; pendingSummCome = false;
-                return;
-            }
-            if (nextRumbleTick < 0) nextRumbleTick = now + Rand.RangeInclusive(RumbleMin, RumbleMax);
-
-            if (pendingFlashTick >= 0 && now >= pendingFlashTick)
+            StormOut o = RM_StormKernel.Step(ref stormCall, now, WeatherName(map) == StormWeather, RM_AbyssSettings.stormCallEnabled,
+                RM_AbyssSettings.darkStrength, Rand.RangeInclusive, Rand.Chance);
+            if (o.flash)
             {
                 // the flash that follows the call: light with NO lightning behind it
                 map.weatherManager.eventHandler.AddEvent(new WeatherEvent_LightningFlash(map));
-                if (pendingSummCome) TrySpawnSumm();
-                pendingFlashTick = -1; pendingSummCome = false;
+                if (o.summ) TrySpawnSumm();
             }
-            else if (pendingFlashTick < 0 && now >= nextRumbleTick)
+            if (o.rumble)
             {
                 SoundDef rumble = DefDatabase<SoundDef>.GetNamedSilentFail("Thunder_OffMap");
                 if (rumble != null) rumble.PlayOneShotOnCamera(map);
-                pendingFlashTick = now + Rand.RangeInclusive(FlashDelayMin, FlashDelayMax);
-                pendingSummCome = Rand.Chance(Mathf.Clamp01(SummChance * RM_AbyssSettings.darkStrength));
-                nextRumbleTick = now + Rand.RangeInclusive(RumbleMin, RumbleMax);
             }
         }
 
@@ -259,9 +228,9 @@ namespace RimMandrake.Abyss
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref nextRumbleTick, "nextRumbleTick", -1);
-            Scribe_Values.Look(ref pendingFlashTick, "pendingFlashTick", -1);
-            Scribe_Values.Look(ref pendingSummCome, "pendingSummCome", false);
+            Scribe_Values.Look(ref stormCall.nextRumbleTick, "nextRumbleTick", -1);
+            Scribe_Values.Look(ref stormCall.pendingFlashTick, "pendingFlashTick", -1);
+            Scribe_Values.Look(ref stormCall.pendingSumm, "pendingSummCome", false);
         }
     }
 }

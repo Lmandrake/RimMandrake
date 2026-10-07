@@ -13,10 +13,11 @@ namespace RimMandrake.StarWars.Droidworks
     /// </summary>
     public class Need_Power : Need
     {
-        public const float PoweredDownAt = 0.02f;
+        public const float PoweredDownAt = DroidworksKernel.PoweredDownAt;
 
-        private DroidworksExtension Ext =>
-            pawn.def.GetModExtension<DroidworksExtension>();
+        // The race's own (last) extension, not the first: XML inheritance APPENDS a child's modExtensions after the family
+        // abstract's inherited copy, so GetModExtension (FirstOrDefault) would ignore any race-level powerFallPerDay.
+        private DroidworksExtension Ext => DroidworksExtension.OfRace(pawn.def);
 
         public Need_Power(Pawn pawn) : base(pawn)
         {
@@ -33,11 +34,11 @@ namespace RimMandrake.StarWars.Droidworks
             // this need at all, so nothing here runs for it. The two knobs below
             // are the drain rate and whether an empty bar actually shuts a droid
             // down (off: the bar can sit at zero and the droid keeps working).
-            float fall = (Ext?.powerFallPerDay ?? 0.33f) * RSW_DroidworksSettings.powerDrainRate
-                / 400f; // NeedInterval = 150 ticks; 60000/150 = 400
-            CurLevel = Mathf.Max(0f, CurLevel - fall);
+            float fall = DroidworksKernel.PowerFallPerInterval(Ext?.powerFallPerDay ?? 0.33f,
+                RSW_DroidworksSettings.powerDrainRate); // NeedInterval = 150 ticks; 60000/150 = 400
+            CurLevel = DroidworksKernel.PowerAfterFall(CurLevel, fall);
             if (!RSW_DroidworksSettings.powerDownWhenEmpty) return;
-            if (CurLevel <= PoweredDownAt && !pawn.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_PoweredDown))
+            if (DroidworksKernel.ShouldPowerDown(true, CurLevel, pawn.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_PoweredDown)))
             {
                 pawn.health.AddHediff(DroidworksDefOf.RSW_DW_PoweredDown);
             }

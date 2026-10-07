@@ -50,9 +50,8 @@ namespace RimMandrake.TheRot
         public static void Notify_Ping(RM_WorldComponent_SwallowedCore w, Map map)
         {
             RM_NavigatorLogDef def = Def;
-            if (w == null || def == null || w.spent || w.logCut) return;
-            int per = System.Math.Max(1, RM_TheRotSettings.navigatorPingsPerEntry);
-            int due = System.Math.Min(def.entries.Count, w.pings / per);
+            if (!RM_TheRotKernel.LogReads(w != null, def != null, w != null && w.spent, w != null && w.logCut)) return;
+            int due = RM_TheRotKernel.EntriesDue(w.pings, RM_TheRotSettings.navigatorPingsPerEntry, def.entries.Count);
             while (w.entriesRead < due)
             {
                 ReadEntry(w, def, map);
@@ -85,9 +84,10 @@ namespace RimMandrake.TheRot
                 slate.Set("map", home);
                 slate.Set("points", StorytellerUtility.DefaultThreatPointsNow(home));
             }
-            if (!def.campaignSiteTiles.NullOrEmpty() && w.sitesRevealed < def.campaignSiteTiles.Count)
+            int tileIndex = RM_TheRotKernel.CampaignTileIndex(w.sitesRevealed, def.campaignSiteTiles.NullOrEmpty() ? 0 : def.campaignSiteTiles.Count);
+            if (tileIndex >= 0)
             {
-                slate.Set("siteTile", new PlanetTile(def.campaignSiteTiles[w.sitesRevealed]));
+                slate.Set("siteTile", new PlanetTile(def.campaignSiteTiles[tileIndex]));
             }
             if (!script.CanRun(slate, home)) return null;
             Quest quest = QuestUtility.GenerateQuestAndMakeAvailable(script, slate);
@@ -102,9 +102,9 @@ namespace RimMandrake.TheRot
         public static void Notify_CarrierDied(RM_WorldComponent_SwallowedCore w)
         {
             RM_NavigatorLogDef def = Def;
-            if (w == null || def == null || w.logCut || w.entriesRead >= def.entries.Count) return;
-            w.logCut = true;
-            if (w.entriesRead == 0) return; // nobody ever heard it; nothing to cut
+            if (w == null || def == null) return;
+            // cut the log; a letter only if anyone ever heard an entry: RM_TheRotKernel.CutLogOnDeath (offline-fuzzed)
+            if (!RM_TheRotKernel.CutLogOnDeath(ref w.logCut, w.entriesRead, def.entries.Count)) return;
             Find.LetterStack.ReceiveLetter("The log stops",
                 "The console's pulse has stopped in the middle of a word. Whatever was left of the dead ship's log died "
               + "with the animal that carried its core. The entries you heard, and the places they named, are still yours.",
