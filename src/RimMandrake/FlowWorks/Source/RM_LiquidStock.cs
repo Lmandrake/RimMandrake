@@ -46,15 +46,22 @@ namespace RimMandrake.FlowWorks
 
 		private readonly HashSet<int> fillSeen = new HashSet<int>();
 
+		/// <summary>Set after a load; BodyAt rebuilds the index first so a saved body is never re-formed from terrain.</summary>
+		private bool indexDirty;
+
 		public IReadOnlyList<RM_LiquidBody> Bodies => bodies;
 
 		public void ExposeData()
 		{
 			Scribe_Collections.Look(ref bodies, "RM_liquidBodies", LookMode.Deep);
 			Scribe_Values.Look(ref nextBodyId, "RM_nextLiquidBodyId", 1);
-			if (Scribe.mode == LoadSaveMode.PostLoadInit && bodies == null)
+			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
-				bodies = new List<RM_LiquidBody>();
+				indexDirty = true;
+				if (bodies == null)
+				{
+					bodies = new List<RM_LiquidBody>();
+				}
 			}
 		}
 
@@ -62,6 +69,7 @@ namespace RimMandrake.FlowWorks
 		/// FinalizeInit, after the grids exist.</summary>
 		public void RebuildIndex(Map map)
 		{
+			indexDirty = false;
 			cellToBody.Clear();
 			byId.Clear();
 			for (int b = 0; b < bodies.Count; b++)
@@ -94,6 +102,10 @@ namespace RimMandrake.FlowWorks
 			if (!c.InBounds(map))
 			{
 				return null;
+			}
+			if (RM_StockMath.NeedsIndexRebuild(indexDirty, bodies.Count, cellToBody.Count))
+			{
+				RebuildIndex(map);
 			}
 			int idx = map.cellIndices.CellToIndex(c);
 			int existing;

@@ -1272,6 +1272,22 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.OccludedBand(11f, 10.2f, 10.9f, out _, out float b2) && b2 < 11f, "a pawn wholly below is covered to its top");
             });
 
+            Case("StockReload_index_rebuild_rule", () =>
+            {
+                Assert(RM_StockMath.NeedsIndexRebuild(true, 0, 0), "dirty after load always rebuilds");
+                Assert(RM_StockMath.NeedsIndexRebuild(false, 3, 0), "saved bodies with an empty index rebuild");
+                Assert(!RM_StockMath.NeedsIndexRebuild(false, 3, 12), "a built index is left alone");
+                Assert(!RM_StockMath.NeedsIndexRebuild(false, 0, 0), "no bodies, nothing to rebuild");
+            });
+
+            Case("LipOcclusion_skips_shallower_pawn", () =>
+            {
+                Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 0, 4), "ground pawn under the band is not covered");
+                Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 8f, 9f, 9.5f, 11.2f, 0, 4), "no overlap, still covered");
+                Assert(!RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 4, 4), "a pawn as deep is never exempt");
+                Assert(RM_WallFaceMath.CoverPieceHitsShallowerPawn(5f, 6f, 10.05f, 11f, 4.6f, 6.4f, 9.5f, 11.2f, 2, 4), "a shallower pawn is exempt");
+            });
+
             // ── principle 5: the scorch persists, fades in quarters, never fades at 0 days ──
             Case("Scorch_fade_rule", () =>
             {

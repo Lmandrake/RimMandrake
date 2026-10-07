@@ -184,6 +184,14 @@ namespace RimMandrake.FlowWorks
 
 		// ── the debit / credit primitives (§5, "Debits") ──────────────────
 
+		/// <summary>FLOWWORKS_POND_STOCK_RELOAD_1: after a load the cell-to-body index must be rebuilt before any lookup.
+		/// A saved body present but no indexed cells (the owner's FinalizeInit rebuild did not take effect) would
+		/// let BodyAt re-form a fresh body from terrain, resetting stock/capacity/receded. True = rebuild first.</summary>
+		public static bool NeedsIndexRebuild(bool indexDirty, int bodyCount, int indexedCells)
+		{
+			return indexDirty || (bodyCount > 0 && indexedCells == 0);
+		}
+
 		/// <summary>May a body still hand out one unit? Compared against the SAME
 		/// unit a debit spends — a flat 1 would let a viscous liquid with
 		/// volumePerTile above 1 pass the check and then fail the debit, which

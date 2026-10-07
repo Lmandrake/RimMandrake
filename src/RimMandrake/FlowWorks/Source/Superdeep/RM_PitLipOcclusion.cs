@@ -47,6 +47,25 @@ namespace RimMandrake.FlowWorks
 			return quad;
 		}
 
+		private bool HitsShallowerPawn(RM_MapComponent_Excavation eng, Pawn sunk, int sunkDepth, float left, float right, float a, float b)
+		{
+			foreach (Pawn q in map.mapPawns.AllPawnsSpawned)
+			{
+				if (q == sunk || q.Flying)
+				{
+					continue;
+				}
+				Vector3 qp = q.DrawPos;
+				float qh = 0.5f * Mathf.Clamp(Mathf.Sqrt(Mathf.Max(q.BodySize, 0.2f)) * 1.2f, 0.6f, 2.4f);
+				if (RM_WallFaceMath.CoverPieceHitsShallowerPawn(left, right, a, b, qp.x - qh, qp.x + qh, qp.z - qh, qp.z + qh,
+					eng.ExcavatedDepthAt(q.Position), sunkDepth))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public override void MapComponentUpdate()
 		{
 			if (!RimMandrakeFlowWorksSettings.pitLipOcclusionEnabled || !RimMandrakeFlowWorksSettings.pitDepthDrawOffsetEnabled
@@ -146,6 +165,10 @@ namespace RimMandrake.FlowWorks
 						if (b <= a)
 						{
 							continue;
+						}
+						if (HitsShallowerPawn(eng, p, d, left, right, a, b))
+						{
+							continue;   // never draw the cover over a pawn standing at ground level or on the lip
 						}
 						Matrix4x4 m = Matrix4x4.TRS(new Vector3(left, y, a), Quaternion.identity, new Vector3(right - left, 1f, b - a));
 						Graphics.DrawMesh(mesh, m, mat, 0);

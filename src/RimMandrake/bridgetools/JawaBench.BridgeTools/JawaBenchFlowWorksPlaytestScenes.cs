@@ -733,7 +733,12 @@ namespace JawaBench.BridgeTools
             var s1 = cp.Where(l => l.StartsWith("s1 ")).Select(l => l.Substring(3)).ToList();
             var channel = s0.Where(l => l.StartsWith("cell ")).Select(l => { string[] p = l.Split(' '); return new IntVec3(int.Parse(p[1]), 0, int.Parse(p[2])); }).ToList();
             c.ev["resume"] = resume; c.ev["save"] = Val("save"); c.ev["ticksAtSave"] = ticksAtSave; c.ev["ticksAtLoad"] = TicksGameSafe();
-            if (TicksGameSafe() != ticksAtSave) { c.Invalid("current game is at tick " + TicksGameSafe() + ", not the checkpoint's " + ticksAtSave + " - load " + Val("save") + " first"); yield break; }
+            // A load lands 0-2 ticks past the save (live round 2: +1 on 3 of 4 loads). Compare STATE, not the tick count:
+            // run only the remaining ticks so the reloaded branch ends at the same game tick as the uninterrupted one.
+            int offset = TicksGameSafe() - ticksAtSave;
+            c.ev["loadTickOffset"] = offset;
+            if (offset < 0 || offset > 2) { c.Invalid("current game is at tick " + TicksGameSafe() + ", not within 0-2 ticks of the checkpoint's " + ticksAtSave + " - load " + Val("save") + " first"); yield break; }
+            n -= offset;
             var l0 = QReloadSnapshot(c, channel, pondCell);
             var d0 = s0.Zip(l0, (a, b) => a == b ? null : "saved[" + a + "] loaded[" + b + "]").Where(x => x != null).ToList();
             c.Phase("exec");
