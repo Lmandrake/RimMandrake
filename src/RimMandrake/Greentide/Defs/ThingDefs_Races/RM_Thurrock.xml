@@ -74,8 +74,8 @@
         <requiresAwake>true</requiresAwake>
         <fellsTreesBelowHealthFraction>0.4</fellsTreesBelowHealthFraction>
       </li>
-      <!-- Provoked only (minSeverity 0.9): buildings only, natural rock spared. PROVISIONAL numbers. -->
-      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttack">
+      <!-- Provoked only (minSeverity 0.9): buildings only, natural rock spared. PROVISIONAL numbers. Secondary class: the engine rejects two comps of one compClass. -->
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttackSecondary">
         <radius>1.9</radius>
         <tickIntervalTicks>60</tickIntervalTicks>
         <damageDef>Blunt</damageDef>
