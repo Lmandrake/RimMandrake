@@ -65,7 +65,7 @@
       <harvestWork>800</harvestWork>
       <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestTag>Standard</harvestTag>
-      <visualSizeRange>2.2~3.2</visualSizeRange>
+      <visualSizeRange>3.3~4.8</visualSizeRange>
       <wildOrder>1</wildOrder>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>50</wildClusterWeight>
@@ -157,7 +157,7 @@
       <fertilitySensitivity>0.3</fertilitySensitivity>
       <growDays>25</growDays>
       <dieIfLeafless>false</dieIfLeafless>
-      <visualSizeRange>2.0~2.6</visualSizeRange>
+      <visualSizeRange>4.0~5.2</visualSizeRange>
       <wildOrder>1</wildOrder>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>35</wildClusterWeight>
@@ -331,7 +331,7 @@
       <fertilitySensitivity>0.2</fertilitySensitivity>
       <growDays>14</growDays>
       <dieIfLeafless>false</dieIfLeafless>
-      <visualSizeRange>1.0~1.4</visualSizeRange>
+      <visualSizeRange>2.0~2.8</visualSizeRange>
       <wildOrder>2</wildOrder>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>10</wildClusterWeight>
@@ -371,7 +371,7 @@
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Pellareth</defName>
     <label>pellareth</label>
-    <description>Great strangely pale flowers on grey stalks, bone-white and slightly glowing in the gloom, growing in runs and arcs that are never random — the white traces the web. Withered heads go grey and papery but stand. Fresh blooms mean an active line; withered runs mean the safe path. The fresh/withered route-signal state machine is a follow-on build.</description>
+    <description>Small pale flowers on thin grey stalks, bone-white and faintly glowing in the gloom, growing in runs and arcs that trace the web. Withered heads go grey and papery but stand. They grow like a graveyard's flowers: a quiet, sober ceremony for a dying place.</description>
     <statBases>
       <MaxHitPoints>25</MaxHitPoints>
       <Flammability>0.2</Flammability>
@@ -387,7 +387,7 @@
       <fertilitySensitivity>0.2</fertilitySensitivity>
       <growDays>12</growDays>
       <dieIfLeafless>false</dieIfLeafless>
-      <visualSizeRange>1.0~1.5</visualSizeRange>
+      <visualSizeRange>0.5~0.8</visualSizeRange>
       <wildOrder>2</wildOrder>
       <wildClusterRadius>2</wildClusterRadius>
       <wildClusterWeight>12</wildClusterWeight>

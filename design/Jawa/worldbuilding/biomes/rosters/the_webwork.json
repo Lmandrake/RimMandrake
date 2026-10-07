@@ -444,7 +444,7 @@
     {
       "from_sheet": "the_webwork §4c",
       "kind": "plant",
-      "mechanic_load": "C#: placement follows web architecture; fresh/withered state as route-signal",
+      "mechanic_load": "placement follows web architecture; no fresh/withered state machine (owner, 2026-10-07)",
       "name": "pale flowers (web-tracing bloom)"
     },
     {
