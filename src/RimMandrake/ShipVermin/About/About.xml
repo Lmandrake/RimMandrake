@@ -13,71 +13,46 @@ cute, some are hideous, some live inside, some can live outside in vaccuum
 (the mynock for example)." One home for every ship-infesting critter, so a
 future species lands here instead of spawning its own mod.
 
-RM tier: the mechanics engine (comps, JobGivers, the alert) knows nothing
-species-specific — every field is attached to a species by an ordinary XML
-patch, driven by the shared mandrake.rm.creaturebehaviors assembly. The
-mynock's own species def (RSW_Mynock — Star-Wars-specific content, per the
-naming scheme's "species vs. clan" rule) lives in mandrake.rsw.swbestiary,
-that mod's existing home for Star Wars creature species; this mod patches its
-mechanics onto that def rather than declaring an RSW_-prefixed def of its
-own (this mod's own defNames are RM_ per the folder's tier).
+SHIPVERMIN_FREE_TIER_BEASTS_1 — owner ruling (card, typed, 2026-10-07): "Make
+the free tier have its own beasts that get patched by the Star Wars bestiary
+when active. Same mechanics same mod otherwise." This mod depends on no
+franchise content. It ships its own cast:
+  - RM_Skivvik: a vacuum-proof hull leech that drifts to a powered hull,
+    breeds (soft cap 3 / hard cap 12 per map, group tag "ShipVermin") and
+    gnaws lights, conduits and laid floor.
+  - RM_Rattagh: a sociable, toxin-proof pest rodent of wreck voids.
+  - RM_Gorrud: a nocturnal predatory rodent of holds and wrecks.
+  - RM_Fethrik: a fuel mite that sprays chemfuel in a cone (RM_FethrikFuelSpew).
+When mandrake.rsw.swbestiary is loaded, that mod's own patch
+(Patches/ShipVermin/RSW_ShipVermin_CanonCast.xml) gives its canon creatures the
+same mechanics and swaps them into the same four nest slots
+(RM_ShipVerminCanonSwapExtension). Mechanics are unchanged either way.
 
-Ships:
-  - Patches/RSW_Mynock_ShipVermin.xml — adds RM_CompVerminBreeder,
-    RM_VerminPressureExtension (soft cap 3 / hard cap 12 per map — the
-    "nuisance unless there are many" curve, owner-verbatim), RM_SeekTargetExtension
-    (seekSubstructure — the vacuum-drift-to-the-hull boarding behavior; vanilla
-    ThingDef.bringAlongOnGravship carries it home for free at launch, RimSage-
-    verified against Gravship.ShouldBringOnGravship) and RM_GnawTargetExtension
-    (chews CompGlower-bearing buildings and PowerConduit, strips laid floor
-    terrain back to substructure) to RSW_Mynock.
-  - RM_Alert_ShipVermin — concrete population alert (group tag "ShipVermin")
-    on top of mandrake.rm.creaturebehaviors' abstract base.
-
-Vacuum: RSW_Mynock's own race stats (in SWBestiary) set canBeVacuumBurnt=false
-and VacuumResistance=1 so it never needs a hull, per the owner's "some can
-live outside in vaccuum (the mynock for example)".
-
-Art: no bespoke mynock sprite ships yet (RSW_Mynock's graphicData points at a
-not-yet-populated texPath under this def's own mod — the def structure is
-complete, the art pass is future work per the item's own "future cool ideas"
-framing). This is NOT the same asset as mandrake.rsw.mynockartoverride, which
-retextures a DIFFERENT, donor (mlie.starwarsanimalcollection) mynock and is
-untouched by this item.
-
-Live-verified 2026-09-11: mynock boards, breeds under the population cap, and
-gnaws power/lighting to rubble on a live bridge quicktest.
+The breeding/seek/gnaw machinery is mandrake.rm.biomes' CreatureBehaviors kit;
+this mod sets it on RM_Skivvik in Defs/ThingDefs_Races/RM_ShipVermin_Cast.xml.
+RM_Alert_ShipVermin is the population alert (group tag "ShipVermin").
 
 WRECKAGE_VERMIN_SPAWN_1 (2026-09-12), owner ruling verbatim: "Yes vermin
-should be able to spawn from wreckage." Adds a second, independent
-mechanism: RM_CompProperties_VerminNest / RM_CompVerminNest, a generic
-"nest under the wreckage" comp — attach it via a comps-list patch to any
-wreckage ThingDef and it periodically spawns one wild pawn of a
-settings-enabled species nearby (Mynock, Scavrat, Womp rat, VFEI2_Fuelmite,
-Rat — the same ship-vermin band already in wildAnimals), gated by the same
-RM_MapComponent_VerminPopulation group-tag pressure pool the mynock breeder
-already respects (default tag "ShipVermin", hard cap 12), so a nest and a
-breeding population press against ONE shared ceiling. This mod stays the
-generic engine only: it does NOT decide which ThingDef counts as
-"wreckage" — a campaign's own patch layer wires the comp onto its own
-wreck/hulk/ruin defs (Utinni layer: Patches/WreckVerminNest_ShipChunk.xml
-in mandrake.rut.patches, wiring it onto vanilla/Odyssey ShipChunk_Mech).
-Mod Settings gained a wreck-nest on/off, a rate multiplier, and a
-per-species checkbox roster.
+should be able to spawn from wreckage." RM_CompProperties_VerminNest /
+RM_CompVerminNest is a generic "nest under the wreckage" comp: attach it via a
+comps-list patch to any wreckage ThingDef and it periodically spawns one wild
+pawn from the settings-enabled nest roster nearby, gated by the same
+RM_MapComponent_VerminPopulation group-tag pool the breeder respects (default
+tag "ShipVermin", hard cap 12), so a nest and a breeding population press
+against ONE shared ceiling. This mod does NOT decide which ThingDef counts as
+wreckage — a campaign's own patch layer wires the comp onto its own defs
+(Utinni layer: Patches/WreckVerminNest_ShipChunk.xml in mandrake.rut.patches).
 
-Live-verify owed: this item was built and compiled offline (no bridge
-session available at build time); the quicktest verify (vermin
-attributable to a placed wreck, toggle-off stops it, no spawn on a
-wreckless map) has not yet been run live. See the item file for the
-block reason if this ships unclosed.</description>
+Mod Settings: alert on/off, fuel spew on/off, wreck-nest on/off, a nest rate
+multiplier, and one checkbox per nest slot (labelled with whichever creature
+fills the slot).
+
+Art: the four free species render with tinted vanilla placeholder textures
+(sparrow, rat, boomrat, megascarab). Their own art is owed.</description>
   <modDependencies>
     <li>
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Biomes</displayName>
-    </li>
-    <li>
-      <packageId>mandrake.rsw.swbestiary</packageId>
-      <displayName>RimMandrake: SW — Bestiary</displayName>
     </li>
   </modDependencies>
   <!-- mandrake.rm.creaturebehaviors (this mod's RM_Alert_VerminPopulationBase provider) was
@@ -91,6 +66,5 @@ block reason if this ships unclosed.</description>
        patch. -->
   <loadAfter>
     <li>mandrake.rm.biomes</li>
-    <li>mandrake.rsw.swbestiary</li>
   </loadAfter>
 </ModMetaData>

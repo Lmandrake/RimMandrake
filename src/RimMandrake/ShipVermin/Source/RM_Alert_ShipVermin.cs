@@ -15,8 +15,8 @@ namespace RimMandrake.ShipVermin
 
 		public RM_Alert_ShipVermin()
 		{
-			defaultLabel = "Mynocks aboard: {0}";
-			defaultExplanation = "Mynocks have taken hold somewhere in your ships or base ({0} counted). Alone they are barely a nuisance, but left unchecked they breed fast, and a real swarm will gnaw conduits and lights dead compartment by compartment. Hunt them down before the population climbs.";
+			defaultLabel = "Ship vermin aboard: {0}";
+			defaultExplanation = "Hull-leeching vermin have taken hold somewhere in your ships or base ({0} counted). Alone they are barely a nuisance, but left unchecked they breed fast, and a real swarm will gnaw conduits and lights dead room by room. Hunt them down before the population climbs.";
 		}
 
 		// MOD_OPTIONS_RETROFIT_1: master switch for the alert only — the

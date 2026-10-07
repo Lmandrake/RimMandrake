@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  SHIPVERMIN_FREE_TIER_BEASTS_1 - the fethrik's chemfuel spew.
+
+  Same numbers as the canon fuel mite's RSW_CindermiteFuelSpew (SWBestiary,
+  Defs/DesertPort/RSW_DesertPortMechanics.xml): a cone of Filth_Fuel that coats without
+  igniting. The comp classes are this mod's own RM-tier copies
+  (Source/RM_CompAbilityEffect_FuelSpew.cs), because an RM mod may not name an RSW type.
+-->
+<Defs>
+
+  <AbilityDef>
+    <defName>RM_FethrikFuelSpew</defName>
+    <label>fuel spew</label>
+    <description>Spray a stream of liquid chemfuel from the mouth. It coats whatever it touches without igniting. The sacs that make it sit under the shell, behind the head.</description>
+    <!-- PLACEHOLDER icon: vanilla's fire-spew ability art. Real art owed. -->
+    <iconPath>UI/Abilities/FireSpew</iconPath>
+    <cooldownTicksRange>6000</cooldownTicksRange>
+    <aiCanUse>true</aiCanUse>
+    <ai_IsIncendiary>false</ai_IsIncendiary>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>12.9</range>
+      <warmupTime>2</warmupTime>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="RimMandrake.ShipVermin.RM_CompProperties_AbilityFuelSpew">
+        <range>10.9</range>
+        <lineWidthEnd>6</lineWidthEnd>
+        <damAmount>1</damAmount>
+        <filthDef>Filth_Fuel</filthDef>
+        <canHitFilledCells>true</canHitFilledCells>
+      </li>
+    </comps>
+  </AbilityDef>
+
+</Defs>

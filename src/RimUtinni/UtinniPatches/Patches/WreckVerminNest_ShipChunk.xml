@@ -52,7 +52,7 @@
      nothing and the Add failed silently-then-loudly (`Patch operation ...
      failed` in Player.log) on every load — this patch never actually
      attached the comp. Fixed with the same check-or-create dance
-     RSW_Mynock_ShipVermin.xml already uses.
+     SWBestiary's Patches/ShipVermin/RSW_ShipVermin_CanonCast.xml uses.
 
      SECOND BUG found the same session: attaching the comp was not enough
      — `ShipChunk_Mech` inherits `tickerType` from `ShipChunkBase` ->
@@ -71,8 +71,9 @@
 
      Tuning: left at RM_CompProperties_VerminNest's own defaults (2-4 day
      interval, radius 4, group tag "ShipVermin", hard cap 12) — the SAME
-     pool RSW_Mynock's breeder already presses against
-     (Patches/RSW_Mynock_ShipVermin.xml in mandrake.rm.shipvermin), so a
+     pool the hull leech's breeder presses against (RM_Skivvik in
+     mandrake.rm.shipvermin's Defs/ThingDefs_Races/RM_ShipVermin_Cast.xml, or
+     RSW_Mynock via SWBestiary's Patches/ShipVermin/RSW_ShipVermin_CanonCast.xml), so a
      nest and a breeding population share one ceiling rather than stacking
      two. Retune here if a wreck nest alone should behave differently from
      that default; the field names and this file are where that lives, not

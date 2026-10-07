@@ -12,7 +12,7 @@ namespace RimMandrake.ShipVermin
 	/// species nearby, generic across every species in the ship-vermin band.
 	///
 	/// populationGroupTag/populationHardCap default to "ShipVermin"/12 to match
-	/// RSW_Mynock's own RM_VerminPressureExtension (Patches/RSW_Mynock_ShipVermin.xml)
+	/// the hull leech's own RM_VerminPressureExtension (RM_Skivvik, Defs/ThingDefs_Races/RM_ShipVermin_Cast.xml)
 	/// so a nest and a breeding population share ONE pressure ceiling — "nuisance
 	/// unless there are many" (owner ruling, 2026-09-11) governs the wreck's total
 	/// output, not just one species' count. A wiring patch that wants a

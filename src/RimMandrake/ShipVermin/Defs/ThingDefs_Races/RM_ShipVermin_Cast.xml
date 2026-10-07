@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  SHIPVERMIN_FREE_TIER_BEASTS_1 - ShipVermin's own franchise-free cast.
+
+  Owner ruling (card, typed, 2026-10-07): "Make the free tier have its own beasts that get
+  patched by the Star Wars bestiary when active. Same mechanics same mod otherwise."
+
+  Four invented RM_ species, one per nest-roster slot. Each copies the stats, tools, body
+  plan and life stages of the canon creature that fills the same slot when
+  mandrake.rsw.swbestiary is active (SWBestiary's Patches/ShipVermin/RSW_ShipVermin_CanonCast.xml
+  adds RM_ShipVerminCanonSwapExtension to the free PawnKindDef, and the nest then spawns the
+  canon kind in that slot instead):
+
+    slot            free (this file)   canon (SWBestiary)
+    hull leech      RM_Skivvik         RSW_Mynock
+    pest rodent     RM_Rattagh         RSW_Scavrat
+    predator rodent RM_Gorrud          RSW_WompRat
+    fuel mite       RM_Fethrik         RSW_Zhakka
+
+  Departures from the canon defs, all forced by the tier line (no RSW_ def may be named here):
+    - RSW_ leathers/meats/body/name generators/sounds swapped for the nearest vanilla ones
+      (Leather_Light, auto-generated meat, QuadrupedAnimalWithPaws, Pawn_Boomrat_* sounds).
+    - No wildBiomes: these arrive by wreck nest and breeding. The canon rodents' vanilla-biome
+      wildBiomes belong to those canon species and are not ShipVermin's mechanics.
+    - RM_Fethrik carries no leather (the canon mite's RSW_InsectChitin has no vanilla twin).
+
+  ART: PLACEHOLDER ONLY. Every texPath below is a vanilla Core texture (Sparrow, Rat, Boomrat,
+  Megascarab), tinted, so the free tier renders with nothing else loaded. Real art is owed per
+  species - see the item file. No new PNG ships with this file.
+-->
+<Defs>
+
+  <!-- ══ hull leech: RM_Skivvik (slot of RSW_Mynock) ══════════════════════════════ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Skivvik</defName>
+    <label>skivvik</label>
+    <description>A flat, rubbery hull-leech with a sucker-ring mouth and two thin wing-flaps that it uses more for steering than for flight. Skivviks drift through vacuum toward the warmth of a powered hull and cling there, feeding on insulation, lighting and the floor laid over a ship's frame. One is a nuisance you barely notice. They breed fast once a few take hold, and a real infestation will chew a ship's conduits and lights dead, room by room. They never need air, warmth or a roof.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <MarketValue>8</MarketValue>
+      <Mass>0.03</Mass>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
+      <ComfyTemperatureMax>150</ComfyTemperatureMax>
+      <FilthRate>1</FilthRate>
+      <Wildness>0.9</Wildness>
+      <VacuumResistance>1</VacuumResistance>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <uiIconScale>0.6</uiIconScale>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <body>Bird</body>
+      <herdAnimal>false</herdAnimal>
+      <canBeVacuumBurnt>false</canBeVacuumBurnt>
+      <canFlyInVacuum>true</canFlyInVacuum>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <roamMtbDays>2</roamMtbDays>
+      <lifeExpectancy>4</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBabyTiny</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tools>
+      <li>
+        <label>sucker mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <!-- Mechanics: identical to the canon hull leech's (SWBestiary's RSW_ShipVermin_CanonCast.xml
+         puts the same comp and extensions, with the same numbers, on RSW_Mynock). Soft cap 3 /
+         hard cap 12 per map, breed every 1-2 days, drift to substructure, gnaw lights/conduits/
+         laid floor. -->
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
+        <pawnSpawnIntervalDays>1~2</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>3</pawnSpawnRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
+        <populationSoftCap>3</populationSoftCap>
+        <populationHardCap>12</populationHardCap>
+        <populationGroupTag>ShipVermin</populationGroupTag>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SeekTargetExtension">
+        <seekSubstructure>true</seekSubstructure>
+        <searchRadius>40</searchRadius>
+        <seekChancePerCheck>0.05</seekChancePerCheck>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_GnawTargetExtension">
+        <gnawBuildingDefNames>
+          <li>PowerConduit</li>
+        </gnawBuildingDefNames>
+        <gnawCompTypeNames>
+          <li>CompGlower</li>
+        </gnawCompTypeNames>
+        <gnawFloorTerrainDefNames>
+          <li>MetalTile</li>
+        </gnawFloorTerrainDefNames>
+        <searchRadius>30</searchRadius>
+        <biteDamage>6</biteDamage>
+        <meannessDamageMultiplier>2</meannessDamageMultiplier>
+        <nutritionPerBite>0.04</nutritionPerBite>
+        <ticksBetweenBites>240</ticksBetweenBites>
+        <seekChanceAtLowPressure>0.01</seekChanceAtLowPressure>
+        <seekChanceAtHighPressure>0.2</seekChanceAtHighPressure>
+      </li>
+    </modExtensions>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Skivvik</defName>
+    <label>skivvik</label>
+    <labelPlural>skivviks</labelPlural>
+    <race>RM_Skivvik</race>
+    <combatPower>5</combatPower>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>skivvik spawnling</label>
+        <labelPlural>skivvik spawnlings</labelPlural>
+        <bodyGraphicData>
+          <!-- PLACEHOLDER: vanilla sparrow, tinted. Art owed. -->
+          <texPath>Things/Pawn/Animal/Sparrow/Sparrow</texPath>
+          <color>(92,70,78)</color>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Sparrow/Sparrow</texPath>
+          <color>(92,70,78)</color>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Sparrow/Sparrow</texPath>
+          <color>(92,70,78)</color>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══ pest rodent: RM_Rattagh (slot of RSW_Scavrat) ═══════════════════════════ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Rattagh</defName>
+    <label>rattagh</label>
+    <description>A heavy, bristle-backed rodent that lives in the voids of wrecks and the crawlspaces of any ship that stays parked long enough. Rattaghs travel in chattering family packs, eat anything that was ever food and plenty that never was, and shrug off toxins that would kill a rat. They are not hunters and rarely bite unless cornered, but where there is one rattagh there are always more.</description>
+    <statBases>
+      <MoveSpeed>4.9</MoveSpeed>
+      <MarketValue>50</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <FilthRate>8</FilthRate>
+      <ToxicResistance>1.0</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>5.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHungerRate>0.3</baseHungerRate>
+      <baseHealthScale>0.7</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <trainability>Intermediate</trainability>
+      <petness>0.2</petness>
+      <lifeExpectancy>5</lifeExpectancy>
+      <gestationPeriodDays>5</gestationPeriodDays>
+      <nuzzleMtbHours>36</nuzzleMtbHours>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Forage</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(2, 1)</li>
+          <li>(3, 1)</li>
+          <li>(4, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Rodent_Wounded</soundWounded>
+          <soundDeath>Pawn_Rodent_Death</soundDeath>
+          <soundCall>Pawn_Rodent_Call</soundCall>
+          <soundAngry>Pawn_Rodent_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Rattagh</defName>
+    <label>rattagh</label>
+    <race>RM_Rattagh</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <wildGroupSize>3~5</wildGroupSize>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+        <color>(58,50,40)</color>
+      </li>
+      <li>
+        <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+        <color>(86,70,45)</color>
+      </li>
+      <li>
+        <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+        <color>(112,87,58)</color>
+      </li>
+      <li>
+        <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+        <color>(135,111,83)</color>
+      </li>
+      <li>
+        <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+        <color>(66,61,48)</color>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- PLACEHOLDER: vanilla rat, tinted. Art owed. -->
+          <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+          <color>(66,61,48)</color>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
+          <drawSize>0.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+          <color>(66,61,48)</color>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Rat/Rat</texPath>
+          <color>(66,61,48)</color>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>1.25</drawSize>
+          <shadowData>
+            <volume>(0.35, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Rat/Dessicated_Rat</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══ predator rodent: RM_Gorrud (slot of RSW_WompRat) ════════════════════════ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gorrud</defName>
+    <label>gorrud</label>
+    <description>A long-jawed, dog-sized rodent that hunts at night through cargo holds and the hollow ribs of wrecks. Gorruds eat carrion when they find it, but they are predators first and will take anything smaller than themselves, including the other vermin that share their wreck. They cannot be tamed and they are not friendly.</description>
+    <statBases>
+      <MoveSpeed>3.9</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <FilthRate>8</FilthRate>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="Mlie.XNDNocturnalAnimals" Class="NocturnalAnimals.ExtendedRaceProperties">
+        <bodyClock>Nocturnal</bodyClock>
+      </li>
+    </modExtensions>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>1.0</maxPreyBodySize>
+      <baseBodySize>0.75</baseBodySize>
+      <baseHungerRate>0.225</baseHungerRate>
+      <baseHealthScale>0.7</baseHealthScale>
+      <foodType>CarnivoreAnimal, OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <trainability>None</trainability>
+      <petness>0.01</petness>
+      <lifeExpectancy>15</lifeExpectancy>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Boomrat_Wounded</soundWounded>
+          <soundDeath>Pawn_Boomrat_Death</soundDeath>
+          <soundCall>Pawn_Boomrat_Call</soundCall>
+          <soundAngry>Pawn_Boomrat_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Rodent_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gorrud</defName>
+    <label>gorrud</label>
+    <race>RM_Gorrud</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- PLACEHOLDER: vanilla boomrat, tinted. Art owed. -->
+          <texPath>Things/Pawn/Animal/Boomrat/Boomrat</texPath>
+          <color>(74,58,52)</color>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Boomrat/Dessicated_Boomrat</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Boomrat/Boomrat</texPath>
+          <color>(74,58,52)</color>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>1.25</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Boomrat/Dessicated_Boomrat</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Boomrat/Boomrat</texPath>
+          <color>(74,58,52)</color>
+          <shaderType>CutoutComplex</shaderType>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.35, 0.4, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Boomrat/Dessicated_Boomrat</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ══ fuel mite: RM_Fethrik (slot of RSW_Zhakka) ══════════════════════════════ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Fethrik</defName>
+    <label>fethrik</label>
+    <description>A large, hard-shelled mite that nests in the fuel bunkers of wrecked ships and has adapted to live on the residue. Sacs beneath its shell concentrate that residue into raw chemfuel, which a threatened fethrik sprays in a wide cone. The fuel coats whatever it hits without catching fire. Fethriks are restless, short-lived and quick to breed.</description>
+    <statBases>
+      <MoveSpeed>3.75</MoveSpeed>
+      <Flammability>0</Flammability>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>160</ComfyTemperatureMax>
+      <MarketValue>650</MarketValue>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.22</ArmorRating_Sharp>
+      <ArmorRating_Heat>2</ArmorRating_Heat>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.ShipVermin.RM_CompProperties_InnateAbility">
+        <ability>RM_FethrikFuelSpew</ability>
+      </li>
+    </comps>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>1.35</baseBodySize>
+      <baseHealthScale>2.85</baseHealthScale>
+      <baseHungerRate>0.62</baseHungerRate>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>Advanced</trainability>
+      <lifeExpectancy>5</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>EusocialInsectLarva</def><minAge>0</minAge></li>
+        <li><def>EusocialInsectJuvenile</def><minAge>0.03</minAge></li>
+        <li><def>EusocialInsectAdult</def><minAge>0.2</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <soundCall>Pawn_BigInsect_Call</soundCall>
+          <soundAngry>Pawn_BigInsect_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="InsectKindBase">
+    <defName>RM_Fethrik</defName>
+    <label>fethrik</label>
+    <race>RM_Fethrik</race>
+    <combatPower>200</combatPower>
+    <ecoSystemWeight>0.50</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <!-- PLACEHOLDER: vanilla megascarab, tinted. Art owed. -->
+          <texPath>Things/Pawn/Animal/Megascarab/Megascarab</texPath>
+          <color>(150,96,48)</color>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Megascarab</texPath>
+          <color>(150,96,48)</color>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <drawSize>1.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Megascarab</texPath>
+          <color>(150,96,48)</color>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
+          <drawSize>2.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

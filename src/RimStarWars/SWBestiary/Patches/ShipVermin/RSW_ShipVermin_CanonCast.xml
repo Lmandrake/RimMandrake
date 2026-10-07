@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  SHIPVERMIN_FREE_TIER_BEASTS_1 - the Star Wars bestiary takes ShipVermin's four slots.
+
+  Owner ruling (card, typed, 2026-10-07): "Make the free tier have its own beasts that get
+  patched by the Star Wars bestiary when active. Same mechanics same mod otherwise."
+
+  mandrake.rm.shipvermin (RM tier) ships its own franchise-free cast and no longer depends on
+  this mod. When both are loaded, this file:
+    1. gives RSW_Mynock the hull-leech mechanics (breeder comp + pressure / seek / gnaw
+       extensions) with exactly the numbers RM_Skivvik carries in ShipVermin's
+       Defs/ThingDefs_Races/RM_ShipVermin_Cast.xml. This block moved here unchanged from
+       ShipVermin's old Patches/RSW_Mynock_ShipVermin.xml.
+    2. puts RM_ShipVerminCanonSwapExtension on each free PawnKindDef, so a wreck nest spawns
+       the canon creature in that slot and the slot's Mod Settings checkbox governs it:
+         RM_Skivvik -> RSW_Mynock     RM_Rattagh -> RSW_Scavrat
+         RM_Gorrud  -> RSW_WompRat    RM_Fethrik -> RSW_Zhakka
+       The free defs stay loaded; only the nest's pick changes.
+
+  Guard: PatchOperationFindMod matches the mod NAME only (ModLister.HasActiveModWithName, read
+  from the decompiled 1.6 engine), not the packageId. ShipVermin is a standalone mod (OUT of the
+  RimMandrake.Biomes composition, biome_mod_unification_spec.md), so its own name is the only one.
+  Without ShipVermin nothing here applies, and the mynock is a plain animal, as before.
+
+  ShipVermin's types (RimMandrake.ShipVermin.*) and CreatureBehaviors' types (in
+  mandrake.rm.biomes, already a dependency of this mod) are resolved at def load, after every
+  assembly is loaded, so no loadAfter on ShipVermin is needed.
+
+  A patch that matches nothing logs nothing: confirm on a load with both mods (get_defs on
+  ThingDef/RSW_Mynock modExtensions and PawnKindDef/RM_Skivvik modExtensions).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Ship Vermin</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- ══ 1. hull-leech mechanics onto RSW_Mynock (same numbers as RM_Skivvik) ══ -->
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Mynock"]/comps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Mynock"]</xpath>
+            <value>
+              <comps />
+            </value>
+          </nomatch>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RSW_Mynock"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
+              <pawnSpawnIntervalDays>1~2</pawnSpawnIntervalDays>
+              <pawnSpawnRadius>3</pawnSpawnRadius>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Mynock"]/modExtensions</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Mynock"]</xpath>
+            <value>
+              <modExtensions />
+            </value>
+          </nomatch>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RSW_Mynock"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
+              <populationSoftCap>3</populationSoftCap>
+              <populationHardCap>12</populationHardCap>
+              <populationGroupTag>ShipVermin</populationGroupTag>
+            </li>
+            <li Class="RimMandrake.CreatureBehaviors.RM_SeekTargetExtension">
+              <seekSubstructure>true</seekSubstructure>
+              <searchRadius>40</searchRadius>
+              <seekChancePerCheck>0.05</seekChancePerCheck>
+            </li>
+            <li Class="RimMandrake.CreatureBehaviors.RM_GnawTargetExtension">
+              <gnawBuildingDefNames>
+                <li>PowerConduit</li>
+              </gnawBuildingDefNames>
+              <gnawCompTypeNames>
+                <li>CompGlower</li>
+              </gnawCompTypeNames>
+              <gnawFloorTerrainDefNames>
+                <!-- a laid floor over a gravship's Substructure foundation: stripping it exposes
+                     the foundation intact (TerrainGrid.RemoveTopLayer never touches FoundationAt). -->
+                <li>MetalTile</li>
+              </gnawFloorTerrainDefNames>
+              <searchRadius>30</searchRadius>
+              <biteDamage>6</biteDamage>
+              <meannessDamageMultiplier>2</meannessDamageMultiplier>
+              <nutritionPerBite>0.04</nutritionPerBite>
+              <ticksBetweenBites>240</ticksBetweenBites>
+              <seekChanceAtLowPressure>0.01</seekChanceAtLowPressure>
+              <seekChanceAtHighPressure>0.2</seekChanceAtHighPressure>
+            </li>
+          </value>
+        </li>
+
+        <!-- ══ 2. canon creatures take the four nest slots ══════════════════════════ -->
+
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/PawnKindDef[defName="RM_Skivvik" or defName="RM_Rattagh" or defName="RM_Gorrud" or defName="RM_Fethrik"][not(modExtensions)]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/PawnKindDef[defName="RM_Skivvik" or defName="RM_Rattagh" or defName="RM_Gorrud" or defName="RM_Fethrik"][not(modExtensions)]</xpath>
+            <value>
+              <modExtensions />
+            </value>
+          </match>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/PawnKindDef[defName="RM_Skivvik"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.ShipVermin.RM_ShipVerminCanonSwapExtension">
+              <kind>RSW_Mynock</kind>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/PawnKindDef[defName="RM_Rattagh"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.ShipVermin.RM_ShipVerminCanonSwapExtension">
+              <kind>RSW_Scavrat</kind>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/PawnKindDef[defName="RM_Gorrud"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.ShipVermin.RM_ShipVerminCanonSwapExtension">
+              <kind>RSW_WompRat</kind>
+            </li>
+          </value>
+        </li>
+
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/PawnKindDef[defName="RM_Fethrik"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.ShipVermin.RM_ShipVerminCanonSwapExtension">
+              <kind>RSW_Zhakka</kind>
+            </li>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>
