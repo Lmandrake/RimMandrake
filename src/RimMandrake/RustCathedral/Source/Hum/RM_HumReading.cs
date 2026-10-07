@@ -90,7 +90,13 @@ namespace RimMandrake.RustCathedral.Hum
 			{
 				return "";
 			}
-			return Line(RM_MapComponent_BiomeAttitude.GetBand(map));
+			string line = Line(RM_MapComponent_BiomeAttitude.GetBand(map));
+			// RUSTCATHEDRAL_HULL_BOLTS_BUILD_1 part 3: the reader says what the arrival letter said.
+			if (RM_GameComponent_HullBoltWitness.Get()?.ArrivedUneasy(map) ?? false)
+			{
+				line += " It was uneasy before you landed.";
+			}
+			return line;
 		}
 
 		/// <summary>The line on a bolt's inspect pane. On the Cathedral it is the map's readout; anywhere else a reader

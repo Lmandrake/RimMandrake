@@ -106,3 +106,35 @@ Deterministic state reads through `jawa/get_defs` and debug `[Tool]`s, recorded 
 - Remove: prying one off spawns one `RM_BoltShedCuriosity`, removes the pawn, and adds the removal weight to
   the ledger; with none left, a later sale adds no entry.
 - Each Mod Settings toggle off removes exactly its effect.
+
+## Built offline (2026-10-07, FOUNDRY helper; never run in game, not deployed)
+
+- `src/RimMandrake/RustCathedral/Source/Hum/RM_HullBolts.cs`: boarding is a prefix on `GravshipUtility.GenerateGravship`
+  (swaps 0-3 living bolts within 4 cells of `engine.ValidSubstructure` for `RM_HullBolt` pawns on outer hull cells; the
+  engine's own `Gravship.CopyCellContents` then carries them, since `bringAlongOnGravship` defaults true and `AddThing`
+  takes pawns, so there is no custom travel code). `RM_CompHullBound` walks a stray back to the nearest hull cell, holds
+  `boardedTick`, the realised mark and the inspect lines. `RM_JobGiver_HullDance` snaps the three plateau figures to hull
+  cells. The plateau dance now centres some figures on a landed ship's nearest hull cell (`ShipEdgeAnchor`, 35%).
+- Witness: `RM_CathedralWitnessDef` (7 defs: four Sells, Butcher bolt, destroy hull bolt, pry). Hooks are
+  `Tradeable.ResolveTrade` (PlayerSells), `Corpse.ButcherProducts` and `Pawn.Kill` (player instigator). Every act makes
+  each hull bolt do `RM_HullBoltTell` (stop, face the act on that map, micro sparks).
+  `RM_GameComponent_HullBoltWitness` keeps the ledger. The first 250-tick check with a player engine on a Rust Cathedral
+  map applies `min(total, cap)` through `RM_MapComponent_BiomeAttitude.AddIrritation`, clears the ledger, sends
+  "The hum is already uneasy." and adds "It was uneasy before you landed." to the hum reader readout for a day.
+- Realisation is `hullBoltRealiseDays` after boarding: the cold line plus a cold-blue overlay
+  (`RM_MapComponent_HullBoltMarks`, the bolt's cell and its last 8 cells). The reveal is `hullBoltRevealDays` after
+  the first realisation, at the next tell while a hum reader is on a hull bolt's map. It is the free-tier
+  `RM_HullBoltsDilemma` choice letter. After the reveal a right-click "Pry the hull bolt off"
+  (`FloatMenuOptionProvider_PryHullBolt`, `JobDriver_PryHullBolt`, 300 ticks) leaves a shed curiosity and records the
+  pry weight. Pet memory `RM_HullBoltsSeen` (+2, 1 day) has a 15% chance per colonist every 2500 ticks within 10
+  cells with line of sight.
+- 12 Mod Settings in the hull-bolt block. All numbers PROVISIONAL. Resistances: mechanoid base, plus VacuumResistance 1
+  and damageMultipliers of 0.05 for Flame, Burn, Frostbite, EMP, AcidBurn, ToxGas and ElectricalBurn.
+- L0: `validation.hullbolts_problems` (in `static_checks`) and `selftest_rustcathedral_hullbolts.py` 17/17.
+
+Still owed:
+- Campaign: Ishko voicing the reveal and Regard posting (`RM_HullBolts.OnWitnessed` is the hook). Kyber and mindstone
+  sales also need witness defs, and their defNames are not measured.
+- Art: `RM_HullBolt` uses the living bolt's texPath. The artpipe `_artsrc/RM_HullBolt_*` renders have no ruling.
+- "Electrical" has no vanilla DamageDef, so it is mapped to ElectricalBurn.
+- L1/L2: every criterion above is a live read, owed.

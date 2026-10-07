@@ -77,6 +77,21 @@ namespace RimMandrake.RustCathedral.Hum
 		public static bool humReadingEnabled = true;
 		public static float humReaderThresholdDays = 5f;
 
+		// RUSTCATHEDRAL_HULL_BOLTS_BUILD_1: hull bolts. All numbers PROVISIONAL.
+		public static bool hullBoltsEnabled = true;
+		public static int hullBoltBoardMin = 1;
+		public static int hullBoltBoardMax = 3;
+		public static float hullBoltNoneChance = 0.15f;
+		public static float hullBoltEdgePull = 0.35f;
+		public static bool hullBoltWitnessEnabled = true;
+		public static float hullBoltWeightScale = 1f;
+		public static float hullBoltIrritationCap = 60f;
+		public static float hullBoltRealiseDays = 10f;
+		public static float hullBoltRevealDays = 5f;
+		public static bool hullBoltPetMemoryEnabled = true;
+
+		public static bool HullBoltsActive => hullBoltsEnabled;
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
@@ -95,6 +110,17 @@ namespace RimMandrake.RustCathedral.Hum
 			Scribe_Values.Look(ref lineCycleMaxSeconds, "lineCycleMaxSeconds", 120f);
 			Scribe_Values.Look(ref humReadingEnabled, "humReadingEnabled", true);
 			Scribe_Values.Look(ref humReaderThresholdDays, "humReaderThresholdDays", 5f);
+			Scribe_Values.Look(ref hullBoltsEnabled, "hullBoltsEnabled", true);
+			Scribe_Values.Look(ref hullBoltBoardMin, "hullBoltBoardMin", 1);
+			Scribe_Values.Look(ref hullBoltBoardMax, "hullBoltBoardMax", 3);
+			Scribe_Values.Look(ref hullBoltNoneChance, "hullBoltNoneChance", 0.15f);
+			Scribe_Values.Look(ref hullBoltEdgePull, "hullBoltEdgePull", 0.35f);
+			Scribe_Values.Look(ref hullBoltWitnessEnabled, "hullBoltWitnessEnabled", true);
+			Scribe_Values.Look(ref hullBoltWeightScale, "hullBoltWeightScale", 1f);
+			Scribe_Values.Look(ref hullBoltIrritationCap, "hullBoltIrritationCap", 60f);
+			Scribe_Values.Look(ref hullBoltRealiseDays, "hullBoltRealiseDays", 10f);
+			Scribe_Values.Look(ref hullBoltRevealDays, "hullBoltRevealDays", 5f);
+			Scribe_Values.Look(ref hullBoltPetMemoryEnabled, "hullBoltPetMemoryEnabled", true);
 		}
 
 		public void DoWindowContents(Rect inRect)
@@ -141,6 +167,27 @@ namespace RimMandrake.RustCathedral.Hum
 				"Off: nobody learns to read the hum by listening and nothing new is shown. Primers already written still teach.");
 			list.Label("Days of listening on calm ground before it comes: " + humReaderThresholdDays.ToString("0.0"));
 			humReaderThresholdDays = list.Slider(humReaderThresholdDays, 0.5f, 30f);
+
+			list.GapLine();
+			list.Label("Bolts on the hull");
+			list.CheckboxLabeled("Some bolts ride the ship away", ref hullBoltsEnabled,
+				"Off: no bolt ever clings to a ship leaving the plateau, and bolts already aboard stop drifting to the edge and stop reacting. Nothing else changes.");
+			list.Label("Bolts that cling at liftoff: " + hullBoltBoardMin + " to " + hullBoltBoardMax + " (" + (hullBoltNoneChance * 100f).ToString("0") + "% chance of none)");
+			hullBoltBoardMin = Mathf.RoundToInt(list.Slider(hullBoltBoardMin, 0f, 5f));
+			hullBoltBoardMax = Mathf.Max(hullBoltBoardMin, Mathf.RoundToInt(list.Slider(hullBoltBoardMax, 0f, 5f)));
+			hullBoltNoneChance = list.Slider(hullBoltNoneChance, 0f, 1f);
+			list.Label("How often a dancing bolt drifts to a landed ship's edge: " + (hullBoltEdgePull * 100f).ToString("0") + "% of figures");
+			hullBoltEdgePull = list.Slider(hullBoltEdgePull, 0f, 1f);
+			list.CheckboxLabeled("They stop and turn when the plateau's things change hands", ref hullBoltWitnessEnabled,
+				"Off: the bolts aboard never react, and nothing waits for you at the next landing on the plateau.");
+			list.Label("How much it is minded: " + hullBoltWeightScale.ToString("0.00") + "x, at most " + hullBoltIrritationCap.ToString("0") + " on landing");
+			hullBoltWeightScale = list.Slider(hullBoltWeightScale, 0f, 3f);
+			hullBoltIrritationCap = list.Slider(hullBoltIrritationCap, 0f, 100f);
+			list.Label("Days aboard before the hull goes cold under them: " + hullBoltRealiseDays.ToString("0.0") + "; days more before it is noticed: " + hullBoltRevealDays.ToString("0.0"));
+			hullBoltRealiseDays = list.Slider(hullBoltRealiseDays, 0f, 60f);
+			hullBoltRevealDays = list.Slider(hullBoltRevealDays, 0f, 60f);
+			list.CheckboxLabeled("Colonists like seeing them", ref hullBoltPetMemoryEnabled,
+				"Off: no small good memory from watching the bolts on the hull.");
 
 			list.End();
 		}

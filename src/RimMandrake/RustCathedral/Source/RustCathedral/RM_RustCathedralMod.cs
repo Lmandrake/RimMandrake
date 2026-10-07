@@ -111,6 +111,17 @@ namespace RimMandrake.RustCathedral
             Scribe_Values.Look(ref RustCathedralHumSettings.lineCycleMaxSeconds, "hum_lineCycleMaxSeconds", 120f);
             Scribe_Values.Look(ref RustCathedralHumSettings.humReadingEnabled, "hum_humReadingEnabled", true);
             Scribe_Values.Look(ref RustCathedralHumSettings.humReaderThresholdDays, "hum_humReaderThresholdDays", 5f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltsEnabled, "hum_hullBoltsEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltBoardMin, "hum_hullBoltBoardMin", 1);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltBoardMax, "hum_hullBoltBoardMax", 3);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltNoneChance, "hum_hullBoltNoneChance", 0.15f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltEdgePull, "hum_hullBoltEdgePull", 0.35f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltWitnessEnabled, "hum_hullBoltWitnessEnabled", true);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltWeightScale, "hum_hullBoltWeightScale", 1f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltIrritationCap, "hum_hullBoltIrritationCap", 60f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltRealiseDays, "hum_hullBoltRealiseDays", 10f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltRevealDays, "hum_hullBoltRevealDays", 5f);
+            Scribe_Values.Look(ref RustCathedralHumSettings.hullBoltPetMemoryEnabled, "hum_hullBoltPetMemoryEnabled", true);
 
             Scribe_Values.Look(ref RustCathedralWallsSettings.wallTiersEnabled, "walls_wallTiersEnabled", true);
             Scribe_Values.Look(ref RustCathedralWallsSettings.sacredWallsEnabled, "walls_sacredWallsEnabled", true);
@@ -168,7 +179,7 @@ namespace RimMandrake.RustCathedral
         }
 
         private const float OwnSectionHeight = 900f;
-        private const float HumSectionHeight = 680f;
+        private const float HumSectionHeight = 1000f;
         private const float WallsSectionHeight = 240f;
         private Vector2 scrollPosition;
 
