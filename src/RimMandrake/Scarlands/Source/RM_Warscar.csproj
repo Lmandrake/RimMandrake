@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <Compile Include="RM_WarscarMod.cs" />
+    <Compile Include="RM_BilewormGas.cs" />
     <Compile Include="RM_WarscarMark.cs" />
     <Compile Include="RM_ChatrakSnap.cs" />
     <Compile Include="RM_CompTurretAim.cs" />

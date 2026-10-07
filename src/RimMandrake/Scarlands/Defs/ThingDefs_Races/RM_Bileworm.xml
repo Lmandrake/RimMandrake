@@ -7,9 +7,9 @@
   these donor-only references:
     - body AA_Slug -> vanilla Snake (HeadAttackTool kept, so the one tool still links) PROVISIONAL
     - sounds AA_Helixien_Angry/_Death -> vanilla Pawn_Thrumbo_Angry/_Death/_Pain PROVISIONAL
-    - VEF CompProperties_CorpseDecayer (rots nearby corpses and drinks them) DROPPED; the "corpses rot into
-      bile near it" mechanic is OWED as ours (not built here). The description still says it.
-    - VEF CompProperties_ThoughtEffecter (AA_Disgust thought within 10 cells) DROPPED, owed with the above.
+    - VEF CompProperties_CorpseDecayer and CompProperties_ThoughtEffecter (AA_Disgust) replaced by our
+      RM_CompBilewormGas (BILEWORM_CORPSE_ROT_1): nearby corpses rot fast into Filth_CorpseBile it drinks,
+      and colonists within 10 cells get RM_BilewormStench.
     - VEF specialTrainables VEF_ControlledCorpseDecay and the VEF AnimalStatExtension dropped.
     - wildBiomes dropped: the biome's own wildAnimals row casts it (RM_Warscar).
     - dessicated graphic (donor art) dropped, as the Abyss ports; vanilla fallback.
@@ -97,6 +97,19 @@
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
+    <comps>
+      <!-- BILEWORM_CORPSE_ROT_1: the gas the description promises (numbers PROVISIONAL). -->
+      <li Class="RimMandrake.Scarlands.RM_CompProperties_BilewormGas">
+        <rotRadius>6</rotRadius>
+        <drinkRadius>1.9</drinkRadius>
+        <stenchRadius>10</stenchRadius>
+        <rotTicksPerTick>40</rotTicksPerTick>
+        <nutritionPerBodySize>0.5</nutritionPerBodySize>
+        <intervalTicks>250</intervalTicks>
+        <bileFilth>Filth_CorpseBile</bileFilth>
+        <stenchThought>RM_BilewormStench</stenchThought>
+      </li>
+    </comps>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

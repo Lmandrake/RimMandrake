@@ -44,7 +44,8 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "choirWindEnabled": True, "choirReducedRepetition": False, "choirJarWarnings": True,
             "markEnabled": True, "markAccrualPerDay": 0.3, "markFloorEnabled": True, "markTradeBonusesEnabled": True,
             "snapEnabled": True, "snapArmingHours": 24.0, "snapStageSpeed": 1.0,
-            "loosenedPanelsEnabled": True, "loosenedPanelsPerMap": 3.0}
+            "loosenedPanelsEnabled": True, "loosenedPanelsPerMap": 3.0,
+            "bilewormGasEnabled": True}
 CHOIR_DEFS = ["SoundDef/RM_GeigerTick", "SoundDef/RM_WindOnMetal", "SoundDef/RM_ProjectorHum", "SoundDef/RM_PoolBoil",
               "ThingDef/RM_CapturedTetchik", "ThingDef/RM_TetchikJar", "RecipeDef/RM_MakeTetchikJar"]
 SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm", "ThingDef/RM_WarDust",
@@ -444,6 +445,42 @@ def static_checks():
     mark = open(os.path.join(HERE, "Defs", "HediffDefs", "RM_WarscarMark.xml")).read()
     if "<label>deepening mark</label>" not in mark:
         bad.append("the mark has no 'deepening' stage for the panel gate to read")
+    bad += bileworm_gas_problems()
+    return bad
+
+
+def bileworm_gas_problems():
+    """BILEWORM_CORPSE_ROT_1: the description's promise is wired. The comp sits on RM_Bileworm, names a real
+    filth and our stench thought, its radii nest (drink < rot <= stench), and at its own rate a fresh human corpse
+    (vanilla 2.5 days to rot) turns within one in-game day of standing beside it. Gated by bilewormGasEnabled."""
+    bad = []
+    race = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Bileworm.xml")).getroot()
+    thing = [e for e in race if e.tag == "ThingDef" and e.findtext("defName") == "RM_Bileworm"]
+    comp = thing[0].find("comps/li[@Class='%sRM_CompProperties_BilewormGas']" % NS) if thing else None
+    if comp is None:
+        return ["RM_Bileworm carries no RM_CompProperties_BilewormGas"]
+    num = {k: float(comp.findtext(k)) for k in ("rotRadius", "drinkRadius", "stenchRadius", "rotTicksPerTick",
+                                                 "nutritionPerBodySize", "intervalTicks")}
+    if not num["drinkRadius"] < num["rotRadius"] <= num["stenchRadius"]:
+        bad.append("bileworm radii do not nest: %s" % num)
+    human_rot_start = 2.5 * 60000
+    intervals = -(-human_rot_start // (num["intervalTicks"] * num["rotTicksPerTick"]))
+    if intervals * num["intervalTicks"] > 60000:
+        bad.append("a human corpse beside a bileworm takes %d ticks to rot (> 1 day)" % (intervals * num["intervalTicks"]))
+    if comp.findtext("bileFilth") != "Filth_CorpseBile":
+        bad.append("bileworm filth is %r, not Filth_CorpseBile" % comp.findtext("bileFilth"))
+    if comp.findtext("stenchThought") != "RM_BilewormStench" or "<defName>RM_BilewormStench</defName>" not in \
+            open(os.path.join(HERE, "Defs", "ThoughtDefs", "RM_BilewormStench.xml")).read():
+        bad.append("stench thought RM_BilewormStench is not defined/wired")
+    if 'Compile Include="RM_BilewormGas.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
+        bad.append("RM_BilewormGas.cs missing from RM_Warscar.csproj")
+    cs = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_BilewormGas.cs")).read())
+    for needle in ("RM_WarscarSettings.bilewormGasEnabled", "FilthMaker.TryMakeFilth", "Messages.Message",
+                   "Faction.OfPlayer", "Renew()", "IsHashIntervalTick"):
+        if needle not in cs:
+            bad.append("RM_BilewormGas.cs lacks %s" % needle)
+    if "OWED" in open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Bileworm.xml")).read():
+        bad.append("RM_Bileworm.xml still calls the gas OWED")
     return bad
 
 
