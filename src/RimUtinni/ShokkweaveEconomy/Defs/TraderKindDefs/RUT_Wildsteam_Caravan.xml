@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Wildsteam_Caravan.xml    ShokkweaveEconomy · SHOKKWEAVE_SOLE_SOURCE_1
+  Owner, typed 2026-10-06 23:34: "I actually don't mind very small amounts of Shokkweave appearing in the
+  stock of the Wildsteam faction, and even more rare ones in the Hutt's."
+  The Wildsteam Clan owned no TraderKindDef (it inherits OutlanderFactionBase's shared Outlander kinds, which
+  must stay stripped), so it gets its own caravan kind. The strip makes Hyperweave Sellable, which every vanilla
+  generator refuses, hence the custom StockGenerator_RareShokkweave: 1-3 units in ~1 visit of 3.
+-->
+<Defs>
+  <TraderKindDef>
+    <defName>RUT_Caravan_Wildsteam_Weavers</defName>
+    <label>Wildsteam weave-runners</label>
+    <commonality>0.5</commonality>
+    <requestable>false</requestable>
+    <orbital>false</orbital>
+    <stockGenerators>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>Silver</thingDef>
+        <countRange>400~1000</countRange>
+      </li>
+      <li Class="RimMandrake.Utinni.ShokkweaveEconomy.StockGenerator_RareShokkweave">
+        <chance>0.33</chance>
+        <countRange>1~3</countRange>
+      </li>
+    </stockGenerators>
+  </TraderKindDef>
+</Defs>

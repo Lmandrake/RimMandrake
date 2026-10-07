@@ -1,5 +1,14 @@
 # SHOKKWEAVE_SOLE_SOURCE_1 — Shokkweave economy (rename, trader strip, harvest routes)
 
+## RULE (owner, typed 2026-10-06 23:34) — the strip has two sanctioned exceptions
+
+*"I actually don't mind very small amounts of Shokkweave appearing in the stock of the Wildsteam faction, and even more rare ones in the Hutt's. That's ok."*
+
+Every trader kind EXCEPT the three below still cannot stock it (Hyperweave stays `Sellable`, `tradeTags` empty; the 11 kinds in the history below remain closed). The exceptions go through one custom generator, `RimMandrake.Utinni.ShokkweaveEconomy.StockGenerator_RareShokkweave` (`chance` per stock roll, then `countRange`), because the strip makes every vanilla generator refuse the def:
+- Wildsteam: new `RUT_Caravan_Wildsteam_Weavers` (Wildsteam owned no kind; shared Outlander kinds stay stripped), appended to the faction's `caravanTraderKinds`. chance 0.33, 1~3 units.
+- Hutt Cartel: its own `RUT_Caravan_HuttCartel_EggMarket` and `RUT_Caravan_HuttCartel_Captives`, chance 0.125, 1~2 units. (The Czerka/HuttGalleon kinds are NOT Hutt Cartel kinds and stay stripped.)
+Files: `src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveRareTraderStock.xml`, `Defs/TraderKindDefs/RUT_Wildsteam_Caravan.xml`, `Source/StockGenerator_RareShokkweave.cs` (DLL rebuilt, not deployed). Validated offline only; live trader generation unproven.
+
 ## 2026-09-24 (FOUNDRY, sixth pass) — wake-up fix RE-PARSE confirmed live; full behavioral proof deferred, canonical map is mid-encounter
 
 **Gap closed**: the 5th pass's open question — "does the running process have
@@ -95,7 +104,7 @@ time (previously only asserted, never re-derived from data this pass cycle).
   that independently lists Hyperweave in its own `excludedThingDefs` — a
   donor-mod precaution, unrelated to and unaffected by our rename.
 
-**Net**: all 11 named trader kinds are now proven, by direct RimSage source
+**Net (superseded in part by the RULE above for the Wildsteam/Hutt kinds)**: all 11 named trader kinds are now proven, by direct RimSage source
 read (never guessed) against the actual live-loaded stockGenerator
 configuration of each, to be structurally incapable of ever stocking
 Shokkweave. This is the strongest evidence gathered on this sub-item to
@@ -282,7 +291,7 @@ tonight.
 is fixed or a minimal+target mod list swap gets a `RUT_Webwork` quicktest
 map without it.
 
-Queue line: rename hyperweave game-wide, strip it from EVERY trader stock
+Queue line: rename hyperweave game-wide, strip it from every trader stock (bar the two owner-sanctioned rare exceptions in the RULE above)
 table (prove against live trader generation), add the three Webwork harvest
 routes (web-cutting, butchery, nest raid).
 
@@ -302,7 +311,7 @@ strip.
 item 4 and the sole-source constraints block for the boundary contract)
 
 ## verify
-Live trader generation shows zero hyperweave/Shokkweave stock; border-map
+Live trader generation shows zero hyperweave/Shokkweave stock from every kind except the Wildsteam weavers (~1 in 3, 1-3) and the two Hutt Cartel kinds (~1 in 8, 1-2); border-map
 creep-web cut yields Shokkweave and can spawn the emergent Shokk.
 
 ## 2026-09-11 update — build-order step 1 shipped, live proof PARTIAL
