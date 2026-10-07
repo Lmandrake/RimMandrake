@@ -101,6 +101,9 @@ def static_checks():
         body = proof.split('case "%s":' % scene, 1)[1].split("return null;", 1)[0] if scene != "thump_off" else proof.split('case "thump_off":', 1)[1].split("case \"thudder_crowd\"", 1)[0]
         if "Hold(" not in body or 'NotThrown(sc, "%s"' % key not in body:
             bad.append("scene %s: bystander %s is not held (stunned) and checked with NotThrown" % (scene, key))
+    thud = proof.split('case "thudder_crowd":', 1)[1].split("return null;", 1)[0]
+    if "s.ticks" not in thud or "launches >= 1" not in thud:
+        bad.append("thudder_crowd: no tick budget past the 100-tick fuse, or a 'thrown' pawn needs no launch record")
     if not os.path.isfile(WALK):
         bad.append("walk missing")
     else:
@@ -279,7 +282,8 @@ def _build_suite():
             return
         if not staged.startswith("STAGED"):
             raise ExpectationFailed(staged)
-        t.bridge_call("rimworld/step_game_ticks", ticks=300)
+        m = re.search(r"ticks=(\d+)", staged)  # the scene's own budget (grenade fuse); 90 = a throw has landed
+        t.bridge_call("rimworld/step_game_ticks", ticks=int(m.group(1)) if m else 90)
         v = _call(t, "Verdict", scene)
         if v.startswith("INVALID"):
             t.upstream_reason = "UNMEASURED: " + v

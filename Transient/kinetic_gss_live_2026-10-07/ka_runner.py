@@ -1,6 +1,6 @@
 """Kinetic Arms live scenes (+ EK pit scenes) on the full list. Run under python.exe from the repo root.
 Same Stage/step/Verdict protocol as ExplosiveKnockback/knockback_runner.py; KA's proof has no Clear/Journal."""
-import datetime, json, os, sys
+import datetime, json, os, re, sys
 REPO = os.getcwd()
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 from rimbridge_client import RimBridge, resolve_endpoint
@@ -50,7 +50,8 @@ def main():
                 st = staged.split(" ", 1)[0]
                 rows.append({"proof": typ.split(".")[1], "scene": name, "status": st, "detail": staged, "origin": o})
                 print("%-22s %s" % (name, staged[:240])); continue
-            b.call("rimworld/step_game_ticks", {"ticks": ticks}, check=False)
+            m = re.search(r"ticks=(\d+)", staged) if len(sys.argv) <= 2 else None  # scene's own budget unless forced
+            b.call("rimworld/step_game_ticks", {"ticks": int(m.group(1)) if m else ticks}, check=False)
             v = call(b, typ, "Verdict", name)
             row = {"proof": typ.split(".")[1], "scene": name, "status": v.split(" ", 1)[0], "detail": v, "origin": o}
             if row["status"] != "PASS":
