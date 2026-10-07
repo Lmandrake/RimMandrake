@@ -44,3 +44,12 @@
 - Rule 2 bar CordAudit.EndsOnBodies: measured 0 faults once junction-arm/strip-socket ports count as nodes (first cut, centres only, read 123 false faults, all ends plugged into junction arms). Fray ends are NOT exempt.
 - Rule 3 was a real gap: hoses rank by reel age, so a newer hose's end/joiner could draw over an older hose. HoseMath.Layer ranks an end-on-hose beneath it, drops joiners over a lower hose; probe field fittingsOnTop for L2. DLL rebuilt (not deployed).
 - Skipped this pass (blocked/not offline): FEVERWOOD_HIVE_GUARD_CHAMBER_1 (build last, after the reacting hive is played), FLOWWORKS_QUARRY_DIGGING_1 remainder (waits on mineral registry + River Works), FLOWWORKS_NORTHSTAR_SHIP_1 (88 DIRTY review + deploy), pit umbrella children all built/bridge.
+
+## Helper 6 (2026-10-07) — FLOWWORKS_SLUICE_TWO_DOORS_1 (claimed)
+- FLOWWORKS_CONFINEMENT_TOGGLE_VESTIGIAL_1 stale-dropped: setting retired at cc8bbdff9.
+- Skipped: FLOWWORKS_CHECKOUT_SCOPE_1 (moves chains into the live core proof the bridge agent runs), NORTHSTAR_PARTIAL_GAPS_FILL_1 (standing, "beside that mod's own build or live run").
+- Built fe20a045f + DLL f056d3012, `implemented` (A1-A2 L0; A3-A4 L2 owed). No new def/setting: shut RM_Sluice seals its cell
+  (RM_FlowKernel.sealedCell <- RM_FlowDoorRules.SealsLiquid <- RM_PitTrapMath.FlowDoorSeals); legacy flood refuses it; grate always passes.
+  L2 already written: JawaBench playtest ScnSluice (expected-fail until this build -> should XPASS once the DLL is deployed). DLL NOT deployed.
+  extension chain flow_doors: doors_pass_liquid_closed -> grate_passes_sluice_seals. Runsheet regenerated (also dropped stale toggle_confinement rows).
+  C# selftest 122/122, run_selftests 221/222 (utinnipatches_dump only).
