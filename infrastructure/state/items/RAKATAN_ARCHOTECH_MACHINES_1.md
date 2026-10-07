@@ -309,3 +309,29 @@ that the player has *won*. A specific cap value neither blocks nor delivers it.
 ⇒ **Do not build a satisfaction condition that reads a grade float.** Do not make
 his endgame depend on a settings toggle. The "settings-dependent Rekko" concern
 listed under `## Still open` is **dissolved, not answered** — strike it.
+
+---
+
+# Build pass, 2026-10-06 (FOUNDRY, offline — not committed, not live-tested)
+
+Built in `src/RimMandrake/WreckedMachines` (layer 1, no setting-specific words):
+- **Grade ladder in C#** — `Source/WreckedMachinesLadder.cs`: `WreckedMachineGrade` mod extension
+  (grade, line, original donor), `PlaceWorker_BuildOverLowerGrade` (upper grades only over a lower
+  grade of the same line; reinstall free), `ThoughtWorker_SalvagedEmanatorSoothe`, `LadderPatcher`
+  (ratios from settings onto power output and emanator mood; Original rung hidden unless the setting is on).
+- **Mod Settings**: wrecked 0.001 / kludged 0.2 / refurbished 0.75 ratios, full restoration (default
+  OFF), build-over requirement (default ON), salvaged-emanator toggle.
+- **`RM_WM_AutomatedSmelter_Refurbished`** (0.75 rung; `_Repaired` is now marked as the 1.0 Original rung).
+- **`RM_WM_AncientComponent`** — the Refurbished cost gate. No source yet.
+- **Mobile lines**: vanometric power cell and psychic emanator, Wrecked/Kludged/Refurbished, minifiable,
+  each with its own restoration research plus an RR Analyse study opportunity on the wreck.
+- About.xml and def text no longer name the campaign (ruling 0 leak removed).
+
+Not built (open or needs the game):
+- Where ancient components come from (still open), so Refurbished is dev-spawn only for now.
+- Wrecks at ancient ruin sites (ruled 2026-10-03; needs a genstep/symbol resolver).
+- Relic value excluded from colony wealth (ruled 2026-10-03; needs a Harmony patch, and this assembly has none).
+- Turrets (no Core archotech turret to act as the 1.0 donor); 1.0 rung for cell/emanator.
+- Per-class Wrecked values for factories; the neutral "grade changed" signal for layer 3.
+- Art: every new grade reuses vanilla or Repaired textures as placeholders (cosmetic needs the owner).
+- Live: placement, ratio patching, thought, RR opportunities — all unproven in game.

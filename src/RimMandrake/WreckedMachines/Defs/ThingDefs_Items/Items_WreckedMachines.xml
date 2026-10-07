@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Ancient components — the gate on every Refurbished grade (owner, 2026-09-15:
+  "refurbishment requires Ancient Components, a truly scarce and valuable
+  resource"). Scarcity is the balance lever, not a nerf to the payoff.
+
+  ⚠️ NO SOURCE YET. Where ancient components come from is still open in the
+  item, so nothing generates them: no thingSetMakerTags, no trader stock, no
+  recipe. Until a source is ruled they are dev-spawn only, which makes every
+  Refurbished grade unreachable in ordinary play. Do not guess a source here.
+
+  ⚠️ PLACEHOLDER ART: vanilla's advanced-component texture, tinted.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_WM_AncientComponent</defName>
+    <label>ancient component</label>
+    <description>A component pulled from an ancient machine. Nobody alive can make one: the tolerances are wrong for any modern fabricator, the materials are not on any known list, and after an age of neglect it still works. Restoring an ancient machine past a bodge needs parts like this, and there are never enough.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentSpacer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(176,150,112)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>25</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <MarketValue>600</MarketValue>
+      <Mass>0.8</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <intricate>true</intricate>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+</Defs>

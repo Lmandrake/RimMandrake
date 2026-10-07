@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines — MOBILE structures (owner rulings 2026-09-15 and
+  2026-09-20: "other mobile structures should also be included"; the named set
+  is "turrets, batteries, psychic emitters, and other traditionally archotech
+  sources", open-ended by design).
+
+  Built here: the two Core archotech-sourced buildings with a clean donor —
+    * vanometric power cell (VanometricPowerCell, Core Buildings_Special.xml) —
+      "the archotech battery". Its ratio applies to POWER OUTPUT: Wrecked
+      trickles 1000 W x 0.001 = 1 W, a faint flicker (ruling 1's battery
+      number); Kludged 200 W; Refurbished 750 W. LadderPatcher recomputes the
+      basePowerConsumption below from the vanilla def at startup and whenever
+      settings close, so the numbers written here are only the defaults.
+    * psychic emanator (PsychicEmanator, same file). Its ratio applies to MOOD
+      via RM_WM_SalvagedEmanatorSoothe (vanilla's worker reads only its own
+      def). Wrecked is inert.
+  NOT built: turrets — Core has no working archotech turret to be the 1.0
+  donor (AncientSecurityTurret is a broken prop), so the line needs a donor
+  chosen. Batteries in the capacity sense (storedEnergyMax) — vanilla's
+  Battery is not archotech-sourced.
+
+  The Original (1.0) rung of both lines is the untouched vanilla def. It is
+  NOT on this ladder yet: building it over a Refurbished machine would need
+  the vanilla def made buildable, which this mod does not do.
+
+  Mobile = minifiable at every grade, so a found wreck can be carried home and
+  installed like any other building. Upper grades are built over a lower grade
+  of the same line (PlaceWorker_BuildOverLowerGrade); reinstalling is free.
+
+  ⚠️ PLACEHOLDER ART: every grade reuses the vanilla texture, tinted darker
+  the lower the grade. Real sprites need the owner's permission first.
+  ⚠️ Where wrecks are found (ruled 2026-10-03: ancient ruin sites) is not
+  wired: nothing spawns them yet. Dev-spawn only.
+-->
+<Defs>
+
+  <!-- ================= VANOMETRIC POWER CELL LINE ================= -->
+
+  <ThingDef Name="RM_WM_PowerCellBase" ParentName="BuildingBase" Abstract="True">
+    <graphicData>
+      <texPath>Things/Building/Special/VanometricPowerCell</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2, 3)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <pathCost>42</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <canOverlapZones>false</canOverlapZones>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <thingCategories>
+      <li>BuildingsSpecial</li>
+    </thingCategories>
+    <tickerType>Normal</tickerType>
+    <size>(1, 2)</size>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <replaceTags>
+      <li>WM_PowerCell</li>
+    </replaceTags>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WM_PowerCellBase">
+    <defName>RM_WM_PowerCell_Wrecked</defName>
+    <label>wrecked vanometric power cell</label>
+    <description>A vanometric power cell, ancient and broken. The housing is cracked, the field lattice is mostly dark, and it gives out barely enough current to light an indicator. It has done so for longer than anyone can say, and it will go on doing it.\n\nStudy it to learn how to restore it, then build a better grade over it.</description>
+    <graphicData>
+      <color>(105,98,90)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>250</MarketValue>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>15</Mass>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-1</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1</glowRadius>
+        <glowColor>(227,233,168,0)</glowColor>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Wrecked</grade>
+        <line>WM_PowerCell</line>
+        <original>VanometricPowerCell</original>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WM_PowerCellBase">
+    <defName>RM_WM_PowerCell_Kludged</defName>
+    <label>kludged vanometric power cell</label>
+    <description>A wrecked vanometric power cell coaxed back into a fraction of its old output. The cracked housing is strapped shut, the dead lattice segments are bypassed with ordinary cable, and it hums unevenly. It makes a fifth of what an intact cell would — free power, forever, just not much of it.\n\nMust be built over a wrecked cell.</description>
+    <graphicData>
+      <color>(160,152,140)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>450</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>15</Mass>
+      <WorkToBuild>2500</WorkToBuild>
+      <Beauty>-3</Beauty>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <designationCategory>Power</designationCategory>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-200</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>2</glowRadius>
+        <glowColor>(227,233,168,0)</glowColor>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Kludged</grade>
+        <line>WM_PowerCell</line>
+        <original>VanometricPowerCell</original>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WM_PowerCellBase">
+    <defName>RM_WM_PowerCell_Refurbished</defName>
+    <label>refurbished vanometric power cell</label>
+    <description>A vanometric power cell refurbished from a wreck. Most of the field lattice glows again, held in place by an ancient component nobody could have made, and it gives three-quarters of what an intact cell would. The seams still show; it is a kludge that happens to work very well.\n\nMust be built over a wrecked or kludged cell.</description>
+    <statBases>
+      <MarketValue>900</MarketValue>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>15</Mass>
+      <WorkToBuild>4000</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>80</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <designationCategory>Power</designationCategory>
+    <researchPrerequisites>
+      <li>RM_WM_PowerCellRestoration</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-750</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3</glowRadius>
+        <glowColor>(227,233,168,0)</glowColor>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Refurbished</grade>
+        <line>WM_PowerCell</line>
+        <original>VanometricPowerCell</original>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ================= PSYCHIC EMANATOR LINE ================= -->
+
+  <ThingDef Name="RM_WM_EmanatorBase" ParentName="BuildingBase" Abstract="True">
+    <graphicData>
+      <texPath>Things/Building/Special/PsychicEmanator</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2, 2)</drawSize>
+      <shadowData>
+        <volume>(0.3, 0.6, 0.3)</volume>
+        <offset>(0.0, 0.0, -0.1)</offset>
+      </shadowData>
+      <damageData>
+        <rect>(0,0.75,1.0,0.5)</rect>
+      </damageData>
+    </graphicData>
+    <uiIconScale>0.85</uiIconScale>
+    <thingCategories>
+      <li>BuildingsSpecial</li>
+    </thingCategories>
+    <altitudeLayer>Building</altitudeLayer>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
+    </building>
+    <fillPercent>0.2</fillPercent>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <pathCost>30</pathCost>
+    <passability>PassThroughOnly</passability>
+    <rotatable>false</rotatable>
+    <canOverlapZones>false</canOverlapZones>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <tickerType>Normal</tickerType>
+    <replaceTags>
+      <li>WM_PsychicEmanator</li>
+    </replaceTags>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WM_EmanatorBase">
+    <defName>RM_WM_PsychicEmanator_Wrecked</defName>
+    <label>wrecked psychic emanator</label>
+    <description>An ancient psychic emanator, long dead. The field coil is fused and the casing is pitted through. Whatever it once did to the minds around it, it does nothing now.\n\nStudy it to learn how to restore it, then build a better grade over it.</description>
+    <graphicData>
+      <color>(105,98,90)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>250</MarketValue>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+      <Mass>15</Mass>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Wrecked</grade>
+        <line>WM_PsychicEmanator</line>
+        <original>PsychicEmanator</original>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WM_EmanatorBase">
+    <defName>RM_WM_PsychicEmanator_Kludged</defName>
+    <label>kludged psychic emanator</label>
+    <description>A wrecked psychic emanator patched back into a weak, uneven field. It soothes the people around it a little, draws more power than it should, and breaks down often.\n\nMust be built over a wrecked emanator.</description>
+    <graphicData>
+      <color>(160,152,140)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>450</MarketValue>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-3</Beauty>
+      <Mass>15</Mass>
+      <WorkToBuild>2000</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>40</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <designationCategory>Misc</designationCategory>
+    <specialDisplayRadius>14.9</specialDisplayRadius>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>260</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_MoteEmitter">
+        <mote>Mote_PsychicEmanatorEffect</mote>
+        <emissionInterval>900</emissionInterval>
+      </li>
+      <li Class="CompProperties_Breakdownable"/>
+      <li Class="CompProperties_Flickable"/>
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Kludged</grade>
+        <line>WM_PsychicEmanator</line>
+        <original>PsychicEmanator</original>
+        <emanates>true</emanates>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WM_EmanatorBase">
+    <defName>RM_WM_PsychicEmanator_Refurbished</defName>
+    <label>refurbished psychic emanator</label>
+    <description>A psychic emanator refurbished from a wreck around an ancient component. Its field is steady again, if not as strong as an intact one: the people around it feel strange, and mostly relaxed.\n\nMust be built over a wrecked or kludged emanator.</description>
+    <statBases>
+      <MarketValue>900</MarketValue>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>15</Mass>
+      <WorkToBuild>3500</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>50</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>8</constructionSkillPrerequisite>
+    <designationCategory>Misc</designationCategory>
+    <researchPrerequisites>
+      <li>RM_WM_EmanatorRestoration</li>
+    </researchPrerequisites>
+    <specialDisplayRadius>14.9</specialDisplayRadius>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>220</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_MoteEmitter">
+        <mote>Mote_PsychicEmanatorEffect</mote>
+        <emissionInterval>450</emissionInterval>
+      </li>
+      <li Class="CompProperties_Breakdownable"/>
+      <li Class="CompProperties_Flickable"/>
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Refurbished</grade>
+        <line>WM_PsychicEmanator</line>
+        <original>PsychicEmanator</original>
+        <emanates>true</emanates>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

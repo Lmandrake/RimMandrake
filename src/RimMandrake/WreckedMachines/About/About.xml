@@ -6,32 +6,34 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Holy wreckage.
+  <description>Ancient wreckage.
 
-The Kolyska's factory did not fail politely. Its machines are still bolted to the deck where they died — split open, scavenged, corroded, half-buried in their own slag. The Jawa do not clear them away. You cannot strip a wreck for steel, you cannot bulldoze it to build something newer on the clean floor. It stays, taking up the space it always took, until the clan earns the right to bring it back.
+Ancient machines do not fail politely. They are found where they died — split open, scavenged, corroded, half-buried in their own slag — and some of them are still, faintly, working. Ancient technology is robust: it does not stop, it sags. A wrecked power cell still trickles current. Bring one home, study it, and build it back up one grade at a time.
 
-Every treated machine exists in three states:
+Every treated machine sits on one ladder of grades:
 
-  WRECKED   Dead. Deformed, scavenged, missing chunks, corroded. Occupies its
-            tiles, does nothing, cannot be removed. Scenery and reproach.
+  WRECKED      Dead, or nearly. Inert — except that a wrecked power source
+               still trickles a faint current.
+  KLUDGED      Works, badly, visibly bodged. About a fifth of the original.
+  REFURBISHED  The ceiling you normally reach: three-quarters of the original,
+               and still visibly a kludge. Needs scarce ancient components.
+  ORIGINAL     The machine as it was built. Off by default — a Mod Setting
+               allows full restoration.
 
-  KLUDGED   Partly restored. Exposed wiring, patches, mismatched plating,
-            strange technology grafted onto an elegant original. It runs — but
-            only the simplest recipes the intact machine could manage.
+Each grade is built over the one below it. Studying the wreck itself is how you
+learn to restore it (with Research Reinvented, the wreck is the research
+subject). Mobile machines are on the ladder too: salvaged power cells and
+psychic emanators can be carried off and installed wherever they are needed.
 
-  REPAIRED  Rebuilt by scavengers: holes filled with metal that does not match,
-            cabling routed almost neatly, a few improvised vents still smoking.
-            Full function. It will never look factory-fresh again.
-
-Advancing a tier costs materials, tools and earned knowledge, never a research
-grind alone.
+Advancing a grade costs materials, tools and earned knowledge, never a research
+grind alone. Every ratio is tunable in Mod Settings.
 
 This mod ships its own art for all three states and does not replace or alter
 any other mod's buildings. The donor mod's original Automated Smelter ThingDef
 is left completely untouched — its stats, comps and recipes are unchanged, and
-our Kludged/Repaired tiers still run its own processes — but it no longer
+our smelter grades still run its own processes — but it no longer
 appears in the Architect build menu, so a player cannot build a fresh one
-alongside these three. Vanilla's own hand-run electric smelter is untouched
+alongside our grades. Vanilla's own hand-run electric smelter is untouched
 and unrelated.</description>
 
   <modDependencies>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  WreckedMachines — Automated Smelter, three tiers.
+  WreckedMachines — Automated Smelter, four grades (Wrecked, Kludged,
+  Refurbished, and Repaired = the 1.0 original).
 
   DONOR, read 2026-08-12, quoted rather than remembered:
     /mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3686924415
@@ -87,7 +88,7 @@
     <altitudeLayer>Building</altitudeLayer>
     <rotatable>true</rotatable>
     <neverMultiSelect>true</neverMultiSelect>
-    <!-- Identical to the donor. A wreck on the Kolyska stands on the factory
+    <!-- Identical to the donor. A wreck stands on a factory
          deck, so map authoring must lay VFEF_FactoryFloor under every wreck;
          relaxing this would deadlock the ladder, because a floor cannot be
          built beneath an occupied cell. -->
@@ -128,6 +129,12 @@
         <li>Production</li>
       </buildingTags>
     </building>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Wrecked</grade>
+        <line>WM_AutomatedSmelter</line>
+      </li>
+    </modExtensions>
     <!-- No minifiedDef: a wreck is not haulable and cannot be uninstalled.
          No comps at all: no power, no heat, no processes, and above all no
          CompProperties_Explosive. -->
@@ -153,7 +160,7 @@
       </damageData>
     </graphicData>
     <!-- PROVISIONAL (DESIGN.md §2, unratified): salvage + components, no
-         research. "This is the Jawa doing what Jawa do." The recommendation
+         research — scavengers doing what scavengers do. The recommendation
          also calls for a Survival Tools Reborn tool requirement, which is not
          expressed here because it needs that mod's own def hooks. -->
     <costList>
@@ -249,13 +256,154 @@
         </linkableFacilities>
       </li>
     </comps>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Kludged</grade>
+        <line>WM_AutomatedSmelter</line>
+      </li>
+    </modExtensions>
+    <placeWorkers>
+      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+    </placeWorkers>
     <!-- No minifiedDef: a bodge does not survive being uninstalled and moved.
          This tier IS powered, so per the ratified rule it is the tier that
          SHOULD carry a detonation comp once TODO.md §1 lands. -->
   </ThingDef>
 
   <!-- ==================================================================
-       TIER 3 — REPAIRED.  Full function. Mechanically identical to the donor.
+       TIER 3 — REFURBISHED (0.75).  The ceiling a player normally reaches.
+       Ruling 1 (2026-09-15): the 0.75 rung "does not exist yet and must be
+       authored". Factories step by recipe set and stats, not by a scaled
+       number — no per-class factory ratio has been set (item "Still open").
+       Five of the donor's six processes (SmeltMechanoid needs an intact feed
+       to swallow a whole body); no overclock; 1.5x the donor's breakdown
+       rate. Gated on the restoration research and on ancient components.
+       ⚠️ PLACEHOLDER ART: reuses the Repaired texture until the owner rules
+       on a Refurbished sprite (cosmetic changes need his permission).
+       ================================================================== -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WM_AutomatedSmelter_Refurbished</defName>
+    <label>refurbished automated smelter</label>
+    <description>An automated smelter refurbished from salvage by people who learned it from the wreck. The breaches are sealed, the coil loom is mostly original again, and a scavenged ancient component holds the thermal stage together.
+
+It melts almost everything the original did — but not a whole mechanoid, and it cannot be overclocked. Three-quarters of a working machine, built from scrap.
+
+Factory buildings need factory hoppers for input and output. Needs to be constructed on factory floor, over a lower grade of the same machine.</description>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>WreckedMachines/Factories/AutomatedSmelter/Repaired/AutomatedSmelter</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(4,5)</drawSize>
+      <damageData>
+        <cornerTL>Damage/Corner</cornerTL>
+        <cornerTR>Damage/Corner</cornerTR>
+        <cornerBL>Damage/Corner</cornerBL>
+        <cornerBR>Damage/Corner</cornerBR>
+      </damageData>
+    </graphicData>
+    <!-- PROVISIONAL amounts, same status as the other tiers' costLists. -->
+    <costList>
+      <Steel>200</Steel>
+      <ComponentIndustrial>5</ComponentIndustrial>
+      <RM_WM_AncientComponent>1</RM_WM_AncientComponent>
+    </costList>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>true</rotatable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <terrainAffordanceNeeded>FactoryFloor</terrainAffordanceNeeded>
+    <uiIconScale>0.8</uiIconScale>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>True</useHitPoints>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <Mass>60</Mass>
+      <Beauty>-15</Beauty>
+      <WorkToBuild>4000</WorkToBuild>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <VEF_BuildingBreakdownFactor>4.5</VEF_BuildingBreakdownFactor>
+      <VEF_BuildingMaxOverclockFactor>1</VEF_BuildingMaxOverclockFactor>
+    </statBases>
+    <tickerType>Rare</tickerType>
+    <size>(3,4)</size>
+    <designationCategory>VFEFactory_Factories</designationCategory>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>True</hasInteractionCell>
+    <interactionCellOffset>(0,0,-2)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <replaceTags>
+      <li>WM_AutomatedSmelter</li>
+    </replaceTags>
+    <researchPrerequisites>
+      <li>RM_WM_AutomatedSmelterRestoration</li>
+    </researchPrerequisites>
+    <building>
+      <relatedBuildCommands>
+        <li>VFEFactory_FactoryHopper</li>
+      </relatedBuildCommands>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+      <workTableRoomRole>VFEFactory_FactoryRoom</workTableRoomRole>
+      <workTableNotInRoomRoleFactor>0.5</workTableNotInRoomRoleFactor>
+    </building>
+    <inspectorTabs>
+      <li>PipeSystem.ITab_Processor</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>true</shortCircuitInRain>
+        <basePowerConsumption>330</basePowerConsumption>
+      </li>
+      <li>
+        <compClass>PipeSystem.CompPowerTrader_Overclocked</compClass>
+      </li>
+      <li Class="CompProperties_HeatPusher">
+        <compClass>PipeSystem.CompHeatPusherPowered_Overclocked</compClass>
+        <heatPerSecond>16</heatPerSecond>
+        <heatPushMaxTemperature>120</heatPushMaxTemperature>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="PipeSystem.CompProperties_AdvancedResourceProcessor">
+        <notWorkingKey>VFEFactory_FactoryNotWorking</notWorkingKey>
+        <canOverclock>false</canOverclock>
+        <alwaysShowProgressBar>true</alwaysShowProgressBar>
+        <processes>
+          <li>VFEFactory_SmeltMetalFromSlag</li>
+          <li>VFEFactory_SmeltMetalFromMechSlag</li>
+          <li>VFEFactory_SmeltWeapon</li>
+          <li>VFEFactory_SmeltApparel</li>
+          <li>VFEFactory_SmeltMetalFromChunk</li>
+        </processes>
+        <hideSettings>true</hideSettings>
+      </li>
+      <li Class="CompProperties_AffectedByFacilities">
+        <linkableFacilities>
+          <li>VFEFactory_Booster</li>
+          <li>VFEFactory_Heatsink</li>
+        </linkableFacilities>
+      </li>
+    </comps>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Refurbished</grade>
+        <line>WM_AutomatedSmelter</line>
+      </li>
+    </modExtensions>
+    <placeWorkers>
+      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <!-- ==================================================================
+       THE ORIGINAL (1.0) — "REPAIRED".  Mechanically identical to the donor.
+       Ruling 1 (2026-09-15): "Repaired" is not a grade, it is the original,
+       so this def is the 1.0 rung. Hidden from the Architect menu unless the
+       "full restoration" Mod Setting is on (LadderPatcher, default OFF).
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_WM_AutomatedSmelter_Repaired</defName>
@@ -379,6 +527,15 @@
       </li>
     </comps>
     <minifiedDef>MinifiedThing</minifiedDef>
+    <modExtensions>
+      <li Class="RimMandrake.WreckedMachines.WreckedMachineGrade">
+        <grade>Original</grade>
+        <line>WM_AutomatedSmelter</line>
+      </li>
+    </modExtensions>
+    <placeWorkers>
+      <li>RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade</li>
+    </placeWorkers>
   </ThingDef>
 
 </Defs>

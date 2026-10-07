@@ -74,7 +74,13 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 SETTINGS_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesSettings"
 PATCHER_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesPatcher"
-SETTINGS = ("allowDonorSmelter", "researchCostFactor", "materialCostFactor", "skipRestorationResearch")
+SETTINGS = ("allowDonorSmelter", "researchCostFactor", "materialCostFactor", "skipRestorationResearch",
+            "wreckedRatio", "kludgedRatio", "refurbishedRatio", "allowFullRestoration",
+            "requireLowerGradeUnderneath", "enableSalvagedEmanators")
+# Settings read at play time rather than by Apply (PlaceWorker / ThoughtWorker).
+RUNTIME_SETTINGS = ("requireLowerGradeUnderneath", "enableSalvagedEmanators")
+GRADE_EXT = "RimMandrake.WreckedMachines.WreckedMachineGrade"
+BUILD_OVER = "RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade"
 
 
 def _tiers():
@@ -83,13 +89,48 @@ def _tiers():
     return {d.findtext("defName"): d for d in root.findall("ThingDef")}
 
 
+def _mobile():
+    root = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings",
+                                 "Buildings_WreckedMachines_Mobile.xml")).getroot()
+    return {d.findtext("defName"): d for d in root.findall("ThingDef") if d.findtext("defName")}
+
+
+def _ladder_checks(defs, bad):
+    """Every grade def names its grade and line; the line equals its replaceTag (inherited
+    from an abstract parent for the mobile lines, so read the def or report it); every grade
+    above Wrecked carries the build-over PlaceWorker."""
+    for dn, d in defs.items():
+        ext = [li for li in d.findall("modExtensions/li") if li.get("Class") == GRADE_EXT]
+        if len(ext) != 1:
+            bad.append("%s carries %d WreckedMachineGrade extensions, want 1" % (dn, len(ext)))
+            continue
+        grade = (ext[0].findtext("grade") or "").strip()
+        if grade not in ("Wrecked", "Kludged", "Refurbished", "Original"):
+            bad.append("%s has unknown grade %r" % (dn, grade))
+        pws = [li.text for li in d.findall("placeWorkers/li")]
+        if grade != "Wrecked" and BUILD_OVER not in pws:
+            bad.append("%s (grade %s) lacks %s" % (dn, grade, BUILD_OVER))
+        if grade == "Refurbished" and "RM_WM_AncientComponent" not in [c.tag for c in d.findall("costList/*")]:
+            bad.append("%s is Refurbished but does not cost RM_WM_AncientComponent" % dn)
+
+
 def static_checks():
-    """Offline: the three tiers are the shapes the mod promises, and every setting is wired."""
+    """Offline: the grades are the shapes the mod promises, and every setting is wired."""
     bad = []
     tiers = _tiers()
-    if len(tiers) < 3:
+    if len(tiers) < 4:
         return ["only %d ThingDefs parsed (sanity probe failed)" % len(tiers)]
-    for dn in ("RM_WM_AutomatedSmelter_Wrecked", "RM_WM_AutomatedSmelter_Kludged", "RM_WM_AutomatedSmelter_Repaired"):
+    mobile = _mobile()
+    if len(mobile) != 6:
+        bad.append("mobile file parsed %d concrete ThingDefs, want 6 (3 power cell + 3 emanator)" % len(mobile))
+    _ladder_checks(tiers, bad)
+    _ladder_checks(mobile, bad)
+    for dn, d in tiers.items():
+        ext = d.find("modExtensions/li")
+        if ext is not None and ext.findtext("line") != "WM_AutomatedSmelter":
+            bad.append("%s line is not WM_AutomatedSmelter" % dn)
+    for dn in ("RM_WM_AutomatedSmelter_Wrecked", "RM_WM_AutomatedSmelter_Kludged",
+               "RM_WM_AutomatedSmelter_Refurbished", "RM_WM_AutomatedSmelter_Repaired"):
         d = tiers.get(dn)
         if d is None:
             bad.append("%s missing" % dn)
@@ -99,7 +140,9 @@ def static_checks():
     w = tiers.get("RM_WM_AutomatedSmelter_Wrecked")
     if w is not None and (w.findtext("building/isInert") != "true" or w.find("comps") is not None or w.findtext("tickerType") != "Never"):
         bad.append("Wrecked tier is not inert (isInert true, no comps, tickerType Never)")
-    for dn, nproc, oc in (("RM_WM_AutomatedSmelter_Kludged", 3, "false"), ("RM_WM_AutomatedSmelter_Repaired", 6, "true")):
+    for dn, nproc, oc in (("RM_WM_AutomatedSmelter_Kludged", 3, "false"),
+                          ("RM_WM_AutomatedSmelter_Refurbished", 5, "false"),
+                          ("RM_WM_AutomatedSmelter_Repaired", 6, "true")):
         d = tiers.get(dn)
         if d is None:
             continue
@@ -112,23 +155,26 @@ def static_checks():
             bad.append("%s runs %d processes, want %d" % (dn, n, nproc))
         if (proc[0].findtext("canOverclock") or "").strip() != oc:
             bad.append("%s canOverclock is %r, want %s" % (dn, proc[0].findtext("canOverclock"), oc))
-    r = tiers.get("RM_WM_AutomatedSmelter_Repaired")
-    if r is not None and "RM_WM_AutomatedSmelterRestoration" not in [li.text for li in r.findall("researchPrerequisites/li")]:
-        bad.append("Repaired tier is not gated by RM_WM_AutomatedSmelterRestoration")
+    for dn in ("RM_WM_AutomatedSmelter_Refurbished", "RM_WM_AutomatedSmelter_Repaired"):
+        r = tiers.get(dn)
+        if r is not None and "RM_WM_AutomatedSmelterRestoration" not in [li.text for li in r.findall("researchPrerequisites/li")]:
+            bad.append("%s is not gated by RM_WM_AutomatedSmelterRestoration" % dn)
     src = open(os.path.join(HERE, "Source", "WreckedMachinesMod.cs"), encoding="utf-8").read()
     fields = re.findall(r"public\s+static\s+(?:bool|float)\s+(\w+)\s*=", src)
     if sorted(fields) != sorted(SETTINGS):
         bad.append("settings fields drifted: source has %s, suite drives %s" % (sorted(fields), sorted(SETTINGS)))
     scribed = src.split("void ExposeData", 1)[-1].split("DoWindowContents", 1)[0]
     ui = src.split("void DoWindowContents", 1)[-1].split("class WreckedMachinesMod", 1)[0]
-    apply = src.split("public static void Apply", 1)[-1]
+    ladder = open(os.path.join(HERE, "Source", "WreckedMachinesLadder.cs"), encoding="utf-8").read()
+    apply = src.split("public static void Apply", 1)[-1] + ladder  # LadderPatcher.Apply reads ratios via RatioFor
     for f in fields:
         if '"%s"' % f not in scribed:
             bad.append("%s is not Scribed" % f)
         if not re.search(r"\b%s\b" % f, ui):
             bad.append("%s has no control in DoWindowContents" % f)
-        if "WreckedMachinesSettings.%s" % f not in apply:
-            bad.append("%s is never read by WreckedMachinesPatcher.Apply (a dead setting)" % f)
+        reader = ladder if f in RUNTIME_SETTINGS else apply
+        if "WreckedMachinesSettings.%s" % f not in reader:
+            bad.append("%s is never read (a dead setting)" % f)
     return bad
 
 
@@ -320,6 +366,15 @@ DRIVES = (
     ("allowDonorSmelter", True, "ThingDef/VFEFactory_AutomatedSmelter", "designationCategory",
      lambda b, a: None if "VFEFactory_Factories" in str(a) and "VFEFactory_Factories" not in str(b)
      else "donor smelter did not reappear in the Factories category"),
+    ("allowFullRestoration", True, "ThingDef/RM_WM_AutomatedSmelter_Repaired", "designationCategory",
+     lambda b, a: None if "VFEFactory_Factories" in str(a) and "VFEFactory_Factories" not in str(b)
+     else "the Original (Repaired) grade did not reappear in the Factories category"),
+    ("refurbishedRatio", 0.5, "ThoughtDef/RM_WM_SalvagedEmanatorSoothe", "stages",
+     lambda b, a: None if str(a) != str(b) else "Refurbished emanator mood did not change"),
+    ("kludgedRatio", 0.1, "ThoughtDef/RM_WM_SalvagedEmanatorSoothe", "stages",
+     lambda b, a: None if str(a) != str(b) else "Kludged emanator mood did not change"),
+    ("wreckedRatio", 0.01, "ThingDef/RM_WM_PowerCell_Wrecked", "comps",
+     lambda b, a: None if str(a) != str(b) else "Wrecked power cell output did not change (-1 W -> -10 W)"),
 )
 
 
@@ -360,6 +415,20 @@ def _make_drive(field, new, defpath, defield, check):
 
 for _d in DRIVES:
     suite.chain("setting_%s_drives_def" % _d[0])(_make_drive(*_d))
+
+
+def _runtime_toggle(field):
+    def chain(t):
+        with t.component("%s_gates_play" % field, toggle=field):
+            if t.session is not None:
+                _unmeasured(t, "%s is read at play time (placement / thought), not by Apply; "
+                               "needs a blueprint placed or a pawn near a powered emanator" % field)
+    chain.__name__ = "runtime_%s" % field
+    return chain
+
+
+for _f in RUNTIME_SETTINGS:
+    suite.chain("setting_%s_gates_play" % _f)(_runtime_toggle(_f))
 
 
 @suite.chain("tier_shapes_static")

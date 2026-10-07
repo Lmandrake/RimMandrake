@@ -61,4 +61,27 @@
     </things>
   </PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef>
 
+  <!-- Study-the-machine for the mobile lines: the wreck is the research subject. -->
+  <PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef
+      ParentName="SpecialResearchOpportunityBase" MayRequire="petetimessix.researchreinvented">
+    <defName>RM_WM_AnalyseWreckedPowerCell</defName>
+    <opportunityType>Analyse</opportunityType>
+    <project>RM_WM_PowerCellRestoration</project>
+    <things>
+      <li>RM_WM_PowerCell_Wrecked</li>
+      <li>RM_WM_PowerCell_Kludged</li>
+    </things>
+  </PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef>
+
+  <PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef
+      ParentName="SpecialResearchOpportunityBase" MayRequire="petetimessix.researchreinvented">
+    <defName>RM_WM_AnalyseWreckedEmanator</defName>
+    <opportunityType>Analyse</opportunityType>
+    <project>RM_WM_EmanatorRestoration</project>
+    <things>
+      <li>RM_WM_PsychicEmanator_Wrecked</li>
+      <li>RM_WM_PsychicEmanator_Kludged</li>
+    </things>
+  </PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef>
+
 </Defs>

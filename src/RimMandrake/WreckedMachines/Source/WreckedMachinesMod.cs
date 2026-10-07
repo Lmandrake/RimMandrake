@@ -12,11 +12,10 @@ namespace RimMandrake.WreckedMachines
     // ResearchProjectDef, one hide-the-donor patch) with no assembly and no
     // settings screen at all — a violation of MOD_OPTIONS_RETROFIT_1's
     // every-mod-ships-settings ruling (owner, 2026-09-12) called out
-    // explicitly by that item's own progress notes. The apparent conflict
-    // with RAKATAN_ARCHOTECH_MACHINES_1's "pure-XML protection" was resolved
-    // the same sitting it was raised: ruling 5 there REVERSES the XML-only
-    // exemption outright ("Every mod ships superb Mod Settings, no
-    // exceptions" wins), so this assembly is owed, not optional.
+    // explicitly by that item's own progress notes. The item that extends
+    // this mod with the grade ladder (2026-09-15 design sitting) reversed
+    // the "pure-XML" exemption outright ("Every mod ships superb Mod
+    // Settings, no exceptions" wins), so this assembly is owed, not optional.
     //
     // Pattern copied from the established in-repo precedent
     // (RimMandrake/GelatinousSlime/Source/SlimeMod.cs): a ModSettings class
@@ -55,6 +54,23 @@ namespace RimMandrake.WreckedMachines
         // RM_WM_AutomatedSmelterRestoration to be finished first.
         public static bool skipRestorationResearch = false;
 
+        // ── The grade ladder (WreckedMachinesLadder.cs). Defaults are the
+        // owner's ruled numbers, 2026-09-15. ──
+        public static float wreckedRatio = 0.001f;
+        public static float kludgedRatio = 0.2f;
+        public static float refurbishedRatio = 0.75f;
+
+        // Shipped default: OFF. Refurbished (0.75) is the cap; the Original
+        // rung (the donor-identical machine) cannot be built.
+        public static bool allowFullRestoration = false;
+
+        // Shipped default: ON. A Kludged/Refurbished/Original machine can only
+        // be built over a lower grade of the same machine.
+        public static bool requireLowerGradeUnderneath = true;
+
+        // Shipped default: ON. Salvaged psychic emanators soothe nearby pawns.
+        public static bool enableSalvagedEmanators = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -62,6 +78,12 @@ namespace RimMandrake.WreckedMachines
             Scribe_Values.Look(ref researchCostFactor, "researchCostFactor", 1f, true);
             Scribe_Values.Look(ref materialCostFactor, "materialCostFactor", 1f, true);
             Scribe_Values.Look(ref skipRestorationResearch, "skipRestorationResearch", false, true);
+            Scribe_Values.Look(ref wreckedRatio, "wreckedRatio", 0.001f, true);
+            Scribe_Values.Look(ref kludgedRatio, "kludgedRatio", 0.2f, true);
+            Scribe_Values.Look(ref refurbishedRatio, "refurbishedRatio", 0.75f, true);
+            Scribe_Values.Look(ref allowFullRestoration, "allowFullRestoration", false, true);
+            Scribe_Values.Look(ref requireLowerGradeUnderneath, "requireLowerGradeUnderneath", true, true);
+            Scribe_Values.Look(ref enableSalvagedEmanators, "enableSalvagedEmanators", true, true);
         }
 
         private static Vector2 settingsScroll;
@@ -102,12 +124,60 @@ namespace RimMandrake.WreckedMachines
             list.GapLine();
 
             list.CheckboxLabeled(
-                "Skip the restoration research for the Repaired tier",
+                "Skip the restoration research for the upper grades",
                 ref skipRestorationResearch,
-                "Off (shipped default): stepping a wreck up to Repaired needs the "
-                + "Automated Smelter Restoration research project finished first. "
-                + "On: any colony can build straight to Repaired with materials "
-                + "alone, no research gate.");
+                "Off (shipped default): stepping a wrecked smelter up to Refurbished "
+                + "or Original needs the Automated Smelter Restoration research "
+                + "project finished first. On: no research gate, materials alone.");
+            list.GapLine();
+
+            list.Label("THE GRADE LADDER");
+            list.Label("Each grade works at a fraction of the original machine. Nothing "
+                + "equals the original unless full restoration is switched on below.");
+            list.Gap();
+
+            list.Label("Wrecked capability: " + wreckedRatio.ToString("0.000") + "x of the original");
+            list.Label("A wrecked power source still trickles this much (default 0.001, a faint flicker). "
+                + "Wrecked machines of every other kind are inert.");
+            wreckedRatio = list.Slider(wreckedRatio, 0f, 0.05f);
+            list.Gap();
+
+            list.Label("Kludged capability: " + kludgedRatio.ToString("0.00") + "x of the original");
+            kludgedRatio = list.Slider(kludgedRatio, 0.05f, 0.6f);
+            list.Gap();
+
+            list.Label("Refurbished capability: " + refurbishedRatio.ToString("0.00") + "x of the original");
+            refurbishedRatio = list.Slider(refurbishedRatio, 0.3f, 0.95f);
+            if (kludgedRatio > refurbishedRatio) kludgedRatio = refurbishedRatio;
+            list.Label("Applies to power output (salvaged power cells) and mood (salvaged emanators). "
+                + "Factory machines step by recipe set and stats instead.");
+            list.GapLine();
+
+            list.CheckboxLabeled(
+                "Allow full restoration to the original machine",
+                ref allowFullRestoration,
+                "Off (shipped default): Refurbished is the ceiling, and the original "
+                + "grade cannot be built. On: the original (1.0) grade appears in the "
+                + "Architect menu and can be built over a Refurbished machine. The "
+                + "Architect menu caches its buttons at startup, so this takes full "
+                + "effect after your next game load.");
+            list.GapLine();
+
+            list.CheckboxLabeled(
+                "Upper grades must be built over a lower grade",
+                ref requireLowerGradeUnderneath,
+                "On (shipped default): a Kludged, Refurbished or original machine can "
+                + "only be built over a lower grade of the same machine, so restoring "
+                + "a found wreck is the only way to get one. Off: they can be built "
+                + "on open ground too.");
+            list.GapLine();
+
+            list.CheckboxLabeled(
+                "Salvaged psychic emanators soothe nearby pawns",
+                ref enableSalvagedEmanators,
+                "On (shipped default): a powered Kludged or Refurbished emanator "
+                + "gives nearby pawns a mood bonus, scaled by its grade. Off: they "
+                + "still draw power but do nothing.");
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
@@ -174,6 +244,9 @@ namespace RimMandrake.WreckedMachines
         private static readonly ThingDef KludgedTier =
             DefDatabase<ThingDef>.GetNamedSilentFail("RM_WM_AutomatedSmelter_Kludged");
 
+        private static readonly ThingDef RefurbishedTier =
+            DefDatabase<ThingDef>.GetNamedSilentFail("RM_WM_AutomatedSmelter_Refurbished");
+
         private static readonly ThingDef RepairedTier =
             DefDatabase<ThingDef>.GetNamedSilentFail("RM_WM_AutomatedSmelter_Repaired");
 
@@ -188,12 +261,18 @@ namespace RimMandrake.WreckedMachines
                 ? new List<ResearchProjectDef>(RepairedTier.researchPrerequisites)
                 : null;
 
+        private static readonly List<ResearchProjectDef> RefurbishedResearchPrereq =
+            RefurbishedTier != null && RefurbishedTier.researchPrerequisites != null
+                ? new List<ResearchProjectDef>(RefurbishedTier.researchPrerequisites)
+                : null;
+
         private static readonly Dictionary<ThingDef, List<ThingDefCountClass>> BaseCosts =
             new Dictionary<ThingDef, List<ThingDefCountClass>>();
 
         static WreckedMachinesPatcher()
         {
             CaptureBaseCost(KludgedTier);
+            CaptureBaseCost(RefurbishedTier);
             CaptureBaseCost(RepairedTier);
             Apply();
         }
@@ -222,7 +301,15 @@ namespace RimMandrake.WreckedMachines
             }
 
             RescaleCost(KludgedTier);
+            RescaleCost(RefurbishedTier);
             RescaleCost(RepairedTier);
+
+            if (RefurbishedTier != null && RefurbishedResearchPrereq != null)
+            {
+                RefurbishedTier.researchPrerequisites = WreckedMachinesSettings.skipRestorationResearch
+                    ? new List<ResearchProjectDef>()
+                    : new List<ResearchProjectDef>(RefurbishedResearchPrereq);
+            }
 
             if (RepairedTier != null && RepairedResearchPrereq != null)
             {
@@ -230,6 +317,8 @@ namespace RimMandrake.WreckedMachines
                     ? new List<ResearchProjectDef>()
                     : new List<ResearchProjectDef>(RepairedResearchPrereq);
             }
+
+            LadderPatcher.Apply();
         }
 
         private static void RescaleCost(ThingDef def)
