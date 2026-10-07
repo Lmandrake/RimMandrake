@@ -126,6 +126,12 @@ least certain. `### the experience` is his to dictate.
       map. (guess)
 
 ## anti-guessing notes
+- RULED OUT (live 2026-10-07): "the dead-venomvine fuel patch does not apply" — the Refuel job ended on `CompRefuelable.IsFull` (TargetFuelLevel − fuel < 1) because the 3000-tick pre-burn removed only 0.5 of the campfire's 20 fuel; the check now burns >1.5 first and refuses to judge a still-full fire.
+- RULED OUT (live 2026-10-07): "`RM_Grellspine` dies after planting" — set_plants REJECTED it: `<pollution>PollutedOnly</pollution>` makes `PlantUtility.CanEverPlantAt` refuse a clean cell; the check pollutes that cell first.
+- RULED OUT (live 2026-10-07): "the turbine breakdown roll never fires" — the test turbine was unowned and `RollTurbineBreakdowns` walks `listerBuildings.allBuildingsColonist` only; the check makes it the colony's.
+- RULED OUT (live 2026-10-07): "the lash ignores its toggle" — the hediffs gained were ambient `Heatstroke` / `RM_GlareBlind` (no body part); the lash checks count only part-bound injuries and `RM_VenomvineVenom`.
+- RULED OUT (live 2026-10-07): "a path length proves a wander" — in the Stall both test animals made the same deterministic non-wander move in two runs; the freeze replaces only `JobGiver_Wander`'s answer, so the Stall check now attributes moves by sampled job.
+- HARNESS (live 2026-10-07): in that session `rimworld/set_time_speed` (Ultrafast, and `order_pawn`'s own Normal unpause) never advanced the clock while stepped `step_game_ticks` did; `_wait` falls back to stepping and the bloom walker is ordered with `waitTicks=0`.
 - RULED OUT: "the smotherable patch on `RM_VenomvineThicket` matches nothing because the thicket has no `<comps>` node" — `EnvironmentalHazards/Defs/ThingDefs_Plants/RM_Venomvine.xml` carries one on the thicket; patches.thicket_smotherable is the guard if that ever changes.
 - RULED OUT: "the lash can ride a plant comp tick" — plants only `TickLong`; the lash is driven by `RM_MapComponent_TwitcherLash` (source header). The check reads the effect, not the driver.
 - RULED OUT: "a settings write via the bridge re-applies `RM_RegrowingHarvest`" — `Apply()` runs at startup and in `WriteSettings` only, so dripping's OFF arm is not drivable live (the walk line says UNCOVERED).

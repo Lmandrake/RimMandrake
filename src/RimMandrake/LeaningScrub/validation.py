@@ -132,7 +132,22 @@ def _read_defs():
     return by_type, parent
 
 
+def _polluted_only():
+    """Plant defNames whose <plant><pollution> is PollutedOnly (PlantUtility.CanEverPlantAt rejects them on a
+    clean cell, so set_plants answers REJECTED 'terrain or conditions cannot support')."""
+    out = set()
+    for path in sorted(glob.glob(os.path.join(HERE, "Defs", "*", "*.xml"))):
+        with open(path, encoding="utf-8") as fh:
+            txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+        for m in re.finditer(r"<ThingDef\b[^>]*>(.*?)</ThingDef>", txt, re.S):
+            nm = re.search(r"<defName>([^<]+)</defName>", m.group(1))
+            if nm and re.search(r"<pollution\b[^>]*>\s*PollutedOnly\s*</pollution>", m.group(1)):
+                out.add(nm.group(1).strip())
+    return out
+
+
 DEFS_BY_TYPE, _PARENT = _read_defs()
+POLLUTED_ONLY = _polluted_only()          # RM_Grellspine (vanilla grayscrub's rule)
 SHIPPED = sorted("%s/%s" % (k, n) for k, ns in DEFS_BY_TYPE.items() for n in ns)
 PLANTS = [n for n in DEFS_BY_TYPE.get("ThingDef", [])
           if _PARENT.get(n) in ("PlantBase", "PlantBaseNonEdible")]            # not the tree
@@ -309,6 +324,17 @@ def _hediffs(row):
     return list(((row or {}).get("health") or {}).get("hediffs") or [])
 
 
+# What the twitcher lash leaves: RM_CompLash.TryStrike -> victim.TakeDamage(RM_VenomvineScratch), i.e. a part-bound
+# injury plus the damage def's additionalHediffs RM_VenomvineVenom. LIVE 2026-10-07: a bare hediff COUNT read an ambient
+# Heatstroke and RM_GlareBlind (part null, from the hot quicktest map and CreatureBehaviors' glare) as "the lash struck".
+LASH_HEDIFFS = ("RM_VenomvineVenom",)
+
+
+def _lash_marks(row):
+    return len([h for h in _hediffs(row) if isinstance(h, dict)
+                and (h.get("part") not in (None, "") or h.get("def") in LASH_HEDIFFS)])
+
+
 def _has_hediff(row, hediff):
     return hediff in json.dumps(_hediffs(row))
 
@@ -450,9 +476,14 @@ def _wait(t, n):
                 break
             if now > last:
                 last, stall = now, time.time()
-            elif time.time() - stall > 60:
-                raise ExpectationFailed("clock stalled at %d during a %d-tick wait (a modal dialog "
-                                        "pausing the game?)" % (now, n))
+            elif time.time() - stall > 30:
+                # LIVE 2026-10-07 (101652Z and 104321Z, both at smother_off_holds_claims): set_time_speed Ultrafast left
+                # the clock frozen for 60 s while every stepped rimworld/step_game_ticks wait in the same run advanced
+                # normally; no Transient/modcheck result (47 files) records a single successful Ultrafast _wait. Fall back
+                # to the stepped wait (exact, ~53 ticks/s) rather than failing the component on a harness clock.
+                # RULED OUT: the smother-off arm itself pausing the game -- it only flips a static bool before the wait.
+                _note(t, "_wait: Ultrafast did not advance the clock (stuck at %d); stepping instead" % now, n)
+                break
     finally:
         s.call("rimworld/set_time_speed", speed="Paused")
     now = s._ticks()
@@ -615,11 +646,19 @@ def patches_chain(t):
                 _fail("fixture missing: campfire %d, dead venomvine %d" % (len(camp), len(fuel)))
             cid, fid = camp[0]["id"], fuel[0]["id"]
             before = fuel[0].get("stackCount")
-            # LIVE 2026-10-03 (suspected cause of the red, not yet proven): a spawned Campfire is FULL (initialFuelPercent
-            # 1.0) and a Refuel job on a full refuelable is refused, so the stack never moved whatever the patch did.
-            # Let it burn ~1 fuel (10/day) first. FALSE THEORY kept for the record: the patch DID apply (no patchfail
-            # line in Player.log, Campfire's own comps li matches the xpath).
-            t.wait_ticks(3000)
+            # A spawned Campfire is FULL (initialFuelPercent 1.0, capacity 20, 10 fuel/day). JobDriver_Refuel ends
+            # Succeeded at once while CompRefuelable.IsFull, and IsFull = TargetFuelLevel - fuel < 1 -- so the fire must
+            # burn MORE than one whole unit (> 6000 ticks) before any fuel is taken.
+            # RULED OUT (LIVE 2026-10-07): "the fuel patch does not apply" -- the old 3000-tick wait burned 0.5 fuel; the
+            # inspect read "Fuel: 19 / 20" (~19.35 after 3900 ticks), IsFull was true, and ordered_job reported curJob
+            # Wait_MaintainPosture instead of Refuel: the job ended on its IsFull end condition before choosing fuel. Core's
+            # Campfire comps li (CompProperties_Refuelable/fuelFilter/thingDefs/li=WoodLog) matches the patch xpath.
+            t.wait_ticks(10000)          # ~1.67 fuel burned -> ~18.3, read "18" (ToStringDecimalIfSmall rounds >=10)
+            _, pre = _inspect(t, cid)
+            m = re.search(r"Fuel:\s*([\d.]+)\s*/\s*([\d.]+)", " ".join(pre))
+            if not m or float(m.group(2)) - float(m.group(1)) < 2:
+                _unmeasured(t, "the campfire is still (nearly) full before the refuel (%s): JobDriver_Refuel would end "
+                               "on IsFull and prove nothing about the fuel filter" % pre)
             col = _spawn(t, "Colonist", x - 2, z + 2, faction="player")
             t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="Refuel", targetAId=cid,
                           targetBId=fid, count=10, waitTicks=60)
@@ -719,9 +758,18 @@ def flora_chain(t):
                 if len(PLANTS) < 18:
                     _fail("parsed %d plant defs, expected 18" % len(PLANTS))
                 cells = {}
+                # LIVE 2026-10-07: RM_Grellspine came back "REJECTED 1: terrain or conditions cannot support" -- its
+                # <pollution>PollutedOnly</pollution> makes PlantUtility.CanEverPlantAt refuse every CLEAN cell, so the
+                # pad's plain soil could never hold it. A PollutedOnly plant gets its own cell polluted first.
+                # RULED OUT: soil fertility (Soil 1.0 >= fertilityMin 0.05), map temperature (min/max growth -22..62),
+                # the plant dying after spawn (set_plants itself reported planted 0, rejected 1 for that def only).
                 for i, d in enumerate(PLANTS):
                     cx, cz = rect[0] + 2 + (i % 6) * 3, rect[1] + 2 + (i // 6) * 3
                     cells[d] = (cx, cz)
+                    if d in POLLUTED_ONLY:
+                        p = t.bridge_call("jawa/set_pollution", rect="%d,%d,1,1" % (cx, cz), polluted=True)
+                        if _live(t) and not (_ok(p, "set_pollution").get("cellsEverPollutable")):
+                            _unmeasured(t, "cell %d,%d cannot be polluted for PollutedOnly %s: %r" % (cx, cz, d, p))
                     t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (d, cx, cz), growth=1.0)
                 lost = [d for d, (cx, cz) in cells.items()
                         if _count(t, d, "%d,%d,1,1" % (cx, cz)) < 1]
@@ -730,24 +778,40 @@ def flora_chain(t):
                     _fail("plant def(s) did not stand after set_plants: %s" % lost)
     finally:
         _stable(t, lambda: None)
+        if t.session is not None and POLLUTED_ONLY:
+            try:    # leave the shared spawn pad clean for whoever uses it next
+                t.session.call("jawa/set_pollution", rect=_rs(_rect(t, PAD_SIZE + 8)), polluted=False)
+            except Exception as ex:
+                print("[lscrub] pollution cleanup failed: %s" % ex, file=sys.stderr, flush=True)
 
 
 # --------------------------------------------------------------------------- chain: the Stall
 
 def _path(t, ids, steps=6, step=250):
-    """Per-pawn path length and net displacement over steps*step ticks, from list_pawns x/z."""
+    """Per-pawn path length over steps*step ticks, from list_pawns x/z, plus the job def seen at each
+    sample (jawa/site_state) so a move can be attributed to wandering or to something else."""
     pos = dict((i, [_xz(r)]) for i, r in _rows(t).items() if i in ids)
+    jobs = dict((i, []) for i in ids)
+    j0 = _jobs(t)
+    for i in ids:
+        jobs[i].append(j0.get(i))
     for _ in range(steps):
         t.wait_ticks(step)
         rows = _rows(t)
+        jn = _jobs(t)
         for i in ids:
             pos.setdefault(i, []).append(_xz(rows.get(i)))
+            jobs[i].append(jn.get(i))
     out = {}
     for i in ids:
         pts = [p for p in pos.get(i, []) if p]
         out[i] = {"alive": len(pts), "samples": len(pos.get(i, [])),
-                  "path": sum(_dist(a, b) for a, b in zip(pts, pts[1:])) if len(pts) > 1 else 0.0}
+                  "path": sum(_dist(a, b) for a, b in zip(pts, pts[1:])) if len(pts) > 1 else 0.0,
+                  "jobs": jobs[i]}
     return out
+
+
+_WANDER_JOBS = ("GotoWander", "Wait_Wander", None)
 
 
 def _full(t, pid):
@@ -769,17 +833,34 @@ def stall_chain(t):
                 ids["big"] = _spawn(t, STALL_BIG, x + 3, z)
                 for p in ids.values():
                     _full(t, p)
-                res = _path(t, list(ids.values()))
-                _note(t, "Stall: path lengths (cells) over 1500 ticks", res)
+                # LIVE 2026-10-07 (twice, 101652Z and 104321Z): BOTH animals moved the SAME vector, to the SAME cells in
+                # both runs ((77,80)->(89,92)->(90,95) and (83,80)->(94,92)), all in the first 250 ticks, then BOTH held
+                # still -- the 0.7 control included -- for >= 1000 ticks. A shared, deterministic, non-wander move: the
+                # freeze (RM_WindCalendarPatches.Wander_Prefix) replaces ONLY JobGiver_Wander's answer by design, so a
+                # higher think-node job (flee, seek-safe-temperature, ...) is out of its scope, and the old path-only
+                # predicate counted it as a wander. The job def at each sample now says which kind of move it was.
+                # RULED OUT: juvenile control frozen by size -- list_pawns read bodySize 0.4 / 0.7 (both adult).
+                # RULED OUT: weather not locked -- weather_get read current RM_Stall right after the lock.
+                # RULED OUT: the crown mob / fire stamp pulling them -- those move only RM_Dustflutter / stamper-extension
+                # races (RM_VenomvineRooms.cs:134, RM_FireStamp.cs:61).
+                res = _path(t, list(ids.values()), steps=12, step=125)
+                _note(t, "Stall: path lengths (cells) and sampled jobs over 1500 ticks", res)
                 small, big = res[ids["small"]], res[ids["big"]]
                 if big["alive"] < 3 or small["alive"] < 3:
                     _unmeasured(t, "a test animal vanished from list_pawns: %r" % res)
-                if big["path"] < 3.0:
-                    _unmeasured(t, "the larger control animal (%s, body 0.7) did not move either "
-                                   "(path %.1f): cannot tell frozen from stuck" % (STALL_BIG, big["path"]))
+                if "GotoWander" in small["jobs"]:
+                    _fail("%s (body 0.4 < 0.5) was handed a GotoWander job in the Stall (jobs %s); the freeze should "
+                          "answer Wait_Wander" % (STALL_SMALL, small["jobs"]))
+                if big["path"] < 3.0 and "GotoWander" not in big["jobs"]:
+                    _unmeasured(t, "the larger control animal (%s, body 0.7) neither moved nor wandered (path %.1f, "
+                                   "jobs %s): cannot tell frozen from stuck" % (STALL_BIG, big["path"], big["jobs"]))
+                other = sorted(set(j for j in small["jobs"] if j not in _WANDER_JOBS))
+                if small["path"] > 1.5 and not other:
+                    _fail("%s (body 0.4 < 0.5) moved %.1f cells in the Stall with only wander-family jobs %s; it "
+                          "should hold still (control %s moved %.1f)"
+                          % (STALL_SMALL, small["path"], small["jobs"], STALL_BIG, big["path"]))
                 if small["path"] > 1.5:
-                    _fail("%s (body 0.4 < 0.5) moved %.1f cells in the Stall; it should hold still "
-                          "(control %s moved %.1f)" % (STALL_SMALL, small["path"], STALL_BIG, big["path"]))
+                    _note(t, "Stall: the small animal's move came from non-wander job(s), outside the freeze", other)
         with _comp(t, "stall_toggle_off_wanders", toggle="stallFreezeEnabled"):
             if _live(t):
                 with _setting(t, "stallFreezeEnabled", False):
@@ -869,6 +950,13 @@ def gale_chain(t):
                 if not turb:
                     _unmeasured(t, "no WindTurbine on the pad after spawn_batch")
                 ids["turbine"] = turb[0]["id"]
+                # LIVE 2026-10-07: spawn_batch leaves the turbine faction null, and RM_MapComponent_WindCalendar.
+                # RollTurbineBreakdowns walks map.listerBuildings.allBuildingsColonist only -- so a factionless turbine
+                # was never rolled and gale_turbine_breakdown read "no breakdown" at a 0.01-day mean. Make it the colony's.
+                # RULED OUT: the roll never firing -- MTB 0.01 d = 600 ticks over a 2500-tick check is ~98% per roll.
+                own = t.bridge_call("jawa/set_thing_props", thing=ids["turbine"], faction="PlayerColony")
+                if _live(t) and "faction" not in json.dumps((own or {}).get("changed")):
+                    _unmeasured(t, "set_thing_props could not make the turbine player-owned: %r" % (own,))
                 _set(t, "galeTurbineBreakdownMtbDays", 0)     # 0 = never: keep the turbine whole
                 try:
                     t.wait_ticks(4100)       # the wind ramps into the Gale over the transition
@@ -922,14 +1010,18 @@ def lash_chain(t):
                 _full(t, ids["col"])
         with _comp(t, "lash_toggle_off_quiet", toggle="twitcherLashEnabled"):
             if _live(t):
-                n0 = len(_hediffs(_rows(t, health=True).get(ids["col"])))
+                # RULED OUT (LIVE 2026-10-07): "the lash ignores its toggle" -- the 2 hediffs gained were Heatstroke and
+                # RM_GlareBlind, both part-less ambient conditions; the stand's inspect read "Mature." (no lash state).
+                n0 = _lash_marks(_rows(t, health=True).get(ids["col"]))
                 with _setting(t, "twitcherLashEnabled", False):
                     t.wait_ticks(300)
-                    n1 = len(_hediffs(_rows(t, health=True).get(ids["col"])))
+                    row1 = _rows(t, health=True).get(ids["col"])
+                    n1 = _lash_marks(row1)
                     _, lines = _inspect(t, ids["plant"])
+                _note(t, "lash OFF: colonist hediffs after 300 ticks", _hediffs(row1))
                 if n1 != n0:
-                    _fail("twitcherLashEnabled OFF but the colonist next to the stand gained %d "
-                          "hediff(s)" % (n1 - n0))
+                    _fail("twitcherLashEnabled OFF but the colonist next to the stand gained %d lash "
+                          "mark(s) (injury / venom): %s" % (n1 - n0, _hediffs(row1)))
                 if re.search(r"poised|spent", " ".join(lines), re.I):
                     _fail("twitcherLashEnabled OFF but the stand still reports a lash state: %s" % lines)
         with _comp(t, "lash_strikes_once", toggle="twitcherLashEnabled"):
@@ -937,12 +1029,12 @@ def lash_chain(t):
                 _, lines = _inspect(t, ids["plant"])
                 if "Poised to strike" not in " ".join(lines):
                     _unmeasured(t, "the stand is not poised before the arm: %s" % lines)
-                n0 = len(_hediffs(_rows(t, health=True).get(ids["col"])))
+                n0 = _lash_marks(_rows(t, health=True).get(ids["col"]))
                 t.wait_ticks(120)
-                n1 = len(_hediffs(_rows(t, health=True).get(ids["col"])))
+                n1 = _lash_marks(_rows(t, health=True).get(ids["col"]))
                 _, lines1 = _inspect(t, ids["plant"])
                 t.wait_ticks(600)
-                n2 = len(_hediffs(_rows(t, health=True).get(ids["col"])))
+                n2 = _lash_marks(_rows(t, health=True).get(ids["col"]))
                 _note(t, "lash: hediffs before / after strike / after the hour's first 600 ticks",
                       [n0, n1, n2])
                 if n1 <= n0:
@@ -1092,15 +1184,25 @@ def crown_chain(t):
         ids = [_spawn(t, "RM_Dustflutter", x + 16 + i, z + 4 - 4 * i) for i in range(3)]
         for p in ids:
             _full(t, p)
-        t.wait_ticks(1500)
+        # LIVE 2026-10-07 (both runs): in BOTH arms the dustflutters ended 23-70 cells off (spawned ~16 away), i.e. they
+        # roamed far whatever the toggle. RM_MapComponent_CrownMob only claims an IDLE mobber (job null / Wait_Wander /
+        # GotoWander / Wait, RM_VenomvineRooms.cs:158-163) every 250 ticks, so a flutter held in another job (a flee, as
+        # the stall chain's shared move also suggests) is outside the mechanism. Sample the jobs so the verdict can say so.
+        jobs = dict((p, []) for p in ids)
+        for _ in range(6):
+            t.wait_ticks(250)
+            jn = _jobs(t)
+            for p in ids:
+                jobs[p].append(jn.get(p))
         rows = _rows(t)
         pos = [_xz(rows.get(p)) for p in ids]
         alive = [p for p in pos if p]
         dists = [_dist(p, (x, z)) for p in alive]
-        _note(t, "crown trial %s: dustflutter distances to the stand" % tag, dists)
+        _note(t, "crown trial %s: dustflutter distances to the stand / sampled jobs" % tag, [dists, jobs])
         if len(alive) < 2:
             _unmeasured(t, "%d of 3 dustflutters survived to be measured" % len(alive))
         t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="Pawn")
+        _STATE["crown_jobs"] = jobs
         return dists
 
     def body():
@@ -1122,6 +1224,11 @@ def crown_chain(t):
             if _live(t):
                 d = trial("ON")
                 around = [v for v in d if v <= near]
+                idle = ("Wait_Wander", "GotoWander", "Wait", "Goto", None)   # Goto = already sent to the stand
+                seen = [j for js in (_STATE.get("crown_jobs") or {}).values() for j in js]
+                if len(around) < 2 and seen and not any(j in idle for j in seen):
+                    _unmeasured(t, "no dustflutter was ever idle (sampled jobs %s): the crown mob claims only idle "
+                                   "mobbers, so this site cannot show the draw" % sorted(set(seen)))
                 if len(around) < 2:
                     _fail("only %d of %d dustflutters gathered within %.0f cells of a crown "
                           "stand in the Stall after 1500 ticks: %s" % (len(around), len(d), near, d))
@@ -1147,7 +1254,12 @@ def bloom_chain(t):
         arms0 = _stack_total(t, "RM_VisslerArm", _rs(_rect(t, PAD_SIZE + 8)))
         walker = _spawn(t, "Colonist", x - 15, z, faction="player")
         _full(t, walker)
-        t.bridge_call("jawa/order_pawn", pawnId=walker, x=x + 14, z=z, waitTicks=60)
+        # LIVE 2026-10-07 (both runs): order_pawn waitTicks=60 unpauses to Normal and waits on the REAL clock with a 30 s
+        # wall-clock ceiling; the clock did not move at Normal (same session as the smother chain's Ultrafast stall) and
+        # the client's own 30.0 s timeout fired first -> RimBridgeError. Issue the order without waiting; the stepped
+        # wait_ticks below advances the game. RULED OUT: the bloom OFF arm hanging the game -- the timeout is at the
+        # order, before any bloom tick could run.
+        t.bridge_call("jawa/order_pawn", pawnId=walker, x=x + 14, z=z, waitTicks=0, unpause=False)
         saw = dict((k, False) for k in cohort)
         for _ in range(16):
             t.wait_ticks(30)
@@ -1306,10 +1418,19 @@ def sweetline_chain(t):
                 t.bridge_call("jawa/time_set_ticks", ticks=int(cur + 5.5 * 60000))   # past the 5-day timer
                 t.wait_ticks(2100)                                    # one Long tick
                 after = _stack_total(t, "RM_SweetlineWool", _rs(_rect(t)))
-                _note(t, "sweetline wool beside the tree before / after a 5.5-day jump", [before, after])
+                # LIVE 2026-10-07 (both runs): 0 felt, the tree mature ("Ready to harvest", timer 14 h / 3.7 d before the
+                # jump). The timer line now says which half broke: still "ready to fall" = RM_CompSweetlineStation.
+                # CompTickLong never ran its shed in the 2100 ticks; "falls in ~5 days" = it ran and reset the timer, so
+                # the felt went somewhere this count does not see; tree gone = it died across the jump.
+                # RULED OUT: Plant.TickLong skipping comps -- decompiled Plant.TickLong calls base.TickLong (comps) and
+                # TickList buckets every Long thing once per 2000 consecutive ticks, jump or not.
+                standing = _things(t, TREE, "%d,%d,1,1" % (x, z))
+                _, tl = _inspect(t, ids["tree"]) if standing else (None, ["<tree gone>"])
+                _note(t, "sweetline wool beside the tree before / after a 5.5-day jump; tree inspect after",
+                      [before, after, tl])
                 if after - before < 5:
                     _fail("a mature sweetline tree shed %d sweetline felt after its 5-day timer passed "
-                          "(expect 5)" % (after - before))
+                          "(expect 5); tree after the wait: %s" % (after - before, tl))
         # SWEETLINE_SCRATCHING_TREE_BUILD_1: a coated animal rubs its coat off at the trunk. The proof
         # (RM_SweetlineScratching.ProofOrderScratch via jawa/static_call) sets the sheep's coat and asks the
         # REAL job giver, so the giver's whole gate is exercised; the ~6 h MTB node above it is not.

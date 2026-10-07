@@ -57,6 +57,7 @@ class Fake(object):
         self.rooms, self.claims, self.jobs, self.log = [], {}, {}, []
         self.walker_until, self.bloom_done, self.tick_hist = -1, False, 0
         self.paths = {}
+        self.polluted = set()
 
     # ------------------------------------------------------------ session surface
     def _ticks(self):
@@ -142,6 +143,7 @@ class Fake(object):
                     or ("crown_ignores_toggle" in b and p["kind"] == "RM_Dustflutter" and crown):
                 p["x"], p["z"] = crown[0]["x"] + 2, crown[0]["z"]
                 continue
+            p["job"] = "Wait_Wander" if frozen else "GotoWander"
             if not frozen:
                 p["x"] += 1
         # --- Gale: deafen
@@ -162,7 +164,8 @@ class Fake(object):
                     and 0 < float(self.settings["galeTurbineBreakdownMtbDays"]) < 0.1
                     and "no_breakdown" not in b):
                 for t in self.of("WindTurbine"):
-                    t["broken"] = True
+                    if t.get("faction") == "PlayerColony":    # listerBuildings.allBuildingsColonist only
+                        t["broken"] = True
             # smother maturation
             if self.on("smotherCraftEnabled") or "smother_ignores_toggle" in b:
                 days = float(self.settings["smotherDays"])
@@ -173,6 +176,11 @@ class Fake(object):
                         st = self.things.pop(sid)
                         del self.claims[sid]
                         self.new("RM_DeadVenomvine", st["x"], st["z"], stackCount=40)
+        # --- ambient: a hot map gives a colonist whole-body heatstroke a while after spawning (LIVE 2026-10-07)
+        for p in self.pawns.values():
+            if p["faction"] == "player" and self.ticks - p.get("born", self.ticks) >= 150 \
+                    and "Heatstroke" not in p["hediffs"]:
+                p["hediffs"].append("Heatstroke")
         # --- lash
         for pl in self.of("RM_TwitcherVenomvine"):
             enabled = self.on("twitcherLashEnabled") or "lash_ignores_toggle" in b
@@ -306,7 +314,7 @@ class Fake(object):
         self.n += 1
         pid = "P%d" % self.n
         self.pawns[pid] = dict(id=pid, kind=kindDef, x=x, z=z, faction=faction, dead=False, hediffs=[],
-                               flee_until=0)
+                               flee_until=0, born=self.ticks)
         return {"success": True, "pawns": [{"id": pid}]}
 
     def t_list_pawns(self, rect=None, includeHealth=False, limit=500, **k):
@@ -319,13 +327,14 @@ class Fake(object):
                    "faction": None if p["faction"] == "none" else p["faction"], "dead": p["dead"],
                    "downed": False, "intelligence": "Humanlike" if p["kind"] == "Colonist" else "Animal"}
             if includeHealth:
-                row["health"] = {"hediffs": [{"def": h} for h in p["hediffs"]]}
+                row["health"] = {"hediffs": [{"def": h, "part": "Torso" if h == "Cut" else None}
+                                             for h in p["hediffs"]]}
             rows.append(row)
         return {"success": True, "pawns": rows}
 
     def t_site_state(self, **k):
         return {"success": True, "pawns": [
-            {"id": p["id"], "job": "Flee" if self.ticks < p.get("flee_until", 0) else "Wait_Wander"}
+            {"id": p["id"], "job": "Flee" if self.ticks < p.get("flee_until", 0) else p.get("job", "Wait_Wander")}
             for p in self.pawns.values()]}
 
     def t_list_things(self, defName=None, rect=None, limit=1, **k):
@@ -376,8 +385,25 @@ class Fake(object):
         for op in ops.split(";"):
             d, nums = op.split(":")
             n = [int(v) for v in nums.split(",")]
-            self.new(d, n[0], n[1], stackCount=n[2] if len(n) > 2 else 1)
+            self.new(d, n[0], n[1], stackCount=n[2] if len(n) > 2 else 1, born=self.ticks)
         return {"success": True}
+
+    def t_set_thing_props(self, thing=None, faction=None, **k):
+        t = self.things.get(thing)
+        if t is None:
+            return {"success": False, "message": "no thing %r" % thing}
+        if faction is not None:
+            t["faction"] = None if faction.lower() in ("null", "none") else faction
+        return {"success": True, "changed": ["faction"] if faction is not None else [], "skipped": []}
+
+    def t_set_pollution(self, rect="", polluted=True, **k):
+        x, z, w, h = [int(v) for v in rect.split(",")]
+        cells = set((cx, cz) for cx in range(x, x + w) for cz in range(z, z + h))
+        if "no_pollute" in self.broken:
+            return {"success": True, "cellsRequested": len(cells), "cellsEverPollutable": len(cells), "cellsChanged": 0}
+        self.polluted = (self.polluted | cells) if polluted else (self.polluted - cells)
+        return {"success": True, "cellsRequested": len(cells), "cellsEverPollutable": len(cells),
+                "cellsChanged": len(cells)}
 
     def t_set_plants(self, ops="", growth=1.0, **k):
         for op in ops.split(";"):
@@ -389,6 +415,9 @@ class Fake(object):
                 continue
             for cx in range(n[0], n[0] + (n[2] if len(n) > 2 else 1)):
                 for cz in range(n[1], n[1] + (n[3] if len(n) > 3 else 1)):
+                    # PlantUtility.CanEverPlantAt: a PollutedOnly plant is rejected on a clean cell (LIVE 2026-10-07)
+                    if d in V.POLLUTED_ONLY and (cx, cz) not in self.polluted:
+                        continue
                     tid = self.new(d, cx, cz, growth=growth, stackCount=1)
                     if d == V.TREE:
                         self.things[tid]["wool"] = self.ticks + 3 * 60000     # staggered first shed
@@ -427,8 +456,15 @@ class Fake(object):
         return {"success": True, "pawns": [{"id": pawn, "canEverFly": "no_fly" not in self.broken,
                                             "maxFlightTimeStat": 6.0}]}
 
+    def fuel(self, tid):
+        """Campfire fuel: spawned full (20), burns 10 per day (Core CompProperties_Refuelable)."""
+        t = self.things.get(tid) or {}
+        return max(0.0, 20 - 10.0 * (self.ticks - t.get("born", self.ticks)) / 60000)
+
     def t_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, targetBId=None, **k):
         kind = {"RM_SmotherVenomvine": "smother", "Refuel": "refuel", "Harvest": "harvest"}.get(jobDef)
+        if kind == "refuel" and 20 - self.fuel(targetAId) < 1:   # JobDriver_Refuel ends on CompRefuelable.IsFull
+            return {"success": False, "accepted": True, "afterJobDef": "Wait_MaintainPosture"}
         self.jobs[pawnId] = {"kind": kind, "a": targetAId, "b": targetBId, "left": 800}
         return {"success": True, "accepted": True, "nowRunningRequested": True}
 
@@ -459,7 +495,7 @@ class Fake(object):
         elif d == "RM_DrippingVenomvine":
             lines = ["Growth: %d%%" % int(100 * t.get("growth", 1))]
         elif d == "Campfire":
-            lines = ["Fuel: 10"]
+            lines = ["Fuel: %d / 20" % round(self.fuel(t["id"]))]
         elif d == V.TREE and (self.on("sweetlineStationsEnabled") or "station_ignores_toggle" in self.broken):
             if "no_name" not in self.broken:
                 label = "Ashveil (sweetline tree)"
@@ -510,6 +546,7 @@ BREAKS = {
     "fuel_unpatched": "patches.dead_venomvine_fuels_fire",
     "setting_missing": "settings.defaults",
     "set_plants_drops": "flora.flora_spawns",
+    "no_pollute": "flora.flora_spawns",          # LIVE 2026-10-07: RM_Grellspine on a clean cell
     "no_fly": "fauna.dustflutter_can_fly",
     "no_freeze": "stall.stall_freezes_small",
     "freeze_ignores_toggle": "stall.stall_toggle_off_wanders",
