@@ -10,10 +10,11 @@ namespace RimMandrake.FlowWorks
 	/// we just had Sluice and SecurityGrateDoor and allowed them to be stuffably made too"). Stuff
 	/// decides armour, hit points and whether it burns; nothing here hardcodes a material ladder.
 	///
-	///   • Both pass liquid while closed. The depth engine never consults edifices (PickDonor reads
-	///     only depth and fill), so a door on a dug cell already lets the level through; the legacy
-	///     flood walk refused every edifice and is taught to treat these two as open
-	///     (Flood_FlowWorks.CanFloodInto).
+	///   • FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06, typed): "There are sealed sluice gates
+	///     (standard) and the ones made of metal grates that always allow liquid (this is just a gate,
+	///     not a sluice gate then)." A SHUT sluice seals its cell: the depth engine moves no liquid into
+	///     or out of it (RM_FlowKernel.sealedCell, fed by SealsLiquid) and the legacy flood walk refuses
+	///     it. Open (a pawn passing, or held open) it passes. The grate passes liquid shut or open.
 	///   • Neither opens for a pawn held in a superdeep pit (setting flowDoorsSealedFromPitEnabled):
 	///     the pit spec §4 door rule, a grid fact now that the holder Thing is retired.
 	///   • The sluice holds small creatures only. A humanlike, or anything too big for a one-wide
@@ -47,6 +48,14 @@ namespace RimMandrake.FlowWorks
 		{
 			RM_FlowDoorExtension ext = def?.GetModExtension<RM_FlowDoorExtension>();
 			return ext != null && ext.holdsSmallCreaturesOnly;
+		}
+
+		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1: the verdict for the edifice on a cell — only a shut sluice
+		/// holds liquid back. Pure on its two inputs so the selftest covers it (RM_PitTrapMath.FlowDoorSeals).</summary>
+		public static bool SealsLiquid(Building edifice)
+		{
+			Building_RM_FlowDoor door = edifice as Building_RM_FlowDoor;
+			return door != null && RM_PitTrapMath.FlowDoorSeals(IsSluice(door.def), door.Open);
 		}
 
 		public static bool CanOpen(Building_Door door, Pawn p, bool vanillaOpens)
@@ -95,8 +104,8 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>Bridge proof (jawa/static_call): the liquid under a flow door — dug depth and
-		/// fill F at the door cell, so a chain can show the level rising past a CLOSED door.
-		/// "DOOR RM_SecurityGrateDoor open=False | depth 2 fill 1".</summary>
+		/// fill F at the door cell, so a chain can show the level passing a CLOSED grate and stopping at a
+		/// CLOSED sluice. "DOOR RM_SecurityGrateDoor open=False seals=False | depth 2 fill 1".</summary>
 		public static string ProofLiquid(Map map, IntVec3 cell)
 		{
 			Building_RM_FlowDoor door = DoorAt(map, cell);
@@ -107,7 +116,8 @@ namespace RimMandrake.FlowWorks
 			RM_MapComponent_Excavation eng = map.GetComponent<RM_MapComponent_Excavation>();
 			int depth = eng == null ? 0 : eng.DepthAt(cell);
 			int fill = eng == null ? 0 : eng.FillAt(cell);
-			return "DOOR " + door.def.defName + " open=" + door.Open + " | depth " + depth + " fill " + fill;
+			return "DOOR " + door.def.defName + " open=" + door.Open + " seals=" + SealsLiquid(door) +
+				" | depth " + depth + " fill " + fill;
 		}
 	}
 }
