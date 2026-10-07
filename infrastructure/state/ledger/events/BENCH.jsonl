@@ -1218,3 +1218,6 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"BENCH live round 2: FlowWorks fixes + full playtest scenes","ts":"2026-10-06T19:01:31Z","tsn":1791313291375899253}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-06T19:31:49Z","tsn":1791315109192648414}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-07T01:01:04Z","tsn":1791334864086517178}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-07T01:21:05Z","tsn":1791336065429236867}
+{"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-07T01:21:09Z","tsn":1791336069408691476}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"deploy GREYSEA_FLOOR_PASS_1 + cold load for its live check and the FlowWorks runner recipe","ts":"2026-10-07T01:22:12Z","tsn":1791336132417274909}
