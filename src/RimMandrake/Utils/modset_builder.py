@@ -584,6 +584,19 @@ TIERS["ishko"] = {
 }
 
 
+TIERS["acc_l1x"] = {
+    "why": "FOUNDRY acceptance 2026-10-07: the L1 def reads whose owning mods the earlier sitting did "
+           "not carry (FallLineArrivals, EggReckoning, WreckedMachines, TrophyCraft, ShipShields, "
+           "UnfinishedLine, AcousticScanner) plus ProximityHatch, GimmeSomeSlack (JawaBench get_defs "
+           "TypeLoads without it) and the composed biomes mod.",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rut.falllinearrivals",
+             "mandrake.rut.eggreckoning", "mandrake.rm.wreckedmachines", "mandrake.rsw.trophycraft",
+             "mandrake.rut.shipshields", "mandrake.rut.unfinishedline", "mandrake.rm.acousticscanner",
+             "mandrake.rm.proximityhatch"],
+    "dlc": True,
+}
+
+
 def resolve_tier(name, installed):
     """(ordered packageIds, missing, refusals) for a tier -- the exact list --apply
     writes. `refusals` is tier_guard's list (forbidden mod in the closure, a DLC
