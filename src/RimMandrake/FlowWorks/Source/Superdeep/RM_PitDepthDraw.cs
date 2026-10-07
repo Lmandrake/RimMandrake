@@ -62,7 +62,7 @@ namespace RimMandrake.FlowWorks
 			int dFrom = ex.ExcavatedDepthAt(from);
 			if (pawn.pather == null || !pawn.pather.Moving)
 			{
-				return RM_PitDrawMath.SinkFor(dFrom, perLevel);
+				return Clamped(ex, pawn.Map, from, dFrom, perLevel);
 			}
 			IntVec3 to = pawn.pather.nextCell;
 			int dTo = to.IsValid ? ex.ExcavatedDepthAt(to) : dFrom;
@@ -73,7 +73,35 @@ namespace RimMandrake.FlowWorks
 			Vector3 a = from.ToVector3Shifted();
 			Vector3 b = to.ToVector3Shifted();
 			float t = RM_PitDrawMath.StepProgress(a.x, a.z, b.x, b.z, drawPos.x, drawPos.z);
-			return RM_PitDrawMath.SinkBetween(dFrom, dTo, t, perLevel);
+			float sa = Clamped(ex, pawn.Map, from, dFrom, perLevel);
+			float sb = to.IsValid ? Clamped(ex, pawn.Map, to, dTo, perLevel) : sa;
+			return sa + (sb - sa) * t;
+		}
+
+		/// <summary>Sink on cell <paramref name="c"/> of dug depth <paramref name="d"/>, held so the drawn centre
+		/// stays north of the near lip in that column (<see cref="RM_PitDrawMath.ClampSinkToLip"/>).</summary>
+		private static float Clamped(RM_MapComponent_Excavation ex, Map map, IntVec3 c, int d, float perLevel)
+		{
+			float sink = RM_PitDrawMath.SinkFor(d, perLevel);
+			if (!(sink > 0f))
+			{
+				return 0f;
+			}
+			float lipZ = float.NaN;
+			for (int k = 1; k <= RM_PitDrawMath.MaxDepth * 2; k++)
+			{
+				IntVec3 cand = new IntVec3(c.x, 0, c.z - k);
+				if (!cand.InBounds(map))
+				{
+					break;
+				}
+				if (ex.ExcavatedDepthAt(cand) < d)
+				{
+					lipZ = cand.z + 1f;
+					break;
+				}
+			}
+			return RM_PitDrawMath.ClampSinkToLip(sink, c.z + 0.5f, lipZ);
 		}
 
 		private static RM_MapComponent_Excavation ExcavationOf(Map map)

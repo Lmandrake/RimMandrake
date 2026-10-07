@@ -60,6 +60,26 @@ namespace RimMandrake.FlowWorks
 			return a + (b - a) * t;
 		}
 
+		/// <summary>PIT_LIP_OCCLUDES_OUTSIDE_1 — the most a pawn on a cell whose centre is at
+		/// <paramref name="cellCentreZ"/> may sink when the near (south) lip in its column is at
+		/// <paramref name="lipZ"/>: its drawn centre never drops past the lip, so the sprite stays
+		/// inside the pit opening and only its lower half goes behind the near bank. Without this a
+		/// pawn on the pit's south row at D4 (sink 1.2) was drawn wholly south of the pit, over the
+		/// ground outside it (owner's muffalo, 2026-10-06). NaN lipZ (no lip found) leaves the sink.</summary>
+		public static float ClampSinkToLip(float sink, float cellCentreZ, float lipZ)
+		{
+			if (!(sink > 0f) || float.IsNaN(lipZ))
+			{
+				return sink > 0f ? sink : 0f;
+			}
+			float room = cellCentreZ - lipZ;
+			if (room <= 0f)
+			{
+				return 0f;
+			}
+			return sink < room ? sink : room;
+		}
+
 		/// <summary>Tween progress from the centre of the cell a pawn is leaving
 		/// (<paramref name="ax"/>,<paramref name="az"/>) toward the next cell's centre, given the
 		/// drawn position (<paramref name="px"/>,<paramref name="pz"/>). Projected onto the

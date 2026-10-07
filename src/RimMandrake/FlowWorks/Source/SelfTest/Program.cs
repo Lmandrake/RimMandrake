@@ -1013,6 +1013,20 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitDrawMath.StepProgress(0.5f, 0.5f, 0.5f, 0.5f, 9f, 9f), 1f, "zero-length step");
             });
 
+            // ── PIT_LIP_OCCLUDES_OUTSIDE_1: a pit pawn's drawn centre never drops past the near lip ──
+            Case("PitDraw_sink_never_carries_the_centre_south_of_the_lip", () =>
+            {
+                float s4 = RM_PitDrawMath.SinkFor(4, 0.3f);
+                // south row of a pit: cell 135 (centre 135.5), lip at 135 -> only half a cell of sink
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 135.5f, 135f), 0.5f, "south row: centre held on the lip");
+                Assert(135.5f - RM_PitDrawMath.ClampSinkToLip(s4, 135.5f, 135f) >= 135f - 1e-4f, "drawn centre inside the opening");
+                // two rows in: full superdeep sink fits
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 136.5f, 135f), s4, "room enough: full sink");
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 136.5f, float.NaN), s4, "no lip found: sink unchanged");
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(0f, 135.5f, 135f), 0f, "no sink stays none");
+                AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 135.5f, 136f), 0f, "lip at or north of the centre: no sink");
+            });
+
             // ── FLOWWORKS_BUILD_PROGRAM_1 Phase 6: ruling 7's burn rates and the travelling front ──
             Case("Fire_burn_is_a_rate_on_the_ladder_one_level_a_day_source_one_per_five", () =>
             {
