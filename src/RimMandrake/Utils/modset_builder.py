@@ -597,6 +597,16 @@ TIERS["acc_l1x"] = {
 }
 
 
+TIERS["acc_harness"] = {
+    "why": "FOUNDRY acceptance 2026-10-07: re-run the five fixed validation chains (LuminousPigment settings_apply, "
+           "WreckedMachines def read-back and config errors, Droidworks protocol droid, FallLineArrivals gate, "
+           "UnfinishedLine volunteer) plus GimmeSomeSlack for JawaBench get_defs.",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.luminouspigment", "mandrake.rm.wreckedmachines",
+             "mandrake.rsw.droidworks", "mandrake.rut.falllinearrivals", "mandrake.rut.unfinishedline"],
+    "dlc": True,
+}
+
+
 TIERS["acc_biomes"] = {
     "why": "FOUNDRY acceptance 2026-10-07: the composed biomes mod (Greentide, Stillsand, LeaningScrub, CreatureBehaviors "
            "and the rest fold into it) plus GimmeSomeSlack, which JawaBench get_defs needs.",
