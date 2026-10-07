@@ -54,6 +54,7 @@
     <Compile Include="Gas_Transmuting.cs" />
     <Compile Include="HediffCompProperties_PeriodicAreaAttack.cs" />
     <Compile Include="HediffComp_PeriodicAreaAttack.cs" />
+    <Compile Include="HediffComp_PeriodicAreaAttackSecondary.cs" />
     <Compile Include="BiomeGlowMultiplierExtension.cs" />
     <Compile Include="BiomeGlowPatches.cs" />
     <Compile Include="EnvironmentalWeatherExtension.cs" />
