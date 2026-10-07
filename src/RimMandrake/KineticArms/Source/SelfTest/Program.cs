@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using RimMandrake.KineticArms;
@@ -91,6 +92,26 @@ internal static class Program
                 if (RM_KineticMath.PickLooted(opts, false, 1400, 0.02f, i / 1000f, 0.5f) >= 0) hits++;
             }
             Check("KA-14 2% of pawns", hits == 20, hits.ToString());
+        }
+
+        // KA-16 ruins loot pick (owner: found in Ancient Danger ruins)
+        {
+            var on = new List<bool> { true, true, true, true, true, true, true, true };
+            Check("KA-16 roll above chance = nothing", RM_KineticMath.PickRuins(on, 0.35f, 0.35f, 0f) == -1);
+            Check("KA-16 roll below chance picks", RM_KineticMath.PickRuins(on, 0.35f, 0.34f, 0f) == 0);
+            Check("KA-16 last pick", RM_KineticMath.PickRuins(on, 0.35f, 0f, 0.9999f) == 7);
+            on[7] = false;
+            Check("KA-16 toggle off never picked", RM_KineticMath.PickRuins(on, 1f, 0f, 0.9999f) == 6);
+            Check("KA-16 all off = nothing", RM_KineticMath.PickRuins(new List<bool> { false, false }, 1f, 0f, 0.5f) == -1);
+            Check("KA-16 chance 0 = nothing", RM_KineticMath.PickRuins(on, 0f, 0f, 0.5f) == -1);
+            var counts = new int[8];
+            for (int i = 0; i < 700; i++)
+            {
+                counts[RM_KineticMath.PickRuins(on, 1f, 0f, i / 700f)]++;
+            }
+            Check("KA-16 uniform over enabled", counts[0] == 100 && counts[6] == 100 && counts[7] == 0, string.Join(",", counts));
+            Check("KA-16 shells 5-12", RM_KineticMath.RuinsStack(true, 0f) == 5 && RM_KineticMath.RuinsStack(true, 0.9999f) == 12);
+            Check("KA-16 weapons single", RM_KineticMath.RuinsStack(false, 0.7f) == 1);
         }
 
         Console.WriteLine((fail == 0 ? "KERNEL: PASS " : "KERNEL: FAIL ") + pass + "/" + (pass + fail));

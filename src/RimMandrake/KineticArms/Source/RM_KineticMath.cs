@@ -136,6 +136,42 @@ namespace RimMandrake.KineticArms
             return m > RaiderPriceCeiling ? RaiderPriceCeiling : m;
         }
 
+        /// <summary>Ruins loot (owner, card 22:37: found in Ancient Danger ruins). Index of the kinetic weapon one ancient
+        /// temple holds, or -1. roll1 &lt; chance gates it; roll2 picks uniformly among the enabled weapons.</summary>
+        public static int PickRuins(IList<bool> enabled, float chance, float roll1, float roll2)
+        {
+            if (enabled == null || chance <= 0f || roll1 >= chance)
+            {
+                return -1;
+            }
+            var fit = new List<int>();
+            for (int i = 0; i < enabled.Count; i++)
+            {
+                if (enabled[i])
+                {
+                    fit.Add(i);
+                }
+            }
+            if (fit.Count == 0)
+            {
+                return -1;
+            }
+            int k = (int)(roll2 * fit.Count);
+            return fit[k < 0 ? 0 : (k >= fit.Count ? fit.Count - 1 : k)];
+        }
+
+        /// <summary>How many of the picked thing a temple holds: thump shells come as a stack of 5-12 (PROVISIONAL),
+        /// everything else singly.</summary>
+        public static int RuinsStack(bool stackable, float roll)
+        {
+            if (!stackable)
+            {
+                return 1;
+            }
+            int n = 5 + (int)(roll * 8f);
+            return n > 12 ? 12 : (n < 5 ? 5 : n);
+        }
+
         /// <summary>Owner 2026-10-06 (typed): "Mostly ruins only, but rare on raids that stole it from said ruins
         /// (pirates/outlaws)". Index of the looted weapon a looter-faction raider carries, or -1 (keeps his own).
         /// roll1 &lt; chance gates it; a grenadier gets only grenades, anyone else only non-grenades he could afford

@@ -35,6 +35,10 @@ namespace RimMandrake.KineticArms
             if (Spawned)
             {
                 charge = RM_KineticMath.Recharge(charge, Capacity, RechargeTicks, 1, powerComp == null || powerComp.PowerOn);
+                if (powerComp != null && powerComp.PowerOn && this.IsHashIntervalTick(250))
+                {
+                    powerComp.PowerOutput = -powerComp.Props.PowerConsumption; // "Pulse cannon power draw" changed mid-game
+                }
             }
         }
 

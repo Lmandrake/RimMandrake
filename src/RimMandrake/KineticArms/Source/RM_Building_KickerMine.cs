@@ -55,6 +55,7 @@ namespace RimMandrake.KineticArms
             {
                 Fuel.ConsumeFuel(RimMandrakeKineticArmsSettings.kickerFuelPerKick);
             }
+            RM_KineticArmsFx.Ring(map, plate, radius);
             DamageDef dd = DefDatabase<DamageDef>.GetNamed("RM_Repulse_Kicker");
             GenExplosion.DoExplosion(centre, map, radius, dd, this, 1, 0f, null, null, null, p,
                 ignoredThings: new List<Thing> { this }, overrideCells: cells);

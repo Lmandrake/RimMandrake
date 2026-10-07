@@ -37,6 +37,8 @@ namespace RimMandrake.KineticArms
             "thump_cannon", "thump_off", "thudder_crowd", "palm_shove", "slam_charge", "repulsor_along_shot",
             "repulsor_westward", "grav_ram", "thump_shell", "kicker_north", "kicker_east", "kicker_south", "kicker_west",
             "kicker_dud_rearm", "pulse_push", "pulse_charge_gate", "strength_zero", "looted_pirates",
+            // 2026-10-06 finish pass (KINETIC_BLAST_WEAPONS_1). NOT YET RUN LIVE.
+            "palm_arrest_wall", "gravram_big_body", "ruins_loot", "kicker_hidden", "cords_marker", "ring_fleck",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -164,6 +166,15 @@ namespace RimMandrake.KineticArms
             Pawn p = PawnGenerator.GeneratePawn(kind, f);
             p.equipment?.DestroyAllEquipment();
             p.inventory?.DestroyAll();
+            GenSpawn.Spawn(p, c, Map);
+            Track(s, key, p);
+            return p;
+        }
+
+        private static Pawn Animal(Scene s, string key, PawnKindDef k, IntVec3 c)
+        {
+            Pawn p = PawnGenerator.GeneratePawn(k, null);
+            p.ageTracker.AgeBiologicalTicks = (long)(p.RaceProps.lifeStageAges[p.RaceProps.lifeStageAges.Count - 1].minAge * 3600000f) + 1;
             GenSpawn.Spawn(p, c, Map);
             Track(s, key, p);
             return p;
@@ -442,6 +453,125 @@ namespace RimMandrake.KineticArms
                                 && pBoss != "RM_Gun_GravRam" && pBoss != "none" && pMiss == "none";
                             return Result(sc, ok, "pirateFactions=" + pirates + " campaignLooters=" + campaign + " otherFactionsClean=" + others + " pirate=" + pPirate
                                 + " grenadier=" + pGren + " boss=" + pBoss + " rollMiss=" + pMiss);
+                        };
+                        return null;
+                    }
+
+                case "palm_arrest_wall":
+                    {
+                        // impactFactor 0 (design §3.1 row 2): shoved into a wall, the palm thumper's target is not hurt by the impact
+                        Pawn sh = Colonist(s, "shooter", O(s, -5, 0));
+                        Pawn t = Hostile(s, "p", O(s, 0, 0));
+                        Thing wall = ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.BlocksGranite);
+                        GenSpawn.Spawn(wall, O(s, 2, 0), Map);
+                        Fire(sh, "RM_Proj_PalmThump", t, "RM_Gun_PalmThumper");
+                        s.verdict = sc =>
+                        {
+                            string m = Moved(sc, "p", out int dx, out int dz);
+                            var b = ForThing(sc, "launch", sc.things["p"]).Concat(ForThing(sc, "blocked", sc.things["p"])).ToList();
+                            bool wallStop = b.Count >= 1 && (string)b[0]["stop"] == "Wall" && Convert.ToSingle(b[0]["impact"]) == 0f;
+                            int wounds = NewInjuries(sc, "p");
+                            return Result(sc, wallStop && wounds == 0 && dx == 1, m + " wallStopNoImpact=" + wallStop + " newInjuries=" + wounds);
+                        };
+                        return null;
+                    }
+
+                case "gravram_big_body":
+                    {
+                        // immuneBodySizeOverride 3.6: the grav-ram moves a 2.5-3.5 body that the repulsor (global 2.5) cannot
+                        PawnKindDef big = DefDatabase<PawnKindDef>.AllDefs.Where(k => k.RaceProps != null && k.RaceProps.Animal && k.RaceProps.IsFlesh
+                            && k.RaceProps.baseBodySize >= 2.5f && k.RaceProps.baseBodySize < 3.5f).OrderBy(k => k.RaceProps.baseBodySize).FirstOrDefault();
+                        if (big == null)
+                        {
+                            return "no animal kind with body size 2.5-3.5 on this list";
+                        }
+                        Pawn sh = Colonist(s, "shooter", O(s, -6, 0));
+                        Pawn sh2 = Colonist(s, "shooter2", O(s, -6, 4));
+                        Pawn a = Animal(s, "big", big, O(s, 0, 0));
+                        Pawn b = Animal(s, "control", big, O(s, 0, 4));
+                        s.numbers["body"] = a.BodySize;
+                        Fire(sh, "RM_Proj_GravRamPulse", a, "RM_Gun_GravRam");
+                        Fire(sh2, "RM_Proj_RepulsorBolt", b, "RM_Gun_RepulsorRifle");
+                        s.verdict = sc =>
+                        {
+                            string m = Moved(sc, "big", out int dx, out int dz);
+                            string mc = Moved(sc, "control", out int cx, out int cz);
+                            bool tooBig = ForThing(sc, "skip", sc.things["control"]).Any(r => (string)r["reason"] == "too_big");
+                            return Result(sc, dx >= 1 && cx == 0 && cz == 0 && tooBig, m + "; " + mc + " body=" + sc.numbers["body"].ToString("0.0")
+                                + " repulsorTooBig=" + tooBig);
+                        };
+                        return null;
+                    }
+
+                case "ruins_loot":
+                    {
+                        // owner: found in Ancient Danger ruins. Def wiring + the pick with fixed rolls; nothing spawned.
+                        s.verdict = sc =>
+                        {
+                            ThingSetMakerDef tsm = DefDatabase<ThingSetMakerDef>.GetNamedSilentFail("MapGen_AncientTempleContents");
+                            bool wired = tsm?.root is ThingSetMaker_Sum sum && sum.options.Any(o => o.thingSetMaker is RM_ThingSetMaker_KineticRuins);
+                            Thing hit = RM_ThingSetMaker_KineticRuins.Make(0f, 0f, 0.5f);
+                            Thing miss = RM_ThingSetMaker_KineticRuins.Make(0.99f, 0f, 0.5f);
+                            bool was = RimMandrakeKineticArmsSettings.foundInRuins;
+                            RimMandrakeKineticArmsSettings.foundInRuins = false;
+                            Thing off = RM_ThingSetMaker_KineticRuins.Make(0f, 0f, 0.5f);
+                            RimMandrakeKineticArmsSettings.foundInRuins = was;
+                            var gen = new List<string>();
+                            for (int i = 0; i < 8; i++)
+                            {
+                                Thing t = RM_ThingSetMaker_KineticRuins.Make(0f, (i + 0.5f) / 8f, 1f);
+                                gen.Add(t != null ? t.def.defName + "x" + t.stackCount : "none");
+                            }
+                            bool all8 = gen.Distinct().Count() == 8 && gen.Contains("RM_Shell_Thumpx12");
+                            return Result(sc, wired && hit != null && miss == null && off == null && all8, "wired=" + wired + " hit=" + (hit?.def.defName ?? "none")
+                                + " miss=" + (miss == null) + " offGivesNone=" + (off == null) + " picks=" + string.Join(",", gen));
+                        };
+                        return null;
+                    }
+
+                case "kicker_hidden":
+                    {
+                        var mine = (RM_Building_KickerMine)GenSpawn.Spawn(ThingMaker.MakeThing(DefDatabase<ThingDef>.GetNamed("RM_KickerMine")), s.o, Map, Rot4.East);
+                        mine.SetFactionDirect(Faction.OfPlayer);
+                        Pawn h = Hostile(s, "h", O(s, -3, 0));
+                        bool hiddenKnows = mine.KnowsOfTrap(h);
+                        RimMandrakeKineticArmsSettings.kickerHidden = false;
+                        bool shownKnows = mine.KnowsOfTrap(h);
+                        RimMandrakeKineticArmsSettings.kickerHidden = true;
+                        s.verdict = sc => Result(sc, !hiddenKnows && shownKnows, "hiddenRaiderKnows=" + hiddenKnows + " shownRaiderKnows=" + shownKnows);
+                        return null;
+                    }
+
+                case "cords_marker":
+                    {
+                        // owner Q3: every kinetic DamageDef carries the marker Gimme Some Slack reads; the setting removes it
+                        s.verdict = sc =>
+                        {
+                            string[] dds = { "RM_Concussive_Thudder", "RM_Concussive_Slam", "RM_Concussive_ThumpShell", "RM_Repulse_Palm",
+                                "RM_Repulse_Repulsor", "RM_Repulse_Pulse", "RM_Repulse_GravRam", "RM_Repulse_Kicker" };
+                            Func<bool> allMarked = () => dds.All(d => DefDatabase<DamageDef>.GetNamed(d).GetModExtension<RM_KineticBlastExtension>() != null);
+                            bool on = allMarked();
+                            RimMandrakeKineticArmsSettings.kineticCutsCords = true;
+                            RimMandrakeKineticArmsMod.ApplySettings();
+                            bool removed = dds.All(d => DefDatabase<DamageDef>.GetNamed(d).GetModExtension<RM_KineticBlastExtension>() == null);
+                            RimMandrakeKineticArmsSettings.kineticCutsCords = false;
+                            RimMandrakeKineticArmsMod.ApplySettings();
+                            bool back = allMarked();
+                            bool thumpUnmarked = DefDatabase<DamageDef>.GetNamed("Thump").GetModExtension<RM_KineticBlastExtension>() == null;
+                            return Result(sc, on && removed && back && thumpUnmarked, "marked=" + on + " cutSettingRemoves=" + removed + " restored=" + back
+                                + " thumpCannonStillCuts=" + thumpUnmarked);
+                        };
+                        return null;
+                    }
+
+                case "ring_fleck":
+                    {
+                        s.verdict = sc =>
+                        {
+                            FleckDef f = DefDatabase<FleckDef>.GetNamedSilentFail("RM_Fleck_KineticRing");
+                            bool tex = f != null && f.GetGraphicData(0)?.Graphic?.MatSingle?.mainTexture != null
+                                && f.GetGraphicData(0).Graphic.MatSingle.mainTexture != BaseContent.BadTex;
+                            return Result(sc, tex, "fleck=" + (f != null) + " textureResolves=" + tex);
                         };
                         return null;
                     }
