@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kinetic Arms damage families (design §3, §10). One DamageDef PER WEAPON because Explosive Knockback reads its
+     throw force from the DamageDef only (RM_KnockbackExtension.force); the force is that weapon's throw multiplier.
+     Kinetic Arms' "Kinetic throw strength" setting rescales these forces at load (RM_KineticArmsMod.ApplySettings).
+     Concussive = a light bruising blast; Repulse = no wound at all (RM_DamageWorker_KineticOnly), the throw is the effect. -->
+<Defs>
+  <DamageDef Name="RM_ConcussiveBase" Abstract="True">
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <externalViolence>true</externalViolence>
+    <isExplosive>true</isExplosive>
+    <harmsHealth>true</harmsHealth>
+    <deathMessage>{0} was killed by a concussion blast.</deathMessage>
+    <hediff>Bruise</hediff>
+    <hediffSolid>Crack</hediffSolid>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Blunt</impactSoundType>
+    <armorCategory>Blunt</armorCategory>
+    <defaultDamage>6</defaultDamage>
+    <defaultArmorPenetration>0</defaultArmorPenetration>
+    <buildingDamageFactor>0.25</buildingDamageFactor>
+    <plantDamageFactor>0.2</plantDamageFactor>
+    <explosionAffectOutsidePartsOnly>true</explosionAffectOutsidePartsOnly>
+    <explosionCellFleck>BlastDry</explosionCellFleck>
+    <explosionColorCenter>(0.80, 0.93, 1.0)</explosionColorCenter>
+    <explosionColorEdge>(0.62, 0.78, 0.92)</explosionColorEdge>
+    <soundExplosion>Explosion_Thump</soundExplosion>
+    <combatLogRules>Damage_Bomb</combatLogRules>
+  </DamageDef>
+
+  <DamageDef Name="RM_RepulseBase" Abstract="True">
+    <workerClass>RimMandrake.KineticArms.RM_DamageWorker_KineticOnly</workerClass>
+    <externalViolence>true</externalViolence>
+    <isExplosive>true</isExplosive>
+    <!-- harmsHealth stays TRUE so AI mans and sieges with it and hooks that read harmful blasts still see it; the worker
+         applies nothing (harmsHealth false would NOT stop pawn injury: DamageWorker_AddInjury ignores it). -->
+    <harmsHealth>true</harmsHealth>
+    <deathMessage>{0} was killed by a repulsor blast.</deathMessage>
+    <impactSoundType>Blunt</impactSoundType>
+    <armorCategory>Blunt</armorCategory>
+    <defaultDamage>1</defaultDamage>
+    <defaultArmorPenetration>0</defaultArmorPenetration>
+    <buildingDamageFactor>0</buildingDamageFactor>
+    <plantDamageFactor>0</plantDamageFactor>
+    <explosionCellFleck>BlastDry</explosionCellFleck>
+    <explosionColorCenter>(0.85, 0.95, 1.0)</explosionColorCenter>
+    <explosionColorEdge>(0.70, 0.80, 0.98)</explosionColorEdge>
+    <soundExplosion>Explosion_Thump</soundExplosion>
+    <combatLogRules>Damage_Bomb</combatLogRules>
+  </DamageDef>
+
+  <DamageDef ParentName="RM_ConcussiveBase">
+    <defName>RM_Concussive_Thudder</defName>
+    <label>thudder blast</label>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.0</force></li>
+    </modExtensions>
+  </DamageDef>
+
+  <DamageDef ParentName="RM_ConcussiveBase">
+    <defName>RM_Concussive_Slam</defName>
+    <label>slam charge</label>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force></li>
+    </modExtensions>
+  </DamageDef>
+
+  <DamageDef ParentName="RM_ConcussiveBase">
+    <defName>RM_Concussive_ThumpShell</defName>
+    <label>thump shell</label>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force></li>
+    </modExtensions>
+  </DamageDef>
+
+  <DamageDef ParentName="RM_RepulseBase">
+    <defName>RM_Repulse_Palm</defName>
+    <label>palm thump</label>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force></li>
+    </modExtensions>
+  </DamageDef>
+
+  <DamageDef ParentName="RM_RepulseBase">
+    <defName>RM_Repulse_Repulsor</defName>
+    <label>repulsor bolt</label>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.8</force></li>
+    </modExtensions>
+  </DamageDef>
+
+  <DamageDef ParentName="RM_RepulseBase">
+    <defName>RM_Repulse_Pulse</defName>
+    <label>pulse wave</label>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force></li>
+    </modExtensions>
+  </DamageDef>
+
+  <DamageDef ParentName="RM_RepulseBase">
+    <defName>RM_Repulse_GravRam</defName>
+    <label>grav-ram pulse</label>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>4.0</force></li>
+    </modExtensions>
+  </DamageDef>
+
+  <DamageDef ParentName="RM_RepulseBase">
+    <defName>RM_Repulse_Kicker</defName>
+    <label>kicker mine</label>
+    <modExtensions>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>3.0</force></li>
+    </modExtensions>
+  </DamageDef>
+</Defs>

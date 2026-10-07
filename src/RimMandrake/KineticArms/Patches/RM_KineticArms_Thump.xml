@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Design §2.2 / owner Q1: the thump cannon's Thump blast throws (force 2.5). Explosive Knockback leaves Thump at its
+     unpatched default (0). Patching the DamageDef also covers Odyssey's unique thump cannon, which fires Thump too.
+     "Thump cannon throws farther" off in Mod Settings sets this force to 0 at runtime. -->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>Defs/DamageDef[defName="Thump"]</xpath>
+    <value>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force></li>
+    </value>
+  </Operation>
+</Patch>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kicker mine and pulse cannon (design §3 rows 5 and 7). Both are FOUND (minified) and installed, never built from a
+     blueprint: no designationCategory, no research. -->
+<Defs>
+
+  <!-- ==================== Kicker mine ==================== -->
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_KickerMine</defName>
+    <label>kicker mine</label>
+    <description>A buried steel pressure plate on a heavy spring piston. Whoever steps on it is launched several cells in the direction its arrow points - into a pit, out of a doorway, off a ledge. It does not break when it fires: it re-arms from its chemfuel charge, and colonists refill it. Hidden in the ground like any trap; enemies do not see it.</description>
+    <thingClass>RimMandrake.KineticArms.RM_Building_KickerMine</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Security/KineticArms/RM_KickerMine</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawRotated>true</drawRotated>
+      <damageData>
+        <rect>(0.1,0.1,0.8,0.8)</rect>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <stealable>false</stealable>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <thingCategories>
+      <li>BuildingsSecurity</li>
+    </thingCategories>
+    <statBases>
+      <MarketValue>180</MarketValue>
+      <Mass>6</Mass>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Beauty>-4</Beauty>
+      <TrapSpringChance>1.0</TrapSpringChance>
+    </statBases>
+    <building>
+      <isTrap>true</isTrap>
+      <trapDestroyOnSpring>false</trapDestroyOnSpring>
+      <trapPeacefulWildAnimalsSpringChanceFactor>0.25</trapPeacefulWildAnimalsSpringChanceFactor>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Kicks charged</fuelLabel>
+        <fuelGizmoLabel>Piston charge</fuelGizmoLabel>
+        <outOfFuelMessage>Needs chemfuel to re-arm</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <fuelCapacity>30</fuelCapacity>
+        <initialFuelPercent>1</initialFuelPercent>
+        <autoRefuelPercent>0.5</autoRefuelPercent>
+        <showFuelGizmo>true</showFuelGizmo>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_NeverAdjacentTrap</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.KineticArms.RM_KineticBoltExtension">
+        <coneDegrees>90</coneDegrees>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ==================== Pulse cannon ==================== -->
+
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>RM_Gun_PulseCannonTurret</defName>
+    <label>pulse cannon emitter</label>
+    <description>The ring-dish emitter of a pulse cannon.</description>
+    <graphicData>
+      <texPath>Things/Building/Security/KineticArms/RM_PulseCannon_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.9</AccuracyTouch>
+      <AccuracyShort>0.85</AccuracyShort>
+      <AccuracyMedium>0.75</AccuracyMedium>
+      <AccuracyLong>0.6</AccuracyLong>
+      <RangedWeapon_Cooldown>6</RangedWeapon_Cooldown>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>20</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <defaultProjectile>RM_Proj_PulseWave</defaultProjectile>
+        <warmupTime>1</warmupTime>
+        <range>22.9</range>
+        <burstShotCount>1</burstShotCount>
+        <soundCast>ThumpCannon_Fire</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>12</muzzleFlashScale>
+      </li>
+    </verbs>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RM_Proj_PulseWave</defName>
+    <label>pulse wave</label>
+    <thingClass>RimMandrake.KineticArms.RM_Projectile_KineticBolt</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/KineticArms/RM_PulseWave</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <damageDef>RM_Repulse_Pulse</damageDef>
+      <damageAmountBase>1</damageAmountBase>
+      <explosionRadius>2.9</explosionRadius>
+      <speed>55</speed>
+      <soundExplode>ThumpCannon_Impact</soundExplode>
+    </projectile>
+    <modExtensions>
+      <li Class="RimMandrake.KineticArms.RM_KineticBoltExtension">
+        <coneDegrees>90</coneDegrees>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_Turret_PulseCannon</defName>
+    <label>pulse cannon</label>
+    <description>An ancient powered emplacement that fires slow, wide pulses of pressure, shoving raiders away from your wall without killing them. It stores a handful of pulse charges and refills them from the power grid; a long assault drains it. Its dumb targeting can't be directed, so keep your own people out of its line.</description>
+    <thingClass>RimMandrake.KineticArms.RM_Building_PulseCannon</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <drawHighlight>true</drawHighlight>
+    <drawHighlightOnlyForHostile>true</drawHighlightOnlyForHostile>
+    <graphicData>
+      <texPath>Things/Building/Security/KineticArms/RM_PulseCannon_Base</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.4,2.4)</drawSize>
+      <damageData>
+        <rect>(0.2,0.2,1.6,1.6)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(1.5,0.35,1.4)</volume>
+        <offset>(0,0,-0.05)</offset>
+      </shadowData>
+    </graphicData>
+    <size>(2,2)</size>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <altitudeLayer>Building</altitudeLayer>
+    <stealable>false</stealable>
+    <rotatable>false</rotatable>
+    <thingCategories>
+      <li>BuildingsSecurity</li>
+    </thingCategories>
+    <statBases>
+      <MarketValue>1100</MarketValue>
+      <MaxHitPoints>320</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <WorkToBuild>2400</WorkToBuild>
+      <Mass>45</Mass>
+      <Beauty>-20</Beauty>
+      <ShootingAccuracyTurret>0.96</ShootingAccuracyTurret>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>350</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Breakdownable"/>
+      <li Class="CompProperties_Stunnable">
+        <affectedDamageDefs>
+          <li>Stun</li>
+          <li>EMP</li>
+        </affectedDamageDefs>
+      </li>
+    </comps>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <hasTooltip>true</hasTooltip>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <building>
+      <combatPower>60</combatPower>
+      <ai_combatDangerous>true</ai_combatDangerous>
+      <turretGunDef>RM_Gun_PulseCannonTurret</turretGunDef>
+      <turretBurstCooldownTime>6</turretBurstCooldownTime>
+      <turretTopDrawSize>2.4</turretTopDrawSize>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_TurretTop</li>
+      <li>PlaceWorker_ShowTurretRadius</li>
+    </placeWorkers>
+  </ThingDef>
+
+</Defs>
