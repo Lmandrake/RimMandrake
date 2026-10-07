@@ -10,6 +10,8 @@ namespace RimMandrake.KineticArms
     /// by its own Utinni patch.</summary>
     public class RM_KineticLooterExtension : DefModExtension
     {
+        /// <summary>Weapon money a pawn of this faction counts as having, at least (poor salvagers like the Junkers).</summary>
+        public float lootMoneyFloor = 0f;
     }
 
     /// <summary>
@@ -51,7 +53,7 @@ namespace RimMandrake.KineticArms
         }
 
         /// <summary>The looted weapon this pawn would carry for the given rolls, or null. Public for the proof tool.</summary>
-        public static ThingDef Pick(PawnKindDef kind, float roll1, float roll2)
+        public static ThingDef Pick(PawnKindDef kind, float roll1, float roll2, float moneyFloor = 0f)
         {
             var opts = new List<RM_KineticMath.LootOption>(Carried.Length);
             var defs = new List<ThingDef>(Carried.Length);
@@ -67,7 +69,7 @@ namespace RimMandrake.KineticArms
                 });
             }
             float chance = RimMandrakeKineticArmsSettings.lootedOnRaiders ? RimMandrakeKineticArmsSettings.lootedChancePercent / 100f : 0f;
-            int i = RM_KineticMath.PickLooted(opts, IsGrenadier(kind), kind.weaponMoney.max, chance, roll1, roll2);
+            int i = RM_KineticMath.PickLooted(opts, IsGrenadier(kind), RM_KineticMath.LootMoney(kind.weaponMoney.max, moneyFloor), chance, roll1, roll2);
             return i >= 0 ? defs[i] : null;
         }
 
@@ -82,7 +84,7 @@ namespace RimMandrake.KineticArms
             {
                 return; // melee drifters and thrashers keep their clubs
             }
-            ThingDef td = Pick(pawn.kindDef, Rand.Value, Rand.Value);
+            ThingDef td = Pick(pawn.kindDef, Rand.Value, Rand.Value, pawn.Faction.def.GetModExtension<RM_KineticLooterExtension>().lootMoneyFloor);
             if (td == null)
             {
                 return;

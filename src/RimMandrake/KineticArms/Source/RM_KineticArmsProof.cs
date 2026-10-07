@@ -433,12 +433,14 @@ namespace RimMandrake.KineticArms
                             Func<string, float, float, string> pick = (k, r1, r2) =>
                                 RM_Patch_LootedKineticWeapons.Pick(DefDatabase<PawnKindDef>.GetNamed(k), r1, r2)?.defName ?? "none";
                             bool pirates = looter("Pirate") && looter("CannibalPirate") && looter("PirateYttakin") && looter("PirateWaster");
+                            bool campaign = DefDatabase<FactionDef>.GetNamedSilentFail("RUT_Jawa_HuttCartel") == null
+                                || (looter("RUT_Jawa_Junkers") && looter("RUT_Jawa_HuttCartel"));
                             bool others = !looter("OutlanderCivil") && !looter("OutlanderRough") && !looter("TribeCivil") && !looter("Empire");
                             string pPirate = pick("Pirate", 0f, 0.99f), pGren = pick("Grenadier_Destructive", 0f, 0.5f),
                                 pBoss = pick("PirateBoss", 0f, 0.999f), pMiss = pick("Pirate", 0.5f, 0f);
-                            bool ok = pirates && others && pPirate == "RM_Gun_PalmThumper" && pGren == "RM_Weapon_ThudderGrenade"
+                            bool ok = pirates && campaign && others && pPirate == "RM_Gun_PalmThumper" && pGren == "RM_Weapon_ThudderGrenade"
                                 && pBoss != "RM_Gun_GravRam" && pBoss != "none" && pMiss == "none";
-                            return Result(sc, ok, "pirateFactions=" + pirates + " otherFactionsClean=" + others + " pirate=" + pPirate
+                            return Result(sc, ok, "pirateFactions=" + pirates + " campaignLooters=" + campaign + " otherFactionsClean=" + others + " pirate=" + pPirate
                                 + " grenadier=" + pGren + " boss=" + pBoss + " rollMiss=" + pMiss);
                         };
                         return null;

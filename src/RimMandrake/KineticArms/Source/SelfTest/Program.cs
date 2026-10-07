@@ -79,6 +79,12 @@ internal static class Program
             Check("KA-14 too poor for any", RM_KineticMath.PickLooted(opts, false, 200, 1f, 0f, 0f) == -1);
             opts[1].enabled = false;
             Check("KA-14 toggle off excluded", RM_KineticMath.PickLooted(opts, false, 345, 1f, 0f, 0f) == -1);
+            Check("KA-15 ceiling keeps grav-ram off a rich kind", RM_KineticMath.LootMoney(26000f, 0f) == 1000f);
+            Check("KA-15 floor lifts a poor kind", RM_KineticMath.LootMoney(168f, 300f) == 300f && RM_KineticMath.LootMoney(660f, 300f) == 660f);
+            opts[1].enabled = true;
+            Check("KA-15 junker (168 lifted to 300) gets palm thumper", RM_KineticMath.PickLooted(opts, false, RM_KineticMath.LootMoney(168f, 300f), 1f, 0f, 0f) == 1);
+            Check("KA-15 hutt leader (15600) never grav-ram", RM_KineticMath.PickLooted(opts, false, RM_KineticMath.LootMoney(15600f, 0f), 1f, 0f, 0.999f) == 3);
+            opts[1].enabled = false;
             int hits = 0;
             for (int i = 0; i < 1000; i++)
             {
