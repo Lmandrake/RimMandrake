@@ -185,4 +185,26 @@ namespace RimMandrake.Utinni.FallLineArrivals
             return map != null && (!FallLineArrivalsSettings.onlyOnFallLine || OnFallLine(map));
         }
     }
+
+    /// <summary>Bridge proof (jawa/static_call): asks the real FallLineGate on the current map, independent of the
+    /// incident's earliestDay / cooldown gates. Returns "ALLOWED ..." or "REFUSED ..." plus the reason and inputs.</summary>
+    public static class FallLineGateProof
+    {
+        public static string ProofGate(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null)
+            {
+                return "REFUSED: no current map";
+            }
+            bool setting = FallLineArrivalsSettings.onlyOnFallLine;
+            bool on = FallLineGate.OnFallLine(map);
+            bool allowed = FallLineGate.Allowed(map);
+            string reason = allowed
+                ? (setting ? "setting ON and map is on the Fall Line" : "setting OFF so any map is allowed")
+                : "setting ON and map is not on the Fall Line";
+            return (allowed ? "ALLOWED" : "REFUSED") + ": " + reason
+                + " onlyOnFallLine=" + setting + " onFallLine=" + on;
+        }
+    }
 }
