@@ -54,6 +54,9 @@ namespace RimMandrake.TitanicCreatures
                     continue;
                 }
                 count++;
+                // Huge Things: a tiered creature can be clicked anywhere on its drawn body, not only near
+                // its middle (owner 2026-10-07: "enormous animals needing similar treatment").
+                RimMandrake.HugeThings.HugeThingsApi.OptInPawn(td);
                 if (td.comps.Any(c => c.compClass == typeof(CompTitanicWake)))
                 {
                     continue; // already declared explicitly in XML - don't double-attach

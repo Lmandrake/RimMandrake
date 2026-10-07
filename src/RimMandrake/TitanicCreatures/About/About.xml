@@ -25,7 +25,9 @@ Rides neku.largepawns (Large Pawns) for the multi-cell footprint itself
 when present, reconciling its size thresholds to this mod's curated tier
 table rather than running two ladders; degrades cleanly to single-cell
 footprints (destruction wake, roofs and corpse-site still work) if Large
-Pawns is absent. Full design: design/Jawa/worldbuilding/research and
+Pawns is absent. Every tiered creature is also opted into Huge Things
+(mandrake.rm.hugethings), so it can be selected by clicking anywhere on its
+drawn body. Full design: design/Jawa/worldbuilding/research and
 infrastructure/state/items/TITANIC_CREATURES_MOD_1.md in the source repo.</description>
   <modDependencies>
     <li>
@@ -37,6 +39,10 @@ infrastructure/state/items/TITANIC_CREATURES_MOD_1.md in the source repo.</descr
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
+    <li>
+      <packageId>mandrake.rm.hugethings</packageId>
+      <displayName>RimMandrake: Huge Things</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
@@ -46,5 +52,6 @@ infrastructure/state/items/TITANIC_CREATURES_MOD_1.md in the source repo.</descr
          after it, when present, is what lets our reconciliation see its
          already-populated per-def override table before we rewrite it. -->
     <li>neku.largepawns</li>
+    <li>mandrake.rm.hugethings</li>
   </loadAfter>
 </ModMetaData>

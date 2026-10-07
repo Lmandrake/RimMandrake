@@ -66,6 +66,11 @@
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- mandrake.rm.hugethings (HugeThingsApi.OptInPawn): a hard dependency in About.xml; never copied local. -->
+    <Reference Include="RM_HugeThings">
+      <HintPath>..\..\HugeThings\Assemblies\RM_HugeThings.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
