@@ -1,0 +1,72 @@
+[
+ {
+  "id": "scald4_shimmereel",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Thuum",
+  "target_original": [
+   "thuum"
+  ],
+  "prompt": "Fresh painting, not an edit of any earlier picture. Owner's note, verbatim, overrides everything below: \"I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.\" Keep the same individual: the long flat ribbon body, its proportions, and the DULL, muted rainbow bands that run along its whole body length, in the same painted style. Change only the head: make it armored, with overlapping hard plates over the skull and snout like a blunt helmet, the plates a darker dull tone that still carries a faint muted rainbow sheen; it must still read as an eel. Drop any dark outline.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.75,
+  "facings": [
+   "east"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Living counterpart of RM_ThuumCatch; keep the catch art's dull rainbow read.",
+  "owner_note": "I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ },
+ {
+  "id": "scald4_shimmereel",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Thuum",
+  "target_original": [
+   "thuum"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.\" Derive from the attached accepted master render of the shimmer eel: the same individual, the same dull muted rainbow bands along its whole body length, the same armored plated head, the same proportions, colours and painted style, so every view reads as one creature.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.75,
+  "facings": [
+   "north",
+   "south"
+  ],
+  "derive_from": "scald4_shimmereel_east",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "owner_note": "I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ },
+ {
+  "id": "scald4_doss",
+  "rimflow_item_id": "SCALD_SHEET_REDOS_1",
+  "target_def": "RM_Doss",
+  "target_original": [
+   "doss"
+  ],
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Too cartoonish, try again\" This is another attempt; the previous one was still too cartoonish. Paint it realistic, grounded, naturalistic, with believable anatomy and texture, no big eyes, no cute features. Owner's note, verbatim, overrides everything below: \"Too cartoonish, try again\" The doss, a finger-length hunch-backed shrimp of the Scald floor (our own invention): a high arched, segmented carapace, many short jointed legs tucked beneath, a short pair of feelers, a blunt tail fan. Boiled pink to coral all over, as though already cooked, with a natural semi-translucent shell, wet sheen and fine surface texture. Naturalistic and anatomically believable, like a real deep-water shrimp studied from life: small dark eyes, realistic proportions, no cartoon features, no big eyes, no smile, no outline.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 0.4,
+  "facings": [
+   "east",
+   "north",
+   "south"
+  ],
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "the Scald floor (the_scald.md): cyan glow under white steam; steam-diffused substellar glare above, the water's own cyan luminescence below, rainbow thermophile mat-bands, geyser backlight; boiling white, scald cyan, thermophile rainbow, basalt rim black; bake NO cast shadow onto the ground.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Living counterpart of RM_DossCatch (its kept catch art a/b/c): match that pink-coral colour.",
+  "owner_note": "Too cartoonish, try again",
+  "oversize_reason": "same canvas as the live art it replaces (512); in-game zoom mods void the 128/cell ceiling"
+ }
+]
