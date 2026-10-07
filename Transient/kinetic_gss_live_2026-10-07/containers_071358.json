@@ -1,0 +1,186 @@
+{
+ "recipes": {
+  "success": true,
+  "message": "0 of 1 def(s) resolved; 1 not found",
+  "requested": 1,
+  "foundCount": 0,
+  "notFound": [
+   "RecipeDef/RM_Make_Bottle_Leather,RecipeDef/RM_Make_Bottle_Glass,RecipeDef/RM_Make_Bottle_Metal,RecipeDef/RM_Make_Barrel_Wood,RecipeDef/RM_Make_Barrel_Metal,RecipeDef/RM_Make_Barrel_Plasteel,RecipeDef/RM_Make_Bucket_Wood,RecipeDef/RM_Make_Bucket_Metal,RecipeDef/RM_Make_Bucket_Leather"
+  ],
+  "malformed": [],
+  "fieldsAsked": [
+   "recipeUsers",
+   "products",
+   "fixedIngredientFilter",
+   "defaultIngredientFilter"
+  ],
+  "defs": [
+   {
+    "requested": "RecipeDef/RM_Make_Bottle_Leather,RecipeDef/RM_Make_Bottle_Glass,RecipeDef/RM_Make_Bottle_Metal,RecipeDef/RM_Make_Barrel_Wood,RecipeDef/RM_Make_Barrel_Metal,RecipeDef/RM_Make_Barrel_Plasteel,RecipeDef/RM_Make_Bucket_Wood,RecipeDef/RM_Make_Bucket_Metal,RecipeDef/RM_Make_Bucket_Leather",
+    "found": false,
+    "defType": "RecipeDef",
+    "defName": "RM_Make_Bottle_Leather,RecipeDef/RM_Make_Bottle_Glass,RecipeDef/RM_Make_Bottle_Metal,RecipeDef/RM_Make_Barrel_Wood,RecipeDef/RM_Make_Barrel_Metal,RecipeDef/RM_Make_Barrel_Plasteel,RecipeDef/RM_Make_Bucket_Wood,RecipeDef/RM_Make_Bucket_Metal,RecipeDef/RM_Make_Bucket_Leather"
+   }
+  ],
+  "ticksGame": 27500,
+  "operation": {
+   "OperationId": "op_ffac635ccd304ccabfdd111fdc97f1e9",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 48
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 27500
+  }
+ },
+ "benches": {
+  "success": true,
+  "message": "0 of 1 def(s) resolved; 1 not found",
+  "requested": 1,
+  "foundCount": 0,
+  "notFound": [
+   "ThingDef/CraftingSpot,ThingDef/HandTailoringBench,ThingDef/TableStonecutter,ThingDef/ElectricSmelter,ThingDef/FueledSmithy,ThingDef/ElectricSmithy,ThingDef/TableMachining,ThingDef/FabricationBench"
+  ],
+  "malformed": [],
+  "fieldsAsked": [
+   "AllRecipes"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/CraftingSpot,ThingDef/HandTailoringBench,ThingDef/TableStonecutter,ThingDef/ElectricSmelter,ThingDef/FueledSmithy,ThingDef/ElectricSmithy,ThingDef/TableMachining,ThingDef/FabricationBench",
+    "found": false,
+    "defType": "ThingDef",
+    "defName": "CraftingSpot,ThingDef/HandTailoringBench,ThingDef/TableStonecutter,ThingDef/ElectricSmelter,ThingDef/FueledSmithy,ThingDef/ElectricSmithy,ThingDef/TableMachining,ThingDef/FabricationBench"
+   }
+  ],
+  "ticksGame": 27500,
+  "operation": {
+   "OperationId": "op_8573fca7b5ab4d27833fc51a14bc99c6",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 25
+  },
+  "state": {
+   "programState": "Playing",
+   "hasCurrentGame": true,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "tick": 27500
+  }
+ },
+ "spawned": [
+  {
+   "def": "RM_BottleEmpty",
+   "stuff": "Leather_Plain",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Plainleather empty bottle",
+    "labelCap": null,
+    "stuff": "Leather_Plain",
+    "id": "RM_BottleEmpty107926",
+    "def": "RM_BottleEmpty"
+   }
+  },
+  {
+   "def": "RM_BottleEmpty",
+   "stuff": "BlocksGranite",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Glass empty bottle",
+    "labelCap": null,
+    "stuff": "BlocksGranite",
+    "id": "RM_BottleEmpty107927",
+    "def": "RM_BottleEmpty"
+   }
+  },
+  {
+   "def": "RM_BottleEmpty",
+   "stuff": "Steel",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Steel empty bottle",
+    "labelCap": null,
+    "stuff": "Steel",
+    "id": "RM_BottleEmpty107928",
+    "def": "RM_BottleEmpty"
+   }
+  },
+  {
+   "def": "RM_BarrelEmpty",
+   "stuff": "WoodLog",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Wooden empty barrel",
+    "labelCap": null,
+    "stuff": "WoodLog",
+    "id": "RM_BarrelEmpty107929",
+    "def": "RM_BarrelEmpty"
+   }
+  },
+  {
+   "def": "RM_BarrelEmpty",
+   "stuff": "Steel",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Steel empty barrel",
+    "labelCap": null,
+    "stuff": "Steel",
+    "id": "RM_BarrelEmpty107930",
+    "def": "RM_BarrelEmpty"
+   }
+  },
+  {
+   "def": "RM_BarrelEmpty",
+   "stuff": "Plasteel",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Plasteel empty barrel",
+    "labelCap": null,
+    "stuff": "Plasteel",
+    "id": "RM_BarrelEmpty107931",
+    "def": "RM_BarrelEmpty"
+   }
+  },
+  {
+   "def": "RM_BucketEmpty",
+   "stuff": "WoodLog",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Wooden empty bucket",
+    "labelCap": null,
+    "stuff": "WoodLog",
+    "id": "RM_BucketEmpty107932",
+    "def": "RM_BucketEmpty"
+   }
+  },
+  {
+   "def": "RM_BucketEmpty",
+   "stuff": "Steel",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Steel empty bucket",
+    "labelCap": null,
+    "stuff": "Steel",
+    "id": "RM_BucketEmpty107933",
+    "def": "RM_BucketEmpty"
+   }
+  },
+  {
+   "def": "RM_BucketEmpty",
+   "stuff": "Leather_Plain",
+   "spawn": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+   "thing": {
+    "label": "Plainleather empty bucket",
+    "labelCap": null,
+    "stuff": "Leather_Plain",
+    "id": "RM_BucketEmpty107934",
+    "def": "RM_BucketEmpty"
+   }
+  }
+ ],
+ "shot": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Screenshots\\containers_per_material.png"
+}

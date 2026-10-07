@@ -1,0 +1,95 @@
+{
+ "battery": 1,
+ "masts": 2,
+ "anchors_before": {
+  "(101, 141)": {
+   "id": 66084,
+   "def": "RM_AerialMast",
+   "x": 101,
+   "z": 141,
+   "faction": "New Arrivals",
+   "net": 1780004644,
+   "compNet": 1780004644,
+   "gridNet": 1780004644,
+   "netLive": false,
+   "fallenLive": null,
+   "links": [
+    {
+     "other": 66085,
+     "state": "Up",
+     "hp": 30
+    }
+   ],
+   "fallen": []
+  },
+  "(119, 141)": {
+   "id": 66085,
+   "def": "RM_AerialMast",
+   "x": 119,
+   "z": 141,
+   "faction": "New Arrivals",
+   "net": 1780004644,
+   "compNet": 1780004644,
+   "gridNet": 1780004644,
+   "netLive": false,
+   "fallenLive": null,
+   "links": [
+    {
+     "other": 66084,
+     "state": "Up",
+     "hp": 30
+    }
+   ],
+   "fallen": []
+  }
+ },
+ "kineticSways_before": 0,
+ "explosionCuts_before": 0,
+ "stage": "STAGED thump_shell at 110,140 tick=9507",
+ "verdict": "FAIL thump_shell p 111,140->116,142 along=5 across=2 launches=1 newInjuries=1",
+ "anchors_after": {
+  "(101, 141)": {
+   "id": 66084,
+   "def": "RM_AerialMast",
+   "x": 101,
+   "z": 141,
+   "faction": "New Arrivals",
+   "net": 1780004644,
+   "compNet": 1780004644,
+   "gridNet": 1780004644,
+   "netLive": false,
+   "fallenLive": null,
+   "links": [
+    {
+     "other": 66085,
+     "state": "Up",
+     "hp": 30
+    }
+   ],
+   "fallen": []
+  },
+  "(119, 141)": {
+   "id": 66085,
+   "def": "RM_AerialMast",
+   "x": 119,
+   "z": 141,
+   "faction": "New Arrivals",
+   "net": 1780004644,
+   "compNet": 1780004644,
+   "gridNet": 1780004644,
+   "netLive": false,
+   "fallenLive": null,
+   "links": [
+    {
+     "other": 66084,
+     "state": "Up",
+     "hp": 30
+    }
+   ],
+   "fallen": []
+  }
+ },
+ "kineticSways_after": 1,
+ "explosionCuts_after": 0,
+ "shot": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\Transient\\kinetic_gss_live_2026-10-07\\gss_kinetic_sway.png"
+}

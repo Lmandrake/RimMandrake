@@ -1,0 +1,10 @@
+{"proof": "KineticArms", "scene": "thump_cannon", "status": "FAIL", "detail": "FAIL thump_cannon p 13,12->15,12 along=2 across=0 launches=1 newInjuries=2 force=2.5", "origin": "12,12"}
+{"proof": "KineticArms", "scene": "thump_off", "status": "FAIL", "detail": "FAIL thump_off p 28,12->28,11 forceWhileOff=0", "origin": "27,12"}
+{"proof": "KineticArms", "scene": "palm_shove", "status": "FAIL", "detail": "FAIL palm_shove p 42,12->45,12 along=3 across=0 launches=1 newInjuries=0 | side 41,13->41,12 sideUnmoved=False", "origin": "42,12"}
+{"proof": "KineticArms", "scene": "slam_charge", "status": "PASS", "detail": "PASS slam_charge p 58,12->63,12 along=5 across=0 launches=1 newInjuries=1", "origin": "57,12"}
+{"proof": "KineticArms", "scene": "grav_ram", "status": "FAIL", "detail": "FAIL grav_ram p 72,12->80,12 along=8 across=0 launches=1 newInjuries=2", "origin": "72,12"}
+{"proof": "KineticArms", "scene": "thump_shell", "status": "PASS", "detail": "PASS thump_shell p 88,12->94,12 along=6 across=0 launches=1 newInjuries=1", "origin": "87,12"}
+{"proof": "KineticArms", "scene": "kicker_north", "status": "PASS", "detail": "PASS kicker_north p 102,12->102,16 along=4 across=0 launches=1 newInjuries=0 fuelSpent=10", "origin": "102,12"}
+{"proof": "KineticArms", "scene": "kicker_east", "status": "PASS", "detail": "PASS kicker_east p 117,12->121,12 along=4 across=0 launches=1 newInjuries=0 fuelSpent=10", "origin": "117,12"}
+{"proof": "KineticArms", "scene": "pulse_push", "status": "PASS", "detail": "PASS pulse_push p 132,12->139,12 along=7 across=0 launches=1 newInjuries=0", "origin": "132,12"}
+{"proof": "KineticArms", "scene": "strength_zero", "status": "FAIL", "detail": "FAIL strength_zero p 147,12->147,11 (strength 0: no throw)", "origin": "147,12"}
