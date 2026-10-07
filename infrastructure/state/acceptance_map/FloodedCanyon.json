@@ -1,0 +1,8 @@
+[
+  {"item": "CRACKEDLANDS_ENRICHMENT_QUICKTEST_1", "criterion": "A1", "level": "L2", "mode": "all",
+   "components": ["warning_sequence_five_beats/herald_then_chime_then_wall", "peakstorm_pulls_flood_forward/peakstorm_light_pulls_next_flood", "recede_feast/irqit_cohort_only_when_enabled", "recede_salvage/salvage_scattered_only_when_enabled"],
+   "notes": "Criterion names five beats, peakstorm, recede feast and salvage; one behaviour component each (five-beat herald-chime-wall order, peakstorm pulls the next flood, feast cohort, salvage scatter)."},
+  {"item": "CRACKEDLANDS_ENRICHMENT_QUICKTEST_1", "criterion": "A2", "level": "L2", "mode": "unmapped",
+   "components": [],
+   "notes": "Four dev-action proofs incl. RM_IrqitFloodBorn and tarruqSilenced; the script reads tarruqSilenced inside the five-beats component but names no component per proof and no IrqitFloodBorn component exists."}
+]

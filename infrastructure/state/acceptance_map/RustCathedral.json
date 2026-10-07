@@ -1,0 +1,14 @@
+[
+  {"item": "RUSTCATHEDRAL_BASE_FINISH_BUILD_1", "criterion": "A4", "level": "L1", "mode": "unmapped", "components": [],
+   "notes": "Wants merged wildAnimals to contain RSW_Mynock with swbestiary loaded; biome_wiring/roster_fish_and_rock_rows_present reads fish and rock rows, not the Mynock."},
+  {"item": "RUSTCATHEDRAL_BASE_FINISH_BUILD_1", "criterion": "A5", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Line-cycle lowers attitude band by one; map_mechanics/hum_value_ladder_and_hysteresis is the ladder, not a RM_LineCycle firing."},
+  {"item": "RUSTCATHEDRAL_BASE_FINISH_BUILD_1", "criterion": "A6", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "RM_HumReader readout on/off; no component adds or removes the trait."},
+  {"item": "RUSTCATHEDRAL_BASE_FINISH_BUILD_1", "criterion": "A7", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Eel count on water after 5000 ticks; eel_fishing_consequence is about fishing, not eel placement."},
+  {"item": "RUSTCATHEDRAL_BASE_FINISH_BUILD_1", "criterion": "A8", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Stray corpses near the edge, toggle on vs off; no component."},
+  {"item": "RUSTCATHEDRAL_BASE_FINISH_BUILD_1", "criterion": "A9", "level": "L2", "mode": "unmapped", "components": [],
+   "notes": "Each new toggle off removes exactly its effect; settings_roundtrip only proves each setting reads back, not its effect."}
+]

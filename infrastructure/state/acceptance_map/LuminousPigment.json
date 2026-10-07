@@ -1,0 +1,5 @@
+[
+  {"item": "LUMINOUS_PIGMENT_FIRST_SCRIPT_1", "criterion": "A2", "level": "GREEN-MIN", "mode": "classified",
+   "components": ["@run", "*"],
+   "notes": "Criterion text: a recorded live run produced a results JSON and each FAIL is classified harness/site/mod/unmeasured. Needs --classified for any non-pass."}
+]
