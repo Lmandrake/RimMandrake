@@ -271,6 +271,17 @@ the delivery), gated by `check_sheet.py`.
   `via` the sheet, `reviewStatus` checked by `review_status.get_review_status()` — refuses prefill).
   It **does not install**; installing is a separate `art apply --from-rulings` step he can see the
   plan of first (dry run default).
+- **Closing a biome sheet, in order** (as run on the Grey Sea, Chill and Twilight Sea closes,
+  2026-10-06/07): stamp `reviewStatus` ruled with his typed words → blank any row he did not decide
+  (no `decidedAt`) that he asked us to infer, recording `agentInference` on it, so ingest cannot turn
+  a prefill into his ruling → file redo jobs carrying his note verbatim (`fill_queue.py`) → `art.py
+  ingest --redo-jobs` → `art.py install` per pick → re-run `art.py purge` for purges ingest refused
+  as live once their replacement is in → wire every texPath / graphicClass → `placeholder_detect.py`
+  over every PNG the biome's defs draw (collect finished renders for borrowed texPaths, queue the
+  rest) → **re-fit creature shadows: `python3 src/RimMandrake/Utils/art/sea_shadows.py apply <Defs
+  xml> <PawnKind>...`** for every creature whose art changed (owner, 2026-10-07: shadows must follow
+  the new art, not the placeholder shape; a creature with no `shadowData` draws no shadow at all) and
+  look at its `contact` sheet → commit, deploy (`--compose biomes`).
 
 **Desert family re-review:** 109 rows (92 creatures, 17 plants), split by biome per his
 biome-by-biome rule (desert / deep desert / blue desert). Import order: all earlier rulings as
