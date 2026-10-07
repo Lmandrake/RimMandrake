@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_AEROSOL_SCREEN_1 part 7: evaluate / salvage / repair of the projector rings. Code: Source/RM_WarscarSalvage.cs. -->
+  <DesignationDef><defName>RM_EvaluateRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
+  <DesignationDef><defName>RM_SalvageRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
+  <DesignationDef><defName>RM_RepairRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>
+
+  <JobDef><defName>RM_EvaluateRing</defName><driverClass>RimMandrake.Scarlands.RM_JobDriver_EvaluateRing</driverClass><reportString>evaluating TargetA.</reportString></JobDef>
+  <JobDef><defName>RM_SalvageRing</defName><driverClass>RimMandrake.Scarlands.RM_JobDriver_SalvageRing</driverClass><reportString>taking TargetA apart.</reportString></JobDef>
+  <JobDef><defName>RM_RepairRing</defName><driverClass>RimMandrake.Scarlands.RM_JobDriver_RepairRing</driverClass><reportString>repairing TargetA.</reportString></JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_EvaluateRing</defName><label>evaluate projector rings</label><giverClass>RimMandrake.Scarlands.RM_WorkGiver_EvaluateRing</giverClass>
+    <workType>Crafting</workType><priorityInType>5</priorityInType><verb>evaluate</verb><gerund>evaluating</gerund>
+    <scanThings>true</scanThings><scanCells>false</scanCells><requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RM_SalvageRing</defName><label>salvage projector rings</label><giverClass>RimMandrake.Scarlands.RM_WorkGiver_SalvageRing</giverClass>
+    <workType>Crafting</workType><priorityInType>4</priorityInType><verb>salvage</verb><gerund>salvaging</gerund>
+    <scanThings>true</scanThings><scanCells>false</scanCells><requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RM_RepairRing</defName><label>repair projector rings</label><giverClass>RimMandrake.Scarlands.RM_WorkGiver_RepairRing</giverClass>
+    <workType>Crafting</workType><priorityInType>3</priorityInType><verb>repair</verb><gerund>repairing</gerund>
+    <scanThings>true</scanThings><scanCells>false</scanCells><requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
+</Defs>

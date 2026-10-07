@@ -130,6 +130,8 @@ namespace RimMandrake.Scarlands
         public static bool aerosolScreenEnabled = true;      // screens block airborne toxins, fallout and the film
         public static float aerosolScreenRadiusFactor = 1f;  // scales every screen's radius
         public static int hummingRingsPerMap = 2;            // projector rings per new map (0-3); the first is always live
+        public static bool ringSalvageEnabled = true;        // evaluated rings can be uninstalled, repaired or stripped
+        public static float projectorCoreChance = 0.3f;      // chance a stripped dead ring yields a projector core
         public static bool shipWakesLine = true;             // a landed gravship's engine within 40 cells wakes dead rings
 
         public static bool crossBiomeEnabled = false;
@@ -213,6 +215,8 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref aerosolScreenRadiusFactor, "aerosolScreenRadiusFactor", 1f);
             Scribe_Values.Look(ref hummingRingsPerMap, "hummingRingsPerMap", 2);
             Scribe_Values.Look(ref shipWakesLine, "shipWakesLine", true);
+            Scribe_Values.Look(ref ringSalvageEnabled, "ringSalvageEnabled", true);
+            Scribe_Values.Look(ref projectorCoreChance, "projectorCoreChance", 0.3f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -402,6 +406,14 @@ namespace RimMandrake.Scarlands
             hummingRingsPerMap = Mathf.RoundToInt(list.Slider(hummingRingsPerMap, 0f, 3f));
             list.CheckboxLabeled("The ship wakes the line", ref shipWakesLine,
                 "A landed gravship whose engine is within 40 cells wakes dead projector rings until it lifts.");
+            list.CheckboxLabeled("Ring salvage", ref ringSalvageEnabled,
+                "Once evaluated, a working ring can be uninstalled and reinstalled at home as a working screen with no research, "
+              + "a failing ring can be repaired, and a dead ring can be stripped. Off: rings can still be evaluated but not taken apart.");
+            if (ringSalvageEnabled)
+            {
+                list.Label("Projector core from a stripped dead ring: " + Mathf.RoundToInt(projectorCoreChance * 100f) + "%");
+                projectorCoreChance = list.Slider(projectorCoreChance, 0f, 1f);
+            }
             list.GapLine();
 
             list.Label("Species (restart required; affects maps generated afterwards)");

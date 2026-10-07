@@ -2,7 +2,7 @@
 <!-- WARSCAR_AEROSOL_SCREEN_1 part 5: the player-built aerosol screen and its core.
      Comp: RM_CompAerosolScreen (Scarlands/Source/RM_AerosolScreen.cs). Burns dielectric gel; half radius without it.
      Gravship-placeable: an ordinary building, nothing excludes it from a ship area.
-     Not yet: research gate (needs an analysed live ring, part 6), calibration (part 3), RM_ProjectorCore sources (part 7).
+     Research gate, rings and ring salvage are built (RM_WarscarProjectors.xml, RM_WarscarRings.cs, RM_WarscarSalvage.cs). Not yet: calibration (part 3), glower shielding (part 9).
      ART OWED: both defs borrow existing art as a placeholder (RM_OldLineTurret_Base, RM_Etchant). -->
 <Defs>
   <ThingDef ParentName="ResourceBase">

@@ -15,13 +15,41 @@ namespace RimMandrake.Scarlands
     public class RM_CompProperties_WarscarRing : RM_CompProperties_AerosolScreen
     {
         public bool dead;
+        // true on the two world-placed rings (dead/live); false on the player-installable salvaged ring.
+        public bool wild;
         public RM_CompProperties_WarscarRing() { compClass = typeof(RM_CompWarscarRing); }
     }
+
+    public enum RingCondition { Dead = 0, Failing = 1, Working = 2 }
 
     public class RM_CompWarscarRing : RM_CompAerosolScreen
     {
         public const float WakeRange = 40f;
         private bool wakeCached;
+
+        // Part 7: condition rolled at generation, saved, revealed by the evaluate job.
+        private int cond = -1;
+        private bool evaluated;
+
+        public RingCondition Condition => (RingCondition)Mathf.Max(cond, 0);
+        public bool Evaluated => evaluated;
+        public void SetCondition(RingCondition c, bool isEvaluated) { cond = (int)c; evaluated = isEvaluated; }
+        public void Evaluate() { evaluated = true; }
+        public static string ConditionLabel(RingCondition c) { return c == RingCondition.Dead ? "dead" : c == RingCondition.Failing ? "failing" : "working"; }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref cond, "ringCond", -1);
+            Scribe_Values.Look(ref evaluated, "ringEvaluated", false);
+        }
+
+        private void RollIfNeeded()
+        {
+            if (cond >= 0) return;
+            // Dead def: always dead. Live def: 70% working, 30% failing. The first ring of a map is forced Working by the genstep.
+            cond = (int)(RingProps.dead ? RingCondition.Dead : (Rand.Chance(0.7f) ? RingCondition.Working : RingCondition.Failing));
+        }
 
         public RM_CompProperties_WarscarRing RingProps => (RM_CompProperties_WarscarRing)props;
 
@@ -31,7 +59,7 @@ namespace RimMandrake.Scarlands
         {
             get
             {
-                if (!RingProps.dead) return base.IsScreenLive;
+                if (!RingProps.dead) return base.IsScreenLive && Condition == RingCondition.Working;
                 return RM_WarscarSettings.shipWakesLine && wakeCached && parent.Spawned;
             }
         }
@@ -39,6 +67,7 @@ namespace RimMandrake.Scarlands
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            RollIfNeeded();
             if (RingProps.dead) wakeCached = ComputeWake();
         }
 
@@ -63,10 +92,80 @@ namespace RimMandrake.Scarlands
 
         public override string CompInspectStringExtra()
         {
+            string cs = evaluated ? "condition: " + ConditionLabel(Condition) : "condition: unassessed (evaluation needs Crafting 6)";
             if (RingProps.dead && !IsScreenLive)
-                return "Projector ring: dead, no hum" + (RM_WarscarSettings.shipWakesLine ? " (a landed gravship's engine would wake it)" : "");
-            if (RingProps.dead) return "Projector ring: woken by the ship's engine; it will go dark when the ship lifts. " + base.CompInspectStringExtra();
-            return "Projector ring: humming. " + base.CompInspectStringExtra();
+                return "Projector ring (" + cs + "), no hum" + (RM_WarscarSettings.shipWakesLine ? "; a landed gravship's engine would wake it" : "");
+            if (RingProps.dead) return "Projector ring (" + cs + "), woken by the ship's engine; it will go dark when the ship lifts. " + base.CompInspectStringExtra();
+            if (Condition == RingCondition.Failing) return "Projector ring (" + cs + "): the dome stutters and does not hold." + (RingProps.wild ? "" : " Needs repair.");
+            return "Projector ring (" + cs + "): humming. " + base.CompInspectStringExtra();
+        }
+
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
+            if (!parent.Spawned) yield break;
+            if (RingProps.wild && !evaluated)
+                yield return Toggle(RM_RingDesignations.Evaluate, "Evaluate ring", "Have someone with Crafting 6 work out this ring's true condition.");
+            if (RM_WarscarSettings.ringSalvageEnabled && RingProps.wild && evaluated)
+                yield return Toggle(RM_RingDesignations.Salvage,
+                    Condition == RingCondition.Dead ? "Strip ring" : "Uninstall ring",
+                    Condition == RingCondition.Dead ? "Break the dead ring down for steel, components and perhaps a projector core."
+                        : "Take the ring up and haul it home. A working ring ends its dome here when it comes out.");
+            if (RM_WarscarSettings.ringSalvageEnabled && !RingProps.wild && !RingProps.dead && Condition == RingCondition.Failing)
+                yield return Toggle(RM_RingDesignations.Repair, "Repair ring", "Needs 2 industrial components and Crafting 8.");
+        }
+
+        private Command_Action Toggle(DesignationDef def, string label, string desc)
+        {
+            DesignationManager dm = parent.Map.designationManager;
+            bool on = dm.DesignationOn(parent, def) != null;
+            return new Command_Action
+            {
+                defaultLabel = on ? "Cancel: " + label : label,
+                defaultDesc = desc,
+                icon = ContentFinder<Texture2D>.Get("UI/Designators/Deconstruct", false),
+                action = delegate
+                {
+                    Designation d = dm.DesignationOn(parent, def);
+                    if (d != null) dm.RemoveDesignation(d); else dm.AddDesignation(new Designation(parent, def));
+                }
+            };
+        }
+
+        // Salvage of a wild ring (called by the job when work completes).
+        // Dead: strip for steel, components, and a core by chance (projectorCoreChance).
+        // Working/Failing: becomes the minified salvaged ring carrying the same condition.
+        public void DoSalvage(Pawn by)
+        {
+            Map map = parent.Map;
+            IntVec3 pos = parent.Position;
+            RingCondition c = Condition;
+            parent.Destroy(DestroyMode.Vanish);
+            if (c == RingCondition.Dead)
+            {
+                Drop(ThingDefOf.Steel, Rand.RangeInclusive(30, 60), pos, map);
+                Drop(ThingDefOf.ComponentIndustrial, Rand.RangeInclusive(1, 3), pos, map);
+                if (Rand.Chance(RM_WarscarSettings.projectorCoreChance))
+                {
+                    ThingDef core = DefDatabase<ThingDef>.GetNamedSilentFail("RM_ProjectorCore");
+                    if (core != null) Drop(core, 1, pos, map);
+                }
+                return;
+            }
+            ThingDef salvaged = DefDatabase<ThingDef>.GetNamedSilentFail("RM_WarscarProjector_Salvaged");
+            if (salvaged == null) return;
+            Thing ring = ThingMaker.MakeThing(salvaged);
+            RM_CompWarscarRing rc = ring.TryGetComp<RM_CompWarscarRing>();
+            if (rc != null) rc.SetCondition(c, true);
+            MinifiedThing mini = MinifyUtility.MakeMinified(ring);
+            GenPlace.TryPlaceThing(mini, pos, map, ThingPlaceMode.Near);
+        }
+
+        public static void Drop(ThingDef def, int n, IntVec3 pos, Map map)
+        {
+            Thing t = ThingMaker.MakeThing(def);
+            t.stackCount = n;
+            GenPlace.TryPlaceThing(t, pos, map, ThingPlaceMode.Near);
         }
     }
 
@@ -137,7 +236,8 @@ namespace RimMandrake.Scarlands
                         foreach (IntVec3 cell in rect)
                             if (!cell.Standable(map) || cell.GetEdifice(map) != null || cell.GetFirstItem(map) != null) { ok = false; break; }
                     if (!ok) continue;
-                    GenSpawn.Spawn(ThingMaker.MakeThing(def), c, map);
+                    Thing ring = GenSpawn.Spawn(ThingMaker.MakeThing(def), c, map);
+                    if (n == 0 && def == live) ring.TryGetComp<RM_CompWarscarRing>()?.SetCondition(RingCondition.Working, false);
                     placed.Add(c);
                     break;
                 }
