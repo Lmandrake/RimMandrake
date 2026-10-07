@@ -122,7 +122,12 @@ def _shipped_names(ty):
 def crawler_road_defs():
     gs = _def(_xml("MapGeneration", "RM_LongShade_GenSteps.xml"), "GenStepDef", "RM_GenStep_CrawlerRoad")
     step = gs.find("genStep")
-    return [e.text.strip() for e in step.iter("li")] + [step.findtext("terminusMarker").strip()]
+    rows = []
+    wl = step.findtext("wreckList")
+    if wl:  # SALVAGE_WRECKAGE_EVERYWHERE_1 step 7: the road's casualties list (element-name rows)
+        lst = _def(_xml("RM_WreckListDefs", "RM_CrawlerRoadWreckList.xml"), "RimMandrake.Wreckage.RM_WreckListDef", wl.strip())
+        rows = [r.tag for r in lst.find("wrecks")] if lst is not None and lst.find("wrecks") is not None else ["<missing list %s>" % wl]
+    return [e.text.strip() for e in step.iter("li")] + rows + [step.findtext("terminusMarker").strip()]
 
 
 def crawler_road_problems():
@@ -138,6 +143,15 @@ def crawler_road_problems():
     for n in crawler_road_defs():
         if n not in _shipped_names("ThingDef"):
             bad.append("crawler road def %s is not a shipped ThingDef" % n)
+    # Every road wreck is shade: the shade grid's caster scan reads staticSunShadowHeight.
+    links = [n for n in crawler_road_defs() if n != "RM_CrawlerRoadTerminus"]
+    for dp, _d, files in os.walk(os.path.join(HERE, "Defs", "ThingDefs_Buildings")):
+        for fn in files:
+            for el in ET.parse(os.path.join(dp, fn)).getroot().iter("ThingDef"):
+                if el.findtext("defName") in links and not el.findtext("staticSunShadowHeight"):
+                    bad.append("crawler road wreck %s casts no shade (no staticSunShadowHeight)" % el.findtext("defName"))
+    if "step.wreckList.PickWreck()" not in mapgen:
+        bad.append("Crawler Road never reads its wreckList (SALVAGE_WRECKAGE_EVERYWHERE_1 step 7)")
     return bad
 
 

@@ -10,8 +10,8 @@
   Order: after Plants (900), so big plants' shadows count, and before
   Animals (1200), so the herds spawn into the road's shade.
 
-  RM_GenStep_CrawlerRoad (§6.4): the RM tier lays RM_WreckedCart links only;
-  mandrake.rsw.injections patches in the skiff and crawler-tread links and
+  RM_GenStep_CrawlerRoad (§6.4): the RM tier lays casualties from RM_WreckList_CrawlerRoad (the cart and
+  a sun-baked speeder); mandrake.rsw.injections adds the skiff and crawler-tread rows to that list and
   the dead-sandcrawler terminus (Patches/CrawlerRoad_LongShade.xml there).
 
   RM_GenStep_SunGraves (§6.5, the Long Carry): Drifter and Dromedary are
@@ -28,6 +28,9 @@
     <defName>RM_GenStep_CrawlerRoad</defName>
     <order>950</order>
     <genStep Class="RimMandrake.LongShade.RM_GenStep_CrawlerRoad">
+      <!-- SALVAGE_WRECKAGE_EVERYWHERE_1 step 7: the list replaces linkDefs when set; linkDefs stays as
+           the fallback for a list that resolves empty. -->
+      <wreckList>RM_WreckList_CrawlerRoad</wreckList>
       <linkDefs>
         <li>RM_WreckedCart</li>
       </linkDefs>

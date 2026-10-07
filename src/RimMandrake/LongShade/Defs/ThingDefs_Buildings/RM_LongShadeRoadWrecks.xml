@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 7 (design §4 Long Shade row: "road casualties only ... Sun-baked
+  x0.8, loot Hull/Speeder; the crawler road is the placement, no field scatter beside it").
+  The RM-tier road casualty on the wreck families: a franchise-free speeder, invented (Q11a). The Star
+  Wars skiff and crawler tread are added to the road's list by mandrake.rsw.injections.
+  Like every road wreck it is shade: staticSunShadowHeight is what the shade grid's caster scan reads.
+  Art: on the vanilla ShipChunk placeholder until wreck_longshadewreckspeeder_* lands.
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Speeder">
+    <defName>RM_LongShadeWreckSpeeder</defName>
+    <label>sun-baked speeder</label>
+    <description>A light repulsor speeder that died crossing the open sand and was left where it dropped. The paint has gone to chalk and the canopy has crazed white, but it throws a shadow long enough to rest in. Deconstruct it for valuable resources.</description>
+    <staticSunShadowHeight>0.6</staticSunShadowHeight>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_SunBaked</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

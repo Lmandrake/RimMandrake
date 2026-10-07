@@ -85,6 +85,12 @@
       <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1 step 7: the crawler road reads an RM_WreckListDef. Composed in the
+         same mod (mandrake.rm.biomes), loaded earlier in LoadFolders order. -->
+    <Reference Include="RimMandrake.Wreckage">
+      <HintPath>..\..\Wreckage\Assemblies\RimMandrake.Wreckage.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="RimMandrake.CreatureBehaviors">
       <HintPath>..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</HintPath>
       <Private>false</Private>

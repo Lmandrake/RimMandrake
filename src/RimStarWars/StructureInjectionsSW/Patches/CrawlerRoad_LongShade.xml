@@ -10,6 +10,20 @@
 -->
 <Patch>
 
+  <!-- SALVAGE_WRECKAGE_EVERYWHERE_1 step 7: the road now lays from RM_WreckList_CrawlerRoad (its
+       wreckList replaces linkDefs), so the Star Wars casualties are list rows, weights PROVISIONAL.
+       linkDefs keeps them too, for a road whose list is absent. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/RimMandrake.Wreckage.RM_WreckListDef[defName="RM_WreckList_CrawlerRoad"]/wrecks</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/RimMandrake.Wreckage.RM_WreckListDef[defName="RM_WreckList_CrawlerRoad"]/wrecks</xpath>
+      <value>
+        <RSW_WreckedSkiff>1</RSW_WreckedSkiff>
+        <RSW_CrawlerTreadWreck>1</RSW_CrawlerTreadWreck>
+      </value>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/GenStepDef[defName="RM_GenStep_CrawlerRoad"]/genStep/linkDefs</xpath>
     <match Class="PatchOperationAdd">
