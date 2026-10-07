@@ -327,6 +327,8 @@ namespace RimMandrake.RustCathedral.Hum.SelfTest
                 foreach (var m in fails) Console.WriteLine("FAIL " + m);
                 if (fails.Count > 0) ok = false;
             }
+            if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
+            if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"coverage: {WorstBandChecks} checks at the worst band, {DrainsApplied} drains applied ({DrainsClamped} cut short by the day cap), {Falls} band falls");
             Console.WriteLine($"observation: de-escalations that skip a band (fall below p-1 in one step, by design): {MultiBandDrops}");
             Console.WriteLine($"edge: StandingAfter(100, int.MaxValue) = {RM_AttitudeKernel.StandingAfter(100, int.MaxValue)} (int overflow wraps; callers pass small deltas)");

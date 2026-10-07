@@ -34,7 +34,7 @@ namespace RimMandrake.Bazaar.SelfTest
         private sealed class World { public Bucket[] b; public int day; }
 
         // arg -> float helpers, pure functions of the action so a shrunk list replays identically
-        private static float Unit(int arg) { return ((arg * 2654435761u) >> 8) / 16777216f; }
+        private static float Unit(int arg) { return (unchecked((uint)arg * 2654435761u) >> 8) / 16777216f; }  // uint math: int*uint would promote to long and leave [0,1)
         private static float NoiseU(int arg)
         {
             switch (arg % 7) { case 0: return 0f; case 1: return 1f; case 2: return 0.5f; default: return Unit(arg); }
@@ -314,6 +314,8 @@ namespace RimMandrake.Bazaar.SelfTest
                 foreach (var m in fails) Console.WriteLine("FAIL " + m);
                 if (fails.Count > 0) ok = false;
             }
+            if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
+            if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"unit hashes rounding to exactly 1.0 (known float edge, tolerated): {UnitOne}");
             Console.WriteLine($"bazaar fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;

@@ -59,9 +59,13 @@ namespace RimMandrake.Ninefold
         /// </summary>
         public static int FrontAfterSwing(bool frontReckoned, int frontGod, float rawAmount, float largeThreshold, int loudest)
         {
-            if (!frontReckoned) return frontGod;
-            if (Math.Abs(rawAmount) < largeThreshold) return frontGod;
-            return loudest;
+            return IsViolentSwing(frontReckoned, rawAmount, largeThreshold) ? loudest : frontGod;
+        }
+
+        /// <summary>True when an event may move the front: a landing has been reckoned and the UNSCALED magnitude is at or above the threshold.</summary>
+        public static bool IsViolentSwing(bool frontReckoned, float rawAmount, float largeThreshold)
+        {
+            return frontReckoned && !(Math.Abs(rawAmount) < largeThreshold);
         }
 
         public enum Contact { None, Fire, Queued }
