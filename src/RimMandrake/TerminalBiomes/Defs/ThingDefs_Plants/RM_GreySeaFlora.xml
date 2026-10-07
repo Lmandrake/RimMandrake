@@ -175,7 +175,7 @@
       <Beauty>9</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_CubicSculpture</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>
@@ -209,7 +209,7 @@
       <Beauty>5</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_SpherePlant</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>
@@ -267,7 +267,7 @@
       <Beauty>12</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_GlassVeilKelp</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(1.6,1.6)</drawSize>
     </graphicData>
@@ -323,7 +323,7 @@
       <Beauty>6</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_BrineCrown</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>
@@ -377,7 +377,7 @@
       <Beauty>14</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantB</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_MosaicFanPalm</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(1.3,1.3)</drawSize>
     </graphicData>
@@ -425,7 +425,7 @@
       <Beauty>7</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/PincushionPlant/PincushionPlantB</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_SaltChimneyVine</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>
@@ -475,7 +475,7 @@
       <Beauty>10</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_CruciblePod</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>

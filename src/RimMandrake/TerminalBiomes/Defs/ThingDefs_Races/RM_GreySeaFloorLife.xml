@@ -129,9 +129,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.05</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.18</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.25</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.33</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.18</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.25</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Sallik/RM_Sallik</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.33</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -189,9 +189,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.08</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.32</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.44</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.32</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Karrud/RM_Karrud</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.44</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -314,9 +314,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.1</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.24</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.36</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.24</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.36</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oomal/RM_Oomal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -376,9 +376,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.05</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.42</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Maalu/RM_Maalu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.42</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -445,9 +445,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.04</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.16</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.16</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Immu/RM_Immu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -512,9 +512,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.12</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.26</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.56</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.26</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Haarn/RM_Haarn</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.56</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 

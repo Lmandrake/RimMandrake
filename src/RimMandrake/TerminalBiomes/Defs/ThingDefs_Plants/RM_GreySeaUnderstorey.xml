@@ -54,20 +54,18 @@
 
   <!-- ==================================================================
        1. RM_MASONMAT — the pillar-mason's skirt (Q6). Route A, 1.0 — "the
-       commonest living thing on the floor." No harvest: it is pasture (the
-       sorruth's grazing target, finally giving that shipped description a
-       real def to point at) and pathCost only.
+       commonest living thing on the floor." No harvest: it is pathCost only.
        ================================================================== -->
   <ThingDef ParentName="RM_GreyCrystalFloraBase">
     <defName>RM_Masonmat</defName>
     <label>masonmat</label>
-    <description>A pale, faintly banded mat, firm as rind, spilling off a pillar's base and spreading across the sediment a hair a year — the pillar-mason at pasture, mineralising everything it crosses. The sorruth graze it in slow herds of one; a column with a wide skirt is an old column, and divers walking pillar-to-pillar learn to feel for the rind through their boots, because where the mat is, a pillar is near. One edge is always ragged.</description>
+    <description>A pale, faintly banded mat, firm as rind, spilling off a pillar's base and spreading across the sediment a hair a year — the pillar-mason at pasture, mineralising everything it crosses. A column with a wide skirt is an old column, and divers walking pillar-to-pillar learn to feel for the rind through their boots, because where the mat is, a pillar is near. One edge is always ragged.</description>
     <statBases>
       <MaxHitPoints>120</MaxHitPoints>
       <Beauty>2</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_Masonmat</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <pathCost>3</pathCost>
@@ -128,7 +126,7 @@
       <Beauty>2</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantB</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_Mournweft</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>
@@ -156,7 +154,7 @@
       <Beauty>3</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_Milkwell</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>
@@ -182,7 +180,7 @@
       <Beauty>4</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_Hoarstock</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <colorTwo>(222,220,214)</colorTwo>
     </graphicData>
@@ -211,7 +209,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_Saltswoon</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <pathCost>2</pathCost>
@@ -273,7 +271,7 @@
       <Beauty>2</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_Brinecomb</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <colorTwo>(210,214,214)</colorTwo>
     </graphicData>
@@ -301,7 +299,7 @@
       <Beauty>1</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_Neverset</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>
@@ -332,7 +330,7 @@
       <Beauty>2</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_Murkblush</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <plant>

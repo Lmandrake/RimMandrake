@@ -1,298 +1,563 @@
 {
-  "biome": "RM_GreySea",
-  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
-  "decidedCount": 46,
-  "decisions": {
-    "RM_BrineCrown": {
-      "at": "2026-10-06T03:35:45.861Z",
-      "decidedAt": "2026-10-06T03:35:45.268Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_Brinecomb": {
-      "at": "2026-10-06T03:35:41.006Z",
-      "decidedAt": "2026-10-06T03:35:40.308Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_Corrik": {
-      "at": "2026-10-06T03:31:29.263Z",
-      "decision": "A",
-      "note": "This doesn't look like anything?",
-      "prefill": "A"
-    },
-    "RM_CruciblePod": {
-      "at": "2026-10-06T03:35:49.221Z",
-      "decidedAt": "2026-10-06T03:35:48.366Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_CubicSculpture": {
-      "at": "2026-10-06T03:35:52.275Z",
-      "decidedAt": "2026-10-06T03:35:51.703Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_Essarn": {
-      "at": "2026-10-06T03:31:59.816Z",
-      "decidedAt": "2026-10-06T03:31:40.690Z",
-      "decision": "B",
-      "note": "Something's wrong with your image scale view",
-      "prefill": "A"
-    },
-    "RM_EssarnCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Fessk": {
-      "at": "2026-10-06T03:32:08.045Z",
-      "decidedAt": "2026-10-06T03:32:08.045Z",
-      "decision": "B",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_GlassVeilKelp": {
-      "at": "2026-10-06T03:35:59.062Z",
-      "decidedAt": "2026-10-06T03:35:54.617Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_Grusk": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_GruskCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Haarn": {
-      "at": "2026-10-06T03:33:12.158Z",
-      "decidedAt": "2026-10-06T03:33:04.453Z",
-      "decision": "redo",
-      "note": "What IS this? It looks like a melted cube? Give the prompt a better description for the image please",
-      "prefill": "A"
-    },
-    "RM_HaarnCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Hessal": {
-      "at": "2026-10-06T03:33:02.546Z",
-      "decidedAt": "2026-10-06T03:32:56.760Z",
-      "decision": "redo",
-      "note": "Give it a better description for the prompt please",
-      "prefill": "A"
-    },
-    "RM_HessalCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Hoarstock": {
-      "at": "2026-10-06T03:36:02.320Z",
-      "decidedAt": "2026-10-06T03:36:01.531Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_Immu": {
-      "at": "2026-10-06T03:33:28.951Z",
-      "decidedAt": "2026-10-06T03:33:23.130Z",
-      "decision": "redo",
-      "note": "Please give a better prompt to the image generation",
-      "prefill": "A"
-    },
-    "RM_ImmuCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Karrud": {
-      "at": "2026-10-06T03:33:44.467Z",
-      "decidedAt": "2026-10-06T03:33:41.242Z",
-      "decision": "redo",
-      "note": "bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_KarrudCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Maalu": {
-      "at": "2026-10-06T03:33:51.062Z",
-      "decidedAt": "2026-10-06T03:33:47.892Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_MaaluCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Masonmat": {
-      "at": "2026-10-06T03:36:07.095Z",
-      "decidedAt": "2026-10-06T03:36:06.485Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_Milkwell": {
-      "at": "2026-10-06T03:36:09.384Z",
-      "decidedAt": "2026-10-06T03:36:08.871Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_MosaicFanPalm": {
-      "at": "2026-10-06T03:36:11.307Z",
-      "decidedAt": "2026-10-06T03:36:10.637Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_Mournweft": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Murkblush": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Neverset": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Nissik": {
-      "at": "2026-10-06T03:34:02.959Z",
-      "decidedAt": "2026-10-06T03:34:02.321Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_NissikCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Oomal": {
-      "at": "2026-10-06T03:34:04.854Z",
-      "decidedAt": "2026-10-06T03:34:04.254Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_OomalCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Orruhmu": {
-      "at": "2026-10-06T03:34:34.616Z",
-      "decidedAt": "2026-10-06T03:34:34.616Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Otheska": {
-      "at": "2026-10-06T03:34:45.212Z",
-      "decidedAt": "2026-10-06T03:34:45.212Z",
-      "decision": "B",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Reefback": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Sallik": {
-      "at": "2026-10-06T03:34:54.563Z",
-      "decidedAt": "2026-10-06T03:34:53.850Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_SallikCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_SaltBladeGrey": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_SaltChimneyVine": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Saltswoon": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Sorruth": {
-      "at": "2026-10-06T03:35:07.203Z",
-      "decidedAt": "2026-10-06T03:35:03.972Z",
-      "decision": "hold",
-      "note": "cut don't need",
-      "prefill": "A"
-    },
-    "RM_SorruthCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_SpherePlant": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Thollim": {
-      "at": "2026-10-06T03:35:11.749Z",
-      "decidedAt": "2026-10-06T03:35:11.122Z",
-      "decision": "redo",
-      "note": "Bad graphics prompt?",
-      "prefill": "A"
-    },
-    "RM_ThollimCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RSW_Reefback": {
-      "at": "2026-10-06T03:35:32.885Z",
-      "decision": "A",
-      "note": "Should be RimMandrake",
-      "prefill": "A"
-    }
+ "biome": "RM_GreySea",
+ "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+ "decidedCount": 46,
+ "decisions": {
+  "RM_BrineCrown": {
+   "at": "2026-10-07T05:56:09.365Z",
+   "decidedAt": "2026-10-07T05:56:03.396Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:56:09.365Z"
   },
-  "posture": "pick-one",
-  "reviewStatus": {
-    "at": null,
-    "by": null,
-    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
-    "state": "prefill"
+  "RM_Brinecomb": {
+   "at": "2026-10-07T05:56:11.534Z",
+   "decidedAt": "2026-10-07T05:55:56.167Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:56:11.534Z"
   },
-  "savedAt": "2026-10-05T20:36:12-0700",
-  "savedBy": "review-sheet-sidecar",
-  "sheetId": "greysea_sheet_2026-10-05",
-  "snapshot": "infrastructure/state/art/sheets/greysea_sheet_2026-10-05.snapshot.json",
-  "snapshotId": "3eb8fede652a45d7",
-  "writeCount": 38
+  "RM_Corrik": {
+   "at": "2026-10-07T05:52:12.805Z",
+   "decidedAt": "2026-10-07T05:50:44.588Z",
+   "decision": "B",
+   "note": "This doesn't look like anything?",
+   "prefill": "A",
+   "variants": [],
+   "variantsAt": "2026-10-07T05:52:12.805Z"
+  },
+  "RM_CruciblePod": {
+   "at": "2026-10-07T05:56:19.647Z",
+   "decidedAt": "2026-10-07T05:56:18.374Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:56:16.522Z"
+  },
+  "RM_CubicSculpture": {
+   "at": "2026-10-07T05:56:28.544Z",
+   "decidedAt": "2026-10-07T05:56:27.249Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:56:25.458Z"
+  },
+  "RM_Essarn": {
+   "at": "2026-10-07T05:52:09.610Z",
+   "decidedAt": "2026-10-07T05:51:20.440Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [],
+   "variantsAt": "2026-10-07T05:52:09.610Z"
+  },
+  "RM_EssarnCatch": {
+   "at": "2026-10-07T05:57:59.476Z",
+   "decidedAt": "2026-10-07T05:57:49.983Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "09232043ec97535660fad7ca5d8677ef4cdb5b7dead6422713cb41684aa33734"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:55.539Z"
+  },
+  "RM_Fessk": {
+   "at": "2026-10-07T05:52:04.487Z",
+   "decidedAt": "2026-10-07T05:51:28.455Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [],
+   "variantsAt": "2026-10-07T05:52:04.487Z"
+  },
+  "RM_GlassVeilKelp": {
+   "at": "2026-10-07T05:56:33.618Z",
+   "decidedAt": "2026-10-07T05:56:32.391Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:56:31.285Z"
+  },
+  "RM_Grusk": {
+   "at": "2026-10-07T05:52:02.539Z",
+   "decidedAt": "2026-10-07T05:51:47.297Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [],
+   "variantsAt": "2026-10-07T05:52:02.539Z"
+  },
+  "RM_GruskCatch": {
+   "at": "2026-10-07T05:58:20.717Z",
+   "decidedAt": "2026-10-07T05:58:09.958Z",
+   "decision": "C",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:58:20.717Z"
+  },
+  "RM_Haarn": {
+   "at": "2026-10-07T05:52:00.751Z",
+   "decidedAt": "2026-10-07T05:51:51.867Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [],
+   "variantsAt": "2026-10-07T05:52:00.751Z"
+  },
+  "RM_HaarnCatch": {
+   "at": "2026-10-07T05:58:30.935Z",
+   "decidedAt": "2026-10-07T05:58:30.935Z",
+   "decision": "C",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:58:27.963Z"
+  },
+  "RM_Hessal": {
+   "at": "2026-10-07T05:53:41.172Z",
+   "decidedAt": "2026-10-07T05:52:56.953Z",
+   "decision": "redo",
+   "note": "Read the description more closelyA patch of frost lying on the floor, sealed for years, then opening slightly when conditions are right. Made of salt crystal. No legs.",
+   "prefill": "A",
+   "purge": [
+    "28c620ef0382bea38c448466fbd3f87c7101154f805af509899a427136d2c7e5",
+    "2a08b17654a7142f99be135572c72ed044c440084b062a777cca57a9af5d5efe",
+    "dab3a11457509ba646194bb757b7d7b79c2d4361d0bbd1d6c52aa17d075227a4"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:52:24.588Z"
+  },
+  "RM_HessalCatch": {
+   "at": "2026-10-07T05:58:52.970Z",
+   "decidedAt": "2026-10-07T05:58:52.970Z",
+   "decision": "D",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "28c620ef0382bea38c448466fbd3f87c7101154f805af509899a427136d2c7e5",
+    "2a08b17654a7142f99be135572c72ed044c440084b062a777cca57a9af5d5efe",
+    "dab3a11457509ba646194bb757b7d7b79c2d4361d0bbd1d6c52aa17d075227a4"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "B",
+    "D"
+   ],
+   "variantsAt": "2026-10-07T05:58:47.266Z"
+  },
+  "RM_Hoarstock": {
+   "at": "2026-10-07T05:56:48.753Z",
+   "decidedAt": "2026-10-07T05:56:47.442Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:56:45.811Z"
+  },
+  "RM_Immu": {
+   "at": "2026-10-07T05:53:52.150Z",
+   "decidedAt": "2026-10-07T05:53:50.665Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:53:52.150Z"
+  },
+  "RM_ImmuCatch": {
+   "at": "2026-10-07T05:59:06.458Z",
+   "decidedAt": "2026-10-07T05:59:02.746Z",
+   "decision": "C",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "13eaa24b6613b2df53e24c4ea822f27be94dd122cced44c87e14ad128b2ecadd"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:59:06.458Z"
+  },
+  "RM_Karrud": {
+   "at": "2026-10-07T05:53:57.870Z",
+   "decidedAt": "2026-10-07T05:53:56.662Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:53:54.626Z"
+  },
+  "RM_KarrudCatch": {
+   "at": "2026-10-07T05:59:14.698Z",
+   "decidedAt": "2026-10-07T05:59:14.698Z",
+   "decision": "C",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "0a7d9f4f5152dd27d9c4f484c28852759579a784ae9bf595de9298bf26e0f1cf"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:59:12.783Z"
+  },
+  "RM_Maalu": {
+   "at": "2026-10-07T05:54:19.146Z",
+   "decidedAt": "2026-10-07T05:54:17.910Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:54:15.393Z"
+  },
+  "RM_MaaluCatch": {
+   "at": "2026-10-07T05:59:24.453Z",
+   "decidedAt": "2026-10-07T05:59:24.453Z",
+   "decision": "C",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "0b4baa212e85ea9ac5265de5baa6c7a8ae4ee5282b91ff9a9e6243baae625c7e"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:59:23.215Z"
+  },
+  "RM_Masonmat": {
+   "at": "2026-10-07T05:56:54.275Z",
+   "decidedAt": "2026-10-07T05:56:53.244Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:56:52.145Z"
+  },
+  "RM_Milkwell": {
+   "at": "2026-10-07T05:56:58.585Z",
+   "decidedAt": "2026-10-07T05:56:57.517Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:56:56.491Z"
+  },
+  "RM_MosaicFanPalm": {
+   "at": "2026-10-07T05:57:03.631Z",
+   "decidedAt": "2026-10-07T05:57:02.270Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:01.024Z"
+  },
+  "RM_Mournweft": {
+   "at": "2026-10-07T05:57:06.421Z",
+   "decidedAt": "2026-10-07T05:57:06.421Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:05.553Z"
+  },
+  "RM_Murkblush": {
+   "at": "2026-10-07T05:57:17.270Z",
+   "decidedAt": "2026-10-07T05:57:12.852Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:17.270Z"
+  },
+  "RM_Neverset": {
+   "at": "2026-10-07T05:57:18.275Z",
+   "decidedAt": "2026-10-07T05:57:18.275Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:15.988Z"
+  },
+  "RM_Nissik": {
+   "at": "2026-10-07T05:54:27.294Z",
+   "decidedAt": "2026-10-07T05:54:26.098Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:54:24.853Z"
+  },
+  "RM_NissikCatch": {
+   "at": "2026-10-07T05:59:31.481Z",
+   "decidedAt": "2026-10-07T05:59:26.997Z",
+   "decision": "C",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "16bfec8bf02ff6ef921a701c24fa3050a6b7e58815b5ecddc7d0da6e248061f6"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "B",
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:59:31.481Z"
+  },
+  "RM_Oomal": {
+   "at": "2026-10-07T05:54:34.041Z",
+   "decidedAt": "2026-10-07T05:54:32.924Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:54:32.001Z"
+  },
+  "RM_OomalCatch": {
+   "at": "2026-10-07T05:59:41.522Z",
+   "decidedAt": "2026-10-07T05:59:41.522Z",
+   "decision": "C",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "fdf249144249a23345895a579cb377c9a688a826e30d5bf094f842ae222c16d5"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:59:40.193Z"
+  },
+  "RM_Orruhmu": {
+   "at": "2026-10-07T05:54:40.117Z",
+   "decidedAt": "2026-10-07T05:54:40.117Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:54:38.441Z"
+  },
+  "RM_Otheska": {
+   "at": "2026-10-07T05:54:52.057Z",
+   "decidedAt": "2026-10-06T03:34:45.212Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:54:52.057Z"
+  },
+  "RM_Reefback": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Sallik": {
+   "at": "2026-10-07T05:55:02.425Z",
+   "decidedAt": "2026-10-07T05:54:59.825Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:55:02.425Z"
+  },
+  "RM_SallikCatch": {
+   "at": "2026-10-07T05:59:46.057Z",
+   "decidedAt": "2026-10-07T05:59:46.057Z",
+   "decision": "C",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "0ae00ef211e776c4079e2113b5c37816308fff60a52907e85c531921eb444de1"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:59:44.982Z"
+  },
+  "RM_SaltBladeGrey": {
+   "at": "2026-10-07T05:57:25.432Z",
+   "decidedAt": "2026-10-07T05:57:25.432Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:24.177Z"
+  },
+  "RM_SaltChimneyVine": {
+   "at": "2026-10-07T05:57:22.019Z",
+   "decidedAt": "2026-10-07T05:57:22.019Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:20.955Z"
+  },
+  "RM_Saltswoon": {
+   "at": "2026-10-07T05:57:28.908Z",
+   "decidedAt": "2026-10-07T05:57:28.908Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:27.582Z"
+  },
+  "RM_Sorruth": {
+   "at": "2026-10-07T05:55:19.356Z",
+   "decidedAt": "2026-10-07T05:55:11.968Z",
+   "decision": "hold",
+   "note": "cut don't need",
+   "prefill": "A",
+   "purge": [
+    "f25fc6b22ec1181cf61e182d7e43107117450ca9c75e5f8c4cc440806d91886d",
+    "31d05e75f65f2db38d6ec0ee1a65f2b8547c07682ed6c52c7f70efad4aec4300"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:55:08.167Z"
+  },
+  "RM_SorruthCatch": {
+   "at": "2026-10-07T06:00:01.190Z",
+   "decidedAt": "2026-10-07T06:00:01.190Z",
+   "decision": "hold",
+   "note": "cut don't need",
+   "prefill": "A",
+   "purge": [
+    "f25fc6b22ec1181cf61e182d7e43107117450ca9c75e5f8c4cc440806d91886d",
+    "31d05e75f65f2db38d6ec0ee1a65f2b8547c07682ed6c52c7f70efad4aec4300",
+    "17d18ad7721b96eaff0db4b84ab1e7ed843963d813cb4ea86df83641afb643b3"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "B",
+    "C"
+   ],
+   "variantsAt": "2026-10-07T05:59:48.739Z"
+  },
+  "RM_SpherePlant": {
+   "at": "2026-10-07T05:57:32.559Z",
+   "decidedAt": "2026-10-07T05:57:32.559Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:57:31.126Z"
+  },
+  "RM_Thollim": {
+   "at": "2026-10-07T05:55:26.771Z",
+   "decidedAt": "2026-10-07T05:55:24.317Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T05:55:26.771Z"
+  },
+  "RM_ThollimCatch": {
+   "at": "2026-10-07T06:00:09.395Z",
+   "decidedAt": "2026-10-07T06:00:09.395Z",
+   "decision": "B",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "d0a7170ed439ed638f08bccdbce3132137885e77dd184441033a7a912306a7c3"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "B"
+   ],
+   "variantsAt": "2026-10-07T06:00:05.220Z"
+  },
+  "RSW_Reefback": {
+   "at": "2026-10-06T03:35:32.885Z",
+   "decision": "A",
+   "note": "Should be RimMandrake",
+   "prefill": "A"
+  }
+ },
+ "posture": "pick-one",
+ "reviewStatus": {
+  "at": "2026-10-07T06:00:10Z",
+  "by": "owner",
+  "evidence": "owner typed: Grey Sea sheet done. Please incorporate all these graphics right now, kill the ones I said to kill, and wire them up ASAP so we finally have sensible graphics on this sheet.",
+  "state": "ruled"
+ },
+ "savedAt": "2026-10-06T23:00:10-0700",
+ "savedBy": "review-sheet-sidecar",
+ "sheetId": "greysea_sheet_2026-10-05",
+ "snapshot": "infrastructure/state/art/sheets/greysea_sheet_2026-10-05.snapshot.json",
+ "snapshotId": "3eb8fede652a45d7",
+ "writeCount": 192
 }
