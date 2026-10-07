@@ -29,6 +29,12 @@ namespace RimMandrake.ExplosiveKnockback
             return def.harmsHealth ? RimMandrakeExplosiveKnockbackSettings.unpatchedHarmfulPercent / 100f : 0f;
         }
 
+        /// <summary>The blast's own throw cap (0 = the global maximum).</summary>
+        public static int OwnCapOf(DamageDef def)
+        {
+            return def?.GetModExtension<RM_KnockbackExtension>()?.maxThrowCells ?? 0;
+        }
+
         public static void Prefix(DamageWorker __instance, Explosion explosion, Thing t, List<Thing> damagedThings,
             List<Thing> ignoredThings, out bool __state)
         {
@@ -79,6 +85,7 @@ namespace RimMandrake.ExplosiveKnockback
                 radius = explosion.radius,
                 damType = __instance.def,
                 force = ForceOf(__instance.def),
+                ownCap = OwnCapOf(__instance.def),
                 instigator = explosion.instigator,
                 thing = t,
                 takeoff = t.Position,
@@ -94,6 +101,7 @@ namespace RimMandrake.ExplosiveKnockback
         public float radius;
         public DamageDef damType;
         public float force;
+        public int ownCap;
         public Thing instigator;
         public Thing thing;
         public IntVec3 takeoff;

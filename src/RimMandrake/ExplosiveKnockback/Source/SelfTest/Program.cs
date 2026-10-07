@@ -66,6 +66,20 @@ internal static class Program
         Check("K-01 strength 0", RM_KnockbackMath.ThrowCells(0f, 2.9f, 1f, 60f, s0) == 0);
         Check("K-01 max cap", RM_KnockbackMath.ThrowCells(0f, 9f, 3f, 5f, s) == s.maxCells);
 
+        // K-13 per-weapon cap (owner card 2026-10-06 "Let each weapon set it"): own cap replaces the global 6
+        Check("K-13 no own cap = global", RM_KnockbackMath.CapFor(0, 6, 1f) == 6);
+        Check("K-13 grav-ram own 10", RM_KnockbackMath.CapFor(10, 6, 1f) == 10);
+        Check("K-13 own cap may be below global", RM_KnockbackMath.CapFor(5, 6, 1f) == 5);
+        Check("K-13 scale 0.5", RM_KnockbackMath.CapFor(10, 6, 0.5f) == 5);
+        Check("K-13 scale floor 1", RM_KnockbackMath.CapFor(1, 6, 0.25f) == 1);
+        Check("K-13 scale ignored without own cap", RM_KnockbackMath.CapFor(0, 6, 2f) == 6);
+        var sGr = new KbSettings { maxCells = RM_KnockbackMath.CapFor(10, 6, 1f) };
+        Check("K-13 grav-ram force 4 centre throws 10", RM_KnockbackMath.ThrowCells(0f, 2.9f, 4f, 70f, sGr) == 10,
+            RM_KnockbackMath.ThrowCells(0f, 2.9f, 4f, 70f, sGr).ToString());
+        var sTh = new KbSettings { maxCells = RM_KnockbackMath.CapFor(8, 6, 1f) };
+        Check("K-13 thump force 2.5 centre throws 8 (global would give 6)", RM_KnockbackMath.ThrowCells(0f, 1.9f, 2.5f, 70f, sTh) == 8
+            && RM_KnockbackMath.ThrowCells(0f, 1.9f, 2.5f, 70f, s) == 6);
+
         // K-02 monotone in distance; 0 at the rim
         int prev = int.MaxValue;
         bool mono = true;
