@@ -6,6 +6,12 @@
  * biome is on the def's owner-editable surveyShadowBiomes list. Everything else is upstream's
  * design, unchanged. Omni Pursuit (a separate class in upstream) is not ported — not our
  * fiction, see About.xml.
+ *
+ * MODIFIED 2026-10-06 (EMPIRE_ESCALATION_LADDER_1): with RFPSettings.ladderEnabled (default on)
+ * the raid tick fires the next rung of the Imperial search ladder (EmpireLadder.cs) instead of
+ * FireRaid_NewTemp; the second wave is retired, endless waves run only once the top rung has
+ * landed, the interval is scaled by the ladder (Visibility band, pace, rung), and the alert
+ * carries the rung. Ladder off = the flat pursuit below, unchanged.
  */
 using RimWorld;
 using RimWorld.Planet;
@@ -169,12 +175,20 @@ namespace RuthlessPursuingMechanoids
                 {
                     return alertCached;
                 }
-                if (mapWarningTimers.TryGetValue(Find.CurrentMap, out var value) && Find.TickManager.TicksGame > TimerIntervalTick(value))
+                bool ladder = LadderHere;
+                if (ladder && !RFPSettings.showSearchAlert)
                 {
+                    return null;
+                }
+                if (mapWarningTimers.TryGetValue(Find.CurrentMap, out var value) && (ladder || Find.TickManager.TicksGame > TimerIntervalTick(value)))
+                {
+                    MapComponent_EmpireSearch search = ladder ? MapComponent_EmpireSearch.For(Find.CurrentMap) : null;
                     alertCached = new Alert_PursuitFactionThreat
                     {
                         raidTick = mapRaidTimers[Find.CurrentMap],
-                        factionName = PursuitFaction.NameColored
+                        factionName = PursuitFaction.NameColored,
+                        rungLine = search?.AlertLine(),
+                        contactLive = search != null && (search.ContactLive || search.terminal),
                     };
                     cachedAlertMap = Find.CurrentMap;
                 }
@@ -486,11 +500,54 @@ namespace RuthlessPursuingMechanoids
 
         public override void PostMapGenerate(Map map)
         {
+            if (LadderHere)
+            {
+                MapComponent_EmpireSearch.For(map)?.EnsureInit();
+            }
             StartTimers(map);
+        }
+
+        /* EMPIRE_ESCALATION_LADDER_1: this part runs the ladder only when the ladder is on and it
+         * is the scenario's (first live) pursuit part. */
+        internal bool LadderHere => RFPSettings.ladderEnabled && EmpireSearch.Part == this;
+
+        private float LadderFactor(Map map)
+        {
+            return LadderHere ? (MapComponent_EmpireSearch.For(map)?.NextIntervalFactor() ?? 1f) : 1f;
+        }
+
+        /* Called by MapComponent_EmpireSearch when a rung resolves: roll the next rung's timer
+         * (base 5-8 d x survey shadow x ladder factor) and its warning (the rung's warningHours
+         * before it; 0 = no separate warning letter). */
+        internal void ScheduleLadder(Map map)
+        {
+            if (map == null || !mapRaidTimers.ContainsKey(map))
+            {
+                return;
+            }
+            MapComponent_EmpireSearch search = MapComponent_EmpireSearch.For(map);
+            float factor = ShadowMultiplier(map) * LadderFactor(map);
+            int raw = Math.Max(RaidDelayRange.RandomInRange, TickInterval);
+            int now = Find.TickManager.TicksGame;
+            mapRaidTimers[map] = now + Math.Max(Mathf.RoundToInt(raw * factor), TickInterval);
+            float warnHours = search?.NextRungDef()?.warningHours ?? 0f;
+            mapWarningTimers[map] = warnHours > 0f
+                ? Math.Max(now + TickInterval, mapRaidTimers[map] - Mathf.RoundToInt(warnHours * GenDate.TicksPerHour))
+                : mapRaidTimers[map];
+            alertCached = null;
+            DebugUtility.DebugLog($"[Ladder] {map} next rung {search?.nextRung} at {mapRaidTimers[map]} (factor {factor:F2}), warning {mapWarningTimers[map]}");
         }
 
         public override void MapRemoved(Map map)
         {
+            if (LadderHere)
+            {
+                MapComponent_EmpireSearch search = MapComponent_EmpireSearch.For(map);
+                if (search != null && search.nextRung >= 0)
+                {
+                    GameComponent_EmpireSearch.Get()?.RecordDeparture(map.Tile, search.nextRung);
+                }
+            }
             if (mapWarningTimers.Remove(map))
             {
                 mapRaidTimers.Remove(map);
@@ -515,6 +572,12 @@ namespace RuthlessPursuingMechanoids
             UpdateDisabled();
             tmpMaps.Clear();
             tmpMaps.AddRange(mapWarningTimers.Keys);
+            bool ladder = LadderHere;
+            if (ladder)
+            {
+                /* the rung, band and countdown move; rebuild the alert hourly */
+                alertCached = null;
+            }
             /* You can technically edit the permanentEnemy field in a FactionDef during runtime, but that seems pretty ill-advised, since it changes the def
              * for the *entire game* until it's rebooted.
              * So instead, if the player has their pursuit faction set to 'permanent enemy', then we just reset the faction's goodwill to -100. */
@@ -559,6 +622,11 @@ namespace RuthlessPursuingMechanoids
                     continue;
                 }
 
+                if (ladder)
+                {
+                    TickLadder(tmpMap);
+                    continue;
+                }
                 if (Find.TickManager.TicksGame == TimerIntervalTick(mapWarningTimers[tmpMap]))
                 {
                     /* If the warning timer is the same as the raid timer, then send a special message saying that the faction got the drop on the player */
@@ -602,6 +670,40 @@ namespace RuthlessPursuingMechanoids
             }
         }
 
+        /* EMPIRE_ESCALATION_LADDER_1: one map's hourly ladder step. Warning letter for the coming
+         * rung, the rung itself on the raid tick (postponed if a storyteller Empire raid landed
+         * inside 2 days), and the endless waves only once the top rung has landed. */
+        private void TickLadder(Map map)
+        {
+            MapComponent_EmpireSearch search = MapComponent_EmpireSearch.For(map);
+            if (search == null)
+            {
+                return;
+            }
+            search.EnsureInit();
+            int now = Find.TickManager.TicksGame;
+            int warnTick = TimerIntervalTick(mapWarningTimers[map]);
+            int raidTick = TimerIntervalTick(mapRaidTimers[map]);
+            if (!search.ContactLive && !search.terminal && now == warnTick && warnTick != raidTick)
+            {
+                search.SendWarningLetter(PursuitFaction);
+            }
+            if (!search.ContactLive && !search.terminal && now == raidTick)
+            {
+                int postpone = search.FireNextRung(PursuitFaction);
+                if (postpone > 0)
+                {
+                    mapRaidTimers[map] = now + postpone;
+                    mapWarningTimers[map] = mapRaidTimers[map];
+                }
+            }
+            if (search.terminal && RFPSettings.endlessAfterTop && !disableEndlessWaves &&
+                now % TimerInterval(EndlessRaidInterval) == 0)
+            {
+                FireRaid_NewTemp(map, EndlessRaidMultiplier, EndlessRaidFloor);
+            }
+        }
+
         /* EMPIRE_PURSUIT_SURVEY_SHADOW_1 — 1f unless def is our subtype and the map's biome is
          * on its owner-editable list, in which case surveyShadowMultiplier (default 4x). */
         private float ShadowMultiplier(Map map)
@@ -623,7 +725,7 @@ namespace RuthlessPursuingMechanoids
                   (map.generatorDef == MapGeneratorDefOf.OrbitalRelay || map.generatorDef == MapGeneratorDefOf.Space || map.generatorDef ==  MapGeneratorDefOf.SpacePocket)) &&
                 !(pursuitFactionDef == FactionDefOf.Mechanoid && map.generatorDef == MapGeneratorDefOf.Mechhive))
             {
-                float shadowMult = ShadowMultiplier(map);
+                float shadowMult = ShadowMultiplier(map) * LadderFactor(map);
                 if (isFirstPeriod)
                 {
                     /* Roll the raid timer first, and use that as the ceiling for the warning timer. The warning timer is what signals the alert, after all, so if the
@@ -738,7 +840,15 @@ namespace RuthlessPursuingMechanoids
             incidentParms.faction = PursuitFaction;
             incidentParms.raidArrivalMode = PursuitRaidType;
             incidentParms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;
-            IncidentDefOf.RaidEnemy.Worker.TryExecute(incidentParms);
+            try
+            {
+                EmpireSearch.FiringLadder = true;
+                IncidentDefOf.RaidEnemy.Worker.TryExecute(incidentParms);
+            }
+            finally
+            {
+                EmpireSearch.FiringLadder = false;
+            }
             DebugUtility.DebugLog($"Firing new raid with {incidentParms.points} threat points for faction {PursuitFaction.Name}");
         }
 
@@ -778,6 +888,10 @@ namespace RuthlessPursuingMechanoids
 
         public string factionName;
 
+        /* EMPIRE_ESCALATION_LADDER_1: the search line, and whether a contact is live (no countdown). */
+        public string rungLine;
+        public bool contactLive;
+
         private bool Red => Find.TickManager.TicksGame > raidTick - 60000;
 
         private bool Critical => Find.TickManager.TicksGame > raidTick;
@@ -801,6 +915,10 @@ namespace RuthlessPursuingMechanoids
 
         public override string GetLabel()
         {
+            if (rungLine != null)
+            {
+                return contactLive ? rungLine : rungLine + ": " + (raidTick - Find.TickManager.TicksGame).ToStringTicksToPeriod(allowSeconds: false, shortForm: true, canUseDecimals: false);
+            }
             if (Critical)
             {
                 return "AlertPursuitThreatCritical".Translate(factionName);
@@ -810,6 +928,10 @@ namespace RuthlessPursuingMechanoids
 
         public override TaggedString GetExplanation()
         {
+            if (rungLine != null)
+            {
+                return "RUT_SearchAlertDesc".Translate(factionName);
+            }
             if (Critical)
             {
                 return "AlertPursuitThreatCriticalDesc".Translate(factionName);

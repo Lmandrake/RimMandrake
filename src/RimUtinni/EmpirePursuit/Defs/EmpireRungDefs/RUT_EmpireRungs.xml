@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- EMPIRE_ESCALATION_LADDER_1: the Imperial search ladder, design §3
+       (design/Jawa/proposals/empire_escalation_ladder_design_2026-10-02.md).
+       Each rung is a different KIND of contact. Rung N+1 comes only if rung N succeeded from the
+       Empire's side; otherwise rung N repeats. Every number is PROVISIONAL, a first guess from the
+       design doc, not tuned. {FACTION} is the pursuing faction's name. -->
+
+  <RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+    <defName>RUT_EmpireRung_Probe</defName>
+    <label>probe</label>
+    <rungIndex>1</rungIndex>
+    <kind>Probe</kind>
+    <!-- KX12 probe droid now; the canon 11-3K viper has no def yet. Missing = the faction's own smallest pawn. -->
+    <pawnKinds>
+      <li>RSW_DW_KotORDroidBad_KX12UPD</li>
+    </pawnKinds>
+    <pawnCount>1~2</pawnCount>
+    <successHours>2</successHours>
+    <timeoutHours>24</timeoutHours>
+    <arrivalLetterLabel>Probe landed</arrivalLetterLabel>
+    <arrivalLetterText>A pod has come down well away from the colony. An Imperial probe droid of {FACTION} is drifting toward us to look.\n\nIf it watches our people or the ship long enough (about two hours of clear sight) it will transmit what it saw, and the search will move on to its next step.\n\nThree ways to beat it: destroy it before it transmits (it self-destructs when killed, so stand back), keep everyone out of its sight (indoors, in the dark, under the hull), or simply let it leave having seen nothing.</arrivalLetterText>
+    <successLetterLabel>Probe transmitted</successLetterLabel>
+    <successLetterText>The probe saw us and sent its report. {FACTION} will send someone to confirm it.</successLetterText>
+    <failLetterLabel>Probe saw nothing</failLetterLabel>
+    <failLetterText>The probe is gone and it reported nothing. The search holds where it was.</failLetterText>
+  </RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+
+  <RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+    <defName>RUT_EmpireRung_Spotter</defName>
+    <label>spotter</label>
+    <rungIndex>2</rungIndex>
+    <kind>Spotter</kind>
+    <pointsFactor>0.35</pointsFactor>
+    <minPoints>150</minPoints>
+    <successHours>6</successHours>
+    <timeoutHours>36</timeoutHours>
+    <arrivalLetterLabel>Scouts staging at the ridge</arrivalLetterLabel>
+    <arrivalLetterText>A small scout team of {FACTION} has walked in and is taking position at range. They are not here to fight. One of them carries the comm-link and is calling in what he sees.\n\nIf he watches the colony or the ship for about six hours the call goes through and a strike team follows.\n\nKill or down the spotter and the rest will leave. Or launch now. Or keep him from seeing anything at all.</arrivalLetterText>
+    <successLetterLabel>The call went out</successLetterLabel>
+    <successLetterText>The spotter's call got through. {FACTION} knows where we are. A strike will follow.</successLetterText>
+    <failLetterLabel>The call never went out</failLetterLabel>
+    <failLetterText>The scouts are pulling back without having called us in. The search holds.</failLetterText>
+  </RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+
+  <RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+    <defName>RUT_EmpireRung_Strike</defName>
+    <label>strike</label>
+    <rungIndex>3</rungIndex>
+    <kind>Strike</kind>
+    <arrivalMode>EdgeDropGroups</arrivalMode>
+    <raidStrategy>ImmediateAttackSmart</raidStrategy>
+    <pointsFactor>1.0</pointsFactor>
+    <warningHours>12</warningHours>
+    <timeoutHours>72</timeoutHours>
+    <warningLetterLabel>Strike team inbound</warningLetterLabel>
+    <warningLetterText>{FACTION} is sending a strike team to confirm what it found. They land in about twelve hours.\n\nBeat them, or be gone before they arrive.</warningLetterText>
+    <arrivalLetterLabel>Imperial strike</arrivalLetterLabel>
+    <arrivalLetterText>Troopers and attack droids of {FACTION} are dropping in groups at the edge of the map.</arrivalLetterText>
+    <successLetterLabel>The strike held</successLetterLabel>
+    <successLetterText>We did not drive them off. {FACTION} will tighten the net: next comes a cordon around the ship.</successLetterText>
+    <failLetterLabel>Strike repelled</failLetterLabel>
+    <failLetterText>The strike team is broken. That buys us time, but {FACTION} will try again.</failLetterText>
+  </RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+
+  <RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+    <defName>RUT_EmpireRung_Cordon</defName>
+    <label>cordon</label>
+    <rungIndex>4</rungIndex>
+    <kind>Cordon</kind>
+    <arrivalMode>EdgeWalkIn</arrivalMode>
+    <raidStrategy>Siege</raidStrategy>
+    <pointsFactor>1.0</pointsFactor>
+    <warningHours>24</warningHours>
+    <successHours>48</successHours>
+    <timeoutHours>72</timeoutHours>
+    <warningLetterLabel>They are building a cordon</warningLetterLabel>
+    <warningLetterText>{FACTION} is moving an ion emplacement into range of the ship. In about a day they will set up a siege camp.\n\nOnce it is in place, ion volleys will knock the grav engine out for a few hours at a time. Never for days: the way out stays open. Launch before the first volley, or break the camp.</warningLetterText>
+    <arrivalLetterLabel>Ion cordon</arrivalLetterLabel>
+    <arrivalLetterText>A siege team of {FACTION} has arrived to pin the ship down. The first ion volley comes in about a day. Each one stalls the grav engine for a few hours.\n\nAssault the camp, or launch while the engine is clear.</arrivalLetterText>
+    <successLetterLabel>The cordon held</successLetterLabel>
+    <successLetterText>The cordon stood for two days. {FACTION} is bringing breachers.</successLetterText>
+    <failLetterLabel>Cordon broken</failLetterLabel>
+    <failLetterText>The siege camp is broken. The ship is free.</failLetterText>
+  </RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+
+  <RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+    <defName>RUT_EmpireRung_Breach</defName>
+    <label>breach</label>
+    <rungIndex>5</rungIndex>
+    <kind>Breach</kind>
+    <arrivalMode>EdgeDropGroups</arrivalMode>
+    <raidStrategy>ImmediateAttackBreaching</raidStrategy>
+    <secondArrivalMode>CenterDrop</secondArrivalMode>
+    <secondRaidStrategy>ImmediateAttack</secondRaidStrategy>
+    <secondPointsFactor>0.5</secondPointsFactor>
+    <pointsFactor>1.2</pointsFactor>
+    <warningHours>6</warningHours>
+    <timeoutHours>72</timeoutHours>
+    <warningLetterLabel>Breach assault coming</warningLetterLabel>
+    <warningLetterText>{FACTION} is coming in hard: breachers at the walls and a second team dropped straight into the colony. About six hours.\n\nWin a hard fight, or leave.</warningLetterText>
+    <arrivalLetterLabel>Breach assault</arrivalLetterLabel>
+    <arrivalLetterText>Two Imperial assaults at once: breachers cutting through the walls, and a second team dropping into the middle of the colony.</arrivalLetterText>
+    <successLetterLabel>They broke through</successLetterLabel>
+    <successLetterText>We did not drive them off. {FACTION} has stopped trying to take us. A Star Destroyer is moving into orbit.</successLetterText>
+    <failLetterLabel>Breach repelled</failLetterLabel>
+    <failLetterText>Both assaults are broken. {FACTION} will try again.</failLetterText>
+  </RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+
+  <RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+    <defName>RUT_EmpireRung_Bombardment</defName>
+    <label>bombardment</label>
+    <rungIndex>6</rungIndex>
+    <kind>Bombardment</kind>
+    <telegraphHours>24</telegraphHours>
+    <arrivalLetterLabel>Star Destroyer in orbit</arrivalLetterLabel>
+    <arrivalLetterText>{FACTION} has a Star Destroyer overhead. In one day it will bombard the marked area around the ship, and it will destroy buildings.\n\nThis cannot be fought. Leave. After the bombardment, the waves will not stop until we do.</arrivalLetterText>
+    <successLetterLabel>Orbital bombardment</successLetterLabel>
+    <successLetterText>The bombardment has begun. {FACTION} will keep coming until we leave this place.</successLetterText>
+  </RuthlessPursuingMechanoids.RUT_EmpireRungDef>
+</Defs>

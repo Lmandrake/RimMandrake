@@ -85,7 +85,18 @@ Still not proven / likely first-live-run corrections:
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("EmpirePursuit")
-suite.toggles = ["printDebug"]
+suite.toggles = ["printDebug", "ladderEnabled", "probesOpen", "cordonEnabled", "bombardmentEnabled"]
+
+# EMPIRE_ESCALATION_LADDER_1: the six rungs of the Imperial search ladder, as shipped in
+# Defs/EmpireRungDefs/RUT_EmpireRungs.xml. Index -> (defName, kind).
+LADDER_RUNGS = {
+    1: ("RUT_EmpireRung_Probe", "Probe"),
+    2: ("RUT_EmpireRung_Spotter", "Spotter"),
+    3: ("RUT_EmpireRung_Strike", "Strike"),
+    4: ("RUT_EmpireRung_Cordon", "Cordon"),
+    5: ("RUT_EmpireRung_Breach", "Breach"),
+    6: ("RUT_EmpireRung_Bombardment", "Bombardment"),
+}
 
 SCEN_CLASS = "RuthlessPursuingMechanoids.ScenPart_RuthlessPursuingMechanoids"
 SCEN_DEF = "RUT_RuthlessPursuingMechanoids"
@@ -253,3 +264,38 @@ def toggle_flips(t):
     with t.component("printDebug_flips", toggle="printDebug"):
         t.set_setting(SETTINGS_TYPE, {"printDebug": True})
         t.set_setting(SETTINGS_TYPE, {"printDebug": False})
+
+
+@suite.chain("ladder_rungs_resolve")
+def ladder_rungs_resolve(t):
+    """EMPIRE_ESCALATION_LADDER_1 P1: all six rung defs load with the index and kind the
+    runner dispatches on. A rung that failed to load would be skipped silently by
+    NextRungDef (it walks up to the next index), so this is the check that catches it.
+    Reads the tool's own success/foundCount, never a substring of the payload."""
+    with t.component("six_rungs_load_in_order", beyond_toggle=True):
+        r = t.bridge_call(
+            "jawa/get_defs",
+            defs=";".join("RUT_EmpireRungDef/%s" % d
+                          for d, _ in LADDER_RUNGS.values()),
+            fields="rungIndex,kind")
+        if not (r or {}).get("success"):
+            raise ExpectationFailed("jawa/get_defs did not succeed (UNMEASURED): %r" % r)
+        rows = (r or {}).get("defs", (r or {}).get("results", [])) or []
+        by_name = {d.get("defName"): (d.get("fields") or {}) for d in rows}
+        for idx, (name, kind) in LADDER_RUNGS.items():
+            f = by_name.get(name)
+            ok = f is not None and str(f.get("rungIndex")) == str(idx) and str(f.get("kind")) == kind
+            t._record("%s -> %r" % (name, f), ok)
+            if not ok:
+                raise ExpectationFailed("%s did not read back as rung %d %s: %r" % (name, idx, kind, f))
+
+
+@suite.chain("ladder_toggle_flips")
+def ladder_toggle_flips(t):
+    """The ladder's master switch and the three rungs a player may remove. Bare flip and
+    read-back; the behaviour behind each (the runner skipping a disabled rung, ladder off =
+    upstream flat pursuit) is the live gauntlet still owed (item EMPIRE_ESCALATION_LADDER_1)."""
+    for name in ("ladderEnabled", "probesOpen", "cordonEnabled", "bombardmentEnabled"):
+        with t.component("%s_flips" % name, toggle=name):
+            t.set_setting(SETTINGS_TYPE, {name: False})
+            t.set_setting(SETTINGS_TYPE, {name: True})
