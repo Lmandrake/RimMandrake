@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 9 / design §3e: the Fall Line's renewal on the shared wreck-fall worker
+  (mandrake.rm.wreckage), reading RUT_WreckList_FallLine. baseChance 0 = debug-fire only, like RM_WreckFall:
+  making it fire on Fall Line tiles (and moving RUT_FallArrival onto this worker) is the follow-up, not
+  built. Gated by the Wreckage "Fresh wreck falls" setting through the worker.
+-->
+<Defs>
+
+  <IncidentDef MayRequire="mandrake.rm.biomes">
+    <defName>RUT_FallLineWreckFall</defName>
+    <label>Fall Line wreckage falls</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Wreckage.RM_IncidentWorker_WreckFall</workerClass>
+    <baseChance>0</baseChance>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckFallExtension">
+        <wreckList>RUT_WreckList_FallLine</wreckList>
+        <countRange>1~4</countRange>
+        <spreadRadius>5</spreadRadius>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 9 (design §4 Fall Line: "Hull, Speeder, Carapace, TIE-panel (RSW_);
+  Fresh ... delivered by §3e, not scattered"). The Fall Line's own Imperial register: children of
+  mandrake.rm.wreckage's families under RUT_WreckWeathering_FallLine. The canon TIE panel and landspeeder
+  are RSW defs (mandrake.rsw.injections) added to the list by patch. Delivered only through
+  RUT_WreckList_FallLine and RUT_FallLineWreckFall (Defs/IncidentDefs); never a field.
+  Art: on the vanilla ShipChunk placeholder until wreck_rutfallline* lands.
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull" MayRequire="mandrake.rm.biomes">
+    <defName>RUT_FallLineWreckHull</defName>
+    <label>fresh-fallen hull</label>
+    <description>A section of grey Imperial hull plate, still warm from the fall, the Empire's cog stencilled across a seam that split on impact. Nothing has been taken from it yet. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RUT_WreckWeathering_FallLine</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Carapace" MayRequire="mandrake.rm.biomes">
+    <defName>RUT_FallLineWreckCarapace</defName>
+    <label>fallen Imperial droid shell</label>
+    <description>The black shell of an Imperial service droid, thrown clear of whatever it fell in. Its photoreceptor is dark, but the casing is whole. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RUT_WreckWeathering_FallLine</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

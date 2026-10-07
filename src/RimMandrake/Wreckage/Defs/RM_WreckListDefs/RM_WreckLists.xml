@@ -10,7 +10,7 @@
   6 casts them), so it names the two vanilla ship chunks, Core's ShipChunk and Odyssey's
   ShipChunk_Mech (every DLC is a shipping prerequisite). Neither carries RM_CompSalvageLoot, so a
   fall of them yields only their costList. Replace the rows when fresh family children exist.
-  The Fall Line's own list (RUT_FallWreck_*) belongs in the RUT layer, never here.
+  The Fall Line's own list is RUT_WreckList_FallLine, in the RUT layer (UtinniPatches), never here.
   Weights PROVISIONAL.
 -->
 <Defs>
