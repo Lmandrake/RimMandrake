@@ -61,6 +61,19 @@ def push_argv(tok):
     return tok[i + 1:]
 
 
+def pushed_head(cwd, refspec):
+    """The commit a `git push <remote> <src>:<dst>` publishes: <src>, not HEAD
+    (ART_LEDGER_SEAT_DEFAULT_1 — `git push origin <sha>:main` used to be checked
+    against whatever HEAD happened to be). Falls back to HEAD."""
+    src = (refspec or "").lstrip("+").split(":", 1)[0] if refspec else ""
+    if src:
+        r = subprocess.run(["git", "-C", cwd, "rev-parse", "--verify", "-q", src + "^{commit}"],
+                           capture_output=True, text=True, timeout=8)
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
+    return "HEAD"
+
+
 def resolve_range(cwd, args):
     """(base, head) rev-range this push is about to publish, or None if it
     cannot be determined (caller then fails open on this command)."""
@@ -78,7 +91,7 @@ def resolve_range(cwd, args):
         r = subprocess.run(["git", "-C", cwd, "rev-parse", "--verify", "-q", c],
                             capture_output=True, text=True, timeout=8)
         if r.returncode == 0:
-            return (c, "HEAD")
+            return (c, pushed_head(cwd, refspec))
     return None
 
 

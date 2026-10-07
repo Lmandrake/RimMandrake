@@ -112,6 +112,19 @@ def check_commit(root, paths):
     return bad, shard_problem
 
 
+def pushed_head(cwd, refspec):
+    """The commit a `git push <remote> <src>:<dst>` publishes: <src>, not HEAD
+    (ART_LEDGER_SEAT_DEFAULT_1 — `git push origin <sha>:main` used to be checked
+    against whatever HEAD happened to be). Falls back to HEAD."""
+    src = (refspec or "").lstrip("+").split(":", 1)[0] if refspec else ""
+    if src:
+        r = subprocess.run(["git", "-C", cwd, "rev-parse", "--verify", "-q", src + "^{commit}"],
+                           capture_output=True, text=True, timeout=8)
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
+    return "HEAD"
+
+
 def _push_range(cwd, args):
     positional = [a for a in args if not a.startswith("-")]
     remote, refspec = (positional + [None, None])[:2]
@@ -126,7 +139,7 @@ def _push_range(cwd, args):
         r = subprocess.run(["git", "-C", cwd, "rev-parse", "--verify", "-q", c],
                            capture_output=True, text=True, timeout=8)
         if r.returncode == 0:
-            return c, "HEAD"
+            return c, pushed_head(cwd, refspec)
     return None
 
 

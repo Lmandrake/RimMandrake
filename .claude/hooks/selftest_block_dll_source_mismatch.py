@@ -150,6 +150,18 @@ def main():
     check("DLL rebuilt with matching stamp regen -> allow", ALLOW)
     g("reset", "-q", "--hard", "origin/main")
 
+    # 4b. ART_LEDGER_SEAT_DEFAULT_1: `git push origin <sha>:main` publishes <sha>,
+    #     not HEAD. A clean HEAD must not launder a bad pushed commit.
+    write(p["foo"], FOO_V1 + "// edited again, NOT rebuilt\n")
+    g("add", "src")
+    g("commit", "-q", "-m", "bad commit pushed by sha")
+    bad_sha = g("rev-parse", "HEAD").stdout.decode().strip()
+    g("reset", "-q", "--hard", "origin/main")
+    check("bad commit pushed by explicit sha, clean HEAD -> deny", DENY,
+          cmd="git push origin %s:main" % bad_sha)
+    check("explicit HEAD:main refspec, clean HEAD -> allow", ALLOW,
+          cmd="git push origin HEAD:main")
+
     # 4. A mismatch already on origin/main (pre-existing) must not block a
     #    LATER, unrelated push that does not touch it.
     write(p["foo"], FOO_V2)  # same edit as case 2, but this time really pushed
