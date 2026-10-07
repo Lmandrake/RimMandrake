@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- One invisible, impassable cell of a huge plant's trunk. Spawned and removed only by
+       CompHugeFootprint (never by a player, never at mapgen by itself). Being an impassable EDIFICE
+       is the whole point: vanilla's own path grid, regions, blueprint refusal and plant-growth
+       checks then treat the trunk as solid with no further patching. It carries no hit points and no
+       flammability, so damage and fire go to the plant itself on its root cell. -->
+  <ThingDef>
+    <defName>RM_HugeTrunkBlocker</defName>
+    <label>trunk</label>
+    <description>The solid trunk of a huge plant.</description>
+    <thingClass>RimMandrake.HugeThings.Building_TrunkBlocker</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <drawerType>None</drawerType>
+    <passability>Impassable</passability>
+    <fillPercent>0.75</fillPercent>
+    <useHitPoints>false</useHitPoints>
+    <selectable>false</selectable>
+    <rotatable>false</rotatable>
+    <holdsRoof>false</holdsRoof>
+    <blockLight>false</blockLight>
+    <blockWind>false</blockWind>
+    <tickerType>Rare</tickerType>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <canOverlapZones>false</canOverlapZones>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>true</isEdifice>
+      <isInert>true</isInert>
+      <isTargetable>false</isTargetable>
+      <claimable>false</claimable>
+      <repairable>false</repairable>
+      <neverBuildable>true</neverBuildable>
+      <expandHomeArea>false</expandHomeArea>
+      <allowAutoroof>false</allowAutoroof>
+      <canBuildNonEdificesUnder>false</canBuildNonEdificesUnder>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+  </ThingDef>
+</Defs>
