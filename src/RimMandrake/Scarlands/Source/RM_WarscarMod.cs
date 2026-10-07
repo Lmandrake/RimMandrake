@@ -129,6 +129,7 @@ namespace RimMandrake.Scarlands
         // WARSCAR_AEROSOL_SCREEN_1 -- the aerosol screen core
         public static bool aerosolScreenEnabled = true;      // screens block airborne toxins, fallout and the film
         public static float aerosolScreenRadiusFactor = 1f;  // scales every screen's radius
+        public static bool calibrationEnabled = true;        // calibrated screens scrub tox gas and slowly un-pollute ground
         public static int hummingRingsPerMap = 2;            // projector rings per new map (0-3); the first is always live
         public static bool ringSalvageEnabled = true;        // evaluated rings can be uninstalled, repaired or stripped
         public static bool glowerShieldingEnabled = true;    // glower shield panels and plates shield against toxins
@@ -214,6 +215,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref loosenedPanelsPerMap, "loosenedPanelsPerMap", 3f);
             Scribe_Values.Look(ref aerosolScreenEnabled, "aerosolScreenEnabled", true);
             Scribe_Values.Look(ref aerosolScreenRadiusFactor, "aerosolScreenRadiusFactor", 1f);
+            Scribe_Values.Look(ref calibrationEnabled, "calibrationEnabled", true);
             Scribe_Values.Look(ref glowerShieldingEnabled, "glowerShieldingEnabled", true);
             Scribe_Values.Look(ref hummingRingsPerMap, "hummingRingsPerMap", 2);
             Scribe_Values.Look(ref shipWakesLine, "shipWakesLine", true);
@@ -403,6 +405,9 @@ namespace RimMandrake.Scarlands
             {
                 list.Label("Screen radius: x" + aerosolScreenRadiusFactor.ToString("0.00"));
                 aerosolScreenRadiusFactor = list.Slider(aerosolScreenRadiusFactor, 0.5f, 2f);
+                list.CheckboxLabeled("Calibrated screens scrub the air and ground", ref calibrationEnabled,
+                    "A calibrated aerosol screen slowly clears toxic gas and, more slowly, ground pollution inside its dome. "
+                  + "Off: calibrated screens only block, like the plain ones.");
             }
             list.CheckboxLabeled("Glower shielding", ref glowerShieldingEnabled,
                 "Glower shield panels give pawns in their room toxic environment resistance and halve room toxic damage; "

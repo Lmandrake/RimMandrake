@@ -65,6 +65,8 @@ namespace RimMandrake.Scarlands
         // Self-powered screens (the live rings) set this false and ignore power entirely.
         public bool needsPower = true;
         public bool drawDome = true;
+        // Part 3/4: a calibrated screen also scrubs GasType.ToxGas and slowly un-pollutes ground in radius.
+        public bool calibrated = false;
 
         public RM_CompProperties_AerosolScreen()
         {
@@ -114,6 +116,55 @@ namespace RimMandrake.Scarlands
         {
             ActiveScreens.Remove(this);
             base.PostDeSpawn(map, mode);
+        }
+
+        private const int CalibrationIntervalTicks = 250;
+        private const int ToxGasScrubPerPass = 12;   // density units (of 255) per cell per pass
+
+        public override void CompTick()
+        {
+            base.CompTick();
+            if (Props.calibrated && parent.IsHashIntervalTick(CalibrationIntervalTicks)) DoCalibrationPass();
+        }
+
+        // Rings tick Rare rather than Normal; whichever ticker the def uses, only one of these runs.
+        public override void CompTickRare()
+        {
+            base.CompTickRare();
+            if (Props.calibrated) DoCalibrationPass();
+        }
+
+        // Scrubs tox gas in radius and un-pollutes one random polluted cell. Slow by design.
+        public void DoCalibrationPass()
+        {
+            if (!Props.calibrated || !RM_WarscarSettings.calibrationEnabled || !RM_WarscarSettings.aerosolScreenEnabled) return;
+            if (!IsScreenLive || parent.Map == null) return;
+            Map map = parent.Map;
+            float r = Radius;
+            GasGrid gas = map.gasGrid;
+            PollutionGrid pol = map.pollutionGrid;
+            List<IntVec3> polluted = null;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(parent.Position, r, true))
+            {
+                if (!c.InBounds(map)) continue;
+                if (gas != null)
+                {
+                    byte tox = gas.DensityAt(c, GasType.ToxGas);
+                    if (tox > 0)
+                    {
+                        byte nt = (byte)Mathf.Max(0, tox - ToxGasScrubPerPass);
+                        gas.SetDirect(c, gas.DensityAt(c, GasType.BlindSmoke), nt,
+                            gas.DensityAt(c, GasType.RotStink), gas.DensityAt(c, GasType.DeadlifeDust));
+                        map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Gas);
+                    }
+                }
+                if (ModsConfig.BiotechActive && pol != null && pol.CanUnpollute(c))
+                {
+                    if (polluted == null) polluted = new List<IntVec3>();
+                    polluted.Add(c);
+                }
+            }
+            if (polluted != null) pol.SetPolluted(polluted.RandomElement(), false);
         }
 
         // Read by the prefixes below and by the Settling film. A colony carries a handful of
@@ -200,6 +251,62 @@ namespace RimMandrake.Scarlands
             if (!RM_CompAerosolScreen.IsPositionScreened(__instance.Position, __instance.Map)) return;
             string line = "Screened from airborne toxins";
             __result = string.IsNullOrEmpty(__result) ? line : __result + "\n" + line;
+        }
+    }
+
+    // Noxious haze (Biotech): the thought, the plant growth factor, the stat part and meditation all
+    // read NoxiousHazeUtility.IsExposedToNoxiousHaze(thing, cell, map) (the one-arg overload forwards
+    // to it), so one prefix suppresses mood and plant factors for anything standing in a screened cell.
+    [HarmonyPatch(typeof(NoxiousHazeUtility), nameof(NoxiousHazeUtility.IsExposedToNoxiousHaze), new[] { typeof(Thing), typeof(IntVec3), typeof(Map) })]
+    public static class RM_AerosolScreenPatches_NoxiousHaze
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(IntVec3 cell, Map map, ref bool __result)
+        {
+            if (map == null || !RM_CompAerosolScreen.IsPositionScreened(cell, map)) return true;
+            __result = false;
+            return false;
+        }
+    }
+
+    // Wasteland ash fall lives in another assembly that does not reference this one, so it is patched
+    // by name at startup: skipped silently when RM_MapComponent_WastelandStorms (or its private DoFall)
+    // is absent, so this assembly loads with or without the Wasteland mod. DoFall's finalizer clears the
+    // flag even if it throws; PollutionGrid.SetPolluted(true) is refused only while the flag is set and
+    // only for screened cells, so no other pollution source is touched.
+    [StaticConstructorOnStartup]
+    public static class RM_AerosolScreenWastelandBridge
+    {
+        [System.ThreadStatic] private static Map fallMap;
+
+        static RM_AerosolScreenWastelandBridge()
+        {
+            try
+            {
+                System.Type t = AccessTools.TypeByName("RimMandrake.Wasteland.RM_MapComponent_WastelandStorms");
+                System.Reflection.MethodInfo doFall = t == null ? null : AccessTools.Method(t, "DoFall");
+                System.Reflection.MethodInfo setPolluted = AccessTools.Method(typeof(PollutionGrid), nameof(PollutionGrid.SetPolluted));
+                if (doFall == null || setPolluted == null) return;
+                Harmony h = new Harmony("mandrake.rm.warscar.aerosolwasteland");
+                h.Patch(doFall,
+                    prefix: new HarmonyMethod(typeof(RM_AerosolScreenWastelandBridge), nameof(FallPrefix)),
+                    finalizer: new HarmonyMethod(typeof(RM_AerosolScreenWastelandBridge), nameof(FallFinalizer)));
+                h.Patch(setPolluted, prefix: new HarmonyMethod(typeof(RM_AerosolScreenWastelandBridge), nameof(SetPollutedPrefix)));
+            }
+            catch (System.Exception e)
+            {
+                Log.Warning("[RM Warscar] aerosol screen could not bridge Wasteland ash fall: " + e.Message);
+            }
+        }
+
+        public static void FallPrefix(MapComponent __instance) { fallMap = __instance?.map; }
+        public static void FallFinalizer() { fallMap = null; }
+
+        public static bool SetPollutedPrefix(IntVec3 cell, bool isPolluted)
+        {
+            Map m = fallMap;
+            if (m == null || !isPolluted) return true;
+            return !RM_CompAerosolScreen.IsPositionScreened(cell, m);
         }
     }
 }
