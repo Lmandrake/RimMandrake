@@ -331,7 +331,8 @@ namespace RimMandrake.KineticArms
                         Pawn sh = Colonist(s, "shooter", O(s, -6, 0));
                         Pawn t = Hostile(s, "p", O(s, 0, 0));
                         Fire(sh, "RM_Proj_GravRamPulse", t, "RM_Gun_GravRam");
-                        s.verdict = sc => AlongAxis(sc, "p", 1, 0, 5, true);
+                        // its own cap is 10 (owner card 2026-10-06): >= 7 proves it is no longer held to the global 6
+                        s.verdict = sc => AlongAxis(sc, "p", 1, 0, 7, true);
                         return null;
                     }
 

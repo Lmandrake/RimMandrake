@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Kinetic Arms damage families (design §3, §10). One DamageDef PER WEAPON because Explosive Knockback reads its
-     throw force from the DamageDef only (RM_KnockbackExtension.force); the force is that weapon's throw multiplier.
+     throw force from the DamageDef only (RM_KnockbackExtension.force); the force is that weapon's throw multiplier and
+     maxThrowCells its own maximum throw (owner card 2026-10-06: each weapon sets its own cap; grenades stay short).
      Kinetic Arms' "Kinetic throw strength" setting rescales these forces at load (RM_KineticArmsMod.ApplySettings).
      Concussive = a light bruising blast; Repulse = no wound at all (RM_DamageWorker_KineticOnly), the throw is the effect. -->
 <Defs>
@@ -52,7 +53,7 @@
     <defName>RM_Concussive_Thudder</defName>
     <label>thudder blast</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.0</force></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.0</force><maxThrowCells>6</maxThrowCells></li>
     </modExtensions>
   </DamageDef>
 
@@ -60,7 +61,7 @@
     <defName>RM_Concussive_Slam</defName>
     <label>slam charge</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force><maxThrowCells>7</maxThrowCells></li>
     </modExtensions>
   </DamageDef>
 
@@ -68,7 +69,7 @@
     <defName>RM_Concussive_ThumpShell</defName>
     <label>thump shell</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.2</force><maxThrowCells>8</maxThrowCells></li>
     </modExtensions>
   </DamageDef>
 
@@ -76,7 +77,7 @@
     <defName>RM_Repulse_Palm</defName>
     <label>palm thump</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force><maxThrowCells>5</maxThrowCells></li>
     </modExtensions>
   </DamageDef>
 
@@ -84,7 +85,7 @@
     <defName>RM_Repulse_Repulsor</defName>
     <label>repulsor bolt</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.8</force></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.8</force><maxThrowCells>8</maxThrowCells></li>
     </modExtensions>
   </DamageDef>
 
@@ -92,7 +93,7 @@
     <defName>RM_Repulse_Pulse</defName>
     <label>pulse wave</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force><maxThrowCells>8</maxThrowCells></li>
     </modExtensions>
   </DamageDef>
 
@@ -100,7 +101,7 @@
     <defName>RM_Repulse_GravRam</defName>
     <label>grav-ram pulse</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>4.0</force></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>4.0</force><maxThrowCells>10</maxThrowCells></li>
     </modExtensions>
   </DamageDef>
 
@@ -108,7 +109,7 @@
     <defName>RM_Repulse_Kicker</defName>
     <label>kicker mine</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>3.0</force></li>
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>3.0</force><maxThrowCells>7</maxThrowCells></li>
     </modExtensions>
   </DamageDef>
 </Defs>
