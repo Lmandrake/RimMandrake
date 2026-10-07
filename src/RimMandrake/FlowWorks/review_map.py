@@ -993,7 +993,8 @@ def main(argv=None):
         keysheet(S, st, doc, m, live)
         R.say("DONE in %ss; visuals %s, gallery %s; %d notes (Transient/fw_review_map_verify.json)" % (
             live["wall_s"], vis_ok, gal_ok, len(R.notes)))
-        return 0
+        if not a.save:          # --build --save used to return here and skip the save silently
+            return 0
     if a.save:
         R.sweep(R.keep_rects(S))
         R.call("rimworld/pause_game", pause=True)
