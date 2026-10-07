@@ -846,11 +846,25 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     [HarmonyPatch(typeof(GenExplosion), nameof(GenExplosion.DoExplosion))]
     internal static class Patch_GenExplosion_CutSpans
     {
+        /// <summary>Kinetic Arms marks its throw-not-wound blasts with a DefModExtension named RM_KineticBlastExtension
+        /// (matched by NAME: this mod cannot reference that assembly). Kinetic Arms' "Kinetic blasts cut aerial cords"
+        /// setting removes the marker, and they cut again.</summary>
+        internal static bool IsKineticBlast(DamageDef d)
+        {
+            if (d.modExtensions == null) return false;
+            for (int i = 0; i < d.modExtensions.Count; i++)
+            {
+                if (d.modExtensions[i]?.GetType().Name == "RM_KineticBlastExtension") return true;
+            }
+            return false;
+        }
+
         private static void Postfix(IntVec3 center, Map map, float radius, DamageDef damType, int damAmount)
         {
             try
             {
                 if (map == null || damType == null || !damType.harmsHealth) return;
+                if (IsKineticBlast(damType)) return; // owner Q3 (2026-10-06): a kinetic blast sways cords, only real explosions cut them
                 float dmg = damAmount >= 0 ? damAmount : damType.defaultDamage;
                 map.GetComponent<RM_MapComponent_Aerial>()?.Notify_Explosion(center, radius, dmg);
             }

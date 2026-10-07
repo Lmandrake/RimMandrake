@@ -29,6 +29,11 @@ namespace RimMandrake.KineticArms
         public static float pulseRechargeSeconds = 20f;
         public static bool lootedOnRaiders = true;
         public static float lootedChancePercent = 2f;
+        public static bool foundInRuins = true;
+        public static float ruinsChancePercent = 35f;   // PROVISIONAL: per ancient-danger temple
+        public static bool kickerHidden = true;
+        public static float pulsePowerDraw = 350f;
+        public static bool kineticCutsCords = false;    // owner Q3: kinetic blasts sway cords, never cut them
 
         public override void ExposeData()
         {
@@ -50,6 +55,11 @@ namespace RimMandrake.KineticArms
             Scribe_Values.Look(ref pulseRechargeSeconds, "pulseRechargeSeconds", 20f);
             Scribe_Values.Look(ref lootedOnRaiders, "lootedOnRaiders", true);
             Scribe_Values.Look(ref lootedChancePercent, "lootedChancePercent", 2f);
+            Scribe_Values.Look(ref foundInRuins, "foundInRuins", true);
+            Scribe_Values.Look(ref ruinsChancePercent, "ruinsChancePercent", 35f);
+            Scribe_Values.Look(ref kickerHidden, "kickerHidden", true);
+            Scribe_Values.Look(ref pulsePowerDraw, "pulsePowerDraw", 350f);
+            Scribe_Values.Look(ref kineticCutsCords, "kineticCutsCords", false);
         }
     }
 
@@ -73,6 +83,7 @@ namespace RimMandrake.KineticArms
 
         /// <summary>Our per-weapon DamageDefs and their shipped forces (the XML values), captured once at startup.</summary>
         private static readonly Dictionary<DamageDef, float> baseForces = new Dictionary<DamageDef, float>();
+        private static readonly Dictionary<DamageDef, RM_KineticBlastExtension> cordMarkers = new Dictionary<DamageDef, RM_KineticBlastExtension>();
         private static readonly Dictionary<ThingDef, (Tradeability trade, List<string> tags, List<string> setTags)> baseAvail
             = new Dictionary<ThingDef, (Tradeability, List<string>, List<string>)>();
 
@@ -93,6 +104,11 @@ namespace RimMandrake.KineticArms
                     if (ext != null)
                     {
                         baseForces[d] = ext.force;
+                    }
+                    RM_KineticBlastExtension mk = d.GetModExtension<RM_KineticBlastExtension>();
+                    if (mk != null)
+                    {
+                        cordMarkers[d] = mk;
                     }
                 }
             }
@@ -131,6 +147,29 @@ namespace RimMandrake.KineticArms
             {
                 te.force = RimMandrakeKineticArmsSettings.thumpCannonThrows ? RimMandrakeKineticArmsSettings.thumpCannonForce : 0f;
             }
+            // owner Q3: the marker makes Gimme Some Slack's explosion hook spare cords; "cut cords" on removes it
+            foreach (var kv in cordMarkers)
+            {
+                if (kv.Key.modExtensions == null)
+                {
+                    kv.Key.modExtensions = new List<DefModExtension>();
+                }
+                bool has = kv.Key.modExtensions.Contains(kv.Value);
+                if (RimMandrakeKineticArmsSettings.kineticCutsCords && has)
+                {
+                    kv.Key.modExtensions.Remove(kv.Value);
+                }
+                else if (!RimMandrakeKineticArmsSettings.kineticCutsCords && !has)
+                {
+                    kv.Key.modExtensions.Add(kv.Value);
+                }
+            }
+            ThingDef pulse = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Turret_PulseCannon");
+            CompProperties_Power pp = pulse?.GetCompProperties<CompProperties_Power>();
+            if (pp != null)
+            {
+                BasePower(pp) = Mathf.Max(0f, RimMandrakeKineticArmsSettings.pulsePowerDraw); // private field in 1.6
+            }
             foreach (var w in Weapons)
             {
                 ThingDef td = DefDatabase<ThingDef>.GetNamedSilentFail(w.def);
@@ -145,6 +184,9 @@ namespace RimMandrake.KineticArms
             }
         }
 
+        private static readonly AccessTools.FieldRef<CompProperties_Power, float> BasePower =
+            AccessTools.FieldRefAccess<CompProperties_Power, float>("basePowerConsumption");
+
         public static float ForceOf(string damageDef)
         {
             return DefDatabase<DamageDef>.GetNamedSilentFail(damageDef)?.GetModExtension<RM_KnockbackExtension>()?.force ?? -1f;
@@ -154,7 +196,7 @@ namespace RimMandrake.KineticArms
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 20f, 820f);
+            Rect view = new Rect(0f, 0f, inRect.width - 20f, 1080f);
             Widgets.BeginScrollView(inRect, ref scroll, view);
             var l = new Listing_Standard();
             l.Begin(view);
@@ -191,6 +233,18 @@ namespace RimMandrake.KineticArms
             l.Label("Chance a pirate gunner carries a looted one: " + RimMandrakeKineticArmsSettings.lootedChancePercent.ToString("0.0", CultureInfo.InvariantCulture)
                 + "%  (grenadiers get thudder grenades; others a weapon they could afford)");
             RimMandrakeKineticArmsSettings.lootedChancePercent = l.Slider(RimMandrakeKineticArmsSettings.lootedChancePercent, 0f, 20f);
+            l.CheckboxLabeled("Kinetic weapons are found in ancient ruins", ref RimMandrakeKineticArmsSettings.foundInRuins,
+                "Ancient Danger temples can hold one kinetic weapon (or a stack of thump shells) among their loot. Off: nothing places them in ruins.");
+            l.Label("Chance an ancient temple holds one: " + RimMandrakeKineticArmsSettings.ruinsChancePercent.ToString("0", CultureInfo.InvariantCulture) + "%");
+            RimMandrakeKineticArmsSettings.ruinsChancePercent = Mathf.Round(l.Slider(RimMandrakeKineticArmsSettings.ruinsChancePercent, 0f, 100f));
+            l.GapLine();
+            l.CheckboxLabeled("Kicker mines hidden from enemies", ref RimMandrakeKineticArmsSettings.kickerHidden,
+                "On: like any trap, raiders do not see it. Off: raiders know where every kicker mine is and walk around it.");
+            l.Label("Pulse cannon power draw: " + RimMandrakeKineticArmsSettings.pulsePowerDraw.ToString("0", CultureInfo.InvariantCulture) + " W");
+            RimMandrakeKineticArmsSettings.pulsePowerDraw = Mathf.Round(l.Slider(RimMandrakeKineticArmsSettings.pulsePowerDraw, 0f, 1500f) / 10f) * 10f;
+            l.CheckboxLabeled("Kinetic blasts cut aerial cords", ref RimMandrakeKineticArmsSettings.kineticCutsCords,
+                "Off (default): with Gimme Some Slack, a kinetic blast sways overhead cords and leaves them whole; only real explosions cut them. On: kinetic blasts cut cords like any other blast.");
+            l.Label("Throw recovery window, shield belts vs throws: see Explosive Knockback's settings.");
             l.Gap();
             if (l.ButtonText("Reset to defaults"))
             {
@@ -225,6 +279,11 @@ namespace RimMandrake.KineticArms
             RimMandrakeKineticArmsSettings.pulseRechargeSeconds = 20f;
             RimMandrakeKineticArmsSettings.lootedOnRaiders = true;
             RimMandrakeKineticArmsSettings.lootedChancePercent = 2f;
+            RimMandrakeKineticArmsSettings.foundInRuins = true;
+            RimMandrakeKineticArmsSettings.ruinsChancePercent = 35f;
+            RimMandrakeKineticArmsSettings.kickerHidden = true;
+            RimMandrakeKineticArmsSettings.pulsePowerDraw = 350f;
+            RimMandrakeKineticArmsSettings.kineticCutsCords = false;
             ApplySettings();
         }
     }

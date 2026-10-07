@@ -39,7 +39,7 @@ Each weapon sets its own maximum throw (grav-ram 10, thump cannon and thump shel
 
 Also: the mechanoid thump cannon now throws farther than a mortar shell beside its impact.
 
-Kinetic blasts do little or no wound damage and barely scratch walls. They kill only through what they throw you into: walls, pits, fire, other people.
+Kinetic blasts do little or no wound damage and barely scratch walls. The palm thumper's shove never hurts on impact (an arrest tool); the grav-ram can move bodies up to size 3.5 (a centipede, never a thrumbo). With Gimme Some Slack, kinetic blasts sway overhead cords instead of cutting them. Shield belts absorb kinetic throws (Explosive Knockback). They kill only through what they throw you into: walls, pits, fire, other people.
 
-These weapons are not crafted: they are found, mostly in ruins. Pirates who looted those ruins rarely carry one on a raid (2% of armed pirates by default); no other faction does. Every weapon and the thump cannon change has a Mod Settings toggle; all off leaves the items inert in the world and the thump cannon vanilla. Design: design/RimMandrake/kinetic_blast_weapons_design_2026-10-06.md.</description>
+These weapons are not crafted: they are found, mostly in ruins - an ancient-danger temple has a 35% chance (setting) to hold one kinetic weapon or a stack of thump shells. Pirates who looted those ruins rarely carry one on a raid (2% of armed pirates by default); no other faction does. Every weapon and the thump cannon change has a Mod Settings toggle; all off leaves the items inert in the world and the thump cannon vanilla. Design: design/RimMandrake/kinetic_blast_weapons_design_2026-10-06.md.</description>
 </ModMetaData>

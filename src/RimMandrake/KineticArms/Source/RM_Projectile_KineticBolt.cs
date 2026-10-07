@@ -21,6 +21,12 @@ namespace RimMandrake.KineticArms
         private static readonly Quaternion EastArt = Quaternion.Euler(0f, -90f, 0f);
 
         public override Quaternion ExactRotation => base.ExactRotation * EastArt;
+
+        protected override void Explode()
+        {
+            RM_KineticArmsFx.Ring(Map, Position, def.projectile.explosionRadius);
+            base.Explode();
+        }
     }
 
     /// <summary>
@@ -43,6 +49,7 @@ namespace RimMandrake.KineticArms
             {
                 RM_KineticArmsUtil.ConeBlast(map, impact, dx, dz, def.projectile.explosionRadius, cone, out centre, out cells);
             }
+            RM_KineticArmsFx.Ring(map, impact, def.projectile.explosionRadius);
             Destroy();
             GenExplosion.DoExplosion(centre, map, def.projectile.explosionRadius, DamageDef, launcher, DamageAmount, ArmorPenetration,
                 def.projectile.soundExplode, equipmentDef, def, intendedTarget.Thing, ignoredThings: ignored, overrideCells: cells);

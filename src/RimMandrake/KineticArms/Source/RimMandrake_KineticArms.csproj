@@ -43,6 +43,7 @@
     <Compile Include="RM_Building_PulseCannon.cs" />
     <Compile Include="RM_KineticArmsProof.cs" />
     <Compile Include="RM_LootedKineticWeapons.cs" />
+    <Compile Include="RM_KineticRuinsAndCompat.cs" />
   </ItemGroup>
 
   <ItemGroup>

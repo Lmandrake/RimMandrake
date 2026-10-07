@@ -26,6 +26,10 @@
     <explosionColorEdge>(0.62, 0.78, 0.92)</explosionColorEdge>
     <soundExplosion>Explosion_Thump</soundExplosion>
     <combatLogRules>Damage_Bomb</combatLogRules>
+    <!-- owner Q3: marks a kinetic blast, so Gimme Some Slack sways cords instead of cutting them (setting can remove it) -->
+    <modExtensions>
+      <li Class="RimMandrake.KineticArms.RM_KineticBlastExtension" />
+    </modExtensions>
   </DamageDef>
 
   <DamageDef Name="RM_RepulseBase" Abstract="True">
@@ -47,6 +51,10 @@
     <explosionColorEdge>(0.70, 0.80, 0.98)</explosionColorEdge>
     <soundExplosion>Explosion_Thump</soundExplosion>
     <combatLogRules>Damage_Bomb</combatLogRules>
+    <!-- owner Q3: marks a kinetic blast, so Gimme Some Slack sways cords instead of cutting them (setting can remove it) -->
+    <modExtensions>
+      <li Class="RimMandrake.KineticArms.RM_KineticBlastExtension" />
+    </modExtensions>
   </DamageDef>
 
   <DamageDef ParentName="RM_ConcussiveBase">
@@ -77,7 +85,8 @@
     <defName>RM_Repulse_Palm</defName>
     <label>palm thump</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force><maxThrowCells>5</maxThrowCells></li>
+      <!-- impactFactor 0: the "arrest" weapon - a shove into a wall bruises nobody (design §3.1 row 2; a pit is still a pit) -->
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>2.5</force><maxThrowCells>5</maxThrowCells><impactFactor>0</impactFactor></li>
     </modExtensions>
   </DamageDef>
 
@@ -101,7 +110,8 @@
     <defName>RM_Repulse_GravRam</defName>
     <label>grav-ram pulse</label>
     <modExtensions>
-      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>4.0</force><maxThrowCells>10</maxThrowCells></li>
+      <!-- immuneBodySizeOverride 3.6: moves bodies up to 3.5 (a centipede at 3.0), never a megasloth or thrumbo (4.0) -->
+      <li Class="RimMandrake.ExplosiveKnockback.RM_KnockbackExtension"><force>4.0</force><maxThrowCells>10</maxThrowCells><immuneBodySizeOverride>3.6</immuneBodySizeOverride></li>
     </modExtensions>
   </DamageDef>
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Owner, card 2026-10-06 22:37 (typed): kinetic weapons are found "from the "Ancient Danger" type ruins". Adds one option to
+     vanilla's MapGen_AncientTempleContents (the loot every ancient-danger temple rolls; read in RimSage 2026-10-06:
+     root ThingSetMaker_Sum with chance-gated options). Chance 1 here: RM_ThingSetMaker_KineticRuins rolls the Mod Settings
+     chance itself (default 35%, PROVISIONAL) and picks only weapons whose toggle is on. -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/ThingSetMakerDef[defName="MapGen_AncientTempleContents"]/root/options</xpath>
+    <value>
+      <li>
+        <chance>1</chance>
+        <thingSetMaker Class="RimMandrake.KineticArms.RM_ThingSetMaker_KineticRuins" />
+      </li>
+    </value>
+  </Operation>
+</Patch>

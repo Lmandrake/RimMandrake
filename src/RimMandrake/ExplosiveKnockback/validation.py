@@ -41,6 +41,13 @@ SCENES = [
     ("caps", "caps", "per_explosion_cap_holds_pawns_first", "maxThrowsPerExplosion"),
     ("tick_cap", "caps", "per_tick_item_cap_drops_overflow", "maxItemThrowsPerMapTick"),
     ("settings_off", "settings", "master_off_nothing_moves_but_wave_hit", "enabled"),
+    # 2026-10-06 finish pass (KINETIC_BLAST_WEAPONS_1): per-blast config, stun-lock guard, shields
+    ("lookup_projectile", "config", "projectile_extension_wins_over_damagedef", "ownCapScale"),
+    ("lookup_zero_wins", "config", "explicit_zero_on_projectile_throws_nothing", None),
+    ("impact_factor", "config", "impact_factor_zero_no_wall_impact", None),
+    ("body_override", "config", "body_override_throws_a_3_body_global_does_not", None),
+    ("immunity_window", "guards", "second_blast_in_recovery_window_is_immune", "recoveryWindowTicks"),
+    ("shield_counter", "guards", "shield_belt_absorbs_throw_and_drains", "shieldsAbsorbThrow"),
 ]
 NOT_DRIVEN = [
     ("hose_carry_drops_at_takeoff", "needs a laid hose reel and a colonist mid CarryHoseEnd job; DropCarriedHose is wired "
@@ -49,6 +56,21 @@ NOT_DRIVEN = [
     ("raid_lord_resumes_duty", "a real assault raid hit by a mortar: needs a raid site"),
     ("vef_active_same_results", "VEF patches PawnFlyer.MakeFlyer/RecomputePosition; needs a VEF tier (ship gate)"),
     ("barrage_perf_ms_per_tick", "performance has no Boolean check (debug_process §4); counts are in the caps chain"),
+    ("immunity_survives_reload", "the landing/stun stamps are Scribed on the map component; needs a save/load half"),
+]
+
+# The validation ladder (rimflow model.LEVELS): L0 offline, L1 resolved-live on the minimal list, L2 behaviour scenes,
+# L4 human. `python3 validation.py --criteria` prints these as `ID LEVEL: text` for `rimflow implemented --criteria-file`.
+CRITERIA = [
+    ("EK.K", "L0", "kernel selftest K-01..K-16 PASS (selftest_explosiveknockback_kernel.py)"),
+    ("EK.static", "L0", "validation.py STATIC PASS: config lookup, shield/landing hooks, settings saved+reset, walk coverage"),
+    ("EK.mock", "L0", "validation.py --mock stages every scene"),
+    ("EK.load", "L1", "explosiveknockback tier loads with no red error from this mod; Harmony patches applied"),
+    ("EK.scenes18", "L2", "the 18 v1 scenes still PASS after the 2026-10-06 config/guard/shield change"),
+    ("EK.config", "L2", "lookup_projectile, lookup_zero_wins, impact_factor, body_override PASS"),
+    ("EK.guards", "L2", "immunity_window and shield_counter PASS"),
+    ("EK.reload", "L2", "recovery-window stamps survive a save/reload (no scene yet)"),
+    ("EK.feel", "L4", "owner watches a blast and a shield belt: reads right"),
 ]
 
 
@@ -73,6 +95,7 @@ def static_checks():
     for f in os.listdir(os.path.join(HERE, "Source")):
         if f.endswith(".cs") and 'Include="%s"' % f not in csproj:
             bad.append("%s is not in the csproj Compile list (EnableDefaultCompileItems is false)" % f)
+    bad += l0_wiring(fields)
     if not os.path.isfile(WALK):
         bad.append("walk missing")
     else:
@@ -85,6 +108,57 @@ def static_checks():
             if "%s.%s" % (chain, comp) not in sec:
                 bad.append("walk does not cover %s.%s" % (chain, comp))
     return bad
+
+
+def l0_wiring(fields):
+    """Offline (L0) proof of every 2026-10-06 feature's wiring, read from the shipped source."""
+    bad = []
+    src = lambda f: open(os.path.join(HERE, "Source", f), encoding="utf-8").read()
+    mod, patch, comp, fly, kern = (src("RM_KnockbackMod.cs"), src("RM_Patch_DamageWorker_ExplosionKnockback.cs"),
+                                   src("RM_MapComponent_Knockback.cs"), src("RM_PawnFlyerPatches.cs"), src("RM_KnockbackMath.cs"))
+    ext = mod.split("class RM_KnockbackExtension", 1)[1].split("\n    }", 1)[0]
+    for f in ("force", "maxThrowCells", "impactFactor", "immuneBodySizeOverride"):
+        if "public %s %s" % ("int" if f == "maxThrowCells" else "float", f) not in ext:
+            bad.append("RM_KnockbackExtension lacks field " + f)
+    res = kern.split("public static KbConfig Resolve", 1)[1].split("public static KbSettings Apply", 1)[0]
+    order = [res.find('"projectile"'), res.find('"weapon"'), res.find('"damageDef"'), res.find('"unpatched"')]
+    if min(order) < 0 or order != sorted(order):
+        bad.append("KbLookup.Resolve order is not projectile -> weapon -> damageDef -> unpatched: %r" % order)
+    if "ConfigOf(explosion, __instance.def)" not in patch:
+        bad.append("ExplosionDamageThing prefix does not resolve ConfigOf(explosion, def)")
+    if "explosion?.projectile" not in patch or "explosion?.weapon" not in patch:
+        bad.append("ConfigOf does not read the explosion's projectile and weapon ThingDefs")
+    if "HarmonyPatch(typeof(CompShield), nameof(CompShield.PostPreApplyDamage))" not in patch:
+        bad.append("no CompShield absorb-capture patch")
+    if "AbsorbByShield" not in comp or "shieldsAbsorbThrow" not in comp:
+        bad.append("map component does not absorb throws by shield behind the setting")
+    if "NotifyLanded" not in fly:
+        bad.append("landing postfix does not stamp the stun-lock guard")
+    for key in ("rmKbLandedAt", "rmKbStunEnd"):
+        if '"%s"' % key not in comp:
+            bad.append("stun-lock stamp %s is not Scribed" % key)
+    if '"immune"' not in comp:
+        bad.append("an immune skip is not journalled")
+    # every setting: saved, reset to its default, shown in the window
+    expose = mod.split("public override void ExposeData", 1)[1].split("\n        }", 1)[0]
+    reset = mod.split("public static void Reset()", 1)[1]
+    window = mod.split("DoSettingsWindowContents", 1)[1].split("public static void Reset()", 1)[0]
+    for f in fields:
+        if 'ref %s,' % f not in expose:
+            bad.append("setting %s is not saved in ExposeData" % f)
+        if "RimMandrakeExplosiveKnockbackSettings.%s =" % f not in reset:
+            bad.append("setting %s is not restored by Reset()" % f)
+        if "RimMandrakeExplosiveKnockbackSettings.%s" % f not in window:
+            bad.append("setting %s has no control in the settings window" % f)
+    prog = open(os.path.join(HERE, "Source", "SelfTest", "Program.cs"), encoding="utf-8").read()
+    for k in ("K-13", "K-14", "K-15", "K-16"):
+        if '"%s ' % k not in prog:
+            bad.append("kernel selftest has no %s rows" % k)
+    return bad
+
+
+def criteria_lines():
+    return ["%s %s: %s" % c for c in CRITERIA]
 
 
 try:
@@ -198,6 +272,9 @@ def mock_run():
 
 
 if __name__ == "__main__":
+    if "--criteria" in sys.argv:
+        print("\n".join(criteria_lines()))
+        sys.exit(0)
     if "--mock" in sys.argv:
         sys.path.insert(0, os.path.join(HERE, "..", "Utils", "modcheck"))
         sys.exit(mock_run())

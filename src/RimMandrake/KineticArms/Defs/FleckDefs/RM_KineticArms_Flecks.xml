@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The kinetic class's signature pale shock ring (design §6, art job kba_RM_Explosion_KineticRing), drawn once at every
+     Kinetic Arms blast (RM_KineticArmsFx.Ring), scaled to the blast radius and growing outward as it fades. -->
+<Defs>
+  <FleckDef ParentName="FleckBase">
+    <defName>RM_Fleck_KineticRing</defName>
+    <altitudeLayer>MoteOverhead</altitudeLayer>
+    <fadeInTime>0</fadeInTime>
+    <solidTime>0.05</solidTime>
+    <fadeOutTime>0.45</fadeOutTime>
+    <growthRate>4</growthRate>
+    <graphicData>
+      <texPath>Things/Mote/KineticArms/RM_KineticRing</texPath>
+      <shaderType>MoteGlow</shaderType>
+      <drawSize>1</drawSize>
+    </graphicData>
+  </FleckDef>
+</Defs>
