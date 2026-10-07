@@ -1,0 +1,78 @@
+[
+ {
+  "id": "sheet_redo_Plant_Grass_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld plant sprite, painterly: the grass. Wild grass. Grows anywhere there is a little light and minimally fertile ground. Our own original design, drawn fresh; do not copy any existing mod's art. One plant, centred, readable at game zoom.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "priority": 15,
+  "target_def": "Plant_Grass",
+  "biome_neutral": true
+ },
+ {
+  "id": "sheet_redo_AA_Murkling_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld creature sprite, painterly: the kessik. A small, quick-witted scavenger that runs in packs, humming to its kin through organs on its snout that no other ear can follow. Sly enough to outwit prey twice its size, the kessik has a reputation across the crags as the thief of the night \u2014 and a bite that leaves more than a scar behind. Our own original design, drawn fresh; do not copy any existing mod's art. One animal, whole body, centred.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, one centred subject on a transparent background, no ground, no props. Same individual in all three facings. Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "priority": 15,
+  "target_def": "AA_Murkling",
+  "biome_neutral": true
+ },
+ {
+  "id": "sheet_redo_RM_FireLavender_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a modest, low-growing single plant \u2014 a small heat-adapted lavender-like flower with ember-orange blossom tips, in a scorched, ember-dusted heat-forge setting. Single organism, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "Non-SW name, general kind fixed from the defName, flavor free per 'improve' semantics. Source row: flora:the_forge:BMT_FireLavender, sizeBin small. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1. Filed under ART_REGEN_FLORA_WAVE1_QUEUE_1's final wave.",
+  "priority": 15,
+  "target_def": "RM_FireLavender",
+  "biome_neutral": true
+ },
+ {
+  "id": "sheet_redo_RM_HeatsinkFungus_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a modest, low-growing single plant \u2014 a small dense fungal cluster with dark ridged fins that read like heat-sink vanes, in a scorched, ember-dusted heat-forge setting. Single organism, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "Non-SW name, general kind fixed from the defName, flavor free per 'improve' semantics. Source row: flora:the_forge:BMT_HeatsinkFungus, sizeBin small. Full regen, outline requirement per ART_REGEN_WAVE4_SOURCE_DECISION_1. Filed under ART_REGEN_FLORA_WAVE1_QUEUE_1's final wave.",
+  "priority": 15,
+  "target_def": "RM_HeatsinkFungus",
+  "biome_neutral": true
+ },
+ {
+  "id": "sheet_redo_Plant_Ambrosia_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld plant sprite, painterly vanilla-RimWorld flora art style: a lush flowering bush whose identity IS its flowers \u2014 several LARGE, vivid golden-amber blooms, wide open petals, dominating the entire silhouette and filling most of the frame, with only a small base of dark mineral-streaked wet stone visible beneath the foliage (the stone is a minor accent, never co-equal with the blooms). Single organism, centered, no ground shadow, no background scenery.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "FLORA_LEGIBILITY_BAR_1 spec item 4: regen of ambrosia_v1. Owner flag: 'What the heck is this? Ambrosia is supposed to have big gol[den blooms]'. Root cause identified as a generation-PROMPT problem, not a legibility-model one: v1's prompt said 'a substantial shrub-sized clump...delicate flowering plant with soft golden petals, among mineral-streaked, weeping stone seeps', and the render (confirmed byte-identical to the currently-deployed UtinniPatches/Textures/Things/Plant/Ambrosia/Ambrosia_A.png) gives the dark rock base roughly equal visual weight to the flowers, so the blooms read as a secondary detail rather than a big dominant feature. This prompt keeps the same weeping-stones flavor but makes the blooms unambiguously the dominant subject and shrinks the rock to a minor base accent, per the owner's own words. Canvas unchanged (drawsize 1.0/medium sizeBin -> 256, per canvas_for_cells) \u2014 this is a composition fix, not a resolution fix. Source row: flora:weeping_stones:Plant_Ambrosia, sizeBin medium.",
+  "priority": 15,
+  "target_def": "Plant_Ambrosia",
+  "biome_neutral": true
+ },
+ {
+  "id": "sheet_redo_RSW_Plant_Chakroot_Wild_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style: the Star Wars canon wild chak-root plant -- [Star Wars Animal Collection (mlie)] in Desert=0.3. mature size 1.50 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.50, grows from 0.50). Single mature specimen, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "style_notes": "",
+  "priority": 15,
+  "target_def": "RSW_Plant_Chakroot_Wild",
+  "biome_neutral": true
+ }
+]

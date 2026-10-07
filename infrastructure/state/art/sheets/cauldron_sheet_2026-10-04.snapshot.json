@@ -1,6 +1,6 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-06T11:23:55-0700",
+ "built": "2026-10-06T21:08:11-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -841,17 +841,23 @@
    "columns": {
     "A": {
      "single": "e5fafd127835482fd4b50ff356befd1475383a7fac90e9b3c7b20ccbf07285dd"
+    },
+    "B": {
+     "single": "d92285d8adf2c75ae3f305b9e080e09645e079db354af088ca42c8ef44b9b26c"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_TwistingThornwood"
+    "A": "Things/Plant/RM_TwistingThornwood",
+    "B": "Things/Plant/RM_TwistingThornwood"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_TwistingThornwood_v1"
    },
    "res": "Things/Plant/RM_TwistingThornwood",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "twistingthornwood"
   },

@@ -15,7 +15,10 @@
   "RSW_BloodletterPetrel": {
    "decision": "A",
    "note": "",
-   "prefill": "A"
+   "prefill": "A",
+   "picks": {
+    "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_Flying_": "C"
+   }
   },
   "RSW_Borcatu": {
    "decision": "A",
@@ -48,7 +51,10 @@
   "RSW_Screecher": {
    "decision": "A",
    "note": "",
-   "prefill": "A"
+   "prefill": "A",
+   "picks": {
+    "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_": "C"
+   }
   },
   "RUT_BrineBattery": {
    "decision": "A",
