@@ -64,6 +64,19 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             return HosePortKind.None;
         }
 
+        /// <summary>GPT source read 2026-10-06 B14: Pick keeps the first of equal ranks, so candidates go in thing-id order, never
+        /// the order things happen to sit in a cell's list.</summary>
+        private static void ById(List<Thing> things, List<HosePortCandidate> cands)
+        {
+            var idx = new List<int>();
+            for (int i = 0; i < things.Count; i++) idx.Add(i);
+            idx.Sort((a, b) => things[a].thingIDNumber.CompareTo(things[b].thingIDNumber));
+            var t2 = new List<Thing>(); var c2 = new List<HosePortCandidate>();
+            foreach (int i in idx) { t2.Add(things[i]); c2.Add(cands[i]); }
+            things.Clear(); things.AddRange(t2);
+            cands.Clear(); cands.AddRange(c2);
+        }
+
         /// <summary>The reel's coupled neighbour (null when none), the side it is on and its kind.</summary>
         public static Thing Find(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
         {
@@ -90,6 +103,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                     cands.Add(new HosePortCandidate(rc.minX, rc.minZ, rc.Width, rc.Height, k));
                 }
             }
+            ById(things, cands);
             int pick = HosePortRule.Pick(rect, cands, out side, out contact);
             if (pick < 0) return null;
             kind = cands[pick].Kind;
@@ -107,8 +121,10 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             var rect = new HoseReelRect(end.x, end.z, 1, 1);
             var things = new List<Thing>();
             var cands = new List<HosePortCandidate>();
+            Thing on = null;
             foreach (Thing t in end.GetThingList(map))
-                if (t != exclude && Classify(t) != HosePortKind.None) { kind = Classify(t); return t; }
+                if (t != exclude && Classify(t) != HosePortKind.None && (on == null || t.thingIDNumber < on.thingIDNumber)) on = t;
+            if (on != null) { kind = Classify(on); return on; }
             foreach (Cell pc in rect.Perimeter())
             {
                 var c = new IntVec3(pc.X, 0, pc.Z);
@@ -125,6 +141,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                     cands.Add(new HosePortCandidate(rc.minX, rc.minZ, rc.Width, rc.Height, k));
                 }
             }
+            ById(things, cands);
             int pick = HosePortRule.Pick(rect, cands, out side, out _);
             if (pick < 0) return null;
             kind = cands[pick].Kind;

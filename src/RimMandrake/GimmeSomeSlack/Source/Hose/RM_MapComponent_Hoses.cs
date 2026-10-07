@@ -134,10 +134,19 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         }
 
         /// <summary>Would a hose from <paramref name="from"/> into <paramref name="to"/> close a loop?</summary>
-        public bool Loops(CompHoseReel from, CompHoseReel to)
+        public bool Loops(CompHoseReel from, CompHoseReel to, bool withPending = false)
         {
             List<CompHoseReel> o = Ordered(out _);
-            return HoseRelay.WouldLoop(o.IndexOf(from), o.IndexOf(to), i => { CompHoseReel n = RelayOf(o[i]); return n == null ? -1 : o.IndexOf(n); });
+            return HoseRelay.WouldLoop(o.IndexOf(from), o.IndexOf(to), i =>
+            {
+                CompHoseReel n = RelayOf(o[i]);
+                int laid = n == null ? -1 : o.IndexOf(n);
+                if (!withPending) return laid;
+                // B10: a pending order's end counts too (the order check), so two orders cannot form a ring
+                bool pend = (o[i].pending == HosePendingOrder.Deploy || o[i].pending == HosePendingOrder.Move) && o[i].pendingAt.IsValid;
+                CompHoseReel pn = pend ? RelayAt(o[i], new Cell(o[i].pendingAt.x, o[i].pendingAt.z)) : null;
+                return HoseRelay.IntendedNext(laid, pend, pn == null ? -1 : o.IndexOf(pn));
+            });
         }
 
         /// <summary>Where r's hose ends: on a relay, the drawn reel's inlet / outline at its intake side (HoseRelay.DrawnEnd,
@@ -213,7 +222,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 for (int x = x0 - 2; x <= x1 + 2; x++)
                 {
                     var c = new Cell(x, z);
-                    h = (h ^ (ulong)(w.IsWalkable(c) ? 1 : 2) ^ (w.IsDoor(c) ? 4UL : 0UL)) * 1099511628211UL;
+                    h = (h ^ CordBuilder.CellSig(w, c)) * 1099511628211UL;   // B7: tree / water cost included
                 }
             return h;
         }
@@ -256,6 +265,10 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 // an obstacle built or removed across the hose (checked every 250 ticks): HOSE_BLOCKED_REROUTE_RETRACT_1 --
                 // re-route if a route within the hose's length remains, else wind it back onto the reel with an alert.
                 // A failed lay is never left laid-but-invisible (no ghost hose).
+                // GPT source read 2026-10-06 B1: the lay used to be made only by DrawAll (the CURRENT map, on screen), so a hose on
+                // a map nobody was viewing was never validated, never retracted, and fed no relay. The tick lays it itself (cached
+                // by key: a no-op when nothing changed), so the check below and the relay flow run on every map.
+                if ((now + r.parent.thingIDNumber) % 250 == 0) EnsureLay(r);
                 if ((now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHash(World(), r.lay) != r.corridorHash))
                 {
                     // S2, design section 8: a walked hose that an obstacle cut (or that will not lay) falls back to the

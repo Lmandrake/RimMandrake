@@ -273,7 +273,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 target = new IntVec3(intake.X, 0, intake.Z);
             }
             else relay = comp.RelayAt(this, new Cell(target.x, target.z));
-            if (relay != null && comp.Loops(this, relay)) return "that reel already feeds this one (a chain may not loop back)";
+            if (relay != null && comp.Loops(this, relay, true)) return "that reel already feeds this one (a chain may not loop back)";
             return comp.CheckInstall(this, target);
         }
 

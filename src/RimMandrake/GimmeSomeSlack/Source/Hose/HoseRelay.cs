@@ -129,6 +129,10 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>True when laying a hose from reel <paramref name="from"/> into relay <paramref name="to"/> would close a
         /// loop: following the chain downstream from <paramref name="to"/> (next(i) = the relay i feeds, -1 = none) reaches
         /// <paramref name="from"/>.</summary>
+        /// <summary>GPT source read 2026-10-06 B10: where a reel's hose WILL end for the loop test: a pending carry order's end
+        /// (Deploy or Move) wins over the laid end, so two pending orders cannot close a ring that neither sees laid.</summary>
+        public static int IntendedNext(int laidNext, bool pendingEnd, int pendingNext) => pendingEnd ? pendingNext : laidNext;
+
         public static bool WouldLoop(int from, int to, Func<int, int> next)
         {
             var seen = new HashSet<int>();

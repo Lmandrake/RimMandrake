@@ -149,10 +149,21 @@ namespace RimMandrake.GimmeSomeSlack.Hose.Jobs
         private void OnFinish(JobCondition cond)
         {
             CompHoseReel r = Reel;
-            if (r == null || r.carry != HoseCarryState.Carrying || r.carrier != pawn) return;
+            if (r == null) return;
             // a path failure (Incompletable/Errored) on a still-current order clears it: resuming would loop (section 5).
             // Everything else (draft, another order, downed, a new order for this reel) keeps the order for a resume.
-            bool unreachable = (cond == JobCondition.Incompletable || cond == JobCondition.Errored) && OrderStillMine();
+            bool unreachable = !HoseOrderRules.KeepOrderAfterJob(cond == JobCondition.Incompletable || cond == JobCondition.Errored, OrderStillMine());
+            if (r.carry != HoseCarryState.Carrying || r.carrier != pawn)
+            {
+                // GPT source read 2026-10-06 B13: failed on the way to the grab (end never in hand): the order used to stay queued
+                if (unreachable && r.carry != HoseCarryState.Carrying && r.carry != HoseCarryState.Retracting)
+                {
+                    r.CancelOrder();
+                    if (r.parent.Faction == Faction.OfPlayer)
+                        Messages.Message("Hose order cancelled: could not reach " + (r.carry == HoseCarryState.Stored ? "the reel" : "the hose end") + ".", new LookTargets(r.parent), MessageTypeDefOf.RejectInput, false);
+                }
+                return;
+            }
             r.DropCarry(pawn, !unreachable);
             if (unreachable && r.parent.Faction == Faction.OfPlayer)
                 Messages.Message("Hose end dropped at " + r.far + ": could not reach " + Dest + ".", new LookTargets(r.parent), MessageTypeDefOf.RejectInput, false);

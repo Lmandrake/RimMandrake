@@ -50,6 +50,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose.Jobs
             if (!forced && t.IsForbidden(pawn)) { why = "forbidden"; return null; }
             if (!pawn.CanReserve(t, 1, -1, null, forced)) { why = "reserved"; return null; }
             Danger d = forced ? Danger.Deadly : Danger.Some;
+            if (!HoseOrderRules.MayResume(r.carry, r.pending, forced, HoseJobTuning.autoResumeDroppedHose)) { why = "waiting for a new order"; return null; }
 
             if (r.pending == HosePendingOrder.Retract)
             {
@@ -68,8 +69,6 @@ namespace RimMandrake.GimmeSomeSlack.Hose.Jobs
             else
             {
                 // Laid / Dropped: the end lies out; an interrupted Deploy is a resume
-                if (r.pending == HosePendingOrder.Deploy && r.carry == HoseCarryState.Dropped && !forced && !HoseJobTuning.autoResumeDroppedHose)
-                { why = "waiting for a new order"; return null; }
                 if (!r.far.IsValid) { why = "no hose end"; return null; }
                 if (!pawn.CanReach(r.far, PathEndMode.Touch, d)) { why = "no path to the hose end"; return null; }
                 if (!forced && !r.far.InAllowedArea(pawn)) { why = "hose end outside allowed area"; return null; }
