@@ -201,7 +201,7 @@ def _build_suite():
                     raise ExpectationFailed("control def reads as present: %r" % r)
         with t.component("every_shipped_def_resolves", beyond_toggle=True):
             names = ["%s/%s" % p for p in SHIPPED]
-            r = t.bridge_call("jawa/get_defs", defs=";".join(names), fields="defName", limit=10)
+            r = t.bridge_call("jawa/get_defs", defs=";".join(names), fields="defName", limit=max(200, len(names)))  # get_defs CAPS at `limit`: limit=10 answered 10 of 12 on every live run (2026-10-07)
             if _live(t):
                 if not isinstance(r, dict) or r.get("success") is False:
                     raise ExpectationFailed("get_defs failed: %r" % r)

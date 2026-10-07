@@ -1,0 +1,487 @@
+[
+ {
+  "item": "FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1",
+  "criterion": "A2",
+  "asked": 2,
+  "success": true,
+  "foundCount": 0,
+  "notFound": [
+   "PawnKindDef/RUT_FeralSurvivor",
+   "HediffDef/RUT_Hediff_FeralScar"
+  ],
+  "message": "0 of 2 def(s) resolved; 2 not found"
+ },
+ {
+  "item": "FORGE_ENRICHMENT_QUICKTEST_1",
+  "criterion": "A5",
+  "asked": 3,
+  "success": true,
+  "foundCount": 3,
+  "notFound": [],
+  "message": "3 of 3 def(s) resolved"
+ },
+ {
+  "item": "MINDSTONE_MATRIX_KINDLED_BUILD_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "SCALD_WATER_AGITATION_FLECKS_1",
+  "criterion": "A1",
+  "asked": 7,
+  "success": true,
+  "foundCount": 7,
+  "notFound": [],
+  "message": "7 of 7 def(s) resolved"
+ },
+ {
+  "item": "VAULT_THAW_QUEST_FAMILY_1",
+  "criterion": "A1",
+  "asked": 8,
+  "success": true,
+  "foundCount": 8,
+  "notFound": [],
+  "message": "8 of 8 def(s) resolved"
+ },
+ {
+  "item": "GREENTIDE_BASE_PORT_BUILD_1",
+  "criterion": "A2",
+  "asked": 17,
+  "success": true,
+  "foundCount": 17,
+  "notFound": [],
+  "message": "17 of 17 def(s) resolved"
+ },
+ {
+  "item": "MOD_OPTIONS_RETROFIT_1",
+  "criterion": "A1",
+  "asked": 4,
+  "success": true,
+  "foundCount": 3,
+  "notFound": [
+   "QuestScriptDef/RUT_Reckoning_CartelOffer"
+  ],
+  "message": "3 of 4 def(s) resolved; 1 not found"
+ },
+ {
+  "item": "PYRINTH_FIRST_SCRIPT_1",
+  "criterion": "A2",
+  "asked": 13,
+  "success": true,
+  "foundCount": 13,
+  "notFound": [],
+  "message": "13 of 13 def(s) resolved"
+ },
+ {
+  "item": "STILLSAND_FIXES_LIVE_PROOF_1",
+  "criterion": "A1",
+  "asked": 5,
+  "success": true,
+  "foundCount": 5,
+  "notFound": [],
+  "message": "5 of 5 def(s) resolved"
+ },
+ {
+  "item": "STILLSAND_FIXES_LIVE_PROOF_1",
+  "criterion": "A2",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "SURFACE_RIVER_WEIRS_1",
+  "criterion": "A1",
+  "asked": 10,
+  "success": true,
+  "foundCount": 10,
+  "notFound": [],
+  "message": "10 of 10 def(s) resolved"
+ },
+ {
+  "item": "WASTELAND_MECHANICS_BUILD_1",
+  "criterion": "A1",
+  "asked": 14,
+  "success": true,
+  "foundCount": 14,
+  "notFound": [],
+  "message": "14 of 14 def(s) resolved"
+ },
+ {
+  "item": "FEVERWOOD_BOUGH_SOIL_TERRAIN_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "LIQUID_INDUSTRY_SETPIECES_1",
+  "criterion": "A1",
+  "asked": 12,
+  "success": true,
+  "foundCount": 12,
+  "notFound": [],
+  "message": "12 of 12 def(s) resolved"
+ },
+ {
+  "item": "MOVING_DUNES_BUILD_1",
+  "criterion": "A3",
+  "asked": 2,
+  "success": true,
+  "foundCount": 2,
+  "notFound": [],
+  "message": "2 of 2 def(s) resolved"
+ },
+ {
+  "item": "STILLSAND_GEOPHONE_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "WRECKED_DISTILLATION_MODULE_1",
+  "criterion": "A1",
+  "asked": 3,
+  "success": true,
+  "foundCount": 0,
+  "notFound": [
+   "ThingDef/RM_WM_Distillation_Wrecked (patch-added)",
+   "ThingDef/RM_WM_Distillation_Kludged (patch-added)",
+   "ThingDef/RM_WM_Distillation_Repaired (patch-added)"
+  ],
+  "message": "0 of 3 def(s) resolved; 3 not found"
+ },
+ {
+  "item": "DROIDWORKS_WIPE_SEVERITY_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "FEVERWOOD_RM_CAST_COMPLETION_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "FORGE_SPUNSTONE_SOURCES_1",
+  "criterion": "A1",
+  "asked": 2,
+  "success": true,
+  "foundCount": 2,
+  "notFound": [],
+  "message": "2 of 2 def(s) resolved"
+ },
+ {
+  "item": "LIVE_ROUND2_FIXES_PROOF_1",
+  "criterion": "A3",
+  "asked": 4,
+  "success": true,
+  "foundCount": 4,
+  "notFound": [],
+  "message": "4 of 4 def(s) resolved"
+ },
+ {
+  "item": "PIT_TEMPERATURE_SOFTENING_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "SCARLANDS_MECHANICS_2",
+  "criterion": "A1",
+  "asked": 6,
+  "success": true,
+  "foundCount": 6,
+  "notFound": [],
+  "message": "6 of 6 def(s) resolved"
+ },
+ {
+  "item": "STILLSAND_PRECIOUS_CAVES_LIVE_1",
+  "criterion": "A1",
+  "asked": 8,
+  "success": true,
+  "foundCount": 8,
+  "notFound": [],
+  "message": "8 of 8 def(s) resolved"
+ },
+ {
+  "item": "WARSCAR_RAINBOW_POOLS_1",
+  "criterion": "A1",
+  "asked": 5,
+  "success": true,
+  "foundCount": 5,
+  "notFound": [],
+  "message": "5 of 5 def(s) resolved"
+ },
+ {
+  "item": "WYYYSCHOKK_FANG_PENDANT_1",
+  "criterion": "A1",
+  "asked": 4,
+  "success": true,
+  "foundCount": 0,
+  "notFound": [
+   "ThingDef/RSW_WyyyschokkFang",
+   "ThingDef/RSW_Apparel_FangPendant",
+   "RecipeDef/RSW_Make_FangPendant",
+   "ThoughtDef/RSW_TrophyCraft_ObserverBraveFang"
+  ],
+  "message": "0 of 4 def(s) resolved; 4 not found"
+ },
+ {
+  "item": "ARMOURY_KOTOR_BOLT_GUARD_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "STILLSAND_SAND_SIEVE_CHORE_1",
+  "criterion": "A1",
+  "asked": 2,
+  "success": true,
+  "foundCount": 2,
+  "notFound": [],
+  "message": "2 of 2 def(s) resolved"
+ },
+ {
+  "item": "WARSCAR_TOTCHAK_WAKES_1",
+  "criterion": "A1",
+  "asked": 4,
+  "success": true,
+  "foundCount": 4,
+  "notFound": [],
+  "message": "4 of 4 def(s) resolved"
+ },
+ {
+  "item": "WEBWORK_TRACTION_LANCE_BUILD_1",
+  "criterion": "A2",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "FIREHAWK_FLIGHT_BEHAVIOR_1",
+  "criterion": "A2",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "FLOWWORKS_VISUAL_PRINCIPLES_1",
+  "criterion": "A1",
+  "asked": 20,
+  "success": true,
+  "foundCount": 20,
+  "notFound": [],
+  "message": "20 of 20 def(s) resolved"
+ },
+ {
+  "item": "GREENTIDE_STELLOCK_LACE_BUILD_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "LEANINGSCRUB_ENRICHMENT_QUICKTEST_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "RUST_CATHEDRAL_MECHANICS_1",
+  "criterion": "A1",
+  "asked": 33,
+  "success": true,
+  "foundCount": 33,
+  "notFound": [],
+  "message": "33 of 33 def(s) resolved"
+ },
+ {
+  "item": "STILLSAND_CAVE_AS_PLACE_1",
+  "criterion": "A1",
+  "asked": 2,
+  "success": true,
+  "foundCount": 2,
+  "notFound": [],
+  "message": "2 of 2 def(s) resolved"
+ },
+ {
+  "item": "STILLSAND_SUN_LANCE_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "WARSCAR_TURRETS_TRACK_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "FOOTPRINT_TRACK_GRID_1",
+  "criterion": "A2",
+  "asked": 2,
+  "success": true,
+  "foundCount": 2,
+  "notFound": [],
+  "message": "2 of 2 def(s) resolved"
+ },
+ {
+  "item": "GREENTIDE_THURROCK_HERD_BUILD_1",
+  "criterion": "A2",
+  "asked": 2,
+  "success": true,
+  "foundCount": 2,
+  "notFound": [],
+  "message": "2 of 2 def(s) resolved"
+ },
+ {
+  "item": "SEA_FISHABLES_ALIVE_IN_DEPTHS_1",
+  "criterion": "A2",
+  "asked": 100,
+  "success": true,
+  "foundCount": 100,
+  "notFound": [],
+  "message": "100 of 100 def(s) resolved"
+ },
+ {
+  "item": "GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1",
+  "criterion": "A1",
+  "asked": 1,
+  "success": true,
+  "foundCount": 1,
+  "notFound": [],
+  "message": "1 of 1 def(s) resolved"
+ },
+ {
+  "item": "SHIELD_MODS_LEVERAGE_1",
+  "criterion": "A1",
+  "asked": 5,
+  "success": true,
+  "foundCount": 0,
+  "notFound": [
+   "ThingDef/RUT_ShieldGenerator",
+   "ThingDef/RUT_ShieldModule_Cryo",
+   "ThingDef/RUT_ShieldModule_Particulate",
+   "ThingDef/RUT_ShieldModule_Thermal",
+   "ResearchProjectDef/RUT_ModulatedShieldFields"
+  ],
+  "message": "0 of 5 def(s) resolved; 5 not found"
+ },
+ {
+  "item": "SUMP_TAR_NASTINESS_1",
+  "criterion": "A1",
+  "asked": 9,
+  "success": true,
+  "foundCount": 9,
+  "notFound": [],
+  "message": "9 of 9 def(s) resolved"
+ },
+ {
+  "item": "CAULDRON_ENRICHMENT_VISUALS_1",
+  "criterion": "A1",
+  "asked": 4,
+  "success": true,
+  "foundCount": 4,
+  "notFound": [],
+  "message": "4 of 4 def(s) resolved"
+ },
+ {
+  "item": "THE_SUMP_FIRST_SCRIPT_1",
+  "criterion": "A2",
+  "asked": 35,
+  "success": true,
+  "foundCount": 35,
+  "notFound": [],
+  "message": "35 of 35 def(s) resolved"
+ },
+ {
+  "item": "UNFINISHED_LINE_WORLD_FOUNDRY_1",
+  "criterion": "A3",
+  "asked": 2,
+  "success": true,
+  "foundCount": 0,
+  "notFound": [
+   "IncidentDef/RUT_FoundryStrike",
+   "QuestScriptDef/RUT_LineVolunteer"
+  ],
+  "message": "0 of 2 def(s) resolved; 2 not found"
+ },
+ {
+  "item": "GRAVSHIP_ACOUSTIC_SCANNER_1",
+  "criterion": "A1",
+  "asked": 5,
+  "success": true,
+  "foundCount": 3,
+  "notFound": [
+   "ThingDef/RM_AcousticSounder",
+   "ResearchProjectDef/RM_AcousticSounding"
+  ],
+  "message": "3 of 5 def(s) resolved; 2 not found"
+ },
+ {
+  "item": "RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1",
+  "criterion": "A2",
+  "asked": 4,
+  "success": true,
+  "foundCount": 4,
+  "notFound": [],
+  "message": "4 of 4 def(s) resolved"
+ },
+ {
+  "item": "STILLSAND_SKELETONS_REMAINDER_1",
+  "criterion": "A2",
+  "asked": 4,
+  "success": true,
+  "foundCount": 4,
+  "notFound": [],
+  "message": "4 of 4 def(s) resolved"
+ }
+]
