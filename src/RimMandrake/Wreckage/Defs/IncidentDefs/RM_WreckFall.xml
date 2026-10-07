@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1, design §3e: the wreck-fall incident. One shared worker,
+  RM_IncidentWorker_WreckFall; each IncidentDef names its list, count and skyfaller in an
+  RM_WreckFallExtension, so a biome layer adds a fall with XML only (and may gate it with
+  allowedBiomes, or the extension's requiredMutators for a mutator-marked region such as the
+  Fall Line). Mod Settings "Fresh wreck falls" (gate Wreckage.falls) stops every one.
+
+  baseChance 0 ON PURPOSE: this RM def is the engine's reference fall, fired by the debug menu
+  (walk check 7, incident.wreckfall). Whether fresh crashes fall on ordinary maps, and how often,
+  is a pacing decision nobody has made; vanilla's ShipChunkDrop already covers generic chunks.
+  A region that wants falls in natural play ships its own IncidentDef with a real baseChance.
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RM_WreckFall</defName>
+    <label>wreckage falls</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Wreckage.RM_IncidentWorker_WreckFall</workerClass>
+    <baseChance>0</baseChance>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckFallExtension">
+        <wreckList>RM_WreckList_Fresh</wreckList>
+        <countRange>1~4</countRange>
+        <spreadRadius>5</spreadRadius>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

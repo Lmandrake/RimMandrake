@@ -35,6 +35,7 @@
     <Compile Include="RM_Patch_DeconstructSalvager.cs" />
     <Compile Include="RM_WreckWeathering.cs" />
     <Compile Include="RM_GenStep_WreckField.cs" />
+    <Compile Include="RM_IncidentWorker_WreckFall.cs" />
   </ItemGroup>
 
   <ItemGroup>

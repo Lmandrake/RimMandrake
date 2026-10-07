@@ -23,7 +23,7 @@ from modcheck import Suite, ExpectationFailed
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCALD = os.path.join(HERE, "..", "TerminalBiomes", "Defs", "ThingDefs_Buildings", "RUT_ScaldWrecks.xml")
 suite = Suite("Wreckage")
-suite.toggles = ["salvageLoot", "lootGenerosity", "skillScalesRare", "wreckFields", "wreckDensity", "disabledFields"]
+suite.toggles = ["salvageLoot", "lootGenerosity", "skillScalesRare", "wreckFields", "wreckDensity", "disabledFields", "wreckFalls"]
 
 TIERS = ("Scrap", "Hull", "Tank", "Carapace", "Sealed")
 RARE_TIERS = ("Hull", "Tank", "Carapace", "Sealed")
@@ -297,6 +297,57 @@ def _field_checks(bad, weathers):
         bad.append("TerminalBiomes does not register the bare Scald gate: the field would ignore the biome switch")
 
 
+FALL_WORKER = "RimMandrake.Wreckage.RM_IncidentWorker_WreckFall"
+FALL_EXT = "RimMandrake.Wreckage.RM_WreckFallExtension"
+LIST_TAG = "RimMandrake.Wreckage.RM_WreckListDef"
+
+
+def _wreckfall_checks(bad):
+    """Design §3e (step 5): the wreck-fall IncidentDef names a defined list with element-name rows
+    and a defined skyfaller; the worker and list types exist in the source."""
+    d = os.path.join(HERE, "Defs")
+    lists = {}
+    for e in ET.parse(os.path.join(d, "RM_WreckListDefs", "RM_WreckLists.xml")).getroot():
+        if e.tag == LIST_TAG:
+            rows = list(e.find("wrecks")) if e.find("wrecks") is not None else []
+            if any(r.tag == "li" for r in rows):
+                bad.append("%s uses <li> rows; the loader reads element names" % e.findtext("defName"))
+            ok = []
+            for r in rows:
+                try:
+                    if float(r.text or 0) > 0:
+                        ok.append(r.tag)
+                except ValueError:
+                    bad.append("%s row <%s> weight %r is not a number" % (e.findtext("defName"), r.tag, r.text))
+            lists[e.findtext("defName")] = ok
+    for n, rows in lists.items():
+        if not rows:
+            bad.append("wreck list %s has no row with weight > 0" % n)
+    falls = [e.findtext("defName") for e in ET.parse(os.path.join(d, "ThingDefs_Skyfallers", "RM_WreckFallIncoming.xml")).getroot()
+             if e.tag == "ThingDef"]
+    incs = [e for e in ET.parse(os.path.join(d, "IncidentDefs", "RM_WreckFall.xml")).getroot() if e.tag == "IncidentDef"]
+    if not incs:
+        bad.append("no wreck-fall IncidentDef")
+    for e in incs:
+        dn = e.findtext("defName")
+        if e.findtext("workerClass") != FALL_WORKER:
+            bad.append("%s worker is %s" % (dn, e.findtext("workerClass")))
+        ext = [li for li in e.findall("modExtensions/li") if li.get("Class") == FALL_EXT]
+        if len(ext) != 1:
+            bad.append("%s carries %d wreck-fall extensions (want 1)" % (dn, len(ext)))
+            continue
+        if ext[0].findtext("wreckList") not in lists:
+            bad.append("%s names wreck list %s, not defined" % (dn, ext[0].findtext("wreckList")))
+        sky = ext[0].findtext("skyfaller") or "RM_WreckFallIncoming"
+        if sky not in falls and sky != "ShipChunkIncoming":
+            bad.append("%s skyfaller %s not defined here" % (dn, sky))
+    src = open(os.path.join(HERE, "Source", "RM_IncidentWorker_WreckFall.cs"), encoding="utf-8").read()
+    for t in ("class RM_IncidentWorker_WreckFall", "class RM_WreckListDef", "class RM_WreckFallExtension",
+              "RM_WreckageSettings.wreckFalls"):
+        if t not in src:
+            bad.append("wreck-fall source lacks %r" % t)
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -358,6 +409,7 @@ def static_checks():
         if set(seen) != set(SCALD_WRECKS):
             bad.append("Scald wrecks wired: %s, want %s" % (sorted(seen), sorted(SCALD_WRECKS)))
     _field_checks(bad, weathers)
+    _wreckfall_checks(bad)
     src_dir = os.path.join(HERE, "Source")
     proj = open(os.path.join(src_dir, "RM_Wreckage.csproj"), encoding="utf-8").read()
     for f in os.listdir(src_dir):
