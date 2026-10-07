@@ -193,6 +193,11 @@ namespace RimMandrake.LongShade
     public class RM_GenStep_CrawlerRoad : GenStep
     {
         public List<ThingDef> linkDefs = new List<ThingDef>();
+
+        /// <summary>SALVAGE_WRECKAGE_EVERYWHERE_1 step 7: the road's casualties as a weighted
+        /// wreck list (mandrake.rm.wreckage, composed beside this mod). When set and non-empty it
+        /// replaces linkDefs, so the Star Wars layer adds rows to the list, not links.</summary>
+        public RimMandrake.Wreckage.RM_WreckListDef wreckList;
         public GenStepDef terminusStep;
         public ThingDef terminusMarker;
 
@@ -224,7 +229,8 @@ namespace RimMandrake.LongShade
         public static void Lay(RM_GenStep_CrawlerRoad step, Map map, GenStepParams parms)
         {
             List<ThingDef> links = step.linkDefs.FindAll(d => d != null);
-            if (links.Count == 0)
+            bool fromList = step.wreckList != null && step.wreckList.AnyWreck;
+            if (links.Count == 0 && !fromList)
             {
                 return;
             }
@@ -289,7 +295,9 @@ namespace RimMandrake.LongShade
                 {
                     break; // the last stop is the terminus, laid below
                 }
-                ThingDef def = links[(k - 1 + Rand.Range(0, links.Count)) % links.Count];
+                ThingDef def = fromList
+                    ? step.wreckList.PickWreck()
+                    : links[(k - 1 + Rand.Range(0, links.Count)) % links.Count];
                 if (!RM_LongShadeMapgen.TryFindSpot(map, at, def.size, 4, out IntVec3 spot))
                 {
                     continue;

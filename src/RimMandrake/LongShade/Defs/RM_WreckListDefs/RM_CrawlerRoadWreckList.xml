@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 7: the Crawler Road's casualties (RM_GenStep_CrawlerRoad.wreckList).
+  Rows are element-name-as-key, <ThingDefName>weight</ThingDefName>, never <li>. mandrake.rsw.injections
+  adds RSW_WreckedSkiff and RSW_CrawlerTreadWreck (Patches/CrawlerRoad_LongShade.xml there).
+  Weights PROVISIONAL.
+-->
+<Defs>
+
+  <RimMandrake.Wreckage.RM_WreckListDef>
+    <defName>RM_WreckList_CrawlerRoad</defName>
+    <label>crawler road casualties</label>
+    <description>What broke down crossing the open sand between the shades.</description>
+    <wrecks>
+      <RM_WreckedCart>2</RM_WreckedCart>
+      <RM_LongShadeWreckSpeeder>1</RM_LongShadeWreckSpeeder>
+    </wrecks>
+  </RimMandrake.Wreckage.RM_WreckListDef>
+
+</Defs>
