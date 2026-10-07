@@ -580,6 +580,145 @@ def cryptid_check():
     return bad
 
 
+def _const(src, name):
+    m = re.search(r"const float %s\s*=\s*([0-9.]+)f" % name, src)
+    return float(m.group(1)) if m else None
+
+
+def brood_check():
+    """Offline (ABYSS_LIGHTFALL_BROOD_WRECK_1): every def the lair names resolves, the wreck's stock and its
+    salvage bills agree, the ship takes four parts and refuses three (refused ones smelt), the greed arithmetic
+    keeps a modest haul safe and the whole haul plus the egg always past the line, no 'dragon' anywhere a player
+    reads, the great bone can only be placed on substructure, both patches wire it, settings and csproj complete."""
+    bad = []
+    lair = _defs("BroodLair/RM_BroodLair.xml")
+    wreckx = _defs("BroodLair/RM_RescueShipWreck.xml")
+    defs = {}
+    for root in (lair, wreckx, _defs("ThingDefs_Races/RM_Summ.xml")):
+        for d in root:
+            if isinstance(d.tag, str) and d.findtext("defName"):
+                defs[(d.tag, d.findtext("defName"))] = d
+    things = {k[1]: v for k, v in defs.items() if k[0] == "ThingDef"}
+    if len(things) < 10:
+        return ["sanity probe: read only %d ThingDefs from the brood files" % len(things)]
+
+    # 1. the genstep's fields resolve
+    gs = lair.find(".//GenStepDef[defName='RM_BroodLair']/genStep")
+    if gs is None:
+        bad.append("GenStepDef RM_BroodLair missing")
+    else:
+        for f in ("motherDef", "eggDef", "greatBoneDef", "boneDef", "wreckDef"):
+            if gs.findtext(f) not in things:
+                bad.append("genstep %s -> %r does not resolve" % (f, gs.findtext(f)))
+    # 2. wreck stock == recipe products, every recipe used at the wreck
+    wreck = things.get("RM_RescueShipWreck")
+    stock = [c.tag for c in wreck.find(".//stock")] if wreck is not None and wreck.find(".//stock") is not None else []
+    recipes = [d for d in wreckx.iter("RecipeDef") if d.get("Abstract") != "True"]
+    products = []
+    base = wreckx.find(".//RecipeDef[@Name='RM_WreckSalvageBase']")
+    if base is None or "RM_RescueShipWreck" not in [li.text for li in base.iter("li")]:
+        bad.append("salvage recipes are not used at RM_RescueShipWreck")
+    for r in recipes:
+        if r.get("ParentName") != "RM_WreckSalvageBase":
+            bad.append("recipe %s does not inherit the salvage worker" % r.findtext("defName"))
+        products += [c.tag for c in r.find("products")]
+    if sorted(stock) != sorted(products) or len(stock) != 7:
+        bad.append("wreck stock %r != salvage products %r" % (sorted(stock), sorted(products)))
+    # 3. four accepted, three refused; refused parts smelt; accepted parts are consumed when fitted
+    acc = [p for p in stock if things.get(p) is not None and things[p].get("ParentName") == "RM_ShipPartAcceptedBase"]
+    ref = [p for p in stock if things.get(p) is not None and things[p].get("ParentName") == "RM_ShipPartRefusedBase"]
+    if (len(acc), len(ref)) != (4, 3):
+        bad.append("expected 4 accepted / 3 refused parts, got %d / %d" % (len(acc), len(ref)))
+    for p in ref:
+        if things[p].find("smeltProducts") is None:
+            bad.append("refused part %s has no smeltProducts (it must stay loot)" % p)
+    abase = wreckx.find(".//ThingDef[@Name='RM_ShipPartAcceptedBase']")
+    rbase = wreckx.find(".//ThingDef[@Name='RM_ShipPartRefusedBase']")
+    if abase is None or abase.find(".//li[@Class='CompProperties_UseEffectDestroySelf']") is None \
+            or (abase.findtext(".//accepted") or "").strip() != "true":
+        bad.append("accepted parts must be fitted (accepted=true) and consumed")
+    if rbase is None or (rbase.findtext(".//accepted") or "").strip() != "false" \
+            or rbase.find(".//li[@Class='CompProperties_UseEffectDestroySelf']") is not None:
+        bad.append("refused parts must say accepted=false and never be consumed")
+    # 4. greed arithmetic against the C# constants
+    src = os.path.join(HERE, "Source")
+    logic = open(os.path.join(src, "RM_BroodWakeLogic.cs")).read()
+    tmin, tmax, egg = _const(logic, "ThresholdMin"), _const(logic, "ThresholdMax"), _const(logic, "EggWeight")
+    greeds = sorted(float(things[p].findtext(".//greed") or 0) for p in stock if p in things)
+    if None in (tmin, tmax, egg) or not greeds:
+        bad.append("could not read the wake constants or greeds")
+    else:
+        if sum(greeds) + egg <= tmax:
+            bad.append("whole haul + egg (%.2f) does not pass the highest line %.2f: greed never wakes her" % (sum(greeds) + egg, tmax))
+        if sum(greeds[-3:]) >= tmin:
+            bad.append("a modest haul (the 3 greediest parts, %.2f) can pass the lowest line %.2f" % (sum(greeds[-3:]), tmin))
+        if _const(logic, "RumbleFraction") is None or not (_const(logic, "StirFraction") < _const(logic, "RumbleFraction") < 1.0):
+            bad.append("signs out of order: stir < rumble < wake")
+    # 5. no fantasy-dragon tells in any player-facing text
+    for root in (lair, wreckx):
+        for el in root.iter():
+            if el.tag in ("label", "description", "labelPlural", "jobString", "useLabel") and el.text \
+                    and re.search(r"dragon|fire.?breath|hoard", el.text, re.I):
+                bad.append("fantasy-dragon wording in %s: %r" % (el.tag, el.text[:60]))
+            if el.tag == "defName" and el.text and "dragon" in el.text.lower():
+                bad.append("defName names a dragon: " + el.text)
+    for fn in ("RM_BroodLair.cs", "RM_BroodEgg.cs", "RM_ShipWreck.cs", "RM_BroodWakeLogic.cs"):
+        code = re.sub(r"//[^\n]*", "", open(os.path.join(src, fn)).read())   # comments may quote the ban itself
+        for lit in re.findall(r'"([^"\n]*)"', code):
+            if re.search(r"dragon|hoard", lit, re.I):
+                bad.append("fantasy-dragon wording in a %s string: %r" % (fn, lit[:60]))
+    # 6. the bond: great bone only on substructure, and the egg looks for that def
+    gb = things.get("RM_SummGreatBone")
+    if gb is None or "PlaceWorker_OnSubstructure" not in [li.text for li in gb.iter("li")] or gb.findtext("minifiedDef") != "MinifiedThing":
+        bad.append("great bone must be minifiable and placeable only on substructure")
+    eggc = things.get("RM_SummEgg")
+    if eggc is None or eggc.findtext(".//greatBoneDef") != "RM_SummGreatBone" or eggc.findtext(".//hatchKind") != "RM_Summing":
+        bad.append("egg must hatch RM_Summing and look for RM_SummGreatBone")
+    if things.get("RM_SummBone") is None or things["RM_SummBone"].find("stuffProps") is None:
+        bad.append("summ bone is not stuff")
+    # 7. she is a summ, five life stages like the race; the awake hediff blocks almost all damage
+    ak = defs.get(("PawnKindDef", "RM_SummAllRender"))
+    race = things.get("RM_Summ")
+    if ak is None or ak.findtext("race") != "RM_Summ" or race is None \
+            or len(ak.find("lifeStages")) != len(race.find("race/lifeStageAges")):
+        bad.append("RM_SummAllRender must be an RM_Summ kind with one graphic per race life stage")
+    aw = defs.get(("HediffDef", "RM_BroodMotherAwake"))
+    if aw is None or not float(aw.findtext(".//IncomingDamageFactor") or 1) <= 0.1:
+        bad.append("woken brood-mother is not essentially unkillable (IncomingDamageFactor > 0.1)")
+    if race is None or race.find(".//li[@Class='RimMandrake.Abyss.CompProperties_RM_SummBane']") is None:
+        bad.append("RM_Summ lacks the bane comp")
+    # 8. textures of our own resolve
+    for d in things.values():
+        tp = d.findtext("graphicData/texPath") or ""
+        if tp.startswith("RM_Abyss/"):
+            ok = os.path.isfile(os.path.join(HERE, "Textures", tp + ".png")) or \
+                 os.path.isfile(os.path.join(HERE, "Textures", tp + "_south.png"))
+            if not ok:
+                bad.append("texture missing for %s: %s" % (d.findtext("defName"), tp))
+    # 9. wiring: map-gen patch, Utinni landmark patch, settings, csproj
+    mg = os.path.join(HERE, "Patches", "RM_BroodLair_MapGen.xml")
+    if not os.path.isfile(mg) or "<li>RM_BroodLair</li>" not in open(mg).read() or "MapCommonBase" not in open(mg).read():
+        bad.append("RM_BroodLair genstep is not added to MapCommonBase")
+    ut = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "RUT_Lightfall_BroodLair.xml")
+    if not os.path.isfile(ut) or 'RUT_Lightfall' not in open(ut).read() or "RimMandrake.Abyss.RM_BroodLairExtension" not in open(ut).read():
+        bad.append("Utinni patch does not mark RUT_Lightfall with RM_BroodLairExtension")
+    if "class RM_BroodLairExtension" not in open(os.path.join(src, "RM_BroodLair.cs")).read():
+        bad.append("RM_BroodLairExtension class missing")
+    mod = open(os.path.join(src, "RM_AbyssMod.cs")).read()
+    for f in ("broodLairEnabled", "wreckEnabled", "eggStormsEnabled", "baneEnabled", "beastHunger", "broodSleepDepth"):
+        # field, Scribe and an on-screen control, each matched by shape (a bare count passes on a comment)
+        field = re.search(r"public static (bool|float) %s\b" % f, mod)
+        scribe = "Scribe_Values.Look(ref %s," % f in mod
+        control = re.search(r"CheckboxLabeled\([^;]*ref %s\b" % f, mod) or ("%s = list.Slider(%s," % (f, f)) in mod
+        if not (field and scribe and control):
+            bad.append("Mod Settings lacks %s (field=%s scribe=%s control=%s)" % (f, bool(field), scribe, bool(control)))
+    proj = open(os.path.join(src, "RM_Abyss.csproj")).read()
+    for fn in ("RM_BroodWakeLogic.cs", "RM_BroodLair.cs", "RM_BroodEgg.cs", "RM_ShipWreck.cs"):
+        if 'Compile Include="%s"' % fn not in proj:
+            bad.append("%s not in csproj" % fn)
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Abyss")
@@ -754,4 +893,6 @@ if __name__ == "__main__":
     print("SOUNDSCAPE static: %s" % ("PASS" if not ss else "FAIL " + "; ".join(ss)))
     cy = cryptid_check()
     print("CRYPTID static: %s" % ("PASS" if not cy else "FAIL " + "; ".join(cy)))
-    sys.exit(1 if (f or g or d or e or k or r or v or pr or lc or ss or cy) else 0)
+    bl = brood_check()
+    print("BROOD LAIR static: %s" % ("PASS" if not bl else "FAIL " + "; ".join(bl)))
+    sys.exit(1 if (f or g or d or e or k or r or v or pr or lc or ss or cy or bl) else 0)

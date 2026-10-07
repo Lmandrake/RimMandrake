@@ -56,6 +56,10 @@
     <Compile Include="RM_AbyssSoundscape.cs" />
     <Compile Include="RM_AbyssSoundHook.cs" />
     <Compile Include="RM_AbyssCryptid.cs" />
+    <Compile Include="RM_BroodWakeLogic.cs" />
+    <Compile Include="RM_BroodLair.cs" />
+    <Compile Include="RM_BroodEgg.cs" />
+    <Compile Include="RM_ShipWreck.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

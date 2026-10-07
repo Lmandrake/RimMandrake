@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_LIGHTFALL_BROOD_WRECK_1: the brood-lair genstep on every map. RM_GenStep_BroodLair self-gates
+  (Source/RM_BroodLair.cs MapWantsLair): it builds only on a tile carrying the RM_BroodLair mutator or a
+  landmark whose def carries RM_BroodLairExtension, and silently no-ops everywhere else. Same shape as
+  RimUtinni/FungalSoilTrade/Patches/RUT_FungalSoilScatter_MapGenPatch.xml.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RM_BroodLair</li>
+    </value>
+  </Operation>
+
+</Patch>
