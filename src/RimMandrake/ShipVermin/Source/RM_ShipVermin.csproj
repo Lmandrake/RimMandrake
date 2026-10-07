@@ -49,6 +49,9 @@
     <Compile Include="RM_CompProperties_VerminNest.cs" />
     <Compile Include="RM_CompVerminNest.cs" />
     <Compile Include="Debug\RM_ShipVerminDebugActions.cs" />
+    <Compile Include="RM_ShipVerminCanonSwapExtension.cs" />
+    <Compile Include="RM_CompInnateAbility.cs" />
+    <Compile Include="RM_CompAbilityEffect_FuelSpew.cs" />
   </ItemGroup>
 
   <ItemGroup>
