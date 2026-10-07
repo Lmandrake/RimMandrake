@@ -12,6 +12,8 @@ ISHKO_MOCK_BREAK=<comma list> re-introduces one defect each, so every check can 
   wrong_pkg      a defName collision: RUT_LightlessSink resolves from another package
   no_anchor      AddLandmark leaves the tile without its Required anchor mutator
   shallow        mutatorChances comes back as bare type names (get_defs without deep=true)
+The live tier MUST carry mandrake.rm.gimmesomeslack (JawaBench TypeLoad-fails without it and preflight REFUSES at game_loaded).
+First live run 2026-10-07: 8 PASS in 3 s, recorded GREEN by the driver (see validation.py "LEARNED").
 Dev tooling, never deployed."""
 import os
 

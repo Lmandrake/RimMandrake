@@ -43,6 +43,25 @@ def _build_suite():
     mod_static.add_harmony_chain(suite, __file__)
     mod_static.add_incident_chain(suite, __file__)
     shipped_defs.add_chain(suite, __file__, sanity=('RUT_FlameHarvest', 'RUT_FireRaid'), min_count=3)
+
+    @suite.chain("unproven_bars")
+    def unproven_bars(t):
+        """The two bars the first live pass could not prove, recorded as UNMEASURED rows (never PASS) so a run's
+        sheet names them (PYRELANDS_MECHANICS_FIRST_SCRIPT_1 A3). Each reason is why no existing bridge tool reaches it."""
+        for name, why in (
+            ("arson_debt_past_threshold_fires_fireraid",
+             "no bridge tool reads or writes the arson debt tally (WorldComponent state) and the dry-run fire_incident only "
+             "proves RUT_FireRaid's worker resolves; needs a proof hook that sets debt past arsonDebtRaidThreshold and reads back the queued raid"),
+            ("flameharvest_needs_flameHarvestMinFires",
+             "no tool lists burning fires per map for a threshold sweep; the dry run proves CanFireNow does not throw but not "
+             "that it refuses below flameHarvestMinFires; needs a fixture that lights N and N+1 fires and a CanFireNow read-back"),
+        ):
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: " + why
+            with t.component(name):
+                pass
+            t.upstream_failed = False
+            t.upstream_reason = ""
     return suite
 
 
