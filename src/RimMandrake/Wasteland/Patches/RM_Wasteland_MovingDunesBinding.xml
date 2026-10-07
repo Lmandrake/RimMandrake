@@ -33,6 +33,7 @@
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Moving Dunes</li>
+      <li>RimMandrake: Baroque Biomes</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
