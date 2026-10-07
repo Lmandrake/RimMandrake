@@ -512,8 +512,66 @@ def o6_review_round1(rows):
     row(rows, "O6_review_round1", "PASS" if not probs else "FAIL", "MOD", probs or "; ".join(info))
 
 
+# GPT source read 2026-10-06 (design/RimMandrake/gss_gpt_source_read_2026-10-06.md): the Verse-bound fixes, checked by the
+# shape of the shipped source (the Verse-free halves are C# selftest rows, SelfTest/GptReadFixChecks.cs). One (finding, file,
+# fragment that must be present) per fix; the can-fail is the planted probe below, which must be reported missing.
+GPT_READ_FIX_SHAPES = [
+    ("B4 port cache uses CacheFresh", "Hose/CompHoseReel.cs", "HoseLive.CacheFresh(now, portTick, 60)"),
+    ("B1 tick lays hoses on every map", "Hose/RM_MapComponent_Hoses.cs", "% 250 == 0) EnsureLay(r);"),
+    ("B5 no no-outlet fallback lay", "Hose/RM_MapComponent_Hoses.cs", "HoseMath.LeadOutBlocked"),
+    ("B2 order need judged on shortest route", "Hose/CompHoseReel.cs", "new Cell(target.x, target.z), -1, false)"),
+    ("B8 hose length in the shape fingerprint", "Hose/HoseSettings.cs", '"|L" + maxLength'),
+    ("B10 order loop check sees pending orders", "Hose/CompHoseReel.cs", "comp.Loops(this, relay, true)"),
+    ("B11 resume rule for every dropped order", "Hose/Jobs/WorkGiver_HoseOrders.cs", "HoseOrderRules.MayResume("),
+    ("B12 refused right-click restores the order", "Hose/Jobs/FloatMenuOptionProvider_Hose.cs", "r.pending = prevOrder;"),
+    ("B13 pre-grab path failure clears the order", "Hose/Jobs/JobDriver_CarryHoseEnd.cs", "HoseOrderRules.KeepOrderAfterJob("),
+    ("B14 port candidates in thing-id order", "Hose/HosePorts.cs", "ById(things, cands);"),
+    ("B7 hose corridor hash has route cost", "Hose/RM_MapComponent_Hoses.cs", "CordBuilder.CellSig(w, c)"),
+    ("A1 taps share one surplus", "Aerial/CompPowerTap.cs", "TapRegistry.TakenThisTick(victim)"),
+    ("A2 switched-off tap drains nothing", "Aerial/CompPowerTap.cs", "if (victim != null && ours != null && working)"),
+    ("A4 auto-link selected is player-only", "Aerial/CompAerialAnchor.cs", "b.Faction == Faction.OfPlayer"),
+    ("A5 link verdict refuses a despawned end", "Aerial/CompAerialAnchor.cs", "return LinkVerdict.Gone;"),
+    ("A6 queued auto-link saved", "Aerial/CompAerialAnchor.cs", '"rmAerialAutoLinkPending"'),
+    ("A8 fallen lays watch the ground", "Aerial/RM_MapComponent_Aerial.cs", "FallenGroundCheck();"),
+    ("A10 whip tails past the cap drawn still", "RM_MapComponent_CordGraph.cs", "else WhipStillDraws++;"),
+    ("A15 restyle never crosses a cut span", "Aerial/RM_MapComponent_ConduitRuns.cs", "s.state == SpanState.Up &&"),
+    ("A17 wall home for transmitter buildings", "CordWorldAdapter.cs", "SetWallHome(th, m);   // GPT source read"),
+    ("A18 span meshes destroyed", "Aerial/RM_MapComponent_Aerial.cs", "Notify_SpansChanged() => ClearSpanMeshes();"),
+    ("A19 dark strip aspect", "SectionLayer_RM_MessyCords.cs", "DecalAspect.Of(d.Kind)"),
+    ("A20 unhooked lamp message shown", "Aerial/RM_MapComponent_ConduitRuns.cs", "this used to return before any message was shown"),
+]
+
+
+def gpt_read_fix_missing(shapes, src_dir):
+    miss = []
+    for name, rel, frag in shapes:
+        path = os.path.join(src_dir, rel)
+        body = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+        if frag not in body:
+            miss.append(name)
+    return miss
+
+
+def o7_gpt_read_fixes(rows):
+    src = os.path.join(HERE, "Source")
+    miss = gpt_read_fix_missing(GPT_READ_FIX_SHAPES, src)
+    probe = gpt_read_fix_missing([("planted", "Hose/HoseMath.cs", "this fragment is not in the source 7f3a")], src)
+    import struct
+    sizes = {}
+    for rel in ("PowerStrip.png", "Styles/ExtCord/PowerStrip_Off.png"):
+        with open(os.path.join(HERE, "Textures", "RimMandrake", "GimmeSomeSlack", rel), "rb") as f:
+            sizes[rel] = struct.unpack(">II", f.read(24)[16:24])
+    if any(w != 2 * h for w, h in sizes.values()):
+        miss.append("A19 power strip art is not 2:1 (DecalAspect 0.5 assumes it): %s" % sizes)
+    if probe != ["planted"]:
+        miss.append("probe: the shape check cannot see a missing fragment")
+    row(rows, "O7_gpt_read_fixes", "PASS" if not miss else "FAIL", "MOD",
+        miss or "%d fix shapes present; planted probe reported missing" % len(GPT_READ_FIX_SHAPES))
+
+
 def run_offline():
     rows = []
+    o7_gpt_read_fixes(rows)
     o1_files(rows)
     o2_defaults(rows)
     o5_style_art(rows)

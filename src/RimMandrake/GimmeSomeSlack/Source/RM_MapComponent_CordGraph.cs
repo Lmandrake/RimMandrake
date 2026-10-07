@@ -381,7 +381,7 @@ namespace RimMandrake.GimmeSomeSlack
         private readonly List<int> mt = new List<int>();
         private PowerNet hiNet;
         private int hiBuilds = -1;
-        public static int WhipDraws, SwayDraws, SwayVerts, HighlightCords, HighlightStubs, SparksThrown, DripEvents;
+        public static int WhipDraws, WhipStillDraws, SwayDraws, SwayVerts, HighlightCords, HighlightStubs, SparksThrown, DripEvents;
         public static ulong SwayHash, RippleHash;
         public static int RippleDraws, RippleVerts;
         public static float LastWind;
@@ -465,7 +465,7 @@ namespace RimMandrake.GimmeSomeSlack
 
         private void DrawMotion()
         {
-            WhipDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0; RippleDraws = 0; RippleVerts = 0;
+            WhipDraws = 0; WhipStillDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0; RippleDraws = 0; RippleVerts = 0;
             if (!GimmeSomeSlackSettings.enabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             if (SectionLayer_RM_MessyCords.CutsceneHides) return;
             if (SectionLayer_RM_MessyCords.FarNow) return;            // far zoom: LOD only, no motion
@@ -484,7 +484,6 @@ namespace RimMandrake.GimmeSomeSlack
             if (whip)
                 foreach (LaidPiece p in pieces)
                 {
-                    if (WhipDraws >= cap) break;
                     if (nv > 1 && MatIndexOf(p) != v) continue;
                     foreach (CordStrand s in p.Strands)
                     {
@@ -493,15 +492,18 @@ namespace RimMandrake.GimmeSomeSlack
                         {
                             bool atStart = side == 0;
                             int cnt = atStart ? s.WhipA : s.WhipB;
-                            if (cnt <= 0 || WhipDraws >= cap) continue;
+                            if (cnt <= 0) continue;
                             V2 tip = atStart ? s.Pts[cnt - 1] : s.Pts[s.Pts.Count - cnt];   // outer end of the tail; test it before allocating
                             if (!view.Contains(CordWorldAdapter.I(tip.Floor))) continue;
                             List<V2> tail = atStart ? s.Pts.GetRange(0, cnt) : s.Pts.GetRange(s.Pts.Count - cnt, cnt);
                             if (atStart) tail.Reverse();                       // tail[0] = the joint
                             ulong seed = CordRng.Hash("whip", p.Key, s.S0, atStart);
-                            List<V2> bent = CordMotion.Whip(tail, now, seed, 0.12);
+                            // GPT source read 2026-10-06 A10: tails past the motion cap used to be drawn by NEITHER path (the section
+                            // layer leaves every whip tail to this one); past the cap they are drawn still, at their laid pose
+                            bool animate = WhipDraws < cap;
+                            List<V2> bent = animate ? CordMotion.Whip(tail, now, seed, 0.12) : tail;
                             SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, bent, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
-                            WhipDraws++;
+                            if (animate) WhipDraws++; else WhipStillDraws++;
                             Material fray = CordMaterials.DecalG(DecalKind.FrayLive, v);
                             if (fray != null)
                             {

@@ -22,7 +22,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// <summary>Up = strung and carrying power; Cut = parted (explosion / roof): both halves lie at their anchors.</summary>
     public enum SpanState { Up, Cut }
 
-    public enum LinkVerdict { Ok, Self, AlreadyLinked, OutOfRange, FullA, FullB, Foreign, NotAnchor, Roofed }
+    public enum LinkVerdict { Ok, Self, AlreadyLinked, OutOfRange, FullA, FullB, Foreign, NotAnchor, Roofed, Gone }
 
     /// <summary>What the link rules need to know about one anchor (or a candidate target).</summary>
     public class AnchorInfo

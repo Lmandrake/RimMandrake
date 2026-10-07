@@ -175,7 +175,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Map map = parent.Map;
             RM_MapComponent_Aerial comp = map.GetComponent<RM_MapComponent_Aerial>();
             comp?.Register(this);
-            if (!respawningAfterLoad && AerialSettings.enabled && AerialSettings.autoLink) comp?.QueueAutoLink(this);
+            // GPT source read 2026-10-06 A6: an auto-link still queued when the game was saved (built while paused) is re-queued
+            if ((!respawningAfterLoad || autoLinkPendingSaved) && AerialSettings.enabled && AerialSettings.autoLink) comp?.QueueAutoLink(this);
+            autoLinkPendingSaved = false;
         }
 
         /// <summary>Runs after CompPower.PostDeSpawn (the power comp is listed first in the def), so vanilla has already
@@ -216,11 +218,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             comp?.Notify_SpansChanged();
         }
 
+        /// <summary>A6: this anchor's auto-link was still queued at save time (written on save, read back on load).</summary>
+        private bool autoLinkPendingSaved;
+
         public override void PostExposeData()
         {
             base.PostExposeData();
             Scribe_Collections.Look(ref links, "rmAerialLinks", LookMode.Deep);
             Scribe_Collections.Look(ref fallen, "rmAerialFallen", LookMode.Deep);
+            if (Scribe.mode == LoadSaveMode.Saving)
+                autoLinkPendingSaved = parent.Spawned && (parent.Map.GetComponent<RM_MapComponent_Aerial>()?.IsAutoLinkPending(this) ?? false);
+            Scribe_Values.Look(ref autoLinkPendingSaved, "rmAerialAutoLinkPending", false);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 links ??= new List<SpanLink>();
@@ -238,6 +246,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         // ------------------------------------------------------------------ topology changes (all re-seed both ends)
         public static LinkVerdict Verdict(CompAerialAnchor a, Thing b)
         {
+            // GPT source read 2026-10-06 A5: either end destroyed while the targeter was open
+            if (a == null || !a.Spawned || b == null || !b.Spawned) return LinkVerdict.Gone;
             AnchorInfo bi = Of(b) is CompAerialAnchor bb ? bb.Info() : new AnchorInfo { Id = b.thingIDNumber, X = b.Position.x, Z = b.Position.z, Faction = FactionKey(b), IsAnchor = false };
             return AerialMath.CanLink(a.Info(), bi, AerialSettings.Range);
         }
@@ -387,7 +397,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             if (autoLinkFrame == Time.frameCount) return;
             autoLinkFrame = Time.frameCount;
-            List<CompAerialAnchor> sel = Find.Selector.SelectedObjects.OfType<Thing>().Select(Of).Where(b => b != null && b.Spawned).ToList();
+            List<CompAerialAnchor> sel = Find.Selector.SelectedObjects.OfType<Thing>().Select(Of)
+                .Where(b => b != null && b.Spawned && b.Faction == Faction.OfPlayer).ToList();   // GPT read A4: never string someone else's anchors
             var byId = sel.ToDictionary(b => b.thingIDNumber);
             foreach ((int a, int b) in AerialMath.MinimumSpanningLinks(sel.Select(s => s.Info()).ToList(), AerialSettings.Range))
                 TryLink(byId[a], byId[b].parent);
@@ -405,6 +416,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 case LinkVerdict.Roofed: return "an anchor under a roof cannot hold a wire.";
                 case LinkVerdict.AlreadyLinked: return "already linked.";
                 case LinkVerdict.Self: return "an anchor cannot link to itself.";
+                case LinkVerdict.Gone: return "that anchor is gone.";
                 default: return v.ToString();
             }
         }

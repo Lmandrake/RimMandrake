@@ -78,6 +78,7 @@ namespace RimMandrake.GimmeSomeSlack
                 m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
                 foreach (IntVec3 adj in GenAdj.CellsAdjacentCardinal(th))
                     if (world.IsConduit(C(adj)) && !m.Hookups.Contains(C(adj))) m.Hookups.Add(C(adj));
+                SetWallHome(th, m);   // GPT source read 2026-10-06 A17: a wall-hung transmitter (the bracket) ends under its wall too
                 if (m.Hookups.Count > 0) world.Machines.Add(m);
             }
             // connectors (consumers, generators, lamps, batteries wired by a hookup)
