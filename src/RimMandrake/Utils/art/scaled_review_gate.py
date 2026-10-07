@@ -42,7 +42,7 @@ GATE_VERSION = "v1"
 SHEET_DIR = L.REPO_ROOT / "Transient" / "biome_ffar"
 CHECK_SHEET = Path.home() / ".claude" / "skills" / "review-sheets" / "assets" / "check_sheet.py"
 SHEET_RE = re.compile(r"^([a-z_]+_sheet_\d{4}-\d{2}-\d{2})\.html$")
-STAMP_RE = re.compile(r'<meta name="scaled-review-gate" content="([^"]*)">\n?')
+STAMP_RE = re.compile(r'<meta name="scaled-review-gate" content="([^"]*)">')
 FAILED_CANON_BADGE = " — failed canon check"
 RULED_GROUP = "Already ruled on another sheet"
 SIZE_FALLBACK_FLAG = "SIZE FALLBACK"

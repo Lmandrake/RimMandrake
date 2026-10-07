@@ -1,6 +1,6 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-06T12:55:39-0700",
+ "built": "2026-10-06T20:15:27-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -224,7 +224,7 @@
      "2_east": "2cb3e6f7e3e61463e4048ba6bacf6e3358a75399c8ad836247c82921ab76db90",
      "3_east": "a674f5b0bd80c751572737f5f51873a11dec9931065df12a691b8c2dce5ad21f"
     },
-    "l": {
+    "m": {
      "1_east": "17886c37d3fa6ee7d26a4d67f097634c293c543f1083e639e260d026d2386a5d",
      "1_north": "bf634e7328a93e4d22a60e70a54615e9f18d7bfdb277140cd3611da7fdbc07c3",
      "1_south": "88e12af7baa3965f07aff771311a52832752aaead2b5e016225273f9ce7f4762",
@@ -251,7 +251,7 @@
     "W": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
     "X": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
     "j": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
-    "l": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
+    "m": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
    },
    "labels": {
     "M": "IN GAME \u2014 Pyrelands",
@@ -262,7 +262,7 @@
     "W": "IN GAME \u2014 FireHawk_Flying_",
     "X": "flight frames rut_firehawk_flying_v2",
     "j": "flight frames pyrelands_firehawk_flight8",
-    "l": "flight frames rut_firehawk_flying"
+    "m": "flight frames rut_firehawk_flying"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
    "reserved": [
@@ -303,7 +303,8 @@
     "i",
     "j",
     "k",
-    "l"
+    "l",
+    "m"
    ],
    "subject_key": "firehawk"
   },
@@ -322,7 +323,7 @@
      "north": "dec2a9a8defa2c3be552738a5fe629470d0d6d000a64ef202dc61f7b6db46bcd",
      "south": "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7"
     },
-    "F": {
+    "G": {
      "1_east": "b5b70b2487df689cc243750d8d502fb3ade04fe151c86b7ec8cd4b9888380f76",
      "1_north": "03bc70df127e8ca115416fc612df48cc1e0c17e7a57ecf442ec7a2bd88a93626",
      "1_south": "ec847d3e66917a7af39b303fb643222f4da2fb271ae5f558400ae1071aab4666",
@@ -335,25 +336,30 @@
      "4_east": "2a83c28a6fc7d33ebefdde211e4bca6ecb57ccfbda2857d784c6da9a179eb64a",
      "4_north": "40ee6240ad761ad7206cf55493e2aedd011c048a37d23b871dd59b04a36c40d0",
      "4_south": "f3d06f7e3ea26ffe092f41173852ee98aaf01a12393c1e53939d1454f7963949",
+     "5_east": "f4d3418c78d443c4c7766086cfea1be5106399492cac91c2af2f4ebe6dc31d9e",
      "5_north": "a8428faa7369949fccd448284164efd300e2be0aaa791e613d156b50add74d7b",
      "5_south": "742af602bb99e1fe9c92527f703f7ace67fde114343aec32cb289a92c909b7c3",
+     "6_east": "a9a9892444fb2af953af1a5d5ee3e36fbd445223f437053563b87f0f938befe7",
      "6_north": "ba25755e8f59b10c0ec7a9fb04f6fc9dc0096b022bac80d2a0423a6bed242332",
      "6_south": "8f4c61d3ae61f1ba370c50d5b66548e8a80a7e6dcad50dd91dbc3a18fc260e01",
+     "7_east": "bdbc75edeff91085aaef47b090bb53e236c1cf85d41fe746d9bb59dcde66cb05",
      "7_north": "20166049190d552d0368bdee530c7830bd45a9a442f518b8d7d1c59be006a2d9",
-     "8_north": "78a1f6b267eac1f72c2041e5043fff45ea6b5d35dc3ace90c1381ebe25428c9f"
+     "7_south": "16ea9c1abd084bf190b08ee8ab732ef1a0b95c1cd6d63ef5137491ded8427c56",
+     "8_north": "78a1f6b267eac1f72c2041e5043fff45ea6b5d35dc3ace90c1381ebe25428c9f",
+     "8_south": "3ae4eb8cc3e681b4858d75e6d8d02c9bf9782c733fe894504cc5f047a3445039"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
     "B": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
     "D": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
-    "F": "_flip:RM_FireWasp"
+    "G": "_flip:RM_FireWasp"
    },
    "labels": {
     "A": "IN GAME \u2014 Pyrelands",
     "B": "render AA_FireWasp_south_eyelevel_v1",
     "D": "history UtinniPatches 2026-09-19",
-    "F": "flight frames pyrelands_firewasp_flight8"
+    "G": "flight frames pyrelands_firewasp_flight8"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
    "reserved": [
@@ -362,7 +368,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "firewasp"
   },
@@ -774,5 +781,5 @@
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "7d668509adf0b85e"
+ "snapshotId": "906c1780d527aa98"
 }

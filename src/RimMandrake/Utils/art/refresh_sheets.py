@@ -171,6 +171,9 @@ def main(argv=None) -> int:
     ap.add_argument("--force", action="store_true", help="rebuild every sheet regardless of fingerprint")
     ap.add_argument("--no-backfill", action="store_true")
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--only", action="append", default=[], metavar="SUBSTR",
+                    help="only sheets whose file base contains SUBSTR (repeatable); safe to run several processes in "
+                         "parallel — state is merged per sheet and the shared index docs are left alone")
     a = ap.parse_args(argv)
     if a.selftest:
         return selftest()
@@ -186,6 +189,8 @@ def main(argv=None) -> int:
     state = json.loads(sp.read_text()) if sp.is_file() else {}
     urls, donors, report, gate_reports = {}, {}, [], []
     for base, date, biome in sheets():
+        if a.only and not any(o in base for o in a.only):
+            continue
         rows = (census["biomes"].get(biome) or {}).get("rows") or []
         keys = [[S.norm(S.stem(x)) for x in [r["key"], r.get("port"), r.get("label")] + list(r.get("defNames") or [])
                  + list(r.get("donors") or []) if x] for r in rows]
@@ -234,7 +239,12 @@ def main(argv=None) -> int:
             status += " (server restarted: NEW URL)" if u else " (SERVER DOWN and not restarted: no passing gate stamp)"
         donors[base] = donor_only_count((OUT / f"{base}.html").read_text())
         report.append((base, status, donors[base]))
-    if not a.dry_run:
+    if not a.dry_run and a.only:
+        mine = {b for b, _, _ in report}
+        cur = json.loads(sp.read_text()) if sp.is_file() else {}
+        cur.update({b: v for b, v in state.items() if b in mine})
+        sp.write_text(json.dumps(cur, indent=1, sort_keys=True) + "\n")
+    elif not a.dry_run:
         sp.write_text(json.dumps(state, indent=1, sort_keys=True) + "\n")
         for f in ("TONIGHT_2026-10-05.md", "SHEETS_INDEX_2026-10-05.md"):
             p = OUT / f

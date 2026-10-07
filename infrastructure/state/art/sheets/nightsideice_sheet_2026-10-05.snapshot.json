@@ -1,6 +1,6 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-06T12:39:29-0700",
+ "built": "2026-10-06T20:15:17-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -60,8 +60,8 @@
     "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "C": "render nightsideice_cavelemming_v1"
+    "A": "history SWBestiary 2026-09-11",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
    "reserved": [
