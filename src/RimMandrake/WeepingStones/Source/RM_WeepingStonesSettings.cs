@@ -28,6 +28,9 @@ namespace RimMandrake.WeepingStones
         public static bool condenserEnabled = true;
         public static float condenserSeasonDays = 15f;
 
+        // WEEPINGSTONES_CONDENSER_QUESTS_1: the two optional condenser quests (capture for a collector / keep it free). Read live at offer time.
+        public static bool condenserQuestsEnabled = true;
+
         // WEEPINGSTONES_DEWSILK_COCOON_1: tamed mirrik leave dewsilk cocoons. Read once at startup.
         public static bool dewsilkEnabled = true;
 
@@ -42,6 +45,7 @@ namespace RimMandrake.WeepingStones
             Scribe_Values.Look(ref vizhikEscapeChance, "vizhikEscapeChance", 0.05f);
             Scribe_Values.Look(ref condenserEnabled, "condenserEnabled", true);
             Scribe_Values.Look(ref condenserSeasonDays, "condenserSeasonDays", 15f);
+            Scribe_Values.Look(ref condenserQuestsEnabled, "condenserQuestsEnabled", true);
             Scribe_Values.Look(ref dewsilkEnabled, "dewsilkEnabled", true);
             Scribe_Values.Look(ref oasisNativeFloraEnabled, "oasisNativeFloraEnabled", true);
         }
@@ -86,6 +90,10 @@ namespace RimMandrake.WeepingStones
             list.Label("Condenser season: " + condenserSeasonDays.ToString("0") + " days (shipped 15)",
                 -1f, (TipSignal?)("How long the gorrask stays settled before it moves on. 15 is one vanilla quadrum."));
             condenserSeasonDays = Mathf.Round(list.Slider(condenserSeasonDays, 3f, 30f));
+            list.CheckboxLabeled("Condenser quests offered", ref condenserQuestsEnabled,
+                "Two optional quests about the old gorrask: a wealthy collector pays to have it subdued and taken away alive "
+              + "(the moving oasis ends), or settlers ask you to keep it alive through a season while trophy hunters come for it. "
+              + "Taking one withdraws the other. Off: neither is offered; quests already running finish normally.");
 
             list.Gap();
             list.CheckboxLabeled("Dewsilk cocoons enabled (applies next launch)", ref dewsilkEnabled,
@@ -105,6 +113,7 @@ namespace RimMandrake.WeepingStones
                 vizhikEscapeChance = 0.05f;
                 condenserEnabled = true;
                 condenserSeasonDays = 15f;
+                condenserQuestsEnabled = true;
                 dewsilkEnabled = true;
                 oasisNativeFloraEnabled = true;
             }

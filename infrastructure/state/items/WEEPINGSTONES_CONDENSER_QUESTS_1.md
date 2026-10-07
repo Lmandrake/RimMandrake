@@ -46,3 +46,19 @@ Depends on: `WEEPINGSTONES_WALKING_CONDENSER_1`, `WEEPINGSTONES_TRUCE_HUNT_SUPPR
   letter and goodwill.
 - Free mod alone: no Hutt/Blackstar/canon string in any free-tier text (search); campaign loaded: the slots show the
   Hutt Cartel, the Homestead's moisture farmers and Blackstar.
+
+## built (offline, FOUNDRY 2026-10-06; not seen in game)
+
+- `src/RimMandrake/WeepingStones/Defs/QuestScriptDefs/RM_CondenserQuests.xml`: `RM_CondenserCapture`, `RM_CondenserKeepFree`
+  (validator: 0 errors, 0 warnings). Random pool route, gated by `RM_QuestNode_GetCondenserCrab`.
+- `Source/RM_CondenserQuests.cs`: crab gate + claim (accepting one withdraws the other; a Success settles it for the
+  world), faction-slot node, downed watcher (no vanilla Downed signal), buyer takes the crab (DeSpawn + world pawn,
+  pool dried, oasis ended), hunters raid targeting the crab (vanilla `QuestPart_RandomRaid.attackTargets`).
+  Retribution is the existing water truce, not new code. Mod Settings toggle `condenserQuestsEnabled`.
+- Slots: `Defs/FactionSlotDefs/RM_CondenserQuestSlots.xml`. Free: buyer Empire (else most advanced friendly),
+  settlers OutlanderCivil, hunters Pirate.
+- Campaign mapping still owed (UtinniPatches): insert `RUT_Jawa_HuttCartel` at the head of
+  `RM_FactionSlot_CondenserBuyer/preferredFactions`. Homestead and Blackstar reskin OutlanderCivil and Pirate, so
+  those two slots already land on them.
+- Deviations: the buyer's crew taking the crab happens offstage, in a letter. No new truce-radius overlay was drawn.
+  The "water stewards" have no free-tier faction, so only the settlers lose goodwill.

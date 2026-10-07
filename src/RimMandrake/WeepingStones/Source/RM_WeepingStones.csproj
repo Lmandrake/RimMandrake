@@ -64,6 +64,7 @@
     <Compile Include="RM_WorkGiver_CullVhorrin.cs" />
     <Compile Include="RM_JobDriver_CullVhorrin.cs" />
     <Compile Include="RM_WalkingCondenser.cs" />
+    <Compile Include="RM_CondenserQuests.cs" />
     <Compile Include="RM_AncientCondenserPlant.cs" />
     <Compile Include="RM_DewsilkSwitch.cs" />
     <Compile Include="RM_TileMutatorWorker_Oasis.cs" />

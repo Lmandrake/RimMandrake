@@ -27,6 +27,11 @@ namespace RimMandrake.WeepingStones
         public bool ended;       // machine cut out: the moving oasis is over for good
         public int buyerPoolUntilTick = -1;
         public Faction buyer;
+        // WEEPINGSTONES_CONDENSER_QUESTS_1: the quest holding the crab (-1 none), whether a quest has settled its fate,
+        // and who took it to their arena.
+        public int claimQuestId = -1;
+        public bool questsSettled;
+        public Faction capturedBy;
 
         public RM_CondenserWorld(World w) : base(w) { }
 
@@ -38,6 +43,9 @@ namespace RimMandrake.WeepingStones
             Scribe_Values.Look(ref ended, "ended");
             Scribe_Values.Look(ref buyerPoolUntilTick, "buyerPoolUntilTick", -1);
             Scribe_References.Look(ref buyer, "buyer");
+            Scribe_Values.Look(ref claimQuestId, "claimQuestId", -1);
+            Scribe_Values.Look(ref questsSettled, "questsSettled");
+            Scribe_References.Look(ref capturedBy, "capturedBy");
         }
     }
 

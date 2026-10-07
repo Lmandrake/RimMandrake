@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_CONDENSER_QUESTS_1. Two optional quests on the walking condenser (the old gorrask,
+  RM_WalkingCondenser.cs). Ruling (owner, 2026-10-02) and its canon faction names: the item prose,
+  infrastructure/state/items/WEEPINGSTONES_CONDENSER_QUESTS_1.md.
+
+  FREE TIER. No canon name appears in any text here: the factions are SLOTS (Defs/FactionSlotDefs/), filled by
+  vanilla factions in this mod (collector: Empire, else the most advanced friendly faction; settlers:
+  OutlanderCivil; hunters: Pirate). The campaign maps the slots by patching RM_FactionSlotDef.preferredFactions
+  from UtinniPatches; its settler and hunter factions are reskins of OutlanderCivil and Pirate, so two of three slots
+  already land on them.
+
+  SPEC (rimworld-quests skill section 2):
+    RM_CondenserCapture
+      ask       down the old gorrask without killing it within 8-12 days
+      reason    a collector wants it alive for its fighting pit
+      choice    this quest or the other (accepting one withdraws the other); and taking the money ends the
+                moving oasis for good
+      failure   it dies (buyer displeased) or time runs out
+      reward    rewardValue 3000 + buyer goodwill; settlers lose goodwill
+      deadline  quest timer, shown
+    RM_CondenserKeepFree
+      ask       keep the old gorrask alive for 10-15 days; two waves of hunters target the crab itself
+      reason    settlers live by its water
+      choice    fight them off, or let the water truce do it (a hunter who strikes first at the pool brings the
+                wild herds down on his own faction: RM_MapComponent_WaterTruce, EnvironmentalHazards)
+      failure   the crab dies: settlers lose goodwill
+      reward    standard reward roll for points + settlers goodwill; the crab walks on
+      deadline  the season is the quest timer, shown
+
+  FIRING ROUTE: natural random pool (route 1), gated by RM_QuestNode_GetCondenserCrab: the crab must be alive
+  and undowned on a player home map, the quests enabled in Mod Settings, the oasis not ended, no quest holding
+  the crab, and no earlier quest having settled its fate. Test: dev mode, Quests, Generate quest.
+
+  NOT SEEN IN GAME. Offline-validated only:
+    python3 .claude/skills/rimworld-quests/scripts/validate_quest.py src/RimMandrake/WeepingStones/Defs/QuestScriptDefs/RM_CondenserQuests.xml
+-->
+<Defs>
+
+  <!-- ================================================================================================ -->
+  <QuestScriptDef>
+    <defName>RM_CondenserCapture</defName>
+    <rootSelectionWeight>0.4</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <minRefireDays>30</minRefireDays>
+    <expireDaysRange>3~5</expireDaysRange>
+    <defaultChallengeRating>3</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->A cage for the old gorrask</li>
+        <li>questName->The collector's crab</li>
+        <li>questName->The oasis, sold</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[asker_nameDef] of [buyer_name] has heard of the old gorrask, the stone-crab that carries a running condenser in its shell and a pool wherever it settles. [buyer_name] want it alive, for their fighting pit.\n\nSubdue [crab_definite] within [captureTicks_duration]: bring it down and keep it breathing. A dead crab is worth nothing to them. Once it is down, their crew will chain it and haul it away, and they will pay well.\n\nNobody who lives by its water will thank you. [settlers_name] count on that pool, and they will hear who sold it. And there will be no moving oasis after this, anywhere: it will never walk the stones again.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_GetCondenserCrab">
+          <storeAs>crab</storeAs>
+          <storeMapAs>map</storeMapAs>
+        </li>
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_GetFactionSlot">
+          <slot>RM_FactionSlot_CondenserBuyer</slot>
+          <storeAs>buyer</storeAs>
+          <storeLeaderAs>asker</storeLeaderAs>
+        </li>
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_GetFactionSlot">
+          <slot>RM_FactionSlot_CondenserSettlers</slot>
+          <exclude>$buyer</exclude>
+          <storeAs>settlers</storeAs>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>rewardValue</name>
+          <value>3000</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>captureTicks</name>
+          <value>$(randInt(8,12)*60000)</value>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$captureTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringCondenserCapture">Wanted alive within: {0}</inspectString>
+          <outSignalComplete>CaptureTimeout</outSignalComplete>
+        </li>
+
+        <!-- Down is the trigger; there is no vanilla signal for it. -->
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_CondenserSubdued">
+          <crab>$crab</crab>
+          <outSignal>CrabSubdued</outSignal>
+        </li>
+
+        <!-- SUCCESS (sad). Order matters: the crab leaves before the End on the same signal. -->
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_CondenserTaken">
+          <inSignal>CrabSubdued</inSignal>
+          <crab>$crab</crab>
+          <buyer>$buyer</buyer>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>CrabSubdued</inSignal>
+          <label TKey="LetterLabelCondenserTaken">The old gorrask is taken</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextCondenserTaken">[buyer_name]'s crew came with chains and sledges while the old gorrask still lay stunned, and dragged it out across the stones toward their fighting pit. It will be kept alive there, in a dry pen, for crowds.\n\nIts pool is draining into the ground and will not well up again. The machine in its shell will run for nobody now. It will never walk again.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>CrabSubdued</inSignal>
+          <faction>$settlers</faction>
+          <change>-15</change>
+          <reason>RM_CondenserSoldToCollector</reason>
+        </li>
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>CrabSubdued</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <allowRoyalFavor>false</allowRoyalFavor>
+          </parms>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>CrabSubdued</inSignal>
+          <outcome>Success</outcome>
+          <goodwillChangeAmount>10</goodwillChangeAmount>
+          <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+          <goodwillChangeReason>RM_CondenserDeliveredAlive</goodwillChangeReason>
+        </li>
+
+        <!-- FAIL: killed instead of taken. .Destroyed is vanilla's "quest pawn died". -->
+        <li Class="QuestNode_Signal">
+          <inSignal>crab.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelCondenserKilledForBuyer">The old gorrask is dead</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextCondenserKilledForBuyer">[buyer_name] wanted the old gorrask alive. It is dead, and so is the moving oasis it carried. [asker_nameDef] will not pay for a carcass.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <goodwillChangeAmount>-8</goodwillChangeAmount>
+                <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+                <goodwillChangeReason>RM_CondenserKilledNotTaken</goodwillChangeReason>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>CaptureTimeout</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>buyer.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+  <!-- ================================================================================================ -->
+  <QuestScriptDef>
+    <defName>RM_CondenserKeepFree</defName>
+    <rootSelectionWeight>0.4</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <minRefireDays>30</minRefireDays>
+    <expireDaysRange>3~5</expireDaysRange>
+    <defaultChallengeRating>2</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Keep the old gorrask free</li>
+        <li>questName->A season at the pool</li>
+        <li>questName->Trophy season</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[asker_nameDef] of [settlers_name] has come asking for help. Their fields and herds drink from the pool the old gorrask carries, and word has reached them that [hunters_name] mean to kill it: not for meat and not for money, but for the boast of having done it.\n\nKeep [crab_definite] alive for [seasonTicks_duration]. The hunters will come more than once, and they will go straight for the crab.\n\nThe water truce holds round its pool. A hunter who strikes first at the pool brings the wild herds down on his own people, so the water itself may fight for you. If the crab lives, it walks on, and [settlers_name] will remember who stood by it.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_GetCondenserCrab">
+          <storeAs>crab</storeAs>
+          <storeMapAs>map</storeMapAs>
+        </li>
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_GetFactionSlot">
+          <slot>RM_FactionSlot_CondenserSettlers</slot>
+          <storeAs>settlers</storeAs>
+          <storeLeaderAs>asker</storeLeaderAs>
+        </li>
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_GetFactionSlot">
+          <slot>RM_FactionSlot_CondenserHunters</slot>
+          <storeAs>hunters</storeAs>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GetDefaultRewardValueFromPoints</def>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>seasonTicks</name>
+          <value>$(randInt(10,15)*60000)</value>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$seasonTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringCondenserSeason">Keep it alive for: {0}</inspectString>
+          <outSignalComplete>SeasonOver</outSignalComplete>
+        </li>
+
+        <!-- Two waves, both inside the shortest season (10 days). -->
+        <li Class="QuestNode_Delay">
+          <delayTicks>$(randInt(2,4)*60000)</delayTicks>
+          <outSignalComplete>HuntersFirst</outSignalComplete>
+        </li>
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_CondenserHunters">
+          <inSignal>HuntersFirst</inSignal>
+          <crab>$crab</crab>
+          <faction>$hunters</faction>
+          <pointsFactor>0.8</pointsFactor>
+        </li>
+        <li Class="QuestNode_Delay">
+          <delayTicks>$(randInt(7,9)*60000)</delayTicks>
+          <outSignalComplete>HuntersSecond</outSignalComplete>
+        </li>
+        <li Class="RimMandrake.WeepingStones.RM_QuestNode_CondenserHunters">
+          <inSignal>HuntersSecond</inSignal>
+          <crab>$crab</crab>
+          <faction>$hunters</faction>
+          <pointsFactor>1.0</pointsFactor>
+        </li>
+
+        <!-- SUCCESS -->
+        <li Class="QuestNode_Letter">
+          <inSignal>SeasonOver</inSignal>
+          <label TKey="LetterLabelCondenserKeptFree">The old gorrask walks on</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextCondenserKeptFree">The season has turned and the old gorrask is still alive. [hunters_name] have gone home with no trophy and nothing to boast of.\n\n[settlers_name] spent the season at its pool, watering their herds, and [asker_nameDef] says they will not forget who stood by it.</text>
+        </li>
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>SeasonOver</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <allowRoyalFavor>false</allowRoyalFavor>
+          </parms>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>SeasonOver</inSignal>
+          <outcome>Success</outcome>
+          <goodwillChangeAmount>15</goodwillChangeAmount>
+          <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+          <goodwillChangeReason>RM_CondenserKeptFree</goodwillChangeReason>
+        </li>
+
+        <!-- FAIL -->
+        <li Class="QuestNode_Signal">
+          <inSignal>crab.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelCondenserLost">The old gorrask is dead</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextCondenserLost">The old gorrask is dead, and the moving oasis with it. [settlers_name] asked you to keep it alive, and their pool is drying into the stones.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <goodwillChangeAmount>-10</goodwillChangeAmount>
+                <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
+                <goodwillChangeReason>RM_CondenserLostOnWatch</goodwillChangeReason>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>settlers.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>
