@@ -131,6 +131,7 @@ namespace RimMandrake.Scarlands
         public static float aerosolScreenRadiusFactor = 1f;  // scales every screen's radius
         public static int hummingRingsPerMap = 2;            // projector rings per new map (0-3); the first is always live
         public static bool ringSalvageEnabled = true;        // evaluated rings can be uninstalled, repaired or stripped
+        public static bool glowerShieldingEnabled = true;    // glower shield panels and plates shield against toxins
         public static float projectorCoreChance = 0.3f;      // chance a stripped dead ring yields a projector core
         public static bool shipWakesLine = true;             // a landed gravship's engine within 40 cells wakes dead rings
 
@@ -213,6 +214,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref loosenedPanelsPerMap, "loosenedPanelsPerMap", 3f);
             Scribe_Values.Look(ref aerosolScreenEnabled, "aerosolScreenEnabled", true);
             Scribe_Values.Look(ref aerosolScreenRadiusFactor, "aerosolScreenRadiusFactor", 1f);
+            Scribe_Values.Look(ref glowerShieldingEnabled, "glowerShieldingEnabled", true);
             Scribe_Values.Look(ref hummingRingsPerMap, "hummingRingsPerMap", 2);
             Scribe_Values.Look(ref shipWakesLine, "shipWakesLine", true);
             Scribe_Values.Look(ref ringSalvageEnabled, "ringSalvageEnabled", true);
@@ -402,6 +404,9 @@ namespace RimMandrake.Scarlands
                 list.Label("Screen radius: x" + aerosolScreenRadiusFactor.ToString("0.00"));
                 aerosolScreenRadiusFactor = list.Slider(aerosolScreenRadiusFactor, 0.5f, 2f);
             }
+            list.CheckboxLabeled("Glower shielding", ref glowerShieldingEnabled,
+                "Glower shield panels give pawns in their room toxic environment resistance and halve room toxic damage; "
+              + "glower plates add resistance to the wearer. Off: both do nothing.");
             list.Label("Projector rings per map: up to " + hummingRingsPerMap + " (new maps; the first is always humming)");
             hummingRingsPerMap = Mathf.RoundToInt(list.Slider(hummingRingsPerMap, 0f, 3f));
             list.CheckboxLabeled("The ship wakes the line", ref shipWakesLine,

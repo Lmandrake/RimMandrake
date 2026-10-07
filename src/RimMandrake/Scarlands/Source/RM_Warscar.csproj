@@ -59,6 +59,7 @@
     <Compile Include="RM_AerosolScreen.cs" />
     <Compile Include="RM_WarscarRings.cs" />
     <Compile Include="RM_WarscarSalvage.cs" />
+    <Compile Include="RM_GlowerShield.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
