@@ -57,8 +57,9 @@ Depends on: `WEEPINGSTONES_WALKING_CONDENSER_1`, `WEEPINGSTONES_TRUCE_HUNT_SUPPR
   Retribution is the existing water truce, not new code. Mod Settings toggle `condenserQuestsEnabled`.
 - Slots: `Defs/FactionSlotDefs/RM_CondenserQuestSlots.xml`. Free: buyer Empire (else most advanced friendly),
   settlers OutlanderCivil, hunters Pirate.
-- Campaign mapping still owed (UtinniPatches): insert `RUT_Jawa_HuttCartel` at the head of
-  `RM_FactionSlot_CondenserBuyer/preferredFactions`. Homestead and Blackstar reskin OutlanderCivil and Pirate, so
-  those two slots already land on them.
+- Campaign mapping: `src/RimUtinni/UtinniPatches/Patches/RUT_CondenserQuestSlots.xml` puts `RUT_Jawa_HuttCartel`
+  at the head of `RM_FactionSlot_CondenserBuyer/preferredFactions` (Empire stays next). Homestead and Blackstar
+  reskin OutlanderCivil and Pirate, so those two slots already land on them. L0: validate_patch 1 match;
+  `selftest_condenser_slots.py`.
 - Deviations: the buyer's crew taking the crab happens offstage, in a letter. No new truce-radius overlay was drawn.
   The "water stewards" have no free-tier faction, so only the settlers lose goodwill.

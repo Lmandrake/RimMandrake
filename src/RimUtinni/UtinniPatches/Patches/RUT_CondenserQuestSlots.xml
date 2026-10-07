@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_CONDENSER_QUESTS_1: campaign mapping of the free mod's condenser-quest
+  faction slots (mandrake.rm.weepingstones, Defs/FactionSlotDefs/RM_CondenserQuestSlots.xml).
+  The buyer is the Hutt Cartel: RUT_Jawa_HuttCartel goes at the HEAD of the buyer slot's
+  preferredFactions, so the free mod's Empire stays the next choice when the cartel is
+  absent from the world. The settlers and hunters slots need no patch: the Homestead and
+  Blackstar reskin OutlanderCivil and Pirate, which those slots already name.
+  Conditional on the slot existing, so this is a no-op without the free mod.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/RimMandrake.WeepingStones.RM_FactionSlotDef[defName="RM_FactionSlot_CondenserBuyer"]/preferredFactions/li[1]</xpath>
+    <match Class="PatchOperationInsert">
+      <xpath>Defs/RimMandrake.WeepingStones.RM_FactionSlotDef[defName="RM_FactionSlot_CondenserBuyer"]/preferredFactions/li[1]</xpath>
+      <order>Prepend</order>
+      <value>
+        <li>RUT_Jawa_HuttCartel</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
