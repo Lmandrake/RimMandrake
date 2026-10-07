@@ -236,7 +236,7 @@ suite.toggles = list(WIRED)
 
 
 def _phases():
-    m = re.search(r"enum ForgeCyclePhase\s*\{([^}]*)\}", _read_cs("RM_GameCondition_ForgeCycle.cs"))
+    m = re.search(r"enum ForgeCyclePhase\s*\{([^}]*)\}", _read_cs(os.path.join("Kernel", "RM_CycleKernel.cs")))
     return [re.sub(r"\s*=.*", "", p).strip() for p in (m.group(1).split(",") if m else []) if p.strip()]
 
 
