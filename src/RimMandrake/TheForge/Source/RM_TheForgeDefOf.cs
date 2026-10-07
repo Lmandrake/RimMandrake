@@ -30,6 +30,9 @@ namespace RimMandrake.TheForge
         // FORGE_SKY_PASTURES_1
         public static MapMeshFlagDef RM_SkyColumns;
 
+        // FORGE_DHOKKUR_WAYS_1
+        public static TerrainDef RM_DhokkurPolishedTrail;
+
         static RM_TheForgeDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_TheForgeDefOf));
