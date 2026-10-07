@@ -149,5 +149,92 @@ namespace RimMandrake.GelatinousSlime
             }
             return "A[" + ra + "] B[" + rb + "] antidoteCuredA=" + curedA;
         }
+
+        // ---- antidote through the real use path (no UI): the item's CompTargetable is primed exactly as
+        // SelectedUseOption + Targeter would (caster, selectedTarget), then OrderForceTarget starts the UseItem job.
+        // jawa/ordered_job cannot do this: it never sets selectedTarget, so CompTargetable.DoEffect returns early.
+        private static readonly List<Pawn> AntidotePawns = new List<Pawn>();
+        private static readonly List<Thing> AntidoteItems = new List<Thing>();
+        private static Pawn _aAwake, _aComa, _aCtl;
+
+        private static string Order(Pawn doctor, Thing item, Pawn patient)
+        {
+            CompTargetable targetable = (item as ThingWithComps)?.GetComp<CompTargetable>();
+            if (targetable == null)
+            {
+                return "noTargetable";
+            }
+            var flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+            typeof(CompTargetable).GetField("caster", flags)?.SetValue(targetable, doctor);
+            typeof(CompTargetable).GetField("selectedTarget", flags)?.SetValue(targetable, patient);
+            targetable.OrderForceTarget(patient);
+            return doctor.CurJobDef != null ? doctor.CurJobDef.defName : "none";
+        }
+
+        /// <summary>Stage a doctor per patient (awake 0.55, comatose 0.55 + XenogerminationComa, untreated control 0.55)
+        /// and a stack-of-1 antidote each, then order both treatments the way the game does.</summary>
+        public static string ProofAntidoteStart(Map map)
+        {
+            map = map ?? Find.CurrentMap;
+            ThingDef antidote = DefDatabase<ThingDef>.GetNamedSilentFail("RM_SlimeAntidote");
+            if (map == null || antidote == null || SlimeDefs.Slimification == null)
+            {
+                return "ERROR no map, antidote or Slimification";
+            }
+            ProofAntidoteClean(map);
+            Pawn d1 = Colonist(map), d2 = Colonist(map);
+            _aAwake = Colonist(map); _aComa = Colonist(map); _aCtl = Colonist(map);
+            AntidotePawns.AddRange(new[] { d1, d2, _aAwake, _aComa, _aCtl });
+            foreach (Pawn p in new[] { _aAwake, _aComa, _aCtl })
+            {
+                Hediff h = HediffMaker.MakeHediff(SlimeDefs.Slimification, p);
+                h.Severity = 0.55f;
+                p.health.AddHediff(h);
+            }
+            if (SlimeDefs.XenogerminationComa != null)
+            {
+                _aComa.health.AddHediff(HediffMaker.MakeHediff(SlimeDefs.XenogerminationComa, _aComa));
+            }
+            Thing i1 = ThingMaker.MakeThing(antidote); Thing i2 = ThingMaker.MakeThing(antidote);
+            GenPlace.TryPlaceThing(i1, d1.Position, map, ThingPlaceMode.Near);
+            GenPlace.TryPlaceThing(i2, d2.Position, map, ThingPlaceMode.Near);
+            AntidoteItems.AddRange(new[] { i1, i2 });
+            string j1 = Order(d1, i1, _aAwake);
+            string j2 = Order(d2, i2, _aComa);
+            return "job1=" + j1 + " job2=" + j2 + " coma=" + (SlimeDefs.XenogerminationComa != null && _aComa.health.hediffSet.HasHediff(SlimeDefs.XenogerminationComa));
+        }
+
+        private static string PatientState(Pawn p)
+        {
+            if (p == null || p.Destroyed || p.Dead || p.health == null)
+            {
+                return "gone";
+            }
+            Hediff slim = p.health.hediffSet.GetFirstHediffOfDef(SlimeDefs.Slimification);
+            Hediff tox = p.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.ToxicBuildup);
+            return string.Format("slim={0:0.00} toxic={1:0.00}", slim?.Severity ?? 0f, tox?.Severity ?? 0f);
+        }
+
+        /// <summary>Read-only state: each patient's film/toxic severity, whether the doctor is still on the UseItem job,
+        /// and whether each antidote stack was consumed (destroyed).</summary>
+        public static string ProofAntidoteState(Map map)
+        {
+            if (AntidoteItems.Count < 2 || AntidotePawns.Count < 5)
+            {
+                return "ERROR not staged";
+            }
+            return string.Format("awake[{0}] coma[{1}] ctl[{2}] doc1Job={3} doc2Job={4} item1Destroyed={5} item2Destroyed={6}",
+                PatientState(_aAwake), PatientState(_aComa), PatientState(_aCtl),
+                AntidotePawns[0].CurJobDef?.defName ?? "none", AntidotePawns[1].CurJobDef?.defName ?? "none",
+                AntidoteItems[0].Destroyed, AntidoteItems[1].Destroyed);
+        }
+
+        public static string ProofAntidoteClean(Map map)
+        {
+            foreach (Pawn p in AntidotePawns) { if (p != null && !p.Destroyed) { p.Destroy(); } }
+            foreach (Thing t in AntidoteItems) { if (t != null && !t.Destroyed) { t.Destroy(); } }
+            AntidotePawns.Clear(); AntidoteItems.Clear();
+            return "cleaned";
+        }
     }
 }
