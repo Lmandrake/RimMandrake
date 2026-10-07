@@ -47,7 +47,7 @@
     <surfaceLook>
       <overlay>false</overlay>
       <wake>0.0</wake>
-      <seeThrough>0.55</seeThrough>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -74,7 +74,7 @@
     <surfaceLook>
       <overlay>false</overlay>
       <wake>0.0</wake>
-      <seeThrough>0.55</seeThrough>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -126,7 +126,7 @@
       <wake>0.0</wake>
       <bubbles>0.9</bubbles>
       <bubbleColor>(0.92,0.96,1.0)</bubbleColor>
-      <seeThrough>0.55</seeThrough>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -212,7 +212,7 @@
       <texture>Terrain/Surfaces/ToxicWater{depth}Ramp</texture>
       <overlay>false</overlay>
       <wake>0.0</wake>
-      <seeThrough>0.55</seeThrough>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -267,7 +267,8 @@
       <wake>0.0</wake>
       <bubbles>0.25</bubbles>
       <bubbleColor>(0.80,1.0,0.35)</bubbleColor>
-      <seeThrough>0.35</seeThrough>
+      <seeThrough>0.25</seeThrough>
+      <seeThroughTint>(0.55,0.75,0.15)</seeThroughTint>
     </surfaceLook>
     <conversions>
       <li>
@@ -307,7 +308,7 @@
       <speed>0.2</speed>
       <sheen>0.5</sheen>
       <wake>0.0</wake>
-      <seeThrough>0.55</seeThrough>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -331,17 +332,19 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <surfaceLook>
-      <shader>Flow</shader>
-      <texture>Other/Perlin</texture>
-      <tint>(0.40,0.40,0.40)</tint>
-      <depthDarken>0.08</depthDarken>
-      <flowSpeed>0.02</flowSpeed>
-      <flowAmplitude>0.06</flowAmplitude>
-      <flowFrequency>1.0</flowFrequency>
-      <brightness>0.0</brightness>
+      <shader>Solid</shader>
+      <texture>White</texture>
+      <tint>(0.24,0.24,0.24)</tint>
+      <depthDarken>0.1</depthDarken>
       <splashes>true</splashes>
-      <overlay>false</overlay>
+      <overlay>true</overlay>
+      <highlight>(0.80,0.80,0.80)</highlight>
+      <strength>0.18</strength>
+      <scale>3.0</scale>
+      <speed>0.05</speed>
+      <sharpness>3.0</sharpness>
       <wake>0.0</wake>
+      <seeThrough>0.0</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -382,7 +385,7 @@
       <rippleDensity>0.7</rippleDensity>
       <overlay>false</overlay>
       <wake>0.0</wake>
-      <seeThrough>0.55</seeThrough>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -431,7 +434,7 @@
       <fleckChance>0.05</fleckChance>
       <overlay>false</overlay>
       <wake>0.0</wake>
-      <seeThrough>0.55</seeThrough>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -454,7 +457,7 @@
       <speed>0.2</speed>
       <sheen>0.3</sheen>
       <wake>0.0</wake>
-      <seeThrough>0.55</seeThrough>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 

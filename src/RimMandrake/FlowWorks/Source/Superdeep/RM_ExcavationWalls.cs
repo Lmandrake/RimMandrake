@@ -442,10 +442,12 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 10 (owner, 2026-10-06: <i>"Is it possible to still show the pit
 		/// walls/floor beneath the translucent water?"</i>). The liquid's terrain has replaced the cut's floor; for a
-		/// liquid whose look is see-through, the floor (the ground the cell was dug through, darkened with depth) and the
-		/// drowned part of the far face are redrawn OVER the liquid, partly transparent — fainter the deeper the liquid
-		/// — so the liquid's own surface shows through them and they read as lying under it. Opaque liquids (seeThrough
-		/// 0: tar, oil, slime, blood) draw nothing here.</summary>
+		/// liquid whose look is see-through, the cut's GEOMETRY is redrawn faintly over it — the floor (the ground it was
+		/// dug through), the drowned band of the far wall and the drowned side walls, each lit like the dry pit's — then
+		/// a thin wash of the liquid's colour over all of it, so they read as lying under the liquid and the water's own
+		/// shimmer still shows through. Opaque liquids (seeThrough 0: tar, oil, slime, blood) draw nothing here.
+		/// Live 2026-10-06, first cut: a flat floor quad plus a black depth quad at 0.55 alpha turned every water pit into
+		/// a dark grey slab with no walls — so no darkening quad any more, lower alphas, walls drawn, a colour wash.</summary>
 		private void SeeThrough(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int f, int north, float y)
 		{
 			RM_LiquidSurfaceLook look = RM_LiquidSurface.LookFor(map.terrainGrid.TerrainAt(c));
@@ -463,27 +465,50 @@ namespace RimMandrake.FlowWorks
 			{
 				ground = TerrainDefOf.Soil;
 			}
-			Material floor = RM_FaceMaterial.FaceMat(ground);
 			int fullDrop = RM_WallFaceMath.ExposedDrop(d, north, 0);
 			int dryDrop = RM_WallFaceMath.ExposedDrop(d, north, f);
 			float hFull = RM_WallFaceMath.NorthFaceHeight(fullDrop);
 			float hDry = RM_WallFaceMath.NorthFaceHeight(dryDrop);
 			float floorTop = 1f - hFull;
 			byte fa = (byte)(255f * a);
-			Quad(floor, c.x, c.z, 1f, floorTop, y, new Color32(255, 255, 255, fa), new Color32(255, 255, 255, fa), UvWorld);
-			// the floor sits at the bottom of the cut: darker the deeper it is
-			byte dk = (byte)(255f * a * RM_WallFaceMath.FootDarkness(d));
-			QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, floorTop, y + 0.0001f, new Color32(0, 0, 0, dk), new Color32(0, 0, 0, dk));
-			if (hFull > hDry)
+			Quad(RM_FaceMaterial.FaceMat(ground), c.x, c.z, 1f, floorTop, y, new Color32(255, 255, 255, fa), new Color32(255, 255, 255, fa), UvWorld);
+			float drowned = hFull - hDry;
+			if (drowned > 0.01f)
 			{
-				// the drowned band of the far face, clearer toward the water line
+				// the drowned band of the far wall: the wall's own ground, lit toward the water line like the dry face
 				TerrainDef faceGround = RM_FaceMaterial.GroundBeside(map, eng, c, c + IntVec3.North, out bool _);
-				Material face = RM_FaceMaterial.FaceMat(faceGround);
 				byte b0 = (byte)(255f * RM_LiquidLookMath.DrownedFaceAlpha(look.seeThrough, f, 0f));
 				byte b1 = (byte)(255f * RM_LiquidLookMath.DrownedFaceAlpha(look.seeThrough, f, 1f));
-				Quad(face, c.x, c.z + floorTop, 1f, hFull - hDry, y + 0.0002f, new Color32(255, 255, 255, b0),
-					new Color32(255, 255, 255, b1), UvFace);
+				Quad(RM_FaceMaterial.FaceMat(faceGround), c.x, c.z + floorTop, 1f, drowned, y + 0.0002f,
+					new Color32(255, 255, 255, b0), new Color32(255, 255, 255, b1), UvFace);
+				byte lit = (byte)(255f * LightAlpha(RM_WallFaceMath.WallFaceLight) * b1 / 255f);
+				QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + floorTop, 1f, drowned, y + 0.0003f,
+					new Color32(255, 248, 232, 0), new Color32(255, 248, 232, lit));
+				// the foot of the wall: a soft dark line where it meets the floor, so the corner reads
+				byte foot = (byte)(120f * a);
+				QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z + floorTop - 0.04f, 1f, 0.08f, y + 0.0003f,
+					new Color32(0, 0, 0, 0), new Color32(0, 0, 0, foot));
 			}
+			// drowned side walls: a strip each side where the neighbour is shallower
+			int west = NeighbourLevel(map, eng, c + IntVec3.West, d), east = NeighbourLevel(map, eng, c + IntVec3.East, d);
+			float ww = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(d, west, 0));
+			float ew = RM_WallFaceMath.SideFaceWidth(RM_WallFaceMath.ExposedDrop(d, east, 0));
+			byte sa = (byte)(255f * a * 0.8f);
+			if (ww > 0f)
+			{
+				QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z, ww, floorTop, y + 0.0003f, new Color32(0, 0, 0, sa), new Color32(0, 0, 0, sa));
+			}
+			if (ew > 0f)
+			{
+				QuadVMat(RM_FaceMaterial.ShadeMat, c.x + 1f - ew, c.z, ew, floorTop, y + 0.0003f,
+					new Color32(255, 248, 232, (byte)(sa / 2)), new Color32(255, 248, 232, (byte)(sa / 2)));
+			}
+			// the liquid's own colour washed thinly over everything drawn above, deeper = stronger
+			Color wash = look.seeThroughTint.r >= 0.999f && look.seeThroughTint.g >= 0.999f && look.seeThroughTint.b >= 0.999f
+				? new Color(0.30f, 0.46f, 0.58f) : look.seeThroughTint;
+			byte wa = (byte)(255f * Mathf.Clamp01(0.16f + 0.07f * f));
+			Color32 w = new Color32((byte)(255f * wash.r), (byte)(255f * wash.g), (byte)(255f * wash.b), wa);
+			QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, 1f - hDry, y + 0.0005f, w, w);
 		}
 
 		/// <summary>An (nx x nz)-cell vertex grid over (x0,z0,w,h) with a colour per vertex; nz defaults to nx.</summary>

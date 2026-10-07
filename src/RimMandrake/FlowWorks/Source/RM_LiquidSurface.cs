@@ -43,7 +43,8 @@ namespace RimMandrake.FlowWorks
 
 		// ── engine look (RM_LiquidLooks applies these to the liquid's own terrains) ──
 
-		/// <summary>"Water" (default): the terrain's own vanilla water shader. "Flow": the base game's slow
+		/// <summary>"Solid": the plain opaque terrain shader, colour = texture x tint exactly (tar). "Water" (default): the
+		/// terrain's own vanilla water shader. "Flow": the base game's slow
 		/// distorting lava-flow shader, for thick liquids.</summary>
 		public string shader;
 
@@ -87,6 +88,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Item 10 (owner: <i>"show the pit walls/floor beneath the translucent water"</i>): 0..1, how much of a
 		/// cut's own floor and drowned walls show through this liquid. 0 = opaque (tar, oil, slime).</summary>
 		public float seeThrough;
+
+		/// <summary>Colour of the liquid laid over a see-through cut's floor (white = a clear water blue).</summary>
+		public Color seeThroughTint = Color.white;
 	}
 
 	/// <summary>

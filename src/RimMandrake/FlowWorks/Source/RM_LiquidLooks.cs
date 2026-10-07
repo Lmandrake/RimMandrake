@@ -213,7 +213,11 @@ namespace RimMandrake.FlowWorks
 				originals[t] = o;
 			}
 			bool flow = string.Equals(look.shader, "Flow", StringComparison.OrdinalIgnoreCase);
-			Shader shader = flow ? ShaderDatabase.LoadShader(FlowShaderPath) : o.graphic.Shader;
+			// "Solid": the base game's plain opaque terrain shader (floors, carpets) — the colour is exactly texture x tint,
+			// nothing added. Tar (live 2026-10-06: on the lava-flow shader a neutral grey tint came out OLIVE, because that
+			// shader paints its own hot colours under the tint; owner: dark grey, no hue).
+			bool solid = string.Equals(look.shader, "Solid", StringComparison.OrdinalIgnoreCase);
+			Shader shader = solid ? ShaderDatabase.TerrainHard : flow ? ShaderDatabase.LoadShader(FlowShaderPath) : o.graphic.Shader;
 			if (shader == null)
 			{
 				Log.WarningOnce("[FlowWorks] liquid look: shader " + FlowShaderPath + " not found; " + t.defName + " keeps its own look", 0x51A7E1);
@@ -253,7 +257,7 @@ namespace RimMandrake.FlowWorks
 				SetIf(m, "_BrightSpotThresholdMax", look.spotMax);
 			}
 			t.graphic = g;
-			if (flow)
+			if (flow || solid)
 			{
 				t.waterDepthMaterial = null;     // no water ripple pass under a thick liquid
 			}
