@@ -29,6 +29,12 @@ namespace RimMandrake.Wreckage
         // Set at resolve time by a noLoot weathering (Picked): no roll of any kind.
         public bool noLoot;
 
+        // Set at resolve time from the weathering (RM_WreckWeatheringDef.extraLoot /
+        // salvageHediff), or directly on a def that is not a weathered wreck.
+        public ThingSetMakerDef extraLoot;
+        public HediffDef salvageHediff;
+        public float salvageHediffSeverity;
+
         public RM_CompProperties_SalvageLoot()
         {
             compClass = typeof(RM_CompSalvageLoot);
@@ -66,11 +72,16 @@ namespace RimMandrake.Wreckage
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
             base.PostDestroy(mode, previousMap);
-            if (Props.noLoot || mode != DestroyMode.Deconstruct || previousMap == null || !RM_WreckageSettings.SalvageLootActive)
+            if (mode != DestroyMode.Deconstruct || previousMap == null)
             {
                 return;
             }
             Pawn salvager = RM_SalvageContext.Salvager;
+            ApplyHazard(salvager);
+            if (Props.noLoot || !RM_WreckageSettings.SalvageLootActive)
+            {
+                return;
+            }
             IntVec3 cell = parent.Position;
             var loot = new List<Thing>();
 
@@ -84,6 +95,10 @@ namespace RimMandrake.Wreckage
             {
                 loot.AddRange(rare.root.Generate());
             }
+            if (Props.extraLoot != null)
+            {
+                loot.AddRange(Props.extraLoot.root.Generate());
+            }
 
             float generosity = RM_WreckageSettings.lootGenerosity;
             foreach (Thing t in loot)
@@ -93,6 +108,26 @@ namespace RimMandrake.Wreckage
                     t.stackCount = Mathf.Clamp(Mathf.RoundToInt(t.stackCount * generosity), 1, t.def.stackLimit);
                 }
                 GenPlace.TryPlaceThing(t, cell, previousMap, ThingPlaceMode.Near);
+            }
+        }
+
+        // The salvager's dose (design §4 Wasteland "radiation on deconstruct"). ToxicBuildup is the
+        // vanilla dose the Wasteland's own waste casks deal through tox gas, so it is scaled by
+        // ToxicResistance exactly as gas exposure is. No pawn known (a debug destroy) = no dose.
+        public void ApplyHazard(Pawn salvager)
+        {
+            if (Props.salvageHediff == null || salvager == null || salvager.Dead || !RM_WreckageSettings.wreckHazards)
+            {
+                return;
+            }
+            float severity = Props.salvageHediffSeverity;
+            if (Props.salvageHediff == HediffDefOf.ToxicBuildup)
+            {
+                severity *= Mathf.Max(0f, 1f - salvager.GetStatValue(StatDefOf.ToxicResistance));
+            }
+            if (severity > 0f)
+            {
+                HealthUtility.AdjustSeverity(salvager, Props.salvageHediff, severity);
             }
         }
 
@@ -122,7 +157,12 @@ namespace RimMandrake.Wreckage
                 return "RM_Wreckage_InspectNothingInside".Translate().Resolve();
             }
             string tier = ("RM_Wreckage_Tier_" + Props.lootTier).Translate().Resolve();
-            return "RM_Wreckage_InspectLootTier".Translate(tier).Resolve();
+            string s = "RM_Wreckage_InspectLootTier".Translate(tier).Resolve();
+            if (Props.salvageHediff != null && RM_WreckageSettings.wreckHazards)
+            {
+                s += "\n" + "RM_Wreckage_InspectHazard".Translate(Props.salvageHediff.label).Resolve();
+            }
+            return s;
         }
     }
 }

@@ -16,6 +16,7 @@
       <wrecks>
         <RM_WastelandWreckHull>2</RM_WastelandWreckHull>
         <RM_WastelandWreckTank>1</RM_WastelandWreckTank>
+        <RM_WastelandWarcasketSarcophagus>0.4</RM_WastelandWarcasketSarcophagus>
       </wrecks>
       <minSpacing>6</minSpacing>
     </genStep>

@@ -10,7 +10,7 @@ namespace RimMandrake.Wreckage
 {
     // SALVAGE_WRECKAGE_EVERYWHERE_1, design §6: the loot rows (slice 1) and the
     // wreck-field rows (slice 3: master, density, one checkbox per field key) and the
-    // fresh-wreck-falls row (step 5, §3e). The hazard row arrives with its engine.
+    // fresh-wreck-falls row (step 5, §3e) and the hazards row (the salvager's dose).
     // Defaults = shipped behaviour; all off = vanilla ShipChunk salvage.
     public class RM_WreckageSettings : ModSettings
     {
@@ -24,6 +24,10 @@ namespace RimMandrake.Wreckage
         public static string disabledFields = "";
         // Design §6 "Fresh wreck falls": off, no RM_IncidentWorker_WreckFall incident fires.
         public static bool wreckFalls = true;
+
+        // Design §6 "Wreck hazards": off, careful salvage never doses the salvager
+        // (RM_CompSalvageLoot.ApplyHazard). The wrecks and their loot remain.
+        public static bool wreckHazards = true;
 
         public static bool SalvageLootActive => salvageLoot;
 
@@ -59,6 +63,7 @@ namespace RimMandrake.Wreckage
             Scribe_Values.Look(ref wreckDensity, "wreckDensity", 1f);
             Scribe_Values.Look(ref disabledFields, "disabledFields", "");
             Scribe_Values.Look(ref wreckFalls, "wreckFalls", true);
+            Scribe_Values.Look(ref wreckHazards, "wreckHazards", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -97,6 +102,8 @@ namespace RimMandrake.Wreckage
             list.GapLine();
             list.CheckboxLabeled("RM_Wreckage_Setting_WreckFalls".Translate(), ref wreckFalls,
                 "RM_Wreckage_Setting_WreckFalls_Tip".Translate());
+            list.CheckboxLabeled("RM_Wreckage_Setting_Hazards".Translate(), ref wreckHazards,
+                "RM_Wreckage_Setting_Hazards_Tip".Translate());
             list.End();
         }
     }
@@ -122,6 +129,7 @@ namespace RimMandrake.Wreckage
             RM_MechanicGates.Register("Wreckage.skillScalesRare", () => RM_WreckageSettings.skillScalesRare);
             RM_MechanicGates.Register("Wreckage.fields", () => RM_WreckageSettings.wreckFields);
             RM_MechanicGates.Register("Wreckage.falls", () => RM_WreckageSettings.wreckFalls);
+            RM_MechanicGates.Register("Wreckage.hazards", () => RM_WreckageSettings.wreckHazards);
             // Per-field keys and their aliases (Scald.S6) need the GenStepDefs:
             // RM_WreckFieldStartup registers them after def load.
         }

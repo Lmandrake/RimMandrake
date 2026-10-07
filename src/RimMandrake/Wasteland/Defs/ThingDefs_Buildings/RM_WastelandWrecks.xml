@@ -47,4 +47,29 @@
     </modExtensions>
   </ThingDef>
 
+  <!-- Wave 2 (design §4 Wasteland "Warcasket sarcophagus (salvage-within-salvage)", "sarcophagus =
+       Carapace +1"; wasteland.md §7: "a dead Junker in an adjusted warcasket is a sealed
+       salvage-within-salvage: suit, tools, and the half-extracted core still in its grips").
+       Carapace family under the shared Irradiated row (so it carries the dose), shifted +1 by
+       extraTierShift: Carapace -> Sealed. Body-length, so 1x2. Art: on the vanilla ShipChunk
+       placeholder until wreck_wastelandsarcophagus_* lands; footprint and shadow are guesses. -->
+  <ThingDef ParentName="RM_WreckFamily_Carapace">
+    <defName>RM_WastelandWarcasketSarcophagus</defName>
+    <label>warcasket sarcophagus</label>
+    <description>A Junker who went in for the core and did not come out, still sealed inside an adjusted warcasket. The suit kept everything it closed over: the tools, the half-extracted fuel core still in its grips, and the dose. Deconstruct it for valuable resources, if you can stand next to it long enough.</description>
+    <size>(1,2)</size>
+    <graphicData>
+      <drawSize>(1,2)</drawSize>
+      <shadowData>
+        <volume>(0.7,0.4,1.2)</volume>
+      </shadowData>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Irradiated</weathering>
+        <extraTierShift>1</extraTierShift>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
 </Defs>

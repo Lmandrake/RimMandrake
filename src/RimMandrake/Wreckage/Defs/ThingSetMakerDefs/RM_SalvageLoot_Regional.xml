@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1, design §3c: REGIONAL extra tables. A weathering row names one as
+  its extraLoot (RM_WreckWeatheringDef.extraLoot) and RM_CompSalvageLoot rolls it on careful
+  salvage on top of the tier tables. Kept out of RM_SalvageLoot.xml, which holds exactly the tier
+  ladder. ALL NUMBERS PROVISIONAL.
+-->
+<Defs>
+
+  <!-- Grey Deep floor (design §4 "Hull + crystal shards"): the jacket's own salts, the colours the
+       Grey's great salt crystals give (TerminalBiomes RM_GreySeaSalts.xml). -->
+  <ThingSetMakerDef>
+    <defName>RM_SalvageLoot_GreyShards</defName>
+    <root Class="ThingSetMaker_Sum">
+      <options>
+        <li>
+          <chance>0.8</chance>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RM_SaltWhite</li>
+                </thingDefs>
+              </filter>
+              <countRange>3~8</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+        <li>
+          <chance>0.3</chance>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter>
+                <thingDefs>
+                  <li>RM_SaltPink</li>
+                  <li>RM_SaltViolet</li>
+                  <li>RM_SaltAmber</li>
+                </thingDefs>
+              </filter>
+              <countRange>1~4</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+
+</Defs>
