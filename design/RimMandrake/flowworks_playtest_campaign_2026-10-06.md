@@ -48,3 +48,13 @@ owner-worthy questions (one pawn near-invisible, four skins grey). Owed: bridge 
   without asking; only faults needing judgement reach him, marked on the page.
 - **Which methods every mod gets: not decided.** Owner asked for the evidence first (relative costs, bug kinds found,
   and plain live Claude debugging as the baseline), without a research project.
+- **Method mix — owner, 2026-10-06 19:0x, typed (verbatim):** *"Seems like we need a LOT more data then. So yes, we
+  have to implement them all to really figure out what works and what doesn't, except for the AI player itself. Very
+  critical we test out the interface buttons and the like too though, so that might point toward AI player
+  eventually... that will come later if it gets too onerous for a human player to do it. We need to figure out if we
+  even want Northstar. So let's go get lots of data, and see how far we can push runner + fuzz + human review sheets
+  like this. MUST implement the looks screenshot auto-review too. GPT source read + GPT validation plan read (once
+  everything seems done and good) are also a given now. Do not eliminate any pathways yet."*
+  ⇒ Every mod in the campaign gets: in-game runner, offline fuzz, human review sheet/map, looks screenshot auto-review
+  (mandatory), GPT source read, and a GPT read of the validation plan once it looks done. Interface buttons (gizmos,
+  float menus, settings) must be exercised. AI-player missions wait. Northstar stays, under evaluation. Nothing dropped.
