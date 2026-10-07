@@ -33,3 +33,33 @@ Owner-typed quote verbatim above; the rest decisions taken by question card
 2026-09-27. Filed by BENCH; design pass to be commissioned when the plot
 wave comes up — the war-lab INTERIOR spec is likewise ruled to wait for the
 route builds (card, same sitting).
+
+## build (FOUNDRY, 2026-10-06, offline)
+Built in `mandrake.rut.empirepursuit` per the design doc's §7 plan P1-P8, every number PROVISIONAL:
+- **P1** `RUT_EmpireRungDef` + `Defs/EmpireRungDefs/RUT_EmpireRungs.xml` (six rungs, letters as data);
+  `MapComponent_EmpireSearch` runs one contact per map, climbs on an Empire success, holds on a
+  failure; the ScenPart's raid tick calls it when `ladderEnabled` (second wave retired, endless
+  waves only after the top rung). Pure math in `EmpireLadderMath.cs` (selftest 42/42).
+- **P2** probe: `LordJob_ImperialProbe`, KX12 kind (falls back to the faction's smallest pawn),
+  drop ≥40 cells out, sighting = 2 h LOS within 26 cells (darkness hides beyond 6), self-destructs
+  on death, letter on landing.
+- **P3** spotter: `LordJob_ImperialSpotter` stages and never assaults; 6 h of LOS from the spotter
+  completes the call; spotter down/dead routes the team.
+- **P4** Visibility soft-bound by reflection: band → interval ×2.0/1.4/1.0/0.7/0.5, probe/spotter
+  `Adjust()` calls (+8 sighting/call, −3 probe destroyed). Points curve already applied by
+  Visibility's own `IncidentWorker.TryExecute` prefix. Tile memory of the rung on `GameComponent_EmpireSearch`.
+- **P5** cordon = `Siege` raid + ion volleys (EMP at the grav engine, `cooldownCompleteTick` pushed
+  6 h, never days), success if it stands 2 days; bombardment = 24 h telegraph with a drawn 15-cell
+  ring, then vanilla `Bombardment` (destroys buildings), then endless waves.
+- **P6** Aftermath `battle.closed` soft-subscribed (REPELLED = hold), own 60% mirror as fallback;
+  storyteller spacing: Harmony on `IncidentWorker.TryExecute` refuses an unforced storyteller raid
+  of the pursuit faction within 2 days of a ladder contact, and the ladder postpones itself the other way.
+- **P7** `EmpireSearch.RaiseFloor(int, reason)` (Route 6 / droid line) and `LowerRung(map, n, reason)` (Unseen Berth).
+- **P8** settings (all of §6) and the alert line "Imperial search: rung N of 6 (Band), next: X".
+
+Not built / owed: the world-map tile inspect line (§2 item 4); `mlie.factionraidcooldown` bypass
+(UNMEASURED whether it touches forced raids); a dedicated ion emplacement def and art (vanilla
+siege stands in); the 11-3K viper probe def; callers of RaiseFloor/LowerRung (Route 6, droid line,
+Ishko) live in other items. Vanilla's own raid letter also shows beside each raid rung's letter.
+Risk for L2: vanilla Empire has `canSiege false`; the cordon passes `Siege` explicitly, which skips
+the strategy's eligibility check, so whether the siege camp builds for the Empire is unproven.

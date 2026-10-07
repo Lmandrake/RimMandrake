@@ -49,6 +49,10 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="EmpireLadderMath.cs" />
+    <Compile Include="RUT_EmpireRungDef.cs" />
+    <Compile Include="EmpireLadderLords.cs" />
+    <Compile Include="EmpireLadder.cs" />
   </ItemGroup>
 
   <ItemGroup>

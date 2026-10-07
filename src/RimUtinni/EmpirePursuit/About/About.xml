@@ -26,8 +26,17 @@ Added `ScenPartDef_RuthlessPursuit` with a `surveyShadowBiomes` list and a
 `surveyShadowMultiplier` (default 4x) read directly off the def, so the owner can edit the
 list without touching code. See EMPIRE_PURSUIT_SURVEY_SHADOW_1 in the project ledger.
 
-Everything else — timers, endless waves, permanent-enemy goodwill reset, the normal-raid-pool
-Harmony patch — is upstream's design, ported unchanged.</description>
+THE IMPERIAL ESCALATION LADDER (on by default, a Mod Settings switch)
+
+The pursuit escalates by KIND, not by headcount: a probe droid that can be dodged, a spotter team
+calling in what it sees, a strike, an ion cordon that stalls the grav engine for hours, a breach
+assault, and finally orbital bombardment of a marked area. Each step comes only if the one before
+worked for the Empire; launching to a new tile resets the search to the probe. With the Colony
+Visibility mod, how loud the clan is sets how fast the next step comes. See
+EMPIRE_ESCALATION_LADDER_1 in the project ledger.
+
+Everything else — timers, the permanent-enemy goodwill reset, the normal-raid-pool Harmony patch,
+and (with the ladder off) the flat raid + endless waves — is upstream's design.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld.Odyssey</packageId>

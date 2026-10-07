@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <!-- EMPIRE_ESCALATION_LADDER_1 -->
+  <RUT_SearchAlertLine>Imperial search: rung {RUNG} of {TOP} ({BAND}), next: {NEXT}</RUT_SearchAlertLine>
+  <RUT_SearchAlertDesc>{0} is searching for us, one step at a time: a probe, then a spotter, a strike, a cordon around the ship, a breach, and finally bombardment from orbit.\n\nEach step only comes if the one before it worked for them. The early steps can be evaded without a fight. Launching to a new place resets the search to the probe.\n\nHow loud we are (Visibility) sets how fast the next step comes.</RUT_SearchAlertDesc>
+  <RUT_IonVolleyMessage>Ion volley: the grav engine is knocked out for a few hours.</RUT_IonVolleyMessage>
+
+  <RUT_Ladder_Header>Imperial escalation ladder</RUT_Ladder_Header>
+  <RUT_Ladder_Enabled>Escalation ladder</RUT_Ladder_Enabled>
+  <RUT_Ladder_EnabledDesc>On: the pursuit escalates rung by rung (probe, spotter, strike, cordon, breach, bombardment). Off: the classic flat pursuit, the same raid on a timer and then endless waves.</RUT_Ladder_EnabledDesc>
+  <RUT_Ladder_ProbesOpen>Probes open every ladder</RUT_Ladder_ProbesOpen>
+  <RUT_Ladder_ProbesOpenDesc>Off: the probe and spotter rungs are skipped and every ladder starts at the strike.</RUT_Ladder_ProbesOpenDesc>
+  <RUT_Ladder_Pace>Ladder pace multiplier: {0} (bigger = slower)</RUT_Ladder_Pace>
+  <RUT_Ladder_VisibilityPace>Visibility drives pace</RUT_Ladder_VisibilityPace>
+  <RUT_Ladder_VisibilityPaceDesc>With the Colony Visibility mod: a hidden clan waits twice as long between rungs, an exposed one half as long. Off: a flat 5 to 8 days.</RUT_Ladder_VisibilityPaceDesc>
+  <RUT_Ladder_Remember>Rungs remembered per tile</RUT_Ladder_Remember>
+  <RUT_Ladder_RememberDesc>Landing back where they were already looking starts the search where it was, decaying with each season away.</RUT_Ladder_RememberDesc>
+  <RUT_Ladder_Decay>Rungs forgotten per season away: {0}</RUT_Ladder_Decay>
+  <RUT_Ladder_Cordon>Cordon (ion siege) rung</RUT_Ladder_Cordon>
+  <RUT_Ladder_CordonDesc>Ion volleys stall the grav engine for a few hours. They never destroy it or close the way out.</RUT_Ladder_CordonDesc>
+  <RUT_Ladder_IonLockout>Engine stalled per ion volley: {0} hours</RUT_Ladder_IonLockout>
+  <RUT_Ladder_Bombardment>Orbital bombardment rung (destroys buildings)</RUT_Ladder_Bombardment>
+  <RUT_Ladder_BombardmentDesc>Affects the map: a day's warning, then a bombardment of the marked area around the ship.</RUT_Ladder_BombardmentDesc>
+  <RUT_Ladder_Endless>Endless waves after the top rung</RUT_Ladder_Endless>
+  <RUT_Ladder_Alert>Show the search alert</RUT_Ladder_Alert>
+</LanguageData>
