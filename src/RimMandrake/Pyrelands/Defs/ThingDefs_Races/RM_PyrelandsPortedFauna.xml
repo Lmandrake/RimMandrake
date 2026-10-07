@@ -872,10 +872,10 @@
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
-    <!-- 8-frame wing-beat flip-book (FLYER_FLIPBOOK_ART_1; owner note "Needs flyer art now"). 7 of 8 until frame 8 east lands (job pyrelands_firewasp_flight8_8r).
+    <!-- 8-frame wing-beat flip-book (FLYER_FLIPBOOK_ART_1; owner note "Needs flyer art now").
          Scales with the life stage's drawSize. -->
     <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_</flyingAnimationFramePathPrefix>
-    <flyingAnimationFrameCount>7</flyingAnimationFrameCount>
+    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
     <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
     <flyingAnimationDrawSize>1</flyingAnimationDrawSize>
     <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
