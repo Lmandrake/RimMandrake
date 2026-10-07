@@ -460,6 +460,25 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             public override string ToString() => "reel(" + Reel.X0 + "," + Reel.Z0 + ") -> " + Target + " max " + MaxLen.ToString("0.0") + " minR " + MinR.ToString("0.0") + " walls " + Walls;
         }
 
+        /// <summary>Every world the cords fuzz builds (seed, step, world, options, live set): the A7 unroutable census
+        /// (UnroutableCensus.cs) walks the same worlds the fuzz checks.</summary>
+        internal static IEnumerable<(long seed, int step, CordWorld w, BuildOptions opt, Func<Cell, bool> live)> CordWorlds(int n)
+        {
+            for (int k = 0; k < n; k++)
+            {
+                long seed = k + 1;
+                Scene s = MakeScene(seed);
+                List<Act> acts = GenActs(s, seed, CordRng.Of("gssfuzz-len", seed).Int(3, 24));
+                for (int i = 0; i <= acts.Count; i++)
+                {
+                    if (i > 0) Apply(s, acts[i - 1]);
+                    CordWorld w = s.ToWorld();
+                    HashSet<Cell> live = s.Live(w);
+                    yield return (seed, i, w, s.Opt, c => live.Contains(c));
+                }
+            }
+        }
+
         internal static HoseCase MakeHose(long seed, List<Cell> wallsOverride = null)
         {
             CordRng r = CordRng.Of("gssfuzz-hose", seed);

@@ -39,6 +39,9 @@ def main(argv):
     for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]
+    if "--unroutable-census" in argv:   # A7 census (UnroutableCensus.cs): --unroutable-census OUT.json [SEEDS]
+        i = argv.index("--unroutable-census")
+        args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
     if "--dump" in argv:
         args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
     return subprocess.run(args, cwd="/mnt/d/Luke/dev").returncode

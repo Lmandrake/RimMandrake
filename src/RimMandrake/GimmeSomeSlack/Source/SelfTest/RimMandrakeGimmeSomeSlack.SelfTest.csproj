@@ -68,6 +68,7 @@
     <Compile Include="HoseLiveChecks.cs" />
     <Compile Include="GssFuzz.cs" />
     <Compile Include="GptReadFixChecks.cs" />
+    <Compile Include="UnroutableCensus.cs" />
   </ItemGroup>
 
   <ItemGroup>

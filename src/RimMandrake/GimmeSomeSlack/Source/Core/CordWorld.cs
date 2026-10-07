@@ -34,6 +34,22 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
     }
 
+    /// <summary>GPT source read 2026-10-06 B9 (owner decision by question card 2026-10-06: "draw a cord like any other
+    /// connection"): a device wired straight to a battery, switch or other non-conduit transmitter building links to that
+    /// building's machine node, so the graph lays its lead like any other. The game adapter and the selftest both call this.</summary>
+    public static class CordWorldLinks
+    {
+        /// <summary>Link device -> transmitter; the transmitter joins the world's machines if it is not there yet (a lone
+        /// battery with no conduit beside it still needs its node).</summary>
+        public static void LinkToMachine(CordWorld w, MachineInfo device, MachineInfo transmitter)
+        {
+            if (w == null || device == null || transmitter == null || device == transmitter) return;
+            if (!device.MachineLinks.Contains(transmitter.Id)) device.MachineLinks.Add(transmitter.Id);
+            if (!w.Machines.Contains(transmitter)) w.Machines.Add(transmitter);
+            if (!w.Machines.Contains(device)) w.Machines.Add(device);
+        }
+    }
+
     /// <summary>
     /// A plain-array snapshot of everything the cord model reads: which cells hold conduit, which
     /// are walkable, doors, trees, machines. The game adapter copies it from the map's own grids

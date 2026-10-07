@@ -66,7 +66,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var o = new BuildOptions { Tangles = S("tangles", "True") == "True", NeedlessLoops = true,
                                        TangleMin = Math.Max(6, Math.Min(20, (int)F("tangleMin", 9))) };
             o.Lay.SlackScale = Math.Max(0, Math.Min(2, F("slack", 1)));
-            o.Lay.MaxExtra = Math.Max(2, Math.Min(40, F("sprawlCap", 16)));
+            // recorded scenes carry the pre-rename key; newer ones carry loopBudget (A12/B15, 2026-10-06)
+            o.Lay.MaxExtra = Math.Max(2, Math.Min(40, settings.TryGetProperty("loopBudget", out _) ? F("loopBudget", 16) : F(LegacyName.OldLoopBudgetKey, 16)));
             o.Lay.MinExtra = Math.Min(o.Lay.MinExtra, o.Lay.MaxExtra);
             o.Lay.CordsMax = Math.Max(1, Math.Min(3, (int)F("cordsPerConnection", 3)));
             return o;
