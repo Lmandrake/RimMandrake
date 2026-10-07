@@ -11,8 +11,10 @@
     nothing (an empty constant think tree), circles (wander root = where it is).
   - Butchering it yields RM_CoolantEelCatch (specificMeatDef) and counts as one catch for the hum
     (HarmonyPatch_CoolantEel_ButcherIsACatch -> RM_CathedralFishing.NoteCatch).
-  PLACEHOLDER ART: vanilla cobra textures. Real facings exist in artpipe (done/RM_CoolantEel_*) and install through the
-  art ledger, not here. All numbers PROVISIONAL.
+  ART: artpipe RM_CoolantEel_* facings, installed by `art install` on owner keep fd20804b11821752357e
+  (rustcathedral sheet 2026-10-05, column C). drawSize 1.1 is the job's brief (sprite fills ~97% of its
+  256 canvas east-facing, so ~1 cell long); no shadowData, like vanilla Cobra. Dessicated stays vanilla
+  cobra (no render). Other numbers PROVISIONAL.
 -->
 <Defs>
   <ThingDef ParentName="AnimalThingBase">
@@ -67,12 +69,12 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
-          <drawSize>0.9</drawSize>
+          <texPath>Things/Pawn/Animal/RM_CoolantEel/RM_CoolantEel</texPath>
+          <drawSize>1.1</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
-          <drawSize>0.9</drawSize>
+          <drawSize>1.1</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
