@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: The Cathedral Pass</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.cathedralpass</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+  <description>Ash'karr campaign content: the Rust Cathedral's mechanoid pass
+  (CATHEDRAL_MECHANOID_PASS_VERBS_1, arc spec §3 "Mechanoid pass", scope ruled
+  2026-09-13 to the narrowest reading).
+
+  A clan pawn carrying the RUT_CathedralPass flag is read as non-hostile by the
+  mechanoid faction (faction 13, the Forgotten Arsenal) — but only on a Rust Cathedral
+  map (RM_RustCathedral or RUT_RustCathedral). Other mechanoid factions are not
+  covered, and off Cathedral ground the pass does nothing. One scoped Harmony
+  postfix on GenHostility.HostileTo(Thing, Thing) carries the whole mechanism.
+
+  This build ships the GRANT flag and the hostility exception only. The GM-layer
+  verbs that decide WHEN the Cathedral grants or revokes the pass (stage VOUCHED+,
+  priced against Imperial Heat, revoked on demotion) belong to the Regard
+  blackboard and are not built here; until then the pass is granted and revoked
+  through the dev-mode debug actions or the public CathedralPass.Grant/Revoke API.
+
+  Mod Settings: one kill switch — off, the pass has no effect anywhere.</description>
+</ModMetaData>

@@ -39,3 +39,12 @@ path); no behavior off Cathedral maps.
 (Helix-REVOKE trigger only — GRANT ships without it). **Waited on by:**
 nothing. **Seat/needs:** FOUNDRY; C# + Harmony + quicktest (game-up, minimal
 list). Row-3 hard — model per `infrastructure/agents/Agent_Policy.md` ladder.
+
+## build 2026-10-06 (FOUNDRY, offline, uncommitted at time of writing)
+GRANT flag + scoped hostility exception built as a new mod, `src/RimUtinni/CathedralPass/`
+(`mandrake.rut.cathedralpass`): `RUT_CathedralPass` HediffDef; `CathedralPass.Grant/Revoke/GrantToClan/RevokeFromAll`
+(the API the GM verbs will call); one Harmony postfix on `GenHostility.HostileTo(Thing, Thing)` — faction-13
+(`Faction.OfMechanoids`) vs a player pawn holding the flag, both on an `RM_RustCathedral`/`RUT_RustCathedral` map,
+forced-hostile mental states still win; one Mod Settings kill switch; dev-mode debug actions standing in for the verbs.
+Built clean via winbuild. NOT built: the GM-layer GRANT/REVOKE verbs and the Helix REVOKE (blocked on
+CATHEDRAL_REGARD_BLACKBOARD_1 / item 7). NOT proven: the whole `## verify` bar (live quicktest).
