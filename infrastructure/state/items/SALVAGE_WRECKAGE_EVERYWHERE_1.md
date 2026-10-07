@@ -23,11 +23,27 @@ Built offline, never loaded:
 - Step 5 (`RM_WreckFall`, baseChance 0, debug-fire only; list is vanilla ShipChunk stand-ins).
 All new children inherit vanilla ShipChunk art as a placeholder (Scald floor excepted) until own renders land.
 
+Wave 2 (2026-10-07, built offline, never loaded; 9c63abbb5 2d8bcc7c9 0b118fbb5 938558741 aebff1aac):
+- Art: 41 renders installed through the art ledger; 24 children carry own texPath + measured shadow.
+- Engine: weathering `extraLoot`, `salvageHediff`, `jacket`; child `extraTierShift`; "Wreck hazards" setting.
+- Grey floor wrecks ringed in RM_BrineJacket + RM_SalvageLoot_GreyShards; Blue Desert in RM_BlueIceMineable.
+- Wasteland: Irradiated doses ToxicBuildup 0.12 x (1-ToxicResistance); RM_WastelandWarcasketSarcophagus (Sealed).
+- Long Shade road lays from RM_WreckList_CrawlerRoad (cart + RM_LongShadeWreckSpeeder; RSW adds skiff/tread rows).
+- Forge: RUT_FoundrySalvageCache is a Carapace child, RUT_WreckWeathering_ForgeWarm + RUT_SalvageLoot_Foundry.
+  Still DEPLOY_HOLD with the F4 tower chain (its art exists; lift with a load round).
+- Step 9: RSW_FreshTIEPanelWreck / RSW_FreshLandspeederWreck; Star Wars droid parts patched onto the four rare
+  tables; RUT_FallLineWreck{Hull,Carapace}, RUT_WreckWeathering_FallLine (+ RUT_SalvageLoot_Imperial),
+  RUT_WreckList_FallLine, RUT_FallLineWreckFall (baseChance 0, debug-fire).
+
 Open:
-- Owed sittings: Cauldron nightward edge, Propane Lake (The Chill) and Terminator Sea floors; Wasteland warcasket
-  sarcophagus + radiation on deconstruct; Grey crystal jacket (mineable) + shard table; Blue Desert ice jacket.
-- Pending sittings for step 6: Pyrelands, Gelatinous Slime, Webwork, Weeping Stones (repair set-pieces); Forge cache
-  loot (RUT_FoundrySalvageCache, Forge-warm row). Art: install the 54 renders when done (swap texPath, re-measure
-  shadow). Step 9: canon hulls, Star Wars loot rows, Fall Line Imperial register (RSW/RUT).
-- Live: L1/L2 passes (a floor map holds wrecks; lichen beside a Warscar wreck by state read).
+- Art: install when the daemon finishes: 10 requeued step 3-6 jobs (3 children still on the ShipChunk
+  placeholder: RM_ContagionWreckFragment, RM_FeverWoodWreckCarapace, RM_StillsandWreckTread) and 12 wave-2 jobs
+  (`design/RimMandrake/wreck_children_artlist_wave2_2026-10-07.json`). `artpipe_state.py collect <job> --to
+  <install_to>`, then texPath + shadow (Scald ratio).
+- Owed sittings: Cauldron nightward edge, Propane Lake (The Chill) and Terminator Sea floors; step 6 Pyrelands,
+  Gelatinous Slime, Webwork, Weeping Stones (repair set-pieces).
+- Not built: Fresh "live power on 1 in 10"; Fever Wood Overgrown vine blocker; Fall Line incident firing on Fall
+  Line tiles.
+- Live: L1/L2 passes (a floor map holds wrecks; jacket ring present; lichen beside a Warscar wreck by state read;
+  a careful strip of a Wasteland wreck adds ToxicBuildup; the Long Shade road lays list rows).
 Follow-ups: Cracked Lands recede -> read a list via `RM_WreckFall.Drop`; Fall Line `RUT_FallArrival` onto this worker.
