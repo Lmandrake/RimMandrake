@@ -28,6 +28,17 @@ Chains (walk: design/validation_walks/RimUtinni/IshkoDarkLandmarks.md):
               so with forced=true the anchor is certain. Removed again afterwards
               (and the anchor mutator stripped if the tile did not have it).
 
+LEARNED, first live run 2026-10-07 (NORTHSTAR_ISHKO_PILOT_1, live_session on the `ishko` tier):
+  * SITE/TIER: the tier needs mandrake.rm.gimmesomeslack. Without it JawaBench's companion tools TypeLoad-fail
+    (jawa/map_info -> "companion tool was built against a different RimBridgeServer.Sdk API ... Could not load type of
+    field JawaBench.BridgeTools.JawaBenchTerrainT..."), so the driver's preflight `game_loaded` FAILs and the run is
+    REFUSED with 0 rows (a site verdict, never recorded). modset_builder's `ishko` tier now carries it.
+  * RESULT: 8 PASS / 0 FAIL / 0 UNMEASURED in 3 s, 26 calls, on a fresh quicktest world; the three defs resolve with
+    their mutatorChances (deep=true), each forced AddLandmark leaves the tile carrying landmark AND its Required anchor
+    mutator, and the placement is undone. The driver itself called status.record_run (GREEN at the mod hash);
+    `modcheck record` REFUSES a northstar_driver result ("no rows", "no env.running") -- it only takes validation_v2 style output.
+  * The walk is still DRAFT (no `## north star` section), so `expected` is [] and a GREEN here is the script's own bars only.
+
 RULED OUT (kept here and in the walk's anti-guessing notes):
   * "none of the three is placed on the planet" as a bar. The old chain read
     `row["defName"]` from jawa/world_landmarks_get, whose rows carry `def`, so

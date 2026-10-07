@@ -129,9 +129,9 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "CreatureBehaviors@1791374888",
+    "run_id": "CreatureBehaviors@1791405474",
     "status": "RED",
-    "ts": 1791374891.5299182
+    "ts": 1791405478.535058
   },
   "DivingInteraction": {
     "hash": "55f061c2c1819fdb6f7e512ec9535cf32192cde79743e5a57c5df1c6d78396bb",
@@ -289,13 +289,13 @@
     "ts": 1791401837.9482229
   },
   "Greentide": {
-    "hash": "19c63b1467fadea2147289ec67f8aab19f11ece7fa0e6a3ab6ab522d4bbb5d2c",
+    "hash": "a99547b1e792fa9d607fec7280ca6ab963e7ca1464ab4cabfa00975c3c7711b1",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Greentide@1791373413",
+    "run_id": "Greentide@1791405084",
     "status": "RED",
-    "ts": 1791373414.4366853
+    "ts": 1791405085.2423186
   },
   "Inhabited": {
     "hash": "43f7825fc307142fe7683457f28eb2fb87b65079c79b1df74161a439335b4ef7",
@@ -303,6 +303,38 @@
     "run_id": "Inhabited@1789295350",
     "status": "RED",
     "ts": 1789295350.987889
+  },
+  "IshkoDarkLandmarks": {
+    "bars": {
+      "defs.RUT_ColdLavaTube_resolves": "PASS",
+      "defs.RUT_LightlessSink_resolves": "PASS",
+      "defs.RUT_ShadowedOverhang_resolves": "PASS",
+      "placement.RUT_ColdLavaTube_places_with_anchor": "PASS",
+      "placement.RUT_LightlessSink_places_with_anchor": "PASS",
+      "placement.RUT_ShadowedOverhang_places_with_anchor": "PASS",
+      "source.defs_gated_on_odyssey": "PASS",
+      "source.icons_supplied_by_art_mod": "PASS"
+    },
+    "components": {
+      "counts": {
+        "PASS": 8
+      },
+      "not_ok": []
+    },
+    "hash": "73f927b79dfb137fc3cfd5c8b92a63500865ba53bacfdfcdf927988695d6510b",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "run_id": "IshkoDarkLandmarks/northstar_driver@IshkoDarkLandmarks_20261007T205850Z.json",
+    "source": {
+      "expected_source": "walk is DRAFT (no `## north star` section in \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\IshkoDarkLandmarks.md)",
+      "mode": "live",
+      "result": "Transient/northstar/IshkoDarkLandmarks_20261007T205850Z.json",
+      "started": "2026-10-07T20:58:47Z",
+      "verb": "northstar_driver run"
+    },
+    "status": "GREEN",
+    "ts": 1791406730.222543
   },
   "JawaIonWeapons": {
     "hash": "bbb79956caf38b668a3eee9cda522c543113aa489f173f1bb724222bc1138fa3",
@@ -354,6 +386,15 @@
     "run_id": "LongShade@1791368217",
     "status": "RED",
     "ts": 1791368218.892892
+  },
+  "LuminousPigment": {
+    "hash": "db53e36b0ad65ff6fd8405bf3ad751ecfa93d1c45cd5e1b90fa00a2f3498d44b",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "run_id": "LuminousPigment@1791405716",
+    "status": "RED",
+    "ts": 1791405717.148934
   },
   "Miasma": {
     "hash": "bcbadf501060e6f2868c131ad7fcde9f2b9ff1f842de9fce67154a3d53391cdb",
@@ -428,6 +469,15 @@
     "run_id": "Pyrelands@1789295372",
     "status": "RED",
     "ts": 1789295372.7931364
+  },
+  "PyrelandsMechanics": {
+    "hash": "a1b2227fc5d4413bd739f28510391ccd38685ba6211875dfd5598fa82095656a",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "run_id": "PyrelandsMechanics@1791405767",
+    "status": "RED",
+    "ts": 1791405767.6703367
   },
   "Pyrinth": {
     "hash": "be81921ffeda8b77fe244e002d46fb219e762d4b225ffb5f57d9d24dffb13324",
@@ -598,9 +648,9 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Stillsand@1791401861",
+    "run_id": "Stillsand@1791406531",
     "status": "RED",
-    "ts": 1791401863.8054776
+    "ts": 1791406533.550608
   },
   "StructureInjections": {
     "hash": "9ca37a3aa43813567bb2edf9e5d75ded5ea3f2765e0e36e90d91c4e2cc3bfa24",

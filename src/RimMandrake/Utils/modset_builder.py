@@ -579,7 +579,9 @@ TIERS["ishko"] = {
            "mandrake.rut.ashkarrlandmarkart, which supplies their icon textures. Nothing "
            "else, so a GREEN is this mod's. All five DLCs (Odyssey is its dependency) "
            "and Harmony resolve automatically.",
-    "want": [BRIDGE, "mandrake.rut.ashkarrlandmarkart", "mandrake.rut.ishkolandmarks"],
+    # gimmesomeslack: JawaBench's companion tools TypeLoad-fail (map_info, get_defs ...) without it -- MEASURED 2026-10-07,
+    # the first live_session run was REFUSED at game_loaded for exactly this.
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rut.ashkarrlandmarkart", "mandrake.rut.ishkolandmarks"],
     "dlc": True,
 }
 
@@ -623,6 +625,16 @@ TIERS["acc_green_min"] = {
              "mandrake.rm.shipvermin", "mandrake.rm.titaniccreatures", "mandrake.rm.warcasket", "mandrake.rsw.gizkastowaway",
              "mandrake.rm.oasismaker", "mandrake.rut.rivercolors", "mandrake.rut.scarlandsladder",
              "mandrake.rut.shokkweaveeconomy", "mandrake.rm.gravshiplanding", "mandrake.rm.pyrinth"],
+    "dlc": True,
+}
+
+
+TIERS["acc_green_min2"] = {
+    "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch 2: Stillsand retry, CreatureBehaviors, Greentide, PyrelandsMechanics, "
+           "LuminousPigment (with Ninefold, which its gods chain needs) on the composed biomes mod.",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary", "mandrake.rut.patches",
+             "mandrake.rut.ashkarrflora", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors",
+             "mandrake.rm.luminouspigment", "mandrake.rm.ninefold", "mandrake.rut.pyrelandsmechanics"],
     "dlc": True,
 }
 

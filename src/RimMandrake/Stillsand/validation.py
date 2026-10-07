@@ -594,7 +594,9 @@ def _regen(t):
             st = (t.bridge_call("rimbridge/get_bridge_status") or {}).get("state") or {}
         except Exception:
             continue
-        if st.get("currentMapReady"):
+        # The bridge state has NO `currentMapReady` key (MEASURED 2026-10-07: programState/currentMapId/longEventPending/
+        # automationReady/visualReady/tick); polling for it burned 300 s and made 62 components UNMEASURED.
+        if st.get("currentMapReady") or (st.get("automationReady") and st.get("currentMapId") and not st.get("longEventPending")):
             return
     _unmeasured(t, "the map was not ready 300 s after Regenerate Current Map")
 
