@@ -464,3 +464,5 @@ All taken by question card unless quoted.
   EMP, smoke and stun blasts do not. Owner typed *"1+3"* (the damaging-only and bombs-and-fire options combined).
 - Q10 (card 19:11) items/corpses thrown toward a pit: **fall in and stay retrievable** — colonists fetch them the way
   they reach the pit floor now (hauling into pits must be verified).
+- Owner, 19:13, typed: *"And when something falls into a covered pit, of course it is no longer covered"* — anything
+  that falls through a cover (pawn, item, corpse) leaves the cover broken.
