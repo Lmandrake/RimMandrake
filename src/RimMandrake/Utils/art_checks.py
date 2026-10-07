@@ -586,6 +586,8 @@ SELFTEST_ROSTER = (
     REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands",
     REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Item/Resource",
     REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Plant",
+    # Frozen known-clipped fixture; live art must never be the known-bad example.
+    REPO_ROOT / "src/RimMandrake/Utils/selftest_fixtures",
 )
 
 #  RECALIBRATED 2026-09-18, SELFTEST_FAILURE_TRIAGE_1. The approved Pyrelands
@@ -643,10 +645,9 @@ OUTLINE_MAX_FLAGGED_FILES = 5
 # 2026-09-18. The previous pin, `Nuna_f_east.png`, is GONE and legitimately so —
 # the 2026-09-17 wave replaced that file and its top margin is no longer 0.
 BOUNDARY_MUST_FLAG_HIGH = [
-    # Pre-existing and stable: unchanged since 2026-09-14, clipped on the right
-    # in both the current file and the pre-`bd9a1b8ee` blob. This is the anchor
-    # that does not move, so the check stays covered even if the other is fixed.
-    ("GizkaW_south.png", "right margin 0 px, unchanged since 2026-09-14"),
+    # Frozen fixture (pre-7577e889e GizkaW_south blob): clipped on the right,
+    # right margin 0 px. Immune to live art changes.
+    ("clipped_right_edge.png", "frozen fixture, right margin 0 px"),
 ]
 
 # The other side of the same check, and it is the side that decays silently: three
