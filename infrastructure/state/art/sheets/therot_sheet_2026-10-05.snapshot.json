@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheRot",
- "built": "2026-10-05T18:50:23-0700",
+ "built": "2026-10-06T21:07:02-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Agaripawn": {
    "columns": {
@@ -209,7 +209,7 @@
     "B": "RotSpecies/Agarilux"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_agarilux_v3) \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_agarilux_v2"
    },
    "res": "RotSpecies/Agarilux",
@@ -253,7 +253,7 @@
     "A": "RotSpecies/ArbuscularMycorrhiza"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_arbuscularmycorrhiza_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSpecies/ArbuscularMycorrhiza",
    "reserved": [
@@ -271,7 +271,7 @@
     "A": "RotSpecies/Bryolux"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_bryolux_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSpecies/Bryolux",
    "reserved": [
@@ -289,7 +289,7 @@
     "A": "RotSpecies/DribblingCap"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_dribblingcap_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSpecies/DribblingCap",
    "reserved": [
@@ -307,7 +307,7 @@
     "A": "RotSpecies/GiantAgarilux"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_giantagarilux_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSpecies/GiantAgarilux",
    "reserved": [
@@ -325,7 +325,7 @@
     "A": "RotSpecies/GlowingAgarilux"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_glowingagarilux_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSpecies/GlowingAgarilux",
    "reserved": [
@@ -343,7 +343,7 @@
     "A": "RotSpecies/Glowstool"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_glowstool_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSpecies/Glowstool",
    "reserved": [
@@ -361,7 +361,7 @@
     "A": "RotSpecies/LilacBeacon"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_lilacbeacon_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSpecies/LilacBeacon",
    "reserved": [
@@ -403,7 +403,7 @@
     "A": "RotSpecies/SlimyPholiota"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_slimypholiota_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSpecies/SlimyPholiota",
    "reserved": [
@@ -451,7 +451,7 @@
     "D": "RotSporeKit/Things/Plant/AgelessCap"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_agelesscap_v2) \u2014 RimMandrake: Baroque Biomes",
     "B": "render rut_agelesscap_v2",
     "C": "render rut_agelesscap_v1",
     "D": "render rut_liveingredient_agelesscap_v1"
@@ -483,7 +483,7 @@
     "C": "RotSporeKit/Things/Plant/Arpeau"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_arpeau_v2) \u2014 RimMandrake: Baroque Biomes",
     "B": "render arpeau_a_v1",
     "C": "render arpeau_b_v1"
    },
@@ -505,7 +505,7 @@
     "A": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_blastpodshroom_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
    "reserved": [
@@ -547,7 +547,7 @@
     "A": "RotSporeKit/Things/Plant/Brightbell"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_brightbell_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/Brightbell",
    "reserved": [
@@ -613,7 +613,7 @@
     "A": "RotSporeKit/Things/Plant/CrimsonCap"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_crimsoncap_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/CrimsonCap",
    "reserved": [
@@ -663,7 +663,7 @@
     "C": "RotSporeKit/Things/Plant/EuphoricCrown"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_euphoriccrown_v2) \u2014 RimMandrake: Baroque Biomes",
     "B": "render rut_euphoriccrown_v1",
     "C": "render rut_liveingredient_euphoriccrown_v1"
    },
@@ -689,7 +689,7 @@
     "B": "RotSporeKit/Things/Plant/FalseFruit"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_falsefruit_v2) \u2014 RimMandrake: Baroque Biomes",
     "B": "render rut_falsefruit_v1"
    },
    "res": "RotSporeKit/Things/Plant/FalseFruit",
@@ -709,7 +709,7 @@
     "A": "RotSporeKit/Things/Plant/FlakespireFungus"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_flakespirefungus_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/FlakespireFungus",
    "reserved": [
@@ -727,7 +727,7 @@
     "A": "RotSporeKit/Things/Plant/FruitingBodies"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_fruitingbodies_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/FruitingBodies",
    "reserved": [
@@ -781,7 +781,7 @@
     "E": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_greylady_v3) \u2014 RimMandrake: Baroque Biomes",
     "B": "render greyladygrown_a_v1",
     "C": "render greyladygrown_b_v1",
     "D": "render greyladygrown_c_v1",
@@ -908,7 +908,7 @@
     "C": "RotSporeKit/Things/Plant/Nuitae"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_nuitae_v2) \u2014 RimMandrake: Baroque Biomes",
     "B": "render nuitae_a_v1",
     "C": "render nuitae_b_v1"
    },
@@ -938,7 +938,7 @@
     "C": "RotSporeKit/Things/Plant/PaleTree"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_paletree_v3) \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_paletree_v2",
     "C": "render rut_paletree_v1"
    },
@@ -992,7 +992,7 @@
     "C": "RotSporeKit/Things/Plant/RegenerantVeil"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render rot_regenerantveil_v2) \u2014 RimMandrake: Baroque Biomes",
     "B": "render rut_liveingredient_regenerantveil_v1",
     "C": "render rut_regenerantveil_v1"
    },
@@ -1038,7 +1038,7 @@
     "A": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_shinecap_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
    "reserved": [
@@ -1076,7 +1076,7 @@
     "A": "RotSporeKit/Things/Plant/Skulltop/Skulltop"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render rot_skulltop_v2) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
    "reserved": [

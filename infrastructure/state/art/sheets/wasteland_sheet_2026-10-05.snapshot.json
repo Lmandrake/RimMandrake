@@ -1,9 +1,9 @@
 {
  "biome": "RM_Wasteland",
- "built": "2026-10-05T18:52:13-0700",
+ "built": "2026-10-06T21:07:12-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "Plant_GrayGrass": {
    "columns": {
@@ -262,20 +262,28 @@
      "east": "fa208fd2a3949fb897629385487bcf448f8df10fd831978647104cc13b3b3043",
      "north": "2d6dacbdf25d538d24dd93bce0d2180453d8c1cca1f103ec21328754c84e7932",
      "south": "67eeeaf7f49d27582ec5df1680fbad21bdc2e3127ebd0596e9481fb12c1edf89"
+    },
+    "C": {
+     "1_east": "ca22126c0caf71f83645458db6f26bdc6709bc9b50a6ed6e6c8ae35e395916f9",
+     "1_north": "36fcdbf197abe7b90a59acd6e9b113c84a4eb8e423dc2d5ba01e1d145ed4c3bc",
+     "1_south": "ca714dc15d545db8b35689680b1160b6f470811259ef827da7d9143d3bdb61c1"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
-    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel"
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+    "C": "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "B": "history SWBestiary 2026-09-11",
+    "C": "IN GAME \u2014 BloodletterPetrel_Flying_"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "bloodletterpetrel"
   },
@@ -321,17 +329,25 @@
      "east": "e409971715490635a7d5e810fa1c95aa3b98d583082c03600e4e4c78b19a5abb",
      "north": "429708aa40b47773a57b0b5c3e06221e039ac7360e59701ec4f6b37033c42629",
      "south": "69045ee348ece520f9ce270e980793ad657321413ef7e4261e91b6d5e8a2d880"
+    },
+    "B": {
+     "east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+     "north": "c6fee02abd34428995a367bb5b5a457009afd537e728f587d0743c6abb1eff79",
+     "south": "1ebb66b07ec805aee4dfe6cf1de38706e2da80d7dc3d4fd4c4f61c3fc9c54d7e"
     }
    },
    "graphic_of": {
-    "A": "swanimals/FeralNerf/FeralNerf"
+    "A": "swanimals/FeralNerf/FeralNerf",
+    "B": "swanimals/FeralNerf/FeralNerf"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render leaningscrub_feralnerf_v1"
    },
    "res": "swanimals/FeralNerf/FeralNerf",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "excretor"
   },
@@ -430,20 +446,28 @@
      "east": "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd",
      "north": "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96",
      "south": "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02"
+    },
+    "C": {
+     "1_east": "37e661b2c97cef6401128e3d875f8e2c3a77679ec272ac975a5d19a4ee5d022e",
+     "1_north": "7a4295d1173e17636d561a7b20829387971b813984b7e72f39939415e6df38cc",
+     "1_south": "bc5d3fb176422bd6aaa618d0f679d29544c2ae0d789da4c54cf2f5dab6179246"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
-    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher"
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+    "C": "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "B": "history SWBestiary 2026-09-11",
+    "C": "IN GAME \u2014 Screecher_Flying_"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "screecher"
   },

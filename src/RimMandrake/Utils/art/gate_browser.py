@@ -45,7 +45,7 @@ def stop_marked(marker: str) -> str:
         return f"stop failed: {type(e).__name__}"
 
 
-def browser_render(html_path, decisions_path=None, timeout: int = 240):
+def browser_render(html_path, decisions_path=None, timeout: int = 600):
     if not Path(EDGE).is_file():
         return None, [], f"UNMEASURED: Edge not found at {EDGE}"
     html_path = Path(html_path).resolve()

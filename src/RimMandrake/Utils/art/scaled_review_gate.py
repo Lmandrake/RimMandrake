@@ -313,6 +313,8 @@ def check_donor_column(ctx, items) -> Check:
         r = by_key.get(it["id"])
         if not r or not (r.get("donors") or it.get("tier") == "donor"):
             continue
+        if it.get("donorAbsent"):
+            continue    # the sheet says, naming the donor mod and texPath, that no donor original is on disk
         if it.get("donorPurged"):
             continue    # the owner purged the donor original: it was shown and rejected, not omitted
         if not any(c.get("kind") == "donor" and not _is_ours_label(c.get("label")) and not c.get("ours")

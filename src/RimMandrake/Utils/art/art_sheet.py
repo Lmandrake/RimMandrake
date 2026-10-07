@@ -1065,6 +1065,7 @@ const _itemBody = it => {
       <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
   };
+  const donorAbs = it.donorAbsent ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>donor column</b><span>${esc(it.donorAbsent)}</span></div></div>` : '';
   const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
       <div class="bs-cimgs">${it.canon.imgs.map(u => `<div class="thumb bs-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
       <div class="bs-must"><b>Must show</b><pre>${esc(it.canon.must || '(this entry lists no Must show)')}</pre>${it.canon.ruling ? `<b>Your ruling on the entry</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<details><summary>visual brief</summary><pre>${esc(it.canon.brief)}</pre></details></div></div>` : '';
@@ -1099,7 +1100,7 @@ const _itemBody = it => {
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
     ${desc}${links}${elsewhere}${rul}${purgedNote}${noart}</div>
-    <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${canon}</div></div>`;
+    <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
   return re ? `<details class="bs-ruled">${reHead}${inner}</details>` : inner;
 };
 const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
@@ -1780,7 +1781,16 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             flags.append(f"{missing} picture(s) not archived — not shown")
         n_sets = sum(len(g["cols"]) for g in gitems)
         plc = r.get("placements") or []
+        # donor-sourced row with no donor original on disk and none recorded as purged: say so explicitly, naming the
+        # donor mod and texPath (SHEET_DONOR_COLUMN_FALSE_PASS_1) — the gate counts this note as the donor column shown
+        donor_absent = ""
+        if (r.get("donors") or tier == "donor") and key not in donor_purged and not any(
+                c.get("kind") == "donor" and not c.get("ours") and not SG._is_ours_label(c.get("label"))
+                for g in gitems for c in g["cols"]):
+            donor_absent = ("donor original not on disk (mod absent): " + (", ".join(r.get("donors") or ["donor tier"]))[:120]
+                            + " · texPath " + (", ".join(x["res"] for x in (r.get("art") or {}).get("resources") or [])[:200] or "unknown"))
         item = {
+            "donorAbsent": donor_absent,
             "id": key, "kind": r["kind"], "label": labels[key].capitalize(),
             "_root": root, "_clustered": clustered,
             "effect": (f"{r['kind']} · {_layer(r)} · commonality {r.get('commonality_max')} · "

@@ -1,6 +1,6 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-06T08:02:14-0700",
+ "built": "2026-10-06T21:06:29-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -460,17 +460,25 @@
    "columns": {
     "A": {
      "south": "eaa7be60672547a3eda2237a56b8564a669c04b0867f517821c394bedcb4fd91"
+    },
+    "B": {
+     "east": "f169f9dc3416b9d1afef925738adff789124a23a6684c6aa42c3794158387a56",
+     "north": "05658ff6438ea9aa5185073182bd0e8bf94b70106ee7a63edc1b4608e4d7d9cc",
+     "south": "2eaf60efb3d29a142456119b9fc77cf8d49ab528247a591b6e19948155cf4c4c"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm"
+    "A": "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm",
+    "B": "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm"
    },
    "labels": {
-    "A": "IN GAME \u2014 Miasma"
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render gapall_RM_FeverSwarm_v1"
    },
    "res": "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "feverswarm"
   },
@@ -562,17 +570,25 @@
    "columns": {
     "A": {
      "south": "05d13d7fa46d3c6e716964cdc5376e58b2cd974f942e4c7bb558e7a80f2acf6c"
+    },
+    "B": {
+     "east": "2c225f0cd46539594450562031180e2dc92350de0ba4b29022e839bc16c1f2ad",
+     "north": "055616977c04159d4b86c8885a900c6bc09cf40120419bc0ddf12e0c351f6eef",
+     "south": "c3777b564e9f28b9cc1ef4b6abd5e075b3363a169c5872f24a4c19caaa00a8fd"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Karravel/RM_Karravel"
+    "A": "Things/Pawn/Animal/RM_Karravel/RM_Karravel",
+    "B": "Things/Pawn/Animal/RM_Karravel/RM_Karravel"
    },
    "labels": {
-    "A": "IN GAME \u2014 Miasma"
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render gapall_RM_Karravel_v1"
    },
    "res": "Things/Pawn/Animal/RM_Karravel/RM_Karravel",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "karravel"
   },
@@ -580,17 +596,25 @@
    "columns": {
     "A": {
      "south": "6563a4658b45027c50543c0874f3616505aaaba6862abde472ef2c2281cef433"
+    },
+    "B": {
+     "east": "ab1a07240937fba4d30dd29a923d356cd4a9d0c47d3f76bffeee847c4e6091e0",
+     "north": "816ddaabed3033a29c58efdfee1db219f5c1c3173d3c30b4e794ccbd8b249dc0",
+     "south": "fa77c8f64f02fa7f0355f2266ddd65f54dc9530d05bde380bba3489f878041da"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth"
+    "A": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth",
+    "B": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth"
    },
    "labels": {
-    "A": "IN GAME \u2014 Miasma"
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render gapall_RM_Karrimeth_v1"
    },
    "res": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "karrimeth"
   },
@@ -598,17 +622,25 @@
    "columns": {
     "A": {
      "south": "ba04451bae3d91c5f6b48a9f4bbd4f027f663bb64da4e35dacd1e66f881b9fea"
+    },
+    "B": {
+     "east": "ab81c619d455fe612465810fd88800f03f6b60bab34c9b8750c0ab269e857b5d",
+     "north": "523b78bdf1901365fc84039eddba1844ff0b6d3e8ef327f0fb07ef2900af2462",
+     "south": "d8ac28adfe3210d6b4d66435ef60f467dd6a25abcfaef1036fd477f556d2c441"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Karrobel/RM_Karrobel"
+    "A": "Things/Pawn/Animal/RM_Karrobel/RM_Karrobel",
+    "B": "Things/Pawn/Animal/RM_Karrobel/RM_Karrobel"
    },
    "labels": {
-    "A": "IN GAME \u2014 Miasma"
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render gapall_RM_Karrobel_v1"
    },
    "res": "Things/Pawn/Animal/RM_Karrobel/RM_Karrobel",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "karrobel"
   },
@@ -616,17 +648,25 @@
    "columns": {
     "A": {
      "south": "2e2c631c3a6f54666037a5766561194df7acc0a43142df2730a8c999ef5f3cf3"
+    },
+    "B": {
+     "east": "36cfc59ddca191ace71329d5a8d1645f76c82a5cea4c8d2a672630c0f6e0076a",
+     "north": "49d5148cd8280605232f306eb3d8313a9eb9eda60cd0b7d2de02e81ac0261c57",
+     "south": "8b5de95d603d0f039bdc7dc7a811fd3f922558b3c2c0af2008a1446b3f3ff0c2"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Karrolun/RM_Karrolun"
+    "A": "Things/Pawn/Animal/RM_Karrolun/RM_Karrolun",
+    "B": "Things/Pawn/Animal/RM_Karrolun/RM_Karrolun"
    },
    "labels": {
-    "A": "IN GAME \u2014 Miasma"
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render gapall_RM_Karrolun_v1"
    },
    "res": "Things/Pawn/Animal/RM_Karrolun/RM_Karrolun",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "karrolun"
   },

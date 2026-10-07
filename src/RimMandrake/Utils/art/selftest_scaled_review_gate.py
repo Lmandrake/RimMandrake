@@ -163,6 +163,9 @@ def main():
         def purged_donor(it, c2):
             own_copy_only(it, c2); it[1]["donorPurged"] = True
         check(not failing(mut(purged_donor), "4"), "req 4 PASSES: the donor original was purged by the owner (shown and rejected)")
+        def absent_donor(it, c2):
+            own_copy_only(it, c2); it[1]["donorAbsent"] = "donor original not on disk (mod absent): AA_Mod · texPath Things/X"
+        check(not failing(mut(absent_donor), "4"), "req 4 PASSES: the row names the donor mod/texPath as not on disk (mod absent)")
         # req 5
         def canon_missing(it, c2): it[1]["canon"] = None; it[1]["canonTag"] = "no canon-library entry"
         f = failing(mut(canon_missing), "5")
