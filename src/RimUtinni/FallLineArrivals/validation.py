@@ -24,7 +24,7 @@ WRECKS = ("RUT_FallWreck_Hull", "RUT_FallWreck_Cargo", "RUT_FallWreck_Tank")
 VERMIN = ("RSW_Mynock", "RSW_Scavrat", "RSW_WompRat", "RSW_Zhakka")
 NEEDLES = ("mandrake.rut.falllinearrivals", "RUT_FallWreck", "RUT_LabRat", "RUT_FallLine",
            "IncidentWorker_FallArrival", "IncidentWorker_LabRatFalls", "RM_CompVerminNest",
-           "RUT_FallSurvivor", "RUT_Hediff_Feral", "FeralSurvivors", "JobGiver_Feral", "RUT_CompFeralLurker")
+           "RUT_FallSurvivor", "RUT_Hediff_Feral", "RUT_FeralSurvivor", "FeralRaces", "Patch_TryEnslavePrisoner", "FeralSurvivors", "JobGiver_Feral", "RUT_CompFeralLurker")
 FERAL_POOL = ("RSW_DW_OuterRim_MSEDroid", "RSW_DW_OuterRim_SalvageAssistDroid", "RSW_DW_OuterRim_DUMDroid",
               "RSW_DW_OuterRim_GNKDroid", "RSW_DW_OuterRim_RSeriesDroid", "RSW_DW_OuterRim_FX7Droid",
               "RSW_DW_OuterRim_MuckrakerDroid", "RSW_DW_OuterRim_DestroyerDroid")
@@ -73,7 +73,7 @@ def load_clean(t):
 def defs(t):
     with t.component("all_defs_resolve", beyond_toggle=True):
         want = ["IncidentDef/RUT_FallArrival", "IncidentDef/RUT_LabRatFalls", "PawnKindDef/RUT_LabRat",
-                "IncidentDef/RUT_FallSurvivor", "HediffDef/RUT_Hediff_Feral", "ThinkTreeDef/RUT_FeralDroidInsert",
+                "IncidentDef/RUT_FallSurvivor", "HediffDef/RUT_Hediff_Feral", "HediffDef/RUT_Hediff_FeralScar", "PawnKindDef/RUT_FeralSurvivor", "ThinkTreeDef/RUT_FeralDroidInsert",
                 "TileMutatorDef/RUT_FallLine"] + ["ThingDef/%s" % w for w in WRECKS] + \
                ["ThingDef/%s" % w.replace("FallWreck_", "FallWreckIncoming_") for w in WRECKS]
         r = t.bridge_call("jawa/get_defs", defs=";".join(want), fields="defName")

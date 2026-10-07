@@ -7,7 +7,7 @@
   <HediffDef>
     <defName>RUT_Hediff_Feral</defName>
     <label>feral</label>
-    <description>Out on the Fall Line alone since its fall, long enough to forget what it was for. It runs from people, hides in wreckage, and fights only when cornered. A wild-keyed data spike, once it is a prisoner, wipes this away completely.</description>
+    <description>Out on the Fall Line alone since its fall, long enough to forget what it was for. It runs from people, hides in wreckage, and fights only when cornered. Joining a colony ends it: for a droid, a wild-keyed data spike wipes it away completely; a person who went feral keeps a scar for life.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <defaultLabelColor>(0.75, 0.6, 0.4)</defaultLabelColor>
     <isBad>false</isBad>

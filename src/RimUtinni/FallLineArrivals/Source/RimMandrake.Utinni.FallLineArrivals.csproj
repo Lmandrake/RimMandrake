@@ -31,6 +31,10 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
@@ -39,6 +43,7 @@
     <Compile Include="FallLineArrivalsMod.cs" />
     <Compile Include="FallLineArrivalIncidents.cs" />
     <Compile Include="FeralSurvivors.cs" />
+    <Compile Include="FeralRaces.cs" />
   </ItemGroup>
 
 
@@ -61,6 +66,10 @@
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">

@@ -23,7 +23,7 @@
        utility kinds; MayRequire keeps the def loadable without Droidworks (an empty pool refuses). -->
   <IncidentDef>
     <defName>RUT_FallSurvivor</defName>
-    <label>feral droid</label>
+    <label>feral survivor</label>
     <category>Misc</category>
     <targetTags>
       <li>Map_PlayerHome</li>
@@ -43,6 +43,8 @@
           <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_FX7Droid</kind><weight>5</weight></li>
           <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_MuckrakerDroid</kind><weight>5</weight></li>
           <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_DestroyerDroid</kind><weight>2</weight><dangerous>true</dangerous></li>
+          <!-- FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1: §8b's feral races, gated by their own Mod Setting. -->
+          <li><kind>RUT_FeralSurvivor</kind><weight>8</weight><feralRace>true</feralRace></li>
         </options>
       </li>
     </modExtensions>

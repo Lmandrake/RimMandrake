@@ -6,11 +6,17 @@
   <supportedVersions><li>1.6</li></supportedVersions>
   <modDependencies>
     <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
       <packageId>mandrake.rm.shipvermin</packageId>
       <displayName>RimMandrake: Ship Vermin</displayName>
     </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>mandrake.rm.biomes</li>
     <li>mandrake.rm.shipvermin</li>
     <li>mandrake.rsw.swbestiary</li>
@@ -39,6 +45,9 @@ Line region names. A Mod Setting lets the events fire on any map instead.
     cornered. One drifts in off the flats now and then; some fallen wrecks
     hide one that bolts when a colonist comes within 25 cells. Capture it and
     a wild-keyed data spike wipes it clean.
+  - Feral people (Band B, §8b feral races): crash survivors gone feral
+    ride the same routes and behaviour. Enslave or recruit one and they
+    keep a permanent Fall Line scar; unlike a droid, nothing wipes it.
 
 Not here yet (filed): placing
 the RUT_FallLine mutator on the region's tiles of the frozen world, and the

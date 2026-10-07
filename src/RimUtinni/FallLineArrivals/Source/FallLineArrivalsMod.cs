@@ -26,6 +26,8 @@ namespace RimMandrake.Utinni.FallLineArrivals
         public static bool allowDestroyer = true;
         public static int maxFeralPerMap = 3;
         public static bool feralAttackInstead = false;
+        // FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1 (§8b feral races)
+        public static bool feralRacesEnabled = true;
 
         public static bool labRatEnabled = true;
         public static float labRatFrequency = 1f;
@@ -45,6 +47,7 @@ namespace RimMandrake.Utinni.FallLineArrivals
             Scribe_Values.Look(ref allowDestroyer, "allowDestroyer", true);
             Scribe_Values.Look(ref maxFeralPerMap, "maxFeralPerMap", 3);
             Scribe_Values.Look(ref feralAttackInstead, "feralAttackInstead", false);
+            Scribe_Values.Look(ref feralRacesEnabled, "feralRacesEnabled", true);
             Scribe_Values.Look(ref labRatEnabled, "labRatEnabled", true);
             Scribe_Values.Look(ref labRatFrequency, "labRatFrequency", 1f);
         }
@@ -95,6 +98,10 @@ namespace RimMandrake.Utinni.FallLineArrivals
                 list.CheckboxLabeled("  They attack instead of running (like a wild droid)", ref feralAttackInstead,
                     "Off (the ruled behaviour): they flee and hide. On: they attack on sight, the way the desert's "
                   + "wild droids do.");
+                list.CheckboxLabeled("  Feral people too (crash survivors)", ref feralRacesEnabled,
+                    "People who survived a fall and went feral out on the flats arrive the same ways the droids do, "
+                  + "and behave the same. Capture and enslave one (or recruit them) and they keep a permanent "
+                  + "Fall Line scar: unlike a droid, there is nothing to wipe.");
             }
 
             list.GapLine();
