@@ -86,14 +86,24 @@ def _comp(t, name, **kw):
               str(c.detail or "")[:300], file=sys.stderr, flush=True)
 
 
+DIAG_FIELDS = ("stepsSeen", "printsWritten", "invisiblePrintsWritten", "cleared", "lastPrintPawn", "lastPrintCell",
+               "lastPrintInvisible", "lastPrintTexPath", "lastPoolCount", "lastPoolCapacity", "lastPoolInvisible")
+
+
 def _diag(t):
-    """The grid's counters as {name: str}. UNMEASURED if the type cannot be read."""
-    r = t.bridge_call("jawa/mod_settings_field", typeName=DIAG, action="list")
-    if not _live(t):
-        return {}
-    if not isinstance(r, dict) or not r.get("success"):
-        _unmeasured(t, "could not read %s: %s" % (DIAG, str(r)[:200]))
-    return {f.get("name"): f.get("value") for f in r.get("fields") or []}
+    """The grid's counters as {name: str}, one `get` per field. UNMEASURED if the type cannot be read.
+    LIVE 2026-10-07: `action=list` on this static (non-ModSettings) class throws 'Invalid generic arguments'
+    (the tool resolves GetSettings<T>), which read as UNMEASURED for every track_grid component; `get` works."""
+    out = {}
+    for f in DIAG_FIELDS:
+        r = t.bridge_call("jawa/mod_settings_field", typeName=DIAG, action="get", field=f)
+        if not _live(t):
+            return {}
+        if not isinstance(r, dict) or not r.get("success"):
+            _unmeasured(t, "could not read %s.%s: %s" % (DIAG, f, str(r)[:200]))
+            return {}
+        out[f] = r.get("value")
+    return out
 
 
 def _int(d, k):
@@ -103,14 +113,44 @@ def _int(d, k):
         raise ExpectationFailed("diag field %s unreadable: %r" % (k, d.get(k)))
 
 
+def _regen(t):
+    """Regenerate the CURRENT tile's map and poll until the bridge says a map is ready (the call can drop its
+    connection while the map rebuilds). Same recipe as Stillsand's site chain, proven live 2026-10-01."""
+    try:
+        t.bridge_call("rimworld/execute_debug_action", path="Actions\\Regenerate Current Map")
+    except Exception as ex:                                                  # noqa: BLE001
+        t._record("regen call ended", str(ex)[:200])
+    for _ in range(60):
+        time.sleep(5)
+        try:
+            st = (t.bridge_call("rimbridge/get_bridge_status") or {}).get("state") or {}
+        except Exception:                                                    # noqa: BLE001
+            continue
+        if st.get("currentMapReady"):
+            return
+    _unmeasured(t, "the map was not ready 300 s after Regenerate Current Map")
+
+
 def _need_surface_map(t):
+    """The footprint surface is RM_Stillsand sand, so the suite stands up a Stillsand map when the current one is
+    another biome (LIVE 2026-10-07: the old 'current map is X' UNMEASURED made four components unreachable)."""
     mi = t.bridge_call("jawa/map_info")
     if not _live(t):
         return
     biome = (mi or {}).get("mapBiome") or ((mi or {}).get("tileInfo") or {}).get("biome")
+    if biome != SURFACE_BIOME and mi.get("tile") is not None:
+        t.bridge_call("jawa/world_tile_set", tiles=str(mi["tile"]), biome=SURFACE_BIOME, temperature=15.0)
+        t.bridge_call("jawa/world_commit")
+        _regen(t)
+        mi = t.bridge_call("jawa/map_info")
+        biome = (mi or {}).get("mapBiome")
+        if biome == SURFACE_BIOME:
+            t.session.call("jawa/spawn_pawn", kindDef="Colonist", x=int(mi["sizeX"]) // 2, z=int(mi["sizeZ"]) // 2,
+                           faction="player", count=3)
+            t.session.call("rimworld/execute_debug_action", path="Actions\\Destroy hostile pawns")
     if biome != SURFACE_BIOME:
-        _unmeasured(t, "current map is %r; the only wired track surface is %s sand (no Warscar film yet)"
-                    % (biome, SURFACE_BIOME))
+        _unmeasured(t, "current map is %r and a %s map could not be generated; the only wired track surface is that "
+                       "sand (no Warscar film yet)" % (biome, SURFACE_BIOME))
     if mi.get("sizeX") and mi.get("sizeZ"):
         t.anchor = (int(mi["sizeX"]) // 2, int(mi["sizeZ"]) // 2)
 
@@ -135,9 +175,24 @@ def _walk(t, dz, hediff=None):
         r = t.bridge_call("jawa/pawn_health", pawn=pid, action="add", hediff=hediff, severity=1.0)
         if _live(t) and not (r or {}).get("success"):
             _unmeasured(t, "pawn_health add %s failed: %s" % (hediff, str(r)[:160]))
+    if _live(t):
+        # LIVE 2026-10-07: prints are counted GLOBALLY, so every other colonist (the 3 home pawns, earlier walkers)
+        # wandering over the sand strip inflated the control arm ("gravel took 24 prints"). Hold them all drafted.
+        try:
+            rows = (t.session.call("jawa/list_pawns", limit=200) or {}).get("pawns") or []
+            for row in rows:
+                if row.get("id") != pid and row.get("isPlayer") and row.get("intelligence") == "Humanlike" and not row.get("dead"):
+                    t.session.call("jawa/set_draft", pawnId=row["id"], drafted=True)
+        except Exception as ex:                                              # noqa: BLE001
+            t._record("hold others failed", str(ex)[:200])
+    if hediff and _live(t):
+        # PsychicInvisibility fades in; a walker ordered at once is visible for its first steps (4 of 12 flagged).
+        t.bridge_call("rimworld/step_game_ticks", ticks=300, pauseFirst=True, timeoutMs=120000)
     before = _diag(t)
     t.walk_over(pid, [(x + WALK, z + dz)], wait_ticks=900)
     after = _diag(t)
+    if _live(t):
+        t.session.call("jawa/set_draft", pawnId=pid, drafted=True)         # hold it where it stopped
     moved = 0
     if _live(t):
         px, _ = t._pawn_pos(pid)
@@ -207,7 +262,10 @@ def track_grid(t):
         try:
             b, a, moved = _walk(t, 0)
         finally:
-            t.set_setting(SETTINGS, {"tracksEnabled": True})
+            # Straight through the session: t.set_setting is suppressed once an upstream UNMEASURED has fired,
+            # which left tracksEnabled False for every later component (LIVE 2026-10-07: all_fields FAIL).
+            if t.session is not None:
+                t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="tracksEnabled", value="True")
         if _live(t):
             # stepsSeen counts only while tracks are on, so it cannot prove the walk here: read the position.
             if moved < WALK // 2:
