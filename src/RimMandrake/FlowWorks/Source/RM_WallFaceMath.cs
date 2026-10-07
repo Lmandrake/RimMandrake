@@ -121,6 +121,17 @@ namespace RimMandrake.FlowWorks
 			return z1 > z0 + 0.001f;
 		}
 
+		/// <summary>PIT_LIP_OCCLUDES_OUTSIDE_1. The near-lip cover is drawn above every pawn, so it must never cover a
+		/// pawn that is NOT sunk as deep as the one it hides (one standing on ground or the lip south of the pit,
+		/// whose sprite the band overlaps). True when a cover piece [left,right]x[a,b] intersects the drawn rect of
+		/// another pawn whose own depth is shallower than the sunk pawn's: that piece must be skipped.</summary>
+		public static bool CoverPieceHitsShallowerPawn(float left, float right, float a, float b,
+			float otherLeft, float otherRight, float otherBottom, float otherTop, int otherDepth, int sunkDepth)
+		{
+			if (otherDepth >= sunkDepth) return false;
+			return right > otherLeft && left < otherRight && b > otherBottom && a < otherTop;
+		}
+
 		// ── scorch (principle 5) ────────────────────────────────────────────
 
 		/// <summary>Remaining scorch strength 0..1 after <paramref name="ageTicks"/>; <paramref name="fadeDays"/> 0 =

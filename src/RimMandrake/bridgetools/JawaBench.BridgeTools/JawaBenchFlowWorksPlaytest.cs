@@ -454,9 +454,21 @@ namespace JawaBench.BridgeTools
                 return d;
             }
 
+            private int settledFrames;
+
+            private static bool GameSettled()
+            {
+                return Current.ProgramState == ProgramState.Playing && Current.Game != null && Find.TickManager != null
+                    && Find.CurrentMap != null && !LongEventHandler.AnyEventNowOrWaiting;
+            }
+
             public void Frame()
             {
                 if (Current.Game == null || Find.CurrentMap != map || !Find.Maps.Contains(map)) { Abort("map changed or game ended mid-run"); return; }
+                // A just-loaded game is not tickable until the long event that loaded it has finished and a few frames
+                // have run (live 2026-10-07: DoSingleTick right after load_game_ready threw NRE in TickList.BucketOf).
+                if (!GameSettled()) { settledFrames = 0; return; }
+                if (settledFrames < 3) { settledFrames++; return; }
                 if (runClock.Wall > MaxRunWallSec) { Abort("run exceeded " + MaxRunWallSec + " s wall"); return; }
                 if (tickMode == "speed" && Find.TickManager.CurTimeSpeed != TimeSpeed.Ultrafast) Find.TickManager.CurTimeSpeed = TimeSpeed.Ultrafast;
                 if (tickMode == "batch" && Find.TickManager.CurTimeSpeed != TimeSpeed.Paused) Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
