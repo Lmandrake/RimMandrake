@@ -47,6 +47,7 @@
     <surfaceLook>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <seeThrough>0.55</seeThrough>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -73,6 +74,7 @@
     <surfaceLook>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <seeThrough>0.55</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -122,6 +124,9 @@
       <fleckChance>0.25</fleckChance>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <bubbles>0.9</bubbles>
+      <bubbleColor>(0.92,0.96,1.0)</bubbleColor>
+      <seeThrough>0.55</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -170,6 +175,7 @@
       <rippleDensity>0.4</rippleDensity>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <seeThrough>0.0</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -206,6 +212,7 @@
       <texture>Terrain/Surfaces/ToxicWater{depth}Ramp</texture>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <seeThrough>0.55</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -254,10 +261,13 @@
     </bottled>
     <surfaceLook>
       <texture>Terrain/Surfaces/ToxicWater{depth}Ramp</texture>
-      <tint>(1.25,1.20,0.55)</tint>
-      <rippleDensity>1.4</rippleDensity>
+      <tint>(1.05,1.30,0.30)</tint>
+      <rippleDensity>1.6</rippleDensity>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <bubbles>0.25</bubbles>
+      <bubbleColor>(0.80,1.0,0.35)</bubbleColor>
+      <seeThrough>0.35</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -297,6 +307,7 @@
       <speed>0.2</speed>
       <sheen>0.5</sheen>
       <wake>0.0</wake>
+      <seeThrough>0.55</seeThrough>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -320,10 +331,15 @@
       <unitsPerBarrel>25</unitsPerBarrel>
     </bottled>
     <surfaceLook>
-      <tint>(0.58,0.56,0.60)</tint>
-      <depthDarken>0.09</depthDarken>
-      <rippleDensity>0.5</rippleDensity>
-      <rippleIntensity>1.4</rippleIntensity>
+      <shader>Flow</shader>
+      <texture>Other/Perlin</texture>
+      <tint>(0.40,0.40,0.40)</tint>
+      <depthDarken>0.08</depthDarken>
+      <flowSpeed>0.02</flowSpeed>
+      <flowAmplitude>0.06</flowAmplitude>
+      <flowFrequency>1.0</flowFrequency>
+      <brightness>0.0</brightness>
+      <splashes>true</splashes>
       <overlay>false</overlay>
       <wake>0.0</wake>
     </surfaceLook>
@@ -366,6 +382,7 @@
       <rippleDensity>0.7</rippleDensity>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <seeThrough>0.55</seeThrough>
     </surfaceLook>
     <conversions>
       <li>
@@ -407,12 +424,14 @@
     </bottled>
     <worldTag>RM_Liquid_Propane</worldTag>
     <surfaceLook>
-      <tint>(0.92,0.96,1.05)</tint>
+      <texture>White</texture>
+      <tint>(0.66,0.66,0.67)</tint>
       <rippleDensity>1.6</rippleDensity>
       <fleck>AirPuff</fleck>
       <fleckChance>0.05</fleckChance>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <seeThrough>0.55</seeThrough>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -435,6 +454,7 @@
       <speed>0.2</speed>
       <sheen>0.3</sheen>
       <wake>0.0</wake>
+      <seeThrough>0.55</seeThrough>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -470,6 +490,7 @@
       <splashes>false</splashes>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <bubbles>0.08</bubbles>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -501,6 +522,7 @@
       <splashes>false</splashes>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <bubbles>0.08</bubbles>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -529,6 +551,7 @@
       <splashes>false</splashes>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <bubbles>0.08</bubbles>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
@@ -555,6 +578,7 @@
       <splashes>false</splashes>
       <overlay>false</overlay>
       <wake>0.0</wake>
+      <bubbles>0.08</bubbles>
     </surfaceLook>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 

@@ -148,7 +148,9 @@ namespace RimMandrake.FlowWorks
 			if (s > 1f) s = 1f;
 			float wall = edgeDist <= 0f ? 1f : (edgeDist >= 0.6f ? 0f : 1f - edgeDist / 0.6f);
 			wall = wall * wall * (3f - 2f * wall);   // smooth, so it never reads as an inner frame
-			float a = 0.36f + 0.30f * blotch + 0.08f * wall;
+			// 2026-10-06: base raised 0.36 -> 0.46 ("doesn't look like anything at all"); the black now lives in the
+			// patches and blast marks above, so the whole floor is still never one black surface.
+			float a = 0.46f + 0.26f * blotch + 0.08f * wall;
 			if (a > 0.72f) a = 0.72f;
 			return a * s;
 		}
@@ -175,6 +177,60 @@ namespace RimMandrake.FlowWorks
 			float rim = v > 0.75f ? (v - 0.75f) / 0.25f : 0f;
 			float a = 0.22f + 0.40f * foot * foot + 0.20f * rim;
 			return (s > 1f ? 1f : s) * (a > 0.7f ? 0.7f : a);
+		}
+
+		// ── blast marks and blackened patches (owner, 2026-10-06: "Scorched dirt and stone doesn't look like anything
+		//    at all, it needs blast marks and blackened bits.") ────────────────────────────────────────────────────
+
+		/// <summary>Near-black patch alpha where the world noise is high: patches, not a black floor. 0 below the
+		/// threshold, up to 0.9 at full scorch.</summary>
+		public static float BlackPatchAlpha(float s, float blotch)
+		{
+			if (s <= 0f || blotch < 0.48f) return 0f;
+			float t = (blotch - 0.48f) / 0.2f;
+			if (t > 1f) t = 1f;
+			t = t * t * (3f - 2f * t);
+			return (s > 1f ? 1f : s) * 0.9f * t;
+		}
+
+		/// <summary>Deterministic 0..1 from integers (no UnityEngine.Random: the selftest pins it).</summary>
+		public static float Hash01(int a, int b, int c)
+		{
+			unchecked
+			{
+				uint h = (uint)(a * 73856093) ^ (uint)(b * 19349663) ^ (uint)(c * 83492791);
+				h ^= h >> 13;
+				h *= 0x5bd1e995;
+				h ^= h >> 15;
+				return (h & 0xFFFFFF) / 16777216f;
+			}
+		}
+
+		/// <summary>A blast mark is a starburst: <paramref name="rays"/> spikes round a dark core. Ray i's length as a
+		/// fraction of the mark's radius: long and short spikes alternate (0.75..1 and 0.3..0.55), seeded per mark.</summary>
+		public static float BlastRayLength(int ray, int rays, int seed)
+		{
+			float r = Hash01(seed, ray, rays);
+			return ray % 2 == 0 ? 0.75f + 0.25f * r : 0.30f + 0.25f * r;
+		}
+
+		/// <summary>Does dug cell (x,z) carry a blast mark on its floor? About two cells in three, seeded.</summary>
+		public static bool HasFloorBlast(int x, int z)
+		{
+			return Hash01(x, z, 7) < 0.66f;
+		}
+
+		/// <summary>Does undug ground cell (x,z) beside a burned cut carry a scorch splash? About one in two.</summary>
+		public static bool HasRimBlast(int x, int z)
+		{
+			return Hash01(x, z, 11) < 0.5f;
+		}
+
+		/// <summary>Core alpha of a blast mark at scorch strength s: near-black, 0.92 at full.</summary>
+		public static float BlastCoreAlpha(float s)
+		{
+			if (s <= 0f) return 0f;
+			return (s > 1f ? 1f : s) * 0.92f;
 		}
 
 		/// <summary>Char multiplier for a face/floor at scorch strength s: 1 untouched, down to 0.30 at full scorch.</summary>

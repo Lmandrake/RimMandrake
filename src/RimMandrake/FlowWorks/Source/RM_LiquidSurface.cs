@@ -75,6 +75,18 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>Vanilla's wading splash (takeSplashes). Thick liquids do not splash.</summary>
 		public bool splashes = true;
+
+		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 7 (owner, 2026-10-06: <i>"acid should be an eerie yellow-green and
+		/// bubbling. slimes should lightly bubble too. Boiling liquid should bubble quite a bit."</i>): bubbles rising
+		/// and popping, per cell per second, on cells in view. 0 = none. Slime ~0.08, acid ~0.25, boiling ~0.9.</summary>
+		public float bubbles;
+
+		/// <summary>Bubble colour (alpha kept from the fleck).</summary>
+		public Color bubbleColor = new Color(0.9f, 0.95f, 1f);
+
+		/// <summary>Item 10 (owner: <i>"show the pit walls/floor beneath the translucent water"</i>): 0..1, how much of a
+		/// cut's own floor and drowned walls show through this liquid. 0 = opaque (tar, oil, slime).</summary>
+		public float seeThrough;
 	}
 
 	/// <summary>
@@ -411,7 +423,15 @@ namespace RimMandrake.FlowWorks
 
 		public override void MapComponentTick()
 		{
-			if (!RimMandrakeFlowWorksSettings.liquidWakesEnabled || Find.TickManager.TicksGame % 12 != 0 || Find.CurrentMap != map)
+			if (Find.CurrentMap != map)
+			{
+				return;
+			}
+			if (RimMandrakeFlowWorksSettings.liquidBubblesEnabled)
+			{
+				Bubbles();
+			}
+			if (!RimMandrakeFlowWorksSettings.liquidWakesEnabled || Find.TickManager.TicksGame % 12 != 0)
 			{
 				return;
 			}
@@ -454,6 +474,65 @@ namespace RimMandrake.FlowWorks
 						velocitySpeed = 0.55f * look.wake,
 						ageTicksOverride = -1
 					});
+				}
+			}
+		}
+
+		// ── bubbles (FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 7) ─────────────────
+
+		private const int BubbleSamples = 16;
+		private static FleckDef bubbleFleck;
+
+		/// <summary>Owner, 2026-10-06: <i>"acid should be an eerie yellow-green and bubbling. slimes should lightly bubble
+		/// too. Boiling liquid should bubble quite a bit."</i> Vanilla's per-terrain emitter visits a cell about once every
+		/// 28 s, far too rare to read as bubbling, so this samples cells IN VIEW each tick (cost bounded by the sample
+		/// count at any zoom, density proportional to how much of the view is bubbling liquid — the same shape as
+		/// EnvironmentalHazards' water agitation). A bubble is RM_Fleck_LiquidBubble (Biotech's vat bubble, tinted per
+		/// liquid); a heavy boil also pops a vanilla water ripple now and then.</summary>
+		private void Bubbles()
+		{
+			if (bubbleFleck == null)
+			{
+				bubbleFleck = DefDatabase<FleckDef>.GetNamedSilentFail("RM_Fleck_LiquidBubble");
+				if (bubbleFleck == null)
+				{
+					return;
+				}
+			}
+			CellRect view = Find.CameraDriver.CurrentViewRect.ClipInsideMap(map);
+			int area = view.Area;
+			if (area <= 0)
+			{
+				return;
+			}
+			int represented = Mathf.Max(1, area / BubbleSamples);
+			TerrainGrid tg = map.terrainGrid;
+			for (int i = 0; i < BubbleSamples; i++)
+			{
+				IntVec3 c = view.RandomCell;
+				RM_LiquidSurfaceLook look = LookFor(tg.TerrainAt(c));
+				if (look == null || look.bubbles <= 0f)
+				{
+					continue;
+				}
+				int n = RM_LiquidLookMath.BubblesThisTick(look.bubbles, RimMandrakeFlowWorksSettings.liquidBubbleDensity,
+					represented, Rand.Value);
+				for (int k = 0; k < n; k++)
+				{
+					Vector3 at = new Vector3(c.x + Rand.Range(0.15f, 0.85f), AltitudeLayer.MoteLow.AltitudeFor(), c.z + Rand.Range(0.15f, 0.85f));
+					if (!at.ShouldSpawnMotesAt(map))
+					{
+						continue;
+					}
+					FleckCreationData d = FleckMaker.GetDataStatic(at, map, bubbleFleck, Rand.Range(0.8f, 1.8f));
+					d.instanceColor = look.bubbleColor;
+					d.velocityAngle = Rand.Range(0f, 360f);
+					d.velocitySpeed = Rand.Range(0f, 0.08f);
+					map.flecks.CreateFleck(d);
+					if (look.bubbles >= 0.5f && Rand.Chance(0.25f))
+					{
+						FleckMaker.WaterRipple(at, map, Rand.Range(0.25f, 0.5f));
+					}
 				}
 			}
 		}

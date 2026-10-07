@@ -177,6 +177,19 @@ namespace RimMandrake.FlowWorks
         public static bool liquidSurfaceMotionEnabled = true;      // ripples / gloss / sheen on filled cuts
         public static bool liquidWakesEnabled = true;              // V wakes behind anything wading
         public static bool liquidLooksEnabled = true;              // per-liquid engine surface look (off: plain XML look)
+        // FLOWWORKS_REVIEW_LOOKS_ROUND_1 (owner review, 2026-10-06). Each OFF degrades to the previous look/behaviour.
+        public static bool liquidBubblesEnabled = true;            // acid, slime and boiling liquid bubble (item 7)
+        public static float liquidBubbleDensity = 1f;              // x every liquid's own bubble rate
+        public static bool liquidSeeThroughEnabled = true;         // a cut's floor/walls show through clear liquid (item 10)
+        public static bool pitWalkNormalEnabled = true;            // walking along a pit floor is normal; only climbing is slow (item 9)
+        // Liquids that may fill a cut (item 4): a FluidDef named here is refused by every fill (pump, drill, debug,
+        // review map). Default empty = every liquid on. Labels come from the FluidDefs, so a new liquid appears itself.
+        public static System.Collections.Generic.List<string> disabledFluids = new System.Collections.Generic.List<string>();
+
+        public static bool FluidAllowed(FluidDef f)
+        {
+            return f == null || disabledFluids == null || !disabledFluids.Contains(f.defName);
+        }
         public static bool pitScorchEnabled = true;                // a cut that burned dry reads scorched
         public static float pitScorchFadeDays = 20f;               // PROVISIONAL; 0 = never fades
         public static bool pitOutlineEnabled = true;               // closed dark outline, strong near (south) lining
@@ -358,6 +371,15 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidSurfaceMotionEnabled, "liquidSurfaceMotionEnabled", true);
             Scribe_Values.Look(ref liquidWakesEnabled, "liquidWakesEnabled", true);
             Scribe_Values.Look(ref liquidLooksEnabled, "liquidLooksEnabled", true);
+            Scribe_Values.Look(ref liquidBubblesEnabled, "liquidBubblesEnabled", true);
+            Scribe_Values.Look(ref liquidBubbleDensity, "liquidBubbleDensity", 1f);
+            Scribe_Values.Look(ref liquidSeeThroughEnabled, "liquidSeeThroughEnabled", true);
+            Scribe_Values.Look(ref pitWalkNormalEnabled, "pitWalkNormalEnabled", true);
+            Scribe_Collections.Look(ref disabledFluids, "disabledFluids", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && disabledFluids == null)
+            {
+                disabledFluids = new System.Collections.Generic.List<string>();
+            }
             Scribe_Values.Look(ref pitOutlineEnabled, "pitOutlineEnabled", true);
             Scribe_Values.Look(ref pitHidesShadowEnabled, "pitHidesShadowEnabled", true);
             Scribe_Values.Look(ref pitScorchEnabled, "pitScorchEnabled", true);
@@ -684,6 +706,10 @@ namespace RimMandrake.FlowWorks
                 pitResistanceLossMultiplier = list.Slider(pitResistanceLossMultiplier, 0f, 4f);
             }
 
+            list.CheckboxLabeled("Walking along a pit floor is normal speed", ref pitWalkNormalEnabled,
+                "Only climbing into or out of a cut is slow (the deeper, the slower; a ladder too); walking around "
+              + "inside one, at one depth, is ordinary walking, and dropping into a superdeep pit is instant. "
+              + "Off: every step on dug ground costs its depth, as before.");
             list.CheckboxLabeled("Falling into a pit deals damage", ref fallDamageEnabled,
                 "Anyone who walks, is pushed or jumps into a superdeep cell takes blunt damage scaled "
               + "by their mass. Off: the fall is harmless.");
@@ -780,6 +806,36 @@ namespace RimMandrake.FlowWorks
             if (looksWas != liquidLooksEnabled)
             {
                 if (liquidLooksEnabled) RM_LiquidLooks.ApplyAll(); else RM_LiquidLooks.RevertAll();
+            }
+            list.CheckboxLabeled("Acid, slime and boiling liquid bubble", ref liquidBubblesEnabled,
+                "Bubbles rise and pop on the liquids that have them: lightly on slime, steadily on acid, hard on "
+              + "boiling water. Drawing only. Off: no bubbles.");
+            if (liquidBubblesEnabled)
+            {
+                list.Label("How many bubbles: x" + liquidBubbleDensity.ToString("F1"));
+                liquidBubbleDensity = Mathf.Round(list.Slider(liquidBubbleDensity, 0.2f, 3f) * 10f) / 10f;
+            }
+            bool seeWas = liquidSeeThroughEnabled;
+            list.CheckboxLabeled("See the floor and walls of a cut through clear liquid", ref liquidSeeThroughEnabled,
+                "Water and other clear liquids standing in a cut let its floor and drowned walls show through, "
+              + "fainter the deeper it is. Tar, oil, slime and blood stay opaque. Drawing only. Off: the liquid "
+              + "surface hides the cut below it.");
+            if (seeWas != liquidSeeThroughEnabled)
+            {
+                SectionLayer_RMExcavationWalls.RedrawAll();
+            }
+            list.Gap(6f);
+            list.Label("Liquids that can fill a cut (off: nothing pours that liquid into a cut — pump, drill or any "
+                     + "other source; what already stands in one stays):");
+            foreach (FluidDef fd in DefDatabase<FluidDef>.AllDefsListForReading)
+            {
+                bool on = FluidAllowed(fd);
+                bool was = on;
+                list.CheckboxLabeled("  " + fd.LabelCap, ref on, "Lets " + fd.label + " stand in a dug cut.");
+                if (on != was)
+                {
+                    if (on) disabledFluids.Remove(fd.defName); else if (!disabledFluids.Contains(fd.defName)) disabledFluids.Add(fd.defName);
+                }
             }
 
             list.CheckboxLabeled("Sluices and grates cannot be opened from inside a pit", ref flowDoorsSealedFromPitEnabled,

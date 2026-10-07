@@ -37,8 +37,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Trace</defName>
-    <label>shallow channel, red slime</label>
-    <description>A channel carrying a trace of red slime — already thick enough to cling.</description>
+    <label>shallow red slime</label>
+    <description>Red slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
     <pathCost>100</pathCost>
     <temporary>true</temporary>
@@ -56,8 +56,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Half</defName>
-    <label>half-full channel, red slime</label>
-    <description>A channel filling with red slime to about half its depth.</description>
+    <label>chest-deep red slime</label>
+    <description>Red slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -78,8 +78,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Brim</defName>
-    <label>brimming channel, red slime</label>
-    <description>A channel filled to its brim with red slime. Depth captures, fill does not.</description>
+    <label>deep red slime</label>
+    <description>Red slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -100,8 +100,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeRed_Superdeep</defName>
-    <label>flooded excavation, red slime</label>
-    <description>A superdeep excavation holding red slime. Whatever falls in is held there.</description>
+    <label>very deep red slime</label>
+    <description>Red slime filling a very deep pit. Whatever falls in is held there, and the red slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -122,8 +122,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Trace</defName>
-    <label>shallow channel, green slime</label>
-    <description>A channel carrying a trace of green slime — already thick enough to cling.</description>
+    <label>shallow green slime</label>
+    <description>Green slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
     <pathCost>100</pathCost>
     <temporary>true</temporary>
@@ -141,8 +141,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Half</defName>
-    <label>half-full channel, green slime</label>
-    <description>A channel filling with green slime to about half its depth.</description>
+    <label>chest-deep green slime</label>
+    <description>Green slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -163,8 +163,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Brim</defName>
-    <label>brimming channel, green slime</label>
-    <description>A channel filled to its brim with green slime. Depth captures, fill does not.</description>
+    <label>deep green slime</label>
+    <description>Green slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -185,8 +185,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeGreen_Superdeep</defName>
-    <label>flooded excavation, green slime</label>
-    <description>A superdeep excavation holding green slime. Whatever falls in is held there.</description>
+    <label>very deep green slime</label>
+    <description>Green slime filling a very deep pit. Whatever falls in is held there, and the green slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -207,8 +207,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Trace</defName>
-    <label>shallow channel, white slime</label>
-    <description>A channel carrying a trace of white slime — already thick enough to cling.</description>
+    <label>shallow white slime</label>
+    <description>White slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
     <pathCost>100</pathCost>
     <temporary>true</temporary>
@@ -227,8 +227,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Half</defName>
-    <label>half-full channel, white slime</label>
-    <description>A channel filling with white slime to about half its depth.</description>
+    <label>chest-deep white slime</label>
+    <description>White slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -250,8 +250,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Brim</defName>
-    <label>brimming channel, white slime</label>
-    <description>A channel filled to its brim with white slime. Depth captures, fill does not.</description>
+    <label>deep white slime</label>
+    <description>White slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -273,8 +273,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeWhite_Superdeep</defName>
-    <label>flooded excavation, white slime</label>
-    <description>A superdeep excavation holding white slime. Whatever falls in is held there.</description>
+    <label>very deep white slime</label>
+    <description>White slime filling a very deep pit. Whatever falls in is held there, and the white slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -296,8 +296,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Trace</defName>
-    <label>shallow channel, yellow slime</label>
-    <description>A channel carrying a trace of yellow slime — already thick enough to cling.</description>
+    <label>shallow yellow slime</label>
+    <description>Yellow slime standing ankle-to-knee deep. Wading it is easy. Thick enough to cling.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
     <pathCost>100</pathCost>
     <temporary>true</temporary>
@@ -315,8 +315,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Half</defName>
-    <label>half-full channel, yellow slime</label>
-    <description>A channel filling with yellow slime to about half its depth.</description>
+    <label>chest-deep yellow slime</label>
+    <description>Yellow slime standing chest-deep. Wading it is slow work. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -337,8 +337,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Brim</defName>
-    <label>brimming channel, yellow slime</label>
-    <description>A channel filled to its brim with yellow slime. Depth captures, fill does not.</description>
+    <label>deep yellow slime</label>
+    <description>Yellow slime standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -359,8 +359,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_SlimeYellow_Superdeep</defName>
-    <label>flooded excavation, yellow slime</label>
-    <description>A superdeep excavation holding yellow slime. Whatever falls in is held there.</description>
+    <label>very deep yellow slime</label>
+    <description>Yellow slime filling a very deep pit. Whatever falls in is held there, and the yellow slime goes to work on it. Thick enough to cling.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>

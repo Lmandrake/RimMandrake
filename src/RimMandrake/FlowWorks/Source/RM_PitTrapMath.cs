@@ -360,5 +360,23 @@ namespace RimMandrake.FlowWorks
 			}
 			return isSluice && sluiceRule && !playerFaction && (humanlike || requiredWidth > 1);
 		}
+
+		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 9 (owner, 2026-10-06: <i>"people stuck inside a pit do NOT walk
+		/// slowly... they walk at normal speed. Only when they are climbing in or out do they move slowly. Falling into a
+		/// pit is FAST. Walking around within the pit is normal."</i>). The terrain base cost of one step between two
+		/// DRY cells: 0 (normal walking) between equal depths, 0 for a drop INTO a superdeep cell (a fall), otherwise
+		/// <paramref name="climbCost"/> (the deeper cell's dry path cost: climbing in or out, ladder included).</summary>
+		public static int DryStepBaseCost(int fromDepth, int toDepth, int climbCost)
+		{
+			if (fromDepth == toDepth)
+			{
+				return 0;
+			}
+			if (toDepth >= Superdeep && toDepth > fromDepth)
+			{
+				return 0;
+			}
+			return climbCost < 0 ? 0 : climbCost;
+		}
 	}
 }

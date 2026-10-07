@@ -22,7 +22,7 @@
 
   <TerrainDef ParentName="WaterShallowBase">
     <defName>RM_TarShallow</defName>
-    <label>tar pit</label>
+    <label>shallow tar</label>
     <description>Black and patient. It does not drown you so much as keep you.</description>
     <renderPrecedence>394</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
@@ -51,7 +51,7 @@
 
   <TerrainDef ParentName="WaterDeepBase">
     <defName>RM_TarDeep</defName>
-    <label>tar pit, deep</label>
+    <label>deep tar</label>
     <description>Black and patient. It does not drown you so much as keep you.</description>
     <renderPrecedence>395</renderPrecedence>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>

@@ -1170,6 +1170,74 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(foot <= 0.7f, "face soot never black");
             });
 
+            // owner 2026-10-06: "Scorched dirt and stone doesn't look like anything at all, it needs blast marks and blackened bits."
+            Case("Scorch_has_blast_marks_and_black_patches", () =>
+            {
+                Assert(RM_WallFaceMath.BlackPatchAlpha(1f, 0.9f) >= 0.85f, "a high-noise patch is near black");
+                AssertClose(RM_WallFaceMath.BlackPatchAlpha(1f, 0.3f), 0f, "low noise: no black (bits, not a black floor)");
+                AssertClose(RM_WallFaceMath.BlackPatchAlpha(0f, 0.9f), 0f, "no scorch, no black");
+                Assert(RM_WallFaceMath.BlastCoreAlpha(1f) >= 0.9f, "a blast mark's core is near black at full scorch");
+                Assert(RM_WallFaceMath.FloorCharAlpha(1f, 0.5f, 0.8f) >= 0.55f, "the char layer itself is visible, not faint");
+                int floors = 0, rims = 0;
+                for (int x = 0; x < 40; x++)
+                    for (int z = 0; z < 40; z++)
+                    {
+                        if (RM_WallFaceMath.HasFloorBlast(x, z)) floors++;
+                        if (RM_WallFaceMath.HasRimBlast(x, z)) rims++;
+                    }
+                Assert(floors > 900 && floors < 1250, "about two dug cells in three carry a floor blast: " + floors);
+                Assert(rims > 650 && rims < 950, "about one rim cell in two carries a splash: " + rims);
+                bool longer = true;
+                for (int seed = 0; seed < 50; seed++)
+                    for (int i = 0; i < 24; i += 2)
+                    {
+                        float l = RM_WallFaceMath.BlastRayLength(i, 24, seed), sh = RM_WallFaceMath.BlastRayLength(i + 1, 24, seed);
+                        if (!(l >= 0.75f && l <= 1f && sh >= 0.3f && sh <= 0.55f && l > sh)) longer = false;
+                    }
+                Assert(longer, "starburst: long and short spikes alternate inside their ranges");
+            });
+
+            // owner 2026-10-06: acid/slime/boiling bubble; bubbles scale with view and stay bounded
+            Case("Liquid_bubbles_rate", () =>
+            {
+                Assert(RM_LiquidLookMath.BubblesThisTick(0f, 1f, 600, 0f) == 0, "a liquid without bubbles never bubbles");
+                Assert(RM_LiquidLookMath.BubblesThisTick(0.9f, 0f, 600, 0f) == 0, "density 0 = none");
+                // 0.9/cell/s over 600 cells = 9 per tick expected -> capped
+                Assert(RM_LiquidLookMath.BubblesThisTick(0.9f, 1f, 600, 0.99f) == RM_LiquidLookMath.MaxBubblesPerSample, "bounded per sample");
+                // 0.08/cell/s over 60 cells = 0.08 per tick: rolls
+                Assert(RM_LiquidLookMath.BubblesThisTick(0.08f, 1f, 60, 0.05f) == 1 && RM_LiquidLookMath.BubblesThisTick(0.08f, 1f, 60, 0.5f) == 0, "fraction is rolled");
+                double heavy = 0, light = 0;
+                for (int i = 0; i < 1000; i++)
+                {
+                    float r = i / 1000f;
+                    heavy += RM_LiquidLookMath.BubblesThisTick(0.9f, 1f, 20, r);
+                    light += RM_LiquidLookMath.BubblesThisTick(0.08f, 1f, 20, r);
+                }
+                Assert(heavy > light * 8, "boiling bubbles far more than slime: " + heavy + " vs " + light);
+            });
+
+            // owner 2026-10-06: "show the pit walls/floor beneath the translucent water"
+            Case("Liquid_see_through", () =>
+            {
+                AssertClose(RM_LiquidLookMath.FloorSeeThroughAlpha(0f, 2), 0f, "opaque liquid hides the floor");
+                AssertClose(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 0), 0f, "dry: nothing to see through");
+                Assert(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 1) > RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 3), "deeper hides more");
+                Assert(RM_LiquidLookMath.FloorSeeThroughAlpha(0.55f, 4) >= 0f, "never negative");
+                Assert(RM_LiquidLookMath.DrownedFaceAlpha(0.55f, 3, 1f) >= RM_LiquidLookMath.DrownedFaceAlpha(0.55f, 3, 0f), "face clearer toward the water line");
+            });
+
+            // owner 2026-10-06: "Only when they are climbing in or out do they move slowly. Falling into a pit is FAST.
+            // Walking around within the pit is normal."
+            Case("Pit_step_cost_walk_normal_climb_slow_fall_fast", () =>
+            {
+                for (int d = 1; d <= 4; d++) Assert(RM_PitTrapMath.DryStepBaseCost(d, d, 300) == 0, "same depth D" + d + " walks at normal speed");
+                Assert(RM_PitTrapMath.DryStepBaseCost(0, 1, 30) == 30, "climbing into a shallow pit is slow");
+                Assert(RM_PitTrapMath.DryStepBaseCost(3, 0, 80) == 80, "climbing out is slow");
+                Assert(RM_PitTrapMath.DryStepBaseCost(2, 3, 80) == 80, "a step down a level is a climb");
+                Assert(RM_PitTrapMath.DryStepBaseCost(0, 4, 300) == 0, "dropping into a superdeep pit is a fall: instant");
+                Assert(RM_PitTrapMath.DryStepBaseCost(4, 0, 300) == 300, "out of a superdeep pit (the ladder) is the slowest climb");
+            });
+
             Case("WallFace_mitre_and_measured_bevels", () =>
             {
                 AssertClose(RM_WallFaceMath.NorthFaceHeight(3), 0.35f, "D3 = the measured steel-wall bevel band");
