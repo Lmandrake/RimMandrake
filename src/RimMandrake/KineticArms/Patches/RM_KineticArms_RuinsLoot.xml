@@ -2,7 +2,8 @@
 <!-- Owner, card 2026-10-06 22:37 (typed): kinetic weapons are found "from the "Ancient Danger" type ruins". Adds one option to
      vanilla's MapGen_AncientTempleContents (the loot every ancient-danger temple rolls; read in RimSage 2026-10-06:
      root ThingSetMaker_Sum with chance-gated options). Chance 1 here: RM_ThingSetMaker_KineticRuins rolls the Mod Settings
-     chance itself (default 35%, PROVISIONAL) and picks only weapons whose toggle is on. -->
+     chance itself (default 35%, PROVISIONAL) and picks only weapons whose toggle is on,
+     by rarity tier (RM_KineticMath.RuinsWeights: grav-ram rarest). -->
 <Patch>
   <Operation Class="PatchOperationAdd">
     <xpath>Defs/ThingSetMakerDef[defName="MapGen_AncientTempleContents"]/root/options</xpath>
@@ -12,5 +13,48 @@
         <thingSetMaker Class="RimMandrake.KineticArms.RM_ThingSetMaker_KineticRuins" />
       </li>
     </value>
+  </Operation>
+  <!-- Ancient complexes (Ideology; every DLC assumed present, the Conditional is load safety only). Three vanilla
+       ThingSetMaker_RandomOption tables (read in RimSage 2026-10-07). RM_ThingSetMaker_KineticComplex always yields one
+       weapon when drawn, picked by the rarity tiers (grav-ram rarest); the "found in ancient complexes" setting removes it
+       from the draw. Weights PROVISIONAL. -->
+  <!-- room loot: as rare as spacer components -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingSetMakerDef[defName="MapGen_AncientComplexRoomLoot_Default"]/root/options</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingSetMakerDef[defName="MapGen_AncientComplexRoomLoot_Default"]/root/options</xpath>
+      <value>
+        <li>
+          <weight>0.15</weight>
+          <thingSetMaker Class="RimMandrake.KineticArms.RM_ThingSetMaker_KineticComplex" />
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- better room loot: same rarity -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingSetMakerDef[defName="MapGen_AncientComplexRoomLoot_Better"]/root/options</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingSetMakerDef[defName="MapGen_AncientComplexRoomLoot_Better"]/root/options</xpath>
+      <value>
+        <li>
+          <weight>0.15</weight>
+          <thingSetMaker Class="RimMandrake.KineticArms.RM_ThingSetMaker_KineticComplex" />
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <!-- security crates: a weapons cache, just under the archotech pool (0.5) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingSetMakerDef[defName="MapGen_AncientComplex_SecurityCrate"]/root/options</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingSetMakerDef[defName="MapGen_AncientComplex_SecurityCrate"]/root/options</xpath>
+      <value>
+        <li>
+          <weight>0.4</weight>
+          <thingSetMaker Class="RimMandrake.KineticArms.RM_ThingSetMaker_KineticComplex" />
+        </li>
+      </value>
+    </match>
   </Operation>
 </Patch>

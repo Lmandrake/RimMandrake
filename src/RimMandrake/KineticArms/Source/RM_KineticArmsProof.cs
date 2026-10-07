@@ -519,11 +519,15 @@ namespace RimMandrake.KineticArms
                             var gen = new List<string>();
                             for (int i = 0; i < 8; i++)
                             {
-                                Thing t = RM_ThingSetMaker_KineticRuins.Make(0f, (i + 0.5f) / 8f, 1f);
+                                Thing t = RM_ThingSetMaker_KineticRuins.Make(0f, RM_ThingSetMaker_KineticRuins.RollFor(i), 1f);
                                 gen.Add(t != null ? t.def.defName + "x" + t.stackCount : "none");
                             }
                             bool all8 = gen.Distinct().Count() == 8 && gen.Contains("RM_Shell_Thumpx12");
-                            return Result(sc, wired && hit != null && miss == null && off == null && all8, "wired=" + wired + " hit=" + (hit?.def.defName ?? "none")
+                            string[] cx = { "MapGen_AncientComplexRoomLoot_Default", "MapGen_AncientComplexRoomLoot_Better", "MapGen_AncientComplex_SecurityCrate" };
+                            bool complexes = cx.All(n => DefDatabase<ThingSetMakerDef>.GetNamedSilentFail(n)?.root is ThingSetMaker_RandomOption ro
+                                && ro.options.Any(o => o.thingSetMaker is RM_ThingSetMaker_KineticComplex));
+                            wired = wired && complexes;
+                            return Result(sc, wired && hit != null && miss == null && off == null && all8, "wired=" + wired + " complexes=" + complexes + " hit=" + (hit?.def.defName ?? "none")
                                 + " miss=" + (miss == null) + " offGivesNone=" + (off == null) + " picks=" + string.Join(",", gen));
                         };
                         return null;

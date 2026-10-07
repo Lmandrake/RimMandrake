@@ -18,7 +18,7 @@ namespace RimMandrake.KineticArms
     /// </summary>
     public class RM_ThingSetMaker_KineticRuins : ThingSetMaker
     {
-        private static List<bool> EnabledFlags(out List<ThingDef> defs)
+        internal static List<bool> EnabledFlags(out List<ThingDef> defs)
         {
             defs = new List<ThingDef>();
             var on = new List<bool>();
@@ -43,9 +43,16 @@ namespace RimMandrake.KineticArms
         /// <summary>The one roll that decides a temple's kinetic loot; public for the proof tool (fixed rolls).</summary>
         public static Thing Make(float roll1, float roll2, float roll3)
         {
-            List<bool> on = EnabledFlags(out List<ThingDef> defs);
             float chance = RimMandrakeKineticArmsSettings.foundInRuins ? RimMandrakeKineticArmsSettings.ruinsChancePercent / 100f : 0f;
-            int i = RM_KineticMath.PickRuins(on, chance, roll1, roll2);
+            return MakeWith(chance, roll1, roll2, roll3);
+        }
+
+        /// <summary>Gate on <paramref name="chance"/>, pick by rarity tier (RM_KineticMath.RuinsWeights, grav-ram rarest)
+        /// among the toggled-on weapons, stack shells, roll quality.</summary>
+        public static Thing MakeWith(float chance, float roll1, float roll2, float roll3)
+        {
+            List<bool> on = EnabledFlags(out List<ThingDef> defs);
+            int i = RM_KineticMath.PickRuins(on, RM_KineticMath.RuinsWeights, chance, roll1, roll2);
             if (i < 0)
             {
                 return null;
@@ -55,6 +62,13 @@ namespace RimMandrake.KineticArms
             t.stackCount = Mathf.Min(td.stackLimit, RM_KineticMath.RuinsStack(td.stackLimit > 1, roll3));
             ThingSetMakerUtility.AssignQuality(t, QualityGenerator.Reward);
             return t;
+        }
+
+        /// <summary>Proof helper: the roll2 that picks weapon <paramref name="index"/> under the current toggles, or -1.</summary>
+        public static float RollFor(int index)
+        {
+            List<bool> on = EnabledFlags(out _);
+            return RM_KineticMath.RuinsRollFor(on, RM_KineticMath.RuinsWeights, index);
         }
 
         protected override void Generate(ThingSetMakerParams parms, List<Thing> outThings)
@@ -69,6 +83,45 @@ namespace RimMandrake.KineticArms
         protected override IEnumerable<ThingDef> AllGeneratableThingsDebugSub(ThingSetMakerParams parms)
         {
             EnabledFlags(out List<ThingDef> defs);
+            foreach (ThingDef d in defs)
+            {
+                if (d != null)
+                {
+                    yield return d;
+                }
+            }
+        }
+    }
+
+    /// <summary>Ancient complexes (Ideology; every DLC is assumed present). One weighted option in vanilla's
+    /// MapGen_AncientComplexRoomLoot_Default/_Better (room loot, weight 0.15 = spacer-component rare) and
+    /// MapGen_AncientComplex_SecurityCrate (weight 0.4, beside the archotech pool's 0.5), all ThingSetMaker_RandomOption
+    /// (read in RimSage 2026-10-07): when this option is chosen it always yields one weapon, picked by the same rarity
+    /// tiers. The RandomOption parent skips it when CanGenerate is false, so "off" just removes it from the draw.
+    /// Toggle: "Kinetic weapons are found in ancient complexes" (default on).</summary>
+    public class RM_ThingSetMaker_KineticComplex : ThingSetMaker
+    {
+        protected override bool CanGenerateSub(ThingSetMakerParams parms)
+        {
+            if (!RimMandrakeKineticArmsSettings.foundInComplexes)
+            {
+                return false;
+            }
+            return RM_ThingSetMaker_KineticRuins.EnabledFlags(out _).Contains(true);
+        }
+
+        protected override void Generate(ThingSetMakerParams parms, List<Thing> outThings)
+        {
+            Thing t = RM_ThingSetMaker_KineticRuins.MakeWith(1f, 0f, Rand.Value, Rand.Value);
+            if (t != null)
+            {
+                outThings.Add(t);
+            }
+        }
+
+        protected override IEnumerable<ThingDef> AllGeneratableThingsDebugSub(ThingSetMakerParams parms)
+        {
+            RM_ThingSetMaker_KineticRuins.EnabledFlags(out List<ThingDef> defs);
             foreach (ThingDef d in defs)
             {
                 if (d != null)
