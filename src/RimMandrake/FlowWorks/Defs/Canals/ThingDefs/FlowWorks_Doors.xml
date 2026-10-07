@@ -7,7 +7,7 @@
        pawn held in a superdeep pit; the sluice gives way to people and big creatures
        (Building_RM_FlowDoor / RM_PitTrapMath.FlowDoorOpens). Light affordance and NOT the stuff's,
        so a stone or steel gate still stands in a dug channel (channels offer Light only).
-       RM_SecurityGrateDoor draws its own grate art (artpipe fwart_RM_SecurityGrateDoor); the other door here still uses the vanilla simple-door mover. -->
+       RM_SecurityGrateDoor draws its own grate art (artpipe fwart_RM_SecurityGrateDoor); RM_Sluice draws its own art (fwart_RM_Sluice). -->
   <ThingDef ParentName="DoorBase">
     <defName>RM_Sluice</defName>
     <label>sluice</label>
@@ -18,13 +18,13 @@
       <MaxHitPoints>100</MaxHitPoints>
     </statBases>
     <graphicData>
-      <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+      <texPath>Things/Building/FlowWorks/Canals/RM_Sluice</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <damageData>
         <enabled>false</enabled>
       </damageData>
     </graphicData>
-    <uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+    <uiIconPath>Things/Building/FlowWorks/Canals/RM_Sluice</uiIconPath>
     <costStuffCount>15</costStuffCount>
     <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>

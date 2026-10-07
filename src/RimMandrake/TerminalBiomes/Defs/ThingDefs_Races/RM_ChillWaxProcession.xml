@@ -71,7 +71,7 @@
     <label>dead filter sheet</label>
     <description>A pale wax plate shed by a hesuun colony once it has strained all it can from the fuel snow. Inert and clean, it is a refinery input that crews haul back from the file's pauses. Left on the floor it crazes and flakes away.</description>
     <graphicData>
-      <texPath>Things/Plant/RM_Pitchpearl/RM_Pitchpearl</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_DeadFilterSheet</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.9</drawSize>
     </graphicData>

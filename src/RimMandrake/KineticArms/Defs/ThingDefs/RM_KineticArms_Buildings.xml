@@ -134,6 +134,7 @@
     <drawerType>MapMeshAndRealTime</drawerType>
     <drawHighlight>true</drawHighlight>
     <drawHighlightOnlyForHostile>true</drawHighlightOnlyForHostile>
+    <uiIconPath>Things/Building/Security/KineticArms/RM_PulseCannon_Icon</uiIconPath>
     <graphicData>
       <texPath>Things/Building/Security/KineticArms/RM_PulseCannon_Base</texPath>
       <graphicClass>Graphic_Single</graphicClass>
