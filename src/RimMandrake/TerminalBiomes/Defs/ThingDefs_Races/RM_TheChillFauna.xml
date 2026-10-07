@@ -106,21 +106,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Heemin/RM_Heemin</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.25</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Heemin/RM_Heemin</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Heemin/RM_Heemin</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
       </li>
@@ -283,21 +283,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Hoolen/RM_Hoolen</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.25</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Hoolen/RM_Hoolen</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Hoolen/RM_Hoolen</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
       </li>

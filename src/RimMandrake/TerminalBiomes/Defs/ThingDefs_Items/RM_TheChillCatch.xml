@@ -19,7 +19,7 @@
     <label>heemin</label>
     <description>A near-transparent sliver hauled off the Chill's top layer, aurora colours still faintly refracting through it before it stiffens in the cold.</description>
     <graphicData>
-      <texPath>Things/Pawn/Animal/RM_Heemin/RM_Heemin</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_HeeminCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -161,7 +161,7 @@
     <label>iliss</label>
     <description>A wire-thin eel the length of a forearm, black, with a spine of conductive mineral that the auroral ground currents run through — it lives along the bed of the lake where the electrojet's currents cross, and on a reconnection night the whole floor of a bay hums with them. It hunts nothing; it feeds on the charge, or on what the charge kills. Landed on a wet line it bites with a shock that has knocked scrapers down. Cooked, it is a good oily eel. Raw, it is still live in a sense that matters.</description>
     <graphicData>
-      <texPath>Things/Pawn/Animal/RM_Iliss/RM_Iliss</texPath>
+      <texPath>Things/Item/RM_TheChill/RM_IlissCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
