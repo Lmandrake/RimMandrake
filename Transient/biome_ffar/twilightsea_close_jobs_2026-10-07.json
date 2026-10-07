@@ -1,0 +1,118 @@
+[
+ {
+  "id": "twilightsea_hollu_redo_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Hollu",
+  "owner_note": "No. The existing (B) render should be made into its own new creature: The Dancing Skresh, new description. But this Hollu is supposed to be a section of almost stained glass-like waveglass, the beautifully colored transparent organism that covers much of the topside ocean. It is a curved-in piece of this sheet in its final life stage.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"No. The existing (B) render should be made into its own new creature: The Dancing Skresh, new description. But this Hollu is supposed to be a section of almost stained glass-like waveglass, the beautifully colored transparent organism that covers much of the topside ocean. It is a curved-in piece of this sheet in its final life stage.\" RimWorld creature sprite, painterly: the hollu of the Twilight Sea, in its final life stage \u2014 a curved-in, cupped section of waveglass, the beautifully coloured transparent organism that lids the sea's surface like a ceiling of living stained glass. It is a fallen bell-shaped curl of that sheet: panes of translucent jewel colour (blue-green, gold, rose, violet) set in thin darker veins like leading in a church window, curved inward on itself, a few short stinging fringes at the rim. No face, no eyes, no legs; it pulses and drifts. Our own original design; no recognisable Earth jellyfish. One whole organism, centred.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.46,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 8,
+  "biome_register": "twilight sea floor register: hypersaline sea under a ceiling of living stained-glass waveglass; dim blue-green light with gold and violet glints filtering down; must read against dark blue-grey sediment through value and rim"
+ },
+ {
+  "id": "twilightsea_hollucatch_redo_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_HolluCatch",
+  "owner_note": "See related notes above.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"See related notes above.\" Catch item sprite, side-on, single image: a netted hollu \u2014 a curved-in cupped section of waveglass, the transparent stained-glass-like organism of the Twilight Sea, jewel-coloured translucent panes (blue-green, gold, rose, violet) in thin dark veins, lying limp as a caught thing. Inferred from the owner's redo of the hollu creature row above it; must match that creature's redo.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.6,
+  "facings": [
+   "east"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 8,
+  "biome_register": "twilight sea floor register: hypersaline sea under a ceiling of living stained-glass waveglass; dim blue-green light with gold and violet glints filtering down; must read against dark blue-grey sediment through value and rim"
+ },
+ {
+  "id": "twilightsea_lunoowa_redo_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Lunoowa",
+  "owner_note": "Supposed to be beautiful multihued waveglass-sheet-like object with trailing filaments, drifting like a bottom dweller... no legs.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Supposed to be beautiful multihued waveglass-sheet-like object with trailing filaments, drifting like a bottom dweller... no legs.\" RimWorld creature sprite, painterly: the lunoowa, a drifting detritivore of the Twilight Sea floor. A beautiful multi-hued ragged sheet like a shed pane of waveglass \u2014 translucent stained-glass colour, blue-green and gold-veined with violet and rose panes \u2014 trailing long fine filaments from its lower edge, settling over the bottom like a bottom dweller. NO legs, no limbs, no face; it reads as a falling pane until it moves. Our own original design. One whole organism, centred.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.35,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 8,
+  "biome_register": "twilight sea floor register: hypersaline sea under a ceiling of living stained-glass waveglass; dim blue-green light with gold and violet glints filtering down; must read against dark blue-grey sediment through value and rim"
+ },
+ {
+  "id": "twilightsea_noothelm_redo_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_NoothelmPlant",
+  "owner_note": "Needs to look like seaweed growing a single golden bulb. But keep art (b) for a new plant in the Sump. It's pretty. Make something new with Star Wars cuisine implications.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Needs to look like seaweed growing a single golden bulb. But keep art (b) for a new plant in the Sump. It's pretty. Make something new with Star Wars cuisine implications.\" RimWorld plant sprite, painterly: the noothelm, a sea-floor plant of the Twilight Sea. It looks like seaweed \u2014 a cluster of long ribbon-like olive and brown-green kelp fronds rising from a holdfast \u2014 growing a single golden bulb at its crown, glowing faintly warm. One plant, whole, centred, base at the bottom of the canvas.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.2,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 8,
+  "biome_register": "twilight sea floor register: hypersaline sea under a ceiling of living stained-glass waveglass; dim blue-green light with gold and violet glints filtering down; must read against dark blue-grey sediment through value and rim"
+ },
+ {
+  "id": "twilightsea_faa_canon_redo_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Faa",
+  "owner_note": "Follow canon closely. However, existing fish images can be remade into a new fish: Scaa Lumsigh for fishing in the Greentide rivers. Move this image to that fishing source, then regen Faa scalefish according to canon",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow canon closely. However, existing fish images can be remade into a new fish: Scaa Lumsigh for fishing in the Greentide rivers. Move this image to that fishing source, then regen Faa scalefish according to canon\" RimWorld creature sprite, painterly, following Star Wars canon closely (design/RimStarWars/canon_references/faascalefish): the faa scalefish of Naboo. Huge deep head and forward-heavy body tapering to a thin stalk tail ending in a large fan/paddle tail with radiating dark ribs; large downturned thick-lipped mouth set low with small needle teeth; a very large concentric-ringed eye raised high on the head on a turret; graduated orange body, paler cream-peach belly and tail, vertical blue-violet stripes and blue speckle behind the eye; small round pectoral fins low on the cheek; low crest along the top of the head; small blue spikes on brow and chin. One fish, whole body, centred.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 8,
+  "biome_register": "twilight sea floor register: hypersaline sea under a ceiling of living stained-glass waveglass; dim blue-green light with gold and violet glints filtering down; must read against dark blue-grey sediment through value and rim"
+ },
+ {
+  "id": "twilightsea_mee_canon_redo_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Mee",
+  "owner_note": "Again, move this fish art to the Greentide rivers as fishable, and redo this according to Canon carefully. ",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Again, move this fish art to the Greentide rivers as fishable, and redo this according to Canon carefully. \" RimWorld creature sprite, painterly, following Star Wars canon carefully (design/RimStarWars/canon_references/meescalefish): the mee scalefish of Naboo. Tall flat diamond/angelfish-like disc body, rounded front, deeply forked tail with two long wispy blue-tipped streamers; golden-yellow body with 3-4 broad dark brown diagonal bars and hexagonal scale texture; ONE very long thin dark needle spine running straight back along the centreline from behind the gill to well past the tail, longer than the body; blunt vertical face, tiny downturned mouth with thick lower lip, red-ringed yellow eye, thin blue-cream whisker filaments across the cheek. Palm-sized school fish. One fish, whole body, centred.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 8,
+  "biome_register": "twilight sea floor register: hypersaline sea under a ceiling of living stained-glass waveglass; dim blue-green light with gold and violet glints filtering down; must read against dark blue-grey sediment through value and rim"
+ }
+]

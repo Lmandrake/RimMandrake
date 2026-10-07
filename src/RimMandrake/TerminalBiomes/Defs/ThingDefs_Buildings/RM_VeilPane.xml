@@ -28,9 +28,8 @@
   reads as full value, and nothing about a just-landed pane is degraded —
   unlike a wreck that has sat cooking in the shallows.
 
-  PLACEHOLDER ART: Things/Building/Exotic/ShipChunk (vanilla, confirmed
-  present), tinted waveglass blue-green — same convention as
-  RM_VeilFallIncoming.xml's own header. Positive Beauty (translucent glass
+  Art: artpipe RM_VeilPane_v2 (Things/Building/RM_VeilPane/), collected
+  2026-10-07. Positive Beauty (translucent glass
   underfoot), unlike ShipChunk's own -20: D8(a) calls a deck under this "the
   most beautiful thing that can happen to a spacecraft."
   ============================================================================
@@ -42,7 +41,7 @@
     <label>fallen waveglass pane</label>
     <description>A whole sheet of the lid, come down entire and settled on the floor — still catching whatever light reaches this deep, still faintly warm from the fall. It will not move again on its own, and it is worth going to: harvest it before something else does.</description>
     <graphicData>
-      <texPath>Things/Building/Exotic/ShipChunk</texPath>
+      <texPath>Things/Building/RM_VeilPane</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>(3,3)</drawSize>

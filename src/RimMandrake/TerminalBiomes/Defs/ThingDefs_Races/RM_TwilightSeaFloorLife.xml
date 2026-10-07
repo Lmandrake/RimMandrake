@@ -290,9 +290,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.04</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.27</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.35</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.27</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.35</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -464,6 +464,62 @@
       <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.28</drawSize></bodyGraphicData></li>
       <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.36</drawSize></bodyGraphicData></li>
       <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.46</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_DancingSkresh
+       New creature, owner, Twilight Sea sheet 2026-10-07: "The existing (B) render should be
+       made into its own new creature: The Dancing Skresh, new description." The art is the
+       former hollu v2 render (twilightsea_hollu_v2). Floor resident only, no catch row: he
+       asked for a creature, not a fishable. Stats copied from the hollu it was drawn as. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_DancingSkresh</defName>
+    <label>dancing skresh</label>
+    <description>A gold-amber bell that never settles. Where the hollu falls and lies still, the skresh keeps itself aloft in the dim water a body-height above the floor, its long frilled skirts turning and flaring in slow spirals as if to music nobody else can hear. Packs of them gather under the brightest panes of the waveglass and turn together. The frills sting, mildly; most things learn to let them dance.</description>
+    <statBases>
+      <MoveSpeed>0.8</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>sting</label>
+        <capacities><li>Stab</li></capacities>
+        <power>4</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.18</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.25</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_DancingSkresh</defName>
+    <label>dancing skresh</label>
+    <race>RM_DancingSkresh</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>2~6</wildGroupSize>
+    <ecoSystemWeight>0.08</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_DancingSkresh/RM_DancingSkresh</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_DancingSkresh/RM_DancingSkresh</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_DancingSkresh/RM_DancingSkresh</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 

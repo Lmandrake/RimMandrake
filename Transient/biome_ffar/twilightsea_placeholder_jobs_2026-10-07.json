@@ -1,0 +1,19 @@
+[
+ {
+  "id": "twilightsea_lampblack_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RUT_LampBlack",
+  "prompt": "RimWorld resource item sprite, painterly: lamp-black, thick lightfast ink pressed from a kellu squid's ink sac in the Twilight Sea \u2014 a small stoppered glass vial or waxed-gut pouch of glossy pitch-black ink, a little sheen of deep blue at the highlights, a smear of ink on the stopper. One item, centred.",
+  "style_notes": "Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props, no baked shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 0.8,
+  "facings": [
+   "east"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 5,
+  "biome_register": "twilight sea register: dim blue-green light under living stained-glass waveglass; must read against dark sediment through value and rim"
+ }
+]

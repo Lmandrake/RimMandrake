@@ -99,19 +99,20 @@
   </ThingDef>
 
   <!-- ==================================================================
-       THE BLADE — Twilight variant, "one black sail on a white pan."
-       Distinct def from RM_SaltBladeGrey per the roster's endemism note.
+       THE SALT-RIMED BLADE — cast in the GREY SEA, not the Twilight (owner,
+       Twilight Sea sheet 2026-10-07: move it there, description less
+       solitary). Distinct def from RM_SaltBladeGrey; defName kept.
        ================================================================== -->
   <ThingDef ParentName="RM_TwilightFloorFloraBase">
     <defName>RM_SaltBladeTwilight</defName>
     <label>salt-rimed blade</label>
-    <description>One black sail standing alone on a white floor, dark almost to nothing at the core and rimed white at the edge where a lifetime of excreted salt has built up and flaked away and built up again. It is the only vertical thing in whatever direction you are facing when you find one, and the next is far enough off that the murk takes it before it takes the shape of another blade.</description>
+    <description>A black sail standing among the crowd of the Grey Sea floor, dark almost to nothing at the core and rimed white at the edge where a lifetime of excreted salt has built up and flaked away and built up again. Stands of them lean together between the crystal monuments, grazers working the salt at their feet and smaller things sheltering in their lee; a diver learns to read the brine current from the way a whole row of blades bends at once.</description>
     <statBases>
       <MaxHitPoints>220</MaxHitPoints>
       <Beauty>8</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_GreySea/RM_SaltBladeTwilight</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <colorTwo>(232,232,228)</colorTwo>
       <drawSize>(1.4,1.4)</drawSize>

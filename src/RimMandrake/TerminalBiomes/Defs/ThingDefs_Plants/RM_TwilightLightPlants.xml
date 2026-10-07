@@ -60,7 +60,7 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_HoolimbrePlant</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <colorTwo>(120,190,150)</colorTwo>
       <drawSize>(1.1,1.1)</drawSize>

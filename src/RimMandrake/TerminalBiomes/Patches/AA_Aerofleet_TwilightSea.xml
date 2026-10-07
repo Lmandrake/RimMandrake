@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    AA_Aerofleet (Alpha Animals), cast in the Twilight and Grey Seas, drawn with our own render
+    (owner, Twilight Sea sheet 2026-10-07, column B: artpipe job gapall_AA_Aerofleet_v1, east/north/south).
+    Our sprites live at Things/Pawn/Animal/AA_Aerofleet_TwilightSea/ (a path the donor does not use).
+    The donor sets alternateGraphicChance 1 over three donor textures, which would always override the
+    body graphic, so the alternates are removed. Body graphic only, every life stage; desiccated stays
+    on donor art; drawSizes unchanged. This applies wherever the aerofleet is cast (it is one def).
+    Guarded with PatchOperationFindMod - MayRequire on an <Operation> is ignored by 1.6.
+  -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Alpha Animals</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/PawnKindDef[defName="AA_Aerofleet"]/alternateGraphics</xpath>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Aerofleet"]/alternateGraphicChance</xpath>
+          <value><alternateGraphicChance>0</alternateGraphicChance></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Aerofleet"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Aerofleet"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea</texPath></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="AA_Aerofleet"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
+          <value><texPath>Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea</texPath></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
