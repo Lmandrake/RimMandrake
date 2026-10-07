@@ -64,7 +64,12 @@ def shipped_defs():
                 for e in ET.parse(os.path.join(dp, f)).getroot():
                     n = e.findtext("defName")
                     if n and e.get("Abstract") != "True":
-                        out.append((e.tag.split(".")[-1], n))
+                        # The FULL tag, never e.tag.split(".")[-1]: jawa/get_defs resolves the type via
+                        # GenTypes.GetTypeInAnyAssembly(name / "RimWorld."+name / "Verse."+name), so a modded
+                        # def class needs its namespace. The short form read RM_DefAliasDef as "No def TYPE".
+                        # RULED OUT: RM_GreentideTierMoveAliases discarded / EnvironmentalHazards absent — the
+                        # bridge row says "No def TYPE named 'RM_DefAliasDef'" (type lookup), not a missing def.
+                        out.append((e.tag, n))
     return out
 
 
@@ -355,7 +360,11 @@ if Suite is not None:
     def _clear_hostiles(t):
         """Remove every hostile pawn on the map. LIVE run17 2026-10-03: two leftover Imperial labor droids (another
         suite's site/raid on the shared bland map) beat the test colonists mid-chain, and the colonist_damaged
-        surprise ended the mire and frenzy chains UNMEASURED. Not Greentide's mechanism; cleared, not asserted."""
+        surprise ended the mire and frenzy chains UNMEASURED. Not Greentide's mechanism; cleared, not asserted.
+        ⚠️ INERT as written: jawa/destroy_batch skips every Pawn even with categories="Pawn" (JawaBenchTerrainTools.cs
+        destroy_batch: `if (thing is Pawn ...) { skippedPawns++; continue; }`). LIVE 2026-10-07 every call here answered
+        "1 pawn(s) left alone" and the hostile Megascarab331787 left the escalation helper with Scratch/Stab.
+        Needs a real pawn-removal tool (JAWABENCH_DESTROY_PAWNS_1)."""
         r = t.bridge_call("jawa/list_pawns", limit=300) or {}
         for p in (r.get("pawns") or []) if isinstance(r, dict) else []:
             if p.get("hostile") and p.get("spawned") and p.get("x", -1) >= 0 and p.get("z", -1) >= 0:
@@ -497,15 +506,23 @@ if Suite is not None:
                                   waitTicks=0, timeoutSeconds=30)
                 if not (r or {}).get("accepted"):
                     _unmeasured(t, "ordered_job RM_FreeMired not accepted: %s" % str(r)[:160])
-                freed = False
+                # "Freed" = no longer STUCK (< 0.85), never "RM_Mired absent": the freed pawn still stands on
+                # churnmud, so RM_MapComponent_TerrainMire re-adds a fresh RM_Mired (HediffDef default
+                # initialSeverity 0.5) within 60 ticks and a 250-tick poll never sees the gap.
+                # RULED OUT: driver never removes the hediff — live 2026-10-07 run: stuck pawn 1.0 -> 0.524 at
+                # the first poll, then +0.032 per 250 ticks (4 checks x 0.008): a FRESH hediff, i.e. RemoveHediff ran.
+                # Alone, a stuck pawn drops only 0.008 on a 1.5% roll per check, so < 0.85 from >= 0.95 in 1500
+                # ticks cannot happen without the job: the predicate still discriminates.
+                freed, sev = False, None
                 for _ in range(6):
                     t.wait_ticks(250)
-                    if "RM_Mired" not in _hed(t, P["stuck"]):
+                    sev = _hed(t, P["stuck"]).get("RM_Mired", 0)
+                    if sev < 0.85:
                         freed = True
                         break
                 if not freed:
-                    _fail("RM_FreeMired was accepted but the stuck pawn still carries RM_Mired after 1500 ticks "
-                          "(240-tick job plus a walk of ~9 cells): read the helper's job before blaming the driver")
+                    _fail("RM_FreeMired was accepted but the stuck pawn is still stuck (RM_Mired %.3f >= 0.85) after 1500 "
+                          "ticks (240-tick job plus a walk of ~9 cells): read the helper's job before blaming the driver" % sev)
 
     # ----------------------------------------------------------------------- 4. the swallow
 
@@ -523,6 +540,11 @@ if Suite is not None:
                         _unmeasured(t, "SITE: Steel did not spawn at %d,%d" % (cx, cz))
         with _comp(t, "swallow_buries_on_churnmud_only", toggle="buriedCacheEnabled"):
             if _live(t):
+                # RULED OUT: the wait never advanced / swallowTicks changed — live 2026-10-07: _wait clocked
+                # 231133 -> 234333 (3200), swallowTicks still 2500. The real cause is MOD: MudSwallow.Scan skips
+                # `thing.ParentHolder != null`, but Thing.ParentHolder => holdingOwner?.Owner and SpawnSetup adds
+                # every spawned thing to map.spawnedThings (ThingOwner<Thing>(map)), so it is never null on a map
+                # (MUDSWALLOW_PARENTHOLDER_GUARD_1). This check is right; it stays red until the C# is fixed.
                 _wait(t, BURY_WAIT)
                 if _items(t, "Steel", "%d,%d,1,1" % P["mud"]):
                     _fail("Steel left %d ticks on %s was not swallowed (RM_MapComponent_MudSwallow dead, or swallowTicks changed)"
@@ -650,6 +672,17 @@ if Suite is not None:
         t.bridge_call("jawa/set_terrain_batch", ops="Soil:%d,%d,12,12;WaterShallow:%d,%d,12,2" % (x - 6, z - 6, x - 6, z + 2))
         t.bridge_call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % (x - 6, z - 6, 12, 12))
 
+        # CheckContact reads EVERY pawn on the vurrak's cell, and neither clear_area nor jawa/destroy_batch removes a
+        # pawn (destroy_batch skips `thing is Pawn` even with categories="Pawn"). LIVE 2026-10-07: the hare step
+        # returned "STRUCK Human331817" — a leftover mire-chain colonist that had wandered onto the anchor (seen at
+        # 125,125 in frenzy_dose), not the hare. So the three step cells are picked from bank cells NO pawn stands
+        # on; the chain never advances ticks, so nothing walks in before the step.
+        # RULED OUT: the hare (body 0.2) passing vurrakTriggerBodySize — the struck id is a Human, not the hare.
+        rows = (t.bridge_call("jawa/list_pawns", limit=300) or {}) if _live(t) else {}
+        busy = {(p.get("x"), p.get("z")) for p in (rows.get("pawns") or []) if isinstance(rows, dict)}
+        free = [(cx, z) for cx in range(x - 5, x + 6) if (cx, z) not in busy]
+        cells = free[0:len(free):max(1, len(free) // 3)][:3] if len(free) >= 3 else [(x - 3, z), (x, z), (x + 3, z)]
+
         def lay(cx, cz):
             r = _ok(t.bridge_call("jawa/spawn_pawn", kindDef="RM_Vurrak", x=cx, z=cz, faction="none", count=1), "spawn vurrak")
             return ((r.get("pawns") or [{}])[0]).get("id")
@@ -661,24 +694,24 @@ if Suite is not None:
 
         with _comp(t, "vurrak_bites_a_person", toggle="vurrakAmbushEnabled"):
             if _live(t):
-                lay(x - 3, z)
-                text = step(x - 3, z, "Colonist")
+                lay(*cells[0])
+                text = step(cells[0][0], cells[0][1], "Colonist")
                 print("[gt] vurrak colonist: %s" % text, file=sys.stderr, flush=True)
                 if not text.startswith("DISGUISED=True -> STRUCK"):
                     _fail("a colonist stepping on a flat vurrak on a bank cell was not bitten: %s" % text)
         with _comp(t, "vurrak_hare_only_reveals", toggle="vurrakAmbushEnabled"):
             if _live(t):
-                lay(x, z)
-                text = step(x, z, "Hare")
+                lay(*cells[1])
+                text = step(cells[1][0], cells[1][1], "Hare")
                 print("[gt] vurrak hare: %s" % text, file=sys.stderr, flush=True)
                 if not text.startswith("DISGUISED=True -> REVEALED"):
                     _fail("a hare (body 0.2) on a flat vurrak should reveal it without a bite: %s" % text)
         with _comp(t, "vurrak_toggle_off_refused", toggle="vurrakAmbushEnabled"):
             if _live(t):
-                lay(x + 3, z)
+                lay(*cells[2])
                 _put(t, "vurrakAmbushEnabled", False)
                 try:
-                    text = step(x + 3, z, "Colonist")
+                    text = step(cells[2][0], cells[2][1], "Colonist")
                 finally:
                     _put(t, "vurrakAmbushEnabled", True)
                 if not text.startswith("REFUSED"):
