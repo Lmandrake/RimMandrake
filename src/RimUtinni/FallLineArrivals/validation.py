@@ -95,10 +95,14 @@ def gate(t):
             raise ExpectationFailed("onlyOnFallLine ON on a quicktest map, but RUT_LabRatFalls can fire")
     with t.component("anywhere_allows", toggle="onlyOnFallLine"):
         t.set_setting(SETTINGS_TYPE, {"onlyOnFallLine": False})
+        # IncidentWorker.CanFireNow caches its result per TicksGame (lastCheckCanRunTick); the game is paused, so
+        # the refusal read just above would be returned again. Advance a tick so the new setting is actually asked.
+        t.wait_ticks(2)
         if _dry(t, "RUT_FallArrival") is not True:
             raise ExpectationFailed("onlyOnFallLine OFF but RUT_FallArrival cannot fire (no skyfaller cell?)")
     with t.component("wrecks_toggle_off_refuses", toggle="wreckFallsEnabled"):
         t.set_setting(SETTINGS_TYPE, {"wreckFallsEnabled": False})
+        t.wait_ticks(2)                                    # CanFireNow is cached per tick (see anywhere_allows)
         off = _dry(t, "RUT_FallArrival")
         t.set_setting(SETTINGS_TYPE, {"wreckFallsEnabled": True})
         if off is not False:

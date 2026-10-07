@@ -328,7 +328,10 @@ def _setting(t, action, field, value=None):
 
 
 def _def_field(t, defpath, field):
-    r = t.bridge_call("jawa/get_defs", defs=defpath, fields=field, limit=2)
+    # deep=True is required for list fields: the default returns each non-scalar list item as its bare type name
+    # (MEASURED live 2026-10-07: costList / stages / comps all read ['ThingDefCountClass', ...] before AND after a
+    # rewrite, so every list-valued drive failed on a read that could not see values).
+    r = t.bridge_call("jawa/get_defs", defs=defpath, fields=field, limit=2, deep=True)
     rows = (r or {}).get("defs") or [] if isinstance(r, dict) else []
     if not isinstance(r, dict) or r.get("success") is False or not rows:
         return None, r

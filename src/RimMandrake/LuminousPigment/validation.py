@@ -646,7 +646,10 @@ def _designation(t, defname):
     v = row.get("designationCategory", "(absent)")
     if _live(t) and v == "(no such field)":
         _unmeasured(t, "get_defs cannot read ThingDef.designationCategory")
-    return None if v in (None, "null", "None", "") else v
+    # MEASURED live 2026-10-07: jawa/get_defs OMITS a null field from `fields` (a requested field whose value is null
+    # comes back as an empty dict), so a nulled designationCategory reads "(absent)" here. A typo'd field name is
+    # different -- it answers "(no such field)", handled above as UNMEASURED.
+    return None if v in (None, "null", "None", "", "(absent)") else v
 
 
 @suite.chain("settings_apply")
