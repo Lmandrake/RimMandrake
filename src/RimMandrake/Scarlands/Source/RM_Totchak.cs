@@ -83,10 +83,11 @@ namespace RimMandrake.Scarlands
         }
     }
 
-    [StaticConstructorOnStartup]
+    // RM_ChotrixPatches already runs PatchAll over this whole assembly. A second PatchAll under another Harmony id
+    // applied every [HarmonyPatch] twice (Harmony dedupes only per owner): the glower damage prefix compounded to
+    // x0.25 and the screened inspect line printed twice.
     public static class RM_TotchakPatches
     {
-        static RM_TotchakPatches() { new Harmony("mandrake.rm.warscar.totchak").PatchAll(typeof(RM_TotchakPatches).Assembly); }
     }
 
     [HarmonyPatch(typeof(Mineable), "DestroyMined")]

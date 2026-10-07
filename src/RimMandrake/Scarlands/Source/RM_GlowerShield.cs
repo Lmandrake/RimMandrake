@@ -24,15 +24,23 @@ namespace RimMandrake.Scarlands
         static readonly List<RM_CompGlowerShield> live = new List<RM_CompGlowerShield>();
         public RM_CompProperties_GlowerShield Props => (RM_CompProperties_GlowerShield)props;
 
+        // Thing.Map is Find.Maps[index]: a panel left registered by a previous game would alias onto the new game's
+        // map at the same index. Compare the registered Map reference instead, and prune stale entries on spawn.
+        private Map registeredMap;
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            live.RemoveAll(s => s == null || s.registeredMap == null || !Find.Maps.Contains(s.registeredMap)
+                || !s.parent.Spawned || s.parent.Map != s.registeredMap);
+            registeredMap = parent.Map;
             if (!live.Contains(this)) live.Add(this);
         }
 
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
             live.Remove(this);
+            registeredMap = null;
             base.PostDeSpawn(map, mode);
         }
 
@@ -47,7 +55,7 @@ namespace RimMandrake.Scarlands
             for (int i = 0; i < live.Count; i++)
             {
                 RM_CompGlowerShield c = live[i];
-                if (c.parent?.Spawned != true || c.parent.Map != p.Map) continue;
+                if (c.parent?.Spawned != true || c.registeredMap != p.Map) continue;
                 if (c.parent.GetRoom() != room) continue;
                 if (best == null || c.Props.resistanceOffset > best.Props.resistanceOffset) best = c;
             }
