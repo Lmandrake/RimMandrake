@@ -273,6 +273,10 @@
         <shadowStrength>1</shadowStrength>
       </li>
     </modExtensions>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_Stillsand</li>
+    </extraGenSteps>
   </BiomeDef>
 
 </Defs>

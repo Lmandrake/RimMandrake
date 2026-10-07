@@ -129,6 +129,7 @@
     <extraGenSteps>
       <li>RM_DurrgakSigns</li>
       <li>RM_AbyssRumorSites</li>
+      <li>RM_WreckField_Abyss</li>  <!-- SALVAGE_WRECKAGE_EVERYWHERE_1 -->
     </extraGenSteps>
     <modExtensions>
       <!-- ABYSS_HIDDEN_SHIP_PROBES_1: scouts that test a hidden gravship. Empty list = a vanilla light mech. The campaign layer patches its probe droids in here. -->

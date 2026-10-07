@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6: the Fever Wood wreck field, Moderate class (design §3d-i). Gate: settingsKey
+  "FeverWood". Weights PROVISIONAL. order 965: after terrain. Children: ../ThingDefs_Buildings/RM_FeverWoodWrecks.xml.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_FeverWood</defName>
+    <label>Fever Wood</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>FeverWood</settingsKey>
+      <densityClass>RM_WreckDensity_Moderate</densityClass>
+      <wrecks>
+        <RM_FeverWoodWreckHull>2</RM_FeverWoodWreckHull>
+        <RM_FeverWoodWreckCarapace>1</RM_FeverWoodWreckCarapace>
+      </wrecks>
+      <minSpacing>6</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

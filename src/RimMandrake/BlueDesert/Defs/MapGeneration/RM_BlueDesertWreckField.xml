@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6: the Blue Desert wreck field, Moderate class (design §3d-i). Gate: settingsKey
+  "BlueDesert". Weights PROVISIONAL. order 965: after terrain. Children: ../ThingDefs_Buildings/RM_BlueDesertWrecks.xml.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_BlueDesert</defName>
+    <label>Blue Desert</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>BlueDesert</settingsKey>
+      <densityClass>RM_WreckDensity_Moderate</densityClass>
+      <wrecks>
+        <RM_BlueDesertWreckHull>2</RM_BlueDesertWreckHull>
+        <RM_BlueDesertWreckFrame>1</RM_BlueDesertWreckFrame>
+      </wrecks>
+      <minSpacing>6</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

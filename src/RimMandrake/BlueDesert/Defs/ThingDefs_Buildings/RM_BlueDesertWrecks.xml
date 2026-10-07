@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6 (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3d-i, §4): Blue Desert wreck children, Moderate class, IceLocked weathering.
+  Source: the_blue_desert.md:176,221,251-252 (wreckage surfaced by the ablation line). The ablation incidents stay the main route; this is the static field. KNOWN GAP: the mineable ice jacket.
+  Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
+  Names and families are design §4's proposals; the biome's own sitting may move them.
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_BlueDesertWreckHull</defName>
+    <label>ice-locked hull</label>
+    <description>A hull section frozen into the blue ice where it fell. The cold kept the metal; the meltwater took a little. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_IceLocked</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Frame">
+    <defName>RM_BlueDesertWreckFrame</defName>
+    <label>ice-locked frame</label>
+    <description>Ribs of a fallen craft standing out of the ice, rimed and brittle. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_IceLocked</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6 (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3d-i, §4): Miasma wreck children, Moderate class, Brined weathering.
+  Source: the_miasma.md:197 (the driftwood-and-salvage beach). Post-surge delivery is a separate trigger on RM_WreckFall (design §3e), not built.
+  Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
+  Names and families are design §4's proposals; the biome's own sitting may move them.
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Frame">
+    <defName>RM_MiasmaFlotsamFrame</defName>
+    <label>brined flotsam frame</label>
+    <description>A tangle of struts and framing thrown up by a surge, white with salt crust. The planet's driftwood. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Brined</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Tank">
+    <defName>RM_MiasmaFlotsamTank</defName>
+    <label>brined flotsam tank</label>
+    <description>A dented tank washed up on the flats, crusted with salt, its fittings eaten away. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Brined</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

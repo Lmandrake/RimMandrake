@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6: the Contagion wreck field, Eroded class (design §3d-i). Gate: settingsKey
+  "Contagion". Weights PROVISIONAL. order 965: after terrain. Children: ../ThingDefs_Buildings/RM_ContagionWrecks.xml.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_Contagion</defName>
+    <label>Contagion</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>Contagion</settingsKey>
+      <densityClass>RM_WreckDensity_Eroded</densityClass>
+      <wrecks>
+        <RM_ContagionWreckFragment>2</RM_ContagionWreckFragment>
+        <RM_ContagionShellFragment>1</RM_ContagionShellFragment>
+      </wrecks>
+      <minSpacing>6</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>
