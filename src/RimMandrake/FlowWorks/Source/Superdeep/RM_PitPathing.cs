@@ -335,9 +335,9 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			IntVec3 from = Traverse.Create(__instance).Field("startVec").GetValue<UnityEngine.Vector3>().ToIntVec3();
-			if (eng.IsSuperdeepExcavation(from))
+			if (RM_PitPathing.IsOpenPit(p.Map, eng, from))
 			{
-				return; // a hop along the pit floor is not a fall
+				return; // a hop along the pit floor is not a fall; a takeoff from a COVERED pit cell is (knockback design §10 #12)
 			}
 			RM_SuperdeepTrap.OnForcedDescent(p, p.Position, eng.SuperdeepTrap);
 		}

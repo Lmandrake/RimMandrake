@@ -138,6 +138,8 @@ namespace RimMandrake.FlowWorks
         // LADDER_PRISON_DOOR_1 (owner Q1 2026-10-02): a ladder is a prison door. Off = any ladder lets anyone out.
         public static bool ladderPrisonDoorEnabled = true;
         public static bool superdeepShootingRuleEnabled = true;
+        // Owner 2026-10-06 (Q5/Q9): a damaging or fire blast breaks any pit cover it reaches.
+        public static bool blastsBreakPitCovers = true;
         // SUPERDEEP_PRISON_ROOM_1 (LAW 2 exception [D]): an enclosed superdeep area is its own room;
         // capture down / convert down are done from the lip.
         public static bool superdeepRoomsEnabled = true;
@@ -342,6 +344,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref rainFillPerPulse, "rainFillPerPulse", 0.1f);
             // ── Phase 5 (see the block above; kept contiguous on purpose) ──
             Scribe_Values.Look(ref superdeepCaptureEnabled, "superdeepCaptureEnabled", true);
+            Scribe_Values.Look(ref blastsBreakPitCovers, "blastsBreakPitCovers", true);
             Scribe_Values.Look(ref superdeepCapturesOwnFaction, "superdeepCapturesOwnFaction", false);
             Scribe_Values.Look(ref ladderRequiredToExitEnabled, "ladderRequiredToExitEnabled", true);
             Scribe_Values.Look(ref ladderPrisonDoorEnabled, "ladderPrisonDoorEnabled", true);
@@ -637,6 +640,10 @@ namespace RimMandrake.FlowWorks
                 "Anyone who walks, is pushed or jumps into a superdeep cell takes a fall and, if the "
               + "pit is wide enough for them, cannot climb back out. They stay on the map, standing "
               + "on the pit floor. Off: a superdeep cell is just a very slow hole to cross.");
+
+            list.CheckboxLabeled("Blasts break pit covers", ref blastsBreakPitCovers,
+                "A bomb, grenade, mortar or fire blast that reaches a pit cover breaks the whole cover, and anyone on it "
+              + "falls in. EMP, smoke and stun blasts do not. Off: only weight springs a cover.");
 
             list.CheckboxLabeled("Your own pit takes your own people", ref superdeepCapturesOwnFaction,
                 "Off (the default), a superdeep cell ignores your own colonists unless they jump in, "
