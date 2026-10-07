@@ -26,3 +26,14 @@
 - RUSTCATHEDRAL_HULL_BOLTS_BUILD_1: built c5b3085d6, `implemented` (A1 L1, A2-A9 L2 owed). Oldest offline item after skips: STATUE_ART_EXPANSION_1 umbrella, SUMP_TAR_LIVING_SYSTEMS_1 + WARSCAR_AEROSOL_SCREEN_1 BLOCKED, NINEFOLD_FAVOUR_ODDS_BUILD_1 already built at aa93c306a (rite half tabled), rites skipped.
   - Boarding = prefix on GravshipUtility.GenerateGravship; vanilla capture carries pawns on substructure. Free tier only; campaign Ishko/Regard owed (hook RM_HullBolts.OnWitnessed). Hull bolt uses living-bolt texPath; _artsrc/RM_HullBolt_* unruled.
   - L0: hullbolts_problems in static_checks, selftest_rustcathedral_hullbolts.py 17/17, run_selftests 220/221 (utinnipatches_dump only). Both RustCathedral DLLs rebuilt.
+
+## Helper 4 (2026-10-07)
+- FEVERWOOD_BROOD_RANSOM_1 campaign half: built 81f360450, `implemented` (A1 L0; A2 L1, A3-A7 L2 owed).
+  Sporefall display tank (RM_GenStep_DisplayTank on Base_Faction, faction+name gated, never rebuilt once freed), free/breach/kill
+  frees with giftRolls 2 + goodwill -50 setting, Wildsteam cask stock (onlyFactions, 0.6, Expensive), deep lines comp on the cask.
+  Open (noted on item): which are "the prison towns"; bigger young; raised buy-back price.
+  L0: selftest_feverwood_broodcampaign.py, validate_patch clean on 613-list snapshot, run_selftests 221/222 (utinnipatches_dump only).
+- Skipped on the oldest-first scan: owner/design items (RAKATAN_ARCHOTECH, MINERALS, LONGSHADE_SHADE_EXTRAS, CRACKEDLANDS_*,
+  LEANINGSCRUB_SWEETLINE, FORGE_DHOKKUR, SHADECRAFT), bridge/game-up (PYRELANDS_NORTHSTAR_TRIAL, NORTHSTAR_FAST_DRIVER,
+  FLOWWORKS/GRAFFITI northstar, STILLSAND_*_LIVE/REMAINDER), NORTHSTAR_ADVERSARIAL_REVIEW_1 (owner-released rounds only),
+  RUSTCATHEDRAL_WORN_BIT_ARC_1 (stage 4 is the tabled Stranger's Overhaul rite).
