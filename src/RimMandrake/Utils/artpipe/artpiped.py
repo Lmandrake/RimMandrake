@@ -956,6 +956,25 @@ def _derive_master_resolved(derive_from: str, done_dir: Path, failed_dir: Path,
     return (failed_dir / f"{derive_from}.manifest.json").is_file()
 
 
+_HELD_LOGGED: dict[str, float] = {}
+_HELD_LOG_INTERVAL_S = 600.0
+
+
+def _log_held(job_id: str, master: str, done_dir: Path, failed_dir: Path,
+              artsrc_dir: Path) -> None:
+    """Throttled (once per job per 10 min) stderr line saying WHY a derived job is held.
+    The orphan case (done manifest, PNG missing) never resolves on its own."""
+    now = time.monotonic()
+    if now - _HELD_LOGGED.get(job_id, -1e9) < _HELD_LOG_INTERVAL_S:
+        return
+    _HELD_LOGGED[job_id] = now
+    if (done_dir / f"{master}.manifest.json").is_file():
+        why = f"master done but PNG missing at {artsrc_dir / master / (master + '.png')} (ORPHAN: will not self-resolve)"
+    else:
+        why = "master has no done/failed manifest yet (pending/active)"
+    print(f"artpiped: HELD derived job {job_id}: {why}", file=sys.stderr, flush=True)
+
+
 def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None,
                 done_dir: Path | None = None, failed_dir: Path | None = None,
                 artsrc_dir: Path | None = None) -> Path | None:
@@ -1006,6 +1025,7 @@ def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None,
             derive_from = _derive_from_of(src)
             if derive_from and not _derive_master_resolved(derive_from, done_dir,
                                                             failed_dir, artsrc_dir):
+                _log_held(src.stem, derive_from, done_dir, failed_dir, artsrc_dir)
                 continue  # HELD — the master hasn't finished yet
         dest = active_dir / src.name
         if dest.exists():
