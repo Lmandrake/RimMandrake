@@ -453,14 +453,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         }
 
         // ================================================================== HOSE
-        private sealed class HoseCase
+        internal sealed class HoseCase
         {
             public CordWorld W; public HoseReelRect Reel; public Cell Target; public double MaxLen; public double MinR; public ulong Seed;
             public int Walls;
             public override string ToString() => "reel(" + Reel.X0 + "," + Reel.Z0 + ") -> " + Target + " max " + MaxLen.ToString("0.0") + " minR " + MinR.ToString("0.0") + " walls " + Walls;
         }
 
-        private static HoseCase MakeHose(long seed, List<Cell> wallsOverride = null)
+        internal static HoseCase MakeHose(long seed, List<Cell> wallsOverride = null)
         {
             CordRng r = CordRng.Of("gssfuzz-hose", seed);
             int W = r.Int(18, 40), H = r.Int(14, 30);
@@ -496,6 +496,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return null;
         }
 
+        /// <summary>Why the hose lays the route check passed were refused, per mode (printed with the hose family).</summary>
+        internal static readonly Dictionary<string, int> RefuseWhy = new Dictionary<string, int>();
+
         internal static string RunHose(long seed, List<Cell> wallsOverride, ref long steps, out int laidOk, out int fellBack, bool outlet = true, List<string> gaps = null)
         {
             laidOk = fellBack = 0;
@@ -509,12 +512,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             bool inb = w.InBounds(c.Target), fitsStraight = V2.Dist(c.Reel.Centre, c.Target.Centre) <= c.MaxLen;
             if (inb && !c.Reel.Contains(c.Target) && fitsStraight && w.IsWalkable(c.Target))
             {
-                List<Cell> full = HoseMath.RouteCells(w, start, c.Target, -1);
+                List<Cell> full = HoseMath.RouteCells(w, start, c.Target, -1, false);   // B2: install judges the SHORTEST route
                 bool capped = HoseMath.LastRouteCapped;
                 double need = -1;
                 if (full != null)
                 {
-                    var pts = HoseMath.RoutePulled(w, c.Reel, c.Target, -1);
+                    var pts = HoseMath.RoutePulled(w, c.Reel, c.Target, -1, false);
                     need = pts == null ? -1 : Geo.Length(pts) * HoseMath.RouteMargin;
                 }
                 steps++;
@@ -534,7 +537,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             steps++;
             HoseLay lay2 = HoseMath.Lay(w, a, b, p, c.Seed, null, outward);
             if (lay.Ok != lay2.Ok || (lay.Ok && !lay.Flat.SequenceEqual(lay2.Flat))) return "hose" + mode + ": Lay twice with one seed gave different hoses";
-            if (!lay.Ok) return null;     // an install the route check passed but the lay refused: the reel retracts with the reason (CheckReplan), not a fault
+            if (!lay.Ok) { lock (RefuseWhy) { RefuseWhy.TryGetValue(mode + " " + lay.Reason, out int rn); RefuseWhy[mode + " " + lay.Reason] = rn + 1; } return null; }     // an install the route check passed but the lay refused: the reel retracts with the reason (CheckReplan), not a fault
             laidOk = 1; if (lay.FellBack) fellBack = 1;
             string bad = FiniteList(lay.Flat, "Flat") ?? FiniteList(lay.Plump, "Plump") ?? FiniteList(lay.Centre, "Centre");
             if (bad != null) return "hose" + mode + ": " + bad;
@@ -545,7 +548,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             double bigger = Math.Max(lay.FlatLen, lay.PlumpLen);
             // length: the hose is never longer than the hose. The nozzled 2x2 reel's outlet run (the game always lays it outward) is planned
             // from 1.6 + 2 radii past the mouth, a lead CheckInstall's route length does not count; in free mode a walled corridor overran by 3%.
-            if (bigger > c.MaxLen + 1e-6) gaps?.Add("G1 laid hose longer than the hose: " + bigger.ToString("0.00") + " > " + c.MaxLen.ToString("0.00"));
+            // G1 FIXED 2026-10-06 (GPT B3): LayOn retries an overlong lay with no slack and otherwise refuses it -- asserted
+            if (bigger > c.MaxLen + 1e-6) return "hose" + mode + ": G1 laid hose longer than the hose: " + bigger.ToString("0.00") + " > " + c.MaxLen.ToString("0.00");
             if (bigger > c.MaxLen * 1.6 + 1) return "hose" + mode + ": laid length " + bigger.ToString("0.00") + " is wildly over the hose " + c.MaxLen.ToString("0.0");
             // plump is the flat hose pulled toward its centreline: shorter, give or take resampling noise
             if (lay.PlumpLen > lay.FlatLen * 1.01 + 0.1) gaps?.Add("G4 plump hose longer than flat: " + lay.PlumpLen.ToString("0.00") + " vs " + lay.FlatLen.ToString("0.00"));
@@ -558,7 +562,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 // leaving the nozzle west and turning back east is a U-turn inside the blend zone (OutletLead cells from the mouth)
                 double skip = outlet ? HoseMath.OutletLead(p) + 0.5 : HoseMath.EndSkip;
                 double bf = HoseMath.MinBendRadius(lay.Flat, skip), bp = HoseMath.MinBendRadius(lay.Plump, skip);
-                if (outlet && lay.MinBendFlat < c.MinR * 0.95) gaps?.Add("G2 bend inside the outlet blend tighter than the hose may bend: " + lay.MinBendFlat.ToString("0.00") + " < " + c.MinR.ToString("0.0"));
+                // G2 FIXED 2026-10-06 (owner decision by question card: straight lead-out): the lead-out (straight run + Dubins
+                // join) never bends under the minimum -- asserted over the lead-out section of both poses
+                if (outlet && outward.HasValue)
+                {
+                    double lo = LeadOutBend(lay.Flat, lay.LeadOutLen), lp = LeadOutBend(lay.Plump, lay.LeadOutLen);
+                    if (lay.LeadOutLen <= 0) return "hose" + mode + ": outlet lay has no lead-out";
+                    if (Math.Min(lo, lp) < c.MinR * 0.95) return "hose" + mode + ": G2 lead-out bends under the minimum: " + Math.Min(lo, lp).ToString("0.00") + " < " + c.MinR.ToString("0.0");
+                    if (lay.MinBendFlat < c.MinR * 0.95) gaps?.Add("G2 bend tighter than the hose may bend (outlet lay, outside the lead-out): " + lay.MinBendFlat.ToString("0.00") + " < " + c.MinR.ToString("0.0"));
+                }
                 if (gaps != null && BendCollect) OutletBendProbe(seed, outlet, lay, p, c.MinR, a, b, outward);
                 if (Math.Min(bf, bp) < c.MinR * 0.95) gaps?.Add("G3 bend beyond the blend under 95% of minR: " + Math.Min(bf, bp).ToString("0.00") + " < " + c.MinR.ToString("0.0"));
                 if (Math.Min(bf, bp) < c.MinR * 0.1) return "hose" + mode + ": bend radius " + Math.Min(bf, bp).ToString("0.00") + " beyond the outlet blend is under a tenth of " + c.MinR.ToString("0.0");
@@ -568,6 +580,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             int prev = 0;
             foreach (int j in lay.Joints) { if (j <= prev || j >= lay.Flat.Count - 1) return "hose" + mode + ": joint index " + j + " out of order or at an end"; prev = j; }
             return null;
+        }
+
+        /// <summary>Min discrete bend radius over the lead-out section [EndSkip, leadLen] of a pose (same measure as MinBendRadius).</summary>
+        internal static double LeadOutBend(IList<V2> X, double leadLen)
+        {
+            double[] s = Geo.CumLen(X);
+            double best = 99;
+            for (int i = 1; i < X.Count - 1; i++)
+            {
+                if (s[i] < HoseMath.EndSkip || s[i] > leadLen) continue;
+                double th = CordLayer.Turn(X[i - 1], X[i], X[i + 1]);
+                double seg = 0.5 * (V2.Dist(X[i - 1], X[i]) + V2.Dist(X[i], X[i + 1]));
+                if (th > 1e-9) best = Math.Min(best, seg / th);
+            }
+            return best;
         }
 
         // ================================================================== G2 LOCATOR (2026-10-06, live hose FAILs vs fuzz G2)
@@ -612,7 +639,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             if (!outlet) { BendFree[seed] = Math.Min(HoseMath.MinBendRadius(lay.Flat, HoseMath.EndSkip), HoseMath.MinBendRadius(lay.Plump, HoseMath.EndSkip)); return; }
             if (!outward.HasValue) return;
-            double bl = 2 * Math.Max(0.45, p.MinBendRadius), st = HoseReelRect.OutletStraight;
+            double st = HoseMath.LeadOutStraight(p), bl = Math.Max(0, lay.LeadOutLen - st);   // 2026-10-06: the straight lead-out, then its join
             double mb = MinBendAt(lay.Flat, HoseMath.EndSkip, out double sAt);
             V2 h = HeadingAt(lay.Flat, st + bl + 0.25);
             V2 ab = b - a; double lab = Math.Sqrt(ab.X * ab.X + ab.Z * ab.Z);
@@ -650,7 +677,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             List<Cell> cp = HoseMath.RouteCells(w, reel.StartCellToward(target), target, -1);
             string pathNote = cp == null ? "no path" : cp.Count + " cells, " + cp.Count(q => q.Z >= 20) + " in the dry tunnel stretch, extra cost " + cp.Sum(q => w.ExtraCost(q)).ToString("0");
             bool gap = why == "route too long" && waterLen > 0 && waterLen * HoseMath.RouteMargin <= hose;
-            o.Add("known gap G6 (cost vs length, GPT B2): " + (gap ? "REPRODUCED" : "not reproduced") + ": hose " + hose.ToString("0") + ", the corridor route needs " +
+            Program.Check(!gap && why == null, "fuzz G6 (GPT B2 fixed): a 37.4-cell costly corridor fits a 40-cell hose and is allowed (CheckInstall said '" + (why ?? "ok") + "')");
+            // can-fail: the cost-first route (what the old CheckInstall judged) is the long dry detour that does not fit
+            Program.Check(chosen * HoseMath.RouteMargin > hose, "fuzz G6 can-fail: the cost-first route still reads too long (" + (chosen * HoseMath.RouteMargin).ToString("0.0") + ")");
+            o.Add("G6 (cost vs length, GPT B2, FIXED 2026-10-06): " + (gap ? "REPRODUCED" : "not reproduced") + ": hose " + hose.ToString("0") + ", the corridor route needs " +
                   (waterLen * HoseMath.RouteMargin).ToString("0.0") + " (fits) but the search returns a " + (chosen * HoseMath.RouteMargin).ToString("0.0") +
                   "-cell route (" + pathNote + ") and CheckInstall says '" + (why ?? "ok") + "'");
             return o;
@@ -1067,6 +1097,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 foreach (string gl in gapLines) fails.Add("KNOWNGAP " + gl);
                 foreach (string gl in OutletBendReport()) fails.Add("KNOWNGAP " + gl);
                 foreach (string gl in CostVsLengthProbe()) fails.Add("KNOWNGAP " + gl);
+                foreach (var kv in RefuseWhy.OrderBy(k => k.Key)) fails.Add("KNOWNGAP refused after the route check " + kv.Key + ": " + kv.Value);
                 sw.Stop(); t.Seconds = sw.Elapsed.TotalSeconds; t.Extra = "   (" + laid + " laid, " + fb + " via fallback, " + gapCount.Count + " known-gap class(es) tallied below)"; t.Failures -= 0;
                 Report(t, fails); tallies.Add(t);
             }

@@ -131,6 +131,9 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// straight run (owner review 2026-10-04 B17).</summary>
         public List<int> Joints = new List<int>();
         public double PathLen, FlatLen, PlumpLen, MinBendFlat, MinBendPlump;
+        /// <summary>Owner decision by question card 2026-10-06 (straight lead-out): arc length of the flat hose's lead-out (the
+        /// straight run out of the nozzle plus the bend that joins it to the laid hose); 0 = no outlet.</summary>
+        public double LeadOutLen;
     }
 
     public static class HoseMath
@@ -220,14 +223,203 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                 // rather than a kink where the straightened run meets it
                 double lead = OutletLead(p);
                 if (OutletClear(w, a, startOutward.Value, lead)) aPlan = a + startOutward.Value * lead;
-                else if (OutletClear(w, a, startOutward.Value)) aPlan = a + startOutward.Value * HoseReelRect.OutletStraight;
-                else startOutward = null;
+                else if (OutletClear(w, a, startOutward.Value, LeadOutStraight(p))) aPlan = a + startOutward.Value * LeadOutStraight(p);
+                else return new HoseLay { Reason = LeadOutBlocked };   // owner card 2026-10-06: refused, never laid without the lead-out
             }
             CordPlan plan = CordPlanner.Plan(w, aPlan, bPlan, new List<KeyValuePair<V2, WaypointKind>>());
             if (!plan.Ok) return new HoseLay { Reason = "no route" };
             if (startOutward.HasValue) plan.Points.Insert(0, a);
             if (endInward.HasValue) plan.Points.Add(b);
             return LayOn(w, a, b, plan.Points, p, seed, endInward, startOutward);
+        }
+
+        /// <summary>Owner decision by question card 2026-10-06: how far the hose runs dead straight out of the nozzle before it
+        /// may bend. Taken from the minimum bend radius: the coupling's own run (OutletStraight) plus half a radius, so a
+        /// stiffer hose stands farther out of the coupling before its (never tighter than minimum) curve starts.</summary>
+        public static double LeadOutStraight(HoseShapeParams p) => HoseReelRect.OutletStraight + 0.5 * Math.Max(0.45, p.MinBendRadius);
+
+        /// <summary>The lead-out: P's start replaced by a straight run of <paramref name="straight"/> from a along u, then the
+        /// shortest radius-R curve (Dubins) onto P at some arc d past the straight run, P's heading there matched. The join point
+        /// is chosen among candidates d = straight + R/2 .. straight + 8R (the least extra length whose new section is clear
+        /// of walls; world null = no wall test). Null when no candidate fits. <paramref name="leadLen"/> = the new section's
+        /// arc length (a to the join).</summary>
+        public static List<(double extra, List<V2> pts, double leadLen)> LeadOutCandidates(CordWorld w, IList<V2> P, V2 a, V2 u, double straight, double R, int max)
+        {
+            var outp = new List<(double extra, List<V2> pts, double leadLen)>();
+            if (P == null || P.Count < 2) return outp;
+            double[] s = Geo.CumLen(P);
+            double L = s[s.Length - 1];
+            V2 s0 = a + u * straight;
+            if (w != null && !Clear(w, new List<V2> { a, s0 })) return outp;
+            double Rd = R * 1.05;
+            var cands = new List<(double extra, List<V2> sec, int j)>();
+            for (int k = 0; k < 24; k++)
+            {
+                double d = straight + R * (0.5 + 0.5 * k);
+                if (d > L - 0.5) break;
+                int j = 1;
+                while (j < P.Count - 1 && s[j] < d) j++;
+                double seg = s[j] - s[j - 1];
+                V2 Q = seg < 1e-12 ? P[j] : P[j - 1] + (P[j] - P[j - 1]) * ((d - s[j - 1]) / seg);
+                // the join's heading is the chord Q lies on, so the hose runs on from Q to P[j] with no kink
+                // every Dubins word, shortest first: the shortest often turns back over the reel, the other way round is clear
+                foreach (List<V2> arc in DubinsAll(s0, u, Q, (P[j] - P[j - 1]).Norm(), Rd, Sample / 4, true))
+                {
+                var sec = new List<V2> { a };
+                int ns = Math.Max(1, (int)Math.Ceiling(straight / Sample));
+                for (int i = 1; i <= ns; i++) sec.Add(a + u * (straight * i / ns));   // densified so the smooth resample keeps it straight
+                sec.AddRange(arc);
+                double extra = Geo.Length(sec) - d;
+                int jj = V2.Dist(sec[sec.Count - 1], P[j]) < 1e-9 ? j + 1 : j;
+                if (jj >= P.Count) continue;
+                cands.Add((extra, sec, jj));
+                }
+            }
+            foreach (var c in cands.OrderBy(c => c.extra))
+            {
+                if (w != null && !Clear(w, new List<V2>(c.sec) { P[c.j] }, 0.5)) continue;
+                var o = new List<V2>(c.sec);
+                for (int i = c.j; i < P.Count; i++) o.Add(P[i]);
+                if (SelfIntersects(ResampleN(o, Math.Max(8, (int)(Geo.Length(o) / Sample) + 1)))) continue;   // no loops (design)
+                outp.Add((c.extra, o, Geo.Length(c.sec)));
+                if (outp.Count >= max) break;
+            }
+            return outp;
+        }
+
+        /// <summary>Points of P within <paramref name="straight"/> of a projected back onto the outlet line.</summary>
+        public static void KeepStraight(List<V2> P, V2 a, V2 u, double straight)
+        {
+            double[] s = Geo.CumLen(P);
+            P[0] = a;
+            for (int i = 1; i < P.Count - 1 && s[i] <= straight + 1e-9; i++)
+            {
+                V2 d = P[i] - a;
+                P[i] = a + u * Math.Max(0, d.X * u.X + d.Z * u.Z);
+            }
+        }
+
+        /// <summary>The final pose of a lead-out candidate at n samples: resampled along its Catmull-Rom curve (a plain
+        /// equal-arc resample of a polyline at another spacing reads its bends up to ~2x tighter), the straight run kept.</summary>
+        public static List<V2> LeadOutFinish(CordWorld w, List<V2> o, int n, V2 a, V2 u, double straight, double R)
+        {
+            List<V2> X = ResampleSmooth(o, n);
+            KeepStraight(X, a, u, straight);
+            return X;
+        }
+
+        /// <summary>n equal-arc samples of the uniform Catmull-Rom curve through p (8 sub-steps per segment), ends exact.</summary>
+        public static List<V2> ResampleSmooth(IList<V2> p, int n)
+        {
+            if (p.Count < 3) return ResampleN(p, n);
+            var d = new List<V2>(p.Count * 8 + 1) { p[0] };
+            for (int i = 0; i < p.Count - 1; i++)
+            {
+                V2 p0 = i > 0 ? p[i - 1] : p[0] * 2 - p[1], p1 = p[i], p2 = p[i + 1], p3 = i + 2 < p.Count ? p[i + 2] : p[i + 1] * 2 - p[i];
+                for (int k = 1; k <= 8; k++)
+                {
+                    double t = k / 8.0, t2 = t * t, t3 = t2 * t;
+                    d.Add((p1 * 2 + (p2 - p0) * t + (p0 * 2 - p1 * 5 + p2 * 4 - p3) * t2 + (p1 * 3 - p0 - p2 * 3 + p3) * t3) * 0.5);
+                }
+            }
+            List<V2> o = ResampleN(d, n);
+            o[0] = p[0];
+            o[n - 1] = p[p.Count - 1];
+            return o;
+        }
+
+        /// <summary>The lead-out lay's sample spacing (cells) and count for a polyline.</summary>
+        public const double LeadOutSpacing = Sample;
+        public static int LeadOutSamples(IList<V2> p) => Math.Max(8, (int)Math.Ceiling(Geo.Length(p) / LeadOutSpacing) + 1);
+
+        /// <summary>MinBendRadius restricted to arc positions [skip, upTo].</summary>
+        public static double MinBendRadiusUpTo(IList<V2> X, double skip, double upTo)
+        {
+            double[] s = Geo.CumLen(X);
+            double best = 99;
+            for (int i = 1; i < X.Count - 1; i++)
+            {
+                if (s[i] < skip || s[i] > upTo) continue;
+                double th = CordLayer.Turn(X[i - 1], X[i], X[i + 1]);
+                double seg = 0.5 * (V2.Dist(X[i - 1], X[i]) + V2.Dist(X[i], X[i + 1]));
+                if (th > 1e-9) best = Math.Min(best, seg / th);
+            }
+            return best;
+        }
+
+        private static V2 PointAt(IList<V2> P, double[] s, double t)
+        {
+            for (int i = 1; i < P.Count; i++)
+                if (s[i] >= t) { double seg = s[i] - s[i - 1]; return seg < 1e-12 ? P[i] : P[i - 1] + (P[i] - P[i - 1]) * ((t - s[i - 1]) / seg); }
+            return P[P.Count - 1];
+        }
+
+        /// <summary>The shortest path from (p0, heading h0) to (p1, heading h1) whose curvature radius is never under R (Dubins:
+        /// the best of LSL, RSR, LSR, RSL, RLR, LRL), sampled about every <paramref name="step"/> from p0 (exclusive) to p1
+        /// (inclusive). Every candidate is integrated and kept only if it lands on p1 heading h1. Null if none does.</summary>
+        public static List<List<V2>> DubinsAll(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step, bool allWords)
+        {
+            double Mod(double x) { x %= 2 * Math.PI; return x < 0 ? x + 2 * Math.PI : x; }
+            V2 D = p1 - p0;
+            double d = D.Len / R, th = Math.Atan2(D.Z, D.X);
+            double al = Mod(Math.Atan2(h0.Z, h0.X) - th), be = Mod(Math.Atan2(h1.Z, h1.X) - th);
+            double sa = Math.Sin(al), sb = Math.Sin(be), ca = Math.Cos(al), cb = Math.Cos(be), cab = Math.Cos(al - be);
+            var cands = new List<(string w, double t, double p, double q)>();
+            double tmp;
+            tmp = 2 + d * d - 2 * cab + 2 * d * (sa - sb);
+            if (tmp >= 0) { double at = Math.Atan2(cb - ca, d + sa - sb); cands.Add(("LSL", Mod(-al + at), Math.Sqrt(tmp), Mod(be - at))); }
+            tmp = 2 + d * d - 2 * cab + 2 * d * (sb - sa);
+            if (tmp >= 0) { double at = Math.Atan2(ca - cb, d - sa + sb); cands.Add(("RSR", Mod(al - at), Math.Sqrt(tmp), Mod(-be + at))); }
+            tmp = -2 + d * d + 2 * cab + 2 * d * (sa + sb);
+            if (tmp >= 0) { double pp = Math.Sqrt(tmp), at = Math.Atan2(-ca - cb, d + sa + sb) - Math.Atan2(-2, pp); cands.Add(("LSR", Mod(-al + at), pp, Mod(-be + at))); }
+            tmp = -2 + d * d + 2 * cab - 2 * d * (sa + sb);
+            if (tmp >= 0) { double pp = Math.Sqrt(tmp), at = Math.Atan2(ca + cb, d - sa - sb) - Math.Atan2(2, pp); cands.Add(("RSL", Mod(al - at), pp, Mod(be - at))); }
+            tmp = (6 - d * d + 2 * cab + 2 * d * (sa - sb)) / 8;
+            if (Math.Abs(tmp) <= 1) { double pp = Mod(2 * Math.PI - Math.Acos(tmp)), t = Mod(al - Math.Atan2(ca - cb, d - sa + sb) + pp / 2); cands.Add(("RLR", t, pp, Mod(al - be - t + pp))); }
+            tmp = (6 - d * d + 2 * cab + 2 * d * (-sa + sb)) / 8;
+            if (Math.Abs(tmp) <= 1) { double pp = Mod(2 * Math.PI - Math.Acos(tmp)), t = Mod(-al - Math.Atan2(ca - cb, d + sa - sb) + pp / 2); cands.Add(("LRL", t, pp, Mod(be - al - t + pp))); }
+            var all = new List<List<V2>>();
+            double h1a = Math.Atan2(h1.Z, h1.X);
+            foreach (var c in cands.OrderBy(c => c.t + c.p + c.q))
+            {
+                List<V2> pts = DubinsSample(p0, Math.Atan2(h0.Z, h0.X), c.w, new[] { c.t * R, c.p * R, c.q * R }, R, step, out double thEnd);
+                double hErr = Math.Abs(Math.Atan2(Math.Sin(thEnd - h1a), Math.Cos(thEnd - h1a)));
+                if (V2.Dist(pts[pts.Count - 1], p1) > 1e-3 * Math.Max(1, R) || hErr > 1e-3) continue;
+                pts[pts.Count - 1] = p1;
+                all.Add(pts);
+                if (!allWords) break;
+            }
+            return all;
+        }
+
+        public static List<V2> Dubins(V2 p0, V2 h0, V2 p1, V2 h1, double R, double step)
+        {
+            List<List<V2>> a = DubinsAll(p0, h0, p1, h1, R, step, false);
+            return a.Count > 0 ? a[0] : null;
+        }
+
+        private static List<V2> DubinsSample(V2 p0, double th, string word, double[] lens, double R, double step, out double thEnd)
+        {
+            var o = new List<V2>();
+            double x = p0.X, z = p0.Z;
+            for (int k = 0; k < 3; k++)
+            {
+                double l = lens[k];
+                if (l <= 1e-12) continue;
+                int n = Math.Max(1, (int)Math.Ceiling(l / step));
+                double ds = l / n;
+                for (int i = 0; i < n; i++)
+                {
+                    char m = word[k];
+                    if (m == 'S') { x += ds * Math.Cos(th); z += ds * Math.Sin(th); }
+                    else if (m == 'L') { double t2 = th + ds / R; x += R * (Math.Sin(t2) - Math.Sin(th)); z += R * (-Math.Cos(t2) + Math.Cos(th)); th = t2; }
+                    else { double t2 = th - ds / R; x += R * (-Math.Sin(t2) + Math.Sin(th)); z += R * (Math.Cos(t2) - Math.Cos(th)); th = t2; }
+                    o.Add(new V2(x, z));
+                }
+            }
+            if (o.Count == 0) o.Add(p0);
+            thEnd = th;
+            return o;
         }
 
         /// <summary>How far out of the outlet the route is planned from: the straight run plus two bend radii, so even a turn
@@ -258,20 +450,42 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             if (startOutward.HasValue)
             {
                 double lead = OutletLead(p);
-                if (!OutletClear(w, a, startOutward.Value, lead)) lead = HoseReelRect.OutletStraight;
+                if (!OutletClear(w, a, startOutward.Value, lead)) lead = LeadOutStraight(p);
                 V2 o = a + startOutward.Value * lead;
                 CordPlan hop = null;
-                if (!OutletClear(w, a, startOutward.Value, lead)) startOutward = null;
+                if (!OutletClear(w, a, startOutward.Value, lead)) return new HoseLay { Reason = LeadOutBlocked };
                 else if (SegmentClear(w, o, pts[1])) pts.Insert(1, o);
                 else if ((hop = CordPlanner.Plan(w, o, pts[1], new List<KeyValuePair<V2, WaypointKind>>())).Ok && hop.Points.Count >= 2)
                     pts.InsertRange(1, hop.Points.Take(hop.Points.Count - 1));     // round the reel to where the walk went
-                else startOutward = null;
+                else return new HoseLay { Reason = LeadOutBlocked };
             }
             return LayOn(w, a, b, pts, p, seed, endInward, startOutward);
         }
 
-        /// <summary>Lay's shared tail: round the route's corners, settle the slack, stiffen, place the joiners.</summary>
+        /// <summary>Why a nozzled reel's hose was refused: no room for the straight lead-out (owner card 2026-10-06).</summary>
+        public const string LeadOutBlocked = "no room for the straight lead-out from the nozzle";
+        /// <summary>Why a hose was refused because, laid, it would be longer than the hose (GPT source read B3).</summary>
+        public const string LaidTooLong = "route too long (the laid hose, lead-out included, is longer than the hose)";
+
+        /// <summary>Lay's shared tail. GPT source read 2026-10-06 B3: the laid hose is never longer than the hose. CheckInstall
+        /// judges the taut route, which does not count the outlet lead-out, and the slack cap only bounds the EXTRA; so a lay
+        /// over the hose's length is retried with no slack, and refused (reel retracts with the reason) if still too long.</summary>
         private static HoseLay LayOn(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward = null)
+        {
+            HoseLay lay = LayOnce(w, a, b, planPoints, p, seed, endInward, startOutward);
+            if (!lay.Ok || !Overlong(lay, p.MaxLength)) return lay;
+            if (p.Slack > 0)
+            {
+                var taut = new HoseShapeParams { MinBendRadius = p.MinBendRadius, Slack = 0, PlumpAmount = p.PlumpAmount, CouplingSpacing = p.CouplingSpacing, MaxLength = p.MaxLength };
+                HoseLay t = LayOnce(w, a, b, planPoints, taut, seed, endInward, startOutward);
+                if (t.Ok && !Overlong(t, p.MaxLength)) return t;
+            }
+            return new HoseLay { Reason = LaidTooLong, PathLen = lay.PathLen };
+        }
+
+        public static bool Overlong(HoseLay lay, double maxLength) => Math.Max(lay.FlatLen, lay.PlumpLen) > maxLength + 1e-6;
+
+        private static HoseLay LayOnce(CordWorld w, V2 a, V2 b, List<V2> planPoints, HoseShapeParams p, ulong seed, V2? endInward, V2? startOutward = null)
         {
             var lay = new HoseLay();
             List<V2> C = CordPlanner.RoundCorners(planPoints, Math.Max(0.45, p.MinBendRadius));
@@ -328,22 +542,41 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             if (startOutward.HasValue)
             {
                 lay.Outlet = true;
-                // the settled rope pulls taut past the planned lead, so the turn back from the outlet is eased over two bend
-                // radii (a 0.5-cell blend left a hairpin kink at the wrap); the short blend is the fallback near walls
-                double bl = 2 * Math.Max(0.45, p.MinBendRadius);
-                List<V2> f = StraightenStart(lay.Flat, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
-                List<V2> q = StraightenStart(lay.Plump, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
-                if (!Clear(w, f) || !Clear(w, q)) bl = 0.5;
-                lay.Flat = StraightenStart(lay.Flat, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
-                lay.Centre = StraightenStart(lay.Centre, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
-                lay.Plump = StraightenStart(lay.Plump, a, startOutward.Value, HoseReelRect.OutletStraight, bl);
+                // Owner decision by question card 2026-10-06 (straight lead-out): the hose leaves the nozzle dead straight for
+                // LeadOutStraight cells, then joins the laid hose by the shortest curve whose radius is never under the hose's
+                // minimum (a Dubins path). The 2026-10-05 position blend (StraightenStart over 2R) bent a U-turn to ~0.02 cell.
+                // No clear lead-out = refused with the reason, never laid kinked or without it.
+                double S = LeadOutStraight(p), R = Math.Max(0.45, p.MinBendRadius);
+                V2 u = startOutward.Value;
+                var fc = LeadOutCandidates(w, lay.Flat, a, u, S, R, 4);
+                var qc = LeadOutCandidates(w, lay.Plump, a, u, S, R, 4);
+                bool done = false;
+                foreach (var pair in fc.SelectMany(x => qc.Select(y => (x, y))).OrderBy(t => t.x.extra + t.y.extra))
+                {
+                    int m = Math.Max(LeadOutSamples(pair.x.pts), LeadOutSamples(pair.y.pts));
+                    List<V2> f = LeadOutFinish(w, pair.x.pts, m, a, u, S, R), q = LeadOutFinish(w, pair.y.pts, m, a, u, S, R);
+                    if (!Clear(w, f) || !Clear(w, q)) continue;
+                    double lead = Math.Max(pair.x.leadLen, pair.y.leadLen);
+                    if (Math.Min(MinBendRadiusUpTo(f, EndSkip, lead + 2 * R + 1), MinBendRadiusUpTo(q, EndSkip, lead + 2 * R + 1)) < R * 0.97) continue;
+                    var cc = LeadOutCandidates(null, lay.Centre, a, u, S, R, 1);
+                    lay.Flat = f;
+                    lay.Plump = q;
+                    lay.Centre = cc.Count > 0 ? ResampleN(cc[0].pts, m) : ResampleN(StraightenStart(lay.Centre, a, u, S), m);
+                    lay.LeadOutLen = pair.x.leadLen;
+                    done = true;
+                    break;
+                }
+                if (!done) return new HoseLay { Reason = LeadOutBlocked, PathLen = L };
             }
             lay.FlatLen = Geo.Length(lay.Flat);
             lay.PlumpLen = Geo.Length(lay.Plump);
             double half = JoinerHalf(VisibleWidth(1, p.PlumpAmount));
             lay.Joints = new List<int>();
+            double[] sF = Geo.CumLen(lay.Flat);
             foreach (int j in Joints(lay.Centre, p.CouplingSpacing, half, lay.Flat, lay.Plump))
             {
+                // owner card 2026-10-06: no rigid joiner inside the lead-out (its straightening would kink the lead-out's bend)
+                if (lay.LeadOutLen > 0 && sF[Math.Min(j, sF.Length - 1)] - half < lay.LeadOutLen + 0.5) continue;
                 // round 4 (owner, station 22: "improper connectivity of two pipe segments"): the joiner is a rigid ~2.3-cell
                 // run of brass and cloth, so the hose under it is drawn dead straight along the joiner's own axis; a joint
                 // whose straightened run would touch a wall is dropped rather than drawn bent or clipped
@@ -490,7 +723,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             }
         }
 
-        private static void StiffenPass(CordWorld w, List<V2> X, double minR, int iters)
+        internal static void StiffenPass(CordWorld w, List<V2> X, double minR, int iters)
         {
             int n = X.Count;
             for (int it = 0; it < iters; it++)
@@ -841,8 +1074,10 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             if (!w.IsWalkable(target)) return "target blocked";
             // round 5: the search is bounded by the hose's length, so any route that fits is found however winding; only
             // when none is within reach does an unbounded search tell "too long" (a way exists) from "no route"
-            double len = RouteLength(w, reel, target, maxLength);
-            if (len < 0) len = RouteLength(w, reel, target);
+            // GPT source read 2026-10-06 B2: the question is "does a route FIT", so the route is the SHORTEST one (ExtraCost off);
+            // the cost-first search returned a cheaper, longer dry detour and refused a costly corridor that fits
+            double len = RouteLength(w, reel, target, maxLength, false);
+            if (len < 0) len = RouteLength(w, reel, target, -1, false);
             if (len < 0) return "no route";
             if (len * RouteMargin > maxLength) return "route too long";
             return null;
@@ -856,16 +1091,16 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// summed the cell path's centre-to-centre steps x1.08: a staircase, which over-read the owner's zig-zag maze at
         /// 48.5 cells where the hose actually lays 35. maxLength (the hose) bounds the search (RouteCells); without it the
         /// search runs to <see cref="RouteMaxExpand"/>.</summary>
-        public static double RouteLength(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1)
+        public static double RouteLength(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1, bool costs = true)
         {
-            List<V2> p = RoutePulled(w, reel, target, maxLength);
+            List<V2> p = RoutePulled(w, reel, target, maxLength, costs);
             return p == null ? -1 : Geo.Length(p);
         }
 
-        public static List<V2> RoutePulled(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1)
+        public static List<V2> RoutePulled(CordWorld w, HoseReelRect reel, Cell target, double maxLength = -1, bool costs = true)
         {
             Cell s = reel.StartCellToward(target);
-            List<Cell> path = RouteCells(w, s, target, maxLength > 0 ? SearchLengthBound(maxLength) : -1);
+            List<Cell> path = RouteCells(w, s, target, maxLength > 0 ? SearchLengthBound(maxLength) : -1, costs);
             if (path == null) return null;
             var pts = new List<V2> { reel.Mouth };
             for (int i = 0; i < path.Count; i++) if (i > 0 || V2.Dist(path[0].Centre, reel.Mouth) > 1e-9) pts.Add(path[i].Centre);
@@ -902,7 +1137,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// whose path length plus straight-line remainder exceeds lengthBound is never opened, so every route within the
         /// bound is found and the search never leaves the (2 x bound + 1)^2 square round the reel. lengthBound &lt;= 0 =
         /// unbounded, capped at RouteMaxExpand.</summary>
-        public static List<Cell> RouteCells(CordWorld w, Cell start, Cell goal, double lengthBound)
+        public static List<Cell> RouteCells(CordWorld w, Cell start, Cell goal, double lengthBound, bool costs = true)
         {
             LastRouteExpanded = 0;
             LastRouteCapped = false;
@@ -947,7 +1182,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                     double step = d.X != 0 && d.Z != 0 ? 1.414 : 1.0;
                     double nl = len[c] + step;
                     if (lengthBound > 0 && nl + H(q) > lengthBound) continue;
-                    double ng = top.g + step + w.ExtraCost(q);
+                    double ng = top.g + step + (costs ? w.ExtraCost(q) : 0);
                     if (!g.TryGetValue(q, out double old) || ng < old - 1e-12)
                     {
                         if (g.TryGetValue(q, out double o2)) open.Remove((o2 + H(q), o2, q));

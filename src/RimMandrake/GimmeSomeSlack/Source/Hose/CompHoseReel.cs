@@ -211,7 +211,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         {
             RM_MapComponent_Hoses comp = Hoses;
             if (comp == null) return 0f;
-            if (trail.Count == 0) return laid ? (float)System.Math.Max(0, HoseMath.RouteLength(comp.World(), Rect, new Cell(far.x, far.z), MaxLength)) : 0f;
+            if (trail.Count == 0) return laid ? (float)System.Math.Max(0, HoseMath.RouteLength(comp.World(), Rect, new Cell(far.x, far.z), MaxLength, false)) : 0f;
             return (float)TrailOf(comp.World()).PulledLength(comp.World());
         }
 
@@ -222,7 +222,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
             RM_MapComponent_Hoses comp = Hoses;
             var f = new Cell(far.x, far.z);
             Cell s = Rect.StartCellToward(f);
-            List<Cell> path = comp == null ? null : HoseMath.RouteCells(comp.World(), s, f, HoseMath.SearchLengthBound(MaxLength));
+            List<Cell> path = comp == null ? null : HoseMath.RouteCells(comp.World(), s, f, HoseMath.SearchLengthBound(MaxLength), false);   // B2: the route install judged
             if (path == null) path = new List<Cell> { s, f };
             foreach (Cell c in path) trail.Add(new IntVec3(c.X, 0, c.Z));
         }
@@ -536,7 +536,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         {
             RM_MapComponent_Hoses comp = parent.Spawned ? parent.Map.GetComponent<RM_MapComponent_Hoses>() : null;
             if (comp == null || !target.IsValid) return -1f;
-            double len = HoseMath.RouteLength(comp.World(), Rect, new Cell(target.x, target.z));
+            double len = HoseMath.RouteLength(comp.World(), Rect, new Cell(target.x, target.z), -1, false);   // B2: as CheckInstall
             return len < 0 ? -1f : (float)(len * HoseMath.RouteMargin);
         }
 
