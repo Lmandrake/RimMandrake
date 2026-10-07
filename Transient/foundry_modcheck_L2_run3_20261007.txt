@@ -1,0 +1,227 @@
+[stillsand-note] site: {"tile": 89672, "latitude": 32.438343, "size": [250, 250]}
+[stillsand] 02:30:36 site_stillsand_map PASS 
+[stillsand-note] [Stillsand] precious cave lines before/after the regen: [0, 1]
+[stillsand] 02:30:36 site_cave_logged PASS 
+[stillsand-note] giant skeletons on the fresh map / cap: [0, 2]
+[stillsand] 02:30:37 skeleton_gen_within_cap PASS 
+[stillsand-note] shipped defs resolved: 131
+[stillsand] 02:30:37 defs_resolve PASS 
+[stillsand] 02:30:37 sand_sieve_defs PASS 
+[stillsand] 02:30:37 solar_still_defs PASS 
+[stillsand] 02:30:37 sun_lance_defs PASS 
+[stillsand] 02:30:37 geophone_defs PASS 
+[stillsand] 02:30:38 sand_swim_remainder PASS 
+[stillsand] 02:30:41 cave_tier_rows PASS 
+[stillsand] 02:30:41 cave_place_defs PASS 
+[stillsand] 02:30:41 custom_defs_resolve UNMEASURED UNMEASURED: get_defs resolved none of the custom def type names (the type name form is unproven): ['RM_PreciousCaveDef/RM_PreciousCave_GuzzkaLair', 'RM_PreciousCaveDef/RM_PreciousCave_LensGrotto', 'RM_PreciousCaveDef/RM_PreciousCave_SealedCache']
+[stillsand-note] biome extensions / extra gen steps: [["RM_SunHeatExtension", "RM_PinnedSunExtension", "DuneFieldExtension", "RM_SkeletonBiomeExtension", "RM_SandRemembersWaterExtension"], ["RM_WreckField_Stillsand", "RM_GiantSkeletons", "RM_PreciousCaveCarve", "RM_PreciousCaveContents"]]
+[stillsand] 02:30:42 biome_row PASS 
+[stillsand] 02:30:42 biome_roster PASS 
+[stillsand] 02:30:42 giants_skeleton_wired PASS 
+[stillsand] 02:30:42 water_egg_patched PASS 
+[stillsand] 02:30:42 eruption_biome_gate PASS 
+[stillsand] 02:30:45 defaults PASS 
+[stillsand] 02:30:45 yardangShapingEnabled_roundtrip PASS 
+[stillsand] 02:30:46 torEnabled_roundtrip PASS 
+[stillsand] 02:30:46 boneHarpEnabled_roundtrip PASS 
+[stillsand] 02:30:46 ledgerEnabled_roundtrip PASS 
+[stillsand] 02:30:46 ledgerIncidentWeighting_roundtrip PASS 
+[stillsand] 02:30:47 sieveEnabled_roundtrip PASS 
+[stillsand] 02:30:47 solarStillEnabled_roundtrip PASS 
+[stillsand] 02:30:47 wringingStillEnabled_roundtrip PASS 
+[stillsand] 02:30:47 sunLanceEnabled_roundtrip PASS 
+[stillsand] 02:30:48 geophoneEnabled_roundtrip PASS 
+[stillsand] 02:30:48 thumperEnabled_roundtrip PASS 
+[stillsand] 02:30:48 sandFishingWakeEnabled_roundtrip PASS 
+[stillsand] 02:30:48 driftSwimEnabled_roundtrip PASS 
+[stillsand] 02:30:49 listeningHissEnabled_roundtrip PASS 
+[stillsand] 02:30:49 listeningSingingEnabled_roundtrip PASS 
+[stillsand] 02:30:49 listeningWarningEnabled_roundtrip PASS 
+[stillsand] 02:30:49 listeningRumbleEnabled_roundtrip PASS 
+[stillsand] 02:30:50 abrasionEnabled_roundtrip PASS 
+[stillsand] 02:30:50 carryEnabled_roundtrip PASS 
+[stillsand] 02:30:50 staticEnabled_roundtrip PASS 
+[stillsand] 02:30:50 seedingEnabled_roundtrip PASS 
+[stillsand] 02:30:51 hornEnabled_roundtrip PASS 
+[stillsand] 02:30:51 denQuestEnabled_roundtrip PASS 
+[stillsand-note] pinned sun: [{"present": true, "isActive": true, "sunElevationDegrees": 54.8025551}, 1.0, 32.438343]
+[stillsand] 02:30:53 sun_pinned_no_night PASS 
+[stillsand] 02:30:53 sun_open_sand_full_exposure PASS 
+[stillsand] 02:30:53 sun_roof_cover_above_55deg UNMEASURED UNMEASURED: sun elevation 54.8 deg is below the 55 deg where a roof is cover (by design a roof is NOT cover at a low sun); this site cannot test it
+[stillsand-note] kinds spawned: {"asked": 21, "lost": []}
+[stillsand] 02:30:55 fauna_spawns PASS 
+[stillsand] 02:30:55 soorrak_can_fly PASS 
+[stillsand-note] flora set: {"asked": 5, "lost": []}
+[stillsand] 02:30:59 flora_spawns PASS 
+[stillsand-note] vekka hediffs (sand / gravel): [[], []]
+[stillsand] 02:31:05 vekka_submerges_on_sand UNMEASURED UNMEASURED: a vekka left the pad before it could be read
+[stillsand-note] disturbed-sand funnels / take letters: [1, ["Taken under: Rooster 1"]]
+[stillsand] 02:31:29 vekka_take_leaves_funnel PASS 
+[stillsand] 02:32:01 zuurrik_below_threshold_dormant PASS 
+[stillsand-note] zuurrik swarm after 1800 ticks: 3
+[stillsand] 02:32:32 zuurrik_wakes_on_blood PASS 
+[stillsand-note] blood cells at wake / 3000 ticks later: [5, 0]
+[stillsand] 02:33:22 zuurrik_strips_blood PASS 
+[stillsand-note] zuurrik after toggle off / after toggle back on: [0, 3]
+[stillsand] 02:34:24 zuurrik_toggle_off_no_wake PASS 
+[stillsand-note] loomma sunstruck severities (open / roofed): [[0.0, 0.0], [0.0]]
+[stillsand] 02:34:51 loomma_sunstruck_open_vs_roofed FAIL ExpectationFailed: an open-sand loomma never gained RM_LoommaSunstruck in 1500 ticks
+[stillsand-note] new log errors naming Soorrak / Notify_JobStarted: [0, 0]
+[stillsand] 02:35:44 soorrak_no_exceptions PASS 
+[stillsand-note] soorrak path length / jobs seen: {"moved": {"RM_Soorrak124834": 31.79430638524805, "RM_Soorrak124835": 50.67565191876908, "RM_Soorrak124836": 34.87758123316328, "RM_Soorrak124837": 26.73323539339392, "RM_Soorrak124838": 31.893447121954296, "RM_Soorrak124839": 53.988493626371195}, "jobs": {"RM_Soorrak124834": ["GotoWander", "Wait_Wander"], "RM_Soorrak124835": ["GotoWander", "Wait_Wander"], "RM_Soorrak124836": ["GotoWander", "Wait_Wander"], "RM_Soorrak124837": ["GotoWander", "Wait_Wander"], "RM_Soorrak124838": ["GotoWander", "Wait_MaintainPosture", "Wait_Wander"], "RM_Soorrak124839": ["GotoWander", "Wait_MaintainPosture", "Wait_Wander"]}}
+[stillsand] 02:35:44 soorrak_not_stuck PASS 
+[stillsand] 02:35:47 glass_site_ready PASS 
+[stillsand] 02:35:47 sun_table_reads_sun_in_open FAIL ExpectationFailed: an open-sand sun furnace does not report 'Sun: NN%': Work speed factor: 10% (outdoors) | Not working: in shade (sun 0%, needs 30%). | Work speed factor: 10% (outdoors)
+[stillsand] 02:35:47 sun_table_roofed_idle PASS 
+[stillsand-note] WorkTableWorkSpeedFactor open / roofed: {"open": 0.1, "roofed": 0.1}
+[stillsand] 02:35:47 furnace_work_speed_tracks_sun FAIL ExpectationFailed: a sun furnace's work speed is 0.10 in the open and 0.10 roofed: the sun stat part is not applied (the StatDef patch matched nothing?)
+[stillsand] 02:35:47 sunfurnace_toggle_off_disabled UNMEASURED UNMEASURED: RM_SunFurnace does not read 'Sun: NN%' with its toggle on: the off arm proves nothing
+[stillsand] 02:35:47 lensbench_toggle_off_disabled UNMEASURED UNMEASURED: RM_LensBench does not read 'Sun: NN%' with its toggle on: the off arm proves nothing
+[stillsand] 02:35:47 solaroven_toggle_off_disabled UNMEASURED UNMEASURED: RM_SolarOven does not read 'Sun: NN%' with its toggle on: the off arm proves nothing
+[stillsand-note] work speed x1 / x2: [0.1, 0.1]
+[stillsand] 02:35:47 sun_work_speed_multiplier_scales FAIL ExpectationFailed: sunWorkSpeedMultiplier 2 moved the furnace's work speed 0.10 -> 0.10 (expected x2)
+[stillsand] 02:35:47 glass_remainder_static PASS 
+[stillsand] 02:35:47 glass_remainder_defs_live UNMEASURED UNMEASURED: RSW_KraytPearl is not loaded (the Star Wars bestiary is absent): the conditional krayt-lens patch correctly added nothing
+[stillsand] 02:35:47 drift_clear_drops_glass_sand UNMEASURED UNMEASURED: needs a driven drift clear on a Stillsand quicktest (not driven: the live game was in use)
+[stillsand] 02:35:47 furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof UNMEASURED UNMEASURED: needs a full bill cycle in sun, in a gale and under a roof (not driven: the live game was in use)
+[stillsand] 02:35:47 oven_cooks_in_sun_not_shade UNMEASURED UNMEASURED: needs a cooked meal in sun and in shade (not driven: the live game was in use)
+[stillsand] 02:35:47 lightning_on_deepsand_leaves_fulgurite_pyrelands_off UNMEASURED UNMEASURED: needs a forced strike on RM_DeepSand with the Pyrelands master toggle off (not driven: the live game was in use)
+[stillsand] 02:35:47 recipe_toggles_hide_recipes UNMEASURED UNMEASURED: no bridge tool reads RecipeDef.AvailableNow for a bench (not driven: the live game was in use)
+[stillsand-note] after a pour on sand: eggs left / hourbloom: [0, 4]
+[stillsand] 02:36:26 pour_blooms_on_sand PASS 
+[stillsand-note] after a pour with bloomOnPour off: eggs left / hourbloom: [0, 0]
+[stillsand] 02:37:04 pour_toggle_off_no_bloom PASS 
+[stillsand-note] after a pour on gravel: eggs left / hourbloom: [0, 0]
+[stillsand] 02:37:42 pour_on_gravel_no_bloom PASS 
+[stillsand-note] after the delay: skeletons / corpses: [1, 0]
+[stillsand] 02:38:19 corpse_becomes_skeleton PASS 
+[stillsand-note] toggle off, after the delay: skeletons / corpses: [0, 1]
+[stillsand] 02:38:56 corpse_stays_when_toggle_off PASS 
+[stillsand] 02:38:58 glare_site_ready UNMEASURED UNMEASURED: the open cell reads sun exposure 0.0 (< 0.6): glare-blind cannot start here (latitude 32.438343)
+[stillsand] 02:38:58 glare_blind_gained_in_open_sun UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 02:38:58 goggles_block_glare_blind UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand-note] ComfyTemperatureMax base / with draught / removed: [34.36, 42.36, 34.36]
+[stillsand] 02:38:59 cooling_draught_widens_comfort PASS 
+[stillsand] 02:39:00 gale_incident_fires PASS 
+[stillsand] 02:39:00 gale_toggle_off_refuses PASS 
+[stillsand] 02:39:01 gale_phases_and_aftermath UNMEASURED UNMEASURED: 19 permanent WeatherController condition(s) still force weather after unlock; they shadow the gale's herald/gale weather, so the phases cannot be read
+[stillsand] 02:39:01 gale_dims_sun_exposure UNMEASURED UNMEASURED: shadegrid_read reads cell exposure, which excludes the gale's sun factor (applied per pawn in ExposureFor); no tool reads pawn exposure, so the dimming cannot be measured here
+[stillsand] 02:39:01 gale_emergence_off_quiet UNMEASURED UNMEASURED: 18 permanent WeatherController condition(s) still force weather after unlock; they shadow the gale's herald/gale weather, so the phases cannot be read
+[stillsand-note] dust devil track: [[[84, 168]], [[88, 169]], [[92, 168]], [[97, 168]], [[95, 167]], []]
+[stillsand] 02:39:27 devil_moves_and_expires PASS 
+[stillsand] 02:39:28 devil_toggle_off_refuses PASS 
+[stillsand-note] muurrok letters / pawns before-after: [["A line of glare", "Mad zuurrik", "Chasing the water: Rubber"], 0, 1]
+[stillsand] 02:40:13 muurrok_emergence_fires PASS 
+[stillsand-note] muffalo with Burn after 3 beam casts: ["Muffalo124959"]
+[stillsand] 02:40:33 beam_burns_target PASS 
+[stillsand-note] mirrorBeamEnabled off: muffalo with Burn: []
+[stillsand] 02:40:49 beam_toggle_off_blocked PASS 
+[stillsand] 02:40:51 eruption_tunnel_then_mound UNMEASURED UNMEASURED: the engine refuses ThreatBig incidents before game tick 300000 and this game is at tick 208246; fire_incident cannot force it
+[stillsand-note] horizon letters / pawns at once / pawns after the delay: [["Dust on the horizon: south"], 0, 0]
+[stillsand] 02:42:00 horizon_warns_then_arrives FAIL ExpectationFailed: the warned group never arrived after the warning delay (it was lost in the queue)
+[stillsand] 02:42:00 horizon_toggle_off_vanilla UNMEASURED UNMEASURED: the neutral group could not be fired with the toggle off: {'success': False, 'dryRun': False, 'resolved': {'incident': 'TraderCaravanArrival', 'category': 'FactionArrival', 'points': -1.0, 'faction': '(worker chooses)'}, 'fired': False, 'windowsOpened': [], 
+[stillsand-note] cave log lines before/after, skeletons: both gen toggles off: {"after": 1, "skel": 0, "before": 1}
+[stillsand] 02:42:12 caves_regen_both_off PASS 
+[stillsand] 02:42:12 genstep_off_no_cave_line PASS 
+[stillsand] 02:42:12 skeleton_placement_off_none PASS 
+[stillsand] 02:42:12 remainder_files_obey_load_log_lessons PASS 
+[stillsand] 02:42:12 remainder_horn_cross_references PASS 
+[stillsand] 02:42:12 remainder_seep_incident_stillsand_only PASS 
+[stillsand] 02:42:13 remainder_den_quest_cross_references PASS 
+[stillsand] 02:42:13 remainder_loud_draws_wired PASS 
+[stillsand] 02:42:13 remainder_charged_thumper_is_loudest UNMEASURED UNMEASURED: LoudestCell is private to a leviathan incident in flight and no tool reads where the dragon headed; needs a thumper charged on a live Stillsand map
+[stillsand] 02:42:13 remainder_den_quest_generates UNMEASURED UNMEASURED: RUT_KraytDenQuest needs mandrake.rut.patches + SWBestiary and a map whose cave rolled RSW_PreciousCave_KraytDen with the dragon alive (a 25% branch of a weighted row); generate through dev mode Quests > Generate quest
+[stillsand] 02:42:13 remainder_horn_routs_and_logs_roll UNMEASURED UNMEASURED: the krayt horn is RSW content (mandrake.rsw.swbestiary) and its answer incident is RUT: neither is on the baroque_wave0 tier; needs a campaign-tier session, with a predator beside the user and the log's '[Stillsand] krayt horn answer roll' line read back
+[stillsand] 02:42:13 remainder_seep_incident_refuses_other_maps_roots_at_seep UNMEASURED UNMEASURED: RSW_SwimmerSeepRoot is Sarlacc (mandrake.rsw.sarlacc, Anomaly-gated), not loaded on this tier; needs a Stillsand map with the sarlacc seep row and a second non-Stillsand map to refuse
+[stillsand-note] log scan: {"stillsand errors": 0, "xref naming our defs": 0, "config errors naming our defs": 0}
+[stillsand] 02:42:14 log_clean PASS 
+[creaturebehaviors] 02:42:22 writer_patched UNMEASURED UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\r\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 5
+[creaturebehaviors] 02:42:22 walker_lays_prints UNMEASURED UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\r\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 5
+[creaturebehaviors] 02:42:23 invisible_walker_recorded_flagged UNMEASURED UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\r\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 5
+[creaturebehaviors] 02:42:23 toggle_off_no_prints UNMEASURED UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\r\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 5
+[creaturebehaviors] 02:42:23 stillsand_moving_sand_erases_print PASS 
+[creaturebehaviors] 02:42:24 control_absent_type_reads_absent PASS 
+[creaturebehaviors] 02:42:24 verminBreeding_wired_and_gated PASS 
+[creaturebehaviors] 02:42:25 gnaw_wired_and_gated PASS 
+[creaturebehaviors] 02:42:25 eatCleanable_wired_and_gated PASS 
+[creaturebehaviors] 02:42:26 seekShade_wired_and_gated PASS 
+[creaturebehaviors] 02:42:26 seekMarkedTerrain_wired_and_gated PASS 
+[creaturebehaviors] 02:42:26 sunScald_wired_and_gated PASS 
+[creaturebehaviors] 02:42:27 senseWeb_wired_and_gated PASS 
+[creaturebehaviors] 02:42:27 chewAnchors_wired_and_gated PASS 
+[creaturebehaviors] 02:42:28 frontCreep_wired_and_gated PASS 
+[creaturebehaviors] 02:42:28 aquaticAmbush_wired_and_gated PASS 
+[creaturebehaviors] 02:42:28 parentalEnrage_wired_and_gated PASS 
+[creaturebehaviors] 02:42:29 drumLure_wired_and_gated PASS 
+[creaturebehaviors] 02:42:34 all_fields_at_shipped_defaults FAIL ExpectationFailed: not at the shipped default (or unreachable by name): {'tracksEnabled': 'False'}
+[creaturebehaviors] 02:42:34 toggle_roundtrip_adhesiveSlickEnabled PASS 
+[creaturebehaviors] 02:42:34 toggle_roundtrip_ambientHeatPusherEnabled PASS 
+[creaturebehaviors] 02:42:35 toggle_roundtrip_aquaticAmbushEnabled PASS 
+[creaturebehaviors] 02:42:35 toggle_roundtrip_brineBatteryDischargeEnabled PASS 
+[creaturebehaviors] 02:42:35 toggle_roundtrip_chewAnchorsBehaviorEnabled PASS 
+[creaturebehaviors] 02:42:35 toggle_roundtrip_creatureHeatSoundsEnabled PASS 
+[creaturebehaviors] 02:42:35 toggle_roundtrip_dashRingEnabled PASS 
+[creaturebehaviors] 02:42:35 toggle_roundtrip_directedAssaultBehaviorEnabled PASS 
+[creaturebehaviors] 02:42:36 toggle_roundtrip_directionalShadeEnabled PASS 
+[creaturebehaviors] 02:42:36 toggle_roundtrip_drinkerFluidSacsEnabled PASS 
+[creaturebehaviors] 02:42:36 toggle_roundtrip_drumLureEnabled PASS 
+[creaturebehaviors] 02:42:36 toggle_roundtrip_dungSeedingEnabled PASS 
+[creaturebehaviors] 02:42:36 toggle_roundtrip_eatCleanableBehaviorEnabled PASS 
+[creaturebehaviors] 02:42:36 toggle_roundtrip_falseShadeAmbushEnabled PASS 
+[creaturebehaviors] 02:42:36 toggle_roundtrip_filterFeedingEnabled PASS 
+[creaturebehaviors] 02:42:37 toggle_roundtrip_frontCreepEnabled PASS 
+[creaturebehaviors] 02:42:37 toggle_roundtrip_glareBlindEnabled PASS 
+[creaturebehaviors] 02:42:37 toggle_roundtrip_gnawBehaviorEnabled PASS 
+[creaturebehaviors] 02:42:37 toggle_roundtrip_grapplerHoldEnabled PASS 
+[creaturebehaviors] 02:42:37 toggle_roundtrip_guardianAlarmEnabled PASS 
+[creaturebehaviors] 02:42:37 toggle_roundtrip_heatDrivenBurstEnabled PASS 
+[creaturebehaviors] 02:42:37 toggle_roundtrip_heatSoundscapeEnabled PASS 
+[creaturebehaviors] 02:42:38 toggle_roundtrip_homeTetherEnabled PASS 
+[creaturebehaviors] 02:42:38 toggle_roundtrip_kinMendingEnabled PASS 
+[creaturebehaviors] 02:42:38 toggle_roundtrip_kindFromElevationEnabled PASS 
+[creaturebehaviors] 02:42:38 toggle_roundtrip_lanceEnabled PASS 
+[creaturebehaviors] 02:42:38 toggle_roundtrip_lanceFriendlyPull PASS 
+[creaturebehaviors] 02:42:38 toggle_roundtrip_mirageEnabled PASS 
+[creaturebehaviors] 02:42:39 toggle_roundtrip_movingShadeEnabled PASS 
+[creaturebehaviors] 02:42:39 toggle_roundtrip_parasolShadeEnabled PASS 
+[creaturebehaviors] 02:42:39 toggle_roundtrip_parentalEnrageEnabled PASS 
+[creaturebehaviors] 02:42:39 toggle_roundtrip_pinnedSunEnabled PASS 
+[creaturebehaviors] 02:42:39 toggle_roundtrip_proximitySoundscapeEnabled PASS 
+[creaturebehaviors] 02:42:39 toggle_roundtrip_reactionDetectionEnabled PASS 
+[creaturebehaviors] 02:42:39 toggle_roundtrip_reactionSourceSpawnEnabled PASS 
+[creaturebehaviors] 02:42:40 toggle_roundtrip_reactionSuppressionEnabled PASS 
+[creaturebehaviors] 02:42:40 toggle_roundtrip_sandBuriedGraphicEnabled PASS 
+[creaturebehaviors] 02:42:40 toggle_roundtrip_sandGlareEnabled PASS 
+[creaturebehaviors] 02:42:40 toggle_roundtrip_sandSwimDroidImmunity PASS 
+[creaturebehaviors] 02:42:40 toggle_roundtrip_sandSwimEnabled PASS 
+[creaturebehaviors] 02:42:40 toggle_roundtrip_seedPassageEnabled PASS 
+[creaturebehaviors] 02:42:40 toggle_roundtrip_seekMarkedTerrainBehaviorEnabled PASS 
+[creaturebehaviors] 02:42:41 toggle_roundtrip_seekShadeBehaviorEnabled PASS 
+[creaturebehaviors] 02:42:41 toggle_roundtrip_senseWebEnabled PASS 
+[creaturebehaviors] 02:42:41 toggle_roundtrip_shadeGridEnabled PASS 
+[creaturebehaviors] 02:42:41 toggle_roundtrip_shadeHopEnabled PASS 
+[creaturebehaviors] 02:42:41 toggle_roundtrip_shadeSeekingWanderEnabled PASS 
+[creaturebehaviors] 02:42:41 toggle_roundtrip_shadeStaggerEnabled PASS 
+[creaturebehaviors] 02:42:42 toggle_roundtrip_shadeTentEnabled PASS 
+[creaturebehaviors] 02:42:42 toggle_roundtrip_shadowFollowEnabled PASS 
+[creaturebehaviors] 02:42:42 toggle_roundtrip_sightBlockEnabled PASS 
+[creaturebehaviors] 02:42:42 toggle_roundtrip_sightBlockRangedFire PASS 
+[creaturebehaviors] 02:42:42 toggle_roundtrip_silenceCueEnabled PASS 
+[creaturebehaviors] 02:42:42 toggle_roundtrip_soulchimePsychicStunEnabled PASS 
+[creaturebehaviors] 02:42:42 toggle_roundtrip_soulchimeShardArmorEnabled PASS 
+[creaturebehaviors] 02:42:43 toggle_roundtrip_soulchimeTameSootheEnabled PASS 
+[creaturebehaviors] 02:42:43 toggle_roundtrip_speciesSpacingEnabled PASS 
+[creaturebehaviors] 02:42:43 toggle_roundtrip_sunHeatEnabled PASS 
+[creaturebehaviors] 02:42:43 toggle_roundtrip_sunLoadBarEnabled PASS 
+[creaturebehaviors] 02:42:43 toggle_roundtrip_sunPathingEnabled PASS 
+[creaturebehaviors] 02:42:43 toggle_roundtrip_sunScaldEnabled PASS 
+[creaturebehaviors] 02:42:43 toggle_roundtrip_sunScaldReadsShade PASS 
+[creaturebehaviors] 02:42:44 toggle_roundtrip_sunShieldEnabled PASS 
+[creaturebehaviors] 02:42:44 toggle_roundtrip_tracksEnabled PASS 
+[creaturebehaviors] 02:42:44 toggle_roundtrip_verminBreedingEnabled PASS 
+[creaturebehaviors] 02:42:44 toggle_roundtrip_wildLeaveNoticeEnabled PASS 
+[creaturebehaviors] 02:42:44 toggle_roundtrip_woundLinkEnabled PASS 
+Stillsand            RED  (state)
+CreatureBehaviors    RED  (state)
+NightsideIce         RED  (state)
+EXIT 1

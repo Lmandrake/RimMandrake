@@ -1,0 +1,1136 @@
+{
+ "mod": "NightsideIce",
+ "stamp": "20261007T094301Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "BiomeDef/RM_NightsideIceNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_NightsideIceNoSuchDef_ZZ",
+           "found": false,
+           "defType": "BiomeDef",
+           "defName": "RM_NightsideIceNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_198d6c933d5f4180add5ee7a1f4aaa51",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:52.4240844+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:52.4737365+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_shipped_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "12 of 12 def(s) resolved",
+         "requested": 12,
+         "foundCount": 12,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_NightsideIce",
+           "found": true,
+           "defName": "RM_NightsideIce",
+           "defType": "BiomeDef",
+           "label": "the Sleeping Ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NightsideIce"
+           }
+          },
+          {
+           "requested": "FleckDef/RM_ShivvenTell",
+           "found": true,
+           "defName": "RM_ShivvenTell",
+           "defType": "FleckDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShivvenTell"
+           }
+          },
+          {
+           "requested": "GenStepDef/RM_WreckField_NightsideIce",
+           "found": true,
+           "defName": "RM_WreckField_NightsideIce",
+           "defType": "GenStepDef",
+           "label": "Nightside Ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WreckField_NightsideIce"
+           }
+          },
+          {
+           "requested": "HediffDef/RM_ShivvenUnderIce",
+           "found": true,
+           "defName": "RM_ShivvenUnderIce",
+           "defType": "HediffDef",
+           "label": "in the ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShivvenUnderIce"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_Shivven",
+           "found": true,
+           "defName": "RM_Shivven",
+           "defType": "PawnKindDef",
+           "label": "shivven",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Shivven"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_ShivvenBreach",
+           "found": true,
+           "defName": "RM_ShivvenBreach",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShivvenBreach"
+           }
+          },
+          {
+           "requested": "SoundDef/RM_ShivvenRumble",
+           "found": true,
+           "defName": "RM_ShivvenRumble",
+           "defType": "SoundDef",
+           "label": null,
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShivvenRumble"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_BreachCrack",
+           "found": true,
+           "defName": "RM_BreachCrack",
+           "defType": "ThingDef",
+           "label": "crack in the ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_BreachCrack"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_NightsideExpeditionRig",
+           "found": true,
+           "defName": "RM_NightsideExpeditionRig",
+           "defType": "ThingDef",
+           "label": "abandoned expedition rig",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NightsideExpeditionRig"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_NightsideWreckHull",
+           "found": true,
+           "defName": "RM_NightsideWreckHull",
+           "defType": "ThingDef",
+           "label": "frost-locked hull section",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NightsideWreckHull"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_NightsideWreckTank",
+           "found": true,
+           "defName": "RM_NightsideWreckTank",
+           "defType": "ThingDef",
+           "label": "frost-locked tank",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_NightsideWreckTank"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Shivven",
+           "found": true,
+           "defName": "RM_Shivven",
+           "defType": "ThingDef",
+           "label": "shivven",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Shivven"
+           }
+          }
+         ],
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_463d69dcfb1141d0962b70435e90dd4b",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:52.4737365+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:52.5233455+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breachEnabled_round_trips",
+      "toggle": "breachEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breachFirstCountdownHours_round_trips",
+      "toggle": "breachFirstCountdownHours",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breachFrequencyScale_round_trips",
+      "toggle": "breachFrequencyScale",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breachWarnings_round_trips",
+      "toggle": "breachWarnings",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "heatDialAlert_round_trips",
+      "toggle": "heatDialAlert",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "heatDialAlertThreshold_round_trips",
+      "toggle": "heatDialAlertThreshold",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "heatDialEnabled_round_trips",
+      "toggle": "heatDialEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "heatDialScale_round_trips",
+      "toggle": "heatDialScale",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "masterEnabled_round_trips",
+      "toggle": "masterEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shivvenHeatSeek_round_trips",
+      "toggle": "shivvenHeatSeek",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shivvenIceOnly_round_trips",
+      "toggle": "shivvenIceOnly",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shivvenSenseRange_round_trips",
+      "toggle": "shivvenSenseRange",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shivvenStrikeHeaters_round_trips",
+      "toggle": "shivvenStrikeHeaters",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "biome_doctrine",
+    "components": [
+     {
+      "name": "flags_and_worker_match_the_sheet",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: get_defs cannot read BiomeDef.workerClass (Type-valued fields read '(no such field)'); the density and flag checks above passed",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "animalDensity",
+          "plantDensity",
+          "allowRoads",
+          "allowRivers",
+          "allowFarmingCamps",
+          "isExtremeBiome",
+          "workerClass"
+         ],
+         "defs": [
+          {
+           "requested": "BiomeDef/RM_NightsideIce",
+           "found": true,
+           "defName": "RM_NightsideIce",
+           "defType": "BiomeDef",
+           "label": "the Sleeping Ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "allowRoads": true,
+            "allowRivers": false,
+            "allowFarmingCamps": false,
+            "animalDensity": 0.2,
+            "plantDensity": 0.0,
+            "isExtremeBiome": true,
+            "workerClass": "(no such field)"
+           }
+          }
+         ],
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_c80502f7430047afb4f0f2678c7abaa4",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:55.7998662+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:55.8402489+00:00",
+          "DurationMs": 40,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "biome_roster",
+    "components": [
+     {
+      "name": "biome_probe_ready",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/biome_probe",
+        "result": {
+         "success": true,
+         "message": "1 biome(s) probed; searched for 1 name(s) \u2014 read `findResults` per biome, and note that present-at-commonality-0 is NOT absent.",
+         "biomesProbed": 1,
+         "notFound": [],
+         "searched": [
+          "RM_NightsideIceNoSuchCreature_ZZ"
+         ],
+         "absentFromEveryProbedBiome": [
+          "RM_NightsideIceNoSuchCreature_ZZ"
+         ],
+         "biomes": [
+          {
+           "defName": "RM_NightsideIce",
+           "label": "the Sleeping Ice",
+           "modName": "RimMandrake: Baroque Biomes",
+           "implemented": true,
+           "generatesNaturally": true,
+           "canBuildBase": true,
+           "canAutoChoose": true,
+           "isExtremeBiome": true,
+           "isWaterBiome": false,
+           "impassable": false,
+           "animalDensity": 0.2,
+           "plantDensity": 0.0,
+           "diseaseMtbDays": 90.0,
+           "forageability": 0.0,
+           "foragedFood": null,
+           "settlementSelectionWeight": 1.0,
+           "wildAnimalCount": 0,
+           "wildPlantCount": 0,
+           "animalsListed": 0,
+           "plantsListed": 0,
+           "animals": [],
+           "plants": [],
+           "findResults": [
+            {
+             "defName": "RM_NightsideIceNoSuchCreature_ZZ",
+             "present": false,
+             "state": "absent",
+             "declared": false,
+             "where": null,
+             "commonality": 0.0,
+             "declaredCommonality": 0.0
+            }
+           ]
+          }
+         ],
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_3bfe08b748b44f72b55dc8b9eff2dd9d",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:55.8490195+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:55.8901472+00:00",
+          "DurationMs": 41,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "no_wild_plants",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "animal_rows_carry_source_commonality",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "heat_dial",
+    "components": [
+     {
+      "name": "dial_reads",
+      "toggle": "heatDialEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofDial(Verse.Map)",
+         "result": "DIAL 0.00 raw 0.0 heaters 0.0 fires 0.0 power 0.0 rooms 0.0 applies=False biome=RM_Stillsand",
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_93e338c139114dcb96c1b8adb1874b52",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:55.8901472+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:55.9400886+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "fire_raises_the_dial",
+      "toggle": "heatDialEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofFireRaisesDial(Verse.Map)",
+         "result": "BEFORE raw 0.0 AFTER raw 20.0 rose=True",
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_854378be92724be0aa8405c58fd8eb4d",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:55.9400886+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:55.9901786+00:00",
+          "DurationMs": 50,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "shivven",
+    "components": [
+     {
+      "name": "site_powered_heater",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: site fixture: the campfire in the roofed room is not pushing heat: DIAL 0.00 raw 0.2 heaters 0.0 fires 0.0 power 0.0 rooms 0.2 applies=False biome=RM_Stillsand",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/map_info",
+        "result": {
+         "success": true,
+         "tile": 89672,
+         "tileValid": true,
+         "mapId": 2,
+         "sizeX": 250,
+         "sizeZ": 250,
+         "cellCount": 62500,
+         "tileInfo": {
+          "biome": "RM_Stillsand",
+          "hilliness": "Mountainous",
+          "hillinessInt": 4,
+          "elevation": 979.654,
+          "rainfall": 2161.193,
+          "swampiness": 0.0,
+          "temperature": 15.0,
+          "pollution": 0.0,
+          "waterCovered": false,
+          "isSurfaceTile": true,
+          "fieldErrors": null
+         },
+         "mapBiome": "RM_Stillsand",
+         "mapBiomeLabel": "the Stillsand",
+         "outdoorTempNow": 27.3022385,
+         "latitude": 32.438343,
+         "longitude": 14.4772415,
+         "season": "Spring",
+         "mapParent": {
+          "defName": "Settlement",
+          "label": "Colony",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals"
+         },
+         "playerSettlementsOnThisTile": 1,
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_6e0d9db1d3d44297aaf6b38d7b5d1b47",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:55.9901786+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:56.0388035+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/make_empty_room",
+        "result": {
+         "success": true,
+         "rect": {
+          "x": 135,
+          "z": 135,
+          "w": 13,
+          "h": 13
+         },
+         "wallDef": "Wall",
+         "floorDef": "Soil",
+         "doorAt": {
+          "x": 144,
+          "z": 147
+         },
+         "cellsWalled": 48,
+         "cellsFloored": 169,
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_a2aa222568e744df99aa41cf7f2a9256",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/make-empty-room",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:56.04031+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:56.1120253+00:00",
+          "DurationMs": 71,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/build_batch",
+        "result": {
+         "success": true,
+         "placed": 1,
+         "survived": 1,
+         "lostToLaterOps": 0,
+         "failedCount": 0,
+         "failed": [],
+         "displacedCount": 0,
+         "displaced": [],
+         "placeWorkerWarningsCount": 0,
+         "placeWorkerWarnings": [],
+         "qualityIgnoredForDefs": [],
+         "message": "1 placed.",
+         "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+         "things": [
+          {
+           "def": "Campfire",
+           "stuff": null,
+           "x": 141,
+           "z": 141,
+           "rot": 0,
+           "faction": "PlayerColony",
+           "hitPoints": 80,
+           "maxHitPoints": 80,
+           "quality": null,
+           "destroyed": false
+          }
+         ],
+         "ticksGame": 212246,
+         "operation": {
+          "OperationId": "op_1ca5ef39f50c460e8d4eaeff868f3c11",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/build-batch",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:56.113029+00:00",
+          "CompletedAtUtc": "2026-10-07T09:42:56.1415461+00:00",
+          "DurationMs": 28,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/step_game_ticks",
+        "result": {
+         "success": true,
+         "stepId": "step_81fd3a01f5b5447e891553abe0202b76",
+         "status": "completed",
+         "requestedTicks": 300,
+         "completedTicks": 300,
+         "remainingTicks": 0,
+         "startTicksGame": 212246,
+         "endTicksGame": 212546,
+         "advancedTicks": 300,
+         "initialFrame": 73895,
+         "lastFrame": 74194,
+         "advancedFrames": 300,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T09:42:56.1580618+00:00",
+         "completedAtUtc": "2026-10-07T09:43:01.1426424+00:00",
+         "message": "Advanced 300 game tick(s) across 300 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_2",
+          "currentMapIndex": 0,
+          "mapCount": 1,
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "screenFading": false,
+          "fadeOverlayAlpha": 0.0,
+          "gameDataReady": true,
+          "mapDataReady": true,
+          "currentMapReady": true,
+          "screenFadeClear": true,
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true
+         },
+         "operation": {
+          "OperationId": "op_8db234c6f89c44809fd3f5e0b1dde571",
+          "CapabilityId": "rimbridge.core/lifecycle/step-game-ticks",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:42:56.1425495+00:00",
+          "CompletedAtUtc": "2026-10-07T09:43:01.1581524+00:00",
+          "DurationMs": 5015,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofDial(Verse.Map)",
+         "result": "DIAL 0.00 raw 0.2 heaters 0.0 fires 0.0 power 0.0 rooms 0.2 applies=False biome=RM_Stillsand",
+         "ticksGame": 212546,
+         "operation": {
+          "OperationId": "op_36366a2ecefa445792095e53e2676e94",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:43:01.1591529+00:00",
+          "CompletedAtUtc": "2026-10-07T09:43:01.2081583+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "seeks_heater_under_ice",
+      "toggle": "shivvenHeatSeek",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: site fixture: the campfire in the roofed room is not pushing heat: DIAL 0.00 raw 0.2 heaters 0.0 fires 0.0 power 0.0 rooms 0.2 applies=False biome=RM_Stillsand",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "stays_on_ice",
+      "toggle": "shivvenIceOnly",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: site fixture: the campfire in the roofed room is not pushing heat: DIAL 0.00 raw 0.2 heaters 0.0 fires 0.0 power 0.0 rooms 0.2 applies=False biome=RM_Stillsand",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "breach_cracks",
+    "components": [
+     {
+      "name": "first_crack_on_open_ice_taught",
+      "toggle": "breachEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofOpen(Verse.Map)",
+         "result": "OPEN cell=(131, 0, 129) terrain=Ice roofed=False floor=False taught=True hours=24 shivven=6",
+         "ticksGame": 212546,
+         "operation": {
+          "OperationId": "op_f4c8c1f49e2b4bf5a10351598c5b2fcf",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:43:01.2096636+00:00",
+          "CompletedAtUtc": "2026-10-07T09:43:01.2590293+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "crack_releases_shivven",
+      "toggle": "breachEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofRelease(Verse.Map)",
+         "result": "RELEASED 6 crackGone=True",
+         "ticksGame": 212546,
+         "operation": {
+          "OperationId": "op_5e162f7345dd4c30b24a7a7e33d8d7f0",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:43:01.2600317+00:00",
+          "CompletedAtUtc": "2026-10-07T09:43:01.3083498+00:00",
+          "DurationMs": 48,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "destroyed_crack_stops_breach",
+      "toggle": "breachEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofDestroyStops(Verse.Map)",
+         "result": "STOPPED shivvenBefore=6 after=6 secondTaught=False",
+         "ticksGame": 212546,
+         "operation": {
+          "OperationId": "op_142c61e5f9d448b2a95eed20eb0b18aa",
+          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+          "Status": 2,
+          "Success": true,
+          "StartedAtUtc": "2026-10-07T09:43:01.3093493+00:00",
+          "CompletedAtUtc": "2026-10-07T09:43:01.3586975+00:00",
+          "DurationMs": 49,
+          "Result": null,
+          "HasResult": true,
+          "ResultWasTruncated": false,
+          "Warnings": [],
+          "Error": null,
+          "Metadata": {}
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "map_mechanics",
+    "components": [
+     {
+      "name": "generated_map_is_all_ice_without_water",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: an all-Ice terrain map with no ponds and Clear-only weather exists only on a map GENERATED as RM_NightsideIce; the bridge cannot generate a map",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\NightsideIce.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}
