@@ -70,9 +70,24 @@ namespace RimMandrake.Abyss
         // ABYSS_FREE_CRYPTID_1 (RM_AbyssCryptid.cs): rumor-sites, the exchange, the clear pocket around nothing, the whisper, the dream.
         public static bool cryptidSignsEnabled = true;
 
+        // ABYSS_LIGHTFALL_BROOD_WRECK_1 (RM_BroodLair.cs, RM_BroodEgg.cs, RM_ShipWreck.cs): the brood lair, the wreck in
+        // its wall, the egg's storms, the bonded beast's bane and hunger, and how deeply she sleeps.
+        public static bool broodLairEnabled = true;
+        public static bool wreckEnabled = true;
+        public static bool eggStormsEnabled = true;
+        public static bool baneEnabled = true;
+        public static float beastHunger = 1f;
+        public static float broodSleepDepth = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref broodLairEnabled, "broodLairEnabled", true, true);
+            Scribe_Values.Look(ref wreckEnabled, "wreckEnabled", true, true);
+            Scribe_Values.Look(ref eggStormsEnabled, "eggStormsEnabled", true, true);
+            Scribe_Values.Look(ref baneEnabled, "baneEnabled", true, true);
+            Scribe_Values.Look(ref beastHunger, "beastHunger", 1f, true);
+            Scribe_Values.Look(ref broodSleepDepth, "broodSleepDepth", 1f, true);
             Scribe_Values.Look(ref lightAversionEnabled, "lightAversionEnabled", true, true);
             Scribe_Values.Look(ref fleeRadiusMultiplier, "fleeRadiusMultiplier", 1f, true);
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
@@ -180,6 +195,24 @@ namespace RimMandrake.Abyss
                 + "caches; an item left unwatched on a ring of shards in the Dark is sometimes swapped for goods of about its "
                 + "value; a clear pocket rarely opens over nothing; colonists whisper, and after a long stay one may dream of not "
                 + "needing the light. Off: none of it; the biome is whole without it. Rumor-sites affect maps generated afterwards.");
+
+            list.CheckboxLabeled("A brood lair at the bottom of the deepest chasm", ref broodLairEnabled,
+                "On: where a map is marked for it, a summ brood-mother the size of the land sleeps round her eggs among a field of great bones. "
+                + "Light, salvage cutting and taking an egg stir her; she shows it before she wakes, and awake she cannot be fought. "
+                + "Off: no lair on maps generated afterwards, and an existing lair's meter stops moving (map generation).");
+            list.Label("How deeply she sleeps: " + broodSleepDepth.ToString("0.0") + "x");
+            broodSleepDepth = list.Slider(broodSleepDepth, 0.5f, 2f);
+            list.Label("Higher lets you take more before she wakes. Fixed for a lair when its map is made.");
+            list.CheckboxLabeled("A wrecked rescue ship in the lair wall", ref wreckEnabled,
+                "On: the lair holds a wrecked rescue gravship to cut fittings from. Your own ship takes only some of them, to restore what has worn; "
+                + "the rest is loot. Off: no wreck on lairs generated afterwards (map generation).");
+            list.CheckboxLabeled("A stolen egg brings Witchfire storms home", ref eggStormsEnabled,
+                "On: while a stolen summ egg is kept on your home map, Witchfire storms gather there every several days and a summ comes looking. Off: the egg is quiet. Safe mid-game.");
+            list.CheckboxLabeled("A bonded summ kills what it finds", ref baneEnabled,
+                "On: a summ that imprinted on you hunts wild animals on its own, semi-randomly, and now and then turns on a tame one. Off: it behaves like any tame animal. Safe mid-game.");
+            list.Label("Bonded summ hunger: " + beastHunger.ToString("0.0") + "x");
+            beastHunger = list.Slider(beastHunger, 0.5f, 3f);
+            list.Label("How ruinous its appetite is on top of its size. 1 = shipped.");
 
             lastHeight = list.CurHeight + 12f;
             list.End();

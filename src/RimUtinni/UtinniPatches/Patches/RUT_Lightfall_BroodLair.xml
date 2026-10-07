@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_LIGHTFALL_BROOD_WRECK_1: the brood lair lies at the bottom of Lightfall. Marks RUT_Lightfall with
+  the free Abyss mod's RM_BroodLairExtension, which RM_GenStep_BroodLair reads off the tile's landmark.
+  An extension, not a mutatorChances entry: tile 9023 already holds its landmark in the frozen world, and
+  a mutator added to the LandmarkDef now would never reach that tile.
+  Guarded on the extension's genstep existing (the Abyss mod present); a bare MayRequire on an Operation
+  is inert in 1.6 (CLAUDE.md, PATCH_MAYREQUIRE_GUARD_INERT_1).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/GenStepDef[defName="RM_BroodLair"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/LandmarkDef[defName="RUT_Lightfall"]/modExtensions</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/LandmarkDef[defName="RUT_Lightfall"]/modExtensions</xpath>
+        <value>
+          <li Class="RimMandrake.Abyss.RM_BroodLairExtension" />
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/LandmarkDef[defName="RUT_Lightfall"]</xpath>
+        <value>
+          <modExtensions>
+            <li Class="RimMandrake.Abyss.RM_BroodLairExtension" />
+          </modExtensions>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
+</Patch>

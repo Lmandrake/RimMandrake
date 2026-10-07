@@ -157,6 +157,12 @@
         <coolPerRareTick>0.06</coolPerRareTick>
         <sunburnHediff>RM_SummSunburn</sunburnHediff>
       </li>
+      <!-- ABYSS_LIGHTFALL_BROOD_WRECK_1: a summ that imprinted on the player kills what it finds (inert on wild ones) -->
+      <li Class="RimMandrake.Abyss.CompProperties_RM_SummBane">
+        <checkInterval>2000</checkInterval>
+        <searchRadius>45</searchRadius>
+        <hungerHediff>RM_SummRuinousHunger</hungerHediff>
+      </li>
     </comps>
     <tradeTags>
       <li>AnimalExotic</li>

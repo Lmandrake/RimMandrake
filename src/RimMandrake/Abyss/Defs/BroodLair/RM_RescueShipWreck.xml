@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_LIGHTFALL_BROOD_WRECK_1 - the Ship in the Wall (Source/RM_ShipWreck.cs). A salvage site, never a
+  second ship. Seven fittings; the player's ship TAKES four (repairs worn ship buildings) and REFUSES three
+  (it likes what it is: a foreign bridge, a foreign field lattice, a rescue berth). Refused parts are loot:
+  sell them, or smelt them. Each cut feeds the brood's wake meter by the part's greed (RM_ShipPartExtension).
+  Greed total 0.90 + the egg 0.35 = 1.25 > the highest possible threshold 1.15: the whole haul and the egg
+  always wake her; a modest haul never does. PROVISIONAL. Placeholder art: vanilla ship chunk and resources.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_RescueShipWreck</defName>
+    <label>rescue ship in the wall</label>
+    <description>A rescue gravship that came down into the chasm after someone and never came back up, driven nose-first into the rock. Its hull is split but much of its fitting-out is whole. Cut fittings free with salvage bills. The cutting is loud, and something enormous sleeps nearby.</description>
+    <thingClass>RimMandrake.Abyss.Building_RM_ShipWreck</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Exotic/ShipChunk</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(8,6)</drawSize>
+      <color>(0.75,0.75,0.8)</color>
+    </graphicData>
+    <size>(6,4)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <blockWind>true</blockWind>
+    <rotatable>false</rotatable>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-3)</interactionCellOffset>
+    <statBases>
+      <MaxHitPoints>3000</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-20</Beauty>
+      <WorkToBuild>30000</WorkToBuild>
+    </statBases>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <claimable>false</claimable>
+      <alwaysDeconstructible>false</alwaysDeconstructible>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <killedLeavings>
+      <ChunkSlagSteel>6</ChunkSlagSteel>
+    </killedLeavings>
+    <modExtensions>
+      <li Class="RimMandrake.Abyss.RM_WreckStockExtension">
+        <stock>
+          <RM_ShipPart_HullPlating>1</RM_ShipPart_HullPlating>
+          <RM_ShipPart_ConduitLoom>1</RM_ShipPart_ConduitLoom>
+          <RM_ShipPart_ThrusterLiner>1</RM_ShipPart_ThrusterLiner>
+          <RM_ShipPart_SealGaskets>1</RM_ShipPart_SealGaskets>
+          <RM_ShipPart_BridgeConsole>1</RM_ShipPart_BridgeConsole>
+          <RM_ShipPart_FieldLattice>1</RM_ShipPart_FieldLattice>
+          <RM_ShipPart_RescueBerth>1</RM_ShipPart_RescueBerth>
+        </stock>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ══ the fittings ═════════════════════════════════════════════════════ -->
+
+  <ThingDef Name="RM_ShipPartBase" ParentName="ResourceBase" Abstract="True">
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <stackLimit>5</stackLimit>
+    <tradeability>All</tradeability>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentSpacer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>1.3</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>8</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+  </ThingDef>
+
+  <!-- accepted: the ship takes these, to restore what has worn -->
+  <ThingDef Name="RM_ShipPartAcceptedBase" ParentName="RM_ShipPartBase" Abstract="True">
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Fit {0_label} to the ship</useLabel>
+        <useDuration>900</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="RimMandrake.Abyss.CompProperties_RM_FitToShip">
+        <accepted>true</accepted>
+        <repairBudget>400</repairBudget>
+      </li>
+      <li Class="CompProperties_UseEffectDestroySelf" />
+    </comps>
+  </ThingDef>
+
+  <!-- refused: the use gizmo is disabled and says why in plain words; smelt or sell them -->
+  <ThingDef Name="RM_ShipPartRefusedBase" ParentName="RM_ShipPartBase" Abstract="True">
+    <smeltable>true</smeltable>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Fit {0_label} to the ship</useLabel>
+        <useDuration>900</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="RimMandrake.Abyss.CompProperties_RM_FitToShip">
+        <accepted>false</accepted>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_ShipPartAcceptedBase">
+    <defName>RM_ShipPart_HullPlating</defName>
+    <label>rescue-ship hull plating</label>
+    <description>Curved hull plates cut from the rescue ship, the same old pattern as your own. Your ship will take them: fitted, they restore worn plating and fittings aboard.</description>
+    <graphicData><texPath>Things/Item/Resource/Plasteel</texPath><color>(170,170,185)</color></graphicData>
+    <statBases><MarketValue>420</MarketValue></statBases>
+    <modExtensions><li Class="RimMandrake.Abyss.RM_ShipPartExtension"><greed>0.12</greed></li></modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_ShipPartAcceptedBase">
+    <defName>RM_ShipPart_ConduitLoom</defName>
+    <label>conduit loom</label>
+    <description>A bundled loom of power and data conduit, pulled whole from the rescue ship's spine. Your ship will take it: fitted, it restores worn fittings aboard.</description>
+    <graphicData><color>(200,170,120)</color></graphicData>
+    <statBases><MarketValue>380</MarketValue></statBases>
+    <modExtensions><li Class="RimMandrake.Abyss.RM_ShipPartExtension"><greed>0.12</greed></li></modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_ShipPartAcceptedBase">
+    <defName>RM_ShipPart_ThrusterLiner</defName>
+    <label>thruster liner</label>
+    <description>A ceramic thruster liner from the rescue ship, unburnt. Your ship will take it: fitted, it restores worn fittings aboard.</description>
+    <graphicData><color>(190,190,170)</color></graphicData>
+    <statBases><MarketValue>460</MarketValue></statBases>
+    <modExtensions><li Class="RimMandrake.Abyss.RM_ShipPartExtension"><greed>0.12</greed></li></modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_ShipPartAcceptedBase">
+    <defName>RM_ShipPart_SealGaskets</defName>
+    <label>seal gaskets</label>
+    <description>A crate of hatch and hull seal gaskets, still supple. Your ship will take them: fitted, they restore worn fittings aboard.</description>
+    <graphicData><color>(120,140,150)</color></graphicData>
+    <statBases><MarketValue>300</MarketValue></statBases>
+    <modExtensions><li Class="RimMandrake.Abyss.RM_ShipPartExtension"><greed>0.12</greed></li></modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_ShipPartRefusedBase">
+    <defName>RM_ShipPart_BridgeConsole</defName>
+    <label>rescue-ship bridge console</label>
+    <description>The rescue ship's whole bridge console, a newer design than yours and laid out for a different crew. Your ship will not take it: it likes what it is. Sell it, or melt it down.</description>
+    <graphicData><color>(140,160,200)</color></graphicData>
+    <statBases><MarketValue>900</MarketValue><Mass>20</Mass></statBases>
+    <smeltProducts><Plasteel>25</Plasteel><ComponentSpacer>1</ComponentSpacer></smeltProducts>
+    <modExtensions><li Class="RimMandrake.Abyss.RM_ShipPartExtension"><greed>0.12</greed></li></modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_ShipPartRefusedBase">
+    <defName>RM_ShipPart_FieldLattice</defName>
+    <label>foreign grav-field lattice</label>
+    <description>The rescue ship's grav-field lattice, a design built around a different engine. Cutting it free is the loudest work in the wreck. Your ship will not take it: it refuses deep redesign. Sell it, or melt it down.</description>
+    <graphicData><color>(160,120,200)</color></graphicData>
+    <statBases><MarketValue>1400</MarketValue><Mass>25</Mass></statBases>
+    <smeltProducts><Plasteel>30</Plasteel><ComponentSpacer>2</ComponentSpacer></smeltProducts>
+    <modExtensions><li Class="RimMandrake.Abyss.RM_ShipPartExtension"><greed>0.18</greed></li></modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_ShipPartRefusedBase">
+    <defName>RM_ShipPart_RescueBerth</defName>
+    <label>rescue berth</label>
+    <description>A fold-out rescue berth with its own small life-support, the reason this ship came down here. Your ship will not take it: it likes what it is. Sell it, or melt it down.</description>
+    <graphicData><color>(210,200,200)</color></graphicData>
+    <statBases><MarketValue>650</MarketValue><Mass>18</Mass></statBases>
+    <smeltProducts><Steel>40</Steel><ComponentIndustrial>2</ComponentIndustrial></smeltProducts>
+    <modExtensions><li Class="RimMandrake.Abyss.RM_ShipPartExtension"><greed>0.12</greed></li></modExtensions>
+  </ThingDef>
+
+  <!-- ══ salvage bills: one per fitting, at the wreck only ══════════════════ -->
+
+  <RecipeDef Name="RM_WreckSalvageBase" Abstract="True">
+    <workerClass>RimMandrake.Abyss.RM_RecipeWorker_WreckSalvage</workerClass>
+    <jobString>Cutting salvage from the wreck.</jobString>
+    <workAmount>2400</workAmount>
+    <workSkill>Construction</workSkill>
+    <effectWorking>ConstructMetal</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <recipeUsers>
+      <li>RM_RescueShipWreck</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_WreckSalvageBase">
+    <defName>RM_Salvage_HullPlating</defName>
+    <label>cut free hull plating</label>
+    <description>Cut the rescue ship's hull plating free. Loud work.</description>
+    <products><RM_ShipPart_HullPlating>1</RM_ShipPart_HullPlating></products>
+  </RecipeDef>
+  <RecipeDef ParentName="RM_WreckSalvageBase">
+    <defName>RM_Salvage_ConduitLoom</defName>
+    <label>pull the conduit loom</label>
+    <description>Pull the conduit loom out of the rescue ship's spine. Loud work.</description>
+    <products><RM_ShipPart_ConduitLoom>1</RM_ShipPart_ConduitLoom></products>
+  </RecipeDef>
+  <RecipeDef ParentName="RM_WreckSalvageBase">
+    <defName>RM_Salvage_ThrusterLiner</defName>
+    <label>cut out a thruster liner</label>
+    <description>Cut a thruster liner out of the rescue ship. Loud work.</description>
+    <products><RM_ShipPart_ThrusterLiner>1</RM_ShipPart_ThrusterLiner></products>
+  </RecipeDef>
+  <RecipeDef ParentName="RM_WreckSalvageBase">
+    <defName>RM_Salvage_SealGaskets</defName>
+    <label>strip the seal gaskets</label>
+    <description>Strip the rescue ship's seal gaskets. Loud work.</description>
+    <products><RM_ShipPart_SealGaskets>1</RM_ShipPart_SealGaskets></products>
+  </RecipeDef>
+  <RecipeDef ParentName="RM_WreckSalvageBase">
+    <defName>RM_Salvage_BridgeConsole</defName>
+    <label>cut out the bridge console</label>
+    <description>Cut the rescue ship's whole bridge console free. Loud work.</description>
+    <products><RM_ShipPart_BridgeConsole>1</RM_ShipPart_BridgeConsole></products>
+  </RecipeDef>
+  <RecipeDef ParentName="RM_WreckSalvageBase">
+    <defName>RM_Salvage_FieldLattice</defName>
+    <label>cut out the grav-field lattice</label>
+    <description>Cut the rescue ship's grav-field lattice free. The loudest work in the wreck.</description>
+    <workAmount>4000</workAmount>
+    <products><RM_ShipPart_FieldLattice>1</RM_ShipPart_FieldLattice></products>
+  </RecipeDef>
+  <RecipeDef ParentName="RM_WreckSalvageBase">
+    <defName>RM_Salvage_RescueBerth</defName>
+    <label>unbolt the rescue berth</label>
+    <description>Unbolt the rescue berth from the rescue ship. Loud work.</description>
+    <products><RM_ShipPart_RescueBerth>1</RM_ShipPart_RescueBerth></products>
+  </RecipeDef>
+
+</Defs>
