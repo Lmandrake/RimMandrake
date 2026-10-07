@@ -22,6 +22,12 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>Speed an auto-retracted (cut) hose winds back at, cells per tick (3 cells/s, the base winding speed).</summary>
         public const double AutoWindPerTick = 3.0 / 60.0;
 
+        /// <summary>GPT source read 2026-10-06 B4: is a cache read at <paramref name="lastTick"/> still fresh at
+        /// <paramref name="now"/>? Long arithmetic, and a never-read cache (lastTick = int.MinValue) is never fresh: the
+        /// int subtraction overflowed to a negative number, which read as fresh forever.</summary>
+        public static bool CacheFresh(int now, int lastTick, int interval) =>
+            lastTick != int.MinValue && (long)now - lastTick >= 0 && (long)now - lastTick < interval;
+
         /// <summary>Section 7, the end-kind rule: a relay intake beats a port (pipe/tank beside the end) beats water beats
         /// nothing. No hose out = None.</summary>
         public static HoseEndKind EndKind(bool hoseOut, bool onRelay, bool besidePort, bool inWater)

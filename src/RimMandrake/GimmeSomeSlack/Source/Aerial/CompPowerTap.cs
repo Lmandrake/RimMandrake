@@ -86,20 +86,25 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             victimNetHash = victim == null ? 0 : System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(victim);
             victimFaction = vt?.Faction?.Name ?? (vt != null ? "no faction" : null);
             float stolenWd = 0f;
-            if (victim != null && ours != null)
+            // GPT source read 2026-10-06 A2: a clamp switched off or broken down drains nothing (it used to debit the victim
+            // regardless and only stop delivering the power)
+            bool working = FlickUtility.WantsToBeOn(parent) && !parent.IsBrokenDown();
+            if (victim != null && ours != null && working)
             {
                 TapRegistry.bypass++;
                 float rawGain, stored;
                 try { rawGain = victim.CurrentEnergyGainRate(); stored = victim.CurrentStoredEnergy(); }
                 finally { TapRegistry.bypass--; }
+                // A1: the gain is read with every tap's debit bypassed, so subtract what the taps that ticked before this one
+                // already took from this victim this tick
                 stolenWd = (float)AerialMath.TapStolenPerTick(AerialSettings.tapRate, rawGain, stored, CompPower.WattsToWattDaysPerTick,
-                    victim == ours, AerialSettings.tapsEnabled && AerialSettings.enabled);
+                    victim == ours, AerialSettings.tapsEnabled && AerialSettings.enabled, TapRegistry.TakenThisTick(victim), working);
             }
             if (stolenWd > 0f) TapRegistry.Debit(victim, stolenWd);
             lastStolenW = stolenWd / CompPower.WattsToWattDaysPerTick;
             stolenTotalWd += stolenWd;
             sinceEventWd += stolenWd;
-            if (!t.PowerOn && lastStolenW > 0f && FlickUtility.WantsToBeOn(parent) && !parent.IsBrokenDown()) t.PowerOn = true;
+            if (!t.PowerOn && lastStolenW > 0f && working) t.PowerOn = true;
             t.PowerOutput = t.PowerOn ? lastStolenW : 0f;
             if (parent.IsHashIntervalTick(250) && sinceEventWd > 0f)
             {
@@ -134,6 +139,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             e.wd += wd;
             debits[net] = e;
             if (debits.Count > 64) Prune(now);
+        }
+
+        /// <summary>A1: energy the taps already debited from this net during the CURRENT tick (0 before the first tap ticks).</summary>
+        public static float TakenThisTick(PowerNet net)
+        {
+            if (net == null || !debits.TryGetValue(net, out Entry e)) return 0f;
+            return e.tick == Find.TickManager.TicksGame ? e.wd : 0f;
         }
 
         /// <summary>Energy owed by this net for the current (or the previous) tick: the thing tick and the net tick

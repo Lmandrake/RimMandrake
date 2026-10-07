@@ -457,5 +457,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (avail <= 0) return 0;
             return Math.Min(rateW * k, avail);
         }
+
+        /// <summary>GPT source read 2026-10-06 A1/A2: as above, but (A1) what other taps already took from this victim THIS
+        /// tick is no longer on offer, so several taps share one surplus instead of each claiming all of it; and (A2) a
+        /// clamp switched off or broken down (<paramref name="working"/> false) takes nothing at all.</summary>
+        public static double TapStolenPerTick(double rateW, double rawGainPerTick, double stored, double k, bool sameNet, bool enabled,
+                                              double takenThisTickByOthers, bool working)
+        {
+            if (!working) return 0;
+            return TapStolenPerTick(rateW, rawGainPerTick - Math.Max(0, takenThisTickByOthers), stored, k, sameNet, enabled);
+        }
     }
 }

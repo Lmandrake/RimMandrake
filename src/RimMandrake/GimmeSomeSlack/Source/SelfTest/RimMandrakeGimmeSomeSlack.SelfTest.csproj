@@ -67,6 +67,7 @@
     <Compile Include="..\Hose\HoseLive.cs" />
     <Compile Include="HoseLiveChecks.cs" />
     <Compile Include="GssFuzz.cs" />
+    <Compile Include="GptReadFixChecks.cs" />
   </ItemGroup>
 
   <ItemGroup>
