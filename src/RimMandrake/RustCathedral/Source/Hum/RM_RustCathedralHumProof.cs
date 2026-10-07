@@ -27,10 +27,8 @@ namespace RimMandrake.RustCathedral.Hum
             return comp;
         }
 
-        private static int Goodwill() => Faction.OfMechanoids?.GoodwillWith(Faction.OfPlayer) ?? 0;
-
         /// <summary>The value ladder, climbing then falling through the hysteresis margin.
-        /// "LADDER goodwill G | weight W | up i:b/l,... | down i:b/l,...", i = irritation, b = band, l = hum layers.</summary>
+        /// "LADDER standing S | weight W | up i:b/l,... | down i:b/l,...", i = irritation, b = band, l = hum layers.</summary>
         public static string ProofLadder()
         {
             Map map = Find.CurrentMap;
@@ -41,9 +39,9 @@ namespace RimMandrake.RustCathedral.Hum
             try
             {
                 RustCathedralHumSettings.humMechanicEnabled = true;
-                // Irritation is chosen so the COMPOSITE (irritation - goodwill x weight) lands on each threshold; a
-                // composite the goodwill floor already exceeds cannot be reached and reads as the floor band.
-                float offset = -Goodwill() * def.goodwillCompositeWeight;
+                // Irritation is chosen so the COMPOSITE (irritation - standing x weight) lands on each threshold; a
+                // composite the standing floor already exceeds cannot be reached and reads as the floor band.
+                float offset = -comp.ProofStanding * def.goodwillCompositeWeight;
                 var up = new List<string>();
                 comp.ProofBandAt(0f);
                 foreach (float composite in new[] { 0f, 10f, 30f, 55f, 80f })
@@ -58,12 +56,37 @@ namespace RimMandrake.RustCathedral.Hum
                     int b = comp.ProofBandAt(composite - offset);
                     down.Add(composite.ToString("0", CultureInfo.InvariantCulture) + ":" + b + "/" + comp.ProofLayers);
                 }
-                return "LADDER goodwill " + Goodwill() + " | weight " + def.goodwillCompositeWeight.ToString("0.00", CultureInfo.InvariantCulture)
+                return "LADDER standing " + comp.ProofStanding + " | weight " + def.goodwillCompositeWeight.ToString("0.00", CultureInfo.InvariantCulture)
                     + " | up " + string.Join(",", up) + " | down " + string.Join(",", down);
             }
             finally
             {
                 RustCathedralHumSettings.humMechanicEnabled = was;
+                if (map.Biome?.defName != def.targetBiome) comp.ProofReset();
+            }
+        }
+
+        /// <summary>RUSTCATHEDRAL_GOODWILL_FLOOR_1: one worst-band drain step, run through the real drain with its
+        /// interval and day budget cleared, then the standing restored. "DRAIN standing A -> B | expected D".</summary>
+        public static string ProofDrain()
+        {
+            Map map = Find.CurrentMap;
+            RM_MapComponent_BiomeAttitude comp = Bind(map, out string refusal);
+            if (comp == null) return refusal;
+            RM_BiomeAttitudeDef def = DefDatabase<RM_BiomeAttitudeDef>.GetNamed(AttitudeDefName);
+            bool wasDrain = RustCathedralHumSettings.goodwillDrainEnabled;
+            int before = comp.ProofStanding;
+            try
+            {
+                RustCathedralHumSettings.goodwillDrainEnabled = true;
+                comp.ProofDrainOnce();
+                int after = comp.ProofStanding;
+                return "DRAIN standing " + before + " -> " + after + " | expected " + def.worstBandGoodwillTickAmount;
+            }
+            finally
+            {
+                RustCathedralHumSettings.goodwillDrainEnabled = wasDrain;
+                comp.ProofSetStanding(before);
                 if (map.Biome?.defName != def.targetBiome) comp.ProofReset();
             }
         }

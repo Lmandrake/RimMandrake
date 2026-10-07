@@ -35,10 +35,13 @@ namespace RimMandrake.RustCathedral.Hum
 		// it only forgives slowly.
 		public float bandHysteresisMargin = 6f;
 
-		// Composite = irritation - goodwill * goodwillCompositeWeight, clamped
-		// to [0, 100]. Only faction-13 (Forsaken/Forgotten Arsenal, vanilla
-		// Mechanoid) goodwill is read; the ledger itself needs no new C#.
+		// Composite = irritation - standing * goodwillCompositeWeight, clamped
+		// to [0, 100]. Standing is the attitude component's own saved value in
+		// [-100, 100] (RUSTCATHEDRAL_GOODWILL_FLOOR_1), not faction goodwill:
+		// the relabelled Mechanoid faction is permanentEnemy and its goodwill
+		// cannot move. standingStart is where a new map's standing begins.
 		public float goodwillCompositeWeight = 0.5f;
+		public int standingStart = 0;
 
 		// Irritation decays continuously; this is the in-game half-life.
 		public float irritationDecayHalfLifeDays = 1f;
@@ -48,10 +51,10 @@ namespace RimMandrake.RustCathedral.Hum
 		public int checkIntervalTicks = 250;
 
 		// Sustained WORST band converts irritation pressure into a direct
-		// faction-13 goodwill tick -- "the hum never flips hostility by
+		// standing tick -- "the hum never flips hostility by
 		// itself; the ledger does" (spec's own framing). Interval in hours of
 		// game time between ticks, magnitude per tick, and a per-day cap so a
-		// long AFK stretch at the worst band can't zero goodwill in one sitting.
+		// long AFK stretch at the worst band can't floor standing in one sitting.
 		public float worstBandGoodwillTickIntervalHours = 4f;
 		public int worstBandGoodwillTickAmount = -1;
 		public int worstBandGoodwillCapPerDay = -5;

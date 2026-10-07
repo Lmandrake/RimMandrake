@@ -9,9 +9,10 @@
     warm-drone layer), rising one hum layer per band, band 4 (the last
     threshold, >= 80 composite) is the WORST band and goes SILENT — the
     sheet's own "when the hum drops, stop moving" tell. composite =
-    irritation - goodwill*0.5, clamped 0-100; goodwill is LIVE faction-13
-    (Forsaken/Forgotten Arsenal) player goodwill, read every check, never
-    duplicated into savedata here.
+    irritation - standing*0.5, clamped 0-100; standing is the attitude
+    component's own saved value in [-100, 100], starting at standingStart
+    (RUSTCATHEDRAL_GOODWILL_FLOOR_1: the relabelled Mechanoid faction is
+    permanentEnemy, so its goodwill can never move and is not read).
 
     Numbers below are the kit spec's own "INVENTED parameters (owner tunes)"
     line for §1, carried over verbatim: decay half-life 1 day, thresholds
@@ -31,6 +32,7 @@
     </bandThresholds>
     <bandHysteresisMargin>6</bandHysteresisMargin>
     <goodwillCompositeWeight>0.5</goodwillCompositeWeight>
+    <standingStart>0</standingStart>
 
     <irritationDecayHalfLifeDays>1</irritationDecayHalfLifeDays>
     <checkIntervalTicks>250</checkIntervalTicks>

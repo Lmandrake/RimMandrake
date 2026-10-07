@@ -91,8 +91,8 @@ namespace RimMandrake.RustCathedral.Hum
 				"Off: the Rust Cathedral's attitude tracking, layered hum, and goodwill coupling all stop. Nothing plays, nothing drains.");
 			list.CheckboxLabeled("Droid commentary", ref commentaryEnabled,
 				"Off: no messages fire on band changes, even with a droid on the map. The hum and goodwill coupling still run.");
-			list.CheckboxLabeled("Sustained sacrilege drains faction goodwill", ref goodwillDrainEnabled,
-				"Off: the worst band still sounds and displays, but never ticks faction-13 goodwill on its own -- only direct sacrilege (destroying/claiming a sacred wall) still costs goodwill.");
+			list.CheckboxLabeled("Sustained sacrilege lowers the Cathedral's standing", ref goodwillDrainEnabled,
+				"Off: the worst band still sounds and displays, but never lowers the Cathedral's standing on its own. Catches and drilling still cost standing.");
 			list.Label("Irritation decay speed: " + irritationDecayRateMultiplier.ToString("0.00") + "x (higher = forgets faster)");
 			irritationDecayRateMultiplier = list.Slider(irritationDecayRateMultiplier, 0.25f, 4f);
 

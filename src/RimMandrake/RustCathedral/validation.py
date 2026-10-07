@@ -404,7 +404,7 @@ def _build_suite():
             ("wall_tiers_laid_at_mapgen", "wallTiersEnabled",
              "deck plate, dead smartsteel and sacred wall scatter exist only on a map GENERATED as RM_RustCathedral; the bridge cannot generate one"),
             ("hum_commentary_and_goodwill_drain", "goodwillDrainEnabled",
-             "a drain of -1 per 4 hours at the worst band needs hours of game time and a Forsaken faction relation"),
+             "the timed drain (-1 standing per 4 hours at the worst band) needs hours of game time; one drain step is proved in calm_bands_reachable"),
         ):
             with t.component(name, toggle=toggle):
                 if _live(t):
@@ -424,7 +424,7 @@ def _build_suite():
             if _live(t):
                 if not text.startswith("LADDER"):
                     _unmeasured(t, "ProofLadder gave no answer: %r" % text[:160]); return
-                g = float(text.split("goodwill ")[1].split(" |")[0])
+                g = float(text.split("standing ")[1].split(" |")[0])
                 w = float(text.split("weight ")[1].split(" |")[0])
                 th, margin, layers = [10.0, 30.0, 55.0, 80.0], 6.0, 3
                 floor = max(0.0, min(100.0, -g * w))
@@ -440,17 +440,28 @@ def _build_suite():
                 if got != expect:
                     raise ExpectationFailed("band/layer ladder %s != the def's thresholds/hysteresis %s (%s)" % (got, expect, text))
         with t.component("calm_bands_reachable", beyond_toggle=True):
-            # LIVE question, not a tautology: the composite subtracts goodwill x weight with the vanilla Mechanoid
-            # faction, which is permanentEnemy (Faction.CanChangeGoodwillFor refuses every change, RimSage-read).
-            # If its goodwill sits at -100 the composite floor is +50 and bands 0-1 can never occur.
+            # LIVE question, not a tautology: the composite subtracts the attitude component's own standing x
+            # weight (RUSTCATHEDRAL_GOODWILL_FLOOR_1 -- it used to read the permanentEnemy Mechanoid faction's
+            # goodwill, which cannot move). A standing low enough to floor the composite at >= 10 makes bands
+            # 0-1 unreachable, and the worst-band drain must actually move the value the composite reads.
             text = _hum(t, "ProofLadder", None)
-            if _live(t) and text.startswith("LADDER"):
-                g = float(text.split("goodwill ")[1].split(" |")[0])
+            if _live(t):
+                if not text.startswith("LADDER"):
+                    _unmeasured(t, "ProofLadder gave no answer: %r" % text[:160]); return
+                g = float(text.split("standing ")[1].split(" |")[0])
                 w = float(text.split("weight ")[1].split(" |")[0])
                 if -g * w >= 10.0:
-                    raise ExpectationFailed("goodwill %d x weight %.2f puts the composite floor at %.0f: the calm bands (0-1) "
-                                            "are unreachable and the goodwill drain can never move it (RUSTCATHEDRAL_GOODWILL_FLOOR_1)"
-                                            % (g, w, -g * w))
+                    raise ExpectationFailed("standing %d x weight %.2f puts the composite floor at %.0f: the calm bands (0-1) "
+                                            "are unreachable (RUSTCATHEDRAL_GOODWILL_FLOOR_1)" % (g, w, -g * w))
+            drain = _hum(t, "ProofDrain", None)
+            if _live(t):
+                if not drain.startswith("DRAIN"):
+                    _unmeasured(t, "ProofDrain gave no answer: %r" % drain[:160]); return
+                a, b = (int(x) for x in drain.split("standing ")[1].split(" |")[0].split(" -> "))
+                d = int(drain.split("expected ")[1])
+                if b - a != max(d, -100 - a):
+                    raise ExpectationFailed("one worst-band drain step moved standing %d -> %d, expected %+d: the drain does "
+                                            "not move the value the composite reads (RUSTCATHEDRAL_GOODWILL_FLOOR_1)" % (a, b, d))
         with t.component("roach_eats_filth", toggle="roachCleaningEnabled"):
             if _live(t):
                 _unmeasured(t, "a roach seeking filth needs a spawned roach, filth and a ticked map; the think-tree wiring is read in roach_gate")
