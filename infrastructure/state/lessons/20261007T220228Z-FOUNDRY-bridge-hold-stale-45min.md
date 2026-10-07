@@ -1,0 +1,1 @@
+2026-10-07: another window taking the bridge after 45 idle minutes kills a helper's live session (the lock goes stale at 45 min). Keep a bridge hold fresh with an event inside every 45 minutes during long helper runs.

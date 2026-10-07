@@ -1,0 +1,1 @@
+2026-10-07: a staged mutation-test build can reuse a stale DLL within about 1 s; sleep 4 and touch the source before rebuilding, then confirm the .srchash changed, or the mutation looks like it had no effect.
