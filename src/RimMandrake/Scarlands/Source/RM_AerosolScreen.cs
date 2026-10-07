@@ -189,4 +189,17 @@ namespace RimMandrake.Scarlands
             return !RM_CompAerosolScreen.IsPositionScreened(c, map);
         }
     }
+
+    // Readable sign (spec 10): pawns standing in a screened cell say so on inspect.
+    [HarmonyPatch(typeof(Pawn), nameof(Pawn.GetInspectString))]
+    public static class RM_AerosolScreenPatches_PawnInspect
+    {
+        public static void Postfix(Pawn __instance, ref string __result)
+        {
+            if (!RM_WarscarSettings.aerosolScreenEnabled || __instance == null || !__instance.Spawned) return;
+            if (!RM_CompAerosolScreen.IsPositionScreened(__instance.Position, __instance.Map)) return;
+            string line = "Screened from airborne toxins";
+            __result = string.IsNullOrEmpty(__result) ? line : __result + "\n" + line;
+        }
+    }
 }
