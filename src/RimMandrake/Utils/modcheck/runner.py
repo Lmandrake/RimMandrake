@@ -667,10 +667,15 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                 folded = composed_into(mod_folder)
                 deploy_args = (("--compose", folded[0]) if folded
                                else ("--mod", mod_folder))
-                r = subprocess.run(
-                    py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
-                           *deploy_args, "--apply"),
-                    cwd=ROOT, capture_output=True, text=True)
+                if os.environ.get("MODCHECK_SKIP_DEPLOY"):
+                    # The caller already deployed with the game DOWN and launched on that list; a re-deploy now
+                    # fails on any DLL the running game holds (LIVE 2026-10-07: a peer rebuilt Hum.dll mid-run).
+                    r = subprocess.CompletedProcess(deploy_args, 0, "", "")
+                else:
+                    r = subprocess.run(
+                        py_cmd(os.path.join(_UTILS, "deploy_custom_mods.py"),
+                               *deploy_args, "--apply"),
+                        cwd=ROOT, capture_output=True, text=True)
                 if r.returncode != 0:
                     raise RuntimeError(
                         "deploy of %s FAILED: %s"
@@ -742,4 +747,7 @@ def write_sheet(mod, summary):
     path = os.path.join(SHEET_DIR, "%s_%s.html" % (mod, stamp))
     with open(path, "w", encoding="utf-8") as f:
         f.write(render(mod, summary))
+    # The same run as machine-readable data (acceptance items say "results JSON"; the HTML sheet alone is not that).
+    with open(path[:-5] + ".json", "wb") as f:
+        f.write(json.dumps({"mod": mod, "stamp": stamp, "summary": summary}, indent=1, default=str).encode("utf-8"))
     return path
