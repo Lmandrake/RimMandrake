@@ -337,6 +337,35 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		/// <summary>Ruling 2 (owner, 2026-10-06): a LIMITED body that cannot pay every inlet pays by cell index, so
 		/// dig order (session) and index order (reload) give the same outcome, and the lower index is paid.</summary>
+		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06): a limitless pond at x=0 feeds a D=2 channel x=1..7
+		/// with a door at x=4. A SHUT sluice (sealed) holds the level at x=1..3 and leaves x=4..7 dry; a grate (never
+		/// sealed) and a sluice opened afterwards both let it reach x=7. The ledger balances throughout.</summary>
+		public static string SluiceSealsGrateDoesNot()
+		{
+			var w = new ArrayWorld(8, 1);
+			w.AddBody(true, 0f, new[] { 0 });
+			var digs = Enumerable.Range(1, 7).ToList();
+			foreach (int c in digs) w.k.depth[c] = 2;
+			bool shut = true;
+			w.k.sealedCell = idx => shut && idx == 4;
+			float worst = 0f;
+			for (int p = 0; p < 40; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
+			string held = string.Join(",", digs.Select(c => w.k.fill[c]));
+			bool holds = digs.All(c => w.k.fill[c] == (c < 4 ? 2 : 0));
+			shut = false;   // the sluice is opened (a pawn passing, or held open)
+			for (int p = 0; p < 40; p++) { w.Pulse(digs); worst = Math.Max(worst, w.k.worstImbalance); }
+			bool opened = digs.All(c => w.k.fill[c] == 2);
+			var g = new ArrayWorld(8, 1);
+			g.AddBody(true, 0f, new[] { 0 });
+			foreach (int c in digs) g.k.depth[c] = 2;
+			g.k.sealedCell = idx => false;   // a grate: never sealed
+			for (int p = 0; p < 40; p++) { g.Pulse(digs); worst = Math.Max(worst, g.k.worstImbalance); }
+			bool grate = digs.All(c => g.k.fill[c] == 2);
+			return holds && opened && grate && worst < 0.001f
+				? $"OK: shut sluice holds F={held}; opened and grate both fill x=1..7"
+				: $"BROKEN: shut F={held} holds={holds} opened={opened} grate={grate} worstImbalance={worst}";
+		}
+
 		public static string ScarceSupplyPaidByPosition()
 		{
 			Func<int[], (int a, int b)> run = order =>

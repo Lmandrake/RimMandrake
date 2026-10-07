@@ -1047,6 +1047,8 @@ namespace RimMandrake.FlowWorks
 			if (flowKernel == null || flowKernel.width != map.Size.x || flowKernel.height != map.Size.z)
 			{
 				flowKernel = new RM_FlowKernel(map.Size.x, map.Size.z) { world = this, maxComponentCells = MaxComponentCells };
+				// FLOWWORKS_SLUICE_TWO_DOORS_1: a shut sluice seals its cell (one edifice-grid read per probe).
+				flowKernel.sealedCell = idx => RM_FlowDoorRules.SealsLiquid(map.edificeGrid[idx]);
 			}
 			flowKernel.depth = depthGrid;
 			flowKernel.fill = fillGrid;

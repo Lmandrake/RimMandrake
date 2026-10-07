@@ -102,6 +102,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `X7n_viscosity_off` | `viscosityEnabled` | state only |
 | `X8_cover_hides_pit` | - | `pit_covered_invisible` |
 | `X9_cover_deck_uniform` | - | `pit_covered_seam_at_max_zoom` |
+| `X10_canal_fire` | - | `canal_burning_reads_as_burning_liquid`, `canal_fire_persists`, `canal_spent_after_burn` |
 | `T0n_fluid_switch_refused` | - | `canal_reads_as_same_liquid_as_reservoir` |
 | `E9_log_budget` | - | state only |
 | `Z_settings_restored` | - | state only |
@@ -129,7 +130,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `canal_digs_from_source` | - | state only |
 | `canal_fill_front` | - | `canal_fill_front_watchable` |
 | `canal_fill_spreads` | - | `canal_fill_spreads_along_itself` |
-| `canal_holds_only_channel` | `channelConfinementEnabled` | `canal_holds_only_the_channel`, `never_liquid_on_open_ground` |
+| `canal_holds_only_channel` | - | `canal_holds_only_the_channel`, `never_liquid_on_open_ground` |
 | `canal_same_liquid_look` | - | `canal_reads_as_same_liquid_as_reservoir` |
 
 ### chain `plot_C2_tar_and_fluids` (extension)
@@ -154,10 +155,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `fire_burning_look` | `canalFireEnabled` | `canal_burning_reads_as_burning_liquid` |
 | `fire_reaches_reservoir` | - | `canal_fire_reaches_reservoir` |
-| `fire_persists_look` | - | `canal_fire_persists` |
-| `burned_channel_spent` | - | `canal_spent_after_burn` |
 
 ### chain `plot_F_slime` (extension)
 
@@ -187,13 +185,6 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `ladder_state_look` | `ladderRequiredToExitEnabled` | `ladder_state_legible` |
 | `sluice_state_look` | - | `sluice_gate_state_legible` |
 | `spikes_look` | - | `spikes_read_distinct` |
-
-### chain `toggle_confinement` (extension)
-
-| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
-|---|---|---|
-| `confinement_on` | `channelConfinementEnabled` | state only |
-| `confinement_off_leaks` | `channelConfinementEnabled` | state only |
 
 ### chain `toggle_fill_in` (extension)
 
@@ -288,7 +279,7 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 
 | component | toggle | bars decided (judge YES for must-show, NO for never_*) |
 |---|---|---|
-| `doors_pass_liquid_closed` | - | state only |
+| `grate_passes_sluice_seals` | - | state only |
 | `sluice_holds_small_only` | `sluiceLetsBigThroughEnabled` | state only |
 | `sluice_rule_off_holds` | `sluiceLetsBigThroughEnabled` | state only |
 | `grate_holds_prisoner` | - | state only |
@@ -399,4 +390,116 @@ Core proof: `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --l
 | `swale_capped_at_rich_soil` | `swaleEnabled` | state only |
 | `swale_off_is_inert` | `swaleEnabled` | state only |
 
-Totals: 172 components, 43 distinct bars claimed; extension-only bars (no core row): `canal_burning_reads_as_burning_liquid`, `canal_fire_persists`, `canal_fire_reaches_reservoir`, `canal_spent_after_burn`, `reservoir_recharge_progress_visible`, `sluice_gate_state_legible`, `spikes_read_distinct`.
+### chain `fire_explosion` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `explosion_off_does_not_light` | `explosionIgnitesLiquidEnabled` | state only |
+| `explosion_lights_liquid` | `explosionIgnitesLiquidEnabled` | state only |
+
+### chain `fire_foam` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `foam_smothers_burning_liquid` | `foamSmothersLiquidFireEnabled` | state only |
+| `foam_off_is_inert` | `foamSmothersLiquidFireEnabled` | state only |
+
+### chain `fire_rain` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `rain_douses_open_fire` | `rainDousesLiquidFireEnabled` | state only |
+| `rain_off_leaves_fire` | `rainDousesLiquidFireEnabled` | state only |
+
+### chain `pit_prison_room` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `pit_is_its_own_room` | `superdeepRoomsEnabled` | state only |
+| `rooms_off_pit_joins_lip` | `superdeepRoomsEnabled` | state only |
+| `prisoner_bed_makes_prison_cell` | - | state only |
+| `capture_down_from_the_lip` | `captureDownEnabled` | state only |
+| `capture_down_off` | `captureDownEnabled` | state only |
+| `warden_served_from_lip` | `wardenFromLipEnabled` | state only |
+| `warden_lip_off` | `wardenFromLipEnabled` | state only |
+
+### chain `liquid_pump` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `pump_unpowered_idle` | - | state only |
+| `pump_draws_into_tank` | `liquidPumpEnabled` | state only |
+| `pump_off_idles` | `liquidPumpEnabled` | state only |
+| `pump_pours_back` | - | state only |
+
+### chain `bottle_revert` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `revert_off_holds` | `bottleRevertEnabled` | state only |
+| `boiling_bottle_reverts_to_fresh` | `bottleRevertEnabled` | state only |
+
+### chain `wall_faces` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `cuts_draw_wall_faces` | `excavationWallFacesEnabled` | state only |
+| `wall_faces_off_hidden` | `excavationWallFacesEnabled` | state only |
+
+### chain `dig_finds` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `finds_off_none` | `digFindsEnabled` | state only |
+| `cut_turns_up_local_find` | `digFindsLocalOnly` | state only |
+| `first_find_sends_letter` | `digFindLetterEnabled` | state only |
+
+### chain `machinery_hoses` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `hose_feeds_far_tank` | `liquidHosesEnabled` | state only |
+| `hoses_off_far_tank_idle` | `liquidHosesEnabled` | state only |
+
+### chain `machinery_found_works` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `works_only_over_ruin` | `industrialWorksBuildAnywhere` | state only |
+| `build_anywhere_on` | `industrialWorksBuildAnywhere` | state only |
+| `ruins_mapgen` | `liquidWorksRuinsEnabled` | state only |
+| `ruin_stock_mapgen` | `liquidWorksRuinStockEnabled` | state only |
+| `pipe_adapters` | `pipeAdaptersEnabled` | state only |
+
+### chain `current` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `defs_core` | - | state only |
+| `grid_from_river` | `surfaceCurrentEnabled` | state only |
+| `shoves` | `surfaceCurrentEnabled` | state only |
+| `ford_exempt` | `fordsEnabled` | state only |
+| `exemptions` | - | state only |
+
+### chain `swept` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `returns_home` | `washOffMapEdge` | state only |
+
+### chain `works` (extension)
+
+| component | toggle | bars decided (judge YES for must-show, NO for never_*) |
+|---|---|---|
+| `place_weir_bank_edge` | `bankWorksEnabled` | state only |
+| `weir_arrest_and_pool` | `bankWorksEnabled` | state only |
+| `weir_fish_draws_stock` | `weirCatchesFish` | state only |
+| `breach_wash` | `breachWashesCatch` | state only |
+| `silt_richen_and_revert` | `siltRichening` | state only |
+| `ferry_rope` | `ferryEnabled` | state only |
+| `levee_engine_fact` | `stakeLineLevee` | state only |
+| `levee_holds_and_gap_leaks` | `stakeLineLevee` | state only |
+| `breach_cascade_order` | `breachEnabled` | state only |
+| `ferry_rope_undrafted` | `ferryRopeGuidesColonists` | state only |
+
+Totals: 215 components, 43 distinct bars claimed; extension-only bars (no core row): `canal_fire_reaches_reservoir`, `reservoir_recharge_progress_visible`, `sluice_gate_state_legible`, `spikes_read_distinct`.

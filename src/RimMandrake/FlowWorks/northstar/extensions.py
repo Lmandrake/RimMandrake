@@ -1083,8 +1083,9 @@ def _verdict(txt, pid):
 @suite.chain("flow_doors")
 def flow_doors(t):
     """FLOWWORKS_DOOR_FAMILY_1 (owner 2026-09-17: two stuffable doors, Sluice + SecurityGrateDoor).
-    Plot H: a D=2 channel off a limitless source runs through a closed wooden sluice and a closed steel
-    grate; the level must reach the far end. Plot G: who each door opens for -- a hostile human and a
+    Plot H (FLOWWORKS_SLUICE_TWO_DOORS_1, owner 2026-10-06: a sluice is sealed shut, a grate always passes):
+    a D=2 channel off a limitless source runs through a closed steel grate and then a closed wooden sluice;
+    the level must pass the grate and stop at the sluice (the open sluice is JawaBench playtest ScnSluice). Plot G: who each door opens for -- a hostile human and a
     wild muffalo (W=2 at the default multiplier) force the sluice, a hare does not; the grate holds the
     human; a hostile held in the superdeep pit cannot open a sluice beside it.
     Not proven here: a wooden one burning (stuff flammability is vanilla), real pathing through a
@@ -1093,17 +1094,22 @@ def flow_doors(t):
     _limitless_source(t, "H")
     run = _channel_from(x0 + 10, z0 + 6, 8)
     _dig_run(t, run, 2)
-    sl, gr = run[2], run[5]
-    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SLUICE, sl[0], sl[1]), stuff="WoodLog")
+    gr, sl = run[2], run[5]
     t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel")
-    with t.component("doors_pass_liquid_closed"):
+    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SLUICE, sl[0], sl[1]), stuff="WoodLog")
+    with t.component("grate_passes_sluice_seals"):
         _wait(t, 10 * PULSE)
+        before = _rep(t, *run[4])
         far = _rep(t, *run[-1])
         if t._guard():
-            for c in (sl, gr):
-                txt = _door_proof(t, "ProofLiquid", c[0], c[1])
-                _expect("open=False" in txt and " fill 0" not in txt, "door cell dry or open: %s" % txt)
-            _expect((far.get("fill") or 0) >= 1, "liquid did not pass the closed doors: far fill %r" % far.get("fill"))
+            txt = _door_proof(t, "ProofLiquid", gr[0], gr[1])
+            _expect("open=False" in txt and "seals=False" in txt and " fill 0" not in txt,
+                    "closed grate did not pass liquid: %s" % txt)
+            txt = _door_proof(t, "ProofLiquid", sl[0], sl[1])
+            _expect("open=False" in txt and "seals=True" in txt and txt.endswith(" fill 0"),
+                    "closed sluice not sealed: %s" % txt)
+            _expect((before.get("fill") or 0) >= 1, "liquid never reached the shut sluice: fill %r" % before.get("fill"))
+            _expect((far.get("fill") or 0) == 0, "liquid passed the shut sluice: far fill %r" % far.get("fill"))
     x0, z0 = _prep_plot(t, "G")
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)

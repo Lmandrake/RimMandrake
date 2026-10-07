@@ -290,9 +290,10 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			// FLOWWORKS_DOOR_FAMILY_1: a sluice or security grate passes liquid while closed.
+			// FLOWWORKS_DOOR_FAMILY_1 + FLOWWORKS_SLUICE_TWO_DOORS_1: a grate passes liquid shut or open; a
+			// sluice passes only while open.
 			Building edifice = c.GetEdifice(map);
-			if (edifice != null && !RM_FlowDoorRules.IsFlowDoor(edifice))
+			if (edifice != null && (!RM_FlowDoorRules.IsFlowDoor(edifice) || RM_FlowDoorRules.SealsLiquid(edifice)))
 			{
 				return false;
 			}

@@ -3,15 +3,16 @@
 
   <!-- FLOWWORKS_DOOR_FAMILY_1 — the owner's two stuffable canal doors (2026-09-17, he took the
        simpler shape: two defs, stuff decides armour, HP and burning; "the player can just learn
-       what happens if you're made of wood"). Both pass liquid while closed and neither opens for a
-       pawn held in a superdeep pit; the sluice gives way to people and big creatures
+       what happens if you're made of wood"). FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06): the
+       sluice is SEALED while shut and passes liquid only open; the grate always passes liquid. Neither
+       opens for a pawn held in a superdeep pit; the sluice gives way to people and big creatures
        (Building_RM_FlowDoor / RM_PitTrapMath.FlowDoorOpens). Light affordance and NOT the stuff's,
        so a stone or steel gate still stands in a dug channel (channels offer Light only).
        RM_SecurityGrateDoor draws its own grate art (artpipe fwart_RM_SecurityGrateDoor); RM_Sluice draws its own art (fwart_RM_Sluice). -->
   <ThingDef ParentName="DoorBase">
     <defName>RM_Sluice</defName>
     <label>sluice</label>
-    <description>A cheap slatted gate for the mouth of a canal. Liquid flows through it while it is shut, and it keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.</description>
+    <description>A sealed gate for a canal. Shut, it holds the liquid back; open it, or hold it open, and the level runs on through. It keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.</description>
     <thingClass>RimMandrake.FlowWorks.Building_RM_FlowDoor</thingClass>
     <statBases>
       <WorkToBuild>500</WorkToBuild>

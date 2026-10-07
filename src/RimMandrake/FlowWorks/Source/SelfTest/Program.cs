@@ -1496,6 +1496,17 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(r.StartsWith("OK"), r);
             });
 
+            Case("Sluice_shut_seals_grate_passes", () =>
+            {
+                Assert(RM_PitTrapMath.FlowDoorSeals(true, false), "a shut sluice must seal");
+                Assert(!RM_PitTrapMath.FlowDoorSeals(true, true), "an open sluice must pass liquid");
+                Assert(!RM_PitTrapMath.FlowDoorSeals(false, false), "a shut grate must pass liquid");
+                Assert(!RM_PitTrapMath.FlowDoorSeals(false, true), "an open grate must pass liquid");
+                string r = FlowKernelFuzz.SluiceSealsGrateDoesNot();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

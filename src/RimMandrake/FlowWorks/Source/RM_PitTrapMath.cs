@@ -390,6 +390,13 @@ namespace RimMandrake.FlowWorks
 			return isSluice && sluiceRule && !playerFaction && (humanlike || requiredWidth > 1);
 		}
 
+		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06): does this flow door hold liquid back? A sluice
+		/// is sealed while shut; a grate is "just a gate, not a sluice gate" and always lets liquid through.</summary>
+		public static bool FlowDoorSeals(bool isSluice, bool open)
+		{
+			return isSluice && !open;
+		}
+
 		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 9 (owner, 2026-10-06: <i>"people stuck inside a pit do NOT walk
 		/// slowly... they walk at normal speed. Only when they are climbing in or out do they move slowly. Falling into a
 		/// pit is FAST. Walking around within the pit is normal."</i>). The terrain base cost of one step between two

@@ -53,6 +53,11 @@ namespace RimMandrake.FlowWorks
 		public bool edgeSinksEnabled;
 		public bool viscosityEnabled;
 		public int maxComponentCells = 6000;
+		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06: "sealed sluice gates (standard) and the ones made of
+		/// metal grates that always allow liquid"): true for a cell under a SHUT sluice. Liquid neither enters nor
+		/// leaves a sealed cell and no flow order is walked through it, so the level stops at the gate. Null = no
+		/// cell is sealed (the offline worlds, and every map without a shut sluice).</summary>
+		public Func<int, bool> sealedCell;
 		/// <summary>Superdeep: what a natural source reads as (RM_ExcavationDepth.Superdeep).</summary>
 		public const byte Superdeep = 4;
 
@@ -107,6 +112,11 @@ namespace RimMandrake.FlowWorks
 		public bool IsExcavated(int idx)
 		{
 			return idx >= 0 && depth[idx] != 0;
+		}
+
+		public bool IsSealed(int idx)
+		{
+			return idx >= 0 && sealedCell != null && sealedCell(idx);
 		}
 
 		public bool IsSource(int idx)
@@ -197,7 +207,7 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				if (fill[c] < depth[c])
+				if (fill[c] < depth[c] && !IsSealed(c))
 				{
 					recipients.Add(c);
 				}
@@ -316,7 +326,7 @@ namespace RimMandrake.FlowWorks
 				for (int i = 0; i < component.Count; i++)
 				{
 					int c = component[i];
-					if (IsExcavated(c) && world.IsSink(c))
+					if (IsExcavated(c) && world.IsSink(c) && !IsSealed(c))
 					{
 						hopFrontier.Add(c);
 					}
@@ -346,7 +356,7 @@ namespace RimMandrake.FlowWorks
 				for (int i = 0; i < 4; i++)
 				{
 					int n = Cardinal(c, i);
-					if (n < 0 || hops.ContainsKey(n) || !componentSet.Contains(n) || !IsExcavated(n))
+					if (n < 0 || hops.ContainsKey(n) || !componentSet.Contains(n) || !IsExcavated(n) || IsSealed(n))
 					{
 						continue;
 					}
@@ -366,7 +376,7 @@ namespace RimMandrake.FlowWorks
 			for (int i = 0; i < 4; i++)
 			{
 				int n = Cardinal(r, i);
-				if (n < 0)
+				if (n < 0 || IsSealed(n))
 				{
 					continue;
 				}
