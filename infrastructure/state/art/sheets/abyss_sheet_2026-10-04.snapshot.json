@@ -1,6 +1,6 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-06T11:22:32-0700",
+ "built": "2026-10-06T12:27:07-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
@@ -652,6 +652,9 @@
     },
     "G": {
      "single": "87fb2aa25e295d20699733066651f29a95f1bb183afa0a101cd7fb7ec1099333"
+    },
+    "H": {
+     "single": "cef31a628f7910d2967b2279a93ee28dcb5b42965a4ff092ccc19ffab31448cf"
     }
    },
    "graphic_of": {
@@ -661,7 +664,8 @@
     "D": "Things/Plants/AB_GlowingGrass",
     "E": "Things/Plants/AB_GlowingGrass",
     "F": "Things/Plants/AB_GlowingGrass",
-    "G": "Things/Plants/AB_GlowingGrass"
+    "G": "Things/Plants/AB_GlowingGrass",
+    "H": "Things/Plants/AB_GlowingGrass"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Biomes",
@@ -670,7 +674,8 @@
     "D": "render abyss_glowinggrass_c_v1",
     "E": "render abyss_glowinggrass_a_tint_v1",
     "F": "render abyss_glowinggrass_b_tint_v1",
-    "G": "render abyss_glowinggrass_c_tint_v1"
+    "G": "render abyss_glowinggrass_c_tint_v1",
+    "H": "render abyss_glowinggrass_b_tint_v2"
    },
    "res": "Things/Plants/AB_GlowingGrass",
    "reserved": [
@@ -680,7 +685,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "subject_key": "glowinggrass"
   },
@@ -995,7 +1001,7 @@
      "5_north": "265debbe7a7ee6186324765b5ceb52a2740d58b2524e4f7a07dbf6a7f72cff98",
      "5_south": "2945156e32b1124d0c137e0ef04008ed82b6c2269a364e16c367f087bbf34ca0"
     },
-    "N": {
+    "O": {
      "1_east": "7a3f6baca8c358fca6b0c7db6d76bdf937ca852f70147dfc19307a8c66141345",
      "1_north": "3d8a4b2da1d78b048d020a60980a722846c4a36e18bf1b24d91a9be93d9d9b6a",
      "1_south": "dc6cfbd21bf92576cc37e4a60a3e3383e5dde7e9c05642dec2b10a85b66b6c7e",
@@ -1021,7 +1027,7 @@
     "E": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
     "F": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
     "G": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_",
-    "N": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_"
+    "O": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 Abyss",
@@ -1031,7 +1037,7 @@
     "E": "render RM_Krizzak_Flying_4",
     "F": "render RM_Krizzak_Flying_5",
     "G": "IN GAME \u2014 RM_Krizzak_Flying_",
-    "N": "flight frames RM_Krizzak_Flying"
+    "O": "flight frames RM_Krizzak_Flying"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
    "reserved": [
@@ -1048,7 +1054,8 @@
     "K",
     "L",
     "M",
-    "N"
+    "N",
+    "O"
    ],
    "subject_key": "krizzak"
   },
@@ -1177,5 +1184,5 @@
   }
  },
  "sheetId": "abyss_sheet_2026-10-04",
- "snapshotId": "e89691f34105cc30"
+ "snapshotId": "db6b55b3bfc3433a"
 }
