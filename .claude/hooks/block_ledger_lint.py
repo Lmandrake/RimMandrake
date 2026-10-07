@@ -17,6 +17,19 @@ import sys
 TAKES_ARG = {"-C", "-c", "--git-dir", "--work-tree", "--namespace", "--exec-path"}
 
 
+def pushed_head(cwd, refspec):
+    """The commit a `git push <remote> <src>:<dst>` publishes: <src>, not HEAD
+    (ART_LEDGER_SEAT_DEFAULT_1 — `git push origin <sha>:main` used to be checked
+    against whatever HEAD happened to be). Falls back to HEAD."""
+    src = (refspec or "").lstrip("+").split(":", 1)[0] if refspec else ""
+    if src:
+        r = subprocess.run(["git", "-C", cwd, "rev-parse", "--verify", "-q", src + "^{commit}"],
+                           capture_output=True, text=True, timeout=8)
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout.strip()
+    return "HEAD"
+
+
 def is_push(tok):
     i = 1
     where = None
@@ -25,6 +38,15 @@ def is_push(tok):
             where = tok[i + 1]
         i += 1 if tok[i] not in TAKES_ARG else 2
     return (i < len(tok) and tok[i] == "push"), where
+
+
+def push_refspec(tok):
+    """The refspec argument of a `git push` token list, or None."""
+    i = 1
+    while i < len(tok) and tok[i] != "push":
+        i += 1 if tok[i] not in TAKES_ARG else 2
+    pos = [a for a in tok[i + 1:] if not a.startswith("-")]
+    return pos[1] if len(pos) > 1 else None
 
 
 ZERO = "0" * 40
@@ -90,7 +112,8 @@ def main():
             script = os.path.join(root, "src", "RimMandrake", "Utils", "ledger_lint.py")
             if not root or not os.path.isfile(script):
                 continue
-            r = subprocess.run([sys.executable or "python3", script, "--rev", "HEAD",
+            rev = pushed_head(where, push_refspec(tok))
+            r = subprocess.run([sys.executable or "python3", script, "--rev", rev,
                                 "--root", root, "--base", "origin/main"],
                                capture_output=True, text=True, timeout=40)
         except Exception:

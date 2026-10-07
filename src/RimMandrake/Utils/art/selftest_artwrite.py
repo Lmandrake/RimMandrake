@@ -35,6 +35,7 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix="artwrite-selftest-"))
     os.environ["ARTSTORE"] = str(tmp / "store")
     os.environ["ART_LEDGER_DIR"] = str(tmp / "ledger")
+    os.environ["ART_SEAT"] = "BUILD"          # art ledger refuses to guess a seat
     os.environ["ART_SRC_ROOT"] = str(tmp / "src")
     sys.path.insert(0, str(HERE))
     import artledger as L

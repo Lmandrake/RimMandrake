@@ -43,6 +43,32 @@ def main():
     import artledger as L
     import art
 
+    # seat resolution (ART_LEDGER_SEAT_DEFAULT_1): never a silent BENCH, honours AGENT_SEAT
+    saved = {k: os.environ.pop(k, None) for k in
+             ("RIMFLOW_SEAT", "ART_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
+    try:
+        try:
+            L.seat()
+            check(False, "seat() refuses when nothing names a seat")
+        except L.NoSeat:
+            check(True, "seat() refuses when nothing names a seat")
+        try:
+            L.Writer(known_ids=set()).add({"type": "probe"})
+            check(False, "a ledger write with no seat refuses")
+        except L.NoSeat:
+            check(True, "a ledger write with no seat refuses")
+        os.environ["AGENT_SEAT"] = "foundry"
+        check(L.seat() == "FOUNDRY" and L.shard_path().name == "FOUNDRY.jsonl",
+              "AGENT_SEAT (the window profile) picks the shard")
+        os.environ["RIMFLOW_SEAT"] = "BENCH"
+        check(L.seat() == "BENCH", "RIMFLOW_SEAT outranks AGENT_SEAT, as in rimflow")
+    finally:
+        for k, v in saved.items():
+            os.environ.pop(k, None)
+            if v is not None:
+                os.environ[k] = v
+    os.environ["ART_SEAT"] = "BUILD"          # the fixture writes below need a seat
+
     mod = "src/FixtureMod"
     tex = tmp / mod / "Textures" / "Things" / "Beast"
     tex.mkdir(parents=True)

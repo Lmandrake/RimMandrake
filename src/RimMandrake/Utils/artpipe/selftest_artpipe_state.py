@@ -49,6 +49,7 @@ def test_collect(tmp: Path):
     os.environ["ARTSTORE"] = str(tmp / "artstore")          # never the real store
     os.environ["ART_SRC_ROOT"] = str(repo / "src")
     os.environ["ART_LEDGER_DIR"] = str(repo / "infrastructure" / "state" / "art")
+    os.environ["ART_SEAT"] = "BUILD"          # art ledger refuses to guess a seat
     _job(st / "done", "a1", install_to="src/M/Textures/a1.png")
     (st / "done" / "a1.manifest.json").write_text("{}")
     (st / "_artsrc" / "a1").mkdir(parents=True)

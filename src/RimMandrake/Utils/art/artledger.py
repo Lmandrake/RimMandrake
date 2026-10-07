@@ -54,8 +54,34 @@ def src_root() -> Path:
     return Path(os.environ.get("ART_SRC_ROOT") or REPO_ROOT / "src")
 
 
+class NoSeat(SystemExit):
+    """Raised at WRITE time when nothing names the running seat. Reads never need one."""
+
+
 def seat() -> str:
-    return os.environ.get("RIMFLOW_SEAT") or os.environ.get("ART_SEAT") or "BENCH"
+    """-> the shard this process appends to: RIMFLOW_SEAT, ART_SEAT, AGENT_SEAT, then this
+    session's .claude/session_roles/$CLAUDE_SESSION_ID — rimflow's order. Refuses rather
+    than guesses (ART_LEDGER_SEAT_DEFAULT_1): the old silent "BENCH" fallback ignored
+    AGENT_SEAT, so FOUNDRY's salvage wave-2 events landed in BENCH.jsonl, permanently."""
+    for val in (os.environ.get("RIMFLOW_SEAT"), os.environ.get("ART_SEAT"),
+                os.environ.get("AGENT_SEAT")):
+        if val and val.strip():
+            v = val.strip().upper()
+            if not re.fullmatch(r"[A-Z0-9_]+", v):
+                raise NoSeat(f"art ledger: seat {val!r} is not a shard name")
+            return v
+    sid = os.environ.get("CLAUDE_SESSION_ID")
+    if sid:
+        try:
+            words = (REPO_ROOT / ".claude" / "session_roles" / sid).read_text(
+                encoding="utf-8").replace("-", " ").split()
+        except OSError:
+            words = []
+        for w in words:
+            if w.upper() in ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP"):
+                return w.upper()
+    raise NoSeat("REFUSED: art ledger cannot tell which seat is writing, and will not guess.\n"
+                 "  Set RIMFLOW_SEAT=<SEAT> (or ART_SEAT / AGENT_SEAT) and re-run.")
 
 
 # ───────────────────────────────────────────────────────────────── hashing ──
