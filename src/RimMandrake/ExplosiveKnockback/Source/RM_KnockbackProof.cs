@@ -369,8 +369,12 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         string m = Moved(sc, "p", out Thing t, out int cells);
                         var desc = ForThing(sc, "descent", t);
+                        var land = ForThing(sc, "land", t);
+                        // the LANDING cell, not the current one: a held hostile walks about on the pit floor afterwards
+                        bool landed = land.Count == 1 && (IntVec3)land[0]["at"] == O(sc, 3, 0);
                         bool inPit = t.Spawned && RM_KnockbackCompat.IsSuperdeep(Map, t.Position);
-                        return Result(sc, inPit && t.Position == O(sc, 3, 0) && desc.Count == 1, m + " inPit=" + inPit + " descents=" + desc.Count);
+                        return Result(sc, inPit && landed && desc.Count == 1, m + " landedOnFirstPitCell=" + landed + " stillInPit=" + inPit
+                            + " descents=" + desc.Count);
                     };
                     return null;
 
@@ -430,7 +434,12 @@ namespace RimMandrake.ExplosiveKnockback
                     Item(s, "steel", "Steel", 75, O(s, 1, 0));
                     Item(s, "comp", "ComponentIndustrial", 1, O(s, 0, 1));
                     {
-                        ThingDef sd = DefDatabase<ThingDef>.GetNamed("ElectricSmelter");
+                        // the heaviest-but-small minifiable building in the game, so "heavy stays" is measured on a thing
+                        // that really is over the limit (a minified electric smelter is only 20 kg: measured live)
+                        ThingDef sd = DefDatabase<ThingDef>.AllDefs
+                            .Where(d => d.Minifiable && d.size.x * d.size.z <= 2)
+                            .OrderByDescending(d => d.GetStatValueAbstract(StatDefOf.Mass, GenStuff.DefaultStuffFor(d)))
+                            .First();
                         Thing smelter = ThingMaker.MakeThing(sd, GenStuff.DefaultStuffFor(sd));
                         Thing min = smelter.MakeMinified();
                         GenPlace.TryPlaceThing(min, O(s, -1, 0), Map, ThingPlaceMode.Direct, out Thing placed);
@@ -479,16 +488,33 @@ namespace RimMandrake.ExplosiveKnockback
                     return null;
 
                 case "killed_by_blast":
-                    Colonist(s, "p", O(s, 1, 0), drafted: false);
-                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 400);
+                    // three pawns and a huge blast: explosion damage lands on random parts, so one pawn can survive it
+                    // (measured live: a 400-damage blast left one standing); the verdict judges every one that died
+                    Colonist(s, "p0", O(s, 1, 0), drafted: false);
+                    Colonist(s, "p1", O(s, 0, 1), drafted: false);
+                    Colonist(s, "p2", O(s, -1, 0), drafted: false);
+                    GenExplosion.DoExplosion(s.o, Map, 2.9f, DamageDefOf.Bomb, null, 9999);
                     s.verdict = sc =>
                     {
-                        Pawn p = (Pawn)sc.things["p"];
-                        Corpse c = p.Corpse;
-                        bool moved = c != null && c.Spawned && Cheb(c.Position, sc.starts["p"]) >= 1;
-                        var rec = c == null ? new List<Dictionary<string, object>>() : ForThing(sc, "item_move", c);
-                        return Result(sc, p.Dead && moved && rec.Count == 1, "dead=" + p.Dead + " corpseMoved=" + moved
-                            + (rec.Count > 0 ? " [" + Rec(rec[0]) + "]" : ""));
+                        int dead = 0, thrown = 0;
+                        foreach (string key in new[] { "p0", "p1", "p2" })
+                        {
+                            Pawn p = (Pawn)sc.things[key];
+                            if (!p.Dead || p.Corpse == null)
+                            {
+                                continue;
+                            }
+                            dead++;
+                            if (ForThing(sc, "item_move", p.Corpse).Count == 1 && Cheb(p.Corpse.Position, sc.starts[key]) >= 1)
+                            {
+                                thrown++;
+                            }
+                        }
+                        if (dead == 0)
+                        {
+                            return "INVALID " + sc.name + " the blast killed nobody";
+                        }
+                        return Result(sc, thrown == dead, "dead=" + dead + " corpsesThrown=" + thrown);
                     };
                     return null;
 
