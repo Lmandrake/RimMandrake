@@ -118,7 +118,7 @@
     "pick": "D"
    },
    "at": "2026-10-07T14:09:50.044Z",
-   "decision": "",
+   "decision": "D",
    "note": "see related notes above",
    "prefill": "A",
    "prefillDecision": "A",
@@ -127,7 +127,14 @@
     "C",
     "D"
    ],
-   "variantsAt": "2026-10-07T14:09:50.044Z"
+   "variantsAt": "2026-10-07T14:09:50.044Z",
+   "cardRuling": {
+    "pick": "D",
+    "by": "owner",
+    "via": "decision taken by question card",
+    "at": "2026-10-07T15:05:00-0700",
+    "note": "Ratifies the agent inference; not an owner quote."
+   }
   },
   "RM_Lanternwhale": {
    "decision": "A",
@@ -156,7 +163,7 @@
     "pick": "D"
    },
    "at": "2026-10-07T14:09:48.473Z",
-   "decision": "",
+   "decision": "D",
    "note": "see related notes above",
    "prefill": "A",
    "prefillDecision": "A",
@@ -165,7 +172,14 @@
     "C",
     "D"
    ],
-   "variantsAt": "2026-10-07T14:09:48.473Z"
+   "variantsAt": "2026-10-07T14:09:48.473Z",
+   "cardRuling": {
+    "pick": "D",
+    "by": "owner",
+    "via": "decision taken by question card",
+    "at": "2026-10-07T15:05:00-0700",
+    "note": "Ratifies the agent inference; not an owner quote."
+   }
   },
   "RM_Loohn": {
    "at": "2026-10-07T13:58:28.779Z",
@@ -227,7 +241,7 @@
     "pick": "D"
    },
    "at": "2026-10-07T14:09:46.719Z",
-   "decision": "",
+   "decision": "D",
    "note": "see related notes above",
    "prefill": "A",
    "prefillDecision": "A",
@@ -236,7 +250,14 @@
     "C",
     "D"
    ],
-   "variantsAt": "2026-10-07T14:09:46.719Z"
+   "variantsAt": "2026-10-07T14:09:46.719Z",
+   "cardRuling": {
+    "pick": "D",
+    "by": "owner",
+    "via": "decision taken by question card",
+    "at": "2026-10-07T15:05:00-0700",
+    "note": "Ratifies the agent inference; not an owner quote."
+   }
   },
   "RM_Niim": {
    "at": "2026-10-07T14:02:10.588Z",
@@ -258,7 +279,7 @@
     "pick": "D"
    },
    "at": "2026-10-07T14:10:15.926Z",
-   "decision": "",
+   "decision": "D",
    "note": "see notes above",
    "prefill": "A",
    "prefillDecision": "A",
@@ -267,7 +288,14 @@
     "C",
     "D"
    ],
-   "variantsDefault": true
+   "variantsDefault": true,
+   "cardRuling": {
+    "pick": "D",
+    "by": "owner",
+    "via": "decision taken by question card",
+    "at": "2026-10-07T15:05:00-0700",
+    "note": "Ratifies the agent inference; not an owner quote."
+   }
   },
   "RM_Noolim": {
    "at": "2026-10-07T14:02:29.867Z",
@@ -371,7 +399,7 @@
     "pick": "D"
    },
    "at": "2026-10-07T14:10:59.562Z",
-   "decision": "",
+   "decision": "D",
    "note": "",
    "prefill": "A",
    "prefillDecision": "A",
@@ -380,7 +408,14 @@
     "C",
     "D"
    ],
-   "variantsAt": "2026-10-07T14:10:59.562Z"
+   "variantsAt": "2026-10-07T14:10:59.562Z",
+   "cardRuling": {
+    "pick": "D",
+    "by": "owner",
+    "via": "decision taken by question card",
+    "at": "2026-10-07T15:05:00-0700",
+    "note": "Ratifies the agent inference; not an owner quote."
+   }
   },
   "RM_Pallu": {
    "at": "2026-10-07T14:04:06.802Z",
@@ -409,7 +444,7 @@
     "pick": "D"
    },
    "at": "2026-10-07T14:11:16.483Z",
-   "decision": "",
+   "decision": "D",
    "note": "",
    "prefill": "A",
    "prefillDecision": "A",
@@ -418,7 +453,14 @@
     "C",
     "D"
    ],
-   "variantsAt": "2026-10-07T14:11:16.483Z"
+   "variantsAt": "2026-10-07T14:11:16.483Z",
+   "cardRuling": {
+    "pick": "D",
+    "by": "owner",
+    "via": "decision taken by question card",
+    "at": "2026-10-07T15:05:00-0700",
+    "note": "Ratifies the agent inference; not an owner quote."
+   }
   },
   "RM_SaltBladeTwilight": {
    "at": "2026-10-07T14:08:41.604Z",
@@ -461,7 +503,7 @@
     "pick": "D"
    },
    "at": "2026-10-07T14:11:26.058Z",
-   "decision": "",
+   "decision": "D",
    "note": "",
    "prefill": "A",
    "prefillDecision": "A",
@@ -470,7 +512,14 @@
     "C",
     "D"
    ],
-   "variantsAt": "2026-10-07T14:11:26.058Z"
+   "variantsAt": "2026-10-07T14:11:26.058Z",
+   "cardRuling": {
+    "pick": "D",
+    "by": "owner",
+    "via": "decision taken by question card",
+    "at": "2026-10-07T15:05:00-0700",
+    "note": "Ratifies the agent inference; not an owner quote."
+   }
   },
   "RM_Weloon": {
    "at": "2026-10-07T14:04:40.501Z",
@@ -495,10 +544,17 @@
     "not_owner_ruling": true,
     "pick": "C"
    },
-   "decision": "",
+   "decision": "C",
    "note": "",
    "prefill": "A",
-   "prefillDecision": "A"
+   "prefillDecision": "A",
+   "cardRuling": {
+    "pick": "C",
+    "by": "owner",
+    "via": "decision taken by question card",
+    "at": "2026-10-07T15:05:00-0700",
+    "note": "Ratifies the agent inference; not an owner quote."
+   }
   },
   "RSW_Faa": {
    "at": "2026-10-07T13:54:14.732Z",
