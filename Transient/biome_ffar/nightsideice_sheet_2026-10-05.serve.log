@@ -1,72 +1,154 @@
 
   sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\nightsideice_sheet_2026-10-05.html
   decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\nightsideice_sheet_2026-10-05.decisions.json
-             4 rows · 4 decided · NEVER reviewed (pre-fill only)
-  serving    http://localhost:35815/?t=ccdJKtkqnZZWvgz537fnTg
+             4 rows · 4 decided · reviewed
+  serving    http://localhost:40203/?t=2W3mCmiEKvcfk0FZXJLTCQ
              (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
               the ?t= token is what gates writes. Windows browser uses localhost.)
   stop       Ctrl-C
 
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
   "GET /decisions HTTP/1.1" 200 -
-  "GET /img/22e9996b2a717b3e5eab.webp HTTP/1.1" 200 -
+  "GET /img/scale_RSW_CaveLemming_1d9d2c449a_7c498c.png HTTP/1.1" 200 -
+  "GET /img/scale_AA_ShockGoat_cd807a6192_7c498c.png HTTP/1.1" 200 -
+  "GET /img/scale_Tauntaun_45ecc26a11_620f12.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_Wampa_e64862a487_d8cf4a.png HTTP/1.1" 200 -
   "GET /img/ca95c92e524c096bbfad.webp HTTP/1.1" 200 -
+  "GET /img/22e9996b2a717b3e5eab.webp HTTP/1.1" 200 -
+  "GET /img/fda357d0e43770aef98d.webp HTTP/1.1" 200 -
   "GET /img/8e3d67c15d10edcd1cd1.webp HTTP/1.1" 200 -
-  "GET /img/b9f6559efb95f15fead8.webp HTTP/1.1" 200 -
-  "GET /img/bd446d6bce804db2673b.webp HTTP/1.1" 200 -
-  "GET /img/9acaf96bc5dc1d938bde.webp HTTP/1.1" 200 -
+  "GET /img/1d9d2c449af5e83b6d61.webp HTTP/1.1" 200 -
+  "GET /img/3f6e1e8cb8f8aaf1da96.webp HTTP/1.1" 200 -
   "GET /img/c3393ed5a233b5f45de4.webp HTTP/1.1" 200 -
   "GET /img/cd807a61921c644fab0e.webp HTTP/1.1" 200 -
-  "GET /img/bcaadce40442f96c0115.webp HTTP/1.1" 200 -
-  "GET /img/e0b5ce5699b15ead5420.webp HTTP/1.1" 200 -
-  "GET /img/6a11a568eae6fabdb835.webp HTTP/1.1" 200 -
-  "GET /img/dbdf4abf638e547780df.webp HTTP/1.1" 200 -
   "GET /favicon.ico HTTP/1.1" 204 -
-  "GET /img/ec61e64684f85023ba6f.webp HTTP/1.1" 200 -
-  "GET /img/45ecc26a11888c3fe7e4.webp HTTP/1.1" 200 -
-  "GET /img/4e688911e696993db0b5.webp HTTP/1.1" 200 -
+  "GET /img/bcaadce40442f96c0115.webp HTTP/1.1" 200 -
+  "GET /img/6a11a568eae6fabdb835.webp HTTP/1.1" 200 -
+  "GET /img/e0b5ce5699b15ead5420.webp HTTP/1.1" 200 -
+  "GET /img/dbdf4abf638e547780df.webp HTTP/1.1" 200 -
+  "GET /img/4e65bde48307524837aa.webp HTTP/1.1" 200 -
+  "GET /img/e9212327ae7c7643948a.webp HTTP/1.1" 200 -
   "GET /img/ca69a2b894ca6da3fadd.webp HTTP/1.1" 200 -
-  "GET /img/192352a7f27eb33bdc72.webp HTTP/1.1" 200 -
+  "GET /img/45ecc26a11888c3fe7e4.webp HTTP/1.1" 200 -
   "GET /img/dd42ec0c1ec17e2aea9f.webp HTTP/1.1" 200 -
+  "GET /img/ec61e64684f85023ba6f.webp HTTP/1.1" 200 -
+  "GET /img/4e688911e696993db0b5.webp HTTP/1.1" 200 -
+  "GET /img/68d32ba5492ccc74b5db.webp HTTP/1.1" 200 -
+  "GET /img/27e976bc5fea092659db.webp HTTP/1.1" 200 -
+  "GET /img/54256ce93ad9bb12ed2c.webp HTTP/1.1" 200 -
+  "GET /img/192352a7f27eb33bdc72.webp HTTP/1.1" 200 -
+  "GET /img/d5141e04d0f4ac9a382d.webp HTTP/1.1" 200 -
   "GET /img/dd44f62b3b53bb50cdba.webp HTTP/1.1" 200 -
   "GET /img/f600c0a4770bba2397e3.webp HTTP/1.1" 200 -
-  "GET /img/582e578f0bbfea1ed157.webp HTTP/1.1" 200 -
   "GET /img/7c6c193a9b5f8e1923dc.webp HTTP/1.1" 200 -
-  "GET /img/ef179636328bfc4cc323.webp HTTP/1.1" 200 -
-  "GET /img/bc2112bb663794b0f36c.webp HTTP/1.1" 200 -
-  "GET /img/11b6d0329c9b724c7dad.webp HTTP/1.1" 200 -
-  "GET /img/e64862a4879bcacccd38.webp HTTP/1.1" 200 -
-  "GET /img/59619e94a34980b3c146.webp HTTP/1.1" 200 -
-  "GET /img/281e4251a54530e4fc5b.webp HTTP/1.1" 200 -
-  "GET /img/415af8fe2c222bc16470.webp HTTP/1.1" 200 -
-  "GET /img/8ea03da849e75951165f.webp HTTP/1.1" 200 -
-  "GET /img/3f1119b1a7e2a1f0b6c8.webp HTTP/1.1" 200 -
-  "GET /img/6aff8ac12bae27f138e8.webp HTTP/1.1" 200 -
-  "GET /img/c9cb2aa06374741b0fce.webp HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
-  "GET /?t=ccdJKtkqnZZWvgz537fnTg HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -
+  "GET /?t=2W3mCmiEKvcfk0FZXJLTCQ HTTP/1.1" 200 -

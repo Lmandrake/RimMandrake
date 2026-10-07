@@ -1,54 +1,180 @@
 
   sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\lanterndeeps_sheet_2026-10-05.html
   decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\lanterndeeps_sheet_2026-10-05.decisions.json
-             39 rows · 39 decided · NEVER reviewed (pre-fill only)
-  serving    http://localhost:41155/?t=yt1iNLP9t_F1YGTKb95MsA
+             39 rows · 39 decided · reviewed
+  serving    http://localhost:38059/?t=oX3JwP638NkkUgDfwz1D8Q
              (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
               the ?t= token is what gates writes. Windows browser uses localhost.)
   stop       Ctrl-C
 
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
   "GET /decisions HTTP/1.1" 200 -
-  "GET /img/b2a7c63e9e1c2278dcce.webp HTTP/1.1" 200 -
-  "GET /img/758a687ab0765a7560d6.webp HTTP/1.1" 200 -
+  "GET /img/scale_RM_Blinker_b5cff32443_2b900c.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Candler_e8017f22ec_a04486.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Chiller_4a2ab36c95_798f6b.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Cleaver_6df2a9d900_7513c3.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Drifter_8f3e9bfc5b_319830.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Knocker_cf2b41c514_5d5804.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Pooler_6a0033e02d_2b900c.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Shoal_39c1ba5992_952242.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Sipper_092ee17d9c_599838.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Slick_28cb7e5e93_798f6b.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_BloodropMoth_222073ce96_a04486.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_BloodropMoth_222073ce96_a04486.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Tapper_fe45c01ad9_2b900c.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_Gembug_09ea2845f7_8f0146.png HTTP/1.1" 200 -
+  "GET /img/b5cff32443b79f7854da.webp HTTP/1.1" 200 -
+  "GET /img/scale_RM_Gembug_09ea2845f7_8f0146.png HTTP/1.1" 200 -
+  "GET /img/4506f56c3903cfdb36d8.webp HTTP/1.1" 200 -
   "GET /img/ffe6a84d80810b4edf48.webp HTTP/1.1" 200 -
-  "GET /img/4fd0431f42079449aa5b.webp HTTP/1.1" 200 -
+  "GET /img/758a687ab0765a7560d6.webp HTTP/1.1" 200 -
+  "GET /img/b2a7c63e9e1c2278dcce.webp HTTP/1.1" 200 -
+  "GET /img/f450a5acef92b171fe3e.webp HTTP/1.1" 200 -
+  "GET /favicon.ico HTTP/1.1" 204 -
+  "GET /img/scale_RSW_GlowSlug_2b9f85abab_07bb71.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_GlowSlug_2b9f85abab_07bb71.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_BovineBeetle_16593bb512_e88389.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_BovineBeetle_16593bb512_e88389.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_Megapleura_8bbd6c1a90_c0ab5c.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Megapleura_8bbd6c1a90_c0ab5c.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_MossBeetleLarvae_3160fddd81_b441e0.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_MossBeetleLarvae_3160fddd81_b441e0.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_ShatterjawBeetle_19a609b975_c784d1.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_ShatterjawBeetle_19a609b975_c784d1.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_FacetMothLarvae_c84f357c7c_2b900c.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_FacetMothLarvae_c84f357c7c_2b900c.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_BrellikBulb_ad45402154_7ee803.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Lanternstone_Sowable_5405bc03c3_8f25d1.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_KuvraSpout_30ea2119cd_5c8508.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_DeepMycelium_a3acdbc5bd_7c856f.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_NurrikGill_2471506b87_50688c.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_OsskBramble_48a5bacf2b_9cd82b.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_PrennaLace_8cad3faee8_2b900c.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_QuorrFern_f74dfa6ca4_4d94d5.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_ThrakkCap_264cc2edce_5c21df.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_TwitchingPuffer_df997c12f6_38b36a.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_VellokReed_3d2b7dd2ce_c1211d.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_ZivvitTaper_573465a455_8048fe.png HTTP/1.1" 200 -
   "GET /img/e8017f22ecb33d29ec72.webp HTTP/1.1" 200 -
+  "GET /img/4fd0431f42079449aa5b.webp HTTP/1.1" 200 -
   "GET /img/673d5a57df31af1e2135.webp HTTP/1.1" 200 -
   "GET /img/941ee4184eaeeeffcc53.webp HTTP/1.1" 200 -
-  "GET /img/e404f8568333c99fd81c.webp HTTP/1.1" 200 -
   "GET /img/4a2ab36c95ae141ed8fb.webp HTTP/1.1" 200 -
-  "GET /img/6df2a9d900e765afe70d.webp HTTP/1.1" 200 -
+  "GET /img/e404f8568333c99fd81c.webp HTTP/1.1" 200 -
   "GET /img/09156b1ff3111d1b358e.webp HTTP/1.1" 200 -
+  "GET /img/6df2a9d900e765afe70d.webp HTTP/1.1" 200 -
   "GET /img/1d433b511f23cdae1526.webp HTTP/1.1" 200 -
-  "GET /favicon.ico HTTP/1.1" 204 -
-  "GET /img/8f3e9bfc5bdf451b36e4.webp HTTP/1.1" 200 -
   "GET /img/d42add1ec219dbc97af8.webp HTTP/1.1" 200 -
+  "GET /img/8f3e9bfc5bdf451b36e4.webp HTTP/1.1" 200 -
   "GET /img/236d121519113fdefd05.webp HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
-  "GET /?t=yt1iNLP9t_F1YGTKb95MsA HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -
+  "GET /?t=oX3JwP638NkkUgDfwz1D8Q HTTP/1.1" 200 -

@@ -11,3 +11,4 @@
 - 21:20 step 3: artboard gss_states recipe (18 subjects) + jawa/gss_stage tool + live.py gss op pass + autofix.py triage (selftest)
 - 21:23 step 5: campaign log GSS section appended; GPT read doc + looks doc written; next selftests + commit
 - 21:31 committed code; committing docs
+- 21:31 commits e9105c857 + 5804198f0 local; pull --rebase refused (other writers' unstaged changes in tree), NOT pushed

@@ -1,5 +1,5 @@
 {
- "visuals_ok": 34,
+ "visuals_ok": 39,
  "gallery_ok": 51,
  "verify": {
   "vis_dry_dirt_D1": {
@@ -546,6 +546,86 @@
    "scorch": 0.0,
    "pawns": 1
   },
+  "vis_slimewhite_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_slimered_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_blood_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_chemfuel_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
+  "vis_astrofuel_dirt_D3": {
+   "ok": true,
+   "cells": 12,
+   "d": [
+    3
+   ],
+   "f": [
+    2
+   ],
+   "want": [
+    3,
+    2
+   ],
+   "scorch": 0.0,
+   "pawns": 1
+  },
   "1": {
    "ok": true,
    "dug": 64,
@@ -748,8 +828,8 @@
   },
   "26": {
    "ok": true,
-   "dug": 9,
-   "want_dug": 9,
+   "dug": 25,
+   "want_dug": 25,
    "missing": [],
    "pawns": 1,
    "want_pawns": 1
@@ -956,7 +1036,7 @@
   }
  },
  "notes": [
-  "swept 47 non-colonist pawn(s) (kept 0 held on purpose)"
+  "swept 6 non-colonist pawn(s) (kept 0 held on purpose)"
  ],
- "wall_s": 128.2
+ "wall_s": 136.5
 }

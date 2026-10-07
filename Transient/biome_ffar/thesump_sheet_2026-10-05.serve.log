@@ -1,58 +1,73 @@
 
   sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\thesump_sheet_2026-10-05.html
   decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\thesump_sheet_2026-10-05.decisions.json
-             21 rows · 21 decided · NEVER reviewed (pre-fill only)
-  serving    http://localhost:33059/?t=_cgqkJUyTxNd_ik1mrJCfQ
+             21 rows · 21 decided · reviewed
+  serving    http://localhost:40751/?t=frI6wDWPo9g8_XcUhofvFA
              (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
               the ?t= token is what gates writes. Windows browser uses localhost.)
   stop       Ctrl-C
 
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
   "GET /decisions HTTP/1.1" 200 -
-  "GET /img/f5707c5dc0c244056940.webp HTTP/1.1" 200 -
-  "GET /img/fbaade5cbb85a04ce61a.webp HTTP/1.1" 200 -
+  "GET /img/scale_RM_Brommet_f5707c5dc0_8fd90e.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Dredgel_2ca18c6ede_a68d3f.png HTTP/1.1" 200 -
+  "GET /img/scale_RSW_Hssiss_980e61dbe6_f6fd77.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Gulveth_003618df6d_fddf56.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Kethrel_9f8035a199_6f0a31.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Skarrid_c9fbcb96db_ab7847.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Skellarn_33e73e6038_54a817.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_SumpMouse_fe63638d8c_506062.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_ThrummelBroodmother_bf90aaa2f4_54a817.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Thrummel_4e7699d87f_05c16b.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_ThrummelWarden_6106782b8c_8fd90e.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Brindeth_b8b30e331c_33ec33.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Dorvel_8a3a5377f0_a20207.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Korveth_96fc2b8881_b4fd0b.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Mirrelin_cf7f863be3_6def80.png HTTP/1.1" 200 -
   "GET /img/a5f17b5da872d818bb01.webp HTTP/1.1" 200 -
-  "GET /img/2ca18c6ede1bbe0239a6.webp HTTP/1.1" 200 -
-  "GET /img/3be22d91574e6efde69f.webp HTTP/1.1" 200 -
+  "GET /img/fbaade5cbb85a04ce61a.webp HTTP/1.1" 200 -
+  "GET /img/f5707c5dc0c244056940.webp HTTP/1.1" 200 -
   "GET /favicon.ico HTTP/1.1" 204 -
-  "GET /img/0a947d573ebed8b6335a.webp HTTP/1.1" 200 -
+  "GET /img/scale_RM_Soffeth_1a4dd40160_bb20e2.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Skelver_a45a5c5304_a20207.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Tolleth_774ce30749_e5929c.png HTTP/1.1" 200 -
+  "GET /img/scale_RM_Pallick_74e65868b2_6def80.png HTTP/1.1" 200 -
+  "GET /img/2ca18c6ede1bbe0239a6.webp HTTP/1.1" 200 -
+  "GET /img/scale_RM_Velloch_fa96726ed2_6def80.png HTTP/1.1" 200 -
+  "GET /img/39e45d48506d58e91b16.webp HTTP/1.1" 200 -
+  "GET /img/scale_RUT_Plant_Wick_fa6e5ce7aa_2c2d77.png HTTP/1.1" 200 -
+  "GET /img/f2a5b3f5ea110a81b54d.webp HTTP/1.1" 200 -
   "GET /img/8008fe4c474c8f60e72a.webp HTTP/1.1" 200 -
   "GET /img/003618df6de8bb6ddc6d.webp HTTP/1.1" 200 -
   "GET /img/966965fb45e0d02312ef.webp HTTP/1.1" 200 -
-  "GET /img/e84e3fba38c7a0e5cfd7.webp HTTP/1.1" 200 -
   "GET /img/980e61dbe6a026a07319.webp HTTP/1.1" 200 -
+  "GET /img/e84e3fba38c7a0e5cfd7.webp HTTP/1.1" 200 -
   "GET /img/f5cc3c557c56ce2d1f5d.webp HTTP/1.1" 200 -
+  "GET /img/350f2b9759d65713b642.webp HTTP/1.1" 200 -
+  "GET /img/0d30a373b760c4e69bf4.webp HTTP/1.1" 200 -
+  "GET /img/b3177bac6db8e882be24.webp HTTP/1.1" 200 -
   "GET /img/e242bfec7b768df5f97d.webp HTTP/1.1" 200 -
   "GET /img/24ac8ee79856c3a4cb77.webp HTTP/1.1" 200 -
   "GET /img/e0f18f3f10577e1c13a6.webp HTTP/1.1" 200 -
-  "GET /img/69d1d551bedbb52e2641.webp HTTP/1.1" 200 -
-  "GET /img/ad8380b9492133e5fc04.webp HTTP/1.1" 200 -
-  "GET /img/55509769f1eb3fe6dd47.webp HTTP/1.1" 200 -
-  "GET /img/b1ad81fa78c8dbf06e5e.webp HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
-  "GET /?t=_cgqkJUyTxNd_ik1mrJCfQ HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
+  "GET /?t=frI6wDWPo9g8_XcUhofvFA HTTP/1.1" 200 -
