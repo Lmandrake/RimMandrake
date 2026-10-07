@@ -134,11 +134,6 @@ namespace RimMandrake.RustCathedral.Hum
 
 			RM_MapComponent_BiomeAttitude.AddIrritation(map, PerCatchIrritation * count);
 
-			if (Faction.OfMechanoids == null)
-			{
-				return;
-			}
-
 			int mapId = map.uniqueID;
 			int nowTick = Find.TickManager.TicksGame;
 			int anchor;
@@ -163,11 +158,9 @@ namespace RimMandrake.RustCathedral.Hum
 				return;
 			}
 
-			Faction.OfMechanoids.TryAffectGoodwillWith(
-				Faction.OfPlayer,
-				GoodwillPerTick * ticks,
-				canSendMessage: false,
-				canSendHostilityLetter: true);
+			// The Cathedral's own standing, not faction goodwill (permanentEnemy
+			// refuses every change -- RUSTCATHEDRAL_GOODWILL_FLOOR_1).
+			RM_MapComponent_BiomeAttitude.AffectStanding(map, GoodwillPerTick * ticks);
 		}
 	}
 

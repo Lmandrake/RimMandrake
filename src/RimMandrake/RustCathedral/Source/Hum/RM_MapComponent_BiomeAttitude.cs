@@ -20,15 +20,18 @@ namespace RimMandrake.RustCathedral.Hum
 	// matching RM_BiomeAttitudeDef, which is every biome but the Cathedral
 	// today -- cheap and harmless everywhere else.
 	//
-	// Ledger (zero C#): the slow layer IS faction-13 (Forsaken/Forgotten
-	// Arsenal, vanilla Mechanoid, Faction.OfMechanoids) player goodwill --
-	// vanilla's own FactionRelation.CheckKindThresholds flips Hostile at <=-75
-	// and back to Neutral only at >=0. This component reads that goodwill and
-	// writes to it (worst-band sustained drain only); it never sets faction
-	// relations directly.
+	// Slow layer (RUSTCATHEDRAL_GOODWILL_FLOOR_1): the Cathedral's own
+	// STANDING with the player, an int in [-100, 100] kept and saved by this
+	// component, starting at def.standingStart. It is NOT faction goodwill:
+	// the faction this campaign relabels as the Forgotten Arsenal is vanilla
+	// Mechanoid, which is permanentEnemy, so Faction.CanChangeGoodwillFor
+	// refuses every change and its goodwill never moves -- reading it
+	// floored the composite and made every drain a no-op. The worst-band
+	// drain, §4's catch cost and §5's drill response all move this value
+	// through AffectStanding(); nothing here touches faction relations.
 	//
 	// Fast layer (this class): "irritation" is a float that events bump and
-	// time decays. composite = irritation - goodwill*weight decides a 0..N
+	// time decays. composite = irritation - standing*weight decides a 0..N
 	// band (N = def.WorstBand) via ascending thresholds with a de-escalation-
 	// only hysteresis margin (the sheet's own "hysteresis wiring" mechanic).
 	// Band drives: (a) how many layered hum Sustainers play (0 at the worst
@@ -46,6 +49,8 @@ namespace RimMandrake.RustCathedral.Hum
 		private int goodwillDrainDayAnchorTick;
 		private int goodwillDrainedToday;
 		private int checksSinceStart;
+		private int standing;
+		private bool standingInitialized;
 
 		private RM_BiomeAttitudeDef cachedDef;
 		private bool defLookupDone;
@@ -68,6 +73,8 @@ namespace RimMandrake.RustCathedral.Hum
 			Scribe_Values.Look(ref worstBandGoodwillLastTickGametime, "worstBandGoodwillLastTickGametime", -999999);
 			Scribe_Values.Look(ref goodwillDrainDayAnchorTick, "goodwillDrainDayAnchorTick", 0);
 			Scribe_Values.Look(ref goodwillDrainedToday, "goodwillDrainedToday", 0);
+			Scribe_Values.Look(ref standing, "standing", 0);
+			Scribe_Values.Look(ref standingInitialized, "standingInitialized", false);
 			// activeSustainers is intentionally not saved -- Sustainer is a
 			// live-audio handle, not save data. currentBand survives the
 			// save/load and the next tick resyncs sustainers to it.
@@ -156,6 +163,47 @@ namespace RimMandrake.RustCathedral.Hum
 			irritation = Mathf.Max(0f, irritation + amount);
 		}
 
+		/// <summary>The Cathedral's standing with the player on this map ([-100, 100]), or null if the biome has no attitude def.</summary>
+		public static int? GetStanding(Map map)
+		{
+			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
+			if (comp == null || comp.GetDef() == null)
+			{
+				return null;
+			}
+			return comp.Standing;
+		}
+
+		/// <summary>Moves this map's standing by delta (negative = offence), clamped to [-100, 100]. No-op off an attitude-def map.</summary>
+		public static void AffectStanding(Map map, int delta)
+		{
+			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
+			if (comp == null || comp.GetDef() == null)
+			{
+				return;
+			}
+			comp.Notify_Standing(delta);
+		}
+
+		public void Notify_Standing(int delta)
+		{
+			standing = Mathf.Clamp(Standing + delta, -100, 100);
+		}
+
+		private int Standing
+		{
+			get
+			{
+				if (!standingInitialized)
+				{
+					RM_BiomeAttitudeDef def = GetDef();
+					standing = def != null ? Mathf.Clamp(def.standingStart, -100, 100) : 0;
+					standingInitialized = true;
+				}
+				return standing;
+			}
+		}
+
 		// ---- CATHEDRAL_STAGE_HUM_BRIDGE_1: the stage source's own lane ----
 
 		/// <summary>This map's current conduct-stage (0 WARY by default), or -1 if the biome has no attitude def.</summary>
@@ -199,6 +247,41 @@ namespace RimMandrake.RustCathedral.Hum
 		public float ProofIrritation => irritation;
 
 		public int ProofLayers => activeSustainers.Count;
+
+		public int ProofStanding => Standing;
+
+		/// <summary>Sets standing directly (proof restore only).</summary>
+		public void ProofSetStanding(int value)
+		{
+			standing = Mathf.Clamp(value, -100, 100);
+			standingInitialized = true;
+		}
+
+		/// <summary>Runs one worst-band drain step with the interval and day budget cleared, then restores the
+		/// drain bookkeeping. Returns false if no def is bound.</summary>
+		public bool ProofDrainOnce()
+		{
+			RM_BiomeAttitudeDef def = GetDef();
+			if (def == null)
+			{
+				return false;
+			}
+			int lastTick = worstBandGoodwillLastTickGametime, anchor = goodwillDrainDayAnchorTick, drained = goodwillDrainedToday;
+			worstBandGoodwillLastTickGametime = -999999;
+			goodwillDrainDayAnchorTick = Find.TickManager.TicksGame;
+			goodwillDrainedToday = 0;
+			try
+			{
+				MaybeDrainGoodwill(def);
+			}
+			finally
+			{
+				worstBandGoodwillLastTickGametime = lastTick;
+				goodwillDrainDayAnchorTick = anchor;
+				goodwillDrainedToday = drained;
+			}
+			return true;
+		}
 
 		/// <summary>Binds this map to an attitude def regardless of its biome (a quicktest map has none).</summary>
 		public void ProofUseDef(RM_BiomeAttitudeDef def)
@@ -282,8 +365,7 @@ namespace RimMandrake.RustCathedral.Hum
 
 		private int ComputeBand(RM_BiomeAttitudeDef def)
 		{
-			int goodwill = Faction.OfMechanoids != null ? Faction.OfMechanoids.GoodwillWith(Faction.OfPlayer) : 0;
-			float composite = Mathf.Clamp(irritation - goodwill * def.goodwillCompositeWeight, 0f, 100f);
+			float composite = Mathf.Clamp(irritation - Standing * def.goodwillCompositeWeight, 0f, 100f);
 
 			int previousBand = currentBand < 0 ? 0 : currentBand;
 			int rawBand = 0;
@@ -415,11 +497,6 @@ namespace RimMandrake.RustCathedral.Hum
 			{
 				return;
 			}
-			if (Faction.OfMechanoids == null)
-			{
-				return;
-			}
-
 			int nowTick = Find.TickManager.TicksGame;
 			if (nowTick - goodwillDrainDayAnchorTick >= GenDate.TicksPerDay)
 			{
@@ -450,7 +527,7 @@ namespace RimMandrake.RustCathedral.Hum
 				return;
 			}
 
-			Faction.OfMechanoids.TryAffectGoodwillWith(Faction.OfPlayer, amount, canSendMessage: false, canSendHostilityLetter: true);
+			Notify_Standing(amount);
 			goodwillDrainedToday += amount;
 		}
 	}

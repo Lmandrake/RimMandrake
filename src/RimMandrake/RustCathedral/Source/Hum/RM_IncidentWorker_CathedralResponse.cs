@@ -217,11 +217,7 @@ namespace RimMandrake.RustCathedral.Hum
 
 			// Escalation coupling into §1.
 			RM_MapComponent_BiomeAttitude.AddIrritation(map, ResponseIrritation);
-			Faction.OfMechanoids.TryAffectGoodwillWith(
-				Faction.OfPlayer,
-				ResponseGoodwill,
-				canSendMessage: false,
-				canSendHostilityLetter: true);
+			RM_MapComponent_BiomeAttitude.AffectStanding(map, ResponseGoodwill);
 
 			// No text args: ban 6 means the letter names nothing and describes
 			// nothing, so there is nothing to substitute into it.
