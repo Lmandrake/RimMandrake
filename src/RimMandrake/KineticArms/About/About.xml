@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.kineticarms</packageId>
+  <name>RimMandrake: Kinetic Arms</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.explosiveknockback</packageId>
+      <displayName>RimMandrake: Explosive Knockback</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.explosiveknockback</li>
+    <li>mandrake.rm.flowworks</li>
+    <li>mandrake.rm.gimmesomeslack</li>
+  </loadAfter>
+  <description>A family of ancient kinetic-blast weapons whose shots throw people rather than wound them. Built on Explosive Knockback.
+
+- Thudder grenade: a thrown concussion grenade that clears a doorway.
+- Palm thumper: a sidearm that shoves one target straight away from the shooter.
+- Slam launcher: a lobbed kinetic charge for the enemy's second rank.
+- Repulsor rifle: every hit pushes the target back along the shot line.
+- Kicker mine: a buried, rotatable plate that launches whoever steps on it in its facing, and re-arms with chemfuel.
+- Thump shell: a wide, low-damage throwing shell for the ordinary mortar.
+- Pulse cannon: a powered turret that stores pulse charges and shoves raiders away from your wall.
+- Grav-ram: the strongest throw there is.
+
+Also: the mechanoid thump cannon now throws farther than a mortar shell beside its impact.
+
+Kinetic blasts do little or no wound damage and barely scratch walls. They kill only through what they throw you into: walls, pits, fire, other people.
+
+These weapons are not crafted: they are found. Every weapon and the thump cannon change has a Mod Settings toggle; all off leaves the items inert in the world and the thump cannon vanilla. Design: design/RimMandrake/kinetic_blast_weapons_design_2026-10-06.md.</description>
+</ModMetaData>
