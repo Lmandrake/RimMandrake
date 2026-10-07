@@ -25,14 +25,22 @@ FAILS = []
 
 # behaviours the C# must carry: (file, label, regex)
 BEHAVIOURS = [
-    ("RM_CompCapturedSpecimen.cs", "foreign display tank skips feeding/neglect/products",
-     r"if \(IsForeignDisplay\)\s*\{\s*return;"),
+    ("RM_CompCapturedSpecimen.cs", "foreign display tank skips feeding/neglect/products (tick asks the kernel)",
+     r"RM_TankKernel\.RunsThisTick\(RM_FeverWoodSettings\.sekkulaathTankEnabled, occupied, IsForeignDisplay"),
+    ("RM_TankKernel.cs", "foreign display tank skips feeding/neglect/products (kernel rule)",
+     r"if \(!tankEnabled \|\| !occupied \|\| foreignDisplay\) return false;"),
     ("RM_CompCapturedSpecimen.cs", "a breach of a foreign display tank frees (not manhunter-escapes) the young",
-     r"private void Escape\(string cause\)\s*\{\s*if \(IsForeignDisplay && RM_FeverWoodSettings\.broodRansomEnabled\)\s*\{\s*FreeDisplayYoung"),
+     r"private void Escape\(string cause\)\s*\{\s*if \(RM_TankKernel\.EscapeFreesDisplayYoung\(IsForeignDisplay, RM_FeverWoodSettings\.broodRansomEnabled\)\)\s*\{\s*FreeDisplayYoung"),
+    ("RM_TankKernel.cs", "a breach of a foreign display tank frees the young (kernel rule)",
+     r"EscapeFreesDisplayYoung\(bool foreignDisplay, bool ransomOn\) \{ return foreignDisplay && ransomOn; \}"),
     ("RM_CompCapturedSpecimen.cs", "a kill outright still frees the young",
-     r"mode == DestroyMode\.KillFinalize && occupied && Props\.displayTank"),
+     r"DestroyFreesDisplayYoung\(mode == DestroyMode\.KillFinalize, occupied, Props\.displayTank"),
+    ("RM_TankKernel.cs", "a kill outright still frees the young (kernel rule)",
+     r"return killFinalize && occupied && displayProps"),
     ("RM_CompCapturedSpecimen.cs", "freeing is idempotent (empty tank does nothing)",
-     r"public Pawn FreeDisplayYoung\([^)]*\)\s*\{\s*if \(!occupied \|\| map == null\)"),
+     r"public Pawn FreeDisplayYoung\([^)]*\)\s*\{\s*if \(!RM_TankKernel\.TryFreeDisplay\(ref occupied, map != null\)"),
+    ("RM_TankKernel.cs", "freeing is idempotent (kernel rule)",
+     r"if \(!occupied \|\| !spawned\) return false;"),
     ("RM_CompCapturedSpecimen.cs", "the freed young carries the tank's gift rolls",
      r"Notify_ReleasedToDeep\(Props\.giftRolls\)"),
     ("RM_CompCapturedSpecimen.cs", "goodwill loss comes from Mod Settings",
@@ -42,12 +50,17 @@ BEHAVIOURS = [
     ("RM_CompEscapedCaptive.cs", "gift rolls are scribed on the young", r'Scribe_Values\.Look\(ref giftRolls, "giftRolls", 1\)'),
     ("RM_CompEscapedCaptive.cs", "gift rolls reach the scheduled gift", r"ScheduleDeepGift\(water, giftRolls\)"),
     ("RM_MapComponent_TentacleWatch.cs", "pending gift rolls are scribed", r'"pendingGiftRolls"'),
-    ("RM_MapComponent_TentacleWatch.cs", "a pending gift grants its rolls", r"RM_DeepGift\.Grant\(map, cell, rolls\)"),
+    ("RM_MapComponent_TentacleWatch.cs", "a pending gift grants its rolls", r"RM_DeepGift\.Grant\(map, due\[i\]\.Key, due\[i\]\.Value\)"),
     ("RM_BroodRansom.cs", "freed tanks are scribed", r'"freedDisplayTanks"'),
-    ("RM_BroodRansom.cs", "the gen step never rebuilds a freed tank", r"DisplayTankFreed\(settlement\) == true\)\s*\{\s*return;"),
+    ("RM_BroodRansom.cs", "the gen step never rebuilds a freed tank", r"DisplayTankFreed\(settlement\) == true\)\)\s*\{\s*return;"),
+    ("RM_BroodKernel.cs", "the gen step never rebuilds a freed tank (kernel rule)", r"applies && !alreadyFreed;"),
     ("RM_BroodRansom.cs", "the gen step is gated on the brood ransom and the tank",
-     r"if \(!RM_FeverWoodSettings\.broodRansomEnabled \|\| !RM_FeverWoodSettings\.sekkulaathTankEnabled \|\| tankDef == null\)"),
-    ("RM_BroodRansom.cs", "the stock generator honours onlyFactions", r"!RM_FeverWoodSettings\.broodRansomEnabled \|\| !StocksFor\(faction\)"),
+     r"PlaceDisplayTank\(RM_FeverWoodSettings\.broodRansomEnabled, RM_FeverWoodSettings\.sekkulaathTankEnabled,\s*tankDef != null"),
+    ("RM_BroodKernel.cs", "the gen step is gated on the brood ransom and the tank (kernel rule)",
+     r"return ransomOn && tankOn && hasTankDef && applies"),
+    ("RM_BroodRansom.cs", "the stock generator honours onlyFactions",
+     r"StocksCask\(RM_FeverWoodSettings\.broodRansomEnabled, StocksFor\(faction\)\)"),
+    ("RM_BroodKernel.cs", "the stock generator honours onlyFactions (kernel rule)", r"StocksCask\(bool ransomOn, bool stocksFor\) \{ return ransomOn && stocksFor; \}"),
     ("RM_BroodRansom.cs", "the keeper extension counts only named settlements", r"onlySettlementNames\.Contains\(settlement\.Name\)"),
     ("RM_FeverWoodMod.cs", "the goodwill loss setting is saved",
      r'Scribe_Values\.Look\(ref broodDisplayTankGoodwillLoss, "broodDisplayTankGoodwillLoss", 50\)'),
@@ -63,11 +76,11 @@ def check(name, cond, detail=""):
 
 def _src(root):
     out = {}
-    d = os.path.join(root, "Source")
-    for f in os.listdir(d):
-        if f.endswith(".cs"):
-            with open(os.path.join(d, f), encoding="utf-8") as fh:
-                out[f] = fh.read()
+    for d in (os.path.join(root, "Source"), os.path.join(root, "Source", "Kernel")):
+        for f in os.listdir(d) if os.path.isdir(d) else []:
+            if f.endswith(".cs"):
+                with open(os.path.join(d, f), encoding="utf-8") as fh:
+                    out[f] = fh.read()
     return out
 
 
@@ -189,7 +202,11 @@ def main():
         ("buildable", "camp", '<designationCategory IsNull="True" />', "", "buildable"),
         ("unknown class", "camp", "RimMandrake.FeverWood.RM_StockGenerator_DeepYoung", "RimMandrake.FeverWood.RM_StockGen_Nope", "not in Source"),
         ("regenerates freed", "Source/RM_BroodRansom.cs", "DisplayTankFreed(settlement) == true)", "DisplayTankFreed(settlement) == false)", "never rebuilds"),
-        ("neglect escapes", "Source/RM_CompCapturedSpecimen.cs", "if (IsForeignDisplay)\n            {\n                return;", "if (false)\n            {\n                return;", "skips feeding"),
+        ("neglect escapes", "Source/Kernel/RM_TankKernel.cs", "if (!tankEnabled || !occupied || foreignDisplay) return false;", "if (!tankEnabled || !occupied) return false;", "skips feeding"),
+        ("escape manhunters a display tank", "Source/Kernel/RM_TankKernel.cs", "{ return foreignDisplay && ransomOn; }", "{ return false; }", "frees the young (kernel rule)"),
+        ("kill leaves young", "Source/Kernel/RM_TankKernel.cs", "return killFinalize && occupied && displayProps", "return false && occupied && displayProps", "kill outright"),
+        ("gen ignores freed", "Source/Kernel/RM_BroodKernel.cs", "applies && !alreadyFreed;", "applies;", "never rebuilds"),
+        ("cask ignores faction list", "Source/Kernel/RM_BroodKernel.cs", "{ return ransomOn && stocksFor; }", "{ return ransomOn; }", "honours onlyFactions"),
         ("rolls dropped on save", "Source/RM_MapComponent_TentacleWatch.cs", '"pendingGiftRolls"', '"pendingGiftRollz"', "pending gift rolls"),
     ]
     for label, where, old, new, expect in plants:

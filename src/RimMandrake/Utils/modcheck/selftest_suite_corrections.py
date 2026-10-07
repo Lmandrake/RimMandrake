@@ -258,6 +258,8 @@ def t_droidworks_quirk_and_prices():
                 return {"success": True, "fired": True}
             if tool == "jawa/spawn_pawn":
                 return {"success": True, "pawns": [{"id": "P%d" % (st["n"] + 1)}]}
+            if tool == "jawa/static_call":    # DroidworksProofs.MakeTrader: the trader is built by the mod, then probed
+                return {"success": True, "result": "OK trader built"}
             if tool == "jawa/trade_price_probe":
                 st["n"] += 1
                 steel = 3.0 - (0.4 if (shift and st["n"] > 1) else 0.0)
