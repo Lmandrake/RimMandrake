@@ -378,3 +378,8 @@ them; Q4 shield belts **absorb the throw and lose charge** (a strong throw pops 
 Owner typed (verbatim): *"We need to assign this tech to someone in the game. I'm thinking this might be ancient
 Rakatan technology (thump guns)."* — kinetic-blast weapons are framed as ancient Rakatan technology; see
 RAKATAN_ARCHOTECH_MACHINES_1 for the existing Rakatan grade ladder. Q5–Q7 asked next in that light.
+- Q-source (card 22:37), owner typed: *"(1) from the "Ancient Danger" type ruins in Rimworld that we have populated with
+  Rakatan Ancients (and the player only can recognize these because the ship is revealing them prolifically)"* —
+  kinetic weapons are FOUND in Ancient Danger ruins populated with Rakatan ancients, then refurbished up the Rakatan
+  grade ladder; no crafting.
+- Q5 first wave: **all eight** (card). Q6 pulse cannon: **rechargeable stored charge** refilled from power (card).

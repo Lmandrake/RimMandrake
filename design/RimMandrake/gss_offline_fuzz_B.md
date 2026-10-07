@@ -92,3 +92,8 @@ Cords dominate: ~2.5 ms per build, ~25 ms per case. `--fuzz-scale 4` runs 1,200 
 
 The adapter that snapshots a real map into `CordWorld` (linkGrid, thingGrid, pathing) and the render path are not in the offline project;
 the fuzz's map model is its own. Live check of the adapter is still owed to a bridge session.
+
+## Owner decision 2026-10-06 22:37 — blocked cords dive anywhere (A7)
+Owner typed: *"(1). We already have the wall and rock hole art. So we just need the water. This is a good solution."*
+A cord may dive into any wall or rock it meets and resurface on the far face (existing wall/rock hole art), and dive
+under water and resurface (new water entry/exit art to commission).
