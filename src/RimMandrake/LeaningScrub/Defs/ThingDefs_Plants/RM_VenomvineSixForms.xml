@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_VenomvineSixForms.xml          LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1
+
+  The six further venomvine forms. Owner ruled 2026-10-03 by question card: build all six
+  (Rearing, Walking, Hoard, Quench, Sworn, Shedding); the sworn hedge spares anyone carrying
+  its sap mark, whoever they are (raiders who carry it go through); the hoard stand keeps the
+  gear of whatever dies inside it. Design and art briefs:
+  design/Jawa/worldbuilding/biomes/leaningscrub_venomvine_forms_pitch_2026-10-03.md section 2.
+
+  Every form is a sibling of the four in RM_LeaningScrubVenomvineForms.xml: PlantBaseNonEdible,
+  Flammability 0.1, Nutrition 0, never auto-cut, the same body-size barrier, smotherable, and
+  the same venomvine-passability gate key. Each mechanic is C# in Source/RM_VenomvineForms.cs,
+  driven by one MapComponent (plants only TickLong), each behind its own Mod Setting; with its
+  setting off a form is a plain venomvine stand.
+
+  Numbers are PROVISIONAL (invented for this build, none ruled).
+
+  Art: NO render exists for any of the six (artpipe_state.py find, 2026-10-06). Each texPath
+  borrows the thicket's render (Things/Plant/RM_Venomvine, shipped by the
+  environmentalhazards dependency) as a PLACEHOLDER so nothing draws magenta. Six plant
+  renders are owed, plus a reared state (Rearing) and a spent state (Quench), per the briefs.
+-->
+<Defs>
+
+  <!-- A. Rearing: a stand pushed into rears up for hours, flags the intruder to the player
+       and reveals anyone hidden inside. The Gale masks the alert; the Stall doubles the rear. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_RearingVenomvine</defName>
+    <label>rearing venomvine</label>
+    <description>At rest its canes lie low in long sunward sweeps. Push into it and the whole stand snaps upright against the lean, a black fan with pale bone-banded undersides standing straight up on a plain where nothing else does. It does not strike. It tells. Raiders threading a hedge of it announce themselves; so does anyone creeping in to rob a nest. Only the Gale, roaring the canopy to white noise, hides a rear.</description>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <!-- PROVISIONAL: rears for 2 h (Mod Setting), only for a body that has to push (the
+           barrier's free band is 0.8, so small runway life passes under without rearing). -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Rearing">
+        <minBodySize>0.8</minBodySize>
+        <minGrowth>0.5</minGrowth>
+        <stallFactor>2</stallFactor>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- B. Walking: each Gale puts soft runners 1-2 cells downwind of the leading edge and lets
+       the oldest tail cells die back to dead venomvine. Runners carry no venom until half grown
+       (RM_CompProperties_MarkedThorns minGrowth, never the shared ContactVenom comp, which has
+       no growth gate). A smothered cell stops its whole stand walking. Map-wide cell cap. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_WalkingVenomvine</defName>
+    <label>walking venomvine</label>
+    <description>A long low wedge of a stand: old man-high black cane at the tail, tapering sunward into a fringe of thin rust-ochre runners laid flat along the ground. Every Gale it lays new runners downwind and lets its oldest cane die back, so across the years it crawls the plain the way the wind blows. The young runners are soft and thornless, safe and quick to cut; trim the front and it goes nowhere. Plant one upwind of where you want a wall and the wind will build it for you.</description>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>8</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.2</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>900</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_MarkedThorns">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <minGrowth>0.5</minGrowth>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <!-- PROVISIONAL: runners land 1-2 cells downwind at 5% growth; a fully grown tail cell dies
+           back with chance 0.5 per Gale and leaves 10 dead venomvine. -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Walking">
+        <runnerGrowth>0.05</runnerGrowth>
+        <maxStep>2</maxStep>
+        <tailDieChance>0.5</tailDieChance>
+        <tailYield>10</tailYield>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>30</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- C. Hoard: loose items lying in or beside the stand are grown in after a few hours
+       (Mod Setting) and listed on inspect; the gear of anything that dies in it is kept too
+       (owner ruling 2026-10-03). Cut, smother or kill the stand and everything drops on the
+       spot. It never kills on its own: no lash, no extra venom. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_HoardVenomvine</defName>
+    <label>hoard venomvine</label>
+    <description>A squat black knot, man-high, its canes coiled inward like a fist instead of leaning out. Anything left lying in it or against it is slowly grown in - dropped gear, a raider's lost rifle, the scrap the nest-birds let fall, the clothes and weapons of whatever died inside - until it glints, cold and metallic, deep in the cane. It is a scrap nest with no bird. Cut it down and it gives back everything it ever kept.</description>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>14</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.1</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <harvestWork>1600</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <!-- PROVISIONAL: holds at most 40 things; reaches its own cell and the eight around it. -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Hoard">
+        <maxHeld>40</maxHeld>
+        <minGrowth>0.5</minGrowth>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>45</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- D. Quench: fire within reach bursts its knuckles in vanilla's own firefoam-popper
+       explosion (DamageDefOf.Extinguish + Filth_FireFoam, values read off FirefoamPopper), then
+       it is spent for days (Mod Setting). Burn it twice. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_QuenchVenomvine</defName>
+    <label>quench venomvine</label>
+    <description>Thick near-black cane swollen at every hand-span into knuckles that carry a faint wet slate-blue sheen. When fire touches the stand the knuckles burst and drench everything around in sap that smothers flame. Fire-walls stall against it; a hedge grown of it does not burn. Each stand bursts once and then stands cracked and scorched for days while it swells again - burn it twice and the second fire takes.</description>
+    <statBases>
+      <MaxHitPoints>550</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <!-- PROVISIONAL: fire within 1.5 cells triggers; burst radius 4.9 (half a popper's 9.9). -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Quench">
+        <triggerRadius>1.5</triggerRadius>
+        <burstRadius>4.9</burstRadius>
+        <minGrowth>0.5</minGrowth>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- E. Sworn: the only venomvine the player can sow (behind RM_SwornHedgecraft). Its thorns
+       spare any pawn carrying RM_SwornSapMarked, whoever they are (owner ruling 2026-10-03).
+       Its venom is RM_CompProperties_MarkedThorns (this mod's own sweep), not the shared
+       ContactVenom comp, because that one has no per-pawn exemption. Wild stands are those a
+       dead settlement left behind, so wild commonality is the lowest of the forms. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_SwornVenomvine</defName>
+    <label>sworn venomvine</label>
+    <description>A venomvine that has been cut and trained: canes bound in lines, the top flat and level, small knots of pale undyed fibre tied along it as the planters' marks. It is the only venomvine anyone sows. Its thorns spare whoever carries its sap-mark and take everyone else - raider, beast or guest - with the full venom, so a sworn hedge is a wall whose gate is a smell. Whoever wears the mark goes through, whoever they are; a raider carrying stolen mark walks in like family. Wild sworn hedges are what dead settlements leave behind.</description>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>10</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.0~1.1</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+      <!-- PROVISIONAL sowing numbers. -->
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <sowWork>600</sowWork>
+      <sowMinSkill>6</sowMinSkill>
+      <sowResearchPrerequisites>
+        <li>RM_SwornHedgecraft</li>
+      </sowResearchPrerequisites>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_MarkedThorns">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <minGrowth>0.2</minGrowth>
+        <sparingHediff>RM_SwornSapMarked</sparingHediff>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- F. Shedding: each Gale throws a V of RM_ThornLitter downwind, up to ~8 cells. The litter
+       scratches weakly (RM_ThornLitterExtension on the filth), is swept by the normal cleaning
+       job, and fades in a few days on its own. -->
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_SheddingVenomvine</defName>
+    <label>shedding venomvine</label>
+    <description>A tall ragged stand whose sunward face is stripped to pale scarred cane where the thorns have torn away. Every Gale it throws them: downwind of it the silver-green ground carries a long rust-coloured V of thorn litter that still bites through a boot. Sweep it, walk round it, or wait a few days for it to rot into the fuzz.</description>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>8</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.0~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <!-- PROVISIONAL: V length is the Mod Setting (default 8); each V cell gets litter at 0.6. -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Shedding">
+        <litterDef>RM_ThornLitter</litterDef>
+        <cellChance>0.6</cellChance>
+        <minGrowth>0.75</minGrowth>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
