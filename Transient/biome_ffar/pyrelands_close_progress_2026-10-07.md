@@ -13,3 +13,10 @@ One line per milestone.
 23 of 24 frames collected via artpipe_state collect into src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_<N>_<dir>.png. Contact (looked: same wasp, wings tuck→spread→tuck): Transient/biome_ffar/pyrelands_close_2026-10-07/firewasp_flight_contact.png. PawnKindDef RM_FireWasp wired: 7 frames for now (frame 8 east requeued; bump to 8 when it lands), 2 ticks/frame, drawSize 1 as multiplier (scales with life stage).
 ## 4. Checks
 placeholder_detect file: 128/128 real (all Pyrelands PNGs except FireHawk, plus the sheet's ArtOverride/Baroque PNGs). texPaths: 26, all resolve (9 are vanilla). No _west.png in any Pyrelands creature folder, so no mirror needed.
+## 5. Pushed 7b3df8349 (unit 1, via merge-tree/commit-tree; other agents' dirty files in this clone).
+## 6. Deploy NOT run: --compose biomes plan (51 add/change lines) carries other agents' UNCOMMITTED files — untracked wreck PNGs in Abyss/Contagion/FeverWood/LongShade/Miasma/Stillsand/TheRot/Wasteland, Slime plant variants, Duumma surfaced art. Rerun once those are committed.
+## 7. Selftests 223/223 pass.
+## 8. Open
+- Frame 8 east job `pyrelands_firewasp_flight8_8r_east` still pending in artpipe. NEXT: collect it to FireWasp_Fly_8_east.png (`artpipe_state.py collect`), set RM_FireWasp flyingAnimationFrameCount 7 -> 8.
+- Gizka female south (`3599473822d4`, GizkaW_south.png, the 80% recolour alternate) stays live: his purge needs a replacement and no ruling covers one. NEXT: get his typed words to install his pick A onto GizkaW_*.
+- Deploy waits on other agents' uncommitted biome files.
