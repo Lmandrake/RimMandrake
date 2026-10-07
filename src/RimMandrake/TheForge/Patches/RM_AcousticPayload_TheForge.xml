@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_TheForge.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_TheForge"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Basalt and pumice, hot and dense. The mountain is not hiding anything close to the surface.</quietText>
+          <targets>
+            <li>
+              <label>magma close under the crust</label>
+              <reading>A thick, slow roar where the crust is thin. The heat is very close here.</reading>
+              <color>(1, 0.45, 0.25)</color>
+              <weight>2</weight>
+              <terrainDefs>
+                <li>RM_GlowingCrackCrust</li>
+              </terrainDefs>
+              <onlyFogged>true</onlyFogged>
+            </li>
+            <li>
+              <label>floatstone garden</label>
+              <reading>A strangely light, glassy chiming: spun stone, growing out of the crust.</reading>
+              <color>(0.95, 0.95, 1)</color>
+              <thingDefs>
+                <li>RM_FloatstoneGarden</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something plated and heavy</label>
+              <reading>A heavy, glassy footfall on the shingle somewhere out of sight.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_Dhokkur</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>lava tube</label>
+              <reading>The echo runs a long way down an empty tube in the rock.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

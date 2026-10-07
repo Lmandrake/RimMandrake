@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_Abyss.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_Abyss"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>The pulse goes into the Dark and nothing comes back but stone.</quietText>
+          <targets>
+            <li>
+              <label>something heavy walking</label>
+              <reading>A slow footfall the pulse catches twice: something big is crossing the crags out of sight.</reading>
+              <color>(1, 0.45, 0.35)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_Summ</li>
+                <li>RM_Moravatha</li>
+                <li>RM_Nevarithia</li>
+                <li>RM_Ysvaltha</li>
+                <li>RM_Aveluthia</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>sorter workings</label>
+              <reading>Small square echoes laid out in rows: someone has been stacking things very neatly.</reading>
+              <color>(0.95, 0.8, 0.45)</color>
+              <thingDefs>
+                <li>RM_DurrgakDen</li>
+                <li>RM_DurrgakSalvageCache</li>
+                <li>RM_DurrgakCairn</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>storm-torn turbine</label>
+              <reading>A long metal ring, and somewhere inside it a bearing still turning.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RM_AbyssWindVane</li>
+                <li>RM_AbyssWindPylon</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>pocket in the rock</label>
+              <reading>The echo falls into a pocket of the Dark that the rock closes over.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

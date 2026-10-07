@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_FeverWood.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_FeverWood"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Mud and root and still water, deep and quiet. Nothing under the pools is awake.</quietText>
+          <targets>
+            <li>
+              <label>something in the pool</label>
+              <reading>Under a mirror pool, a long coil shifts its weight and goes still again.</reading>
+              <color>(1, 0.35, 0.35)</color>
+              <weight>3</weight>
+              <thingDefs>
+                <li>RM_Sekkulaath_Feeler</li>
+                <li>RM_Sekkulaath_Snare</li>
+                <li>RM_Sekkulaath_Lash</li>
+                <li>RM_Sekkulaath_Porter</li>
+                <li>RM_Sekkulaath_Sentinel</li>
+                <li>RM_Sekkulaath_Bloom</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>living heartwood</label>
+              <reading>A slow wet pulse deep inside a trunk: the one part of the tree that never goes still.</reading>
+              <color>(0.55, 1, 0.55)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RUT_FeverTrunkCore</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>kurreth tunnels</label>
+              <reading>Packed, resin-hard plugs in the ground, and empty runs between them.</reading>
+              <color>(0.95, 0.75, 0.4)</color>
+              <thingDefs>
+                <li>RM_KurrethResinPlug</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>overgrown wreck</label>
+              <reading>Metal under the roots, wrapped tight and ringing dull.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RM_FeverWoodWreckHull</li>
+                <li>RM_FeverWoodWreckCarapace</li>
+              </thingDefs>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

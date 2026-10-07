@@ -36,7 +36,7 @@ ALT = {"enabled": False, "requireLandedShip": False, "cooldownHours": 3.0, "over
        "bandSize": 9, "rangeCells": 80.0, "pulseEffects": False}
 DEFS = ["ThingDef/RM_AcousticSounder", "ResearchProjectDef/RM_AcousticSounding"]
 CONTROL_ABSENT = "ThingDef/RM_AcousticSounder_NoSuchDef_Control"
-PAYLOAD_BIOMES = ["RM_FloodedCanyon", "RM_Stillsand", "RUT_CrackedLands"]    # biomes the patches target
+PAYLOAD_BIOMES = ["RM_FloodedCanyon", "RM_Stillsand", "RUT_CrackedLands"]    # the criteria's live-probe biomes; every owned BiomeDef carries a payload (owned_biomes)
 SOUNDER = "RM_AcousticSounder"
 ENGINE = "GravEngine"
 PULSE_LABEL = "Sound the ground"
@@ -68,6 +68,47 @@ def _literal(kind, raw):
     if kind == "bool":
         return raw == "true"
     return float(raw.rstrip("f")) if kind == "float" else int(raw)
+
+
+SRC = os.path.normpath(os.path.join(HERE, "..", ".."))
+# defs a payload may name that live outside src/: vanilla terrains and donor races/plants on our rosters
+DONOR_DEFS = {"WaterShallow", "WaterMovingShallow", "WaterDeep", "WaterMovingChestDeep", "HotSpring", "Mud",
+              "Terrorworm", "AB_RimeNodules"}
+
+
+def _src_xml():
+    for dp, dns, fns in os.walk(SRC):
+        dns[:] = [d for d in dns if d not in ("__pycache__", "Source", "Textures", "Assemblies")]
+        for fn in fns:
+            if fn.endswith(".xml"):
+                yield os.path.join(dp, fn)
+
+
+def payload_patch_files():
+    return sorted(p for p in _src_xml() if os.sep + "Patches" + os.sep in p
+                  and PAYLOAD_TYPE in open(p, encoding="utf-8", errors="replace").read())
+
+
+def _defs_roots():
+    for p in _src_xml():
+        if os.sep + "Patches" + os.sep in p:
+            continue
+        try:
+            r = ET.parse(p).getroot()
+        except ET.ParseError:
+            continue
+        if r.tag == "Defs":
+            yield r
+
+
+def src_def_names():
+    return {el.findtext("defName") for r in _defs_roots() for el in r if el.findtext("defName")}
+
+
+def owned_biomes():
+    """Every concrete BiomeDef defined in src/, parsed as elements."""
+    return {b.findtext("defName") for r in _defs_roots() for b in r.findall("BiomeDef")
+            if b.findtext("defName") and b.get("Abstract") != "True"}
 
 
 def static_checks():
@@ -133,9 +174,10 @@ def static_checks():
     if PULSE_LABEL not in keyed:
         bad.append("gizmo label %r is not in Keyed" % PULSE_LABEL)
     # the payload patches: parse, FindMod-guarded by this mod's name, target a BiomeDef, no top-level MayRequire
-    patch_files = [os.path.join(HERE, "..", "FloodedCanyon", "Patches", "RM_AcousticPayload_FloodedCanyon.xml"),
-                   os.path.join(HERE, "..", "Stillsand", "Patches", "RM_AcousticPayload_Stillsand.xml"),
-                   os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "AcousticPayload_CrackedLands.xml")]
+    patch_files = payload_patch_files()
+    if len(patch_files) < 3:   # sanity probe: the glob must find the three original payload files at least
+        bad.append("sanity probe: payload glob found %d patch files (expected >= 3)" % len(patch_files))
+    known = src_def_names()
     targeted = set()
     for p in patch_files:
         if not os.path.exists(p):
@@ -160,8 +202,22 @@ def static_checks():
                         bad.append("%s: a target has no label" % os.path.basename(p))
                     if not any(t.find(k) is not None for k in ("thingDefs", "pawnRaces", "terrainDefs", "hiddenCaves")):
                         bad.append("%s: target %r matches nothing" % (os.path.basename(p), t.findtext("label")))
-    if targeted != set(PAYLOAD_BIOMES):
-        bad.append("payload biomes drifted: patches target %s, script lists %s" % (sorted(targeted), PAYLOAD_BIOMES))
+                    for k in ("thingDefs", "pawnRaces", "terrainDefs"):
+                        for li in t.findall(k + "/li"):
+                            if li.text not in known and li.text not in DONOR_DEFS:
+                                bad.append("%s: %s names %r, defined nowhere in src/ and not a listed donor/vanilla def"
+                                           % (os.path.basename(p), k, li.text))
+    # owner card 2026-10-06: the payload goes on EVERY BiomeDef of ours (zero-tile biomes included)
+    owned = owned_biomes()
+    if len(owned) < 20:        # sanity probe: the BiomeDef census must see the biome mods
+        bad.append("sanity probe: owned-BiomeDef census found only %d" % len(owned))
+    for b in sorted(owned - targeted):
+        bad.append("owned BiomeDef %s carries no acoustic payload" % b)
+    for b in sorted(targeted - owned):
+        bad.append("a payload targets %s, which is not a BiomeDef defined in src/" % b)
+    for b in PAYLOAD_BIOMES:
+        if b not in targeted:
+            bad.append("live-probe biome %s lost its payload" % b)
     # the walk exists and declares coverage for every line
     walk = os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "AcousticScanner.md")
     if not os.path.exists(walk):

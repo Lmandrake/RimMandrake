@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_SeabedFloor, RM_SeabedFloor_GreySea, RM_SeabedFloor_TheScald, RM_SeabedFloor_TwilightSea, RM_SeabedFloor_TheChill, RM_SeabedUnavailable.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_SeabedFloor"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Silt and rock under a long column of water. Nothing on the floor answers.</quietText>
+          <targets>
+            <li>
+              <label>sunken wreck</label>
+              <reading>Hollow metal lying on the floor, ringing dull through the water.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RM_PickedWreck</li>
+                <li>RM_GreyFloorWreckHull</li>
+                <li>RM_GreyFloorWreckSpine</li>
+                <li>RM_ScaldFloorWreckHull</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>void in the floor</label>
+              <reading>The echo drops into a hollow under the sediment.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_SeabedFloor_GreySea"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Salt and sediment, every echo muffled. Nothing on the floor moves.</quietText>
+          <targets>
+            <li>
+              <label>crystallised figure</label>
+              <reading>A standing block of salt with a shape inside it, the wrong shape for stone.</reading>
+              <color>(1, 0.6, 0.45)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_BrineEncasement</li>
+                <li>RM_BrineJacket</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>brine elder</label>
+              <reading>A trunk of grown salt wider than a house, rising out of the deepest pool.</reading>
+              <color>(0.95, 0.9, 1)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_BrineElder</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>crystal-jacketed wreck</label>
+              <reading>A hull the salt grew over, ringing like stone with a hollow inside.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RM_GreyFloorWreckHull</li>
+                <li>RM_GreyFloorWreckSpine</li>
+                <li>RM_PickedWreck</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something vast and slow</label>
+              <reading>A huge, slow body with a whole reef growing on it.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_Reefback</li>
+              </pawnRaces>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_SeabedFloor_TheScald"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Vents and boiling mats everywhere. Under the roar the pulse picks out nothing.</quietText>
+          <targets>
+            <li>
+              <label>vent field</label>
+              <reading>Small sharp ticks of fresh silica on the vents, and the hiss between the pulses.</reading>
+              <color>(1, 0.75, 0.35)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_Glasskelle</li>
+                <li>RM_Pulsebead</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something walking the floor</label>
+              <reading>A hundred short heavy legs moving across the boiling floor.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_ScaldWalker</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>scalded deep hull</label>
+              <reading>A hull section cooked clean, lying deep where few hands reach.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RM_ScaldFloorWreckHull</li>
+              </thingDefs>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_SeabedFloor_TwilightSea"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Dim water and soft silt. Every light on the floor is telling the truth.</quietText>
+          <targets>
+            <li>
+              <label>fallen pane</label>
+              <reading>A broad flat sheet of the lid lying on the floor, still ringing from its fall.</reading>
+              <color>(0.5, 0.9, 0.85)</color>
+              <thingDefs>
+                <li>RM_VeilPane</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something very big in the dark</label>
+              <reading>A body as long as a hull, moving slowly at the edge of the light.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_GrippingTerror</li>
+                <li>RM_Lanternwhale</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>a light that lies</label>
+              <reading>One gold light answers the pulse a moment too late. Lamps do not do that.</reading>
+              <color>(1, 0.55, 0.3)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_Vaulisk</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>sunken wreck</label>
+              <reading>Hollow metal lying on the floor, ringing dull through the water.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RM_PickedWreck</li>
+                <li>RM_GreyFloorWreckHull</li>
+                <li>RM_GreyFloorWreckSpine</li>
+                <li>RM_ScaldFloorWreckHull</li>
+              </thingDefs>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_SeabedFloor_TheChill"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>The cold garden, quiet and still. Nothing on the floor answers but ice.</quietText>
+          <targets>
+            <li>
+              <label>coolant manifold</label>
+              <reading>A broken ring of pipe half sunk in the floor, and fittings around it.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_ReturnGalleryHub</li>
+                <li>RM_ReturnGalleryLocker</li>
+                <li>RM_GalleryPipe</li>
+                <li>RM_GalleryBreak</li>
+                <li>RM_GalleryOutlet</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>conductor</label>
+              <reading>A long black conductor running through the ice and out of sight.</reading>
+              <color>(0.75, 0.85, 1)</color>
+              <thingDefs>
+                <li>RM_ReturnCombBusbar</li>
+                <li>RM_ReturnCombStud</li>
+                <li>RM_ReturnCombIce</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>stonewater</label>
+              <reading>A hard, bone-white ring on the floor: water, frozen hard as granite.</reading>
+              <color>(0.6, 0.85, 1)</color>
+              <weight>2</weight>
+              <thingDefs>
+                <li>RM_Stonewater</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>wax colony</label>
+              <reading>A slow file of heavy waxy bodies crossing the floor, eating.</reading>
+              <color>(0.95, 0.9, 0.6)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_Hesuun</li>
+              </pawnRaces>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_SeabedUnavailable"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Solid bedrock under the weight of a continent. The pulse goes nowhere.</quietText>
+          <targets>
+            <li>
+              <label>void in the bedrock</label>
+              <reading>Somewhere far down, the echo finds a small empty space.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

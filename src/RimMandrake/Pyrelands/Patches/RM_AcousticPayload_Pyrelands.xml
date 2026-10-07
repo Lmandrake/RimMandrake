@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_Pyrelands.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_Pyrelands"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Grass, ash and hard ground. Whatever burned here burned all the way.</quietText>
+          <targets>
+            <li>
+              <label>unburnt seed pods</label>
+              <reading>Small sealed husks in the ground, all waiting for the next fire.</reading>
+              <color>(1, 0.75, 0.3)</color>
+              <thingDefs>
+                <li>RM_FE_Plant_ScorchFruit</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>something heavy and hot</label>
+              <reading>A heavy body with a hard, mineral ring to it, lying down in the grass.</reading>
+              <color>(1, 0.4, 0.3)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_FurnaceBeast</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>deep ash</label>
+              <reading>A soft, swallowing note where the ash lies deep. The last fire burned long here.</reading>
+              <color>(0.7, 0.7, 0.7)</color>
+              <weight>0.5</weight>
+              <terrainDefs>
+                <li>RM_FE_Ash_Deep</li>
+                <li>RM_FE_Ash_Heavy</li>
+              </terrainDefs>
+              <onlyFogged>true</onlyFogged>
+            </li>
+            <li>
+              <label>void in the rock</label>
+              <reading>The echo drops into a hollow under the savanna.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

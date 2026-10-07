@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_TheSump.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_TheSump"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Tar, flat and black, swallowing the pulse without a ripple.</quietText>
+          <targets>
+            <li>
+              <label>something under the tar</label>
+              <reading>A rise in the tar answers late and heavy. Something big is lying just under the surface.</reading>
+              <color>(1, 0.35, 0.3)</color>
+              <weight>3</weight>
+              <thingDefs>
+                <li>RUT_BeastBulge</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>still hunter</label>
+              <reading>A body as still as the glass sheet around it, and warmer.</reading>
+              <color>(1, 0.55, 0.4)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_Skarrid</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>thrummel brood</label>
+              <reading>Many soft echoes clustered round one larger body.</reading>
+              <color>(0.85, 0.5, 1)</color>
+              <weight>2</weight>
+              <pawnRaces>
+                <li>RM_ThrummelBroodmother</li>
+                <li>RM_ThrummelWarden</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>void under the sheet</label>
+              <reading>The echo drops into a hollow under the cooled glass.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

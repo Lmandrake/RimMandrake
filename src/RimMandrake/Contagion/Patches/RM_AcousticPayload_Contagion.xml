@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_Contagion.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_Contagion"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>Wet, warm noise and the storm overhead. Nothing in the ground is growing any faster than the rest.</quietText>
+          <targets>
+            <li>
+              <label>something growing</label>
+              <reading>One deep wet heartbeat, too large for any animal, and getting slowly larger.</reading>
+              <color>(1, 0.3, 0.35)</color>
+              <weight>3</weight>
+              <thingDefs>
+                <li>RM_Coalescence</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>gestation pods</label>
+              <reading>A cluster of small thick echoes, each with something soft and moving inside it.</reading>
+              <color>(1, 0.55, 0.65)</color>
+              <thingDefs>
+                <li>RM_Wombpod</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>eroded wreckage</label>
+              <reading>Thin, pitted metal: whatever fell here, the land is still eating it.</reading>
+              <color>(0.8, 0.8, 0.85)</color>
+              <thingDefs>
+                <li>RM_ContagionWreckFragment</li>
+                <li>RM_ContagionShellFragment</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>hollow under the mud</label>
+              <reading>The pulse finds a hollow under the red ground, and it is warm.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

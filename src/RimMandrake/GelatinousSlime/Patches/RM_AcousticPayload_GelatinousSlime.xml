@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GRAVSHIP_ACOUSTIC_SCANNER_1: the acoustic-scanner payload for RM_GelatinousSlime.
+  Owner decision by question card 2026-10-06: the payload goes on EVERY biome of ours.
+
+  Pure XML, FindMod-guarded on "RimMandrake: Acoustic Scanner", so the extension class
+  is only named while its assembly is active. Every def is a defName STRING resolved
+  at pulse time (GetNamedSilentFail), so a target naming another mod's def just hears
+  nothing when that mod is absent. Each target is drawn from this biome's own content;
+  the biome's sitting may re-author it. The reading is always banded by the scanner.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Acoustic Scanner</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]</xpath>
+      <value>
+        <li Class="RimMandrake.AcousticScanner.RM_AcousticPayloadExtension">
+          <quietText>The body hums back at the same pitch everywhere. Nothing in it is any bigger than the rest.</quietText>
+          <targets>
+            <li>
+              <label>something vast in the body</label>
+              <reading>The whole ground answers late, as if something huge had to turn round first.</reading>
+              <color>(1, 0.4, 0.35)</color>
+              <weight>3</weight>
+              <pawnRaces>
+                <li>RM_Titanoslime</li>
+                <li>RM_Dwommo</li>
+              </pawnRaces>
+            </li>
+            <li>
+              <label>liquid slime</label>
+              <reading>A soft, swallowing note: the crust is thin here and the body underneath is still liquid.</reading>
+              <color>(0.5, 1, 0.6)</color>
+              <terrainDefs>
+                <li>RM_Slime_Liquid</li>
+                <li>RM_Slime_Mud</li>
+              </terrainDefs>
+              <onlyFogged>true</onlyFogged>
+            </li>
+            <li>
+              <label>readerblooms</label>
+              <reading>Pale discs somewhere ahead all turn at once to face the pulse.</reading>
+              <color>(0.9, 0.9, 0.6)</color>
+              <thingDefs>
+                <li>RM_Plant_Readerbloom</li>
+              </thingDefs>
+            </li>
+            <li>
+              <label>hollow in the body</label>
+              <reading>The pulse falls into a hollow the body has closed over.</reading>
+              <color>(0.6, 0.6, 0.9)</color>
+              <hiddenCaves>true</hiddenCaves>
+              <cellSampleStride>4</cellSampleStride>
+            </li>
+          </targets>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
