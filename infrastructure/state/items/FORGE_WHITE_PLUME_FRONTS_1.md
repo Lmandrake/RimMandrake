@@ -1,7 +1,7 @@
 # FORGE_WHITE_PLUME_FRONTS_1 — white plume fronts
 
-Split from `FORGE_GPT_ENRICHMENT_1` §4 (owner-picked). Not built: every mechanical choice below is open, and the
-spec gives no numbers.
+Split from `FORGE_GPT_ENRICHMENT_1` §4 (owner-picked). Built at `09ccb3ca5` (offline, L0): the builder answered the four
+questions below (record: `Transient/work_PLUME_20261003.md`; owner review owed as A7).
 
 ## spec (from the parent)
 
@@ -16,10 +16,18 @@ modifier, AI avoidance, and an adapted-species exemption.
 freeze phase). Vanilla 1.6 has `GasType.BlindSmoke`. If it is used for the "obscure" half, ranged accuracy and AI
 avoidance come from vanilla and no Harmony is needed. That is a suggestion, not a ruling.
 
-## open questions (owner)
+## what was built (09ccb3ca5)
 
-1. Obscuring: vanilla blind smoke (cheap, and the AI already avoids it) or a custom front with its own accuracy
-   number?
-2. Heatstroke inside a front: how much faster than the Forge's ambient heat?
-3. "Soak the ground": wet terrain or filth, or FlowWorks water?
-4. Which species are "vapour-adapted"? Every pawn with `CompProperties_VaporDrifter`, or a named list?
+**No defs.** The fronts are code plus six Mod Settings: `RM_MapComponent_PlumeFronts` in
+`src/RimMandrake/TheForge/Source/RM_ForgePlumeFronts.cs`, fed by `FreezeBatch` in `RM_GameCondition_ForgeCycle`.
+It reuses vanilla `GasType.BlindSmoke` and vanilla `Filth_Water`. Settings: `plumeFrontsEnabled`,
+`plumeObscureEnabled`, `plumeSoakEnabled`, `plumeHeatEnabled`, `plumeAdaptedExempt`, `plumeStrength`.
+
+## builder-chosen answers (owner review owed, A7)
+
+1. Obscuring: vanilla blind smoke, so ranged accuracy and line-of-sight refusal come from vanilla. There is no
+   pathing avoidance.
+2. Heat: a Harmony postfix adds +25 °C × strength to `Thing.AmbientTemperature` for flesh pawns in a front cell.
+   Vanilla `HediffGiver_Heat` then gives the heatstroke.
+3. Soak: vanilla `Filth_Water` puddles that evaporate in 0.2–0.4 days. FlowWorks is not used.
+4. Vapour-adapted: any pawn carrying `RM_CompVaporDrifter` (`groundHazardImmune`), behind the toggle `plumeAdaptedExempt`.

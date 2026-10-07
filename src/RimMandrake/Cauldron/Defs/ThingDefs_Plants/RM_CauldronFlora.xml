@@ -212,6 +212,12 @@
     </plant>
     <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (StableRing). -->
     <modExtensions>
+      <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
+           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
+           the swap is skipped and the Plant.Graphic patch is not installed. -->
+      <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
+        <texPath>Things/Plant/RM_Dewfall/RM_CrystalFlower_dew</texPath>
+      </li>
       <li Class="RimMandrake.Cauldron.RM_CondensateHabitatExtension">
         <ventHabitat>StableRing</ventHabitat>
         <ventMinRadius>2.5</ventMinRadius>
@@ -246,6 +252,12 @@
     </plant>
     <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (ChronicLeak). -->
     <modExtensions>
+      <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
+           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
+           the swap is skipped and the Plant.Graphic patch is not installed. -->
+      <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
+        <texPath>Things/Plant/RM_Dewfall/RM_BloodBouquet_dew</texPath>
+      </li>
       <li Class="RimMandrake.Cauldron.RM_CondensateHabitatExtension">
         <ventHabitat>ChronicLeak</ventHabitat>
         <ventMinRadius>2.5</ventMinRadius>
@@ -321,6 +333,14 @@
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>2</wildOrder>
     </plant>
+    <modExtensions>
+      <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
+           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
+           the swap is skipped and the Plant.Graphic patch is not installed. -->
+      <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
+        <texPath>Things/Plant/RM_Dewfall/RM_RedBugloss_dew</texPath>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -372,6 +392,14 @@
       <topWindExposure>0.15</topWindExposure>
       <wildOrder>4</wildOrder>
     </plant>
+    <modExtensions>
+      <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
+           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
+           the swap is skipped and the Plant.Graphic patch is not installed. -->
+      <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
+        <texPath>Things/Plant/RM_Dewfall/RM_KeeningCordax_dew</texPath>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -399,6 +427,12 @@
     </plant>
     <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (RecentBlowout). -->
     <modExtensions>
+      <!-- CAULDRON_ENRICHMENT_VISUALS_1 V2: dew variant while RM_Dewfall (RM_DewfallSaturation). Spec
+           default set (spec V2: owner may trim). Art owed, 256x256 against the base; until it is on disk
+           the swap is skipped and the Plant.Graphic patch is not installed. -->
+      <li Class="RimMandrake.Cauldron.RM_DewfallGraphicExtension">
+        <texPath>Things/Plant/RM_Dewfall/RM_GiantToxicFlower_dew</texPath>
+      </li>
       <li Class="RimMandrake.Cauldron.RM_CondensateHabitatExtension">
         <ventHabitat>RecentBlowout</ventHabitat>
         <ventMinRadius>2.5</ventMinRadius>

@@ -3,16 +3,16 @@
 First north-star script (THE_SUMP_FIRST_SCRIPT_1). Walk: design/validation_walks/RimMandrake/TheSump.md (DRAFT).
 The planet's oil sump: a dusky tar basin biome (RM_TheSump) with its own flora and fauna rosters, a poured tar moat and fuse post,
 the dig-shaft stratum lottery, the Deep Black mere gen step, the tar-pit belch incident and a permanent-dusk weather lock.
-TEN FILES ARE HELD FROM DEPLOY by src/DEPLOY_HOLD.txt (flora, fauna, flora items, the tar-beast bulge and its registration,
-moat fuse post, mouse filth, and the BiomeDef itself). The script reads that list: held defs are never expected live.
+The script reads src/DEPLOY_HOLD.txt: any def held there is never expected live. Since the 2026-10-03 lift (art existed)
+NO TheSump file is held, so every parsed def is expected live.
 
 CHAINS
   defs_resolve       every def parsed from the mod's own XML that actually DEPLOYS resolves live; a control name reads
                      notFound; held defs are reported UNMEASURED-by-hold, never as failures.
   settings_roundtrip every `public static` bool/float of RM_TheSumpSettings: default / write / restore (numerics compared numerically).
-  biome_wiring       UNMEASURED-by-hold: the BiomeDef is held (a live read would describe the stale game copy).
+  biome_wiring       the BiomeDef's densities; UNMEASURED on a real map until the one terminal repaint (0 tiles by design).
   map_mechanics      Deep Black mere, tar vault, moat/fuse post, dig lottery, tar beast, mouse trail, wick garden, dusk lock: UNMEASURED,
-                     each naming whether the cause is the hold or a map/event the bridge cannot generate.
+                     each naming the map/event the bridge cannot generate.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
 """
@@ -445,7 +445,7 @@ def _build_suite():
                 _unmeasured(t, 'RUT_Plant_Wick resolves in defs_resolve; growth, glow and harvest need a sown plant and game days on a Sump map')
         with t.component("permanent_dusk_lock", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'RUT_SumpDuskLock/RUT_SumpWeather resolve, but their wiring patch targets the held BiomeDef; the lock holding the sky at dusk needs an RM_TheSump map')
+                _unmeasured(t, 'RUT_SumpDuskLock/RUT_SumpWeather resolve, but their wiring patch targets the BiomeDef; the lock holding the sky at dusk needs an RM_TheSump map')
 
     @suite.chain("capstan_turret")
     def capstan_turret(t):
