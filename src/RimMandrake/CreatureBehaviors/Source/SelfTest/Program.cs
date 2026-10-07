@@ -93,6 +93,22 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
 
         private static int Main()
         {
+            Case("wild leave: a Chill native (comfy -150..-30) on a 15 C map is TooWarm (CHILL_CREATURES_VANISH_1)", () =>
+            {
+                Assert(RM_WildLeaveMath.Classify(15f, -150f, -30f, 15f, -160f, -20f, false) == RM_WildLeaveReason.TooWarm,
+                    "the Chill native's leave on a temperate map was not classed TooWarm");
+                Assert(RM_WildLeaveMath.Classify(-60f, -150f, -30f, -60f, -160f, -20f, false) == RM_WildLeaveReason.None,
+                    "a Chill native at home (-60 C) was given a temperature reason to leave");
+                Assert(RM_WildLeaveMath.Classify(-40f, -10f, 55f, -40f, -20f, 65f, false) == RM_WildLeaveReason.TooCold,
+                    "a Grey Sea native (-10..55) on a -40 C map was not classed TooCold");
+                Assert(RM_WildLeaveMath.Classify(20f, -10f, 55f, 20f, -20f, 65f, true) == RM_WildLeaveReason.Starving,
+                    "a starving animal in its season was not classed Starving");
+                Assert(RM_WildLeaveMath.Classify(20f, -10f, 55f, 70f, -20f, 65f, false) == RM_WildLeaveReason.TooWarm,
+                    "an in-season animal standing in dangerous heat was not classed TooWarm");
+                Assert(RM_WildLeaveMath.ShouldNotify(100, -1, 2500) && !RM_WildLeaveMath.ShouldNotify(2000, 100, 2500)
+                    && RM_WildLeaveMath.ShouldNotify(2600, 100, 2500), "the one-per-hour throttle is wrong");
+            });
+
             Case("overhead: sun heats, cast shade and a roof both protect", () =>
             {
                 float sun = HeatstrokeStep(Felt(RM_HeatKind.overhead, true, 0f, false, 0f), HumanSafeMax);
