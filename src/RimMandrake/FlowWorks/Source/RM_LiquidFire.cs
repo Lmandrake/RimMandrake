@@ -18,7 +18,8 @@ namespace RimMandrake.FlowWorks
 	/// - FRONT: one travelling front for every burnable liquid. FluidDef.fireKind says CreepingFuse or Detonation
 	///   and fireFrontTicksPerCell is the speed; a player can outrun a fuse. The front runs back along the liquid
 	///   into the source body ("they will also light their source"), bounded by sourceFireReach cells.
-	/// - BURN: ruling 7, a rate on the tier ladder: one canal fill level per day; a source cell costs its body one
+	/// - BURN: ruling 7, a rate on the tier ladder: one canal fill level per day (a DETONATING liquid's canal
+	///   cell is instead consumed whole on the first pulse after it lights, ruling 13); a source cell costs its body one
 	///   level per five days, so a limitless source burns forever and a moat piped from a larger body burns as
 	///   long as inflow beats the burn. Burned liquid is GONE (the second disclosed exit, beside overflow):
 	///   counted in <see cref="BurnedLevelsTotal"/>, debited outside the pulse's conservation ledger.
@@ -350,6 +351,27 @@ namespace RimMandrake.FlowWorks
 				int acc = burning[i];
 				if (ex.IsExcavated(c))
 				{
+					// Ruling 13 (2026-09-16): "astrofuel and chemfuel detonate" — a detonating liquid "does not burn down a
+					// tier a day — it is consumed at once". So a lit detonating canal cell burns ALL its levels on the
+					// first pulse after it lights (here, before the components resolve, like every other burn).
+					FluidDef lit = BurnableFluidAt(map, ex, c);
+					if (lit != null && lit.fireKind == RM_FluidFireKind.Detonation)
+					{
+						int guardLv = 0;
+						while (ex.FillAt(c) > 0 && guardLv++ < 16)
+						{
+							if (!ex.BurnOffLevel(c))
+							{
+								break;
+							}
+							burnedLevelsTotal += 1f;
+						}
+						if (ex.FillAt(c) == 0)
+						{
+							Extinguish(map, c, i, true);
+						}
+						continue;
+					}
 					int levels = RM_FireMath.LevelsDue(ref acc, pulseTicks, canalTicks);
 					burning[i] = acc;
 					for (int l = 0; l < levels; l++)

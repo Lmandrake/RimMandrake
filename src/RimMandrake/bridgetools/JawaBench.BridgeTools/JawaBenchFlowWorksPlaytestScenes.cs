@@ -295,6 +295,8 @@ namespace JawaBench.BridgeTools
                 Watch();
                 if (kind == "control") yield return PTicks(900, Watch);
                 else yield return PUntil(() => lit.Count >= strip.Count, kind == "fuse" ? 4000 : 600, Watch);
+                // ruling 13: a detonation is consumed at once, debited on the next flow pulse (<= PulseIntervalTicks)
+                if (kind == "detonation") yield return PUntil(() => strip.All(x => QFill(c, x) == 0), 1200, Watch);
 
                 c.Phase("observe");
                 var order = strip.Select(x => lit.TryGetValue(x, out int t) ? t - t0 : -1).ToList();
