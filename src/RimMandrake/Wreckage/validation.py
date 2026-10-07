@@ -58,12 +58,21 @@ WEATHER_PINNED = {"RM_WreckWeathering_Cooked": (0.75, 0), "RM_WreckWeathering_Fr
                   "RM_WreckWeathering_Picked": (0.2, -2), "RM_WreckWeathering_CrystalJacketed": (1.0, 1),
                   "RM_WreckWeathering_Stripped": (0.35, -1), "RM_WreckWeathering_Irradiated": (0.9, 0),
                   "RM_WreckWeathering_SandScoured": (0.6, 0), "RM_WreckWeathering_Sealed": (1.0, 1),
-                  "RM_WreckWeathering_IceLocked": (0.9, 0), "RM_WreckWeathering_Eroded": (0.2, -2)}
+                  "RM_WreckWeathering_IceLocked": (0.9, 0), "RM_WreckWeathering_Eroded": (0.2, -2),
+                  "RM_WreckWeathering_Brined": (0.7, 0), "RM_WreckWeathering_FloodBuried": (0.8, 0),
+                  "RM_WreckWeathering_Overgrown": (0.8, 0), "RM_WreckWeathering_Digested": (0.6, 0),
+                  "RM_WreckWeathering_StormTorn": (0.8, 0)}
 # Fields that must exist planet-wide once steps 3-4 landed (design §7): {field: registered-in}.
 PLANET_FIELDS = {"RM_WreckField_Scald": "biome", "RM_WreckField_NightsideIce": "biome",
                  "RM_WreckField_LanternDeeps": "biome", "RM_WreckField_Warscar": "biome",
                  "RM_WreckField_Wasteland": "biome", "RM_WreckField_GreyFloor": "floor",
-                 "RM_WreckField_TwilightFloor": "floor", "RM_WreckField_ScaldFloor": "floor"}
+                 "RM_WreckField_TwilightFloor": "floor", "RM_WreckField_ScaldFloor": "floor",
+                 "RM_WreckField_BlueDesert": "biome", "RM_WreckField_Miasma": "biome",
+                 "RM_WreckField_FloodedCanyon": "biome", "RM_WreckField_FeverWood": "biome",
+                 "RM_WreckField_TheRot": "biome", "RM_WreckField_Abyss": "biome",
+                 "RM_WreckField_Stillsand": "biome", "RM_WreckField_Contagion": "biome"}
+# Every family must have at least one child by step 6 (design §3a's six families).
+FAMILIES_WITH_CHILDREN = FAMILY_NAMES
 SRC_ROOT = os.path.normpath(os.path.join(HERE, ".."))
 LICHEN_CS = os.path.join(HERE, "..", "Scarlands", "Source", "MapComponent_WreckLichen.cs")
 # Public fields of the base class GenStep_Scatterer (RimSage Verse/GenStep_Scatterer.cs), so an XML field
@@ -454,6 +463,10 @@ def _planet_checks(bad, fams, weathers, tables):
         tier = _shift(fams[c.get("ParentName")][0], weathers[w][1])
         if "RM_SalvageLoot_%s" % tier not in tables:
             bad.append("%s resolves to tier %s with no table" % (dn, tier))
+    used = {c.get("ParentName") for c in children.values()}
+    for fam in FAMILIES_WITH_CHILDREN:
+        if fam not in used:
+            bad.append("family %s has no child anywhere (design §3a)" % fam)
     fam_xml = open(FAMILIES_XML, encoding="utf-8").read()
     if "<li>RM_WreckSurface</li>" not in fam_xml.split('Name="RM_WreckFamily_Hull"')[0]:
         bad.append("RM_WreckFamilyBase does not carry the RM_WreckSurface building tag (design §3b)")

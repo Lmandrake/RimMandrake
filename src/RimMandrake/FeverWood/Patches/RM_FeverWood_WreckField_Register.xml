@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6: registers RM_WreckField_FeverWood (../Defs/MapGeneration/
+  RM_FeverWoodWreckField.xml) on RM_FeverWood via extraGenSteps. A patch rather than an edit of
+  RM_FeverWood.xml, which had another window's uncommitted work in it when this landed.
+  Nested Conditionals: skip if the biome is absent; append to an existing extraGenSteps, else create one.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_FeverWood"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_FeverWood"]/extraGenSteps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_FeverWood"]/extraGenSteps</xpath>
+        <value>
+          <li>RM_WreckField_FeverWood</li>
+        </value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_FeverWood"]</xpath>
+        <value>
+          <extraGenSteps>
+            <li>RM_WreckField_FeverWood</li>
+          </extraGenSteps>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+</Patch>

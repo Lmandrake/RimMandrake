@@ -4,8 +4,9 @@
   with that weathering. Slice 2 shipped the Scald's row as the template; slice 3 adds the
   Riddled/High rows (design §7 step 3 comes first): Frozen, Picked, Crystal-jacketed. The
   land rows of design §4 follow: Stripped (Warscar), Irradiated (Wasteland), Sand-scoured (Deep
-  Desert), Sealed (Dune Sea / Stillsand), Ice-locked (Blue Desert), Eroded (Contagion). Brined,
-  Overgrown, Digested, Storm-torn and Forge-warm arrive with their biomes' step-6 sittings.
+  Desert), Sealed (Dune Sea / Stillsand), Ice-locked (Blue Desert), Eroded (Contagion), and step 6's
+  Brined (Miasma), Flood-buried (Flooded Canyon), Overgrown (Fever Wood), Digested (Rot), Storm-torn
+  (Abyss). Forge-warm waits for the Forge cache's loot (a RUT-layer def).
   Biome by-products (sand, salt, mud) are not set as extraLeavings: no row names a def for them
   yet, and the family's slag already covers smashing.
   The density law's "+1 tier" for Riddled/High places lives HERE (a tier is per-def), not on
@@ -130,6 +131,57 @@
     <yieldFactor>0.2</yieldFactor>
     <lootTierShift>-2</lootTierShift>
     <labelPrefix>eroded</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+
+  <!-- Miasma (Moderate; design §4 "Brined: x0.7, salt crust"). -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Brined</defName>
+    <label>brined</label>
+    <description>Washed up by the surges and left to the brine: a white salt crust over everything, the thin metal eaten through.</description>
+    <yieldFactor>0.7</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>salt-crusted</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Flooded Canyon / Cracked Lands (Low; design §4 "Flood-buried: x0.8"). The mud reclaiming it is the canyon's built recede aftermath, not this row. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_FloodBuried</defName>
+    <label>flood-buried</label>
+    <description>Half buried in dried flood mud, exposed by the last flood and waiting for the next to take it back.</description>
+    <yieldFactor>0.8</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>flood-buried</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Fever Wood (Moderate; design §4 "Overgrown: x0.8, vines must be cut"). KNOWN GAP: the vine-on-the-cell blocker is not built. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Overgrown</defName>
+    <label>overgrown</label>
+    <description>Grown through with vines and root. The war that left it is long over; the wood is still eating it.</description>
+    <yieldFactor>0.8</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>overgrown</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- The Rot (Moderate; design §4 "Digested: x0.6"). KNOWN GAP: the Sheen-glazed salvage casting extra needs its item def; not wired. -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_Digested</defName>
+    <label>digested</label>
+    <description>Half dissolved by the Rot's gut. The edges have run like wax, and what is left has a greasy sheen.</description>
+    <yieldFactor>0.6</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>digested</labelPrefix>
+  </RimMandrake.Wreckage.RM_WreckWeatheringDef>
+
+  <!-- Abyss (Moderate; design §4 "Storm-torn: x0.8"). -->
+  <RimMandrake.Wreckage.RM_WreckWeatheringDef>
+    <defName>RM_WreckWeathering_StormTorn</defName>
+    <label>storm-torn</label>
+    <description>Torn apart by the chasm winds: vanes snapped, housings ripped open, everything loose long since blown away.</description>
+    <yieldFactor>0.8</yieldFactor>
+    <lootTierShift>0</lootTierShift>
+    <labelPrefix>storm-torn</labelPrefix>
   </RimMandrake.Wreckage.RM_WreckWeatheringDef>
 
 </Defs>

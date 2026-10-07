@@ -208,6 +208,10 @@
     </wildAnimals>
     <coastalWildAnimals />
     <allowedPackAnimals />
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_BlueDesert</li>
+    </extraGenSteps>
   </BiomeDef>
 
 </Defs>

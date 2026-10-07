@@ -162,6 +162,10 @@
       <RM_Luqqim>0.1</RM_Luqqim>
       <RM_Harrovaq>0.06</RM_Harrovaq>
     </wildPlants>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_FloodedCanyon</li>
+    </extraGenSteps>
   </BiomeDef>
 
 </Defs>

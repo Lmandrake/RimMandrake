@@ -219,6 +219,10 @@
       <RM_Wombpod>0.2</RM_Wombpod>  <!-- wombpod - genome-loop host source -->
     </wildPlants>
     <wildPlantRegrowDays>25</wildPlantRegrowDays>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_Contagion</li>
+    </extraGenSteps>
   </BiomeDef>
 
 </Defs>

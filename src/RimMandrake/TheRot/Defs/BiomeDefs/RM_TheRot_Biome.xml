@@ -202,6 +202,10 @@
       </li>
       <li Class="RimMandrake.TheRot.RM_TheRotBiomeRanges" />
     </modExtensions>
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_TheRot</li>
+    </extraGenSteps>
   </BiomeDef>
 
 </Defs>

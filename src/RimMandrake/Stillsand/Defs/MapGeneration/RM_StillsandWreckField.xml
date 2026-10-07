@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6: the Stillsand wreck field, Low class (design §3d-i). Gate: settingsKey
+  "Stillsand". Weights PROVISIONAL. order 965: after terrain. Children: ../ThingDefs_Buildings/RM_StillsandWrecks.xml.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_WreckField_Stillsand</defName>
+    <label>Stillsand</label>
+    <order>965</order>
+    <genStep Class="RimMandrake.Wreckage.RM_GenStep_WreckField">
+      <settingsKey>Stillsand</settingsKey>
+      <densityClass>RM_WreckDensity_Low</densityClass>
+      <wrecks>
+        <RM_StillsandWreckHull>2</RM_StillsandWreckHull>
+        <RM_StillsandWreckTank>1</RM_StillsandWreckTank>
+        <RM_StillsandWreckTread>1</RM_StillsandWreckTread>
+      </wrecks>
+      <minSpacing>6</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

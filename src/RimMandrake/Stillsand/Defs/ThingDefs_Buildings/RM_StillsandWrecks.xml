@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6 (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3d-i, §4): Stillsand wreck children, Low class, Sealed weathering.
+  Source: dune_sea.md:217,234,253 (buried finds, sealed and uncorroded). The first Tread-family child. The storm-reveal variant is later.
+  Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
+  Names and families are design §4's proposals; the biome's own sitting may move them.
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_StillsandWreckHull</defName>
+    <label>sand-sealed hull</label>
+    <description>A hull section a storm uncovered, buried dry and airless for years: uncorroded, and whatever was inside is intact. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Sealed</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Tank">
+    <defName>RM_StillsandWreckTank</defName>
+    <label>sand-sealed tank</label>
+    <description>A sealed tank dug out by the wind, its fittings bright under the sand. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Sealed</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Tread">
+    <defName>RM_StillsandWreckTread</defName>
+    <label>sand-sealed tread</label>
+    <description>A crawler's tread section, huge and uncorroded, laid bare by a storm. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Sealed</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

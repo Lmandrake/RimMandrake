@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6 (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3d-i, §4): Contagion wreck children, Eroded class, Eroded weathering.
+  Source: Owner ruling 2026-10-03: the Contagion has wrecks, but it erodes them and little remains.
+  Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
+  Names and families are design §4's proposals; the biome's own sitting may move them.
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Frame">
+    <defName>RM_ContagionWreckFragment</defName>
+    <label>eroded wreck fragment</label>
+    <description>A fragment of something that fell here once. The land has eaten the rest. Deconstruct it for what little remains.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Eroded</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Carapace">
+    <defName>RM_ContagionShellFragment</defName>
+    <label>eroded shell fragment</label>
+    <description>A scrap of a droid's shell, eaten thin. Deconstruct it for what little remains.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Eroded</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

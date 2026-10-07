@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6 (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3d-i, §4): Abyss wreck children, Moderate class, StormTorn weathering.
+  Source: abyss.md:227 (wind-farms, working and wrecked). The Ship in the Wall is ABYSS_LIGHTFALL_BROOD_WRECK_1, not this field.
+  Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
+  Names and families are design §4's proposals; the biome's own sitting may move them.
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Frame">
+    <defName>RM_AbyssWindVane</defName>
+    <label>storm-torn wind vane</label>
+    <description>The snapped vane and hub of a wind-farm turbine, torn off by the chasm winds. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_StormTorn</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Tank">
+    <defName>RM_AbyssWindPylon</defName>
+    <label>storm-torn turbine housing</label>
+    <description>A turbine's nacelle ripped open by the wind, its gravlite bearings still inside. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_StormTorn</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

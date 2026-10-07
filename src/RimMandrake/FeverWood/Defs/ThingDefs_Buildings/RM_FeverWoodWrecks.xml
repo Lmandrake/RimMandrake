@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 6 (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §3d-i, §4): Fever Wood wreck children, Moderate class, Overgrown weathering.
+  Source: the_fever_wood.md:168 (chitin and salvage, the two-front war's leavings). The first Carapace-family child. Registered by patch (RM_FeverWood_WreckField_Register.xml), not in RM_FeverWood.xml.
+  Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
+  Names and families are design §4's proposals; the biome's own sitting may move them.
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_FeverWoodWreckHull</defName>
+    <label>overgrown hull</label>
+    <description>A hull section swallowed by the wood, vines grown through every gap, left from the two-front war. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Overgrown</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Carapace">
+    <defName>RM_FeverWoodWreckCarapace</defName>
+    <label>overgrown droid shell</label>
+    <description>The shell of a war droid, root-bound and green with moss, its optics long dark. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Overgrown</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
