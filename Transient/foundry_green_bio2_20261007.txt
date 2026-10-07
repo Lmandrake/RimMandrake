@@ -1,0 +1,199 @@
+[creaturebehaviors] 05:06:00 writer_patched PASS 
+[creaturebehaviors] 05:06:31 walker_lays_prints FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[creaturebehaviors] 05:07:06 invisible_walker_recorded_flagged FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[creaturebehaviors] 05:07:45 toggle_off_no_prints FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[creaturebehaviors] 05:07:45 stillsand_moving_sand_erases_print PASS 
+[creaturebehaviors] 05:07:46 control_absent_type_reads_absent PASS 
+[creaturebehaviors] 05:07:46 verminBreeding_wired_and_gated PASS 
+[creaturebehaviors] 05:07:47 gnaw_wired_and_gated PASS 
+[creaturebehaviors] 05:07:47 eatCleanable_wired_and_gated PASS 
+[creaturebehaviors] 05:07:48 seekShade_wired_and_gated PASS 
+[creaturebehaviors] 05:07:48 seekMarkedTerrain_wired_and_gated PASS 
+[creaturebehaviors] 05:07:48 sunScald_wired_and_gated PASS 
+[creaturebehaviors] 05:07:49 senseWeb_wired_and_gated PASS 
+[creaturebehaviors] 05:07:49 chewAnchors_wired_and_gated PASS 
+[creaturebehaviors] 05:07:50 frontCreep_wired_and_gated PASS 
+[creaturebehaviors] 05:07:50 aquaticAmbush_wired_and_gated PASS 
+[creaturebehaviors] 05:07:51 parentalEnrage_wired_and_gated PASS 
+[creaturebehaviors] 05:07:51 drumLure_wired_and_gated PASS 
+[creaturebehaviors] 05:07:56 all_fields_at_shipped_defaults PASS 
+[creaturebehaviors] 05:07:56 toggle_roundtrip_adhesiveSlickEnabled PASS 
+[creaturebehaviors] 05:07:57 toggle_roundtrip_ambientHeatPusherEnabled PASS 
+[creaturebehaviors] 05:07:57 toggle_roundtrip_aquaticAmbushEnabled PASS 
+[creaturebehaviors] 05:07:57 toggle_roundtrip_brineBatteryDischargeEnabled PASS 
+[creaturebehaviors] 05:07:57 toggle_roundtrip_chewAnchorsBehaviorEnabled PASS 
+[creaturebehaviors] 05:07:57 toggle_roundtrip_creatureHeatSoundsEnabled PASS 
+[creaturebehaviors] 05:07:57 toggle_roundtrip_dashRingEnabled PASS 
+[creaturebehaviors] 05:07:57 toggle_roundtrip_directedAssaultBehaviorEnabled PASS 
+[creaturebehaviors] 05:07:58 toggle_roundtrip_directionalShadeEnabled PASS 
+[creaturebehaviors] 05:07:58 toggle_roundtrip_drinkerFluidSacsEnabled PASS 
+[creaturebehaviors] 05:07:58 toggle_roundtrip_drumLureEnabled PASS 
+[creaturebehaviors] 05:07:58 toggle_roundtrip_dungSeedingEnabled PASS 
+[creaturebehaviors] 05:07:58 toggle_roundtrip_eatCleanableBehaviorEnabled PASS 
+[creaturebehaviors] 05:07:58 toggle_roundtrip_falseShadeAmbushEnabled PASS 
+[creaturebehaviors] 05:07:58 toggle_roundtrip_filterFeedingEnabled PASS 
+[creaturebehaviors] 05:07:59 toggle_roundtrip_frontCreepEnabled PASS 
+[creaturebehaviors] 05:07:59 toggle_roundtrip_glareBlindEnabled PASS 
+[creaturebehaviors] 05:07:59 toggle_roundtrip_gnawBehaviorEnabled PASS 
+[creaturebehaviors] 05:07:59 toggle_roundtrip_grapplerHoldEnabled PASS 
+[creaturebehaviors] 05:07:59 toggle_roundtrip_guardianAlarmEnabled PASS 
+[creaturebehaviors] 05:07:59 toggle_roundtrip_heatDrivenBurstEnabled PASS 
+[creaturebehaviors] 05:08:00 toggle_roundtrip_heatSoundscapeEnabled PASS 
+[creaturebehaviors] 05:08:00 toggle_roundtrip_homeTetherEnabled PASS 
+[creaturebehaviors] 05:08:00 toggle_roundtrip_kinMendingEnabled PASS 
+[creaturebehaviors] 05:08:00 toggle_roundtrip_kindFromElevationEnabled PASS 
+[creaturebehaviors] 05:08:00 toggle_roundtrip_lanceEnabled PASS 
+[creaturebehaviors] 05:08:00 toggle_roundtrip_lanceFriendlyPull PASS 
+[creaturebehaviors] 05:08:00 toggle_roundtrip_mirageEnabled PASS 
+[creaturebehaviors] 05:08:01 toggle_roundtrip_movingShadeEnabled PASS 
+[creaturebehaviors] 05:08:01 toggle_roundtrip_parasolShadeEnabled PASS 
+[creaturebehaviors] 05:08:01 toggle_roundtrip_parentalEnrageEnabled PASS 
+[creaturebehaviors] 05:08:01 toggle_roundtrip_pinnedSunEnabled PASS 
+[creaturebehaviors] 05:08:01 toggle_roundtrip_proximitySoundscapeEnabled PASS 
+[creaturebehaviors] 05:08:01 toggle_roundtrip_reactionDetectionEnabled PASS 
+[creaturebehaviors] 05:08:01 toggle_roundtrip_reactionSourceSpawnEnabled PASS 
+[creaturebehaviors] 05:08:02 toggle_roundtrip_reactionSuppressionEnabled PASS 
+[creaturebehaviors] 05:08:02 toggle_roundtrip_sandBuriedGraphicEnabled PASS 
+[creaturebehaviors] 05:08:02 toggle_roundtrip_sandGlareEnabled PASS 
+[creaturebehaviors] 05:08:02 toggle_roundtrip_sandSwimDroidImmunity PASS 
+[creaturebehaviors] 05:08:02 toggle_roundtrip_sandSwimEnabled PASS 
+[creaturebehaviors] 05:08:02 toggle_roundtrip_seedPassageEnabled PASS 
+[creaturebehaviors] 05:08:03 toggle_roundtrip_seekMarkedTerrainBehaviorEnabled PASS 
+[creaturebehaviors] 05:08:03 toggle_roundtrip_seekShadeBehaviorEnabled PASS 
+[creaturebehaviors] 05:08:03 toggle_roundtrip_senseWebEnabled PASS 
+[creaturebehaviors] 05:08:03 toggle_roundtrip_shadeGridEnabled PASS 
+[creaturebehaviors] 05:08:03 toggle_roundtrip_shadeHopEnabled PASS 
+[creaturebehaviors] 05:08:03 toggle_roundtrip_shadeSeekingWanderEnabled PASS 
+[creaturebehaviors] 05:08:03 toggle_roundtrip_shadeStaggerEnabled PASS 
+[creaturebehaviors] 05:08:04 toggle_roundtrip_shadeTentEnabled PASS 
+[creaturebehaviors] 05:08:04 toggle_roundtrip_shadowFollowEnabled PASS 
+[creaturebehaviors] 05:08:04 toggle_roundtrip_sightBlockEnabled PASS 
+[creaturebehaviors] 05:08:04 toggle_roundtrip_sightBlockRangedFire PASS 
+[creaturebehaviors] 05:08:04 toggle_roundtrip_silenceCueEnabled PASS 
+[creaturebehaviors] 05:08:04 toggle_roundtrip_soulchimePsychicStunEnabled PASS 
+[creaturebehaviors] 05:08:04 toggle_roundtrip_soulchimeShardArmorEnabled PASS 
+[creaturebehaviors] 05:08:05 toggle_roundtrip_soulchimeTameSootheEnabled PASS 
+[creaturebehaviors] 05:08:05 toggle_roundtrip_speciesSpacingEnabled PASS 
+[creaturebehaviors] 05:08:05 toggle_roundtrip_sunHeatEnabled PASS 
+[creaturebehaviors] 05:08:05 toggle_roundtrip_sunLoadBarEnabled PASS 
+[creaturebehaviors] 05:08:05 toggle_roundtrip_sunPathingEnabled PASS 
+[creaturebehaviors] 05:08:05 toggle_roundtrip_sunScaldEnabled PASS 
+[creaturebehaviors] 05:08:05 toggle_roundtrip_sunScaldReadsShade PASS 
+[creaturebehaviors] 05:08:06 toggle_roundtrip_sunShieldEnabled PASS 
+[creaturebehaviors] 05:08:06 toggle_roundtrip_tracksEnabled PASS 
+[creaturebehaviors] 05:08:06 toggle_roundtrip_verminBreedingEnabled PASS 
+[creaturebehaviors] 05:08:06 toggle_roundtrip_wildLeaveNoticeEnabled PASS 
+[creaturebehaviors] 05:08:06 toggle_roundtrip_woundLinkEnabled PASS 
+[modcheck] CreatureBehaviors: no ledger item MODCHECK_CREATUREBEHAVIORS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\CreatureBehaviors_20261007T120807Z.html only
+[stillsand] 05:13:17 site_stillsand_map UNMEASURED UNMEASURED: the map was not ready 300 s after Regenerate Current Map
+[stillsand] 05:13:17 site_cave_logged UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:17 skeleton_gen_within_cap UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand-note] shipped defs resolved: 131
+[stillsand] 05:13:17 defs_resolve PASS 
+[stillsand] 05:13:17 sand_sieve_defs PASS 
+[stillsand] 05:13:18 solar_still_defs PASS 
+[stillsand] 05:13:18 sun_lance_defs PASS 
+[stillsand] 05:13:18 geophone_defs PASS 
+[stillsand] 05:13:18 sand_swim_remainder PASS 
+[stillsand] 05:13:21 cave_tier_rows PASS 
+[stillsand] 05:13:22 cave_place_defs PASS 
+[stillsand] 05:13:22 custom_defs_resolve UNMEASURED UNMEASURED: get_defs resolved none of the custom def type names (the type name form is unproven): ['RM_PreciousCaveDef/RM_PreciousCave_GuzzkaLair', 'RM_PreciousCaveDef/RM_PreciousCave_LensGrotto', 'RM_PreciousCaveDef/RM_PreciousCave_SealedCache']
+[stillsand-note] biome extensions / extra gen steps: [["RM_SunHeatExtension", "RM_PinnedSunExtension", "DuneFieldExtension", "RM_SkeletonBiomeExtension", "RM_SandRemembersWaterExtension"], ["RM_WreckField_Stillsand", "RM_GiantSkeletons", "RM_PreciousCaveCarve", "RM_PreciousCaveContents"]]
+[stillsand] 05:13:22 biome_row PASS 
+[stillsand] 05:13:22 biome_roster PASS 
+[stillsand] 05:13:22 giants_skeleton_wired PASS 
+[stillsand] 05:13:22 water_egg_patched PASS 
+[stillsand] 05:13:22 eruption_biome_gate PASS 
+[stillsand] 05:13:25 defaults PASS 
+[stillsand] 05:13:25 yardangShapingEnabled_roundtrip PASS 
+[stillsand] 05:13:26 torEnabled_roundtrip PASS 
+[stillsand] 05:13:26 boneHarpEnabled_roundtrip PASS 
+[stillsand] 05:13:26 ledgerEnabled_roundtrip PASS 
+[stillsand] 05:13:26 ledgerIncidentWeighting_roundtrip PASS 
+[stillsand] 05:13:27 sieveEnabled_roundtrip PASS 
+[stillsand] 05:13:27 solarStillEnabled_roundtrip PASS 
+[stillsand] 05:13:27 wringingStillEnabled_roundtrip PASS 
+[stillsand] 05:13:27 sunLanceEnabled_roundtrip PASS 
+[stillsand] 05:13:28 geophoneEnabled_roundtrip PASS 
+[stillsand] 05:13:28 thumperEnabled_roundtrip PASS 
+[stillsand] 05:13:28 sandFishingWakeEnabled_roundtrip PASS 
+[stillsand] 05:13:28 driftSwimEnabled_roundtrip PASS 
+[stillsand] 05:13:29 listeningHissEnabled_roundtrip PASS 
+[stillsand] 05:13:29 listeningSingingEnabled_roundtrip PASS 
+[stillsand] 05:13:29 listeningWarningEnabled_roundtrip PASS 
+[stillsand] 05:13:29 listeningRumbleEnabled_roundtrip PASS 
+[stillsand] 05:13:30 abrasionEnabled_roundtrip PASS 
+[stillsand] 05:13:30 carryEnabled_roundtrip PASS 
+[stillsand] 05:13:30 staticEnabled_roundtrip PASS 
+[stillsand] 05:13:30 seedingEnabled_roundtrip PASS 
+[stillsand] 05:13:31 hornEnabled_roundtrip PASS 
+[stillsand] 05:13:31 denQuestEnabled_roundtrip PASS 
+[stillsand] 05:13:31 sun_pinned_no_night UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:31 sun_open_sand_full_exposure UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:31 sun_roof_cover_above_55deg UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:31 fauna_spawns UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:31 soorrak_can_fly UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:31 flora_spawns UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 vekka_submerges_on_sand UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 vekka_take_leaves_funnel UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 zuurrik_below_threshold_dormant UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 zuurrik_wakes_on_blood UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 zuurrik_strips_blood UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 zuurrik_toggle_off_no_wake UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 loomma_sunstruck_open_vs_roofed UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 soorrak_no_exceptions UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 soorrak_not_stuck UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 glass_site_ready UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 sun_table_reads_sun_in_open UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 sun_table_roofed_idle UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 furnace_work_speed_tracks_sun UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 sunfurnace_toggle_off_disabled UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 lensbench_toggle_off_disabled UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 solaroven_toggle_off_disabled UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 sun_work_speed_multiplier_scales UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 glass_remainder_static UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 glass_remainder_defs_live UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 drift_clear_drops_glass_sand UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 oven_cooks_in_sun_not_shade UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 lightning_on_deepsand_leaves_fulgurite_pyrelands_off UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 recipe_toggles_hide_recipes UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 pour_blooms_on_sand UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 pour_toggle_off_no_bloom UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 pour_on_gravel_no_bloom UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 corpse_becomes_skeleton UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:32 corpse_stays_when_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 glare_site_ready UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 glare_blind_gained_in_open_sun UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 goggles_block_glare_blind UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 cooling_draught_widens_comfort UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 gale_incident_fires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 gale_toggle_off_refuses UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 gale_phases_and_aftermath UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 gale_dims_sun_exposure UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 gale_emergence_off_quiet UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 devil_moves_and_expires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 devil_toggle_off_refuses UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 muurrok_emergence_fires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 beam_burns_target UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 beam_toggle_off_blocked UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:33 eruption_tunnel_then_mound UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:34 horizon_warns_then_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:34 horizon_toggle_off_vanilla UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:34 caves_regen_both_off UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:34 genstep_off_no_cave_line UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:34 skeleton_placement_off_none UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:13:34 remainder_files_obey_load_log_lessons PASS 
+[stillsand] 05:13:34 remainder_horn_cross_references PASS 
+[stillsand] 05:13:34 remainder_seep_incident_stillsand_only PASS 
+[stillsand] 05:13:35 remainder_den_quest_cross_references PASS 
+[stillsand] 05:13:35 remainder_loud_draws_wired PASS 
+[stillsand] 05:13:35 remainder_charged_thumper_is_loudest UNMEASURED UNMEASURED: LoudestCell is private to a leviathan incident in flight and no tool reads where the dragon headed; needs a thumper charged on a live Stillsand map
+[stillsand] 05:13:35 remainder_den_quest_generates UNMEASURED UNMEASURED: RUT_KraytDenQuest needs mandrake.rut.patches + SWBestiary and a map whose cave rolled RSW_PreciousCave_KraytDen with the dragon alive (a 25% branch of a weighted row); generate through dev mode Quests > Generate quest
+[stillsand] 05:13:35 remainder_horn_routs_and_logs_roll UNMEASURED UNMEASURED: the krayt horn is RSW content (mandrake.rsw.swbestiary) and its answer incident is RUT: neither is on the baroque_wave0 tier; needs a campaign-tier session, with a predator beside the user and the log's '[Stillsand] krayt horn answer roll' line read back
+[stillsand] 05:13:35 remainder_seep_incident_refuses_other_maps_roots_at_seep UNMEASURED UNMEASURED: RSW_SwimmerSeepRoot is Sarlacc (mandrake.rsw.sarlacc, Anomaly-gated), not loaded on this tier; needs a Stillsand map with the sarlacc seep row and a second non-Stillsand map to refuse
+[stillsand-note] log scan: {"stillsand errors": 0, "xref naming our defs": 0, "config errors naming our defs": 0}
+[stillsand] 05:13:36 log_clean PASS 
+[modcheck] Stillsand: no ledger item MODCHECK_STILLSAND_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Stillsand_20261007T121336Z.html only
+CreatureBehaviors    RED  (state)
+Stillsand            RED  (state)

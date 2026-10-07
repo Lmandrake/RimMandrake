@@ -1,0 +1,111 @@
+[stillsand] 05:21:01 site_stillsand_map UNMEASURED UNMEASURED: the map was not ready 300 s after Regenerate Current Map
+[stillsand] 05:21:01 site_cave_logged UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:01 skeleton_gen_within_cap UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand-note] shipped defs resolved: 131
+[stillsand] 05:21:01 defs_resolve PASS 
+[stillsand] 05:21:02 sand_sieve_defs PASS 
+[stillsand] 05:21:02 solar_still_defs PASS 
+[stillsand] 05:21:02 sun_lance_defs PASS 
+[stillsand] 05:21:02 geophone_defs PASS 
+[stillsand] 05:21:02 sand_swim_remainder PASS 
+[stillsand] 05:21:05 cave_tier_rows PASS 
+[stillsand] 05:21:06 cave_place_defs PASS 
+[stillsand] 05:21:06 custom_defs_resolve UNMEASURED UNMEASURED: get_defs resolved none of the custom def type names (the type name form is unproven): ['RM_PreciousCaveDef/RM_PreciousCave_GuzzkaLair', 'RM_PreciousCaveDef/RM_PreciousCave_LensGrotto', 'RM_PreciousCaveDef/RM_PreciousCave_SealedCache']
+[stillsand-note] biome extensions / extra gen steps: [["RM_SunHeatExtension", "RM_PinnedSunExtension", "DuneFieldExtension", "RM_SkeletonBiomeExtension", "RM_SandRemembersWaterExtension"], ["RM_WreckField_Stillsand", "RM_GiantSkeletons", "RM_PreciousCaveCarve", "RM_PreciousCaveContents"]]
+[stillsand] 05:21:06 biome_row PASS 
+[stillsand] 05:21:06 biome_roster PASS 
+[stillsand] 05:21:06 giants_skeleton_wired PASS 
+[stillsand] 05:21:06 water_egg_patched PASS 
+[stillsand] 05:21:06 eruption_biome_gate PASS 
+[stillsand] 05:21:09 defaults PASS 
+[stillsand] 05:21:10 yardangShapingEnabled_roundtrip PASS 
+[stillsand] 05:21:10 torEnabled_roundtrip PASS 
+[stillsand] 05:21:10 boneHarpEnabled_roundtrip PASS 
+[stillsand] 05:21:10 ledgerEnabled_roundtrip PASS 
+[stillsand] 05:21:11 ledgerIncidentWeighting_roundtrip PASS 
+[stillsand] 05:21:11 sieveEnabled_roundtrip PASS 
+[stillsand] 05:21:11 solarStillEnabled_roundtrip PASS 
+[stillsand] 05:21:11 wringingStillEnabled_roundtrip PASS 
+[stillsand] 05:21:12 sunLanceEnabled_roundtrip PASS 
+[stillsand] 05:21:12 geophoneEnabled_roundtrip PASS 
+[stillsand] 05:21:12 thumperEnabled_roundtrip PASS 
+[stillsand] 05:21:12 sandFishingWakeEnabled_roundtrip PASS 
+[stillsand] 05:21:13 driftSwimEnabled_roundtrip PASS 
+[stillsand] 05:21:13 listeningHissEnabled_roundtrip PASS 
+[stillsand] 05:21:13 listeningSingingEnabled_roundtrip PASS 
+[stillsand] 05:21:13 listeningWarningEnabled_roundtrip PASS 
+[stillsand] 05:21:14 listeningRumbleEnabled_roundtrip PASS 
+[stillsand] 05:21:14 abrasionEnabled_roundtrip PASS 
+[stillsand] 05:21:14 carryEnabled_roundtrip PASS 
+[stillsand] 05:21:14 staticEnabled_roundtrip PASS 
+[stillsand] 05:21:15 seedingEnabled_roundtrip PASS 
+[stillsand] 05:21:15 hornEnabled_roundtrip PASS 
+[stillsand] 05:21:15 denQuestEnabled_roundtrip PASS 
+[stillsand] 05:21:15 sun_pinned_no_night UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:15 sun_open_sand_full_exposure UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:15 sun_roof_cover_above_55deg UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 fauna_spawns UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 soorrak_can_fly UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 flora_spawns UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 vekka_submerges_on_sand UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 vekka_take_leaves_funnel UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 zuurrik_below_threshold_dormant UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 zuurrik_wakes_on_blood UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 zuurrik_strips_blood UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 zuurrik_toggle_off_no_wake UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 loomma_sunstruck_open_vs_roofed UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 soorrak_no_exceptions UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 soorrak_not_stuck UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 glass_site_ready UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 sun_table_reads_sun_in_open UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 sun_table_roofed_idle UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 furnace_work_speed_tracks_sun UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 sunfurnace_toggle_off_disabled UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 lensbench_toggle_off_disabled UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 solaroven_toggle_off_disabled UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 sun_work_speed_multiplier_scales UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 glass_remainder_static UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 glass_remainder_defs_live UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 drift_clear_drops_glass_sand UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 oven_cooks_in_sun_not_shade UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 lightning_on_deepsand_leaves_fulgurite_pyrelands_off UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:16 recipe_toggles_hide_recipes UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 pour_blooms_on_sand UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 pour_toggle_off_no_bloom UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 pour_on_gravel_no_bloom UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 corpse_becomes_skeleton UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 corpse_stays_when_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 glare_site_ready UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 glare_blind_gained_in_open_sun UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 goggles_block_glare_blind UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 cooling_draught_widens_comfort UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 gale_incident_fires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 gale_toggle_off_refuses UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 gale_phases_and_aftermath UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 gale_dims_sun_exposure UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 gale_emergence_off_quiet UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 devil_moves_and_expires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 devil_toggle_off_refuses UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 muurrok_emergence_fires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 beam_burns_target UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:17 beam_toggle_off_blocked UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:18 eruption_tunnel_then_mound UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:18 horizon_warns_then_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:18 horizon_toggle_off_vanilla UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:18 caves_regen_both_off UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:18 genstep_off_no_cave_line UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:18 skeleton_placement_off_none UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 05:21:18 remainder_files_obey_load_log_lessons PASS 
+[stillsand] 05:21:18 remainder_horn_cross_references PASS 
+[stillsand] 05:21:18 remainder_seep_incident_stillsand_only PASS 
+[stillsand] 05:21:19 remainder_den_quest_cross_references PASS 
+[stillsand] 05:21:19 remainder_loud_draws_wired PASS 
+[stillsand] 05:21:19 remainder_charged_thumper_is_loudest UNMEASURED UNMEASURED: LoudestCell is private to a leviathan incident in flight and no tool reads where the dragon headed; needs a thumper charged on a live Stillsand map
+[stillsand] 05:21:19 remainder_den_quest_generates UNMEASURED UNMEASURED: RUT_KraytDenQuest needs mandrake.rut.patches + SWBestiary and a map whose cave rolled RSW_PreciousCave_KraytDen with the dragon alive (a 25% branch of a weighted row); generate through dev mode Quests > Generate quest
+[stillsand] 05:21:19 remainder_horn_routs_and_logs_roll UNMEASURED UNMEASURED: the krayt horn is RSW content (mandrake.rsw.swbestiary) and its answer incident is RUT: neither is on the baroque_wave0 tier; needs a campaign-tier session, with a predator beside the user and the log's '[Stillsand] krayt horn answer roll' line read back
+[stillsand] 05:21:19 remainder_seep_incident_refuses_other_maps_roots_at_seep UNMEASURED UNMEASURED: RSW_SwimmerSeepRoot is Sarlacc (mandrake.rsw.sarlacc, Anomaly-gated), not loaded on this tier; needs a Stillsand map with the sarlacc seep row and a second non-Stillsand map to refuse
+[stillsand-note] log scan: {"stillsand errors": 0, "xref naming our defs": 0, "config errors naming our defs": 0}
+[stillsand] 05:21:20 log_clean PASS 
+[modcheck] Stillsand: no ledger item MODCHECK_STILLSAND_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Stillsand_20261007T122120Z.html only
+Stillsand            RED  (state)
