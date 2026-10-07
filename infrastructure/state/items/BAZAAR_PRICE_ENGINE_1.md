@@ -34,3 +34,22 @@ when the artifact is carried.
 - Never hook MarketValue/StatWorker — that is the rejected VTE blast radius.
 - The dump has no statBases (def-dump blind spot): calibrate "typical price"
   baselines from live values, not the offline dump.
+
+## built offline (2026-10-06, uncommitted at time of writing)
+
+In `src/RimMandrake/TheBazaar`: `Source/Economy/` (RM_BazaarEconomy WorldComponent — lazy per-tile seeding,
+32-entry history ring, trader-visit log, daily drift with ±10%/day step clamp and ×0.25–×4.0 band;
+RM_BazaarSeedRuleDef; RM_BazaarTags with a null-tolerant FlowWorks liquid-tag seam by reflection and a
+provider registry for RimUtinni settlement tags; RM_Patch_GetPriceFor postfix guarded on
+`RM_BazaarSession.Current`), `Source/Intel/` (gate evaluation reusing Droidworks'
+`IsAvailableProtocolDroid` by reflection; L1–L4 column/badge workers), `Defs/` (4 seed rules, 8 intel
+layers, 2 columns, 2 badges, 4 module items + fitted hediffs), 7 settings toggles. Builds clean.
+
+Deviations from this item's 2026-09-13 text, following the later owner ruling in the design (§4, 2026-09-20):
+the "three artifacts" are FOUR protocol-droid MODULES (adds `RM_TransponderScanner`), gated on a fitted hediff,
+not on a carried item.
+
+Still owed: (1) the module install RecipeDef — design routes it through Droidworks' `Recipe_InstallDroidPart`
+(RSW tier), so it belongs in the Droidworks layer, not here; (2) L0 colony-needs badges (not built);
+(3) everything in `## verify` — the postfix cannot act until the WindowStack.Add intercept
+(BAZAAR_WINDOW_GRID_1) constructs `RM_Window_Bazaar`, which raises the session guard.

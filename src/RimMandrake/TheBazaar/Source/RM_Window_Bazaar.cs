@@ -35,9 +35,33 @@ namespace RimMandrake.Bazaar
     /// </summary>
     public class RM_Window_Bazaar : Dialog_Trade
     {
+        private readonly Pawn negotiator;
+        private readonly ITrader bazaarTrader;
+        private readonly bool giftsOnly;
+
+        /// <summary>BAZAAR_PRICE_ENGINE_1: the session whose
+        /// <see cref="RM_BazaarSession.Current"/> guard lets the
+        /// GetPriceFor postfix act. Raised on open, lowered on close.</summary>
+        public RM_BazaarSession session;
+
         public RM_Window_Bazaar(Pawn playerNegotiator, ITrader trader, bool giftsOnly = false)
             : base(playerNegotiator, trader, giftsOnly)
         {
+            negotiator = playerNegotiator;
+            bazaarTrader = trader;
+            this.giftsOnly = giftsOnly;
+        }
+
+        public override void PostOpen()
+        {
+            base.PostOpen();
+            session = RM_BazaarSession.Open(negotiator, bazaarTrader, giftsOnly);
+        }
+
+        public override void PostClose()
+        {
+            base.PostClose();
+            RM_BazaarSession.Close(session);
         }
     }
 }
