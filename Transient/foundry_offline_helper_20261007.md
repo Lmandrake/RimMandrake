@@ -37,3 +37,10 @@
   LEANINGSCRUB_SWEETLINE, FORGE_DHOKKUR, SHADECRAFT), bridge/game-up (PYRELANDS_NORTHSTAR_TRIAL, NORTHSTAR_FAST_DRIVER,
   FLOWWORKS/GRAFFITI northstar, STILLSAND_*_LIVE/REMAINDER), NORTHSTAR_ADVERSARIAL_REVIEW_1 (owner-released rounds only),
   RUSTCATHEDRAL_WORN_BIT_ARC_1 (stage 4 is the tabled Stranger's Overhaul rite).
+
+## Helper 5 (2026-10-07) — MESSYCONDUIT_CABLE_PILE_LOOK_1 (claimed)
+- Rule 1 (no orphan strip) already built + checked: ReviewRound1Checks B13 (50b906466).
+- Built 8bab86beb, `implemented` (A1 L0; A2-A3 L2, A4 L4 owed). GSS selftest 803/803, run_selftests 221/222 (utinnipatches_dump only).
+- Rule 2 bar CordAudit.EndsOnBodies: measured 0 faults once junction-arm/strip-socket ports count as nodes (first cut, centres only, read 123 false faults, all ends plugged into junction arms). Fray ends are NOT exempt.
+- Rule 3 was a real gap: hoses rank by reel age, so a newer hose's end/joiner could draw over an older hose. HoseMath.Layer ranks an end-on-hose beneath it, drops joiners over a lower hose; probe field fittingsOnTop for L2. DLL rebuilt (not deployed).
+- Skipped this pass (blocked/not offline): FEVERWOOD_HIVE_GUARD_CHAMBER_1 (build last, after the reacting hive is played), FLOWWORKS_QUARRY_DIGGING_1 remainder (waits on mineral registry + River Works), FLOWWORKS_NORTHSTAR_SHIP_1 (88 DIRTY review + deploy), pit umbrella children all built/bridge.
