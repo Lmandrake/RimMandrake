@@ -76,3 +76,4 @@ scope, balanced by cost and gating; never narrowed.**
 - Still owed: ShipShields deriving from `RM_CompAerosolScreen` and dropping its own two prefixes (criterion
   "one patch class"); the extension on Wasteland/Cauldron/Contagion; parts 3-11 (no `RM_AerosolScreen`
   building def yet, so nothing in game carries the comp).
+- 2026-10-07 (part 5, offline): `Scarlands/Defs/ThingDefs_Buildings/RM_AerosolScreen.xml` adds `RM_ProjectorCore` (item) and `RM_AerosolScreen` (2x2, 400 W, flickable, dielectric-gel refuelable, plasteel + 2 components + 1 core) carrying `RM_CompAerosolScreen`; the comp now draws a visual-only dome (`Other/ForceField`, `drawDome`). Art is borrowed placeholder. Still owed: research gate (part 6), ShipShields deriving from the comp, calibration, Biome ship-contribution row, projector-core sources, parts 6-11. Never run in game.

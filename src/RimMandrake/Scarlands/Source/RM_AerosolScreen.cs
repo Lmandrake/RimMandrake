@@ -64,6 +64,7 @@ namespace RimMandrake.Scarlands
         public float radius = 7.9f;
         // Self-powered screens (the live rings) set this false and ignore power entirely.
         public bool needsPower = true;
+        public bool drawDome = true;
 
         public RM_CompProperties_AerosolScreen()
         {
@@ -128,6 +129,22 @@ namespace RimMandrake.Scarlands
                 if (c.DistanceToSquared(s.parent.Position) <= r * r) return true;
             }
             return false;
+        }
+
+        // Visual only (spec 5): the dome is drawn with the force-field bubble material, never the
+        // interceptor class, so projectiles pass.
+        private static Material domeMat;
+
+        public override void PostDraw()
+        {
+            base.PostDraw();
+            if (!Props.drawDome || !RM_WarscarSettings.aerosolScreenEnabled || !IsScreenLive) return;
+            if (domeMat == null)
+                domeMat = MaterialPool.MatFrom("Other/ForceField", ShaderDatabase.MoteGlow, new Color(0.95f, 0.75f, 0.35f, 0.18f));
+            float d = Radius * 2f;
+            Vector3 pos = parent.DrawPos;
+            pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
+            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(d, 1f, d)), domeMat, 0);
         }
 
         public override void PostDrawExtraSelectionOverlays()
