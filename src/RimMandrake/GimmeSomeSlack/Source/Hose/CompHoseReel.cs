@@ -82,7 +82,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public Thing Port(bool force = false)
         {
             int now = Find.TickManager?.TicksGame ?? 0;
-            if (!force && now - portTick < 60 && (port == null || port.Spawned)) return port;
+            if (!force && HoseLive.CacheFresh(now, portTick, 60) && (port == null || port.Spawned)) return port;
             portTick = now;
             port = HosePorts.Find(this, out portSide, out portContact, out portKind);
             return port;

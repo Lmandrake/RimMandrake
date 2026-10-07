@@ -160,7 +160,7 @@ namespace RimMandrake.GimmeSomeSlack
                         if (m == null) continue;
                         bool face = CordMaterials.IsFace(d.Kind);
                         float y = face ? faceY + 0.002f : baseY + 0.009f;
-                        float aspect = d.Kind == DecalKind.PowerStrip ? 0.5f : 1f;
+                        float aspect = DecalAspect.Of(d.Kind);
                         verts += d.Cropped
                             ? Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y, (float)d.U0, (float)d.U1, (float)d.V0, (float)d.V1)
                             : Quad(m, d.Pos, (float)d.Angle, (float)d.ScaleX, (float)d.Scale * aspect, y);

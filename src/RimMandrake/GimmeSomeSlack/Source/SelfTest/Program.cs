@@ -79,6 +79,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             StyleStage3Checks.Run();       // per-build style stage 3, hose reels (2026-10-04): StyleStage3Checks.cs + ../Hose/HoseStyles.cs
             LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
+            GptReadFixChecks.Run();        // GPT source read 2026-10-06 fixes: GptReadFixChecks.cs
             GssFuzz.Run(args);             // approach B: seeded action-sequence fuzz (design/RimMandrake/gss_offline_fuzz_B.md)
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;

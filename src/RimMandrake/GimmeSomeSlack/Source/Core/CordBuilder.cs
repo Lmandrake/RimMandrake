@@ -9,6 +9,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
 {
     public enum DecalKind { Plug, JunctionTape, JunctionTin, StubWall, StubRock, PowerStrip, FrayDead, FrayLive, PowerStripDark }
 
+    /// <summary>A decal's drawn height over its width. The power strip's art is 64x32 lit AND dark (GPT source read 2026-10-06
+    /// A19: the dark strip drew at aspect 1, twice as tall as the lit one).</summary>
+    public static class DecalAspect
+    {
+        public static float Of(DecalKind k) => k == DecalKind.PowerStrip || k == DecalKind.PowerStripDark ? 0.5f : 1f;
+    }
+
     /// <summary>What a pile (tangle) and a device stub are built from (owner review 2026-10-04 B1/B2/B13/B15): power strips
     /// only for the modern extension-cord look; every other look plugs its cables into many + and T junction boxes.</summary>
     public enum PileArt { Junctions, Strips }
