@@ -52,7 +52,7 @@
        salvage-within-salvage: suit, tools, and the half-extracted core still in its grips").
        Carapace family under the shared Irradiated row (so it carries the dose), shifted +1 by
        extraTierShift: Carapace -> Sealed. Body-length, so 1x2. Art: on the vanilla ShipChunk
-       placeholder until wreck_wastelandsarcophagus_* lands; footprint and shadow are guesses. -->
+       placeholder until wreck_wastelandwarcasketsarcophagus_* lands; footprint and shadow are guesses. -->
   <ThingDef ParentName="RM_WreckFamily_Carapace">
     <defName>RM_WastelandWarcasketSarcophagus</defName>
     <label>warcasket sarcophagus</label>

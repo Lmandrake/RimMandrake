@@ -5,7 +5,7 @@
   mandrake.rm.wreckage's families under RUT_WreckWeathering_FallLine. The canon TIE panel and landspeeder
   are RSW defs (mandrake.rsw.injections) added to the list by patch. Delivered only through
   RUT_WreckList_FallLine and RUT_FallLineWreckFall (Defs/IncidentDefs); never a field.
-  Art: on the vanilla ShipChunk placeholder until wreck_rutfallline* lands.
+  Art: on the vanilla ShipChunk placeholder until wreck_falllinewreck* lands.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
