@@ -1,0 +1,3954 @@
+{
+ "chains": [
+  {
+   "name": "power_state_machine",
+   "components": [
+    {
+     "name": "format_tier_defaults_to_programmable",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: RSW_DW_FormatTier severity=None, expected Programmable (2.5-3.5)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "listing": true,
+        "count": 20,
+        "totalSpawned": 21,
+        "truncated": true,
+        "pawns": [
+         {
+          "thingId": "Human150",
+          "thingIdNumber": 150,
+          "name": "Dex",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 167,
+          "z": 152
+         },
+         {
+          "thingId": "Yak4082",
+          "thingIdNumber": 4082,
+          "name": "Allegra",
+          "kindDef": "Yak",
+          "faction": "PlayerColony",
+          "x": 143,
+          "z": 210
+         },
+         {
+          "thingId": "Human153",
+          "thingIdNumber": 153,
+          "name": "Elsbeth",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 161,
+          "z": 157
+         },
+         {
+          "thingId": "Snowhare21389",
+          "thingIdNumber": 21389,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 132,
+          "z": 38
+         },
+         {
+          "thingId": "Snowhare21390",
+          "thingIdNumber": 21390,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 144,
+          "z": 97
+         },
+         {
+          "thingId": "Moose21391",
+          "thingIdNumber": 21391,
+          "name": "moose",
+          "kindDef": "Moose",
+          "faction": null,
+          "x": 119,
+          "z": 63
+         },
+         {
+          "thingId": "Snowhare21392",
+          "thingIdNumber": 21392,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 180,
+          "z": 180
+         },
+         {
+          "thingId": "Ibex21393",
+          "thingIdNumber": 21393,
+          "name": "ibex ram",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 223,
+          "z": 25
+         },
+         {
+          "thingId": "Ibex21394",
+          "thingIdNumber": 21394,
+          "name": "ibex ram",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 223,
+          "z": 28
+         },
+         {
+          "thingId": "Ibex21395",
+          "thingIdNumber": 21395,
+          "name": "ibex doe",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 224,
+          "z": 25
+         },
+         {
+          "thingId": "Elk21396",
+          "thingIdNumber": 21396,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 106,
+          "z": 50
+         },
+         {
+          "thingId": "Elk21397",
+          "thingIdNumber": 21397,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 110,
+          "z": 48
+         },
+         {
+          "thingId": "Elk21398",
+          "thingIdNumber": 21398,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 106,
+          "z": 49
+         },
+         {
+          "thingId": "Elk21399",
+          "thingIdNumber": 21399,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 104,
+          "z": 54
+         },
+         {
+          "thingId": "Human47214",
+          "thingIdNumber": 47214,
+          "name": "Shield",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 188,
+          "z": 73
+         },
+         {
+          "thingId": "Human47217",
+          "thingIdNumber": 47217,
+          "name": "Polo",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 159,
+          "z": 102
+         },
+         {
+          "thingId": "Human47220",
+          "thingIdNumber": 47220,
+          "name": "Weaves",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 168,
+          "z": 102
+         },
+         {
+          "thingId": "Human47253",
+          "thingIdNumber": 47253,
+          "name": "Rhae",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 97,
+          "z": 128
+         },
+         {
+          "thingId": "Human47683",
+          "thingIdNumber": 47683,
+          "name": "Flynnie",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 60,
+          "z": 208
+         },
+         {
+          "thingId": "Human48286",
+          "thingIdNumber": 48286,
+          "name": "Zeiph",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 68,
+          "z": 191
+         }
+        ],
+        "ticksGame": 170170,
+        "operation": {
+         "OperationId": "op_0a6b4f0f62e747a8b9d56d2739c46ca4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:05.4477886+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:05.4537897+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "format tier severity",
+       "result": null
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "power_need_present",
+     "toggle": "powerNeed",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "empty_bar_powers_down",
+     "toggle": "powerDownWhenEmpty",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "expect_hediff(None, RSW_DW_PoweredDown present=True)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "reboot_restores_power",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "expect_hediff(None, RSW_DW_PoweredDown present=False)",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "passive_charging",
+   "components": [
+    {
+     "name": "nimbus_charges_in_range",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: RSW_DW_ChargeNimbus not found at anchor after spawn: []",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 9620,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {},
+        "ticksGame": 170170,
+        "message": "NOTHING MATCHED. 9620 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_cc9923da25d14e6497995e39c9970498",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:06.6521584+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:06.6583213+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "detonation",
+   "components": [
+    {
+     "name": "full_charge_detonates_on_death",
+     "toggle": "detonation",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no corpse appeared after lethal damage (before=3 after=3)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": false,
+        "message": "Give a pawn id, name or thingId.",
+        "details": null,
+        "operation": {
+         "OperationId": "op_680f47da793d47f1ab62948c05e9b330",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-need",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:07.8169696+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:07.8229696+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Corpse_Human47365",
+          "def": "Corpse_Human",
+          "label": "Cross, Castaway (dead)",
+          "x": 187,
+          "z": 73,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 98,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "Corpse_Human47366",
+          "def": "Corpse_Human",
+          "label": "Patricia, Marine (dead)",
+          "x": 177,
+          "z": 49,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 98,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "Corpse_Human51686",
+          "def": "Corpse_Human",
+          "label": "Bishop, Engineer (dead)",
+          "x": 200,
+          "z": 56,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 100,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 3,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {
+         "Corpse_Human": 3
+        },
+        "ticksGame": 170170,
+        "message": "3 of 3 matching thing(s) returned, 3 examined.",
+        "operation": {
+         "OperationId": "op_749b46f999164d248add828475684e4f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:07.8300435+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:07.8351504+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": false,
+        "message": "Give either thingId, or both x and z.",
+        "details": null,
+        "operation": {
+         "OperationId": "op_30970d63e0c146c48239e97634fc288b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:07.8421489+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:07.8441518+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "expect_pawn_despawned(None)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Corpse_Human47365",
+          "def": "Corpse_Human",
+          "label": "Cross, Castaway (dead)",
+          "x": 187,
+          "z": 73,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 98,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "Corpse_Human47366",
+          "def": "Corpse_Human",
+          "label": "Patricia, Marine (dead)",
+          "x": 177,
+          "z": 49,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 98,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "Corpse_Human51686",
+          "def": "Corpse_Human",
+          "label": "Bishop, Engineer (dead)",
+          "x": 200,
+          "z": 56,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 100,
+          "maxHitPoints": 100,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 3,
+        "countReturned": 3,
+        "countMatched": 3,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {
+         "Corpse_Human": 3
+        },
+        "ticksGame": 170230,
+        "message": "3 of 3 matching thing(s) returned, 3 examined.",
+        "operation": {
+         "OperationId": "op_add51cb5f9904b98971891da82986479",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:08.6540864+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:08.6581691+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 60,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "salvage_on_death",
+   "components": [
+    {
+     "name": "head_drops_with_identity",
+     "toggle": "headDrop",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no RSW_DW_Head_Battle in the blast area: []",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "parts_drop_from_dead_droid",
+     "toggle": "partDrop",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 60,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "bolt_core",
+   "components": [
+    {
+     "name": "resentment_accrues",
+     "toggle": "boltResentment",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: RSW_DW_BoltResentment severity did not rise (0.000000 -> 0.000000)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human52046",
+          "thingIdNumber": 52046,
+          "name": "Zack Wong",
+          "nameShort": "Zack",
+          "title": "cave explorer",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "gender": "Male",
+          "ageBiologicalYears": 29,
+          "ageChronologicalYears": 39,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Undivided Family",
+          "childhood": "SicklyChild55",
+          "adulthood": "CaveExplorer45",
+          "headType": "Male_AverageNormal",
+          "bodyType": "Male",
+          "hair": "Messy",
+          "beard": "Full",
+          "position": {
+           "x": 200,
+           "z": 200
+          },
+          "traits": [
+           {
+            "def": "Immunity",
+            "degree": -1,
+            "label": "Sickly",
+            "forced": false
+           },
+           {
+            "def": "DrugDesire",
+            "degree": 2,
+            "label": "Chemical fascination",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 13,
+            "levelEffective": 13,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.9992887,
+            "pct": 0.9992887
+           },
+           {
+            "need": "Joy",
+            "level": 0.522122741,
+            "pct": 0.522122741
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 170290,
+        "operation": {
+         "OperationId": "op_174355bc6bc247e1b38e797bdfbcadeb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:11.7149093+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:11.7199063+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1200) [watched] -> 1200 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1200,
+        "requested": 1200
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human52046",
+          "thingIdNumber": 52046,
+          "name": "Zack Wong",
+          "nameShort": "Zack",
+          "title": "cave explorer",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "gender": "Male",
+          "ageBiologicalYears": 29,
+          "ageChronologicalYears": 39,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Undivided Family",
+          "childhood": "SicklyChild55",
+          "adulthood": "CaveExplorer45",
+          "headType": "Male_AverageNormal",
+          "bodyType": "Male",
+          "hair": "Messy",
+          "beard": "Full",
+          "position": {
+           "x": 219,
+           "z": 200
+          },
+          "traits": [
+           {
+            "def": "Immunity",
+            "degree": -1,
+            "label": "Sickly",
+            "forced": false
+           },
+           {
+            "def": "DrugDesire",
+            "degree": 2,
+            "label": "Chemical fascination",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 13,
+            "levelEffective": 13,
+            "passion": "Minor",
+            "xpSinceLastLevel": -3.6,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_CollarShirt",
+            "defName": "Apparel_CollarShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.52,
+            "pct": 0.52
+           },
+           {
+            "need": "Food",
+            "level": 0.767999947,
+            "pct": 0.767999947
+           },
+           {
+            "need": "Rest",
+            "level": 0.9802886,
+            "pct": 0.9802886
+           },
+           {
+            "need": "Joy",
+            "level": 0.64365685,
+            "pct": 0.64365685
+           },
+           {
+            "need": "Beauty",
+            "level": 0.461600065,
+            "pct": 0.461600065
+           },
+           {
+            "need": "Comfort",
+            "level": 0.4807999,
+            "pct": 0.4807999
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.498092234,
+            "pct": 0.498092234
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.93200016,
+            "pct": 0.93200016
+           }
+          ]
+         }
+        ],
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_7d8d69ed41194ffeaabfc2829f6c7a3c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:15.8539211+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:15.8615923+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shear_on_damage",
+     "toggle": "boltShear",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mood_penalty_nearby",
+     "toggle": "boltMoodPenalty",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mental_break_suppressed_while_bolted",
+     "toggle": "boltSuppressesMentalBreaks",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "fed": 0,
+    "ticks_spent": 1200,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "bolt_rebellion_structural",
+   "components": [
+    {
+     "name": "rebellion_recipe_wired",
+     "toggle": "boltRebellion",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: get_defs('RecipeDef/RSW_DW_RemoveRestrainingBolt', fields='workerClass') did not contain 'Recipe_RemoveRestrainingBolt': {'success': True, 'message': '0 of 1 def(s) resolved; 1 not found', 'requested': 1, 'foundCount': 0, 'notFound': ['RecipeDef/RSW_DW_RemoveRestrainingBolt'], 'malformed': [], 'fieldsAsked': ['workerClass'], 'defs': [{'requested': 'RecipeDef/RSW_DW_RemoveRestrainingBolt', 'found': False, 'defType': 'RecipeDef', 'defName': 'RSW_DW_RemoveRestrainingBolt'}], 'ticksGame': 171490, 'operation': {'OperationId': 'op_d189129a360f4702ae58f7c685392390', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-03T05:30:17.1600725+00:00', 'CompletedAtUtc': '2026-10-03T05:30:17.1681778+00:00', 'DurationMs': 8, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "RecipeDef/RSW_DW_RemoveRestrainingBolt"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "workerClass"
+        ],
+        "defs": [
+         {
+          "requested": "RecipeDef/RSW_DW_RemoveRestrainingBolt",
+          "found": false,
+          "defType": "RecipeDef",
+          "defName": "RSW_DW_RemoveRestrainingBolt"
+         }
+        ],
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_d189129a360f4702ae58f7c685392390",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:17.1600725+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:17.1681778+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "get_defs(RecipeDef/RSW_DW_RemoveRestrainingBolt) contains 'Recipe_RemoveRestrainingBolt'",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "wipe_and_drift_structural",
+   "components": [
+    {
+     "name": "wipe_hediff_attaches",
+     "toggle": "wipeStumble",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: None hediff RSW_DW_RecentlyWiped=False, expected present=True (hediffs: [])",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": false,
+        "message": "Give a pawn id, name or thingId.",
+        "details": null,
+        "operation": {
+         "OperationId": "op_c1265d0fae05454a932a280a45705fdc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:18.3993604+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:18.4058736+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "listing": true,
+        "count": 20,
+        "totalSpawned": 21,
+        "truncated": true,
+        "pawns": [
+         {
+          "thingId": "Human150",
+          "thingIdNumber": 150,
+          "name": "Dex",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 167,
+          "z": 152
+         },
+         {
+          "thingId": "Yak4082",
+          "thingIdNumber": 4082,
+          "name": "Allegra",
+          "kindDef": "Yak",
+          "faction": "PlayerColony",
+          "x": 143,
+          "z": 210
+         },
+         {
+          "thingId": "Human153",
+          "thingIdNumber": 153,
+          "name": "Elsbeth",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 161,
+          "z": 157
+         },
+         {
+          "thingId": "Snowhare21389",
+          "thingIdNumber": 21389,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 132,
+          "z": 38
+         },
+         {
+          "thingId": "Snowhare21390",
+          "thingIdNumber": 21390,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 144,
+          "z": 97
+         },
+         {
+          "thingId": "Moose21391",
+          "thingIdNumber": 21391,
+          "name": "moose",
+          "kindDef": "Moose",
+          "faction": null,
+          "x": 119,
+          "z": 63
+         },
+         {
+          "thingId": "Snowhare21392",
+          "thingIdNumber": 21392,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 180,
+          "z": 180
+         },
+         {
+          "thingId": "Ibex21393",
+          "thingIdNumber": 21393,
+          "name": "ibex ram",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 223,
+          "z": 25
+         },
+         {
+          "thingId": "Ibex21394",
+          "thingIdNumber": 21394,
+          "name": "ibex ram",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 223,
+          "z": 28
+         },
+         {
+          "thingId": "Ibex21395",
+          "thingIdNumber": 21395,
+          "name": "ibex doe",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 224,
+          "z": 25
+         },
+         {
+          "thingId": "Elk21396",
+          "thingIdNumber": 21396,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 106,
+          "z": 50
+         },
+         {
+          "thingId": "Elk21397",
+          "thingIdNumber": 21397,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 110,
+          "z": 48
+         },
+         {
+          "thingId": "Elk21398",
+          "thingIdNumber": 21398,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 106,
+          "z": 49
+         },
+         {
+          "thingId": "Elk21399",
+          "thingIdNumber": 21399,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 104,
+          "z": 54
+         },
+         {
+          "thingId": "Human47214",
+          "thingIdNumber": 47214,
+          "name": "Shield",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 206,
+          "z": 51
+         },
+         {
+          "thingId": "Human47217",
+          "thingIdNumber": 47217,
+          "name": "Polo",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 143,
+          "z": 128
+         },
+         {
+          "thingId": "Human47220",
+          "thingIdNumber": 47220,
+          "name": "Weaves",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 188,
+          "z": 76
+         },
+         {
+          "thingId": "Human47253",
+          "thingIdNumber": 47253,
+          "name": "Rhae",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 96,
+          "z": 148
+         },
+         {
+          "thingId": "Human47683",
+          "thingIdNumber": 47683,
+          "name": "Flynnie",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 60,
+          "z": 208
+         },
+         {
+          "thingId": "Human48286",
+          "thingIdNumber": 48286,
+          "name": "Zeiph",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 68,
+          "z": 191
+         }
+        ],
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_d5dddac441f34447a1e7cdceb32f25be",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:18.4128692+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:18.4199141+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(None, RSW_DW_RecentlyWiped present=True)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "quirk_pool_marked",
+     "toggle": "wipeQuirks",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "quirk marker modExtensions -> None",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "idiosyncrasy_pool_marked",
+     "toggle": "personalityDrift",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "get_defs(TraitDef/RSW_DW_Idio_Opinionated) contains 'chassisWeights'",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "hutt_captive_bolt_state",
+   "components": [
+    {
+     "name": "captive_bolt_state_reachable",
+     "toggle": "huttCaptivesBolted",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: captive bolt state did not attach: {}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human52066",
+          "thingIdNumber": 52066,
+          "name": "Venus 'Unay' David",
+          "nameShort": "Unay",
+          "title": "reptile researcher",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "gender": "Female",
+          "ageBiologicalYears": 37,
+          "ageChronologicalYears": 287,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Undivided Family",
+          "childhood": "FarmersDaughter81",
+          "adulthood": "ReptileResearcher37",
+          "headType": "Female_NarrowNormal",
+          "bodyType": "Female",
+          "hair": "Shaved",
+          "beard": "NoBeard",
+          "position": {
+           "x": 200,
+           "z": 200
+          },
+          "traits": [
+           {
+            "def": "SpeedOffset",
+            "degree": 1,
+            "label": "Fast walker",
+            "forced": false
+           },
+           {
+            "def": "Beauty",
+            "degree": 2,
+            "label": "Beautiful",
+            "forced": false
+           },
+           {
+            "def": "DrugDesire",
+            "degree": 1,
+            "label": "Chemical interest",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.978168964,
+            "pct": 0.978168964
+           },
+           {
+            "need": "Joy",
+            "level": 0.541859269,
+            "pct": 0.541859269
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_81d8878d4a4449b1830378fb5e53e665",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:19.6290783+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:19.6351218+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(Human52066, RSW_DW_RestrainingBolt present=False)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": false,
+        "message": "No HediffDef 'RSW_DW_RestrainingBolt'.",
+        "details": [],
+        "operation": {
+         "OperationId": "op_fe66a8ea4cab405c92f4c0fa98c21324",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:19.6441373+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:19.6511471+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": false,
+        "message": "No HediffDef 'RSW_DW_BoltResentment'.",
+        "details": [],
+        "operation": {
+         "OperationId": "op_3c342063cf7c4beda59ca00d1ef892cb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:19.6581834+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:19.6641833+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human52066",
+          "thingIdNumber": 52066,
+          "name": "Venus 'Unay' David",
+          "nameShort": "Unay",
+          "title": "reptile researcher",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "gender": "Female",
+          "ageBiologicalYears": 37,
+          "ageChronologicalYears": 287,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Undivided Family",
+          "childhood": "FarmersDaughter81",
+          "adulthood": "ReptileResearcher37",
+          "headType": "Female_NarrowNormal",
+          "bodyType": "Female",
+          "hair": "Shaved",
+          "beard": "NoBeard",
+          "position": {
+           "x": 200,
+           "z": 200
+          },
+          "traits": [
+           {
+            "def": "SpeedOffset",
+            "degree": 1,
+            "label": "Fast walker",
+            "forced": false
+           },
+           {
+            "def": "Beauty",
+            "degree": 2,
+            "label": "Beautiful",
+            "forced": false
+           },
+           {
+            "def": "DrugDesire",
+            "degree": 1,
+            "label": "Chemical interest",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.978168964,
+            "pct": 0.978168964
+           },
+           {
+            "need": "Joy",
+            "level": 0.541859269,
+            "pct": 0.541859269
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_6ffd8e15da2e495e83ada550b45662bc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:19.6712244+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:19.6772822+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "module_personality",
+   "components": [
+    {
+     "name": "module_grants_personality_on_wear",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: None hediff RSW_DW_ModulePersonality_Twitchy=False, expected present=True (hediffs: [])",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "listing": true,
+        "count": 20,
+        "totalSpawned": 21,
+        "truncated": true,
+        "pawns": [
+         {
+          "thingId": "Human150",
+          "thingIdNumber": 150,
+          "name": "Dex",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 167,
+          "z": 152
+         },
+         {
+          "thingId": "Yak4082",
+          "thingIdNumber": 4082,
+          "name": "Allegra",
+          "kindDef": "Yak",
+          "faction": "PlayerColony",
+          "x": 143,
+          "z": 210
+         },
+         {
+          "thingId": "Human153",
+          "thingIdNumber": 153,
+          "name": "Elsbeth",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 161,
+          "z": 157
+         },
+         {
+          "thingId": "Snowhare21389",
+          "thingIdNumber": 21389,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 132,
+          "z": 38
+         },
+         {
+          "thingId": "Snowhare21390",
+          "thingIdNumber": 21390,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 144,
+          "z": 97
+         },
+         {
+          "thingId": "Moose21391",
+          "thingIdNumber": 21391,
+          "name": "moose",
+          "kindDef": "Moose",
+          "faction": null,
+          "x": 119,
+          "z": 63
+         },
+         {
+          "thingId": "Snowhare21392",
+          "thingIdNumber": 21392,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 180,
+          "z": 180
+         },
+         {
+          "thingId": "Ibex21393",
+          "thingIdNumber": 21393,
+          "name": "ibex ram",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 223,
+          "z": 25
+         },
+         {
+          "thingId": "Ibex21394",
+          "thingIdNumber": 21394,
+          "name": "ibex ram",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 223,
+          "z": 28
+         },
+         {
+          "thingId": "Ibex21395",
+          "thingIdNumber": 21395,
+          "name": "ibex doe",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 224,
+          "z": 25
+         },
+         {
+          "thingId": "Elk21396",
+          "thingIdNumber": 21396,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 106,
+          "z": 50
+         },
+         {
+          "thingId": "Elk21397",
+          "thingIdNumber": 21397,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 110,
+          "z": 48
+         },
+         {
+          "thingId": "Elk21398",
+          "thingIdNumber": 21398,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 106,
+          "z": 49
+         },
+         {
+          "thingId": "Elk21399",
+          "thingIdNumber": 21399,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 104,
+          "z": 54
+         },
+         {
+          "thingId": "Human47214",
+          "thingIdNumber": 47214,
+          "name": "Shield",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 206,
+          "z": 51
+         },
+         {
+          "thingId": "Human47217",
+          "thingIdNumber": 47217,
+          "name": "Polo",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 143,
+          "z": 128
+         },
+         {
+          "thingId": "Human47220",
+          "thingIdNumber": 47220,
+          "name": "Weaves",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 188,
+          "z": 76
+         },
+         {
+          "thingId": "Human47253",
+          "thingIdNumber": 47253,
+          "name": "Rhae",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 96,
+          "z": 148
+         },
+         {
+          "thingId": "Human47683",
+          "thingIdNumber": 47683,
+          "name": "Flynnie",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 60,
+          "z": 208
+         },
+         {
+          "thingId": "Human48286",
+          "thingIdNumber": 48286,
+          "name": "Zeiph",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 68,
+          "z": 191
+         }
+        ],
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_b6423bb893d841a3ab2bc515492df0a4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:20.9340323+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:20.9391786+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(None, RSW_DW_ModulePersonality_Twitchy present=False)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": false,
+        "message": "Give a pawn id, name or thingId.",
+        "details": null,
+        "operation": {
+         "OperationId": "op_d5c8abdeca6b4370b5c777b8d407dfe7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-gear",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:20.9471983+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:20.9531954+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "listing": true,
+        "count": 20,
+        "totalSpawned": 21,
+        "truncated": true,
+        "pawns": [
+         {
+          "thingId": "Human150",
+          "thingIdNumber": 150,
+          "name": "Dex",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 167,
+          "z": 152
+         },
+         {
+          "thingId": "Yak4082",
+          "thingIdNumber": 4082,
+          "name": "Allegra",
+          "kindDef": "Yak",
+          "faction": "PlayerColony",
+          "x": 143,
+          "z": 210
+         },
+         {
+          "thingId": "Human153",
+          "thingIdNumber": 153,
+          "name": "Elsbeth",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 161,
+          "z": 157
+         },
+         {
+          "thingId": "Snowhare21389",
+          "thingIdNumber": 21389,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 132,
+          "z": 38
+         },
+         {
+          "thingId": "Snowhare21390",
+          "thingIdNumber": 21390,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 144,
+          "z": 97
+         },
+         {
+          "thingId": "Moose21391",
+          "thingIdNumber": 21391,
+          "name": "moose",
+          "kindDef": "Moose",
+          "faction": null,
+          "x": 119,
+          "z": 63
+         },
+         {
+          "thingId": "Snowhare21392",
+          "thingIdNumber": 21392,
+          "name": "snowhare",
+          "kindDef": "Snowhare",
+          "faction": null,
+          "x": 180,
+          "z": 180
+         },
+         {
+          "thingId": "Ibex21393",
+          "thingIdNumber": 21393,
+          "name": "ibex ram",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 223,
+          "z": 25
+         },
+         {
+          "thingId": "Ibex21394",
+          "thingIdNumber": 21394,
+          "name": "ibex ram",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 223,
+          "z": 28
+         },
+         {
+          "thingId": "Ibex21395",
+          "thingIdNumber": 21395,
+          "name": "ibex doe",
+          "kindDef": "Ibex",
+          "faction": null,
+          "x": 224,
+          "z": 25
+         },
+         {
+          "thingId": "Elk21396",
+          "thingIdNumber": 21396,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 106,
+          "z": 50
+         },
+         {
+          "thingId": "Elk21397",
+          "thingIdNumber": 21397,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 110,
+          "z": 48
+         },
+         {
+          "thingId": "Elk21398",
+          "thingIdNumber": 21398,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 106,
+          "z": 49
+         },
+         {
+          "thingId": "Elk21399",
+          "thingIdNumber": 21399,
+          "name": "elk",
+          "kindDef": "Elk",
+          "faction": null,
+          "x": 104,
+          "z": 54
+         },
+         {
+          "thingId": "Human47214",
+          "thingIdNumber": 47214,
+          "name": "Shield",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 206,
+          "z": 51
+         },
+         {
+          "thingId": "Human47217",
+          "thingIdNumber": 47217,
+          "name": "Polo",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 143,
+          "z": 128
+         },
+         {
+          "thingId": "Human47220",
+          "thingIdNumber": 47220,
+          "name": "Weaves",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 188,
+          "z": 76
+         },
+         {
+          "thingId": "Human47253",
+          "thingIdNumber": 47253,
+          "name": "Rhae",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 96,
+          "z": 148
+         },
+         {
+          "thingId": "Human47683",
+          "thingIdNumber": 47683,
+          "name": "Flynnie",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 60,
+          "z": 208
+         },
+         {
+          "thingId": "Human48286",
+          "thingIdNumber": 48286,
+          "name": "Zeiph",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "x": 68,
+          "z": 191
+         }
+        ],
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_a13fa1e4f9454b4c8f0fec1152ab015a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:20.9597021+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:20.9652116+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(None, RSW_DW_ModulePersonality_Twitchy present=True)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "wild_droid_crash",
+   "components": [
+    {
+     "name": "wild_droid_crash_fires",
+     "toggle": "wildDroidCrash",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/fire_incident(RSW_DW_WildDroidCrash) did not fire: {'success': False, 'message': \"No IncidentDef named 'RSW_DW_WildDroidCrash'.\", 'details': {'suggestions': []}, 'operation': {'OperationId': 'op_11a58f3a896644db8c172590153df07c', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-03T05:30:22.1604021+00:00', 'CompletedAtUtc': '2026-10-03T05:30:22.165911+00:00', 'DurationMs': 5, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}} (if this names an unknown tool, the companion was not built with JAWA_GM_TOOLS -- see module docstring gap #5)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "7 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human47214",
+          "name": "Shield",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 206,
+          "z": 51,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human47217",
+          "name": "Polo",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 143,
+          "z": 128,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human47220",
+          "name": "Weaves",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 188,
+          "z": 76,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human47253",
+          "name": "Rhae",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 96,
+          "z": 148,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human47683",
+          "name": "Flynnie",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 60,
+          "z": 208,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human48286",
+          "name": "Zeiph",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 68,
+          "z": 191,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human50545",
+          "name": "Bellerose",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "Northstar Test Colony",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 81,
+          "z": 178,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         }
+        ],
+        "returned": 7,
+        "truncated": 0,
+        "totalOnMap": 7,
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_66713fbacbd147f09f9bb5c111052d1f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:22.1483033+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:22.1533047+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "No IncidentDef named 'RSW_DW_WildDroidCrash'.",
+        "details": {
+         "suggestions": []
+        },
+        "operation": {
+         "OperationId": "op_11a58f3a896644db8c172590153df07c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:22.1604021+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:22.165911+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "protocol_trade_advantage",
+   "components": [
+    {
+     "name": "protocol_droid_shifts_prices",
+     "toggle": "protocolTrade",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no buy price changed across 17 tradeable(s) after adding a protocol droid to the player party: e.g. {'defName': 'Lynx', 'label': 'lynx (male, 2)', 'baseMarketValue': 250.0, 'buy': 350.0, 'sell': 150.0} -> {'defName': 'Lynx', 'label': 'lynx (male, 2)', 'baseMarketValue': 250.0, 'buy': 350.0, 'sell': 150.0}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "TraderCaravanArrival fired with 645 points.",
+        "incident": "TraderCaravanArrival",
+        "category": "FactionArrival",
+        "canFireNow": true,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 645.0,
+        "faction": "TribeCivil",
+        "ticksGame": 171490,
+        "operation": {
+         "OperationId": "op_2a589946480a48a6b82500a4afd66aa7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:23.4490123+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:23.4859284+00:00",
+         "DurationMs": 36,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(120) [watched] -> 120 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 120,
+        "requested": 120
+       }
+      },
+      {
+       "call": "bridge_call jawa/trade_price_probe",
+       "result": {
+        "success": true,
+        "traderName": "Pig",
+        "traderId": "Human52073",
+        "traderKind": "Caravan_Neolithic_WarMerchant",
+        "traderFaction": "TribeCivil",
+        "negotiatorName": "Debby",
+        "negotiatorId": "Human52070",
+        "negotiatorTradePriceImprovement": 0.0,
+        "playerParty": [
+         {
+          "defName": "Human",
+          "label": "Shield",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Polo",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Weaves",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Rhae",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Flynnie",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Zeiph",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Bellerose",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Debby",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         }
+        ],
+        "traderParty": [
+         {
+          "defName": "Human",
+          "label": "Pig",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Dromedary",
+          "label": "dromedary",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Dromedary",
+          "label": "dromedary",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Dromedary",
+          "label": "dromedary",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Newt",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Cobra",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Echidna",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Bringa",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Sagoalbo",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Louscu",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Salamander",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Goose",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Choco",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         }
+        ],
+        "tradeableCount": 25,
+        "prices": [
+         {
+          "defName": "Lynx",
+          "label": "lynx (female, 1)",
+          "baseMarketValue": 250.0,
+          "buy": 350.0,
+          "sell": 150.0
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx (male, 4)",
+          "baseMarketValue": 250.0,
+          "buy": 350.0,
+          "sell": 150.0
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx (male, 2)",
+          "baseMarketValue": 250.0,
+          "buy": 350.0,
+          "sell": 150.0
+         },
+         {
+          "defName": "Silver",
+          "label": "silver",
+          "baseMarketValue": 1.0,
+          "buy": 1.0,
+          "sell": 1.0
+         },
+         {
+          "defName": "MeleeWeapon_BreachAxe",
+          "label": "steel breach axe (good)",
+          "baseMarketValue": 141.25,
+          "buy": 198.0,
+          "sell": 16.95
+         },
+         {
+          "defName": "Flamebow",
+          "label": "flamebow (normal)",
+          "baseMarketValue": 45.0,
+          "buy": 63.0,
+          "sell": 5.4
+         },
+         {
+          "defName": "MeleeWeapon_Club",
+          "label": "granite club",
+          "baseMarketValue": 41.616,
+          "buy": 58.2624,
+          "sell": 4.99392033
+         },
+         {
+          "defName": "Bow_Recurve",
+          "label": "recurve bow (good)",
+          "baseMarketValue": 82.5,
+          "buy": 116.0,
+          "sell": 9.900001
+         },
+         {
+          "defName": "Apparel_KidParka",
+          "label": "cloth kid parka (normal)",
+          "baseMarketValue": 83.04,
+          "buy": 116.0,
+          "sell": 49.824
+         },
+         {
+          "defName": "Apparel_KidTribal",
+          "label": "dog leather kid tribalwear (normal)",
+          "baseMarketValue": 65.04,
+          "buy": 91.056,
+          "sell": 39.0240021
+         },
+         {
+          "defName": "Apparel_KidParka",
+          "label": "muffalo wool kid parka (normal)",
+          "baseMarketValue": 131.04,
+          "buy": 183.0,
+          "sell": 78.624
+         },
+         {
+          "defName": "Pila",
+          "label": "pila (normal)",
+          "baseMarketValue": 109.2,
+          "buy": 153.0,
+          "sell": 13.104
+         },
+         {
+          "defName": "Apparel_CultistMask",
+          "label": "bioferrite ritual mask (normal)",
+          "baseMarketValue": 45.75,
+          "buy": 64.0499954,
+          "sell": 27.45
+         },
+         {
+          "defName": "Apparel_WarVeil",
+          "label": "synthread veil (good)",
+          "baseMarketValue": 106.3,
+          "buy": 149.0,
+          "sell": 63.7800026
+         },
+         {
+          "defName": "MedicineHerbal",
+          "label": "herbal medicine",
+          "baseMarketValue": 10.0,
+          "buy": 14.0,
+          "sell": 6.0
+         },
+         {
+          "defName": "Apparel_Broadwrap",
+          "label": "devilstrand broadwrap (normal)",
+          "baseMarketValue": 171.48,
+          "buy": 240.0,
+          "sell": 103.0
+         },
+         {
+          "defName": "Apparel_KidTribal",
+          "label": "mink fur kid tribalwear (normal)",
+          "baseMarketValue": 161.04,
+          "buy": 225.0,
+          "sell": 96.624
+         },
+         {
+          "defName": "MeleeWeapon_Ikwa",
+          "label": "steel ikwa (good)",
+          "baseMarketValue": 141.25,
+          "buy": 198.0,
+          "sell": 16.95
+         },
+         {
+          "defName": "Bow_Great",
+          "label": "greatbow (normal)",
+          "baseMarketValue": 104.4,
+          "buy": 146.0,
+          "sell": 12.5280008
+         },
+         {
+          "defName": "MeleeWeapon_Knife",
+          "label": "steel knife (normal)",
+          "baseMarketValue": 63.48,
+          "buy": 88.872,
+          "sell": 7.61760044
+         },
+         {
+          "defName": "Apparel_TribalHeaddress",
+          "label": "devilstrand tribal headdress (normal)",
+          "baseMarketValue": 295.0,
+          "buy": 413.0,
+          "sell": 177.0
+         },
+         {
+          "defName": "Pemmican",
+          "label": "pemmican",
+          "baseMarketValue": 1.4,
+          "buy": 1.95999992,
+          "sell": 0.840000033
+         },
+         {
+          "defName": "Apparel_KidTribal",
+          "label": "sheep wool kid tribalwear (normal)",
+          "baseMarketValue": 86.04,
+          "buy": 120.0,
+          "sell": 51.6240044
+         },
+         {
+          "defName": "Apparel_KidParka",
+          "label": "mastodon wool kid parka (excellent)",
+          "baseMarketValue": 196.56,
+          "buy": 275.0,
+          "sell": 118.0
+         },
+         {
+          "defName": "Apparel_KidTribal",
+          "label": "cloth kid tribalwear (normal)",
+          "baseMarketValue": 50.04,
+          "buy": 70.056,
+          "sell": 30.0240021
+         }
+        ],
+        "ticksGame": 171610,
+        "operation": {
+         "OperationId": "op_e872cfef86354ef7897fab88040d0fe1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/trade-price-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:24.408083+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:24.4175946+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "spawn_pawn RSW_DW_OuterRim_ProtocolDroid hostile=False",
+       "result": {
+        "success": false,
+        "message": "No PawnKindDef named 'RSW_DW_OuterRim_ProtocolDroid'.",
+        "details": {
+         "suggestions": []
+        },
+        "operation": {
+         "OperationId": "op_8725ccb055654e65a95bf61f82c2ecf3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:24.4240965+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:24.4301004+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/trade_price_probe",
+       "result": {
+        "success": true,
+        "traderName": "Pig",
+        "traderId": "Human52073",
+        "traderKind": "Caravan_Neolithic_WarMerchant",
+        "traderFaction": "TribeCivil",
+        "negotiatorName": "Debby",
+        "negotiatorId": "Human52070",
+        "negotiatorTradePriceImprovement": 0.0,
+        "playerParty": [
+         {
+          "defName": "Human",
+          "label": "Shield",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Polo",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Weaves",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Rhae",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Flynnie",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Zeiph",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Bellerose",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Debby",
+          "faction": "PlayerColony",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         }
+        ],
+        "traderParty": [
+         {
+          "defName": "Human",
+          "label": "Pig",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Dromedary",
+          "label": "dromedary",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Dromedary",
+          "label": "dromedary",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Dromedary",
+          "label": "dromedary",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Newt",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Cobra",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Echidna",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Bringa",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Sagoalbo",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Louscu",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Salamander",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Goose",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         },
+         {
+          "defName": "Human",
+          "label": "Choco",
+          "faction": "TribeCivil",
+          "dead": false,
+          "downed": false,
+          "droidChassisClass": null
+         }
+        ],
+        "tradeableCount": 25,
+        "prices": [
+         {
+          "defName": "Lynx",
+          "label": "lynx (female, 1)",
+          "baseMarketValue": 250.0,
+          "buy": 350.0,
+          "sell": 150.0
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx (male, 4)",
+          "baseMarketValue": 250.0,
+          "buy": 350.0,
+          "sell": 150.0
+         },
+         {
+          "defName": "Lynx",
+          "label": "lynx (male, 2)",
+          "baseMarketValue": 250.0,
+          "buy": 350.0,
+          "sell": 150.0
+         },
+         {
+          "defName": "Silver",
+          "label": "silver",
+          "baseMarketValue": 1.0,
+          "buy": 1.0,
+          "sell": 1.0
+         },
+         {
+          "defName": "MeleeWeapon_BreachAxe",
+          "label": "steel breach axe (good)",
+          "baseMarketValue": 141.25,
+          "buy": 198.0,
+          "sell": 16.95
+         },
+         {
+          "defName": "Flamebow",
+          "label": "flamebow (normal)",
+          "baseMarketValue": 45.0,
+          "buy": 63.0,
+          "sell": 5.4
+         },
+         {
+          "defName": "MeleeWeapon_Club",
+          "label": "granite club",
+          "baseMarketValue": 41.616,
+          "buy": 58.2624,
+          "sell": 4.99392033
+         },
+         {
+          "defName": "Bow_Recurve",
+          "label": "recurve bow (good)",
+          "baseMarketValue": 82.5,
+          "buy": 116.0,
+          "sell": 9.900001
+         },
+         {
+          "defName": "Apparel_KidParka",
+          "label": "cloth kid parka (normal)",
+          "baseMarketValue": 83.04,
+          "buy": 116.0,
+          "sell": 49.824
+         },
+         {
+          "defName": "Apparel_KidTribal",
+          "label": "dog leather kid tribalwear (normal)",
+          "baseMarketValue": 65.04,
+          "buy": 91.056,
+          "sell": 39.0240021
+         },
+         {
+          "defName": "Apparel_KidParka",
+          "label": "muffalo wool kid parka (normal)",
+          "baseMarketValue": 131.04,
+          "buy": 183.0,
+          "sell": 78.624
+         },
+         {
+          "defName": "Pila",
+          "label": "pila (normal)",
+          "baseMarketValue": 109.2,
+          "buy": 153.0,
+          "sell": 13.104
+         },
+         {
+          "defName": "Apparel_CultistMask",
+          "label": "bioferrite ritual mask (normal)",
+          "baseMarketValue": 45.75,
+          "buy": 64.0499954,
+          "sell": 27.45
+         },
+         {
+          "defName": "Apparel_WarVeil",
+          "label": "synthread veil (good)",
+          "baseMarketValue": 106.3,
+          "buy": 149.0,
+          "sell": 63.7800026
+         },
+         {
+          "defName": "MedicineHerbal",
+          "label": "herbal medicine",
+          "baseMarketValue": 10.0,
+          "buy": 14.0,
+          "sell": 6.0
+         },
+         {
+          "defName": "Apparel_Broadwrap",
+          "label": "devilstrand broadwrap (normal)",
+          "baseMarketValue": 171.48,
+          "buy": 240.0,
+          "sell": 103.0
+         },
+         {
+          "defName": "Apparel_KidTribal",
+          "label": "mink fur kid tribalwear (normal)",
+          "baseMarketValue": 161.04,
+          "buy": 225.0,
+          "sell": 96.624
+         },
+         {
+          "defName": "MeleeWeapon_Ikwa",
+          "label": "steel ikwa (good)",
+          "baseMarketValue": 141.25,
+          "buy": 198.0,
+          "sell": 16.95
+         },
+         {
+          "defName": "Bow_Great",
+          "label": "greatbow (normal)",
+          "baseMarketValue": 104.4,
+          "buy": 146.0,
+          "sell": 12.5280008
+         },
+         {
+          "defName": "MeleeWeapon_Knife",
+          "label": "steel knife (normal)",
+          "baseMarketValue": 63.48,
+          "buy": 88.872,
+          "sell": 7.61760044
+         },
+         {
+          "defName": "Apparel_TribalHeaddress",
+          "label": "devilstrand tribal headdress (normal)",
+          "baseMarketValue": 295.0,
+          "buy": 413.0,
+          "sell": 177.0
+         },
+         {
+          "defName": "Pemmican",
+          "label": "pemmican",
+          "baseMarketValue": 1.4,
+          "buy": 1.95999992,
+          "sell": 0.840000033
+         },
+         {
+          "defName": "Apparel_KidTribal",
+          "label": "sheep wool kid tribalwear (normal)",
+          "baseMarketValue": 86.04,
+          "buy": 120.0,
+          "sell": 51.6240044
+         },
+         {
+          "defName": "Apparel_KidParka",
+          "label": "mastodon wool kid parka (excellent)",
+          "baseMarketValue": 196.56,
+          "buy": 275.0,
+          "sell": 118.0
+         },
+         {
+          "defName": "Apparel_KidTribal",
+          "label": "cloth kid tribalwear (normal)",
+          "baseMarketValue": 50.04,
+          "buy": 70.056,
+          "sell": 30.0240021
+         }
+        ],
+        "ticksGame": 171610,
+        "operation": {
+         "OperationId": "op_277887ed732c45c9854a9d6b723bfe13",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/trade-price-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:24.4311011+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:24.437606+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 120,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Pig (Human52073) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Newt (Human52106) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Cobra (Human52111) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Echidna (Human52117) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Bringa (Human52122) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Sagoalbo (Human52127) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Louscu (Human52132) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Salamander (Human52137) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Goose (Human52141) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Choco (Human52147) joined the roster"
+     },
+     {
+      "tick": 171610,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] War merchant from The Bico Kinship"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ion_overload_shutdown",
+   "components": [
+    {
+     "name": "ion_overload_shuts_down_droid",
+     "toggle": "ionShutdown",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not add RSW_JawaIon_Stun ({'success': False, 'message': 'Give a pawn id, name or thingId.', 'details': None, 'operation': {'OperationId': 'op_ff80be0db8f847e7ac50b860090793e7', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-03T05:30:25.7306408+00:00', 'CompletedAtUtc': '2026-10-03T05:30:25.737315+00:00', 'DurationMs': 6, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}) -- Jawa Ion Weapons is probably not active in this environment; see module docstring gap #2",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": false,
+        "message": "Give a pawn id, name or thingId.",
+        "details": null,
+        "operation": {
+         "OperationId": "op_ff80be0db8f847e7ac50b860090793e7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:25.7306408+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:25.737315+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FD5A210>",
+  "<suite.Component object at 0x000001BF5FCD4C50>",
+  "<suite.Component object at 0x000001BF5FB719A0>",
+  "<suite.Component object at 0x000001BF5FCDD5E0>",
+  "<suite.Component object at 0x000001BF5FD8DFD0>",
+  "<suite.Component object at 0x000001BF5FCB64C0>",
+  "<suite.Component object at 0x000001BF5FCB6570>",
+  "<suite.Component object at 0x000001BF5FCB62B0>",
+  "<suite.Component object at 0x000001BF5FCB6620>",
+  "<suite.Component object at 0x000001BF5FCB66D0>",
+  "<suite.Component object at 0x000001BF5FCB6780>",
+  "<suite.Component object at 0x000001BF5FCB6830>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimStarWars\\Droidworks.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

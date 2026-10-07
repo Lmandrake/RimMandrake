@@ -1,0 +1,1214 @@
+{
+ "name": "BlueDesert__cold_wax__colonist_died__t815303__001",
+ "when_utc": "2026-10-04T14:19:32Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Alarm died (death_letter)",
+   "evidence": {
+    "name": "Alarm",
+    "ticks": [
+     815150
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Alarm"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human88890 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human88890",
+    "ticks": [
+     815150
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human88890"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human88890"
+  }
+ ],
+ "snapshot": {
+  "tick": 815303,
+  "epoch": 0,
+  "map_id": 6,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Kimmy",
+    "arrivalTick": 806923,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kimmy",
+     806923
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 806923,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     806923
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Williams",
+    "arrivalTick": 806923,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Williams",
+     806923
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Kimmy",
+    "arrivalTick": 806923,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Kimmy",
+     806923
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Williams",
+    "arrivalTick": 806923,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Williams",
+     806923
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 806923,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     806923
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 806934,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     806934
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jackalope",
+    "arrivalTick": 806934,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jackalope",
+     806934
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 807103,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     807103
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Noodles",
+    "arrivalTick": 807103,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Noodles",
+     807103
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Noodles",
+    "arrivalTick": 807103,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Noodles",
+     807103
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 807103,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     807103
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cassie",
+    "arrivalTick": 807103,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cassie",
+     807103
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Cassie",
+    "arrivalTick": 807103,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Cassie",
+     807103
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     814303
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Black",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Black",
+     814303
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Black",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Black",
+     814303
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     814303
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Maskinnen",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Maskinnen",
+     814303
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Maskinnen",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Maskinnen",
+     814303
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     814303
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Gage",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Gage",
+     814303
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Gage",
+    "arrivalTick": 814303,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Gage",
+     814303
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 815150,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     815150
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Alarm",
+    "arrivalTick": 815150,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Alarm",
+     815150
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 47,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 45,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 815303
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Tyran cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Smarty is not generally well."
+  ],
+  [
+   "Message",
+   "Bowen is not generally well."
+  ],
+  [
+   "Message",
+   "Lars failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Storch and Seraph cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Storch and Brewer cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Souta cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Chuckles cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Smarty cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Tyran cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Storch and Willow are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Storch and Hiroto cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Bowen cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Storch and Carimyna cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Lars cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Storch"
+  ],
+  [
+   "Message",
+   "Smarty is not generally well."
+  ],
+  [
+   "Message",
+   "Tyran cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Bowen is not generally well."
+  ],
+  [
+   "Message",
+   "Storch failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 1000,
+  "overhead_spent": 0,
+  "total_spent": 1000,
+  "epoch": 0,
+  "last_seen_tick": 815303,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1225,
+    "spent": 500
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 814303,
+    "tick_to": 814803,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 814803,
+    "tick_to": 815303,
+    "ticks": 500,
+    "requested": 500
+   }
+  ]
+ },
+ "context": {
+  "mod": "BlueDesert",
+  "chain": "cold_wax",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T071347\\BlueDesert__cold_wax__colonist_died__t815303__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2390576,
+  "width": 1810,
+  "height": 1183,
+  "md5": "acf73cafe3fc2b318759a2b0cd42d35f",
+  "why": ""
+ },
+ "notes": []
+}

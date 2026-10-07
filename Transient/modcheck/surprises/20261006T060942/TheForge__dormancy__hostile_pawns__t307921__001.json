@@ -1,0 +1,491 @@
+{
+ "name": "TheForge__dormancy__hostile_pawns__t307921__001",
+ "when_utc": "2026-10-06T13:10:54Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Locust60341",
+      "kindDef": "Locust",
+      "faction": "Insect",
+      "x": 198,
+      "z": 50
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    198,
+    50
+   ],
+   "fingerprint": "hostile_pawns:Locust60341"
+  }
+ ],
+ "snapshot": {
+  "tick": 307921,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Locust60341",
+    "name": "Locust",
+    "kindDef": "Locust",
+    "def": "Locust",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 198,
+    "z": 50,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     449
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     449
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     449
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2049
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     137799
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     137799
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     137799
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 6,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 307921
+  },
+  "fires": 0,
+  "conditions": []
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=-3980 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=162438 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=135846 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "Geyser spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=2870 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=147335 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=GasWash endsIn=6801 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=0 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Rain endsIn=20700 inBurst=True frozen=0 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=60 swarmErupted=60 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Rain endsIn=20570 inBurst=True frozen=0 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=60 swarmErupted=60 swarmResealed=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Freeze endsIn=27944 inBurst=True frozen=0 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Freeze endsIn=27944 inBurst=True frozen=0 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Growth endsIn=163769 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Growth endsIn=163769 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Cracks endsIn=17661 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=5 gardensDrifted=5 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Cracks endsIn=17661 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=5 gardensDrifted=5 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Melt endsIn=3867 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=5 gardensDrifted=5 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Melt endsIn=3867 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=3 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=5 gardensDrifted=5 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=StillHeat endsIn=125294 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=3 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=5 gardensDrifted=5 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=125294 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=3 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=5 gardensDrifted=5 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "Geyser spray sustainer still playing after 1000 ticks. Force-ending."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955093,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954967,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954897,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954834,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 5,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954771,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 6,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954708,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 122,
+  "overhead_spent": 0,
+  "total_spent": 122,
+  "epoch": 1,
+  "last_seen_tick": 307921,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 602,
+    "spent": 2
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 137799,
+    "tick_to": 137919,
+    "ticks": 120,
+    "requested": 120
+   },
+   {
+    "kind": "epoch",
+    "reason": "verb:bridge_call:jawa/time_set_ticks",
+    "epoch": 1,
+    "tick_from": 137919,
+    "tick_to": 307919,
+    "ticks": 0,
+    "cause": "flagged"
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 1,
+    "tick_from": 307919,
+    "tick_to": 307921,
+    "ticks": 2,
+    "requested": 2
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "dormancy",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T060942\\TheForge__dormancy__hostile_pawns__t307921__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3984869,
+  "width": 2516,
+  "height": 1252,
+  "md5": "e011751e76e7a97c62c9795f36ff974a",
+  "why": ""
+ },
+ "notes": []
+}

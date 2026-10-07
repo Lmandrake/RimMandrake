@@ -1,0 +1,935 @@
+{
+ "name": "LeaningScrub__patches__colonist_damaged__t50650__001",
+ "when_utc": "2026-10-04T13:04:17Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Jumper took 2 damage event(s): Stab by Metalhorror",
+   "evidence": {
+    "id": "Human268971",
+    "events": [
+     {
+      "seq": 287,
+      "tick": 50377,
+      "damageDef": "Stab",
+      "amount": 7.42082834,
+      "instigatorId": "Metalhorror269047",
+      "instigatorDef": "Metalhorror",
+      "weapon": "Metalhorror",
+      "origin": null,
+      "hediffsAdded": [
+       "Stab"
+      ]
+     },
+     {
+      "seq": 289,
+      "tick": 50647,
+      "damageDef": "Stab",
+      "amount": 8.936304,
+      "instigatorId": "Metalhorror269047",
+      "instigatorDef": "Metalhorror",
+      "weapon": "Metalhorror",
+      "origin": null,
+      "hediffsAdded": [
+       "Stab"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    125,
+    121
+   ],
+   "fingerprint": "colonist_damaged:Human268971:287,289"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Brad took 1 damage event(s): Cut by Metalhorror",
+   "evidence": {
+    "id": "Human268980",
+    "events": [
+     {
+      "seq": 286,
+      "tick": 50257,
+      "damageDef": "Cut",
+      "amount": 8.759951,
+      "instigatorId": "Metalhorror269047",
+      "instigatorDef": "Metalhorror",
+      "weapon": "Metalhorror",
+      "origin": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    128,
+    123
+   ],
+   "fingerprint": "colonist_damaged:Human268980:286"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Jumper is downed",
+   "evidence": {
+    "id": "Human268971",
+    "name": "Jumper",
+    "downed": true,
+    "bleedRate": 0.6420049,
+    "painTotal": 0.5420088
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    125,
+    121
+   ],
+   "fingerprint": "colonist_downed:Human268971:True"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Brad is downed",
+   "evidence": {
+    "id": "Human268980",
+    "name": "Brad",
+    "downed": true,
+    "bleedRate": 0.371009678,
+    "painTotal": 0.5891286
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    128,
+    123
+   ],
+   "fingerprint": "colonist_downed:Human268980:True"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Jumper gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human268971",
+    "name": "Jumper",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00200362364
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    125,
+    121
+   ],
+   "fingerprint": "colonist_injured:Human268971:BloodLoss@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Brad gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human268980",
+    "name": "Brad",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00222605816
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    128,
+    123
+   ],
+   "fingerprint": "colonist_injured:Human268980:BloodLoss@None"
+  },
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Metalhorror269047",
+      "kindDef": "Metalhorror",
+      "faction": "Entities",
+      "x": 126,
+      "z": 122
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    126,
+    122
+   ],
+   "fingerprint": "hostile_pawns:Metalhorror269047"
+  }
+ ],
+ "snapshot": {
+  "tick": 50650,
+  "epoch": 0,
+  "map_id": 6,
+  "pawns": [
+   {
+    "id": "Human268971",
+    "name": "Jumper",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 125,
+    "z": 121,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_MoodyPassion",
+      "label": "moody passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "RM_UnjoiningPurge",
+      "label": "unjoining purge (24h)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ChemicalBurn",
+      "label": "chemical burn scar",
+      "part": "Kidney",
+      "severity": 4.0
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Stab",
+      "label": "stab (metalhorror blade)",
+      "part": "Head",
+      "severity": 3.33937263
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00200362364
+     },
+     {
+      "def": "Stab",
+      "label": "stab (metalhorror blade)",
+      "part": "Shoulder",
+      "severity": 4.02133656
+     }
+    ],
+    "bleedRate": 0.6420049,
+    "painTotal": 0.5420088,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human268980",
+    "name": "Brad",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 128,
+    "z": 123,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "RM_UnjoiningPurge",
+      "label": "unjoining purge (24h)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ChemicalBurn",
+      "label": "chemical burn scar",
+      "part": "Kidney",
+      "severity": 4.0
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Crack",
+      "label": "crack (metalhorror blade)",
+      "part": "Tibia",
+      "severity": 6.18349457
+     },
+     {
+      "def": "Cut",
+      "label": "cut (metalhorror blade)",
+      "part": "Leg",
+      "severity": 6.18349457
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00222605816
+     }
+    ],
+    "bleedRate": 0.371009678,
+    "painTotal": 0.5891286,
+    "census": true,
+    "job": "Wait_Downed",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Metalhorror269047",
+    "name": "Metalhorror",
+    "kindDef": "Metalhorror",
+    "def": "Metalhorror",
+    "faction": "Entities",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 126,
+    "z": 122,
+    "intelligence": "ToolUser",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     2251
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buck",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buck",
+     2251
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Ancient mech",
+    "arrivalTick": 23552,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Ancient mech",
+     23552
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     36121
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: As-Is (gizka)",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: As-Is (gizka)",
+     36121
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Endor (gizka)",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Endor (gizka)",
+     36121
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Shrinkage (gizka)",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Shrinkage (gizka)",
+     36121
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     36121
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     36121
+    ]
+   },
+   {
+    "defName": "HumanPregnancy",
+    "label": "(*Name)Jackalope(/Name) pregnant",
+    "arrivalTick": 36516,
+    "mapId": null,
+    "fingerprint": [
+     "HumanPregnancy",
+     "(*Name)Jackalope(/Name) pregnant",
+     36516
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 49762,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     49762
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 49762,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     49762
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 49762,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     49762
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 49762,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     49762
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The gut-mother gives back",
+    "arrivalTick": 50062,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The gut-mother gives back",
+     50062
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 50062,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     50062
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Ship's Stores in the Log",
+    "arrivalTick": 50062,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Ship's Stores in the Log",
+     50062
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 50062,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     50062
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 50062,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     50062
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 50062,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     50062
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 40,
+   "adaptDays": -35.6666641,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 50650
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Eval Brad: opinion=0, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Starting scan. Candidates=12, CurrentMood=0.24"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Hiroto: opinion=-10, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Chuckles: opinion=-10, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Bowen: opinion=-10, mood=0.43, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Smarty: opinion=-10, mood=0.32, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Tyran: opinion=-10, mood=0.24, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Seraph: opinion=-10, mood=0.27, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Willow: opinion=-10, mood=0.28, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Brewer: opinion=-10, mood=0.25, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Souta: opinion=-10, mood=0.30, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Lars: opinion=-15, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Storch: opinion=-10, mood=0.39, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Scan finished. NewlyAddedMemories=6"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (downed in battle: Jumper<color=#999999FF>, Bought</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Klem: Starting scan. Candidates=3, CurrentMood=0.16"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Klem: Eval Rakoto: opinion=58, mood=0.38, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Klem: Eval Jude: opinion=73, mood=0.38, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Klem: Scan finished. NewlyAddedMemories=1"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953198,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 588,
+  "overhead_spent": 0,
+  "total_spent": 588,
+  "epoch": 0,
+  "last_seen_tick": 50650,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 4350,
+    "spent": 588
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 50062,
+    "tick_to": 50650,
+    "ticks": 588,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "patches",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T060347\\LeaningScrub__patches__colonist_damaged__t50650__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2130574,
+  "width": 1810,
+  "height": 1183,
+  "md5": "4cd7a8729355acc625253f0cc870d463",
+  "why": ""
+ },
+ "notes": []
+}

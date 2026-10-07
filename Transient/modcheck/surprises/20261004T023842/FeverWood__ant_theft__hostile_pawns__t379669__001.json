@@ -1,0 +1,1047 @@
+{
+ "name": "FeverWood__ant_theft__hostile_pawns__t379669__001",
+ "when_utc": "2026-10-04T09:56:07Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "6 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "RM_Kurreth279726",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 122,
+      "z": 111
+     },
+     {
+      "id": "RM_Kurreth279727",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 109,
+      "z": 116
+     },
+     {
+      "id": "RM_Kurreth279728",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 108,
+      "z": 116
+     },
+     {
+      "id": "RM_Kurreth279729",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 108,
+      "z": 119
+     },
+     {
+      "id": "RM_Kurreth279730",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 109,
+      "z": 121
+     },
+     {
+      "id": "RM_Kurreth279731",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 108,
+      "z": 118
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    122,
+    111
+   ],
+   "fingerprint": "hostile_pawns:RM_Kurreth279726,RM_Kurreth279727,RM_Kurreth279728,RM_Kurreth279729,RM_Kurreth279730,RM_Kurreth279731"
+  }
+ ],
+ "snapshot": {
+  "tick": 379669,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [
+   {
+    "id": "RM_Kurreth279726",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 122,
+    "z": 111,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_KurrethStun",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth279727",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 109,
+    "z": 116,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_KurrethStun",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth279728",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 108,
+    "z": 116,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth279729",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 108,
+    "z": 119,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth279730",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 109,
+    "z": 121,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth279731",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 108,
+    "z": 118,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 24387,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     24387
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jovial",
+    "arrivalTick": 24387,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jovial",
+     24387
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 25074,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     25074
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cotwo",
+    "arrivalTick": 25074,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cotwo",
+     25074
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Summer",
+    "arrivalTick": 355075,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Summer",
+     355075
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 355075,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     355075
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Illoth hunting (*Name)Iris(/Name)",
+    "arrivalTick": 355086,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Illoth hunting (*Name)Iris(/Name)",
+     355086
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Cait",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Cait",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Jovial",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Jovial",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Cotwo",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Cotwo",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Unwavering prisoner",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Unwavering prisoner",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 605 for 740",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 605 for 740",
+     355545
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Disease: Infection",
+    "arrivalTick": 357290,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Disease: Infection",
+     357290
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 360824,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     360824
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Stanislav",
+    "arrivalTick": 360824,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Stanislav",
+     360824
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 360984,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     360984
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Merandil",
+    "arrivalTick": 360984,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Merandil",
+     360984
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369370,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369370
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Deva",
+    "arrivalTick": 369370,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Deva",
+     369370
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369575,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369575
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mila",
+    "arrivalTick": 369575,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mila",
+     369575
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369853,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369853
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Frankie",
+    "arrivalTick": 369853,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Frankie",
+     369853
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 370728,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     370728
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Patches",
+    "arrivalTick": 370728,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Patches",
+     370728
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 12,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 38,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 379669
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Mel: opinion=-9, mood=0.80, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Tail: opinion=-10, mood=0.70, happy=True, sad=False, thought=MCR_ADislikableGuyIsHappy, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Jinkson: opinion=-19, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Izzy: opinion=-10, mood=0.56, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Smelly: opinion=-10, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Neme: opinion=-10, mood=0.45, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Yuki: opinion=-10, mood=0.51, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Vikinger: opinion=-20, mood=0.37, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Nannos: opinion=-20, mood=0.23, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Atkins: opinion=-9, mood=0.33, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Speedy: opinion=-10, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Sam: opinion=0, mood=0.67, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Charlzie: opinion=-20, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Isis: opinion=10, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Braz: opinion=-10, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Gransier: opinion=-10, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Nicholls: opinion=-10, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Clarke: opinion=0, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Eval Grunt: opinion=-20, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Howard: Scan finished. NewlyAddedMemories=4"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950917,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 425,
+  "overhead_spent": 0,
+  "total_spent": 425,
+  "epoch": 0,
+  "last_seen_tick": 379669,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 8100,
+    "spent": 425
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 379244,
+    "tick_to": 379669,
+    "ticks": 425,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "ant_theft",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T023842\\FeverWood__ant_theft__hostile_pawns__t379669__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2837544,
+  "width": 1810,
+  "height": 1183,
+  "md5": "4167be655f09a2da24a07ae67b89c925",
+  "why": ""
+ },
+ "notes": []
+}

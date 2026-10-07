@@ -1,0 +1,718 @@
+{
+ "name": "FlowWorksExtensions__toggle_liquid_drilling__colonist_died__t177987__001",
+ "when_utc": "2026-10-06T10:27:04Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human638 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human638",
+    "ticks": [
+     177629
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human638"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human638"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Moon died (death_letter)",
+   "evidence": {
+    "name": "Moon",
+    "ticks": [
+     177629
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Moon"
+  }
+ ],
+ "snapshot": {
+  "tick": 177987,
+  "epoch": 0,
+  "map_id": 3,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Found while digging: Steel",
+    "arrivalTick": 97545,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Found while digging: Steel",
+     97545
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Manhunter: Joy",
+    "arrivalTick": 177629,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Manhunter: Joy",
+     177629
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Requiem of Faith opportunity for Moon",
+    "arrivalTick": 177629,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Requiem of Faith opportunity for Moon",
+     177629
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Moon",
+    "arrivalTick": 177629,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Moon",
+     177629
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 16,
+   "adaptDays": -27.7777786,
+   "totalThreatPointsFactor": 0.429629624,
+   "ticksGame": 177987
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=45,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=45,0 got map.Tile=45,0 map.uniqueID=3 map.Index=3"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87512"
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87514"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 3.0."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87514"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87512"
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594952293,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 11200,
+  "overhead_spent": 0,
+  "total_spent": 11200,
+  "epoch": 0,
+  "last_seen_tick": 177987,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 13100,
+    "spent": 1200
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 166787,
+    "tick_to": 167387,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 167387,
+    "tick_to": 167987,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 167987,
+    "tick_to": 168587,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 168587,
+    "tick_to": 169187,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 169187,
+    "tick_to": 169787,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 169787,
+    "tick_to": 170387,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 170387,
+    "tick_to": 170987,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 170987,
+    "tick_to": 171587,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 171587,
+    "tick_to": 172187,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 172187,
+    "tick_to": 172787,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 172787,
+    "tick_to": 173387,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 173387,
+    "tick_to": 173987,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 173987,
+    "tick_to": 174587,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 174587,
+    "tick_to": 175187,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 175187,
+    "tick_to": 175787,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 175787,
+    "tick_to": 176387,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 176387,
+    "tick_to": 176787,
+    "ticks": 400,
+    "requested": 400
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 176787,
+    "tick_to": 177387,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 177387,
+    "tick_to": 177987,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "toggle_liquid_drilling",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T025413\\FlowWorksExtensions__toggle_liquid_drilling__colonist_died__t177987__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4070153,
+  "width": 2516,
+  "height": 1252,
+  "md5": "0758197566727da7d8687422dfdcf353",
+  "why": ""
+ },
+ "notes": []
+}

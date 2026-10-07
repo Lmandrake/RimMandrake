@@ -1,0 +1,816 @@
+{
+ "name": "WeepingStones__job_net__colonist_damaged__t36636__001",
+ "when_utc": "2026-10-04T12:42:52Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human88887 took 1 damage event(s): Bite by RSW_BrainWorm",
+   "evidence": {
+    "id": "Human88887",
+    "events": [
+     {
+      "seq": 198,
+      "tick": 36574,
+      "damageDef": "Bite",
+      "amount": 2.32154965,
+      "instigatorId": "RSW_BrainWorm198198",
+      "instigatorDef": "RSW_BrainWorm",
+      "weapon": "RSW_BrainWorm",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human88887:198"
+  },
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "2 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Human225079",
+      "kindDef": "VFEP_Scrapper",
+      "faction": "VFEP_Junkers",
+      "x": 205,
+      "z": 186
+     },
+     {
+      "id": "Human225084",
+      "kindDef": "VFEP_Scrapper",
+      "faction": "VFEP_Junkers",
+      "x": 194,
+      "z": 191
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    205,
+    186
+   ],
+   "fingerprint": "hostile_pawns:Human225079,Human225084"
+  }
+ ],
+ "snapshot": {
+  "tick": 36636,
+  "epoch": 0,
+  "map_id": 5,
+  "pawns": [
+   {
+    "id": "Human225079",
+    "name": "The Abandoned",
+    "kindDef": "VFEP_Scrapper",
+    "def": "Human",
+    "faction": "VFEP_Junkers",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 205,
+    "z": 186,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human225084",
+    "name": "The Quiet",
+    "kindDef": "VFEP_Scrapper",
+    "def": "Human",
+    "faction": "VFEP_Junkers",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 194,
+    "z": 191,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_VengefulPassion_Hediff",
+      "label": "vengeful passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_DuncePassion",
+      "label": "dunce passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     2251
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buck",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buck",
+     2251
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Ancient mech",
+    "arrivalTick": 23552,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Ancient mech",
+     23552
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     36121
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: As-Is (gizka)",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: As-Is (gizka)",
+     36121
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Endor (gizka)",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Endor (gizka)",
+     36121
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Shrinkage (gizka)",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Shrinkage (gizka)",
+     36121
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     36121
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 36121,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     36121
+    ]
+   },
+   {
+    "defName": "HumanPregnancy",
+    "label": "(*Name)Jackalope(/Name) pregnant",
+    "arrivalTick": 36516,
+    "mapId": null,
+    "fingerprint": [
+     "HumanPregnancy",
+     "(*Name)Jackalope(/Name) pregnant",
+     36516
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 26,
+   "adaptDays": -25.166666,
+   "totalThreatPointsFactor": 0.464444458,
+   "ticksGame": 36636
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Bowman: Eval Goldy: opinion=0, mood=0.32, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bowman: Eval Gong: opinion=0, mood=0.64, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bowman: Eval Jeremy: opinion=-5, mood=0.42, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bowman: Eval Kren: opinion=-10, mood=0.41, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bowman: Scan finished. NewlyAddedMemories=3"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Starting scan. Candidates=14, CurrentMood=0.53"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Carlson: opinion=11, mood=0.18, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Tyche: opinion=11, mood=0.02, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Yarr: opinion=35, mood=0.28, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Ulyana: opinion=10, mood=0.29, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Duces: opinion=-10, mood=0.28, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Jenni: opinion=0, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Hotaru: opinion=-12, mood=0.21, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Kev: opinion=-10, mood=0.29, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Goldy: opinion=0, mood=0.31, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Bowman: opinion=-10, mood=0.35, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Gong: opinion=0, mood=0.64, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Jeremy: opinion=-10, mood=0.42, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Eval Kren: opinion=-7, mood=0.41, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cross: Scan finished. NewlyAddedMemories=8"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954587,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954652,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954457,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 515,
+  "overhead_spent": 0,
+  "total_spent": 515,
+  "epoch": 0,
+  "last_seen_tick": 36636,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1725,
+    "spent": 515
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 36121,
+    "tick_to": 36636,
+    "ticks": 515,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "WeepingStones",
+  "chain": "job_net",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T053947\\WeepingStones__job_net__colonist_damaged__t36636__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 1925495,
+  "width": 1810,
+  "height": 1183,
+  "md5": "b875b5ae261f58257db37def1aca28ac",
+  "why": ""
+ },
+ "notes": []
+}

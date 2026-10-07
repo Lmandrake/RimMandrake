@@ -1,0 +1,479 @@
+{
+ "name": "FeverWood__hive_parasite__colonist_damaged__t34977__001",
+ "when_utc": "2026-10-04T12:29:53Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human88887 took 2 damage event(s): Bite by RSW_BrainWorm",
+   "evidence": {
+    "id": "Human88887",
+    "events": [
+     {
+      "seq": 108,
+      "tick": 34684,
+      "damageDef": "Bite",
+      "amount": 2.34939861,
+      "instigatorId": "RSW_BrainWorm198198",
+      "instigatorDef": "RSW_BrainWorm",
+      "weapon": "RSW_BrainWorm",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     },
+     {
+      "seq": 112,
+      "tick": 34834,
+      "damageDef": "Bite",
+      "amount": 1.68632126,
+      "instigatorId": "RSW_BrainWorm198198",
+      "instigatorDef": "RSW_BrainWorm",
+      "weapon": "RSW_BrainWorm",
+      "origin": null,
+      "hediffsAdded": null
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human88887:108,112"
+  }
+ ],
+ "snapshot": {
+  "tick": 34977,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     2251
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buck",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buck",
+     2251
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Ancient mech",
+    "arrivalTick": 23552,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Ancient mech",
+     23552
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 22,
+   "adaptDays": -25.166666,
+   "totalThreatPointsFactor": 0.464444458,
+   "ticksGame": 34977
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Woods: Starting scan. Candidates=3, CurrentMood=0.56"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Woods: Eval Jackalope: opinion=56, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Woods: Eval Merandil: opinion=26, mood=0.27, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Woods: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Klem cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Klem failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Jeremy cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 9"
+  ],
+  [
+   "Message",
+   "Carlson is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Tyche is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Yarr is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Ulyana is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Cross is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Duces is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Hotaru is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Kev is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Bowman is already in conversation."
+  ],
+  [
+   "Message",
+   "Jeremy is already in conversation."
+  ],
+  [
+   "Message",
+   "Kren is too far to join the conversation."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 1146,
+  "overhead_spent": 0,
+  "total_spent": 1146,
+  "epoch": 0,
+  "last_seen_tick": 34977,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3725,
+    "spent": 1146
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 33831,
+    "tick_to": 34388,
+    "ticks": 557,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 34388,
+    "tick_to": 34977,
+    "ticks": 589,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "hive_parasite",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T050655\\FeverWood__hive_parasite__colonist_damaged__t34977__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3533951,
+  "width": 1810,
+  "height": 1183,
+  "md5": "b9dd2b539d2230724ad87b143c911ba7",
+  "why": ""
+ },
+ "notes": []
+}

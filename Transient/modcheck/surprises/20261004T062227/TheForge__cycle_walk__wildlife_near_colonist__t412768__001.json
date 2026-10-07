@@ -1,0 +1,895 @@
+{
+ "name": "TheForge__cycle_walk__wildlife_near_colonist__t412768__001",
+ "when_utc": "2026-10-04T13:23:53Z",
+ "hits": [
+  {
+   "detector": "wildlife_near_colonist",
+   "severity": "SURPRISE",
+   "summary": "1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured",
+   "evidence": {
+    "animals": [
+     {
+      "id": "RM_Dhuvvox301629",
+      "kindDef": "RM_Dhuvvox",
+      "x": 148,
+      "z": 62,
+      "dist": 2,
+      "new": true,
+      "hunting": false
+     }
+    ]
+   },
+   "suggest": [
+    "kill_wildlife"
+   ],
+   "focus": [
+    148,
+    62
+   ],
+   "fingerprint": "wildlife_near_colonist:RM_Dhuvvox301629"
+  }
+ ],
+ "snapshot": {
+  "tick": 412768,
+  "epoch": 0,
+  "map_id": 6,
+  "pawns": [
+   {
+    "id": "RM_Dhuvvox301629",
+    "name": "Dhuvvox",
+    "kindDef": "RM_Dhuvvox",
+    "def": "RM_Dhuvvox",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 148,
+    "z": 62,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 50062,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     50062
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 60000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     60000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 65665,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     65665
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hyanggom",
+    "arrivalTick": 65665,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hyanggom",
+     65665
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 65665,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     65665
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mickey",
+    "arrivalTick": 65665,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mickey",
+     65665
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 65965,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     65965
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kaleun",
+    "arrivalTick": 65965,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kaleun",
+     65965
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Kaleun",
+    "arrivalTick": 65965,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Kaleun",
+     65965
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 79165,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     79165
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Raymond",
+    "arrivalTick": 79165,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Raymond",
+     79165
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 80365,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     80365
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ethan",
+    "arrivalTick": 80365,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ethan",
+     80365
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 81959,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     81959
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bentley",
+    "arrivalTick": 81959,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bentley",
+     81959
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 81959,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     81959
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bishop",
+    "arrivalTick": 81959,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bishop",
+     81959
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Hyanggom",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Hyanggom",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Mickey",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Mickey",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Raymond",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Raymond",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Ethan",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Ethan",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Bentley",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Bentley",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Bishop",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Bishop",
+     412378
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 412500,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     412500
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 8,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 42,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 412768
+  },
+  "fires": 19,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "RM_ForgePulse",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Lars: Eval Carimyna: opinion=-15, mood=0.29, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lars: Eval Storch: opinion=-10, mood=0.13, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lars: Scan finished. NewlyAddedMemories=7"
+  ],
+  [
+   "Message",
+   "Toxic spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jude: Skipped because pawn is Psychopath."
+  ],
+  [
+   "Message",
+   "Toxic spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Starting scan. Candidates=12, CurrentMood=0.15"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Carlson: opinion=-10, mood=0.02, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Tyche: opinion=-12, mood=0.00, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Yarr: opinion=-27, mood=0.05, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Ulyana: opinion=-10, mood=0.13, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Cross: opinion=-10, mood=0.42, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Duces: opinion=-10, mood=0.05, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Jenni: opinion=0, mood=0.22, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Hotaru: opinion=-9, mood=0.00, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Kev: opinion=46, mood=0.07, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Bowman: opinion=-6, mood=0.16, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Eval Kren: opinion=-9, mood=0.10, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jeremy: Scan finished. NewlyAddedMemories=6"
+  ],
+  [
+   "Message",
+   "Toxic spray sustainer still playing after 1000 ticks. Force-ending."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950281,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950351,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950160,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 5,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950221,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 6,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950030,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 7,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950098,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 390,
+  "overhead_spent": 0,
+  "total_spent": 390,
+  "epoch": 0,
+  "last_seen_tick": 412768,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 762,
+    "spent": 130
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 412378,
+    "tick_to": 412508,
+    "ticks": 130,
+    "requested": 130
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 412508,
+    "tick_to": 412638,
+    "ticks": 130,
+    "requested": 130
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 412638,
+    "tick_to": 412768,
+    "ticks": 130,
+    "requested": 130
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "cycle_walk",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T062227\\TheForge__cycle_walk__wildlife_near_colonist__t412768__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2025923,
+  "width": 1810,
+  "height": 1183,
+  "md5": "0167fcb9498e192c803d2ab98d9596e3",
+  "why": ""
+ },
+ "notes": []
+}

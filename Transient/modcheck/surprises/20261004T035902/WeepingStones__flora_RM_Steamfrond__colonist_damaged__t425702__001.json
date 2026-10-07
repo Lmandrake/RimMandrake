@@ -1,0 +1,1210 @@
+{
+ "name": "WeepingStones__flora_RM_Steamfrond__colonist_damaged__t425702__001",
+ "when_utc": "2026-10-04T11:11:41Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human115409 took 1 damage event(s): Bite by RM_Kurreth",
+   "evidence": {
+    "id": "Human115409",
+    "events": [
+     {
+      "seq": 9099,
+      "tick": 425272,
+      "damageDef": "Bite",
+      "amount": 10.761364,
+      "instigatorId": "RM_Kurreth115407",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "origin": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human115409:9099"
+  }
+ ],
+ "snapshot": {
+  "tick": 425702,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 605 for 740",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 605 for 740",
+     355545
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Disease: Infection",
+    "arrivalTick": 357290,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Disease: Infection",
+     357290
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 360824,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     360824
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Stanislav",
+    "arrivalTick": 360824,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Stanislav",
+     360824
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 360984,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     360984
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Merandil",
+    "arrivalTick": 360984,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Merandil",
+     360984
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369370,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369370
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Deva",
+    "arrivalTick": 369370,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Deva",
+     369370
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369575,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369575
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mila",
+    "arrivalTick": 369575,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mila",
+     369575
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369853,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369853
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Frankie",
+    "arrivalTick": 369853,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Frankie",
+     369853
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 370728,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     370728
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Patches",
+    "arrivalTick": 370728,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Patches",
+     370728
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 380114,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     380114
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 484 for 750",
+    "arrivalTick": 380114,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 484 for 750",
+     380114
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 389480,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     389480
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ashton",
+    "arrivalTick": 389480,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ashton",
+     389480
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 390000,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     390000
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 401855,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     401855
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 1892 for 2150",
+    "arrivalTick": 401855,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 1892 for 2150",
+     401855
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 415075,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     415075
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Disease: Infection",
+    "arrivalTick": 418356,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Disease: Infection",
+     418356
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 419991,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     419991
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dmitry",
+    "arrivalTick": 419991,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dmitry",
+     419991
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 14,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 38,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 425702
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Howard: opinion=-19, mood=0.39, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Lawson: opinion=-5, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Tate: opinion=-10, mood=0.44, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Ozkan: opinion=-10, mood=0.57, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Klomster: opinion=-20, mood=0.31, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Jones: opinion=-20, mood=0.32, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Valery: opinion=-20, mood=0.34, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Karina: opinion=-10, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Edouard: opinion=-20, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Eval Veronica: opinion=0, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jimmy: Scan finished. NewlyAddedMemories=4"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Starting scan. Candidates=8, CurrentMood=0.13"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Eval Giggles: opinion=-13, mood=0.22, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Eval Dwight: opinion=-19, mood=0.00, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Eval Vitaly: opinion=-22, mood=0.00, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Eval Genevieve: opinion=0, mood=0.00, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Eval Helene: opinion=-9, mood=0.17, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Eval Hugh: opinion=-27, mood=0.00, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Eval Blue: opinion=-20, mood=0.00, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jerbear: Scan finished. NewlyAddedMemories=5"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594945462,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594945141,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 591,
+  "overhead_spent": 0,
+  "total_spent": 591,
+  "epoch": 0,
+  "last_seen_tick": 425702,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3725,
+    "spent": 591
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 425111,
+    "tick_to": 425702,
+    "ticks": 591,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "WeepingStones",
+  "chain": "flora_RM_Steamfrond",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T035902\\WeepingStones__flora_RM_Steamfrond__colonist_damaged__t425702__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2991039,
+  "width": 1810,
+  "height": 1183,
+  "md5": "7c9a53b6d42823e06fe829d70413d22b",
+  "why": ""
+ },
+ "notes": []
+}

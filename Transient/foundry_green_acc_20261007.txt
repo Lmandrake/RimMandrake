@@ -1,0 +1,44 @@
+[modcheck] ProximityHatch: no ledger item MODCHECK_PROXIMITYHATCH_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\ProximityHatch_20261007T111549Z.html only
+[modcheck] AcousticScanner: no ledger item MODCHECK_ACOUSTICSCANNER_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\AcousticScanner_20261007T111557Z.html only
+[modcheck] TrophyCraft: no ledger item MODCHECK_TROPHYCRAFT_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\TrophyCraft_20261007T111600Z.html only
+[modcheck] ShipShields: no ledger item MODCHECK_SHIPSHIELDS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\ShipShields_20261007T111602Z.html only
+[egr] 04:16:04 shipped_defs_resolve PASS 
+[egr] 04:16:04 defs_the_code_looks_up_resolve PASS 
+[egr] 04:16:04 control_absent_def_reads_absent PASS 
+[egr] 04:16:04 reckoningEnabled_round_trips PASS 
+[egr] 04:16:04 toggle_on_leaves_the_rumor_route_in_the_pool PASS 
+[egr] 04:16:04 toggle_on_leaves_the_cartel_offer_trader_given_and_not_random PASS 
+[egr] 04:16:04 toggle_off_removes_both_routes UNMEASURED UNMEASURED: EggReckoningPatcher.Apply runs only from the mod's WriteSettings and at startup; jawa/mod_settings_field writes the static field without calling either, and rimworld/update_mod_settings cannot reach a static field, so flipping the toggle live cannot move the def fields (a companion [Tool
+[egr] 04:16:05 cartel_offer_generates_when_the_world_allows PASS 
+[egr] 04:16:05 site_ready_egg_and_colonist PASS 
+[egr] 04:16:55 egg_stays_an_egg_and_no_spider_appears PASS 
+[egr] 04:16:55 trade_request_silver_closes_the_debt UNMEASURED UNMEASURED: needs an accepted quest, a trade request raised against the Cartel and silver delivered to it; no bridge tool answers a trade request
+[egr] 04:16:55 all_enemies_defeated_completes_and_costs_goodwill UNMEASURED UNMEASURED: needs the site map generated and its garrison killed (an Outpost at threat 300+); a combat map the harness cannot build on a held map
+[egr] 04:16:55 undetected_egg_hatches_in_the_night_window UNMEASURED UNMEASURED: needs the outpost map (roofed unfogged cell), RM_QuestPart_EggPlantWatcher's signals and a 23:00-02:00 night; owed to a joint live round
+[egr] 04:16:55 hatched_spider_is_a_four_year_old_manhunter UNMEASURED UNMEASURED: needs the hatch part to fire; the age (4.0 y) and manhunter state are read from the spawned pawn, not provable without the quest
+[egr] 04:16:55 found_egg_costs_goodwill_and_undiscovered_kill_costs_none UNMEASURED UNMEASURED: needs the 3 percent-per-hour discovery roll on the live site and a goodwill read for the target's faction
+[egr] 04:16:56 all_settings_at_shipped_defaults PASS 
+[modcheck] EggReckoning: no ledger item MODCHECK_EGGRECKONING_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\EggReckoning_20261007T111656Z.html only
+[drj] 04:16:57 shipped_defs_resolve PASS 
+[drj] 04:16:58 droidworks_defs_the_quest_names_resolve PASS 
+[drj] 04:16:58 control_absent_def_reads_absent PASS 
+[drj] 04:16:58 paymentMultiplier_round_trips PASS 
+[drj] 04:16:58 wealthAndReputationScaling_round_trips PASS 
+[drj] 04:16:59 flat_payment_quotes_320_512_128 UNMEASURED UNMEASURED: quest_lifecycle(list) shows no new droid-repair quest after fire_quest succeeded: {'success': True, 'message': 'RUT_DroidRepairJob available as quest 1 "Repair Job" at 35 points, State=NotYetAccepted.', 'quest': 'RUT_DroidRepairJob', 'questId': 1, 'questName': 'Repair Job', 'state'
+[drj] 04:16:59 payment_multiplier_scales_every_tier UNMEASURED UNMEASURED: the flat arm never produced a readable quote, so the multiplier arm has no baseline
+[drj] 04:16:59 wealth_and_reputation_arm_of_the_payment UNMEASURED UNMEASURED: the scaled amount is base x tech-level factor x goodwill factor of whichever settlement the generator picks; no bridge read names that faction before the quote, so only the flat arm is provable here
+[drj] 04:16:59 site_ready_two_droids PASS 
+[drj] 04:17:00 fault_lands_on_a_droid_and_only_that_droid PASS 
+[drj] 04:17:00 fitted_part_tier_decides_fine_honest_shoddy_neglected UNMEASURED UNMEASURED: grading runs at the PickupDue signal after a 5-9 day job timer (jobTicks); no bridge tool fires a quest signal, and a seeded part-effect hediff plus a faked timer would test the harness rather than the quest
+[drj] 04:17:00 each_outcome_changes_goodwill_with_its_history_event UNMEASURED UNMEASURED: needs a finished job (see pickup_grading) and a read of the faction tab's history-event line, which no bridge tool exposes
+[drj] 04:17:00 silver_arrives_at_the_landing_spot_for_the_graded_tier UNMEASURED UNMEASURED: needs a finished job; PaySilver drops stacks at the pickup spot only after PickupDue
+[drj] 04:17:00 kept_and_destroyed_droid_outcomes_are_distinct_events UNMEASURED UNMEASURED: needs the lodger droid to be arrested or killed during a live job and the lodgers.Arrested / .Destroyed signals to fire
+[drj] 04:17:00 quest_is_offered_by_the_storyteller_with_progress_score_4 UNMEASURED UNMEASURED: rootSelectionWeight 1.1, rootMinProgressScore 4 and minRefireDays 15 are storyteller-pool behaviour over days; fire_quest bypasses the pool, so selection itself is not provable on a bland map
+[drj] 04:17:00 all_settings_at_shipped_defaults PASS 
+[modcheck] DroidRepairJobs: no ledger item MODCHECK_DROIDREPAIRJOBS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\DroidRepairJobs_20261007T111701Z.html only
+ProximityHatch       RED  (state)
+AcousticScanner      RED  (state)
+TrophyCraft          RED  (state)
+ShipShields          RED  (state)
+EggReckoning         RED  (state)
+DroidRepairJobs      RED  (state)

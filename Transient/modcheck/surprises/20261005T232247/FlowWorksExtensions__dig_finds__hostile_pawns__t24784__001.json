@@ -1,0 +1,418 @@
+{
+ "name": "FlowWorksExtensions__dig_finds__hostile_pawns__t24784__001",
+ "when_utc": "2026-10-06T06:29:18Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "4 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Fingerspike2525",
+      "kindDef": "Fingerspike",
+      "faction": "Entities",
+      "x": 85,
+      "z": 89
+     },
+     {
+      "id": "Bulbfreak2526",
+      "kindDef": "Bulbfreak",
+      "faction": "Entities",
+      "x": 84,
+      "z": 88
+     },
+     {
+      "id": "Trispike2524",
+      "kindDef": "Trispike",
+      "faction": "Entities",
+      "x": 85,
+      "z": 88
+     },
+     {
+      "id": "Bulbfreak2527",
+      "kindDef": "Bulbfreak",
+      "faction": "Entities",
+      "x": 84,
+      "z": 87
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    85,
+    89
+   ],
+   "fingerprint": "hostile_pawns:Bulbfreak2526,Bulbfreak2527,Fingerspike2525,Trispike2524"
+  }
+ ],
+ "snapshot": {
+  "tick": 24784,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Fingerspike2525",
+    "name": "Fingerspike",
+    "kindDef": "Fingerspike",
+    "def": "Fingerspike",
+    "faction": "Entities",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 85,
+    "z": 89,
+    "intelligence": "ToolUser",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Bulbfreak2526",
+    "name": "Bulbfreak",
+    "kindDef": "Bulbfreak",
+    "def": "Bulbfreak",
+    "faction": "Entities",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 84,
+    "z": 88,
+    "intelligence": "ToolUser",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Trispike2524",
+    "name": "Trispike",
+    "kindDef": "Trispike",
+    "def": "Trispike",
+    "faction": "Entities",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 85,
+    "z": 88,
+    "intelligence": "ToolUser",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Bulbfreak2527",
+    "name": "Bulbfreak",
+    "kindDef": "Bulbfreak",
+    "def": "Bulbfreak",
+    "faction": "Entities",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 84,
+    "z": 87,
+    "intelligence": "ToolUser",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 24284,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     24284
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 8,
+   "adaptDays": -5.5,
+   "totalThreatPointsFactor": 0.7266667,
+   "ticksGame": 24784
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 1 cells, LIMITED (5 / 5 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 1 cells, LIMITED (5 / 5 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 2 cells, LIMITED (10 / 10 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 40 cells, LIMITED (200 / 200 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #7: 64 cells, LIMITED (320 / 320 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #8: 64 cells, LIMITED (320 / 320 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #9: 64 cells, LIMITLESS (limitless \u2014 the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - ray1203.SimpleCameraSetting\n  - mandrake.rm.flowworks"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 64 cells, LIMITLESS (limitless \u2014 the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 64 cells, LIMITLESS (limitless \u2014 the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 1 cells, LIMITED (5 / 5 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 1 cells, LIMITED (5 / 5 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 2 cells, LIMITED (10 / 10 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 40 cells, LIMITED (200 / 200 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #7: 64 cells, LIMITED (320 / 320 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #8: 64 cells, LIMITED (320 / 320 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #9: 64 cells, LIMITLESS (limitless \u2014 the off-map continuation is the reservoir. Supply is still capped per shoreline cell you dig to.). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Error",
+   "Tried to get CurKindLifeStage from humanlike pawn Borne"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956471,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 500,
+  "overhead_spent": 0,
+  "total_spent": 500,
+  "epoch": 0,
+  "last_seen_tick": 24784,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1225,
+    "spent": 500
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 24284,
+    "tick_to": 24784,
+    "ticks": 500,
+    "requested": 500
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "dig_finds",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261005T232247\\FlowWorksExtensions__dig_finds__hostile_pawns__t24784__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 5155749,
+  "width": 2516,
+  "height": 1252,
+  "md5": "847a3e4eb56ee845cc2b8128bb5b8d56",
+  "why": ""
+ },
+ "notes": []
+}

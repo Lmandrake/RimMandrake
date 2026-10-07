@@ -1,0 +1,882 @@
+{
+ "name": "FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t193720__001",
+ "when_utc": "2026-10-06T10:35:17Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Bowman gained 2 new hediff(s) (DrugOverdose,FlakeHigh); cause_hint=unknown",
+   "evidence": {
+    "id": "Human94976",
+    "name": "Bowman",
+    "new_hediffs": [
+     {
+      "def": "FlakeHigh",
+      "label": "high on flake (3h)",
+      "part": null,
+      "severity": 0.420221776
+     },
+     {
+      "def": "DrugOverdose",
+      "label": "drug overdose (minor)",
+      "part": null,
+      "severity": 0.192153156
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "DrugOverdose",
+     "FlakeHigh"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    97,
+    138
+   ],
+   "fingerprint": "colonist_injured:Human94976:DrugOverdose@None,FlakeHigh@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 193720,
+  "epoch": 0,
+  "map_id": 3,
+  "pawns": [
+   {
+    "id": "Human94976",
+    "name": "Bowman",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 97,
+    "z": 138,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "PsychiteAddiction",
+      "label": "psychite addiction (0%)",
+      "part": null,
+      "severity": 0.999889
+     },
+     {
+      "def": "PsychiteTolerance",
+      "label": "psychite tolerance (large)",
+      "part": null,
+      "severity": 0.5913898
+     },
+     {
+      "def": "FlakeHigh",
+      "label": "high on flake (3h)",
+      "part": null,
+      "severity": 0.420221776
+     },
+     {
+      "def": "DrugOverdose",
+      "label": "drug overdose (minor)",
+      "part": null,
+      "severity": 0.192153156
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 85166,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     85166
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Found while digging: Steel",
+    "arrivalTick": 97545,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Found while digging: Steel",
+     97545
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Manhunter: Joy",
+    "arrivalTick": 177629,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Manhunter: Joy",
+     177629
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Requiem of Faith opportunity for Moon",
+    "arrivalTick": 177629,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Requiem of Faith opportunity for Moon",
+     177629
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Moon",
+    "arrivalTick": 177629,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Moon",
+     177629
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Requiem of Faith opportunity for Kern",
+    "arrivalTick": 180965,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Requiem of Faith opportunity for Kern",
+     180965
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kern",
+    "arrivalTick": 180965,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kern",
+     180965
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Requiem of Faith opportunity for Noka",
+    "arrivalTick": 185119,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Requiem of Faith opportunity for Noka",
+     185119
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Noka",
+    "arrivalTick": 185119,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Noka",
+     185119
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 185220,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     185220
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 3,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 16,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 193720
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87512"
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87514"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 3.0."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87514"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87512"
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87514"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87512"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 8500,
+  "overhead_spent": 0,
+  "total_spent": 8500,
+  "epoch": 0,
+  "last_seen_tick": 193720,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1225,
+    "spent": 500
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 185220,
+    "tick_to": 185720,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 185720,
+    "tick_to": 186220,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 186220,
+    "tick_to": 186720,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 186720,
+    "tick_to": 187220,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 187220,
+    "tick_to": 187720,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 187720,
+    "tick_to": 188220,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 188220,
+    "tick_to": 188720,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 188720,
+    "tick_to": 189220,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 189220,
+    "tick_to": 189720,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 189720,
+    "tick_to": 190220,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 190220,
+    "tick_to": 190720,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 190720,
+    "tick_to": 191220,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 191220,
+    "tick_to": 191720,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 191720,
+    "tick_to": 192220,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 192220,
+    "tick_to": 192720,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 192720,
+    "tick_to": 193220,
+    "ticks": 500,
+    "requested": 500
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 193220,
+    "tick_to": 193720,
+    "ticks": 500,
+    "requested": 500
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "dig_finds",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T025413\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t193720__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4476478,
+  "width": 2516,
+  "height": 1252,
+  "md5": "75bfa8986640445b23f6183cf4b2b673",
+  "why": ""
+ },
+ "notes": []
+}

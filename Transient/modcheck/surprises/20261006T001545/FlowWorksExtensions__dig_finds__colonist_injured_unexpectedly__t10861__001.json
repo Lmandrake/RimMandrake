@@ -1,0 +1,355 @@
+{
+ "name": "FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t10861__001",
+ "when_utc": "2026-10-06T07:21:13Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Tony gained 4 new hediff(s) (Bruise,Crack); cause_hint=unknown",
+   "evidence": {
+    "id": "Human37861",
+    "name": "Tony",
+    "new_hediffs": [
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "part": "Torso",
+      "severity": 7.44079
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "part": "Torso",
+      "severity": 7.376585
+     },
+     {
+      "def": "Crack",
+      "label": "crack (human fist)",
+      "part": "Spine",
+      "severity": 3.66312075
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "part": "Arm",
+      "severity": 10.7478218
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "Bruise",
+     "Crack"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    82,
+    160
+   ],
+   "fingerprint": "colonist_injured:Human37861:Bruise@Arm,Bruise@Torso,Bruise@Torso,Crack@Spine"
+  }
+ ],
+ "snapshot": {
+  "tick": 10861,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human37861",
+    "name": "Tony",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 82,
+    "z": 160,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "part": "Leg",
+      "severity": 7.491942
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "part": "Torso",
+      "severity": 7.44079
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "part": "Torso",
+      "severity": 7.376585
+     },
+     {
+      "def": "Crack",
+      "label": "crack (human fist)",
+      "part": "Spine",
+      "severity": 3.66312075
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "part": "Arm",
+      "severity": 10.7478218
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.449845433,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 5,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 10861
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=10789"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=10792"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=110 elapsedMs=10903"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=561 elapsedMs=10903"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=110 elapsedMs=10903"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: 399ee7b3de4b4d519173afe2f4e03936"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - ray1203.SimpleCameraSetting\n  - mandrake.rm.flowworks"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 373 tools, build bf614bde1cce"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 10/46c1792b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser30594"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith37733"
+  ],
+  [
+   "Error",
+   "Tried to get CurKindLifeStage from humanlike pawn Squid"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser30594"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith37733"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser30595"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser30597"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956724,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 500,
+  "overhead_spent": 0,
+  "total_spent": 500,
+  "epoch": 0,
+  "last_seen_tick": 10861,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1225,
+    "spent": 500
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 10361,
+    "tick_to": 10861,
+    "ticks": 500,
+    "requested": 500
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "dig_finds",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t10861__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4607750,
+  "width": 2516,
+  "height": 1252,
+  "md5": "c24c4b4d05ccb524fc7dce40a2cb59f8",
+  "why": ""
+ },
+ "notes": []
+}

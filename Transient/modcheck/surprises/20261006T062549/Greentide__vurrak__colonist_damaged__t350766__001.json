@@ -1,0 +1,897 @@
+{
+ "name": "Greentide__vurrak__colonist_damaged__t350766__001",
+ "when_utc": "2026-10-06T13:29:30Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Mlie took 1 damage event(s): Bite by RM_Vurrak",
+   "evidence": {
+    "id": "Human61542",
+    "events": [
+     {
+      "seq": 232,
+      "tick": 350766,
+      "damageDef": "Bite",
+      "amount": 26.77046,
+      "instigatorId": "RM_Vurrak61541",
+      "instigatorDef": "RM_Vurrak",
+      "weapon": null,
+      "origin": null,
+      "hediffsAdded": [
+       "MissingBodyPart",
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    47,
+    50
+   ],
+   "fingerprint": "colonist_damaged:Human61542:232"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Mlie is bleeding",
+   "evidence": {
+    "id": "Human61542",
+    "name": "Mlie",
+    "downed": false,
+    "bleedRate": 1.19999993,
+    "painTotal": 0.125
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    47,
+    50
+   ],
+   "fingerprint": "colonist_downed:Human61542:False"
+  },
+  {
+   "detector": "wildlife_near_colonist",
+   "severity": "SURPRISE",
+   "summary": "1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured",
+   "evidence": {
+    "animals": [
+     {
+      "id": "Hare61548",
+      "kindDef": "Hare",
+      "x": 50,
+      "z": 50,
+      "dist": 3,
+      "new": true,
+      "hunting": false
+     }
+    ]
+   },
+   "suggest": [
+    "kill_wildlife"
+   ],
+   "focus": [
+    50,
+    50
+   ],
+   "fingerprint": "wildlife_near_colonist:Hare61548"
+  },
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): The bank moved; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      350766,
+      "The bank moved"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@350766"
+  }
+ ],
+ "snapshot": {
+  "tick": 350766,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human61542",
+    "name": "Mlie",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 47,
+    "z": 50,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten out (fresh)",
+      "part": "Eye",
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 1.19999993,
+    "painTotal": 0.125,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Hare61548",
+    "name": "Hare",
+    "kindDef": "Hare",
+    "def": "Hare",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 50,
+    "z": 50,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     449
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     449
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 449,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     449
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2049
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2049,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2049
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2179
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2179,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2179
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     137799
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     137799
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 137799,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     137799
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 310555,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     310555
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 311635,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     311635
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 311635,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     311635
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Astro-Theric Burial opportunity for Seraph",
+    "arrivalTick": 311695,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Astro-Theric Burial opportunity for Seraph",
+     311695
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Seraph",
+    "arrivalTick": 311695,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Seraph",
+     311695
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 311695,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     311695
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 346646,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     346646
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "The bank moved",
+    "arrivalTick": 350766,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "The bank moved",
+     350766
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 26,
+   "adaptDays": -36.1666679,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 350766
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Freeze endsIn=32857 inBurst=True frozen=5 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=5 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1473 plumeCells=49"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1507 plumeCells=127"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1639 plumeCells=324"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1639 plumeCells=519"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=3 plumeSpawned=8 plumePuddles=1639 plumeCells=519"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=0 plumeSpawned=8 plumePuddles=1639 plumeCells=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Freeze endsIn=32077 inBurst=True frozen=18 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=18 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Growth endsIn=147435 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Growth endsIn=147435 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Cracks endsIn=16638 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Cracks endsIn=16638 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Melt endsIn=4123 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Melt endsIn=4123 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=StillHeat endsIn=147942 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=147942 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=7 gardensDrifted=7 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Warning",
+   "Seraph on unwalkable cell (50, 0, 200). Teleporting to (49, 0, 200)"
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_12559) A = Thing_Human60795 B = Thing_RM_LureStake60791 Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_15166) A = Thing_Human60873 B = Thing_RM_LureStake60872 Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_21922) A = Thing_Human61002 B = Thing_RM_LureStake61001 Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594952060,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 350766,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "Greentide",
+  "chain": "vurrak",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T062549\\Greentide__vurrak__colonist_damaged__t350766__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4168246,
+  "width": 2516,
+  "height": 1252,
+  "md5": "d3fb3ab4f6c2b20a7122116c84024ad6",
+  "why": ""
+ },
+ "notes": []
+}

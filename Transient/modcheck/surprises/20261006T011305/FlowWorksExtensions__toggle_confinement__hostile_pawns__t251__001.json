@@ -1,0 +1,341 @@
+{
+ "name": "FlowWorksExtensions__toggle_confinement__hostile_pawns__t251__001",
+ "when_utc": "2026-10-06T08:13:36Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "3 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Toughspike74952",
+      "kindDef": "Toughspike",
+      "faction": "Entities",
+      "x": 134,
+      "z": 73
+     },
+     {
+      "id": "Trispike74951",
+      "kindDef": "Trispike",
+      "faction": "Entities",
+      "x": 136,
+      "z": 72
+     },
+     {
+      "id": "Trispike74953",
+      "kindDef": "Trispike",
+      "faction": "Entities",
+      "x": 142,
+      "z": 69
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    134,
+    73
+   ],
+   "fingerprint": "hostile_pawns:Toughspike74952,Trispike74951,Trispike74953"
+  }
+ ],
+ "snapshot": {
+  "tick": 251,
+  "epoch": 0,
+  "map_id": 3,
+  "pawns": [
+   {
+    "id": "Toughspike74952",
+    "name": "Toughspike",
+    "kindDef": "Toughspike",
+    "def": "Toughspike",
+    "faction": "Entities",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 134,
+    "z": 73,
+    "intelligence": "ToolUser",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Trispike74951",
+    "name": "Trispike",
+    "kindDef": "Trispike",
+    "def": "Trispike",
+    "faction": "Entities",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 136,
+    "z": 72,
+    "intelligence": "ToolUser",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Trispike74953",
+    "name": "Trispike",
+    "kindDef": "Trispike",
+    "def": "Trispike",
+    "faction": "Entities",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 142,
+    "z": 69,
+    "intelligence": "ToolUser",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 7,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 251
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=8227"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=8230"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=33 elapsedMs=8264"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=400 elapsedMs=8265"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=34 elapsedMs=8265"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: 14f18cb1a2d44433a82f31c8057766dc"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - ray1203.SimpleCameraSetting\n  - mandrake.rm.flowworks"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 373 tools, build bf614bde1cce"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 10/46c1792b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=1459,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=1459,0 got map.Tile=1459,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=8865,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=8865,0 got map.Tile=8865,0 map.uniqueID=2 map.Index=2"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=16853,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=16853,0 got map.Tile=16853,0 map.uniqueID=3 map.Index=3"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957055,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 250,
+  "overhead_spent": 0,
+  "total_spent": 250,
+  "epoch": 0,
+  "last_seen_tick": 251,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 912,
+    "spent": 250
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1,
+    "tick_to": 251,
+    "ticks": 250,
+    "requested": 250
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "toggle_confinement",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T011305\\FlowWorksExtensions__toggle_confinement__hostile_pawns__t251__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4054430,
+  "width": 2516,
+  "height": 1252,
+  "md5": "426fc8387ea458bd5f0e8e8b037d3275",
+  "why": ""
+ },
+ "notes": []
+}

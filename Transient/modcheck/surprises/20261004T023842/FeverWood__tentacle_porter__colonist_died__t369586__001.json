@@ -1,0 +1,916 @@
+{
+ "name": "FeverWood__tentacle_porter__colonist_died__t369586__001",
+ "when_utc": "2026-10-04T09:42:57Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Deva died (death_letter)",
+   "evidence": {
+    "name": "Deva",
+    "ticks": [
+     369370
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 2
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Deva"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human85260 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human85260",
+    "ticks": [
+     369575
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human85260"
+    ],
+    "colonistsKilled_delta": 2
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human85260"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human87552 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human87552",
+    "ticks": [
+     369370
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human87552"
+    ],
+    "colonistsKilled_delta": 2
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human87552"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Mila died (death_letter)",
+   "evidence": {
+    "name": "Mila",
+    "ticks": [
+     369575
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 2
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Mila"
+  }
+ ],
+ "snapshot": {
+  "tick": 369586,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Willo",
+    "arrivalTick": 23310,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Willo",
+     23310
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 23810,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     23810
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cait",
+    "arrivalTick": 23810,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cait",
+     23810
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Illoth hunting (*Name)Iris(/Name)",
+    "arrivalTick": 23856,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Illoth hunting (*Name)Iris(/Name)",
+     23856
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 24387,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     24387
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jovial",
+    "arrivalTick": 24387,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jovial",
+     24387
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 25074,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     25074
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cotwo",
+    "arrivalTick": 25074,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cotwo",
+     25074
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Summer",
+    "arrivalTick": 355075,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Summer",
+     355075
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 355075,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     355075
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Illoth hunting (*Name)Iris(/Name)",
+    "arrivalTick": 355086,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Illoth hunting (*Name)Iris(/Name)",
+     355086
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Cait",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Cait",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Jovial",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Jovial",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Cotwo",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Cotwo",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Unwavering prisoner",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Unwavering prisoner",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 605 for 740",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 605 for 740",
+     355545
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Disease: Infection",
+    "arrivalTick": 357290,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Disease: Infection",
+     357290
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 360824,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     360824
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Stanislav",
+    "arrivalTick": 360824,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Stanislav",
+     360824
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 360984,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     360984
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Merandil",
+    "arrivalTick": 360984,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Merandil",
+     360984
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369370,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369370
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Deva",
+    "arrivalTick": 369370,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Deva",
+     369370
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369575,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369575
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mila",
+    "arrivalTick": 369575,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mila",
+     369575
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 10,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 34,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 369586
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Lawson and Neme cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Izzy cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Lawson and Jimmy cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Lawson and Howard are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Lawson and Vikinger cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Lawson and Jinkson cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Lawson"
+  ],
+  [
+   "Message",
+   "Lawson failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Giggles cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Ashton cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Helene cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Hugh and Dmitry cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Dwight cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Vitaly cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Jerbear cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Hugh and Blue cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Hugh"
+  ],
+  [
+   "Message",
+   "Jerbear cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Vitaly cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Hugh failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 369586,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 975,
+    "spent": 300
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 368986,
+    "tick_to": 369286,
+    "ticks": 300,
+    "requested": 300
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 369286,
+    "tick_to": 369586,
+    "ticks": 300,
+    "requested": 300
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "tentacle_porter",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T023842\\FeverWood__tentacle_porter__colonist_died__t369586__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2985785,
+  "width": 1810,
+  "height": 1183,
+  "md5": "34fcafd14f9264a13d902c93d1bf7ff7",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,619 @@
+{
+ "name": "Scarlands__warscar_mark__colonist_injured_unexpectedly__t362858__001",
+ "when_utc": "2026-10-06T12:03:15Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Bucky gained 1 new hediff(s) (RM_WarscarMark); cause_hint=unknown",
+   "evidence": {
+    "id": "Human75997",
+    "name": "Bucky",
+    "new_hediffs": [
+     {
+      "def": "RM_WarscarMark",
+      "label": "the Warscar mark (deepening mark)",
+      "part": null,
+      "severity": 0.5999997
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_WarscarMark"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    126,
+    126
+   ],
+   "fingerprint": "colonist_injured:Human75997:RM_WarscarMark@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 362858,
+  "epoch": 0,
+  "map_id": 2,
+  "pawns": [
+   {
+    "id": "Human75997",
+    "name": "Bucky",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 126,
+    "z": 126,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_WarscarMark",
+      "label": "the Warscar mark (deepening mark)",
+      "part": null,
+      "severity": 0.5999997
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2309,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2309
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2309,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2309
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2309,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2309
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2439
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2439
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "A hiss in the vents",
+    "arrivalTick": 158269,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "A hiss in the vents",
+     158269
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     158732
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     158732
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     158732
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 335684,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     335684
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 359084,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     359084
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 359084,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     359084
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 361718,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     361718
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     362798
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     362798
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Patriotic Funeral opportunity for Sheep",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Patriotic Funeral opportunity for Sheep",
+     362798
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sheep",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sheep",
+     362798
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "She takes it back",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "She takes it back",
+     362798
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sold: Muffalo calf 2",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sold: Muffalo calf 2",
+     362798
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Patriotic Funeral opportunity for Kallax",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Patriotic Funeral opportunity for Kallax",
+     362858
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kallax",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kallax",
+     362858
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 2,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 11,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 362858
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=1 plumeSpawned=6 plumePuddles=1875 plumeCells=69"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=1 plumeSpawned=6 plumePuddles=1942 plumeCells=167"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=1 plumeSpawned=6 plumePuddles=1942 plumeCells=268"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=2 plumeSpawned=7 plumePuddles=1942 plumeCells=268"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] plumeLive=0 plumeSpawned=7 plumePuddles=1942 plumeCells=0"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Freeze endsIn=26089 inBurst=True frozen=18 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=18 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Growth endsIn=146218 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Growth endsIn=146218 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Cracks endsIn=15130 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Cracks endsIn=15130 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Melt endsIn=5667 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Melt endsIn=5667 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=StillHeat endsIn=128464 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=128464 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser57780"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=440,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 440,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=440,0 got map.Tile=440,0 map.uniqueID=2 map.Index=2"
+  ],
+  [
+   "Warning",
+   "Tried to discard Younha whose state is -1."
+  ],
+  [
+   "Warning",
+   "Kallax on unwalkable cell (50, 0, 50). Teleporting to (49, 0, 50)"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 362858,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "Scarlands",
+  "chain": "warscar_mark",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T050151\\Scarlands__warscar_mark__colonist_injured_unexpectedly__t362858__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4053817,
+  "width": 2516,
+  "height": 1252,
+  "md5": "258541312252f5fe9059cf1f3d62a981",
+  "why": ""
+ },
+ "notes": []
+}

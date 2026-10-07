@@ -1,0 +1,921 @@
+{
+ "name": "TheForge__voices__fire_on_map__t557056__001",
+ "when_utc": "2026-10-04T13:26:30Z",
+ "hits": [
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "27 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 99,
+      "z": 195
+     },
+     {
+      "x": 98,
+      "z": 195
+     },
+     {
+      "x": 99,
+      "z": 193
+     },
+     {
+      "x": 101,
+      "z": 195
+     },
+     {
+      "x": 100,
+      "z": 197
+     },
+     {
+      "x": 101,
+      "z": 193
+     },
+     {
+      "x": 101,
+      "z": 197
+     },
+     {
+      "x": 99,
+      "z": 198
+     },
+     {
+      "x": 98,
+      "z": 198
+     },
+     {
+      "x": 96,
+      "z": 196
+     },
+     {
+      "x": 101,
+      "z": 192
+     },
+     {
+      "x": 103,
+      "z": 195
+     },
+     {
+      "x": 98,
+      "z": 199
+     },
+     {
+      "x": 96,
+      "z": 192
+     },
+     {
+      "x": 97,
+      "z": 199
+     },
+     {
+      "x": 102,
+      "z": 191
+     },
+     {
+      "x": 103,
+      "z": 192
+     },
+     {
+      "x": 95,
+      "z": 192
+     },
+     {
+      "x": 98,
+      "z": 190
+     },
+     {
+      "x": 101,
+      "z": 190
+     },
+     {
+      "x": 94,
+      "z": 193
+     },
+     {
+      "x": 94,
+      "z": 197
+     },
+     {
+      "x": 95,
+      "z": 199
+     },
+     {
+      "x": 102,
+      "z": 190
+     },
+     {
+      "x": 100,
+      "z": 189
+     },
+     {
+      "x": 95,
+      "z": 200
+     },
+     {
+      "x": 102,
+      "z": 201
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    99,
+    195
+   ],
+   "fingerprint": "fire_on_map:27"
+  }
+ ],
+ "snapshot": {
+  "tick": 557056,
+  "epoch": 0,
+  "map_id": 6,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Bishop",
+    "arrivalTick": 81959,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bishop",
+     81959
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Hyanggom",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Hyanggom",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Mickey",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Mickey",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Raymond",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Raymond",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Ethan",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Ethan",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Bentley",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Bentley",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Bishop",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Bishop",
+     412378
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 412378,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     412378
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 412500,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     412500
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 412768,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     412768
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 412768,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     412768
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 412768,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     412768
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 413318,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     413318
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 413318,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     413318
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 413318,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     413318
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 414414,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     414414
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 414414,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     414414
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 414414,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     414414
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 414414,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     414414
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 414544,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     414544
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 414544,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     414544
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 414544,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     414544
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 414544,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     414544
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 414544,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     414544
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 414544,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     414544
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 8,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 42,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 557056
+  },
+  "fires": 27,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "RM_ForgePulse",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Toxic spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Starting scan. Candidates=12, CurrentMood=0.29"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Hiroto: opinion=-10, mood=0.29, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Chuckles: opinion=-10, mood=0.26, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Bowen: opinion=-10, mood=0.32, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Smarty: opinion=-10, mood=0.23, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Tyran: opinion=-10, mood=0.22, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Seraph: opinion=-10, mood=0.14, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Willow: opinion=-10, mood=0.24, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Brewer: opinion=-10, mood=0.03, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Souta: opinion=-10, mood=0.25, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Lars: opinion=-15, mood=0.21, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Eval Storch: opinion=-9, mood=0.13, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Carimyna: Scan finished. NewlyAddedMemories=10"
+  ],
+  [
+   "Message",
+   "Toxic spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Klem: Starting scan. Candidates=3, CurrentMood=0.00"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Klem: Eval Rakoto: opinion=43, mood=0.17, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Klem: Eval Jude: opinion=74, mood=0.26, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Klem: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "Toxic spray sustainer still playing after 1000 ticks. Force-ending."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594948245,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 380,
+  "overhead_spent": 0,
+  "total_spent": 380,
+  "epoch": 0,
+  "last_seen_tick": 557056,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 762,
+    "spent": 130
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 556676,
+    "tick_to": 556796,
+    "ticks": 120,
+    "requested": 120
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 556796,
+    "tick_to": 556926,
+    "ticks": 130,
+    "requested": 130
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 556926,
+    "tick_to": 557056,
+    "ticks": 130,
+    "requested": 130
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "voices",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T062227\\TheForge__voices__fire_on_map__t557056__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3712253,
+  "width": 1810,
+  "height": 1183,
+  "md5": "2b343ef832e3df1f3e2c432a6b24bfd6",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,138 @@
+{
+ "chains": [
+  {
+   "name": "reading_completes_and_advances_research",
+   "components": [
+    {
+     "name": "ordered_reading_job_catalogues_and_adds_progress",
+     "toggle": "readingEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not resolve urn/station thingIds from jawa/list_things: []",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 9621,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 170170,
+        "message": "NOTHING MATCHED. 9621 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_002f78305c34434ea04e276d7b160e68",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:02.9853498+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:02.9903489+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "no_more_reading_once_all_stages_done",
+   "components": [
+    {
+     "name": "stage_completion_gate",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not finish RUT_Antiq_Language: {'success': False, 'message': \"No ResearchProjectDef named 'RUT_Antiq_Language'.\", 'details': None, 'operation': {'OperationId': 'op_5fb974d31ce944b6b980e459ff0826ec', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-03T05:30:04.1860434+00:00', 'CompletedAtUtc': '2026-10-03T05:30:04.1920445+00:00', 'DurationMs': 6, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": false,
+        "message": "No ResearchProjectDef named 'RUT_Antiq_Language'.",
+        "details": null,
+        "operation": {
+         "OperationId": "op_5fb974d31ce944b6b980e459ff0826ec",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:30:04.1860434+00:00",
+         "CompletedAtUtc": "2026-10-03T05:30:04.1920445+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FD08B00>",
+  "<suite.Component object at 0x000001BF5FD09480>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\Antiquities.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

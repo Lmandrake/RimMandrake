@@ -1,0 +1,667 @@
+{
+ "name": "FeverWood__kurreth_column__hostile_pawns__t36121__001",
+ "when_utc": "2026-10-04T12:30:31Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "6 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "RM_Kurreth201620",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 67,
+      "z": 122
+     },
+     {
+      "id": "RM_Kurreth201621",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 74,
+      "z": 112
+     },
+     {
+      "id": "RM_Kurreth201622",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 71,
+      "z": 124
+     },
+     {
+      "id": "RM_Kurreth201623",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 68,
+      "z": 122
+     },
+     {
+      "id": "RM_Kurreth201624",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 69,
+      "z": 122
+     },
+     {
+      "id": "RM_Kurreth201625",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 71,
+      "z": 124
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    67,
+    122
+   ],
+   "fingerprint": "hostile_pawns:RM_Kurreth201620,RM_Kurreth201621,RM_Kurreth201622,RM_Kurreth201623,RM_Kurreth201624,RM_Kurreth201625"
+  }
+ ],
+ "snapshot": {
+  "tick": 36121,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [
+   {
+    "id": "RM_Kurreth201620",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 67,
+    "z": 122,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_KurrethStun",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth201621",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 74,
+    "z": 112,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_KurrethStun",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth201622",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 71,
+    "z": 124,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth201623",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 68,
+    "z": 122,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth201624",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 69,
+    "z": 122,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth201625",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 71,
+    "z": 124,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     2251
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buck",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buck",
+     2251
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Ancient mech",
+    "arrivalTick": 23552,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Ancient mech",
+     23552
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 22,
+   "adaptDays": -25.166666,
+   "totalThreatPointsFactor": 0.464444458,
+   "ticksGame": 36121
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Rakoto cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Klem failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Ian cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Ian failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Ian cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Middleton"
+  ],
+  [
+   "Message",
+   "Middleton failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Tyche cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Tyche failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Yarr failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Woods cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Woods failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Klem cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Jude cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Rakoto cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Klem failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Starting scan. Candidates=3, CurrentMood=0.32"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Jackalope: opinion=26, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Woods: opinion=29, mood=0.61, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Scan finished. NewlyAddedMemories=0"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954834,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954771,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 575,
+  "overhead_spent": 0,
+  "total_spent": 575,
+  "epoch": 0,
+  "last_seen_tick": 36121,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 8100,
+    "spent": 575
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 35546,
+    "tick_to": 36121,
+    "ticks": 575,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "kurreth_column",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T050655\\FeverWood__kurreth_column__hostile_pawns__t36121__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3599906,
+  "width": 1810,
+  "height": 1183,
+  "md5": "5716f627e70f1ecd3d0b4e4dc960f351",
+  "why": ""
+ },
+ "notes": []
+}

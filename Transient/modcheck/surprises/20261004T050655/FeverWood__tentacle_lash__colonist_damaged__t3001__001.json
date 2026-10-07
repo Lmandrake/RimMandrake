@@ -1,0 +1,564 @@
+{
+ "name": "FeverWood__tentacle_lash__colonist_damaged__t3001__001",
+ "when_utc": "2026-10-04T12:11:11Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Tyche took 1 damage event(s): Cut by RM_Sekkulaath_Lash",
+   "evidence": {
+    "id": "Human167431",
+    "events": [
+     {
+      "seq": 46,
+      "tick": 3001,
+      "damageDef": "Cut",
+      "amount": 8.0,
+      "instigatorId": "RM_Sekkulaath_Lash169770",
+      "instigatorDef": "RM_Sekkulaath_Lash",
+      "weapon": null,
+      "origin": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    130,
+    129
+   ],
+   "fingerprint": "colonist_damaged:Human167431:46"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Tyche is bleeding",
+   "evidence": {
+    "id": "Human167431",
+    "name": "Tyche",
+    "downed": false,
+    "bleedRate": 0.338823527,
+    "painTotal": 0.127058834
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    130,
+    129
+   ],
+   "fingerprint": "colonist_downed:Human167431:False"
+  }
+ ],
+ "snapshot": {
+  "tick": 3001,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [
+   {
+    "id": "Human167431",
+    "name": "Tyche",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 130,
+    "z": 129,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_PsychicPassion",
+      "label": "psychic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_IntimatePassion_Hediff",
+      "label": "intimate passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "HeartArteryBlockage",
+      "label": "artery blockage (minor)",
+      "part": "Heart",
+      "severity": 0.221533313
+     },
+     {
+      "def": "VBE_CaffeineAddiction",
+      "label": "caffeine addiction (38%)",
+      "part": null,
+      "severity": 0.6165541
+     },
+     {
+      "def": "VBE_CaffeineTolerance",
+      "label": "caffeine tolerance (small)",
+      "part": null,
+      "severity": 0.462086827
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Sternum",
+      "severity": 5.647059
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "part": "Torso",
+      "severity": 5.647059
+     }
+    ],
+    "bleedRate": 0.338823527,
+    "painTotal": 0.127058834,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Primitive Interment opportunity",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Primitive Interment opportunity",
+     2251
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buck",
+    "arrivalTick": 2251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buck",
+     2251
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -26.666666,
+   "totalThreatPointsFactor": 0.444444448,
+   "ticksGame": 3001
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Alarm already recently tried to seduce Walters"
+  ],
+  [
+   "Message",
+   "Alarm and Norton cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Alarm"
+  ],
+  [
+   "Message",
+   "Alarm failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Ian cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Middleton"
+  ],
+  [
+   "Message",
+   "Middleton failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Jude: Skipped because pawn is Psychopath."
+  ],
+  [
+   "Message",
+   "Yarr and Carlson are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Tyche cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Ulyana cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Yarr"
+  ],
+  [
+   "Message",
+   "Ulyana is drafted."
+  ],
+  [
+   "Message",
+   "Yarr failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Alarm already recently tried to seduce Walters"
+  ],
+  [
+   "Message",
+   "Alarm and Norton cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Alarm"
+  ],
+  [
+   "Message",
+   "Alarm failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Tyche cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Tyche failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 720,
+  "overhead_spent": 0,
+  "total_spent": 720,
+  "epoch": 0,
+  "last_seen_tick": 3001,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1500,
+    "spent": 720
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 2281,
+    "tick_to": 2879,
+    "ticks": 598,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 2879,
+    "tick_to": 3001,
+    "ticks": 122,
+    "requested": 122
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "tentacle_lash",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T050655\\FeverWood__tentacle_lash__colonist_damaged__t3001__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3617064,
+  "width": 1810,
+  "height": 1183,
+  "md5": "b48514a601befe2919058ab4aa6d7429",
+  "why": ""
+ },
+ "notes": []
+}

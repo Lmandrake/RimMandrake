@@ -1,0 +1,127 @@
+{
+ "chains": [
+  {
+   "name": "replay_dwelling_plan",
+   "components": [
+    {
+     "name": "dwelling_plan_replays_fully",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='dwelling_test.txt' field='foundationCells' value='0' (last matching line: None)",
+     "evidence": [
+      {
+       "call": "expect_log_contains(dwelling_test.txt, foundationCells=0)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "replay_moisture_farm_plan",
+   "components": [
+    {
+     "name": "moisture_farm_plan_replays",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='moisture_farm_test.txt' field='foundationCells' value='0' (last matching line: None)",
+     "evidence": [
+      {
+       "call": "expect_log_contains(moisture_farm_test.txt, foundationCells=0)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "enabled_toggle_flips",
+   "components": [
+    {
+     "name": "enabled_setting_flips",
+     "toggle": "enabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: mod_settings_field(set, RimMandrake.StructureInjections.RM_StructureInjectionsSettings.enabled=False) failed: {'success': False, 'message': \"No loaded type 'RimMandrake.StructureInjections.RM_StructureInjectionsSettings' found - mod not active, or the name is wrong (pass Type.FullName exactly).\", 'details': None, 'operation': {'OperationId': 'op_f765c31d24b6494fac4eb0663c95bfe5', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-03T05:47:43.9974201+00:00', 'CompletedAtUtc': '2026-10-03T05:47:44.5392299+00:00', 'DurationMs': 541, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FCB5BD0>",
+  "<suite.Component object at 0x000001BF5FCB7280>",
+  "<suite.Component object at 0x000001BF5FCB71D0>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\StructureInjections.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

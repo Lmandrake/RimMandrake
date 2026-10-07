@@ -1,0 +1,628 @@
+{
+ "name": "FeverWood__tentacle_lash__colonist_damaged__t367238__001",
+ "when_utc": "2026-10-06T12:10:31Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Charissa took 1 damage event(s): Cut by RM_Sekkulaath_Lash",
+   "evidence": {
+    "id": "Human94036",
+    "events": [
+     {
+      "seq": 259,
+      "tick": 367118,
+      "damageDef": "Cut",
+      "amount": 8.0,
+      "instigatorId": "RM_Sekkulaath_Lash94384",
+      "instigatorDef": "RM_Sekkulaath_Lash",
+      "weapon": null,
+      "origin": null,
+      "hediffsAdded": [
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    127,
+    133
+   ],
+   "fingerprint": "colonist_damaged:Human94036:259"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Charissa is bleeding",
+   "evidence": {
+    "id": "Human94036",
+    "name": "Charissa",
+    "downed": false,
+    "bleedRate": 0.52853334,
+    "painTotal": 0.110111117
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    127,
+    133
+   ],
+   "fingerprint": "colonist_downed:Human94036:False"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Charissa gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human94036",
+    "name": "Charissa",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00106186676
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    127,
+    133
+   ],
+   "fingerprint": "colonist_injured:Human94036:BloodLoss@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 367238,
+  "epoch": 0,
+  "map_id": 3,
+  "pawns": [
+   {
+    "id": "Human94036",
+    "name": "Charissa",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 127,
+    "z": 133,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Cut",
+      "label": "cut",
+      "part": "Torso",
+      "severity": 7.928
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00106186676
+     }
+    ],
+    "bleedRate": 0.52853334,
+    "painTotal": 0.110111117,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2439
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     2439
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 2439,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     2439
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "A hiss in the vents",
+    "arrivalTick": 158269,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "A hiss in the vents",
+     158269
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     158732
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     158732
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 158732,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     158732
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 335684,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     335684
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 359084,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     359084
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 359084,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     359084
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 361718,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     361718
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     362798
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     362798
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Patriotic Funeral opportunity for Sheep",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Patriotic Funeral opportunity for Sheep",
+     362798
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sheep",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sheep",
+     362798
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "She takes it back",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "She takes it back",
+     362798
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sold: Muffalo calf 2",
+    "arrivalTick": 362798,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sold: Muffalo calf 2",
+     362798
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Patriotic Funeral opportunity for Kallax",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Patriotic Funeral opportunity for Kallax",
+     362858
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kallax",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kallax",
+     362858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     362858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     362858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     362858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 362858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     362858
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 2,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 14,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 367238
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Freeze endsIn=26089 inBurst=True frozen=18 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=18 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Growth endsIn=146218 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Growth endsIn=146218 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Cracks endsIn=15130 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Cracks endsIn=15130 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=Melt endsIn=5667 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=Melt endsIn=5667 inBurst=True frozen=144 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=0 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] advanced. phase=StillHeat endsIn=128464 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=128464 inBurst=True frozen=0 gardensLive=0 cycles=1 gasIgnitions=0 floods=0 cellsFrozen=144 cellsMelted=144 gardensSpawned=8 gardensDrifted=8 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0 swarmLive=0 swarmErupted=60 swarmResealed=60"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser57780"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=440,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 440,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=440,0 got map.Tile=440,0 map.uniqueID=2 map.Index=2"
+  ],
+  [
+   "Warning",
+   "Tried to discard Younha whose state is -1."
+  ],
+  [
+   "Warning",
+   "Kallax on unwalkable cell (50, 0, 50). Teleporting to (49, 0, 50)"
+  ],
+  [
+   "Error",
+   "Tried to play sustainer SoundDef Interact_Tend as a one-shot sound."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=1294,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 1294,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=1294,0 got map.Tile=1294,0 map.uniqueID=3 map.Index=3"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser87647"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594952676,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 367238,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1500,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 366638,
+    "tick_to": 367238,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "tentacle_lash",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T050713\\FeverWood__tentacle_lash__colonist_damaged__t367238__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4717412,
+  "width": 2516,
+  "height": 1252,
+  "md5": "3531ace906df91752839179d356864e5",
+  "why": ""
+ },
+ "notes": []
+}

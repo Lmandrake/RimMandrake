@@ -1,0 +1,547 @@
+{
+ "chains": [
+  {
+   "name": "trait_defs_readback",
+   "components": [
+    {
+     "name": "rollable_trait_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: TraitDef/RUT_Jawa_WaterDiscipline.commonality = '(no such field)', expected a numeric commonality",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "TraitDef/RUT_Jawa_WaterDiscipline"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "commonality",
+         "degreeDatas"
+        ],
+        "defs": [
+         {
+          "requested": "TraitDef/RUT_Jawa_WaterDiscipline",
+          "found": false,
+          "defType": "TraitDef",
+          "defName": "RUT_Jawa_WaterDiscipline"
+         }
+        ],
+        "ticksGame": 343321,
+        "operation": {
+         "OperationId": "op_a1ed3a4a979941b7a39735cca6188dd3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:46:45.3075467+00:00",
+         "CompletedAtUtc": "2026-10-03T05:46:45.3151299+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "TraitDef/RUT_Jawa_WaterDiscipline.commonality -> '(no such field)' (a numeric commonality)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "forced_only_trait_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "TraitDef/RUT_Jawa_Numbered.commonality -> '(no such field)' (commonality 0 (forcedTraits-only))",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "backstory_defs_readback",
+   "components": [
+    {
+     "name": "backstory_RUT_Jawa_AcademyCadet",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: BackstoryDef/RUT_Jawa_AcademyCadet.slot = '(no such field)', expected slot=Childhood",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "BackstoryDef/RUT_Jawa_AcademyCadet"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "slot",
+         "spawnCategories"
+        ],
+        "defs": [
+         {
+          "requested": "BackstoryDef/RUT_Jawa_AcademyCadet",
+          "found": false,
+          "defType": "BackstoryDef",
+          "defName": "RUT_Jawa_AcademyCadet"
+         }
+        ],
+        "ticksGame": 343321,
+        "operation": {
+         "OperationId": "op_3e1a07b57f744ec29694ecbc22dd98bd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:46:46.5475947+00:00",
+         "CompletedAtUtc": "2026-10-03T05:46:46.5529431+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_AcademyCadet.slot -> '(no such field)' (slot=Childhood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_Majordomo",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_Majordomo.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_PurificationEngineer",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_PurificationEngineer.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_ColdForged",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_ColdForged.slot -> '(no such field)' (slot=Childhood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_AshSpeaker",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_AshSpeaker.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_MootSpeaker",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_MootSpeaker.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "backstory_RUT_Jawa_RetrievalAgent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_RetrievalAgent.slot -> '(no such field)' (slot=Adulthood)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "vqe_rakata_categories_readback",
+   "components": [
+    {
+     "name": "ancient_patient_pool_marked",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: BackstoryDef/RUT_Jawa_RakataSiegeChild.spawnCategories = '(no such field)', expected VQE_AncientPatient present",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "BackstoryDef/RUT_Jawa_RakataSiegeChild"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "spawnCategories"
+        ],
+        "defs": [
+         {
+          "requested": "BackstoryDef/RUT_Jawa_RakataSiegeChild",
+          "found": false,
+          "defType": "BackstoryDef",
+          "defName": "RUT_Jawa_RakataSiegeChild"
+         }
+        ],
+        "ticksGame": 343321,
+        "operation": {
+         "OperationId": "op_a7dc7d2c830e4f26af1395db7da0c291",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:46:47.7975828+00:00",
+         "CompletedAtUtc": "2026-10-03T05:46:47.8045862+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "BackstoryDef/RUT_Jawa_RakataSiegeChild.spawnCategories -> '(no such field)' (VQE_AncientPatient present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "experiment_pool_marked",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "BackstoryDef/RUT_Jawa_RakataTakenChild.spawnCategories -> '(no such field)' (VQE_Experiment present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "faction_patch_wired_vanilla",
+   "components": [
+    {
+     "name": "empire_filter_wired",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: FactionDef/Empire.backstoryFilters = [{'categories': ['ImperialCommon'], 'exclude': None, 'categoriesChildhood': None, 'excludeChildhood': None, 'categoriesAdulthood': None, 'excludeAdulthood': None, 'commonality': 1.0}], expected JawaBSC_Empire present",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "backstoryFilters"
+        ],
+        "defs": [
+         {
+          "requested": "FactionDef/Empire",
+          "found": true,
+          "defName": "Empire",
+          "defType": "FactionDef",
+          "label": "shattered empire",
+          "modName": "Royalty",
+          "packageId": "ludeon.rimworld.royalty",
+          "fields": {
+           "backstoryFilters": [
+            {
+             "categories": [
+              "ImperialCommon"
+             ],
+             "exclude": null,
+             "categoriesChildhood": null,
+             "excludeChildhood": null,
+             "categoriesAdulthood": null,
+             "excludeAdulthood": null,
+             "commonality": 1.0
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 343321,
+        "operation": {
+         "OperationId": "op_10cdf68253d346d3b184ab384224c467",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:46:49.0744239+00:00",
+         "CompletedAtUtc": "2026-10-03T05:46:49.0806895+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "FactionDef/Empire.backstoryFilters -> [{'categories': ['ImperialCommon'], 'exclude': None, 'categoriesChildhood': None, 'excludeChildhood': None, 'categoriesAdulthood': None, 'excludeAdulthood': None, 'commonality': 1.0}] (JawaBSC_Empire present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pirate_filter_wired",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [
+      {
+       "call": "FactionDef/Pirate.backstoryFilters -> '(no such field)' (JawaBSC_Blackstar present)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "empire_pawn_generation",
+   "components": [
+    {
+     "name": "empire_pawn_draws_flavor_backstory",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: none of 12 spawned Empire pawns drew a RUT_Jawa_* backstory: [('ComaChild93', 'RoyalCook18'), ('StoryWriter67', 'BalletDancer81'), ('MusicalKid86', 'CorporateFixer36'), ('VatgrownSoldier8', 'Housemate8'), ('WarRefugee51', 'RoyalCook18'), ('ShopKid36', 'ImperialInquisitor53'), ('ShopKid36', 'RoyalMasseuse43'), ('Pyromaniac18', 'SpaceTactician28'), ('WarRefugee51', 'PlanetaryMiner64'), ('Scout44', 'PlanetaryMiner64'), ('StoryWriter67', 'OrnamentMaker56'), ('OrganFarm67', 'LowWageWorker7')]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FCB6A40>",
+  "<suite.Component object at 0x000001BF5FCB7490>",
+  "<suite.Component object at 0x000001BF5FCB78B0>",
+  "<suite.Component object at 0x000001BF5FCB6620>",
+  "<suite.Component object at 0x000001BF5FCB6780>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\PawnFlavor.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

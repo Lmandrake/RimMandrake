@@ -1,0 +1,633 @@
+{
+ "name": "FlowWorksExtensions__toggle_bottle_dirty__colonist_injured_unexpectedly__t78866__001",
+ "when_utc": "2026-10-06T09:47:55Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Igor gained 1 new hediff(s) (Heatstroke); cause_hint=heat",
+   "evidence": {
+    "id": "Human31315",
+    "name": "Igor",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    123,
+    158
+   ],
+   "fingerprint": "colonist_injured:Human31315:Heatstroke@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Anbo gained 1 new hediff(s) (Heatstroke); cause_hint=heat",
+   "evidence": {
+    "id": "Human31318",
+    "name": "Anbo",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    103,
+    138
+   ],
+   "fingerprint": "colonist_injured:Human31318:Heatstroke@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Mila gained 1 new hediff(s) (Heatstroke); cause_hint=heat",
+   "evidence": {
+    "id": "Human31321",
+    "name": "Mila",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    91,
+    130
+   ],
+   "fingerprint": "colonist_injured:Human31321:Heatstroke@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Darya gained 1 new hediff(s) (Heatstroke); cause_hint=heat",
+   "evidence": {
+    "id": "Human31374",
+    "name": "Darya",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    118,
+    153
+   ],
+   "fingerprint": "colonist_injured:Human31374:Heatstroke@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 78866,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human31315",
+    "name": "Igor",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 123,
+    "z": 158,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human31318",
+    "name": "Anbo",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 103,
+    "z": 138,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human31321",
+    "name": "Mila",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 91,
+    "z": 130,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human31374",
+    "name": "Darya",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 118,
+    "z": 153,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Stab",
+      "label": "stab scar",
+      "part": "Shoulder",
+      "severity": 6.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch scar (itchy)",
+      "part": "Torso",
+      "severity": 2.0
+     },
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00300000026
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0125,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "Seasonal flooding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Seasonal flooding",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 9,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 78866
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[JawaBench] ready: 373 tools, build bf614bde1cce"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 10/46c1792b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=738,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=738,0 got map.Tile=738,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 3.0."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to get CurKindLifeStage from humanlike pawn Anbo"
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "Object with load ID Thing_Human25762 is referenced (xml node name: otherPawn) but is not deep-saved. This will cause errors during loading."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 1800,
+  "overhead_spent": 0,
+  "total_spent": 1800,
+  "epoch": 0,
+  "last_seen_tick": 78866,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 6850,
+    "spent": 1800
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 77066,
+    "tick_to": 77666,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 77666,
+    "tick_to": 78266,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 78266,
+    "tick_to": 78866,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "toggle_bottle_dirty",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T021919\\FlowWorksExtensions__toggle_bottle_dirty__colonist_injured_unexpectedly__t78866__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3322148,
+  "width": 2516,
+  "height": 1252,
+  "md5": "2b53eb0347174a2bd769057916a7c974",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,341 @@
+{
+ "chains": [
+  {
+   "name": "own_tab_defs",
+   "components": [
+    {
+     "name": "research_tabs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: RUT_Tree_* ResearchTabDefs did not resolve as shipped: not found: ['ResearchTabDef/RUT_Tree_Scavenging', 'ResearchTabDef/RUT_Tree_Refinery', 'ResearchTabDef/RUT_Tree_Workshop', 'ResearchTabDef/RUT_Tree_Hearth', 'ResearchTabDef/RUT_Tree_PowderAndSlug', 'ResearchTabDef/RUT_Tree_Utinni', 'ResearchTabDef/RUT_Tree_Shell', 'ResearchTabDef/RUT_Tree_Unbolting', 'ResearchTabDef/RUT_Tree_Blasterworks', 'ResearchTabDef/RUT_Tree_WakingMind', 'ResearchTabDef/RUT_Tree_Reach', 'ResearchTabDef/RUT_Tree_AscendantLadder', 'ResearchTabDef/RUT_Tree_StrangeSchools', 'ResearchTabDef/RUT_Tree_JunkerYards', 'ResearchTabDef/RUT_Tree_FoundryHive']; RUT_Tree_Scavenging: expected label='jawa scavenging', got None; RUT_Tree_Refinery: expected label='the refinery', got None; RUT_Tree_Workshop: expected label='the workshop', got None; RUT_Tree_Hearth: expected label='the hearth', got None; RUT_Tree_PowderAndSlug: expected label='powder & slug', got None; RUT_Tree_Utinni: expected label='the utinni', got None; RUT_Tree_Shell: expected label='the shell', got None; RUT_Tree_Unbolting: expected label='the unbolting', got None; RUT_Tree_Blasterworks: expected label='blasterworks', got None; RUT_Tree_WakingMind: expected label='the waking mind', got None; RUT_Tree_Reach: expected label='the reach', got None; RUT_Tree_AscendantLadder: expected label='the ascendant ladder', got None; RUT_Tree_StrangeSchools: expected label='the strange schools', got None; RUT_Tree_JunkerYards: expected label='the junker yards', got None; RUT_Tree_FoundryHive: expected label='the foundry hive', got None",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 15 def(s) resolved; 15 not found",
+        "requested": 15,
+        "foundCount": 0,
+        "notFound": [
+         "ResearchTabDef/RUT_Tree_Scavenging",
+         "ResearchTabDef/RUT_Tree_Refinery",
+         "ResearchTabDef/RUT_Tree_Workshop",
+         "ResearchTabDef/RUT_Tree_Hearth",
+         "ResearchTabDef/RUT_Tree_PowderAndSlug",
+         "ResearchTabDef/RUT_Tree_Utinni",
+         "ResearchTabDef/RUT_Tree_Shell",
+         "ResearchTabDef/RUT_Tree_Unbolting",
+         "ResearchTabDef/RUT_Tree_Blasterworks",
+         "ResearchTabDef/RUT_Tree_WakingMind",
+         "ResearchTabDef/RUT_Tree_Reach",
+         "ResearchTabDef/RUT_Tree_AscendantLadder",
+         "ResearchTabDef/RUT_Tree_StrangeSchools",
+         "ResearchTabDef/RUT_Tree_JunkerYards",
+         "ResearchTabDef/RUT_Tree_FoundryHive"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "label",
+         "generalTitle"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Scavenging",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Scavenging"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Refinery",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Refinery"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Workshop",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Workshop"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Hearth",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Hearth"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_PowderAndSlug",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_PowderAndSlug"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Utinni",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Utinni"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Shell",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Shell"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Unbolting",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Unbolting"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Blasterworks",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Blasterworks"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_WakingMind",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_WakingMind"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_Reach",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_Reach"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_AscendantLadder",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_AscendantLadder"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_StrangeSchools",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_StrangeSchools"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_JunkerYards",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_JunkerYards"
+         },
+         {
+          "requested": "ResearchTabDef/RUT_Tree_FoundryHive",
+          "found": false,
+          "defType": "ResearchTabDef",
+          "defName": "RUT_Tree_FoundryHive"
+         }
+        ],
+        "ticksGame": 343321,
+        "operation": {
+         "OperationId": "op_3165e2b96fc746bbbddf08a433b5f904",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:22.7622268+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:22.7713167+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "core_rows_retagged",
+   "components": [
+    {
+     "name": "core_rows_match_manifest",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: Core research rows do not match the retag/tab-assign patches: AirConditioning.baseCost: expected '700', got 500.0; AirConditioning.tab: expected 'RUT_Tree_Scavenging', got 'Main'; Autodoors.baseCost: expected '1700', got 600.0; Autodoors.tab: expected 'RUT_Tree_Scavenging', got 'Main'; CarpetMaking.techLevel: expected 'Industrial', got 'Medieval'; CarpetMaking.tab: expected 'RUT_Tree_Hearth', got 'Main'; ColoredLights.baseCost: expected '700', got 300.0; ColoredLights.tab: expected 'RUT_Tree_Hearth', got 'Main'; Cryptosleep.techLevel: expected 'Industrial', got 'Spacer'; Cryptosleep.tab: expected 'RUT_Tree_Reach', got 'Main'; Cryptosleep.prerequisites: expected 'VitalsMonitor' in ['MultiAnalyzer']",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "5 of 5 def(s) resolved",
+        "requested": 5,
+        "foundCount": 5,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "baseCost",
+         "techLevel",
+         "tab",
+         "prerequisites"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchProjectDef/AirConditioning",
+          "found": true,
+          "defName": "AirConditioning",
+          "defType": "ResearchProjectDef",
+          "label": "air conditioning",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 500.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "Main"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/Autodoors",
+          "found": true,
+          "defName": "Autodoors",
+          "defType": "ResearchProjectDef",
+          "label": "autodoor",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 600.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "Main"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/CarpetMaking",
+          "found": true,
+          "defName": "CarpetMaking",
+          "defType": "ResearchProjectDef",
+          "label": "carpet-making",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 800.0,
+           "prerequisites": null,
+           "techLevel": "Medieval",
+           "tab": "Main"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/ColoredLights",
+          "found": true,
+          "defName": "ColoredLights",
+          "defType": "ResearchProjectDef",
+          "label": "advanced lights",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 300.0,
+           "prerequisites": [
+            "Electricity"
+           ],
+           "techLevel": "Industrial",
+           "tab": "Main"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/Cryptosleep",
+          "found": true,
+          "defName": "Cryptosleep",
+          "defType": "ResearchProjectDef",
+          "label": "cryptosleep casket",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "baseCost": 2000.0,
+           "prerequisites": [
+            "MultiAnalyzer"
+           ],
+           "techLevel": "Spacer",
+           "tab": "Main"
+          }
+         }
+        ],
+        "ticksGame": 343321,
+        "operation": {
+         "OperationId": "op_542a68ed4caf42c38312b9b5df80e010",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:24.3164799+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:24.3259686+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FCB5BD0>",
+  "<suite.Component object at 0x000001BF5FCB78B0>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\ResearchRetag.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

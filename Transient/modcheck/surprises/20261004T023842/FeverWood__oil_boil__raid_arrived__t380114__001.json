@@ -1,0 +1,1636 @@
+{
+ "name": "FeverWood__oil_boil__raid_arrived__t380114__001",
+ "when_utc": "2026-10-04T09:56:41Z",
+ "hits": [
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): The oil haze flashed; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      380114,
+      "The oil haze flashed"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@380114"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "197 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 110,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 138
+     },
+     {
+      "x": 111,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 136
+     },
+     {
+      "x": 109,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 139
+     },
+     {
+      "x": 111,
+      "z": 138
+     },
+     {
+      "x": 109,
+      "z": 138
+     },
+     {
+      "x": 112,
+      "z": 137
+     },
+     {
+      "x": 111,
+      "z": 136
+     },
+     {
+      "x": 110,
+      "z": 135
+     },
+     {
+      "x": 109,
+      "z": 136
+     },
+     {
+      "x": 108,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 140
+     },
+     {
+      "x": 111,
+      "z": 139
+     },
+     {
+      "x": 109,
+      "z": 139
+     },
+     {
+      "x": 112,
+      "z": 138
+     },
+     {
+      "x": 108,
+      "z": 138
+     },
+     {
+      "x": 113,
+      "z": 137
+     },
+     {
+      "x": 112,
+      "z": 136
+     },
+     {
+      "x": 111,
+      "z": 135
+     },
+     {
+      "x": 110,
+      "z": 134
+     },
+     {
+      "x": 109,
+      "z": 135
+     },
+     {
+      "x": 108,
+      "z": 136
+     },
+     {
+      "x": 107,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 141
+     },
+     {
+      "x": 111,
+      "z": 140
+     },
+     {
+      "x": 109,
+      "z": 140
+     },
+     {
+      "x": 112,
+      "z": 139
+     },
+     {
+      "x": 108,
+      "z": 139
+     },
+     {
+      "x": 113,
+      "z": 138
+     },
+     {
+      "x": 107,
+      "z": 138
+     },
+     {
+      "x": 114,
+      "z": 137
+     },
+     {
+      "x": 113,
+      "z": 136
+     },
+     {
+      "x": 112,
+      "z": 135
+     },
+     {
+      "x": 111,
+      "z": 134
+     },
+     {
+      "x": 110,
+      "z": 133
+     },
+     {
+      "x": 109,
+      "z": 134
+     },
+     {
+      "x": 108,
+      "z": 135
+     },
+     {
+      "x": 107,
+      "z": 136
+     },
+     {
+      "x": 106,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 142
+     },
+     {
+      "x": 111,
+      "z": 141
+     },
+     {
+      "x": 109,
+      "z": 141
+     },
+     {
+      "x": 112,
+      "z": 140
+     },
+     {
+      "x": 108,
+      "z": 140
+     },
+     {
+      "x": 113,
+      "z": 139
+     },
+     {
+      "x": 107,
+      "z": 139
+     },
+     {
+      "x": 114,
+      "z": 138
+     },
+     {
+      "x": 106,
+      "z": 138
+     },
+     {
+      "x": 115,
+      "z": 137
+     },
+     {
+      "x": 114,
+      "z": 136
+     },
+     {
+      "x": 113,
+      "z": 135
+     },
+     {
+      "x": 112,
+      "z": 134
+     },
+     {
+      "x": 111,
+      "z": 133
+     },
+     {
+      "x": 110,
+      "z": 132
+     },
+     {
+      "x": 109,
+      "z": 133
+     },
+     {
+      "x": 108,
+      "z": 134
+     },
+     {
+      "x": 107,
+      "z": 135
+     },
+     {
+      "x": 106,
+      "z": 136
+     },
+     {
+      "x": 105,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 143
+     },
+     {
+      "x": 111,
+      "z": 142
+     },
+     {
+      "x": 109,
+      "z": 142
+     },
+     {
+      "x": 112,
+      "z": 141
+     },
+     {
+      "x": 108,
+      "z": 141
+     },
+     {
+      "x": 113,
+      "z": 140
+     },
+     {
+      "x": 107,
+      "z": 140
+     },
+     {
+      "x": 114,
+      "z": 139
+     },
+     {
+      "x": 106,
+      "z": 139
+     },
+     {
+      "x": 115,
+      "z": 138
+     },
+     {
+      "x": 105,
+      "z": 138
+     },
+     {
+      "x": 116,
+      "z": 137
+     },
+     {
+      "x": 115,
+      "z": 136
+     },
+     {
+      "x": 114,
+      "z": 135
+     },
+     {
+      "x": 113,
+      "z": 134
+     },
+     {
+      "x": 112,
+      "z": 133
+     },
+     {
+      "x": 111,
+      "z": 132
+     },
+     {
+      "x": 110,
+      "z": 131
+     },
+     {
+      "x": 109,
+      "z": 132
+     },
+     {
+      "x": 108,
+      "z": 133
+     },
+     {
+      "x": 107,
+      "z": 134
+     },
+     {
+      "x": 106,
+      "z": 135
+     },
+     {
+      "x": 105,
+      "z": 136
+     },
+     {
+      "x": 104,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 144
+     },
+     {
+      "x": 111,
+      "z": 143
+     },
+     {
+      "x": 109,
+      "z": 143
+     },
+     {
+      "x": 112,
+      "z": 142
+     },
+     {
+      "x": 108,
+      "z": 142
+     },
+     {
+      "x": 113,
+      "z": 141
+     },
+     {
+      "x": 107,
+      "z": 141
+     },
+     {
+      "x": 114,
+      "z": 140
+     },
+     {
+      "x": 106,
+      "z": 140
+     },
+     {
+      "x": 115,
+      "z": 139
+     },
+     {
+      "x": 105,
+      "z": 139
+     },
+     {
+      "x": 116,
+      "z": 138
+     },
+     {
+      "x": 104,
+      "z": 138
+     },
+     {
+      "x": 117,
+      "z": 137
+     },
+     {
+      "x": 116,
+      "z": 136
+     },
+     {
+      "x": 115,
+      "z": 135
+     },
+     {
+      "x": 114,
+      "z": 134
+     },
+     {
+      "x": 113,
+      "z": 133
+     },
+     {
+      "x": 112,
+      "z": 132
+     },
+     {
+      "x": 111,
+      "z": 131
+     },
+     {
+      "x": 110,
+      "z": 130
+     },
+     {
+      "x": 109,
+      "z": 131
+     },
+     {
+      "x": 108,
+      "z": 132
+     },
+     {
+      "x": 107,
+      "z": 133
+     },
+     {
+      "x": 106,
+      "z": 134
+     },
+     {
+      "x": 105,
+      "z": 135
+     },
+     {
+      "x": 104,
+      "z": 136
+     },
+     {
+      "x": 103,
+      "z": 137
+     },
+     {
+      "x": 110,
+      "z": 145
+     },
+     {
+      "x": 111,
+      "z": 144
+     },
+     {
+      "x": 109,
+      "z": 144
+     },
+     {
+      "x": 112,
+      "z": 143
+     },
+     {
+      "x": 108,
+      "z": 143
+     },
+     {
+      "x": 113,
+      "z": 142
+     },
+     {
+      "x": 107,
+      "z": 142
+     },
+     {
+      "x": 114,
+      "z": 141
+     },
+     {
+      "x": 106,
+      "z": 141
+     },
+     {
+      "x": 115,
+      "z": 140
+     },
+     {
+      "x": 105,
+      "z": 140
+     },
+     {
+      "x": 116,
+      "z": 139
+     },
+     {
+      "x": 104,
+      "z": 139
+     },
+     {
+      "x": 117,
+      "z": 138
+     },
+     {
+      "x": 103,
+      "z": 138
+     },
+     {
+      "x": 118,
+      "z": 137
+     },
+     {
+      "x": 117,
+      "z": 136
+     },
+     {
+      "x": 116,
+      "z": 135
+     },
+     {
+      "x": 115,
+      "z": 134
+     },
+     {
+      "x": 114,
+      "z": 133
+     },
+     {
+      "x": 113,
+      "z": 132
+     },
+     {
+      "x": 112,
+      "z": 131
+     },
+     {
+      "x": 111,
+      "z": 130
+     },
+     {
+      "x": 110,
+      "z": 129
+     },
+     {
+      "x": 109,
+      "z": 130
+     },
+     {
+      "x": 108,
+      "z": 131
+     },
+     {
+      "x": 107,
+      "z": 132
+     },
+     {
+      "x": 106,
+      "z": 133
+     },
+     {
+      "x": 105,
+      "z": 134
+     },
+     {
+      "x": 104,
+      "z": 135
+     },
+     {
+      "x": 103,
+      "z": 136
+     },
+     {
+      "x": 102,
+      "z": 137
+     },
+     {
+      "x": 112,
+      "z": 144
+     },
+     {
+      "x": 108,
+      "z": 144
+     },
+     {
+      "x": 113,
+      "z": 143
+     },
+     {
+      "x": 107,
+      "z": 143
+     },
+     {
+      "x": 114,
+      "z": 142
+     },
+     {
+      "x": 106,
+      "z": 142
+     },
+     {
+      "x": 115,
+      "z": 141
+     },
+     {
+      "x": 105,
+      "z": 141
+     },
+     {
+      "x": 116,
+      "z": 140
+     },
+     {
+      "x": 104,
+      "z": 140
+     },
+     {
+      "x": 117,
+      "z": 139
+     },
+     {
+      "x": 103,
+      "z": 139
+     },
+     {
+      "x": 117,
+      "z": 135
+     },
+     {
+      "x": 116,
+      "z": 134
+     },
+     {
+      "x": 115,
+      "z": 133
+     },
+     {
+      "x": 114,
+      "z": 132
+     },
+     {
+      "x": 113,
+      "z": 131
+     },
+     {
+      "x": 112,
+      "z": 130
+     },
+     {
+      "x": 108,
+      "z": 130
+     },
+     {
+      "x": 107,
+      "z": 131
+     },
+     {
+      "x": 106,
+      "z": 132
+     },
+     {
+      "x": 105,
+      "z": 133
+     },
+     {
+      "x": 104,
+      "z": 134
+     },
+     {
+      "x": 103,
+      "z": 135
+     },
+     {
+      "x": 113,
+      "z": 144
+     },
+     {
+      "x": 107,
+      "z": 144
+     },
+     {
+      "x": 114,
+      "z": 143
+     },
+     {
+      "x": 106,
+      "z": 143
+     },
+     {
+      "x": 115,
+      "z": 142
+     },
+     {
+      "x": 105,
+      "z": 142
+     },
+     {
+      "x": 116,
+      "z": 141
+     },
+     {
+      "x": 104,
+      "z": 141
+     },
+     {
+      "x": 117,
+      "z": 140
+     },
+     {
+      "x": 103,
+      "z": 140
+     },
+     {
+      "x": 117,
+      "z": 134
+     },
+     {
+      "x": 116,
+      "z": 133
+     },
+     {
+      "x": 115,
+      "z": 132
+     },
+     {
+      "x": 114,
+      "z": 131
+     },
+     {
+      "x": 113,
+      "z": 130
+     },
+     {
+      "x": 107,
+      "z": 130
+     },
+     {
+      "x": 106,
+      "z": 131
+     },
+     {
+      "x": 105,
+      "z": 132
+     },
+     {
+      "x": 104,
+      "z": 133
+     },
+     {
+      "x": 103,
+      "z": 134
+     },
+     {
+      "x": 115,
+      "z": 143
+     },
+     {
+      "x": 105,
+      "z": 143
+     },
+     {
+      "x": 116,
+      "z": 142
+     },
+     {
+      "x": 104,
+      "z": 142
+     },
+     {
+      "x": 116,
+      "z": 132
+     },
+     {
+      "x": 115,
+      "z": 131
+     },
+     {
+      "x": 105,
+      "z": 131
+     },
+     {
+      "x": 104,
+      "z": 132
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    110,
+    137
+   ],
+   "fingerprint": "fire_on_map:197"
+  }
+ ],
+ "snapshot": {
+  "tick": 380114,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Jovial",
+    "arrivalTick": 24387,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jovial",
+     24387
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 25074,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     25074
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cotwo",
+    "arrivalTick": 25074,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cotwo",
+     25074
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Summer",
+    "arrivalTick": 355075,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Summer",
+     355075
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 355075,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     355075
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Illoth hunting (*Name)Iris(/Name)",
+    "arrivalTick": 355086,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Illoth hunting (*Name)Iris(/Name)",
+     355086
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Cait",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Cait",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Jovial",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Jovial",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Cotwo",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Cotwo",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Unwavering prisoner",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Unwavering prisoner",
+     355545
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 605 for 740",
+    "arrivalTick": 355545,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 605 for 740",
+     355545
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Disease: Infection",
+    "arrivalTick": 357290,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Disease: Infection",
+     357290
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 360824,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     360824
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Stanislav",
+    "arrivalTick": 360824,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Stanislav",
+     360824
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 360984,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     360984
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Merandil",
+    "arrivalTick": 360984,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Merandil",
+     360984
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369370,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369370
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Deva",
+    "arrivalTick": 369370,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Deva",
+     369370
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369575,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369575
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mila",
+    "arrivalTick": 369575,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mila",
+     369575
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 369853,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     369853
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Frankie",
+    "arrivalTick": 369853,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Frankie",
+     369853
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Pacifist Funeral opportunity",
+    "arrivalTick": 370728,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Pacifist Funeral opportunity",
+     370728
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Patches",
+    "arrivalTick": 370728,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Patches",
+     370728
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 380114,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     380114
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 12,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 38,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 380114
+  },
+  "fires": 197,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Starry is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Mel is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Tail is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Jinkson is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Izzy is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Smelly is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Neme is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Yuki is already in conversation."
+  ],
+  [
+   "Message",
+   "Vikinger is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Nannos is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Atkins is already in conversation."
+  ],
+  [
+   "Message",
+   "Speedy is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Charlzie is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Isis is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Gransier is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Clarke is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Grunt is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Kurreth) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 6.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 100.0 [Exalted]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950849,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 380114,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "oil_boil",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T023842\\FeverWood__oil_boil__raid_arrived__t380114__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2884326,
+  "width": 1810,
+  "height": 1183,
+  "md5": "a769503dbe1b34b318452821f315127e",
+  "why": ""
+ },
+ "notes": []
+}

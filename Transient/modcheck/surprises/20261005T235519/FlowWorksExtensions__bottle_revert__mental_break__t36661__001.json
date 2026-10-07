@@ -1,0 +1,520 @@
+{
+ "name": "FlowWorksExtensions__bottle_revert__mental_break__t36661__001",
+ "when_utc": "2026-10-06T07:01:42Z",
+ "hits": [
+  {
+   "detector": "mental_break",
+   "severity": "SURPRISE",
+   "summary": "Semyon entered mental state WanderConfused",
+   "evidence": {
+    "id": "Human38079",
+    "mentalState": "WanderConfused",
+    "isAggro": false,
+    "via": "pawn_census"
+   },
+   "suggest": [
+    "calm_colonists"
+   ],
+   "focus": [
+    84,
+    138
+   ],
+   "fingerprint": "mental_break:Human38079:WanderConfused"
+  }
+ ],
+ "snapshot": {
+  "tick": 36661,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human38079",
+    "name": "Semyon",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 84,
+    "z": 138,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": {
+     "def": "WanderConfused",
+     "isAggro": false,
+     "ageTicks": 150,
+     "causedByMood": false,
+     "causedByDamage": false,
+     "causedByPawn": null,
+     "forceRecoverAfterTicks": -1
+    },
+    "hediffs": [
+     {
+      "def": "BadBack",
+      "label": "bad back",
+      "part": "Spine",
+      "severity": 0.001
+     },
+     {
+      "def": "Dementia",
+      "label": "dementia",
+      "part": "Brain",
+      "severity": 0.001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NegativeEvent",
+    "label": "(*Name)Dragon(/Name): Heatstroke",
+    "arrivalTick": 19996,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "(*Name)Dragon(/Name): Heatstroke",
+     19996
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Unwavering prisoner",
+    "arrivalTick": 27898,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Unwavering prisoner",
+     27898
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "(*Name)Alovebo(/Name): Heatstroke",
+    "arrivalTick": 31535,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "(*Name)Alovebo(/Name): Heatstroke",
+     31535
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Confusion: Semyon",
+    "arrivalTick": 36526,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Confusion: Semyon",
+     36526
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 6,
+   "adaptDays": -4.125,
+   "totalThreatPointsFactor": 0.745,
+   "ticksGame": 36661
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=7396"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=7397"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=2 elapsedMs=7400"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=7401"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=7401"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=7403"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=21 elapsedMs=7425"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=393 elapsedMs=7426"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=22 elapsedMs=7426"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: 5101cf7aa53c440bbb96e0f2dab1dccb"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - ray1203.SimpleCameraSetting\n  - mandrake.rm.flowworks"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 373 tools, build bf614bde1cce"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 10/46c1792b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith37957"
+  ],
+  [
+   "Error",
+   "Tried to get CurKindLifeStage from humanlike pawn Bacchus"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith37957"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 5500,
+  "overhead_spent": 0,
+  "total_spent": 5500,
+  "epoch": 0,
+  "last_seen_tick": 36661,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 4037,
+    "spent": 2750
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 31161,
+    "tick_to": 31761,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 31761,
+    "tick_to": 32361,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 32361,
+    "tick_to": 32961,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 32961,
+    "tick_to": 33561,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 33561,
+    "tick_to": 33911,
+    "ticks": 350,
+    "requested": 350
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 33911,
+    "tick_to": 34511,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 34511,
+    "tick_to": 35111,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 35111,
+    "tick_to": 35711,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 35711,
+    "tick_to": 36311,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 36311,
+    "tick_to": 36661,
+    "ticks": 350,
+    "requested": 350
+   }
+  ]
+ },
+ "context": {
+  "mod": "FlowWorksExtensions",
+  "chain": "bottle_revert",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261005T235519\\FlowWorksExtensions__bottle_revert__mental_break__t36661__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4327912,
+  "width": 2516,
+  "height": 1252,
+  "md5": "f5c678454f5eebfc6377b03c91063931",
+  "why": ""
+ },
+ "notes": []
+}

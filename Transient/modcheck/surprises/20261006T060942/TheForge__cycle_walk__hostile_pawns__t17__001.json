@@ -1,0 +1,391 @@
+{
+ "name": "TheForge__cycle_walk__hostile_pawns__t17__001",
+ "when_utc": "2026-10-06T13:09:59Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "2 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Megaspider58106",
+      "kindDef": "Megaspider",
+      "faction": "Insect",
+      "x": 195,
+      "z": 51
+     },
+     {
+      "id": "Spelopede58107",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 197,
+      "z": 50
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    195,
+    51
+   ],
+   "fingerprint": "hostile_pawns:Megaspider58106,Spelopede58107"
+  }
+ ],
+ "snapshot": {
+  "tick": 17,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Megaspider58106",
+    "name": "Megaspider",
+    "kindDef": "Megaspider",
+    "def": "Megaspider",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 195,
+    "z": 51,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede58107",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 197,
+    "z": 50,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 6,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 17
+  },
+  "fires": 0,
+  "conditions": []
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=35352"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=35356"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=28 elapsedMs=35385"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=1209 elapsedMs=35385"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=28 elapsedMs=35385"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: e443173dc16f41e588c2e8b0da6ebdbe"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 373 tools, build e5f4f08c3bef"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 14/c5cd396b, toolSet 0a7653a4, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) \u2014 no furnace-beast herd seeded."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - ray1203."
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 75663,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=3,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 3,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=3,0 got map.Tile=3,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] spunstone points=0 revealed=False projectHidden=True canStart=False"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] spunstone points=0 revealed=True projectHidden=False canStart=False"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "LudeonTK.Dialog_DevPalette",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 1,
+   "isDebug": true,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957120,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957181,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 16,
+  "overhead_spent": 0,
+  "total_spent": 16,
+  "epoch": 0,
+  "last_seen_tick": 17,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 602,
+    "spent": 2
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1,
+    "tick_to": 3,
+    "ticks": 2,
+    "requested": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 3,
+    "tick_to": 5,
+    "ticks": 2,
+    "requested": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 5,
+    "tick_to": 7,
+    "ticks": 2,
+    "requested": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 7,
+    "tick_to": 9,
+    "ticks": 2,
+    "requested": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 9,
+    "tick_to": 11,
+    "ticks": 2,
+    "requested": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 11,
+    "tick_to": 13,
+    "ticks": 2,
+    "requested": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 13,
+    "tick_to": 15,
+    "ticks": 2,
+    "requested": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 15,
+    "tick_to": 17,
+    "ticks": 2,
+    "requested": 2
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "cycle_walk",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T060942\\TheForge__cycle_walk__hostile_pawns__t17__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4201188,
+  "width": 2516,
+  "height": 1252,
+  "md5": "c0585bebb979d2b138a2844a2ae9794b",
+  "why": ""
+ },
+ "notes": []
+}

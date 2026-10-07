@@ -1,0 +1,237 @@
+{
+ "chains": [
+  {
+   "name": "jawa_xenotype_mechanism",
+   "components": [
+    {
+     "name": "xenotype_applies_fragile_genes",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/set_pawn_xenotype returned no pawn row: {'success': False, 'message': \"No XenotypeDef named 'RSW_MandrakeJawa'.\", 'details': {'suggestions': []}, 'operation': {'OperationId': 'op_38f63a3def96443db9df87fe9aa468b5', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-pawn-xenotype', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-03T05:47:36.9143216+00:00', 'CompletedAtUtc': '2026-10-03T05:47:36.9230593+00:00', 'DurationMs': 8, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/set_pawn_xenotype",
+       "result": {
+        "success": false,
+        "message": "No XenotypeDef named 'RSW_MandrakeJawa'.",
+        "details": {
+         "suggestions": []
+        },
+        "operation": {
+         "OperationId": "op_38f63a3def96443db9df87fe9aa468b5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-pawn-xenotype",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:36.9143216+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:36.9230593+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mining_disabled_not_plantwork",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "jawa_naming",
+   "components": [
+    {
+     "name": "namer_draws_from_jawa_wordlist",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/spawn_pawn(kindDef='Colonist', xenotype='RSW_MandrakeJawa') produced no pawn: {'success': False, 'message': \"No XenotypeDef named 'RSW_MandrakeJawa'.\", 'details': {'suggestions': []}, 'operation': {'OperationId': 'op_a543467dd9d44d4295cd8b33734ded61', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-03T05:47:38.3721525+00:00', 'CompletedAtUtc': '2026-10-03T05:47:38.3801718+00:00', 'DurationMs': 8, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": false,
+        "message": "No XenotypeDef named 'RSW_MandrakeJawa'.",
+        "details": {
+         "suggestions": []
+        },
+        "operation": {
+         "OperationId": "op_a543467dd9d44d4295cd8b33734ded61",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:38.3721525+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:38.3801718+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "donor_species_sample",
+   "components": [
+    {
+     "name": "donor_xenotype_defs_resolve_without_donor_mods",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: sampled donor-species xenotypes did not resolve: ['XenotypeDef/RSW_RimMandrakeWookiee', 'XenotypeDef/RSW_RimMandrakeTwilek', 'XenotypeDef/RSW_RimMandrakeRodian'] -- either this mod failed to load them, or the run's mod list is missing something this mod needs",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 3 def(s) resolved; 3 not found",
+        "requested": 3,
+        "foundCount": 0,
+        "notFound": [
+         "XenotypeDef/RSW_RimMandrakeWookiee",
+         "XenotypeDef/RSW_RimMandrakeTwilek",
+         "XenotypeDef/RSW_RimMandrakeRodian"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "XenotypeDef/RSW_RimMandrakeWookiee",
+          "found": false,
+          "defType": "XenotypeDef",
+          "defName": "RSW_RimMandrakeWookiee"
+         },
+         {
+          "requested": "XenotypeDef/RSW_RimMandrakeTwilek",
+          "found": false,
+          "defType": "XenotypeDef",
+          "defName": "RSW_RimMandrakeTwilek"
+         },
+         {
+          "requested": "XenotypeDef/RSW_RimMandrakeRodian",
+          "found": false,
+          "defType": "XenotypeDef",
+          "defName": "RSW_RimMandrakeRodian"
+         }
+        ],
+        "ticksGame": 344321,
+        "operation": {
+         "OperationId": "op_c816c2bbe5aa44fcbe7b60c18ba0d71d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T05:47:39.6052259+00:00",
+         "CompletedAtUtc": "2026-10-03T05:47:39.6102463+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 12 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001BF5FCB6570>",
+  "<suite.Component object at 0x000001BF5FCB62B0>",
+  "<suite.Component object at 0x000001BF5FCB7490>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimStarWars\\StarWarsRaces.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

@@ -1,0 +1,4 @@
+[modcheck] ShipShields: no ledger item MODCHECK_SHIPSHIELDS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\ShipShields_20261007T112101Z.html only
+[modcheck] TrophyCraft: no ledger item MODCHECK_TROPHYCRAFT_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\TrophyCraft_20261007T112104Z.html only
+ShipShields          GREEN
+TrophyCraft          RED  (state)
