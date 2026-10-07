@@ -67,7 +67,7 @@ namespace RimMandrake.CreatureBehaviors
 	/// folded into ShadeAt and into the cached exposure, so sun path cost
 	/// and the patch graph see them too. None registered = no effect.
 	/// </summary>
-	public class RM_MapComponent_ShadeGrid : MapComponent
+	public class RM_MapComponent_ShadeGrid : MapComponent, IRM_MovingCasterSource<Thing>
 	{
 		private const int RecomputeIntervalTicks = 2000;
 
@@ -131,16 +131,10 @@ namespace RimMandrake.CreatureBehaviors
 		// TUNED: 60 ticks — the gloomcast walks ~2 cells a second (MoveSpeed
 		// 2.2), so its shadow trails by at most a couple of cells.
 		private const int MovingShadeRefreshTicks = 60;
-		private float[] movingShade;
-		private readonly Dictionary<Thing, MovingCasterState> movingCasters = new Dictionary<Thing, MovingCasterState>();
-		private bool movingDirty;
-
-		private class MovingCasterState
-		{
-			public IntVec3 lastPos = IntVec3.Invalid;
-			public bool hasRect;
-			public int minX, minZ, maxX, maxZ;
-		}
+		// The grid and the per-caster dirty rectangles live in RM_MovingShadeLayer (fuzzed offline); this
+		// component answers its questions about each caster (IRM_MovingCasterSource below).
+		private readonly RM_MovingShadeLayer<Thing> moving = new RM_MovingShadeLayer<Thing>();
+		private float[] movingShade => moving.Grid;
 
 		// SOLAR_HEAT_EXPOSURE_1 §5: the shade-patch graph (RM_ShadePatchGraph),
 		// built lazily from the exposure layer. It is built only when a hop,
@@ -367,24 +361,12 @@ namespace RimMandrake.CreatureBehaviors
 		/// spawned (RM_Comp_ShadowCaster with castShadeHeight).</summary>
 		public void RegisterMovingCaster(Thing t)
 		{
-			if (t != null && !movingCasters.ContainsKey(t))
-			{
-				movingCasters.Add(t, new MovingCasterState());
-				movingDirty = true;
-			}
+			moving.Register(t);
 		}
 
 		public void UnregisterMovingCaster(Thing t)
 		{
-			if (t != null && movingCasters.TryGetValue(t, out MovingCasterState st))
-			{
-				if (st.hasRect && movingShade != null)
-				{
-					RM_MovingShadeMath.ClearRect(movingShade, map.Size.x, map.Size.z, st.minX, st.minZ, st.maxX, st.maxZ);
-				}
-				movingCasters.Remove(t);
-				movingDirty = true;
-			}
+			moving.Unregister(t, map.Size.x, map.Size.z);
 		}
 
 		/// <summary>Shade 0..1 from living casters alone at this cell.</summary>
@@ -402,91 +384,34 @@ namespace RimMandrake.CreatureBehaviors
 		/// the sun vector or the arrays changed, so redo all of them.</summary>
 		private void RefreshMovingShade(bool force)
 		{
-			if (movingCasters.Count == 0 && !force)
+			if (moving.Count == 0 && !force)
 			{
 				return;
-			}
-			int w = map.Size.x;
-			int h = map.Size.z;
-			int n = map.cellIndices.NumGridCells;
-			if (movingShade == null || movingShade.Length != n)
-			{
-				movingShade = new float[n];
-				force = true;
 			}
 			bool on = RM_CreatureBehaviorsSettings.shadeGridEnabled && RM_CreatureBehaviorsSettings.movingShadeEnabled;
-			if (force)
+			moving.Refresh(this, map.Size.x, map.Size.z, force, on, directional, sunShadowDir.x, sunShadowDir.y,
+				sunLengthPerHeight, MaxCastCells, ShadowTipShade);
+		}
+
+		bool IRM_MovingCasterSource<Thing>.TryGetCaster(Thing t, out RM_MovingCasterInfo info)
+		{
+			info = default(RM_MovingCasterInfo);
+			if (t == null || !t.Spawned || t.Map != map)
 			{
-				System.Array.Clear(movingShade, 0, n);
-				foreach (MovingCasterState st in movingCasters.Values)
-				{
-					st.hasRect = false;
-					st.lastPos = IntVec3.Invalid;
-				}
+				return false;
 			}
-			List<Thing> gone = null;
-			bool any = force || movingDirty;
-			foreach (KeyValuePair<Thing, MovingCasterState> kv in movingCasters)
+			info.alive = true;
+			info.x = t.Position.x;
+			info.z = t.Position.z;
+			RM_CompProperties_ShadowCaster p = t.TryGetComp<RM_Comp_ShadowCaster>()?.Props;
+			if (p != null)
 			{
-				Thing t = kv.Key;
-				if (t == null || !t.Spawned || t.Map != map)
-				{
-					(gone ??= new List<Thing>()).Add(t);
-					any = true;
-					continue;
-				}
-				if (t.Position != kv.Value.lastPos)
-				{
-					any = true;
-				}
+				info.hasProps = true;
+				info.height = p.castShadeHeight;
+				info.radius = p.castShadeRadius;
+				info.depth = p.castShadeDepth;
 			}
-			if (gone != null)
-			{
-				foreach (Thing t in gone)
-				{
-					UnregisterMovingCaster(t);
-				}
-			}
-			movingDirty = false;
-			if (!any)
-			{
-				return;
-			}
-			// Clear every old rectangle first, then cast every caster at its
-			// new place: overlapping shadows of two casters stay whole. With
-			// the one or two giants a map holds this is a few hundred cells.
-			foreach (MovingCasterState st in movingCasters.Values)
-			{
-				if (st.hasRect)
-				{
-					RM_MovingShadeMath.ClearRect(movingShade, w, h, st.minX, st.minZ, st.maxX, st.maxZ);
-					st.hasRect = false;
-				}
-			}
-			if (!on)
-			{
-				return;
-			}
-			foreach (KeyValuePair<Thing, MovingCasterState> kv in movingCasters)
-			{
-				Thing t = kv.Key;
-				MovingCasterState st = kv.Value;
-				st.lastPos = t.Position;
-				RM_CompProperties_ShadowCaster p = t.TryGetComp<RM_Comp_ShadowCaster>()?.Props;
-				if (p == null || p.castShadeHeight <= 0f)
-				{
-					continue;
-				}
-				float len = directional ? RM_SunHeatMath.ShadowLength(p.castShadeHeight, sunLengthPerHeight, MaxCastCells) : 0f;
-				if (!RM_MovingShadeMath.ShadowBounds(w, h, t.Position.x, t.Position.z, p.castShadeRadius,
-					directional, sunShadowDir.x, sunShadowDir.y, len, out st.minX, out st.minZ, out st.maxX, out st.maxZ))
-				{
-					continue;
-				}
-				st.hasRect = true;
-				RM_MovingShadeMath.CastBody(movingShade, w, h, t.Position.x, t.Position.z, p.castShadeRadius,
-					directional, sunShadowDir.x, sunShadowDir.y, len, ShadowTipShade, p.castShadeDepth);
-			}
+			return true;
 		}
 
 		public void UnregisterGear(Thing t)

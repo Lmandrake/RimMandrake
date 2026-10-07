@@ -118,6 +118,7 @@
     <Compile Include="RM_CompProperties_DrumLure.cs" />
     <Compile Include="RM_CompDrumLure.cs" />
     <Compile Include="RM_SandSwimExtension.cs" />
+    <Compile Include="RM_SandSwimKernel.cs" />
     <Compile Include="RM_CompSandSwim.cs" />
     <!-- STILLSAND_DUNE_GALE_1: what a weather does to sun exposure and the swimmers' senses -->
     <Compile Include="RM_WeatherSenseExtension.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="RM_Gizmo_SunLoad.cs" />
     <Compile Include="RM_ShadeGear.cs" />
     <Compile Include="RM_ShadePatchGraph.cs" />
+    <Compile Include="RM_MovingShadeLayer.cs" />
     <Compile Include="RM_ShadeHop.cs" />
     <Compile Include="RM_GlareBlind.cs" />
     <Compile Include="RM_Mirage.cs" />
