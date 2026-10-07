@@ -81,7 +81,11 @@ def browser_render(html_path, decisions_path=None, timeout: int = 600):
                             "--log-level=0", "--user-data-dir=" + profile, "--no-first-run", "--dump-dom", url],
                            capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
-        return None, [], f"UNMEASURED: headless Edge failed to run ({type(e).__name__})"
+        tail = ""
+        if isinstance(e, subprocess.TimeoutExpired) and e.stderr:
+            raw = e.stderr.decode("utf-8", "replace") if isinstance(e.stderr, bytes) else e.stderr
+            tail = " | Edge stderr tail: " + " / ".join(l.strip()[:160] for l in raw.splitlines()[-6:])
+        return None, [], f"UNMEASURED: headless Edge failed to run ({type(e).__name__}){tail}"
     finally:
         stop_marked(marker)
         shutil.rmtree(os.path.join(SCRATCH_WSL, marker), ignore_errors=True)

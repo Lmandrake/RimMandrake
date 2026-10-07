@@ -1,9 +1,9 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-05T20:55:29-0700",
+ "built": "2026-10-06T21:34:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 12 mods \u2014 a test list): 610 active",
  "rows": {
   "ColossusToad": {
    "columns": {
@@ -39,27 +39,21 @@
      "single": "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
     },
     "B": {
-     "single": "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786"
-    },
-    "C": {
-     "single": "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3"
+     "single": "c3a8696e1246f4f80e24ac4242a97c7958f0c7ad579b5bb622c4f33ab5c2f16a"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/Ambrosia",
-    "B": "Things/Plant/Ambrosia",
-    "C": "Things/Plant/Ambrosia"
+    "B": "Things/Plant/Ambrosia"
    },
    "labels": {
     "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
-    "B": "render ambrosia_v2",
-    "C": "donor original \u2014 Vanilla Textures Expanded"
+    "B": "render sheet_redo_Plant_Ambrosia_v3"
    },
    "res": "Things/Plant/Ambrosia",
    "reserved": [
     "A",
-    "B",
-    "C"
+    "B"
    ],
    "subject_key": "ambrosia"
   },
@@ -101,7 +95,7 @@
     "B": "Things/Plant/RM_Bladderquill"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render weepingstones2_bladderquill) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Bladderquill_v1"
    },
    "res": "Things/Plant/RM_Bladderquill",
@@ -153,7 +147,7 @@
     "B": "Things/Plant/RM_Dewblade"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render weepingstones2_dewblade) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Dewblade_v1"
    },
    "res": "Things/Plant/RM_Dewblade",
@@ -177,7 +171,7 @@
     "B": "Things/Plant/RM_Dewgourd"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render weepingstones2_dewgourd) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Dewgourd_v1"
    },
    "res": "Things/Plant/RM_Dewgourd",
@@ -225,7 +219,7 @@
     "B": "Things/Plant/RM_Dripfringe"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render weepingstones2_dripfringe) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Dripfringe_v1"
    },
    "res": "Things/Plant/RM_Dripfringe",
@@ -813,7 +807,7 @@
     "B": "Things/Plant/RM_Rockfinger"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render weepingstones2_rockfinger) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Rockfinger_v1"
    },
    "res": "Things/Plant/RM_Rockfinger",
@@ -837,7 +831,7 @@
     "B": "Things/Plant/RM_Salvecomb"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render weepingstones2_salvecomb) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Salvecomb_v1"
    },
    "res": "Things/Plant/RM_Salvecomb",
@@ -861,7 +855,7 @@
     "B": "Things/Plant/RM_Shadefern"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art (render weepingstones2_shadefern) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Shadefern_v1"
    },
    "res": "Things/Plant/RM_Shadefern",
@@ -1005,17 +999,23 @@
    "columns": {
     "A": {
      "single": "9a026de1cd707e625640758e09c138196c57b8f8a70df0db56e2beaf72337277"
+    },
+    "B": {
+     "single": "3e7e959a38701f265383a2a0f44ff14a599412984befcfa36f9e9b8973bf39a3"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Steamfrond"
+    "A": "Things/Plant/RM_Steamfrond",
+    "B": "Things/Plant/RM_Steamfrond"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render weepingstones2_steamfrond) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Steamfrond_v1"
    },
    "res": "Things/Plant/RM_Steamfrond",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "steamfrond"
   },
@@ -1139,17 +1139,23 @@
    "columns": {
     "A": {
      "single": "67cbc65379e146b13cc47e291cc68b331393e6172e02e6a8d289606225f67025"
+    },
+    "B": {
+     "single": "4a7070f73675b245a7e370b5d4cc005ee8cb4f66ef691019b7504514ee52577b"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Verdimoss"
+    "A": "Things/Plant/RM_Verdimoss",
+    "B": "Things/Plant/RM_Verdimoss"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render weepingstones2_verdimoss) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Verdimoss_v1"
    },
    "res": "Things/Plant/RM_Verdimoss",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "verdimoss"
   },
@@ -1289,17 +1295,23 @@
    "columns": {
     "A": {
      "single": "38916358cbeef69c9d8083c5aac556d98eb2cb14455c4d1c39f1b0232ac0ad1c"
+    },
+    "B": {
+     "single": "6e3f0b1e9c6bd28d6733c28fd47c1a3579c0c2f833bee0a3f0ed02a8eca71720"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Weepmat"
+    "A": "Things/Plant/RM_Weepmat",
+    "B": "Things/Plant/RM_Weepmat"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render weepingstones2_weepmat) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_Weepmat_v1"
    },
    "res": "Things/Plant/RM_Weepmat",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "weepmat"
   },
@@ -1446,26 +1458,43 @@
      "east": "a3896b6849e675fbfbcf8aa3c09a28c5010739bb0a6329bd38a473c9b3263334",
      "north": "2588487bfeed8a148f45a0b9860b97cd69fa2660c9322e9708cdf5f8e6f5380a",
      "south": "8f7f9cac7ae43bc012b32f71026dc06fd07f7762ceb8c089b2fc77fd15c62dd4"
+    },
+    "E": {
+     "1_east": "800d099c9ad1010968988e0c2dd19f736b1574a8a29575a1940d14527c88efbf",
+     "1_north": "0ba52eafbcb790636f7889aadcf80bfeb042e2728cad9bb8531ddb8dfc2b9f75",
+     "1_south": "c30da978551e5b79670152f47ec32124fddbbe2823077f3c3e292ee771c23471",
+     "2_east": "c3cefb631a93bf411f4aa95bb838f8efb483627f02cbf28c270ab73b9c4fa125",
+     "2_north": "056133d2c622eaeb05f2f994eee369bb3f8889391b62d8d71552c85ae728b7ba",
+     "2_south": "38cb40589f3b46c3210d0aac7d0112ae3cfd35d4ca298f9ea381a4599354c86e",
+     "3_east": "49dccb0e2662051a5d3fc0e51bb6aff78fc243316b1e2b4d1bd5186a20cb1cd6",
+     "3_north": "f76f68d4fd862a413f363d0ebbb31a81ab9b588460e3d5562cebae579b6e6052",
+     "3_south": "bd67385fd1280a0a60c080dde2cb2be1c67614fc05b38fb2ec9fd9db6b0b275e",
+     "4_east": "800d099c9ad1010968988e0c2dd19f736b1574a8a29575a1940d14527c88efbf",
+     "4_north": "0ba52eafbcb790636f7889aadcf80bfeb042e2728cad9bb8531ddb8dfc2b9f75",
+     "4_south": "c30da978551e5b79670152f47ec32124fddbbe2823077f3c3e292ee771c23471"
     }
    },
    "graphic_of": {
     "A": "swanimals/Dactillion/Dactillion",
     "B": "swanimals/Dactillion/Dactillion",
     "C": "swanimals/Dactillion/Dactillion",
-    "D": "swanimals/Dactillion/Dactillion"
+    "D": "swanimals/Dactillion/Dactillion",
+    "E": "_flip:swanimals/Dactillion/Dactillion_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render dactillion_toyfig_b",
     "C": "history SWBestiary 2026-09-12",
-    "D": "donor original \u2014 mlie.starwarsanimalcollection"
+    "D": "donor original \u2014 mlie.starwarsanimalcollection",
+    "E": "IN GAME \u2014 Dactillion_Flying_"
    },
    "res": "swanimals/Dactillion/Dactillion",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "dactillion"
   },
@@ -1683,5 +1712,5 @@
   }
  },
  "sheetId": "weepingstones_sheet_2026-10-05",
- "snapshotId": "c182e376732dc888"
+ "snapshotId": "2a61d73e179d5161"
 }
