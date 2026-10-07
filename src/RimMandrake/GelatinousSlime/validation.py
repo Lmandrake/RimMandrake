@@ -828,48 +828,53 @@ def dissolution(t):
 
 @suite.chain("antidote")
 def antidote(t):
+    """The antidote through the game's own use path. jawa/ordered_job (UseItem + targetB) is NOT that path: the item's
+    CompTargetable only applies its target effects when selectedTarget was set by the targeting UI, so a bare ordered
+    job runs the whole job and changes nothing (the 2026-10-07 live run's 0.55 'failure' was exactly this).
+    RM_SlimeSeekerProof.ProofAntidoteStart primes caster + selectedTarget and calls OrderForceTarget, as a click does."""
     P = {}
     with t.component("site_ready_antidote"):
         if t._guard():
             _prep_site(t)
             _check_site(t)
-            P["doc1"] = _spawn(t, "Colonist", *_plain_xz(t, 0), draft=False)
-            P["doc2"] = _spawn(t, "Colonist", *_plain_xz(t, 2), draft=False)
-            P["awake"] = _spawn(t, "Colonist", *_plain_xz(t, 1))
-            P["coma"] = _spawn(t, "Colonist", *_plain_xz(t, 3))
-            P["ctl"] = _spawn(t, "Colonist", *_plain_xz(t, 5))
-            for k in ("awake", "coma", "ctl"):
-                _add_hediff(t, P[k], HEDIFF, 0.55)
-            _add_hediff(t, P["coma"], "XenogerminationComa", 1.0)
-            x, z = t.anchor
-            r = t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d;%s:%d,%d" % (ANTIDOTE, x + 6, z - 6, ANTIDOTE, x + 6, z))
-            ids = [a.get("id") for a in _things(t, ANTIDOTE, _rect(x + 6, z - 3, 8))]
-            if len(ids) < 2:
-                _unmeasured(t, "antidote stacks not spawned (%s): %s" % (ids, str(r)[:140]))
-            P["ids"] = ids
+            text = _seeker(t, "ProofAntidoteStart")
+            v = _kv(text)
+            if v.get("job1") != "UseItem" or v.get("job2") != "UseItem":
+                _unmeasured(t, "doctors did not take the UseItem job (HARNESS: reservation/reach): %s" % text[:200])
+            if v.get("coma") != "True":
+                _unmeasured(t, "coma patient did not receive XenogerminationComa: %s" % text[:200])
+            P["started"] = True
     with _comp(t, "antidote_clears_film_and_poisons"):
         if t._guard():
-            for doc, pat, item in (("doc1", "awake", P["ids"][0]), ("doc2", "coma", P["ids"][1])):
-                r = t.bridge_call("jawa/ordered_job", pawnId=P[doc], jobDef="UseItem", targetAId=item,
-                                  targetBId=P[pat], count=1, waitTicks=0, timeoutSeconds=30)
-                if not (r or {}).get("accepted"):
-                    _unmeasured(t, "UseItem order for %s refused (HARNESS: reservation/shape): %s" % (pat, str(r)[:160]))
-            t.wait_ticks(1200)
-            rows = _rows(t)
-            for pat in ("awake", "coma"):
-                h = _hed(rows.get(P[pat]))
-                if h is None:
-                    _unmeasured(t, "%s patient vanished" % pat)
-                if HEDIFF in h:
-                    _fail("%s patient still slimified (%.2f) after the antidote" % (pat, h[HEDIFF]))
-                if h.get("ToxicBuildup", 0) < 0.08:
-                    _fail("%s patient took no ToxicBuildup (the cure is honestly a poisoning; got %r)"
-                          % (pat, h.get("ToxicBuildup")))
-            if HEDIFF not in (_hed(rows.get(P["ctl"])) or {}):
-                _fail("untreated control lost the film by itself: the clear above proves nothing")
-            x, z = t.anchor
-            if _things(t, ANTIDOTE, _rect(x + 6, z - 3, 8)):
-                _fail("antidote stack(s) not consumed")
+            st = {}
+            try:
+                # useDuration 360 + walking; poll until both stacks are consumed or the budget runs out
+                for _ in range(5):
+                    t.wait_ticks(600)
+                    text = _seeker(t, "ProofAntidoteState")
+                    st = dict(re.findall(r"(\w+)=(\w+)", text))
+                    if st.get("item1Destroyed") == "True" and st.get("item2Destroyed") == "True":
+                        break
+                rows = {k: dict(re.findall(r"(\w+)=([\d.]+)", m.group(1)))
+                        for k, m in ((k, re.search(k + r"\[([^\]]*)\]", text)) for k in ("awake", "coma", "ctl")) if m}
+                for k in ("awake", "coma", "ctl"):
+                    if k not in rows:
+                        _unmeasured(t, "%s patient gone before the read: %s" % (k, text[:300]))
+                # the use must have COMPLETED before severity means anything
+                if st.get("item1Destroyed") != "True" or st.get("item2Destroyed") != "True":
+                    if st.get("doc1Job") == "UseItem" or st.get("doc2Job") == "UseItem":
+                        _unmeasured(t, "UseItem still running after the budget (HARNESS: slow walk): %s" % text[:300])
+                    _fail("antidote stack(s) not consumed after the use job ended: %s" % text[:300])
+                for pat in ("awake", "coma"):
+                    if float(rows[pat].get("slim", 0)) > 0:
+                        _fail("%s patient still slimified (%.2f) after the antidote was consumed" % (pat, float(rows[pat]["slim"])))
+                    if float(rows[pat].get("toxic", 0)) < 0.08:
+                        _fail("%s patient took no ToxicBuildup (the cure is honestly a poisoning; got %r)"
+                              % (pat, rows[pat].get("toxic")))
+                if float(rows["ctl"].get("slim", 0)) <= 0:
+                    _fail("untreated control lost the film by itself: the clear above proves nothing")
+            finally:
+                _seeker(t, "ProofAntidoteClean")
 
 
 # --------------------------------------------------------------------------- chain 5: eating raw slime

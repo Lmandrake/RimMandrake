@@ -314,6 +314,21 @@ class SlimeSim(object):
             fmt = "target=True rider=True coma=True slim=0.40 fastClock=True ratePerDay=%.3f mark=%.1f seekerUsed=True"
             return {"success": True, "result": "A[" + fmt % (rate, mark_a) + "] B[" + fmt % (rate, mark_b)
                     + "] antidoteCuredA=%s" % cured}
+        if m == "ProofAntidoteStart":
+            self.anti_at = self.g.ticks
+            return {"success": True, "result": "job1=UseItem job2=UseItem coma=True"}
+        if m == "ProofAntidoteState":
+            done = getattr(self, "anti_at", None) is not None and self.g.ticks - self.anti_at >= 600
+            def row(treated):
+                slim = 0.55 if (not done or not treated or "antidote_noop" in self.f) else 0.0
+                tox = 0.14 if (done and treated and "antidote_nocost" not in self.f) else 0.0
+                return "slim=%.2f toxic=%.2f" % (slim, tox)
+            return {"success": True, "result": "awake[%s] coma[%s] ctl[%s] doc1Job=%s doc2Job=%s item1Destroyed=%s item2Destroyed=%s"
+                    % (row(True), row(True), row(False), "none" if done else "UseItem", "none" if done else "UseItem",
+                       done, done)}
+        if m == "ProofAntidoteClean":
+            self.anti_at = None
+            return {"success": True, "result": "cleaned"}
         return {"success": False, "error": "mock: unknown proof method %s" % m}
 
     # ------------------------------------------------------------------ time
