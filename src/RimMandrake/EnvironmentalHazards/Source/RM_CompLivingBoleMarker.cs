@@ -8,7 +8,7 @@ namespace RimMandrake.EnvironmentalHazards
     // GREENTIDE_MECHANICS_2 M12 build. The registration half of
     // RM_MapComponent_LivingRegrowth's interface — same push-registration
     // idiom as RM_CompDreadSource/RM_MapComponent_DreadField elsewhere in
-    // this assembly. Attach to any marker building ("RUT_GreatboleCore" is
+    // this assembly. Attach to any marker building ("RM_GreatboleCore" is
     // this kit's own instance) to make it the anchor of one living-dungeon
     // bole: on first spawn it flood-fills outward from its own position
     // over every contiguous cell whose edifice is regrowthThing, registers
@@ -16,12 +16,12 @@ namespace RimMandrake.EnvironmentalHazards
     // component. Nothing here names Greentide or the Greatbole.
     //
     //   <ThingDef>
-    //     <defName>RUT_GreatboleCore</defName>
+    //     <defName>RM_GreatboleCore</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
-    //         <regrowthThing>RUT_GreatboleHeartwood</regrowthThing>
-    //         <sealantTerrain>RUT_ToxinSealant</sealantTerrain>
+    //         <regrowthThing>RM_GreatboleHeartwood</regrowthThing>
+    //         <sealantTerrain>RM_ToxinSealedFloor</sealantTerrain>
     //         <regrowDaysRange>3~6</regrowDaysRange>
     //       </li>
     //     </comps>

@@ -12,12 +12,12 @@ namespace RimMandrake.EnvironmentalHazards
     // extension too — nothing below names Greentide or the Greatbole.
     //
     //   <BiomeDef>
-    //     <defName>RUT_Greentide</defName>
+    //     <defName>RM_Greentide</defName>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension">
-    //         <heartwoodThing>RUT_GreatboleHeartwood</heartwoodThing>
-    //         <coreMarkerThing>RUT_GreatboleCore</coreMarkerThing>
+    //         <heartwoodThing>RM_GreatboleHeartwood</heartwoodThing>
+    //         <coreMarkerThing>RM_GreatboleCore</coreMarkerThing>
     //       </li>
     //     </modExtensions>
     //   </BiomeDef>

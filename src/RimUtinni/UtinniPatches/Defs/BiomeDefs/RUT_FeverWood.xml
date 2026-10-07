@@ -187,10 +187,9 @@
         <fallbackEdgeMargin>10</fallbackEdgeMargin>
         <additionalPasses>
           <li>
-            <!-- RUT_RootCauseway carries no MayRequire of its own (plain
-                 UtinniPatches TerrainDef, unlike RUT_ToxinSealant) — so
-                 this reference needs none either. -->
-            <causewayTerrain>RUT_RootCauseway</causewayTerrain>
+            <!-- RM_RootCauseway is a Greentide def inside mandrake.rm.biomes, the same
+                 package the enclosing extension is gated on (GREENTIDE_BASE_PORT_BUILD_1). -->
+            <causewayTerrain>RM_RootCauseway</causewayTerrain>
             <basinTerrains>
               <li>Soil</li>
               <li>SoilRich</li>

@@ -362,11 +362,9 @@ def infestation_ban_problems(core_defs=_CORE_DEFS, mod_dir=None):
 
 
 # ---- UTINNIPATCHES_COVERAGE_GAPS_1 (offline half, round 41) -----------------------------------------------------
-# (a) every non-held, non-inactive def this mod ships is IN the load-14 def dump and carries the label its XML authors;
-# (b) the greatbole harvest ladder's threshold state machine, mirrored from the C# and driven over fraction sequences.
+# Every non-held, non-inactive def this mod ships is IN the load-14 def dump and carries the label its XML authors.
+# (The greatbole ladder chain moved to src/RimMandrake/Greentide/validation.py with its comp, GREENTIDE_BASE_PORT_BUILD_1.)
 import json as _json
-_LADDER_CS = os.path.join("Source", "RUT_CompGreatboleHarvestLadder.cs")
-_SETTINGS_CS = os.path.join("Source", "UtinniPatchesSettings.cs")
 
 
 def held_globs(hold_file=None):
@@ -446,79 +444,6 @@ def _dump_types(base, wanted):
     return out
 
 
-def ladder_parse(mod_dir=None):
-    """{threshold defaults, catastrophe toggle, hysteresis} parsed from the two C# files, plus the source with whitespace squeezed."""
-    mod_dir = mod_dir or _MOD_DIR
-    cs = re.sub(r"\s+", " ", open(os.path.join(mod_dir, _LADDER_CS), encoding="utf-8").read())
-    st = open(os.path.join(mod_dir, _SETTINGS_CS), encoding="utf-8").read()
-    d = dict((m.group(1), float(m.group(2))) for m in re.finditer(r"public static float (greatbole\w+Threshold) = ([0-9.]+)f;", st))
-    d["catastropheEnabled"] = bool(re.search(r"public static bool greatboleCatastropheEnabled = true;", st))
-    h = re.search(r"public float hysteresis = ([0-9.]+)f;", cs)
-    d["hysteresis"] = float(h.group(1)) if h else None
-    d["_cs"], d["_st"] = cs, st
-    return d
-
-
-def ladder_findings(p):
-    out, cs, st = [], p["_cs"], p["_st"]
-    t = (p.get("greatboleShakingThreshold"), p.get("greatboleHealingThreshold"), p.get("greatboleCatastropheThreshold"))
-    if None in t or p["hysteresis"] is None:
-        return ["ladder constants not parseable: %r hysteresis %r" % (t, p["hysteresis"])]
-    if t != (0.4, 0.6, 0.7):
-        out.append("shipped thresholds %s are not the ruled 0.40 / 0.60 / 0.70" % (t,))
-    if not t[0] < t[1] < t[2]:
-        out.append("shipped thresholds are not ordered shaking < healing < catastrophe")
-    for need in ("if (catastropheDone || !parent.Spawned) { return; }",
-                 "if (!shakingArmed && fraction >= UtinniPatchesSettings.greatboleShakingThreshold) { shakingArmed = true; GreatShaking(map); }",
-                 "else if (shakingArmed && fraction < UtinniPatchesSettings.greatboleShakingThreshold - h) { shakingArmed = false; }",
-                 "if (!healingAnnounced && fraction >= UtinniPatchesSettings.greatboleHealingThreshold) { healingAnnounced = true; AnnounceViolentHealing(); }",
-                 "else if (healingAnnounced && fraction < UtinniPatchesSettings.greatboleHealingThreshold - h) { healingAnnounced = false; }",
-                 "if (UtinniPatchesSettings.greatboleCatastropheEnabled && fraction >= UtinniPatchesSettings.greatboleCatastropheThreshold) { Catastrophe(map, marker, regrowth); }"):
-        if need not in cs:
-            out.append("ladder source lost: %s" % need[:90])
-    cat = re.search(r"private void Catastrophe\([^)]*\) \{ catastropheDone = true;", cs)
-    if not cat:
-        out.append("Catastrophe no longer sets catastropheDone first: it could fire every poll")
-    # slider ranges contain the defaults (a default the slider cannot reach is lost after one drag)
-    for name, lo, hi in re.findall(r"(greatbole\w+Threshold) = list\.Slider\(\1, ([0-9.]+)f, ([0-9.]+)f\)", st):
-        if not float(lo) <= p[name] <= float(hi):
-            out.append("%s default %s lies outside its slider %s..%s" % (name, p[name], lo, hi))
-    sim = ladder_sim(p, [i / 100.0 for i in range(0, 91)])
-    if [e[0] for e in sim] != ["shaking", "healing", "catastrophe"] or [e[1] for e in sim] != [0.4, 0.6, 0.7]:
-        out.append("a rising fraction fires %s, want shaking@0.40, healing@0.60, catastrophe@0.70 once each" % sim)
-    if [e[0] for e in ladder_sim(p, [0.0, 0.5, 0.39, 0.38, 0.5])] != ["shaking"]:
-        out.append("a dip of less than the hysteresis re-fires shaking")
-    if [e[0] for e in ladder_sim(p, [0.0, 0.5, 0.30, 0.5])] != ["shaking", "shaking"]:
-        out.append("falling below threshold minus hysteresis does not re-arm shaking")
-    if [e[0] for e in ladder_sim(dict(p, catastropheEnabled=False), [0.0, 0.95])] != ["shaking", "healing"]:
-        out.append("greatboleCatastropheEnabled=false still allows the catastrophe")
-    if [e[0] for e in ladder_sim(p, [0.0, 0.75, 0.2, 0.9])] != ["shaking", "healing", "catastrophe"]:
-        out.append("the catastrophe is not once-only and final (nothing may fire after it)")
-    return out
-
-
-def ladder_sim(p, fractions):
-    """Mirror of RUT_CompGreatboleHarvestLadder.CompTick's state machine: [(event, fraction)]."""
-    ts, th, tc, h = p["greatboleShakingThreshold"], p["greatboleHealingThreshold"], p["greatboleCatastropheThreshold"], p["hysteresis"]
-    armed = announced = done = False
-    ev = []
-    for f in fractions:
-        if done:
-            break
-        if not armed and f >= ts:
-            armed = True
-            ev.append(("shaking", f))
-        elif armed and f < ts - h:
-            armed = False
-        if not announced and f >= th:
-            announced = True
-            ev.append(("healing", f))
-        elif announced and f < th - h:
-            announced = False
-        if p["catastropheEnabled"] and f >= tc:
-            done = True
-            ev.append(("catastrophe", f))
-    return ev
 
 
 @suite.chain("defs_vs_dump_static")
@@ -544,14 +469,6 @@ def defs_vs_dump_static(t):
             raise ExpectationFailed("%d of %d checked defs lost or drifted (skipped %s): %s" % (len(bad), checked, skipped, "; ".join(bad[:5])))
 
 
-@suite.chain("greatbole_ladder_static")
-def greatbole_ladder_static(t):
-    """Offline: the greatbole harvest ladder (shaking 0.40 / violent healing 0.60 / catastrophe 0.70) mirrored from the C#:
-    thresholds ordered, hysteresis, each rung fires once, the catastrophe is final and respects its toggle."""
-    with t.component("harvest_ladder_fires_each_rung_once_and_catastrophe_is_final", toggle="greatboleCatastropheEnabled"):
-        bad = ladder_findings(ladder_parse())
-        if bad:
-            raise ExpectationFailed("; ".join(bad[:4]))
 
 
 

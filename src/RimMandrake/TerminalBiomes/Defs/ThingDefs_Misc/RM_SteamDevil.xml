@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RUT_SteamDevil.xml                     UtinniPatches · GREENTIDE_MECHANICS_2 M3
+  RM_SteamDevil.xml        TerminalBiomes · GREENTIDE_MECHANICS_2 M3 (renamed from RUT_ by GREENTIDE_BASE_PORT_BUILD_1)
   ============================================================================
   greentide_kit_spec.md M3 ("Scald damage + steam devils"): "a wandering
   white column of boiling vapor spins off the river". Only the vortex ships
@@ -23,7 +23,7 @@
   ~180 lines of custom DrawAt mesh-part code, which this pass does not crib
   — copying just the drawerType override without the draw code risks an
   engine draw call against a null Graphic every frame). No <graphicData>/
-  art this pass (same DEPLOY_HOLD posture as RUT_RoilWeather's own overlay
+  art this pass (same DEPLOY_HOLD posture as RM_RoilWeather's own overlay
   texture) — the vortex is represented only by its own Tick-driven fleck
   column (FleckMaker.ThrowSmoke, already-shipped vanilla flecks, no new
   art), not a drawn sprite. OWED, flagged rather than silently shipped: the
@@ -36,7 +36,7 @@
 <Defs>
 
   <ThingDef ParentName="EtherealThingBase">
-    <defName>RUT_SteamDevil</defName>
+    <defName>RM_SteamDevil</defName>
     <label>steam devil</label>
     <description>A wandering column of scalding vapor, dragged up off the river. It scalds what it crosses and knocks down what it can — a wet burn that heat-rated armor does nothing against.</description>
     <thingClass>RimMandrake.EnvironmentalHazards.RM_WanderingVortex</thingClass>

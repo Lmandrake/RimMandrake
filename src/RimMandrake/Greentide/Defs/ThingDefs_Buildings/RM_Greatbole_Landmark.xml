@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  The living greatbole landmark (spec M12; GREATBOLE_HARVEST_LADDER_1). GREENTIDE_BASE_PORT_BUILD_1: moved
+  from the campaign tier, RUT_ -> RM_. Placed only by RM_GenStep_LivingBoles from RM_Greentide's
+  RM_LivingBoleBiomeExtension. Not the same def as RM_Greatbole (the fellable tree, ThingDefs_Plants).
+
+  RM_GreatboleHeartwood: the mineable blob the player sees and digs (RockBase, never vein-scattered).
+    Mines RM_GreatboleHardwood. Art: 4x4 linked bark-edge atlas (CornerFiller + Custom1 link flag, so the
+    bark never welds to stone), moved with the def.
+  RM_GreatboleCore: 1x1 bookkeeping marker at the blob's centre; draws nothing. RM_CompLivingBoleMarker
+    registers the bole for regrowth (sealed by RM_ToxinSealedFloor); RM_CompGreatboleHarvestLadder fires
+    the Great Shaking, the violent-healing warning and the catastrophe at the Mod Settings thresholds.
+    Past acceleratedRegrowThreshold healing runs 20x (INVENTED).
+  RM_GreatboleTrunkSegment: scattered once by the catastrophe; slow-mined (yield 6, INVENTED). Reuses the
+    heartwood atlas.
+  RM_GreatboleDeadHusk: replaces the core after the catastrophe; no marker comp, so the bole is dead for
+    good, and it blocks nothing.
+
+  The campaign tier (UtinniPatches) binds its own faction and hardwood onto these defs by patch.
+-->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_GreatboleHeartwood</defName>
+    <label>greatbole heartwood</label>
+    <description>Living wood grown as dense and as still as stone — the outer mass of a Greatbole, packed tight enough to dig into like rock. Cut chamber into it and it heals, slowly, unless you paint the wound shut.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_GreatboleHeartwood/RM_GreatboleHeartwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Custom1</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>900</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_GreatboleHardwood</mineableThing>
+      <mineableYield>15</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_GreatboleCore</defName>
+    <label>greatbole core</label>
+    <description>The living heart of a Greatbole — the one cell of it that never goes still, and never mines out. Everything the tree does starts here.</description>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <passability>Impassable</passability>
+    <fillPercent>1.0</fillPercent>
+    <coversFloor>true</coversFloor>
+    <holdsRoof>true</holdsRoof>
+    <useHitPoints>true</useHitPoints>
+    <drawerType>None</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <statBases>
+      <MaxHitPoints>1200</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker">
+        <regrowthThing>RM_GreatboleHeartwood</regrowthThing>
+        <sealantTerrain>RM_ToxinSealedFloor</sealantTerrain>
+        <regrowDaysRange>3~6</regrowDaysRange>
+        <acceleratedRegrowThreshold>0.6</acceleratedRegrowThreshold>
+        <acceleratedRegrowSpeedMultiplier>20</acceleratedRegrowSpeedMultiplier>
+      </li>
+      <li Class="RimMandrake.Greentide.RM_CompProperties_GreatboleHarvestLadder">
+        <fruitDef>RM_GreatboleFruit</fruitDef>
+        <grubKindDef>RM_GreatboleGrub</grubKindDef>
+        <hardwoodDef>RM_GreatboleHardwood</hardwoodDef>
+        <trunkSegmentDef>RM_GreatboleTrunkSegment</trunkSegmentDef>
+        <deadHuskDef>RM_GreatboleDeadHusk</deadHuskDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_GreatboleTrunkSegment</defName>
+    <label>fallen trunk segment</label>
+    <description>A section of greatbole trunk the size of a house, thrown down by the catastrophe that killed it. Too dense to burn, too heavy to move — it will lie exactly here for the rest of anyone's life.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_GreatboleHeartwood/RM_GreatboleHeartwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_GreatboleHardwood</mineableThing>
+      <mineableYield>6</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_GreatboleDeadHusk</defName>
+    <label>dead greatbole husk</label>
+    <description>The hollow remains of a greatbole, killed by the wound that opened it to the core. It will never heal, never fruit and never sing again — but nothing in here will ever push back against you either.</description>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <coversFloor>false</coversFloor>
+    <holdsRoof>false</holdsRoof>
+    <useHitPoints>false</useHitPoints>
+    <drawerType>None</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <statBases>
+      <Beauty>-3</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+</Defs>

@@ -41,7 +41,7 @@
   Fall mechanics (RimMandrake.EnvironmentalHazards, mandrake.rm.
   environmentalhazards — NOT a hard mod dependency of this mod today, so
   every comp/modExtension entry below carries its own MayRequire, matching
-  RUT_GreatboleCore.xml's own established pattern of gating the <li> rather
+  the old campaign greatbole core's established pattern of gating the <li> rather
   than the whole ThingDef): per the design doc's §4a, only RM_Veluthar (the
   biggest ordinary fall) and RM_Mirrelbole (highest crack-fall rate) carry an
   explicit extension/comp. "Everything else takes nothing" — RM_TreeFallUtility

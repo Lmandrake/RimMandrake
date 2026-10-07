@@ -15,12 +15,12 @@ namespace RimMandrake.EnvironmentalHazards
     // field for.
     //
     //   <GameConditionDef MayRequire="mandrake.rm.environmentalhazards">
-    //     <defName>RUT_GreentideWetBulbLock</defName>
+    //     <defName>RM_GreentideWetBulbLock</defName>
     //     <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WetBulb</conditionClass>
     //     ...
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_WetBulbExtension">
-    //         <hediffDef>RUT_WetBulbOverwhelm</hediffDef>
+    //         <hediffDef>RM_WetBulbOverwhelm</hediffDef>
     //         <protectionStat>RM_WetBulbProtection</protectionStat>
     //         <intervalTicks>600</intervalTicks>
     //         <severityPerInterval>0.00667</severityPerInterval>
@@ -72,8 +72,8 @@ namespace RimMandrake.EnvironmentalHazards
         // that map that tick — not merely a reduced driveFactor, an outright
         // skip, matching "the wet-bulb clock pauses" verbatim. Left empty by
         // default so this stays a no-op on every other biome; Greentide's
-        // own RUT_GreentideWetBulbLock.xml is the only config that names
-        // RUT_BreaklightCondition here. Data-driven rather than a hardcoded
+        // own RM_GreentideWetBulbLock.xml is the only config that names
+        // RM_BreaklightCondition here. Data-driven rather than a hardcoded
         // defName so this class stays kit-agnostic — the specific pairing
         // lives in XML, not in RM_GameCondition_WetBulb.cs.
         public List<GameConditionDef> pausedByConditions;

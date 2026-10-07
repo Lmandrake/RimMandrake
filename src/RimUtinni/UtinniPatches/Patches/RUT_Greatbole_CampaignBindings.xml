@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_BASE_PORT_BUILD_1. The greatbole landmark is free-tier now (mandrake.rm.greentide,
+  RM_Greatbole_Landmark.xml). The campaign keeps exactly what it had before the move, by binding its own
+  defs onto the RM_ ones:
+    - the Wildsteam clan takes the catastrophe as sacrilege (offendedFactionDef; goodwill -70);
+    - heartwood, fallen trunks and the catastrophe yield drop the campaign's RUT_Hardwood instead of the
+      free tier's RM_GreatboleHardwood.
+  No mechanism is copied here. FindMod is the real gate (MayRequire on an Operation is inert).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Baroque Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RM_GreatboleCore"]/comps/li[@Class="RimMandrake.Greentide.RM_CompProperties_GreatboleHarvestLadder"]</xpath>
+          <value>
+            <offendedFactionDef>RUT_Jawa_WildsteamClan</offendedFactionDef>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RM_GreatboleCore"]/comps/li[@Class="RimMandrake.Greentide.RM_CompProperties_GreatboleHarvestLadder"]/hardwoodDef</xpath>
+          <value>
+            <hardwoodDef>RUT_Hardwood</hardwoodDef>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RM_GreatboleHeartwood" or defName="RM_GreatboleTrunkSegment"]/building/mineableThing</xpath>
+          <value>
+            <mineableThing>RUT_Hardwood</mineableThing>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

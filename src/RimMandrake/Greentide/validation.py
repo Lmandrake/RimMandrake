@@ -68,6 +68,129 @@ def shipped_defs():
     return out
 
 
+# --------------------------------------------------------------------------- the greatbole harvest ladder
+# Moved here from UtinniPatches/validation.py with RM_CompGreatboleHarvestLadder (GREENTIDE_BASE_PORT_BUILD_1):
+# the threshold state machine parsed from the C#, mirrored, and driven over fraction sequences.
+
+_LADDER_CS = os.path.join("Source", "RM_CompGreatboleHarvestLadder.cs")
+_SETTINGS_CS = os.path.join("Source", "RM_GreentideMod.cs")
+_S = "RM_GreentideSettings."
+
+
+def ladder_parse(mod_dir=None):
+    """{threshold defaults, catastrophe toggle, hysteresis} parsed from the two C# files, plus the source with whitespace squeezed."""
+    mod_dir = mod_dir or HERE
+    cs = re.sub(r"\s+", " ", open(os.path.join(mod_dir, _LADDER_CS), encoding="utf-8").read())
+    st = open(os.path.join(mod_dir, _SETTINGS_CS), encoding="utf-8").read()
+    d = dict((m.group(1), float(m.group(2))) for m in re.finditer(r"public static float (greatbole\w+Threshold) = ([0-9.]+)f;", st))
+    d["catastropheEnabled"] = bool(re.search(r"public static bool greatboleCatastropheEnabled = true;", st))
+    h = re.search(r"public float hysteresis = ([0-9.]+)f;", cs)
+    d["hysteresis"] = float(h.group(1)) if h else None
+    d["_cs"], d["_st"] = cs, st
+    return d
+
+
+def ladder_findings(p):
+    out, cs, st = [], p["_cs"], p["_st"]
+    t = (p.get("greatboleShakingThreshold"), p.get("greatboleHealingThreshold"), p.get("greatboleCatastropheThreshold"))
+    if None in t or p["hysteresis"] is None:
+        return ["ladder constants not parseable: %r hysteresis %r" % (t, p["hysteresis"])]
+    if t != (0.4, 0.6, 0.7):
+        out.append("shipped thresholds %s are not the ruled 0.40 / 0.60 / 0.70" % (t,))
+    if not t[0] < t[1] < t[2]:
+        out.append("shipped thresholds are not ordered shaking < healing < catastrophe")
+    for need in ("if (catastropheDone || !parent.Spawned) { return; }",
+                 "if (!shakingArmed && fraction >= %sgreatboleShakingThreshold) { shakingArmed = true; GreatShaking(map); }" % _S,
+                 "else if (shakingArmed && fraction < %sgreatboleShakingThreshold - h) { shakingArmed = false; }" % _S,
+                 "if (!healingAnnounced && fraction >= %sgreatboleHealingThreshold) { healingAnnounced = true; AnnounceViolentHealing(); }" % _S,
+                 "else if (healingAnnounced && fraction < %sgreatboleHealingThreshold - h) { healingAnnounced = false; }" % _S,
+                 "if (%sgreatboleCatastropheEnabled && fraction >= %sgreatboleCatastropheThreshold) { Catastrophe(map, marker, regrowth); }" % (_S, _S)):
+        if need not in cs:
+            out.append("ladder source lost: %s" % need[:90])
+    if not re.search(r"private void Catastrophe\([^)]*\) \{ catastropheDone = true;", cs):
+        out.append("Catastrophe no longer sets catastropheDone first: it could fire every poll")
+    # slider ranges contain the defaults (a default the slider cannot reach is lost after one drag)
+    for name, lo, hi in re.findall(r"(greatbole\w+Threshold) = list\.Slider\(\1, ([0-9.]+)f, ([0-9.]+)f\)", st):
+        if not float(lo) <= p[name] <= float(hi):
+            out.append("%s default %s lies outside its slider %s..%s" % (name, p[name], lo, hi))
+    sim = ladder_sim(p, [i / 100.0 for i in range(0, 91)])
+    if [e[0] for e in sim] != ["shaking", "healing", "catastrophe"] or [e[1] for e in sim] != [0.4, 0.6, 0.7]:
+        out.append("a rising fraction fires %s, want shaking@0.40, healing@0.60, catastrophe@0.70 once each" % sim)
+    if [e[0] for e in ladder_sim(p, [0.0, 0.5, 0.39, 0.38, 0.5])] != ["shaking"]:
+        out.append("a dip of less than the hysteresis re-fires shaking")
+    if [e[0] for e in ladder_sim(p, [0.0, 0.5, 0.30, 0.5])] != ["shaking", "shaking"]:
+        out.append("falling below threshold minus hysteresis does not re-arm shaking")
+    if [e[0] for e in ladder_sim(dict(p, catastropheEnabled=False), [0.0, 0.95])] != ["shaking", "healing"]:
+        out.append("greatboleCatastropheEnabled=false still allows the catastrophe")
+    if [e[0] for e in ladder_sim(p, [0.0, 0.75, 0.2, 0.9])] != ["shaking", "healing", "catastrophe"]:
+        out.append("the catastrophe is not once-only and final (nothing may fire after it)")
+    return out
+
+
+def ladder_sim(p, fractions):
+    """Mirror of RM_CompGreatboleHarvestLadder.CompTick's state machine: [(event, fraction)]."""
+    ts, th, tc, h = p["greatboleShakingThreshold"], p["greatboleHealingThreshold"], p["greatboleCatastropheThreshold"], p["hysteresis"]
+    armed = announced = done = False
+    ev = []
+    for f in fractions:
+        if done:
+            break
+        if not armed and f >= ts:
+            armed = True
+            ev.append(("shaking", f))
+        elif armed and f < ts - h:
+            armed = False
+        if not announced and f >= th:
+            announced = True
+            ev.append(("healing", f))
+        elif announced and f < th - h:
+            announced = False
+        if p["catastropheEnabled"] and f >= tc:
+            done = True
+            ev.append(("catastrophe", f))
+    return ev
+
+
+# --------------------------------------------------------------------------- the spine (GREENTIDE_BASE_PORT_BUILD_1)
+
+SPINE_DEFS = [("WeatherDef", "RM_RoilWeather"), ("WeatherDef", "RM_BreaklightClear"),
+              ("GameConditionDef", "RM_RoilLock"), ("GameConditionDef", "RM_GreentideWetBulbLock"),
+              ("GameConditionDef", "RM_BreaklightCondition"), ("IncidentDef", "RM_Breaklight"),
+              ("IncidentDef", "RM_GreatboleFruitfall"), ("HediffDef", "RM_WetBulbOverwhelm"),
+              ("HediffDef", "RM_DryAirAversion"), ("ThingDef", "RM_DryAirBlower"),
+              ("ThingDef", "RM_GreatboleHeartwood"), ("ThingDef", "RM_GreatboleCore"),
+              ("ThingDef", "RM_GreatboleTrunkSegment"), ("ThingDef", "RM_GreatboleDeadHusk"),
+              ("TerrainDef", "RM_RootCauseway"), ("TerrainDef", "RM_ToxinSealedFloor"),
+              ("GenStepDef", "RM_GenStep_LivingBoles"), ("GenStepDef", "RM_GenStep_RootCauseways")]
+
+
+def spine_findings(biome_root=None, defs=None):
+    """Offline: the spine ships in this mod and RM_Greentide carries it. Failure strings; empty is a pass."""
+    bad = []
+    defs = set(defs if defs is not None else shipped_defs())
+    for ty, n in SPINE_DEFS:
+        if (ty, n) not in defs:
+            bad.append("spine def %s/%s is not shipped" % (ty, n))
+    if biome_root is None:
+        biome_root = ET.parse(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Greentide_Biome.xml")).getroot()
+    gt = next((e for e in biome_root if e.findtext("defName") == "RM_Greentide"), None)
+    if gt is None:
+        return bad + ["RM_Greentide BiomeDef not found"]
+    ext = [li.get("Class") for li in gt.findall("modExtensions/li")]
+    for cls in ("RimMandrake.EnvironmentalHazards.RM_LivingBoleBiomeExtension", "RimMandrake.EnvironmentalHazards.RM_RootCausewayBiomeExtension"):
+        if cls not in ext:
+            bad.append("RM_Greentide lacks %s" % cls.split(".")[-1])
+    conds = [li.text for li in gt.findall("biomeMapConditions/li")]
+    for c in ("RM_RoilLock", "RM_GreentideWetBulbLock"):
+        if c not in conds:
+            bad.append("RM_Greentide biomeMapConditions lacks %s" % c)
+    if gt.find("baseWeatherCommonalities/RM_RoilWeather") is None:
+        bad.append("RM_Greentide weather table lacks RM_RoilWeather")
+    if gt.findtext("modExtensions/li/heartwoodThing") != "RM_GreatboleHeartwood":
+        bad.append("living-bole extension does not name RM_GreatboleHeartwood")
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
 except ImportError:                       # offline static run outside the modcheck path
@@ -579,6 +702,29 @@ if Suite is not None:
         "canopySwarmEnabled is a deliberate no-op until the Krannock is rostered at the biome's own review sitting (About.xml)",
         "canopySwarmEnabled")
 
+    @suite.chain("greatbole_ladder_static")
+    def greatbole_ladder_static(t):
+        """Offline: the greatbole harvest ladder (shaking 0.40 / violent healing 0.60 / catastrophe 0.70) mirrored from the
+        C#: thresholds ordered, hysteresis, each rung fires once, the catastrophe is final and respects its toggle."""
+        with _comp(t, "harvest_ladder_fires_each_rung_once_and_catastrophe_is_final", toggle="greatboleCatastropheEnabled"):
+            bad = ladder_findings(ladder_parse())
+            if bad:
+                _fail("; ".join(bad[:4]))
+
+    @suite.chain("spine_static")
+    def spine_static(t):
+        """Offline: GREENTIDE_BASE_PORT_BUILD_1's defs ship here and RM_Greentide carries both extensions, both locks and the Roil."""
+        with _comp(t, "spine_defs_shipped_and_wired_onto_rm_greentide", beyond_toggle=True):
+            bad = spine_findings()
+            if bad:
+                _fail("; ".join(bad[:4]))
+
+    _um("roil", "roil_lock_absent_on_a_new_map_with_roil_off",
+        "WORLDGEN-AFFECTING: biomeMapConditions apply in BiomeConditionMapComponent.MapGenerated, so the toggle needs a "
+        "freshly generated Greentide map; the harness cannot do that on a held map", "roilEnabled")
+    _um("greatbole_fruitfall", "fruitfall_spawns_grubs_near_a_live_bole",
+        "needs a generated Greentide map with a registered greatbole and a forced RM_GreatboleFruitfall", "fruitfallEnabled")
+
     @suite.chain("settings_restored")
     def settings_restored(t):
         """LAST: every field is back at its shipped (parsed) default; a leaked arm would corrupt the next run."""
@@ -675,6 +821,8 @@ def static_checks():
         bad.append("RM_Yammeth MaxFlightTime must be > 0 (the stat is the flight switch)")
     if os.path.exists(os.path.join(HERE, "Patches", "RM_Greentide_FaunaHooks.xml")):
         bad.append("the vanilla Warg/Muffalo hook patch is back")
+    bad.extend(spine_findings())
+    bad.extend("greatbole ladder: " + x for x in ladder_findings(ladder_parse()))
     if not any(f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
         bad.append("no DLL in Assemblies")
     return bad

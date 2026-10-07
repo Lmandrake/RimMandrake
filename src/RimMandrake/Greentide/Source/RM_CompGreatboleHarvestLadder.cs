@@ -5,41 +5,26 @@ using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace RimMandrake.Utinni.UtinniPatches
+namespace RimMandrake.Greentide
 {
-	// GREATBOLE_HARVEST_LADDER_1. The three named events on the Greatbole's
-	// own footprint — the Great Shaking (40%), the violent healing (60%) and
-	// the catastrophe (70%) — attach this alongside
-	// RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker on
-	// RUT_GreatboleCore. It never touches the generic mechanism directly:
-	// everything it needs is the small read-only query API
-	// (RM_MapComponent_LivingRegrowth.GetRemovedFraction/GetBoleCenter/
-	// GetFootprintCells, RM_CompLivingBoleMarker.BoleId) that mechanism
-	// already exposes for exactly this — a content mod polling it on its own
-	// schedule rather than the generic component knowing this content
-	// exists. The 60% healing SPEED-UP itself is not implemented here at
-	// all: it is CompProperties_LivingBoleMarker's own
-	// acceleratedRegrowThreshold/acceleratedRegrowSpeedMultiplier fields,
-	// set in RUT_GreatboleCore.xml — this comp only announces the crossing.
-	//
-	//   <comps>
-	//     <li Class="RimMandrake.Utinni.UtinniPatches.RUT_CompProperties_GreatboleHarvestLadder">
-	//       <fruitDef>RM_GreatboleFruit</fruitDef>
-	//       <grubKindDef>RM_GreatboleGrub</grubKindDef>
-	//       <hardwoodDef>RUT_Hardwood</hardwoodDef>
-	//       <trunkSegmentDef>RUT_GreatboleTrunkSegment</trunkSegmentDef>
-	//       <deadHuskDef>RUT_GreatboleDeadHusk</deadHuskDef>
-	//       <wildsteamFactionDef>RUT_Jawa_WildsteamClan</wildsteamFactionDef>
-	//     </li>
-	//   </comps>
-	public class RUT_CompProperties_GreatboleHarvestLadder : CompProperties
+	// GREATBOLE_HARVEST_LADDER_1. The three named events on the greatbole's own footprint, the Great
+	// Shaking, the violent healing and the catastrophe, at the Mod Settings thresholds (default 40/60/70%
+	// removed). Attached beside RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker on
+	// RM_GreatboleCore; it only polls that mechanism's read-only API
+	// (RM_MapComponent_LivingRegrowth.GetRemovedFraction/GetBoleCenter/GetFootprintCells,
+	// RM_CompLivingBoleMarker.BoleId). The 60% healing SPEED-UP is the marker's own
+	// acceleratedRegrowThreshold/acceleratedRegrowSpeedMultiplier; this comp only announces it.
+	// Moved from the campaign assembly by GREENTIDE_BASE_PORT_BUILD_1. offendedFactionDef is empty on
+	// the free tier; the campaign patches its own faction in.
+	public class RM_CompProperties_GreatboleHarvestLadder : CompProperties
 	{
 		public ThingDef fruitDef;
 		public PawnKindDef grubKindDef;
 		public ThingDef hardwoodDef;
 		public ThingDef trunkSegmentDef;
 		public ThingDef deadHuskDef;
-		public FactionDef wildsteamFactionDef;
+		// A faction that takes the catastrophe as sacrilege (goodwill change below). Optional.
+		public FactionDef offendedFactionDef;
 
 		// How often the fraction is (re-)read. INVENTED: matches the generic
 		// component's own TickInterval (250) — no reason to poll faster than
@@ -72,13 +57,13 @@ namespace RimMandrake.Utinni.UtinniPatches
 		public IntRange catastropheGrubYieldRange = new IntRange(8, 14);
 		public IntRange catastropheHardwoodYieldRange = new IntRange(400, 700);
 		public IntRange trunkSegmentCountRange = new IntRange(6, 12);
-		public int catastropheWildsteamGoodwillChange = -70;
+		public int catastropheGoodwillChange = -70;
 		public int catastropheCameraShakeDurationTicks = 240;
 		public float catastropheCameraShakeMagnitude = 4f;
 
-		public RUT_CompProperties_GreatboleHarvestLadder()
+		public RM_CompProperties_GreatboleHarvestLadder()
 		{
-			compClass = typeof(RUT_CompGreatboleHarvestLadder);
+			compClass = typeof(RM_CompGreatboleHarvestLadder);
 		}
 
 		public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
@@ -90,12 +75,12 @@ namespace RimMandrake.Utinni.UtinniPatches
 
 			if (fruitDef == null)
 			{
-				yield return "RUT_CompProperties_GreatboleHarvestLadder on " + parentDef?.defName + " has no fruitDef.";
+				yield return "RM_CompProperties_GreatboleHarvestLadder on " + parentDef?.defName + " has no fruitDef.";
 			}
 		}
 	}
 
-	public class RUT_CompGreatboleHarvestLadder : ThingComp
+	public class RM_CompGreatboleHarvestLadder : ThingComp
 	{
 		// Scribed hysteresis flags — see the class header for why this comp
 		// polls rather than subscribes to anything.
@@ -103,7 +88,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 		private bool healingAnnounced;
 		private bool catastropheDone;
 
-		public RUT_CompProperties_GreatboleHarvestLadder Props => (RUT_CompProperties_GreatboleHarvestLadder)props;
+		public RM_CompProperties_GreatboleHarvestLadder Props => (RM_CompProperties_GreatboleHarvestLadder)props;
 
 		public override void CompTick()
 		{
@@ -129,28 +114,28 @@ namespace RimMandrake.Utinni.UtinniPatches
 			float fraction = regrowth.GetRemovedFraction(marker.BoleId);
 			float h = Props.hysteresis;
 
-			if (!shakingArmed && fraction >= UtinniPatchesSettings.greatboleShakingThreshold)
+			if (!shakingArmed && fraction >= RM_GreentideSettings.greatboleShakingThreshold)
 			{
 				shakingArmed = true;
 				GreatShaking(map);
 			}
-			else if (shakingArmed && fraction < UtinniPatchesSettings.greatboleShakingThreshold - h)
+			else if (shakingArmed && fraction < RM_GreentideSettings.greatboleShakingThreshold - h)
 			{
 				shakingArmed = false;
 			}
 
-			if (!healingAnnounced && fraction >= UtinniPatchesSettings.greatboleHealingThreshold)
+			if (!healingAnnounced && fraction >= RM_GreentideSettings.greatboleHealingThreshold)
 			{
 				healingAnnounced = true;
 				AnnounceViolentHealing();
 			}
-			else if (healingAnnounced && fraction < UtinniPatchesSettings.greatboleHealingThreshold - h)
+			else if (healingAnnounced && fraction < RM_GreentideSettings.greatboleHealingThreshold - h)
 			{
 				healingAnnounced = false;
 			}
 
-			if (UtinniPatchesSettings.greatboleCatastropheEnabled
-			    && fraction >= UtinniPatchesSettings.greatboleCatastropheThreshold)
+			if (RM_GreentideSettings.greatboleCatastropheEnabled
+			    && fraction >= RM_GreentideSettings.greatboleCatastropheThreshold)
 			{
 				Catastrophe(map, marker, regrowth);
 			}
@@ -162,7 +147,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 		// CreakWarning, same family, bigger).
 		private void GreatShaking(Map map)
 		{
-			Messages.Message("RUT_GreatboleShaking".Translate(), new TargetInfo(parent.Position, map),
+			Messages.Message("RM_GreatboleShaking".Translate(), new TargetInfo(parent.Position, map),
 				MessageTypeDefOf.ThreatBig);
 			SoundDefOf.Building_Complete.PlayOneShot(SoundInfo.InMap(new TargetInfo(parent.Position, map)));
 			Find.CameraDriver?.shaker.DoShake(2f);
@@ -185,15 +170,15 @@ namespace RimMandrake.Utinni.UtinniPatches
 
 		private void AnnounceViolentHealing()
 		{
-			Messages.Message("RUT_GreatboleViolentHealing".Translate(), new TargetInfo(parent.Position, parent.Map),
+			Messages.Message("RM_GreatboleViolentHealing".Translate(), new TargetInfo(parent.Position, parent.Map),
 				MessageTypeDefOf.ThreatBig);
 			SoundDefOf.Building_Complete.PlayOneShot(SoundInfo.InMap(new TargetInfo(parent.Position, parent.Map)));
 		}
 
 		// §2c. Permanent, once. Everything within catastropheRadius is
 		// crushed; the bole dies forever (deregistered — RM_MapComponent_
-		// LivingRegrowth never schedules another regrow for it); Wildsteam
-		// takes the sacrilege as the taboo it is (§8).
+		// LivingRegrowth never schedules another regrow for it); the
+		// offended faction, if one is set, takes the sacrilege as a taboo (§8).
 		private void Catastrophe(Map map, RM_CompLivingBoleMarker marker, RM_MapComponent_LivingRegrowth regrowth)
 		{
 			catastropheDone = true;
@@ -201,7 +186,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 			IntVec3 center = regrowth.GetBoleCenter(marker.BoleId);
 			IReadOnlyCollection<IntVec3> footprint = regrowth.GetFootprintCells(marker.BoleId);
 
-			Messages.Message("RUT_GreatboleCatastrophe".Translate(), new TargetInfo(center, map),
+			Messages.Message("RM_GreatboleCatastrophe".Translate(), new TargetInfo(center, map),
 				MessageTypeDefOf.ThreatBig);
 			SoundDefOf.Building_Complete.PlayOneShot(SoundInfo.InMap(new TargetInfo(center, map)));
 			Find.CameraDriver?.shaker.DoShake(Props.catastropheCameraShakeMagnitude, Props.catastropheCameraShakeDurationTicks);
@@ -210,15 +195,15 @@ namespace RimMandrake.Utinni.UtinniPatches
 			ScatterTrunkSegments(map, center, Props.catastropheRadius);
 			DropCatastropheYield(map, center);
 
-			if (Props.wildsteamFactionDef != null)
+			if (Props.offendedFactionDef != null)
 			{
 				// reason: null — TryAffectGoodwillWith's HistoryEventDef param only
 				// changes attribution text on the goodwill message/letter; inventing a
 				// whole new HistoryEventDef just to word that line is not worth the
 				// extra def for a one-off sacrilege hit. The goodwill swing and the
 				// message/letter both still fire.
-				Faction wildsteam = Find.FactionManager?.FirstFactionOfDef(Props.wildsteamFactionDef);
-				wildsteam?.TryAffectGoodwillWith(Faction.OfPlayer, Props.catastropheWildsteamGoodwillChange,
+				Faction offended = Find.FactionManager?.FirstFactionOfDef(Props.offendedFactionDef);
+				offended?.TryAffectGoodwillWith(Faction.OfPlayer, Props.catastropheGoodwillChange,
 					canSendMessage: true, canSendHostilityLetter: true);
 			}
 
@@ -369,6 +354,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 		public override void PostExposeData()
 		{
 			base.PostExposeData();
+			// Keys keep their campaign-era names so a save from before the move keeps its state.
 			Scribe_Values.Look(ref shakingArmed, "rutShakingArmed", false);
 			Scribe_Values.Look(ref healingAnnounced, "rutHealingAnnounced", false);
 			Scribe_Values.Look(ref catastropheDone, "rutCatastropheDone", false);

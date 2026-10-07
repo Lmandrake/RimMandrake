@@ -11,7 +11,7 @@ namespace RimMandrake.EnvironmentalHazards
     // this extension only carries the vortex's own tuning, including a
     // pointer at that already-shipped DamageDef.
     //
-    // DefModExtension on RUT_SteamDevil (an EtherealThingBase-derived
+    // DefModExtension on RM_SteamDevil (an EtherealThingBase-derived
     // ThingDef, same category vanilla's own Tornado uses), read by
     // RM_WanderingVortex every tick. All numeric defaults are INVENTED — the
     // spec names no figures for the vortex's own speed/lifetime/radius, only
@@ -81,7 +81,7 @@ namespace RimMandrake.EnvironmentalHazards
         /// <summary>Races this vortex never damages, and the PawnKindDefs
         /// likewise. SCALD_STEAM_WEATHER_DESIGN_1 step 3, 2026-09-26.
         ///
-        /// The spec's own finding: RUT_SteamDevil scalded the Scald's own
+        /// The spec's own finding: RM_SteamDevil scalded the Scald's own
         /// natives exactly as hard as a colonist, because DamageCell hit
         /// every Thing in the cell with no species check and this extension
         /// carried no immune list at all. The water half of native immunity

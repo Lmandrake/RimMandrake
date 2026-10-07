@@ -24,9 +24,7 @@ namespace RimMandrake.Greentide
     //
     // Buried caches (RM_MapComponent_MudSwallow) need no separate cross-biome
     // toggle: it already fires off the terrain extension alone, wherever
-    // RM_GreentideChurnmud exists, native map or opted-in map alike. The Greatbole
-    // does not exist yet (About.xml: gated on ALPHA_MECHANICS_KIT_1 /
-    // EXPLOSIVE_PLANT_GROWTH_1) — nothing to gate.
+    // RM_GreentideChurnmud exists, native map or opted-in map alike.
     // ════════════════════════════════════════════════════════════════════
     public class RM_GreentideSettings : ModSettings
     {
@@ -133,6 +131,23 @@ namespace RimMandrake.Greentide
         public static float thurrockFellingPace = 1f;
         public static bool thurrockProvokedWallDamage = true;
 
+        // GREENTIDE_BASE_PORT_BUILD_1 — the spine moved down from the campaign tier.
+        // The Roil: RM_RoilLock (and RM_RoilWeather's table row) are taken off RM_Greentide by
+        // RM_GreentideDensityApplier when off. biomeMapConditions are applied in
+        // BiomeConditionMapComponent.MapGenerated, so this reaches NEW maps only.
+        public static bool roilEnabled = true;
+        // Greatbole fruitfall (RM_IncidentWorker_GreatboleFruitfall.CanFireNowSub).
+        public static bool fruitfallEnabled = true;
+        // GREATBOLE_HARVEST_LADDER_1 thresholds, read by RM_CompGreatboleHarvestLadder (moved here from
+        // the campaign's UtinniPatchesSettings with the comp). Grub breeding is not duplicated: it is
+        // RM_CreatureBehaviorsSettings.verminBreedingEnabled. Breaklight, wet-bulb, living boles and
+        // root causeways are already live toggles in the Environmental Hazards Kit's screen; this screen
+        // names them rather than adding a second switch on the same wire.
+        public static float greatboleShakingThreshold = 0.40f;
+        public static float greatboleHealingThreshold = 0.60f;
+        public static float greatboleCatastropheThreshold = 0.70f;
+        public static bool greatboleCatastropheEnabled = true;
+
         private string biomeListBuffer;
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 1200f;
@@ -165,6 +180,12 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref thurrockFellingEnabled, "thurrockFellingEnabled", true);
             Scribe_Values.Look(ref thurrockFellingPace, "thurrockFellingPace", 1f);
             Scribe_Values.Look(ref thurrockProvokedWallDamage, "thurrockProvokedWallDamage", true);
+            Scribe_Values.Look(ref roilEnabled, "roilEnabled", true);
+            Scribe_Values.Look(ref fruitfallEnabled, "fruitfallEnabled", true);
+            Scribe_Values.Look(ref greatboleShakingThreshold, "greatboleShakingThreshold", 0.40f);
+            Scribe_Values.Look(ref greatboleHealingThreshold, "greatboleHealingThreshold", 0.60f);
+            Scribe_Values.Look(ref greatboleCatastropheThreshold, "greatboleCatastropheThreshold", 0.70f);
+            Scribe_Values.Look(ref greatboleCatastropheEnabled, "greatboleCatastropheEnabled", true);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own — that is native, not "cross").</summary>
@@ -349,6 +370,32 @@ namespace RimMandrake.Greentide
             list.CheckboxLabeled("Provoked thurrocks batter walls", ref thurrockProvokedWallDamage,
                 "On: a manhunting thurrock shoulders walls and doors the way it shoulders trees. Natural rock is "
               + "always spared, and a calm one never damages buildings. Off: no building damage even when provoked.");
+
+            list.GapLine();
+
+            list.Label("The Roil, Breaklight and the greatbole");
+            list.CheckboxLabeled("The Roil (WORLDGEN-AFFECTING — new maps only)", ref roilEnabled,
+                "On: a Greentide map stands under permanent waist-deep hot fog (aim x0.7, move x0.95), and the "
+              + "fog can throw up a steam devil. Off: maps generated after the change get ordinary weather. "
+              + "A map that already exists keeps the fog it was born with.");
+            list.CheckboxLabeled("Greatbole fruitfall", ref fruitfallEnabled,
+                "On: now and then a living greatbole drops a fruit or two and a few grubs on its own, no wound "
+              + "needed. Off: fruit only comes from felling or wounding.");
+            list.Label("Greatbole harvest ladder — share of a bole's footprint mined away.");
+            list.Label("  The Great Shaking: " + (greatboleShakingThreshold * 100f).ToString("0") + "% removed");
+            greatboleShakingThreshold = list.Slider(greatboleShakingThreshold, 0.1f, 0.9f);
+            list.Label("  The violent healing: " + (greatboleHealingThreshold * 100f).ToString("0") + "% removed");
+            greatboleHealingThreshold = list.Slider(greatboleHealingThreshold, 0.1f, 0.95f);
+            list.CheckboxLabeled("  The catastrophe can happen", ref greatboleCatastropheEnabled,
+                "Off: a greatbole never dies from being mined out, no matter how much of its footprint is removed. "
+              + "The Great Shaking and the violent healing still fire.");
+            if (greatboleCatastropheEnabled)
+            {
+                list.Label("  The catastrophe: " + (greatboleCatastropheThreshold * 100f).ToString("0") + "% removed");
+                greatboleCatastropheThreshold = list.Slider(greatboleCatastropheThreshold, 0.1f, 0.99f);
+            }
+            list.Label("Breaklight, wet-bulb overwhelm, the dry-air blower's field, living greatbole placement and "
+              + "root causeways are switched in the Environmental Hazards Kit's settings.");
 
             lastContentHeight = list.CurHeight + 20f;
             list.End();

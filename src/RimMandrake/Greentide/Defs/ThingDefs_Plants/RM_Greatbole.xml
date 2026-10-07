@@ -3,8 +3,8 @@
   RM_Greatbole.xml                                   GREENTIDE_JUNGLE_TREE_ROSTER_1
 
   The signature giant — design doc §3a0, row 22. Ruled 2026-09-22: the
-  LANDMARK (RUT_GreatboleCore/RUT_GreatboleHeartwood, campaign-tier,
-  mandrake.rm.environmentalhazards + UtinniPatches, unfellable) and this
+  LANDMARK (RM_GreatboleCore/RM_GreatboleHeartwood, RM_Greatbole_Landmark.xml in
+  this mod since GREENTIDE_BASE_PORT_BUILD_1, unfellable) and this
   FELLABLE giant are the SAME SPECIES at different life stages — the
   landmark is what a greatbole becomes after centuries, this is the mature
   tree a player actually fells. They share a visual family (leaf, bark
@@ -31,16 +31,13 @@
   not itself Star Wars IP, so nothing about it needs to live behind the
   campaign layer. This closes the tier gap the design doc flagged as "not
   mine to decide": the free mod now gets its OWN mature giant (this def)
-  rather than only ever meeting the campaign-tier landmark it can never
-  encounter.
+  as well as the landmark.
 
   Interface with the harvest-ladder work (GREATBOLE_HARVEST_LADDER_1): this
-  def does NOT carry RUT_CompGreatboleHarvestLadder — that comp is the
-  LANDMARK's own threshold ladder (40/60/70% mined-away events) and is
-  Utinni/RUT_ tier by construction (its own header: "attach this alongside
-  ... on RUT_GreatboleCore"), unreachable from an RM_ tier def without
-  crossing the tier line. This tree's own "interface" with that work is
-  fictional continuity only (same species) plus the ALREADY-GENERIC
+  def does NOT carry RM_CompGreatboleHarvestLadder — that comp is the
+  LANDMARK's own threshold ladder (mined-away events on RM_GreatboleCore),
+  and this tree is felled, not mined. This tree's own "interface" with that
+  work is fictional continuity only (same species) plus the ALREADY-GENERIC
   mechanism the harvest-ladder item itself relies on and that this roster
   was built to finally give real content: RM_FellableTreeExtension +
   RM_TreeFallUtility.FellTree (RimMandrake.EnvironmentalHazards,

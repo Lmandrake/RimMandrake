@@ -97,3 +97,35 @@ Deterministic state reads (def dump, `jawa/get_defs` reading `success`/`foundCou
 - Campaign tier loaded: the same defs resolve exactly once (no `RUT_` duplicate), and `RM_Greentide`'s
   `biomeMapConditions` still lists both locks.
 - Each Mod Settings toggle off removes exactly its effect (one case per toggle).
+
+## build (offline, 2026-10-06, FOUNDRY) — live criteria NOT yet run
+
+Moved into `src/RimMandrake/Greentide/` as RM_ defs (RUT_ originals deleted, every live reference repointed):
+`Defs/WeatherDefs/RM_Greentide_Weathers.xml`, `Defs/GameConditionDefs/RM_Greentide_Conditions.xml`,
+`Defs/IncidentDefs/RM_Greentide_Spine_Incidents.xml`, `Defs/HediffDefs/RM_Greentide_WetBulb_Hediffs.xml`,
+`Defs/ThingDefs_Buildings/RM_DryAirBlower.xml`, `Defs/ThingDefs_Buildings/RM_Greatbole_Landmark.xml`,
+`Defs/TerrainDefs/RM_Greentide_SpineTerrains.xml`, `Defs/MapGeneration/RM_Greentide_GenSteps.xml`,
+`Patches/RM_Greentide_GenStep_Register.xml`, both textures, `Source/RM_CompGreatboleHarvestLadder.cs`,
+`Source/RM_IncidentWorker_GreatboleFruitfall.cs`, keyed strings. `RM_Greentide` now carries both extensions, both
+locks and an `RM_RoilWeather` row. EnvironmentalHazards: `RM_IncidentWorker_Breaklight`/`RM_IncidentWorker_SteamDevil`
+(steam-devil keys moved to EH `Languages`); TerminalBiomes: `RM_SteamDevil`/`RM_SteamDevilAppears`.
+
+Decisions taken in the build (not in the spec above):
+- **Save check replaced by aliases**, the SUMP_FREE_TIER_MOVE_BUILD_1 pattern: `Defs/Misc/RM_GreentideTierMove_Aliases.xml`
+  (+ TerminalBiomes `Defs/Misc/RM_SteamDevilRename_Aliases.xml`) map every old name, terrain shortHash included, so a placed
+  RUT_ blower/heartwood/causeway loads as the RM_ def. `RM_DefAliasProof` now also resolves Weather/GameCondition/Incident
+  defs. The repo-search criterion therefore finds the old names in those two alias files by design.
+- **`RUT_ToxinSealant` moved too** (as `RM_ToxinSealedFloor`): the free core's `sealantTerrain` cannot name a campaign
+  def. Fever Wood's trunk core and the Atlas entry repointed.
+- **Hardwood and faction stay campaign bindings**: the free landmark mines `RM_GreatboleHardwood` and offends no faction
+  (comp field renamed `offendedFactionDef`); `UtinniPatches/Patches/RUT_Greatbole_CampaignBindings.xml` puts back
+  `RUT_Hardwood` and `RUT_Jawa_WildsteamClan` so the campaign behaves as before.
+- **Mod Settings**: Greentide gains The Roil (new maps only; removes lock + weather row from the live BiomeDef),
+  Greatbole fruitfall, and the ladder thresholds (moved out of `UtinniPatchesSettings`). Breaklight, wet-bulb, living
+  boles and causeways were already live toggles in the Environmental Hazards Kit; the Greentide screen names them
+  instead of adding a second switch on the same wire.
+- The ladder chain moved from `UtinniPatches/validation.py` to `Greentide/validation.py` (+ `spine_static`, and
+  UNMEASURED `roil`/`greatbole_fruitfall`); selftest `Greentide/selftest_greentide_spine.py`.
+- Not done: `BiomeGlowMultiplierExtension` (0.75) stays on the twin only — not in this item's list. Criterion "0 hits for
+  `class RUT_IncidentWorker_`" would also catch five other EH classes this item does not name (SporeCloud, WalkerSurfacing,
+  TarPitBelch, MirrorBreak, ContagionProbe). Comment-only mentions of the old names remain in other mods' files.

@@ -3,22 +3,12 @@ using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
 {
-    // GREENTIDE_MECHANICS_2 M3 remainder build (greentide_kit_spec.md M3:
-    // "Spawned by an IncidentDef weighted into the biome and, rarely, by the
-    // Roil condition itself"). Only the plain IncidentDef route ships this
-    // pass — checked before build: RUT_RoilWeather.xml/RUT_RoilLock.xml
-    // exist on disk but uncommitted, still being actively built by another
-    // window's M4/M5 pass this same session (GREENTIDE_MECHANICS_2's own
-    // build-order note), so M4 has not landed as far as this item's own
-    // ledger is concerned. Per the build brief's own explicit fallback for
-    // exactly this situation, the rare Roil-triggered spawn hook is owed,
-    // not wired — wiring it now would mean hooking a condition class that
-    // might still change shape before that window's own commit lands.
-    //
-    // RUT_-prefixed content class in the shared EnvironmentalHazards
-    // assembly, same posture as RUT_IncidentWorker_ContagionProbe/
-    // RUT_IncidentWorker_Breaklight/RUT_IncidentWorker_WalkerSurfacing.
-    public class RUT_IncidentWorker_SteamDevil : IncidentWorker
+    // GREENTIDE_MECHANICS_2 M3 (greentide_kit_spec.md M3: "Spawned by an IncidentDef weighted into
+    // the biome and, rarely, by the Roil condition itself"). This is the IncidentDef route
+    // (RM_SteamDevilAppears, mandrake.rm.terminalbiomes); the Roil route is
+    // RM_MapComponent_RoilVortexSpawner, which reuses TryFindRiverCell. Renamed from RUT_ by
+    // GREENTIDE_BASE_PORT_BUILD_1.
+    public class RM_IncidentWorker_SteamDevil : IncidentWorker
     {
         private const int SampleCells = 60; // bounded sample, matching RUT_IncidentWorker_WalkerSurfacing's own posture — not a full-map scan
 
@@ -44,7 +34,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return false;
             }
 
-            ThingDef steamDevilDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_SteamDevil");
+            ThingDef steamDevilDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_SteamDevil");
             if (steamDevilDef == null)
             {
                 return false; // content not deployed — never a hard error over it, same posture as RUT_IncidentWorker_ContagionProbe
@@ -58,8 +48,8 @@ namespace RimMandrake.EnvironmentalHazards
             GenSpawn.Spawn(steamDevilDef, cell, map);
 
             SendStandardLetter(
-                "RUT_SteamDevilAppears".Translate(),
-                "RUT_SteamDevilAppearsDesc".Translate(),
+                "RM_SteamDevilAppears".Translate(),
+                "RM_SteamDevilAppearsDesc".Translate(),
                 LetterDefOf.NeutralEvent,
                 parms,
                 new TargetInfo(cell, map));
