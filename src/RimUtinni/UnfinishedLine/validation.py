@@ -383,6 +383,12 @@ def world(t):
         if t._guard() and "runs=True" not in text:
             raise ExpectationFailed("marking the line completed did not make it run: %s" % text)
     with t.component("volunteer_offered", beyond_toggle=True):
+        # Fixture (MEASURED live 2026-10-07: "VOLUNTEER REFUSED: Enclaves not allied"): VolunteerBlocker needs the
+        # Enclaves to be the player's ALLY, which a quicktest world never is. Make them so, and read it back.
+        ally = t.bridge_call("jawa/faction_relations_set", faction="Player", other="RUT_Jawa_FreeDroidEnclaves",
+                             kind="Ally")
+        if t._guard() and not (ally or {}).get("success"):
+            raise ExpectationFailed("fixture: could not ally the Enclaves with the player: %s" % ally)
         text = w("volunteer")
         if t._guard() and not text.startswith("VOLUNTEER OFFERED"):
             raise ExpectationFailed("%s was not offered: %s" % (VOLUNTEER, text))

@@ -586,6 +586,13 @@ def protocol_trade_advantage(t):
     with t.component("protocol_droid_shifts_prices", toggle="protocolTrade"):
         r = t.bridge_call("jawa/fire_incident", incidentDef="TraderCaravanArrival")
         if not (r or {}).get("fired", (r or {}).get("success")):
+            # The worker's own pick can be a faction whose Trader group cannot spawn on this list (MEASURED live
+            # 2026-10-07: RUT_Jawa_DeepwaterCompact, whose trader is RSW_MonCalamari from a mod not in the
+            # quicktest list -> SpawnPawns empty -> TryExecuteWorker false though canFireNow=True). Retry with a
+            # vanilla trading faction; the price mechanic keys on the negotiator party, not on whose caravan it is.
+            r = t.bridge_call("jawa/fire_incident", incidentDef="TraderCaravanArrival", faction="OutlanderCivil",
+                              dryRun=False)
+        if not (r or {}).get("fired", (r or {}).get("success")):
             raise ExpectationFailed(
                 "jawa/fire_incident(TraderCaravanArrival) did not fire: %s "
                 "(needs JAWA_GM_TOOLS -- see module docstring gap #5)" % r)

@@ -515,11 +515,39 @@ namespace RimMandrake.LuminousPigment
                 crowncarpetCultured.plant.harvestYield = LuminousPigmentSettings.tankYield;
             }
 
+            RefreshBuildMenu();
             ApplyCuisineSkillRequirements();
             ApplyCuisineRecipeVisibility();
             ApplyStatusThoughtNumbers();
             ApplyStatusMoodScale();
             ApplyClusterBlockToMaps();
+        }
+
+        // The architect menu is NOT derived from BuildableDef.designationCategory at draw time:
+        // DesignationCategoryDef builds its designator list once (private ResolveDesignators) and
+        // draws that cache. Nulling or restoring designationCategory above therefore changed the
+        // def but not the menu until the next launch, contradicting the setting's tooltip. Rebuild
+        // the Production list whenever a game is running; before that the category resolves itself
+        // after startup and reads the already-applied field.
+        static void RefreshBuildMenu()
+        {
+            if (Current.ProgramState != ProgramState.Playing) return;
+            try
+            {
+                MethodInfo resolve = typeof(DesignationCategoryDef).GetMethod("ResolveDesignators",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                if (resolve == null)
+                {
+                    Log.Warning("[LuminousPigment] DesignationCategoryDef.ResolveDesignators not found; " +
+                                "GlowTank/press build-menu toggles apply on next launch.");
+                    return;
+                }
+                resolve.Invoke(DesignationCategoryDefOf.Production, null);
+            }
+            catch (System.Exception e)
+            {
+                Log.Warning("[LuminousPigment] could not refresh the build menu: " + e.Message);
+            }
         }
 
         // clusterBlock's block indices are keyed off the block size, so a
