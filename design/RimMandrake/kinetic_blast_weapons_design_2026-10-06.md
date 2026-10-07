@@ -368,3 +368,13 @@ base is the reward for building one; (c) give it ammo like the mortar.
 mines, Hutt Cartel enforcers carry repulsor rifles, the Geonosian Foundry Hive mounts pulse cannons, Free Droid
 Enclaves field a rare grav-ram. (a) **as proposed** (recommended); (b) keep kinetic weapons player-only for now —
 no enemy ever throws your colonists; (c) a different split you type.
+
+## 9. Owner decisions, 2026-10-06 ~22:30
+
+By question card: Q1 thump cannon **force 2.5** (5 cells beside the impact, 8 at centre); Q2 a **new mod "Kinetic
+Arms"** that needs Explosive Knockback; Q3 kinetic blasts **sway** Gimme Some Slack cords, only real explosions cut
+them; Q4 shield belts **absorb the throw and lose charge** (a strong throw pops them).
+
+Owner typed (verbatim): *"We need to assign this tech to someone in the game. I'm thinking this might be ancient
+Rakatan technology (thump guns)."* — kinetic-blast weapons are framed as ancient Rakatan technology; see
+RAKATAN_ARCHOTECH_MACHINES_1 for the existing Rakatan grade ladder. Q5–Q7 asked next in that light.
