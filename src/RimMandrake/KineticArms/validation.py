@@ -181,9 +181,45 @@ def l0_wiring(fields):
             bad.append("setting %s is not restored by Reset()" % f)
         if f not in toggled and "RimMandrakeKineticArmsSettings.%s" % f not in window:
             bad.append("setting %s has no control in the settings window" % f)
+    bad += load_error_checks(defs, patches)
     prog = open(os.path.join(HERE, "Source", "SelfTest", "Program.cs"), encoding="utf-8").read()
     if '"KA-16 ' not in prog:
         bad.append("kernel selftest has no KA-16 (ruins pick) rows")
+    return bad
+
+
+# Projectile thingClasses that derive from Projectile_Explosive (VerbProperties.CausesExplosion is true for them).
+_EXPLOSIVE_CLASSES = ("Projectile_Explosive", "RimMandrake.KineticArms.RM_Projectile_KineticExplosive",
+                      "RimMandrake.KineticArms.RM_Projectile_KineticBolt")
+# The vanilla pirate gangs that loot (owner 2026-10-06). Each is patched BY NAME: a mod setting Inherit="False" on a
+# child's modExtensions (ReGrowth 2 does it to PirateWaster) silently drops anything patched on the Pirate parent.
+LOOTER_FACTIONS = ("Pirate", "CannibalPirate", "PirateYttakin", "PirateWaster")
+
+
+def load_error_checks(defs, patches):
+    """L0 repro of the 2026-10-07 full-list load errors and the looted_pirates miss."""
+    bad = []
+    for (tag, key), el in defs.items():
+        if tag != "ThingDef":
+            continue
+        for v in el.iter("li"):
+            proj = v.findtext("defaultProjectile")
+            if not proj or v.findtext("verbClass") not in ("Verb_Shoot", "Verb_LaunchProjectile"):
+                continue
+            p = defs.get(("ThingDef", proj))
+            explosive = p is not None and (p.findtext("thingClass") or "") in _EXPLOSIVE_CLASSES
+            fmr = float(v.findtext("forcedMissRadius") or 0)
+            # VerbProperties.ConfigErrors: (forcedMissRadius > 0) != CausesExplosion is a red config error
+            if (fmr > 0) != explosive:
+                bad.append("%s verb fires %s (explosive=%s) with forcedMissRadius %s: forcedMiss config error"
+                           % (key, proj, explosive, fmr))
+        # ThingDef.ConfigErrors: smeltable with no smeltProducts and no costList yields nothing (BaseWeapon is smeltable)
+        if el.get("ParentName") in ("BaseWeapon", "BaseGunWithQuality") and el.findtext("smeltable") != "false" \
+                and el.find("smeltProducts") is None and el.find("costList") is None:
+            bad.append("%s is smeltable but gives nothing for smelting" % key)
+    for f in LOOTER_FACTIONS:
+        if 'FactionDef[defName="%s"]' % f not in patches:
+            bad.append("looter faction %s is not patched by name (inheritance from Pirate is not safe)" % f)
     return bad
 
 
