@@ -174,6 +174,7 @@ namespace RimMandrake.FlowWorks
         // FLOWWORKS_VISUAL_PRINCIPLES_1 (owner principles 1-5, 2026-10-05). Each OFF falls back to the flat look.
         public static bool excavationWallMaterialEnabled = true;   // faces in the ground's own dirt/stone, lit like vanilla walls
         public static bool pitLipOcclusionEnabled = true;          // the near lip hides a sunk pawn's lower body
+        public static bool pitSinkClampEnabled = false;            // OFF (owner 2026-10-07, try without): hold the sink so the drawn centre stays north of the near lip; on a south-row pit cell this caps every pawn at 0.5
         public static float pitLipOcclusion = 0.85f;               // how much it hides (1 = fully)
         public static bool liquidSurfaceMotionEnabled = true;      // ripples / gloss / sheen on filled cuts
         public static bool liquidWakesEnabled = true;              // V wakes behind anything wading
@@ -369,6 +370,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref excavationWallFacesEnabled, "excavationWallFacesEnabled", true);
             Scribe_Values.Look(ref excavationWallMaterialEnabled, "excavationWallMaterialEnabled", true);
             Scribe_Values.Look(ref pitLipOcclusionEnabled, "pitLipOcclusionEnabled", true);
+            Scribe_Values.Look(ref pitSinkClampEnabled, "pitSinkClampEnabled", false);
             Scribe_Values.Look(ref pitLipOcclusion, "pitLipOcclusion", 0.85f);
             Scribe_Values.Look(ref liquidSurfaceMotionEnabled, "liquidSurfaceMotionEnabled", true);
             Scribe_Values.Look(ref liquidWakesEnabled, "liquidWakesEnabled", true);
@@ -789,6 +791,8 @@ namespace RimMandrake.FlowWorks
                 list.CheckboxLabeled("The near edge of a cut hides whoever stands deep in it", ref pitLipOcclusionEnabled,
                     "Seen from above and to the south, the near bank is in front of a pawn standing deep in a cut, so the "
                   + "part of them below its edge is hidden behind it. Drawing only.");
+                list.CheckboxLabeled("Hold a deep pawn inside the cut's near edge", ref pitSinkClampEnabled,
+                    "Stops a big sprite from drawing outside the cut on the south side, but also caps how far everyone sinks on that row. Off by default. Drawing only.");
                 list.CheckboxLabeled("No ground shadow under someone down in a cut", ref pitHidesShadowEnabled,
                     "A person or animal standing in a cut has no shadow drawn on the ground under them, so it cannot "
                   + "show through the near bank. Drawing only. Off: the game's usual shadow.");

@@ -87,6 +87,10 @@ namespace RimMandrake.FlowWorks
 			{
 				return 0f;
 			}
+			if (!RimMandrakeFlowWorksSettings.pitSinkClampEnabled)
+			{
+				return sink;
+			}
 			float lipZ = float.NaN;
 			for (int k = 1; k <= RM_PitDrawMath.MaxDepth * 2; k++)
 			{
