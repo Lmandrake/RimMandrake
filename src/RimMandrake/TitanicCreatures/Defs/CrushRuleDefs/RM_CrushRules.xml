@@ -19,35 +19,35 @@
     rows here - open question, flagged in the build report, not resolved.
   -->
 
-  <RM_CrushRuleDef>
+  <RimMandrake.TitanicCreatures.RM_CrushRuleDef>
     <defName>RM_Crush_Walls</defName>
     <thing>Wall</thing>
     <crushable>true</crushable>
     <minTier>T2</minTier>
-  </RM_CrushRuleDef>
+  </RimMandrake.TitanicCreatures.RM_CrushRuleDef>
 
-  <RM_CrushRuleDef>
+  <RimMandrake.TitanicCreatures.RM_CrushRuleDef>
     <defName>RM_Crush_Buildings</defName>
     <category>Buildings</category>
     <crushable>true</crushable>
     <minTier>T2</minTier>
-  </RM_CrushRuleDef>
+  </RimMandrake.TitanicCreatures.RM_CrushRuleDef>
 
-  <RM_CrushRuleDef>
+  <RimMandrake.TitanicCreatures.RM_CrushRuleDef>
     <defName>RM_Crush_Plants</defName>
     <category>Plants</category>
     <crushable>true</crushable>
     <minTier>T1</minTier>
-  </RM_CrushRuleDef>
+  </RimMandrake.TitanicCreatures.RM_CrushRuleDef>
 
   <!-- Explicit protect, not just an absence: chunks are named in the ruling
        as needing individual review, so this is a deliberate placeholder
        "no" rather than a silent gap that would read the same either way. -->
-  <RM_CrushRuleDef>
+  <RimMandrake.TitanicCreatures.RM_CrushRuleDef>
     <defName>RM_Crush_Chunks</defName>
     <category>Chunks</category>
     <crushable>false</crushable>
     <minTier>T1</minTier>
-  </RM_CrushRuleDef>
+  </RimMandrake.TitanicCreatures.RM_CrushRuleDef>
 
 </Defs>

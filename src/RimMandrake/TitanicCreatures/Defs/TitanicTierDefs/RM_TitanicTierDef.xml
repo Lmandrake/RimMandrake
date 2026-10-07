@@ -12,11 +12,11 @@
     Paraceramuffalo, bs 20 ElderSando, bs 32 Reefback, bs 40 Lanternwhale as
     the scale this exists for), never by editing RM_TitanicTierDef.cs.
   -->
-  <RM_TitanicTierDef>
+  <RimMandrake.TitanicCreatures.RM_TitanicTierDef>
     <defName>RM_TitanicTiers_Default</defName>
     <t1MinBodySize>4</t1MinBodySize>
     <t2MinBodySize>8</t2MinBodySize>
     <t3MinBodySize>20</t3MinBodySize>
-  </RM_TitanicTierDef>
+  </RimMandrake.TitanicCreatures.RM_TitanicTierDef>
 
 </Defs>
