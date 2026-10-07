@@ -352,10 +352,29 @@ def _build_suite():
         r = t.bridge_call("jawa/static_call", type="RimMandrake.NightsideIce.RM_ShivvenProof", method=method, args="current")
         return str((r or {}).get("result", "")) or "no result: %r" % (r,)
 
+    def _site_heater(t):
+        """Site for the shivven/breach proofs. LIVE 2026-10-07 (jawa probes, each a false theory kept here): a heater
+        spawned by spawn_batch has no faction, so the dial never counts it (build_batch faction=player fixes that);
+        an OUTDOOR heater or campfire never pushes heat at all (ShouldPushHeatNow false, dial heaters 0.0), so the
+        source must sit in a roofed room; the room floor must be natural ground (Soil) because ProofSeek lays its
+        ice only on non-layerable cells; and HottestSource is cached 250 ticks, so the clock must run past it."""
+        info = t.bridge_call("jawa/map_info") or {}
+        n = int(info.get("sizeX", 250))
+        x0 = n // 2 + 10
+        z0 = int(info.get("sizeZ", n)) // 2 + 10
+        t.bridge_call("jawa/make_empty_room", rect="%d,%d,13,13" % (x0, z0), floorDef="Soil")
+        t.bridge_call("jawa/build_batch", ops="Campfire:%d,%d" % (x0 + 6, z0 + 6), faction="player")
+        t.bridge_call("rimworld/step_game_ticks", ticks=300, pauseFirst=True, timeoutMs=120000)
+        txt = _dial(t, "ProofDial")
+        if _live(t) and "heaters 0.0" in txt:
+            _unmeasured(t, "site fixture: the campfire in the roofed room is not pushing heat: %s" % txt)
+
     @suite.chain("shivven")
     def shivven(t):
         """NIGHTSIDEICE_SHIVVEN_BUILD_1: a shivven seeks the heater under the ice and never stands on a floor.
         Needs a working player heater on the current map (ProofSeek refuses otherwise)."""
+        with t.component("site_powered_heater", beyond_toggle=True):
+            _site_heater(t)
         with t.component("seeks_heater_under_ice", toggle="shivvenHeatSeek"):
             txt = _shiv(t, "ProofSeek")
             if _live(t) and ("state=seeking" not in txt and "state=striking" not in txt or "terrain=Ice" not in txt):
