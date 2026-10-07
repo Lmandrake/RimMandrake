@@ -76,6 +76,27 @@ namespace RimMandrake.TheForge
         public static bool jossurStoopEnabled = true;
         public static bool skyColumnHighlightEnabled = true;
 
+        // FORGE_DHOKKUR_WAYS_1 — the dhokkur's ways. Each is read live.
+        // PROVISIONAL defaults; the item's two owner questions (how a shove
+        // treats a wall, whether tracks fade) are these settings' defaults.
+        public static bool dhokkurWakeEffectsEnabled = true;
+        public static bool dhokkurPathMemoryEnabled = true;
+        public static int dhokkurPassesToPolish = 3;
+        public static bool dhokkurTrailsFade = false;
+        public static float dhokkurTrailFadeDays = 60f;
+        public static bool dhokkurWallShoveEnabled = true;
+        public static int dhokkurShoveMode = 0;
+        public static float dhokkurShoveDamagePct = 0.25f;
+        // A cell gains at most one pass per half day, so only a path walked
+        // on separate rains wears in.
+        public const int DhokkurWearCooldownTicks = 30000;
+        private static readonly string[] ShoveModeLabels =
+        {
+            "moved one cell, intact",
+            "minified and dropped",
+            "damaged in place",
+        };
+
         // Master switch folded in: a feature is on only while the mod is.
         private static Vector2 scrollPos;
         private static float viewHeight = 900f;
@@ -124,6 +145,14 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref skyColumnHuntEnabled, "skyColumnHuntEnabled", true);
             Scribe_Values.Look(ref jossurStoopEnabled, "jossurStoopEnabled", true);
             Scribe_Values.Look(ref skyColumnHighlightEnabled, "skyColumnHighlightEnabled", true);
+            Scribe_Values.Look(ref dhokkurWakeEffectsEnabled, "dhokkurWakeEffectsEnabled", true);
+            Scribe_Values.Look(ref dhokkurPathMemoryEnabled, "dhokkurPathMemoryEnabled", true);
+            Scribe_Values.Look(ref dhokkurPassesToPolish, "dhokkurPassesToPolish", 3);
+            Scribe_Values.Look(ref dhokkurTrailsFade, "dhokkurTrailsFade", false);
+            Scribe_Values.Look(ref dhokkurTrailFadeDays, "dhokkurTrailFadeDays", 60f);
+            Scribe_Values.Look(ref dhokkurWallShoveEnabled, "dhokkurWallShoveEnabled", true);
+            Scribe_Values.Look(ref dhokkurShoveMode, "dhokkurShoveMode", 0);
+            Scribe_Values.Look(ref dhokkurShoveDamagePct, "dhokkurShoveDamagePct", 0.25f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -234,6 +263,28 @@ namespace RimMandrake.TheForge
                 "A hunting jossur takes to the air when its prey is a way off and closes in on the wing.");
             list.CheckboxLabeled("  Selecting a sky creature lights up its columns", ref skyColumnHighlightEnabled,
                 "While a column-bound flier is selected, the columns it can reach are outlined. Nothing is shown otherwise.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Dhokkur wakes with a groan", ref dhokkurWakeEffectsEnabled,
+                "When the boiling rain wakes a dhokkur, the hill groans and water pours off its plates "
+              + "for a few seconds. Off: it stands up silently.");
+            list.CheckboxLabeled("Dhokkur paths wear into the ground", ref dhokkurPathMemoryEnabled,
+                "Ground a dhokkur walks on separate rains is polished to glass, and it seals in a worn "
+              + "hollow at the end of its tracks. Off: no new wear (polished ground already laid stays).");
+            list.Label("  Rains to polish a track: " + dhokkurPassesToPolish);
+            dhokkurPassesToPolish = Mathf.RoundToInt(list.Slider(dhokkurPassesToPolish, 1f, 10f));
+            list.CheckboxLabeled("  Tracks fade when unwalked", ref dhokkurTrailsFade,
+                "Off: polished tracks last forever. On: a track unwalked for the period below loses one "
+              + "rain's wear, and goes back to bare ground once it drops under the polish count.");
+            list.Label("  Fade period: " + dhokkurTrailFadeDays.ToString("0") + " days");
+            dhokkurTrailFadeDays = list.Slider(dhokkurTrailFadeDays, 5f, 240f);
+            list.CheckboxLabeled("Dhokkur shoves walls off its path", ref dhokkurWallShoveEnabled,
+                "A building standing on a dhokkur's polished track, next to it, is shoved aside rather "
+              + "than destroyed. Off: it walks around, as any animal does.");
+            list.Label("  A shoved building is first: " + ShoveModeLabels[Mathf.Clamp(dhokkurShoveMode, 0, 2)]);
+            dhokkurShoveMode = Mathf.RoundToInt(list.Slider(dhokkurShoveMode, 0f, 2f));
+            list.Label("  Damage when it cannot be moved: " + dhokkurShoveDamagePct.ToStringPercent());
+            dhokkurShoveDamagePct = list.Slider(dhokkurShoveDamagePct, 0f, 1f);
             list.GapLine();
             list.Label("Tibanna-tap rate: " + tibannaTapRate.ToString("0.00") + "x");
             tibannaTapRate = list.Slider(tibannaTapRate, 0.25f, 3f);

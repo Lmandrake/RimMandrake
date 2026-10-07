@@ -100,6 +100,13 @@
         <awakeDuringFlashWindow>false</awakeDuringFlashWindow>
         <wakeMessage>The rain is falling and a hill on the skirts has stood up: a {0} is walking.</wakeMessage>
       </li>
+      <!-- FORGE_DHOKKUR_WAYS_1: rain-wake groan and pour, path memory, wall shove.
+           Vanilla SoundDefs (FOUNDRY.md audio ruling 2026-10-03): Emergence_Quake for the
+           stone groan, EmergeFromWater for the water off its plates. -->
+      <li Class="RimMandrake.TheForge.CompProperties_DhokkurWays">
+        <wakeGroanSound>Emergence_Quake</wakeGroanSound>
+        <wakeWaterSound>EmergeFromWater</wakeWaterSound>
+      </li>
     </comps>
     <race>
       <renderTree>RM_DormantAnimalBody</renderTree>

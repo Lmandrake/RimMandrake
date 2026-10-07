@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DhokkurTrail.xml                    FORGE_DHOKKUR_WAYS_1
+
+  The dhokkur's path memory (RM_MapComponent_DhokkurPaths, Source/RM_ForgeDhokkurWays.cs):
+  ground walked on enough separate rains is polished to glass. TEMPORARY terrain on the 1.6
+  temp-terrain layer, like the cycle's crust (RM_ForgeCycleTerrain.xml), so the base terrain
+  underneath is never touched and a fading track is simply the layer removed.
+
+  Art: no new texture. Odyssey's smooth volcanic rock surface (VolcanicRock_Smooth's own
+  texturePath, read from the decompiled defs 2026-10-06), darkened toward obsidian. Bespoke
+  glass-polish art is a later ask. Values INVENTED.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_DhokkurPolishedTrail</defName>
+    <label>dhokkur track</label>
+    <description>Ground worn to a black glassy polish by something enormous walking the same line, rain after rain. Nothing grows on it. Whatever made it will be back.</description>
+    <texturePath>Terrain/Surfaces/SmoothVolcanicRock</texturePath>
+    <color>(0.55, 0.55, 0.62)</color>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>394</renderPrecedence>
+    <pathCost>0</pathCost>
+    <fertility>0</fertility>
+    <temporary>true</temporary>
+    <tempTerrain>
+      <destroysFloors>false</destroysFloors>
+    </tempTerrain>
+    <holdSnowOrSand>false</holdSnowOrSand>
+    <takeFootprints>false</takeFootprints>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <statBases>
+      <Beauty>1</Beauty>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

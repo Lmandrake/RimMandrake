@@ -225,9 +225,13 @@ WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabl
          "plumeStrength",
          "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled",
          "floatstoneDoorEnabled", "spunstoneHullEnabled"]
+# FORGE_DHOKKUR_WAYS_1 (RM_ForgeDhokkurWays.cs): wired in the C#, but NO component of this suite drives them yet, so
+# they are neither WIRED (the toggle floor would demand a component) nor scaffolding (they do change something).
+UNCOVERED = ["dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPassesToPolish", "dhokkurTrailsFade",
+             "dhokkurTrailFadeDays", "dhokkurWallShoveEnabled", "dhokkurShoveMode", "dhokkurShoveDamagePct"]
 # FORGE_SPUNSTONE_SOURCES_1: the floatstone-only builds spunstone bonding unlocks besides the keel brace.
 SPUNSTONE_PARTS = ("RM_FloatstoneDoor", "RM_SpunstoneHull")
-SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED)
+SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED and k not in UNCOVERED)
 suite.toggles = list(WIRED)
 
 
