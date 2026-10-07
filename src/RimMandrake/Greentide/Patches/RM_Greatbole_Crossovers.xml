@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1 — two settings-gated patches
+  (RimMandrake.Greentide.RM_PatchOperationGreentideSettingGate; settings are read before patches
+  apply, so a change takes effect on the next game start).
+
+  1. greatboleSeedPlantingEnabled (default ON, spec §3c): the seed becomes plantable with vanilla
+     CompPlantable (the Gauranlen-seed mechanism: gizmo, WorkGiver_PlantSeed via
+     ThingRequestGroup.Seed). The water rule and fast growth live in RM_Plant_Greatbole.
+
+  2. greatboleServantsEnabled (default OFF, spec §8b-ii, owner ruling 2026-10-03: vanilla Gauranlen
+     with the nearby-building penalty OFF). Adds CompProperties_TreeConnection to RM_GreatboleCore
+     and swaps the two Ideology ritual pieces that hard-code Plant_TreeGauranlen for subclasses that
+     read ThingRequestGroup.DryadSpawner (RM_GreatboleServants.cs). Building penalty off:
+     radiusToBuildingForConnectionStrengthLoss 0 (ListerArtificialBuildingsForMeditation.GetForCell
+     radius 0 with useCenter false finds nothing) AND a flat-zero building curve as a second guard.
+     The other numbers are Plant_TreeGauranlen's own (Ideology Plants_Special.xml), unchanged.
+-->
+<Patch>
+
+  <Operation Class="RimMandrake.Greentide.RM_PatchOperationGreentideSettingGate">
+    <setting>greatboleSeedPlantingEnabled</setting>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RM_GreatboleSeed"]</xpath>
+      <value>
+        <comps>
+          <li Class="CompProperties_Plantable">
+            <plantDefToSpawn>RM_Greatbole</plantDefToSpawn>
+          </li>
+        </comps>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="RimMandrake.Greentide.RM_PatchOperationGreentideSettingGate">
+    <setting>greatboleServantsEnabled</setting>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RM_GreatboleCore"]/comps</xpath>
+          <value>
+            <li Class="CompProperties_TreeConnection">
+              <pawnKind>Dryad_Basic</pawnKind>
+              <spawnDays>8</spawnDays>
+              <initialConnectionStrengthRange>0.25~0.45</initialConnectionStrengthRange>
+              <connectionStrengthLossPerDryadDeath>0.1</connectionStrengthLossPerDryadDeath>
+              <connectionStrengthGainPerHourPruningBase>0.01</connectionStrengthGainPerHourPruningBase>
+              <spawningPodOffset>(-0.15, 0, -0.55)</spawningPodOffset>
+              <spawningPodSizeRange>0.4~0.65</spawningPodSizeRange>
+              <maxDryadsWild>2</maxDryadsWild>
+              <radiusToBuildingForConnectionStrengthLoss>0</radiusToBuildingForConnectionStrengthLoss>
+              <maxDryadsPerConnectionStrengthCurve>
+                <points>
+                  <li>(0, 0)</li>
+                  <li>(0.05, 1)</li>
+                  <li>(0.25, 2)</li>
+                  <li>(0.5, 3)</li>
+                  <li>(0.75, 4)</li>
+                </points>
+              </maxDryadsPerConnectionStrengthCurve>
+              <connectionLossPerLevelCurve>
+                <points>
+                  <li>(0, 0)</li>
+                  <li>(0.001, 0.02)</li>
+                  <li>(0.33, 0.04)</li>
+                  <li>(0.66, 0.06)</li>
+                </points>
+              </connectionLossPerLevelCurve>
+              <connectionLossDailyPerBuildingDistanceCurve>
+                <points>
+                  <li>(0, 0)</li>
+                  <li>(7.9, 0)</li>
+                </points>
+              </connectionLossDailyPerBuildingDistanceCurve>
+              <connectionStrengthGainPerPlantSkill>
+                <points>
+                  <li>(0, 0.8)</li>
+                  <li>(8, 1)</li>
+                  <li>(20, 1.2)</li>
+                </points>
+              </connectionStrengthGainPerPlantSkill>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="RM_GreatboleCore"]</xpath>
+          <value>
+            <ritualFocus>
+              <spectateDistance>4</spectateDistance>
+              <allowedSpectateSides>All</allowedSpectateSides>
+            </ritualFocus>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/RitualObligationTargetFilterDef[defName="GauranlenTree"]/workerClass</xpath>
+          <value>
+            <workerClass>RimMandrake.Greentide.RM_RitualObligationTargetWorker_UnconnectedDryadSpawner</workerClass>
+          </value>
+        </li>
+        <li Class="PatchOperationAttributeSet">
+          <xpath>/Defs/RitualBehaviorDef[defName="TreeConnection"]/stages/li/roleBehaviors/li/customPositions/li[@Class="RitualPosition_BesideTree"]</xpath>
+          <attribute>Class</attribute>
+          <value>RimMandrake.Greentide.RM_RitualPosition_BesideDryadSpawner</value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

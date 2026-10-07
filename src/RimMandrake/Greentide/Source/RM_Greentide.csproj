@@ -61,6 +61,9 @@
     <Compile Include="RM_ThurrockAuraApplier.cs" />
     <Compile Include="RM_CompGreatboleHarvestLadder.cs" />
     <Compile Include="RM_IncidentWorker_GreatboleFruitfall.cs" />
+    <Compile Include="RM_Plant_Greatbole.cs" />
+    <Compile Include="RM_GreatboleServants.cs" />
+    <Compile Include="RM_PatchOperationGreentideSettingGate.cs" />
   </ItemGroup>
 
   <ItemGroup>

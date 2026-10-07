@@ -60,6 +60,10 @@
     <holdsRoof>true</holdsRoof>
     <useHitPoints>true</useHitPoints>
     <drawerType>None</drawerType>
+    <!-- RM_CompGreatboleHarvestLadder works in CompTick, and ThingDef.tickerType defaults to Never
+         (BuildingBase sets none), so without this the ladder never polled. The opt-in servant
+         crossover's CompTreeConnection also needs the Normal ticker. -->
+    <tickerType>Normal</tickerType>
     <altitudeLayer>Building</altitudeLayer>
     <statBases>
       <MaxHitPoints>1200</MaxHitPoints>

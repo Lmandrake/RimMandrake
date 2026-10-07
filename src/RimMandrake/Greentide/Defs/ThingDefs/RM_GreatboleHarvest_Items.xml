@@ -148,16 +148,9 @@
       <DeteriorationRate>0.5</DeteriorationRate>
     </statBases>
     <stackLimit>10</stackLimit>
-    <!-- GREATBOLE_HARVEST_LADDER_1 §3c: planting this to grow a fast
-         RM_Greatbole is DEFERRED, not built here. RM_Greatbole itself (the
-         mature fellable giant, roster row 22) now ships —
-         GREENTIDE_JUNGLE_TREE_ROSTER_1, RM_Greatbole.xml — but wiring THIS
-         seed to actually plant one, including the water-adjacency
-         growth-rate override the spec's own §10 answer already proved
-         buildable (a Plant subclass overriding the virtual GrowthRate), is
-         still separate content work, owed as a follow-on rather than
-         duplicated here. The seed exists as a real, tradeable product of the
-         recipe below so the fruit's third product is not simply missing. -->
+    <!-- Planting: CompProperties_Plantable (plantDefToSpawn RM_Greatbole) is added by
+         Patches/RM_Greatbole_Crossovers.xml behind the "Greatbole seeds can be planted" setting.
+         The water rule and fast growth are RM_Plant_Greatbole (GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1). -->
   </ThingDef>
 
   <ThingDef ParentName="ApparelMakeableBase">
