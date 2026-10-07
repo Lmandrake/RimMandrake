@@ -123,7 +123,11 @@ def setup():
     # Written by the NEW cli, so the events are exactly what step 2 puts on the ledger.
     for iid in (BUILT, DONE, PLAIN):
         new_ok("file", iid, "--for", "FOUNDRY", "--title", "old reader " + iid)
+        # step 3: `claim` leases and STARTS the item; `reclaim` returns it to plain `ready`,
+        # the pre-implemented state this test was written against. The lease `take` it
+        # leaves is an unknown verb to this old reader (selftest_lease.py covers leases).
         new_ok("claim", iid)
+        new_ok("reclaim", iid)
     new_ok("implemented", BUILT, "--sha", sha[:9], "--criteria-file", crit)
     new_ok("verify", BUILT, "--criterion", "A1", "--result", "pass", "--config", "min-13")
     new_ok("implemented", DONE, "--sha", sha[:9], "--none-owed")
@@ -150,8 +154,9 @@ def old_replay():
 def t_old_model_replays_without_crashing():
     r = old_replay()
     CTX["old"] = r
-    verbs = sorted(e[0] for e in r["errors"])
+    verbs = sorted(e[0] for e in r["errors"] if e[0] != "lease")
     assert verbs == ["implemented", "implemented", "verify"], r["errors"]
+    assert sum(1 for e in r["errors"] if e[0] == "lease") == 3, r["errors"]
     assert any("unknown verb 'implemented'" in e[1] for e in r["errors"]), r["errors"]
     assert any("no field" in e[1] for e in r["errors"] if e[0] == "verify"), r["errors"]
 

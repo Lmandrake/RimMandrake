@@ -112,13 +112,44 @@ def _row_key(item):
         return (1, 0)
 
 
+def now_of(ctx):
+    """-> the clock leases are judged against: `ctx["now"]` (epoch seconds) when the
+    caller passes one — `next` does, and so do the selftests — else the wall clock.
+    ⚠️ This is the one input to `rank()` that is not in the ledger. It is an INPUT, not
+    hidden state: the same (ledger, seat, game state, now) still gives the same answer."""
+    n = (ctx or {}).get("now")
+    return int(n) if n is not None else model.epoch_now()
+
+
+def offerable_state(it, now):
+    """Does this item's state + lease admit it to `rank()`? (rimflow redesign step 3)
+
+      ready, no live lease                        yes — the pool
+      ready, LIVE lease                           no  — reserved by `next`/`claim`
+      doing, lease lapsed or released             yes — the worker went away; `next`
+                                                        runs it through the git check
+                                                        and labels it LAPSED
+      doing, live lease / no lease record at all  no  — in flight, or a legacy start
+                                                        that never took a lease (those
+                                                        are NOT migrated; `reclaim` them)
+    """
+    ls = model.lease_status(it, now)
+    if it.state == "ready":
+        return ls != "live"
+    if it.state == "doing":
+        return ls in ("lapsed", "released")
+    return False
+
+
 def rank(world, seat, target="v1", ctx=None):
-    """-> [Item], best first. Pure. Empty is a legitimate and common answer."""
+    """-> [Item], best first. Pure over (world, seat, target, ctx incl. `now`). Empty is
+    a legitimate and common answer."""
     out = []
+    now = now_of(ctx)
     for it in world.items.values():
         if it.owner != seat:
             continue
-        if it.state != "ready":
+        if not offerable_state(it, now):
             continue
         if it.blocked:
             continue
@@ -231,9 +262,16 @@ def why_not(world, seat, iid, target="v1", ctx=None):
     if it.owner != seat:
         out.append("owned by %s, not %s. Filing work for another seat is normal; "
                    "working it is not." % (it.owner, seat))
-    state = state_reason(it)
-    if state:
-        out.append(state)
+    now = now_of(ctx)
+    ls = model.lease_status(it, now)
+    if ls == "live" and it.open:
+        out.append("LEASED until %s by %s (token %s…) — another worker holds it. It "
+                   "lapses on its own if the holder stops renewing."
+                   % (it.lease["expires"], it.lease["seat"], it.lease["token"][:12]))
+    elif not offerable_state(it, now) or it.state not in ("ready", "doing"):
+        state = state_reason(it)
+        if state:
+            out.append(state)
     if it.blocked:
         out.append("BLOCKED: %s%s" % (it.blocked_reason,
                                       (" (on %s)" % it.blocked_on) if it.blocked_on else ""))

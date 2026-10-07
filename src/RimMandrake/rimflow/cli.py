@@ -63,10 +63,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import model, priority, probe, reconcile
+    from . import lease, model, priority, probe, reconcile
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import model, priority, probe, reconcile   # noqa: F401
+    from rimflow import lease, model, priority, probe, reconcile   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -283,6 +283,23 @@ def _trigger_health_rebuild():
         pass
 
 
+def _write_one(ev):
+    """check() then append() ONE event, no rendering. `_emit`'s core, split out (step 3)
+    so a lease group — `lease` + `claim` + `start` — can land as several checked writes
+    under one dispatcher lock and re-render once. -> the event as written."""
+    ev = {k: v for k, v in ev.items() if v is not None and v != "" and v is not False}
+    try:
+        model.check(ev, _replay_now())
+        _stamp_owner_and_override(ev)
+        # 🔴 NO PATH: the event goes to THIS SEAT'S shard, `<ledger>/events/<SEAT>.
+        # jsonl`, so BENCH and FOUNDRY never append to the same git-tracked file and
+        # can never conflict in one on rebase. See `model.SHARD_DIR`.
+        model.append(ev)
+    except model.LedgerError as e:
+        die(str(e))                     # verbatim, non-zero — see the module docstring
+    return ev
+
+
 def _emit(ev, world=None, quiet=False):
     """check() then append(). The ONLY writer in this file.
 
@@ -314,16 +331,7 @@ def _emit(ev, world=None, quiet=False):
     # whole system refuses at every other boundary. None and "" still go: `_apply_file`
     # depends on the strip (see its `or`-not-`get`-default comment) so that a
     # present-but-null key can never reach the projection.
-    ev = {k: v for k, v in ev.items() if v is not None and v != "" and v is not False}
-    try:
-        model.check(ev, _replay_now())
-        _stamp_owner_and_override(ev)
-        # 🔴 NO PATH: the event goes to THIS SEAT'S shard, `<ledger>/events/<SEAT>.
-        # jsonl`, so BENCH and FOUNDRY never append to the same git-tracked file and
-        # can never conflict in one on rebase. See `model.SHARD_DIR`.
-        model.append(ev)
-    except model.LedgerError as e:
-        die(str(e))                     # verbatim, non-zero — see the module docstring
+    ev = _write_one(ev)
     if not quiet:
         print("%s %s%s" % (ev["event"], ev.get("id", ""),
                            "" if ev.get("id") else "(" + str(ev.get("state", "")) + ")"))
@@ -848,25 +856,40 @@ def cmd_next(args, seat):
     # offered, because an item whose work already shipped kept being offered as fresh
     # work (SALVAGE_WRECKAGE_EVERYWHERE_1: claimed twice with four build commits between).
     idx = reconcile.load_index(write_cache=not peek)
-    offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
-    if not offers:
-        claimable = _claimable(w, seat, args.target)
-        if claimable:
-            a = reconcile.assess(claimable[0], idx)
-            if a.kind == "reconcile":
-                _print_reconcile(a, w, peek)
-                _print_skipped(skipped)
-                return 0
-            _offer_claimable(claimable, seat)
-            _print_skipped(skipped)
-            return 0
+    # 🔑 RESERVING DISPATCH (step 3). Several subagents of one window used to call `next`
+    # and all get the SAME top item. Now the choice and its lease are made under ONE
+    # clone-wide lock (lease.dispatch_lock), against a ledger re-read inside it, so the
+    # second caller's replay already holds the first caller's lease and `rank()` skips
+    # that item. The slow parts (game probe, git index) stay OUTSIDE the lock.
+    # ⛔ `--peek` takes no lock and no lease: it is the advisory, read-only view.
+    # ⛔ ONE CLONE ONLY — lease.py's docstring says what cross-clone exclusivity needs.
+    held = None
+    if peek:
+        ctx["now"] = model.epoch_now()
+        ch = _choose(w, seat, args, ctx, idx)
+    else:
+        with lease.dispatch_lock():
+            _, w = load()
+            ctx["now"] = model.epoch_now()
+            ch = _choose(w, seat, args, ctx, idx)
+            if ch["item"] is not None:
+                held = _take_lease(ch["item"], seat, ctx["now"])
+            _rerender_queue_views()
+    skipped = ch["skipped"]
+    if ch["kind"] == "nothing":
         _nothing(w, seat, args, ctx)
         _print_skipped(skipped)
         return 0
-    a = offers[0]
+    if ch["kind"] == "claimable":
+        _offer_claimable(ch["claimable"], seat, held)
+        _print_skipped(skipped)
+        return 0
+    a = ch["offer"]
     it = a.item
     if a.kind == "reconcile":
         _print_reconcile(a, w, peek)
+        _print_lapsed(it, ctx, idx, reconciling=True)
+        _print_lease(held)
         _print_skipped(skipped)
         return 0
 
@@ -894,6 +917,7 @@ def cmd_next(args, seat):
         print("⚠️  PARTLY BUILT — %s" % reconcile.standing_line(a))
         print("    Work the REMAINING line. The spec below describes the whole item, "
               "most of which shipped.")
+    _print_lapsed(it, ctx, idx)
     print("")
     prose = read_prose(it.id)
     if not prose:
@@ -911,7 +935,12 @@ def cmd_next(args, seat):
             body = body[:budget] + "\n... (truncated; open items/%s.md)" % it.id
         budget -= len(body)
         print(body + "\n")
-    print("-> rimflow start %s" % it.id)
+    if held:
+        print("-> rimflow claim %s --token %s     (starts it under this lease)"
+              % (it.id, held["token"]))
+    else:
+        print("-> rimflow claim %s     (takes a lease and starts it)" % it.id)
+    _print_lease(held)
     # ⭐ AND SAY WHAT IS QUEUED BEHIND IT. `_claimable` below fires only when NOTHING is
     # claimed, which fixed the empty-queue case and left the worse one open: a seat with
     # any `ready` item never learns that spec-complete work is waiting. Measured
@@ -929,6 +958,78 @@ def cmd_next(args, seat):
         print("    filed for you by another seat. `rimflow claim <ID>` to take one.")
     _print_skipped(skipped)
     return 0
+
+
+def _choose(w, seat, args, ctx, idx):
+    """-> {"kind", "offer", "item", "claimable", "skipped"}: what `next` offers. Pure over its
+    inputs (ctx carries `now`); `cmd_next` calls it inside the dispatcher lock.
+
+    kind  "offer"      a ranked item (build / partial / reconcile), `a` its Assessment
+          "claimable"  nothing ranked; the oldest `proposed` item, as before
+          "nothing"
+    (Keyed `offer`: selftest_cli bans a one-letter write-mode literal in this file.)
+    `item` is what gets leased. Items under a LIVE lease never reach here: `rank()`
+    and `_claimable` both skip them."""
+    offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
+    out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "skipped": skipped}
+    if offers:
+        out.update(kind="offer", offer=offers[0], item=offers[0].item)
+        return out
+    claimable = _claimable(w, seat, args.target, ctx.get("now"))
+    if claimable:
+        a = reconcile.assess(claimable[0], idx)
+        if a.kind == "reconcile":
+            out.update(kind="offer", offer=a, item=a.item)
+        else:
+            out.update(kind="claimable", claimable=claimable, item=claimable[0])
+    return out
+
+
+def _take_lease(it, seat, now):
+    """Write a `lease take` for `it` as of `now`; -> {"token", "expires"}. Called only
+    inside `lease.dispatch_lock()`; refusals come from `model._apply_lease`."""
+    token = lease.new_token(seat)
+    exp = lease.expires_at(now)
+    _write_one({"seat": seat, "event": "lease", "id": it.id, "action": "take",
+                "token": token, "expires": exp, "ts": model.stamp(now)})
+    return {"id": it.id, "token": token, "expires": exp}
+
+
+def _print_lease(held):
+    if not held:
+        return
+    print("")
+    for line in lease.instructions(held["id"], held["token"], held["expires"]):
+        print(line)
+
+
+def _print_lapsed(it, ctx, idx, reconciling=False):
+    """Say so when the offered item's previous lease LAPSED or was released (step 3).
+
+    🔑 Expiry never re-offers work silently as "build this": the item has already been
+    through the step-1 git check (`reconcile.guard`) — commits naming it would have made
+    this a RECONCILE offer — and this line says what that check could and could not see."""
+    ls = model.lease_status(it, ctx.get("now") or model.epoch_now())
+    if ls not in ("lapsed", "released"):
+        return
+    L = it.lease
+    print("")
+    if ls == "lapsed":
+        print("⏳ LAPSED LEASE — %s held it (token %s…) until %s, and it was never renewed "
+              "or released." % (L["seat"], L["token"][:12], L["expires"]))
+    else:
+        print("↩️  RELEASED — the last holder (%s, token %s…) gave it back at %s without "
+              "finishing it." % (L["seat"], L["token"][:12], L["released"]))
+    if reconciling:
+        print("   The commits above may be that worker's: judge them before anything is "
+              "rebuilt.")
+    elif idx is None:
+        print("   ⚠️ git could NOT be checked (no index). Before building, look for the "
+              "previous worker's commits: git log --grep %s origin/main" % it.id)
+    else:
+        print("   git (%s @%s) was checked: no unjudged commit names it. Its previous "
+              "worker's\n   UNPUBLISHED edits may still sit in a working tree — look "
+              "before rebuilding." % (idx.ref, (idx.head or "?")[:9]))
 
 
 def _print_acceptance(args, seat):
@@ -1013,7 +1114,7 @@ def _warn_contested_claims(w, seat):
               "work on it and take the next item." % (c["loser_ts"], seat))
 
 
-def _claimable(w, seat, target="v1"):
+def _claimable(w, seat, target="v1", now=None):
     """-> [Item] this seat owns that are `proposed` and unblocked, thin ones included.
 
     🔴 THE HANDOFF USED TO END HERE, SILENTLY. `priority.rank()` filters
@@ -1036,14 +1137,17 @@ def _claimable(w, seat, target="v1"):
     # blame landed on whoever filed it. Measured 2026-08-22: three of BUILD's open items
     # were starved this way. A thin item is offered, and `_offer_claimable` says what is
     # thin about it so the claiming seat knows what it is walking into.
+    # step 3: an item `next` already reserved for another worker (a LIVE lease) is not
+    # offered again, here any more than in `rank()`.
+    now = model.epoch_now() if now is None else now
     out = [i for i in w.items.values()
            if i.owner == seat and i.state == "proposed" and not i.blocked
-           and i.target in (None, target)]
+           and i.target in (None, target) and model.lease_status(i, now) != "live"]
     out.sort(key=lambda i: (not i.this_deployment, i.created_at or "", i.id))
     return out
 
 
-def _offer_claimable(items, seat):
+def _offer_claimable(items, seat, held=None):
     it = items[0]
     print("nothing is CLAIMED, but %d item%s waiting for %s to claim."
           % (len(items), "" if len(items) == 1 else "s", seat))
@@ -1068,7 +1172,12 @@ def _offer_claimable(items, seat):
         rest = ", ".join(i.id for i in items[1:6])
         print("also: %s%s" % (rest, "" if len(items) <= 6 else ", +%d" % (len(items) - 6)))
     print("")
-    print("-> rimflow claim %s     (then `start`)" % it.id)
+    if held:
+        print("-> rimflow claim %s --token %s     (takes it and starts it under this "
+              "lease)" % (it.id, held["token"]))
+    else:
+        print("-> rimflow claim %s     (takes a lease and starts it)" % it.id)
+    _print_lease(held)
     return 0
 
 
@@ -1403,6 +1512,73 @@ def _move_prose_to_closed(iid):
     os.makedirs(model.CLOSED, exist_ok=True)
     os.rename(live, closed)
     return (os.path.relpath(live, model.ROOT), os.path.relpath(closed, model.ROOT))
+
+
+def cmd_claim(args, seat):
+    """`claim` — take the item AND a lease on it, and START it (rimflow redesign step 3).
+
+    🔴 `claim` USED TO RE-ADVERTISE THE ITEM. The model's `claim` sets owner and lands in
+    `ready` ("always reaches ready", 2026-08-21), and `rank()` offers exactly `ready` — so
+    claiming made an item the thing `next` handed out, to every subagent of the window
+    (system doc §3.4: 36 of 40 `ready` items were claimed and never started). Now the
+    command writes, under the dispatcher lock: `lease take` (or `renew` with `--token`,
+    for the holder of a reservation `next` made), then `claim`, then `start`. The item is
+    `doing` under a live lease and nobody is offered it.
+
+    ⚠️ The MODEL's `claim` is unchanged on purpose: replaying the 200+ historical claims
+    as anything but `ready` would silently migrate the board, which step 3 must not do.
+    And an OLD clone reading these events still sees `claim` then `start` -> `doing`.
+    `start` still works on its own for scripts; a bare `start` takes no lease.
+    Items in any other state (built, validated) keep the old single `claim` event.
+    """
+    tok = getattr(args, "token", None)
+    held = None
+    with lease.dispatch_lock():
+        w = _replay_now()
+        it = w.items.get(args.id)
+        now = model.epoch_now()
+        if it is not None and it.state in ("proposed", "ready", "doing"):
+            if tok:
+                exp = lease.expires_at(now)
+                _write_one({"seat": seat, "event": "lease", "id": args.id,
+                            "action": "renew", "token": tok, "expires": exp,
+                            "ts": model.stamp(now)})
+                held = {"id": args.id, "token": tok, "expires": exp}
+            else:
+                held = _take_lease(it, seat, now)
+            if it.state != "doing":
+                _write_one({"seat": seat, "event": "claim", "id": args.id})
+                _write_one({"seat": seat, "event": "start", "id": args.id})
+        else:
+            _write_one({"seat": seat, "event": "claim", "id": args.id})
+        _rerender_queue_views()
+    _trigger_health_rebuild()
+    it = _replay_now().items.get(args.id)
+    print("claim %s -> %s" % (args.id, it.state if it else "?"))
+    _print_lease(held)
+    return 0
+
+
+def _lease_verb(action):
+    """`renew` / `release` — the token holder's two verbs. Refusals (wrong token, expired
+    lease on renew, already released) are `model._apply_lease`'s, printed verbatim."""
+    def run(args, seat):
+        with lease.dispatch_lock():
+            now = model.epoch_now()
+            ev = {"seat": seat, "event": "lease", "id": args.id, "action": action,
+                  "token": args.token, "ts": model.stamp(now)}
+            if action == "renew":
+                ev["expires"] = lease.expires_at(now)
+            _write_one(ev)
+            _rerender_queue_views()
+        if action == "renew":
+            print("renewed %s until %s (renew again within %d min)"
+                  % (args.id, ev["expires"], lease.RENEW_EVERY_S // 60))
+        else:
+            print("released %s — it is offerable again (a `doing` item comes back "
+                  "through `next`'s git check)" % args.id)
+        return 0
+    return run
 
 
 def _simple(verb, extra=()):
@@ -2514,10 +2690,21 @@ def build_parser():
                    help="this item takes over ID's work: supersede ID in the same act, "
                         "so the parent closes and names its successor")
 
-    add("claim", "take ownership; always reaches `ready`",
-        _simple("claim")).add_argument("id")
-    add("start", "begin work; never refused for missing prose",
+    s = add("claim", "take it under a LEASE and start it (-> doing); never re-offers it",
+            cmd_claim)
+    s.add_argument("id")
+    s.add_argument("--token", help="the lease token `next` printed when it reserved this "
+                                   "item for you (renews it instead of taking a new one)")
+    add("start", "begin work, no lease (kept for scripts); never refused for missing prose",
         _simple("start")).add_argument("id")
+    s = add("renew", "keep YOUR lease alive (every 10 min; it lapses at 45)",
+            _lease_verb("renew"))
+    s.add_argument("id")
+    s.add_argument("--token", required=True)
+    s = add("release", "give YOUR lease back early, so the item is offered again",
+            _lease_verb("release"))
+    s.add_argument("id")
+    s.add_argument("--token", required=True)
 
     s = add("close", "close it against a commit (any seat; --reason if not yours)",
             cmd_close)

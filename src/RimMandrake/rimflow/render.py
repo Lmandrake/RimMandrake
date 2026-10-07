@@ -249,10 +249,18 @@ def view_sections(world, seat, target="v1", ctx=None):
     ranked_ids = {i.id for i in ranked}
     by_age = lambda i: (i.created_at or "", i.id)          # noqa: E731
 
-    doing = sorted((i for i in mine if i.state == "doing"), key=by_age)
+    # step 3: a LIVE lease is in-flight work whatever the state (`next` reserves a
+    # `ready` or `proposed` item without starting it), and a `doing` item whose lease
+    # lapsed or was released is back in `rank()` — so it is in NEXT, not here.
+    now = priority.now_of(ctx)
+    leased = {i.id for i in mine
+              if i.open and model.lease_status(i, now) == "live"
+              and i.state in ("proposed", "ready", "doing")}
+    doing = sorted((i for i in mine if (i.state == "doing" and i.id not in ranked_ids)
+                    or i.id in leased), key=by_age)
     blocked = sorted((i for i in mine if i.blocked and i.open), key=by_age)
     blocked_ids = {i.id for i in blocked}
-    rest = [i for i in mine if i.state == "ready"
+    rest = [i for i in mine if i.state == "ready" and i.id not in leased
             and i.id not in ranked_ids and i.id not in blocked_ids]
     waiting = sorted((i for i in rest
                       if not priority.satisfiable(i, world, ctx, seat)), key=by_age)
@@ -260,8 +268,8 @@ def view_sections(world, seat, target="v1", ctx=None):
     # Everything `rank()` rejected that is not blocked and whose window IS open can
     # only have failed the target filter — that is the last filter left.
     offtarget = sorted((i for i in rest if i.id not in waiting_ids), key=by_age)
-    proposed = sorted((i for i in mine if i.state == "proposed" and not i.blocked),
-                      key=by_age)
+    proposed = sorted((i for i in mine if i.state == "proposed" and not i.blocked
+                       and i.id not in leased), key=by_age)
     # step 2: built work leaves NEXT/IN PROGRESS for its own section, so "built, owes
     # live proof" is never again indistinguishable from "unstarted" (system doc §3.6).
     built = sorted((i for i in mine if i.state in ("built", "validated")
@@ -269,8 +277,9 @@ def view_sections(world, seat, target="v1", ctx=None):
 
     return ranked, [
         ("IN PROGRESS", doing,
-         "Started, and therefore not offered again. `rimflow close` or "
-         "`rimflow block` moves them.", None),
+         "Started or LEASED, and therefore not offered again. `rimflow close` or "
+         "`rimflow block` moves them; a lease that lapses puts its item back in NEXT.",
+         lambda i: lease_lines(i, now)),
         ("BLOCKED — something is WRONG and someone must act", blocked,
          "⚠️ Blocked is not the same as waiting for a window. These need an "
          "action, not the passage of time.",
@@ -296,6 +305,19 @@ def view_sections(world, seat, target="v1", ctx=None):
          lambda i: ["thin:     %s" % (", ".join("no ## " + m for m in model._missing(i))
                                       or "spec, verify and criteria all present")]),
     ]
+
+
+def lease_lines(it, now):
+    """The line an item with a lease carries (step 3). The token is cut short: the
+    view is read by everyone, and the token is the holder's alone to renew/release."""
+    ls = model.lease_status(it, now)
+    if ls is None:
+        return []           # legacy starts carry no lease; their lines stay as they were
+    L = it.lease
+    if ls == "live":
+        return ["lease:    LIVE until %s, %s, token %s…" % (L["expires"], L["seat"],
+                                                          L["token"][:12])]
+    return ["lease:    %s (%s)" % (ls, L.get("released") or L["expires"])]
 
 
 def acceptance_lines(it):
@@ -427,7 +449,8 @@ def _render_view_text(seat, events, world, ranked, sections, gindex=None):
 
 
 def queue_view(world, seat, events, target="v1", ctx=None, gindex=None):
-    """-> markdown text for one seat. Pure; no clock, no filesystem beyond items/.
+    """-> markdown text for one seat. Pure; no filesystem beyond items/. The one clock
+    read is lease liveness (`priority.now_of`), and `ctx["now"]` pins it.
     `gindex` (a `gitindex.Index`) is passed in, never fetched here."""
     ranked, sections = view_sections(world, seat, target, ctx)
     return _render_view_text(seat, events, world, ranked, sections, gindex)
