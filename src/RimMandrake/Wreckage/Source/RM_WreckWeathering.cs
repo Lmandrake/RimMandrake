@@ -29,6 +29,10 @@ namespace RimMandrake.Wreckage
         // Biome by-product appended to killedLeavings (what smashing leaves).
         public List<ThingDefCountClass> extraLeavings;
 
+        // "Nothing inside": careful salvage gives the costList only, no loot roll at all
+        // (the Twilight Deep's picked wrecks, design §4 "Picked: x0.2, no loot roll").
+        public bool noLoot;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors())
@@ -91,6 +95,17 @@ namespace RimMandrake.Wreckage
                     td.killedLeavings = new List<ThingDefCountClass>();
                 }
                 td.killedLeavings.AddRange(weathering.extraLeavings);
+            }
+            if (weathering.noLoot && td.comps != null)
+            {
+                foreach (CompProperties cp in td.comps)
+                {
+                    if (cp is RM_CompProperties_SalvageLoot loot)
+                    {
+                        loot.noLoot = true;
+                        loot.rareChance = 0f;
+                    }
+                }
             }
             if (weathering.lootTierShift != 0 && td.comps != null)
             {

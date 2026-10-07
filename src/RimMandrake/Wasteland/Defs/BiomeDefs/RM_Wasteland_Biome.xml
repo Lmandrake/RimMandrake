@@ -147,6 +147,10 @@
          The RUT_ twin's own patch-added campaign roster
          (UtinniPatches/Patches/WildAnimals_Wasteland.xml) is untouched;
          not this pass's scope. -->
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_Wasteland</li>
+    </extraGenSteps>
     <wildAnimals>
       <RM_Scumslider>0.7</RM_Scumslider>  <!-- port of GR_ParagonRat, renamed from Scumrat -->
       <RM_Gripper>0.7</RM_Gripper>  <!-- port of GR_Beetlefleet, renamed from Middenbeetle -->

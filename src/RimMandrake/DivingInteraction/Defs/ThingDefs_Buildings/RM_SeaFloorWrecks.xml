@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 3: sea-floor wreck children (design
+  design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md §3d-i "High: every sea floor",
+  §4 floor rows). Placed by RM_SeaFloorWreckFields.xml, named in each floor generator's genSteps.
+
+  🔴 AFFORDANCE: the floor's base terrain RM_SeaFloorGround carries Light/Medium/Heavy and NO Walkable,
+  so the family's Walkable would reject every floor cell. Every child here sets Light.
+
+  Rows:
+  - Twilight Sea: RM_PickedWreck, "the wrecks of the impatient", a hull-rib with a salvage-mark and
+    nothing inside (the_twilight_deep_content_2026-09-26.md:816-823). Picked weathering: x0.2 and
+    noLoot, so careful salvage gives a fifth of the costList and no roll.
+  - Grey Sea: hull and spine, Crystal-jacketed ("the jacketed salvage", the_grey_deep.md:366,463).
+    KNOWN GAP: the mineable crystal jacket and the crystal-shard extra table are not built.
+  - The Scald floor: the surface S6 hull, deeper (design §4 "Scald floor"). Reuses the Scald hull's
+    shipped art and shadow box; Cooked weathering.
+  The Chill (Propane Lake) and the Terminator Sea floor are pending their sittings: no rows here.
+
+  ART PLACEHOLDER (Picked, Grey): no texPath, so they inherit ShipChunkBase's vanilla
+  Things/Building/Exotic/ShipChunk. Own renders are queued in the artpipe (ids wreck_seafloor_*).
+  ALL NUMBERS PROVISIONAL (family + weathering rows).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_PickedWreck</defName>
+    <label>picked hull-rib</label>
+    <description>A curved rib of hull standing out of the sediment, a salvage-mark scratched deep into it. Someone came down here first, impatient, and took everything worth taking. What is left is the metal they could not carry.</description>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Picked</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_GreyFloorWreckHull</defName>
+    <label>crystal-jacketed hull</label>
+    <description>A hull section the Grey Sea's crystal has grown over until it reads as stone. The jacket sealed it: whatever was inside when it closed is still there. Deconstruct it for valuable resources.</description>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_CrystalJacketed</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Frame">
+    <defName>RM_GreyFloorWreckSpine</defName>
+    <label>crystal-jacketed spine</label>
+    <description>The keel spine of a ship, crusted along its length with grey crystal like coral on a bone. Deconstruct it for valuable resources.</description>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_CrystalJacketed</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_ScaldFloorWreckHull</defName>
+    <label>scalded deep hull</label>
+    <description>A hull section that sank past the shallows to the Scald's floor, cooked clean on the way down. Fewer hands reach it here than in the shallows. Deconstruct it for valuable resources.</description>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <graphicData>
+      <!-- The Scald hull's shipped art and its measured shadow (TerminalBiomes RUT_ScaldWrecks.xml). -->
+      <texPath>Things/Building/Ruins/RUT_ScaldWreckHull</texPath>
+      <shadowData>
+        <volume>(1.31,0.5,1.10)</volume>
+      </shadowData>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Cooked</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

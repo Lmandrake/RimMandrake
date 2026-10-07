@@ -26,6 +26,9 @@ namespace RimMandrake.Wreckage
         // PROVISIONAL: design §3c's "1 in 20" for a Hull.
         public float rareChance = 0.05f;
 
+        // Set at resolve time by a noLoot weathering (Picked): no roll of any kind.
+        public bool noLoot;
+
         public RM_CompProperties_SalvageLoot()
         {
             compClass = typeof(RM_CompSalvageLoot);
@@ -41,7 +44,7 @@ namespace RimMandrake.Wreckage
             {
                 yield return e;
             }
-            if (CommonMaker == null)
+            if (!noLoot && CommonMaker == null)
             {
                 yield return "RM_CompProperties_SalvageLoot: no ThingSetMakerDef RM_SalvageLoot_" + lootTier;
             }
@@ -63,7 +66,7 @@ namespace RimMandrake.Wreckage
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
             base.PostDestroy(mode, previousMap);
-            if (mode != DestroyMode.Deconstruct || previousMap == null || !RM_WreckageSettings.SalvageLootActive)
+            if (Props.noLoot || mode != DestroyMode.Deconstruct || previousMap == null || !RM_WreckageSettings.SalvageLootActive)
             {
                 return;
             }
@@ -113,6 +116,10 @@ namespace RimMandrake.Wreckage
             if (!RM_WreckageSettings.SalvageLootActive)
             {
                 return null;
+            }
+            if (Props.noLoot)
+            {
+                return "RM_Wreckage_InspectNothingInside".Translate().Resolve();
             }
             string tier = ("RM_Wreckage_Tier_" + Props.lootTier).Translate().Resolve();
             return "RM_Wreckage_InspectLootTier".Translate(tier).Resolve();

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 4 (design §4 Wasteland row): crashed hulls (wasteland.md:199,217,
+  247-253). Moderate class: radiation keeps people out. Irradiated weathering (x0.9).
+
+  Owed, not built: the warcasket sarcophagus (salvage-within-salvage, Carapace +1) and the radiation
+  hazard on deconstruct (the Wasteland's own hediffs); both need the Wasteland's sitting.
+
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  Own renders are queued in the artpipe (ids wreck_wasteland_*). ALL NUMBERS PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_WastelandWreckHull</defName>
+    <label>irradiated hull</label>
+    <description>A crashed hull section, still hot. Nobody has come for it because nobody wants to stand next to it, so most of the metal is still there. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Irradiated</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Tank">
+    <defName>RM_WastelandWreckTank</defName>
+    <label>irradiated tank</label>
+    <description>A ruptured tank lying in the ash, its shell stained and warm to the counter. Deconstruct it for valuable resources.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Irradiated</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

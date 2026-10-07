@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1 step 4 (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md
+  §4 Warscar row): crashed ships "plundered to skeletons", "No intact treasure in the open"
+  (the_scarlands.md:54,138,190,234). Moderate class; Stripped weathering (x0.35, -1 tier, so Hull
+  drops to Scrap with no rare roll).
+
+  These are the wrecks RM_WreckLichen grows on: every wreck family carries the building tag
+  RM_WreckSurface (Wreckage/Defs/ThingDefs_Buildings/RM_WreckFamilies.xml), and
+  MapComponent_WreckLichen seeds beside any building with that tag as well as the Ancient* ruins.
+
+  Not here: RM_FailedChassis is an ITEM (RM_HospiceItems.xml), not a wreck; the live shield generator
+  (the biome's one prize) is its own set-piece, not a weathered family.
+
+  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  Own renders are queued in the artpipe (ids wreck_warscar_*). ALL NUMBERS PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_WreckFamily_Hull">
+    <defName>RM_WarscarWreckHull</defName>
+    <label>stripped hull</label>
+    <description>The skeleton of a crashed warship's hull. Every army that crossed the Warscar took a piece: the plating, the wiring, anything that would come loose. What is left is what nobody could carry. Lichen grows on it.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Stripped</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_WreckFamily_Frame">
+    <defName>RM_WarscarWreckFrame</defName>
+    <label>stripped frame</label>
+    <description>Bare ribs and struts of a fallen ship, picked clean by soldiers and scavengers years ago. Lichen grows on it.</description>
+    <modExtensions>
+      <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
+        <weathering>RM_WreckWeathering_Stripped</weathering>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

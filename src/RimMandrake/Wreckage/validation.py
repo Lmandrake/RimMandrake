@@ -55,7 +55,17 @@ OLD_SCALD_STEPS = ["RUT_Jawa_ScatterScaldWreck%s" % k for k in ("Hull", "Tank", 
 DENSITY_ORDER = ["RM_WreckDensity_Riddled", "RM_WreckDensity_High", "RM_WreckDensity_Moderate", "RM_WreckDensity_Low"]
 # Design §4 numbers for the rows this script pins (yieldFactor, lootTierShift).
 WEATHER_PINNED = {"RM_WreckWeathering_Cooked": (0.75, 0), "RM_WreckWeathering_Frozen": (1.0, 1),
-                  "RM_WreckWeathering_Picked": (0.2, -2), "RM_WreckWeathering_CrystalJacketed": (1.0, 1)}
+                  "RM_WreckWeathering_Picked": (0.2, -2), "RM_WreckWeathering_CrystalJacketed": (1.0, 1),
+                  "RM_WreckWeathering_Stripped": (0.35, -1), "RM_WreckWeathering_Irradiated": (0.9, 0),
+                  "RM_WreckWeathering_SandScoured": (0.6, 0), "RM_WreckWeathering_Sealed": (1.0, 1),
+                  "RM_WreckWeathering_IceLocked": (0.9, 0), "RM_WreckWeathering_Eroded": (0.2, -2)}
+# Fields that must exist planet-wide once steps 3-4 landed (design §7): {field: registered-in}.
+PLANET_FIELDS = {"RM_WreckField_Scald": "biome", "RM_WreckField_NightsideIce": "biome",
+                 "RM_WreckField_LanternDeeps": "biome", "RM_WreckField_Warscar": "biome",
+                 "RM_WreckField_Wasteland": "biome", "RM_WreckField_GreyFloor": "floor",
+                 "RM_WreckField_TwilightFloor": "floor", "RM_WreckField_ScaldFloor": "floor"}
+SRC_ROOT = os.path.normpath(os.path.join(HERE, ".."))
+LICHEN_CS = os.path.join(HERE, "..", "Scarlands", "Source", "MapComponent_WreckLichen.cs")
 # Public fields of the base class GenStep_Scatterer (RimSage Verse/GenStep_Scatterer.cs), so an XML field
 # that is neither ours nor the base's is a typo the loader would only warn about at load.
 SCATTERER_FIELDS = {"count", "countPer10kCellsRange", "nearPlayerStart", "nearMapCenter", "minSpacing",
@@ -165,6 +175,9 @@ def _families(bad):
     return out
 
 
+NO_LOOT = set()
+
+
 def _weatherings(bad):
     """{defName: (yieldFactor, lootTierShift)}"""
     out = {}
@@ -177,6 +190,8 @@ def _weatherings(bad):
         if not 0 < yf <= 1.5 or not -2 <= sh <= 2:
             bad.append("%s out of range (yieldFactor %s, shift %s)" % (e.findtext("defName"), yf, sh))
         out[e.findtext("defName")] = (yf, sh)
+        if (e.findtext("noLoot") or "").strip() == "true":
+            NO_LOOT.add(e.findtext("defName"))
     if not out:
         bad.append("no weathering rows parsed")
     return out
@@ -348,6 +363,110 @@ def _wreckfall_checks(bad):
             bad.append("wreck-fall source lacks %r" % t)
 
 
+def _xml_roots():
+    for dp, dns, fns in os.walk(SRC_ROOT):
+        dns[:] = [d for d in dns if d not in (".git", "obj", "bin", "__pycache__", "Textures", "Assemblies")]
+        for fn in fns:
+            if fn.endswith(".xml"):
+                path = os.path.join(dp, fn)
+                try:
+                    yield path, ET.parse(path).getroot()
+                except ET.ParseError as ex:
+                    yield path, ex
+
+
+def _planet_checks(bad, fams, weathers, tables):
+    """Steps 3-4: every wreck field on the planet, its children and its registration."""
+    children, fields, biome_regs, floor_regs = {}, {}, {}, {}
+    classes = _density_classes([])
+    ours = _cs_fields(FIELD_CS) | SCATTERER_FIELDS
+    for path, root in _xml_roots():
+        if isinstance(root, ET.ParseError):
+            if any(n in open(path, encoding="utf-8", errors="replace").read() for n in ("RM_WreckField", "RM_WreckFamily")):
+                bad.append("%s does not parse: %s" % (os.path.relpath(path, SRC_ROOT), root))
+            continue
+        for e in root:
+            dn = e.findtext("defName")
+            if e.tag == "ThingDef" and (e.get("ParentName") or "") in fams and dn:
+                children[dn] = e
+            elif e.tag == "GenStepDef" and e.find("genStep") is not None and e.find("genStep").get("Class") == FIELD_CLASS:
+                fields[dn] = e.find("genStep")
+            elif e.tag == "BiomeDef":
+                for li in e.findall("extraGenSteps/li"):
+                    biome_regs.setdefault(li.text, []).append(dn)
+            elif e.tag == "MapGeneratorDef":
+                for li in e.findall("genSteps/li"):
+                    floor_regs.setdefault(li.text, []).append(dn)
+        if root.tag == "Patch":  # the Scald registers by patch
+            for li in root.iter("li"):
+                if li.text and li.text.startswith("RM_WreckField_"):
+                    biome_regs.setdefault(li.text, []).append("(patch)")
+    # Sanity probe: the instrument must see the Scald's known field and its three children.
+    if "RM_WreckField_Scald" not in fields or not set(SCALD_WRECKS) <= set(children):
+        bad.append("planet sweep cannot see the Scald field/children: the sweep is blind, nothing below is evidence")
+        return
+    for want, kind in PLANET_FIELDS.items():
+        if want not in fields:
+            bad.append("planet field %s missing (design §7 steps 3-4)" % want)
+            continue
+        regs = biome_regs.get(want, []) if kind == "biome" else floor_regs.get(want, [])
+        if not regs:
+            bad.append("%s is defined but registered in no %s" % (want, "BiomeDef/patch" if kind == "biome" else "floor generator"))
+        if kind == "floor":
+            gens = sorted(regs)
+            if not (any(g.startswith("RM_SeabedGenerator_") for g in gens) and any(g.startswith("RM_SeaDiveGenerator_") for g in gens)):
+                bad.append("%s must be in the Seabed generator AND its SeaDive twin, got %s" % (want, gens))
+    for fdn, gs in fields.items():
+        for child in gs:
+            if child.tag not in ours:
+                bad.append("%s sets <%s>, which is no field of RM_GenStep_WreckField or GenStep_Scatterer" % (fdn, child.tag))
+        if not gs.findtext("settingsKey"):
+            bad.append("%s has no settingsKey" % fdn)
+        if gs.findtext("densityClass") not in classes:
+            bad.append("%s names density class %s, not defined" % (fdn, gs.findtext("densityClass")))
+        rows = list(gs.find("wrecks")) if gs.find("wrecks") is not None else []
+        if not rows or any(r.tag == "li" for r in rows):
+            bad.append("%s wrecks list empty or in <li> form" % fdn)
+        floor = fdn in floor_regs
+        for r in rows:
+            c = children.get(r.tag)
+            if c is None:
+                bad.append("%s lists %s, which is no wreck-family child" % (fdn, r.tag))
+                continue
+            if floor and (c.findtext("terrainAffordanceNeeded") or "Walkable") == "Walkable":
+                bad.append("%s (floor field %s) needs Walkable, which RM_SeaFloorGround lacks: nothing would place" % (r.tag, fdn))
+    keys = [gs.findtext("settingsKey") for gs in fields.values()]
+    if len(keys) != len(set(keys)):
+        bad.append("two wreck fields share a settingsKey: %s" % sorted(keys))
+    for dn, c in children.items():
+        ext = [li for li in c.findall("modExtensions/li") if li.get("Class") == EXT_CLASS]
+        if len(ext) != 1:
+            bad.append("%s carries %d weathering extensions (want 1)" % (dn, len(ext)))
+            continue
+        w = ext[0].findtext("weathering")
+        if w not in weathers:
+            bad.append("%s names weathering %s, not defined" % (dn, w))
+            continue
+        if [li for li in c.findall("comps/li") if li.get("Class") == COMP_CLASS]:
+            bad.append("%s restates the salvage comp (two rolls)" % dn)
+        if w in NO_LOOT:
+            continue
+        tier = _shift(fams[c.get("ParentName")][0], weathers[w][1])
+        if "RM_SalvageLoot_%s" % tier not in tables:
+            bad.append("%s resolves to tier %s with no table" % (dn, tier))
+    fam_xml = open(FAMILIES_XML, encoding="utf-8").read()
+    if "<li>RM_WreckSurface</li>" not in fam_xml.split('Name="RM_WreckFamily_Hull"')[0]:
+        bad.append("RM_WreckFamilyBase does not carry the RM_WreckSurface building tag (design §3b)")
+    if '"RM_WreckSurface"' not in open(LICHEN_CS, encoding="utf-8").read():
+        bad.append("MapComponent_WreckLichen does not read RM_WreckSurface: the Warscar lichen ignores our wrecks")
+    for f, needle in ((os.path.join(HERE, "Source", "RM_CompSalvageLoot.cs"), "Props.noLoot"),
+                      (os.path.join(HERE, "Source", "RM_WreckWeathering.cs"), "public bool noLoot")):
+        if needle not in open(f, encoding="utf-8").read():
+            bad.append("%s lacks %s (Picked's no-roll)" % (os.path.basename(f), needle))
+    if "RM_WreckWeathering_Picked" not in NO_LOOT:
+        bad.append("Picked weathering does not set noLoot (design §4: no loot roll)")
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -409,6 +528,7 @@ def static_checks():
         if set(seen) != set(SCALD_WRECKS):
             bad.append("Scald wrecks wired: %s, want %s" % (sorted(seen), sorted(SCALD_WRECKS)))
     _field_checks(bad, weathers)
+    _planet_checks(bad, fams, weathers, got)
     _wreckfall_checks(bad)
     src_dir = os.path.join(HERE, "Source")
     proj = open(os.path.join(src_dir, "RM_Wreckage.csproj"), encoding="utf-8").read()

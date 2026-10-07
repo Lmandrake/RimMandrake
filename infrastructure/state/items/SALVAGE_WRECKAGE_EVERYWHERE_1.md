@@ -3,11 +3,24 @@
 Authority: `design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md` (§7 build plan, §8 owner rulings).
 Walk: `design/validation_walks/RimMandrake/Wreckage.md`.
 
-State at 2026-10-07: engine (`src/RimMandrake/Wreckage`) built, slices 1-3 done; the Scald is the only biome on it.
-Open: step 3 (sea floors, Nightside Ice, Lantern Deeps, Cauldron edge), step 4 (Warscar/Wasteland + `RM_WreckSurface`),
-step 5 (wreck-fall incident), steps 6-9 (per-biome scatter, cleaned biomes, art, RSW/RUT layers).
-Speeder/Carapace/Tread families have no children or art; weathering rows Sand-scoured/Sealed/Stripped/Irradiated/Ice-locked are missing.
+State at 2026-10-07 (later): engine (`src/RimMandrake/Wreckage`) slices 1-3, step 5 (wreck fall), and
+steps 3-4 built offline; nothing new has run in game.
 
-Step 5 built offline 2026-10-07 (`RM_WreckFall` incident, baseChance 0, debug-fire only; list is vanilla ShipChunk stand-ins); never fired in game.
-Step 3 sea floors BLOCKED: no `RM_` wreck children exist. Owed: Twilight Picked child, Grey Hull+Spine (crystal-jacketed), Propane Lake family (pending its sitting). Floors: `RM_SeabedFloor_*`, generators `RM_SeaDiveGenerator_*` in `DivingInteraction/Defs/MapGeneration/`; register in each generator's `<genSteps>`.
+Built offline, never loaded:
+- Step 3: Nightside Ice + Lantern Deeps (Riddled; `RM_NightsideWreck{Hull,Tank}`, `RM_NightsideExpeditionRig`, Frozen,
+  shared by both fields); sea floors Grey (`RM_GreyFloorWreck{Hull,Spine}`, Crystal-jacketed), Twilight (`RM_PickedWreck`,
+  Picked + new `noLoot`), Scald floor (`RM_ScaldFloorWreckHull`, Scald hull art). Floor fields are in BOTH
+  `RM_SeabedGenerator_*` and `RM_SeaDiveGenerator_*`. Floor children set Light: `RM_SeaFloorGround` has no Walkable.
+- Step 4: `RM_WreckSurface` building tag on `RM_WreckFamilyBase`; `MapComponent_WreckLichen` seeds beside it.
+  Warscar `RM_WarscarWreck{Hull,Frame}` (Stripped), Wasteland `RM_WastelandWreck{Hull,Tank}` (Irradiated).
+- Weathering rows Stripped, Irradiated, Sand-scoured, Sealed, Ice-locked, Eroded.
+- Step 5 (`RM_WreckFall`, baseChance 0, debug-fire only; list is vanilla ShipChunk stand-ins).
+All new children inherit vanilla ShipChunk art as a placeholder (Scald floor excepted) until own renders land.
+
+Open:
+- Owed sittings: Cauldron nightward edge, Propane Lake (The Chill) and Terminator Sea floors; Wasteland warcasket
+  sarcophagus + radiation on deconstruct; Grey crystal jacket (mineable) + shard table; Blue Desert ice jacket.
+- Steps 6-9: Moderate/Low/Eroded land biomes (Brined/Overgrown/Digested/Storm-torn/Forge-warm rows with them),
+  Cleaned confirmation, art waves, RSW/RUT layers. Speeder/Carapace/Tread families still have no children.
+- Live: L1/L2 passes (a floor map holds wrecks; lichen beside a Warscar wreck by state read).
 Follow-ups: Cracked Lands recede -> read a list via `RM_WreckFall.Drop`; Fall Line `RUT_FallArrival` onto this worker.

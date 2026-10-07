@@ -167,6 +167,10 @@
          was empty by law), which meant these six could never spawn however high their
          commonality. CLOSED 2026-09-09: set to 0.2 above as a DESIGNED interim, sized
          to vanilla IceSheet, with a quicktest tune owed. -->
+    <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
+    <extraGenSteps>
+      <li>RM_WreckField_NightsideIce</li>
+    </extraGenSteps>
     <wildAnimals>
       <!-- NIGHTSIDEICE_HEAT_DIAL_BUILD_1 row 0 (owner card 2026-10-01, nightsideice_bedazzle_review section 8):
            the six evicted imports are out (boulder mit, summit crab, red goo, slurrypede, and the terramorph and
