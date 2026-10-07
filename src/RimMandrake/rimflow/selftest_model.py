@@ -1082,6 +1082,10 @@ CANONICAL = {
     "bridge":    dict(seat="BENCH", state="taken"),
     "game":      dict(seat="OWNER", state="UP"),
     "capability": dict(seat="BUILD", system="TEST_SYSTEM", function_rung="implemented"),
+    # step 2 (selftest_built.py covers the semantics; this fuzzes the field reads)
+    "implemented": dict(seat="BUILD", id="A_B_1", sha="598dec613", ref="origin/main",
+                        needs="bridge", criteria=[{"id": "O1", "level": "L0", "text": "x"},
+                                                  {"id": "A1", "level": "L1"}]),
 }
 
 

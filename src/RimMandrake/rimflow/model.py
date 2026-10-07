@@ -187,7 +187,79 @@ SEATS = ("BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP")
 # Item lifecycle. `proposed` means "filed, not yet taken". 🔴 It is NO LONGER a
 # completeness gate — the owner removed that on 2026-08-21 (see `start`). An item may be
 # claimed and started with no spec, verify or criteria at all.
-STATES = ("proposed", "ready", "doing", "done", "dropped", "superseded")
+STATES = ("proposed", "ready", "doing", "built", "validated",
+          "done", "dropped", "superseded")
+
+# 🔑 `built` and `validated` — rimflow redesign STEP 2 (2026-10-07; design:
+# `design/RimMandrake/rimflow_gpt_review_2026-10-07.md` §2 and
+# `rimflow_validation_levels_addendum_2026-10-07.md`, owner decisions at its end).
+#   built      the implementation is published (its sha is on origin/main) and every L0
+#              (offline) criterion passes; live levels are still owed.
+#   validated  at least one live level has passed; more are still owed.
+#   done       nothing is owed.
+# Entered ONLY by `implemented` (-> built, or straight to done when nothing is owed) and by
+# a passing `verify --criterion` (built -> validated, -> done on the last one). Neither is
+# ever offered by `priority.rank()` (which offers `ready` only) — a built item is
+# ACCEPTANCE work, listed by `rimflow next --acceptance`, never implementation work.
+# ⚠️ `claim`/`start` on a built item still move it to ready/doing (corrective work) —
+# unchanged on purpose; leases are step 3.
+OPEN_STATES = ("proposed", "ready", "doing", "built", "validated")
+
+# The validation ladder, cheapest first (addendum §"The levels that exist today").
+# L0 offline · L1 resolved-live on the minimal list · L2 behaviour gauntlet ·
+# GREEN-MIN / GREEN-FULL north-star on the minimal / full list · L3 Opus evaluation ·
+# L4 human. The ORDER is load-bearing: "cheapest outstanding level" is the first of
+# these an item still owes, and that decides its `needs` and its acceptance group.
+LEVELS = ("L0", "L1", "L2", "GREEN-MIN", "GREEN-FULL", "L3", "L4")
+# What each level needs to be worked. GREEN-FULL is `bridge` too — the full list is
+# not a `needs` value; the acceptance view groups by LEVEL, which carries it.
+LEVEL_NEEDS = {"L0": "offline", "L1": "bridge", "L2": "bridge", "GREEN-MIN": "bridge",
+               "GREEN-FULL": "bridge", "L3": "bridge", "L4": "owner"}
+CRITERION_ID_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_.-]{0,23}$")
+CRITERION_TEXT_MAX = 160          # chars kept on the ledger; the full text lives in prose
+# One criterion line: `- A1 L1: defs resolve on the minimal list`. The bullet, the colon
+# and the text are optional; the id and the level are not.
+CRITERION_LINE_RE = re.compile(
+    r"^\s*(?:[-*]|\d+[.)])?\s*(?:\[[ xX]\]\s*)?(?P<cid>[A-Za-z][A-Za-z0-9_.-]{0,23})\s+"
+    r"(?P<level>L0|L1|L2|L3|L4|GREEN-MIN|GREEN-FULL)(?![A-Za-z0-9-])\s*[:—-]?\s*"
+    r"(?P<text>.*)$")
+BULLET_RE = re.compile(r"^\s*(?:[-*]|\d+[.)])\s+\S")
+
+
+def level_rank(level):
+    return LEVELS.index(level) if level in LEVELS else len(LEVELS)
+
+
+def cheapest_level(levels):
+    """-> the first level on the ladder among `levels`, or None for none."""
+    levels = [l for l in levels if l in LEVELS]
+    return min(levels, key=level_rank) if levels else None
+
+
+def needs_for_levels(levels):
+    """-> the `needs` an item owing `levels` has: that of its CHEAPEST outstanding level
+    (addendum rec. 2 — the cheapest, not the first written). None when nothing is owed."""
+    c = cheapest_level(levels)
+    return LEVEL_NEEDS[c] if c else None
+
+
+def parse_criteria(text):
+    """-> (criteria, untagged). `criteria` = [{"id", "level", "text"}] from every line
+    carrying `<ID> <LEVEL>`; `untagged` = bullet lines that carry no level tag — the
+    caller refuses on those, because a criterion with no level cannot be routed and
+    silently dropping it would let an item reach `done` owing it."""
+    crit, untagged = [], []
+    for raw in (text or "").splitlines():
+        line = raw.rstrip()
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        m = CRITERION_LINE_RE.match(line)
+        if m:
+            crit.append({"id": m.group("cid"), "level": m.group("level"),
+                         "text": m.group("text").strip()[:CRITERION_TEXT_MAX]})
+        elif BULLET_RE.match(line):
+            untagged.append(line.strip())
+    return crit, untagged
 
 # ⚠️ `blocked` is NOT a state. It is a flag, because an item can be blocked while
 # proposed, ready or doing, and collapsing it into the state enum is what made the old
@@ -255,6 +327,11 @@ class SchemaError(LedgerError):
     pass
 
 
+class UnknownFieldError(SchemaError):
+    """A KNOWN verb carrying a field this reader does not know. Refused on the writing
+    path like any SchemaError; tolerated by non-strict `replay` (see there)."""
+
+
 class PermissionError_(LedgerError):
     pass
 
@@ -287,7 +364,22 @@ VERBS = {
     "start":     {"who": "owner", "req": (), "opt": ()},
     "block":     {"who": "owner", "req": ("reason",), "opt": ("on",)},
     "unblock":   {"who": "owner", "req": (), "opt": ("reason",)},
-    "verify":    {"who": "owner", "req": ("result", "config"), "opt": ("evidence", "sha")},
+    # `level` / `criterion` (step 2): a pass naming an OUTSTANDING criterion of a built
+    # item drops it, built -> validated, and the last one -> done. ⚠️ A reader older than
+    # step 2 refuses these two fields and collects the WHOLE run into `world.errors`
+    # (selftest_built_old_reader.py measures it); readers from step 2 on strip unknown
+    # fields instead (`replay`, UnknownFieldError).
+    "verify":    {"who": "owner", "req": ("result", "config"),
+                  "opt": ("evidence", "sha", "level", "criterion")},
+    # 🔑 `implemented` (rimflow redesign step 2): the implementation is published at `sha`
+    # (the CLI refuses a sha that is not an ancestor of `ref`, origin/main) and every L0
+    # criterion passes. `criteria` is the level-tagged manifest, [{"id","level","text"}];
+    # the non-L0 ones are what is still OWED, and `needs` is derived from the cheapest of
+    # them IN THIS SAME EVENT (review §2: never two separately forgettable writes).
+    # Enters `built`, or `done` when nothing is owed. Any seat, like `close`.
+    # ⚠️ A reader older than step 2 refuses the unknown verb into `world.errors`: the item
+    # keeps its previous state and needs there (selftest_built_old_reader.py).
+    "implemented": {"who": "any", "req": ("sha",), "opt": ("ref", "criteria", "needs")},
     "finding":   {"who": "any",   "req": ("from", "type", "severity", "name"), "opt": ()},
     # ⚠️ `spawn` carries no `id`. Its cause is `from` — a finding name, a run name, or
     # an item id — and its product is `name`. Requiring an `id` too forced the caller to
@@ -525,7 +617,7 @@ def _check_no_unknown_fields(ev, spec):
     known = set(spec["req"]) | set(spec["opt"]) | set(UNIVERSAL_FIELDS)
     for f in ev:
         if f not in known:
-            raise SchemaError(
+            raise UnknownFieldError(
                 "`%s` has no field %r. Prose belongs in items/<ID>.md, not in the "
                 "ledger — a scalar that exists in two places drifts."
                 % (ev["event"], f))
@@ -562,6 +654,16 @@ def _check_enums(ev):
         raise SchemaError("reassign --to must name a seat")
     if verb == "verify" and ev["result"] not in ("pass", "fail", "partial"):
         raise SchemaError("verify result must be pass|fail|partial")
+    if verb == "verify":
+        lv, cid = ev.get("level"), ev.get("criterion")
+        if lv is not None and lv not in LEVELS:
+            raise SchemaError("verify --level must be one of %s (got %r)"
+                              % (", ".join(LEVELS), lv))
+        if cid is not None and not CRITERION_ID_RE.match(str(cid)):
+            raise SchemaError("verify --criterion must be a criterion id like A1 "
+                              "(got %r)" % (cid,))
+    if verb == "implemented":
+        _check_implemented(ev)
     if verb == "reconcile":
         if ev["verdict"] not in RECONCILE_VERDICTS:
             raise SchemaError("reconcile --verdict must be %s (got %r)"
@@ -576,6 +678,37 @@ def _check_enums(ev):
                 "reconcile --verdict partial needs --remaining \"<what is left, one "
                 "line>\" — `next` prints that line instead of the whole spec, so the "
                 "next builder works the remainder rather than rebuilding the item.")
+
+
+def _check_implemented(ev):
+    """The `implemented` manifest: a list of {id, level, text?}, ids unique, levels on
+    the ladder, and `needs` equal to the cheapest OWED (non-L0) level's — derived in the
+    same event, so a built item can never carry the stale `offline` it was filed with."""
+    if not SHA_RE.match(str(ev["sha"])):
+        raise SchemaError("implemented --sha takes one commit sha, 7-40 lowercase hex "
+                          "(got %r)" % (ev["sha"],))
+    crit = ev.get("criteria", [])
+    if not isinstance(crit, list):
+        raise SchemaError("implemented `criteria` must be a list (got %s)"
+                          % type(crit).__name__)
+    seen = set()
+    for c in crit:
+        if not isinstance(c, dict) or set(c) - {"id", "level", "text"}:
+            raise SchemaError("each implemented criterion is {id, level, text} "
+                              "(got %r)" % (c,))
+        if not CRITERION_ID_RE.match(str(c.get("id") or "")):
+            raise SchemaError("criterion id %r is not like A1" % (c.get("id"),))
+        if c.get("level") not in LEVELS:
+            raise SchemaError("criterion %s: level %r is not one of %s"
+                              % (c.get("id"), c.get("level"), ", ".join(LEVELS)))
+        if c["id"] in seen:
+            raise SchemaError("criterion %s is listed twice" % c["id"])
+        seen.add(c["id"])
+    owed = needs_for_levels([c["level"] for c in crit if c["level"] != "L0"])
+    if owed and ev.get("needs") != owed:
+        raise SchemaError(
+            "implemented: the cheapest owed level makes `needs` %r, and the event says "
+            "%r. They are written in ONE event so they cannot disagree." % (owed, ev.get("needs")))
 
 
 def _check_caused_by(ev):
@@ -951,7 +1084,7 @@ VERB_RANK = {
     "block": 2, "unblock": 2, "needs": 2, "retarget": 2,
     "reassign": 3, "reclaim": 3,
     "claim": 4, "start": 5,
-    "note": 7, "reconcile": 7, "verify": 8,
+    "note": 7, "reconcile": 7, "implemented": 7.5, "verify": 8,
     "close": 9, "drop": 9, "supersede": 9,
 }
 _BRIDGE_RANK = {"released": 0, "taken": 1}
@@ -1057,12 +1190,15 @@ class Run(object):
     stands permanently and the follow-up is a NEW item, linked by `caused_by`.
     """
 
-    __slots__ = ("item", "n", "config", "result", "evidence", "sha", "ts", "index")
+    __slots__ = ("item", "n", "config", "result", "evidence", "sha", "ts", "index",
+                 "level", "criterion")
 
-    def __init__(self, item, n, config, result, evidence, sha, ts, index):
+    def __init__(self, item, n, config, result, evidence, sha, ts, index,
+                 level=None, criterion=None):
         self.item, self.n, self.config = item, n, config
         self.result, self.evidence, self.sha = result, evidence, sha
         self.ts, self.index = ts, index
+        self.level, self.criterion = level, criterion
 
     @property
     def name(self):
@@ -1079,7 +1215,9 @@ class Item(object):
                  "blocked", "blocked_reason", "blocked_on", "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
                  "runs", "findings", "history", "caused_by", "claim_ts",
-                 "reconciles", "cited_shas")
+                 "reconciles", "cited_shas",
+                 "built_sha", "built_ref", "built_at", "criteria", "outstanding",
+                 "passed", "level_reached")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1099,10 +1237,25 @@ class Item(object):
         # shas cited in this item's `note` texts, in ledger order (a build commit that
         # names no item is often linked ONLY by its note: WEBWORK_TRACTION_LANCE_BUILD_1)
         self.cited_shas = []
+        # step 2 — set by `implemented`, advanced by `verify --criterion`:
+        self.built_sha = self.built_ref = self.built_at = None
+        self.criteria = []              # the manifest, [{"id","level","text"}], in order
+        self.outstanding = []           # criterion ids still OWED (never L0), in order
+        self.passed = []                # [{"criterion","level","run","ts"}] since built
+        self.level_reached = None       # highest level passed since built (L0 at built)
 
     @property
     def open(self):
-        return self.state in ("proposed", "ready", "doing")
+        return self.state in OPEN_STATES
+
+    def owed_levels(self):
+        """-> the levels still owed, cheapest first, one each."""
+        lv = {c["level"] for c in self.criteria if c["id"] in self.outstanding}
+        return sorted(lv, key=level_rank)
+
+    def next_level(self):
+        """-> the cheapest level still owed, or None."""
+        return cheapest_level(self.owed_levels())
 
     def __repr__(self):
         return "<Item %s %s%s>" % (self.id, self.state,
@@ -1151,6 +1304,9 @@ class World(object):
         self.game = "DOWN"
         self.findings = {}              # name -> {"from":…, "type":…, "severity":…}
         self.errors = []                # refusals a replay found ALREADY IN the file
+        # events applied with fields this reader does not know stripped (written by
+        # newer code): [(index, verb, [field, …])] — see `_tolerate_unknown_fields`
+        self.tolerated = []
         self.capabilities = {}          # system -> Capability (latest state + full history)
         # Concurrent claims (git plan §2.5): two windows of one seat can both `claim` an
         # item and both events survive the union merge. Earliest `ts` wins — it is the
@@ -1221,6 +1377,14 @@ def _who_refusal(ev, item):
                 "the authorization:\n"
                 "    python3 src/RimMandrake/rimflow/cli.py capability set <SYSTEM> "
                 "--function-rung played --owner-said \"<his words, verbatim>\"")
+    # 🔑 ACCEPTANCE IS NOT THE BUILDER'S — owner, 2026-10-06: *"Foundry is supposed to own
+    # automated processes. Bench is about human interaction"*. A run naming a criterion of
+    # a built/validated item may come from ANY seat, so the FOUNDRY sitting can record a
+    # pass on a BENCH-owned item (and BENCH an L4 one on FOUNDRY's). A run with no
+    # criterion keeps the owning-seat rule.
+    if verb == "verify" and ev.get("criterion") and item is not None and \
+            item.state in ("built", "validated"):
+        return None
     who = VERBS[verb]["who"]
     if who in ("any", "self"):
         return None                             # a seat may only speak for itself
@@ -1507,6 +1671,75 @@ def _apply_itemless(ev, seat, world):
         return
 
 
+def _apply_implemented(ev, item):
+    """`implemented` -> built (live levels owed) or done (nothing owed).
+
+    A re-implementation (after corrective work, or straight from built/validated)
+    REPLACES the manifest and forgets earlier passes: they tested an older artifact.
+    The runs themselves stay, immutable, in `item.runs`."""
+    crit = [dict(c) for c in ev.get("criteria") or []]
+    owed = [c["id"] for c in crit if c["level"] != "L0"]
+    target = "built" if owed else "done"
+    _transition(item, target)
+    item.built_sha, item.built_ref, item.built_at = ev["sha"], ev.get("ref"), ev["ts"]
+    item.criteria, item.outstanding, item.passed = crit, owed, []
+    item.level_reached = "L0"
+    if owed:
+        item.needs = ev.get("needs") or needs_for_levels(
+            [c["level"] for c in crit if c["id"] in owed])
+    else:
+        item.closed_sha = ev["sha"]
+        item.blocked = False
+        item.blocked_reason = item.blocked_on = None
+
+
+def _verify_target(ev, item):
+    """-> (level, criterion) a run is recorded against, after refusing a run that names
+    a criterion this item does not owe or a level that contradicts the criterion's.
+
+    ⚠️ A pass only counts against the BUILT artifact: a criterion pass on an item that is
+    not built/validated is refused, never silently recorded as progress."""
+    level, cid = ev.get("level"), ev.get("criterion")
+    if not cid:
+        return level, None
+    known = {c["id"]: c for c in item.criteria}
+    if cid not in known:
+        raise TransitionError(
+            "%s has no criterion %s. Its manifest (from `implemented`) is: %s"
+            % (item.id, cid, ", ".join("%s %s" % (c["id"], c["level"])
+                                       for c in item.criteria) or "(none — never implemented)"))
+    want = known[cid]["level"]
+    if level and level != want:
+        raise SchemaError("%s criterion %s is tagged %s, and this run says --level %s."
+                          % (item.id, cid, want, level))
+    if ev["result"] == "pass":
+        if item.state not in ("built", "validated"):
+            raise TransitionError(
+                "%s is `%s`: a criterion pass counts only against a BUILT artifact. "
+                "Record `implemented` first." % (item.id, item.state))
+        if cid not in item.outstanding:
+            raise TransitionError("%s criterion %s is not outstanding (passed already, or "
+                                  "L0 — attested by `implemented`)." % (item.id, cid))
+    return want, cid
+
+
+def _criterion_passed(item, cid, level, run, ev):
+    item.outstanding = [c for c in item.outstanding if c != cid]
+    item.passed.append({"criterion": cid, "level": level, "run": run.name, "ts": ev["ts"]})
+    if level_rank(level) > level_rank(item.level_reached or "L0"):
+        item.level_reached = level
+    if not item.outstanding:
+        _transition(item, "done")
+        item.closed_sha = ev.get("sha") or item.built_sha
+        item.blocked = False
+        item.blocked_reason = item.blocked_on = None
+        return
+    if level != "L0" and item.state == "built":
+        _transition(item, "validated")
+    # needs follows the cheapest level still owed, at every acceptance step
+    item.needs = needs_for_levels(item.owed_levels()) or item.needs
+
+
 def _apply_item_verb(ev, index, item, seat, world):
     """Every verb that MUTATES an item that already exists."""
     verb = ev["event"]
@@ -1559,9 +1792,15 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.blocked = False
         item.blocked_reason = item.blocked_on = None
     elif verb == "verify":
+        level, cid = _verify_target(ev, item)       # refuses BEFORE the run is recorded
         n = sum(1 for r in item.runs if r.config == ev["config"]) + 1
-        item.runs.append(Run(item.id, n, ev["config"], ev["result"],
-                             ev.get("evidence"), ev.get("sha"), ev["ts"], index))
+        run = Run(item.id, n, ev["config"], ev["result"], ev.get("evidence"),
+                  ev.get("sha"), ev["ts"], index, level, cid)
+        item.runs.append(run)
+        if cid and ev["result"] == "pass":
+            _criterion_passed(item, cid, level, run, ev)
+    elif verb == "implemented":
+        _apply_implemented(ev, item)
     elif verb == "finding":
         world.findings[ev["name"]] = {"from": ev["from"], "type": ev["type"],
                                       "severity": ev["severity"], "at": ev["ts"]}
@@ -1739,13 +1978,41 @@ def replay(events=None, strict=False, path=None):
     world = World()
     for index, ev in enumerate(events):
         try:
-            validate(ev)
+            try:
+                validate(ev)
+            except UnknownFieldError:
+                if strict:
+                    raise
+                ev = _tolerate_unknown_fields(ev, index, world)
             _apply(ev, index, world, strict)
         except LedgerError as e:
             if strict:
                 raise
             world.errors.append((index, ev.get("event"), str(e)))
     return world
+
+
+def _tolerate_unknown_fields(ev, index, world):
+    """-> `ev` without the fields this reader does not know, re-validated.
+
+    🔑 FORWARD COMPATIBILITY (rimflow redesign step 2, 2026-10-07). The shards are read by
+    every clone, and a clone can run older code than the event's writer. A reader older
+    than step 2 (577d72d2f and before) refuses a KNOWN verb carrying an unknown field and
+    drops the WHOLE event — measured: a `verify --level L1 --criterion A1` run vanishes
+    there. From this reader on, the known part of such an event is applied and the
+    stripped field names are recorded in `world.tolerated`, so a later step that adds a
+    field to an existing verb degrades to the old meaning instead of losing the event.
+    ⛔ Non-strict replay ONLY. The writing path (`check`, `append`) still refuses unknown
+    fields, so nothing written through this module ever relies on this. An unknown VERB
+    is still an error: its meaning cannot be guessed.
+    """
+    known = set(VERBS[ev["event"]]["req"]) | set(VERBS[ev["event"]]["opt"]) \
+        | set(UNIVERSAL_FIELDS)
+    stripped = sorted(f for f in ev if f not in known)
+    ev = {k: v for k, v in ev.items() if k in known}
+    validate(ev)
+    world.tolerated.append((index, ev.get("event"), stripped))
+    return ev
 
 
 def check(ev, world=None, path=None):
