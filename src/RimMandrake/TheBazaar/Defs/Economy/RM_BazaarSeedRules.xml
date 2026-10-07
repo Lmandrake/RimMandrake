@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     BAZAAR_PRICE_ENGINE_1 - design §3 seed rule table. A settlement whose
+     tags match a rule starts each target bucket at a multiplier drawn,
+     deterministically from (tile, key, rule), within `multiplier`.
+
+     Tags (RM_BazaarTags.TagsFor): biome:<BiomeDef>, climate:arid
+     (rainfall < 400), climate:hot (> 25 C), climate:cold (< 0 C),
+     faction:<FactionDef>, liquid:<LiquidDef> (FlowWorks' authored liquid
+     tag on the settlement tile or an adjacent one), plus whatever a
+     registered provider (RimUtinni settlement tags) adds.
+
+     thingDef targets are defName STRINGS on purpose: FlowWorks' water,
+     brine and propane containers are another mod's defs, and a string costs
+     nothing when FlowWorks is absent (the bucket is just never looked up).
+     Multipliers are FOUNDRY's numbers except desert water x1.8-2.6, which is
+     the design doc's own figure.
+======================================================================== -->
+<Defs>
+
+  <!-- Desert water: the design's worked example. -->
+  <RimMandrake.Bazaar.RM_BazaarSeedRuleDef>
+    <defName>RM_BazaarSeed_DesertWater</defName>
+    <label>desert settlements pay for water</label>
+    <anyTags>
+      <li>climate:arid</li>
+      <li>biome:Desert</li>
+      <li>biome:ExtremeDesert</li>
+    </anyTags>
+    <targets>
+      <li><thingDef>RM_Bottle_FreshWater</thingDef><multiplier>1.8~2.6</multiplier></li>
+      <li><thingDef>RM_Bucket_FreshWater</thingDef><multiplier>1.8~2.6</multiplier></li>
+      <li><thingDef>RM_Barrel_FreshWater</thingDef><multiplier>1.8~2.6</multiplier></li>
+    </targets>
+  </RimMandrake.Bazaar.RM_BazaarSeedRuleDef>
+
+  <!-- Brine-adjacent: salt is cheap where the sea leaves it lying about. -->
+  <RimMandrake.Bazaar.RM_BazaarSeedRuleDef>
+    <defName>RM_BazaarSeed_BrineSalt</defName>
+    <label>brine-shore settlements sell salt cheap</label>
+    <requiredTags>
+      <li>liquid:RM_Liquid_Brine</li>
+    </requiredTags>
+    <targets>
+      <li><thingDef>RM_Bottle_Brine</thingDef><multiplier>0.4~0.6</multiplier></li>
+      <li><thingDef>RM_Bucket_Brine</thingDef><multiplier>0.4~0.6</multiplier></li>
+      <li><thingDef>RM_Barrel_Brine</thingDef><multiplier>0.4~0.6</multiplier></li>
+    </targets>
+  </RimMandrake.Bazaar.RM_BazaarSeedRuleDef>
+
+  <!-- Propane lake: fuel is cheap at the source. -->
+  <RimMandrake.Bazaar.RM_BazaarSeedRuleDef>
+    <defName>RM_BazaarSeed_PropaneFuel</defName>
+    <label>propane-lake settlements sell fuel cheap</label>
+    <requiredTags>
+      <li>liquid:RM_Liquid_Propane</li>
+    </requiredTags>
+    <targets>
+      <li><thingDef>RM_Bottle_Propane</thingDef><multiplier>0.45~0.65</multiplier></li>
+      <li><thingDef>RM_Bucket_Propane</thingDef><multiplier>0.45~0.65</multiplier></li>
+      <li><thingDef>RM_Barrel_Propane</thingDef><multiplier>0.45~0.65</multiplier></li>
+      <li><thingDef>Chemfuel</thingDef><multiplier>0.6~0.8</multiplier></li>
+    </targets>
+  </RimMandrake.Bazaar.RM_BazaarSeedRuleDef>
+
+  <!-- Boiling-sea shore: fresh water is distilled locally, so it is cheaper
+       there than the desert around it would suggest. Multiplies with the
+       desert rule when both match. -->
+  <RimMandrake.Bazaar.RM_BazaarSeedRuleDef>
+    <defName>RM_BazaarSeed_BoilingSeaStill</defName>
+    <label>boiling-sea settlements distil their own water</label>
+    <requiredTags>
+      <li>liquid:RM_Liquid_BoilingWater</li>
+    </requiredTags>
+    <targets>
+      <li><thingDef>RM_Bottle_FreshWater</thingDef><multiplier>0.6~0.75</multiplier></li>
+      <li><thingDef>RM_Bucket_FreshWater</thingDef><multiplier>0.6~0.75</multiplier></li>
+      <li><thingDef>RM_Barrel_FreshWater</thingDef><multiplier>0.6~0.75</multiplier></li>
+    </targets>
+  </RimMandrake.Bazaar.RM_BazaarSeedRuleDef>
+
+</Defs>

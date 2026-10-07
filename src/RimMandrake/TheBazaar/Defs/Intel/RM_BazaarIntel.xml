@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     BAZAAR_PRICE_ENGINE_1 - design §4 intel layers, and the L1..L4 columns
+     and badges that gate on them. Rebalancing a gate is a one-line edit
+     here (minSocialSkill), never in C#.
+
+     D1..D4 are protocol-droid MODULES (owner, 2026-09-20), gated on the
+     module hediff being on a functional protocol droid in the party or at
+     the colony (RM_BazaarIntel). Only D4 has an effect in this slice (it
+     lowers every Social gate by 2); D1's numbers belong to the haggle duel
+     (BAZAAR_HAGGLE_*), D2/D3 to BAZAAR_STOLEN_GOODS_PROPERTY_1.
+======================================================================== -->
+<Defs>
+
+  <!-- ── Social layers ── -->
+  <RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+    <defName>RM_BazaarIntel_L1_PriceContext</defName>
+    <label>price context</label>
+    <description>Arrow and percentage against what a good typically fetches here.</description>
+    <minSocialSkill>3</minSocialSkill>
+    <settingsToggle>intelPriceContext</settingsToggle>
+  </RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+
+  <RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+    <defName>RM_BazaarIntel_L2_GoodDeals</defName>
+    <label>good deals</label>
+    <description>Flags prices far from typical, both directions.</description>
+    <minSocialSkill>5</minSocialSkill>
+    <settingsToggle>intelGoodDeals</settingsToggle>
+  </RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+
+  <RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+    <defName>RM_BazaarIntel_L3_LocalEconomy</defName>
+    <label>local economy</label>
+    <description>What this settlement pays relative to the norm, and where to sell.</description>
+    <minSocialSkill>7</minSocialSkill>
+    <settingsToggle>intelLocalEconomy</settingsToggle>
+  </RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+
+  <RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+    <defName>RM_BazaarIntel_L4_Scarcity</defName>
+    <label>scarcity</label>
+    <description>Goods only this trader has carried in the last 30 days.</description>
+    <minSocialSkill>9</minSocialSkill>
+    <settingsToggle>intelScarcity</settingsToggle>
+  </RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+
+  <!-- ── Protocol-droid module layers ── -->
+  <RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+    <defName>RM_BazaarIntel_D1_TraderRead</defName>
+    <label>trader read</label>
+    <description>Personality, patience as numbers, crit odds. Read by a haggler module.</description>
+    <requiredModule>RM_HagglerModuleFitted</requiredModule>
+    <settingsToggle>intelModules</settingsToggle>
+  </RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+
+  <RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+    <defName>RM_BazaarIntel_D2_Registry</defName>
+    <label>lost-and-stolen registry</label>
+    <description>Goods origin, and definite stolen or lost flags. Read by a manifest decoder.</description>
+    <requiredModule>RM_ManifestDecoderFitted</requiredModule>
+    <settingsToggle>intelModules</settingsToggle>
+  </RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+
+  <RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+    <defName>RM_BazaarIntel_D3_TransponderScan</defName>
+    <label>transponder scan</label>
+    <description>Stolen and lost flags read off the goods' own transponders. Read by a transponder scanner.</description>
+    <requiredModule>RM_TransponderScannerFitted</requiredModule>
+    <settingsToggle>intelModules</settingsToggle>
+  </RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+
+  <RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+    <defName>RM_BazaarIntel_D4_MarketAnalysis</defName>
+    <label>market analysis</label>
+    <description>Full price history, and every Social gate lowered by 2. Read by a price almanac.</description>
+    <requiredModule>RM_PriceAlmanacFitted</requiredModule>
+    <settingsToggle>intelModules</settingsToggle>
+    <lowersOtherSocialGatesBy>2</lowersOtherSocialGatesBy>
+  </RimMandrake.Bazaar.RM_BazaarIntelLayerDef>
+
+  <!-- ── Columns and badges (drawn once the grid body lands) ── -->
+  <RimMandrake.Bazaar.RM_BazaarColumnDef>
+    <defName>RM_BazaarCol_PriceContext</defName>
+    <label>vs typical</label>
+    <workerClass>RimMandrake.Bazaar.BazaarColumnWorker_PriceContext</workerClass>
+    <defaultWidth>70</defaultWidth>
+    <displayPriority>500</displayPriority>
+  </RimMandrake.Bazaar.RM_BazaarColumnDef>
+
+  <RimMandrake.Bazaar.RM_BazaarColumnDef>
+    <defName>RM_BazaarCol_LocalEconomy</defName>
+    <label>local rate</label>
+    <workerClass>RimMandrake.Bazaar.BazaarColumnWorker_LocalEconomy</workerClass>
+    <defaultWidth>60</defaultWidth>
+    <displayPriority>510</displayPriority>
+  </RimMandrake.Bazaar.RM_BazaarColumnDef>
+
+  <RimMandrake.Bazaar.RM_BazaarBadgeDef>
+    <defName>RM_BazaarBadge_GoodDeal</defName>
+    <label>good deal</label>
+    <workerClass>RimMandrake.Bazaar.BazaarBadgeWorker_GoodDeal</workerClass>
+    <displayPriority>100</displayPriority>
+  </RimMandrake.Bazaar.RM_BazaarBadgeDef>
+
+  <RimMandrake.Bazaar.RM_BazaarBadgeDef>
+    <defName>RM_BazaarBadge_Scarcity</defName>
+    <label>scarce</label>
+    <workerClass>RimMandrake.Bazaar.BazaarBadgeWorker_Scarcity</workerClass>
+    <displayPriority>200</displayPriority>
+  </RimMandrake.Bazaar.RM_BazaarBadgeDef>
+
+</Defs>

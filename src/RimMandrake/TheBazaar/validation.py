@@ -3,15 +3,17 @@
 First north-star script (THE_BAZAAR_FIRST_SCRIPT_1). Walk: design/validation_walks/RimMandrake/TheBazaar.md.
 Design: design/RimMandrake/bazaar_trade_window_design.md (whole-deal haggle duel, broker tab: both owner-ruled, NOT built).
 
-HONEST SCOPE. Only BAZAAR_WINDOW_GRID_1 slice 1 ships: four plugin def classes (no XML defs), an inert Dialog_Trade
-subclass nothing constructs, and a settings screen with no field. So the chains prove what exists and report the rest
-UNMEASURED with the reason, never a fake pass or fail:
+HONEST SCOPE. Ships: BAZAAR_WINDOW_GRID_1 slice 1 (four plugin def classes, an inert Dialog_Trade subclass nothing
+constructs) and BAZAAR_PRICE_ENGINE_1 slice 2 (RM_BazaarEconomy, RM_BazaarSeedRuleDef rules, the session-guarded
+Tradeable.GetPriceFor postfix, intel layer defs + L1..L4 workers, four protocol-droid module items/hediffs, settings).
+The chains prove what exists and report the rest UNMEASURED with the reason, never a fake pass or fail:
 
-  defs_and_types      no XML defs shipped (probe can say absent); every C# type resolves live; log clean.
-  settings_roundtrip  every `public static` field of RM_BazaarSettings round-trips (none today: the probe is proven on a
-                      sample line, and components are generated when fields land).
-  intercept_state     no Harmony patch of this mod on WindowStack.Add (slice-1 truth). Red = intercept landed: extend.
-  unshipped           grid, price engine, intel layers, haggle duel, broker tab, banter: UNMEASURED (not built).
+  defs_and_types      shipped XML defs (vanilla-typed ones) resolve live; every C# type resolves live; log clean.
+  settings_roundtrip  every `public static` field of RM_BazaarSettings round-trips.
+  intercept_state     no Harmony patch of this mod on WindowStack.Add (still true). Red = intercept landed: extend.
+  price_engine        our postfix sits on Tradeable.GetPriceFor; the economy/water/wealth proofs need a live Bazaar
+                      session, which cannot exist before the intercept: UNMEASURED with that reason.
+  unshipped           grid, intel rendering, haggle duel, broker tab, banter: UNMEASURED (not built).
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
 """
@@ -24,7 +26,14 @@ NS = "RimMandrake.Bazaar."
 SETTINGS = NS + "RM_BazaarSettings"
 HARMONY_ID = "mandrake.rm.bazaar"
 TYPES = [NS + n for n in ("RM_BazaarColumnDef", "RM_BazaarBadgeDef", "RM_BazaarTabDef", "RM_BazaarIntelLayerDef",
-                          "RM_BazaarSession", "RM_Window_Bazaar", "RM_BazaarSettings", "RM_BazaarMod")]
+                          "RM_BazaarSession", "RM_Window_Bazaar", "RM_BazaarSettings", "RM_BazaarMod",
+                          "RM_BazaarEconomy", "RM_BazaarSeedRuleDef", "RM_BazaarTags", "RM_Patch_GetPriceFor",
+                          "RM_BazaarIntel", "BazaarColumnWorker_PriceContext", "BazaarColumnWorker_LocalEconomy",
+                          "BazaarBadgeWorker_GoodDeal", "BazaarBadgeWorker_Scarcity")]
+# Vanilla-typed defs the mod ships; jawa/get_defs can resolve these by "DefType/defName".
+SHIPPED_DEFS = ["ThingDef/RM_HagglerModule", "ThingDef/RM_ManifestDecoder", "ThingDef/RM_TransponderScanner",
+                "ThingDef/RM_PriceAlmanac", "HediffDef/RM_HagglerModuleFitted", "HediffDef/RM_ManifestDecoderFitted",
+                "HediffDef/RM_TransponderScannerFitted", "HediffDef/RM_PriceAlmanacFitted"]
 _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
 INTERCEPT_SHIPPED = False     # flip to True in the slice that lands the WindowStack.Add intercept, and add its chains
 
@@ -41,14 +50,66 @@ def _probe_works():
     return bool(_FIELD.search("public static bool sampleToggle = true;"))
 
 
+def xml_checks(cstext):
+    """Every workerClass names a class declared in Source/; every requiredModule names a HediffDef we ship;
+    every seed target sets exactly one of thingDef/tradeTag/category; every settingsToggle is a settings field."""
+    import xml.etree.ElementTree as ET
+    bad, hediffs, layers = [], set(), []
+    defs_dir = os.path.join(HERE, "Defs")
+    xmls = [os.path.join(r, f) for r, _d, fs in os.walk(defs_dir) for f in fs if f.endswith(".xml")]
+    if len(xmls) < 3:
+        return ["only %d Defs XML files found (sanity probe failed)" % len(xmls)]
+    seen = {"worker": 0, "rule": 0}
+    for path in xmls:
+        try:
+            root = ET.parse(path).getroot()
+        except ET.ParseError as e:
+            bad.append("%s does not parse: %s" % (os.path.basename(path), e))
+            continue
+        for el in root:
+            if el.tag == "HediffDef" and el.findtext("defName"):
+                hediffs.add(el.findtext("defName"))
+            if el.tag.endswith("RM_BazaarIntelLayerDef"):
+                layers.append(el)
+            wc = el.findtext("workerClass")
+            if wc:
+                seen["worker"] += 1
+                if not re.search(r"\bclass\s+%s\b" % re.escape(wc.split(".")[-1]), cstext):
+                    bad.append("workerClass %s is not declared in Source/" % wc)
+            if el.tag.endswith("RM_BazaarSeedRuleDef"):
+                seen["rule"] += 1
+                for li in el.findall("targets/li"):
+                    n = sum(1 for k in ("thingDef", "tradeTag", "category") if (li.findtext(k) or "").strip())
+                    if n != 1:
+                        bad.append("%s: a target sets %d of thingDef/tradeTag/category" % (el.findtext("defName"), n))
+    if seen["worker"] < 4 or seen["rule"] < 1 or len(layers) < 8:
+        bad.append("XML sanity probe: workers=%d rules=%d layers=%d" % (seen["worker"], seen["rule"], len(layers)))
+    fields = settings_fields()
+    for el in layers:
+        mod = el.findtext("requiredModule")
+        if mod and mod not in hediffs:
+            bad.append("%s requiredModule %s is not a HediffDef we ship" % (el.findtext("defName"), mod))
+        tog = el.findtext("settingsToggle")
+        if tog and tog not in fields:
+            bad.append("%s settingsToggle %s is not a settings field" % (el.findtext("defName"), tog))
+    for d in SHIPPED_DEFS:
+        if d.split("/")[1] not in open(os.path.join(defs_dir, "Modules", "RM_BazaarModules.xml"), encoding="utf-8").read():
+            bad.append("SHIPPED_DEFS lists %s but Modules XML lacks it" % d)
+    return bad
+
+
 def static_checks():
     bad = []
     if not _probe_works():
         return ["settings regex cannot see a sample field (sanity probe failed)"]
     srcdir = os.path.join(HERE, "Source")
-    files = sorted(f for f in os.listdir(srcdir) if f.endswith(".cs")) + \
-        ["Defs/" + f for f in sorted(os.listdir(os.path.join(srcdir, "Defs"))) if f.endswith(".cs")]
-    if len(files) < 7:
+    files = []
+    for root, _dirs, names in os.walk(srcdir):
+        for f in names:
+            if f.endswith(".cs") and "/obj" not in root.replace(os.sep, "/"):
+                files.append(os.path.relpath(os.path.join(root, f), srcdir).replace(os.sep, "/"))
+    files.sort()
+    if len(files) < 13:
         bad.append("only %d .cs files found (sanity probe failed)" % len(files))
     proj = open(os.path.join(srcdir, "RimMandrake_Bazaar.csproj"), encoding="utf-8").read()
     for f in files:
@@ -58,8 +119,7 @@ def static_checks():
     for ty in TYPES:
         if not re.search(r"\b(class|abstract class)\s+%s\b" % ty.split(".")[-1], alltext):
             bad.append("type %s not declared in Source/" % ty)
-    if os.path.isdir(os.path.join(HERE, "Defs")):
-        bad.append("a Defs/ folder now exists: extend defs_and_types to resolve its XML defs")
+    bad.extend(xml_checks(alltext))
     sset = open(os.path.join(srcdir, "RM_BazaarSettings.cs"), encoding="utf-8").read()
     scribed = sset.split("ExposeData", 1)[1].split("DoWindowContents", 1)[0]
     ui = sset.split("DoWindowContents", 1)[1]
@@ -68,8 +128,11 @@ def static_checks():
             bad.append("settings field %s is not Scribed" % n)
         if not re.search(r"\b%s\b" % n, ui):
             bad.append("settings field %s has no control in DoWindowContents" % n)
-    if not INTERCEPT_SHIPPED and re.search(r"HarmonyPatch|\.PatchAll|harmony\.Patch", alltext):
-        bad.append("Harmony patching appeared in Source/ but INTERCEPT_SHIPPED is False: extend intercept_state")
+    code = re.sub(r"//[^\n]*", "", alltext)
+    if not INTERCEPT_SHIPPED and re.search(r"typeof\(WindowStack\)|nameof\(WindowStack", code):
+        bad.append("a WindowStack patch target appeared but INTERCEPT_SHIPPED is False: extend intercept_state")
+    if re.search(r"typeof\(StatWorker|nameof\(Thing\.MarketValue\)|\"MarketValue\"|typeof\(StatExtension", code):
+        bad.append("a MarketValue/StatWorker hook appeared: the engine must stay read-side (item Watch-out)")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "TheBazaar.md")):
         bad.append("walk missing")
     return bad
@@ -109,15 +172,24 @@ def _build_suite():
 
     @suite.chain("defs_and_types")
     def defs_and_types(t):
-        with t.component("no_xml_defs_shipped", beyond_toggle=True):
-            if os.path.isdir(os.path.join(HERE, "Defs")):
-                raise ExpectationFailed("a Defs/ folder exists: this component is stale, resolve its defs")
+        with t.component("shipped_defs_resolve", beyond_toggle=True):
             r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_BazaarNoSuchDef_ZZ", fields="defName", limit=2)
             if _live(t):
                 if not isinstance(r, dict) or r.get("success") is False:
                     raise ExpectationFailed("get_defs failed outright on the control: %r" % r)
                 if int(r.get("foundCount", 0)) != 0 or not r.get("notFound"):
                     raise ExpectationFailed("control def reads as present: %r" % r)
+            missing = []
+            for d in SHIPPED_DEFS:
+                r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
+                if not _live(t):
+                    continue
+                if not isinstance(r, dict) or r.get("success") is False:
+                    raise ExpectationFailed("get_defs(%s) could not be asked: %r" % (d, r))
+                if int(r.get("foundCount", 0)) < 1:
+                    missing.append(d)
+            if _live(t) and missing:
+                raise ExpectationFailed("shipped defs absent live: %s" % missing)
         with t.component("types_resolve", beyond_toggle=True):
             bad = []
             for ty in TYPES:
@@ -191,12 +263,29 @@ def _build_suite():
                 if INTERCEPT_SHIPPED and not mine:
                     raise ExpectationFailed("INTERCEPT_SHIPPED is set but no %s patch sits on WindowStack.Add" % HARMONY_ID)
 
+    @suite.chain("price_engine")
+    def price_engine(t):
+        with t.component("getpricefor_postfix_is_ours", beyond_toggle=True):
+            r = t.bridge_call("jawa/harmony_patches", typeName="Tradeable", methodName="GetPriceFor")
+            if _live(t):
+                if not isinstance(r, dict) or r.get("success") is not True or r.get("harmonyError"):
+                    _unmeasured(t, "harmony_patches could not be asked: %s" % str(r)[:160])
+                    return
+                owners = [p.get("owner") for m in (r.get("methods") or []) for p in (m.get("postfixes") or [])]
+                if HARMONY_ID not in owners:
+                    raise ExpectationFailed("no %s postfix on Tradeable.GetPriceFor (owners: %s)" % (HARMONY_ID, owners))
+        for name in ("desert_water_reads_about_2x", "economy_round_trips_save_load", "colony_wealth_identical"):
+            with t.component(name, beyond_toggle=True):
+                if _live(t):
+                    _unmeasured(t, "needs a live Bazaar session; RM_BazaarSession.Current is only raised by "
+                                   "RM_Window_Bazaar, which nothing constructs until the WindowStack.Add intercept lands")
+
     @suite.chain("unshipped")
     def unshipped(t):
         for name, why in (
             ("grid_searchable_sortable", "the grid body is not built (design section 2, slice 2+)"),
-            ("price_engine_reads_economy", "RM_BazaarEconomy is not built (design section 3)"),
-            ("intel_layers_gated_by_social", "intel layers have no defs and no workers (design section 4); needs a trade session"),
+            ("intel_layers_render_gated", "L1..L4 workers exist but nothing draws them until the grid body lands; "
+                                          "module layers also need Droidworks' install recipe (not built)"),
             ("whole_deal_haggle_duel", "the duel and its patience meter are not built (design section 5, owner ruling "
                                        "2026-09-13); needs a trade session driven through the bridge"),
             ("broker_tab_needs_flowworks", "the broker tab is not built (design sections 2 and 7)"),

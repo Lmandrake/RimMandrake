@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    BAZAAR_WINDOW_GRID_1, slice 1: plugin def scaffolding, the RM_Window_Bazaar
-    stub and a Mod Settings skeleton. No Harmony reference yet: this slice
-    ships no [HarmonyPatch] code. The WindowStack.Add intercept (design
-    doc, section 2) is the next slice; add the 0Harmony reference alongside
-    it, same pattern as RimMandrake_FlowWorks.csproj.
+    BAZAAR_WINDOW_GRID_1 slice 1 (plugin def scaffolding, RM_Window_Bazaar,
+    Mod Settings) + BAZAAR_PRICE_ENGINE_1 slice 2 (RM_BazaarEconomy, seed
+    rules, the session-guarded Tradeable.GetPriceFor postfix, intel gates and
+    L1..L4 workers). 0Harmony is referenced for that one postfix; Harmony
+    itself comes from brrainz.harmony at runtime (same pattern as
+    RimMandrake_FlowWorks.csproj).
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\src\RimMandrake\TheBazaar\Source\RimMandrake_Bazaar.csproj -c Release
@@ -36,6 +37,10 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_BazaarSettings.cs" />
     <Compile Include="RM_BazaarSession.cs" />
@@ -44,6 +49,12 @@
     <Compile Include="Defs\RM_BazaarBadgeDef.cs" />
     <Compile Include="Defs\RM_BazaarTabDef.cs" />
     <Compile Include="Defs\RM_BazaarIntelLayerDef.cs" />
+    <Compile Include="Economy\RM_BazaarEconomy.cs" />
+    <Compile Include="Economy\RM_BazaarSeedRuleDef.cs" />
+    <Compile Include="Economy\RM_BazaarTags.cs" />
+    <Compile Include="Economy\RM_Patch_GetPriceFor.cs" />
+    <Compile Include="Intel\RM_BazaarIntel.cs" />
+    <Compile Include="Intel\RM_BazaarIntelWorkers.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,6 +72,18 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

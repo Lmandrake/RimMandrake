@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ========================================================================
+     BAZAAR_PRICE_ENGINE_1 - the protocol-droid intel modules (design §4).
+     The item (filed 2026-09-13) named three carried artifacts; the owner
+     ruled on 2026-09-20 that they are droid MODULES, found and then fitted,
+     never carried, and the design added a fourth (RM_TransponderScanner,
+     working name). This file follows the ruling.
+
+     Each module is a found item (ThingDef) and the hediff it becomes once
+     fitted (HediffDef, "...Fitted"). RM_BazaarIntel looks for the hediff on
+     a functional protocol droid.
+
+     NOT HERE, on purpose: the install RecipeDef. The design routes fitting
+     through Droidworks' Recipe_InstallDroidPart (RSW tier); an RM-tier mod
+     cannot name an RSW type, so that recipe is owed in the Droidworks layer.
+     Campaign placement is RimUtinni data (stubbed: tradeability None, so no
+     trader stocks them by accident). Art: placeholder vanilla texture.
+======================================================================== -->
+<Defs>
+
+  <ThingDef Name="RM_BazaarModuleBase" ParentName="ResourceBase" Abstract="True">
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentSpacer</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <Mass>0.2</Mass>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <MarketValue>900</MarketValue>
+    </statBases>
+    <techLevel>Spacer</techLevel>
+    <tradeability>None</tradeability>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BazaarModuleBase">
+    <defName>RM_HagglerModule</defName>
+    <label>haggler module</label>
+    <description>A protocol-droid module loaded with a trade guild's negotiation tables. Fitted to a working protocol droid, it reads the trader across the table: temperament, patience, and when they are about to crack.</description>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BazaarModuleBase">
+    <defName>RM_ManifestDecoder</defName>
+    <label>manifest decoder</label>
+    <description>A protocol-droid module holding a registry of known lost and stolen goods. Fitted to a working protocol droid, it says where a thing came from and who would miss it.</description>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BazaarModuleBase">
+    <defName>RM_TransponderScanner</defName>
+    <label>transponder scanner</label>
+    <description>A protocol-droid module that listens to the transponders goods radiate. Fitted to a working protocol droid, it flags stolen and lost stock before a word is exchanged.</description>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_BazaarModuleBase">
+    <defName>RM_PriceAlmanac</defName>
+    <label>price almanac</label>
+    <description>A protocol-droid market-analysis module: years of price records and the models to read them. Fitted to a working protocol droid, it shows full price histories and makes every negotiator sharper.</description>
+  </ThingDef>
+
+  <HediffDef Name="RM_BazaarModuleFittedBase" Abstract="True">
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.6, 0.75, 0.9)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <isBad>false</isBad>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li><minSeverity>0</minSeverity></li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_BazaarModuleFittedBase">
+    <defName>RM_HagglerModuleFitted</defName>
+    <label>haggler module</label>
+    <description>A fitted haggler module. When this droid is in the trading party, or at the colony during a comms trade, the trader's temperament and patience can be read.</description>
+    <spawnThingOnRemoved>RM_HagglerModule</spawnThingOnRemoved>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_BazaarModuleFittedBase">
+    <defName>RM_ManifestDecoderFitted</defName>
+    <label>manifest decoder</label>
+    <description>A fitted manifest decoder. Reads the lost-and-stolen registry during trades.</description>
+    <spawnThingOnRemoved>RM_ManifestDecoder</spawnThingOnRemoved>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_BazaarModuleFittedBase">
+    <defName>RM_TransponderScannerFitted</defName>
+    <label>transponder scanner</label>
+    <description>A fitted transponder scanner. Reads goods' transponders during trades.</description>
+    <spawnThingOnRemoved>RM_TransponderScanner</spawnThingOnRemoved>
+  </HediffDef>
+
+  <HediffDef ParentName="RM_BazaarModuleFittedBase">
+    <defName>RM_PriceAlmanacFitted</defName>
+    <label>price almanac</label>
+    <description>A fitted price almanac. Full price histories during trades, and every negotiator's Social gates lowered by 2.</description>
+    <spawnThingOnRemoved>RM_PriceAlmanac</spawnThingOnRemoved>
+  </HediffDef>
+
+</Defs>

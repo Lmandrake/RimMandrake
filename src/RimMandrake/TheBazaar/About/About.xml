@@ -13,27 +13,38 @@ trade window with a searchable, sortable, column-configurable grid, intel
 layers gated by Social skill and found artifacts, and a whole-deal haggle
 duel at confirm time.
 
-BAZAAR_WINDOW_GRID_1, slice 1 (this build): plugin def scaffolding
-(RM_BazaarColumnDef/BadgeDef/TabDef/IntelLayerDef + worker base classes),
-the RM_Window_Bazaar Dialog_Trade subclass, and a Mod Settings skeleton.
+Built so far: plugin def scaffolding (columns, badges, tabs, intel layers),
+the RM_Window_Bazaar Dialog_Trade subclass, Mod Settings, and the
+read-side settlement price economy (RM_BazaarEconomy: settlements seeded
+from their climate, biome and adjacent liquid bodies, daily drift within
+x0.25-x4.0, price history and a trader-visit log), intel layers L1-L4
+gated by Social, and four protocol-droid intel modules.
 
 NOT YET SHIPPED: the WindowStack.Add Harmony intercept that actually
-substitutes RM_Window_Bazaar for vanilla's Dialog_Trade, the virtualized
-grid body, the price engine, the haggle duel and banter. See
+substitutes RM_Window_Bazaar for vanilla's Dialog_Trade - so prices are
+still vanilla in play - plus the virtualized grid body, the haggle duel,
+the broker tab and banter. See
 `design/RimMandrake/bazaar_trade_window_design.md` for the full design and
 `Source/RM_Window_Bazaar.cs` for the specific hazard the intercept still
 owes (double TradeSession.SetupWith).
 
-No DLC required. Vanilla TradeSession/TradeDeal/Tradeable are untouched by
-this mod at every stage of the design — it never rewrites trade execution,
-only the window drawn over it.</description>
+Settlement prices apply only inside The Bazaar's own window, through one
+postfix on Tradeable.GetPriceFor; colony wealth, raid points and market
+values are never touched, and trade execution is never rewritten.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
     </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+    <li>brrainz.harmony</li>
+    <li>mandrake.rm.flowworks</li>
   </loadAfter>
 </ModMetaData>
