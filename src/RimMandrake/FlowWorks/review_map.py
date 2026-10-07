@@ -50,8 +50,8 @@ SW, SH = 16, 14                     # a gallery station's footprint
 PITCH_X, PITCH_Z = 22, 21           # 6 / 7 cells between stations: labels sit in the gap, liquids never join
 GX0, GZ0 = 52, 4                    # gallery grid origin (columns x 52..244)
 NCOL = 9
-VIS_BASE = (10, 6)                  # visuals block: 4 columns x 9 rows of 6x5 plots, pitch 8 x 7 -> x 10..41, z 6..68
-VIS_RECT = (VIS_BASE[0] - 2, VIS_BASE[1] - 2, 4 * (VIS.PLOT_W + VIS.GAP) + 2, 9 * (VIS.PLOT_H + VIS.GAP) + 4)
+VIS_BASE = (10, 6)                  # visuals block: 4 columns x 10 rows of 6x5 plots, pitch 8 x 7 -> x 10..41, z 6..75
+VIS_RECT = (VIS_BASE[0] - 2, VIS_BASE[1] - 2, 4 * (VIS.PLOT_W + VIS.GAP) + 2, 10 * (VIS.PLOT_H + VIS.GAP) + 4)
 FREE = dict(rect=(96, 108, 52, 26),   # round the quicktest colonists (they stand near 125,125)
             stock=[("Steel", 75, (98 + i, 109)) for i in range(6)] + [("ComponentIndustrial", 25, (105, 109)),
                    ("ComponentIndustrial", 25, (106, 109)), ("WoodLog", 75, (108, 109)), ("WoodLog", 75, (109, 109)),
@@ -506,7 +506,7 @@ def label_ops(S, st, doc, m=None):
     col = {k: m.F_COLOR[k] for k in m.F_ORDER}
     vx, vz, vw, vh = VIS_RECT
     add(vx + vw // 2, vz + vh + 1, "V  FLOWWORKS PITS: WHAT THEY LOOK LIKE",
-        "columns: depth D1 to D4   |   rows: dry, water, tar, scorched (soil then granite), top row oil + slime   |   "
+        "columns: depth D1 to D4   |   rows: dry, water, tar, scorched (soil then granite), top two rows more liquids   |   "
         "--goto V", CREAM)
     if doc:
         for v in doc["stations"]:

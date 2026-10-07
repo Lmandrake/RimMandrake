@@ -9,8 +9,8 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>shallow channel oil</label>
-    <description>Crude oil standing in a dug channel. It clings, it stinks, and it burns.</description>
+    <label>shallow oil</label>
+    <description>Oil standing ankle-to-knee deep. Wading it is easy. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
     <driesTo></driesTo>
@@ -32,8 +32,8 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>half-full channel oil</label>
-    <description>Crude oil standing in a dug channel. It clings, it stinks, and it burns.</description>
+    <label>chest-deep oil</label>
+    <description>Oil standing chest-deep. Wading it is slow work. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -58,8 +58,8 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>brimming channel oil</label>
-    <description>Crude oil standing in a dug channel. It clings, it stinks, and it burns.</description>
+    <label>deep oil</label>
+    <description>Oil standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -84,8 +84,8 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>flooded excavation, oil</label>
-    <description>Crude oil standing in a dug channel. It clings, it stinks, and it burns.</description>
+    <label>very deep oil</label>
+    <description>Oil filling a very deep pit. Whatever falls in is held there, and the oil goes to work on it. It clings, it stinks, and it burns.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -105,8 +105,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Trace</defName>
-    <label>shallow channel poison</label>
-    <description>A dug channel holding a poisonous liquid. Standing in it poisons you, more the deeper it is.</description>
+    <label>shallow poison</label>
+    <description>Poison standing ankle-to-knee deep. Wading it is easy. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
     <driesTo></driesTo>
@@ -125,8 +125,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Half</defName>
-    <label>half-full channel poison</label>
-    <description>A dug channel holding a poisonous liquid. Standing in it poisons you, more the deeper it is.</description>
+    <label>chest-deep poison</label>
+    <description>Poison standing chest-deep. Wading it is slow work. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -148,8 +148,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Brim</defName>
-    <label>brimming channel poison</label>
-    <description>A dug channel holding a poisonous liquid. Standing in it poisons you, more the deeper it is.</description>
+    <label>deep poison</label>
+    <description>Poison standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -171,8 +171,8 @@
 
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Poison_Superdeep</defName>
-    <label>flooded excavation, poison</label>
-    <description>A dug channel holding a poisonous liquid. Standing in it poisons you, more the deeper it is.</description>
+    <label>very deep poison</label>
+    <description>Poison filling a very deep pit. Whatever falls in is held there, and the poison goes to work on it. Standing in it poisons you, more the deeper it is.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -180,6 +180,295 @@
     <canFreeze>false</canFreeze>
     <takeSplashes>false</takeSplashes>
     <color>(96,150,64)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+
+  <!-- FLOWWORKS_REVIEW_LOOKS_ROUND_1 (owner, 2026-10-06: "Need many more of the fluids online here. Blood. Chemfuel.
+       Astrofuel."): three more fill ladders, cloned from oil's tiers (same pathCost/passability per tier); colour and
+       words differ, and blood does not burn. Surface looks: Tools/generate_liquid_suite.py FLUID_SURFACE_LOOKS. -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Blood_Trace</defName>
+    <label>shallow blood</label>
+    <description>Blood standing ankle-to-knee deep. Wading it is easy. Thick, warm at first, and it draws flies.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(110,20,18)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Blood_Half</defName>
+    <label>chest-deep blood</label>
+    <description>Blood standing chest-deep. Wading it is slow work. Thick, warm at first, and it draws flies.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(110,20,18)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Blood_Brim</defName>
+    <label>deep blood</label>
+    <description>Blood standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Thick, warm at first, and it draws flies.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(110,20,18)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Blood_Superdeep</defName>
+    <label>very deep blood</label>
+    <description>Blood filling a very deep pit. Whatever falls in is held there, and the blood goes to work on it. Thick, warm at first, and it draws flies.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(110,20,18)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Chemfuel_Trace</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>shallow chemfuel</label>
+    <description>Chemfuel standing ankle-to-knee deep. Wading it is easy. It reeks of fumes; a spark sets it off.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(150,118,58)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Chemfuel_Half</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>chest-deep chemfuel</label>
+    <description>Chemfuel standing chest-deep. Wading it is slow work. It reeks of fumes; a spark sets it off.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(150,118,58)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Chemfuel_Brim</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>deep chemfuel</label>
+    <description>Chemfuel standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. It reeks of fumes; a spark sets it off.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(150,118,58)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Chemfuel_Superdeep</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>very deep chemfuel</label>
+    <description>Chemfuel filling a very deep pit. Whatever falls in is held there, and the chemfuel goes to work on it. It reeks of fumes; a spark sets it off.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(150,118,58)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Astrofuel_Trace</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>shallow astrofuel</label>
+    <description>Astrofuel standing ankle-to-knee deep. Wading it is easy. Refined propellant; a spark sets it off violently.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(118,168,186)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Astrofuel_Half</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>chest-deep astrofuel</label>
+    <description>Astrofuel standing chest-deep. Wading it is slow work. Refined propellant; a spark sets it off violently.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(118,168,186)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Astrofuel_Brim</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>deep astrofuel</label>
+    <description>Astrofuel standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Refined propellant; a spark sets it off violently.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(118,168,186)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_Astrofuel_Superdeep</defName>
+    <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
+         in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
+    <extinguishesFire>false</extinguishesFire>
+    <label>very deep astrofuel</label>
+    <description>Astrofuel filling a very deep pit. Whatever falls in is held there, and the astrofuel goes to work on it. Refined propellant; a spark sets it off violently.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(118,168,186)</color>
     <pathCost>300</pathCost>
     <passability>Standable</passability>
     <renderPrecedence>397</renderPrecedence>

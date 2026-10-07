@@ -88,6 +88,15 @@ namespace RimMandrake.FlowWorks
 				{
 					// principle 5: the SAME empty pit, charred — vertex-colour char over the normal floor
 					CharFloor(c, d, north, south, west, east, 1f - h, sc, y - 0.0005f);
+					// 2026-10-06 review: "it needs blast marks and blackened bits"
+					if (RM_WallFaceMath.HasFloorBlast(c.x, c.z))
+					{
+						BlastMark(c.x + 0.5f, c.z + (1f - h) * 0.5f, 0.42f, Gen.HashCombineInt(c.x * 31, c.z), sc, y - 0.0002f);
+					}
+				}
+				if (f > 0 && material && RimMandrakeFlowWorksSettings.liquidSeeThroughEnabled)
+				{
+					SeeThrough(map, eng, c, d, f, north, y - 0.0008f);
 				}
 				if (!material)
 				{
@@ -299,6 +308,17 @@ namespace RimMandrake.FlowWorks
 			}
 			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, hTop, N, charC, y);
 			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, hTop, N, ashC, y + 0.0001f);
+			// blackened patches (2026-10-06): near-black where the noise runs high — bits, never the whole floor
+			Color32[,] blackC = new Color32[N + 1, N + 1];
+			for (int i = 0; i <= N; i++)
+			{
+				for (int j = 0; j <= N; j++)
+				{
+					float b = Blotch(c.x + i / (float)N + 13.7f, c.z + j / (float)N * hTop + 4.1f);
+					blackC[i, j] = new Color32(8, 7, 6, (byte)(255f * RM_WallFaceMath.BlackPatchAlpha(s, b)));
+				}
+			}
+			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, hTop, N, blackC, y + 0.00005f);
 			// a few pale ash flecks, seeded per cell (not a pattern)
 			System.Random r = new System.Random(Gen.HashCombineInt(c.x * 7349, c.z * 2971));
 			int flecks = r.Next(2);   // sparse and soft: dense pale dots read as rain/specks (owner, 2026-10-05)
@@ -349,7 +369,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			const int N = 6;
-			const float W = 0.4f;
+			const float W = 0.75f;   // 2026-10-06: was 0.4 — the ring read as nothing at play zoom
 			Color32[,] g = new Color32[N + 1, N + 1];
 			for (int i = 0; i <= N; i++)
 			{
@@ -362,13 +382,108 @@ namespace RimMandrake.FlowWorks
 					if (sW > 0f) a = Mathf.Max(a, sW * Mathf.Clamp01(1f - lx / W));
 					if (sE > 0f) a = Mathf.Max(a, sE * Mathf.Clamp01(1f - (1f - lx) / W));
 					float b = Blotch(c.x + lx, c.z + lz);
-					a *= 0.25f + 0.55f * b;
+					a *= 0.40f + 0.55f * b;
 					Color32 k = Char;
 					k.a = (byte)(255f * Mathf.Clamp01(a));
 					g[i, j] = k;
 				}
 			}
 			Grid(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, 1f, N, g, y);
+			// a scorch splash thrown out of the burned cut onto the ground beside it, centred toward the cut
+			if (RM_WallFaceMath.HasRimBlast(c.x, c.z))
+			{
+				float s = Mathf.Max(Mathf.Max(sN, sS), Mathf.Max(sW, sE));
+				float cx = c.x + 0.5f + (sE > 0f ? 0.3f : sW > 0f ? -0.3f : 0f);
+				float cz = c.z + 0.5f + (sN > 0f ? 0.3f : sS > 0f ? -0.3f : 0f);
+				BlastMark(cx, cz, 0.5f, Gen.HashCombineInt(c.x * 17, c.z * 5), s, y + 0.0001f);
+			}
+		}
+
+		/// <summary>A blast mark: a near-black core fading out along long and short spikes (a starburst), seeded so no
+		/// two look alike. Owner, 2026-10-06: <i>"it needs blast marks and blackened bits."</i></summary>
+		private void BlastMark(float cx, float cz, float radius, int seed, float s, float y)
+		{
+			float core = RM_WallFaceMath.BlastCoreAlpha(s);
+			if (core <= 0f)
+			{
+				return;
+			}
+			int rays = 10 + (int)(RM_WallFaceMath.Hash01(seed, 1, 2) * 5f);
+			float spin = RM_WallFaceMath.Hash01(seed, 3, 4) * Mathf.PI * 2f;
+			LayerSubMesh sm = GetSubMesh(RM_FaceMaterial.ShadeMat);
+			int b = sm.verts.Count;
+			Color32 k = new Color32(10, 8, 7, (byte)(255f * core));
+			sm.verts.Add(new Vector3(cx, y, cz));
+			sm.uvs.Add(Vector3.zero);
+			sm.colors.Add(k);
+			// ring 1: the dark core (0.35 r), ring 2: the spike tips (alpha 0)
+			int n = rays * 2;
+			for (int i = 0; i < n; i++)
+			{
+				float ang = spin + i * Mathf.PI * 2f / n;   // x = sin, z = cos: rising angle runs clockwise, the winding Quad uses
+				float len = RM_WallFaceMath.BlastRayLength(i, n, seed) * radius;
+				float rc = Mathf.Min(len, radius * 0.35f);
+				sm.verts.Add(new Vector3(cx + Mathf.Sin(ang) * rc, y, cz + Mathf.Cos(ang) * rc));
+				sm.uvs.Add(Vector3.zero);
+				sm.colors.Add(new Color32(10, 8, 7, (byte)(255f * core * 0.85f)));
+				sm.verts.Add(new Vector3(cx + Mathf.Sin(ang) * len, y, cz + Mathf.Cos(ang) * len));
+				sm.uvs.Add(Vector3.zero);
+				sm.colors.Add(new Color32(10, 8, 7, 0));
+			}
+			for (int i = 0; i < n; i++)
+			{
+				int inner = b + 1 + i * 2, outer = inner + 1;
+				int inner2 = b + 1 + ((i + 1) % n) * 2, outer2 = inner2 + 1;
+				sm.tris.Add(b); sm.tris.Add(inner); sm.tris.Add(inner2);
+				sm.tris.Add(inner); sm.tris.Add(outer); sm.tris.Add(outer2);
+				sm.tris.Add(inner); sm.tris.Add(outer2); sm.tris.Add(inner2);
+			}
+		}
+
+		/// <summary>FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 10 (owner, 2026-10-06: <i>"Is it possible to still show the pit
+		/// walls/floor beneath the translucent water?"</i>). The liquid's terrain has replaced the cut's floor; for a
+		/// liquid whose look is see-through, the floor (the ground the cell was dug through, darkened with depth) and the
+		/// drowned part of the far face are redrawn OVER the liquid, partly transparent — fainter the deeper the liquid
+		/// — so the liquid's own surface shows through them and they read as lying under it. Opaque liquids (seeThrough
+		/// 0: tar, oil, slime, blood) draw nothing here.</summary>
+		private void SeeThrough(Map map, RM_MapComponent_Excavation eng, IntVec3 c, int d, int f, int north, float y)
+		{
+			RM_LiquidSurfaceLook look = RM_LiquidSurface.LookFor(map.terrainGrid.TerrainAt(c));
+			if (look == null || look.seeThrough <= 0f)
+			{
+				return;
+			}
+			float a = RM_LiquidLookMath.FloorSeeThroughAlpha(look.seeThrough, f);
+			if (a <= 0f)
+			{
+				return;
+			}
+			TerrainDef ground = eng.OriginalTerrainAt(c);
+			if (ground == null || ground.IsWater)
+			{
+				ground = TerrainDefOf.Soil;
+			}
+			Material floor = RM_FaceMaterial.FaceMat(ground);
+			int fullDrop = RM_WallFaceMath.ExposedDrop(d, north, 0);
+			int dryDrop = RM_WallFaceMath.ExposedDrop(d, north, f);
+			float hFull = RM_WallFaceMath.NorthFaceHeight(fullDrop);
+			float hDry = RM_WallFaceMath.NorthFaceHeight(dryDrop);
+			float floorTop = 1f - hFull;
+			byte fa = (byte)(255f * a);
+			Quad(floor, c.x, c.z, 1f, floorTop, y, new Color32(255, 255, 255, fa), new Color32(255, 255, 255, fa), UvWorld);
+			// the floor sits at the bottom of the cut: darker the deeper it is
+			byte dk = (byte)(255f * a * RM_WallFaceMath.FootDarkness(d));
+			QuadVMat(RM_FaceMaterial.ShadeMat, c.x, c.z, 1f, floorTop, y + 0.0001f, new Color32(0, 0, 0, dk), new Color32(0, 0, 0, dk));
+			if (hFull > hDry)
+			{
+				// the drowned band of the far face, clearer toward the water line
+				TerrainDef faceGround = RM_FaceMaterial.GroundBeside(map, eng, c, c + IntVec3.North, out bool _);
+				Material face = RM_FaceMaterial.FaceMat(faceGround);
+				byte b0 = (byte)(255f * RM_LiquidLookMath.DrownedFaceAlpha(look.seeThrough, f, 0f));
+				byte b1 = (byte)(255f * RM_LiquidLookMath.DrownedFaceAlpha(look.seeThrough, f, 1f));
+				Quad(face, c.x, c.z + floorTop, 1f, hFull - hDry, y + 0.0002f, new Color32(255, 255, 255, b0),
+					new Color32(255, 255, 255, b1), UvFace);
+			}
 		}
 
 		/// <summary>An (nx x nz)-cell vertex grid over (x0,z0,w,h) with a colour per vertex; nz defaults to nx.</summary>

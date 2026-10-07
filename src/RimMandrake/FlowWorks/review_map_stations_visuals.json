@@ -289,7 +289,7 @@
   {
    "id": "vis_water_dirt_D1",
    "title": "A depth-1 pit cut in soil, with water standing in it.",
-   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "what_to_notice": "The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.",
    "grid": {
     "col": 0,
     "row": 2
@@ -323,7 +323,7 @@
   {
    "id": "vis_water_dirt_D2",
    "title": "A depth-2 pit cut in soil, with water standing in it.",
-   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "what_to_notice": "The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.",
    "grid": {
     "col": 1,
     "row": 2
@@ -357,7 +357,7 @@
   {
    "id": "vis_water_dirt_D3",
    "title": "A depth-3 pit cut in soil, with water standing in it.",
-   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "what_to_notice": "The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.",
    "grid": {
     "col": 2,
     "row": 2
@@ -391,7 +391,7 @@
   {
    "id": "vis_water_dirt_D4",
    "title": "A depth-4 pit cut in soil, with water standing in it.",
-   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "what_to_notice": "The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.",
    "grid": {
     "col": 3,
     "row": 2
@@ -425,7 +425,7 @@
   {
    "id": "vis_water_stone_D1",
    "title": "A depth-1 pit cut in granite, with water standing in it.",
-   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "what_to_notice": "The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.",
    "grid": {
     "col": 0,
     "row": 3
@@ -459,7 +459,7 @@
   {
    "id": "vis_water_stone_D2",
    "title": "A depth-2 pit cut in granite, with water standing in it.",
-   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "what_to_notice": "The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.",
    "grid": {
     "col": 1,
     "row": 3
@@ -493,7 +493,7 @@
   {
    "id": "vis_water_stone_D3",
    "title": "A depth-3 pit cut in granite, with water standing in it.",
-   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "what_to_notice": "The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.",
    "grid": {
     "col": 2,
     "row": 3
@@ -527,7 +527,7 @@
   {
    "id": "vis_water_stone_D4",
    "title": "A depth-4 pit cut in granite, with water standing in it.",
-   "what_to_notice": "The water shimmers and drifts instead of being one flat colour; a person walking through leaves a V-shaped wake. Deeper water keeps its darker colour. The far face shows only above the water line.",
+   "what_to_notice": "The water moves like the game's own shallow water. The pit's floor and its drowned far wall show through it, fainter the deeper the water.",
    "grid": {
     "col": 3,
     "row": 3
@@ -561,7 +561,7 @@
   {
    "id": "vis_tar_dirt_D1",
    "title": "A depth-1 pit cut in soil, with tar standing in it.",
-   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "what_to_notice": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.",
    "grid": {
     "col": 0,
     "row": 4
@@ -595,7 +595,7 @@
   {
    "id": "vis_tar_dirt_D2",
    "title": "A depth-2 pit cut in soil, with tar standing in it.",
-   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "what_to_notice": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.",
    "grid": {
     "col": 1,
     "row": 4
@@ -629,7 +629,7 @@
   {
    "id": "vis_tar_dirt_D3",
    "title": "A depth-3 pit cut in soil, with tar standing in it.",
-   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "what_to_notice": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.",
    "grid": {
     "col": 2,
     "row": 4
@@ -663,7 +663,7 @@
   {
    "id": "vis_tar_dirt_D4",
    "title": "A depth-4 pit cut in soil, with tar standing in it.",
-   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "what_to_notice": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.",
    "grid": {
     "col": 3,
     "row": 4
@@ -697,7 +697,7 @@
   {
    "id": "vis_tar_stone_D1",
    "title": "A depth-1 pit cut in granite, with tar standing in it.",
-   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "what_to_notice": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.",
    "grid": {
     "col": 0,
     "row": 5
@@ -731,7 +731,7 @@
   {
    "id": "vis_tar_stone_D2",
    "title": "A depth-2 pit cut in granite, with tar standing in it.",
-   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "what_to_notice": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.",
    "grid": {
     "col": 1,
     "row": 5
@@ -765,7 +765,7 @@
   {
    "id": "vis_tar_stone_D3",
    "title": "A depth-3 pit cut in granite, with tar standing in it.",
-   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "what_to_notice": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.",
    "grid": {
     "col": 2,
     "row": 5
@@ -799,7 +799,7 @@
   {
    "id": "vis_tar_stone_D4",
    "title": "A depth-4 pit cut in granite, with tar standing in it.",
-   "what_to_notice": "Tar is black but wet: slow glossy highlights slide across it, nothing like a burnt patch. It barely leaves a wake.",
+   "what_to_notice": "Tar is dark grey and opaque on soil and granite alike, never blue: a thick liquid that slowly creeps and shines.",
    "grid": {
     "col": 3,
     "row": 5
@@ -833,7 +833,7 @@
   {
    "id": "vis_scorched_dirt_D1",
    "title": "A depth-1 pit cut in soil, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: blast marks (dark starbursts) on the floor and the ground round the rim, blackened patches, ash, soot climbing the faces.",
    "grid": {
     "col": 0,
     "row": 6
@@ -867,7 +867,7 @@
   {
    "id": "vis_scorched_dirt_D2",
    "title": "A depth-2 pit cut in soil, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: blast marks (dark starbursts) on the floor and the ground round the rim, blackened patches, ash, soot climbing the faces.",
    "grid": {
     "col": 1,
     "row": 6
@@ -901,7 +901,7 @@
   {
    "id": "vis_scorched_dirt_D3",
    "title": "A depth-3 pit cut in soil, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: blast marks (dark starbursts) on the floor and the ground round the rim, blackened patches, ash, soot climbing the faces.",
    "grid": {
     "col": 2,
     "row": 6
@@ -935,7 +935,7 @@
   {
    "id": "vis_scorched_dirt_D4",
    "title": "A depth-4 pit cut in soil, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: blast marks (dark starbursts) on the floor and the ground round the rim, blackened patches, ash, soot climbing the faces.",
    "grid": {
     "col": 3,
     "row": 6
@@ -969,7 +969,7 @@
   {
    "id": "vis_scorched_stone_D1",
    "title": "A depth-1 pit cut in granite, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: blast marks (dark starbursts) on the floor and the ground round the rim, blackened patches, ash, soot climbing the faces.",
    "grid": {
     "col": 0,
     "row": 7
@@ -1003,7 +1003,7 @@
   {
    "id": "vis_scorched_stone_D2",
    "title": "A depth-2 pit cut in granite, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: blast marks (dark starbursts) on the floor and the ground round the rim, blackened patches, ash, soot climbing the faces.",
    "grid": {
     "col": 1,
     "row": 7
@@ -1037,7 +1037,7 @@
   {
    "id": "vis_scorched_stone_D3",
    "title": "A depth-3 pit cut in granite, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: blast marks (dark starbursts) on the floor and the ground round the rim, blackened patches, ash, soot climbing the faces.",
    "grid": {
     "col": 2,
     "row": 7
@@ -1071,7 +1071,7 @@
   {
    "id": "vis_scorched_stone_D4",
    "title": "A depth-4 pit cut in granite, after a fire burned it dry.",
-   "what_to_notice": "Still an empty pit with the same walls, but charred: ash and char on the floor, soot climbing the faces, a scorch ring on the ground round the rim.",
+   "what_to_notice": "Still an empty pit with the same walls, but burned: blast marks (dark starbursts) on the floor and the ground round the rim, blackened patches, ash, soot climbing the faces.",
    "grid": {
     "col": 3,
     "row": 7
@@ -1139,7 +1139,7 @@
   {
    "id": "vis_slime_dirt_D3",
    "title": "A depth-3 pit cut in soil, with green slime standing in it.",
-   "what_to_notice": "Slime: thick, soft bright blobs that barely move.",
+   "what_to_notice": "Green slime: thick, opaque, slowly creeping, a few bubbles rising.",
    "grid": {
     "col": 1,
     "row": 8
@@ -1159,6 +1159,176 @@
      "depth": 3
     },
     "fluid": "RM_Fluid_SlimeGreen",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_slimewhite_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with white slime standing in it.",
+   "what_to_notice": "White slime: thick, opaque, slowly creeping, a few bubbles rising.",
+   "grid": {
+    "col": 2,
+    "row": 8
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_SlimeWhite",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_slimered_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with red slime standing in it.",
+   "what_to_notice": "Red slime: thick, opaque, slowly creeping, a few bubbles rising.",
+   "grid": {
+    "col": 3,
+    "row": 8
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_SlimeRed",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_blood_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with blood standing in it.",
+   "what_to_notice": "Blood: thick, opaque dark red, slowly creeping.",
+   "grid": {
+    "col": 0,
+    "row": 9
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_Blood",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_chemfuel_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with chemfuel standing in it.",
+   "what_to_notice": "Chemfuel: a thin amber-brown fuel with a faint rainbow film; the pit floor shows faintly through it.",
+   "grid": {
+    "col": 1,
+    "row": 9
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_Chemfuel",
+    "fill_level": 2,
+    "scorched": false,
+    "pawn": {
+     "kindDef": "Colonist",
+     "at": "pit near row, second column",
+     "dx": 2,
+     "dz": 1
+    },
+    "roofed": false
+   }
+  },
+  {
+   "id": "vis_astrofuel_dirt_D3",
+   "title": "A depth-3 pit cut in soil, with astrofuel standing in it.",
+   "what_to_notice": "Astrofuel: a thin pale blue fuel with a faint rainbow film; the pit floor shows faintly through it.",
+   "grid": {
+    "col": 2,
+    "row": 9
+   },
+   "setup": {
+    "plot": {
+     "w": 6,
+     "h": 5
+    },
+    "ground_terrain": "Soil",
+    "ground_kind": "dirt",
+    "pit": {
+     "dx": 1,
+     "dz": 1,
+     "w": 4,
+     "h": 3,
+     "depth": 3
+    },
+    "fluid": "RM_Fluid_Astrofuel",
     "fill_level": 2,
     "scorched": false,
     "pawn": {

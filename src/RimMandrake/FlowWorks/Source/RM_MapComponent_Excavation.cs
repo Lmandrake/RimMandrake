@@ -1322,6 +1322,11 @@ namespace RimMandrake.FlowWorks
 			// Step 2b: a driver claiming a dry cell stamps its fluid (default: the map's); it cannot pour into a cell
 			// already holding a different fluid (fluids never mix) and returns false so the caller can keep its own behaviour.
 			FluidDef fluid = driverFluid ?? FluidAt(c) ?? ActiveFluid;
+			// FLOWWORKS_REVIEW_LOOKS_ROUND_1: a liquid switched off in Mod Settings never pours into a cut.
+			if (fill > fillGrid[i] && !RimMandrakeFlowWorksSettings.FluidAllowed(fluid))
+			{
+				return false;
+			}
 			if (fill > 0 && !RM_StockMath.FluidsCompatible(fillGrid[i] > 0, FluidAt(c), fluid))
 			{
 				return false;

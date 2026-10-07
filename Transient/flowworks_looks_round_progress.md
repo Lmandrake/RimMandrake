@@ -1,0 +1,13 @@
+# FlowWorks looks round 1 — progress
+- 19:04 started
+- 19:06 surveyed: scorch=SectionLayer vertex char (RM_ExcavationWalls.cs); tar=water shader tint on blue ramp; labels in Canals TerrainDefs; red/white slime FluidDefs exist, blood/chemfuel/astrofuel FluidDefs missing
+- 19:08 item 7 (acid/slime/boiling bubbles) appended to item file
+- 19:09 item 8 (propane grey) appended to item file
+- 19:10 item 9 (pit walking speed) appended
+- 19:12 item 10 (see-through water) appended
+- 19:13 step 3 labels: all fill tiers now shallow/chest-deep/deep/very deep <liquid>; dry cuts shallow pit/pit/deep pit/very deep pit; natural tar shallow/deep tar
+- 19:13 item 11 (cover breaks on fall) appended; fluids Blood/Chemfuel/Astrofuel FluidDefs + fill terrains added
+- 19:14 generator: tar->Flow dark grey, acid yellow-green+bubbles, slime/boiling bubbles, propane grey on White, blood/chemfuel/astrofuel looks, seeThrough on water family; registry+looks patch regenerated
+- 19:16 C#: look fields bubbles/bubbleColor/seeThrough, White texture, bubble emitter + RM_Fleck_LiquidBubble, settings (bubbles, see-through, pit walk, per-fluid fill toggles), driver-fill gate, RM_PitStepCost (item 9)
+- 19:17 walls layer: blast-mark starbursts (floor + rim), black patches, wider/stronger rim ring, see-through floor+drowned face for clear liquids
+- 19:19 item 11: already true (Spring destroys deck before descent; flyer landing needs open pit) — pinned by selftest_flowworks_cover_breaks.py; review map +5 liquid stations (39); selftests 107/107

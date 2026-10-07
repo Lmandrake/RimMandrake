@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 7 (owner, 2026-10-06: "acid should be an eerie yellow-green and bubbling.
+       slimes should lightly bubble too. Boiling liquid should bubble quite a bit."). A property-for-property clone of
+       Biotech's Fleck_VatBubble (Defs/Biotech/Effects/Fleck_Visual.xml) — its texture ships in Biotech, which every
+       player has (all DLC assumed, owner 2026-09-26). Tinted per liquid by FleckCreationData.instanceColor from the
+       liquid's look (bubbleColor); thrown by RM_LiquidSurface's in-view emitter. Slightly longer-lived than the vat's
+       so a bubble reads as rising and popping on a surface. -->
+  <FleckDef ParentName="FleckBase_Thrown">
+    <defName>RM_Fleck_LiquidBubble</defName>
+    <altitudeLayer>MoteLow</altitudeLayer>
+    <fadeInTime>0.15</fadeInTime>
+    <solidTime>0.8</solidTime>
+    <fadeOutTime>0.35</fadeOutTime>
+    <growthRate>0.25</growthRate>
+    <graphicData>
+      <graphicClass>Graphic_FleckPulse</graphicClass>
+      <shaderType>TransparentShaking</shaderType>
+      <texPath>Things/Mote/VatBubble</texPath>
+      <shaderParameters>
+        <_Amplitude>(0.03, 0.0, 0.02, 0)</_Amplitude>
+        <_Speed>5</_Speed>
+      </shaderParameters>
+      <drawSize>0.18</drawSize>
+    </graphicData>
+  </FleckDef>
+</Defs>

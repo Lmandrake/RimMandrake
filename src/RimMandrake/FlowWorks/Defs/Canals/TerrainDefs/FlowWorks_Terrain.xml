@@ -29,8 +29,8 @@
        D=1 rather than losing them. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Empty</defName>
-    <label>shallow channel</label>
-    <description>A shallow channel, dug one level below the surface. Dry, it is a soft barrier — crossing it costs as much as wading shallow water. Dig it again to deepen it.</description>
+    <label>shallow pit</label>
+    <description>Ground dug one level below the surface. Climbing in or out takes a moment; walking along it is easy. Dig again to deepen it.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <renderPrecedence>325</renderPrecedence>
     <fertility>0</fertility>
@@ -56,8 +56,8 @@
   <!-- D = 2, MID. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Mid</defName>
-    <label>channel</label>
-    <description>A channel dug two levels below the surface. Crossing it is slow work.</description>
+    <label>pit</label>
+    <description>Ground dug two levels below the surface. Climbing in or out is slow work; walking along the bottom is not.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.78,0.75,0.70)</color>
     <renderPrecedence>326</renderPrecedence>
@@ -82,8 +82,8 @@
   <!-- D = 3, DEEP. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Deep</defName>
-    <label>deep channel</label>
-    <description>A channel dug three levels below the surface. A pawn can still climb through it, but it costs dearly.</description>
+    <label>deep pit</label>
+    <description>Ground dug three levels below the surface. Climbing in or out costs dearly; walking along the bottom is easy.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.58,0.55,0.51)</color>
     <renderPrecedence>327</renderPrecedence>
@@ -117,8 +117,8 @@
        pathCost 300 keeps it a place nobody crosses by choice. -->
   <TerrainDef ParentName="NaturalTerrainBase">
     <defName>RM_Channel_Superdeep</defName>
-    <label>superdeep excavation</label>
-    <description>An excavation four levels below the surface. Anything that walks into it falls in and is held there; without a ladder standing in the hole, it is not climbing out.</description>
+    <label>very deep pit</label>
+    <description>Ground dug four levels below the surface. Anything that walks into it falls in and is held there; without a ladder standing in the hole, it is not climbing out.</description>
     <texturePath>Terrain/Surfaces/Gravel</texturePath>
     <color>(0.38,0.36,0.33)</color>
     <renderPrecedence>328</renderPrecedence>
@@ -180,8 +180,8 @@
        free and it reads identically in play. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Trace</defName>
-    <label>shallow channel water</label>
-    <description>A channel carrying a trace of liquid — ankle-to-knee deep, enough to wade and enough to put out a fire.</description>
+    <label>shallow water</label>
+    <description>Water standing ankle-to-knee deep. Wading it is easy.</description>
     <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. -->
     <pathCost>90</pathCost>
     <temporary>true</temporary>
@@ -199,8 +199,8 @@
   <!-- Tier 2 of 3 — half full, read as chest-deep. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Half</defName>
-    <label>half-full channel</label>
-    <description>A channel filled to about half its depth. Wading it is chest-deep work.</description>
+    <label>chest-deep water</label>
+    <description>Water standing chest-deep. Wading it is slow work.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -223,8 +223,8 @@
   <!-- Tier 3 of 3 — brimming, read as deep. Standable per ruling 26. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Brim</defName>
-    <label>brimming channel</label>
-    <description>A channel filled to its brim. Crossing it is punishing, but it is a tax, not a wall — depth captures, fill does not.</description>
+    <label>deep water</label>
+    <description>Water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -251,8 +251,8 @@
        fill would silently become the barrier the ruling says it is not. -->
   <TerrainDef ParentName="WaterShallow">
     <defName>RM_Fill_Water_Superdeep</defName>
-    <label>flooded excavation</label>
-    <description>A superdeep excavation holding liquid. Whatever falls in is held there, and the liquid then goes to work on it.</description>
+    <label>very deep water</label>
+    <description>Water filling a very deep pit. Whatever falls in is held there, and the water goes to work on it.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -300,8 +300,8 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>shallow channel tar</label>
-    <description>A channel carrying a trace of tar -- black, patient, and already sucking at a boot even this shallow.</description>
+    <label>shallow tar</label>
+    <description>Tar standing ankle-to-knee deep. Wading it is easy. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
     <temporary>true</temporary>
     <driesTo></driesTo>
@@ -323,8 +323,8 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>half-full channel tar</label>
-    <description>A channel filling with tar to about half its depth. Wading it is chest-deep, sucking work.</description>
+    <label>chest-deep tar</label>
+    <description>Tar standing chest-deep. Wading it is slow work. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -349,8 +349,8 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>brimming channel tar</label>
-    <description>A channel filled to its brim with tar. Crossing it is punishing, but it is a tax, not a wall -- depth captures, fill does not.</description>
+    <label>deep tar</label>
+    <description>Tar standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>
@@ -380,8 +380,8 @@
     <!-- burnable fill: WaterShallow's extinguishesFire put a burning occupant out at once (ruling 22: one held
          in a burning pit always catches). Live 2026-10-05: oil-pit pirate took heatstroke, never a burn. -->
     <extinguishesFire>false</extinguishesFire>
-    <label>flooded excavation, tar</label>
-    <description>A superdeep excavation holding tar. Whatever falls in is held there, and the tar then goes to work on it.</description>
+    <label>very deep tar</label>
+    <description>Tar filling a very deep pit. Whatever falls in is held there, and the tar goes to work on it. Black and patient, it sucks at every step.</description>
     <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
     <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
     <temporary>true</temporary>

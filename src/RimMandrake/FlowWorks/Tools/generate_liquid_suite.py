@@ -269,8 +269,8 @@ LIQUID_ROWS = {
     "tar": {
         "defnamePrefix": "RM_Tar",
         "file_name": "RM_Tar.xml",
-        "label_shallow": "tar pit",
-        "label_deep": "tar pit, deep",
+        "label_shallow": "shallow tar",
+        "label_deep": "deep tar",
         "description": "Black and patient. It does not drown you so much as keep you.",
         "native_overrides": {"canFreeze": False, "color": "(86,82,88)"},  # near-black slate; the water shader multiplies it
         "native_overrides_shallow": {"pathCost": 300},  # cited: "pathCost 300 Standable"
@@ -1123,32 +1123,48 @@ LIQUID_DEF_ROWS = {
 #   splashes -- vanilla's wading splash (takeSplashes); thick liquids do not splash.
 #   overlay -- the old procedural glint/sheen layer (RM_LiquidSurface); only oil's rainbow film keeps it.
 #   wake -- the custom V-wake; 0 everywhere (vanilla has none; the water family uses vanilla's splash).
+#   bubbles / bubbleColor -- FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 7 (owner, 2026-10-06: "acid should be an eerie
+#     yellow-green and bubbling. slimes should lightly bubble too. Boiling liquid should bubble quite a bit."):
+#     bubbles rising and popping, per cell per second in view (RM_LiquidSurface's camera-view emitter; the vanilla
+#     per-terrain emitter visits a cell only every ~28 s, far too rare). Slime 0.08 light, acid 0.25, boiling 0.9.
+#   seeThrough -- item 10 (owner: "show the pit walls/floor beneath the translucent water"): 0..1, how much of a
+#     cut's own floor and submerged walls show through the liquid (0 = opaque: tar, oil, slime).
 # Values [INVENTED, PROVISIONAL], tuned by LOOKING in game (RM_LiquidLookProof.Tune on the review map's liquid
 # gallery). Mod Setting liquidLooksEnabled off = every fill keeps its plain XML look.
-_WATER = {"wake": 0.0, "overlay": False}
+_WATER = {"wake": 0.0, "overlay": False, "seeThrough": 0.55}
 _FLOW = {"shader": "Flow", "texture": "Other/Perlin", "splashes": False, "wake": 0.0, "overlay": False,
          "depthDarken": 0.12, "flowSpeed": 0.03, "flowAmplitude": 0.05, "flowFrequency": 1.0, "brightness": 0.0}
-_SLIME = dict(_FLOW, flowSpeed=0.05, flowAmplitude=0.08, depthDarken=0.10)
+_SLIME = dict(_FLOW, flowSpeed=0.05, flowAmplitude=0.08, depthDarken=0.10, bubbles=0.08)
 SURFACE_LOOKS = {
     # the water family: vanilla shallow water, nothing drawn over it
     "freshwater":     dict(_WATER),
     "saltwater":      dict(_WATER),
     "brine":          dict(_WATER, tint="(0.86,0.97,0.93)", rippleDensity=0.7),
     "boiling":        dict(_WATER, texture="Terrain/Surfaces/HotSpringRamp", rippleDensity=1.8, rippleIntensity=1.3,
-                           fleck="AirPuff", fleckChance=0.25),
-    "icy":            dict(_WATER, texture="Terrain/Surfaces/Ice", tint="(0.80,0.88,0.95)", rippleDensity=0.4),
+                           fleck="AirPuff", fleckChance=0.25, bubbles=0.9, bubbleColor="(0.92,0.96,1.0)"),
+    "icy":            dict(_WATER, texture="Terrain/Surfaces/Ice", tint="(0.80,0.88,0.95)", rippleDensity=0.4,
+                           seeThrough=0.0),
     "toxic":          dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp"),
-    "acid":           dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp", tint="(1.25,1.20,0.55)",
-                           rippleDensity=1.4),
+    # acid: an eerie yellow-green, bubbling (owner, 2026-10-06)
+    "acid":           dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp", tint="(1.05,1.30,0.30)",
+                           rippleDensity=1.6, bubbles=0.25, bubbleColor="(0.80,1.0,0.35)", seeThrough=0.35),
     "reactionliquor": dict(_WATER, tint="(0.95,0.88,1.08)", overlay=True, strength=0.0, sheen=0.5, scale=2.0,
                            speed=0.2),
-    "propane":        dict(_WATER, tint="(0.92,0.96,1.05)", rippleDensity=1.6, fleck="AirPuff", fleckChance=0.05),
+    # propane: a medium-pale grey (owner, 2026-10-06: "Make propane a medium-pale grey"). Texture "White" (plain white, see
+    # RM_LiquidLooks) under the same water shader, so the tint IS the colour (a tint on vanilla's blue ramp always stays blue); shader, alpha
+    # and ripples unchanged.
+    "propane":        dict(_WATER, texture="White", tint="(0.66,0.66,0.67)", rippleDensity=1.6, fleck="AirPuff",
+                           fleckChance=0.05),
     "chemfuel":       dict(_WATER, tint="(1.10,0.95,0.70)", overlay=True, strength=0.0, sheen=0.3, scale=2.0,
                            speed=0.2),
     # the thick family: black/coloured liquid that creeps, never a flat colour, never a burn scar
-    # tar is black WATER (owner, 2026-10-06: "make the black tar look/act like water, just black and much more slowly
-    # oscillating"): the vanilla water shader, near-black tint, broad low-density ripples, wading splash kept.
-    "tar":            dict(_WATER, tint="(0.58,0.56,0.60)", depthDarken=0.09, rippleDensity=0.5, rippleIntensity=1.4),
+    # tar (owner, 2026-10-06 review: "It should not be blue, it should be dark grey no matter what. Not transparent.
+    # Dirt tar should look the same as stone tar."). The vanilla WATER shader cannot do that: its texture is
+    # vanilla's blue depth ramp (any tint on it stays blue) and it blends with what lies under it, so tar over soil
+    # and over granite differed. Now the opaque Flow shader (the one the approved oil and slime use) over neutral
+    # noise with an R=G=B tint: dark grey on any ground, slowly oscillating. Splash kept (owner, earlier the same day).
+    "tar":            dict(_FLOW, tint="(0.40,0.40,0.40)", depthDarken=0.08, flowSpeed=0.02, flowAmplitude=0.06,
+                           splashes=True),
     "slime_red":      dict(_SLIME, tint="(0.62,0.16,0.14)"),
     "slime_green":    dict(_SLIME, tint="(0.30,0.55,0.18)"),
     "slime_white":    dict(_SLIME, tint="(0.80,0.78,0.70)"),
@@ -1159,11 +1175,19 @@ FLUID_SURFACE_LOOKS = {
     "RM_Fluid_Oil":    dict(_FLOW, tint="(0.24,0.17,0.09)", flowSpeed=0.05, overlay=True, strength=0.0, sheen=0.6,
                             scale=2.4, speed=0.1, stretch=1.6),
     "RM_Fluid_Poison": dict(_WATER, texture="Terrain/Surfaces/ToxicWater{depth}Ramp", tint="(0.75,1.15,0.60)"),
+    # FLOWWORKS_REVIEW_LOOKS_ROUND_1 (owner, 2026-10-06: "Blood. Chemfuel. Astrofuel."): blood thick and opaque
+    # dark red; the two fuels thin, on the water shader over texture "White" so the tint is the colour, with oil's
+    # rainbow film.
+    "RM_Fluid_Blood":     dict(_FLOW, tint="(0.55,0.06,0.05)", flowSpeed=0.04, flowAmplitude=0.06, depthDarken=0.12),
+    "RM_Fluid_Chemfuel":  dict(_WATER, texture="White", tint="(0.62,0.48,0.22)", rippleDensity=1.2,
+                               overlay=True, strength=0.0, sheen=0.35, scale=2.0, speed=0.2, seeThrough=0.25),
+    "RM_Fluid_Astrofuel": dict(_WATER, texture="White", tint="(0.45,0.70,0.80)", rippleDensity=1.4,
+                               overlay=True, strength=0.0, sheen=0.25, scale=2.0, speed=0.25, seeThrough=0.35),
 }
 _LOOK_FIELDS = ("shader", "texture", "mask", "tint", "depthDarken", "flowSpeed", "flowAmplitude", "flowFrequency",
                 "brightness", "spotScale", "spotSpeed", "spotMin", "spotMax", "rippleDensity", "rippleIntensity",
                 "fleck", "fleckChance", "splashes", "overlay", "highlight", "strength", "scale", "speed", "sharpness",
-                "stretch", "sheen", "wake")
+                "stretch", "sheen", "wake", "bubbles", "bubbleColor", "seeThrough")
 
 
 def _look_lines(look, indent):
@@ -1194,7 +1218,8 @@ def build_fluid_looks_patch(out_dir: Path):
     xml = """<?xml version="1.0" encoding="utf-8"?>
 <!--
   RM_FluidSurfaceLooks.xml         GENERATED by generate_liquid_suite.py (FLUID_SURFACE_LOOKS)
-  The surface look of the canal fluids that have no LiquidDef row (oil, poison). Edit the table, never this file.
+  The surface look of the canal fluids that have no LiquidDef row (oil, poison, blood, chemfuel, astrofuel).
+  Edit the table, never this file.
 -->
 <Patch>
 """ + "\n".join(ops) + "\n</Patch>\n"

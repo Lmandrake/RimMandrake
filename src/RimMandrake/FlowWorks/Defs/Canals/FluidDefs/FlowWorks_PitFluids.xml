@@ -43,4 +43,62 @@
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
   </RimMandrake.FlowWorks.FluidDef>
+
+  <!-- FLOWWORKS_REVIEW_LOOKS_ROUND_1 (owner, 2026-10-06: "Need many more of the fluids online here. Blood. Chemfuel.
+       Astrofuel."). Canal fluids only — no item is required for any of them (astrofuel's item is Vanilla Gravship
+       Expanded's VGE_Astrofuel, adopted separately by Patches/LiquidTypes/RM_LiquidDef_AstrofuelAdoption.xml).
+       Fire: chemfuel and astrofuel DETONATE (ruling: "chemfuel/astrofuel detonate"); blood does not burn.
+       ticksPerTile PROVISIONAL: blood a little thick (120), the fuels thin (60). Each can be switched off in Mod
+       Settings ("Liquids that can fill a cut"). -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_Blood</defName>
+    <label>blood</label>
+    <floodTerrain>RM_Fill_Blood_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_Blood_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_Blood_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_Blood_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>120</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_Chemfuel</defName>
+    <label>chemfuel</label>
+    <fireKind>Detonation</fireKind>
+    <fireFrontTicksPerCell>10</fireFrontTicksPerCell>
+    <floodTerrain>RM_Fill_Chemfuel_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_Chemfuel_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_Chemfuel_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_Chemfuel_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_Astrofuel</defName>
+    <label>astrofuel</label>
+    <fireKind>Detonation</fireKind>
+    <fireFrontTicksPerCell>10</fireFrontTicksPerCell>
+    <floodTerrain>RM_Fill_Astrofuel_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_Astrofuel_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_Astrofuel_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_Astrofuel_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
 </Defs>

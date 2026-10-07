@@ -212,7 +212,10 @@ namespace JawaBench.BridgeTools
                 int clamped = QFill(c, cc);
                 c.ev["clamp"] = PD("cell", PCell(cc), "D", c.Depth(cc), "asked", 2, "accepted", accepted, "fillAfter", clamped);
 
-                // movement assertions (ruling 17: dry channel path cost rises with depth; a pawn is slowed)
+                // movement assertions. Route PLANNING still sees ruling 17's rising dry cost (pg.Cost), but the walk
+                // itself follows the owner's 2026-10-06 ruling (FLOWWORKS_REVIEW_LOOKS_ROUND_1 item 9): "people stuck
+                // inside a pit do NOT walk slowly... Only when they are climbing in or out do they move slowly." The
+                // walker crosses the strip end to end AT ONE DEPTH, so its time must match the surface baseline.
                 object Cost(string k) => rows.First(rw => (string)rw["state"] == k)["pathCost"];
                 object Cross(string k) => rows.First(rw => (string)rw["state"] == k).TryGetValue("crossTicks", out object v) ? v : null;
                 var fails = new List<string>();
@@ -228,10 +231,12 @@ namespace JawaBench.BridgeTools
                     {
                         object xk = Cross(k);
                         if (xk == null) fails.Add(k + " crossing did not complete");
-                        else if ((int)xk < (int)x0) fails.Add(k + " crossing " + xk + " ticks faster than surface " + x0);
+                        else if (Math.Abs((int)xk - (int)x0) > Math.Max(20, (int)x0 / 4))
+                            fails.Add(k + " crossing along the pit floor took " + xk + " ticks against surface " + x0
+                                + " (walking at one depth must be normal speed)");
                     }
                 c.ev["note"] = "wet and D4 rows are recorded, not asserted (no ruled number yet)";
-                if (fails.Count == 0) c.Pass("all " + states.Count + " (D,F) states read back; F clamps to D; dry cost rises with depth and slows a crossing");
+                if (fails.Count == 0) c.Pass("all " + states.Count + " (D,F) states read back; F clamps to D; dry planning cost rises with depth; walking along a pit floor is normal speed");
                 else c.Defect(string.Join("; ", fails));
             }
             finally { QVanish(walker); }

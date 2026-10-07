@@ -38,6 +38,9 @@ namespace RimMandrake.FlowWorks
 	{
 		public const string FlowShaderPath = "Map/TerrainLavaShallow";
 
+		/// <summary>A look's <c>texture</c> value meaning "plain white" (no asset; BaseContent.WhiteTex).</summary>
+		public const string WhiteTexture = "White";
+
 		/// <summary>What a terrain looked like before any look was applied, so a look can be undone live.</summary>
 		private class Original
 		{
@@ -216,7 +219,11 @@ namespace RimMandrake.FlowWorks
 				Log.WarningOnce("[FlowWorks] liquid look: shader " + FlowShaderPath + " not found; " + t.defName + " keeps its own look", 0x51A7E1);
 				return false;
 			}
-			string tex = !look.texture.NullOrEmpty() ? TierTexture(look.texture, tier) : t.texturePath;
+			// "White": plain white under the shader, so the tint IS the colour (a tint on vanilla's blue water ramp always
+			// stays blue — tar and propane, owner 2026-10-06). The graphic is keyed by this look's own colour, so the
+			// texture swap below touches no other terrain's material.
+			bool white = string.Equals(look.texture, WhiteTexture, StringComparison.OrdinalIgnoreCase);
+			string tex = white ? t.texturePath : !look.texture.NullOrEmpty() ? TierTexture(look.texture, tier) : t.texturePath;
 			if (ContentFinder<Texture2D>.Get(tex, false) == null)
 			{
 				Log.WarningOnce("[FlowWorks] liquid look: texture " + tex + " not found; " + t.defName + " keeps its own", tex.GetHashCode());
@@ -226,6 +233,10 @@ namespace RimMandrake.FlowWorks
 			Graphic g = GraphicDatabase.Get<Graphic_Terrain>(tex, shader, Vector2.one, col, 2000 + t.renderPrecedence);
 			Material m = g.MatSingle;
 			m.SetTexture(ShaderPropertyIDs.AlphaAddTex, TexGame.AlphaAddTex);
+			if (white)
+			{
+				m.mainTexture = BaseContent.WhiteTex;
+			}
 			if (flow)
 			{
 				Texture2D noise = ContentFinder<Texture2D>.Get("Other/Perlin", false);
