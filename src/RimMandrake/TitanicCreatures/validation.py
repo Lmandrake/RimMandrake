@@ -114,7 +114,7 @@ def static_checks():
     cr = crush_xml()
     if len(cr) < 4 or cr.get("RM_Crush_Chunks", {}).get("crushable") != "false":
         bad.append("crush table probe read %r (expected 4 rows, chunks protected)" % sorted(cr))
-    if len([1 for ty, _n in SHIPPED if ty == "RM_CrushRuleDef"]) != len(cr):
+    if len([1 for ty, _n in SHIPPED if ty.endswith("RM_CrushRuleDef")]) != len(cr):
         bad.append("crush rule count differs between the defs probe and the table probe")
     mod = open(os.path.join(HERE, "Source", "RM_TitanicCreaturesMod.cs"), encoding="utf-8").read()
     if 'HarmonyId = "%s"' % HARMONY_ID not in mod:
@@ -359,32 +359,51 @@ def _build_suite():
                     return True
         return True
 
-    def _run(t, lanes_wake_expected):
-        t.clear_area(size=30)
+    SITE = 60            # cleared square (half 30): the control lane sits CTL_DZ cells away, well inside it
+    CTL_DZ = 22          # control lane offset; the Elephant wanders after its Goto, so 6 cells polluted the Rat lane
+
+    def _sweep_filth(t):
+        """Wipe every Filth thing in the cleared site (clear_area's own pass did not remove Filth_RubbleRock)."""
+        x, z = t.anchor
+        h = SITE // 2
+        t.bridge_call("jawa/destroy_batch", rects=_rect(t, x - h, z - h, SITE, SITE), categories="Filth")
+
+    def _run(t, with_control=True):
+        """One lane run. with_control=False leaves the Elephant the only creature we placed (the off/multiplier
+        components judge the beast alone, so no second walker can drop rubble into its rect)."""
+        t.clear_area(size=SITE)
+        _sweep_filth(t)
         beast, brect, bx, bz = _lane(t, BEAST, 0)
-        ctl, crect, cx, cz = _lane(t, CONTROL, 6)
+        ctl = crect = cx = cz = None
+        if with_control:
+            ctl, crect, cx, cz = _lane(t, CONTROL, CTL_DZ)
         if not _live(t):
             return None
-        if _count(t, FILTH, _rect(t, bx - 1, bz - 2, 18, 10)) != 0:
-            _unmeasured(t, "rubble filth already on the test lane after clear_area: no clean baseline")
+        _sweep_filth(t)      # ambient tiered wanderers scatter rubble map-wide; start from zero right before the walk
+        if _count(t, FILTH, _rect(t, bx - 1, bz - 2, 18, 5)) != 0 or \
+                (with_control and _count(t, FILTH, _rect(t, cx - 1, cz - 2, 18, 5)) != 0):
+            _unmeasured(t, "rubble filth still on a test lane after clear_area + Filth sweep: no clean baseline")
             return None
         if not _tier_ok(t, beast):
             _unmeasured(t, "a spawned %s reads BodySize < the T1 floor: this race is not tiered, so a wake is not expected" % BEAST)
             return None
-        ok1, ok2 = _walk(t, beast, bx, bz), _walk(t, ctl, cx, cz)
+        ok1 = _walk(t, beast, bx, bz)
+        ok2 = _walk(t, ctl, cx, cz) if with_control else True
         if not (ok1 and ok2):
             _unmeasured(t, "ordered Goto not confirmed running (beast %s, control %s): no walker, so no wake can be judged"
                            % (ok1, ok2))
             return None
         t.wait_ticks(500)
-        return {"beast_filth": _count(t, FILTH, _rect(t, bx, bz - 1, 16, 3)),
-                "ctl_filth": _count(t, FILTH, _rect(t, cx, cz - 1, 16, 3)),
-                "beast_plants": _count(t, PLANT, brect), "ctl_plants": _count(t, PLANT, crect)}
+        m = {"beast_filth": _count(t, FILTH, _rect(t, bx, bz - 1, 16, 3)), "beast_plants": _count(t, PLANT, brect)}
+        if with_control:
+            m["ctl_filth"] = _count(t, FILTH, _rect(t, cx, cz - 1, 16, 3))
+            m["ctl_plants"] = _count(t, PLANT, crect)
+        return m
 
     @suite.chain("wake")
     def wake(t):
         with t.component("t1_beast_trails_rubble_and_tramples_plants", toggle="wakeEnabled"):
-            m = _run(t, True) if _live(t) else None
+            m = _run(t) if _live(t) else None
             if m is not None:
                 if m["ctl_filth"] != 0 or m["ctl_plants"] != 6:
                     _unmeasured(t, "the un-tiered control (%s) left filth or lost plants (%r): the lane is not clean, so the "
@@ -398,7 +417,7 @@ def _build_suite():
             if _live(t):
                 _put(t, "wakeEnabled", False)
                 try:
-                    m = _run(t, False)
+                    m = _run(t, with_control=False)
                     if m is not None and (m["beast_filth"] != 0 or m["beast_plants"] != 6):
                         raise ExpectationFailed("wakeEnabled=false but the %s still left a wake (toggle dead): %r" % (BEAST, m))
                 finally:
@@ -407,7 +426,7 @@ def _build_suite():
             if _live(t):
                 _put(t, "wakeCrushDamageMultiplier", 0.1)
                 try:
-                    m = _run(t, True)
+                    m = _run(t, with_control=False)
                     # 20 x 0.1 = 2 damage against 5-HP plants: they must survive (control for the 1x kill above)
                     if m is not None and m["beast_plants"] < 6:
                         raise ExpectationFailed("multiplier 0.1 (2 damage) still destroyed 5-HP plants: %r" % (m,))
