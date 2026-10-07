@@ -5,7 +5,7 @@
   Source: the_cracked_lands.md:318 (a flood is a salvage strike). The first Speeder-family child. The recede aftermath reading a wreck list is a separate follow-up.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -14,6 +14,13 @@
     <defName>RM_CanyonWreckHull</defName>
     <label>flood-buried hull</label>
     <description>A hull section half buried in dried flood mud, uncovered by the last flood. Deconstruct it before the next one takes it back.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_CanyonWreckHull</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 92.1% x 84.5% -> 0.70*0.921*2, 0.63*0.845*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.29,0.5,1.06)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_FloodBuried</weathering>
@@ -25,6 +32,13 @@
     <defName>RM_CanyonWreckSpeeder</defName>
     <label>flood-buried speeder</label>
     <description>The shell of a small repulsor craft, nose down in the mud where a flood rolled it. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_CanyonWreckSpeeder</texPath>
+      <!-- MEASURED 1 variant(s): mean alpha bbox 89.6% x 89.6% -> 0.70*0.896*2, 0.63*0.896*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.26,0.5,1.13)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_FloodBuried</weathering>

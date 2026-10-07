@@ -5,7 +5,8 @@
   Source: dune_sea.md:217,234,253 (buried finds, sealed and uncorroded). The first Tread-family child. The storm-reveal variant is later.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child;
+  still on vanilla ShipChunk placeholder until its render lands: RM_StillsandWreckTread.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -14,6 +15,13 @@
     <defName>RM_StillsandWreckHull</defName>
     <label>sand-sealed hull</label>
     <description>A hull section a storm uncovered, buried dry and airless for years: uncorroded, and whatever was inside is intact. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_StillsandWreckHull</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 93.5% x 90.6% -> 0.70*0.935*2, 0.63*0.906*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.31,0.5,1.14)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Sealed</weathering>
@@ -25,6 +33,13 @@
     <defName>RM_StillsandWreckTank</defName>
     <label>sand-sealed tank</label>
     <description>A sealed tank dug out by the wind, its fittings bright under the sand. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_StillsandWreckTank</texPath>
+      <!-- MEASURED 1 variant(s): mean alpha bbox 93.2% x 87.1% -> 0.70*0.932*2, 0.63*0.871*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.3,0.5,1.1)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Sealed</weathering>

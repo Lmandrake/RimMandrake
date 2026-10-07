@@ -12,9 +12,7 @@
   Light affordance, not the family's Walkable: Light is on every land terrain these biomes paint
   (Ice, Soil, Gravel, RM_LanternstoneFloor) while RM_LanternstoneFloor carries no Walkable.
 
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk
-  (Graphic_Random). Own renders are queued in the artpipe (rimflow_item_id SALVAGE_WRECKAGE_EVERYWHERE_1,
-  ids wreck_nightside_*); the art install swaps texPath and re-measures the shadow box.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
   Labels come from the child; ALL NUMBERS live on the family and the Frozen row (PROVISIONAL).
 -->
 <Defs>
@@ -23,6 +21,13 @@
     <defName>RM_NightsideWreckHull</defName>
     <label>frost-locked hull section</label>
     <description>A length of hull plate rimed white, exactly as it came down. Nothing on the nightside rusts and nobody comes out here to strip it, so whatever was bolted inside is still bolted inside. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_NightsideWreckHull</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 92.2% x 87.0% -> 0.70*0.922*2, 0.63*0.870*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.29,0.5,1.1)</volume>
+      </shadowData>
+    </graphicData>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
@@ -35,6 +40,13 @@
     <defName>RM_NightsideWreckTank</defName>
     <label>frost-locked tank</label>
     <description>A fuel or pressure tank frozen where it landed, its seams still whole. The cold kept what was inside it. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_NightsideWreckTank</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 92.3% x 84.7% -> 0.70*0.923*2, 0.63*0.847*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.29,0.5,1.07)</volume>
+      </shadowData>
+    </graphicData>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
@@ -47,6 +59,13 @@
     <defName>RM_NightsideExpeditionRig</defName>
     <label>abandoned expedition rig</label>
     <description>The frame of a crystal-cutting rig from an expedition that never came back: struts, a drill mount, a sled bed frozen to the ground. Their tools went with them or under the ice. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_NightsideExpeditionRig</texPath>
+      <!-- MEASURED 1 variant(s): mean alpha bbox 90.8% x 85.7% -> 0.70*0.908*2, 0.63*0.857*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.27,0.5,1.08)</volume>
+      </shadowData>
+    </graphicData>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">

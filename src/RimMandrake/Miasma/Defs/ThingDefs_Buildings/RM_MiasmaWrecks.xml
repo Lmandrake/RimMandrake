@@ -5,7 +5,7 @@
   Source: the_miasma.md:197 (the driftwood-and-salvage beach). Post-surge delivery is a separate trigger on RM_WreckFall (design §3e), not built.
   Family parents, weathering and loot: src/RimMandrake/Wreckage (composed into mandrake.rm.biomes).
   Names and families are design §4's proposals; the biome's own sitting may move them.
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
   ALL NUMBERS PROVISIONAL (family + weathering rows).
 -->
 <Defs>
@@ -14,6 +14,13 @@
     <defName>RM_MiasmaFlotsamFrame</defName>
     <label>brined flotsam frame</label>
     <description>A tangle of struts and framing thrown up by a surge, white with salt crust. The planet's driftwood. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_MiasmaFlotsamFrame</texPath>
+      <!-- MEASURED 1 variant(s): mean alpha bbox 94.3% x 93.4% -> 0.70*0.943*2, 0.63*0.934*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.32,0.5,1.18)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Brined</weathering>
@@ -25,6 +32,13 @@
     <defName>RM_MiasmaFlotsamTank</defName>
     <label>brined flotsam tank</label>
     <description>A dented tank washed up on the flats, crusted with salt, its fittings eaten away. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_MiasmaFlotsamTank</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 90.8% x 81.6% -> 0.70*0.908*2, 0.63*0.816*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.27,0.5,1.03)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Brined</weathering>

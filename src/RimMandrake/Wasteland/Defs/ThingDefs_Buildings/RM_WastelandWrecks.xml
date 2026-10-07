@@ -6,8 +6,8 @@
   Owed, not built: the warcasket sarcophagus (salvage-within-salvage, Carapace +1) and the radiation
   hazard on deconstruct (the Wasteland's own hediffs); both need the Wasteland's sitting.
 
-  ART PLACEHOLDER: no texPath, so each inherits ShipChunkBase's vanilla Things/Building/Exotic/ShipChunk.
-  Own renders are queued in the artpipe (ids wreck_wasteland_*). ALL NUMBERS PROVISIONAL.
+  Art: own artpipe renders (wreck_*) installed via art install, texPath + measured shadow per child.
+  ALL NUMBERS PROVISIONAL.
 -->
 <Defs>
 
@@ -15,6 +15,13 @@
     <defName>RM_WastelandWreckHull</defName>
     <label>irradiated hull</label>
     <description>A crashed hull section, still hot. Nobody has come for it because nobody wants to stand next to it, so most of the metal is still there. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_WastelandWreckHull</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 95.0% x 82.7% -> 0.70*0.950*2, 0.63*0.827*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.33,0.5,1.04)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Irradiated</weathering>
@@ -26,6 +33,13 @@
     <defName>RM_WastelandWreckTank</defName>
     <label>irradiated tank</label>
     <description>A ruptured tank lying in the ash, its shell stained and warm to the counter. Deconstruct it for valuable resources.</description>
+    <graphicData>
+      <texPath>Things/Building/Wrecks/RM_WastelandWreckTank</texPath>
+      <!-- MEASURED 2 variant(s): mean alpha bbox 95.1% x 73.3% -> 0.70*0.951*2, 0.63*0.733*2 (Scald ratio) -->
+      <shadowData>
+        <volume>(1.33,0.5,0.92)</volume>
+      </shadowData>
+    </graphicData>
     <modExtensions>
       <li Class="RimMandrake.Wreckage.RM_WreckWeathering">
         <weathering>RM_WreckWeathering_Irradiated</weathering>
