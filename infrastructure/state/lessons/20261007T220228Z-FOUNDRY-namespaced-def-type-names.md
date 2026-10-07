@@ -1,0 +1,1 @@
+2026-10-07: custom Def roots in XML need the NAMESPACED type name (TitanicCreatures RM_CrushRuleDef/RM_TitanicTierDef); a bare name fails to resolve. jawa/get_defs likewise needs the namespaced type and returns fields:{} for a null value (treat as null, not as missing).
