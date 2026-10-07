@@ -100,7 +100,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 			ThingDef to = Props.revertTo;
 			int count = parent.stackCount;
 			bool forbidden = parent.IsForbidden(Faction.OfPlayer);
-			Thing made = ThingMaker.MakeThing(to);
+			Thing made = RM_LiquidBottleUtility.MakeContainer(to, parent);
 			made.stackCount = count;
 			if (parent.Spawned)
 			{

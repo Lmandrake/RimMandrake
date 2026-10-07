@@ -97,12 +97,25 @@
     <thingCategories>
       <li>RM_LiquidBottleItems</li>
     </thingCategories>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1 (owner, 2026-10-06: "Player can set
+         what kinds of bottles they use (leather, glass(any stone), metal)
+         depending on what they have in abundance and what crafting stations
+         they have."). Every bottle state is stuffed; the material rides the
+         whole chain via RM_LiquidBottleUtility.MakeContainer, and each
+         material is its own recipe at its own stations
+         (Defs/LiquidTypes/RecipeDefs/RM_ContainerRecipes.xml). No
+         costStuffCount on purpose: the price stays the statBases value. -->
+    <stuffCategories>
+      <li>Leathery</li>
+      <li>Stony</li>
+      <li>Metallic</li>
+    </stuffCategories>
   </ThingDef>
 
   <ThingDef ParentName="RM_BottleItemBase">
     <defName>RM_BottleEmpty</defName>
     <label>empty bottle</label>
-    <description>A scavenged glass or plastic bottle, empty and ready to fill. Nests inside itself for hauling, so a stack of these takes up almost no room.</description>
+    <description>A bottle, empty and ready to fill: stitched leather, glass melted down from stone, or hammered metal, whichever its maker had to hand. Nests inside itself for hauling, so a stack of these takes up almost no room.</description>
     <stackLimit>75</stackLimit>
     <statBases>
       <MarketValue>0.5</MarketValue>
@@ -210,12 +223,19 @@
     <thingCategories>
       <li>RM_LiquidBottleItems</li>
     </thingCategories>
+    <!-- FLOWWORKS_CONTAINER_MATERIALS_1 (owner, 2026-10-06: "Barrels are like
+         this too: wooden, metal, plasteel"). Plasteel is Metallic stuff; its
+         own recipe puts it at the machining/fabrication benches. -->
+    <stuffCategories>
+      <li>Woody</li>
+      <li>Metallic</li>
+    </stuffCategories>
   </ThingDef>
 
   <ThingDef ParentName="RM_BarrelItemBase">
     <defName>RM_BarrelEmpty</defName>
     <label>empty barrel</label>
-    <description>A scavenged steel barrel, empty and ready to fill. Twenty-five bottles' worth, bulk enough to actually trade.</description>
+    <description>A barrel of wood, metal or plasteel, empty and ready to fill. Twenty-five bottles' worth, bulk enough to actually trade.</description>
     <stackLimit>10</stackLimit>
     <statBases>
       <MarketValue>6</MarketValue>
