@@ -259,6 +259,20 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
     /// <summary>Stage S2 (design section 11): how a reel's saved fields read back. Verse-free so the selftest (row 6)
     /// exercises the same rule the reel's PostLoadInit runs.</summary>
+    /// <summary>GPT source read 2026-10-06 B11: does the work giver pick a pending order back up on its own? A hose whose end lies
+    /// DROPPED (any interrupted order: Deploy, Move or Retract) resumes only when the setting allows it or the job is forced;
+    /// the setting used to gate an interrupted Deploy only.</summary>
+    public static class HoseOrderRules
+    {
+        /// <summary>B13: when a carry job ends, does the reel's order survive for a resume? A path failure (Incompletable /
+        /// Errored) on a still-current order clears it whether or not the pawn had grabbed the end yet (resuming would loop);
+        /// it used to be cleared only once the end was in hand, so a failure on the way to the grab left it dangling.</summary>
+        public static bool KeepOrderAfterJob(bool pathFailed, bool orderStillMine) => !(pathFailed && orderStillMine);
+
+        public static bool MayResume(HoseCarryState carry, HosePendingOrder pending, bool forced, bool autoResumeDropped) =>
+            pending != HosePendingOrder.None && (carry != HoseCarryState.Dropped || forced || autoResumeDropped);
+    }
+
     public static class HoseCarryLoad
     {
         /// <summary>The reel's `laid` flag (still written, read by flow, relays, probe and alert) for a carry state.</summary>

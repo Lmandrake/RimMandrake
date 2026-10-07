@@ -110,7 +110,8 @@ namespace RimMandrake.GimmeSomeSlack.Hose
 
         /// <summary>Everything the laid geometry depends on: a change re-lays every hose.</summary>
         public static string ShapeFingerprint() => minBendRadius.ToString("0.###") + "|" + slack.ToString("0.###") + "|" +
-                                                   plumpAmount.ToString("0.###") + "|" + couplingSpacing;
+                                                   plumpAmount.ToString("0.###") + "|" + couplingSpacing +
+                                                   "|L" + maxLength.ToString("0.###");   // GPT source read B8: a new hose length re-lays (and re-checks) every hose
     }
 
     public class FireHosesMod : Mod

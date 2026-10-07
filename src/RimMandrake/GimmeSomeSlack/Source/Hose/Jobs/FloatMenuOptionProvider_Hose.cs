@@ -74,6 +74,8 @@ namespace RimMandrake.GimmeSomeSlack.Hose.Jobs
             var tp = new TargetingParameters { canTargetLocations = true, canTargetPawns = false, canTargetBuildings = true, canTargetItems = false };
             Find.Targeter.BeginTargeting(tp, t =>
             {
+                HosePendingOrder prevOrder = r.pending;
+                IntVec3 prevAt = r.pendingAt;
                 string why = order(t.Cell);
                 if (why != null)
                 {
@@ -81,7 +83,14 @@ namespace RimMandrake.GimmeSomeSlack.Hose.Jobs
                     return;
                 }
                 Job j = WorkGiver_HoseOrders.JobFor(p, r, true, out string jwhy);
-                if (j == null) { Messages.Message("Cannot carry the hose: " + jwhy + ".", MessageTypeDefOf.RejectInput, false); return; }
+                if (j == null)
+                {
+                    // GPT source read 2026-10-06 B12: the refused order used to stay queued behind this message; put back what was there
+                    r.pending = prevOrder;
+                    r.pendingAt = prevAt;
+                    Messages.Message("Cannot carry the hose: " + jwhy + ".", MessageTypeDefOf.RejectInput, false);
+                    return;
+                }
                 HoseJobs.GiveForced(p, j);
             }, caster: p);
         }
