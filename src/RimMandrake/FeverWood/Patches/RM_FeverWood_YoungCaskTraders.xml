@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_BROOD_RANSOM_1: the vanilla exotic traders rarely stock a
+     young-cask and always buy one back (RM_StockGenerator_DeepYoung; chance in
+     Mod Settings, both off with the brood ransom). defNames read from Core's
+     TraderKinds_Orbital_Misc.xml / TraderKinds_Caravan_Outlander.xml. -->
+<Patch>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/TraderKindDef[defName="Orbital_Exotic" or defName="Caravan_Outlander_Exotic"]/stockGenerators</xpath>
+    <value>
+      <li Class="RimMandrake.FeverWood.RM_StockGenerator_DeepYoung" />
+    </value>
+  </Operation>
+
+</Patch>

@@ -97,6 +97,7 @@ class FWGame(MockGame):
         self.known[("SoundDef", "RM_FeverWood_CrownHum")] = "mandrake.rm.biomes"
         self.known[("ThingDef", "TableMachining")] = "Ludeon.RimWorld"
         self.known[("MapGeneratorDef", "Base_Player")] = "Ludeon.RimWorld"
+        self.known[("LetterDef", "RM_DeepGiftLetter")] = "mandrake.rm.biomes"   # Defs/LetterDefs (not a parsed group)
         if "missing_def" in self.brk:
             plain = next(n for g, _, ns, _ in reversed(V.GROUPS) if g == "items_ThingDef" for n in reversed(ns)
                          if ("ThingDef", n) not in [bn for bn in V.BY_NAME] and n not in V.ROTTABLE_ITEMS)
@@ -377,6 +378,9 @@ class FWGame(MockGame):
                    ("Baited with nobody." if "stake_empty_wrong" in self.brk else "No bait staked.")
         elif o["def"] == "RM_SekkulaathTank":
             line = "Occupant fed - producing while stock lasts."
+        elif o["def"] == "RM_SekkulaathYoungCask":
+            on = self.sett.get("broodRansomEnabled") == "True" or "brood_ignores_toggle" in self.brk
+            line = "Young of the deep held in the world: 1 (the pools are uneasy, tentacles x1.10)" if on else ""
         else:
             line = ""
         return {"success": True, "things": [{"id": o["id"], "inspect": [line]}]}
@@ -657,7 +661,7 @@ def main():
     for group, _, names, floor in V.GROUPS:
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
-          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 18, V.BOOL_TOGGLES)  # +sillochAmbushEnabled, brathekBoresWood (cast pass 2)
+          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 19, V.BOOL_TOGGLES)  # +sillochAmbushEnabled, brathekBoresWood (cast pass 2), +broodRansomEnabled
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
     check("harvest flora derived", len(V.FLORA_PRODUCTS) == 4, V.FLORA_PRODUCTS)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)
@@ -702,6 +706,7 @@ def main():
         ("porter_hit_still_deposits", {"tentacle_porter.a_hit_porter_vanishes_and_brings_nothing"}),
         ("lash_dead", {"tentacle_lash.lash_cuts_a_pawn_inside_its_range"}),
         ("lash_range_infinite", {"tentacle_lash.lash_spares_a_pawn_outside_its_range"}),
+        ("brood_ignores_toggle", {"brood_ransom.with_the_brood_toggle_off_the_cask_says_nothing"}),
         ("tank_unbreakable", {"tank.a_heavy_hit_breaches_the_tank_and_the_juvenile_escapes_remembering"}),
         ("tank_no_memory", {"tank.a_heavy_hit_breaches_the_tank_and_the_juvenile_escapes_remembering"}),
         ("tank_light_breaks", {"tank.a_hit_below_the_threshold_keeps_the_tank_shut"}),

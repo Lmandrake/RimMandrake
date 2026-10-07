@@ -76,3 +76,27 @@ Deterministic state reads, recorded in `FEVER_WOOD_FIRST_SCRIPT_1`'s `validation
   when `broodRansomEnabled` is off.
 - Campaign: after the Sporefall young is freed, `Jawa_WildsteamClan` goodwill with the player dropped by at
   least the configured amount (faction read before/after).
+
+## built (offline, FOUNDRY 2026-10-06, not yet live-proven)
+
+Free tier, all in `src/RimMandrake/FeverWood/`:
+- `Source/RM_BroodRansom.cs`: `RM_WorldComponent_DeepYoung` (tally: occupied tanks + casks on player home maps,
+  casks in player caravans, settlements of a FactionDef carrying `RM_DeepYoungKeeperExtension`, per-settlement
+  override `SetSettlementYoung`; recomputed every 15,000 ticks and on each release; threshold letters at 1/3/6/10,
+  INVENTED), `RM_DeepGiftTableDef` + `RM_DeepGift.Grant(map, pool, rolls)`, `RM_StockGenerator_DeepYoung`,
+  `RM_CompUseEffect_ReleaseYoung`.
+- `RM_CompCapturedSpecimen`: `occupied` flag, "Return to the deep" gizmo, restlessness line in the inspect string.
+- `RM_CompEscapedCaptive`: a `released` young walks to the nearest water (Fever Wood pool first); at a
+  `RUT_FeverWoodMirrorPool` registered cell it schedules the gift, anywhere else it settles in with no gift.
+- `RM_MapComponent_TentacleWatch`: ambient MTB divided by the boldness multiplier, snare/lash weights scaled,
+  `EffectiveEmergenceChancePerCheck` (the read the boldness criterion wants), pending gifts (600-2,200 ticks).
+- Defs: `RM_SekkulaathYoungCask`, `RM_DeepGiftLoot` (ShipChunk, AncientSealedCrate, Gravcore, ArchiteCapsule,
+  AIPersonaCore, each measured in the def dump), `RM_DeepGiftLetter`; a patch adds the stock generator to
+  `Orbital_Exotic` and `Caravan_Outlander_Exotic`.
+- Mod Settings: `broodRansomEnabled`, `broodBoldnessPerYoung`, `broodBoldnessCap`, `broodCaskTraderStockChance`,
+  per-gift weight sliders. `validation.py` chain `brood_ransom` covers the toggle via the cask's inspect line.
+
+Not built: §4's campaign half and all of §5 (Sporefall's tank, Wildsteam/prison-town trade and buy-back price,
+Narrator lines, goodwill break: `src/RimUtinni/`); the JawaBench `[Tool]` reads of the tally and the effective
+chance; a pool inspect string (pools are terrain with no inspect pane, so the line sits on the tank and the cask);
+no porter limb is spawned for the gift (the gift appears with a letter); an emptied tank cannot be restocked.

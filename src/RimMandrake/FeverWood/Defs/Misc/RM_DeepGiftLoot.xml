@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DeepGiftLoot.xml                                FEVERWOOD_BROOD_RANSOM_1
+
+  One great gift from the very bottom, set down when a released young of the
+  deep enters a Fever Wood pool (RM_DeepGift.Grant). Old, heavy things: an
+  ancient ship component, an archotech-tier fragment, a sealed salvage crate.
+
+  Every defName MEASURED in the def dump (defs.sqlite mods=638, captured
+  2026-10-04), never guessed: ShipChunk (Core, building), AncientSealedCrate
+  (Odyssey, building), Gravcore (Odyssey, item), ArchiteCapsule (Biotech,
+  item), AIPersonaCore (Core, item). All DLCs are assumed present; the
+  MayRequire guards are load safety only. Weights are INVENTED; each is
+  scaled by its own Mod Settings slider.
+-->
+<Defs>
+
+  <RimMandrake.FeverWood.RM_DeepGiftTableDef>
+    <defName>RM_DeepGiftLoot</defName>
+    <label>gifts from the bottom</label>
+    <entries>
+      <li>
+        <thing>ShipChunk</thing>
+        <weight>30</weight>
+      </li>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">
+        <thing>AncientSealedCrate</thing>
+        <weight>30</weight>
+      </li>
+      <li MayRequire="Ludeon.RimWorld.Odyssey">
+        <thing>Gravcore</thing>
+        <weight>10</weight>
+      </li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">
+        <thing>ArchiteCapsule</thing>
+        <weight>15</weight>
+      </li>
+      <li>
+        <thing>AIPersonaCore</thing>
+        <weight>15</weight>
+      </li>
+    </entries>
+  </RimMandrake.FeverWood.RM_DeepGiftTableDef>
+
+</Defs>

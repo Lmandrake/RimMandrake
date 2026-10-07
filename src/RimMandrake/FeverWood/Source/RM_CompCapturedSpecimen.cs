@@ -38,11 +38,30 @@ namespace RimMandrake.FeverWood
 
         private int unfedSinceTick = -1;
         private bool taught;
+        private bool occupied = true; // FEVERWOOD_BROOD_RANSOM_1: false once returned to the deep
         private Dictionary<ThingDef, int> lastProducedTick = new Dictionary<ThingDef, int>();
 
         public RM_CompProperties_CapturedSpecimen Props => (RM_CompProperties_CapturedSpecimen)props;
 
         private CompRefuelable Fuel => parent.GetComp<CompRefuelable>();
+
+        /// <summary>FEVERWOOD_BROOD_RANSOM_1: counted in the world's tally of
+        /// the deep's young while true.</summary>
+        public bool Occupied => occupied;
+
+        /// <summary>The occupant kind (resolved live so the Star Wars swap
+        /// patch applies). With no tank to ask, reads the RM_SekkulaathTank
+        /// def's own comp props.</summary>
+        public static PawnKindDef YoungKind(RM_CompProperties_CapturedSpecimen props)
+        {
+            if (props == null)
+            {
+                ThingDef tank = DefDatabase<ThingDef>.GetNamedSilentFail("RM_SekkulaathTank");
+                props = tank?.GetCompProperties<RM_CompProperties_CapturedSpecimen>();
+            }
+            string name = props?.occupantKindDefName ?? "RM_Sekkulaath_Juvenile";
+            return DefDatabase<PawnKindDef>.GetNamedSilentFail(name);
+        }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -69,6 +88,10 @@ namespace RimMandrake.FeverWood
             if (!RM_FeverWoodSettings.sekkulaathTankEnabled)
             {
                 return; // Mod Settings master off: inert box, per that toggle's own tooltip
+            }
+            if (!occupied)
+            {
+                return; // returned to the deep: an empty tank neither produces nor escapes
             }
             if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
             {
@@ -149,7 +172,7 @@ namespace RimMandrake.FeverWood
             {
                 return;
             }
-            if (!RM_FeverWoodSettings.sekkulaathTankEnabled)
+            if (!RM_FeverWoodSettings.sekkulaathTankEnabled || !occupied)
             {
                 return;
             }
@@ -214,13 +237,83 @@ namespace RimMandrake.FeverWood
 
         public override string CompInspectStringExtra()
         {
-            if (Fuel == null)
+            string line;
+            if (!occupied)
             {
-                return null;
+                line = "Empty — its occupant was returned to the deep.";
             }
-            return Fuel.HasFuel
-                ? "Occupant fed — producing while stock lasts."
-                : "Occupant unfed — containment risk rising.";
+            else if (Fuel == null)
+            {
+                line = null;
+            }
+            else
+            {
+                line = Fuel.HasFuel
+                    ? "Occupant fed — producing while stock lasts."
+                    : "Occupant unfed — containment risk rising.";
+            }
+            string restless = RM_WorldComponent_DeepYoung.RestlessnessLine();
+            if (restless != null)
+            {
+                line = line == null ? restless : line + "\n" + restless;
+            }
+            return line;
+        }
+
+        // FEVERWOOD_BROOD_RANSOM_1: "Return to the deep". A deliberate player
+        // act: empties the tank and lets the young out NON-hostile, flagged
+        // released, walking for the nearest pool. Only a Fever Wood pool
+        // answers with a gift (RM_CompEscapedCaptive.ArriveReleased).
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            foreach (Gizmo g in base.CompGetGizmosExtra())
+            {
+                yield return g;
+            }
+            if (!RM_FeverWoodSettings.broodRansomEnabled || !RM_FeverWoodSettings.sekkulaathTankEnabled
+                || parent.Faction != Faction.OfPlayer)
+            {
+                yield break;
+            }
+            PawnKindDef kind = YoungKind(Props);
+            Command_Action cmd = new Command_Action
+            {
+                defaultLabel = "Return to the deep",
+                defaultDesc = "Open the tank and let its occupant go. It will make for the nearest water. If that "
+                    + "water is a Fever Wood pool, the deep will know its young came home, and will pay for it.",
+                icon = kind?.race?.uiIcon ?? BaseContent.BadTex,
+                action = () => Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                    "Open the tank and let the young go? The tank will stand empty.", ReleaseToTheDeep, destructive: true))
+            };
+            if (!occupied)
+            {
+                cmd.Disable("The tank is empty.");
+            }
+            yield return cmd;
+        }
+
+        public void ReleaseToTheDeep()
+        {
+            if (!occupied || !parent.Spawned)
+            {
+                return;
+            }
+            Map map = parent.Map;
+            PawnKindDef kind = YoungKind(Props);
+            occupied = false;
+            if (Fuel != null)
+            {
+                Fuel.allowAutoRefuel = false; // nothing left to feed
+            }
+            if (kind != null)
+            {
+                Pawn young = PawnGenerator.GeneratePawn(kind, null);
+                GenSpawn.Spawn(young, CellFinder.RandomClosewalkCellNear(parent.Position, map, 3), map);
+                young.GetComp<RM_CompEscapedCaptive>()?.Notify_ReleasedToDeep();
+                Messages.Message("The tank is opened. The young slides out and makes for the water.",
+                    young, MessageTypeDefOf.NeutralEvent);
+            }
+            RM_WorldComponent_DeepYoung.Get?.Recompute();
         }
 
         public override void PostExposeData()
@@ -228,6 +321,7 @@ namespace RimMandrake.FeverWood
             base.PostExposeData();
             Scribe_Values.Look(ref unfedSinceTick, "unfedSinceTick", -1);
             Scribe_Values.Look(ref taught, "taught", false);
+            Scribe_Values.Look(ref occupied, "occupied", true);
             Scribe_Collections.Look(ref lastProducedTick, "lastProducedTick", LookMode.Def, LookMode.Value);
             if (lastProducedTick == null)
             {

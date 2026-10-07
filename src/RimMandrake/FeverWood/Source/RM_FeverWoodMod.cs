@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -229,6 +230,27 @@ namespace RimMandrake.FeverWood
         /// animal. Default ON.</summary>
         public static bool brathekBoresWood = true;
 
+        /// <summary>FEVERWOOD_BROOD_RANSOM_1 master toggle. Off: the world's
+        /// tally still counts but changes nothing (boldness x1, no letters),
+        /// the tank has no "Return to the deep" gizmo, a young-cask cannot be
+        /// opened, no gift is ever set down and traders neither stock nor buy
+        /// young-casks — today's behaviour. Default ON.</summary>
+        public static bool broodRansomEnabled = true;
+
+        /// <summary>Boldness gained per young the world holds: the ordinary
+        /// emergence chance and the snare/lash weights are multiplied by
+        /// min(cap, 1 + this x tally). INVENTED defaults 0.1 and 2.0.</summary>
+        public static float broodBoldnessPerYoung = 0.1f;
+        public static float broodBoldnessCap = 2f;
+
+        /// <summary>Chance an exotic trader carries one young-cask. INVENTED
+        /// default 0.1 ("rarely").</summary>
+        public static float broodCaskTraderStockChance = 0.1f;
+
+        /// <summary>Per-gift weight multipliers over RM_DeepGiftLoot, keyed by
+        /// the gift's defName (absent = 1, 0 = never).</summary>
+        public static Dictionary<string, float> broodGiftWeightMultipliers = new Dictionary<string, float>();
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -272,6 +294,15 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref oilBoilYieldMultiplier, "oilBoilYieldMultiplier", 2f);
             Scribe_Values.Look(ref oilBoilFlashRadius, "oilBoilFlashRadius", 8f);
             Scribe_Values.Look(ref oilBoilWakesDeep, "oilBoilWakesDeep", true);
+            Scribe_Values.Look(ref broodRansomEnabled, "broodRansomEnabled", true);
+            Scribe_Values.Look(ref broodBoldnessPerYoung, "broodBoldnessPerYoung", 0.1f);
+            Scribe_Values.Look(ref broodBoldnessCap, "broodBoldnessCap", 2f);
+            Scribe_Values.Look(ref broodCaskTraderStockChance, "broodCaskTraderStockChance", 0.1f);
+            Scribe_Collections.Look(ref broodGiftWeightMultipliers, "broodGiftWeightMultipliers", LookMode.Value, LookMode.Value);
+            if (broodGiftWeightMultipliers == null)
+            {
+                broodGiftWeightMultipliers = new Dictionary<string, float>();
+            }
         }
 
         private static Vector2 scroll;
@@ -426,6 +457,36 @@ namespace RimMandrake.FeverWood
             list.CheckboxLabeled("A flash at a pool's edge wakes the deep", ref oilBoilWakesDeep,
                 "On: if the fire reaches a cell beside a pool, tentacles rise there (an ordinary emergence, never the "
               + "Great Emergence). Off: the fire burns and the deep sleeps on.");
+
+            list.GapLine();
+            list.CheckboxLabeled("The ransom of its young", ref broodRansomEnabled,
+                "The small tentacled things kept in prison tanks are the deep's own young. The more of them the world "
+              + "holds (occupied tanks and young-casks on your maps and in your caravans, plus any town that keeps one), "
+              + "the more often tentacles rise and the more often they are snares and lashes; a letter says when the pools "
+              + "grow bolder. Return a young to a Fever Wood pool (the tank's 'Return to the deep', or open a young-cask "
+              + "at the water's edge) and within the hour the deep sets down one great gift from the very bottom. Any "
+              + "other water: it settles in and nothing answers. Off: none of this happens.");
+            list.Label("Boldness per young held: +" + broodBoldnessPerYoung.ToString("0.00")
+                + "  (cap x" + broodBoldnessCap.ToString("0.0") + ")");
+            broodBoldnessPerYoung = list.Slider(broodBoldnessPerYoung, 0f, 0.5f);
+            broodBoldnessCap = list.Slider(broodBoldnessCap, 1f, 5f);
+            list.Label("Chance an exotic trader carries a young-cask: " + broodCaskTraderStockChance.ToString("0.00"));
+            broodCaskTraderStockChance = list.Slider(broodCaskTraderStockChance, 0f, 1f);
+            RM_DeepGiftTableDef gifts = DefDatabase<RM_DeepGiftTableDef>.GetNamedSilentFail(RM_DeepGift.TableDefName);
+            if (gifts != null)
+            {
+                list.Label("Gift weights (x base weight; 0 = never):");
+                foreach (RM_DeepGiftEntry e in gifts.entries)
+                {
+                    if (e.thing == null)
+                    {
+                        continue;
+                    }
+                    float m = broodGiftWeightMultipliers.TryGetValue(e.thing.defName, out float v) ? v : 1f;
+                    list.Label("  " + e.thing.LabelCap + ": x" + m.ToString("0.0"));
+                    broodGiftWeightMultipliers[e.thing.defName] = list.Slider(m, 0f, 5f);
+                }
+            }
 
             viewHeight = list.CurHeight + 20f;
             list.End();

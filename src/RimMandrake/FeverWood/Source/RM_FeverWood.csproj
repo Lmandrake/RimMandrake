@@ -86,6 +86,7 @@
     <Compile Include="RM_OilBoil.cs" />
     <Compile Include="RM_CompSillochAmbush.cs" />
     <Compile Include="RM_BrathekBoring.cs" />
+    <Compile Include="RM_BroodRansom.cs" />
   </ItemGroup>
 
   <ItemGroup>

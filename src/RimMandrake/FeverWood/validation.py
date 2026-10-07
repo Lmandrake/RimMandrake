@@ -267,7 +267,10 @@ BY_NAME = [("HediffDef", "RM_CaptivityMemory"), ("HediffDef", "RM_LureStaked"),
            ("PawnKindDef", "RM_KurrethQueen"), ("JobDef", "RM_FoulPool"), ("JobDef", "RM_StunForStaking"),
            ("JobDef", "RM_HaulToStake"), ("DesignationDef", "RM_Designation_FoulPool"),
            ("DesignationDef", "RM_Designation_StakeLure"), ("ThingDef", "RM_RadioactiveSuppressant"),
-           ("ThingDef", "RM_LureStake"), ("ThingDef", "RM_SeveredTentacleFlesh")]
+           ("ThingDef", "RM_LureStake"), ("ThingDef", "RM_SeveredTentacleFlesh"),
+           # FEVERWOOD_BROOD_RANSOM_1 (RM_BroodRansom.cs looks these up by name)
+           ("ThingDef", "RM_SekkulaathYoungCask"), ("ThingDef", "RM_SekkulaathTank"),
+           ("LetterDef", "RM_DeepGiftLetter"), ("TerrainDef", "RUT_FeverWoodMirrorPool")]
 
 _G = {}                     # per-process memo
 
@@ -1316,6 +1319,49 @@ def tank(t):
                         _fail("with sekkulaathTankEnabled=false the tank still breached (the toggle gates nothing)")
                     if _pawns(t, _pad_rect(t), kind=TANK_OCCUPANT):
                         _fail("with sekkulaathTankEnabled=false an occupant still escaped")
+    finally:
+        _teardown(t)
+
+
+@suite.chain("brood_ransom")
+def brood_ransom(t):
+    """FEVERWOOD_BROOD_RANSOM_1, the parts readable without a Fever Wood pool: a young-cask on a player map
+    reads the deep's restlessness (the world tally line) while the brood ransom is on, and says nothing with it
+    off. UNCOVERED here, owed a JawaBench [Tool] read: the tally count itself (2 tanks + 1 cask = 3, then 2
+    after a release reaches a pool), RM_MapComponent_TentacleWatch.EffectiveEmergenceChancePerCheck at tally 0
+    vs past the first threshold, and the gift (one RM_DeepGiftLoot thing within 6 cells + RM_DeepGiftLetter
+    within 2,500 ticks of a released young entering a Fever Wood pool; none for other water or an escapee)."""
+    _enter(t)
+    try:
+        with _comp(t, "site_ready_brood"):
+            _reset_pad(t)
+
+        with _comp(t, "a_young_cask_reads_the_deeps_restlessness", independent=True, toggle="broodRansomEnabled"):
+            x, z = t.anchor
+            t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="All")
+            _spawn_stack(t, "RM_SekkulaathYoungCask", x, z, 1)
+            found = _things(t, "RM_SekkulaathYoungCask", "%d,%d,4,4" % (x, z)) if _live(t) else []
+            if _live(t):
+                if len(found) != 1:
+                    _fail("expected one RM_SekkulaathYoungCask after spawn, found %d" % len(found))
+                r = t.bridge_call("jawa/inspect_string", thingIds=found[0].get("id"))
+                text = " | ".join(_flat(_ok(r, "inspect_string")))
+                if "Young of the deep held in the world" not in text:
+                    _fail("the young-cask does not read the world tally with the brood ransom on: %s" % text[:200])
+
+        with _comp(t, "with_the_brood_toggle_off_the_cask_says_nothing", independent=True, toggle="broodRansomEnabled"):
+            x, z = t.anchor
+            t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="All")
+            _spawn_stack(t, "RM_SekkulaathYoungCask", x, z, 1)
+            with _settings(t, broodRansomEnabled=False):
+                if _live(t):
+                    found = _things(t, "RM_SekkulaathYoungCask", "%d,%d,4,4" % (x, z))
+                    if len(found) != 1:
+                        _fail("expected one RM_SekkulaathYoungCask after spawn, found %d" % len(found))
+                    r = t.bridge_call("jawa/inspect_string", thingIds=found[0].get("id"))
+                    text = " | ".join(_flat(_ok(r, "inspect_string")))
+                    if "Young of the deep" in text:
+                        _fail("with broodRansomEnabled=false the cask still reads the tally (the toggle gates nothing)")
     finally:
         _teardown(t)
 
