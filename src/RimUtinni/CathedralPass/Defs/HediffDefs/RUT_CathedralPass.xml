@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_CathedralPass                    CathedralPass - CATHEDRAL_MECHANOID_PASS_VERBS_1
+
+  The GRANT flag. Pure marker: no stages, no stats, no severity curve. What it
+  does lives in Source/Patch_CathedralPassHostility.cs — faction-13 machines on a
+  Rust Cathedral map stop reading the holder as hostile.
+
+  Visible on the health tab on purpose (owner, 2026-09-29/30: nothing changes
+  without a readable sign). The label is world-register, never intent (arc §P):
+  it names what the machines do, not why.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_CathedralPass</defName>
+    <label>cathedral pass</label>
+    <description>The machines of the Rust Cathedral let this one pass. On Cathedral ground the old sentinels track them, pause, and look away. Nowhere else does it mean anything.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.6,0.35)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <everCurableByItem>false</everCurableByItem>
+  </HediffDef>
+
+</Defs>
