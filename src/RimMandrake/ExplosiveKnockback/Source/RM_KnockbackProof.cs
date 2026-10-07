@@ -158,6 +158,7 @@ namespace RimMandrake.ExplosiveKnockback
                         }
                     }
                 }
+                RM_KnockbackCompat.FillToSurface(map, c); // a pit left by an earlier scene at this origin
                 if (!RM_KnockbackCompat.IsSuperdeep(map, c))
                 {
                     TerrainDef td = c.GetTerrain(map);

@@ -19,6 +19,7 @@ namespace RimMandrake.ExplosiveKnockback
         private static Type excavationType;
         private static Func<object, IntVec3, bool> isSuperdeep;
         private static Func<object, IntVec3, byte> deepen;
+        private static Func<object, IntVec3, byte> fillIn;
         private static Func<Map, IntVec3, Thing> coverAt;
         private static Type coverType;
 
@@ -40,6 +41,7 @@ namespace RimMandrake.ExplosiveKnockback
                 {
                     MethodInfo m = AccessTools.Method(excavationType, "IsSuperdeepExcavation", new[] { typeof(IntVec3) });
                     MethodInfo d = AccessTools.Method(excavationType, "Deepen", new[] { typeof(IntVec3) });
+                    MethodInfo fi = AccessTools.Method(excavationType, "FillIn", new[] { typeof(IntVec3) });
                     Type util = AccessTools.TypeByName("RimMandrake.FlowWorks.Pits.RM_PitCoverUtility");
                     MethodInfo ca = util == null ? null : AccessTools.Method(util, "CoverAt", new[] { typeof(Map), typeof(IntVec3) });
                     coverType = AccessTools.TypeByName("RimMandrake.FlowWorks.Pits.Building_PitCover");
@@ -51,6 +53,7 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         isSuperdeep = (o, c) => (bool)m.Invoke(o, new object[] { c });
                         deepen = d == null ? null : (Func<object, IntVec3, byte>)((o, c) => (byte)d.Invoke(o, new object[] { c }));
+                        fillIn = fi == null ? null : (Func<object, IntVec3, byte>)((o, c) => (byte)fi.Invoke(o, new object[] { c }));
                         coverAt = ca == null ? null : (Func<Map, IntVec3, Thing>)((map, c) => ca.Invoke(null, new object[] { map, c }) as Thing);
                     }
                 }
@@ -125,6 +128,26 @@ namespace RimMandrake.ExplosiveKnockback
                 deepen(ex, c);
             }
             return isSuperdeep(ex, c);
+        }
+
+        /// <summary>Fill a dug cell back to the surface (proof scenes only: a pit an earlier scene dug at a reused origin
+        /// otherwise catches the next scene's throw — live 2026-10-07, thump cannon "2 cells" was a stop in a leftover pit).
+        /// True when the cell ends at the surface or FlowWorks is absent.</summary>
+        public static bool FillToSurface(Map map, IntVec3 c)
+        {
+            object ex = Excavation(map);
+            if (ex == null || fillIn == null)
+            {
+                return ex == null;
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                if (fillIn(ex, c) == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>Owner Q6: a carried hose end drops where the carrier stood. True if one was dropped.</summary>

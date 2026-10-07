@@ -133,6 +133,7 @@ namespace RimMandrake.KineticArms
                         t.Destroy(DestroyMode.Vanish);
                     }
                 }
+                RM_KnockbackCompat.FillToSurface(map, c); // a pit an earlier scene (EK pit_*) dug at this origin
                 TerrainDef td = c.GetTerrain(map);
                 if (td == null || td.passability == Traversability.Impassable || td.IsWater)
                 {
@@ -178,6 +179,25 @@ namespace RimMandrake.KineticArms
             GenSpawn.Spawn(p, c, Map);
             Track(s, key, p);
             return p;
+        }
+
+        /// <summary>A bystander whose verdict is "did not move": stunned for the whole scene, so an unarmed hostile or a
+        /// shot animal cannot walk off and fake a throw (live 2026-10-07: side/thump_off/strength_zero/control pawns
+        /// stepped 1-3 cells). Stun does not gate Explosive Knockback (PawnSkipReason, Eligible), so a real throw still
+        /// shows — and NotThrown also requires zero launch records.</summary>
+        private static Pawn Hold(Pawn p)
+        {
+            p.stances?.stunner?.StunFor(2500, null, false, false);
+            return p;
+        }
+
+        /// <summary>Unmoved AND no launch/blocked record in Explosive Knockback's journal.</summary>
+        private static bool NotThrown(Scene s, string key, out string detail)
+        {
+            string m = Moved(s, key, out int dx, out int dz);
+            int launches = ForThing(s, "launch", s.things[key]).Count;
+            detail = m + " launches=" + launches;
+            return dx == 0 && dz == 0 && launches == 0;
         }
 
         private static void Track(Scene s, string key, Thing t)
@@ -259,7 +279,11 @@ namespace RimMandrake.KineticArms
                             RimMandrakeKineticArmsMod.ApplySettings();
                         }
                         Pawn sh = Colonist(s, "shooter", O(s, -6, 0));
-                        Hostile(s, "p", O(s, 1, 0));
+                        Pawn tp = Hostile(s, "p", O(s, 1, 0));
+                        if (s.name == "thump_off")
+                        {
+                            Hold(tp);
+                        }
                         s.numbers["force"] = RimMandrakeKineticArmsMod.ForceOf("Thump");
                         Fire(sh, "Bullet_ThumpCannon", O(s, 0, 0), "Gun_ThumpCannon");
                         if (s.name == "thump_off")
@@ -268,8 +292,8 @@ namespace RimMandrake.KineticArms
                             s.verdict = sc =>
                             {
                                 RimMandrakeKineticArmsMod.ApplySettings();
-                                string m = Moved(sc, "p", out int dx, out int dz);
-                                return Result(sc, dx == 0 && dz == 0 && sc.numbers["force"] == 0f, m + " forceWhileOff=" + sc.numbers["force"]);
+                                bool still = NotThrown(sc, "p", out string m);
+                                return Result(sc, still && sc.numbers["force"] == 0f, m + " forceWhileOff=" + sc.numbers["force"]);
                             };
                             return null;
                         }
@@ -305,13 +329,12 @@ namespace RimMandrake.KineticArms
                     {
                         Pawn sh = Colonist(s, "shooter", O(s, -5, 0));
                         Pawn t = Hostile(s, "p", O(s, 0, 0));
-                        Hostile(s, "side", O(s, -1, 1)); // shooter side of the back-step centre: outside the cone
+                        Hold(Hostile(s, "side", O(s, -1, 1))); // shooter side of the back-step centre: outside the cone
                         Fire(sh, "RM_Proj_PalmThump", t, "RM_Gun_PalmThumper");
                         s.verdict = sc =>
                         {
                             string a = AlongAxis(sc, "p", 1, 0, 2, true);
-                            string m = Moved(sc, "side", out int dx, out int dz);
-                            bool sideStill = dx == 0 && dz == 0;
+                            bool sideStill = NotThrown(sc, "side", out string m);
                             return (a.StartsWith("PASS") && sideStill ? "PASS " : "FAIL ") + a.Substring(5) + " | " + m + " sideUnmoved=" + sideStill;
                         };
                         return null;
@@ -488,16 +511,16 @@ namespace RimMandrake.KineticArms
                         Pawn sh = Colonist(s, "shooter", O(s, -6, 0));
                         Pawn sh2 = Colonist(s, "shooter2", O(s, -6, 4));
                         Pawn a = Animal(s, "big", big, O(s, 0, 0));
-                        Pawn b = Animal(s, "control", big, O(s, 0, 4));
+                        Pawn b = Hold(Animal(s, "control", big, O(s, 0, 4)));
                         s.numbers["body"] = a.BodySize;
                         Fire(sh, "RM_Proj_GravRamPulse", a, "RM_Gun_GravRam");
                         Fire(sh2, "RM_Proj_RepulsorBolt", b, "RM_Gun_RepulsorRifle");
                         s.verdict = sc =>
                         {
                             string m = Moved(sc, "big", out int dx, out int dz);
-                            string mc = Moved(sc, "control", out int cx, out int cz);
+                            bool controlStill = NotThrown(sc, "control", out string mc);
                             bool tooBig = ForThing(sc, "skip", sc.things["control"]).Any(r => (string)r["reason"] == "too_big");
-                            return Result(sc, dx >= 1 && cx == 0 && cz == 0 && tooBig, m + "; " + mc + " body=" + sc.numbers["body"].ToString("0.0")
+                            return Result(sc, dx >= 1 && controlStill && tooBig, m + "; " + mc + " body=" + sc.numbers["body"].ToString("0.0")
                                 + " repulsorTooBig=" + tooBig);
                         };
                         return null;
@@ -585,14 +608,14 @@ namespace RimMandrake.KineticArms
                         RimMandrakeKineticArmsSettings.kineticStrength = 0f;
                         RimMandrakeKineticArmsMod.ApplySettings();
                         Pawn sh = Colonist(s, "shooter", O(s, -6, 0));
-                        Pawn t = Hostile(s, "p", O(s, 0, 0));
+                        Pawn t = Hold(Hostile(s, "p", O(s, 0, 0)));
                         Fire(sh, "RM_Proj_RepulsorBolt", t, "RM_Gun_RepulsorRifle");
                         s.verdict = sc =>
                         {
                             RimMandrakeKineticArmsSettings.kineticStrength = 1f;
                             RimMandrakeKineticArmsMod.ApplySettings();
-                            string m = Moved(sc, "p", out int dx, out int dz);
-                            return Result(sc, dx == 0 && dz == 0, m + " (strength 0: no throw)");
+                            bool still = NotThrown(sc, "p", out string m);
+                            return Result(sc, still, m + " (strength 0: no throw)");
                         };
                         return null;
                     }
