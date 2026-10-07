@@ -443,6 +443,71 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>Does a blast of <paramref name="radius"/> at c reach the span's straight ground projection?</summary>
         public static bool SpanHit(P2 a, P2 b, P2 c, double radius) => P2.Dist(P2.Lerp(a, b, ClosestT(a, b, c)), c) <= radius;
 
+        // ------------------------------------------------------------------ kinetic blasts sway, never cut (owner Q3, 2026-10-06)
+        /// <summary>What a blast does to the spans it reaches: nothing, cut (wound them), or sway (a push wave, no wound).</summary>
+        public enum BlastKind { None, Cut, Sway }
+
+        /// <summary>
+        /// The blast verdict. A kinetic blast (Kinetic Arms' RM_KineticBlastExtension marker) NEVER cuts: it sways when
+        /// <paramref name="kineticSway"/> is on, otherwise does nothing. Every other harmful blast keeps the design 2.6
+        /// rule: cut when the setting is on and the damage is positive.
+        /// </summary>
+        public static BlastKind BlastKindFor(bool harmsHealth, bool kinetic, double damage, bool explosionsCut, bool kineticSway)
+        {
+            if (!harmsHealth) return BlastKind.None;
+            if (kinetic) return kineticSway ? BlastKind.Sway : BlastKind.None;
+            return explosionsCut && damage > 0 ? BlastKind.Cut : BlastKind.None;
+        }
+
+        /// <summary>One span's answer to one blast: its hp after, whether it parted, and the sway kick (0..1) and side.</summary>
+        public struct SpanBlast
+        {
+            public bool Hit, Cut;
+            public double Hp, Kick;
+            /// <summary>+1 / -1: which side of the span (along its left normal) the wave pushes it to; away from the blast.</summary>
+            public int Side;
+        }
+
+        /// <summary>Weakest kick a span inside the radius gets (its far edge); the centre of the blast gives 1.</summary>
+        public const double BlastKickFloor = 0.35;
+
+        public static SpanBlast BlastSpan(P2 a, P2 b, P2 c, double radius, double hp, double damage, BlastKind kind)
+        {
+            var r = new SpanBlast { Hp = hp };
+            if (kind == BlastKind.None || !SpanHit(a, b, c, radius)) return r;
+            r.Hit = true;
+            if (kind == BlastKind.Cut)
+            {
+                r.Hp = hp - damage;
+                r.Cut = r.Hp <= 0;
+                return r;
+            }
+            double d = P2.Dist(P2.Lerp(a, b, ClosestT(a, b, c)), c);
+            r.Kick = radius > 1e-9 ? Math.Max(BlastKickFloor, Math.Min(1.0, 1.0 - d / radius)) : 1.0;
+            double cross = (b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X);
+            r.Side = cross > 0 ? -1 : 1; // blast on the left normal's side pushes the wire to the right, and back
+            return r;
+        }
+
+        /// <summary>How long a blast-swayed span keeps moving (game ticks, 3 s).</summary>
+        public const int BlastSwayTicks = 180;
+        /// <summary>Peak blast displacement as a multiple of the wind-sway amplitude (a push wave beats a breeze).</summary>
+        public const double BlastSwayGain = 2.5;
+
+        /// <summary>
+        /// Perpendicular offset of a point at fraction t along a span <paramref name="ageTicks"/> after a kinetic blast:
+        /// thrown to <paramref name="side"/> at once, then a decaying swing back and forth that is exactly 0 at both
+        /// insulators and from <see cref="BlastSwayTicks"/> on. Deterministic in its arguments (game-tick clock).
+        /// </summary>
+        public static double BlastSway(double t, int ageTicks, double kick, int side, double amp, int seed)
+        {
+            if (t <= 0 || t >= 1 || ageTicks < 0 || ageTicks >= BlastSwayTicks || kick <= 0 || amp <= 0) return 0;
+            double f = ageTicks / (double)BlastSwayTicks;
+            double period = 40 + 10 * U(seed, 5); // ticks per swing, per span
+            double decay = Math.Exp(-3 * f) * (1 - f);
+            return side * amp * BlastSwayGain * kick * Math.Sin(Math.PI * t) * decay * Math.Cos(2 * Math.PI * ageTicks / period);
+        }
+
         // ------------------------------------------------------------------ the one-way power tap (design 2.7)
         /// <summary>
         /// Energy (watt-days) the clamp takes from the victim net this tick: at most rate x k, at most what the victim

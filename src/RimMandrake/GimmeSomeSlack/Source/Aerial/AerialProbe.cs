@@ -190,7 +190,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             sb.Append(",\"anchors\":[" + string.Join(",", rows) + "]");
             sb.Append(",\"spansUp\":" + up / 2 + ",\"spansCut\":" + cut / 2 + ",\"fallenCords\":" + fallenN);
             sb.Append(",\"netRepairs\":" + comp.netRepairs + ",\"watchdogRuns\":" + comp.watchdogRuns + ",\"roofCuts\":" + comp.roofCuts +
-                      ",\"explosionCuts\":" + comp.explosionCuts + ",\"autoLinks\":" + comp.autoLinks + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
+                      ",\"explosionCuts\":" + comp.explosionCuts + ",\"kineticSways\":" + comp.kineticSways + ",\"autoLinks\":" + comp.autoLinks + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
             sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
                       ",\"topDraws\":" + comp.lastTopDraws + ",\"dropDraws\":" + comp.lastDropDraws + ",\"look\":" + S(AerialMaterials.Look) +
                       ",\"spanPath\":" + S(AerialMaterials.SpanPath) + ",\"spanWidth\":" + F(AerialMaterials.SpanWidth) +

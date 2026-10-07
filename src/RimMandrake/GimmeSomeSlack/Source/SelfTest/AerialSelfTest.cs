@@ -37,6 +37,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Watchdog();
             Fallen();
             Explosion();
+            KineticBlast();
             Tap();
             CanFail();
             Brackets();
@@ -328,6 +329,41 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             C(AerialMath.SpanHit(a, b, new P2(5, 2), 2.5) && !AerialMath.SpanHit(a, b, new P2(5, 3), 2.5), "explosion hits a span whose ground line is within radius");
             C(Math.Abs(AerialMath.ClosestT(a, b, new P2(3, 4)) - 0.3) < 1e-9, "cut point = closest point on the span (t 0.3)");
             C(!AerialMath.SpanHit(a, b, new P2(-4, 0), 2.5), "beyond the end is a miss");
+        }
+
+        /// <summary>Owner Q3 (2026-10-06): a kinetic blast sways spans and never cuts them; ordinary blasts still cut.</summary>
+        private static void KineticBlast()
+        {
+            var a = new P2(0, 0);
+            var b = new P2(10, 0);
+            var c = new P2(5, 1);
+            const double hp = 40, dmg = 50;
+            // kinetic: intact AND swayed, whatever the damage number says
+            AerialMath.BlastKind kk = AerialMath.BlastKindFor(true, true, dmg, true, true);
+            AerialMath.SpanBlast k = AerialMath.BlastSpan(a, b, c, 3, hp, dmg, kk);
+            C(kk == AerialMath.BlastKind.Sway, "kinetic blast verdict is Sway (" + kk + ")");
+            C(k.Hit && !k.Cut && k.Hp == hp, "kinetic blast leaves the span intact (hp " + k.Hp + ", cut " + k.Cut + ")");
+            C(k.Kick >= AerialMath.BlastKickFloor && k.Kick <= 1 && Math.Abs(k.Kick - (1 - 1.0 / 3)) < 1e-9, "kinetic kick falls off with distance (" + k.Kick.ToString("0.000") + ")");
+            C(k.Side == -1 && AerialMath.BlastSpan(a, b, new P2(5, -1), 3, hp, dmg, kk).Side == 1, "kinetic wave pushes the span away from the blast");
+            double peak = 0;
+            for (int age = 0; age < AerialMath.BlastSwayTicks; age++) peak = Math.Max(peak, Math.Abs(AerialMath.BlastSway(0.5, age, k.Kick, k.Side, 0.12, 7)));
+            C(peak > 0.12 && peak <= 0.12 * AerialMath.BlastSwayGain + 1e-9, "kinetic blast swings mid-span harder than wind, within gain (" + peak.ToString("0.000") + ")");
+            C(AerialMath.BlastSway(0.5, 0, k.Kick, k.Side, 0.12, 7) < 0, "first frame throws the span to the push side");
+            C(AerialMath.BlastSway(0.0, 5, 1, 1, 0.12, 7) == 0 && AerialMath.BlastSway(1.0, 5, 1, 1, 0.12, 7) == 0, "blast sway is 0 at both insulators");
+            C(AerialMath.BlastSway(0.5, AerialMath.BlastSwayTicks, 1, 1, 0.12, 7) == 0 && AerialMath.BlastSway(0.5, -1, 1, 1, 0.12, 7) == 0, "blast sway is 0 before the blast and once it settles");
+            C(AerialMath.BlastSway(0.5, 30, 1, 1, 0.12, 7) == AerialMath.BlastSway(0.5, 30, 1, 1, 0.12, 7), "blast sway deterministic");
+            C(!AerialMath.BlastSpan(a, b, new P2(5, 4), 3, hp, dmg, kk).Hit, "kinetic blast out of reach does nothing");
+            // the kinetic setting off: ignored, still never cut
+            C(AerialMath.BlastKindFor(true, true, dmg, true, false) == AerialMath.BlastKind.None, "kinetic sway off: the blast is ignored, never a cut");
+            // ordinary blast: existing behaviour (wound, part at hp 0)
+            AerialMath.BlastKind nk = AerialMath.BlastKindFor(true, false, dmg, true, true);
+            AerialMath.SpanBlast n = AerialMath.BlastSpan(a, b, c, 3, hp, dmg, nk);
+            C(nk == AerialMath.BlastKind.Cut && n.Hit && n.Cut && n.Hp == hp - dmg && n.Kick == 0, "ordinary blast still cuts (hp " + n.Hp + ")");
+            AerialMath.SpanBlast w = AerialMath.BlastSpan(a, b, c, 3, hp, 10, nk);
+            C(w.Hit && !w.Cut && w.Hp == hp - 10, "ordinary weak blast wounds without parting (hp " + w.Hp + ")");
+            C(AerialMath.BlastKindFor(true, false, dmg, false, true) == AerialMath.BlastKind.None, "explosions-cut setting off: ordinary blast ignored");
+            C(AerialMath.BlastKindFor(false, false, dmg, true, true) == AerialMath.BlastKind.None && AerialMath.BlastKindFor(true, false, 0, true, true) == AerialMath.BlastKind.None,
+              "harmless or zero-damage blast does nothing");
         }
 
         // ------------------------------------------------------------------ the one-way power tap

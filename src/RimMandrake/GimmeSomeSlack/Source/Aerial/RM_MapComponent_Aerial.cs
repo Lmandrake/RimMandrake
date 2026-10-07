@@ -366,11 +366,34 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             }
         }
 
-        // ------------------------------------------------------------------ explosions (design 2.6)
-        public int Notify_Explosion(IntVec3 center, float radius, float damage)
+        // ------------------------------------------------------------------ explosions (design 2.6) + kinetic sway (Q3)
+        /// <summary>A span a kinetic blast set swinging: when, how hard (0..1), which way. Transient (not saved): a
+        /// swing lasts AerialMath.BlastSwayTicks, and a load mid-swing simply starts at rest.</summary>
+        public struct BlastSwing { public int tick; public double kick; public int side; }
+        private readonly Dictionary<long, BlastSwing> swings = new Dictionary<long, BlastSwing>();
+        public int kineticSways;
+
+        private static long SwingKey(CompAerialAnchor a, CompAerialAnchor b) => ((long)a.thingIDNumber << 32) ^ (uint)b.thingIDNumber;
+
+        /// <summary>The swing on the owner-ordered span a-b now, if any (state read: AerialProbe, selftests).</summary>
+        public bool SwingOf(CompAerialAnchor a, CompAerialAnchor b, out BlastSwing s, out int age)
         {
-            if (!AerialSettings.explosionsCut || damage <= 0f) return 0;
-            int cuts = 0;
+            age = -1;
+            if (!swings.TryGetValue(SwingKey(a, b), out s)) return false;
+            age = Find.TickManager.TicksGame - s.tick;
+            if (age >= AerialMath.BlastSwayTicks) { swings.Remove(SwingKey(a, b)); return false; }
+            return true;
+        }
+
+        public int Notify_Explosion(IntVec3 center, float radius, float damage) =>
+            Notify_Blast(center, radius, damage, AerialMath.BlastKindFor(true, false, damage, AerialSettings.explosionsCut, AerialSettings.kineticSway));
+
+        /// <summary>Applies one blast to every standing span its radius reaches. Cut: wound, and part at hp 0 (design 2.6).
+        /// Sway: no wound, no cut; the span swings (owner Q3, 2026-10-06). Returns spans cut or swayed.</summary>
+        public int Notify_Blast(IntVec3 center, float radius, float damage, AerialMath.BlastKind kind)
+        {
+            if (kind == AerialMath.BlastKind.None) return 0;
+            int n = 0, now = Find.TickManager.TicksGame;
             var c = new P2(center.x + 0.5, center.z + 0.5);
             foreach (CompAerialAnchor a in Anchors.ToList())
                 foreach (SpanLink l in a.links.ToList())
@@ -378,14 +401,21 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     if (l.state != SpanState.Up || l.other == null || !AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber)) continue;
                     var pa = new P2(a.BasePoint.x, a.BasePoint.z);
                     var pb = new P2(l.other.BasePoint.x, l.other.BasePoint.z);
-                    if (!AerialMath.SpanHit(pa, pb, c, radius)) continue;
+                    AerialMath.SpanBlast r = AerialMath.BlastSpan(pa, pb, c, radius, l.hp, damage, kind);
+                    if (!r.Hit) continue;
+                    if (kind == AerialMath.BlastKind.Sway)
+                    {
+                        swings[SwingKey(a, l.other)] = new BlastSwing { tick = now, kick = r.Kick, side = r.Side };
+                        n++; kineticSways++;
+                        continue;
+                    }
                     SpanLink back = l.other.LinkTo(a);
-                    l.hp -= damage;
+                    l.hp = (float)r.Hp;
                     if (back != null) back.hp = l.hp;
-                    if (l.hp > 0f) continue;
-                    if (CompAerialAnchor.Cut(a, l.other, (float)AerialMath.ClosestT(pa, pb, c), true)) { cuts++; explosionCuts++; }
+                    if (!r.Cut) continue;
+                    if (CompAerialAnchor.Cut(a, l.other, (float)AerialMath.ClosestT(pa, pb, c), true)) { n++; explosionCuts++; }
                 }
-            return cuts;
+            return n;
         }
 
         // ------------------------------------------------------------------ drawing
@@ -413,7 +443,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     if (l.state != SpanState.Up || l.other == null || !l.other.Spawned || !AerialMath.Owns(a.thingIDNumber, l.other.thingIDNumber)) continue;
                     SpanMesh m = MeshFor(a, l.other, spanY);
                     if (m == null || !m.rect.Overlaps(view)) continue;
-                    if (sway) { m.Sway(time, wind, 0.12f * AerialSettings.swayStrength); lastSwayDraws++; }
+                    bool swung = SwingOf(a, l.other, out BlastSwing bs, out int age);
+                    if (sway || swung)
+                    {
+                        float amp = 0.12f * Mathf.Max(AerialSettings.swayStrength, 0.25f);
+                        m.Sway(sway ? time : 0f, sway ? wind : 0f, sway ? 0.12f * AerialSettings.swayStrength : 0f, swung ? age : -1, bs.kick, bs.side, amp);
+                        lastSwayDraws++;
+                    }
                     else m.Rest();
                     Graphics.DrawMesh(m.mesh, Matrix4x4.identity, m.mat, 0);
                     lastSpanDraws++;
@@ -754,15 +790,16 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             atRest = true;
         }
 
-        public void Sway(float time, float wind, float amp)
+        /// <summary>Wind sway plus, while <paramref name="blastAge"/> is in [0, BlastSwayTicks), a kinetic blast's swing.</summary>
+        public void Sway(float time, float wind, float amp, int blastAge, double kick, int side, float blastAmp)
         {
-            WriteVerts(time, wind, amp);
+            WriteVerts(time, wind, amp, blastAge, kick, side, blastAmp);
             mesh.vertices = verts;
             atRest = false;
         }
 
         /// <summary>Ribbon vertices; each sample displaced perpendicular to the span in the ground plane by AerialMath.Sway.</summary>
-        private void WriteVerts(float time, float wind, float amp)
+        private void WriteVerts(float time, float wind, float amp, int blastAge = -1, double kick = 0, int side = 0, float blastAmp = 0f)
         {
             var n = new P2(-dir.Z, dir.X);
             int v = 0;
@@ -773,6 +810,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 {
                     double t = i / (double)(s.Count - 1);
                     double off = amp > 0 ? AerialMath.Sway(t, time, wind, amp, seed + si * 977) : 0;
+                    if (blastAge >= 0) off += AerialMath.BlastSway(t, blastAge, kick, side, blastAmp, seed + si * 977);
                     P2 p = new P2(s[i].X + n.X * off, s[i].Z + n.Z * off);
                     P2 prev = i > 0 ? s[i - 1] : s[i], next = i < s.Count - 1 ? s[i + 1] : s[i];
                     double tx = next.X - prev.X, tz = next.Z - prev.Z, tl = Math.Sqrt(tx * tx + tz * tz);
@@ -864,9 +902,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             try
             {
                 if (map == null || damType == null || !damType.harmsHealth) return;
-                if (IsKineticBlast(damType)) return; // owner Q3 (2026-10-06): a kinetic blast sways cords, only real explosions cut them
                 float dmg = damAmount >= 0 ? damAmount : damType.defaultDamage;
-                map.GetComponent<RM_MapComponent_Aerial>()?.Notify_Explosion(center, radius, dmg);
+                // owner Q3 (2026-10-06): a kinetic blast sways cords and never cuts them; only real explosions cut
+                AerialMath.BlastKind kind = AerialMath.BlastKindFor(damType.harmsHealth, IsKineticBlast(damType), dmg,
+                    AerialSettings.explosionsCut, AerialSettings.kineticSway);
+                map.GetComponent<RM_MapComponent_Aerial>()?.Notify_Blast(center, radius, dmg, kind);
             }
             catch (Exception ex) { Log.ErrorOnce("[GimmeSomeSlack] aerial explosion hook: " + ex, 0x7A9E12); }
         }
