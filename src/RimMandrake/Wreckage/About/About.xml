@@ -36,7 +36,12 @@ Slice 2: abstract wreck family parents and RM_WreckWeatheringDef (yield, tier sh
 Slice 3: RM_GenStep_WreckField, one weighted-list scatter per biome on terrain tags, and
 RM_WreckDensityClassDef (Riddled, High, Moderate, Low, Eroded), plus the Frozen, Picked and
 Crystal-jacketed weathering rows.
+Step 5 (section 3e): RM_WreckListDef, a named weighted wreck list for arrivals, and the wreck-fall
+incident RM_WreckFall (RM_IncidentWorker_WreckFall + RM_WreckFallExtension: list, 1-4 wrecks,
+skyfaller RM_WreckFallIncoming, optional mutator gate). baseChance 0: debug-fired only until a
+region ships its own fall. Mod Settings: fresh wreck falls on/off.
 
 Not yet built (design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md section 7): the
-biome lists beyond the Scald, the repairable few, wreck falls.</description>
+biome lists beyond the Scald, the repairable few, the Cracked Lands recede and Miasma flotsam
+reading a wreck list, and the Fall Line's own falls moving onto this worker.</description>
 </ModMetaData>

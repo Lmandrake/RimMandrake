@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1, design §3e: named weighted wreck lists for ARRIVALS (wreck
+  falls, Miasma post-surge flotsam, the Cracked Lands flood strike). A field's list lives on its
+  GenStepDef; an arrival's lives here so any worker or map component can read it by defName
+  (RM_WreckListDef.PickWreck, or RM_WreckFall.Drop to land several by skyfaller).
+  Rows are element-name-as-key, <ThingDefName>weight</ThingDefName>, never <li>.
+
+  RM_WreckList_Fresh is a PLACEHOLDER. No RM_ "fresh" family child exists yet (design §4/§7 step
+  6 casts them), so it names the two vanilla ship chunks, Core's ShipChunk and Odyssey's
+  ShipChunk_Mech (every DLC is a shipping prerequisite). Neither carries RM_CompSalvageLoot, so a
+  fall of them yields only their costList. Replace the rows when fresh family children exist.
+  The Fall Line's own list (RUT_FallWreck_*) belongs in the RUT layer, never here.
+  Weights PROVISIONAL.
+-->
+<Defs>
+
+  <RimMandrake.Wreckage.RM_WreckListDef>
+    <defName>RM_WreckList_Fresh</defName>
+    <label>fresh wreckage</label>
+    <description>Wrecks that have only just come down: nothing has picked them over yet.</description>
+    <wrecks>
+      <ShipChunk>1</ShipChunk>
+      <ShipChunk_Mech>1</ShipChunk_Mech>
+    </wrecks>
+  </RimMandrake.Wreckage.RM_WreckListDef>
+
+</Defs>

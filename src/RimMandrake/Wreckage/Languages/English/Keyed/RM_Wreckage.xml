@@ -11,6 +11,9 @@
   <RM_Wreckage_Setting_Density>Wreck density (new maps only): {0}</RM_Wreckage_Setting_Density>
   <RM_Wreckage_Setting_Field>Wreck field: {0}</RM_Wreckage_Setting_Field>
   <RM_Wreckage_Setting_Field_Tip>Scatter wrecks on new {0} maps. Affects new maps only.</RM_Wreckage_Setting_Field_Tip>
+  <RM_Wreckage_Setting_WreckFalls>Fresh wreck falls</RM_Wreckage_Setting_WreckFalls>
+  <RM_Wreckage_Setting_WreckFalls_Tip>Let wreckage fall from the sky as an event, landing salvageable wrecks on the map. Off: no wreck-fall event ever fires. Wrecks that already landed stay.</RM_Wreckage_Setting_WreckFalls_Tip>
+  <RM_Wreckage_WreckFallMessage>Wreckage is falling from the sky. It will be salvageable once it lands.</RM_Wreckage_WreckFallMessage>
   <RM_Wreckage_InspectLootTier>Salvage: {0}</RM_Wreckage_InspectLootTier>
   <RM_Wreckage_Tier_Scrap>scrap</RM_Wreckage_Tier_Scrap>
   <RM_Wreckage_Tier_Hull>hull parts</RM_Wreckage_Tier_Hull>

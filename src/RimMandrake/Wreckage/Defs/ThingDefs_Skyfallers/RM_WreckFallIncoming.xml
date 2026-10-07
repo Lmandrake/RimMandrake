@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_WRECKAGE_EVERYWHERE_1, design §3e: the default incoming-wreck skyfaller for
+  RM_IncidentWorker_WreckFall (RM_WreckFallExtension.skyfaller unset). Same shape as Core's
+  ShipChunkIncoming (2x2, Defs/Core/ThingDefs_Misc/Ethereal_Skyfallers.xml) minus its Bomb blast:
+  a wreck is debris, not a bomb, so it throws slag shrapnel and shakes the camera instead
+  (the Fall Line arrival spec's RUT_FallWreckIncoming_* precedent). A wreck larger than 2x2 is
+  placed Near the impact cell by Skyfaller.SpawnThings. ALL NUMBERS PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>RM_WreckFallIncoming</defName>
+    <label>falling wreckage</label>
+    <size>(2, 2)</size>
+    <skyfaller>
+      <shadowSize>(2.5, 2.5)</shadowSize>
+      <explosionRadius>0</explosionRadius>
+      <cameraShake>1</cameraShake>
+      <metalShrapnelCountRange>3~6</metalShrapnelCountRange>
+      <ticksToImpactRange>240~360</ticksToImpactRange>
+    </skyfaller>
+  </ThingDef>
+
+</Defs>
