@@ -15,13 +15,13 @@ namespace RimMandrake.FeverWood
     // get; returning one to a Fever Wood pool makes the deep set down one great
     // gift from the very bottom.
     //
-    // Free tier only. The campaign half (Sporefall's display tank, the
-    // Wildsteam/prison-town trade, the Narrator's trader lines, the goodwill
-    // break) belongs in src/RimUtinni/ and is NOT built here; the hooks it needs
-    // are public: RM_DeepYoungKeeperExtension (flag a FactionDef's settlements
-    // as keeping young), RM_WorldComponent_DeepYoung.SetSettlementYoung (e.g.
-    // zero Sporefall once its young is freed), RM_DeepGift.Grant(rolls: 2) (the
-    // doubled "greatest gift").
+    // Free-tier mechanism only. The campaign names who and where in
+    // src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml:
+    // Sporefall's display tank (RM_GenStep_DisplayTank + a displayTank
+    // RM_CompProperties_CapturedSpecimen with giftRolls 2), the Wildsteam's
+    // young-cask stock (RM_StockGenerator_DeepYoung.onlyFactions), Sporefall's
+    // place in the tally (RM_DeepYoungKeeperExtension.onlySettlementNames), and
+    // the deep's lines (RM_CompProperties_DeepYoungLines).
     // ════════════════════════════════════════════════════════════════════
 
     /// <summary>Flags every settlement of a FactionDef as keeping this many of
@@ -30,6 +30,22 @@ namespace RimMandrake.FeverWood
     public class RM_DeepYoungKeeperExtension : DefModExtension
     {
         public int youngPerSettlement = 1;
+        // Empty: every settlement of the faction keeps young. Otherwise only
+        // the settlements with these names (campaign: Sporefall).
+        public List<string> onlySettlementNames = new List<string>();
+
+        public int YoungFor(Settlement settlement)
+        {
+            if (settlement == null)
+            {
+                return 0;
+            }
+            if (onlySettlementNames != null && onlySettlementNames.Count > 0 && !onlySettlementNames.Contains(settlement.Name))
+            {
+                return 0;
+            }
+            return Mathf.Max(0, youngPerSettlement);
+        }
     }
 
     /// <summary>The world's tally of the deep's young, recomputed on a long
@@ -45,6 +61,7 @@ namespace RimMandrake.FeverWood
         private int lastComputedTick = -999999;
         private int announcedLevel;
         private Dictionary<int, int> settlementYoungOverride = new Dictionary<int, int>();
+        private HashSet<int> freedDisplayTanks = new HashSet<int>(); // settlement IDs whose display tank was freed
 
         public RM_WorldComponent_DeepYoung(World world) : base(world)
         {
@@ -105,6 +122,44 @@ namespace RimMandrake.FeverWood
             }
             settlementYoungOverride[settlement.ID] = Mathf.Max(0, count);
             Recompute();
+        }
+
+        /// <summary>How many young this settlement keeps: its override, else
+        /// its faction's RM_DeepYoungKeeperExtension, else 0.</summary>
+        public int SettlementYoung(Settlement settlement)
+        {
+            if (settlement == null)
+            {
+                return 0;
+            }
+            if (settlementYoungOverride.TryGetValue(settlement.ID, out int ov))
+            {
+                return ov;
+            }
+            RM_DeepYoungKeeperExtension ext = settlement.Faction?.def?.GetModExtension<RM_DeepYoungKeeperExtension>();
+            return ext != null ? ext.YoungFor(settlement) : 0;
+        }
+
+        /// <summary>FEVERWOOD_BROOD_RANSOM_1 §5: the settlement's display tank
+        /// was freed. Remembered so the tank is not regenerated on the next
+        /// visit (settlement maps are rebuilt), and the town keeps one young
+        /// fewer in the tally.</summary>
+        public void Notify_DisplayTankFreed(Settlement settlement)
+        {
+            if (settlement == null)
+            {
+                return;
+            }
+            if (freedDisplayTanks.Add(settlement.ID))
+            {
+                settlementYoungOverride[settlement.ID] = Mathf.Max(0, SettlementYoung(settlement) - 1);
+            }
+            Recompute();
+        }
+
+        public bool DisplayTankFreed(Settlement settlement)
+        {
+            return settlement != null && freedDisplayTanks.Contains(settlement.ID);
         }
 
         public override void WorldComponentTick()
@@ -181,7 +236,7 @@ namespace RimMandrake.FeverWood
                 RM_DeepYoungKeeperExtension ext = st.Faction?.def?.GetModExtension<RM_DeepYoungKeeperExtension>();
                 if (ext != null)
                 {
-                    n += Mathf.Max(0, ext.youngPerSettlement);
+                    n += ext.YoungFor(st);
                 }
             }
 
@@ -232,6 +287,11 @@ namespace RimMandrake.FeverWood
             if (settlementYoungOverride == null)
             {
                 settlementYoungOverride = new Dictionary<int, int>();
+            }
+            Scribe_Collections.Look(ref freedDisplayTanks, "freedDisplayTanks", LookMode.Value);
+            if (freedDisplayTanks == null)
+            {
+                freedDisplayTanks = new HashSet<int>();
             }
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
@@ -400,14 +460,31 @@ namespace RimMandrake.FeverWood
     /// carrying this generator buys one back. Chance from Mod Settings.</summary>
     public class RM_StockGenerator_DeepYoung : StockGenerator
     {
+        // Campaign hooks (FEVERWOOD_BROOD_RANSOM_1 §4): stock only for these
+        // factions' traders (empty = any trader carrying the generator), and a
+        // fixed stock chance in place of the Mod Settings one (<0 = settings).
+        public List<FactionDef> onlyFactions = new List<FactionDef>();
+        public float stockChance = -1f;
+
+        public float EffectiveStockChance => Mathf.Clamp01(stockChance >= 0f ? stockChance : RM_FeverWoodSettings.broodCaskTraderStockChance);
+
+        public bool StocksFor(Faction faction)
+        {
+            if (onlyFactions == null || onlyFactions.Count == 0)
+            {
+                return true;
+            }
+            return faction != null && onlyFactions.Contains(faction.def);
+        }
+
         public override IEnumerable<Thing> GenerateThings(PlanetTile forTile, Faction faction = null)
         {
-            if (!RM_FeverWoodSettings.broodRansomEnabled)
+            if (!RM_FeverWoodSettings.broodRansomEnabled || !StocksFor(faction))
             {
                 yield break;
             }
             ThingDef cask = DefDatabase<ThingDef>.GetNamedSilentFail("RM_SekkulaathYoungCask");
-            if (cask != null && Rand.Chance(Mathf.Clamp01(RM_FeverWoodSettings.broodCaskTraderStockChance)))
+            if (cask != null && Rand.Chance(EffectiveStockChance))
             {
                 yield return ThingMaker.MakeThing(cask);
             }
@@ -482,6 +559,119 @@ namespace RimMandrake.FeverWood
         public override string CompInspectStringExtra()
         {
             return RM_WorldComponent_DeepYoung.RestlessnessLine();
+        }
+    }
+
+    /// <summary>FEVERWOOD_BROOD_RANSOM_1 §5: places a settlement's display
+    /// tank when its map is generated. Free-tier mechanism; the campaign
+    /// names the faction and town (Sporefall) in XML. Skipped once that
+    /// settlement's tank was freed, and with the brood ransom or tank off.</summary>
+    public class RM_GenStep_DisplayTank : GenStep
+    {
+        public ThingDef tankDef;
+        public FactionDef faction;
+        public string settlementName; // null/empty: every settlement of the faction
+        public float searchRadius = 14f;
+
+        public override int SeedPart => 518302771;
+
+        public static bool Applies(Settlement settlement, FactionDef faction, string settlementName)
+        {
+            if (settlement == null || faction == null || settlement.Faction?.def != faction)
+            {
+                return false;
+            }
+            return settlementName.NullOrEmpty() || settlement.Name == settlementName;
+        }
+
+        public override void Generate(Map map, GenStepParams parms)
+        {
+            if (!RM_FeverWoodSettings.broodRansomEnabled || !RM_FeverWoodSettings.sekkulaathTankEnabled || tankDef == null)
+            {
+                return;
+            }
+            Settlement settlement = map.Parent as Settlement;
+            if (!Applies(settlement, faction, settlementName))
+            {
+                return;
+            }
+            if (RM_WorldComponent_DeepYoung.Get?.DisplayTankFreed(settlement) == true)
+            {
+                return;
+            }
+            if (!CellFinder.TryFindRandomCellNear(map.Center, map, Mathf.RoundToInt(searchRadius),
+                    c => FootprintClear(c, map), out IntVec3 cell))
+            {
+                Log.Warning("[RM FeverWood] No room for " + tankDef.defName + " at " + settlement.Name + "; display tank not placed.");
+                return;
+            }
+            Thing tank = ThingMaker.MakeThing(tankDef, tankDef.MadeFromStuff ? GenStuff.DefaultStuffFor(tankDef) : null);
+            tank.SetFaction(settlement.Faction);
+            GenSpawn.Spawn(tank, cell, map, Rot4.North);
+        }
+
+        private bool FootprintClear(IntVec3 c, Map map)
+        {
+            foreach (IntVec3 f in GenAdj.OccupiedRect(c, Rot4.North, tankDef.size).ExpandedBy(1))
+            {
+                if (!f.InBounds(map) || !f.Standable(map) || f.GetTerrain(map).IsWater || f.GetEdifice(map) != null
+                    || f.GetFirstItem(map) != null || f.GetFirstPawn(map) != null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    /// <summary>FEVERWOOD_BROOD_RANSOM_1 §4: what the deep thinks of traders
+    /// in its children. Lines shown when a young-cask is bought or sold, and
+    /// when a young comes home. Free tier: not attached (no lines); the
+    /// campaign adds it to RM_SekkulaathYoungCask with its own wording.</summary>
+    public class RM_CompProperties_DeepYoungLines : CompProperties
+    {
+        public string boughtLine;
+        public string soldLine;
+        public string returnedLine;
+
+        public RM_CompProperties_DeepYoungLines()
+        {
+            compClass = typeof(RM_CompDeepYoungLines);
+        }
+
+        public static RM_CompProperties_DeepYoungLines ForCask()
+        {
+            return DefDatabase<ThingDef>.GetNamedSilentFail("RM_SekkulaathYoungCask")?.GetCompProperties<RM_CompProperties_DeepYoungLines>();
+        }
+    }
+
+    public class RM_CompDeepYoungLines : ThingComp
+    {
+        public RM_CompProperties_DeepYoungLines Props => (RM_CompProperties_DeepYoungLines)props;
+
+        public static string LineFor(RM_CompProperties_DeepYoungLines p, TradeAction action)
+        {
+            if (p == null)
+            {
+                return null;
+            }
+            return action == TradeAction.PlayerBuys ? p.boughtLine
+                : action == TradeAction.PlayerSells ? p.soldLine
+                : null;
+        }
+
+        public override void PrePreTraded(TradeAction action, Pawn playerNegotiator, ITrader trader)
+        {
+            base.PrePreTraded(action, playerNegotiator, trader);
+            if (!RM_FeverWoodSettings.broodRansomEnabled)
+            {
+                return;
+            }
+            string line = LineFor(Props, action);
+            if (!line.NullOrEmpty())
+            {
+                Messages.Message(line, MessageTypeDefOf.NeutralEvent);
+            }
         }
     }
 }

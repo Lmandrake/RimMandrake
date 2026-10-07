@@ -88,6 +88,22 @@ namespace RimMandrake.FeverWood
         /// produces/escapes, it just never files that teach.</summary>
         public bool teachesColonyWarning = true;
 
+        // FEVERWOOD_BROOD_RANSOM_1 §5: a town's DISPLAY tank (campaign:
+        // Sporefall's). While another faction owns it, it neither feeds,
+        // produces nor escapes on neglect; a colonist standing beside it can
+        // free the young ("Free the young"), and breaching it frees the young
+        // too. Either way the young is RELEASED (walks home, buys
+        // giftRolls gifts at a Fever Wood pool), the owning faction loses
+        // goodwill (Mod Settings: broodDisplayTankGoodwillLoss) and the
+        // settlement keeps one young fewer in the world's tally.
+        public bool displayTank = false;
+        // When set, the occupant is whatever that tank ThingDef holds (so a
+        // display tank follows the Star Wars dianoga swap of RM_SekkulaathTank).
+        public string occupantLikeTank;
+        public int giftRolls = 1;
+        public string freedLetterLabel;
+        public string freedLetterText;
+
         public RM_CompProperties_CapturedSpecimen()
         {
             compClass = typeof(RM_CompCapturedSpecimen);
@@ -100,7 +116,7 @@ namespace RimMandrake.FeverWood
                 yield return err;
             }
 
-            if (string.IsNullOrEmpty(occupantKindDefName))
+            if (string.IsNullOrEmpty(occupantKindDefName) && string.IsNullOrEmpty(occupantLikeTank))
             {
                 yield return "RM_CompProperties_CapturedSpecimen occupantKindDefName is required.";
             }

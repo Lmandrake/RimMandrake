@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using RimMandrake.EnvironmentalHazards;
@@ -59,6 +60,15 @@ namespace RimMandrake.FeverWood
                 ThingDef tank = DefDatabase<ThingDef>.GetNamedSilentFail("RM_SekkulaathTank");
                 props = tank?.GetCompProperties<RM_CompProperties_CapturedSpecimen>();
             }
+            if (props != null && !props.occupantLikeTank.NullOrEmpty())
+            {
+                RM_CompProperties_CapturedSpecimen like = DefDatabase<ThingDef>.GetNamedSilentFail(props.occupantLikeTank)
+                    ?.GetCompProperties<RM_CompProperties_CapturedSpecimen>();
+                if (like != null && like != props && like.occupantLikeTank.NullOrEmpty())
+                {
+                    props = like;
+                }
+            }
             string name = props?.occupantKindDefName ?? "RM_Sekkulaath_Juvenile";
             return DefDatabase<PawnKindDef>.GetNamedSilentFail(name);
         }
@@ -92,6 +102,10 @@ namespace RimMandrake.FeverWood
             if (!occupied)
             {
                 return; // returned to the deep: an empty tank neither produces nor escapes
+            }
+            if (IsForeignDisplay)
+            {
+                return; // a town's display tank: the town feeds it; it neither produces for nor escapes on the player
             }
             if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
             {
@@ -199,6 +213,15 @@ namespace RimMandrake.FeverWood
         /// (item's ruling 3: "it remembers the tank").</summary>
         private void Escape(string cause)
         {
+            if (IsForeignDisplay && RM_FeverWoodSettings.broodRansomEnabled)
+            {
+                FreeDisplayYoung(parent.Map, parent.Position, breached: true);
+                if (!parent.Destroyed)
+                {
+                    parent.Destroy(DestroyMode.Vanish);
+                }
+                return;
+            }
             Map map = parent.Map;
             IntVec3 pos = parent.Position;
             PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(Props.occupantKindDefName);
@@ -270,8 +293,16 @@ namespace RimMandrake.FeverWood
             {
                 yield return g;
             }
-            if (!RM_FeverWoodSettings.broodRansomEnabled || !RM_FeverWoodSettings.sekkulaathTankEnabled
-                || parent.Faction != Faction.OfPlayer)
+            if (!RM_FeverWoodSettings.broodRansomEnabled || !RM_FeverWoodSettings.sekkulaathTankEnabled)
+            {
+                yield break;
+            }
+            if (IsForeignDisplay)
+            {
+                yield return FreeYoungGizmo();
+                yield break;
+            }
+            if (parent.Faction != Faction.OfPlayer)
             {
                 yield break;
             }
@@ -290,6 +321,100 @@ namespace RimMandrake.FeverWood
                 cmd.Disable("The tank is empty.");
             }
             yield return cmd;
+        }
+
+        // ── FEVERWOOD_BROOD_RANSOM_1 §5: a town's display tank ──────────────
+
+        /// <summary>A display tank another faction owns (campaign: Sporefall's).</summary>
+        public bool IsForeignDisplay => Props.displayTank && parent.Faction != null && parent.Faction != Faction.OfPlayer;
+
+        /// <summary>A player colonist stands in or beside the tank's footprint.</summary>
+        public Pawn AdjacentColonist()
+        {
+            if (!parent.Spawned)
+            {
+                return null;
+            }
+            CellRect near = parent.OccupiedRect().ExpandedBy(1);
+            IReadOnlyList<Pawn> pawns = parent.Map.mapPawns.FreeColonistsSpawned;
+            for (int i = 0; i < pawns.Count; i++)
+            {
+                if (near.Contains(pawns[i].Position) && !pawns[i].Downed && pawns[i].IsColonistPlayerControlled)
+                {
+                    return pawns[i];
+                }
+            }
+            return null;
+        }
+
+        private Command_Action FreeYoungGizmo()
+        {
+            PawnKindDef kind = YoungKind(Props);
+            Faction owner = parent.Faction;
+            Command_Action cmd = new Command_Action
+            {
+                defaultLabel = "Free the young",
+                defaultDesc = "Open " + owner.Name + "'s tank and let the young out. It will make for the nearest water; "
+                    + "at a Fever Wood pool the deep pays " + (Props.giftRolls > 1 ? "twice over" : "for it")
+                    + ". " + owner.Name + " will not forgive it (goodwill -" + RM_FeverWoodSettings.broodDisplayTankGoodwillLoss
+                    + "). Needs a colonist standing beside the tank.",
+                icon = kind?.race?.uiIcon ?? BaseContent.BadTex,
+                action = () => Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                    "Free the young from " + owner.Name + "'s tank? They will see it done.",
+                    () => FreeDisplayYoung(parent.Map, parent.Position, breached: false), destructive: true))
+            };
+            if (!occupied)
+            {
+                cmd.Disable("The tank is empty.");
+            }
+            else if (AdjacentColonist() == null)
+            {
+                cmd.Disable("A colonist must stand beside the tank.");
+            }
+            return cmd;
+        }
+
+        /// <summary>Frees a display tank's young: released (walks home, buys
+        /// Props.giftRolls gifts at a Fever Wood pool), goodwill loss with the
+        /// owner, one young fewer at the settlement, and the town's letter.
+        /// Idempotent: an empty tank does nothing.</summary>
+        public Pawn FreeDisplayYoung(Map map, IntVec3 pos, bool breached)
+        {
+            if (!occupied || map == null)
+            {
+                return null;
+            }
+            occupied = false;
+            Faction owner = parent.Faction;
+            Pawn young = null;
+            PawnKindDef kind = YoungKind(Props);
+            if (kind != null)
+            {
+                young = PawnGenerator.GeneratePawn(kind, null);
+                GenSpawn.Spawn(young, CellFinder.RandomClosewalkCellNear(pos, map, 3), map);
+                young.GetComp<RM_CompEscapedCaptive>()?.Notify_ReleasedToDeep(Props.giftRolls);
+            }
+            int loss = RM_FeverWoodSettings.broodDisplayTankGoodwillLoss;
+            if (owner != null && owner != Faction.OfPlayer && loss > 0)
+            {
+                owner.TryAffectGoodwillWith(Faction.OfPlayer, -loss, canSendMessage: true, canSendHostilityLetter: true,
+                    reason: null, lookTarget: young != null ? new GlobalTargetInfo(young) : (GlobalTargetInfo?)null);
+            }
+            if (map.Parent is Settlement settlement)
+            {
+                RM_WorldComponent_DeepYoung.Get?.Notify_DisplayTankFreed(settlement);
+            }
+            else
+            {
+                RM_WorldComponent_DeepYoung.Get?.Recompute();
+            }
+            string label = Props.freedLetterLabel ?? "The young is loose";
+            string text = Props.freedLetterText
+                ?? ((breached ? "The tank is broken open" : "The tank is opened") + " and its young slides out, making for the water. "
+                    + (owner != null ? owner.Name + " saw it done." : ""));
+            Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.NegativeEvent,
+                young != null ? new LookTargets(young) : new LookTargets(new TargetInfo(pos, map)));
+            return young;
         }
 
         public void ReleaseToTheDeep()
@@ -314,6 +439,18 @@ namespace RimMandrake.FeverWood
                     young, MessageTypeDefOf.NeutralEvent);
             }
             RM_WorldComponent_DeepYoung.Get?.Recompute();
+        }
+
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            base.PostDestroy(mode, previousMap);
+            // Broken outright (no escape roll got there first): a display tank's young still gets out.
+            if (mode == DestroyMode.KillFinalize && occupied && Props.displayTank && previousMap != null
+                && parent.Faction != null && parent.Faction != Faction.OfPlayer
+                && RM_FeverWoodSettings.broodRansomEnabled && RM_FeverWoodSettings.sekkulaathTankEnabled)
+            {
+                FreeDisplayYoung(previousMap, parent.Position, breached: true);
+            }
         }
 
         public override void PostExposeData()

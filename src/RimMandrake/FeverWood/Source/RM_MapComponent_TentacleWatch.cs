@@ -103,6 +103,7 @@ namespace RimMandrake.FeverWood
         // FEVERWOOD_BROOD_RANSOM_1: gifts owed for young returned to a pool here.
         private List<int> pendingGiftTicks = new List<int>();
         private List<IntVec3> pendingGiftCells = new List<IntVec3>();
+        private List<int> pendingGiftRolls = new List<int>();
         private const int GiftCheckIntervalTicks = 250;
 
         private List<IntVec3> poolCellsCache;
@@ -176,10 +177,11 @@ namespace RimMandrake.FeverWood
 
         /// <summary>The young came home to a pool here: within the hour the
         /// deep sets down one great gift beside it.</summary>
-        public void ScheduleDeepGift(IntVec3 pool)
+        public void ScheduleDeepGift(IntVec3 pool, int rolls = 1)
         {
             pendingGiftTicks.Add(Find.TickManager.TicksGame + Rand.RangeInclusive(600, 2200)); // INVENTED: "within an hour"
             pendingGiftCells.Add(pool);
+            pendingGiftRolls.Add(UnityEngine.Mathf.Max(1, rolls));
         }
 
         private void TickPendingGifts()
@@ -192,11 +194,16 @@ namespace RimMandrake.FeverWood
                     continue;
                 }
                 IntVec3 cell = pendingGiftCells[i];
+                int rolls = i < pendingGiftRolls.Count ? pendingGiftRolls[i] : 1;
                 pendingGiftTicks.RemoveAt(i);
                 pendingGiftCells.RemoveAt(i);
+                if (i < pendingGiftRolls.Count)
+                {
+                    pendingGiftRolls.RemoveAt(i);
+                }
                 if (RM_FeverWoodSettings.broodRansomEnabled)
                 {
-                    RM_DeepGift.Grant(map, cell);
+                    RM_DeepGift.Grant(map, cell, rolls);
                 }
             }
         }
@@ -602,6 +609,15 @@ namespace RimMandrake.FeverWood
             {
                 pendingGiftTicks = new List<int>();
                 pendingGiftCells = new List<IntVec3>();
+            }
+            Scribe_Collections.Look(ref pendingGiftRolls, "pendingGiftRolls", LookMode.Value);
+            if (pendingGiftRolls == null || pendingGiftRolls.Count != pendingGiftTicks.Count)
+            {
+                pendingGiftRolls = new List<int>(); // older save or mismatch: every pending gift rolls once
+                for (int i = 0; i < pendingGiftTicks.Count; i++)
+                {
+                    pendingGiftRolls.Add(1);
+                }
             }
             // sentinelCount is deliberately NOT scribed: every spawned
             // sentinel's own RM_CompTentacleLimb.PostSpawnSetup re-registers

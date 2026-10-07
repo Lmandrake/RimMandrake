@@ -36,10 +36,12 @@ namespace RimMandrake.FeverWood
 
         private bool armed;
         private bool released; // FEVERWOOD_BROOD_RANSOM_1: let go on purpose, walking home
+        private int giftRolls = 1; // a display tank's young (Sporefall's) buys the doubled "greatest gift"
 
         private int nextSearchTick; // transient: throttles the whole-map water scan
 
         public bool Released => released;
+        public int GiftRolls => giftRolls;
 
         public void Notify_JustEscaped()
         {
@@ -50,9 +52,10 @@ namespace RimMandrake.FeverWood
         /// gizmo or an opened young-cask). Non-hostile; walks for the
         /// nearest water. Distinct from an escape: only a released young
         /// buys a gift.</summary>
-        public void Notify_ReleasedToDeep()
+        public void Notify_ReleasedToDeep(int rolls = 1)
         {
             released = true;
+            giftRolls = UnityEngine.Mathf.Max(1, rolls);
             armed = false;
         }
 
@@ -233,9 +236,14 @@ namespace RimMandrake.FeverWood
             if (home && RM_FeverWoodSettings.broodRansomEnabled && watch != null)
             {
                 watch.Notify_SekkulaathInstalled();
-                watch.ScheduleDeepGift(water);
+                watch.ScheduleDeepGift(water, giftRolls);
                 Messages.Message("The young slips into the pool and is gone. Something below has noticed.",
                     new TargetInfo(water, map), MessageTypeDefOf.PositiveEvent);
+                string returned = RM_CompProperties_DeepYoungLines.ForCask()?.returnedLine;
+                if (!returned.NullOrEmpty())
+                {
+                    Messages.Message(returned, new TargetInfo(water, map), MessageTypeDefOf.NeutralEvent);
+                }
             }
             else
             {
@@ -254,6 +262,7 @@ namespace RimMandrake.FeverWood
             base.PostExposeData();
             Scribe_Values.Look(ref armed, "armed", false);
             Scribe_Values.Look(ref released, "released", false);
+            Scribe_Values.Look(ref giftRolls, "giftRolls", 1);
         }
     }
 }
