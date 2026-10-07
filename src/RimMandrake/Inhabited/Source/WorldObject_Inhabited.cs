@@ -290,31 +290,22 @@ namespace RimMandrake.Inhabited
                 return;
             }
 
-            List<PawnKindDef> wanted = new List<PawnKindDef>();
+            List<PawnKindDef> kinds = new List<PawnKindDef>();
+            List<int> rolled = new List<int>();
             for (int i = 0; i < cast.roles.Count; i++)
             {
                 InhabitedRole role = cast.roles[i];
-                if (role?.kind == null)
-                {
-                    continue;
-                }
-                int n = role.count.RandomInRange;
-                for (int j = 0; j < n; j++)
-                {
-                    wanted.Add(role.kind);
-                }
+                kinds.Add(role?.kind);
+                rolled.Add(role?.kind == null ? 0 : role.count.RandomInRange);
             }
+            // Trim from the BACK, so leaders and traders -- written first -- keep
+            // their places when a roll overshoots the archetype's size.
+            // (Built and trimmed by InhabitedCustody.BuildWanted, which the offline fuzz drives.)
+            int size = cast.castSize.RandomInRange;
+            List<PawnKindDef> wanted = InhabitedCustody.BuildWanted(kinds, rolled, size);
             if (wanted.Count == 0)
             {
                 return;
-            }
-
-            // Trim from the BACK, so leaders and traders -- written first -- keep
-            // their places when a roll overshoots the archetype's size.
-            int size = cast.castSize.RandomInRange;
-            if (size > 0 && wanted.Count > size)
-            {
-                wanted.RemoveRange(size, wanted.Count - size);
             }
 
             int fromPool = 0;
@@ -342,7 +333,7 @@ namespace RimMandrake.Inhabited
             // head silently cost a place receiving displaced people its authored
             // leader and trader pawnkinds, and misaligned every authored character
             // against the role it was written for.
-            for (int i = 0; i < wanted.Count - fromPool; i++)
+            for (int i = 0; i < InhabitedCustody.GenerateCount(wanted.Count, fromPool); i++)
             {
                 // Fixed 2026-09-02 (opus code review): must thread the upcoming
                 // character's gender into generation itself (fixedGender), not
@@ -352,9 +343,8 @@ namespace RimMandrake.Inhabited
                 // and leaves a rolled-for-the-other-gender body/head/hair, which
                 // is what CharacterApplier.Spawn's own fixedGender arg already
                 // avoids for its callers -- this was the one path that didn't.
-                CharacterDef upcoming = (cast.characters != null && nextCharacter < cast.characters.Count)
-                    ? cast.characters[nextCharacter]
-                    : null;
+                int upcomingIndex = InhabitedCustody.UpcomingCharacter(nextCharacter, cast.characters?.Count ?? 0);
+                CharacterDef upcoming = upcomingIndex >= 0 ? cast.characters[upcomingIndex] : null;
 
                 Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
                     wanted[i],
@@ -481,29 +471,19 @@ namespace RimMandrake.Inhabited
             DisplacedPool pool = DisplacedPool.Current;
             if (pool != null && roster != null && roster.Count > 0)
             {
-                List<Pawn> left = roster.InnerListForReading.ToList();
-                for (int i = 0; i < left.Count; i++)
-                {
-                    Pawn p = left[i];
-                    if (p == null || p.Dead)
-                    {
-                        continue;
-                    }
-                    if (!roster.Remove(p))
-                    {
-                        continue;
-                    }
-                    if (!pool.Absorb(p, Faction, DisplacedReason.Fled, LabelCap)
-                        && !roster.TryAdd(p, canMergeWithExistingStacks: false))
+                InhabitedCustody.MoveRosterToPool(roster.InnerListForReading.ToList(), p => p.Dead,
+                    p => roster.Remove(p),
+                    p => pool.Absorb(p, Faction, DisplacedReason.Fled, LabelCap),
+                    p => roster.TryAdd(p, canMergeWithExistingStacks: false),
+                    p =>
                     {
                         // Absorb refuses a destroyed pawn and a pool that will
-                        // not take them, and this loop had already taken them off
-                        // the roster -- so they were held by nothing, which no
-                        // Scribe path reaches and no save can carry.
+                        // not take them, and the roster had already let them go --
+                        // so they were held by nothing, which no Scribe path
+                        // reaches and no save can carry.
                         Log.Error("[RimMandrake.Inhabited] " + p.LabelShort + " left " + LabelCap
                                   + " and has nowhere to be; they are lost.");
-                    }
-                }
+                    });
             }
         }
 

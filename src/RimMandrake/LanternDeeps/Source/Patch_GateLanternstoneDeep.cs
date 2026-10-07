@@ -15,7 +15,7 @@ namespace RimMandrake.LanternDeeps
 
 		public static bool IsLanternstone(ThingDef def)
 		{
-			return def != null && (def.defName == "RM_Lanternstone" || def.defName == "RUT_Lanternstone");
+			return def != null && (def.defName == "RM_Lanternstone");
 		}
 
 		public static void Postfix(CompDeepScanner __instance, ref ThingDef __result)

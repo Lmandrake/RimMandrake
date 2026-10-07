@@ -8,26 +8,6 @@ using Verse;
 namespace RimMandrake.Inhabited
 {
     /// <summary>
-    /// Why someone is placeless. Drift between factions is possible but rare and
-    /// must carry a reason -- it is never random.
-    /// </summary>
-    public enum DisplacedReason
-    {
-        /// <summary>The player menaced them off their own site. Stays in faction.</summary>
-        Fled,
-        /// <summary>The larder emptied and they went. Stays in faction.</summary>
-        StarvedOut,
-        /// <summary>May change faction: to the new owner.</summary>
-        Enslaved,
-        /// <summary>May change faction: to factionless, or whoever shelters them.</summary>
-        Escaped,
-        /// <summary>May change faction: absorbed by the victor.</summary>
-        LostABattle,
-        /// <summary>May change faction: to the buyer's cast. They stay there.</summary>
-        SoldByPlayer
-    }
-
-    /// <summary>
     /// The people who lost their place. They are not destroyed; they wait here,
     /// and any cast being instantiated draws from this pool BEFORE generating
     /// anyone new. That one ordering rule is the entire recurring-character
@@ -59,18 +39,12 @@ namespace RimMandrake.Inhabited
         private ThingOwner<Pawn> placeless;
 
         /// <summary>
-        /// Why each is placeless, and where from, keyed by thingIDNumber rather
+        /// Why each is placeless, and where from, and in what order, keyed by thingIDNumber rather
         /// than by pawn reference. Plain value dictionaries need no cross-reference
-        /// resolution, so they cannot half-load behind a pawn that did.
+        /// resolution, so they cannot half-load behind a pawn that did. The bookkeeping
+        /// lives in InhabitedCustodyKernel.cs (DisplacementBook), which the offline fuzz drives.
         /// </summary>
-        private Dictionary<int, DisplacedReason> reasons = new Dictionary<int, DisplacedReason>();
-
-        private Dictionary<int, string> origins = new Dictionary<int, string>();
-
-        /// <summary>Displacement order, so a Draw can take the longest-waiting first.</summary>
-        private Dictionary<int, int> displacedAt = new Dictionary<int, int>();
-
-        private int nextOrder;
+        private DisplacementBook book = new DisplacementBook();
 
         public DisplacedPool(Game game)
         {
@@ -97,28 +71,17 @@ namespace RimMandrake.Inhabited
         {
             base.ExposeData();
             Scribe_Deep.Look(ref placeless, "placeless", this);
-            Scribe_Collections.Look(ref reasons, "reasons", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref origins, "origins", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref displacedAt, "displacedAt", LookMode.Value, LookMode.Value);
-            Scribe_Values.Look(ref nextOrder, "nextOrder", 0);
+            Scribe_Collections.Look(ref book.reasons, "reasons", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref book.origins, "origins", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref book.displacedAt, "displacedAt", LookMode.Value, LookMode.Value);
+            Scribe_Values.Look(ref book.nextOrder, "nextOrder", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (placeless == null)
                 {
                     placeless = new ThingOwner<Pawn>(this, oneStackOnly: false, LookMode.Deep);
                 }
-                if (reasons == null)
-                {
-                    reasons = new Dictionary<int, DisplacedReason>();
-                }
-                if (origins == null)
-                {
-                    origins = new Dictionary<int, string>();
-                }
-                if (displacedAt == null)
-                {
-                    displacedAt = new Dictionary<int, int>();
-                }
+                book.EnsureNotNull();
             }
         }
 
@@ -129,33 +92,31 @@ namespace RimMandrake.Inhabited
         public bool Absorb(Pawn pawn, Faction faction, DisplacedReason reason = DisplacedReason.Fled,
             string origin = null)
         {
-            if (pawn == null || pawn.Dead || pawn.Destroyed)
+            if (pawn == null)
             {
                 return false;
             }
-            if (pawn.Spawned)
-            {
-                pawn.DeSpawnOrDeselect();
-            }
-            if (pawn.IsWorldPawn())
-            {
-                // A pawn cannot be both deep-held here and owned by WorldPawns: it
-                // would be saved twice, and WorldPawnGC would still be free to
-                // discard the copy it can see.
-                Find.WorldPawns.RemovePawn(pawn);
-            }
-            if (faction != null && pawn.Faction != faction)
-            {
-                pawn.SetFaction(faction);
-            }
-            if (!placeless.TryAdd(pawn, canMergeWithExistingStacks: false))
-            {
-                return false;
-            }
-            reasons[pawn.thingIDNumber] = reason;
-            origins[pawn.thingIDNumber] = origin;
-            displacedAt[pawn.thingIDNumber] = nextOrder++;
-            return true;
+            return InhabitedCustody.Absorb(book, pawn.thingIDNumber, pawn.Dead || pawn.Destroyed,
+                () =>
+                {
+                    if (pawn.Spawned)
+                    {
+                        pawn.DeSpawnOrDeselect();
+                    }
+                    if (pawn.IsWorldPawn())
+                    {
+                        // A pawn cannot be both deep-held here and owned by WorldPawns: it
+                        // would be saved twice, and WorldPawnGC would still be free to
+                        // discard the copy it can see.
+                        Find.WorldPawns.RemovePawn(pawn);
+                    }
+                    if (faction != null && pawn.Faction != faction)
+                    {
+                        pawn.SetFaction(faction);
+                    }
+                },
+                () => placeless.TryAdd(pawn, canMergeWithExistingStacks: false),
+                reason, origin);
         }
 
         /// <summary>
@@ -168,10 +129,9 @@ namespace RimMandrake.Inhabited
             {
                 return new List<Pawn>();
             }
-            return placeless.InnerListForReading
-                .Where(p => p != null && !p.Dead && filter(p))
-                .OrderBy(p => displacedAt.TryGetValue(p.thingIDNumber, out int o) ? o : int.MaxValue)
-                .ToList();
+            return InhabitedCustody.Order(book,
+                placeless.InnerListForReading.Where(p => p != null && !p.Dead && filter(p)),
+                p => p.thingIDNumber);
         }
 
         /// <summary>
@@ -189,43 +149,24 @@ namespace RimMandrake.Inhabited
         /// </summary>
         private bool TryHandOver(Pawn p, Func<Pawn, bool> destination)
         {
-            if (p == null || placeless == null || !placeless.Remove(p))
-            {
-                return false;
-            }
-            bool taken;
-            try
-            {
-                taken = destination(p);
-            }
-            catch
-            {
-                PutBack(p);
-                throw;
-            }
-            if (!taken)
-            {
-                PutBack(p);
-                return false;
-            }
-            reasons.Remove(p.thingIDNumber);
-            origins.Remove(p.thingIDNumber);
-            displacedAt.Remove(p.thingIDNumber);
-            return true;
+            return InhabitedCustody.HandOver(book, p, p?.thingIDNumber ?? 0,
+                x => placeless != null && placeless.Remove(x), PutBack, destination, LogLost);
         }
 
         /// <summary>
         /// Undo a hand-over the destination refused. The metadata is cleared only
-        /// on success above, so this restores the reason, the origin and the place
+        /// on success, so this restores the reason, the origin and the place
         /// in the queue exactly as they were.
         /// </summary>
-        private void PutBack(Pawn p)
+        private bool PutBack(Pawn p)
         {
-            if (!placeless.TryAdd(p, canMergeWithExistingStacks: false))
-            {
-                Log.Error("[RimMandrake.Inhabited] could not return " + p.ToStringSafe()
-                          + " to the displaced pool; they are now held nowhere and will not be saved.");
-            }
+            return placeless.TryAdd(p, canMergeWithExistingStacks: false);
+        }
+
+        private static void LogLost(Pawn p)
+        {
+            Log.Error("[RimMandrake.Inhabited] could not return " + p.ToStringSafe()
+                      + " to the displaced pool; they are now held nowhere and will not be saved.");
         }
 
         /// <summary>
@@ -245,18 +186,9 @@ namespace RimMandrake.Inhabited
             {
                 return 0;
             }
-            List<Pawn> candidates = Candidates(p => p.Faction == faction);
-            int moved = 0;
-            for (int i = 0; i < candidates.Count && moved < count; i++)
-            {
-                if (!TryHandOver(candidates[i], p => destination.TryAdd(p, canMergeWithExistingStacks: false)))
-                {
-                    continue;
-                }
-                arrived?.Add(candidates[i]);
-                moved++;
-            }
-            return moved;
+            return InhabitedCustody.DrawInto(book, Candidates(p => p.Faction == faction), count, p => p.thingIDNumber,
+                x => placeless.Remove(x), PutBack, p => destination.TryAdd(p, canMergeWithExistingStacks: false),
+                LogLost, arrived);
         }
 
         /// <summary>
@@ -277,15 +209,8 @@ namespace RimMandrake.Inhabited
             {
                 return null;
             }
-            List<Pawn> candidates = Candidates(p => p.RaceProps != null && p.RaceProps.Humanlike);
-            for (int i = 0; i < candidates.Count; i++)
-            {
-                if (TryHandOver(candidates[i], destination))
-                {
-                    return candidates[i];
-                }
-            }
-            return null;
+            return InhabitedCustody.DrawAny(book, Candidates(p => p.RaceProps != null && p.RaceProps.Humanlike),
+                p => p.thingIDNumber, x => placeless.Remove(x), PutBack, destination, LogLost);
         }
 
         /// <summary>How many of a faction are waiting. Used to size a draw.</summary>
@@ -300,12 +225,12 @@ namespace RimMandrake.Inhabited
 
         public DisplacedReason ReasonFor(Pawn pawn)
         {
-            return reasons.TryGetValue(pawn.thingIDNumber, out DisplacedReason r) ? r : DisplacedReason.Fled;
+            return book.ReasonFor(pawn.thingIDNumber);
         }
 
         public string OriginFor(Pawn pawn)
         {
-            return origins.TryGetValue(pawn.thingIDNumber, out string o) ? o : null;
+            return book.OriginFor(pawn.thingIDNumber);
         }
 
         /// <summary>Everyone waiting, for debug listing only.</summary>

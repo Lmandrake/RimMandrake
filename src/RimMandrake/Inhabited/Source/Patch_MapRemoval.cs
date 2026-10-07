@@ -93,18 +93,19 @@ namespace RimMandrake.Inhabited
                 // TryAddOrTransfer, not TryAdd: a carried resident is still held by
                 // the carrier, and ThingOwner.TryAdd refuses anything that already
                 // has a holdingOwner.
-                if (place.roster.TryAddOrTransfer(p, canMergeWithExistingStacks: false))
-                {
-                    continue;
-                }
-                if (pool != null && pool.Absorb(p, place.Faction, DisplacedReason.Fled, place.LabelCap))
+                InhabitedCustody.RecallOutcome outcome = InhabitedCustody.Recall(p,
+                    x => place.roster.TryAddOrTransfer(x, canMergeWithExistingStacks: false),
+                    x => pool != null && pool.Absorb(x, place.Faction, DisplacedReason.Fled, place.LabelCap));
+                if (outcome == InhabitedCustody.RecallOutcome.Placeless)
                 {
                     Log.Warning("[RimMandrake.Inhabited] " + p.LabelShort + " would not go back on the roster of "
                                 + place.LabelCap + "; they are placeless instead.");
-                    continue;
                 }
-                Log.Warning("[RimMandrake.Inhabited] could not return " + p.LabelShort + " to the roster of "
-                            + place.LabelCap + "; they are left to the world.");
+                else if (outcome == InhabitedCustody.RecallOutcome.LeftToWorld)
+                {
+                    Log.Warning("[RimMandrake.Inhabited] could not return " + p.LabelShort + " to the roster of "
+                                + place.LabelCap + "; they are left to the world.");
+                }
             }
             place.onTheGround.Clear();
 
@@ -129,10 +130,7 @@ namespace RimMandrake.Inhabited
 
             // No death record, no memorial, no ledger, no counter. The roster IS
             // the survivors and the absence is the memory.
-            if (place.SoulCount == 0 && place.state == InhabitedState.Inhabited)
-            {
-                place.state = InhabitedState.Abandoned;
-            }
+            place.state = InhabitedFateKernel.StateAfterRecall(place.state, place.SoulCount);
 
             // ⚠️ LAST, AND NOTHING MAY FOLLOW IT. A fired Transient fate destroys
             // the world object. Everything above has to have finished first: the

@@ -247,16 +247,15 @@ namespace RimMandrake.LanternDeeps
     {
         public const string SipperDef = "RM_Sipper";
         private const int Interval = 300;
-        private const float Floor = 0.25f;
         private static readonly FieldInfo LitGlowersField = typeof(GlowGrid).GetField("litGlowers", BindingFlags.Instance | BindingFlags.NonPublic);
 
-        private class Entry { public float written; public float reduction; }
-        private readonly Dictionary<CompGlower, Entry> drunk = new Dictionary<CompGlower, Entry>();
+        // The radius ledger (what we wrote, how much we took, when to give it back) lives in RM_SipperLedgerKernel.cs.
+        private readonly SipperLedger<CompGlower> ledger = new SipperLedger<CompGlower>();
         private ThingDef sipperDef;
 
         public RM_MapComponent_Sippers(Map map) : base(map) { }
 
-        public int DrunkCount => drunk.Count;
+        public int DrunkCount => ledger.DrunkCount;
 
         public static IEnumerable<CompGlower> LitGlowers(Map map)
         {
@@ -301,40 +300,9 @@ namespace RimMandrake.LanternDeeps
                     if (n > 0) counts[g] = n;
                 }
             }
-            int changed = 0;
-            foreach (KeyValuePair<CompGlower, int> kv in counts)
-            {
-                CompGlower g = kv.Key;
-                drunk.TryGetValue(g, out Entry e);
-                // base: the radius the glower would have undrunk. If nobody else touched it since we wrote it, add our
-                // reduction back; otherwise whatever it is now (the aurora's x1.75, a reset) is the new base.
-                float baseR = (e != null && Mathf.Abs(g.GlowRadius - e.written) < 0.01f) ? e.written + e.reduction : g.GlowRadius;
-                float red = Mathf.Min(baseR * (1f - Floor), kv.Value * LanternDeepsSettings.sipperCellsPerSipper);
-                float want = baseR - red;
-                if (e == null) { e = new Entry(); drunk[g] = e; }
-                e.reduction = red;
-                if (Mathf.Abs(g.GlowRadius - want) > 0.05f)
-                {
-                    g.GlowRadius = want;
-                    g.ForceRegister(map);
-                    changed++;
-                }
-                e.written = g.GlowRadius;
-            }
-            foreach (CompGlower g in drunk.Keys.ToList())
-            {
-                if (counts.ContainsKey(g)) continue;
-                Entry e = drunk[g];
-                drunk.Remove(g);
-                if (g.parent == null || !g.parent.Spawned) continue;
-                if (Mathf.Abs(g.GlowRadius - e.written) < 0.01f)
-                {
-                    g.GlowRadius = e.written + e.reduction;
-                    if (g.Glows) g.ForceRegister(map);
-                    changed++;
-                }
-            }
-            return changed;
+            return ledger.Pass(counts, LanternDeepsSettings.sipperCellsPerSipper,
+                g => g.GlowRadius, (g, r) => g.GlowRadius = r,
+                g => g.parent != null && g.parent.Spawned, g => g.Glows, g => g.ForceRegister(map));
         }
     }
 

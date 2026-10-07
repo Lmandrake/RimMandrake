@@ -45,99 +45,64 @@ namespace RimMandrake.Inhabited
             {
                 return null;
             }
-            switch (place.placeDef.fate)
-            {
-                case InhabitedFate.Resident:
-                    return null;
-
-                // A caravan passing through is gone when the player is. Nothing
-                // has to happen for this one; being visited at all is the cause.
-                case InhabitedFate.Transient:
-                    return "InhabitedFateTransient";
-
+            CellRect area = place.StockArea;
+            return InhabitedFateKernel.Cause(
+                place.placeDef.fate,
                 // "A gravship coming out of the sky is enough." GravshipUtility
                 // carries its own !OdysseyActive guard and returns false without
                 // the DLC, so this reads as Resident on a base-game install
                 // rather than throwing.
-                case InhabitedFate.FleeOnArrival:
-                    return GravshipUtility.PlayerHasGravEngine(map) ? "InhabitedFateGravship" : null;
-
-                case InhabitedFate.FleeIfThreatened:
-                    return Menace(place, map);
-            }
-            return null;
+                () => GravshipUtility.PlayerHasGravEngine(map),
+                area.Area > 0,
+                () => FireInside(map, area),
+                place.Faction != null && place.Faction.HostileTo(Faction.OfPlayer),
+                map.mapPawns.FreeColonistsSpawnedCount > 0,
+                place.onTheGround != null ? place.onTheGround.Count : 0,
+                () => CountCast(place, map),
+                place.stockSpawnedCount,
+                () => InhabitedStock.CountOnMap(map, area, place.stockOnTheGround),
+                RobbedFraction);
         }
 
-        /// <summary>
-        /// The four menaces, cheapest test first.
-        ///
-        /// ⚠️ NONE OF THESE PROVES THE PLAYER DID IT, and one of them cannot: a
-        /// raider shooting up the same map harms the cast just as well. The
-        /// attribution here is the player's PRESENCE (they are on this map, and
-        /// this map only exists because they came), which is the same standard
-        /// the settlement-proximity goodwill rules use. A cast that breaks
-        /// because a mech cluster killed two of them while the player watched is
-        /// not a wrong outcome.
-        /// </summary>
-        private static string Menace(WorldObject_Inhabited place, Map map)
+        // ⚠️ NONE OF THE MENACES PROVES THE PLAYER DID IT, and one of them cannot: a
+        // raider shooting up the same map harms the cast just as well. The
+        // attribution is the player's PRESENCE (they are on this map, and
+        // this map only exists because they came), which is the same standard
+        // the settlement-proximity goodwill rules use. The decision order lives in
+        // InhabitedFateKernel.Cause.
+
+        private static bool FireInside(Map map, CellRect area)
         {
-            CellRect area = place.StockArea;
-
-            // Burn the granary. The literal headline case, and the only one that
-            // fires WHILE it is happening rather than after.
-            if (area.Area > 0)
+            List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
+            for (int i = 0; i < fires.Count; i++)
             {
-                List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
-                for (int i = 0; i < fires.Count; i++)
+                if (fires[i] != null && area.Contains(fires[i].Position))
                 {
-                    if (fires[i] != null && area.Contains(fires[i].Position))
-                    {
-                        return "InhabitedFateBurned";
-                    }
+                    return true;
                 }
             }
+            return false;
+        }
 
-            if (place.Faction != null && place.Faction.HostileTo(Faction.OfPlayer))
+        private static CastCount CountCast(WorldObject_Inhabited place, Map map)
+        {
+            CastCount c = new CastCount();
+            List<Pawn> here = map.mapPawns.AllPawns;
+            for (int i = 0; i < here.Count; i++)
             {
-                return "InhabitedFateHostile";
-            }
-
-            if (map.mapPawns.FreeColonistsSpawnedCount > 0
-                && place.onTheGround != null && place.onTheGround.Count > 0)
-            {
-                int standing = 0;
-                List<Pawn> here = map.mapPawns.AllPawns;
-                for (int i = 0; i < here.Count; i++)
+                Pawn p = here[i];
+                if (p == null || p.Dead || !place.onTheGround.Contains(p.thingIDNumber))
                 {
-                    Pawn p = here[i];
-                    if (p == null || p.Dead || !place.onTheGround.Contains(p.thingIDNumber))
-                    {
-                        continue;
-                    }
-                    if (p.Downed)
-                    {
-                        return "InhabitedFateHarmed";
-                    }
-                    standing++;
+                    continue;
                 }
-                // A dead resident is a Corpse, not a Pawn, so MapPawns stops
-                // counting them entirely -- the shortfall IS the casualty count.
-                if (standing < place.onTheGround.Count)
+                if (p.Downed)
                 {
-                    return "InhabitedFateHarmed";
+                    c.anyDowned = true;
+                    return c;
                 }
+                c.standing++;
             }
-
-            if (place.stockSpawnedCount > 0)
-            {
-                int left = InhabitedStock.CountOnMap(map, area, place.stockOnTheGround);
-                if (left < place.stockSpawnedCount * RobbedFraction)
-                {
-                    return "InhabitedFateRobbed";
-                }
-            }
-
-            return null;
+            return c;
         }
 
         /// <summary>
@@ -150,8 +115,8 @@ namespace RimMandrake.Inhabited
         /// </summary>
         public static void Apply(WorldObject_Inhabited place)
         {
-            if (place?.placeDef == null || !place.threatened
-                || place.placeDef.fate == InhabitedFate.Resident)
+            if (place?.placeDef == null
+                || !InhabitedFateKernel.ShouldApply(place.placeDef.fate, place.threatened))
             {
                 return;
             }
@@ -171,35 +136,25 @@ namespace RimMandrake.Inhabited
             DisplacedPool pool = DisplacedPool.Current;
             if (pool != null && place.roster != null && place.roster.Count > 0)
             {
-                List<Pawn> left = new List<Pawn>(place.roster.InnerListForReading);
-                for (int i = 0; i < left.Count; i++)
-                {
-                    Pawn p = left[i];
-                    if (p == null || p.Dead || !place.roster.Remove(p))
-                    {
-                        continue;
-                    }
-                    if (pool.Absorb(p, place.Faction, DisplacedReason.Fled, place.LabelCap))
-                    {
-                        fled++;
-                    }
-                    else if (!place.roster.TryAdd(p, canMergeWithExistingStacks: false))
+                fled = InhabitedCustody.MoveRosterToPool(
+                    new List<Pawn>(place.roster.InnerListForReading), p => p.Dead,
+                    p => place.roster.Remove(p),
+                    p => pool.Absorb(p, place.Faction, DisplacedReason.Fled, place.LabelCap),
+                    p => place.roster.TryAdd(p, canMergeWithExistingStacks: false),
+                    p =>
                     {
                         // The pool refused and the roster will not take them back:
                         // destroying them here would be a silent death, which is
                         // the one outcome this mod's roster rule cannot survive.
                         Log.Error("[RimMandrake.Inhabited] " + p.LabelShort + " left "
                                   + place.LabelCap + " and has nowhere to be; they are lost.");
-                    }
-                }
+                    });
             }
 
             // An emptied larder is a LOOTING; a full one left behind is an
             // ABANDONMENT, and GetInspectString already draws both differently
             // ("looted" vs "N souls fled . stock spoiling").
-            place.state = (place.stock == null || place.stock.Count == 0)
-                ? InhabitedState.Looted
-                : InhabitedState.Abandoned;
+            place.state = InhabitedFateKernel.StateAfterFate(place.stock == null ? 0 : place.stock.Count);
 
             Log.Message("[RimMandrake.Inhabited] fate " + place.placeDef.fate + " fired at "
                         + place.LabelCap + " (" + (place.threatReason ?? "-") + "): "

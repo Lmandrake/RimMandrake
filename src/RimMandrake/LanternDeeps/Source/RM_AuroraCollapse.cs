@@ -110,8 +110,7 @@ namespace RimMandrake.LanternDeeps
                     {
                         continue;
                     }
-                    float want = on ? g.Props.glowRadius * ext.glowMultiplier : g.Props.glowRadius;
-                    if (System.Math.Abs(g.GlowRadius - want) > 0.01f)
+                    if (SipperLedger<CompGlower>.AuroraWant(g.GlowRadius, g.Props.glowRadius, ext.glowMultiplier, on, out float want))
                     {
                         g.GlowRadius = want;
                         if (g.Glows)
@@ -218,10 +217,8 @@ namespace RimMandrake.LanternDeeps
 
     public class RM_MapComponent_DeepCollapse : CustomMapComponent
     {
-        private Dictionary<IntVec3, int> due = new Dictionary<IntVec3, int>();
-        private HashSet<IntVec3> released = new HashSet<IntVec3>();
-        // cells brought down by force (a galuush blast): they fall when the warning ends, propped or not
-        private HashSet<IntVec3> forced = new HashSet<IntVec3>();
+        // The warning bookkeeping (due / released / forced) lives in RM_DeepCollapseKernel.cs, which the offline fuzz drives.
+        private readonly DeepCollapseState<IntVec3> state = new DeepCollapseState<IntVec3>();
         private List<IntVec3> tmpKeys;
         private List<int> tmpVals;
 
@@ -229,24 +226,29 @@ namespace RimMandrake.LanternDeeps
         {
         }
 
-        public int Pending => due.Count;
+        public int Pending => state.Pending;
 
-        public IEnumerable<IntVec3> PendingCells => due.Keys;
+        public IEnumerable<IntVec3> PendingCells => state.due.Keys;
 
         public void MarkForced(IntVec3 c)
         {
-            forced.Add(c);
+            state.MarkForced(c);
+        }
+
+        // Vanilla collapses these now, with no warning: forget any pending window or forced mark on them.
+        public void NoteUnwarned(List<IntVec3> marked)
+        {
+            state.PassThrough(marked);
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Collections.Look(ref due, "due", LookMode.Value, LookMode.Value, ref tmpKeys, ref tmpVals);
-            Scribe_Collections.Look(ref forced, "forced", LookMode.Value);
+            Scribe_Collections.Look(ref state.due, "due", LookMode.Value, LookMode.Value, ref tmpKeys, ref tmpVals);
+            Scribe_Collections.Look(ref state.forced, "forced", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                due = due ?? new Dictionary<IntVec3, int>();
-                forced = forced ?? new HashSet<IntVec3>();
+                state.EnsureNotNull();
             }
         }
 
@@ -260,26 +262,10 @@ namespace RimMandrake.LanternDeeps
         // Called by the prefix with vanilla's marked list: keeps released cells, holds new ones.
         public void Filter(List<IntVec3> marked)
         {
-            int now = Find.TickManager.TicksGame;
-            bool fresh = false;
-            for (int i = marked.Count - 1; i >= 0; i--)
-            {
-                IntVec3 c = marked[i];
-                if (released.Remove(c))
-                {
-                    continue;
-                }
-                if (!due.ContainsKey(c))
-                {
-                    // LANTERNDEEPS_HYDROCARBON_WAVE2_BUILD_1: a tame knocker hears it sooner
-                    float window = LanternDeepsSettings.collapseWarningTicks
-                        * (RM_CompKnocker.TameKnockerOn(map) ? LanternDeepsSettings.knockerWarningFactor : 1f);
-                    due[c] = now + (int)window;
-                    fresh = true;
-                }
-                marked.RemoveAt(i);
-            }
-            if (fresh)
+            // LANTERNDEEPS_HYDROCARBON_WAVE2_BUILD_1: a tame knocker hears it sooner
+            int window = DeepCollapseState<IntVec3>.Window(LanternDeepsSettings.collapseWarningTicks,
+                RM_CompKnocker.TameKnockerOn(map), LanternDeepsSettings.knockerWarningFactor);
+            if (state.Filter(marked, Find.TickManager.TicksGame, window))
             {
                 Warn(true);
             }
@@ -287,7 +273,7 @@ namespace RimMandrake.LanternDeeps
 
         public override void MapComponentTick()
         {
-            if (due.Count == 0)
+            if (state.Pending == 0)
             {
                 return;
             }
@@ -305,7 +291,7 @@ namespace RimMandrake.LanternDeeps
             {
                 return;
             }
-            List<IntVec3> ripe = due.Where(kv => kv.Value <= now).Select(kv => kv.Key).ToList();
+            List<IntVec3> ripe = state.Ripe(now);
             if (ripe.Count > 0)
             {
                 Resolve(ripe);
@@ -314,31 +300,23 @@ namespace RimMandrake.LanternDeeps
 
         public string Resolve(List<IntVec3> ripe)
         {
-            int fell = 0, held = 0;
-            foreach (IntVec3 c in ripe)
+            DeepCollapseState<IntVec3>.Resolution r = state.Resolve(ripe, c => c.Roofed(map), Supported);
+            foreach (IntVec3 c in r.fell)
             {
-                due.Remove(c);
-                bool force = forced.Remove(c);
-                if (c.Roofed(map) && (force || !Supported(c)))
-                {
-                    released.Add(c);
-                    map.roofCollapseBuffer.MarkToCollapse(c);
-                    fell++;
-                }
-                else
-                {
-                    held++;
-                }
+                map.roofCollapseBuffer.MarkToCollapse(c);
             }
-            if (fell > 0)
+            if (r.fell.Count > 0)
             {
                 map.roofCollapseBufferResolver.CollapseRoofsMarkedToCollapse();
+                // Whatever that run did not consume (the prefix is skipped when warnings are off) must not wave a later,
+                // unrelated marking of the same cell through without its warning.
+                state.EndRelease();
             }
-            else if (held > 0 && due.Count == 0)
+            else if (r.held > 0 && state.Pending == 0)
             {
                 Messages.Message("RM_DeepCollapseHeld".Translate(), new TargetInfo(ripe[0], map), MessageTypeDefOf.PositiveEvent);
             }
-            return "fell=" + fell + " held=" + held;
+            return "fell=" + r.fell.Count + " held=" + r.held;
         }
 
         private bool Supported(IntVec3 c)
@@ -348,18 +326,13 @@ namespace RimMandrake.LanternDeeps
 
         private void ReleaseAll()
         {
-            List<IntVec3> all = due.Keys.ToList();
-            foreach (IntVec3 c in all)
-            {
-                due[c] = 0;
-            }
-            Resolve(all);
+            Resolve(state.DueAll());
         }
 
         // Dust trailing down, sand piling below, the grumble.
         private void Warn(bool start)
         {
-            List<IntVec3> cells = due.Keys.ToList();
+            List<IntVec3> cells = state.due.Keys.ToList();
             EffecterDef debris = DefDatabase<EffecterDef>.GetNamedSilentFail("UndercaveCeilingDebris");
             ThingDef sand = DefDatabase<ThingDef>.GetNamedSilentFail("Filth_Sand");
             int n = start ? 3 : 1;
@@ -394,10 +367,7 @@ namespace RimMandrake.LanternDeeps
 
         public void ForceDueNow()
         {
-            foreach (IntVec3 c in due.Keys.ToList())
-            {
-                due[c] = 0;
-            }
+            state.DueAll();
         }
     }
 
@@ -430,11 +400,12 @@ namespace RimMandrake.LanternDeeps
     {
         public static bool Prefix(Map ___map)
         {
+            RM_MapComponent_DeepCollapse comp = ___map.GetComponent<RM_MapComponent_DeepCollapse>();
             if (Patch_DeepCollapseRemovalMode.depth > 0 || !RM_MapComponent_DeepCollapse.Applies(___map))
             {
+                comp?.NoteUnwarned(___map.roofCollapseBuffer.CellsMarkedToCollapse);
                 return true;
             }
-            RM_MapComponent_DeepCollapse comp = ___map.GetComponent<RM_MapComponent_DeepCollapse>();
             if (comp == null)
             {
                 return true;
