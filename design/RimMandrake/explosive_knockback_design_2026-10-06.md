@@ -27,11 +27,9 @@ Older owner text the mechanic must honour (PIT_SUPERDEEP_COLLAPSE_1, 2026-09-17,
 And the balance paradigm (`design/RimMandrake/balance_paradigm.md`) already lists **knockback** and
 **displace (knockback, gravitic)** among the "new effect = new verb" mechanics worth building.
 
-⇒ So what he has stated: explosions (and, older, weapon blowback) move pawns against their will, and that
-is the route by which colonists fall into pits. What he has NOT stated: whether it is its own mod (he
-calls it one), whether it applies everywhere or only near pits, its strength, or whether weapons other
-than explosions push. Those are §9 questions, not assumptions — §3 is written for the general mod
-because he named a mod, with every scope choice exposed as a setting.
+⇒ He then answered eight question cards (§11, 2026-10-06 19:05): everywhere, explosions only, thrown over
+sandbags, everything light thrown (items and corpses), a blast always breaks a pit cover, a carried hose
+drops, 3 cells for a mortar beside a human, its own mod. §3–§8 are written to those rulings.
 
 ## 2. What exists already
 
@@ -100,133 +98,173 @@ None is active on today's list (ModsConfig holds 10 mods — the minimal tier is
 
 ## 3. The mechanic
 
-**One sentence:** when an explosion wounds or reaches a pawn, the pawn is thrown a short distance
-straight away from the blast centre, stops early against anything solid (taking impact damage for the
-distance it did not travel), and lands stunned — and if it lands in an open pit, FlowWorks makes it fall.
+**One sentence:** every blast throws everything light near it — pawns, items and corpses — straight
+away from its centre, over sandbags and barricades, stopping early against anything solid; pawns take
+impact damage for the distance they did not travel and land stunned; a blast that reaches a pit cover
+breaks it; anything that lands in an open pit is in the pit, and FlowWorks makes a pawn fall. (Rulings
+in §11.)
 
-### 3.1 What triggers a push
-- **Explosions only, by DamageDef.** A `DamageDef` carries a push strength through a `DefModExtension`
-  (`RM_KnockbackExtension { float force; }` — no `requiresWound`: a void postfix cannot see the
-DamageResult, GPT #3; v1 pushes every eligible pawn the wave reaches). Shipped: `Bomb` (`DamageDefOf.Bomb`,
-  verified) gets one. Flame, EMP, Smoke, Extinguish, ToxGas (all verified in `DamageDefOf`) do **not**
-  push by default. Other mods' explosive DamageDefs get one by patch, not by guess — the Star Wars tier
-  adds its own (thermal detonators etc.) in `RSW_` patches. A setting "any other explosion that harms
-  health pushes at N%" covers unpatched mod explosives.
-- **Weapon blowback** (his 2026-09-17 phrase) is NOT in v1 — §9 Q2.
-- The push is decided per pawn inside the explosion wave (§4), so a pawn the wave never reaches is never
-  pushed, and `damagedThings` already guarantees one push per pawn per explosion.
+### 3.1 What triggers a throw
+- **Explosions only, by DamageDef** (Q2: *"melee weapons often already have blowback"*). A `DamageDef`
+  carries a throw strength through a `DefModExtension` (`RM_KnockbackExtension { float force; }`).
+  Shipped: `Bomb` (`DamageDefOf.Bomb`, verified) gets force 1.0. Flame, EMP, Smoke, Extinguish, ToxGas
+  (all verified in `DamageDefOf`) get explicit zero-force extensions. Other mods' explosive DamageDefs get
+  one by patch, never by guess — the Star Wars tier adds its own (thermal detonators etc.) in `RSW_`
+  patches. A setting "unpatched harmful explosions throw at N%" defaults to 0.
+- No `requiresWound`: a void postfix cannot see the DamageResult (§10 #3). Every eligible thing the wave
+  reaches is thrown, armour or not.
+- Decided per thing inside the explosion wave (§4), deduplicated by (explosion, thing).
 
-### 3.2 Who moves
-| Subject | v1 | Why |
+### 3.2 What moves
+| Subject | Moves? | Notes |
 |---|---|---|
-| Standing / walking pawn (any faction, humans, animals, mechs) | yes | the point |
-| Downed pawn | yes, at the same force | a body is thrown; this is how a downed raider ends up in the pit |
-| Pawn with bodySize ≥ `immuneBodySize` (default 2.5: thrumbo-class, big mechs) | no, stagger only | "mass is menace" — big things are events |
-| Pawn in bed, carried, in a flyer/container, not spawned | no | not on the ground |
-| Pawn **flying** (1.6 `Pawn.Flying`) | no in v1 | flight + flyer stacking is untested; and flyer live tests need him present (CLAUDE.md) |
-| Items, corpses, chunks | no in v1 | cost and chaos; §9 Q4 |
-| Buildings | never | |
+| Standing / walking pawn (any faction, humans, animals, mechs) | yes | |
+| Downed pawn | yes | a body is thrown; how a downed raider ends up in the pit |
+| Pawn with bodySize ≥ `immuneBodySize` (default 2.5) | no, vanilla stagger only | big things are events |
+| Pawn already on a D = 4 cell | no | §10 #1; "you can't climb out. Period." |
+| Pawn carrying a pawn (rescuer, kidnapper) | no, stagger only | §10 #9 |
+| Pawn **flying** (1.6 `Pawn.Flying`) | no | flight + flyer stacking untested; flyer live tests need him present |
+| Pawn in bed, carried, in a container, not spawned | no | not on the ground |
+| **Item stack** (spawned, category Item, total stack mass ≤ `lightMassLimit`) | **yes** | Q4 "everything light" |
+| **Corpse** (mass of the dead body ≤ `lightMassLimit`, inner pawn bodySize < immune) | **yes** | Q4 |
+| Item on a cell with a storage edifice (shelf, rack) | no | it is in the furniture, not on the floor |
+| Minified building, chunk | yes if under the mass limit | they are items |
+| Buildings, plants, filth | never | |
+`lightMassLimit` default **75 kg** (a human corpse ≈ 60 kg passes; a full 75-stack of steel = 37.5 kg passes;
+a stone chunk passes; a minified heavy machine does not). Mass for an item stack is
+`GetStatValue(Mass) × stackCount`.
 
 ### 3.3 How far
-Kernel (pure, Verse-free `RM_KnockbackMath`):
+Kernel (pure, Verse-free `RM_KnockbackMath`), same for pawns, items and corpses:
 ```
-falloff   = 1 − clamp01(dist(pawn, centre) / radius)            // 1 at centre, 0 at rim
-massScale = clamp( (refMass / max(mass, 1))^0.5 , 0.25, 2 )     // refMass 60 kg (≈ human)
-cells     = maxPushCells × force × falloff × massScale × globalMultiplier
-cells     = floor(cells + 0.5); if cells < 1 → no move (vanilla stagger only)
-cells     = min(cells, maxPushCells)
+falloff   = 1 − clamp01(dist(thing, centre) / radius)            // 1 at centre, 0 at rim
+massScale = clamp( (refMass / max(mass, 1))^0.5 , 0.25, 2 )      // refMass 60 kg (≈ human)
+cells     = round(baseCells × force × falloff × massScale × globalMultiplier)
+cells     = min(cells, maxThrowCells); if cells < 1 → no move
 ```
-Mass is `StatDefOf.Mass` minus carried inventory mass (as JecsTools does; armour counts). Defaults:
-`maxPushCells 3`, `force(Bomb) 1.0`. Worked (corrected after GPT #16): a human 1 cell from a frag centre
-(radius 1.9) gets round(3 × 0.47) = 1 cell; 1 cell from a mortar centre (radius 2.9) gets 2; on the centre
-cell, 3. If that reads too weak, the lever is `maxPushCells` or a falloff exponent < 1 (§9 Q7).
-Direction = centre → pawn cell. A pawn **on** the centre cell gets a random direction from a seeded Rand
-(the engine itself uses a random angle there).
+**Calibrated to Q7: a mortar shell beside a human throws it 3 cells.** With radius 2.9 at distance 1,
+falloff = 0.655, so `baseCells = 4` gives round(2.62) = 3. Consequences of the same numbers: a frag
+grenade (radius 1.9) beside a human → 2; a human on the centre cell → 4; a 10 kg item beside a mortar →
+round(4 × 0.655 × 2) = 5 (light things fly farther). `maxThrowCells` default 6. Pawn mass is
+`StatDefOf.Mass` minus carried inventory (worn gear counts). Direction = centre → thing's cell; a thing on
+the centre cell gets a direction from a seeded Rand keyed on (explosion id, thing id).
 
 ### 3.4 The path and what stops it
-Walk the cells of the line from the pawn's cell toward the target (`GenSight.PointsOnLineOfSight`, as
-JecsTools does), one cell at a time, using the **pawn's own** pathing context
-(`map.pathing.For(pawn).pathGrid`) so a swimmer and a walker differ correctly:
-| Next cell is… | Result |
-|---|---|
-| walkable, empty | continue |
-| out of bounds | stop on the previous cell, no impact |
-| impassable (wall, rock, Fillage.Full edifice) | stop on previous cell, **impact** |
-| closed door (incl. a FlowWorks sluice door) | stop, impact; door takes a small hit |
-| partial-fill cover (sandbags, barricade) | stop on it? or before it? — §9 Q3; default: stop **before**, impact halved |
-| occupied by another pawn | stop before; impact split between both (the other does not move in v1) |
-| an **open FlowWorks pit** (D = 4, uncovered) | **enter it and stop there.** Nothing flies across a pit. FlowWorks does the fall. |
-| a **pit cover** | continue as ground; whether the cover gives way is FlowWorks' rule (§7) |
-| deep water / deep liquid not walkable for this pawn | stop before (no impact) |
-| fire / burning liquid | continue — being thrown into burning tar is a feature |
-Diagonal steps never cut a wall corner (both orthogonal neighbours must be passable), the same rule
-vanilla pathing uses.
+Walk the grid steps of the line from the thing's cell toward the target (`GenSight.PointsOnLineOfSight`),
+one cell at a time. Pawns use their own pathing context (`map.pathing.For(pawn).pathGrid`); items and
+corpses use `map.pathing.Normal`. Forced movement ignores fog and forbidden zones; roofs do not stop the
+low arc.
+| Next cell is… | Pawn | Item / corpse |
+|---|---|---|
+| walkable, empty | continue | continue |
+| out of bounds | stop on previous cell, no impact | stop on previous cell |
+| impassable (wall, rock, Fillage.Full edifice) | stop on previous cell, **impact** | stop on previous cell |
+| closed door (incl. a FlowWorks sluice door) | stop, impact; door takes a small hit | stop |
+| **sandbags / barricade** (Fillage.Partial, passable) | **thrown over: continue**, no impact (Q3) | continue |
+| occupied by another pawn | stop before; impact split between both (the other does not move) | continue (items pass pawns) |
+| an **open FlowWorks pit** (D = 4, uncovered) | **enter it and stop there** — FlowWorks does the fall | enter and stop — it lies on the pit floor |
+| a **pit cover** the wave has not yet broken | continue as ground | continue as ground |
+| deep water / liquid not walkable for this pawn | stop before (no impact) | stop before |
+| fire / burning liquid | continue | continue |
+A pit cell that is also occupied or blocked by an edifice counts as blocked. Diagonal steps never cut a
+wall corner (both orthogonal neighbours must be passable). If the final cell is a Fillage.Partial edifice
+cell, a pawn may land on it (sandbag cells are standable); an item lands on the next free cell back along
+the line.
 
-### 3.5 Damage on impact, stun, downed
-- Impact: `Blunt` damage = `impactDamagePerCell (default 4) × cellsNotTravelled × sqrt(massScale⁻¹)`,
-  applied once, instigator = the explosion's instigator (so kills and goodwill attribute correctly).
-- Landing: stun `knockdownStunTicks` (default 60–120) through the flyer def's `stunDurationTicksRange`.
-  Vanilla's own 95-tick explosion stagger still applies on wound; we do not add to it.
-- A push never downs by itself except through the impact damage, which is ordinary damage.
-- No fall damage for flat ground; FlowWorks owns fall damage into pits.
+### 3.5 Damage, stun, downed
+- Pawn impact: `Blunt` = `impactDamagePerCell (default 4) × cellsNotTravelled × massScale⁻¹ᐟ²`, applied at
+  **launch**, instigator = the explosion's instigator; dead/downed/spawned re-checked before the throw.
+- Items and corpses take no impact damage (the blast already damaged them).
+- Pawn landing: stun 60–120 ticks via the flyer def's `stunDurationTicksRange`. Vanilla's own 95-tick
+  explosion stagger still applies on wound.
+- No fall damage on flat ground; FlowWorks owns fall damage into pits.
+
+### 3.6 A blast always breaks a pit cover (Q5)
+When the wave reaches a cell holding an intact `Building_PitCover`, the whole deck springs at once
+(`Building_PitCover.Spring(fallers)` with every pawn standing on the deck, `RM_PitCoverUtility.Deck`).
+This is a **FlowWorks** feature, not this mod's: covers are FlowWorks', it already postfixes
+`DamageWorker.ExplosionAffectCell` (`RM_Patch_ExplosionLightsLiquid`), and the ruling should hold with the
+knockback mod absent. Its trigger set is the same "blast" set (§9 Q-A). Order inside one blast: the cover
+breaks when the wave reaches its cell; throws are flushed at the end of that explosion tick, so a thing
+thrown onto a cover the wave has already reached lands in an open pit, and one thrown onto a cover the wave
+reaches later is in the air when it breaks and lands in the hole. Both end in the pit.
 
 ## 4. Engine route and performance
 
 ### 4.1 Where to hook
-**Postfix `DamageWorker.ExplosionDamageThing(Explosion, Thing, List<Thing>, List<Thing>, IntVec3)`**
-(protected virtual; Harmony patches the base, and every subclass that does not override it). It has the
-explosion (centre, radius, damType, instigator), the pawn and the cell, and runs at the moment the
-wave reaches that pawn. The postfix **only enqueues** a request `(pawn, centre, radius, force, instigator,
-tick)` on a per-map component. ⚠️ Do not despawn the pawn inside the loop: `ExplosionAffectCell` is
-iterating a cell list, and FlowWorks' own `ExplosionAffectCell` postfix runs after it.
-**Flush** in a postfix on `Explosion.Tick` (runs after the tick's cells are affected, even on the tick the
-explosion destroys itself) — same tick, after damage, so a pawn killed by the blast is dead and skipped.
-Subclasses that override `ExplosionDamageThing` without calling base would not push; RimSage search for
-overrides is owed before build (one search).
+**Prefix + postfix on `DamageWorker.ExplosionDamageThing(Explosion, Thing, List<Thing>, List<Thing>,
+IntVec3)`** (protected virtual). The prefix records eligibility (thing not already in `damagedThings`,
+not in `ignoredThings`); the postfix **only enqueues** a request carrying immutable data — map, explosion
+thingIDNumber, centre, radius, damType, force, instigator, thing, takeoff cell — on a per-map component.
+⚠️ Never despawn inside the loop: `ExplosionAffectCell` iterates a cell list and FlowWorks' postfix runs
+after it. **Flush** in a postfix on `Explosion.Tick`, from a snapshot of the queue, never reading the
+(possibly destroyed) Explosion. A pawn killed by the blast is now a corpse: the request is re-resolved to
+the corpse and judged by the corpse rules. Owed before build: one RimSage search for `ExplosionDamageThing`
+overrides that skip base.
 
-### 4.2 How to move — three routes considered
+### 4.2 How pawns move — a `PawnFlyer` of our own def
+`RM_PawnFlyer_Knockback` (ParentName `PawnFlyerBase`, thingClass `PawnFlyer`, worker `PawnFlyerWorker`,
+copied from Core's `PawnFlyer_Stun` with `flightDurationMin` ~0.3 and `heightFactor` ~0.6). Engine-normal
+(the engine's own thrown fleshbeast), visible arc, suspends and restores jobs/drafted/queue, lands with a
+stun, saves mid-flight, and FlowWorks' `RM_Patch_PawnFlyer_LandInPit` already catches its landing.
+`PawnFlyer.MakeFlyer(def, pawn, destCell, null, landingSound, flyWithCarriedThing: true)` then
+`GenSpawn.Spawn(flyer, takeoffCell, map)`.
+- ⚠️ Vanilla `CheckDestination` redirects any flyer every 15 ticks to any `ValidJumpTarget` within 3.9
+  cells (§10 #5). A Harmony prefix skips it for our def only; our own landing check walks back along the
+  travelled line toward takeoff if the destination became invalid; `TryDrop`'s result is checked.
+- **A carried hose end is dropped at the takeoff cell before the throw (Q6)** — `HoseCarry` `Interrupt` on
+  `Carrying` → `Dropped`; any other carried item rides with the pawn.
+- Rejected routes: a position set + `Notify_Teleported` reads as teleporting over 3+ cells; a forced
+  "stumble" job is a *walked* step, which FlowWorks treats as pathing (no fall) and `RM_PitPathing`
+  refuses pit cells.
+
+### 4.3 How items and corpses move — a NEW path
+`PawnFlyer.MakeFlyer` takes a `Pawn`, so items need their own carrier. Two options:
 | Route | For | Against | Verdict |
 |---|---|---|---|
-| **A. `PawnFlyer` with our own def** `RM_PawnFlyer_Knockback` (ParentName `PawnFlyerBase`, thingClass `PawnFlyer`, worker `PawnFlyerWorker`, copied from Core's `PawnFlyer_Stun` with a lower `flightDurationMin` ~0.25 and `heightFactor` ~0.6) | Engine-normal: the engine's own "thrown pawn" (fleshbeasts out of pits). Visible arc. Suspends and restores jobs, drafted state, job queue. Lands with a stun. **FlowWorks already catches its landing** (`RM_Patch_PawnFlyer_LandInPit`). Saves mid-flight (it is a Thing with an inner container). | Pawn despawned for the flight (≈ 0.25–0.75 s): untargetable, and anything iterating spawned pawns misses it. VEF patches `MakeFlyer`. `RespawnPawn` drops with `ThingPlaceMode.Direct` — destination must already be valid. | **Chosen.** |
-| B. Position set + `Notify_Teleported` | Instant, no despawn | Looks like a teleport; we own every job/stance edge. FlowWorks' tick detector does catch it. | Fallback only, for a setting "instant knockback (performance)" — and not in v1 |
-| C. A forced "stumble" job | Pawn stays spawned | It is a *walked* step: FlowWorks reads a walked step into a pit as pathing (no fall) and `RM_PitPathing` refuses pit cells. Contradicts the ruling. | **Rejected.** |
+| **Instant relocate**: `DeSpawn`, then `GenPlace.TryPlaceThing(thing, dest, map, ThingPlaceMode.Direct)`, falling back along the line; a dust fleck at the landing cell | cheapest; no per-thing ticking object; stacks merge by vanilla rules | no visible flight | **v1** |
+| `RM_ThrownThing`: a Thing holding a `ThingOwner`, drawn on an arc, landing by `GenPlace` | looks like the pawns | one ticking object per stack; a stockpile hit by a mortar spawns dozens | later, only if he asks for the look |
+Forbidden state, ownership and stack identity are preserved by `DeSpawn`/`TryPlaceThing`. An item that
+lands in an open pit stays on the pit floor; haulers cannot path in, so it is reachable only by someone in
+the pit or via a lowered ladder (§9 Q-B). A corpse thrown into a pit is the same.
 
-`PawnFlyer.MakeFlyer(def, pawn, destCell, null, landingSound, flyWithCarriedThing: true)` then
-`GenSpawn.Spawn(flyer, pawn.Position, map)` (the vanilla pattern in `FleshbeastUtility`). With
-`flyWithCarriedThing: true` the carried thing (a hauled item, a carried hose end) is kept. Re-validate
-`destCell` at landing time is impossible in vanilla `RespawnPawn` — if a wall is built or a pawn walks into
-the cell during the flight, `Direct` still places it. ⚠️ And vanilla `CheckDestination` redirects the flyer itself every
-15 ticks (§10 #5) — the guard is a def-scoped prefix that disables it, plus our own fallback that walks
-back along the travelled line toward the takeoff cell.
-
-### 4.3 Performance
-Per pushed pawn: ≤ `maxPushCells` cell checks + one Thing spawn. A heavy mortar barrage (10 shells ×
-15 pawns) is 150 cheap requests across many ticks. Guards: `maxPushesPerExplosion` (default 40), and the
-whole hook returns on the first line when the damType has no extension and the global "other explosions"
-setting is 0. No per-tick cost when nothing is queued (queue empty check only).
+### 4.4 Performance — items are the risk
+Pawns: a heavy barrage (10 shells × 15 pawns) is ≤ 150 flyers spread over many ticks. **Items are the
+real cost:** a mortar into a stockpile can reach ~25 cells × several stacks each, and a barrage multiplies
+that. Guards, all in Mod Settings:
+- `maxThrowsPerExplosion` (default 40 — pawns first, then corpses, then items nearest the centre).
+- `maxItemThrowsPerMapTick` (default 60 across all explosions); the overflow is dropped, not deferred, so
+  nothing accumulates.
+- The instant item route costs one despawn + one place per stack, no ticking object.
+- The hook returns on its first line when the damType's force is 0, and the flush is a single empty check
+  when nothing is queued.
+- `barrage_perf` (§8.2) measures ms per explosion tick on a stockpile, not only on pawns.
 
 ## 5. Mod Settings
 
-Defaults = shipped behaviour; all off = vanilla. Nothing here affects worldgen.
+Defaults = the owner's rulings (§11); all off = vanilla. Nothing here affects worldgen.
 | Setting | Type | Default | Notes |
 |---|---|---|---|
 | Enable explosive knockback | toggle | on | master |
-| Push strength (global multiplier) | 0–3 | 1.0 | |
-| Maximum push distance (cells) | 1–8 | 3 | |
-| Explosions from other mods push at | 0–100% | 0% | for harmsHealth DamageDefs with no extension; 0 = only patched defs |
-| Push downed pawns | toggle | on | |
-| Push animals | toggle | on | |
-| Push mechanoids | toggle | on | |
+| Throw strength (global multiplier) | 0–3 | 1.0 | 1.0 = mortar beside a human throws 3 cells (Q7) |
+| Maximum throw distance (cells) | 1–10 | 6 | |
+| Unpatched harmful explosions throw at | 0–100% | 0% | for mods' DamageDefs with no extension |
+| Throw downed pawns | toggle | on | |
+| Throw animals | toggle | on | |
+| Throw mechanoids | toggle | on | |
 | Immune at body size ≥ | 1–5 | 2.5 | |
-| Impact damage on hitting a wall / pawn | toggle + per-cell slider 0–15 | on, 4 | |
+| Throw items | toggle | on | Q4 |
+| Throw corpses | toggle | on | Q4 |
+| Light-thing mass limit (kg) | 5–200 | 75 | items and corpses above it stay put |
+| Sandbags and barricades stop a throw | toggle | off | Q3: thrown over |
+| Impact damage on hitting a wall / pawn | toggle + per-cell 0–15 | on, 4 | pawns only |
 | Landing stun (ticks) | range | 60–120 | |
-| Partial cover stops a push | toggle | on | §9 Q3 |
 | Doors take impact damage | toggle | on | |
-| Knockback mood thought for humanlikes | toggle | off | JecsTools has one; noise |
-| Push into FlowWorks pits | toggle | on | when off, an open pit cell is treated as a wall for the path (no fall) |
-| Max pushes per explosion | 1–200 | 40 | performance guard |
-| Debug: draw push vectors | toggle | off | dev mode only |
-Biome-kit rule: the mechanic is global; no biome gating needed.
+| Throw into FlowWorks pits | toggle | on | off = an open pit cell is a wall for the path |
+| Max throws per explosion | 1–200 | 40 | performance |
+| Max item throws per map tick | 1–500 | 60 | performance |
+| Debug: draw throw vectors | toggle | off | dev mode only |
+**In FlowWorks' settings, not this mod's:** "Blasts break pit covers" — toggle, default **on** (Q5).
 
 ## 6. Naming
 
@@ -246,33 +284,33 @@ Tier **RimMandrake** — it is a mechanic for any RimWorld game, franchise-free.
 ## 7. Interactions with our mods
 
 **FlowWorks — pits / superdeep (the reason this exists).**
-- Landing in an open D = 4 cell from outside: `RM_Patch_PawnFlyer_LandInPit` → `OnForcedDescent` → fall
-  damage; a player pawn is added as a jumper (held; a lowered ladder lets them out); a hostile is captured.
-  **No FlowWorks change needed** — the test is whether it fires for our flyer def (it patches the base
-  `PawnFlyer.RespawnPawn`, and our def uses thingClass `PawnFlyer`, so it should).
-- The path stops **in** the first open pit cell, so nobody is thrown across a pit. Landing on a lowered
-  ladder cell still counts as a forced fall (`DescentFalls(walkedStep:false, …)` returns true before it
-  reads the ladder) — that is what the ruling says ("blown in → fall").
-- Pit covers: a cover is ground. Our pawn lands on it; `CompPitCoverTrigger` sums mass on the deck every
-  30 ticks, so a thrown pawn plus those already standing there can spring it. That is emergent and correct;
-  a push does not itself break a cover in v1 (§9 Q5).
-- A pawn already on a D = 4 cell is **never pushed** in v1 (stagger only; §10 #1) — nobody is blown out of
-  a pit or along it, which keeps the owner's "you can't climb out. Period." and FlowWorks' jumper state.
+- A pawn landing in an open D = 4 cell from outside: `RM_Patch_PawnFlyer_LandInPit` → `OnForcedDescent` →
+  fall damage; a player pawn is added as a jumper (held; a lowered ladder lets them out); a hostile is
+  captured. It patches the base `PawnFlyer.RespawnPawn` and our def uses thingClass `PawnFlyer`, so it fires.
+- **Two FlowWorks changes are owed** (file for FOUNDRY with the build): (1) `RM_Patch_PawnFlyer_LandInPit`
+  skips any superdeep takeoff, so a pawn thrown off a *covered* D = 4 cell into an open pit is missed
+  (§10 #12) — skip only when the takeoff was an open pit; (2) **blasts break pit covers** (§3.6, Q5).
+- The path stops **in** the first open pit cell: nothing is thrown across a pit. A lowered-ladder cell is
+  still a forced fall (`DescentFalls(walkedStep:false, …)` returns true before it reads the ladder).
+- A pawn already on a D = 4 cell is never thrown (§3.2).
+- Items and corpses in a pit: FlowWorks has no item-fall rule; they lie on the pit floor (§9 Q-B).
 - Liquids: burning tar is walkable, so a blast can throw a pawn into it; FlowWorks' explosion-lights-liquid
   postfix may already have lit that cell. Drowning in a liquid-filled pit is FlowWorks' (`RM_PitDrowning`).
-- Sluice doors are doors: closed stops the push with impact.
-**Flyers (1.6 flight).** `Pawn.Flying` pawns are skipped in v1. Proof is a state read (the pawn's cell
-before/after, `Flying` true) — never an unattended live flight hunt (owner, said three times).
+- Sluice doors are doors: closed stops the throw with impact.
+**Flyers (1.6 flight).** `Pawn.Flying` pawns are not thrown. Proof is a state read (cell before/after,
+`Flying` true) — never an unattended live flight hunt (owner, said three times).
 **Gimme Some Slack.**
 - Aerial cord spans are already cut by explosions (`Patch_GenExplosion_CutSpans`); independent.
-- **Hose carry:** `MakeFlyer` suspends the carrier's job (`InterruptForced`). HoseCarry's table maps
-  `Interrupt` on `Carrying` → `Dropped`. Open: the walked-trail rule assumes contiguous steps; a 3-cell
-  jump is a gap. Either the hose end drops at the take-off cell (simplest, matches Interrupt), or the trail
-  bridges the gap. Needs one runner scene; owner question only if the simple answer looks wrong (§9 Q6).
+- **Hose carry (Q6):** the hose end drops where the carrier stood — dropped at the takeoff cell before
+  `MakeFlyer`, through `HoseCarry`'s `Interrupt` (`Carrying` → `Dropped`). The scene asserts the hose end's
+  physical cell and holder, not just the table state.
+- Laid hoses and cords are not items on the floor in the `Item` category sense; they are not thrown.
+  (Verify the hose end's ThingCategory before build.)
 **Ninefold / Scarlands (Totchak) / FlowWorks liquid fire** hook the same explosion; they read, we move.
-Order does not matter because we defer the move to the end of the explosion tick.
-**VEF / Melee Animation** patch `PawnFlyer.MakeFlyer`/`RecomputePosition`; both are inactive today but
-installed. A load with VEF active is owed before shipping (VEF is in the campaign list in practice).
+Same-tick ordering against them is irrelevant because we defer moves to the end of the explosion tick;
+ordering between two explosions on one tick is not (§10 #6).
+**VEF / Melee Animation** patch `PawnFlyer.MakeFlyer`/`RecomputePosition`; inactive today, installed. A
+VEF-active run is a ship gate.
 
 ## 8. The first functional script
 
@@ -282,83 +320,73 @@ Per `design/RimMandrake/debug_process.md` §2: a modcheck `Suite` in
 arrows, every setting in `suite.toggles`, and a `--mock` selftest that exits clean first.
 
 ### 8.1 Offline kernel tests (pure C#, `Source/SelfTest`, like FlowWorks' `Program.cs`)
-`RM_KnockbackMath` is Verse-free: input a small grid fixture (passable / wall / door / partial / pawn /
-pit / deep-water / out-of-bounds), centre, radius, force, mass, bodySize, settings; output
-`(destCell, cellsTravelled, impact, stopReason)`.
-- K-01 distance falls monotonically with distance from centre; 0 at the rim.
-- K-02 heavier never travels farther (property test over random masses).
-- K-03 bodySize ≥ immune → no move.
-- K-04 cells < 1 → no move.
-- K-05 never ends on an impassable / door / occupied / out-of-bounds cell (property test, 10k random grids).
-- K-06 never passes through a wall, including diagonal corner-cutting.
-- K-07 wall stop: impact = perCell × cells not travelled; out-of-bounds stop: impact 0.
-- K-08 open pit: stops IN the first pit cell, never beyond; with "push into pits" off, stops before it.
-- K-09 held-in-pit pawn never leaves D = 4.
-- K-10 epicentre: seeded direction is deterministic for a seed.
-- K-11 pawn-pawn: impact split, other pawn not moved.
-- K-12 per-explosion cap respected.
-Each ruled-out theory from build goes in the walk's `## anti-guessing notes`.
+`RM_KnockbackMath` is Verse-free: input a grid fixture (passable / wall / door / partial cover / pawn /
+pit / covered pit / deep water / out-of-bounds), centre, radius, force, mass, bodySize, kind (pawn | item |
+corpse), settings; output `(destCell, cellsTravelled, impact, stopReason)`.
+- K-01 calibration: mortar (r 2.9) at distance 1, 60 kg → 3 cells; frag (r 1.9) → 2; centre → 4.
+- K-02 unobstructed distance falls monotonically with distance from centre; 0 at the rim.
+- K-03 heavier never travels farther (property test); bodySize ≥ immune → no move; mass > light limit
+  (item/corpse) → no move.
+- K-04 never ends on an impassable / door / occupied / out-of-bounds cell (property test).
+- K-05 never passes through a wall, including diagonal corner-cutting.
+- K-06 partial cover is crossed (pawn and item); with the setting on, it stops a pawn before it.
+- K-07 wall stop: impact = perCell × cells not travelled × massScale⁻¹ᐟ²; out-of-bounds: 0; items: 0.
+- K-08 open pit: stops IN the first pit cell, never beyond; with "throw into pits" off, stops before it.
+- K-09 pawn-pawn: impact split, other pawn not moved; item passes a pawn cell.
+- K-10 epicentre direction deterministic for (explosion id, thing id).
+- K-11 caps: per-explosion priority (pawns, corpses, items-nearest-first); per-map-tick item cap drops
+  overflow.
+- K-12 dedupe: an ignored thing and a repeat callback for one (explosion, thing) enqueue nothing.
 
 ### 8.2 In-game runner scenes
-A `jawa/knockback_playtest_*` trio in the style of FlowWorks' `playtest_runner.py`
-(start → poll status → collect JSONL journal; verdict re-derived from the file; scratch map only). Each
-scene spawns, calls `GenExplosion.DoExplosion` from C#, ticks, reads state:
+A `jawa/knockback_playtest_*` trio in the style of FlowWorks' `playtest_runner.py` (start → poll → collect
+JSONL journal; verdict re-derived from the file; scratch map only). Each scene calls
+`GenExplosion.DoExplosion` from C#, ticks, and asserts **journal records** (request, launch, landing cell,
+impact amount, stopReason) plus state — and, for every "not moved" assertion, that the wave processed the
+thing.
 | Scene | Setup | PASS reads |
 |---|---|---|
-| open_ground | human 1 cell from a frag centre, open field | moved 1–3 cells away from centre; stunned on landing; alive |
-| wall_stop | human with a wall 1 cell behind | did not pass the wall; took Blunt impact (hediff count up) |
-| door_stop | closed door behind | same, door HP down |
-| pit_colonist | colonist 1 cell from an open D = 4 pit, blast on the far side | in the pit; FlowWorks `RecentDescents` has a forced entry; colonist held (jumper) |
-| pit_enemy | hostile, same | in the pit, captured |
-| pit_cover | pawn thrown onto a cover rated below its mass | cover springs within 30 ticks |
-| no_cross | pit 1 cell wide, 3-cell push | stops inside, never on the far lip |
-| heavy | thrumbo-sized animal beside a mortar shell | not moved |
-| downed | downed raider beside a blast | moved |
-| settings_off | master off | nobody moved; vanilla stagger only |
-| flying_skip | a flying pawn (state read `Flying`) | not moved — **state read only**, no screenshot |
-| hose_carry | colonist carrying a hose end | hose state = Dropped, no exception |
-| save_mid_flight | save while a flyer is in the air, reload | pawn lands once, exists once |
-| barrage_perf | 10 shells on 15 pawns | ms per explosion tick under budget; no errors in Player.log |
-`pit_*` scenes are the ones that close FlowWorks review row F10 and `FLOWWORKS_PIT_FALL_ONLY_FORCED_1`'s
-"forced/blown entry reaches the fall path" check.
+| calibration | human 1 cell from a mortar centre, open field | journal: 3 cells, away from centre; stunned; alive |
+| wall_stop | wall 1 cell behind | journal impact > 0, stopReason wall; did not pass the wall |
+| door_stop | closed door behind | as above; door HP down by the impact hit |
+| over_sandbags | sandbag line between pawn and open ground | pawn landed beyond the sandbags |
+| pit_colonist | colonist beside an open pit, blast on the far side | descent count +1 exactly, this pawn, this cell; held as jumper |
+| pit_enemy | hostile, same | descent +1; captured |
+| cover_breaks | blast reaching a cover with no one on it; and one with a pawn on it | cover sprung both times; the standing pawn fell |
+| thrown_onto_cover | pawn thrown toward a cover the wave reaches later | pawn ends in the pit |
+| covered_takeoff | pawn on a covered D = 4 cell beside an open pit | after the FlowWorks fix: descent +1 |
+| no_cross | 1-wide pit, 4-cell throw | stops inside, never on the far lip |
+| items | steel stack, a 10 kg item and a heavy minified building beside a blast | light ones moved per kernel; heavy one did not; stack count unchanged |
+| corpse_into_pit | corpse beside a pit | corpse on the pit floor; no exception |
+| killed_by_blast | pawn the blast kills | its corpse is thrown by the corpse rule |
+| shelf | items on a shelf | not moved |
+| heavy / downed / flying_skip / in_pit_skip / carrier_skip | one each | per §3.2; flying by state read only |
+| hose_carry | colonist carrying a hose end | hose end on the takeoff cell, not held; state Dropped |
+| redirect_guard | destination blocked mid-flight; two pawns to one cell | lands on the line back toward takeoff; never across a wall |
+| two_blasts | two explosions on one tick, both orders | no exception; one throw per pawn; recorded |
+| save_mid_flight | save with a flyer in the air, reload | save holds the pawn in a flyer; after reload it exists once |
+| raid_lord | a real assault raid hit by a mortar | raiders resume their lord's duty after the stun |
+| barrage_perf | 10 shells on 15 pawns AND on a full stockpile | ms per explosion tick under budget; launches and item moves counted; no Player.log errors |
+| settings_off | master off; items off; corpses off | nothing / no items / no corpses moved; wave processed them |
+| vef_active | VEF loaded, calibration + pit_colonist | same results |
+`pit_*` scenes close FlowWorks review row F10 and `FLOWWORKS_PIT_FALL_ONLY_FORCED_1`'s forced-entry check.
 
 ## 9. Open questions for the owner
 
-**Q1. Scope: everywhere, or only at pit edges?** The 12:01 card's recommended option was "near the edge";
-he later called it a mod. (d) is GPT's staging suggestion (§10).
-- (a) **Everywhere** — every blast throws people; pits are one consequence. Biggest change to combat feel;
-  needs balance tuning against raids. *(design default)*
-- (b) **Only next to pits** — a push happens only if it would end in a pit. Tiny, safe, but "blown back"
-  never happens on open ground, which looks odd beside a pit that does it.
-- (c) Everywhere but weak (max 1 cell) unless a pit is in the path.
-- (d) **Pit-only first, general later** — a 1-cell shove into an adjacent open pit, no flyer, no impact
-  damage; ships fast and closes the ruling, then the general mod is a second build.
+All eight original questions are answered (§11). The rulings raised these:
 
-**Q2. Weapons other than explosions?** His 2026-09-17 words: "weapon blowback".
-- (a) Explosions only in v1 *(design default)*; (b) also heavy single shots (a per-weapon extension, e.g.
-  shotguns, Star Wars heavy blasters) — more balance work; (c) also melee (hammers, Force push) — VEF
-  already has a melee pushback worker we could leave to VEF.
+**Q-A. What counts as a "blast" for breaking pit covers and for throwing?**
+- (a) Only explosions that throw (Bomb and anything patched with force) *(design)* — fire, EMP, smoke and
+  gas never break a cover. Predictable.
+- (b) Any explosion that harms health, including incendiary — a fire grenade also opens covers.
+- (c) Any explosion at all, even EMP and smoke — simplest rule, but a smoke grenade then defeats a trap.
 
-**Q3. Sandbags and barricades.**
-- (a) Stop the push, half impact *(default)* — cover protects; (b) pawns are thrown over them — dramatic,
-  makes cover worse against explosives; (c) stop and knock the pawn down behind it.
-
-**Q4. Items and corpses.**
-- (a) Never *(default)*; (b) corpses only (bodies into pits — cleanup by mortar); (c) everything light —
-  most chaos, most cost.
-
-**Q5. Can a blast break a pit cover directly?**
-- (a) No, only weight springs it *(default)*; (b) blasts on a cover always break it — makes covers fragile
-  against raider grenades; (c) blasts damage covers by HP like any building.
-
-**Q6. Carried hose when the carrier is thrown.**
-- (a) The hose end drops where they stood *(default)*; (b) it stays in their hands and the hose stretches
-  across the gap.
-
-**Q7. Strength.** A mortar beside a human: (a) 3 cells *(default)*; (b) 1–2 (subtle); (c) 5+ (cinematic).
-
-**Q8. Is it its own mod?** (a) Yes, `mandrake.rm.explosiveknockback` *(default — it works with no pits)*;
-(b) a FlowWorks feature — fewer mods, but then it only exists where FlowWorks is loaded.
+**Q-B. Items and corpses that land in a pit.**
+- (a) They stay on the pit floor; only someone in the pit, or a hauler via a lowered ladder, can reach them
+  *(design)*. Cost: blasts near pits can "lose" loot until a ladder is down.
+- (b) Haulers may fetch from the lip, like a warden feeding from the lip. Cost: new FlowWorks hauling code.
+- (c) Items and corpses are never thrown into pits (they stop at the lip). Cost: corpses-into-pit cleanup
+  by mortar goes away.
 
 ## 10. GPT evaluation — what I accept, what I reject and why
 
@@ -412,18 +440,12 @@ decompiled 1.6 source before ruling.
 - **#20** performance counts launches, and the cap counts successful launches per map tick; F10 closes only
   on a recorded blast → displacement → exactly one forced descent, never on the class-name probe.
 
-**Accepted as a staging option, put to the owner (Q1):** **#19 smallest version first** — Bomb only,
-1-cell outward push, only when that cell is an open pit, by position set + `Notify_Teleported` (the same
-route `TryJumpInto` uses, which FlowWorks' tick detector already reads as forced), no flyer, no impact
-damage. It sidesteps #5, #6, #8 entirely and closes his stated need. It does not give "blown back" on open
-ground.
+**Not taken:** **#19 "smallest version first"** (a 1-cell shove into an adjacent pit, no flyer) — the owner
+ruled Q1 **everywhere** (§11), so the general mod is the build.
 
 **Rejected:**
-- *"Scope exceeds the demonstrated owner requirement"* as a reason to build only the pit version — he
-  called it a mod by name, and balance_paradigm.md already lists knockback as a wanted verb. Scope is his
-  call, so it is Q1, not my call either way.
 - *Position set as the general route* — for multi-cell pushes it reads as teleporting, and every job/stance
-  edge becomes ours. Kept only for the 1-cell staging option.
+  edge becomes ours. Items and corpses do use an instant relocate (§4.3) — they have no jobs or stances to break.
 - *Excluding inventory mass is "a balance choice"* — agreed it is a choice; I keep JecsTools' rule (worn
   gear counts, backpack does not) because a loaded hauler should not become immovable. Not a defect.
 
