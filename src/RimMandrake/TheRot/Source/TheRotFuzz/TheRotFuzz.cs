@@ -547,6 +547,46 @@ namespace RimMandrake.TheRot.Fuzz
                 for (float body = 0f; body < 6f; body += 0.05f) { Steps++; int d = RM_TheRotKernel.DigestTicksFor(3f, 24f, body); if (d < prev || d < 7500) bad("digest not monotone / under the minimum at body size " + body); prev = d; }
             }
 
+            // --- swallow edge cases a random walk rarely sits on (added with the mutation set)
+            Cases++;
+            {
+                Steps += 14;
+                var s0 = RM_TheRotKernel.SwallowState.Fresh();
+                if (RM_TheRotKernel.TimeLeftFraction(s0) != 0f || RM_TheRotKernel.TicksLeft(s0) != 0) bad("an empty belly must read as no time left");
+                var over = new RM_TheRotKernel.SwallowState { ticksToDigest = 100, ticksInside = 150, nextKnockTick = -1 };
+                if (RM_TheRotKernel.TimeLeftFraction(over) != 0f) bad("time-left fraction fell below 0 (" + RM_TheRotKernel.TimeLeftFraction(over) + ")");
+                if (RM_TheRotKernel.TicksLeft(over) != 0) bad("ticks left went negative");
+                var half = new RM_TheRotKernel.SwallowState { ticksToDigest = 100, ticksInside = 50, nextKnockTick = -1 };
+                if (RM_TheRotKernel.TimeLeftFraction(half) != 0.5f) bad("half way in must read 0.5");
+                if (RM_TheRotKernel.TimeLeftFraction(new RM_TheRotKernel.SwallowState { ticksToDigest = 100, ticksInside = -20 }) != 1f) bad("time-left fraction rose above 1");
+                // a new swallow starts clean even if the last one was never cleared
+                var dirty = new RM_TheRotKernel.SwallowState { ticksInside = 77, ticksToDigest = 1000, damageSinceSwallow = 40f, nextKnockTick = 5 };
+                RM_TheRotKernel.Begin(ref dirty, 500, 1000);
+                if (dirty.damageSinceSwallow != 0f || dirty.ticksInside != 0 || dirty.ticksToDigest != 500 || dirty.nextKnockTick != 1120) bad("Begin must reset damage, clock and the first knock (120 ticks out)");
+                var stranger = new RM_TheRotKernel.SwallowState { damageSinceSwallow = 40f };
+                RM_TheRotKernel.BeginStranger(ref stranger, 500, 1000, 200);
+                if (stranger.damageSinceSwallow != 0f || stranger.ticksInside != 300 || stranger.nextKnockTick != 1120) bad("BeginStranger: damage reset, 200 ticks left, first knock 120 out");
+                // Tick: a victim already dead / gone finishes AT ONCE, mid-digest; the knock is due exactly at nextKnockTick, not a tick before
+                var t1 = new RM_TheRotKernel.SwallowState { ticksToDigest = 1000, ticksInside = 10, nextKnockTick = 5000 };
+                if (RM_TheRotKernel.Tick(ref t1, 100, true) != RM_TheRotKernel.SwallowEvent.Finish) bad("a dead victim must finish the swallow immediately");
+                var t2 = new RM_TheRotKernel.SwallowState { ticksToDigest = 1000, ticksInside = 10, nextKnockTick = 500 };
+                if (RM_TheRotKernel.Tick(ref t2, 499, false) != RM_TheRotKernel.SwallowEvent.None) bad("a knock fired a tick early");
+                if (RM_TheRotKernel.Tick(ref t2, 500, false) != RM_TheRotKernel.SwallowEvent.Knock) bad("a knock did not fire when due");
+                var t3 = new RM_TheRotKernel.SwallowState { ticksToDigest = 20, ticksInside = 18, nextKnockTick = 5000 };
+                if (RM_TheRotKernel.Tick(ref t3, 1, false) != RM_TheRotKernel.SwallowEvent.None || RM_TheRotKernel.Tick(ref t3, 2, false) != RM_TheRotKernel.SwallowEvent.Finish) bad("the digest must finish on the tick that reaches its length");
+                if (t3.ticksInside != 20) bad("Tick must advance the clock by exactly one");
+                if (Math.Abs(RM_TheRotKernel.KnockVolume(0f, 1f) - 0.25f) > 1e-6f || Math.Abs(RM_TheRotKernel.KnockVolume(1f, 1f) - 1f) > 1e-6f || Math.Abs(RM_TheRotKernel.KnockVolume(0.5f, 2f) - 1.25f) > 1e-6f) bad("knock volume table (quiet at the end, scaled by loudness)");
+                // tile 0 is a real campaign tile: a hwelgrue on any other tile must not claim the core
+                if (RM_TheRotKernel.Claim(true, false, false, null, "me", false, 0, 1) != RM_TheRotKernel.ClaimResult.No || RM_TheRotKernel.Claim(true, false, false, null, "me", false, 0, 0) != RM_TheRotKernel.ClaimResult.New || RM_TheRotKernel.Claim(true, false, false, null, "me", false, -1, 9) != RM_TheRotKernel.ClaimResult.New) bad("campaign tile gate (0 is a valid tile, -1 means none set)");
+                foreach (bool hw in new[] { false, true }) foreach (bool hd in new[] { false, true }) foreach (bool sp in new[] { false, true }) foreach (bool cut in new[] { false, true })
+                    if (RM_TheRotKernel.LogReads(hw, hd, sp, cut) != (hw && hd && !sp && !cut)) bad("LogReads(" + hw + "," + hd + "," + sp + "," + cut + ")");
+                var edge = new RM_TheRotKernel.BiomeRanges { tempMin = -40f, tempMax = 15f, rainMin = 0f, rainMax = 1600f, elevMin = 0f, elevMax = 1200f, baseScore = 30f, degreeWeight = 1.2f, rainfallDivisor = 0f };
+                if (!(RM_TheRotKernel.BiomeScore(false, false, false, 15f, 100f, 100f, edge) >= 30f) || !(RM_TheRotKernel.BiomeScore(false, false, false, -40f, 100f, 100f, edge) >= 30f)) bad("temperature range edges are inclusive");
+                if (!(RM_TheRotKernel.BiomeScore(false, false, false, 0f, 100f, 100f, edge) < 1e6f) || float.IsNaN(RM_TheRotKernel.BiomeScore(false, false, false, 0f, 100f, 100f, edge))) bad("a zero rainfall divisor must not blow the score up");
+                // the rot boost is exactly 0 at multiplier 1 and strictly positive above it
+                if (RM_TheRotKernel.RotBoost(1f, 2f, 250) != 0f || RM_TheRotKernel.RotBoost(0.5f, 2f, 250) != 0f || !(RM_TheRotKernel.RotBoost(1.5f, 2f, 250) > 0f) || RM_TheRotKernel.RotBoost(2f, 0f, 250) != 0f) bad("rot boost edges");
+            }
+
             // --- biome score
             Cases++;
             {
