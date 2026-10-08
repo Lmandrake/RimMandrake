@@ -130,5 +130,29 @@
   "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
   "old": "            return seen.Add((sourceKey, ownerId));",
   "new": "            return seen.Add((sourceKey, 0));"
+ },
+ {
+  "name": "pushed items may land in a footprint",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "                    if (k == src || excluded(k)) continue;",
+  "new": "                    if (k == src) continue;"
+ },
+ {
+  "name": "destinations overfilled across cells (capacity not shared)",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "                foreach (KeyValuePair<long, int> kv in take) used[kv.Key] = (used.TryGetValue(kv.Key, out int u2) ? u2 : 0) + kv.Value;\n",
+  "new": ""
+ },
+ {
+  "name": "a cell moves only some of its items",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "                if (dests.Count < need) continue;",
+  "new": "                if (dests.Count == 0) continue;"
+ },
+ {
+  "name": "root rule fires when any variant is root-only",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "            for (int i = 0; i < contactCountsPerVariant.Count; i++) if (contactCountsPerVariant[i] != 0) return false;\n            return true;",
+  "new": "            for (int i = 0; i < contactCountsPerVariant.Count; i++) if (contactCountsPerVariant[i] == 0) return true;\n            return false;"
  }
 ]

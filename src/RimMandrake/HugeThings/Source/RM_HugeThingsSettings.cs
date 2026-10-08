@@ -39,6 +39,7 @@ namespace RimMandrake.HugeThings
             list.CheckboxLabeled("Huge plants are solid where they touch the ground", ref plantTrunkEnabled,
                 "A huge plant blocks the cells where its stem, roots or body meet the ground (measured from its art), "
               + "so pawns walk around it and nothing can be built inside it; its overhanging cap stays walkable. "
+              + "A giant whose art touches the ground only in its own cell becomes solid on that cell (after a restart). "
               + "Off: every plant is one walk-through cell, as in vanilla.");
             list.CheckboxLabeled("Click anywhere on a huge plant's picture to select it", ref plantSelectionEnabled,
                 "Off: a huge plant can only be selected on the one cell it grows from.");

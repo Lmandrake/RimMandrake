@@ -29,6 +29,7 @@ namespace RimMandrake.HugeThings
         private readonly ClaimLedger ledger = new ClaimLedger();
         private readonly Dictionary<long, Building_TrunkBlocker> realized = new Dictionary<long, Building_TrunkBlocker>();
         private readonly SortedSet<long> pending = new SortedSet<long>();
+        private readonly Dictionary<long, int> lastMoveTick = new Dictionary<long, int>();
         private bool initialized;
         private bool mutating;
 
@@ -195,18 +196,78 @@ namespace RimMandrake.HugeThings
                 if (mine.Count == 0) continue;
                 CellBox window = Planner.Window(c.MaxKeys(), Key(c.parent.Position));
                 Dictionary<long, CellFlags> flags = Flags(window);
+                Dictionary<long, List<long>> moves = PlanItemMoves(mine, flags);
+                foreach (long k in moves.Keys) flags[k] &= ~CellFlags.Item;   // movable: plan it as if clear
                 List<long> ok = Planner.Plan(mine, roots, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.Passable, window);
                 foreach (long k in ok)
                 {
+                    if (moves.TryGetValue(k, out List<long> dests) && !MoveItems(k, dests)) continue;
                     if (Spawn(k)) flags[k] = CellFlags.None;
                 }
             }
+        }
+
+        /// <summary>Owner ruling 2026-10-07 21:08: for each wanted cell held ONLY by items (no pawn, nothing protected), a
+        /// destination per item in the nearest free valid cell outside every footprint, preferring the source's own storage;
+        /// at most once per PendingRetryInterval per cell. Cells whose items do not all fit are left out (they stay open).</summary>
+        private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags)
+        {
+            Dictionary<long, int> counts = new Dictionary<long, int>();
+            int now = Find.TickManager.TicksGame;
+            foreach (long k in mine)
+            {
+                if (!flags.TryGetValue(k, out CellFlags f) || f != (CellFlags.Passable | CellFlags.Item)) continue;
+                if (lastMoveTick.TryGetValue(k, out int t) && now - t < PendingRetryInterval) continue;
+                counts[k] = Cell(k).GetItemCount(map);
+            }
+            if (counts.Count == 0) return new Dictionary<long, List<long>>();
+            return ItemMover.Assign(counts, Capacity, k => ledger.IsClaimed(k),
+                                    (src, k) => Cell(src).GetSlotGroup(map) == Cell(k).GetSlotGroup(map));
+        }
+
+        /// <summary>How many more items cell k takes; -1 when it is no place for an item at all.</summary>
+        private int Capacity(long k)
+        {
+            IntVec3 c = Cell(k);
+            if (!c.InBounds(map) || !c.Standable(map) || realized.ContainsKey(k)) return -1;
+            return System.Math.Max(0, c.GetMaxItemsAllowedInCell(map) - c.GetItemCount(map));
+        }
+
+        /// <summary>Move every item off k to its planned cell, keeping each Thing (so its forbidden state, stack and
+        /// quality) and destroying nothing; an item that cannot be placed goes back where it was. Quiet: no letter, no
+        /// message. True only when the cell is left with no items.</summary>
+        private bool MoveItems(long k, List<long> dests)
+        {
+            IntVec3 src = Cell(k);
+            lastMoveTick[k] = Find.TickManager.TicksGame;
+            List<Thing> items = new List<Thing>();
+            foreach (Thing t in src.GetThingList(map)) if (t.def.category == ThingCategory.Item) items.Add(t);
+            if (items.Count != dests.Count) return false;   // the cell changed since planning: try again later
+            for (int i = 0; i < items.Count; i++)
+            {
+                Thing t = items[i];
+                IntVec3 to = Cell(dests[i]);
+                if (to.GetItemCount(map) >= to.GetMaxItemsAllowedInCell(map) || !to.Standable(map)) continue;
+                t.DeSpawn(DestroyMode.Vanish);
+                try
+                {
+                    GenSpawn.Spawn(t, to, map, WipeMode.Vanish);
+                }
+                catch (System.Exception e)
+                {
+                    Log.ErrorOnce("[RimMandrake.HugeThings] could not move " + t + " to " + to + ": " + e, t.thingIDNumber ^ 0x6d76);
+                }
+                if (!t.Spawned) GenSpawn.Spawn(t, src, map, WipeMode.Vanish);   // put it back rather than lose it
+            }
+            return src.GetItemCount(map) == 0;
         }
 
         private bool Spawn(long k)
         {
             IntVec3 c = Cell(k);
             if (!c.InBounds(map) || realized.ContainsKey(k)) return false;
+            // An impassable thing spawning over an item WIPES it (GenSpawn.SpawningWipes, verified 1.6): never spawn over one.
+            if (c.GetItemCount(map) > 0 || c.GetFirstPawn(map) != null) return false;
             Building_TrunkBlocker b = (Building_TrunkBlocker)ThingMaker.MakeThing(HugeThingsDefOf.RM_HugeTrunkBlocker);
             mutating = true;
             try

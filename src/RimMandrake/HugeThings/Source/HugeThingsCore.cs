@@ -64,6 +64,19 @@ namespace RimMandrake.HugeThings
             ext.blockingSupported = why == null;
             if (why != null)
                 Log.Error("[RimMandrake.HugeThings] " + def.defName + ": " + why + " -- it gets selection only, no ground footprint.");
+            // Owner ruling 2026-10-07 21:08: art that touches the ground only in its own cell makes that cell solid. Verified
+            // 1.6: PathGrid blocks a cell for ANY thing whose def is Impassable (not only edifices); cutting and harvesting use
+            // PathEndMode.Touch (WorkGiver_PlantsCut, WorkGiver_GrowerHarvest, JobDriver_PlantWork), which reaches an
+            // impassable 1x1 target from an adjacent open cell (TouchPathEndModeUtility.AddAllowedAdjacentRegions); a plant
+            // never wipes anything on spawn (GenSpawn.SpawningWipes returns false for a Plant). Read at startup, so toggling
+            // the footprint setting affects these plants after a restart.
+            List<int> counts = new List<int>();
+            foreach (HugePlantVariant v in ext.variants) counts.Add(v.contact.Count);
+            if (RootRule.RootImpassable(RM_HugeThingsSettings.plantTrunkEnabled, ext.blockingSupported, counts))
+            {
+                def.passability = Traversability.Impassable;
+                ext.rootImpassable = true;
+            }
         }
 
         public static void OptInPawn(ThingDef def, RM_HugePawnExtension ext = null)

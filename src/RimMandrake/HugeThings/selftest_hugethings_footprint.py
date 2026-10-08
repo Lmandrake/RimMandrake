@@ -293,6 +293,32 @@ def patch_is_what_the_tool_measures_from_the_current_art():
 
 
 @test
+def root_only_giants_are_made_impassable_and_stay_cuttable():
+    """Owner ruling 2026-10-07 21:08: a giant whose every measured picture touches the ground only in its own cell is made
+    Impassable on that cell, by the generic rule (never a per-species exception). Pins which giants that is today, and that
+    the code path carries its 1.6 evidence: Touch reaches an impassable 1x1 plant from an adjacent cell."""
+    root_only = sorted(dn for dn, (_s, vs) in patch_table().items() if vs and all(len(v[2]) == 0 for v in vs.values()))
+    assert root_only == ["AB_GiantAgarilux"], root_only
+    core = open(os.path.join(HERE, "Source", "HugeThingsCore.cs"), encoding="utf-8").read()
+    assert "RootRule.RootImpassable(RM_HugeThingsSettings.plantTrunkEnabled, ext.blockingSupported, counts)" in core
+    assert "def.passability = Traversability.Impassable;" in core
+    assert "AB_GiantAgarilux" not in core and "GiantAgarilux" not in core, "a hand-tuned exception crept in"
+    for needle in ("PathEndMode.Touch", "WorkGiver_PlantsCut", "WorkGiver_GrowerHarvest", "TouchPathEndModeUtility.AddAllowedAdjacentRegions"):
+        assert needle in core, "the impassable-root note lost its 1.6 evidence: %s" % needle
+    # the root of an impassable plant must still have an open neighbour: the planner keeps every served root served
+    comp = open(os.path.join(HERE, "Source", "MapComponent_HugeFootprints.cs"), encoding="utf-8").read()
+    assert "Planner.Plan(mine, roots," in comp
+
+
+@test
+def items_are_pushed_never_wiped():
+    comp = open(os.path.join(HERE, "Source", "MapComponent_HugeFootprints.cs"), encoding="utf-8").read()
+    assert "if (c.GetItemCount(map) > 0 || c.GetFirstPawn(map) != null) return false;" in comp, "a blocker could wipe items"
+    assert "ItemMover.Assign(counts, Capacity, k => ledger.IsClaimed(k)" in comp
+    assert "Letter" not in comp and "Messages.Message" not in comp, "the push must be quiet"
+
+
+@test
 def csharp_still_matches_this_mirror():
     src = open(os.path.join(HERE, "Source", "Kernel", "RM_HugeFootprintKernel.cs"), encoding="utf-8").read()
     for needle in ("(int)Math.Floor(v + 0.5f)", "if (cz - visual / 2f < rootZ) cz = rootZ + visual / 2f;",

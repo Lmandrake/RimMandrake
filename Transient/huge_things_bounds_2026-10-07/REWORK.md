@@ -37,12 +37,7 @@ AgariluxPrime 118 | DribblingCap_A 28 | Nogtyl A/B/C 17/13/12 | Arpeau A/B 4/3 |
 `python3 src/RimMandrake/Utils/mutate_hugethings_fuzz.py`: 13/13 CAUGHT (flip axis x2, anchoring removed, anchoring by side, root exemption, picture clip, selection-root, picture last column, row rounding, column ceil, scale anchor, jitter ignored, V0 ignored).
 Dropped as equivalent: "selection forgets blocked cells" (blocked cells are clipped to the picture, which the selection already holds).
 Growth nesting is NOT asserted (GPT #10); the first fuzz measured 13326/21000 random masks where half growth is not a subset of full.
-Kernel rule added for the fuzz invariant "blocked never outside the silhouette": a cell blocks only if its centre is inside the drawn picture box; the tool applies the same rule (+0.06-cell jitter margin) so full growth still reproduces the data. Effect: AB_GiantAgarilux now 0 contact cells (its art touches the ground only in its own root cell) -- see Needs owner.
-
-## Needs owner
-- AB_GiantAgarilux (vokkun pillar): its stem is ~1.2 cells wide and stands on its own root cell, which can never carry a blocker (the edifice would wipe the plant). Today it blocks nothing. Options: accept a walk-through pillar, or make the def itself PassThroughOnly/Impassable (a def change in TheRot, not HugeThings).
-
-Note: run_selftests 303/304 before this step; the 1 FAIL is src/RimMandrake/bridgetools/selftest_tool_metadata.py (JawaBench DLL lacks kill_hostiles/world_tile_cache_reset from ac8b24b82) -- not HugeThings.
+Kernel rule added for the fuzz invariant "blocked never outside the silhouette": a cell blocks only if its centre is inside the drawn picture box; the tool applies the same rule (+0.06-cell jitter margin) so full growth still reproduces the data. Effect: AB_GiantAgarilux now 0 contact cells (its art touches the ground only in its own root cell); owner ruling 21:08 makes such a plant impassable on its own cell (below).
 
 ## GPT review + owner ruling #4 (20:38) -- plan
 - C1 geometry unit: kernel + tool + data + fuzz with an INDEPENDENT double-precision forward oracle (drawSize != 1, boundary crossings), mutation set, lint. Strict growth nesting DROPPED as an invariant (GPT; also measured: halving growth is not a subset in ~63% of random masks).
@@ -80,9 +75,6 @@ Dropped as equivalent: "primary owner = max id" (still order-independent).
 Found by the fuzz and fixed: the planner judged reachability in a window that shrank as cells closed and ran one greedy pass -> a second pass closed cells the first refused (134/3000). Now a fixed per-plant window (full-growth, max-setting footprint + 4) and a fixpoint loop.
 
 ## Needs owner
-- (above) AB_GiantAgarilux blocks nothing.
-- Map-scale disconnection: the planner guarantees no NEW enclosure inside each giant's window (footprint + 4 cells). A chain of giants that together seal a region larger than any one window is not detected. Options: accept; or a map-level reachability check per change (cost).
-- Deferred cells: a cell refused for a pawn/item stays open until the next retry (250 ticks) finds it clear; a stockpile under a footprint keeps an item there forever -> that cell never closes. Acceptable?
 - Union fallback: an unmeasured picture (RM_PaleTree's immature graphic is vanilla TreeAnima_Immature) blocks the union of the measured variants, scaled; the selection is the whole quad.
 - Planner cost at load: ~O(window cells x pending cells x passes) per giant (worst measured shape 118 cells, ~28x28 window); unbenchmarked in game.
 
@@ -90,3 +82,9 @@ Found by the fuzz and fixed: the planner judged reachability in a window that sh
 run_selftests: 326/327; the one FAIL is bridgetools/selftest_tool_metadata.py (JawaBench DLL vs source, from ac8b24b82), not HugeThings.
 All HugeThings C# files are DIRTY under code_review_status (no full-file review yet).
 BENCH to see it live: python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod HugeThings (then --apply) and --mod for the Rot patch's mod (mandrake.rm.biomes / TheRot folder), with the game closed (DLL locked while running); cold load; on an existing save Reconcile re-takes every footprint on load.
+
+## Owner rulings 21:08 (decision taken by question card) -- implemented
+1. Root-only giants are solid on their own cell. Generic rule RootRule.RootImpassable (kernel): blocking on, renderer supported, and EVERY measured variant has 0 non-root contact cells -> the plant def's passability is set Impassable at startup (HugeThingsApi.ValidateRenderer). Today that is AB_GiantAgarilux only (pinned). Verified 1.6: PathGrid.CalculatedCostAt blocks for any thing whose def is Impassable; WorkGiver_PlantsCut and WorkGiver_GrowerHarvest use PathEndMode.Touch, JobDriver_PlantWork goes to Touch, and TouchPathEndModeUtility.AddAllowedAdjacentRegions reaches a 1x1 target from any allowed adjacent cell; GenSpawn.SpawningWipes returns false for a Plant. The planner already keeps every giant's root with an open reachable 4-neighbour. Takes effect after a restart if the footprint setting is toggled.
+2. Large enclosures: ACCEPTED as a known limitation. The planner guarantees no new enclosure inside each giant's window (its full-growth, max-setting footprint + 4 cells). A chain of giants that together seal a region larger than any single window is not detected.
+3. Items under a closing footprint are pushed, gently (ItemMover in the kernel; MapComponent.PlanItemMoves/MoveItems): a cell held only by items (no pawn, nothing protected) closes after ALL its items fit in the nearest free valid cells (BFS <= 12 cells over standable ground, capacity GetMaxItemsAllowedInCell - GetItemCount, shared across the pass), never in any claimed footprint cell, preferring the source's own storage (same SlotGroup). The same Thing is despawned and respawned (forbidden state, stack, quality kept); an item that cannot be placed goes back. At most once per 250 ticks per cell; no letters or messages. Otherwise the cell stays open. Pawns are never moved. New guard: a blocker never spawns over an item or pawn (an impassable spawn WIPES items, GenSpawn.SpawningWipes).
+Fuzz: + items 4000 (half crowded) and root 2000 -> ALL PASS (any, full, boundary, symmetry, ledger, planner, items, root, cache, damage, determinism). Mutations: 26, all caught (+ item lands in footprint, capacity not shared, partial move, root rule any-vs-every).

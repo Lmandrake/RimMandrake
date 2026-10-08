@@ -15,6 +15,8 @@
 //                order-independent; idempotent (checked against an independent whole-board flood)
 //   cache        signature cache == fresh computation as each field changes alone
 //   damage       one forwarded hit per (tick, source, owner)
+//   items        pushed items: count conserved, none lost, none lands in a footprint or over capacity; pawn cells never close
+//   root         a plant whose every variant touches the ground only in its own cell is made impassable there
 // Growth -> cells nesting is NOT an invariant (GPT review #10; a ring of roots scaled up truly moves outward).
 //   determinism  the same seed gives byte-identical results
 // A failing case prints as `FAIL family seed N: message`; --fuzz-seed N replays it.
@@ -511,6 +513,92 @@ namespace RimMandrake.HugeThings.SelfTest
             return forwarded.Count.ToString();
         }
 
+        /// <summary>Owner ruling 2026-10-07 21:08: items under a closing footprint are pushed, never destroyed. The item
+        /// count is conserved, no moved item lands in any footprint (claimed) cell or past a cell's capacity, a cell closes
+        /// only when it is left empty, a pawn's cell never closes, and a cell whose items cannot all fit stays open.</summary>
+        internal static string CaseItems(int seed)
+        {
+            var r = new Random(seed);
+            int w = 8 + r.Next(14), h = 8 + r.Next(14);
+            Grid g = MakeGrid(r, w, h);
+            bool crowded = (seed & 1) == 0;   // half the cases: almost no room, so partial fits are common
+            var items = new Dictionary<long, int>();
+            var cap = new Dictionary<long, int>();
+            for (int z = 0; z < h; z++)
+                for (int x = 0; x < w; x++)
+                {
+                    long k = K.Key(x, z);
+                    CellFlags f = g.F[z * w + x];
+                    cap[k] = (f & CellFlags.Passable) == 0 || (f & CellFlags.Protected) != 0 ? -1 : 1 + (r.Next(4) == 0 ? 2 : 0);
+                    if ((f & CellFlags.Item) != 0) items[k] = 1 + r.Next(Math.Max(1, cap[k]));
+                    else if (crowded && cap[k] > 0 && (f & CellFlags.Pawn) == 0)
+                    {
+                        items[k] = cap[k] - (r.Next(6) == 0 ? 1 : 0);   // a packed storeroom
+                        if (items[k] > 0) g.F[z * w + x] |= CellFlags.Item;   // as Flags() reports any item
+                        else items.Remove(k);
+                    }
+                }
+            int total = items.Values.Sum();
+            List<long> claimed = Blob(r, w / 2, h / 2, 5 + r.Next(50)).Where(k => K.KeyX(k) >= 0 && K.KeyZ(k) >= 0 && K.KeyX(k) < w && K.KeyZ(k) < h).ToList();
+            var root = K.Key(w / 2, h / 2 - 1);
+            claimed.Remove(root);
+            var claimedSet = new HashSet<long>(claimed);
+            int Cap(long k)
+            {
+                if (!cap.TryGetValue(k, out int c)) return -1;
+                return c < 0 ? -1 : Math.Max(0, c - (items.TryGetValue(k, out int n) ? n : 0));
+            }
+            var counts = new Dictionary<long, int>();
+            foreach (long k in claimed)
+                if (g.At(k) == (CellFlags.Passable | CellFlags.Item)) counts[k] = items[k];
+            var moves = ItemMover.Assign(counts, Cap, k => claimedSet.Contains(k), (a, b) => ((K.KeyX(a) ^ K.KeyX(b)) & 1) == 0);
+            var flags = new Dictionary<long, CellFlags>();
+            foreach (long k in cap.Keys) flags[k] = g.At(k);
+            foreach (long k in moves.Keys) flags[k] &= ~CellFlags.Item;
+            CellBox win = Planner.Window(claimed, root);
+            List<long> acc = Planner.Plan(claimed, new List<long> { root }, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.Passable, win);
+            var landed = new Dictionary<long, int>();
+            foreach (long k in acc)
+            {
+                Check((g.At(k) & CellFlags.Pawn) == 0, "closed a pawn's cell");
+                if (!moves.TryGetValue(k, out List<long> dests))
+                {
+                    Check(!items.ContainsKey(k), "closed a cell whose items had nowhere to go (they would be wiped)");
+                    continue;
+                }
+                Check(dests.Count == items[k], "moved " + dests.Count + " of " + items[k] + " items (one would be lost)");
+                foreach (long d in dests)
+                {
+                    Check(!claimedSet.Contains(d), "an item landed inside a footprint");
+                    Check(d != k, "an item stayed in the closing cell");
+                    landed[d] = (landed.TryGetValue(d, out int n) ? n : 0) + 1;
+                }
+                items.Remove(k);
+            }
+            foreach (var kv in landed)
+            {
+                Check(Cap(kv.Key) >= kv.Value, "a destination got more items than it holds");
+                items[kv.Key] = (items.TryGetValue(kv.Key, out int n) ? n : 0) + kv.Value;
+            }
+            foreach (long k in counts.Keys)
+                if (!moves.ContainsKey(k)) Check(!acc.Contains(k), "a cell whose items did not all fit was closed");
+            Check(items.Values.Sum() == total, "item count not conserved: " + total + " -> " + items.Values.Sum());
+            return acc.Count + "/" + moves.Count;
+        }
+
+        /// <summary>A plant is made impassable on its own cell exactly when every measured variant has no non-root contact
+        /// cell, blocking is on and the renderer is supported.</summary>
+        internal static string CaseRoot(int seed)
+        {
+            var r = new Random(seed);
+            int n = r.Next(4);
+            var counts = Enumerable.Range(0, n).Select(_ => r.Next(3) == 0 ? r.Next(1, 20) : 0).ToList();
+            bool on = r.Next(4) != 0, sup = r.Next(4) != 0;
+            bool want = on && sup && n > 0 && counts.All(c => c == 0);
+            Check(RootRule.RootImpassable(on, sup, counts) == want, "root rule wrong for counts [" + string.Join(",", counts) + "] on=" + on + " sup=" + sup);
+            return want ? "1" : "0";
+        }
+
         private static bool Family(string name, int n, int? one, Func<int, string> run)
         {
             int fails = 0;
@@ -542,6 +630,8 @@ namespace RimMandrake.HugeThings.SelfTest
             if (only == null || only == "symmetry") ok &= Family("symmetry", N(3000), one, CaseSymmetry);
             if (only == null || only == "ledger") ok &= Family("ledger", N(4000), one, CaseLedger);
             if (only == null || only == "planner") ok &= Family("planner", N(3000), one, CasePlanner);
+            if (only == null || only == "items") ok &= Family("items", N(4000), one, CaseItems);
+            if (only == null || only == "root") ok &= Family("root", N(2000), one, CaseRoot);
             if (only == null || only == "cache") ok &= Family("cache", N(2000), one, CaseCache);
             if (only == null || only == "damage") ok &= Family("damage", N(2000), one, CaseDamage);
             if (only == null || only == "determinism")
@@ -549,7 +639,7 @@ namespace RimMandrake.HugeThings.SelfTest
                 ok &= Family("determinism", N(500), one, s =>
                 {
                     Check(CaseAny(s) == CaseAny(s) && CaseBoundary(s) == CaseBoundary(s) && CaseFull(s) == CaseFull(s)
-                          && CaseLedger(s) == CaseLedger(s) && CasePlanner(s) == CasePlanner(s), "a seed replayed differently");
+                          && CaseLedger(s) == CaseLedger(s) && CasePlanner(s) == CasePlanner(s) && CaseItems(s) == CaseItems(s), "a seed replayed differently");
                     return "";
                 });
             }
