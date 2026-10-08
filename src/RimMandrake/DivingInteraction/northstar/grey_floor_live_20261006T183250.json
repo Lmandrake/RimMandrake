@@ -1,0 +1,427 @@
+{
+ "chains": [
+  {
+   "name": "per_sea_floor_biomes",
+   "components": [
+    {
+     "name": "floor_biomes_defined",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: floor biomes missing or query failed: ['BiomeDef/RM_SeabedFloor_TheScald', 'BiomeDef/RM_SeabedFloor_GreySea', 'BiomeDef/RM_SeabedFloor_TwilightSea', 'BiomeDef/RM_SeabedFloor_TheChill']",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 4 def(s) resolved; 4 not found",
+        "requested": 4,
+        "foundCount": 0,
+        "notFound": [
+         "BiomeDef/RM_SeabedFloor_TheScald",
+         "BiomeDef/RM_SeabedFloor_GreySea",
+         "BiomeDef/RM_SeabedFloor_TwilightSea",
+         "BiomeDef/RM_SeabedFloor_TheChill"
+        ],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_SeabedFloor_TheScald",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_SeabedFloor_TheScald"
+         },
+         {
+          "requested": "BiomeDef/RM_SeabedFloor_GreySea",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_SeabedFloor_GreySea"
+         },
+         {
+          "requested": "BiomeDef/RM_SeabedFloor_TwilightSea",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_SeabedFloor_TwilightSea"
+         },
+         {
+          "requested": "BiomeDef/RM_SeabedFloor_TheChill",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_SeabedFloor_TheChill"
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_540ec23bab5e4191af95ed5b3510438c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-07T01:32:48.3557531+00:00",
+         "CompletedAtUtc": "2026-10-07T01:32:48.4053088+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sea_biomes_name_their_floor",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "seabed_floor_generators",
+   "components": [
+    {
+     "name": "floor_biomes_name_layer_generators",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\floor_biomes_name_layer_generators_1791336768.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "layer_generators_match_hatch_content",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\layer_generators_match_hatch_content_1791336768.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "live_floor_generates_sea_content",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: layer generators missing live: {'success': True, 'message': '0 of 4 def(s) resolved; 4 not found', 'requested': 4, 'foundCount': 0, 'notFound': ['MapGeneratorDef/RM_SeabedGenerator_TheScald', 'MapGeneratorDef/RM_SeabedGenerator_GreySea', 'MapGeneratorDef/RM_SeabedGenerator_TwilightSea', 'MapGeneratorDef/RM_SeabedGenerator_TheChill'], 'malformed': [], 'fieldsAsked': [], 'defs': [{'requested': 'MapGeneratorDef/RM_SeabedGenerator_TheScald', 'found': False, 'defType': 'MapGeneratorDef', 'defName': 'RM_SeabedGenerator_TheScald'}, {'requested': 'MapGeneratorDef/RM_SeabedGenerator_GreySea', 'found': False, 'defType': 'MapGeneratorDef', 'defName': 'RM_SeabedGenerator_GreySea'}, {'requested': 'MapGeneratorDef/RM_SeabedGenerator_TwilightSea', 'found': False, 'defType': 'MapGeneratorDef', 'defName': 'RM_SeabedGenerator_TwilightSea'}, {'requested': 'MapGeneratorDef/RM_SeabedGenerator_TheChill', 'found': False, 'defType': 'MapGeneratorDef', 'defName': 'RM_SeabedGenerator_TheChill'}], 'ticksGame': 1, 'operation': {'OperationId': 'op_f9cf32e5ebd0487ea9f4920afcb05356', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-07T01:32:49.1223848+00:00', 'CompletedAtUtc': '2026-10-07T01:32:49.1708312+00:00', 'DurationMs': 48, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 4 def(s) resolved; 4 not found",
+        "requested": 4,
+        "foundCount": 0,
+        "notFound": [
+         "MapGeneratorDef/RM_SeabedGenerator_TheScald",
+         "MapGeneratorDef/RM_SeabedGenerator_GreySea",
+         "MapGeneratorDef/RM_SeabedGenerator_TwilightSea",
+         "MapGeneratorDef/RM_SeabedGenerator_TheChill"
+        ],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "MapGeneratorDef/RM_SeabedGenerator_TheScald",
+          "found": false,
+          "defType": "MapGeneratorDef",
+          "defName": "RM_SeabedGenerator_TheScald"
+         },
+         {
+          "requested": "MapGeneratorDef/RM_SeabedGenerator_GreySea",
+          "found": false,
+          "defType": "MapGeneratorDef",
+          "defName": "RM_SeabedGenerator_GreySea"
+         },
+         {
+          "requested": "MapGeneratorDef/RM_SeabedGenerator_TwilightSea",
+          "found": false,
+          "defType": "MapGeneratorDef",
+          "defName": "RM_SeabedGenerator_TwilightSea"
+         },
+         {
+          "requested": "MapGeneratorDef/RM_SeabedGenerator_TheChill",
+          "found": false,
+          "defType": "MapGeneratorDef",
+          "defName": "RM_SeabedGenerator_TheChill"
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_f9cf32e5ebd0487ea9f4920afcb05356",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-07T01:32:49.1223848+00:00",
+         "CompletedAtUtc": "2026-10-07T01:32:49.1708312+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "seabed_floor_ambient_carryover",
+   "components": [
+    {
+     "name": "floor_temperature_matches_hatch",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\floor_temperature_matches_hatch_1791336769.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "floor_biomes_carry_sea_life",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: floor biome query failed: {'success': True, 'message': '0 of 4 def(s) resolved; 4 not found', 'requested': 4, 'foundCount': 0, 'notFound': ['BiomeDef/RM_SeabedFloor_TheScald', 'BiomeDef/RM_SeabedFloor_GreySea', 'BiomeDef/RM_SeabedFloor_TwilightSea', 'BiomeDef/RM_SeabedFloor_TheChill'], 'malformed': [], 'fieldsAsked': ['plantDensity', 'animalDensity'], 'defs': [{'requested': 'BiomeDef/RM_SeabedFloor_TheScald', 'found': False, 'defType': 'BiomeDef', 'defName': 'RM_SeabedFloor_TheScald'}, {'requested': 'BiomeDef/RM_SeabedFloor_GreySea', 'found': False, 'defType': 'BiomeDef', 'defName': 'RM_SeabedFloor_GreySea'}, {'requested': 'BiomeDef/RM_SeabedFloor_TwilightSea', 'found': False, 'defType': 'BiomeDef', 'defName': 'RM_SeabedFloor_TwilightSea'}, {'requested': 'BiomeDef/RM_SeabedFloor_TheChill', 'found': False, 'defType': 'BiomeDef', 'defName': 'RM_SeabedFloor_TheChill'}], 'ticksGame': 1, 'operation': {'OperationId': 'op_4a24b24ebf914f67a11ee4740f2874a1', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-07T01:32:49.5219262+00:00', 'CompletedAtUtc': '2026-10-07T01:32:49.5709777+00:00', 'DurationMs': 49, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 4 def(s) resolved; 4 not found",
+        "requested": 4,
+        "foundCount": 0,
+        "notFound": [
+         "BiomeDef/RM_SeabedFloor_TheScald",
+         "BiomeDef/RM_SeabedFloor_GreySea",
+         "BiomeDef/RM_SeabedFloor_TwilightSea",
+         "BiomeDef/RM_SeabedFloor_TheChill"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "plantDensity",
+         "animalDensity"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_SeabedFloor_TheScald",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_SeabedFloor_TheScald"
+         },
+         {
+          "requested": "BiomeDef/RM_SeabedFloor_GreySea",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_SeabedFloor_GreySea"
+         },
+         {
+          "requested": "BiomeDef/RM_SeabedFloor_TwilightSea",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_SeabedFloor_TwilightSea"
+         },
+         {
+          "requested": "BiomeDef/RM_SeabedFloor_TheChill",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_SeabedFloor_TheChill"
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_4a24b24ebf914f67a11ee4740f2874a1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-07T01:32:49.5219262+00:00",
+         "CompletedAtUtc": "2026-10-07T01:32:49.5709777+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "grey_floor_is_a_place",
+   "components": [
+    {
+     "name": "grey_roster_read_offline",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grey_floor_map_generates",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "tool-too-old: world_tile_map_generate has no layer= (deployed DLL older than 2026-10-06)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/world_tile_map_generate",
+       "result": {
+        "success": false,
+        "message": "No PlanetLayerDef 'RM_SeabedLayer'.",
+        "details": [],
+        "operation": {
+         "OperationId": "op_8fcdc0e9fe924b4a9d8d094714bbd145",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/world-tile-map-generate",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-07T01:32:49.5878345+00:00",
+         "CompletedAtUtc": "2026-10-07T01:32:49.6373235+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "evidence": []
+     }
+    },
+    {
+     "name": "grey_floor_has_pillars_and_crystals",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: tool-too-old: world_tile_map_generate has no layer= (deployed DLL older than 2026-10-06)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grey_floor_grows_its_flora",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: tool-too-old: world_tile_map_generate has no layer= (deployed DLL older than 2026-10-06)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grey_floor_carries_its_cast",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: tool-too-old: world_tile_map_generate has no layer= (deployed DLL older than 2026-10-06)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grey_floor_returns_home",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: tool-too-old: world_tile_map_generate has no layer= (deployed DLL older than 2026-10-06)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001F7C3C481A0>",
+  "<suite.Component object at 0x000001F7C3B5D5B0>",
+  "<suite.Component object at 0x000001F7C3AC8F30>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\bench\\design\\validation_walks\\RimMandrake\\DivingInteraction.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}
