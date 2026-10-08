@@ -10,6 +10,11 @@
 //                formulas (drawSize != 1 included), ignoring only cells within Eps of an edge; no duplicates
 //   boundary     growths that put an edge within 1e-4 of a cell centre, nudged both ways, against the oracle
 //   symmetry     integer translation moves the footprint with the root; a mirrored mask with the opposite flip is identical
+//   ledger       overlap: realized = union of claims in any order; idempotent re-set; removing one owner keeps the rest
+//   planner      never closes pawn/item/protected cells, never cuts a cell off from open ground or a root from access;
+//                order-independent; idempotent (checked against an independent whole-board flood)
+//   cache        signature cache == fresh computation as each field changes alone
+//   damage       one forwarded hit per (tick, source, owner)
 // Growth -> cells nesting is NOT an invariant (GPT review #10; a ring of roots scaled up truly moves outward).
 //   determinism  the same seed gives byte-identical results
 // A failing case prints as `FAIL family seed N: message`; --fuzz-seed N replays it.
@@ -270,6 +275,242 @@ namespace RimMandrake.HugeThings.SelfTest
             return a.Count.ToString();
         }
 
+        // ---- claims, planning, cache, damage ------------------------------------------------------------------------------
+        private static List<long> Blob(Random r, int cx, int cz, int n)
+        {
+            var s = new HashSet<long>();
+            int x = cx, z = cz;
+            for (int i = 0; i < n; i++)
+            {
+                s.Add(K.Key(x, z));
+                int d = r.Next(4);
+                x += d == 0 ? 1 : d == 1 ? -1 : 0;
+                z += d == 2 ? 1 : d == 3 ? -1 : 0;
+            }
+            return s.ToList();
+        }
+
+        /// <summary>Overlap: the realized set is the union of current claims whatever order owners set/refresh/remove in;
+        /// setting the same claims twice changes nothing; removing one owner leaves exactly the others' union.</summary>
+        internal static string CaseLedger(int seed)
+        {
+            var r = new Random(seed);
+            int owners = 2 + r.Next(5);
+            var claims = new Dictionary<int, List<long>>();
+            for (int o = 0; o < owners; o++) claims[o + 100] = Blob(r, r.Next(6), r.Next(6), 1 + r.Next(25));
+            string Realize(IEnumerable<int> order, out ClaimLedger led, out HashSet<long> realized)
+            {
+                led = new ClaimLedger();
+                realized = new HashSet<long>();
+                foreach (int o in order)
+                {
+                    var on = new List<long>();
+                    var off = new List<long>();
+                    led.Set(o, Blob(new Random(o * 31 + seed), 0, 0, 5), on, off);   // a stale earlier footprint
+                    foreach (long c in on) Check(realized.Add(c), "a cell became claimed twice");
+                    foreach (long c in off) Check(realized.Remove(c), "freed a cell that was not realized");
+                    on.Clear(); off.Clear();
+                    led.Set(o, claims[o], on, off);
+                    foreach (long c in on) Check(realized.Add(c), "a cell became claimed twice");
+                    foreach (long c in off) Check(realized.Remove(c), "freed a cell that was not realized");
+                }
+                var want = new HashSet<long>(claims.Values.SelectMany(v => v));
+                Check(realized.SetEquals(want), "realized != union of claims");
+                Check(new HashSet<long>(led.Claimed).SetEquals(want), "ledger != union of claims");
+                ClaimLedger l = led;
+                return string.Join(" ", want.OrderBy(k => k).Select(k => l.PrimaryOwner(k)));
+            }
+            var ids = claims.Keys.ToList();
+            string a = Realize(ids, out ClaimLedger l1, out HashSet<long> real1);
+            var shuffled = ids.OrderBy(_ => r.Next()).ToList();
+            string b = Realize(shuffled, out _, out _);
+            Check(a == b, "primary owners depend on registration order");
+            var on2 = new List<long>();
+            var off2 = new List<long>();
+            int victim = ids[r.Next(ids.Count)];
+            l1.Set(victim, claims[victim], on2, off2);
+            Check(on2.Count == 0 && off2.Count == 0, "re-setting identical claims changed cells (not idempotent)");
+            l1.Remove(victim, off2);
+            foreach (long c in off2) real1.Remove(c);
+            var rest = new HashSet<long>(claims.Where(kv => kv.Key != victim).SelectMany(kv => kv.Value));
+            Check(real1.SetEquals(rest), "removing one owner lost another owner's claims");
+            Check(new HashSet<long>(l1.Claimed).SetEquals(rest), "ledger after removal != others' union");
+            return a;
+        }
+
+        internal sealed class Grid
+        {
+            public int W, H;
+            public CellFlags[] F;
+            public CellFlags At(long k)
+            {
+                int x = K.KeyX(k), z = K.KeyZ(k);
+                if (x < 0 || z < 0 || x >= W || z >= H) return CellFlags.Passable;   // beyond the board: open map
+                return F[z * W + x];
+            }
+        }
+
+        internal static Grid MakeGrid(Random r, int w, int h)
+        {
+            var g = new Grid { W = w, H = h, F = new CellFlags[w * h] };
+            for (int i = 0; i < g.F.Length; i++)
+            {
+                double u = r.NextDouble();
+                g.F[i] = u < 0.12 ? CellFlags.None                                   // wall / existing trunk
+                       : u < 0.17 ? CellFlags.Passable | CellFlags.Pawn
+                       : u < 0.22 ? CellFlags.Passable | CellFlags.Item
+                       : u < 0.27 ? CellFlags.Passable | CellFlags.Protected
+                       : CellFlags.Passable;
+            }
+            return g;
+        }
+
+        /// <summary>The planner never closes a pawn/item/protected/impassable cell, never cuts a passable cell off from the
+        /// border it reached, keeps every served root served, is order-independent and idempotent.</summary>
+        internal static string CasePlanner(int seed)
+        {
+            var r = new Random(seed);
+            int w = 8 + r.Next(16), h = 8 + r.Next(16);
+            Grid g = MakeGrid(r, w, h);
+            List<long> wanted = Blob(r, w / 2, h / 2, 5 + r.Next(60)).Where(k => K.KeyX(k) >= 0 && K.KeyZ(k) >= 0 && K.KeyX(k) < w && K.KeyZ(k) < h).ToList();
+            var roots = new List<long> { K.Key(w / 2, h / 2 - 1) };
+            wanted.Remove(roots[0]);
+            CellBox win = Planner.Window(wanted, roots[0]);
+            List<long> acc = Planner.Plan(wanted, roots, g.At, win);
+            var accSet = new HashSet<long>(acc);
+            Check(accSet.Count == acc.Count, "duplicate planned cells");
+            Check(accSet.IsSubsetOf(wanted), "planned a cell nobody wanted");
+            foreach (long k in acc)
+            {
+                CellFlags f = g.At(k);
+                Check((f & CellFlags.Passable) != 0, "closed an already impassable cell");
+                Check((f & CellFlags.Pawn) == 0, "closed a cell with a pawn in it");
+                Check((f & CellFlags.Item) == 0, "closed a cell with an item in it (it would be moved or destroyed)");
+                Check((f & CellFlags.Protected) == 0, "closed a protected cell");
+                Check(!roots.Contains(k), "closed a root");
+            }
+            // independent reachability over the planner's window, flooded by separate code (the window border = open map)
+            bool[] Board(HashSet<long> closed, out int bw, out int bh)
+            {
+                bw = win.MaxX - win.MinX + 1; bh = win.MaxZ - win.MinZ + 1;
+                var pass = new bool[bw * bh];
+                for (int z = 0; z < bh; z++)
+                    for (int x = 0; x < bw; x++)
+                    {
+                        long k = K.Key(x + win.MinX, z + win.MinZ);
+                        pass[z * bw + x] = (g.At(k) & CellFlags.Passable) != 0 && !closed.Contains(k);
+                    }
+                return pass;
+            }
+            bool[] p0 = Board(new HashSet<long>(), out int W2, out int H2);
+            bool[] p1 = Board(accSet, out _, out _);
+            bool[] r0 = Flood(p0, W2, H2), r1 = Flood(p1, W2, H2);
+            for (int i = 0; i < p1.Length; i++)
+            {
+                if (p1[i] && r0[i]) Check(r1[i], "a cell that reached open ground is now cut off (trapped pawn / new pocket) at " + (i % W2 + win.MinX) + "," + (i / W2 + win.MinZ));
+            }
+            foreach (long root in roots)
+            {
+                int ri = (K.KeyZ(root) - win.MinZ) * W2 + K.KeyX(root) - win.MinX;
+                bool Served(bool[] pass, bool[] reach) => new[] { 1, -1, W2, -W2 }.Any(d => pass[ri + d] && reach[ri + d]);
+                if (Served(p0, r0)) Check(Served(p1, r1), "the root lost every reachable open neighbour (cannot be cut)");
+            }
+            // order independence
+            var shuffled = wanted.OrderBy(_ => r.Next()).ToList();
+            List<long> acc2 = Planner.Plan(shuffled, roots, g.At, win);
+            Check(acc2.SequenceEqual(acc), "planning depends on the order cells were wanted in");
+            // idempotence: with the accepted cells closed, the rest stays deferred
+            Grid g2 = new Grid { W = w, H = h, F = (CellFlags[])g.F.Clone() };
+            foreach (long k in acc) g2.F[K.KeyZ(k) * w + K.KeyX(k)] = CellFlags.None;
+            List<long> again = Planner.Plan(wanted.Where(k => !accSet.Contains(k)).ToList(), roots, g2.At, win);
+            Check(again.Count == 0, "a second plan on the same map closed " + again.Count + " more cells (not idempotent)");
+            return string.Join(" ", acc);
+        }
+
+        /// <summary>Independent 4-connected flood from the border (BFS over a queue; the planner uses a stack).</summary>
+        private static bool[] Flood(bool[] pass, int w, int h)
+        {
+            var seen = new bool[pass.Length];
+            var q = new Queue<int>();
+            for (int i = 0; i < pass.Length; i++)
+            {
+                int x = i % w, z = i / w;
+                if (pass[i] && (x == 0 || z == 0 || x == w - 1 || z == h - 1)) { seen[i] = true; q.Enqueue(i); }
+            }
+            while (q.Count > 0)
+            {
+                int i = q.Dequeue(), x = i % w, z = i / w;
+                foreach (int j in new[] { x > 0 ? i - 1 : -1, x < w - 1 ? i + 1 : -1, z > 0 ? i - w : -1, z < h - 1 ? i + w : -1 })
+                {
+                    if (j >= 0 && pass[j] && !seen[j]) { seen[j] = true; q.Enqueue(j); }
+                }
+            }
+            return seen;
+        }
+
+        /// <summary>The cache returns exactly what a fresh computation would, as each signature field changes alone.</summary>
+        internal static string CaseCache(int seed)
+        {
+            var r = new Random(seed);
+            var cache = new SignatureCache<string>();
+            Plant p = MakePlant(seed, false);
+            var sig = new FootprintSignature { RootX = p.RootX, RootZ = p.RootZ, MaskId = 1, DrawX = p.DrawX, Visual = p.Visual(p.Growth),
+                                               JitterX = p.Jx, JitterZ = p.Jz, BlockScale = p.Scale, Flip = p.Flip, Measured = true,
+                                               Blocking = true, Selecting = true, OldEnough = true };
+            var masks = new Dictionary<int, HugeMask> { { 1, p.Mask }, { 2, MakeMask(r, p.Mask.MeasuredSize, true) } };
+            string Fresh(FootprintSignature s)
+            {
+                if (!s.Blocking || !s.OldEnough) return "-";
+                HugeQuad q = K.Quad(s.RootX, s.RootZ, s.DrawX, s.Visual, s.JitterX, s.JitterZ);
+                HugeMask m = masks[s.MaskId];
+                List<long> b = K.ContactCells(s.RootX, s.RootZ, q, s.BlockScale, s.Flip, m);
+                CellBox sel = K.SelectBox(s.RootX, s.RootZ, K.PictureBox(q, m, s.Flip), b);
+                return Fmt(b) + "|" + sel.MinX + "," + sel.MinZ + "," + sel.MaxX + "," + sel.MaxZ + (s.Selecting ? "S" : "") + (s.Measured ? "M" : "");
+            }
+            for (int step = 0; step < 40; step++)
+            {
+                switch (r.Next(13))
+                {
+                    case 0: sig.RootX += 1; break;
+                    case 1: sig.RootZ -= 1; break;
+                    case 2: sig.MaskId = sig.MaskId == 1 ? 2 : 1; break;
+                    case 3: sig.DrawX = r.NextDouble() < 0.5 ? 1f : R(r, 0.5f, 2f); break;
+                    case 4: sig.Visual = R(r, p.VMin, p.VMax); break;
+                    case 5: sig.JitterX = R(r, -0.05f, 0.05f); break;
+                    case 6: sig.JitterZ = R(r, -0.05f, 0.05f); break;
+                    case 7: sig.BlockScale = R(r, 0.5f, 1.5f); break;
+                    case 8: sig.Flip = !sig.Flip; break;
+                    case 9: sig.Measured = !sig.Measured; break;
+                    case 10: sig.Blocking = !sig.Blocking; break;
+                    case 11: sig.Selecting = !sig.Selecting; break;
+                    default: sig.OldEnough = !sig.OldEnough; break;
+                }
+                Check(cache.Get(sig, Fresh) == Fresh(sig), "cache disagrees with a fresh computation after step " + step);
+            }
+            return "";
+        }
+
+        /// <summary>A blast or beam crossing many cells of one giant forwards one hit per (tick, source, owner).</summary>
+        internal static string CaseDamage(int seed)
+        {
+            var r = new Random(seed);
+            var d = new DamageDedup();
+            int tick = r.Next(1000);
+            var forwarded = new Dictionary<(int, long, int), int>();
+            for (int i = 0; i < 200; i++)
+            {
+                if (r.Next(10) == 0) tick += 1 + r.Next(3);
+                long src = r.Next(4);
+                int owner = r.Next(3);
+                bool f = d.ShouldForward(tick, src, owner);
+                var key = (tick, src, owner);
+                forwarded.TryGetValue(key, out int n);
+                Check(f == (n == 0), f ? "forwarded twice for one source in one tick" : "dropped the first hit of a source");
+                if (f) forwarded[key] = n + 1;
+            }
+            return forwarded.Count.ToString();
+        }
+
         private static bool Family(string name, int n, int? one, Func<int, string> run)
         {
             int fails = 0;
@@ -299,11 +540,16 @@ namespace RimMandrake.HugeThings.SelfTest
             if (only == null || only == "full") ok &= Family("full", N(5000), one, CaseFull);
             if (only == null || only == "boundary") ok &= Family("boundary", N(5000), one, CaseBoundary);
             if (only == null || only == "symmetry") ok &= Family("symmetry", N(3000), one, CaseSymmetry);
+            if (only == null || only == "ledger") ok &= Family("ledger", N(4000), one, CaseLedger);
+            if (only == null || only == "planner") ok &= Family("planner", N(3000), one, CasePlanner);
+            if (only == null || only == "cache") ok &= Family("cache", N(2000), one, CaseCache);
+            if (only == null || only == "damage") ok &= Family("damage", N(2000), one, CaseDamage);
             if (only == null || only == "determinism")
             {
                 ok &= Family("determinism", N(500), one, s =>
                 {
-                    Check(CaseAny(s) == CaseAny(s) && CaseBoundary(s) == CaseBoundary(s) && CaseFull(s) == CaseFull(s), "a seed replayed differently");
+                    Check(CaseAny(s) == CaseAny(s) && CaseBoundary(s) == CaseBoundary(s) && CaseFull(s) == CaseFull(s)
+                          && CaseLedger(s) == CaseLedger(s) && CasePlanner(s) == CasePlanner(s), "a seed replayed differently");
                     return "";
                 });
             }

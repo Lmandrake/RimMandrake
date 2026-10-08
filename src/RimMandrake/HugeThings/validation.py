@@ -34,7 +34,7 @@ HARMONY_ID = "mandrake.rm.hugethings"
 CONTROL_ABSENT = "ThingDef/RM_HugeNoSuchDef_ZZ"
 BLOCKER = "RM_HugeTrunkBlocker"
 GIANT = "RM_Nogtyl"          # brommok timber: TheRot's own def (no donor mod needed), 12 cells drawn at full size
-REFRESH_TICKS = 2000         # MapComponent_HugeFootprints.RefreshInterval
+REFRESH_TICKS = 300          # settings change marks every plant dirty; RefreshesPerTick per tick + PendingRetryInterval 250
 _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
 DEFAULTS = {"plantTrunkEnabled": True, "plantSelectionEnabled": True, "plantTrunkScale": 1.0,
             "pawnHitboxEnabled": True, "pawnHitboxScale": 1.0}
@@ -90,8 +90,18 @@ def static_checks():
     if "nameof(Thing.CustomRectForSelector), MethodType.Getter" not in core:
         bad.append("the selection postfix no longer targets Thing.CustomRectForSelector's getter")
     mc = open(os.path.join(HERE, "Source", "MapComponent_HugeFootprints.cs"), encoding="utf-8").read()
-    if "RefreshInterval = %d" % REFRESH_TICKS not in mc:
-        bad.append("refresh interval moved; update REFRESH_TICKS (the toggle-off wait depends on it)")
+    if "PendingRetryInterval = 250" not in mc or "RefreshesPerTick" not in mc:
+        bad.append("refresh cadence moved; update REFRESH_TICKS (the toggle-off wait depends on it)")
+    for patch, why in (('typeof(ZoneManager), "Notify_NoZoneOverlapThingSpawned"', "blockers would carve zones (GPT #3)"),
+                       ('typeof(DamageWorker), "ExplosionDamageThing"', "a blast over N trunk cells would hit nothing / N times"),
+                       ("nameof(GravshipPlacementUtility.ClearArea)", "gravship landing policy (GPT #15)"),
+                       ("nameof(GenUI.ThingsUnderMouse)", "duplicate mouse candidates (GPT #12)"),
+                       ("nameof(Plant.PlantCollected)", "footprint lags harvest (GPT #14)")):
+        if patch not in core:
+            bad.append("HugeThingsCore lost its patch on %s: %s" % (patch, why))
+    blk = open(os.path.join(HERE, "Source", "Building_TrunkBlocker.cs"), encoding="utf-8").read()
+    if "p.TakeDamage(dinfo)" not in blk or "absorbed = true" not in blk:
+        bad.append("Building_TrunkBlocker no longer forwards hits to its plant (owner ruling 2026-10-07 20:38)")
     gb = giant_blockers()
     if not gb or min(gb.values()) < 2:
         bad.append("the Rot patch no longer gives %s measured contact cells: %r" % (GIANT, gb))
@@ -251,6 +261,9 @@ def _build_suite():
                 ("click_anywhere_on_picture_selects_plant", "no bridge tool reads Thing.CustomRectForSelector or simulates a map click"),
                 ("huge_pawn_hitbox_covers_drawn_body", "no RM_HugePawnExtension race in a mod-only list, and no selection-rect read tool"),
                 ("trunk_relinks_after_save_load", "needs a save/load round on a map with a giant"),
+                ("shot_into_trunk_damages_the_plant_once", "no bridge tool fires a projectile or explosion at a cell; offline: kernel fuzz `damage`, static patch checks"),
+                ("growth_never_traps_a_pawn", "needs a pawn staged inside a growing footprint; offline: kernel fuzz `planner`"),
+                ("zone_cells_survive_blockers", "needs a stockpile staged under a footprint; offline: static patch check"),
                 ("mapgen_giants_get_trunks", "needs a fresh Rot map generation")):
             with t.component(name, beyond_toggle=True):
                 if _live(t):

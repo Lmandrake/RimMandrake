@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- One invisible, impassable cell of a huge plant's trunk. Spawned and removed only by
-       CompHugeFootprint (never by a player, never at mapgen by itself). Being an impassable EDIFICE
-       is the whole point: vanilla's own path grid, regions, blueprint refusal and plant-growth
-       checks then treat the trunk as solid with no further patching. It carries no hit points and no
-       flammability, so damage and fire go to the plant itself on its root cell. -->
+  <!-- One invisible, impassable cell of a huge plant's ground footprint. Spawned and removed only by
+       MapComponent_HugeFootprints (never by a player, never at mapgen by itself). Being an impassable EDIFICE
+       is the whole point: vanilla's own path grid, regions, blueprint refusal and plant-growth checks then treat
+       the cell as solid with no further patching. It carries no hit points and no flammability: a shot or blast
+       that hits it is forwarded to the plant (Building_TrunkBlocker.PreApplyDamage, explosion prefix in
+       HugeThingsCore), once per projectile / beam / blast.
+
+       fillPercent 0.4 (owner ruling 2026-10-07 20:38, decision taken by question card: trunk cells give partial
+       cover). Reasoning: vanilla trees are 0.25 and sandbags 0.65. A giant's ground cell is denser than one
+       tree trunk but is often root tangle rather than solid wall, so it sits between the two. In 1.6 it stops a
+       passing shot with chance 0.4 x 0.15 = 6% per cell en route and 40% when adjacent to the target
+       (Projectile.CheckForFreeIntercept), and gives 40% base cover to a pawn behind it. It stays below 1 on
+       purpose: full fill would seal rooms and block sight (GPT review #17), and the lint pins it. -->
   <ThingDef>
     <defName>RM_HugeTrunkBlocker</defName>
     <label>trunk</label>
@@ -14,7 +22,7 @@
     <altitudeLayer>Building</altitudeLayer>
     <drawerType>None</drawerType>
     <passability>Impassable</passability>
-    <fillPercent>0.75</fillPercent>
+    <fillPercent>0.4</fillPercent>
     <useHitPoints>false</useHitPoints>
     <selectable>false</selectable>
     <rotatable>false</rotatable>

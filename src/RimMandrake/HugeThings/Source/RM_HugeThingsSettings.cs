@@ -15,9 +15,6 @@ namespace RimMandrake.HugeThings
         public static bool pawnHitboxEnabled = true;
         public static float pawnHitboxScale = 1f;
 
-        /// <summary>Changes whenever a plant setting does (slider drags included), so caches can key on it.</summary>
-        public static int Stamp() => (plantSelectionEnabled ? 1 : 0) | (plantTrunkEnabled ? 2 : 0)
-                                 | (Mathf.RoundToInt(plantTrunkScale * 1000f) << 2);
 
         public override void ExposeData()
         {
@@ -27,6 +24,12 @@ namespace RimMandrake.HugeThings
             Scribe_Values.Look(ref plantTrunkScale, "plantTrunkScale", 1f);
             Scribe_Values.Look(ref pawnHitboxEnabled, "pawnHitboxEnabled", true);
             Scribe_Values.Look(ref pawnHitboxScale, "pawnHitboxScale", 1f);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit || Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                // a hand-edited or stale config must not outgrow the planning window (MaxKeys uses MaxTrunkScale) or go NaN
+                plantTrunkScale = float.IsNaN(plantTrunkScale) ? 1f : Mathf.Clamp(plantTrunkScale, 0.5f, MaxTrunkScale);
+                pawnHitboxScale = float.IsNaN(pawnHitboxScale) ? 1f : Mathf.Clamp(pawnHitboxScale, 0.5f, MaxTrunkScale);
+            }
         }
 
         public void DoWindowContents(Rect inRect)

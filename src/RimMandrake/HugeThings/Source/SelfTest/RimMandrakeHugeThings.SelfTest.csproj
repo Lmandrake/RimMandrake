@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Compile Include="..\Kernel\RM_HugeFootprintKernel.cs" />
+    <Compile Include="..\Kernel\RM_HugeClaimsKernel.cs" />
     <Compile Include="HugeThingsFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

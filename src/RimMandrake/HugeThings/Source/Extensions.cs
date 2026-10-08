@@ -53,6 +53,9 @@ namespace RimMandrake.HugeThings
         /// <summary>Below this growth the plant blocks nothing (a young fungus is not yet a wall).</summary>
         public float minGrowthToBlock = 0.25f;
 
+        /// <summary>Set at startup by HugeThingsApi.ValidateRenderer: false = selection only, no ground footprint.</summary>
+        [Unsaved] public bool blockingSupported = true;
+
         [Unsaved] private HugePlantVariant union;
         [Unsaved] private HugeMask unionMask;
 
@@ -90,10 +93,16 @@ namespace RimMandrake.HugeThings
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors()) yield return e;
-            if (variants.Count > 0 && measuredSize <= 0f) yield return "RM_HugePlantExtension has variants but no measuredSize";
+            if (variants.Count > 0 && !(measuredSize > 0f && measuredSize < 200f)) yield return "RM_HugePlantExtension measuredSize " + measuredSize + " is not in (0, 200)";
+            if (!(minGrowthToBlock >= 0f && minGrowthToBlock <= 1f)) yield return "RM_HugePlantExtension minGrowthToBlock " + minGrowthToBlock + " is not in [0, 1]";
+            HashSet<string> names = new HashSet<string>();
             for (int i = 0; i < variants.Count; i++)
             {
                 if (variants[i].texture.NullOrEmpty()) yield return "RM_HugePlantExtension variant " + i + " has no texture";
+                else if (!names.Add(variants[i].texture)) yield return "RM_HugePlantExtension variant " + variants[i].texture + " is listed twice";
+                Vector2 mn = variants[i].opaqueMin, mx = variants[i].opaqueMax;
+                if (!(mn.x >= 0f && mn.y >= 0f && mx.x <= 1f && mx.y <= 1f && mn.x < mx.x && mn.y < mx.y))
+                    yield return "RM_HugePlantExtension variant " + variants[i].texture + " opaque box " + mn + ".." + mx + " is not inside 0..1";
                 if (variants[i].contact.Contains(IntVec2.Zero)) yield return "RM_HugePlantExtension variant " + variants[i].texture + " blocks the root cell";
             }
         }
