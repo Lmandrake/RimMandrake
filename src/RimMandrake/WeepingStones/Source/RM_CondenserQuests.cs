@@ -38,8 +38,8 @@ namespace RimMandrake.WeepingStones
                 infos.Add(new FactionInfo
                 {
                     id = f.loadID, defName = f.def.defName, isPlayer = f.IsPlayer, defeated = f.defeated, temporary = f.temporary,
-                    hidden = f.Hidden, humanlike = f.def.humanlikeFaction, hostile = f.HostileTo(Faction.OfPlayer),
-                    permanentEnemy = f.def.permanentEnemy, techLevel = (int)f.def.techLevel, goodwill = f.PlayerGoodwill
+                    hidden = f.Hidden, humanlike = f.def.humanlikeFaction, hostile = !f.IsPlayer && f.HostileTo(Faction.OfPlayer),
+                    permanentEnemy = f.def.permanentEnemy, techLevel = (int)f.def.techLevel, goodwill = f.IsPlayer ? 0 : f.PlayerGoodwill
                 });
             }
             FactionInfo? hit = RM_ClaimKernel.Resolve(infos, preferredFactions, fallback, exclude != null ? exclude.loadID : -1);

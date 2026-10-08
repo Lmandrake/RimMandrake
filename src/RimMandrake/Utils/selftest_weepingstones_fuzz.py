@@ -23,7 +23,22 @@ SELFTEST = os.path.join(REPO, "src", "RimMandrake", "WeepingStones", "Source", "
 CSPROJ = os.path.join(SELFTEST, "RimMandrakeWeepingStones.SelfTest.csproj")
 
 
+def source_guards():
+    """CONDENSER_SLOT_SELF_RELATION_1: the info builder must not read relations (goodwill / HostileTo) on the player faction."""
+    src = open(os.path.join(REPO, "src", "RimMandrake", "WeepingStones", "Source", "RM_CondenserQuests.cs"), encoding="utf-8").read()
+    bad = []
+    if "hostile = f.HostileTo(" in src or "hostile = !f.IsPlayer && f.HostileTo(" not in src:
+        bad.append("HostileTo is read without an IsPlayer guard")
+    if "goodwill = f.PlayerGoodwill" in src or "f.IsPlayer ? 0 : f.PlayerGoodwill" not in src:
+        bad.append("PlayerGoodwill is read without an IsPlayer guard")
+    for b in bad:
+        print("SOURCE GUARD FAILED: CONDENSER_SLOT_SELF_RELATION_1:", b)
+    return 1 if bad else 0
+
+
 def main(argv):
+    if source_guards():
+        return 1
     rc, rec = winbuild.stage_build(CSPROJ, stage_name="WeepingStonesFuzzSelfTest",
                                    extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "WeepingStones", "Source", "Kernel")])
     if rc:
