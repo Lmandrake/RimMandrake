@@ -100,7 +100,7 @@ The roster's invented signature pieces are BUILT and named (`ARIDSHRUBLAND_SHIPP
 4 of 5 ruled 2026-09-21): **thunderstep** (`RSW_ShrublandGiant`, bs 6.0, the huge grazer;
 parental enrage shipped 2026-09-20 as `RM_ParentalEnrageExtension`/`RM_CompParentalEnrage`/
 `RM_MentalState_ParentalEnrage` in `mandrake.rm.creaturebehaviors` — no Harmony needed),
-**yanker** (`RSW_TunnelSnake`, the corridor predator), `RSW_ScrapNestBird` (treasure-nest
+**yanker** (`RM_TunnelSnake`, ported from `RSW_TunnelSnake` 2026-10-08; the corridor predator), `RSW_ScrapNestBird` (treasure-nest
 bird), plus `RSW_ImperialToad`. Still owed from that card: the player-facing name of **the
 fuzz** (BENCH item, do not pick ahead of it) and the bird-analog/sweetline-tree names.
 
@@ -142,7 +142,7 @@ fuzz** (BENCH item, do not pick ahead of it) and the bird-analog/sweetline-tree 
 | 1 | Unique mechanic | **HAVE** | Venomvine body-size barrier is live C# (`RM_MapComponent_BodySizeBarrier`, EnvironmentalHazards; no other biome consumes it today) + parental enrage on the thunderstep (built 2026-09-20). But the sheet's marquee mechanics — Stall/Gale, ripple concealment, V-blight — are RULED (frozen sheet 2026-09-07; names locked 2026-09-21) and UNBUILT. |
 | 2 | Discoverable technology | **MISS** | Nothing teaches a keepable craft. The smother-craft (blanket → banked claim → premium fuel) and the moisture-farm trade are both in the frozen sheet (§4/§7, 2026-09-07) with zero defs — RULED-but-unbuilt. |
 | 3 | Unique resources | **PARTIAL** | `RM_SweetlineWool` shipped (SWEETLINE_WOOL_HARVEST_1 closed); scrap-nest treasure mechanism shipped (SHRUBLAND_SCRAPNEST_BIRDS_1 closed; `SCRAPNEST_BIRD_LIVE_VERIFY_1` still owed). Dead-venomvine fuel and the smother-blanket trade good: no defs. |
-| 4 | Surprising creatures | **HAVE** | `RSW_ScrapNestBird` with real nest-theft C# (RimMandrakeBeastMechanicsRSW.dll); yanker (`RSW_TunnelSnake`) the corridor-shaped predator; `AA_Wildpod` huge-sessile. |
+| 4 | Surprising creatures | **HAVE** | `RSW_ScrapNestBird` with real nest-theft C# (RimMandrakeBeastMechanicsRSW.dll); yanker (`RM_TunnelSnake`) the corridor-shaped predator; `AA_Wildpod` huge-sessile. |
 | 5 | GIANT beast | **HAVE (art caveat)** | Thunderstep `RSW_ShrublandGiant`, bs 6.0, enrage comp live — but its art is a reskinned Fambaa (`texPath swanimals/Fambaa/...`); own art never queued (artpipe: 0 jobs under shrublandgiant/thunderstep, probe imperialtoad=12 proves the instrument sees). |
 | 6 | Gravship touch | **MISS** | Nothing anywhere references the ship in this biome's voice. Slate targets it. |
 | 7 | Soundscape | **MISS (register RULED)** | The frozen sheet §9 rules the register — *"the eternal hiss of wind... under it, nothing. The wild has no voice, only posture"* (2026-09-07) — no SoundDef, no ambient, nothing built. |

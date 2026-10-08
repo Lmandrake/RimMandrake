@@ -155,5 +155,11 @@
     "regen_gt_gristle_v2"
    ]
   }
+ },
+ "RM_LeaningScrub": {
+  "RSW_TunnelSnake": {
+   "new_label": "yanker",
+   "new_defName": "RM_TunnelSnake"
+  }
  }
 }

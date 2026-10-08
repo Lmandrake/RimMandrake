@@ -610,14 +610,17 @@ SELFTEST_ROSTER = (
 # because the art is bad. ⛔ Do not "fix" this row by loosening
 # FACING_HEIGHT_MAX_RATIO. Item: ORRAY_FACING_HEIGHT_REGRESSION_1.
 HEIGHT_MUST_FLAG = {
-    "Anooba_f", "Anooba_m", "Flamefang", "Bolotaur", "FireWasp",
+    "Anooba_m", "Flamefang", "Bolotaur", "FireWasp",
     "GR_Mantistanis", "Dalgo", "Orray",
 }
 # ✅ Zeer moved FLAG -> PASS: the 2026-09-17 wave genuinely fixed it. MEASURED
 # 1.480 on the pre-wave blob (`9e7e773a0^`) against 1.024 now (east 0.990,
 # north 0.967, south 0.980 of canvas) — it is now the cleanest row in the
 # corpus, so it anchors the pass side instead of the flag side.
-HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer"}
+# ✅ Anooba_f moved FLAG -> PASS 2026-10-08: the owner picked new art (Leaning Scrub sheet, column L,
+# installed via the art ledger at 3acc6123b). MEASURED 1.247 now (east 0.758, north 0.945, south 0.914
+# of canvas); the old flagged set is gone from disk. Anooba_m keeps its old art and stays flagged.
+HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer", "Anooba_f"}
 
 # Height ratios that moved for the WRONG reason and are pinned to an exact number
 # so the selftest fails loudly whether they worsen OR are quietly "fixed" by moving

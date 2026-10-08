@@ -4,6 +4,9 @@
   WildAnimals_LeaningScrub.xml               UtinniPatches — new file 2026-09-25
   ============================================================================
 
+  (The yanker is the free RM_TunnelSnake now, ported from RSW_TunnelSnake 2026-10-08 and cast inline in
+  RM_LeaningScrub; its row is gone from the op below.)
+
   Wires the campaign's Star Wars fauna onto RM_LeaningScrub's wildAnimals,
   layered on top of the 5 non-Star-Wars rows that mod ships inline
   (Terrorworm, AA_Cactipine, AA_Needlepost, AA_Wildpawn, AA_Wildpod — Q9
@@ -88,7 +91,6 @@
           <RSW_KowakianMonkeyLizard>0.01</RSW_KowakianMonkeyLizard>
           <RSW_Kreetle>0.8</RSW_Kreetle>
           <RSW_ShrublandGiant>0.35</RSW_ShrublandGiant>
-          <RSW_TunnelSnake>0.5</RSW_TunnelSnake>
           <RSW_ScrapNestBird>0.45</RSW_ScrapNestBird>
           <RSW_Gizka>0.4</RSW_Gizka>
           <RSW_Nuna>0.4</RSW_Nuna>

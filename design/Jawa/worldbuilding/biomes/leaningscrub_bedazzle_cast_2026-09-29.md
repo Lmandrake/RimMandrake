@@ -453,11 +453,11 @@ dedup (§2) then splits them:
 | subject | today's donor skin | the regen brief |
 |---|---|---|
 | **RM_Thunderstep** (`RSW_ShrublandGiant`, bs 6.0) | Fambaa (`swanimals/Fambaa/`) — and `fambaa_v1` in done/ is the CANON Fambaa, not this animal | The huge grazer as the sheet paints it: *"giants as walking hills with lit flanks"* — a vast dun-and-slate grazing hill on pillar legs, raised long-necked head (the only sightline in the biome), wool snagging in sheets along the flanks, utterly indifferent posture. **Anchor: WALKING HILL** — dun hide, slate shadow mass, one lit flank in the low gold light. Same silhouette ROLE as today (huge quadruped grazer), our own animal. 512 canvas, 3 facings, drawSize ~7.0. |
-| **RM_Yanker** (`RSW_TunnelSnake`) | Klorslug (`swanimals/Klorslug/`) | The corridor predator: long, thin, terrible, shaped exactly like the runs it hunts — a muscular tube of an animal, blunt armored ram of a head, mouth built to take prey head-on in a space with no sideways. **Anchor: CORRIDOR-DARK** — deep earth-umber above shading to root-black, pale gullet the only light. Same silhouette role (elongate tunnel serpent), ours. 256, 3 facings, drawSize ~1.8. |
+| **RM_Yanker** (`RM_TunnelSnake`, ported from `RSW_TunnelSnake` 2026-10-08) | Klorslug (`swanimals/Klorslug/`) | The corridor predator: long, thin, terrible, shaped exactly like the runs it hunts — a muscular tube of an animal, blunt armored ram of a head, mouth built to take prey head-on in a space with no sideways. **Anchor: CORRIDOR-DARK** — deep earth-umber above shading to root-black, pale gullet the only light. Same silhouette role (elongate tunnel serpent), ours. 256, 3 facings, drawSize ~1.8. |
 | **RM_ScrapNestBird** (`RSW_ScrapNestBird`) | Whisperbird (`swanimals/Whisperbird/`) — shared with `RSW_Whisperbird`, TWO defs on ONE donor image today | The scavenger bird-analog of the vine: a wiry, quick, longer-necked diver with clever feet, built for threading thorns and carrying glitter. **Anchor: SOOT-AND-GLITTER** — dark soot plumage with oil-slick iridescent glints at throat and wing-edge (the magpie read: a thing that loves shine). Same silhouette role (medium bird-analog), ours — and it finally splits the two defs' art. 256, 3 facings, drawSize ~1.3. |
 
 *(The ticket's four names resolve to three defs: "yanker" and "tunnel snake" are both
-`RSW_TunnelSnake` — ruled name and def name of one creature.)*
+`RM_TunnelSnake` (was `RSW_TunnelSnake`, ported to the RimMandrake tier 2026-10-08, owner note on the Leaning Scrub sheet) — ruled name and def name of one creature.)*
 
 **Job ids keep the live defNames as subjects** (`rsw_shrublandgiant_v1`,
 `rsw_tunnelsnake_v1`, `rsw_scrapnestbird_v1`) so the dedup instrument finds them by
