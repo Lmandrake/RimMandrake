@@ -139,23 +139,9 @@ namespace RimMandrake.TitanicCreatures
                     continue;
                 }
 
-                int desiredSize;
-                if (ext.forceEnabled == false)
-                {
-                    desiredSize = 1;
-                }
-                else
-                {
-                    // Forced-in: our own tier ladder decides the actual size
-                    // (GetTier floors at T1 when there's no natural bodySize
-                    // qualification); Large Pawns' hard ceiling is 4, matching
-                    // our own T3 footprint cap (item's own ⚠️: "4x4 is its hard
-                    // ceiling").
-                    TitanicTier tier = TitanicTierUtility.DefQualifies(raceDef)
-                        ? TierForBodySize(raceDef.race.baseBodySize)
-                        : TitanicTier.T1;
-                    desiredSize = FootprintSizeFor(tier);
-                }
+                int desiredSize = RM_TitanicKernel.OverrideFootprint(raceDef.race.baseBodySize,
+                    TitanicTierUtility.Thresholds.t1MinBodySize, TitanicTierUtility.Thresholds.t2MinBodySize,
+                    TitanicTierUtility.Thresholds.t3MinBodySize, TitanicTierUtility.ForceOf(ext));
 
                 object row = overrides.Cast<object>()
                     .FirstOrDefault(o => (string)defNameField.GetValue(o) == raceDef.defName);
@@ -166,33 +152,6 @@ namespace RimMandrake.TitanicCreatures
                     overrides.Add(row);
                 }
                 sizeField.SetValue(row, desiredSize);
-            }
-        }
-
-        private static TitanicTier TierForBodySize(float bodySize)
-        {
-            RM_TitanicTierDef t = TitanicTierUtility.Thresholds;
-            if (bodySize >= t.t3MinBodySize)
-            {
-                return TitanicTier.T3;
-            }
-            if (bodySize >= t.t2MinBodySize)
-            {
-                return TitanicTier.T2;
-            }
-            return TitanicTier.T1;
-        }
-
-        private static int FootprintSizeFor(TitanicTier tier)
-        {
-            switch (tier)
-            {
-                case TitanicTier.T3:
-                    return 4; // Large Pawns' hard ceiling - see the ⚠️ above.
-                case TitanicTier.T2:
-                    return 3;
-                default:
-                    return 2;
             }
         }
     }

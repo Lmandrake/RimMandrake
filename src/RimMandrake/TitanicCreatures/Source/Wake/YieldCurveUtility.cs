@@ -1,4 +1,3 @@
-using UnityEngine;
 using Verse;
 
 namespace RimMandrake.TitanicCreatures
@@ -26,9 +25,8 @@ namespace RimMandrake.TitanicCreatures
         public static float SubLinearFactor(Pawn pawn, TitanicTier tier)
         {
             RM_TitanicTierDef t = TitanicTierUtility.Thresholds;
-            float floor = tier == TitanicTier.T1 ? t.t1MinBodySize : t.t2MinBodySize;
-            float bodySize = Mathf.Max(pawn.BodySize, floor);
-            return Mathf.Clamp(Mathf.Sqrt(floor / bodySize), RM_TitanicCreaturesSettings.yieldCurveMinFactor, 1f);
+            float floor = RM_TitanicKernel.YieldFloor((int)tier, t.t1MinBodySize, t.t2MinBodySize);
+            return RM_TitanicKernel.SubLinearFactor(pawn.BodySize, floor, RM_TitanicCreaturesSettings.yieldCurveMinFactor);
         }
     }
 }

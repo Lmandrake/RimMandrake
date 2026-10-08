@@ -52,7 +52,7 @@ namespace RimMandrake.TitanicCreatures
 
             if (byDef.TryGetValue(t.def, out RM_CrushRuleDef exact))
             {
-                return exact.crushable && tier >= exact.minTier;
+                return RM_TitanicKernel.CrushAllowed((int)tier, exact.crushable, (int)exact.minTier);
             }
 
             for (int i = 0; i < categoryRules.Count; i++)
@@ -67,7 +67,7 @@ namespace RimMandrake.TitanicCreatures
                 // TorchLamp/Campfire/SculptureSmall - none carry "Buildings").
                 if (rule.category.ContainedInThisOrDescendant(t.def))
                 {
-                    return rule.crushable && tier >= rule.minTier;
+                    return RM_TitanicKernel.CrushAllowed((int)tier, rule.crushable, (int)rule.minTier);
                 }
             }
 
