@@ -1,4 +1,5 @@
 using Verse;
+using RimMandrake.HugeThings;
 
 namespace RimMandrake.TitanicCreatures
 {
@@ -18,7 +19,7 @@ namespace RimMandrake.TitanicCreatures
         /// sqrt(floor / bodySize), clamped to [minFactor, 1]: doubling bodySize
         /// past a tier's floor only multiplies yield by ~1.41x rather than 2x,
         /// and it can never fall below the player-tunable floor
-        /// (RM_TitanicCreaturesSettings.yieldCurveMinFactor). BENCH-draft curve
+        /// (RM_HugeThingsSettings.yieldCurveMinFactor). BENCH-draft curve
         /// shape, not owner-ruled - tune the exponent here if the sub-linear
         /// feel is wrong once real creature stats exist.
         /// </summary>
@@ -26,7 +27,7 @@ namespace RimMandrake.TitanicCreatures
         {
             RM_TitanicTierDef t = TitanicTierUtility.Thresholds;
             float floor = RM_TitanicKernel.YieldFloor((int)tier, t.t1MinBodySize, t.t2MinBodySize);
-            return RM_TitanicKernel.SubLinearFactor(pawn.BodySize, floor, RM_TitanicCreaturesSettings.yieldCurveMinFactor);
+            return RM_TitanicKernel.SubLinearFactor(pawn.BodySize, floor, RM_HugeThingsSettings.yieldCurveMinFactor);
         }
     }
 }

@@ -3,7 +3,7 @@
   WASTELAND_MIDDENSHELL_FOOTPRINT_1 — the Middenshell, TWENTY CELLS WIDE (owner ruling
   2026-09-30: "Yes it can make 20 wide. Just do it.").
 
-  A Building, not a pawn: a pawn occupies one cell and Large Pawns (the TitanicCreatures
+  A Building, not a pawn: a pawn occupies one cell and Large Pawns (the Huge Things titan half, formerly TitanicCreatures
   engine's footprint source) stops at 4x4, while a building's footprint is def.size with no
   engine cap (largest vanilla single-Thing precedent: Ideology's ArchonexusCore, 11x11). It
   walks by the Odyssey gravship relocation route (DeSpawn WillReplace + GenSpawn.Spawn one cell

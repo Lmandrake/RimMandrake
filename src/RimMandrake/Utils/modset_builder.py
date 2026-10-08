@@ -604,7 +604,7 @@ TIERS["acc_harness"] = {
            "WreckedMachines def read-back and config errors, Droidworks protocol droid, FallLineArrivals gate, "
            "UnfinishedLine volunteer) plus GimmeSomeSlack for JawaBench get_defs.",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.luminouspigment", "mandrake.rm.wreckedmachines",
-             "mandrake.rsw.droidworks", "mandrake.rut.falllinearrivals", "mandrake.rut.unfinishedline", "mandrake.rut.patches", "mandrake.rm.titaniccreatures"],
+             "mandrake.rsw.droidworks", "mandrake.rut.falllinearrivals", "mandrake.rut.unfinishedline", "mandrake.rut.patches", "mandrake.rm.hugethings"],
     "dlc": True,
 }
 
@@ -617,12 +617,12 @@ TIERS["acc_biomes"] = {
 }
 
 TIERS["acc_green_min"] = {
-    "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch: one cold load for Abyss, Scarlands, ShipVermin, TitanicCreatures, "
+    "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch: one cold load for Abyss, Scarlands, ShipVermin, HugeThings (Titanic Creatures merged in), "
            "Warcasket, GizkaStowaway, OasisMaker, RiverColors, ScarlandsLadder, ShokkweaveEconomy, LeaningScrub, "
            "GelatinousSlime, GravshipLanding, Stillsand, Pyrinth (composed biomes mod carries several).",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rsw.swbestiary", "mandrake.rut.patches",
              "mandrake.rut.ashkarrflora", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors",
-             "mandrake.rm.shipvermin", "mandrake.rm.titaniccreatures", "mandrake.rm.warcasket", "mandrake.rsw.gizkastowaway",
+             "mandrake.rm.shipvermin", "mandrake.rm.hugethings", "mandrake.rm.warcasket", "mandrake.rsw.gizkastowaway",
              "mandrake.rm.oasismaker", "mandrake.rut.rivercolors", "mandrake.rut.scarlandsladder",
              "mandrake.rut.shokkweaveeconomy", "mandrake.rm.gravshiplanding", "mandrake.rm.pyrinth"],
     "dlc": True,

@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    HUGE_THINGS_FOOTPRINT_1 - solid trunks for huge plants, selection hitboxes for huge pawns.
-    Engine only; content opts in by modExtension. Design:
+    HUGE_THINGS_FOOTPRINT_1 - solid trunks for huge plants, selection hitboxes for huge pawns; and (merged from Titanic
+    Creatures 2026-10-07, TITANIC_CREATURES_MOD_1) size tiers, destruction wake, roofs, butcher yield and the T3 corpse site
+    for titans. Engine only; content opts in by modExtension or bodySize. No compile reference to Large Pawns (reflection only). Design:
     design/RimMandrake/giant_footprint_design_2026-10-07.md.
     Build: python3 src/RimMandrake/Utils/winbuild.py HugeThings  (net472, Harmony from brrainz.harmony
     at runtime, never copied local). Compile items are EXPLICIT (SelfTest/ is its own net8.0 fuzz project):
@@ -39,6 +40,8 @@
   <ItemGroup>
     <Compile Include="Kernel\RM_HugeFootprintKernel.cs" />
     <Compile Include="Kernel\RM_HugeClaimsKernel.cs" />
+    <Compile Include="Kernel\RM_HugeTitanKernel.cs" />
+    <Compile Include="Kernel\RM_TitanicKernel.cs" />
     <Compile Include="Building_TrunkBlocker.cs" />
     <Compile Include="CompHugeFootprint.cs" />
     <Compile Include="Extensions.cs" />
@@ -46,6 +49,28 @@
     <Compile Include="HugeThingsCore.cs" />
     <Compile Include="MapComponent_HugeFootprints.cs" />
     <Compile Include="RM_HugeThingsSettings.cs" />
+    <!-- the titan half, merged from Titanic Creatures 2026-10-07: namespace RimMandrake.TitanicCreatures kept (saves name its types) -->
+    <Compile Include="Titanic\CorpseSite\Building_TitanicCorpseSite.cs" />
+    <Compile Include="Titanic\CorpseSite\JobDriver_HarvestTitanicCorpse.cs" />
+    <Compile Include="Titanic\CorpseSite\Patch_CorpseSiteConversion.cs" />
+    <Compile Include="Titanic\CorpseSite\TitanicCorpseSiteUtility.cs" />
+    <Compile Include="Titanic\CorpseSite\WorkGiver_HarvestTitanicCorpse.cs" />
+    <Compile Include="Titanic\Footprint\LargePawnsBridge.cs" />
+    <Compile Include="Titanic\Footprint\Patch_ThickRoofAvoidance.cs" />
+    <Compile Include="Titanic\RM_TitanicCreaturesDefOf.cs" />
+    <Compile Include="Titanic\RM_TitanicCreaturesMod.cs" />
+    <Compile Include="Titanic\Tiering\RM_TitanicExtension.cs" />
+    <Compile Include="Titanic\Tiering\RM_TitanicTierDef.cs" />
+    <Compile Include="Titanic\Tiering\TitanicTier.cs" />
+    <Compile Include="Titanic\Tiering\TitanicTierUtility.cs" />
+    <Compile Include="Titanic\Wake\CompProperties_TitanicWake.cs" />
+    <Compile Include="Titanic\Wake\CompTitanicWake.cs" />
+    <Compile Include="Titanic\Wake\CrushTableUtility.cs" />
+    <Compile Include="Titanic\Wake\Patch_ButcherYieldCurve.cs" />
+    <Compile Include="Titanic\Wake\Patch_Thing_Position_Wake.cs" />
+    <Compile Include="Titanic\Wake\RM_CrushRuleDef.cs" />
+    <Compile Include="Titanic\Wake\TitanicWakeProcessor.cs" />
+    <Compile Include="Titanic\Wake\YieldCurveUtility.cs" />
   </ItemGroup>
 
   <ItemGroup>

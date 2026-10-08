@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Planted-defect selftest for lint_titaniccreatures_defs.py: clean on the real mod, then one planted defect at a time is caught.
+"""Planted-defect selftest for lint_hugethings_titanic_defs.py: clean on the real mod, then one planted defect at a time is caught.
 
-    python3 src/RimMandrake/Utils/selftest_titaniccreatures_lint.py
+    python3 src/RimMandrake/Utils/selftest_hugethings_titanic_lint.py
 """
 import os
 import sys
@@ -25,11 +25,14 @@ PLANTS = [
     ("kernel imports Verse", "Source/Kernel/RM_TitanicKernel.cs", "using System;", "using System;\nusing Verse;", "tc-kernel"),
     ("kernel day length drifts", "Source/Kernel/RM_TitanicKernel.cs", "TicksPerDay = 60000;", "TicksPerDay = 24000;", "TicksPerDay"),
     ("crush damages inverted", "Source/Kernel/RM_TitanicKernel.cs", "CrushDamageLight = 20f;", "CrushDamageLight = 90f;", "light < heavy"),
-    ("SelfTest leaks into the mod assembly", "Source/RM_TitanicCreatures.csproj", '<Compile Remove="SelfTest\\**" />', "", "SelfTest"),
-    ("DefOf names a missing job", "Source/RM_TitanicCreaturesDefOf.cs", "public static JobDef RM_HarvestTitanicCorpse;", "public static JobDef RM_HarvestTitanicCorps;", "DefOf"),
+    ("SelfTest leaks into the mod assembly", "Source/RM_HugeThings.csproj", "<EnableDefaultCompileItems>false</EnableDefaultCompileItems>", "", "SelfTest"),
+    ("DefOf names a missing job", "Source/Titanic/RM_TitanicCreaturesDefOf.cs", "public static JobDef RM_HarvestTitanicCorpse;", "public static JobDef RM_HarvestTitanicCorps;", "DefOf"),
     ("job driver class typo", "Defs/JobDefs/RM_JobDefs.xml", "JobDriver_HarvestTitanicCorpse</driverClass>", "JobDriver_HarvestTitanicCorps</driverClass>", "class-resolves"),
-    ("settings Scribe default drifts", "Source/RM_TitanicCreaturesSettings.cs", '"wakeFilthTrailChance", 0.35f)', '"wakeFilthTrailChance", 0.5f)', "settings-scribed"),
+    ("custom-tier default drifts from the XML", "Source/RM_HugeThingsSettings.cs", "tierT2MinBodySize = 8f;", "tierT2MinBodySize = 9f;", "custom-tier defaults"),
+    ("smash tier default out of range", "Source/RM_HugeThingsSettings.cs", "giantPlantSmashMinTier = 3;", "giantPlantSmashMinTier = 5;", "giantPlantSmashMinTier"),
+    ("trunk becomes crushable", C, "<thing>RM_HugeTrunkBlocker</thing>\n    <crushable>false</crushable>", "<thing>RM_HugeTrunkBlocker</thing>\n    <crushable>true</crushable>", "RM_HugeTrunkBlocker row"),
+    ("settings Scribe default drifts", "Source/RM_HugeThingsSettings.cs", '"wakeFilthTrailChance", 0.35f)', '"wakeFilthTrailChance", 0.5f)', "settings-scribed"),
 ]
 
 if __name__ == "__main__":
-    sys.exit(H.run("TitanicCreatures", "lint_titaniccreatures_defs.py", PLANTS, keep=("Languages",)))
+    sys.exit(H.run("HugeThings", "lint_hugethings_titanic_defs.py", PLANTS, keep=("Languages",)))

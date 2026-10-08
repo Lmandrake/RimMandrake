@@ -2,6 +2,7 @@ using System.Text;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.HugeThings;
 
 namespace RimMandrake.TitanicCreatures
 {
@@ -83,8 +84,8 @@ namespace RimMandrake.TitanicCreatures
         /// </summary>
         private void ApplyDailySpoilage()
         {
-            int meatLoss = RM_TitanicKernel.SpoilLoss(meatRemaining, RM_TitanicCreaturesSettings.corpseSiteMeatSpoilagePerDay);
-            int leatherLoss = RM_TitanicKernel.SpoilLoss(leatherRemaining, RM_TitanicCreaturesSettings.corpseSiteLeatherSpoilagePerDay);
+            int meatLoss = RM_TitanicKernel.SpoilLoss(meatRemaining, RM_HugeThingsSettings.corpseSiteMeatSpoilagePerDay);
+            int leatherLoss = RM_TitanicKernel.SpoilLoss(leatherRemaining, RM_HugeThingsSettings.corpseSiteLeatherSpoilagePerDay);
             meatRemaining = Mathf.Max(0, meatRemaining - meatLoss);
             leatherRemaining = Mathf.Max(0, leatherRemaining - leatherLoss);
             if (!HasYield)
@@ -102,7 +103,7 @@ namespace RimMandrake.TitanicCreatures
         {
             var results = new System.Collections.Generic.List<Thing>();
 
-            int meatTake = RM_TitanicKernel.HarvestTake(meatRemaining, RM_TitanicCreaturesSettings.corpseSiteHarvestMeatPerSession);
+            int meatTake = RM_TitanicKernel.HarvestTake(meatRemaining, RM_HugeThingsSettings.corpseSiteHarvestMeatPerSession);
             if (meatTake > 0 && meatDef != null)
             {
                 Thing meat = ThingMaker.MakeThing(meatDef);
@@ -111,7 +112,7 @@ namespace RimMandrake.TitanicCreatures
                 meatRemaining -= meatTake;
             }
 
-            int leatherTake = RM_TitanicKernel.HarvestTake(leatherRemaining, RM_TitanicCreaturesSettings.corpseSiteHarvestLeatherPerSession);
+            int leatherTake = RM_TitanicKernel.HarvestTake(leatherRemaining, RM_HugeThingsSettings.corpseSiteHarvestLeatherPerSession);
             if (leatherTake > 0 && leatherDef != null)
             {
                 Thing leather = ThingMaker.MakeThing(leatherDef);

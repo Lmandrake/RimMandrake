@@ -50,4 +50,15 @@
     <minTier>T1</minTier>
   </RimMandrake.TitanicCreatures.RM_CrushRuleDef>
 
+  <!-- A giant plant's trunk is never crushed by the table (merge into Huge Things, owner ruling 2026-10-07 by question card):
+       titans at or above the smash tier (Mod Settings, T3 by default) damage the giant itself through GiantSmash, once per
+       step; smaller titans go around its trunk as a wall. The trunk has no hit points; this row makes the protection explicit
+       rather than an accident of the category rows (RM_HugeTrunkBlocker carries no thingCategories). -->
+  <RimMandrake.TitanicCreatures.RM_CrushRuleDef>
+    <defName>RM_Crush_HugeTrunk</defName>
+    <thing>RM_HugeTrunkBlocker</thing>
+    <crushable>false</crushable>
+    <minTier>T1</minTier>
+  </RimMandrake.TitanicCreatures.RM_CrushRuleDef>
+
 </Defs>

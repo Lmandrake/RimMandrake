@@ -19,7 +19,7 @@ namespace RimMandrake.HugeThings
     }
 
     /// <summary>
-    /// The opt-in surface other mods call (TitanicCreatures does, for every race it tiers). Idempotent, and
+    /// The opt-in surface other mods call (the titan half of this mod does, for every race it tiers). Idempotent, and
     /// must run at startup - before any map loads - because vanilla files a Thing into the
     /// WithCustomRectForSelector lister group by its def's flag at the moment the Thing registers.
     /// </summary>
@@ -72,7 +72,7 @@ namespace RimMandrake.HugeThings
             // the footprint setting affects these plants after a restart.
             List<int> counts = new List<int>();
             foreach (HugePlantVariant v in ext.variants) counts.Add(v.contact.Count);
-            if (RootRule.RootImpassable(RM_HugeThingsSettings.plantTrunkEnabled, ext.blockingSupported, counts))
+            if (RootRule.RootImpassable(RM_HugeThingsSettings.PlantTrunkActive, ext.blockingSupported, counts))
             {
                 def.passability = Traversability.Impassable;
                 ext.rootImpassable = true;
@@ -94,7 +94,7 @@ namespace RimMandrake.HugeThings
         public static CellRect? PawnHitbox(Pawn pawn)
         {
             RM_HugePawnExtension ext = pawn?.def.GetModExtension<RM_HugePawnExtension>();
-            if (ext == null || !pawn.Spawned || !RM_HugeThingsSettings.pawnHitboxEnabled) return null;
+            if (ext == null || !pawn.Spawned || !RM_HugeThingsSettings.PawnHitboxActive) return null;
             Vector2 drawn = pawn.ageTracker?.CurKindLifeStage?.bodyGraphicData?.drawSize ?? Vector2.one;
             CellRect foot = pawn.OccupiedRect();   // Large Pawns' square when it is loaded, else one cell
             return FootprintMath.PawnHitbox(drawn.x, drawn.y, ext.hitboxFraction, RM_HugeThingsSettings.pawnHitboxScale, foot, pawn.DrawPos.ToIntVec3());
@@ -179,6 +179,7 @@ namespace RimMandrake.HugeThings
         {
             if (!(t is Building_TrunkBlocker b)) return true;
             if (!damagedThings.Contains(b)) damagedThings.Add(b);
+            if (!RM_HugeThingsSettings.PlantTrunkDamageActive) return false;   // Mod Settings: the trunk soaks the blast
             Plant p = b.owner;
             if (p == null || p.Destroyed || !p.Spawned || damagedThings.Contains(p)) return false;
             t = p;
@@ -214,7 +215,7 @@ namespace RimMandrake.HugeThings
 
         static HugeThingsStartup()
         {
-            new Harmony(HarmonyId).PatchAll(typeof(HugeThingsStartup).Assembly);
+            PatchNamespace(new Harmony(HarmonyId), typeof(HugeThingsStartup).Namespace);
             int plants = 0, pawns = 0;
             foreach (ThingDef td in DefDatabase<ThingDef>.AllDefsListForReading)
             {
@@ -230,6 +231,21 @@ namespace RimMandrake.HugeThings
                 }
             }
             Log.Message("[RimMandrake.HugeThings] ready: " + plants + " huge plants, " + pawns + " huge pawn races.");
+        }
+
+        /// <summary>The assembly holds two halves (giant plants and pawns here, titans in RimMandrake.TitanicCreatures), each with
+        /// its own Harmony id: PatchAll on the assembly from both would patch every method twice. This is PatchAll restricted to
+        /// one namespace (Harmony's PatchAll is exactly CreateClassProcessor(type).Patch() over the assembly's types).</summary>
+        public static int PatchNamespace(Harmony harmony, string ns)
+        {
+            int n = 0;
+            foreach (System.Type t in AccessTools.GetTypesFromAssembly(typeof(HugeThingsStartup).Assembly))
+            {
+                if (t.Namespace != ns) continue;
+                harmony.CreateClassProcessor(t).Patch();
+                n++;
+            }
+            return n;
         }
     }
 }

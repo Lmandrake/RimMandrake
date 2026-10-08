@@ -21,7 +21,7 @@ Jawa auctions were not picked either. Builds on `WASTELAND_RULED_CONTENT_1` and
    one map edge. The 20-cell Middenshell (owner-ruled width; keep it, or report an engine ceiling)
    crosses on a slow, readable route. It grinds buildings and leaves hot footprints, shell flakes and
    minor bezoars. Waste stockpiles can divert it. If it exits, its trail and edge scar remain. Build: a
-   large C# extension to TitanicCreatures' route and destruction wake, plus an XML incident, sounds,
+   large C# extension to the Huge Things titan half's (formerly TitanicCreatures') route and destruction wake, plus an XML incident, sounds,
    and footprint filth or terrain. **Model: opus.**
 3. **Sealed Cask Bay.** A ship-bound bay accepts dangerous waste casks and clearly shows seal
    integrity, internal heat, stored dose and launch safety. Powered seals contain pollution. Processor

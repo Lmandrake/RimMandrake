@@ -9,7 +9,7 @@
 ## What
 Built 2026-10-07: `src/RimMandrake/HugeThings` (`mandrake.rm.hugethings`). Design, per-species table and the
 mechanism: `design/RimMandrake/giant_footprint_design_2026-10-07.md`. The Rot opts in nine giants
-(`TheRot/Patches/RotGiants_HugeFootprint.xml`); TitanicCreatures depends on it and opts in every tiered race.
+(`TheRot/Patches/RotGiants_HugeFootprint.xml`); Its titan half (Titanic Creatures, merged in 2026-10-07) opts in every tiered race.
 
 ## Verify
 - Offline: `python3 src/RimMandrake/HugeThings/selftest_hugethings_footprint.py` (12/12) and

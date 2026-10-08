@@ -108,7 +108,7 @@ as evidence only.
 | StrandedQuest | mandrake.rm.strandedquest | yes | One quest |
 | StructureInjections | mandrake.rm.injections | yes | BuildPlan replay engine |
 | TheBazaar | mandrake.rm.bazaar | no | Trade overhaul — named OUT by the item |
-| TitanicCreatures | mandrake.rm.titaniccreatures | no | Generic large-pawn engine; no biome references it |
+| TitanicCreatures | (merged into mandrake.rm.hugethings 2026-10-07) | no | Generic large-pawn engine; no biome references it |
 | Visibility | mandrake.rm.visibility | yes | Colony-visibility engine |
 | WeatherSuite | mandrake.rm.weathersuite | yes | Planet-geometry/terminator-band engine; ZERO biome XML references it (measured) — planet-scale framework, not a biome kit |
 | WreckedMachines | mandrake.rm.wreckedmachines | yes | Wreckage content mod (own north star, DRAFT); not a biome |

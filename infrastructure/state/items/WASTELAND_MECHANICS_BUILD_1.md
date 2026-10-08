@@ -11,7 +11,7 @@ card waited on is moot.
 
 ## 1. The Middenshell — the giant (owner: "Bezoar Colossus loved")
 
-- **TWENTY CELLS WIDE, owner-ruled.** Rides the TitanicCreatures engine
+- **TWENTY CELLS WIDE, owner-ruled.** Rides the Huge Things titan engine (formerly TitanicCreatures)
   (`RM_TitanicExtension`, Large Pawns multi-cell body, wander-route AI,
   destruction wake). Never hostile; proximity aura dose; its walk is the danger.
 - **Corpse = permanent bezoar-quarry landmark**: mined like resource rock for

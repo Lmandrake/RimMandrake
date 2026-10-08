@@ -165,7 +165,7 @@
     <rewardCount>50</rewardCount>
   </RimMandrake.Utinni.Atlas.AtlasEntryDef>
 
-  <!-- RM_TitanicCorpseSite: ThingDef, mandrake.rm.titaniccreatures, "The remains
+  <!-- RM_TitanicCorpseSite: ThingDef, mandrake.rm.hugethings (Titanic Creatures merged in 2026-10-07), "The remains
        of something titanic. Days of work here will yield meat and leather". -->
   <RimMandrake.Utinni.Atlas.AtlasEntryDef>
     <defName>RUT_Atlas_TitanicRemains</defName>

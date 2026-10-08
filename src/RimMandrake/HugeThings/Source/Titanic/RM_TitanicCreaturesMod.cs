@@ -34,8 +34,10 @@ namespace RimMandrake.TitanicCreatures
 
         static RM_TitanicCreaturesMod()
         {
+            // One assembly since the merge into Huge Things (2026-10-07): patch only this half's classes, under its own Harmony id
+            // (kept so the patches' owner reads the same as before); HugeThingsStartup patches the other half.
             Harmony harmony = new Harmony(HarmonyId);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.HugeThings.HugeThingsStartup.PatchNamespace(harmony, typeof(RM_TitanicCreaturesMod).Namespace);
 
             int qualifyingRaces = InjectWakeComps();
 
