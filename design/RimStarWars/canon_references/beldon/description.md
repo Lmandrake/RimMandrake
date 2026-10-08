@@ -72,7 +72,13 @@ entry treats this as an inherent, unrenderable fact rather than a "wrong size" d
   dark tendrils — matches the infobox text's orange coloring, disagrees
   with the one image found on color.
 
+- `wookieepedia_woswfg.webp` — File:Beldons-woswfg.jpg (1000x933 WebP despite the name on the wiki), the actual canon image per the owner, 2026-10-08: the illustration the donor sprite was inspired by. Use ONLY this image as the canon reference; ignore `beldon_wookieepedia_1.jpg` (the purple SWGA drawing).
+
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `donor_current_sprite.png`
 
 > "The images for the source material are all over the place. I think this is a pretty good rendition of it. https://static.wikia.nocookie.net/starwars/images/b/bc/Beldons-woswfg.jpg/revision/latest?cb=20070123191252 was clearly its inspiration, please see that and reproduce it rimworld-style."
+
+**RULED** (owner, 2026-10-08, Greentide sheet 2026-10-05): the canon image is `wookieepedia_woswfg.webp` (https://static.wikia.nocookie.net/starwars/images/b/bc/Beldons-woswfg.jpg); the purple `beldon_wookieepedia_1.jpg` is to be ignored entirely. Verbatim:
+
+> "This is a tricky one. Please regenerate the Canon creature based on the current donor art. I know it's low quality.  It comes from here, and you should add this as the actual canon image: https://static.wikia.nocookie.net/starwars/images/b/bc/Beldons-woswfg.jpg/revision/latest/scale-to-width-down/1000?cb=20070123191252 Please realize that in a much more realistic manner. Totally ignore the weird purple drawings you currently have as the canon database entry."

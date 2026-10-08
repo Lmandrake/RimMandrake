@@ -1,0 +1,1862 @@
+[
+ {
+  "id": "regen_gt_canon_beldon_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Beldon",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"This is a tricky one. Please regenerate the Canon creature based on the current donor art. I know it's low quality.  It comes from here, and you should add this as the actual canon image: https://static.wikia.nocookie.net/starwars/images/b/bc/Beldons-woswfg.jpg/revision/latest/scale-to-width-down/1000?cb=20070123191252 Please realize that in a much more realistic manner. Totally ignore the weird purple drawings you currently have as the canon database entry. \" RimWorld creature sprite of the Star Wars canon beldon, drawn from the attached canon illustration (first image): a huge floating gas-bladder creature: a cluster of four or five swollen, glossy, translucent orange-peach spherical bladders mottled with warm orange-red blotches and fine dark speckles, fused into one lumpy mass; ragged frilled spiny crests between the topmost bladders; a broad flat fleshy fin trailing at the rear; a dark crimson crust of small knobbly bead-like growths along the underside from which a cloud of long, thin, dark thread-like tendrils hangs. Hand-painted-guidebook anatomy, rendered realistically. The second attached image is the CURRENT in-game donor sprite, to be used only as concept guidance for the overall pose and proportion; redraw it far more realistically and in much higher quality. Ignore any purple colour: the bladders are orange. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "This is a tricky one. Please regenerate the Canon creature based on the current donor art. I know it's low quality.  It comes from here, and you should add this as the actual canon image: https://static.wikia.nocookie.net/starwars/images/b/bc/Beldons-woswfg.jpg/revision/latest/scale-to-width-down/1000?cb=20070123191252 Please realize that in a much more realistic manner. Totally ignore the weird purple drawings you currently have as the canon database entry. ",
+  "drawsize": 4.0,
+  "canon": "beldon",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/beldon/wookieepedia_woswfg.webp",
+   "/mnt/d/Luke/dev/_artstore/5b/5b4ff5388507a62dcc7330f588b545c7c4f8714ec56e44979577d47ab17a6938.png"
+  ],
+  "target_texpath": "swanimals/Beldon/Beldon"
+ },
+ {
+  "id": "regen_gt_beldon_flying_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Beldon",
+  "prompt": "RimWorld creature FLYING animation frame 1 of 3 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a floating beldon, a huge floating gas-bladder creature: a cluster of four or five swollen, glossy, translucent orange-peach spherical bladders mottled with warm orange-red blotches and fine dark speckles, fused into one lumpy mass; ragged frilled spiny crests between the topmost bladders; a broad flat fleshy fin trailing at the rear; a dark crimson crust of small knobbly bead-like growths along the underside from which a cloud of long, thin, dark thread-like tendrils hangs. Hand-painted-guidebook anatomy, rendered realistically. In flight, body level, legs tucked, wings raised high in a V at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 4.0,
+  "derive_from": "regen_gt_canon_beldon_v1_east",
+  "target_texpath": "swanimals/Beldon/Beldon_Flying_1",
+  "canon": "beldon"
+ },
+ {
+  "id": "regen_gt_beldon_flying_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Beldon",
+  "prompt": "RimWorld creature FLYING animation frame 2 of 3 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a floating beldon, a huge floating gas-bladder creature: a cluster of four or five swollen, glossy, translucent orange-peach spherical bladders mottled with warm orange-red blotches and fine dark speckles, fused into one lumpy mass; ragged frilled spiny crests between the topmost bladders; a broad flat fleshy fin trailing at the rear; a dark crimson crust of small knobbly bead-like growths along the underside from which a cloud of long, thin, dark thread-like tendrils hangs. Hand-painted-guidebook anatomy, rendered realistically. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 4.0,
+  "derive_from": "regen_gt_canon_beldon_v1_east",
+  "target_texpath": "swanimals/Beldon/Beldon_Flying_2",
+  "canon": "beldon"
+ },
+ {
+  "id": "regen_gt_beldon_flying_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Beldon",
+  "prompt": "RimWorld creature FLYING animation frame 3 of 3 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a floating beldon, a huge floating gas-bladder creature: a cluster of four or five swollen, glossy, translucent orange-peach spherical bladders mottled with warm orange-red blotches and fine dark speckles, fused into one lumpy mass; ragged frilled spiny crests between the topmost bladders; a broad flat fleshy fin trailing at the rear; a dark crimson crust of small knobbly bead-like growths along the underside from which a cloud of long, thin, dark thread-like tendrils hangs. Hand-painted-guidebook anatomy, rendered realistically. In flight, body level, legs tucked, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 4.0,
+  "derive_from": "regen_gt_canon_beldon_v1_east",
+  "target_texpath": "swanimals/Beldon/Beldon_Flying_3",
+  "canon": "beldon"
+ },
+ {
+  "id": "regen_gt_canon_dragonsnake_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Dragonsnake",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow the middle white canon on a black background\" RimWorld creature sprite of the Star Wars canon dragonsnake, drawn from the attached canon image (the middle canon image, the pale snake rising from dark water): a colossal pallid serpent: a very long, thick, smooth, glossy cream-white flesh-pale body ringed with faint ribbing along the neck, held in heavy coils; a long drooping skull-like head with a narrow bony snout, sunken shadowed eye sockets, and a wide mouth lined with long needle-like fangs and wet pink-red gums. No limbs. Subtle grey-brown shading on the upper back. The background is fully transparent, not black. Standing/resting pose, head raised. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow the middle white canon on a black background",
+  "drawsize": 4.0,
+  "canon": "dragonsnake",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dragonsnake/wookieepedia_mandalorianandgrogu.jpg"
+  ],
+  "target_texpath": "swanimals/Dragonsnake/Dragonsnake"
+ },
+ {
+  "id": "regen_gt_canon_dragonsnake_v1_swim",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Dragonsnake",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow the middle white canon on a black background\" RimWorld creature SWIMMING sprite of the dragonsnake, the same individual as the accepted standing render: a colossal pallid serpent: a very long, thick, smooth, glossy cream-white flesh-pale body ringed with faint ribbing along the neck, held in heavy coils; a long drooping skull-like head with a narrow bony snout, sunken shadowed eye sockets, and a wide mouth lined with long needle-like fangs and wet pink-red gums. No limbs. Subtle grey-brown shading on the upper back. Shown swimming, the body low and level as if half-submerged in undulating coils, head just above the surface, the outline clean against transparency (the water is drawn by the game). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow the middle white canon on a black background",
+  "drawsize": 4.0,
+  "canon": "dragonsnake",
+  "derive_from": "regen_gt_canon_dragonsnake_v1_east",
+  "target_texpath": "swanimals/Dragonsnake/Dragonsnake_Swimming"
+ },
+ {
+  "id": "regen_gt_canon_hawkbat_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.\" RimWorld creature sprite of the Star Wars canon hawkbat, following the attached purple-and-tan canon illustration very closely: a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. Standing/perched pose, wings folded. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
+  "drawsize": 2.0,
+  "canon": "hawkbat",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hawkbat/wookieepedia_legends_infobox.jpg"
+  ],
+  "target_texpath": "swanimals/Hawkbat/Hawkbat"
+ },
+ {
+  "id": "regen_gt_canon_hawkbat_juv_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.\" RimWorld creature sprite of the juvenile hawkbat, the same individual as the accepted adult render, younger and smaller with softer paler purple-tan colouring and proportionally larger head: a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. Standing/perched pose, wings folded. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
+  "drawsize": 2.0,
+  "canon": "hawkbat",
+  "derive_from": "regen_gt_canon_hawkbat_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_j"
+ },
+ {
+  "id": "regen_gt_hawkbat_flying_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. In flight, body level, legs tucked, wings raised high in a V at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 2.0,
+  "derive_from": "regen_gt_canon_hawkbat_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_Flying_1",
+  "canon": "hawkbat"
+ },
+ {
+  "id": "regen_gt_hawkbat_flying_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 2.0,
+  "derive_from": "regen_gt_canon_hawkbat_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_Flying_2",
+  "canon": "hawkbat"
+ },
+ {
+  "id": "regen_gt_hawkbat_flying_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 2.0,
+  "derive_from": "regen_gt_canon_hawkbat_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_Flying_3",
+  "canon": "hawkbat"
+ },
+ {
+  "id": "regen_gt_hawkbat_flying_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. In flight, body level, legs tucked, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 2.0,
+  "derive_from": "regen_gt_canon_hawkbat_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_Flying_4",
+  "canon": "hawkbat"
+ },
+ {
+  "id": "regen_gt_hawkbat_flying_j_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a juvenile, smaller and paler a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. In flight, body level, legs tucked, wings raised high in a V at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 2.0,
+  "derive_from": "regen_gt_canon_hawkbat_juv_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_j_Flying_1",
+  "canon": "hawkbat"
+ },
+ {
+  "id": "regen_gt_hawkbat_flying_j_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a juvenile, smaller and paler a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 2.0,
+  "derive_from": "regen_gt_canon_hawkbat_juv_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_j_Flying_2",
+  "canon": "hawkbat"
+ },
+ {
+  "id": "regen_gt_hawkbat_flying_j_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a juvenile, smaller and paler a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 2.0,
+  "derive_from": "regen_gt_canon_hawkbat_juv_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_j_Flying_3",
+  "canon": "hawkbat"
+ },
+ {
+  "id": "regen_gt_hawkbat_flying_j_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "prompt": "RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a juvenile, smaller and paler a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. In flight, body level, legs tucked, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 2.0,
+  "derive_from": "regen_gt_canon_hawkbat_juv_v1_east",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_j_Flying_4",
+  "canon": "hawkbat"
+ },
+ {
+  "id": "regen_gt_canon_kinrath_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Kinrath",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon art closley, looks closest to a mantis shape. Study the donor art for geometry info. \" RimWorld creature sprite of the Star Wars canon kinrath, following the attached canon illustration closely (it looks closest to a mantis): a tall, slender, four-long-legged mantis/spider-like predator: a narrow upright segmented body, a long upward-curving segmented neck ending in a small elongated head with clustered small eyes, two folded raptorial mantis forelimbs, and four very long, thin, multi-jointed legs; gold-tan banded skin with orange-brown mottling and darker joints, glossy chitin plates. The second attached image is the donor art, to be studied ONLY for geometry (limb count and body proportions). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon art closley, looks closest to a mantis shape. Study the donor art for geometry info. ",
+  "drawsize": 2.5,
+  "canon": "kinrath",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kinrath/wookieepedia_legends_infobox_viperkinrath.png",
+   "/mnt/d/Luke/dev/_artstore/8f/8f307c24cd8c3ee502bb63772f55ee173894bbba7c9c649c5779860222580769.png"
+  ],
+  "target_texpath": "swanimals/Kinrath/Kinrath"
+ },
+ {
+  "id": "regen_gt_canon_klorslug_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Klorslug",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow the canon art precisely, the red and white one \" RimWorld creature sprite of the Star Wars canon klorslug, following the attached canon illustration precisely (the red-and-white one): a long, low, armoured centipede-slug: a ribbed, segmented body of glossy deep crimson-red plates with paler pinkish-white bands, a gaping round maw ringed with spiky red plates at the front, a row of long curved bone-white claw-spines along each flank in place of legs, and a thick curling segmented tail with a spiked tip. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Follow the canon art precisely, the red and white one ",
+  "drawsize": 2.5,
+  "canon": "klorslug",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/klorslug/wookieepedia_legends_1.webp"
+  ],
+  "target_texpath": "swanimals/Klorslug/Klorslug"
+ },
+ {
+  "id": "regen_gt_canon_klorslug_juv_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Klorslug",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow the canon art precisely, the red and white one \" RimWorld creature sprite of the juvenile klorslug, the same individual as the accepted adult render, smaller and shorter with softer paler red-white colouring: a long, low, armoured centipede-slug: a ribbed, segmented body of glossy deep crimson-red plates with paler pinkish-white bands, a gaping round maw ringed with spiky red plates at the front, a row of long curved bone-white claw-spines along each flank in place of legs, and a thick curling segmented tail with a spiked tip. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Follow the canon art precisely, the red and white one ",
+  "drawsize": 2.5,
+  "canon": "klorslug",
+  "derive_from": "regen_gt_canon_klorslug_v1_east",
+  "target_texpath": "swanimals/Klorslug/Klorslug_j"
+ },
+ {
+  "id": "regen_gt_canon_lylek_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Lylek",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon closely\" RimWorld creature sprite of the Star Wars canon lylek, following the attached canon illustration closely: a many-limbed ambush horror: a hunched olive-green body of overlapping spiked bark-like plates over a pale cream belly, three small snaking heads on thick necks (one central head with a wide toothy open mouth, two smaller flanking heads), six very long thin spiked spider-like legs, and two long black whip-like tentacle tails curling at the rear. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon closely",
+  "drawsize": 4.0,
+  "canon": "lylek",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lylek/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Lylek/Lylek"
+ },
+ {
+  "id": "regen_gt_canon_mott_f_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Mott",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon closely, kinda like a dog hippo rhino or something\" RimWorld creature sprite of the female Star Wars canon mott, following the attached canon photograph closely: a heavy stocky dog/hippo/rhino-like quadruped: a barrel body with a tan-grey back and rust-orange shoulders and legs, crossed by fine pale cream stripes over the flanks and legs; a broad blunt hippo-like snout with a small horn at the nose and small ears or horns on the head, a small dark eye and a wide mouth; short thick legs with splayed toes. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon closely, kinda like a dog hippo rhino or something",
+  "drawsize": 1.5,
+  "canon": "mott",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/mott/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Mott/Mott_f"
+ },
+ {
+  "id": "regen_gt_canon_mott_m_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Mott",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon closely, kinda like a dog hippo rhino or something\" RimWorld creature sprite of the male mott, the same species and palette as the accepted female render but a bit more massive with a heavier horn and bolder stripes: a heavy stocky dog/hippo/rhino-like quadruped: a barrel body with a tan-grey back and rust-orange shoulders and legs, crossed by fine pale cream stripes over the flanks and legs; a broad blunt hippo-like snout with a small horn at the nose and small ears or horns on the head, a small dark eye and a wide mouth; short thick legs with splayed toes.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon closely, kinda like a dog hippo rhino or something",
+  "drawsize": 1.5,
+  "canon": "mott",
+  "derive_from": "regen_gt_canon_mott_f_v1_east",
+  "target_texpath": "swanimals/Mott/Mott_m"
+ },
+ {
+  "id": "regen_gt_canon_mott_f_swim_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Mott",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon closely, kinda like a dog hippo rhino or something\" RimWorld creature SWIMMING sprite of the female mott, the same individual as the accepted standing render: a heavy stocky dog/hippo/rhino-like quadruped: a barrel body with a tan-grey back and rust-orange shoulders and legs, crossed by fine pale cream stripes over the flanks and legs; a broad blunt hippo-like snout with a small horn at the nose and small ears or horns on the head, a small dark eye and a wide mouth; short thick legs with splayed toes. Shown swimming, the body low and level as if half-submerged, legs paddling, the outline clean against transparency. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon closely, kinda like a dog hippo rhino or something",
+  "drawsize": 1.5,
+  "canon": "mott",
+  "derive_from": "regen_gt_canon_mott_f_v1_east",
+  "target_texpath": "swanimals/Mott/Mott_f_Swimming"
+ },
+ {
+  "id": "regen_gt_canon_mott_m_swim_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Mott",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon closely, kinda like a dog hippo rhino or something\" RimWorld creature SWIMMING sprite of the male mott, the same individual as the accepted standing render: a heavy stocky dog/hippo/rhino-like quadruped: a barrel body with a tan-grey back and rust-orange shoulders and legs, crossed by fine pale cream stripes over the flanks and legs; a broad blunt hippo-like snout with a small horn at the nose and small ears or horns on the head, a small dark eye and a wide mouth; short thick legs with splayed toes. Shown swimming, the body low and level as if half-submerged, legs paddling, the outline clean against transparency. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon closely, kinda like a dog hippo rhino or something",
+  "drawsize": 1.5,
+  "canon": "mott",
+  "derive_from": "regen_gt_canon_mott_m_v1_east",
+  "target_texpath": "swanimals/Mott/Mott_m_Swimming"
+ },
+ {
+  "id": "regen_gt_canon_pekopeko_f_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"kill all this terrible art. Follow the canon very closely. Flyer.\" RimWorld creature sprite of the female Star Wars canon peko-peko, following the attached canon field-guide illustration very closely: a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. Standing/perched pose, wings folded. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "kill all this terrible art. Follow the canon very closely. Flyer.",
+  "drawsize": 3.5,
+  "canon": "pekopeko",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/pekopeko/wookieepedia_fieldguide.jpg"
+  ],
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_f"
+ },
+ {
+  "id": "regen_gt_canon_pekopeko_m_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"kill all this terrible art. Follow the canon very closely. Flyer.\" RimWorld creature sprite of the male peko-peko, the same species as the accepted female render but brighter, bolder blue with a larger gold crest and longer tail: a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. Standing/perched pose, wings folded.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "kill all this terrible art. Follow the canon very closely. Flyer.",
+  "drawsize": 3.5,
+  "canon": "pekopeko",
+  "derive_from": "regen_gt_canon_pekopeko_f_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_m"
+ },
+ {
+  "id": "regen_gt_pekopeko_flying_f_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a female a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. In flight, body level, legs tucked, wings raised high in a V at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 3.5,
+  "derive_from": "regen_gt_canon_pekopeko_f_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_f_Flying_1",
+  "canon": "pekopeko"
+ },
+ {
+  "id": "regen_gt_pekopeko_flying_f_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a female a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 3.5,
+  "derive_from": "regen_gt_canon_pekopeko_f_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_f_Flying_2",
+  "canon": "pekopeko"
+ },
+ {
+  "id": "regen_gt_pekopeko_flying_f_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a female a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 3.5,
+  "derive_from": "regen_gt_canon_pekopeko_f_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_f_Flying_3",
+  "canon": "pekopeko"
+ },
+ {
+  "id": "regen_gt_pekopeko_flying_f_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a female a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. In flight, body level, legs tucked, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 3.5,
+  "derive_from": "regen_gt_canon_pekopeko_f_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_f_Flying_4",
+  "canon": "pekopeko"
+ },
+ {
+  "id": "regen_gt_pekopeko_flying_m_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a male, brighter a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. In flight, body level, legs tucked, wings raised high in a V at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 3.5,
+  "derive_from": "regen_gt_canon_pekopeko_m_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_m_Flying_1",
+  "canon": "pekopeko"
+ },
+ {
+  "id": "regen_gt_pekopeko_flying_m_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a male, brighter a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 3.5,
+  "derive_from": "regen_gt_canon_pekopeko_m_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_m_Flying_2",
+  "canon": "pekopeko"
+ },
+ {
+  "id": "regen_gt_pekopeko_flying_m_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a male, brighter a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 3.5,
+  "derive_from": "regen_gt_canon_pekopeko_m_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_m_Flying_3",
+  "canon": "pekopeko"
+ },
+ {
+  "id": "regen_gt_pekopeko_flying_m_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "prompt": "RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a male, brighter a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. In flight, body level, legs tucked, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "drawsize": 3.5,
+  "derive_from": "regen_gt_canon_pekopeko_m_v1_east",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_m_Flying_4",
+  "canon": "pekopeko"
+ },
+ {
+  "id": "regen_gt_canon_shirotrap_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_ShiroTrap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"This is a shiro with a plant on it... canon. Go for it. Look at the Shiro, then the Trap plant, then put them together. \" RimWorld creature sprite of the Star Wars canon shiro-trap: a shiro with a trap plant on it, per the attached canon illustration (the first image): a squat armoured turtle-like animal (a shiro: a spined, ridged dome shell, stubby legs, a blunt snout, mossy olive-green skin) with a trap plant growing from its back: a rosette of broad coral-orange leaves striped with gold, and two or three long stalks each ending in a red toothed snapping trap-mouth with small berry-like buds. The second attached image is the in-game Shiro, the turtle body to use as concept guidance for the animal half; the trap plant on top is drawn from the canon image. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "This is a shiro with a plant on it... canon. Go for it. Look at the Shiro, then the Trap plant, then put them together. ",
+  "drawsize": 1.5,
+  "canon": "shirotrap",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shirotrap/wookieepedia_canon_1.webp",
+   "/mnt/d/Luke/dev/_artstore/7d/7d5feacac6e585b4b2b6013d70b2f417cd8eb2a995335414be1625858df2f736.png"
+  ],
+  "target_texpath": "swanimals/ShiroTrap/ShiroTrap"
+ },
+ {
+  "id": "regen_gt_canon_shirotrap_i_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_ShiroTrap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"This is a shiro with a plant on it... canon. Go for it. Look at the Shiro, then the Trap plant, then put them together. \" RimWorld creature sprite of the shiro-trap as an infant, tiny, with a small sprout of trap plant just starting on its shell, the same individual as the accepted adult render: a squat armoured turtle-like animal (a shiro: a spined, ridged dome shell, stubby legs, a blunt snout, mossy olive-green skin) with a trap plant growing from its back: a rosette of broad coral-orange leaves striped with gold, and two or three long stalks each ending in a red toothed snapping trap-mouth with small berry-like buds. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "This is a shiro with a plant on it... canon. Go for it. Look at the Shiro, then the Trap plant, then put them together. ",
+  "drawsize": 1.5,
+  "canon": "shirotrap",
+  "derive_from": "regen_gt_canon_shirotrap_v1_east",
+  "target_texpath": "swanimals/ShiroTrap/ShiroTrap_i"
+ },
+ {
+  "id": "regen_gt_canon_shirotrap_j_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_ShiroTrap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"This is a shiro with a plant on it... canon. Go for it. Look at the Shiro, then the Trap plant, then put them together. \" RimWorld creature sprite of the shiro-trap as a juvenile, smaller than the adult, with a half-grown trap plant on its shell, the same individual as the accepted adult render: a squat armoured turtle-like animal (a shiro: a spined, ridged dome shell, stubby legs, a blunt snout, mossy olive-green skin) with a trap plant growing from its back: a rosette of broad coral-orange leaves striped with gold, and two or three long stalks each ending in a red toothed snapping trap-mouth with small berry-like buds. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "This is a shiro with a plant on it... canon. Go for it. Look at the Shiro, then the Trap plant, then put them together. ",
+  "drawsize": 1.5,
+  "canon": "shirotrap",
+  "derive_from": "regen_gt_canon_shirotrap_v1_east",
+  "target_texpath": "swanimals/ShiroTrap/ShiroTrap_j"
+ },
+ {
+  "id": "regen_gt_ookala_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_CanopySwinger",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make this more alien and elongated. Rename to the Ookala\" RimWorld creature sprite, the ookala, design based on the attached in-game render (concept guidance only): a drawn-out, narrow-bodied canopy climber, very long and thin, its limbs jointed one time more than they need to be so each reach folds out like a tape, hooked hands, a long gripping tail; it hangs between the giants and is hard to tell from a vine. Make it far more alien and ELONGATED: a stretched, spindly, unfamiliar anatomy, not a monkey. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Make this more alien and elongated. Rename to the Ookala",
+  "drawsize": 1.1,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/e2/e24a8933e9aa23c320b649387a4d448cdf8c835ddf85a9c6788eac554110ca23.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger"
+ },
+ {
+  "id": "regen_gt_tuun_v2a",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Tuun",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More alien\" RimWorld fish-item icon, the tuun (option a of 3, vary the design): a small quick bark-mottled octopus that climbs root causeways, based on the attached chosen render (column B, good concept) but made MORE ALIEN: unfamiliar proportions, an odd many-lobed body, bark-textured mottling, bright thief's eyes. Realistic. One item, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "More alien",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/26/26272ed49b6f677eeba769031c59a4d4393537ea04724350d0a5d38f6893580c.png"
+  ],
+  "target_texpath": "Things/Item/Fish/RM_Tuun"
+ },
+ {
+  "id": "regen_gt_tuun_v2b",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Tuun",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More alien\" RimWorld fish-item icon, the tuun (option b of 3, vary the design): a small quick bark-mottled octopus that climbs root causeways, based on the attached chosen render (column B, good concept) but made MORE ALIEN: unfamiliar proportions, an odd many-lobed body, bark-textured mottling, bright thief's eyes. Realistic. One item, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "More alien",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/26/26272ed49b6f677eeba769031c59a4d4393537ea04724350d0a5d38f6893580c.png"
+  ],
+  "target_texpath": "Things/Item/Fish/RM_Tuun"
+ },
+ {
+  "id": "regen_gt_tuun_v2c",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Tuun",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More alien\" RimWorld fish-item icon, the tuun (option c of 3, vary the design): a small quick bark-mottled octopus that climbs root causeways, based on the attached chosen render (column B, good concept) but made MORE ALIEN: unfamiliar proportions, an odd many-lobed body, bark-textured mottling, bright thief's eyes. Realistic. One item, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "More alien",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/26/26272ed49b6f677eeba769031c59a4d4393537ea04724350d0a5d38f6893580c.png"
+  ],
+  "target_texpath": "Things/Item/Fish/RM_Tuun"
+ },
+ {
+  "id": "regen_gt_gristle_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Diggerpede",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename the Gristle, make it realistic\" RimWorld creature sprite, the gristle (no canon-library entry exists; invented creature): a long, flat-plated burrower the length of a man, every segment carrying a pair of short digging legs, the head armoured in a heavy shovel-edged shield with hooked mandibles, a body of tough rubbery muscle over a chitin frame. Make it REALISTIC: believable arthropod anatomy, segmented plates, real chitin texture. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Rename the Gristle, make it realistic",
+  "drawsize": 1.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/8d/8dd840148f9ac32d719335e21571ea299cc99ce83b1f58b8a97bbdac2e7ffb0f.png"
+  ],
+  "target_texpath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede"
+ },
+ {
+  "id": "regen_gt_saluksis_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_Swarmling",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"redo description. Rename it to Saluksis, make it yet more alien\" RimWorld creature sprite, the saluksis (formerly the swarmling), design based on the attached render (column B, rot_swarmling_v2, concept guidance): a small insectoid with a bulbous milk-white abdomen sac, made YET MORE ALIEN: unfamiliar asymmetric anatomy, extra joints and odd sensory organs, glossy wet chitin. Realistic. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "redo description. Rename it to Saluksis, make it yet more alien",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/30/3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/Swarmling/Swarmling"
+ },
+ {
+  "id": "regen_gt_brakkel_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Brakkel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add one more variant\" RimWorld plant sprite, the brakkel: a NEW, REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A mound of enormous overlapping paddle leaves standing taller than a pawn, with fruit clustered underneath in the dark — you have to push into it to see whether there is anything there, and to see what else is in there with you. The Greentide's own foraged staple, replacing a stock berry bush entirely. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "add one more variant",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cf/cf23746c326ec2034259cf8488e92c7096db16e2c66b12105d28daa3502ab65d.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_cundral_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Cundral",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add one more variant\" RimWorld plant sprite, the cundral: a NEW, REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A squat woody base almost buried under a skirt of tentacle-thick ground runners, with translucent pods hanging among them like fruit you must not pick — you can see the acid moving inside them. Left undisturbed it lets you dig its root, a real food staple; damaged, the pods go. Reward and hazard are the same object, most explicitly of anything in the biome. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "add one more variant",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/13/13f9e5861ee71efd33ca86bd0dc4df12a31b305571a9d7bbaf1f5d804a5a244f.png"
+  ]
+ },
+ {
+  "id": "regen_gt_gorbeleth_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Gorbeleth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add one more variant\" RimWorld plant sprite, the gorbeleth: a NEW, REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A low mottled purple-brown barrel of a trunk with one upward-facing muscular throat at the top, ringed with tooth-like bracts. It twitches toward movement. Nothing else about it suggests a plant. Its toxin is worth extracting, which means going close. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "add one more variant",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cf/cf0123afcf15c0b85d00ff0c61a2ffd305f6326356f9f47c71ea0980274db3a4.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 3.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_maddrick_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Maddrick",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add one more variant\" RimWorld plant sprite, the maddrick: a NEW, REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A ring of inward-curling leaf blades standing shoulder-high, waxy and wet, around a throat of standing fluid you cannot see into until you are at its lip. It closes on what steps in. Completely static — it does not move toward anything. Pure hazard, with a use: a patch of maddrick is a free perimeter, something to build around rather than clear. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "add one more variant",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/19/1984439d3d0b798211761a4ddd758599047d71a45867b9b279ad537cecb43d09.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 3.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_grass_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_Grass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the grass: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. ordinary wild grass: a clump of fine blade tufts, the Greentide's wet green ground cover (drawn in game with ReGrowth's RG_Grass) Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f2/f25c52a6f4f1cd701d1b8f439208254b348248f6ab3201140636ecf33f034cb3.png"
+  ]
+ },
+ {
+  "id": "regen_gt_grass_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_Grass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the grass: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. ordinary wild grass: a clump of fine blade tufts, the Greentide's wet green ground cover (drawn in game with ReGrowth's RG_Grass) Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f2/f25c52a6f4f1cd701d1b8f439208254b348248f6ab3201140636ecf33f034cb3.png"
+  ]
+ },
+ {
+  "id": "regen_gt_tallgrass_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_TallGrass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the tallgrass: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. tall wild grass: long arching blades in a dense wet clump (drawn in game with RG_Grass) Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f2/f25c52a6f4f1cd701d1b8f439208254b348248f6ab3201140636ecf33f034cb3.png"
+  ]
+ },
+ {
+  "id": "regen_gt_tallgrass_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_TallGrass",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the tallgrass: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. tall wild grass: long arching blades in a dense wet clump (drawn in game with RG_Grass) Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f2/f25c52a6f4f1cd701d1b8f439208254b348248f6ab3201140636ecf33f034cb3.png"
+  ]
+ },
+ {
+  "id": "regen_gt_ghemmel_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ghemmel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the ghemmel: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood — the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f1/f14d780a43eef6c8053276d9dbeaf3901b0e830cb1bff0879d0eaf257f5159df.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 6.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_ghemmel_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ghemmel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the ghemmel: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. The ordinary one, and the roster needs one: gnarled wind-bent trunk, dense rounded crown of medium dark leaves. Its distinguishing feature is not shape but blood — the bark bleeds thick red wherever it is cut or split, and in this biome it is split everywhere. The commonest mid-storey tree and the source of the biome's red dye. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f1/f14d780a43eef6c8053276d9dbeaf3901b0e830cb1bff0879d0eaf257f5159df.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 6.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_greatbole_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Greatbole",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the greatbole: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A single grey-brown column so broad at the base that its fluting reads as separate trunks fused together, rising far past every other crown before opening into one horizontal raft of paddle leaves. Bark in long vertical plates that shed. Nothing grows in its shadow, so it stands in a clearing of its own making. Given centuries and left uncut, a greatbole like this one becomes something else entirely — a trunk too vast to still be called a tree. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/44/440d064d807c737b7f652f32e4dfa0483e65444354937ff230edd4b010ec8ab8.png"
+  ],
+  "oversize_reason": "giant tree, drawSize 12-16 cells: 1024 is the generator ceiling (~64-85 px/cell)"
+ },
+ {
+  "id": "regen_gt_greatbole_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Greatbole",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the greatbole: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A single grey-brown column so broad at the base that its fluting reads as separate trunks fused together, rising far past every other crown before opening into one horizontal raft of paddle leaves. Bark in long vertical plates that shed. Nothing grows in its shadow, so it stands in a clearing of its own making. Given centuries and left uncut, a greatbole like this one becomes something else entirely — a trunk too vast to still be called a tree. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/44/440d064d807c737b7f652f32e4dfa0483e65444354937ff230edd4b010ec8ab8.png"
+  ],
+  "oversize_reason": "giant tree, drawSize 12-16 cells: 1024 is the generator ceiling (~64-85 px/cell)"
+ },
+ {
+  "id": "regen_gt_illurin_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Illurin",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the illurin: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A broad fleshy cap held above pawn height on a thick stem, glowing cyan-green from its underside down onto the mud — so it lights the ground beneath it and blocks the view across. The only light under the canopy. Suppresses nothing, reveals everything within its small radius; without it the understory is unreadable. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/db/dba5fdf5c16f539468980f5a5b4d75c5acb14f80e8e0d6bc3bd19bf58f977d7c.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 7.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_illurin_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Illurin",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the illurin: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A broad fleshy cap held above pawn height on a thick stem, glowing cyan-green from its underside down onto the mud — so it lights the ground beneath it and blocks the view across. The only light under the canopy. Suppresses nothing, reveals everything within its small radius; without it the understory is unreadable. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/db/dba5fdf5c16f539468980f5a5b4d75c5acb14f80e8e0d6bc3bd19bf58f977d7c.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 7.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_kaddrath_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Kaddrath",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the kaddrath: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Roots first, tree second: wide-splayed above-ground root buttresses taller than a pawn, with walk-through gaps between them, a trunk shorter than the root mass is wide, and a modest crown of olive leaf plates. Reads as architecture — its roots are the biome's causeways, not decoration, and its gaps are the best hiding place on the map. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/07/078bc6b316e2f846a22005227f61c3cda94a0b1445cff357965177d7fa0109ee.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 9.0 cells x 128 px/cell exceeds 1024; generator ceiling"
+ },
+ {
+  "id": "regen_gt_kaddrath_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Kaddrath",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the kaddrath: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Roots first, tree second: wide-splayed above-ground root buttresses taller than a pawn, with walk-through gaps between them, a trunk shorter than the root mass is wide, and a modest crown of olive leaf plates. Reads as architecture — its roots are the biome's causeways, not decoration, and its gaps are the best hiding place on the map. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/07/078bc6b316e2f846a22005227f61c3cda94a0b1445cff357965177d7fa0109ee.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 9.0 cells x 128 px/cell exceeds 1024; generator ceiling"
+ },
+ {
+  "id": "regen_gt_mirrelbole_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Mirrelbole",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the mirrelbole: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Trunk visibly split down its own length by the speed it grew, the wounds glazed with amber resin that never sets in the humidity. Sheds bark plates; permanently wet-looking, the mud at its foot sticky. The sap tap of the fuel economy — and reward and hazard are the same object here: the tree you tap is the tree most likely to crack and come down on you. The highest crack-fall rate in the biome. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/ff/ffbc590c62c14d1391f60bc3d232a9e140503d09b573b338d7d9df49fc8a9317.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_mirrelbole_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Mirrelbole",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the mirrelbole: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Trunk visibly split down its own length by the speed it grew, the wounds glazed with amber resin that never sets in the humidity. Sheds bark plates; permanently wet-looking, the mud at its foot sticky. The sap tap of the fuel economy — and reward and hazard are the same object here: the tree you tap is the tree most likely to crack and come down on you. The highest crack-fall rate in the biome. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/ff/ffbc590c62c14d1391f60bc3d232a9e140503d09b573b338d7d9df49fc8a9317.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_mourvel_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Mourvel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the mourvel: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it — the Greentide's one true concealment tree. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/89/89b69acbf3c05c2142745d8b7501c35d37237cd1f4403c886acfa090c2550f05.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 8.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_mourvel_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Mourvel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the mourvel: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. The brief's \"willow-like canopy\" taken literally, and then further: a low wide dome whose entire outer surface is hanging cord-like leaf strands that reach the mud, so the tree is a room with walls. Bark violet-black, strands blue-green. Nothing is visible through it — the Greentide's one true concealment tree. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/89/89b69acbf3c05c2142745d8b7501c35d37237cd1f4403c886acfa090c2550f05.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 8.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_nemmer_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nemmer",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the nemmer: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Slender pale smooth trunk, deliberately thin crown of a few long drooping fronds rather than a mass, and fruit far too large for the branch holding it, hanging low enough to take from the ground. The lightest silhouette on the page, by design. Free calories with a tax: the fruit-fall draws everything that eats fruit, and then everything that eats those. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/29/2915e2f896d4d0673a580f24edbed906ea739e295abbd3de0c6fbc40871ff6a9.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 5.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_nemmer_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nemmer",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the nemmer: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Slender pale smooth trunk, deliberately thin crown of a few long drooping fronds rather than a mass, and fruit far too large for the branch holding it, hanging low enough to take from the ground. The lightest silhouette on the page, by design. Free calories with a tax: the fruit-fall draws everything that eats fruit, and then everything that eats those. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/29/2915e2f896d4d0673a580f24edbed906ea739e295abbd3de0c6fbc40871ff6a9.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 5.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_phorrik_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Phorrik",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the phorrik: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A dense thicket of taut translucent bladders held at head height on springy stalks, each visibly over-full. You cannot see through the mass of them, and pushing through bursts them. Hazard-with-payoff: the spores are medicinal, and walking through a patch fills the air — go around, or pay for what you release. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c3/c3f63f0fc88ec83d3274a36e8f203beedcf8c91f06429ccaaf982474a1758845.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 3.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_phorrik_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Phorrik",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the phorrik: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A dense thicket of taut translucent bladders held at head height on springy stalks, each visibly over-full. You cannot see through the mass of them, and pushing through bursts them. Hazard-with-payoff: the spores are medicinal, and walking through a patch fills the air — go around, or pay for what you release. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c3/c3f63f0fc88ec83d3274a36e8f203beedcf8c91f06429ccaaf982474a1758845.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 3.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_quathis_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Quathis",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the quathis: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. One flat vertical fan of gigantic leaves, all in a single plane from a short thick base — a wide bright blade from one side and a line from the other, the only row in the roster whose silhouette changes with facing. Bright lime, translucent at the edges. Its leaves are single-piece roofing and thatch panels, the biome's cheapest building material, and the colour relief in a dark understory. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/07/07b8941731de488df113121ca4bec41e7cc7bf429a19ff578fac0f1d4f0fb011.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_quathis_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Quathis",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the quathis: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. One flat vertical fan of gigantic leaves, all in a single plane from a short thick base — a wide bright blade from one side and a line from the other, the only row in the roster whose silhouette changes with facing. Bright lime, translucent at the edges. Its leaves are single-piece roofing and thatch panels, the biome's cheapest building material, and the colour relief in a dark understory. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/07/07b8941731de488df113121ca4bec41e7cc7bf429a19ff578fac0f1d4f0fb011.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_sarnstilt_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sarnstilt",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the sarnstilt: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Stands in the channel itself on a tripod of prop roots, trunk starting clear of the water, crown leaning hard out over the current and shedding huge single leaves onto it. Bark salt-crusted pale on the downstream side. River-margin only — this is the tree that makes crossing water frightening, and it falls across the channel it stands in. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a9/a9c5a50c1652458bef2b3338b3bad747dce112330f8dbe22549335dc79c67918.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 7.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_sarnstilt_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sarnstilt",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the sarnstilt: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Stands in the channel itself on a tripod of prop roots, trunk starting clear of the water, crown leaning hard out over the current and shedding huge single leaves onto it. Bark salt-crusted pale on the downstream side. River-margin only — this is the tree that makes crossing water frightening, and it falls across the channel it stands in. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a9/a9c5a50c1652458bef2b3338b3bad747dce112330f8dbe22549335dc79c67918.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 7.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_sarquin_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sarquin",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the sarquin: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A thick fleshy central whorl at chest height with long hanging tentacle-leaves falling from above it, dripping clear sweet sap continuously, each drip-point glazed and crusted. The curtain of strands is what blocks the view; the mud beneath is sugared and crawling. The sugar source — and the drip is why insects are drawn here, and the insects are why something bigger is. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/8d/8d8ee608c77c9c38ee6dcc06a539ec53168b52226152f94c244a1baf5e4e8beb.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_sarquin_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sarquin",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the sarquin: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A thick fleshy central whorl at chest height with long hanging tentacle-leaves falling from above it, dripping clear sweet sap continuously, each drip-point glazed and crusted. The curtain of strands is what blocks the view; the mud beneath is sugared and crawling. The sugar source — and the drip is why insects are drawn here, and the insects are why something bigger is. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/8d/8d8ee608c77c9c38ee6dcc06a539ec53168b52226152f94c244a1baf5e4e8beb.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_thalquith_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Thalquith",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the thalquith: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Aquamarine — the only non-green thing growing here. Smooth trunk with no bark texture at all, branches meeting overhead in a flat interlocking lattice rather than a crown; saplings are literal inverted cones. The lattice hums in moving air, constantly — the hum stopping is the tell. Fragile, and hard to keep alive near work. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/e6/e628104e73f8ac6d7cfc36e0df99630be5f6ec3e4f786e05b3036455446b6f7b.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_thalquith_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Thalquith",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the thalquith: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. Aquamarine — the only non-green thing growing here. Smooth trunk with no bark texture at all, branches meeting overhead in a flat interlocking lattice rather than a crown; saplings are literal inverted cones. The lattice hums in moving air, constantly — the hum stopping is the tell. Fragile, and hard to keep alive near work. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/e6/e628104e73f8ac6d7cfc36e0df99630be5f6ec3e4f786e05b3036455446b6f7b.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_tumbel_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Tumbel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the tumbel: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested — the roster's own waypoint marker, visible from further away than a flat plant would be. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c6/c63ed5d062dfd4c6eea6112c00767aeface7f59d3e16f0523e9e107e4d2f764c.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 5.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_tumbel_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Tumbel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the tumbel: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A thick runner arching up on woody props well above pawn height, carrying heavy hollow vessels slung along its length, each the size of a crate, dull and leathery-skinned. You walk under it and cannot see out through the vessels. Its hollow shells are cut into containers once harvested — the roster's own waypoint marker, visible from further away than a flat plant would be. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c6/c63ed5d062dfd4c6eea6112c00767aeface7f59d3e16f0523e9e107e4d2f764c.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 5.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_veluthar_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Veluthar",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the veluthar: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A bare grey column for most of its height, then one single tier of enormous paddle leaves radiating flat from the very top like an opened umbrella — no crown mass below it at all. Deep green above, the undersides pale and permanently wet. The dominant canopy tree, and the biggest ordinary fall in the whole Greentide. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/53/5345c1f53544b333d450bd4d19c2a04e7c3300b12c48e04318c71f25b63b1c0c.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 10.0 cells x 128 px/cell exceeds 1024; generator ceiling"
+ },
+ {
+  "id": "regen_gt_veluthar_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Veluthar",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the veluthar: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A bare grey column for most of its height, then one single tier of enormous paddle leaves radiating flat from the very top like an opened umbrella — no crown mass below it at all. Deep green above, the undersides pale and permanently wet. The dominant canopy tree, and the biggest ordinary fall in the whole Greentide. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/53/5345c1f53544b333d450bd4d19c2a04e7c3300b12c48e04318c71f25b63b1c0c.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 10.0 cells x 128 px/cell exceeds 1024; generator ceiling"
+ },
+ {
+  "id": "regen_gt_wollick_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Wollick",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the wollick: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A rosette of huge leaves standing upright rather than lying flat, each a blade taller than a pawn, fanning out over a deep starchy tuber. From inside a patch you can see nothing but leaf. Bulk carbohydrate — digging it slumps the churnmud around it, a small honest cost rather than a hazard. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/22/22f5f8e35fea439728fba4772c1efc22dc4381373e63e7df19236f13481159b3.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_wollick_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Wollick",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the wollick: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A rosette of huge leaves standing upright rather than lying flat, each a blade taller than a pawn, fanning out over a deep starchy tuber. From inside a patch you can see nothing but leaf. Bulk carbohydrate — digging it slumps the churnmud around it, a small honest cost rather than a hazard. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/22/22f5f8e35fea439728fba4772c1efc22dc4381373e63e7df19236f13481159b3.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 4.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_yearningfruit_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_YearningFruit",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the yearningfruit: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A heavy-fruiting bush, absurdly generous with itself — huge, glossy, sickly-sweet fruit hangs everywhere on it, all season. The sweetness is real, but so is the trick: every fruit is loaded with digestive accelerants, so whatever eats it digests fast, is hungry again within hours, and leaves the seed behind in a fresh patch of its own fertilizer a short walk from where it ate. The ground under a healthy stand is carpeted in filth and new sprouts in equal measure, which is not neglect. It is the plan working. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/ec/ec087d4e8a0b92b123bbf80cd7822ef6bd9f69b8a09e83cd4a74c6ee3b5d557c.png"
+  ]
+ },
+ {
+  "id": "regen_gt_yearningfruit_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_YearningFruit",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the yearningfruit: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. A heavy-fruiting bush, absurdly generous with itself — huge, glossy, sickly-sweet fruit hangs everywhere on it, all season. The sweetness is real, but so is the trick: every fruit is loaded with digestive accelerants, so whatever eats it digests fast, is hungry again within hours, and leaves the seed behind in a fresh patch of its own fertilizer a short walk from where it ate. The ground under a healthy stand is carpeted in filth and new sprouts in equal measure, which is not neglect. It is the plan working. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/ec/ec087d4e8a0b92b123bbf80cd7822ef6bd9f69b8a09e83cd4a74c6ee3b5d557c.png"
+  ]
+ },
+ {
+  "id": "regen_gt_zhorrel_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Zhorrel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the zhorrel: a NEW, MUCH MORE REALISTIC VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still — the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/bf/bfc68cdb9f5a3d453a312261c19a84d93fb994d696ede5662b790b92378f375a.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 5.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_zhorrel_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Zhorrel",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add much more realistic variants\" RimWorld plant sprite, the zhorrel: a NEW, MUCH MORE REALISTIC VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a stand of them reads varied. No crown at all: a low crossbeam of branches with a hanging curtain of slack finger-thick tentacle-leaves, red-barked above. The tentacles are visibly not still — the tell is that they move against the wind rather than with it. The strangler: no truce, ever. Kill one and the tentacles are excellent cordage. Naturalistic, believable botanical rendering, painted from a real plant's anatomy. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Add much more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/bf/bfc68cdb9f5a3d453a312261c19a84d93fb994d696ede5662b790b92378f375a.png"
+  ],
+  "oversize_reason": "plant visualSizeRange max 5.0 cells x 128 px/cell"
+ },
+ {
+  "id": "regen_gt_yammeth_flying_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Yammeth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Flier, so get those graphics ready\" RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a light, wiry canopy flier with two pairs of broad membrane wings in hot magenta and acid yellow, and a throat sac it puffs out to scream. In flight, body level, legs tucked, wings raised high in a V at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Flier, so get those graphics ready",
+  "drawsize": 0.9,
+  "derive_from": "RM_Yammeth_east",
+  "target_texpath": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth_Flying_1"
+ },
+ {
+  "id": "regen_gt_yammeth_flying_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Yammeth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Flier, so get those graphics ready\" RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a light, wiry canopy flier with two pairs of broad membrane wings in hot magenta and acid yellow, and a throat sac it puffs out to scream. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Flier, so get those graphics ready",
+  "drawsize": 0.9,
+  "derive_from": "RM_Yammeth_east",
+  "target_texpath": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth_Flying_2"
+ },
+ {
+  "id": "regen_gt_yammeth_flying_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Yammeth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Flier, so get those graphics ready\" RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a light, wiry canopy flier with two pairs of broad membrane wings in hot magenta and acid yellow, and a throat sac it puffs out to scream. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Flier, so get those graphics ready",
+  "drawsize": 0.9,
+  "derive_from": "RM_Yammeth_east",
+  "target_texpath": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth_Flying_3"
+ },
+ {
+  "id": "regen_gt_yammeth_flying_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Yammeth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Flier, so get those graphics ready\" RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a light, wiry canopy flier with two pairs of broad membrane wings in hot magenta and acid yellow, and a throat sac it puffs out to scream. In flight, body level, legs tucked, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Flier, so get those graphics ready",
+  "drawsize": 0.9,
+  "derive_from": "RM_Yammeth_east",
+  "target_texpath": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth_Flying_4"
+ }
+]

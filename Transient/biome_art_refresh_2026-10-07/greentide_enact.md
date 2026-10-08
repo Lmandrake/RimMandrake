@@ -5,11 +5,11 @@ Source: `Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json` (owner 
 ## Status
 - [x] decisions read
 - [x] install / purge
-- [ ] regen queued
+- [x] regen queued
 - [x] names / descriptions / tiers / cuts
-- [ ] def changes
-- [ ] validate + selftests
-- [ ] commits
+- [x] def changes (rest are follow-ups)
+- [x] validate + selftests
+- [x] commits
 
 ## Log
 ### Part 1 — install / purge (done)
@@ -34,3 +34,19 @@ Source: `Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json` (owner 
 - Cut: RM_Sytheclaw removed from RM_Greentide_Biome.xml wildAnimals only (Pyrelands keeps it; RUT_ twins untouched); roster json evictions + labels updated.
 - Tier moves: none asked.
 - validate_patch: Greentide_Rename / Contagion_Rename / WildAnimals_Greentide 0 errors (static; live load set is a 15-mod test list so --defs refused); targets confirmed one ThingDef + one PawnKindDef each via measure get.
+
+### Part 2 — regen (done, see greentide_regen.md)
+- 177 jobs / 89 rows at priority 0, pending positions 152–328 of 340 (behind Miasma + Feverwood). Builder: build_greentide_regen_jobs.py.
+- Canon: Beldon (owner's woswfg image added to the canon entry + ruling line), Dragonsnake, Hawkbat, Kinrath, Klorslug, Lylek, Mott, PekoPeko, ShiroTrap. Flight frames: Beldon 3, Hawkbat 4 (+juvenile), PekoPeko 4, Yammeth 4.
+- Overlap: Miasma's miasma_swarmling_green_v1_* still queued beside regen_gt_saluksis_v2 (same def).
+
+### Validation
+- selftests 331/335: HugeThings footprint (merge in flight), bridgetools tool_metadata (stale DLL), modcheck selftest timeout, abyss_fuzz (passes alone: 20507 cases OK — load flake). None touch these files.
+- decisions re-read at finish: md5 unchanged (26a48c1b…).
+
+### Follow-ups (need finished art or a ruling)
+- Install + wire on art arrival: Yammeth flight (flyingAnimationFramePathPrefix Things/Pawn/Animal/RM_Yammeth/RM_Yammeth_Flying_, count 4); RM_Tuun texPath -> Things/Item/Fish/RM_Tuun; ookala, gristle, saluksis, the nine canon creatures and their swim/juvenile/flight sets; plant variants into each Graphic_Random folder.
+- Plant_Grass/TallGrass: realistic variants queued; wiring needs an override of ReGrowth's RG_Grass AssetBundle Graphic_Random folder (planet-wide).
+- RSW_Shiro variant B: ingest skips variant clicks on purge-touched rows without decidedAt; once a ruling exists, install ShiroB_* in ShiroArtOverride + alternateGraphics on RSW_Shiro.
+- RM_AcousticPayload_Greentide.xml still has a "something lying in wait" target reading only RM_Sytheclaw (now absent from the Greentide).
+- Gristle is an invented-style name on an RSW_ def; Q11a would let it move to RM_ tier — not asked, not done.
