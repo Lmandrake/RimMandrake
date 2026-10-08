@@ -8,8 +8,8 @@
   RM_LeaningScrub; its row is gone from the op below.)
 
   Wires the campaign's Star Wars fauna onto RM_LeaningScrub's wildAnimals,
-  layered on top of the 5 non-Star-Wars rows that mod ships inline
-  (Terrorworm, AA_Cactipine, AA_Needlepost, AA_Wildpawn, AA_Wildpod — Q9
+  layered on top of the 4 non-Star-Wars rows that mod ships inline
+  (Terrorworm, AA_Cactipine, AA_Wildpawn, AA_Wildpod — Q9
   permits those directly on a RM_ def). Per §7 Q11 ("RimMandrake should not
   name star wars ever"), RM_LeaningScrub may not carry any Star Wars
   creature by any route, so every one of the frozen RUT_AridShrubland.xml's
