@@ -18,14 +18,7 @@ namespace RimMandrake.TitanicCreatures
     /// </summary>
     public static class TitanicWakeProcessor
     {
-        // Crush damage dealt to a curated-crushable Thing that ISN'T simply
-        // destroyed outright (T3 buildings are - see ProcessCell). BENCH-draft
-        // tuning, not owner-ruled: enough that a wall dies in a handful of
-        // passes at T1/T2, cheap to retune from one place. Scaled by
-        // RM_TitanicCreaturesSettings.wakeCrushDamageMultiplier at the point
-        // of use (ProcessCrushables).
-        private const float CrushDamageT1 = 20f;
-        private const float CrushDamageT2 = 60f;
+        // Crush damage numbers live in RM_TitanicKernel (CrushDamageLight/Heavy, PROVISIONAL BENCH-draft tuning).
 
         public static void ProcessFootprint(Pawn titan, TitanicTier tier)
         {
@@ -49,7 +42,7 @@ namespace RimMandrake.TitanicCreatures
             ProcessRoof(c, map, tier);
             ProcessCrushables(c, map, tier, titan);
 
-            if (tier >= TitanicTier.T1 && Rand.Chance(RM_TitanicCreaturesSettings.wakeFilthTrailChance))
+            if (RM_TitanicKernel.LeavesFilth((int)tier, Rand.Chance(RM_TitanicCreaturesSettings.wakeFilthTrailChance)))
             {
                 FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_RubbleRock);
             }
@@ -71,12 +64,8 @@ namespace RimMandrake.TitanicCreatures
         /// </summary>
         private static void ProcessRoof(IntVec3 c, Map map, TitanicTier tier)
         {
-            if (tier < TitanicTier.T2)
-            {
-                return;
-            }
             RoofDef roof = c.GetRoof(map);
-            if (roof != null && !roof.isThickRoof)
+            if (RM_TitanicKernel.HolesRoof((int)tier, roof != null, roof != null && roof.isThickRoof))
             {
                 map.roofGrid.SetRoof(c, null);
             }
@@ -108,14 +97,13 @@ namespace RimMandrake.TitanicCreatures
                     continue;
                 }
 
-                if (tier == TitanicTier.T3 && t.def.category == ThingCategory.Building)
+                if (RM_TitanicKernel.DestroysOutright((int)tier, t.def.category == ThingCategory.Building))
                 {
                     t.Destroy(DestroyMode.KillFinalize);
                     continue;
                 }
 
-                float damage = (tier == TitanicTier.T2 ? CrushDamageT2 : CrushDamageT1)
-                    * RM_TitanicCreaturesSettings.wakeCrushDamageMultiplier;
+                float damage = RM_TitanicKernel.CrushDamage((int)tier, RM_TitanicCreaturesSettings.wakeCrushDamageMultiplier);
                 t.TakeDamage(new DamageInfo(DamageDefOf.Crush, damage, instigator: titan));
             }
         }

@@ -32,7 +32,7 @@ namespace RimMandrake.TitanicCreatures
         private int leatherRemaining;
         private int lastSpoilageTick = -1;
 
-        private const int TicksPerSpoilageStep = GenDate.TicksPerDay;
+        private const int TicksPerSpoilageStep = RM_TitanicKernel.TicksPerDay;
         // Defaults live in RM_TitanicCreaturesSettings (meat spoils faster
         // than leather by default) - read from there at point of use so a
         // settings change takes effect on sites already standing.
@@ -83,8 +83,8 @@ namespace RimMandrake.TitanicCreatures
         /// </summary>
         private void ApplyDailySpoilage()
         {
-            int meatLoss = Mathf.CeilToInt(meatRemaining * RM_TitanicCreaturesSettings.corpseSiteMeatSpoilagePerDay);
-            int leatherLoss = Mathf.CeilToInt(leatherRemaining * RM_TitanicCreaturesSettings.corpseSiteLeatherSpoilagePerDay);
+            int meatLoss = RM_TitanicKernel.SpoilLoss(meatRemaining, RM_TitanicCreaturesSettings.corpseSiteMeatSpoilagePerDay);
+            int leatherLoss = RM_TitanicKernel.SpoilLoss(leatherRemaining, RM_TitanicCreaturesSettings.corpseSiteLeatherSpoilagePerDay);
             meatRemaining = Mathf.Max(0, meatRemaining - meatLoss);
             leatherRemaining = Mathf.Max(0, leatherRemaining - leatherLoss);
             if (!HasYield)
@@ -102,7 +102,7 @@ namespace RimMandrake.TitanicCreatures
         {
             var results = new System.Collections.Generic.List<Thing>();
 
-            int meatTake = Mathf.Min(meatRemaining, RM_TitanicCreaturesSettings.corpseSiteHarvestMeatPerSession);
+            int meatTake = RM_TitanicKernel.HarvestTake(meatRemaining, RM_TitanicCreaturesSettings.corpseSiteHarvestMeatPerSession);
             if (meatTake > 0 && meatDef != null)
             {
                 Thing meat = ThingMaker.MakeThing(meatDef);
@@ -111,7 +111,7 @@ namespace RimMandrake.TitanicCreatures
                 meatRemaining -= meatTake;
             }
 
-            int leatherTake = Mathf.Min(leatherRemaining, RM_TitanicCreaturesSettings.corpseSiteHarvestLeatherPerSession);
+            int leatherTake = RM_TitanicKernel.HarvestTake(leatherRemaining, RM_TitanicCreaturesSettings.corpseSiteHarvestLeatherPerSession);
             if (leatherTake > 0 && leatherDef != null)
             {
                 Thing leather = ThingMaker.MakeThing(leatherDef);

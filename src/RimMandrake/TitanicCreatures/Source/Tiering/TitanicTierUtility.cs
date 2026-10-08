@@ -33,6 +33,13 @@ namespace RimMandrake.TitanicCreatures
             }
         }
 
+        /// <summary>RM_TitanicExtension.forceEnabled as the kernel's tri-state.</summary>
+        public static int ForceOf(RM_TitanicExtension ext)
+        {
+            if (ext == null || ext.forceEnabled == null) return RM_TitanicKernel.ForceAuto;
+            return ext.forceEnabled == true ? RM_TitanicKernel.ForceIn : RM_TitanicKernel.ForceOut;
+        }
+
         /// <summary>
         /// Def-level qualification check: could ANY pawn of this race ever be
         /// tiered? Used only to decide whether to auto-attach CompTitanicWake
@@ -47,16 +54,8 @@ namespace RimMandrake.TitanicCreatures
             {
                 return false;
             }
-            RM_TitanicExtension ext = raceDef.GetModExtension<RM_TitanicExtension>();
-            if (ext != null && ext.forceEnabled == false)
-            {
-                return false;
-            }
-            if (ext != null && ext.forceEnabled == true)
-            {
-                return true;
-            }
-            return raceDef.race.baseBodySize >= Thresholds.t1MinBodySize;
+            return RM_TitanicKernel.DefQualifies(raceDef.race.baseBodySize, Thresholds.t1MinBodySize,
+                ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
         }
 
         /// <summary>
@@ -69,45 +68,15 @@ namespace RimMandrake.TitanicCreatures
             {
                 return TitanicTier.None;
             }
-            RM_TitanicExtension ext = pawn.def.GetModExtension<RM_TitanicExtension>();
-            if (ext != null && ext.forceEnabled == false)
-            {
-                return TitanicTier.None;
-            }
-            bool forcedOn = ext != null && ext.forceEnabled == true;
-
             // Pawn.BodySize = lifestage.bodySizeFactor * RaceProps.baseBodySize
             // (Verse/Pawn.cs). OPEN QUESTION (flagged, not guessed): whether any
             // gene StatDef offsets a separate "BodySize" stat outside this
             // formula is unconfirmed - if a future gene needs to move a pawn
             // between tiers independently of RaceProps/lifestage, that stat
             // must be found and read here rather than assumed absent.
-            float bodySize = pawn.BodySize;
             RM_TitanicTierDef t = Thresholds;
-
-            TitanicTier tier;
-            if (bodySize >= t.t3MinBodySize)
-            {
-                tier = TitanicTier.T3;
-            }
-            else if (bodySize >= t.t2MinBodySize)
-            {
-                tier = TitanicTier.T2;
-            }
-            else if (bodySize >= t.t1MinBodySize)
-            {
-                tier = TitanicTier.T1;
-            }
-            else
-            {
-                tier = TitanicTier.None;
-            }
-
-            if (tier == TitanicTier.None && forcedOn)
-            {
-                tier = TitanicTier.T1;
-            }
-            return tier;
+            return (TitanicTier)RM_TitanicKernel.TierFor(pawn.BodySize, t.t1MinBodySize, t.t2MinBodySize, t.t3MinBodySize,
+                ForceOf(pawn.def.GetModExtension<RM_TitanicExtension>()));
         }
     }
 }
