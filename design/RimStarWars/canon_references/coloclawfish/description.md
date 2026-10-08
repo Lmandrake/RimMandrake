@@ -13,6 +13,7 @@ While trying to reach Theed during the Invasion of Naboo, Qui-Gon Jinn, Obi-Wan 
 **Biology and appearance** The colo claw fish had a flat eel-like body,, bioluminescent skin,, a bioluminescent tail, a crocodile-like head, a row of sharp teeth, a set of mandibles, and a set of venomous fangs. They possessed a digestive system that worked slowly. They had a serpentine and spine-studded body. They were able to emit a hydrosonic shriek that could disorient its prey. They could swallow prey larger than its own head by unhinging its jaw, and it could expand its stomach.
 
 Colo claw fish were considered to taste good, and they were edible by Sullustans and humans. Their eggs were also a delicacy enjoyed by wealthy individuals such as Dryden Vos.
+Canon infobox: **length 40 m** (131 ft; Databank and the 2024 Encyclopedia), skin green and yellow, eyes yellow, bioluminescent skin, ocean habitat, origins Naboo and Odona (*Star Wars Annual* 2015 3). Behaviour (canon): hides in tunnels on Naboo's ocean floor, lies still for hours waiting for prey (young opee sea killers, scalefish, large fish); disorients prey with a hydrosonic shriek, stuns with venomous fangs, unhinges its jaw to swallow; prey may chew out of its stomach. Eaten by sando aqua monsters.
 ### Legends — https://starwars.fandom.com/wiki/Colo_claw_fish/Legends
 
 The colo claw fish was one of the largest creatures found in the depths of Naboo's seas. The body of the colo was very long and flat, with two rows of bioluminescent nodules along either side, which were used to attract prey.
@@ -32,7 +33,7 @@ Four images; the two canon-page pieces and the two Legends pieces differ in rend
 - **Skin:** olive to khaki-brown, finely textured, with scattered dark blue-black spots along the flank (`legends_1`, `canon_2`) — canon_1 is plain olive with no spots.
 - **Infant (`canon_2`, canon, a baby):** a smooth tan-olive torpedo with a pale belly, blue flank spots, small yellow eye and a short croc snout; claws only just visible. Not a different species, just a juvenile: no glow fringe.
 - **Painted watercolour (`legends_2`, Legends):** shows opee sea killers escaping from the stomach; the colo is grey-brown with a blue-striped glow band down the body, spines along the back, toothy head with small claws. Useful only to confirm the glow band and the spiny back.
-- **Disagreement:** the prose says "flat eel-like" and "serpentine and spine-studded"; images agree, but the spine studs are small glowing nodules, not big spikes. Size is not shown directly (text: second-largest predator in Naboo's seas, bigger than an opee sea killer).
+- **Disagreement:** the prose says "flat eel-like" and "serpentine and spine-studded"; images agree, but the canon text says "serpentine and spine-studded" and the Legends text says nodules; whether the spine studs read as small nodules or sharp spikes in the images is my reading and is not settled by the text. Size: canon gives 40 m long (not shown by the images); Legends text: second-largest predator in Naboo's seas, bigger than an opee sea killer.
 
 ## Must show
 - [ ] Very long, flat, eel-like body tapering to a thin or paddle-shaped tail, not a stout fish

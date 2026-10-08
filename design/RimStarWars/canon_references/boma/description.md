@@ -19,6 +19,14 @@ appeared as tamed/ridden beasts — used by Jedi Knight Tott Doneeta (Force
 animal-bond) to breach a citadel, and depicted as a large mount carrying a
 howdah/canopy with multiple riders in *Empire's End* (11 ABY, set on
 Onderon).
+Also on the page (https://starwars.fandom.com/wiki/Boma): first appeared in
+*Tales of the Jedi* 1 (Legends comic); KOTOR II lets Meetra Surik learn
+beast control by taming a large boma on Dxun; bomas were to be brought to
+Telos IV during its restoration, possibly to control cannoks; a Mandalorian
+clan still bred them in breeding pens at the time of the Galactic War (SWTOR
+"Boma Breeding"); they are SWTOR Cartel Market mounts. The page's own
+description gives **long tails** and "four horns" while its infobox gives "2
+horns and 2 tusks" — the page itself is not consistent on these.
 
 ## Visual brief
 The two candidate images show what reads as **two different "sizes" of

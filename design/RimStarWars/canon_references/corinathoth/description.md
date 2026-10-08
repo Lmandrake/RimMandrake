@@ -16,8 +16,10 @@ Rim"* (part of the *Star Wars Encyclopedia* booklet series) — that mention is
 purely textual (native to Maridun, hunted by the Amanin) and carries no new
 canon artwork of its own.
 
+Legends page (https://starwars.fandom.com/wiki/Corinathoth/Legends, from *Empire* 16 and *The Complete Star Wars Encyclopedia*): non-sentient quadrupeds, height "gigantic", mass "massive", skin orange with brown spots, multihorned, short tail, habitat plains, diet herbivore. "Massive, slow-moving herbivores", harmless; General Ziering's expedition met a herd lumbering across the plains of Maridun. Herbivory is a Legends statement, not canon (being hunted by the Amanin does not itself imply it).
+
 ## Visual brief
-**Important caveat: there is no canon-continuity artwork of a Corinathoth.**
+**Important caveat: no canon-continuity artwork of a Corinathoth is identified on the page.**
 The only image found — and the only one Wookieepedia itself illustrates the
 species with — is explicitly captioned "A Star Wars Legends depiction of a
 group of Corinathoths," sourced from the 2004 *Empire* comic. Wookieepedia's
@@ -29,7 +31,7 @@ appearance.
 That Legends image shows a herd of stocky, quadrupedal, ceratopsian-like
 dinosaurs (triceratops-style bony head frills and multiple horns), with
 warm orange/tan hides mottled with darker rust-brown patches, including
-visibly smaller young in the herd — a large plant-grazer / prey-animal
+visibly smaller animals in the herd (not stated to be young by the page) — a large plant-grazer / prey-animal
 reading consistent with "hunted by the Amanin."
 
 **The current donor sprite (`donor_current_sprite.png`) is in the same
@@ -57,7 +59,7 @@ none known
   2026-09-13)
 - https://static.wikia.nocookie.net/starwars/images/a/ad/Corinathoth.jpg
   (Legends-continuity depiction from *Star Wars: Empire* #16, 2004 — the only
-  known Corinathoth artwork, canon or Legends)
+  Corinathoth artwork identified on the Wookieepedia page)
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary

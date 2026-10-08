@@ -758,3 +758,110 @@ Format per row: entry | claim | verdict | source
 | A canon name mention does not import Legends anatomy (gizka, gornt, granite slug, hawk-bat) | VERIFIED (each canon page is a stub or lacks the Legends detail) |
 | Wiki continuity tabs do not determine continuity of film/Clone Wars frames | VERIFIED (gelagrub and gutkurr canon pages cite the same film/TCW frames; Gutkurr_TCW.png sits on both pages) |
 | Old Databank prose is not automatically canon | UNVERIFIABLE from wikitext |
+
+## Batch 02
+| entry | claim | VERDICT | source |
+|---|---|---|---|
+| boma | Boma is Legends-only (KOTOR II, Tales of the Jedi) | VERIFIED | https://starwars.fandom.com/wiki/Boma (page is {{Top|leg}}; entry already labels Legends) |
+| boma | Size variation does not prove separate small-wild / large-mount variants | VERIFIED (the page says only "most generally small, some extremely large"; linking the two images to those is our inference) | https://starwars.fandom.com/wiki/Boma |
+| boma | "Databank-style render" is not provenance; blue-grey comic colouring not a biological variant | UNVERIFIABLE (page gives no provenance for Boma_Beast.jpg; no colour variant stated) | https://starwars.fandom.com/wiki/Boma |
+| boma | Page says long tails, checklist says moderate tail | VERIFIED | https://starwars.fandom.com/wiki/Boma (Description: "long tails") |
+| boma | Four horns vs 2 horns + 2 tusks needs reconciling | VERIFIED (page contains both) | https://starwars.fandom.com/wiki/Boma |
+| boma | Mandalorian breeding via SWTOR "Boma Breeding" | VERIFIED | https://starwars.fandom.com/wiki/Boma (History) |
+| boma | Onderon/Dxun dangerous carnivore, riding-size individuals | VERIFIED | https://starwars.fandom.com/wiki/Boma |
+| boma | Tales of the Jedi 1-2 early appearances / Tott Doneeta | VERIFIED | https://starwars.fandom.com/wiki/Boma |
+| boma | Empire's End 2 is Dark Horse comic distinct from Aftermath novel | UNVERIFIABLE from page text | - |
+| borcatu | Disney Infinity 3.0 does not make it canon; Noncanon banner | VERIFIED | https://starwars.fandom.com/wiki/Borcatu ({{Top\|ncc}}, {{Noncanon}}) |
+| borcatu | "Almost entirely two pieces of art" misleading; CotG has biology | VERIFIED | https://starwars.fandom.com/wiki/Borcatu/Legends |
+| borcatu | Legends biology: small stout scavenger, scaled thick hide, digging claws, powerful jaws, mottled dark, stowaway, cannibal, Escabar, Serhan desert region | VERIFIED | https://starwars.fandom.com/wiki/Borcatu/Legends |
+| borcatu | ~0.5 m long | VERIFIED (infobox 0.2 - 0.5 m) | https://starwars.fandom.com/wiki/Borcatu/Legends |
+| borcatu | "higher-canon-weight" should be "original Legends source" | VERIFIED | https://starwars.fandom.com/wiki/Borcatu |
+| borcatu | Images incompatible; excluding scales/armour poor for fidelity | VERIFIED as to scales (Legends text says scales); image comparison UNVERIFIABLE | https://starwars.fandom.com/wiki/Borcatu/Legends |
+| borcatu | No canon appearance/dimorphism/stages available | VERIFIED (none on pages) | https://starwars.fandom.com/wiki/Borcatu/Legends |
+| brainworm | Nasal infection, eggs, corpse animation, cold susceptibility are shared canon/Legends | REFUTED in part: canon page has corpse animation, cold, mouth emergence, "freshly-hatched"; nose route and yellow eggs appear only on the Legends page | https://starwars.fandom.com/wiki/Brain_worm ; .../Brain_worm/Legends |
+| brainworm | "Biologically archived memory" needs specific source | REFUTED (canon Capabilities section states it, cited to Legacy of Terror) | https://starwars.fandom.com/wiki/Brain_worm |
+| brainworm | Automatic Geonosian speech unsupported | VERIFIED (Legends page only, canon silent) | https://starwars.fandom.com/wiki/Brain_worm/Legends |
+| brainworm | Forearm-length is an estimate, not canon measure | VERIFIED, and contradicted: canon infobox gives 1 m, Legends ~0.5 m | https://starwars.fandom.com/wiki/Brain_worm |
+| brainworm | Hosts transport eggs/spread; Karina tries to infect Luminara | VERIFIED (infection spread by Scythe; Luminara desired as host) | https://starwars.fandom.com/wiki/Brain_worm |
+| brainworm | Barriss's worm emerges through mouth; cold weakens | VERIFIED | https://starwars.fandom.com/wiki/Brain_worm |
+| brainworm | "Eyeless-looking" not biological eyelessness; stripe/nubs need model | UNVERIFIABLE | - |
+| brainworm | Diet, lifespan, sexes unknown | VERIFIED (blank on pages) | https://starwars.fandom.com/wiki/Brain_worm |
+| brainworm | Episodes S2E8/S2E9 | VERIFIED (Legacy of Terror, Brain Invaders) | https://starwars.fandom.com/wiki/Brain_worm |
+| cancell | Womp-rat quote unrelated to can-cells | VERIFIED (not on either page) - deleted | https://starwars.fandom.com/wiki/Can-cell |
+| cancell | ROTS and TCW film both canon; "most authoritative" is only clarity | VERIFIED | https://starwars.fandom.com/wiki/Can-cell |
+| cancell | TGTB is not a game asset; may be Traveler's Guide to Batuu | VERIFIED (infobox image Can-Cell-TGTB.png; ref "guide" = Traveler's Guide to Batuu) - entry corrected | https://starwars.fandom.com/wiki/Can-cell |
+| cancell | Brown/teal image feathers/bird plan is misreading | UNVERIFIABLE (no image viewing) | - |
+| cancell | Ruling filename/"same as #3" ambiguous | UNVERIFIABLE here / ruling not touched | - |
+| cancell | Four wings, large eyes | VERIFIED ("quad wings and large eyes") | https://starwars.fandom.com/wiki/Can-cell |
+| cancell | Six walking legs, segmented abdomen | UNVERIFIABLE (not in page text) | - |
+| cancell | >3 m is length; Kashyyyk origin | VERIFIED (VE; infobox origin Kashyyyk; Legends 3.35 m) | https://starwars.fandom.com/wiki/Can-cell |
+| cancell | Ride shows carrying, not tameness | VERIFIED (Anakin/Ahsoka ride on Teth; Batuu pets separate claim) | https://starwars.fandom.com/wiki/Can-cell |
+| cancell | Bombad Jedi, Mercy Mission appearances | VERIFIED | https://starwars.fandom.com/wiki/Can-cell |
+| cancell | Diet/sex/larva unknown | VERIFIED (blank) | https://starwars.fandom.com/wiki/Can-cell |
+| cannok | Tales of the Jedi #1 published 1993 not 1994 | VERIFIED (Oct 19, 1993) - entry corrected | https://starwars.fandom.com/wiki/Tales_of_the_Jedi_1 |
+| cannok | Caption "where canon shows" should be "where the Legends description specifies" | VERIFIED (page is {{Top\|fga\|leg}}) - corrected | https://starwars.fandom.com/wiki/Cannok |
+| cannok | One visible eye in side view is not one-eyed; stalk is the issue | UNVERIFIABLE (image claim); text does say eyes on short stalks moving independently | https://starwars.fandom.com/wiki/Cannok |
+| cannok | Predator and omnivore compatible | VERIFIED (infobox Omnivorous; "aggressive predators") | https://starwars.fandom.com/wiki/Cannok |
+| cannok | Pale belly, head spine fan, spiked tail tip tied to illustrations not species traits | VERIFIED (page text gives bony ridge with fleshy spines, short stubby tail; no pale belly or spiked tail tip) | https://starwars.fandom.com/wiki/Cannok |
+| cannok | Curiosity, rapid reproduction, indiscriminate eating, packs; bites and head-butts; high-stepped gait, eyestalk wiggle | VERIFIED - merged | https://starwars.fandom.com/wiki/Cannok |
+| cannok | KOTOR II swallowed-equipment task (Zuka) | VERIFIED | https://starwars.fandom.com/wiki/Cannok |
+| cannok | Four broad tridactyl spatulate-clawed feet; short stubby tail; bony dorsal ridge with fleshy spines; upward-facing low jaw with projecting lower teeth | VERIFIED | https://starwars.fandom.com/wiki/Cannok |
+| cannok | Numeric size absent; sexes/stages unsupported | VERIFIED (length blank) | https://starwars.fandom.com/wiki/Cannok |
+| cannok | Operation: Shadowpoint is RPG anatomy source, keep its continuity | VERIFIED (infobox cites it, page is Legends) | https://starwars.fandom.com/wiki/Cannok |
+| chak_root | Chakrootpic.jpg is not from Outlaws; 2008 timestamp predates it | VERIFIED as to date (URL cb=20080711) and Legends-page placement; "from The Gungan Frontier" UNVERIFIABLE from page text - entry corrected | https://starwars.fandom.com/wiki/Chak-root/Legends |
+| chak_root | "Outlaws-era style" cannot establish provenance | VERIFIED - phrase deleted | same |
+| chak_root | 3-4 lobes / green tips not invariant | UNVERIFIABLE (image) | - |
+| chak_root | Canon reuse does not canonize Legends plant | VERIFIED (canon page = substance only) | https://starwars.fandom.com/wiki/Chak-root |
+| chak_root | Legends: green fern-like foliage, reddish roots, tobacco-like product | REFUTED/UNVERIFIABLE: Legends page says only red plant, marshland, liquor and snuff; no foliage described | https://starwars.fandom.com/wiki/Chak-root/Legends |
+| chak_root | Production on Ochotl in Legends | UNVERIFIABLE (not on Wookieepedia pages; starwars.com cite not checked) | - |
+| chak_root | Canon: Tregga, Free Fall contraband plot | VERIFIED - merged | https://starwars.fandom.com/wiki/Chak-root |
+| chak_root | Legends sources Gungan Frontier, Guide to the SW Universe, Han Solo and the Corporate Sector | VERIFIED (all listed; Guide is infobox source) | https://starwars.fandom.com/wiki/Chak-root/Legends |
+| chak_root | Canon dimensions/flowers etc. unavailable | VERIFIED | https://starwars.fandom.com/wiki/Chak-root |
+| clodhopper | Field Guide is Legends; "only available canon reference" wrong | VERIFIED (page {{Top\|leg}}) - corrected | https://starwars.fandom.com/wiki/Clodhopper |
+| clodhopper | Omnivorous vs herbivorous conflict; insects (Secrets of Naboo) vs flightless avian | VERIFIED (lead omnivorous, infobox Herbivorous, "voracious herbivores"; BTS notes insects) - merged | https://starwars.fandom.com/wiki/Clodhopper |
+| clodhopper | Blue periocular skin is not the "eye colour: blue" field | VERIFIED as logical point (infobox eyecolor Blue, no patch mentioned) - hedged | https://starwars.fandom.com/wiki/Clodhopper |
+| clodhopper | Muted animals not securely juveniles | UNVERIFIABLE (image; page has no juvenile colour) | - |
+| clodhopper | "Ostrich/cassowary" risks wrong anatomy | UNVERIFIABLE (page: powerful forelegs to forage and hop; avian) | https://starwars.fandom.com/wiki/Clodhopper |
+| clodhopper | Small flightless voracious pest, usually under ~0.9 m | VERIFIED ("rarely more than three feet tall") | same |
+| clodhopper | Gungan meat/hide use, narglatch predation, off-world agricultural damage | VERIFIED | same |
+| clodhopper | 200 young in two days needs context | VERIFIED (page: "ability to spawn 200 young in only two days"; litter/maturation not specified) | same |
+| clodhopper | Dimorphism/colour progression not established | VERIFIED (none on page) | same |
+| coloclawfish | Missing 40 m length | VERIFIED (canon infobox 40 m / 131 ft, Databank + Encyclopedia) - merged | https://starwars.fandom.com/wiki/Colo_claw_fish |
+| coloclawfish | "Small glowing nodules, not big spikes" too restrictive; Databank says sharp tail protrusions | UNVERIFIABLE for Databank wording; page canon text says "serpentine and spine-studded"; Legends says nodules - claim hedged | https://starwars.fandom.com/wiki/Colo_claw_fish |
+| coloclawfish | Mandibles are in canon prose so cannot be dismissed as Legends-render | VERIFIED (canon: "a set of mandibles") | same |
+| coloclawfish | Slit pupil / flank spots / cyan fringe need visual confirmation; yellow eye does not give pupil | VERIFIED as to text (infobox Yellow eyes only; Legends says stalked eyes); image UNVERIFIABLE | same |
+| coloclawfish | One juvenile image lacking glow does not prove juveniles non-luminous | UNVERIFIABLE (page silent) | - |
+| coloclawfish | Ambush carnivore in underwater tunnels, claws force food into mouth | VERIFIED | same |
+| coloclawfish | Sando aqua monsters prey on colos (TPM); Solo colo eggs delicacy | VERIFIED | same |
+| coloclawfish | Canon: Odona, venom, sonic disorientation, expandable stomach, escape from stomach | VERIFIED (not Legends-exclusive) | same |
+| coloclawfish | Dimorphism/lifecycle unknown | VERIFIED (blank) | same |
+| convor | Insects/rodents diet consistent with carnivory, no contradiction | VERIFIED (infobox Carnivorous; Behavior: mostly insects and small rodents) - entry fixed | https://starwars.fandom.com/wiki/Convor |
+| convor | Pair lifting/dropping is defence vs momongs, not hunting | VERIFIED ("work in pairs to fend off predators") - entry fixed | https://starwars.fandom.com/wiki/Convor |
+| convor | Morai's bond does not make every convor supernatural; beliefs are beliefs | VERIFIED (page: "strong connection to the Force" is Ultimate SW claim; Morai individual) - hedged | https://starwars.fandom.com/wiki/Convor |
+| convor | Galaxy of Creatures is its own series, not a Rebels short | VERIFIED (page cites {{GoC}} template for Convor) - entry fixed | https://starwars.fandom.com/wiki/Convor |
+| convor | Amber-eye requirement conflicts with black-eye infobox | VERIFIED (infobox eyecolor Black) - hedged in brief | https://starwars.fandom.com/wiki/Convor |
+| convor | Morai's Tales of the Jedi appearance unconfirmed | REFUTED: Morai appearances list Victory and Death, Rebels, Mandalorian, Ahsoka; no Tales of the Jedi - entry fixed | https://starwars.fandom.com/wiki/Morai |
+| convor | Grasping curling tail + small plump feathered body diagnostic | VERIFIED (prehensile tail, short plump bodies) | https://starwars.fandom.com/wiki/Convor |
+| convor | Popular pets; Alien Archive as source | VERIFIED popular pets (cited to Absolutely Everything You Need to Know); Alien Archive cited on page only for Atollon | https://starwars.fandom.com/wiki/Convor |
+| convor | Morai green-and-white plumage; appearances Rebels, Victory and Death, Ahsoka | VERIFIED (Morai page: female, green and white feathers, green eyes, 0.2 m) | https://starwars.fandom.com/wiki/Morai |
+| convor | 0.2 m / 2 kg need source contexts | VERIFIED (0.2 m height cited to Absolutely Everything; 2 kg to Bestiary) | https://starwars.fandom.com/wiki/Convor |
+| convor | Togruta funerary traditions from Dawn of Rebellion | VERIFIED | https://starwars.fandom.com/wiki/Convor |
+| convor | Banded tail not universal | UNVERIFIABLE (page silent on banding) | - |
+| corinathoth | Continuity history: Maridun origin, Amanin hunting canon; Empire #16; 2022 booklet | VERIFIED | https://starwars.fandom.com/wiki/Corinathoth |
+| corinathoth | Being hunted does not establish herbivory | VERIFIED logically; however Legends page does state herbivore (Complete SW Encyclopedia) - merged as Legends | https://starwars.fandom.com/wiki/Corinathoth/Legends |
+| corinathoth | Smaller animals in herd not confirmed young | VERIFIED as to text (page silent on young) - hedged | https://starwars.fandom.com/wiki/Corinathoth/Legends |
+| corinathoth | "No canon artwork exists" too strong | VERIFIED (only image on page is Legends depiction; absence can't be proven) - softened | https://starwars.fandom.com/wiki/Corinathoth |
+| corinathoth | Canon name mention does not canonize comic's frill/horns/colours | VERIFIED | same |
+| corinathoth | Legends size, diet, locomotion | REFUTED that these are "unsupported": Legends page gives gigantic height, massive mass, orange with brown spots, multihorned, short tail, plains, herbivore, slow-moving; no numerical size | https://starwars.fandom.com/wiki/Corinathoth/Legends |
+| corinathoth | Booklet "Mustafar and Other Planets in the Outer Rim" is the canon mention | VERIFIED | https://starwars.fandom.com/wiki/Corinathoth |
+| corinathoth | Frill, tan/rust mottling need comic confirmation | UNVERIFIABLE (page: orange with brown spots, multihorned; frill not stated) | https://starwars.fandom.com/wiki/Corinathoth/Legends |
+
+## Cross-entry problems
+| issue | verdict | note |
+|---|---|---|
+| No duplicates in batch; cancell/Can-cell and colo claw fish/colo clawfish are alias forms | VERIFIED | wiki lists "also spelled colo clawfish"; Can-cell page is one species |
+| Boma and cannok distinct, share Onderon/Dxun; convor and Kiros bird not to be merged | VERIFIED | Convor page: very similar, differ by colour (Kiros purple/blue) |
+| Chak-root is plant/commodity entry; brain worm is a parasite | VERIFIED | canon Chak-root = substance only; Legends = plant |
+| Wikipedia text, infobox and hosted image are not independent sources | VERIFIED (general point) | e.g. Brain worm length from Join the Battle |
+| Several checklists turn style/size into universal anatomy | VERIFIED for boma (small vs mount), cancell (palette), clodhopper (juveniles) | proposals filed |
+| "None known" engine limits not assessed | UNVERIFIABLE here | flying/aquatic/host-control/40 m body worth review; see proposals |
