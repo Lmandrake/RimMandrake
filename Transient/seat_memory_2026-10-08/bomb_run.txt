@@ -1,0 +1,19 @@
+contained in rm-harness.slice (max 12G), 6 workers
+[1/1] KILLED        4.1s  src/RimMandrake/Utils/selftest_zz_planted_bomb.py
+KILLED      4.1s  src/RimMandrake/Utils/selftest_zz_planted_bomb.py
+           bomb cgroup: 0::/user.slice/user-1000.slice/user@1000.service/rm.slice/rm-harness.slice/rm-harness-1247732-2.scope
+           allocated 512 MiB
+           allocated 1024 MiB
+           allocated 1536 MiB
+           allocated 2048 MiB
+           allocated 2560 MiB
+           allocated 3072 MiB
+           allocated 3584 MiB
+           allocated 4096 MiB
+           allocated 4608 MiB
+           allocated 5120 MiB
+           allocated 5632 MiB
+           KILLED by memory cap: oom_kill=1 in its scope, peak 6.00 GiB, cap 6.00 GiB, rc 137
+
+0/1 passed  (wall 4.1s, 0 skipped, 0 unmeasured, 0 timeout, 1 killed-by-cap, 0 failed) — contained in rm-harness.slice (max 12G), 6 workers
+KILLED BY MEMORY CAP (1) — NOT passes; their scope's OOM killer fired: src/RimMandrake/Utils/selftest_zz_planted_bomb.py

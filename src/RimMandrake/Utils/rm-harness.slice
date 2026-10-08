@@ -1,0 +1,17 @@
+# The test harness's own memory pen, 2026-10-08 (SEAT_MEMORY_CLONES_DRIVES_1).
+#
+# Selftest workers used to run inside the Claude seat that launched them, so a
+# 16-worker fan-out (single tests reach 5.1 GB) filled the seat's 10G cap and the
+# kernel killed Claude itself (10-04/05, 10-07). Tests now run here instead: a
+# SIBLING of claude.slice under the user manager (systemd nests "rm-harness" under
+# rm.slice), never inside a seat, so tests compete only with tests.
+#
+# run_selftests.py installs this file into ~/.config/systemd/user/ when it differs
+# (the same self-install claude_bounded.sh does for claude-seats.slice) and refuses
+# to fan out unless its probe lands under this slice WITH a numeric memory.max -
+# systemd would otherwise create an UNBOUNDED slice on demand for an unknown name.
+# Each test gets its own scope inside it with a per-test MemoryMax and no swap.
+[Slice]
+MemoryAccounting=yes
+MemoryMax=12G
+MemorySwapMax=2G
