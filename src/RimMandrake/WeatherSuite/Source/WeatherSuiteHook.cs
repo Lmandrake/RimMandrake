@@ -106,15 +106,7 @@ namespace RimMandrake.StarWars.WeatherSuite
             if (!tile.Valid) return -1f;
 
             Vector2 longLat = Find.WorldGrid.LongLatOf(tile);
-            float lat = longLat.y * Mathf.Deg2Rad;
-            float lon = longLat.x * Mathf.Deg2Rad;
-            float lat0 = geo.substellarLat * Mathf.Deg2Rad;
-            float lon0 = geo.substellarLon * Mathf.Deg2Rad;
-
-            float cosArc = Mathf.Sin(lat0) * Mathf.Sin(lat)
-                           + Mathf.Cos(lat0) * Mathf.Cos(lat) * Mathf.Cos(lon - lon0);
-            cosArc = Mathf.Clamp(cosArc, -1f, 1f);
-            return Mathf.Acos(cosArc) * Mathf.Rad2Deg;
+            return RM_WeatherKernel.ArcDegrees(longLat.y, longLat.x, geo.substellarLat, geo.substellarLon);
         }
 
         public static bool TileInTerminatorBand(PlanetTile tile)
@@ -122,7 +114,7 @@ namespace RimMandrake.StarWars.WeatherSuite
             PlanetGeometryDef geo = ActiveGeometry;
             if (geo == null) return false;
             float arc = ArcFromSubstellar(tile);
-            return arc >= geo.terminatorBandMinArc && arc <= geo.terminatorBandMaxArc;
+            return RM_WeatherKernel.InTerminatorBand(arc, geo.terminatorBandMinArc, geo.terminatorBandMaxArc);
         }
 
         public static bool TileInNightsideBand(PlanetTile tile)
@@ -136,7 +128,7 @@ namespace RimMandrake.StarWars.WeatherSuite
             // exactly that arc satisfied both bands, breaking the "never both
             // at once" invariant this header claims. Exclusive here so the two
             // bands share a single dividing line instead of overlapping on it.
-            return arc > geo.nightsideBandMinArc;
+            return RM_WeatherKernel.InNightsideBand(arc, geo.nightsideBandMinArc);
         }
 
         public static bool MapInTerminatorBand(Map map)
@@ -281,8 +273,8 @@ namespace RimMandrake.StarWars.WeatherSuite
             if (map.GameConditionManager.IsAlwaysDarkOutside) return null;
 
             Color currentColor = CurrentColor;
-            Color sky = ClampToOne(Color.Lerp(Color.white, currentColor, WeatherSuiteSettings.auroraSkySaturation) * WeatherSuiteSettings.auroraSkyBrightness);
-            Color overlay = ClampToOne(Color.Lerp(Color.white, currentColor, WeatherSuiteSettings.auroraOverlaySaturation) * WeatherSuiteSettings.auroraSkyBrightness);
+            Color sky = Tint(currentColor, WeatherSuiteSettings.auroraSkySaturation, WeatherSuiteSettings.auroraSkyBrightness, RM_WeatherKernel.VanillaSkySaturation);
+            Color overlay = Tint(currentColor, WeatherSuiteSettings.auroraOverlaySaturation, WeatherSuiteSettings.auroraSkyBrightness, RM_WeatherKernel.VanillaOverlaySaturation);
             float glow = Mathf.Max(GenCelestial.CurCelestialSunGlow(map), AuroraGlowFloor);
             return new SkyTarget(
                 colorSet: new SkyColorSet(
@@ -295,9 +287,10 @@ namespace RimMandrake.StarWars.WeatherSuite
                 lightsourceShineIntensity: 1f);
         }
 
-        private static Color ClampToOne(Color c)
+        private static Color Tint(Color c, float saturation, float brightness, float vanillaSaturation)
         {
-            return new Color(Mathf.Min(c.r, 1f), Mathf.Min(c.g, 1f), Mathf.Min(c.b, 1f), c.a);
+            return new Color(RM_WeatherKernel.TintChannel(c.r, saturation, brightness, vanillaSaturation), RM_WeatherKernel.TintChannel(c.g, saturation, brightness, vanillaSaturation),
+                RM_WeatherKernel.TintChannel(c.b, saturation, brightness, vanillaSaturation), c.a);
         }
     }
 
@@ -350,24 +343,21 @@ namespace RimMandrake.StarWars.WeatherSuite
                 return "Instrument reading: front-forced weather incoming — " + forced.label + ".";
             }
 
-            List<(WeatherDef weather, float weight)> weighted = new List<(WeatherDef, float)>();
+            var weathers = new List<WeatherDef>();
+            var weights = new List<float>();
             foreach (WeatherDef w in DefDatabase<WeatherDef>.AllDefsListForReading)
             {
                 float c = ComputeCommonality(w, map);
-                if (c > 0f) weighted.Add((w, c));
+                if (c > 0f) { weathers.Add(w); weights.Add(c); }
             }
-            if (weighted.Count == 0) return "Instrument reading: no clear signal.";
-
-            weighted.Sort((a, b) => b.weight.CompareTo(a.weight));
-            float total = weighted.Sum(x => x.weight);
+            if (weathers.Count == 0) return "Instrument reading: no clear signal.";
 
             StringBuilder sb = new StringBuilder("Instrument reading — likely next: ");
-            int shown = Math.Min(2, weighted.Count);
-            for (int i = 0; i < shown; i++)
+            List<KeyValuePair<int, float>> top = RM_WeatherKernel.TopShares(weights, 2);
+            for (int i = 0; i < top.Count; i++)
             {
                 if (i > 0) sb.Append(", then ");
-                float pct = total > 0f ? weighted[i].weight / total * 100f : 0f;
-                sb.Append(weighted[i].weather.label).Append(" (~").Append(pct.ToString("F0")).Append("%)");
+                sb.Append(weathers[top[i].Key].label).Append(" (~").Append(top[i].Value.ToString("F0")).Append("%)");
             }
             return sb.ToString();
         }
