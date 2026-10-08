@@ -36,6 +36,7 @@
     <Compile Include="RM_CompWatcher.cs" />
     <Compile Include="RM_WatcherSign.cs" />
     <Compile Include="RM_WatcherUtility.cs" />
+    <Compile Include="RM_WatcherCues.cs" />
     <Compile Include="RM_JobGiver_Watch.cs" />
     <Compile Include="RM_JobDriver_Watch.cs" />
     <Compile Include="RM_JobGiver_WanderInMedium.cs" />

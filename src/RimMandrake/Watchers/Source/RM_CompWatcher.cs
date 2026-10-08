@@ -130,6 +130,52 @@ namespace RimMandrake.Watchers
                 {
                     def.comps.Add(new RM_CompProperties_Watcher());
                 }
+                AuditMedium(def, def.GetModExtension<RM_WatcherExtension>());
+            }
+        }
+
+        /// <summary>The water half of the medium lock (owner ruling 2026-10-08: media are ground AND water). A water medium works on
+        /// the kit as built (the sign is Ethereal, so it spawns on any terrain; relocation and wander only need Standable cells) as long
+        /// as the terrain is passable, the race is waterSeeker where the terrain is avoidWander, and no swimming sprite hides the peek.</summary>
+        private static void AuditMedium(ThingDef race, RM_WatcherExtension ext)
+        {
+            if (ext == null || !ext.HasMedium)
+            {
+                return;
+            }
+            bool impassable = false, avoidWander = false, water = false;
+            foreach (TerrainDef t in ext.mediumTerrains)
+            {
+                if (t == null)
+                {
+                    continue;
+                }
+                impassable |= t.passability == Traversability.Impassable;
+                avoidWander |= t.avoidWander;
+                water |= t.IsWater;
+            }
+            bool swimSprite = false;
+            foreach (PawnKindDef k in DefDatabase<PawnKindDef>.AllDefsListForReading)
+            {
+                if (k.race != race || k.lifeStages == null)
+                {
+                    continue;
+                }
+                foreach (PawnKindLifeStage ls in k.lifeStages)
+                {
+                    swimSprite |= ls?.swimmingGraphicData != null;
+                }
+            }
+            var errors = new List<string>();
+            var warnings = new List<string>();
+            RM_WatcherKernel.MediumAudit(impassable, avoidWander, water, race.race.waterSeeker, swimSprite, errors, warnings);
+            foreach (string e in errors)
+            {
+                Log.Error("[Watchers] " + race.defName + ": " + e);
+            }
+            foreach (string w in warnings)
+            {
+                Log.Warning("[Watchers] " + race.defName + ": " + w);
             }
         }
     }

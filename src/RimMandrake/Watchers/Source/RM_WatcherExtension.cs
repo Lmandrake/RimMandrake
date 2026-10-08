@@ -49,6 +49,10 @@ namespace RimMandrake.Watchers
 
         public float puffScale = 0.6f;
 
+        /// <summary>The optional non-body flinch cues (gas, heat, fire, steam, shade, buried, light), owner ruling 2026-10-08.
+        /// Null or an absent node = the member flinches from bodies (and the geophone) only. See RM_WatcherCues.</summary>
+        public RM_WatcherCues cues;
+
         public bool HasMedium => !mediumTerrains.NullOrEmpty();
 
         public bool IsMedium(TerrainDef t)
@@ -67,6 +71,13 @@ namespace RimMandrake.Watchers
                 hideTicks.min, hideTicks.max, maxWatchTicks, boltTicks, wanderChance, emergeWhenFoodBelow, geophoneMinBodySize))
             {
                 yield return "RM_WatcherExtension: " + err;
+            }
+            if (cues != null)
+            {
+                foreach (string err in cues.ConfigErrors())
+                {
+                    yield return "RM_WatcherExtension: " + err;
+                }
             }
         }
     }

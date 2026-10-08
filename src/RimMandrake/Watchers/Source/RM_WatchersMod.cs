@@ -18,6 +18,14 @@ namespace RimMandrake.Watchers
         public static float flinchRadiusScale = 1f;   // PROVISIONAL range 0.5-2 (design §6 gives 3-12 cells around 6)
         public static float emergeDelayScale = 1f;    // PROVISIONAL range 0.25-3 (design §6: "1-3 h, slider")
         public static int maxActivePerMap = 40;       // design §6 default; PROVISIONAL range 5-200
+        // The optional non-body cues (owner ruling 2026-10-08, "Full set"): one toggle per kind; a member only reacts to the kinds it lists.
+        public static bool cueGas = true;
+        public static bool cueHeat = true;
+        public static bool cueFire = true;
+        public static bool cueSteam = true;
+        public static bool cueShade = true;
+        public static bool cueBuried = true;
+        public static bool cueLight = true;
 
         public static bool HideActive => watchersEnabled && hideAndFlinch;
 
@@ -33,6 +41,13 @@ namespace RimMandrake.Watchers
             Scribe_Values.Look(ref flinchRadiusScale, "flinchRadiusScale", 1f);
             Scribe_Values.Look(ref emergeDelayScale, "emergeDelayScale", 1f);
             Scribe_Values.Look(ref maxActivePerMap, "maxActivePerMap", 40);
+            Scribe_Values.Look(ref cueGas, "cueGas", true);
+            Scribe_Values.Look(ref cueHeat, "cueHeat", true);
+            Scribe_Values.Look(ref cueFire, "cueFire", true);
+            Scribe_Values.Look(ref cueSteam, "cueSteam", true);
+            Scribe_Values.Look(ref cueShade, "cueShade", true);
+            Scribe_Values.Look(ref cueBuried, "cueBuried", true);
+            Scribe_Values.Look(ref cueLight, "cueLight", true);
         }
 
         private Vector2 scrollPosition;
@@ -60,6 +75,15 @@ namespace RimMandrake.Watchers
                     "RM_Watchers_Setting_Geophone_Tip".Translate());
                 list.CheckboxLabeled("RM_Watchers_Setting_FlushHunt".Translate(), ref flushMarksHunt,
                     "RM_Watchers_Setting_FlushHunt_Tip".Translate());
+                list.GapLine();
+                list.Label("RM_Watchers_Setting_CuesHeader".Translate());
+                list.CheckboxLabeled("RM_Watchers_Setting_CueGas".Translate(), ref cueGas, "RM_Watchers_Setting_CueGas_Tip".Translate());
+                list.CheckboxLabeled("RM_Watchers_Setting_CueHeat".Translate(), ref cueHeat, "RM_Watchers_Setting_CueHeat_Tip".Translate());
+                list.CheckboxLabeled("RM_Watchers_Setting_CueFire".Translate(), ref cueFire, "RM_Watchers_Setting_CueFire_Tip".Translate());
+                list.CheckboxLabeled("RM_Watchers_Setting_CueSteam".Translate(), ref cueSteam, "RM_Watchers_Setting_CueSteam_Tip".Translate());
+                list.CheckboxLabeled("RM_Watchers_Setting_CueShade".Translate(), ref cueShade, "RM_Watchers_Setting_CueShade_Tip".Translate());
+                list.CheckboxLabeled("RM_Watchers_Setting_CueBuried".Translate(), ref cueBuried, "RM_Watchers_Setting_CueBuried_Tip".Translate());
+                list.CheckboxLabeled("RM_Watchers_Setting_CueLight".Translate(), ref cueLight, "RM_Watchers_Setting_CueLight_Tip".Translate());
                 list.GapLine();
                 list.Label("RM_Watchers_Setting_FlinchRadius".Translate(flinchRadiusScale.ToStringPercent()));
                 flinchRadiusScale = Mathf.Round(list.Slider(flinchRadiusScale, 0.5f, 2f) * 20f) / 20f;

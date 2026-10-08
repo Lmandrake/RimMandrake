@@ -1,5 +1,5 @@
 // Watchers offline fuzz entry. Knobs: --fuzz-scale F (multiplies every case count, 0 skips), --fuzz-seed N (replay one seed of every
-// family), --fuzz-only NAME (step|scan|gates|config).
+// family), --fuzz-only NAME (step|scan|gates|config|cues).
 using System;
 
 namespace RimMandrake.Watchers.SelfTest

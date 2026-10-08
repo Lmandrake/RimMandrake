@@ -9,6 +9,8 @@ Run:
     python.exe src/RimMandrake/Utils/modcheck/cli.py run Watchers
 
 Offline: `python3 src/RimMandrake/Watchers/validation.py` runs static_checks() only.
+The optional non-body cues (gas, heat, fire, steam, shade, buried, light; owner ruling 2026-10-08)
+are per-member data under RM_WatcherExtension.cues, each behind its own toggle.
 Not proven here (no bridge run yet; each live component says what it needs): the hide/sign cycle,
 the facing, the geophone, the flush and bolt. Every one is provable by a STATE read (hediff on the
 pawn, sign Thing on the cell, pawn.Rotation, CurJobDef), never by screenshot.
@@ -25,7 +27,20 @@ SRC = os.path.normpath(os.path.join(HERE, ".."))
 NS = "RimMandrake.Watchers."
 suite = Suite("Watchers")
 suite.toggles = ["watchersEnabled", "hideAndFlinch", "turnToFace", "stayOnMedium", "geophone", "flushMarksHunt",
-                 "flinchRadiusScale", "emergeDelayScale", "maxActivePerMap"]
+                 "flinchRadiusScale", "emergeDelayScale", "maxActivePerMap",
+                 "cueGas", "cueHeat", "cueFire", "cueSteam", "cueShade", "cueBuried", "cueLight"]
+# The optional non-body cues (owner ruling 2026-10-08, "Full set"): kind -> (toggle, what a live proof needs).
+# No shipped member carries a cue yet (members are admitted at each biome's sitting), so each proof needs a
+# test race given that cue; the state read is the same as flinch_hides_with_sign (hediff + sign, no body near).
+CUES = {
+    "gas": ("cueGas", "tox gas spawned on its cell (GenExplosion/gasGrid.AddGas ToxGas) with no pawn within flinch"),
+    "heat": ("cueHeat", "its cell's temperature pushed above cues.heat.aboveC (a heater or GenTemperature.PushHeat)"),
+    "fire": ("cueFire", "a Fire started within cues.fire.radius; it comes back up after the fire is out and the delay passes"),
+    "steam": ("cueSteam", "an RM_SteamDevil spawned within cues.steam.radius (needs mandrake.rm.terminalbiomes)"),
+    "shade": ("cueShade", "unroofed at noon: stays hidden; roofed or at night: comes up (with and without the CreatureBehaviors shade grid)"),
+    "buried": ("cueBuried", "a murrek carrying RM_MurrekBuried within cues.buried.radius (needs mandrake.rm.bluedesert)"),
+    "light": ("cueLight", "a standing lamp lit beside it (GroundGlowAt >= cues.light.minGlow): it hides; lamp off: it comes up"),
+}
 
 MEMBERS = {"RM_Piinnok": "RM_DeepSand"}   # race -> its ONE medium (Q9 / Q1 ruling)
 NEEDLES = ("mandrake.rm.watchers", "RimMandrake.Watchers", "RM_Watcher", "RM_Piinnok", "[Watchers]")
@@ -83,6 +98,10 @@ def behaviour(t):
         with t.component(comp, toggle=tog, beyond_toggle=tog is None):
             if t._guard():
                 raise ExpectationFailed("UNMEASURED: " + why)
+    for kind, (tog, why) in CUES.items():
+        with t.component("cue_%s_hides_and_holds" % kind, toggle=tog):
+            if t._guard():
+                raise ExpectationFailed("UNMEASURED: needs a watcher carrying cues.%s and %s; and with %s off it ignores it" % (kind, why, tog))
 
 
 def _xml(*parts):
@@ -235,6 +254,18 @@ def static_checks():
             r"public static int SubmergedSwimmersNear\(Map map, IntVec3 cell, float radius, float minBodySize, List<Pawn> results = null\)",
             open(cb, encoding="utf-8").read()):
         bad.append("CreatureBehaviors RM_SandSwimUtility.SubmergedSwimmersNear signature changed: the geophone reflection binds nothing")
+    # The shade cue binds CreatureBehaviors' shade grid by reflection: ShadeAt(IntVec3) -> float and SunHeatActive.
+    sg = open(os.path.join(SRC, "CreatureBehaviors", "Source", "RM_MapComponent_ShadeGrid.cs"), encoding="utf-8").read()
+    if not re.search(r"public float ShadeAt\(IntVec3 cell\)", sg) or not re.search(r"public bool SunHeatActive\b", sg) \
+            or "namespace RimMandrake.CreatureBehaviors" not in sg:
+        bad.append("CreatureBehaviors RM_MapComponent_ShadeGrid.ShadeAt/SunHeatActive changed: the shade cue binds nothing")
+    if '"RimMandrake.CreatureBehaviors.RM_MapComponent_ShadeGrid"' not in _src("RM_WatcherCues.cs"):
+        bad.append("shade-grid reflection target string missing from RM_WatcherCues.cs")
+    # Each cue kind has its toggle read where the cue is read.
+    cues_src = _src("RM_WatcherCues.cs")
+    for kind, (tog, _why) in CUES.items():
+        if "c.%s != null && RM_WatchersSettings.%s" % (kind, tog) not in cues_src:
+            bad.append("cue %s is not gated by its toggle %s" % (kind, tog))
     util = _src("RM_WatcherUtility.cs")
     if '"RimMandrake.CreatureBehaviors.RM_SandSwimUtility"' not in util:
         bad.append("geophone reflection target string missing from RM_WatcherUtility.cs")

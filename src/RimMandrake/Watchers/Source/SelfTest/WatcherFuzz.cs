@@ -19,6 +19,7 @@ namespace RimMandrake.Watchers.SelfTest
 {
     internal static class WatcherFuzz
     {
+        public static long CueHides, CueFires;
         public static long Cases, Steps, Hides, Emerges, HungryEmerges, Succeeded, Interrupted, HuntSinks, SignRestores;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
         private static float F(Random r, float lo, float hi) { return lo + (float)r.NextDouble() * (hi - lo); }
@@ -28,7 +29,7 @@ namespace RimMandrake.Watchers.SelfTest
         {
             // nested-predicate restatement of the ruled behaviour
             if (!(s.watchersEnabled && s.onMedium)) return StepFlags.EndInterrupted;
-            bool flinched = s.hideAndFlinch && (s.inFlinch || s.geophone || s.hunted);
+            bool flinched = s.hideAndFlinch && (s.inFlinch || s.geophone || s.cue || s.hunted);
             if (!s.hidden)
             {
                 if (flinched) return StepFlags.Hide | (s.hunted ? StepFlags.DropHunt : 0);
@@ -38,7 +39,7 @@ namespace RimMandrake.Watchers.SelfTest
                 return f;
             }
             StepFlags g = s.signMissing ? StepFlags.RestoreSign : 0;
-            bool calm = s.now >= s.hiddenUntil && !s.inFlinch && !s.geophone;
+            bool calm = s.now >= s.hiddenUntil && !s.inFlinch && !s.geophone && !s.cue;
             if (s.hungry || !s.hideAndFlinch || calm)
             {
                 g |= StepFlags.Emerge | StepFlags.ResetWatchClock;
@@ -53,14 +54,14 @@ namespace RimMandrake.Watchers.SelfTest
             // exhaustive truth table first (all booleans x the time relations)
             try
             {
-                for (int m = 0; m < (1 << 11); m++)
+                for (int m = 0; m < (1 << 12); m++)
                     for (int tc = 0; tc < 4; tc++)
                     {
                         var s = new StepIn
                         {
                             watchersEnabled = (m & 1) != 0, onMedium = (m & 2) != 0, hidden = (m & 4) != 0, hideAndFlinch = (m & 8) != 0,
                             turnToFace = (m & 16) != 0, hasNearest = (m & 32) != 0, inFlinch = (m & 64) != 0, geophone = (m & 128) != 0,
-                            hunted = (m & 256) != 0, signMissing = (m & 512) != 0, hungry = (m & 1024) != 0,
+                            hunted = (m & 256) != 0, signMissing = (m & 512) != 0, hungry = (m & 1024) != 0, cue = (m & 2048) != 0,
                             now = 10000, hiddenUntil = tc == 0 ? 9999 : tc == 1 ? 10000 : 10001, watchStart = tc == 3 ? 10000 - 2500 : 10000 - 2499, maxWatchTicks = 2500,
                         };
                         Cases++; Steps++;
@@ -83,13 +84,14 @@ namespace RimMandrake.Watchers.SelfTest
                     int hiddenSince = -1, rolled = 0; bool ended = false;
                     double hunger = F(r, 0f, 1f); float below = F(r, 0.1f, 0.5f);
                     // the world: a creature that wanders in and out of the flinch circle
-                    double nearDist = F(r, 0f, 30f); bool geoPending = false; int quietFor = 0;
+                    double nearDist = F(r, 0f, 30f); bool geoPending = false; int quietFor = 0; int cueRun = 0;
                     for (int t = 0; t < 400 && !ended; t++)
                     {
                         Steps++; now += RM_WatcherKernel.StepInterval;
                         nearDist = Math.Max(0, nearDist + F(r, -3f, 3f));
                         bool hasNearest = nearDist <= 14.0; bool inFlinch = nearDist <= 6.0;
                         geoPending = r.Next(40) == 0;
+                        bool cuePending = cueRun > 0 ? (--cueRun > 0) : (r.Next(120) == 0 && (cueRun = 1 + r.Next(40)) > 0);   // a cue that holds for a while (sun, a fire)
                         if (!hidden && r.Next(60) == 0) { hunted = true; }
                         hunger = Math.Max(0, Math.Min(1, hunger + F(r, -0.02f, 0.012f)));
                         bool hungry = hunger < below;
@@ -100,7 +102,7 @@ namespace RimMandrake.Watchers.SelfTest
                         var s = new StepIn
                         {
                             watchersEnabled = enabled, onMedium = onMedium, hidden = hidden, hideAndFlinch = hideAndFlinch, turnToFace = turn,
-                            hasNearest = hasNearest, inFlinch = inFlinch, geophone = geoPending, hunted = hunted && !hidden, signMissing = signMissing, hungry = hungry,
+                            hasNearest = hasNearest, inFlinch = inFlinch, geophone = geoPending, cue = cuePending, hunted = hunted && !hidden, signMissing = signMissing, hungry = hungry,
                             now = now, hiddenUntil = hiddenUntil, watchStart = watchStart, maxWatchTicks = maxWatch,
                         };
                         StepFlags f = RM_WatcherKernel.DecideStep(s);
@@ -116,7 +118,8 @@ namespace RimMandrake.Watchers.SelfTest
                         }
                         if ((f & StepFlags.Hide) != 0)
                         {
-                            Check(hideAndFlinch && (inFlinch || geoPending || (hunted && !hidden)), "hid without a reason");
+                            Check(hideAndFlinch && (inFlinch || geoPending || cuePending || (hunted && !hidden)), "hid without a reason");
+                            if (cuePending && !inFlinch && !geoPending && !hunted) CueHides++;
                             hidden = true; signThere = true; hiddenSince = now; rolled = hideMin + r.Next(hideMax - hideMin + 1);
                             hiddenUntil = RM_WatcherKernel.HiddenUntil(now, rolled, scale); Hides++;
                             if ((f & StepFlags.DropHunt) != 0) { hunted = false; HuntSinks++; }
@@ -132,6 +135,7 @@ namespace RimMandrake.Watchers.SelfTest
                             if (early) Check(hungry || !hideAndFlinch, $"emerged {hiddenUntil - now} ticks early without hunger or the setting off");
                             Check(!(inFlinch && hideAndFlinch && !hungry), "emerged while a creature stood in the flinch circle");
                             Check(!(geoPending && hideAndFlinch && !hungry), "emerged while the geophone was pinging");
+                            Check(!(cuePending && hideAndFlinch && !hungry), "emerged while a cue still held");
                             hidden = false; signThere = false; watchStart = now; Emerges++;
                             if (hungry) { Check((f & StepFlags.EndSucceeded) != 0, "hungry emerge did not end the job (hide/emerge loop)"); HungryEmerges++; }
                         }
@@ -175,7 +179,7 @@ namespace RimMandrake.Watchers.SelfTest
 
         private static string Describe(StepIn s)
         {
-            return $"en={s.watchersEnabled} med={s.onMedium} hid={s.hidden} hf={s.hideAndFlinch} face={s.turnToFace} near={s.hasNearest} flinch={s.inFlinch} geo={s.geophone} hunted={s.hunted} nosign={s.signMissing} hungry={s.hungry} until={s.hiddenUntil} start={s.watchStart}";
+            return $"en={s.watchersEnabled} med={s.onMedium} hid={s.hidden} hf={s.hideAndFlinch} face={s.turnToFace} near={s.hasNearest} flinch={s.inFlinch} geo={s.geophone} cue={s.cue} hunted={s.hunted} nosign={s.signMissing} hungry={s.hungry} until={s.hiddenUntil} start={s.watchStart}";
         }
 
         // ---------------------------------------------------------------- scan
@@ -342,6 +346,111 @@ namespace RimMandrake.Watchers.SelfTest
             return fails;
         }
 
+        // ---------------------------------------------------------------- cues
+        private static CueKind SpecCues(CueIn c)
+        {
+            CueKind k = 0;
+            if (c.gasOn) { if (!(c.gasPercent < c.gasMin)) k |= CueKind.Gas; }
+            if (c.heatOn) { if (!(c.tempC < c.heatAboveC)) k |= CueKind.Heat; }
+            if (c.fireOn) { if (c.fireDistSq != float.MaxValue && !(c.fireDistSq > c.fireRadius * c.fireRadius)) k |= CueKind.Fire; }
+            if (c.steamOn) { if (c.steamDistSq != float.MaxValue && !(c.steamDistSq > c.steamRadius * c.steamRadius)) k |= CueKind.Steam; }
+            if (c.shadeOn) { if (c.shade < c.shadeMin) k |= CueKind.Shade; }
+            if (c.buriedOn) { if (c.buriedDistSq != float.MaxValue && !(c.buriedDistSq > c.buriedRadius * c.buriedRadius)) k |= CueKind.Buried; }
+            if (c.lightOn) { if (!(c.glow < c.lightAbove)) k |= CueKind.Light; }
+            return k;
+        }
+
+        private static float Dist(Random r, float radius)
+        {
+            int k = r.Next(6);
+            if (k == 0) return float.MaxValue;                      // none on the map
+            if (k == 1) return radius * radius;                     // exactly on the edge: counts
+            float d = k == 2 ? (float)Math.Floor(radius) : F(r, 0f, radius * 2f);
+            return d * d;
+        }
+
+        private static List<string> Cues(int cases, int seed0)
+        {
+            var fails = new List<string>();
+            for (int c = 0; c < cases; c++)
+            {
+                int seed = seed0 + c; var r = new Random(seed); Cases++; Steps++;
+                try
+                {
+                    float fr = F(r, 0.5f, 20f), sr = F(r, 0.5f, 20f), br = F(r, 0.5f, 20f);
+                    var ci = new CueIn
+                    {
+                        gasOn = r.Next(2) == 0, heatOn = r.Next(2) == 0, fireOn = r.Next(2) == 0, steamOn = r.Next(2) == 0,
+                        shadeOn = r.Next(2) == 0, buriedOn = r.Next(2) == 0, lightOn = r.Next(2) == 0,
+                        gasMin = F(r, 0.01f, 1f), heatAboveC = F(r, -150f, 80f), fireRadius = fr, steamRadius = sr, shadeMin = F(r, 0.01f, 1f),
+                        buriedRadius = br, lightAbove = F(r, 0.01f, 1f), fireDistSq = Dist(r, fr), steamDistSq = Dist(r, sr), buriedDistSq = Dist(r, br),
+                    };
+                    ci.gasPercent = r.Next(4) == 0 ? ci.gasMin : F(r, 0f, 1f);
+                    ci.tempC = r.Next(4) == 0 ? ci.heatAboveC : F(r, -200f, 120f);
+                    ci.shade = r.Next(4) == 0 ? ci.shadeMin : F(r, 0f, 1f);
+                    ci.glow = r.Next(4) == 0 ? ci.lightAbove : F(r, 0f, 1f);
+                    CueKind got = RM_WatcherKernel.Cues(ci), want = SpecCues(ci);
+                    Check(got == want, $"Cues {got}, spec {want}");
+                    if (got != 0) CueFires++;
+                    // a cue that is off never fires, whatever its reading
+                    var off = ci; off.gasOn = off.heatOn = off.fireOn = off.steamOn = off.shadeOn = off.buriedOn = off.lightOn = false;
+                    Check(RM_WatcherKernel.Cues(off) == CueKind.None, "a cue fired with every cue off");
+                    // metamorphic: closer/hotter/darker never un-fires
+                    var m2 = ci; m2.fireDistSq = Math.Min(ci.fireDistSq, 0f); m2.tempC = ci.tempC + 10f; m2.gasPercent = Math.Min(1f, ci.gasPercent + 0.1f);
+                    m2.shade = Math.Max(0f, ci.shade - 0.1f); m2.glow = Math.Min(1f, ci.glow + 0.1f);
+                    Check((RM_WatcherKernel.Cues(m2) & got) == got, "a stronger stimulus un-fired a cue");
+                    // shade reading: roof = full shade; night = full shade; grid never makes it brighter than the sky alone
+                    float g = F(r, -0.5f, 1.5f), sky = F(r, -0.5f, 1.5f);
+                    float sAct = RM_WatcherKernel.ShadeReading(false, true, g, sky), sOff = RM_WatcherKernel.ShadeReading(false, false, g, sky);
+                    Check(RM_WatcherKernel.ShadeReading(true, r.Next(2) == 0, g, sky) == 1f, "a roofed cell is not full shade");
+                    Check(RM_WatcherKernel.ShadeReading(false, r.Next(2) == 0, g, 0f) == 1f, "night is not full shade");
+                    Check(sAct >= sOff && sAct >= 0f && sAct <= 1f && sOff >= 0f && sOff <= 1f, $"shade reading out of order/range: active {sAct}, off {sOff}");
+                    Check(RM_WatcherKernel.ShadeReading(false, false, 1f, 1f) == 0f, "full sun, no grid, no roof is not 0 shade");
+                }
+                catch (Exception e) { fails.Add($"cues seed {seed}: {e.Message}"); }
+            }
+            try
+            {
+                // config: the sound example in RM_WatcherCues' header, then each single break exactly once
+                int E(bool a, int b, float c2, bool d, float e2, bool f, float g, bool h, int i, float j, bool k, float l, bool m, int n, float o, bool p, float q)
+                    => RM_WatcherKernel.CueConfigErrors(a, b, c2, d, e2, f, g, h, i, j, k, l, m, n, o, p, q).Count;
+                Check(E(true, 1, 0.1f, true, -120f, true, 8f, true, 1, 10f, true, 0.5f, true, 1, 10f, true, 0.5f) == 0, "the documented example is rejected");
+                Check(E(false, 0, 0f, false, 0f, false, 0f, false, 0, 0f, false, 0f, false, 0, 0f, false, 0f) == 0, "no cues at all is rejected");
+                Check(E(true, 1, 1f, true, -272f, true, 0.01f, true, 1, 0.01f, true, 1f, true, 1, 0.01f, true, 1f) == 0, "boundary values rejected");
+                var breaks = new (string, int)[]
+                {
+                    ("gas no types", E(true, 0, 0.1f, false, 0f, false, 0f, false, 0, 0f, false, 0f, false, 0, 0f, false, 0f)),
+                    ("gas min 0", E(true, 1, 0f, false, 0f, false, 0f, false, 0, 0f, false, 0f, false, 0, 0f, false, 0f)),
+                    ("gas min above 1", E(true, 1, 1.5f, false, 0f, false, 0f, false, 0, 0f, false, 0f, false, 0, 0f, false, 0f)),
+                    ("heat below absolute zero", E(false, 0, 0f, true, -300f, false, 0f, false, 0, 0f, false, 0f, false, 0, 0f, false, 0f)),
+                    ("heat NaN", E(false, 0, 0f, true, float.NaN, false, 0f, false, 0, 0f, false, 0f, false, 0, 0f, false, 0f)),
+                    ("fire radius 0", E(false, 0, 0f, false, 0f, true, 0f, false, 0, 0f, false, 0f, false, 0, 0f, false, 0f)),
+                    ("steam no things", E(false, 0, 0f, false, 0f, false, 0f, true, 0, 5f, false, 0f, false, 0, 0f, false, 0f)),
+                    ("steam radius 0", E(false, 0, 0f, false, 0f, false, 0f, true, 1, 0f, false, 0f, false, 0, 0f, false, 0f)),
+                    ("shade min 0", E(false, 0, 0f, false, 0f, false, 0f, false, 0, 0f, true, 0f, false, 0, 0f, false, 0f)),
+                    ("buried no hediffs", E(false, 0, 0f, false, 0f, false, 0f, false, 0, 0f, false, 0f, true, 0, 5f, false, 0f)),
+                    ("buried radius negative", E(false, 0, 0f, false, 0f, false, 0f, false, 0, 0f, false, 0f, true, 1, -1f, false, 0f)),
+                    ("light min 0", E(false, 0, 0f, false, 0f, false, 0f, false, 0, 0f, false, 0f, false, 0, 0f, true, 0f)),
+                };
+                foreach (var (name, n) in breaks) { Cases++; Check(n == 1, $"single cue break '{name}' reported {n} errors"); }
+                // the water audit, exhaustively
+                for (int m = 0; m < 32; m++)
+                {
+                    bool imp = (m & 1) != 0, avoid = (m & 2) != 0, water = (m & 4) != 0, seeker = (m & 8) != 0, swim = (m & 16) != 0;
+                    var errs = new List<string>(); var warns = new List<string>(); Cases++; Steps++;
+                    RM_WatcherKernel.MediumAudit(imp, avoid, water, seeker, swim, errs, warns);
+                    Check(errs.Count == (imp ? 1 : 0), $"medium audit errors {errs.Count} for mask {m}");
+                    Check(warns.Count == (avoid && !seeker ? 1 : 0) + (water && swim ? 1 : 0), $"medium audit warnings {warns.Count} for mask {m}");
+                }
+                // the shipped piinnok (deep sand: avoidWander, IsWater, waterSeeker, no swim sprite) audits clean
+                var e0 = new List<string>(); var w0 = new List<string>();
+                RM_WatcherKernel.MediumAudit(false, true, true, true, false, e0, w0);
+                Check(e0.Count == 0 && w0.Count == 0, "the shipped piinnok fails the water audit");
+            }
+            catch (Exception e) { fails.Add("cues config/audit: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -354,6 +463,7 @@ namespace RimMandrake.Watchers.SelfTest
                 ("scan", () => Scan(N(4000), S(1))),
                 ("gates", () => Gates()),
                 ("config", () => Config(N(3000), S(1))),
+                ("cues", () => Cues(N(6000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -369,6 +479,8 @@ namespace RimMandrake.Watchers.SelfTest
             if (only == null && !oneSeed.HasValue && scale >= 1)
             {
                 Console.WriteLine($"step reached: hides {Hides}, emerges {Emerges} (hungry {HungryEmerges}), finished {Succeeded}, interrupted {Interrupted}, hunt orders dropped {HuntSinks}, signs restored {SignRestores}");
+                Console.WriteLine($"cues reached: cue-only hides {CueHides}, cue fires {CueFires}");
+                if (CueHides == 0 || CueFires == 0) { Console.WriteLine("FAIL cue paths never reached (blind)"); ok = false; }
                 if (Hides == 0 || Emerges == 0 || HungryEmerges == 0 || Succeeded == 0 || Interrupted == 0 || HuntSinks == 0 || SignRestores == 0) { Console.WriteLine("FAIL watcher fuzz never reached a path (blind)"); ok = false; }
             }
             Console.WriteLine($"watchers fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
