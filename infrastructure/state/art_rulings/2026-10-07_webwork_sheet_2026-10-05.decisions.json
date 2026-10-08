@@ -1,0 +1,319 @@
+{
+  "biome": "RM_Webwork",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 23,
+  "decisions": {
+    "Plant_TookeTrap_Wild": {
+      "at": "2026-10-07T14:31:47.458Z",
+      "decidedAt": "2026-10-07T14:31:28.089Z",
+      "decision": "redo",
+      "note": "Please follow the original in-game version more closle,y this is a canon render. Can also look this up.",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Brennoth": {
+      "at": "2026-10-07T14:20:02.726Z",
+      "decidedAt": "2026-10-07T14:19:51.686Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:20:02.726Z"
+    },
+    "RM_Brimlock": {
+      "at": "2026-10-07T14:21:20.144Z",
+      "decidedAt": "2026-10-07T14:20:16.404Z",
+      "decision": "redo",
+      "note": "No viable art, try again. A strangely stubby trunk with almost translucent bladders for water, with swirls of spiral-like leaves hanging down like a willow from above in a great cataphony of differing greens. Thick, mangrove-like roots.",
+      "prefill": "A",
+      "purge": [
+        "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+      ],
+      "purgeTouched": true,
+      "variants": [],
+      "variantsAt": "2026-10-07T14:20:14.661Z"
+    },
+    "RM_Cravvet": {
+      "at": "2026-10-07T14:15:12.356Z",
+      "decidedAt": "2026-10-07T14:14:19.662Z",
+      "decision": "B",
+      "note": "Needs regen of the East facing",
+      "prefill": "A",
+      "purge": [
+        "164c8ac583bc5a8a9e41e5c25ea6c99d610e07f3ebdc403248b2b04964ecc342"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:14:18.165Z"
+    },
+    "RM_Dulloth": {
+      "at": "2026-10-07T14:22:27.113Z",
+      "decidedAt": "2026-10-07T14:21:51.846Z",
+      "decision": "redo",
+      "note": "Huge flat leaves held up high on stilt-like stems. Like lilly pads grown straight up out of the ground above you to the scale of a tree. Make it twice as big.",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Fellome": {
+      "at": "2026-10-07T14:22:46.872Z",
+      "decidedAt": "2026-10-07T14:22:45.198Z",
+      "decision": "B",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:22:46.872Z"
+    },
+    "RM_Grennick": {
+      "at": "2026-10-07T14:22:52.058Z",
+      "decidedAt": "2026-10-07T14:22:50.953Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:22:52.058Z"
+    },
+    "RM_Kessaroth": {
+      "at": "2026-10-07T14:24:12.891Z",
+      "decidedAt": "2026-10-07T14:23:21.874Z",
+      "decision": "redo",
+      "note": "Make this much richer and less cartoonish. Eager, visceral flytrap-like mouths, one shown already fed, on muscular stalks. Streaked with dull red in a few places.",
+      "prefill": "A",
+      "purge": [
+        "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:24:11.353Z"
+    },
+    "RM_Kollavane": {
+      "at": "2026-10-07T14:25:10.696Z",
+      "decidedAt": "2026-10-07T14:24:27.340Z",
+      "decision": "redo",
+      "note": "Much more realistic, this is a big graphic. Variants please. Read the description. Make it 50% bigger.",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:24:24.933Z"
+    },
+    "RM_Norrveth": {
+      "at": "2026-10-07T14:26:13.160Z",
+      "decidedAt": "2026-10-07T14:25:31.440Z",
+      "decision": "B",
+      "note": "Make this twice as big and DANGEROUS. Redo to be less cartoonish. Variants. ",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:25:29.959Z"
+    },
+    "RM_Ollathrix": {
+      "at": "2026-10-07T14:15:32.292Z",
+      "decidedAt": "2026-10-07T14:15:24.930Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:15:32.292Z"
+    },
+    "RM_Pellareth": {
+      "at": "2026-10-07T14:29:01.457Z",
+      "decidedAt": "2026-10-07T14:28:29.027Z",
+      "decision": "redo",
+      "note": "This needs a full redo. Small graveyard-like flowers meant to be a sober ceremony to the death of this biome. No need for new state machine building.",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:27:53.352Z"
+    },
+    "RM_Quarrok": {
+      "at": "2026-10-07T14:16:02.694Z",
+      "decidedAt": "2026-10-07T14:16:01.245Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-07T14:16:02.694Z"
+    },
+    "RM_Ruddreth": {
+      "at": "2026-10-07T14:29:30.778Z",
+      "decidedAt": "2026-10-07T14:29:29.008Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:29:30.778Z"
+    },
+    "RM_Sellith": {
+      "at": "2026-10-07T14:29:51.379Z",
+      "decidedAt": "2026-10-07T14:29:51.379Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:29:48.766Z"
+    },
+    "RM_Sivvern": {
+      "at": "2026-10-07T14:16:51.219Z",
+      "decidedAt": "2026-10-07T14:16:14.170Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-07T14:16:51.219Z"
+    },
+    "RM_Skennet": {
+      "at": "2026-10-07T14:18:48.156Z",
+      "decidedAt": "2026-10-07T14:18:03.559Z",
+      "decision": "redo",
+      "note": "Keep this aesthetic: an awkward, nervous, bone-pale runner on stilt legs (only two) with eerily long very thin arms. Keep the strange almost elopee head you have here. Keep the alien vibe. ",
+      "prefill": "A",
+      "purge": [
+        "2a343638d43a1f9d5bc58e635a17dc2e93df3b2464466aaf2e34f8aaf6ef6663",
+        "eba4ff4458336e515fc71c50ba3687f9a6122ec80b4c512df736f258b262735c",
+        "a1866b37081a6fd042d1567735cf4cf5690fec3b531a988e3d2a4f93e7217863",
+        "8ce06eead0ef690fb1bed6a08d5458ed1f00fbc5804de3e45662be789e946f59",
+        "a015e7bb979fee3ab72c6dd2fb18e1cbaf41c9562bc66972a9cf1457efae2456"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-07T14:17:20.510Z"
+    },
+    "RM_Sorrivel": {
+      "at": "2026-10-07T14:29:58.386Z",
+      "decidedAt": "2026-10-07T14:29:55.241Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:29:58.386Z"
+    },
+    "RM_Tavrosk": {
+      "at": "2026-10-07T14:30:33.518Z",
+      "decidedAt": "2026-10-07T14:30:32.021Z",
+      "decision": "B",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:30:33.518Z"
+    },
+    "RM_Threllick": {
+      "at": "2026-10-07T14:30:38.944Z",
+      "decidedAt": "2026-10-07T14:30:38.944Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:30:35.984Z"
+    },
+    "RM_Varrisk": {
+      "at": "2026-10-07T14:33:20.521Z",
+      "decidedAt": "2026-10-07T14:33:14.863Z",
+      "decision": "redo",
+      "note": "More realistic, less cartoonish",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:32:55.969Z"
+    },
+    "RM_Vennick": {
+      "at": "2026-10-07T14:19:44.935Z",
+      "decidedAt": "2026-10-07T14:18:54.899Z",
+      "decision": "B",
+      "note": "Regenerate to focus as a line of little creatures as you have in the North facing. But make them mite-orange.",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:19:06.872Z"
+    },
+    "RM_Vessark": {
+      "at": "2026-10-07T14:33:28.272Z",
+      "decidedAt": "2026-10-07T14:33:26.518Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:33:28.272Z"
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-07T07:33:29-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "webwork_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/webwork_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "136ea14f056d2df4",
+  "writeCount": 128
+}
