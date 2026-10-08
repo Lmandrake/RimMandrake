@@ -36,14 +36,18 @@ brief describes:
 Two candidate images, both game-rendered 3D models rather than illustration,
 and they show a body-plan match but a color disagreement worth flagging:
 
-- `wookieepedia_kotor2_juvenile.png` (captioned "A juvenile zakkeg," in-game
-  render, KOTOR II) — a **rust-red/copper-brown** quadruped with a jagged
+- `wookieepedia_kotor2_juvenile.png` (file `JuvenileZakkeg.png`, captioned
+  "A juvenile zakkeg"; the wiki file page sources it to the 2020 SWTOR Cartel
+  Market announcement, so it is a SWTOR pet render, NOT a KOTOR II render;
+  the filename is historical) — a **rust-red/copper-brown** quadruped with a jagged
   spiked ridge running along the spine from head to tail, a low-slung
   reptilian toothy head with small yellow eyes, thick knobbed/bumpy hide,
   and stocky clawed legs. This is the closer color match to the in-universe
   "huge, red lizard" quote.
-- `wookieepedia_swtor_adult.jpg` (in-game render, *The Old Republic*) — the
-  same body plan at adult scale: spiked dorsal ridge, low reptilian head
+- `wookieepedia_swtor_adult.jpg` (file `Zakkeg.jpg`, the Legends infobox image;
+  the wiki file page sources it to *Knights of the Old Republic II*, so it is
+  the KOTOR II model, NOT SWTOR; the page does not call it an adult) — the
+  same body plan: spiked dorsal ridge, low reptilian head
   with visible fangs and small eyes, thick knobbed scales, four
   heavy-clawed legs, a tapered tail. Coloring here reads **dark
   brown-to-near-black**, noticeably darker/duller than the juvenile render
@@ -52,13 +56,14 @@ and they show a body-plan match but a color disagreement worth flagging:
 **Net read**: body plan is consistent and well-confirmed across both
 sources and the text — a stegosaur-like reptilian quadruped predator with a
 spiked dorsal ridge, thick knobbed/armored hide, a low toothy head, and four
-heavy taloned legs, roughly the size of "a battle tank." Color is the one
-open question: the sourced in-universe quote and the juvenile render both
-point to **red/rust**, while the adult SWTOR render is darker
-brown-black — plausibly a juvenile-vs-adult color shift (common in reptile
-Wookieepedia analogues) rather than a contradiction, but not confirmed
-either way. Favor red/rust as the primary color anchor since it is the only
-one both an in-universe character quote AND an image agree on.
+heavy taloned legs; Legends gives a length greater than 4 meters
+(*Operation: Shadowpoint*; "built like a battle tank" is the guard captain's
+simile, not a measurement). Color is the one open question: the KOTOR II quote
+says red and the SWTOR pet render is rust-red, while the KOTOR II model image is
+dark brown-black. No source states an age-based colour change, so none should
+be assumed. All of this is Legends (appearance reference only); canon
+(`Zakkeg`) holds only the proverbial mentions in *Star Wars: Commander* and a
+Liana Kor Databank entry.
 
 ## Must show
 - [ ] Stegosaur-like reptilian quadruped with a jagged spiked ridge running along the spine from head to tail

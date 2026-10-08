@@ -5,11 +5,13 @@ patched by `src/RimStarWars/Shokk/Patches/RSW_Shokk_Wyyyschokk.xml`, packageId
 `mandrake.rsw.shokk`)
 
 ## Sourced text (Wookieepedia)
-A large arachnid predator native to Kashyyyk's Shadowlands. Canon Wookieepedia
-prose (as pulled by the 2026-09-13 canon-brief pass) described it as
-"near-black to dark reddish-brown chitin" — **this text description undersold
-the real visual canon and is the worked example for why text alone fails; see
-below.**
+### Canon — https://starwars.fandom.com/wiki/Wyyyschokk
+
+Wyyyschokk were a species of gigantic spider that lived on Kashyyyk (jungle and forest), taller than 2 metres per the Bestiary. Highly intelligent and extremely hostile, they ensnared prey by casting a web-like enzyme from their mandibles from a distance, and often ambushed prey by dropping from the forest canopy or hiding underground, then crushed the prey's head in their mandibles. A notable subspecies was the Albino Wyyyschokk (also in *Star Wars Jedi: Fallen Order*). An adult could lay up to 1,000 eggs a year in extremely durable egg sacs of webbing, saliva and a secretion from lymphatic nodes under each leg; hatchlings took up to five days to eat out of the sac. At least 15% of Kashyyyk's forests were estimated covered in their webs, and Wookiee children were taught to defend against them from age three. First canon appearance: *Fallen Order* (2019); Legends origin earlier. The canon page gives no body colour.
+
+### Legends — https://starwars.fandom.com/wiki/Wyyyschokk/Legends
+
+Also called webweavers or Kashyyykian giant weavers; the most dangerous predator on Kashyyyk. Pack-hunting, tracked prey over a kilometre, immobilised victims with thick web strands and poison from upraised mandibles. Skin and hair grey, red, green or blue; eyes yellow, blue or red.
 
 ## Visual brief — RULED (owner correction, 2026-09-13)
 The owner's own lore images (comics/game art) show the real canon look:

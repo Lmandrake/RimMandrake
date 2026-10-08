@@ -6,20 +6,20 @@
 described Zeer as a "KOTOR-era creature." That does not match what
 Wookieepedia actually has on file — the only "Zeer" creature article is a
 *Star Wars Legends* species from the prequel-era Naboo video game *Star
-Wars Episode I: The Gungan Frontier* (2000), unrelated to *Knights of the
+Wars Episode I: The Gungan Frontier* (1999), unrelated to *Knights of the
 Old Republic*. Documented here as found, not adjusted to fit the brief.
 
 ## Sourced text (Wookieepedia/Legends)
 Zeer were a species of giraffe-like, non-sentient herd creatures native to
 the northern temperate and subtropical regions of Naboo, later also used to
 populate the moon Ohma-D'un and displayed for trade on Coruscant in the New
-Republic era. Infobox stats: height ~15 feet, length ~9 feet. Distinctions:
+Republic era. Infobox stats: height 15 feet (about 4.57 m), length 9 feet (about 2.74 m); the measurement axes are not stated. Distinctions:
 tall, with two swiveling horns on the head "similar to that of a dwarf
-bantha." They traveled in herds and grazed on leaves from the tops of tall
+bantha." They traveled in herds and browsed (ate) leaves off the very top of tall
 trees; described as relatively calm. Illegal poachers on Naboo killed many
 zeer before the Rebellion era, sharply reducing the population, which began
 recovering during the Galactic Civil War. First appearance: *Star Wars
-Episode I: The Gungan Frontier* (Nintendo 64, 2000); sourced description
+Episode I: The Gungan Frontier* (PC game by Lucas Learning, released May 18, 1999; see https://starwars.fandom.com/wiki/Star_Wars_Episode_I:_The_Gungan_Frontier); sourced description
 text comes from *The Wildlife of Star Wars: A Field Guide* (2001).
 
 ## Visual brief
@@ -55,7 +55,7 @@ entry.
 none known — no donor mod screenshot or sprite could be obtained at all (the donor mod is not present anywhere on this machine's disk), so there is nothing on disk to test against a rendering-pipeline constraint.
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Zeer/Legends (Wookieepedia article text,
+- https://starwars.fandom.com/wiki/Zeer (Wookieepedia article, Legends-tagged; no separate Zeer/Legends title exists; text
   pulled via
   `starwars.fandom.com/api.php?action=parse&page=Zeer&prop=wikitext`,
   2026-09-13; the bare "Zeer" title resolves straight to this Legends

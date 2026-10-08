@@ -8,6 +8,8 @@
 Womp rats were creatures native to Tatooine, and were considered pests by local moisture farmers who hunted them for sport.
 
 **Biology and appearance** Native to Tatooine, the womp rat evolved to withstand harsh desert climates. A breed of rodent, they were considered hairy, monstrous pests. They had lumpish, gray skin with tufts of spiky black hair running along their backs. They moved on four legs tipped with three-clawed paws, and had long tails and ears. Typically not much bigger than two meters, they possessed big, sharp fangs used to seize prey, and had large, yellow eyes.
+
+**Behavior (canon)** Womp rats were not timid; they hunted in packs and seized prey with their fangs, and a lone rat devoured garbage left by moisture farmers. They lived in the Jawa Heights region and denned in Beggar's Canyon alongside krayt dragons; swarms sometimes attacked inhabitants. Tusken Raiders decorated clothing with womp rat tusks and dewbacks ate them. A living brown womp rat appears in *The Book of Boba Fett*, "Chapter 5: Return of the Mandalorian" (https://starwars.fandom.com/wiki/Womp_rat). The wiki attributes gray skin, black back hair, three-clawed paws and long tails and ears to *Star Wars: Galactic Atlas*, and yellow eyes to *Star Wars: Alien Archive*.
 ### Legends — https://starwars.fandom.com/wiki/Womp_rat/Legends
 
 Womp rats were large, omnivorous rodents native to Tatooine, widely considered to be pests. They were slightly larger than two meters in size. There were three species of womp rats: ones that lived in Beggar's Canyon, ones that lived in the Jundland Wastes, and swamp womp rats. It was not unheard of for people to have domesticated womp rats as pets, but Luke Skywalker and his friends used to "bulls-eye" womp rats while flying T-16 skyhoppers, for fun and target practice.
@@ -44,7 +46,7 @@ hair along the back") fits image 2 best.
 - **Hands/feet**: THREE long dark curved claws on each paw (clearly counted in images 2 and 3), thin
   hairless pads/fingers; forepaws are hand-like.
 - **Coat (images disagree)**: image 2 (canon) = lumpy bare grey-black hide with a stiff mohawk-like
-  ridge of spiky black bristle hair along the spine and thin whiskers; image 1 (canon) = scruffy
+  ridge of spiky black bristle hair along the spine and thin whiskers; image 1 (canon, *Book of Boba Fett* ch. 5) = scruffy
   mottled brown fur with a dark patchy back; image 3 (Legends) = long golden-tan flowing fur; image 4
   (Legends) = scruffy olive-tan with a dark mane ridge. Prose and the strongest canon art say grey skin
   + black spiky back tufts; fur length varies by image.
