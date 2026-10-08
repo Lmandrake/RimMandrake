@@ -649,7 +649,7 @@
     <defName>RM_Dunejelly</defName>
     <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Tint it more green. Rename to Dunejelly." / "belongs at RimMandrake level"): renamed from RM_Jellypot / "jellypot"; RSW_Jellypot retired onto this def. texPath unchanged so the owner-kept art still binds; the green tint is an art job. -->
     <label>dunejelly</label>
-    <description>Called the dunejelly for the insect jelly it produces in its large thoracic sac, this rare animal is almost exclusively found near insectoid hives. Despite being farmed much like ants do with aphids, it does not seem capable of breeding in captivity.</description>
+    <description>A pale green, glassy dome of a creature, slightly translucent, with a small brown head poking out of one side of its low body. The insect jelly it produces fills its large thoracic sac. It is almost always found near insectoid hives, which tend it much as ants farm aphids, and it does not seem able to breed in captivity.</description>
     <statBases>
       <MoveSpeed>1.65</MoveSpeed>
       <ComfyTemperatureMin>-25</ComfyTemperatureMin>
@@ -739,7 +739,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot</texPath>
+          <texPath>Things/Pawn/Animal/RM_Dunejelly/RM_Dunejelly</texPath>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -749,7 +749,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot</texPath>
+          <texPath>Things/Pawn/Animal/RM_Dunejelly/RM_Dunejelly</texPath>
           <drawSize>0.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -759,7 +759,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot</texPath>
+          <texPath>Things/Pawn/Animal/RM_Dunejelly/RM_Dunejelly</texPath>
           <drawSize>1</drawSize>
           <shadowData>
             <volume>(0.4, 0.5, 0.37)</volume>
@@ -1110,7 +1110,7 @@
 		<!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Keep art, rename to the Oreclaw, lives in RimMandrake level."): renamed from RM_Groundrunner / "groundrunner"; RSW_Groundrunner retired onto this def. texPaths unchanged so the kept art binds. -->
 		<defName>RM_Oreclaw</defName>
 		<label>oreclaw</label>
-		<description>A strange chimera between a bear and mole, oreclaws were used as walking heavy tools by desert prospectors when they hit rock that plasteel can't break, and for hauling large boulders their owners can't lift.\n\nDue to their domesticated origins, they are surprisingly docile and easy to tame. Their incredible strength and sharp claws allow them to break rocks with relative ease. But out here, those claws are usually reserved for ripping apart anything foolish enough to corner one.</description>
+		<description>A heavy, rust-furred digger with a long pointed snout, small eyes and a bear's hunched, powerful build. Its front paws end in great curved claws, and rough grey plates of hardened skin cover its shoulders and forearms. Desert prospectors keep oreclaws as living tools, since the claws break rock that plasteel cannot and the animal can drag boulders no colonist can lift. Tame ones are docile, but a cornered oreclaw will use those claws on anything near.</description>
 		<statBases>
 			<MoveSpeed>3.00</MoveSpeed>
 			<ComfyTemperatureMin>-10</ComfyTemperatureMin>

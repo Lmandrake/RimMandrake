@@ -1,0 +1,1394 @@
+{
+  "biome": "RM_LongShade",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 93,
+  "decisions": {
+    "JOE_Landopus": {
+      "at": "2026-10-08T05:23:31.827Z",
+      "decidedAt": "2026-10-08T05:23:26.023Z",
+      "decision": "F",
+      "note": "Good. Now make N and S.",
+      "picks": {
+        "Things/Pawn/Animal/landopus/swimming_landopus": "D"
+      },
+      "prefill": "A",
+      "purge": [
+        "b0bb652dadaa74b967ef5f38e5eb2cf7b952be9daf90a3e2bcda1e64de407897",
+        "784691533c8b5b0e31b31641f83847240bea87083cd0b05267f78211448ac22e",
+        "321295ff2813188fc1f75f37a058fdddd1c996bb20b9d74b4c4e1b820424bce3",
+        "941bc4f7025e66cc4b483d0155cc09e09eecc41d4c0d343a896d68bd938005b7",
+        "4825e7484676737fbeb1d0464d548430649f9d1e87156fe1ac972460d164a2c2",
+        "083ad3c2f9e9f848892bae8e6d7365b0a16806a8a3d4570f2b34a966f780275a",
+        "ce35bb8fedadc48745becee07c926922a703832d3ab8296ac713e11f50057c1b"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "F"
+      ],
+      "variantsAt": "2026-10-08T05:23:21.599Z"
+    },
+    "RM_Bokka": {
+      "at": "2026-10-08T05:02:53.192Z",
+      "decidedAt": "2026-10-05T03:18:42.854Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T05:02:45.453Z"
+    },
+    "RM_Chorn": {
+      "at": "2026-10-08T05:04:06.869Z",
+      "decidedAt": "2026-10-08T05:03:46.933Z",
+      "decision": "redo",
+      "note": "Make this thing 5 cells wide please, regenerate but keep roughly the same otherwise. Regenerate description.",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Dakkra": {
+      "at": "2026-10-08T05:04:40.956Z",
+      "decidedAt": "2026-10-08T05:04:23.401Z",
+      "decision": "C",
+      "note": "Good! Now make North and South versions of C",
+      "prefill": "A",
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:04:40.956Z"
+    },
+    "RM_Dewfringe": {
+      "at": "2026-10-08T05:27:33.439Z",
+      "decision": "A",
+      "note": "Add a bunch of variants, move to RimMandrake tier",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "variantsAt": "2026-10-08T05:27:33.439Z"
+    },
+    "RM_Dunejelly": {
+      "at": "2026-10-08T05:05:58.736Z",
+      "decidedAt": "2026-10-08T05:05:45.139Z",
+      "decision": "D",
+      "note": "Regenerate description from image",
+      "prefill": "A",
+      "purge": [
+        "808e80d3bdb999d5f8c1581aaddeb53c43ed5fe3e0b9dad99b062b24eb89cd6a",
+        "1d40c90e69e8bda87a93ec56f38e79f9dd6493a5fb2b16598edb169b26e9ae70",
+        "ae26a108fb2870804b0275631d00fba4c6ce86f086a717c12ca9a69197bc5d4d",
+        "1e79c98bd4269061c241dca50c039d1ae61bd1e0ddb3bae18ef7bd8edaf463d5",
+        "1f38098e7ba9f62fc3c1dfe941638ea6c547d700b27ce655a512d08f9c5b63a1",
+        "60c3ce8140ef913e763d5ed78d1293d669e5347d51294c14f5da9a4fcabf681c",
+        "3efcf1a76c71854b7f60a685bcc3e37918c8909df1d7d0d139b7ba71571e80c8",
+        "388390dc51913d33d6aaed92bdbe8c69a24ee2bb27d5cba90a62a7051ee2ec95",
+        "98384dcadc06b05500a44aa7ea355a1749ea35ea3574339b0ccc4d641ef91899"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Gennok": {
+      "at": "2026-10-08T05:08:23.102Z",
+      "decidedAt": "2026-10-08T05:08:14.714Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "b6c19678c8ff7501d9bc59d3cc5a3cca8a66d331be3c18f4236e88dc0d35c03a",
+        "b66b096c9718d7505a13eef7fc50717250b4597f4ab3b452b94b23f4e978315d",
+        "95d35ae044a26575a28bc0a52be640f333510fe8db8d23088447c447081136a0"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:08:13.589Z"
+    },
+    "RM_Gloomcast": {
+      "at": "2026-10-08T05:08:47.208Z",
+      "decidedAt": "2026-10-08T05:08:41.893Z",
+      "decision": "E",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "d6bb408a2bdd678def9425a619677ccd8d6a025f1aa76d1863debbeeadb94e7a",
+        "c9190d3f9e248b875dfe6554ad796e3d627fe24853cc6dc1147c18a0d736a5c9",
+        "a578c32d3c7a978a3d2f8ebf1d884c9dfdbf3518f0025e9a0a1f826be6a204ed",
+        "7343d370be648e560973a47f3a1ab2444026472727bafef1afd11e66a7d402ce",
+        "71f171b1f1571ee03a0ae7548c85d182597e828178f7966118346ee1a00739c4",
+        "b65c4377b0f9bec8cfbc251fc971d9eb7ec0a9e1f89563d36e7174db2e920335"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "E"
+      ],
+      "variantsDefault": true
+    },
+    "RM_GreatDevourer": {
+      "at": "2026-10-05T03:21:18.329Z",
+      "decision": "A",
+      "note": "This is NOT Canon. Star Wars DOES have something called the Great Devourer that is unrelated. This was from Alpha Animals originally, and now we are making it ours. It is now a life stage of the Sarlacc (see entry) that quests until it finds rich food and a water source to claim. See the Sarlacc entry for what to call it properly. Remove the canon association with this animal. Lives at the RSW level (though we're adding to the Star Wars canon ourselves with this one)",
+      "prefill": "A"
+    },
+    "RM_Groundrunner": {
+      "at": "2026-10-05T03:22:41.896Z",
+      "decision": "A",
+      "note": "See above.",
+      "prefill": "A"
+    },
+    "RM_Jellypot": {
+      "at": "2026-10-05T03:23:31.832Z",
+      "decision": "A",
+      "note": "See above, belongs at RimMandrake level.",
+      "prefill": "A"
+    },
+    "RM_Khorrak": {
+      "at": "2026-10-05T03:24:32.049Z",
+      "decision": "A",
+      "note": "See above, belongs at RimMandrake level",
+      "prefill": "A",
+      "purge": [
+        "f543ad9be205860b0bff91eabc40739fb98c84b0c792e9eceb98c11e38484b40",
+        "ed969696fb9b1831fdb0955c9488e145678fb535271ea1681dda8981a594d300",
+        "ec5cacdb2a581d56308b9d3990943f7a5be41cdfe622a596ef79623cc263c60e"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Kudda": {
+      "at": "2026-10-05T03:25:18.886Z",
+      "decidedAt": "2026-10-05T03:25:14.272Z",
+      "decision": "hold",
+      "note": "Just cut this creature. It's dumb.",
+      "prefill": "A"
+    },
+    "RM_Leachmoss": {
+      "at": "2026-10-08T05:27:36.890Z",
+      "decidedAt": "2026-10-05T03:34:26.417Z",
+      "decision": "redo",
+      "note": "",
+      "prefill": "hold",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsAt": "2026-10-08T05:27:36.890Z"
+    },
+    "RM_Maidenbloom": {
+      "at": "2026-10-05T03:34:47.286Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsAt": "2026-10-05T03:34:47.286Z"
+    },
+    "RM_MatureFleshbeast": {
+      "at": "2026-10-05T03:26:07.380Z",
+      "decidedAt": "2026-10-05T03:26:00.765Z",
+      "decision": "hold",
+      "note": "Remove this, no longer needed",
+      "prefill": "A"
+    },
+    "RM_Mirrak": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Ommok": {
+      "at": "2026-10-05T03:27:16.168Z",
+      "decision": "A",
+      "note": "see above",
+      "prefill": "A"
+    },
+    "RM_Oreclaw": {
+      "at": "2026-10-08T05:12:59.593Z",
+      "decision": "A",
+      "note": "Add description based on image",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Ossik": {
+      "at": "2026-10-05T03:27:44.922Z",
+      "decidedAt": "2026-10-05T03:27:42.379Z",
+      "decision": "hold",
+      "note": "no longer needed",
+      "prefill": "A"
+    },
+    "RM_Pavecrust": {
+      "at": "2026-10-08T05:27:42.510Z",
+      "decision": "A",
+      "note": "add many variants",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "variantsAt": "2026-10-08T05:27:42.510Z"
+    },
+    "RM_Pirrik": {
+      "at": "2026-10-05T02:43:41.936Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "306593e8160baecb630066c4414a21584356e51a522e260d04027d262f94aa74",
+        "ce36709f9f4696e7a960b07980b10bb1356a8fe8a02e2c348c996a3cc6516619",
+        "827d7a3b37e26f39f8cb44c881274075c44ad03b878e9ddaffd23edbf007a193"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Qorrax": {
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming": "B"
+      },
+      "prefill": "A"
+    },
+    "RM_Shadespire": {
+      "at": "2026-10-08T05:27:49.203Z",
+      "decidedAt": "2026-10-08T05:27:47.027Z",
+      "decision": "D",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "69b8539fe792a1a37ee13d8919e899cf5869b4ad7ddb6a3d56b12d3661cbd24e",
+        "64944ac8ff038ec3c8cc08584a3bd7a61d64f1ba5e6c844a1941879e46989dfc"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "D"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Sippra": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Skarrok": {
+      "at": "2026-10-05T03:04:23.160Z",
+      "decision": "A",
+      "note": "Accept art, but renake to Ski'ra'lim",
+      "prefill": "A",
+      "purge": [
+        "7697fe84c3a26f112237ff8657af2a92a37dc59367fd2e2a384b422a3756fef5",
+        "3ae5d1b61d21e2a791cd5a2448fc38ba0809ed1da9ae465ec9318864a3b6dc6f",
+        "a344c956e9292c8c0260c18a434d6a6230aeb7d92d30ee54280086678e0d7148"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Skiralim": {
+      "at": "2026-10-08T05:19:02.305Z",
+      "decision": "A",
+      "note": "write new descriptionm based on image",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Sollak": {
+      "at": "2026-10-05T03:06:03.634Z",
+      "decision": "A",
+      "note": "Keep art, rename it Chorn.",
+      "prefill": "A",
+      "purge": [
+        "1fe9a4e633656ff77a47ccd4db87329a07c8f2a7c0f104db83f77b3bee15d688",
+        "46e866033c6a3c2000ca45470ad663b3ef6f8307906794e57b253c265e3c26ab",
+        "fc7e8a9cbdb51788979ea482d7a7994e9015a4f0cdea733c0a9532f425da0c87"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Tazzok": {
+      "at": "2026-10-05T03:06:32.157Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "633f4ccb8032486f6a44f747766718298525f52e5a8f94ec99ea8e4178c3f927",
+        "abc03a1b583876e86a062e0c0aadef2f756f2fc6d390905b1fa89c09b129588e",
+        "f098fcd0b46cdb094c02a9f638c1027fbd24332fb68d9f7b3ae9c8acda7c0b65"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Tebbra": {
+      "at": "2026-10-05T03:06:43.071Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "d81f7b0222f66da6ed8c3a2db8244d6f1036f360338a0b7bbfdbe775475828b8",
+        "6b3a090946e5d54236827f1ceb8a66f76bed90ed8126ec752bc33b2232a6cc0e",
+        "ff50a8125e4f130215464faa4eb6633b48cab873a1cd2ecf99fdef04c910816e"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Thurra": {
+      "at": "2026-10-05T03:28:32.410Z",
+      "decidedAt": "2026-10-05T03:28:29.768Z",
+      "decision": "hold",
+      "note": "no longer needed",
+      "prefill": "A"
+    },
+    "RM_TruffleMole": {
+      "at": "2026-10-05T03:29:44.217Z",
+      "decidedAt": "2026-10-05T03:29:44.217Z",
+      "decision": "B",
+      "note": "see above",
+      "prefill": "A"
+    },
+    "RM_Ulgga": {
+      "at": "2026-10-05T03:31:36.983Z",
+      "decision": "A",
+      "note": "see above",
+      "prefill": "A",
+      "purge": [
+        "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a",
+        "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
+        "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Ultracactus": {
+      "at": "2026-10-05T03:38:51.802Z",
+      "decision": "hold",
+      "note": "see above",
+      "prefill": "hold"
+    },
+    "RM_Venomvine": {
+      "at": "2026-10-08T05:28:23.003Z",
+      "decidedAt": "2026-10-05T03:36:51.415Z",
+      "decision": "redo",
+      "note": "REDO THE VENOM VINE!! Totally wrong art.",
+      "prefill": "hold",
+      "variants": [],
+      "variantsDefault": true
+    },
+    "RM_Vorrel": {
+      "at": "2026-10-08T05:28:32.012Z",
+      "decidedAt": "2026-10-08T05:28:32.012Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "hold",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Vosska": {
+      "at": "2026-10-05T03:32:26.866Z",
+      "decision": "A",
+      "note": "see above",
+      "prefill": "A"
+    },
+    "RM_Vrekka": {
+      "at": "2026-10-05T03:13:01.749Z",
+      "decidedAt": "2026-10-05T03:12:42.127Z",
+      "decision": "redo",
+      "note": "Keep the overall face/mouth part and bony underjaw. Make the legs even snorter and less fit for running. Ambush predator.",
+      "prefill": "A"
+    },
+    "RSW_Bantha": {
+      "at": "2026-10-08T05:02:38.415Z",
+      "decidedAt": "2026-10-08T05:02:21.204Z",
+      "decision": "F",
+      "note": "Nice!",
+      "picks": {
+        "swanimals/Bantha/BanthaW_j": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "2d7d9221c9f80b42cb795c21835e8ad588e441ce22dbf1fedabf2472186e4b84",
+        "02443102a6ce72bd206b04f7483861249fabc269c37aa61eac3dac568104e8f3",
+        "384288d3bedda0a0b0924f825f7d7be2695bbd5aef7c8f28b9bbf22f986085e9",
+        "66fafe41129a51519c705af64630f8cd2b4e769a405806495843448706d5e9b6",
+        "4211aef404d352faa2c371c6148991f3ede159ae53ebaa52a70d90ba8689acce",
+        "180410ff27f77194026df59b76551860bb8ea7c98d637b8ae32bbe9e096e4169"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "F",
+        "G",
+        "H",
+        "I",
+        "J"
+      ],
+      "variantsAt": "2026-10-08T05:02:28.752Z"
+    },
+    "RSW_Bokka": {
+      "at": "2026-10-05T03:18:38.290Z",
+      "decidedAt": "2026-10-05T03:18:20.809Z",
+      "decision": "B",
+      "note": "Should live at RimMandrake level",
+      "prefill": "A"
+    },
+    "RSW_Bolotaur": {
+      "at": "2026-10-08T05:03:28.836Z",
+      "decidedAt": "2026-10-08T05:03:05.469Z",
+      "decision": "E",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "3fb02dba6ffddcba1e799f941a343381b325d6b35ff4346fcb6147173f507d8b",
+        "feecd105cdf63bac013d4822f465c06f2e3e84277439f2246fe146535be3b4ed",
+        "26672e3f72b8dd3f1f41e7c67a85bba41fa3be1090706f21361147376e067793",
+        "b68bdc5712b9d8b6ee1a8f8fba5f41c862a57ae145a90d630d588c7d7f605e07",
+        "28c1eb8f61910b330f07c20580e2584e9f562ea837c13ae3c26b888c5638c065",
+        "e6468ea550f53246f23c5561a5aee9ebe67829a78958115c8c535dcf09dfad39",
+        "78f84d78872e59601c8619f7f8b11b07be2ebfbf81d421d3c501aaf56a67cd9e",
+        "202d94c298daed4a360312adb5d5d335904e1f9ee68be5d33ea450ece9c8ee0e"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "E"
+      ],
+      "variantsAt": "2026-10-08T05:03:28.836Z"
+    },
+    "RSW_Clodhopper": {
+      "at": "2026-10-05T01:19:00.386Z",
+      "decidedAt": "2026-10-05T01:16:52.328Z",
+      "decision": "redo",
+      "note": "Truly alien creature, do not turn into a bird. Ignore the \"avian\" description, they don't look anything like a bird. Four legged. Wingless. Travel in large groups. Bizarre jointed mouth part ending in an extended beak at the end of a fleshy appendage.  Follow canon.",
+      "prefill": "A",
+      "purge": [
+        "a2e6ec0ec6a170f047f77510291702f0b794b136083e835283ec654465627421",
+        "dc297c1ba505b126c785a32f7ec3c07e6432e68509b6efffd96aa4a05ddf84c2",
+        "cd39c6b7a3a4b2111728d3020313923f04af28046cd9062de2ec81f87fecf343"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Dewback": {
+      "at": "2026-10-08T05:05:19.261Z",
+      "decidedAt": "2026-10-08T05:04:56.887Z",
+      "decision": "H",
+      "note": "Good! Now make North and South versions of that creature, and make it four cells wide.",
+      "prefill": "A",
+      "purge": [
+        "88aaff25c565b25b88bbd5fab5cf0ceb510a35bcb6af84b6f8ca62e0e48e9f2a",
+        "5a292707ae8df49da5c560f19251c73beae3c9343d29dfdf0f20fe3d6d83d137",
+        "2e4e730329d3448cfc411753dbe994f83e9d5846644cffdeb8cc48104ebffb9d",
+        "a7def6a5f6a13e56811fdbc071606cbaf3b814f8c9d92700fb3cd77a9c193c85",
+        "9ba728db4a92098cd09ed5466f3a36321a618db1c9460c6dc68dea8e10b4ac56",
+        "664e965fd886511bbf5dece1cf18e400f856df00e68104b5f211f0702792441b",
+        "ad77184e33f462a7a66adf0635e9953e664fac97a15c0e4790a2510269c320d9",
+        "758b2b01eb82d06f18c09316f3d834a715f416e35660790c3648267d9ab14935"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "H"
+      ],
+      "variantsAt": "2026-10-08T05:05:00.406Z"
+    },
+    "RSW_DommoTree": {
+      "at": "2026-10-05T03:34:06.796Z",
+      "decidedAt": "2026-10-05T03:34:02.881Z",
+      "decision": "hold",
+      "note": "cut this",
+      "prefill": "A"
+    },
+    "RSW_Eopie": {
+      "at": "2026-10-08T05:06:34.034Z",
+      "decidedAt": "2026-10-08T05:06:22.402Z",
+      "decision": "G",
+      "note": "Good!",
+      "picks": {
+        "swanimals/Eopie/Eopie_j": "F"
+      },
+      "prefill": "B",
+      "purge": [
+        "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae",
+        "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
+        "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
+        "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898",
+        "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+        "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "F",
+        "G"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Falumpaset": {
+      "at": "2026-10-08T05:07:03.438Z",
+      "decidedAt": "2026-10-08T05:06:54.313Z",
+      "decision": "C",
+      "note": "Good! Now make N and S views.",
+      "prefill": "A",
+      "purge": [
+        "f9ece556f07e1e95697566c969e62e7bbe20eaac91d5e20bb048214830b8f09e",
+        "df0ce2c77dbfe0ee9df9e4b41e05f6dc76923127804ffc04c6154019d973acc7",
+        "9082ec7f8b8ea1fb1413ca1b69358f59013288802c9a3f22aa260b185cbfc416"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:07:03.438Z"
+    },
+    "RSW_FeralGrazer": {
+      "at": "2026-10-08T05:07:24.282Z",
+      "decidedAt": "2026-10-08T05:07:24.282Z",
+      "decision": "C",
+      "note": "Good!",
+      "prefill": "A",
+      "purge": [
+        "a13e7f34318460abe8de7fe85460cac3e619f8ef32babe34c23e19a18634dfc4",
+        "b5eb0f34f4efda92f60991f1871717ce90dfb47d961b23bd295e9d9d04823ce7",
+        "b2472be4ad49ba9d7d8a4c43f60c4aaff8f95cf53e3f99da5c0ff44ca4fa46de"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:07:09.235Z"
+    },
+    "RSW_FrilledGorg": {
+      "at": "2026-10-08T05:08:05.789Z",
+      "decidedAt": "2026-10-08T05:07:50.851Z",
+      "decision": "F",
+      "note": "Good! Make sure all the variants have N, E, S",
+      "picks": {
+        "swanimals/FrilledGorg/FrilledGorg_Swimming": "C",
+        "swanimals/FrilledGorg/FrilledGorg_j": "D",
+        "swanimals/FrilledGorg/FrilledGorg_j_Swimming": "E"
+      },
+      "prefill": "A",
+      "purge": [
+        "977cb82046d21f347904907cf85114f833406dc355a10f78106fd8d6f8c4eb41",
+        "db294f48374b4d02704fdc4ca4178d699dc307d37004048af0d34a50e377fba3",
+        "c83dd075243daaa6e40de427a3d0d90ebf837abc3bd088809a04ce233b23210c"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "F",
+        "G",
+        "I",
+        "J",
+        "K",
+        "M"
+      ],
+      "variantsAt": "2026-10-08T05:07:47.717Z"
+    },
+    "RSW_Gorg": {
+      "at": "2026-10-08T05:09:15.863Z",
+      "decidedAt": "2026-10-08T05:09:15.863Z",
+      "decision": "F",
+      "note": "Good! Make sure all variants have N, E, S",
+      "picks": {
+        "swanimals/Gorg/Gorg_Swimming": "C",
+        "swanimals/Gorg/Gorg_j": "D",
+        "swanimals/Gorg/Gorg_j_Swimming": "E"
+      },
+      "prefill": "A",
+      "purge": [
+        "5d23ef610783cee163727ace06f0d2402d6cbe1ad3f7dbcd2a8ec67f3b06b184",
+        "dc6ad278bb698b15ffb1051547a298e1885ecec60f307778b1440fb32d3d67dd",
+        "6abf49062826588170b9ade67da4aeeba55426034831692cc60cbf17d08d65e7"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "F",
+        "G",
+        "H",
+        "K",
+        "L",
+        "N",
+        "O"
+      ],
+      "variantsAt": "2026-10-08T05:09:00.858Z"
+    },
+    "RSW_GreatDevourer": {
+      "at": "2026-10-08T05:27:13.661Z",
+      "decision": "A",
+      "note": "Not SW",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Groundrunner": {
+      "at": "2026-10-05T03:22:34.924Z",
+      "decision": "A",
+      "note": "Keep art, rename to the Oreclaw, lives in RimMandrake level.",
+      "prefill": "A"
+    },
+    "RSW_Gutkurr": {
+      "at": "2026-10-08T05:09:24.486Z",
+      "decidedAt": "2026-10-08T05:09:22.712Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "e41fc3270a25ff9642b1ad10cbab3cf54eebc733f018a8db1d0096c559ec270a",
+        "3666ba09c5946124ad381c0d649d9406fb08b62dde07bce1b78becb9ffcb7955",
+        "bd8053c99e1367906bbedb693ee2ccc457dba3c45b6bdd4c9c10bde58a9651eb"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "C"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Horax": {
+      "at": "2026-10-08T05:09:50.473Z",
+      "decidedAt": "2026-10-08T05:09:44.191Z",
+      "decision": "E",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "dec2823f81e782bb84623bb059e73fe030af07e47e2fa231080c792ee15e5533",
+        "6f1f91145ca19f93ed18055d6fa73a6b0101fe143a5e6773cdc0f8fc225d33ea",
+        "b90d01e49b05d6aca651eded1392c0606a0f375cd9a88393d2fa75b77f68f026",
+        "883b5e16512a9ce064fff5cedfed0cdba56358c218b12063a7567b66b0a8b89d",
+        "e27c739b1cf2f13ca74c962c0c53da847b59ea124129efa5e93df0aabf5e20c7",
+        "c5bd967e5067c718d912165103eca092e8507df9dab2bb894c0dcc3531a284c6",
+        "dabe7c133ead7a48bc6cd0140d6c04585ef9d4cfe25274c8839bece39f664af4"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "E"
+      ],
+      "variantsAt": "2026-10-08T05:09:47.245Z"
+    },
+    "RSW_Hrumph": {
+      "at": "2026-10-08T05:10:16.605Z",
+      "decidedAt": "2026-10-08T05:10:08.793Z",
+      "decision": "D",
+      "note": "",
+      "picks": {
+        "swanimals/Hrumph/Hrumph_j": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "18d9a94ab7a4e6757e843e9f4a373fc1ce3b0a39a374dc1824be58bdc91cda4d",
+        "c6e92b4e604a38edd9ca52e97e421c46af4d4ed29c9232094408d58ca067bd8e",
+        "02397881facf5c06691c38b0cd2c2cc05067764d5891d10624c8a2395e7a71ac"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:10:14.466Z"
+    },
+    "RSW_Iriaz": {
+      "at": "2026-10-08T05:10:40.058Z",
+      "decidedAt": "2026-10-08T05:10:37.746Z",
+      "decision": "I",
+      "note": "",
+      "prefill": "B",
+      "purge": [
+        "2a7cb65763c0ff45061f212f70c062bba0b67d7ef3b1bf13195790e4b8734959",
+        "4f79c85dda5a8edfdb6c06f54482bac3edfceff6c6c0c18eb05315d2e353a053",
+        "e40bc3c2adf55f194fd6feaac6d2c2938c2b3c0984bfa4644f777d1417ab9a47",
+        "0de8eff19362b2c97c17f8dc2f7511343ded2d81842c805b60c635b9064b3363",
+        "b62c6edacee6405152a7f039ff9f2eec0d527646da2f7352ce311d24dcec33d3",
+        "847ed6c765b78ceefc6511a5a4ea268ae5a1f0de20fec7a9d37eba2ca97e1294",
+        "716520e54f7f0860184504c85e8a0068cd30f3f2302ada30edee41a8e3de57e6",
+        "7c9f26fc6ee999bf673977843d6989fd6f3cf0437143f84a308ff942e99f5889",
+        "bee207641dd4880eac99b682e44a1187ff016697eff485c6b308b3dc334b1376",
+        "1c5e230d80f6120818341b52a7a274b63a02fd7aed6f484394949ba00804ead9",
+        "2a992e80b52bdfb60bacf805ea2a912f8f24492bfc64741333d5e76e0f61ea14",
+        "6df9daa0dd032d2d6fe8ab9b6ccd293c927307b3cb26db6ee2d2abb66138ad24",
+        "c89db66e50c906953a07ef5c10ed194b1a05abfccf64dff33dcb38a06a796205",
+        "dbf9e182ffe4b57075ce9f21a9505c6f389901e6ab11db6e475a761c32295be6",
+        "0c71a8259e7497dfe8798e1ca10309cb7f6137b0eefcc5a78b85d005c4f34139",
+        "51a1e8a59765bae754d5a286305875fcb75a18485e1a365aa85b74bfe0f211f9",
+        "2b33ce06b59e38194e148128657a69bfa40eee4fbb293c1bffc822b9e6f0466e",
+        "21a39e0981d79fa8f04c97d063b04018936b710b6f6184c1f4660fbb3450fca9",
+        "1c9975dd7e0a36005569f9b01cb76475f19d2b10aad8804576133cc9ee5538c0",
+        "f0417789c32fb83912fbe9d56b6d1fc1f769e308826567e01f678e111de62a67"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "G",
+        "H",
+        "I"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_IridonianReek": {
+      "at": "2026-10-08T05:10:52.486Z",
+      "decidedAt": "2026-10-08T05:10:47.814Z",
+      "decision": "D",
+      "note": "",
+      "picks": {
+        "swanimals/Reek/Reek_j": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "39fa363d375feccf5097f1eed17357c65d2a2b11c288ac8038eb32d0233cf7b9",
+        "7c0b8b532e747b5eea016c3c62b005807efbb52a42344dc5d68568cf20cdb159",
+        "48ecfc21360c987853a65773c545ef1936be3279b313e314ee9d6bcf60c671f8"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:10:50.942Z"
+    },
+    "RSW_Jakobeast": {
+      "at": "2026-10-08T05:11:04.362Z",
+      "decidedAt": "2026-10-08T05:10:59.627Z",
+      "decision": "E",
+      "note": "",
+      "picks": {
+        "swanimals/Jakobeast/Jakobeast_j": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "3256bf66c1eeccfe56e136c28baecba73b795cca24a3bff24f1feddcf53e7e87",
+        "324c50dbfe72b0bdeb55799268768ae4da466a4e5ae4cbf8eb485ae1578fafdc",
+        "90bbe5bea7d9223deccc7b78aed2a5e09dc3f8208c1d284a44a5ba3372ea3701"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "E"
+      ],
+      "variantsAt": "2026-10-08T05:11:02.460Z"
+    },
+    "RSW_Jamel": {
+      "at": "2026-10-08T05:11:17.420Z",
+      "decidedAt": "2026-10-08T05:11:12.567Z",
+      "decision": "D",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "3537446a7d74add5d4e44e5d9f4e9a3aeb75dc9a48a5fc04d866233d737afaaa",
+        "3c6876c1ddd627e60cebadab157daa74da2dfbb9afdf8946ed9294d696aefbcd",
+        "d7e33c9d85e3bad84472dbf08d4e7aec637b47107bfacb80529d1e180e751e31"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:11:14.168Z"
+    },
+    "RSW_Jellypot": {
+      "at": "2026-10-05T03:23:20.223Z",
+      "decision": "A",
+      "note": "Tint it more green. Rename to Dunejelly.",
+      "prefill": "A"
+    },
+    "RSW_Jimvu": {
+      "at": "2026-10-08T05:11:29.016Z",
+      "decidedAt": "2026-10-08T05:11:26.284Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "1df6dd760d9c5038c878780e8955f11450e6cea871ef240dff82c0316f5f91f5",
+        "c249323ff9d5ae0ee6afa8e687a6725fbec18cd3ab94d779ec1edd19cc61d1c4",
+        "fc76118c588611d33a2e91c66332bdbacc211c87ff58a12ef979a7e409041b70"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:11:27.494Z"
+    },
+    "RSW_Khorrak": {
+      "at": "2026-10-05T03:24:15.288Z",
+      "decision": "A",
+      "note": "It should produce vacstone chunks.",
+      "prefill": "A",
+      "purge": [
+        "f543ad9be205860b0bff91eabc40739fb98c84b0c792e9eceb98c11e38484b40",
+        "ed969696fb9b1831fdb0955c9488e145678fb535271ea1681dda8981a594d300",
+        "ec5cacdb2a581d56308b9d3990943f7a5be41cdfe622a596ef79623cc263c60e"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Krykna": {
+      "at": "2026-10-08T05:11:38.525Z",
+      "decidedAt": "2026-10-08T05:11:35.320Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "09e1ca6f4c61b8d8845defe7faeef15d3640edc813a0462124197d4f1fc3e816",
+        "6effbc42d4cd742baed36d7a47c135d6e6a40ecf4e7e977f9c63f4d1cc74a5bb",
+        "21241915edca38bed4c7e83d70bc86c50c7a49a6a9ac7c902ebbe02a97fecc31"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:11:36.293Z"
+    },
+    "RSW_Kudda": {
+      "at": "2026-10-05T03:25:10.421Z",
+      "decidedAt": "2026-10-05T03:25:05.824Z",
+      "decision": "hold",
+      "note": "Just cut this creature. It's dumb.",
+      "prefill": "A"
+    },
+    "RSW_Kwi": {
+      "at": "2026-10-08T05:11:49.762Z",
+      "decidedAt": "2026-10-08T05:11:49.762Z",
+      "decision": "C",
+      "note": "",
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "98d4a7f433b1827c0f581069b0c23fe957b42396f25848657a4b3778b1761d54",
+        "8cbcc68146fb01cd03e182edaec73e2192c93fa317c1222607683ef7ab23c3f5",
+        "e56b7b7ceaeb955ceaf6f03ff2e8107a5675ed1b7a931e1c20a7f4c96f0d3849"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:11:45.310Z"
+    },
+    "RSW_LongtailGorg": {
+      "at": "2026-10-08T05:12:07.465Z",
+      "decidedAt": "2026-10-08T05:12:02.554Z",
+      "decision": "F",
+      "note": "Good!",
+      "picks": {
+        "swanimals/LongtailGorg/LongtailGorg_Swimming": "C",
+        "swanimals/LongtailGorg/LongtailGorg_j": "D",
+        "swanimals/LongtailGorg/LongtailGorg_j_Swimming": "E"
+      },
+      "prefill": "A",
+      "purge": [
+        "57f4519230ba07c20fe89d91c9acc286d7a3d9932f6449efcc19bb2faf4b4153",
+        "d99538682a448084a448ea2f8bd8c2522e770053ee6a6d9a22cae032fdc93967",
+        "b1af40525b8033f45c21405495c25c26225ee8163d58e1d2f141231290450a21"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L"
+      ],
+      "variantsAt": "2026-10-08T05:11:58.448Z"
+    },
+    "RSW_MatureFleshbeast": {
+      "at": "2026-10-05T03:25:53.952Z",
+      "decidedAt": "2026-10-05T03:25:45.188Z",
+      "decision": "hold",
+      "note": "No longer needed, remove.",
+      "prefill": "A",
+      "purge": [
+        "c252527a99985e86c0af1bdc2f0a6d18a8251479300d8c4709567e57b88652d7",
+        "e34da4a0974656f7711c4ef5a310cc30e3b4cc01e2e4ca354c529ac312274b49",
+        "924215c2575d4f3d829d926428520551b9b63ed2ac93c875db4031072bff095c"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Nerf": {
+      "at": "2026-10-08T05:12:34.688Z",
+      "decidedAt": "2026-10-08T05:12:29.408Z",
+      "decision": "E",
+      "note": "Good! Now do N and S too",
+      "picks": {
+        "_byname": "E",
+        "swanimals/Nerf/Nerf_j": "B",
+        "swanimals/Nerf/Nerf_m": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "e29d723584044d9f7e3d41e4cb5b3773ba3f085e95aed66d08eb0025e9525404",
+        "08787cdf90a9addf63307cec2ce32b3e7edea179ab4a67db81942de41a8617c1",
+        "1ca88ca5d3db5afbe6cbee248534beb33c36946f521a62b1b1fa0a2f90ca3680"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "E"
+      ],
+      "variantsAt": "2026-10-08T05:12:25.277Z"
+    },
+    "RSW_Nuna": {
+      "at": "2026-10-05T02:43:29.607Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "swanimals/Nuna/Nuna_m": "F"
+      },
+      "prefill": "A",
+      "purge": [
+        "f0b3164a7a7f243735e73621a80b833fae7ca3a62b17d33d7e5983996a28c201",
+        "69411aa58ee3ffe8b744ac358f461dd15e4e8dd68ef9aa5941a6dadb190f4224",
+        "79692f8ee7a10859845e5806223cdeed91ba62640bf06234cd184d19888ca641",
+        "be8c539adf93e9502fb56372c9666142c352b0c59dacd710ae0d8283849ce83d",
+        "b12317061a53c913cd657f739d5477c9f9e82cd95fc66b0e8a7602f2aa8dfa65",
+        "65c74d2b395db00a4fde2484de1eca85695d63cfcd6962282f9a76d18fca08c8",
+        "98f37666c7df36beebabb3e58bf908d5631747abcedd0522ee3b1b73fbe416fb",
+        "9006f37f9c6b7b3fca57cdba873c5106ce5955695342a46a6ad14484e0e9a5e0",
+        "bb31936d090a504a8a3c3fdb3096792b6284d7e6ba9f63077d763b63a0831bc0",
+        "2c70ed792c2fa6111362bc59a464cbfdd0c2cd9bdacdd8f8a7310a1c96fa0167"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "F"
+      ],
+      "variantsAt": "2026-10-05T02:43:15.484Z"
+    },
+    "RSW_Ommok": {
+      "at": "2026-10-05T03:27:10.393Z",
+      "decidedAt": "2026-10-05T03:26:29.583Z",
+      "decision": "B",
+      "note": "Move this to the Miasma Biome and shrink by half, should be Rim Mandrake tier",
+      "prefill": "A"
+    },
+    "RSW_Ossik": {
+      "at": "2026-10-05T03:27:37.053Z",
+      "decidedAt": "2026-10-05T03:27:34.261Z",
+      "decision": "hold",
+      "note": "no longer needed",
+      "prefill": "A",
+      "purge": [
+        "a741bfbc024eada102892042fb000dabe3d88b855c458f84d4cf7aadd22fa819",
+        "919b35c82665929c48b6017deeccbe2c333d21a74e1a0cd45abd69153b4cb3d8",
+        "9ecd37095c8f967d1d28d667d8f890c333e1d6a0e2575d59ac3f6665fb00a767"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Plant_Chakroot_Wild": {
+      "at": "2026-10-08T05:28:38.455Z",
+      "decidedAt": "2026-10-08T05:28:37.017Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Plant_HubbaGourd_Wild": {
+      "at": "2026-10-08T05:29:02.704Z",
+      "decidedAt": "2026-10-08T05:28:58.416Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T05:28:57.467Z"
+    },
+    "RSW_Ronto": {
+      "at": "2026-10-08T05:14:17.651Z",
+      "decidedAt": "2026-10-08T05:14:06.565Z",
+      "decision": "F",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "9bb6a0c62dc1418e776597fe8991b82624badc6a18704e167b276f0c48c279dc",
+        "e44bbd8d49bd9ff34577d5307db941a71ad42570061a175ed60c18bbee37fbfa",
+        "22cb7013c11ed53ff815f69716d688a08f0acf5cdaf4ef8083498e35b64454dc",
+        "9387757385a47e0a4324c69b443e07fddbe7b35191db91622375634bb455688f",
+        "71979748615a0133f182c1b3f440c906d0a0cb33b136125876c0671b22042cd3",
+        "76f2bd397e3089ffb178f5c5f0e7b54e8c0b9208b9041f3f78334c8c1c80a6c2",
+        "23f7884fb91e41a2eb4c224a8c84338a7b24ca004b93ac03b71174f8e0aa6b8b",
+        "0a2a5d09426f8ea9a01a597ddcff4f0c209936f29e47e3c66194935864dbbbd2",
+        "8e2dcadce62188a789e9dca0924048e6df24773532471dcd074cea52ccd7869d",
+        "d14febcd87b6864c51d944166b286f15878fc205f4e31a0ea15189e49aaef565",
+        "261a09408a9a0268b0b3fc7695e80f61ea8fffc451c1c560f8c655e6b1c3808d",
+        "9f148f51a5b05b6011e69898add2b28301437cd5280ad508e5f8f6dfe74cbe96"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "F"
+      ],
+      "variantsAt": "2026-10-08T05:14:15.009Z"
+    },
+    "RSW_Runyip": {
+      "at": "2026-10-08T05:14:33.790Z",
+      "decidedAt": "2026-10-08T05:14:25.963Z",
+      "decision": "G",
+      "note": "",
+      "picks": {
+        "swanimals/Runyip/Runyip_Swimming": "C",
+        "swanimals/Runyip/Runyip_j": "D",
+        "swanimals/Runyip/Runyip_j_Swimming": "E"
+      },
+      "prefill": "A",
+      "purge": [
+        "25888e5bc73588461568f1da194cc423be4b24d0db98d6b7ad3ada935197dc1b",
+        "b7183440ee99134015bf3dc0ad0067b70d9d0e5a0ef34e0dce0c58e5b345a05d",
+        "09f42584602e2be5452f174e29a71891d1a1917541992cb33a01c0b1ec12cb39"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "G"
+      ],
+      "variantsAt": "2026-10-08T05:14:31.191Z"
+    },
+    "RSW_Shaak": {
+      "at": "2026-10-08T05:14:42.970Z",
+      "decidedAt": "2026-10-08T05:14:39.038Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "0fff0c5b224975bc620aca00aef23f569f7fe52d1bc71d0288141368af9aa0cb",
+        "2812aa4db40b2ea792a5c6ca37c0ebdd96a479c67e18702faa490ac97d0ed660",
+        "5ab6582f802250356a1767edaaf6a89c1432007f4deb0a491fbaa88854d83252"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:14:41.291Z"
+    },
+    "RSW_Shyrack": {
+      "at": "2026-10-08T05:15:19.408Z",
+      "decidedAt": "2026-10-08T05:14:52.796Z",
+      "decision": "C",
+      "note": "going to have to regenerate those flyers",
+      "prefill": "A",
+      "purge": [
+        "813a8fd1d2fae098cda3e252eec8621991255e72eb6fae0bbb693e0ee2de1b21",
+        "f5e16384e2ee2516536f3ff9cd7c22dd02fea5dfeb89a4b307b67cd23188a5cc",
+        "06ed443cc2d720d15b1dc228b154ca744229f68e3ec4fb7506ce5d52a80b5861"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "C",
+        "D"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Skalder": {
+      "at": "2026-10-08T05:18:21.443Z",
+      "decidedAt": "2026-10-08T05:18:11.034Z",
+      "decision": "D",
+      "note": "Follow the canon description very closely. ",
+      "picks": {
+        "swanimals/Skalder/Skalder_Swimming": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "2666d021500f1b73f1d61c6ab0901e5a118d7bd620747a975722de432a95f0f0",
+        "252ca13d89137e2c3f0ee2779c082fa504daef427fafa862e3f47b11fd43df20",
+        "877c2f627c5b2b01be5806b0d2130540743c90614e402c54c4c025a471eda627",
+        "9380c8568a951dfd511406ff6e3b5704614906dcc1f7e6a4b2e9e3b2e1bdf7b3",
+        "5879e940a5c716b3ddb140b000d5158e38be97de0b5ac7d7b49c468d47804575",
+        "d4e402ac13bee4208bbfe088fe5ec27c94797047f965ab6ccdb57fe646c3bf34"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:18:13.540Z"
+    },
+    "RSW_Sketto": {
+      "at": "2026-10-08T05:18:45.590Z",
+      "decidedAt": "2026-10-08T05:18:36.800Z",
+      "decision": "C",
+      "note": "Please follow canon closely and regenerate N and S",
+      "prefill": "A",
+      "purge": [
+        "756bae622ab3d1be35ee73c681cd7474cee83877dc39b44e0ebb88ccf5bd747d",
+        "84afa7e5d81e9d1774456a9010182b0f593ba15036e0b0a3734f9c26d8525436",
+        "37ea6f01fc5ee8b533660156672b2770e41eec9c5f9f5f767183787ad5d09166"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_SurraGrass": {
+      "at": "2026-10-08T05:28:00.175Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:27:56.581Z"
+    },
+    "RSW_TeeMuss": {
+      "at": "2026-10-08T05:22:52.947Z",
+      "decidedAt": "2026-10-08T05:22:40.525Z",
+      "decision": "C",
+      "note": "Good! Now make North and South and the proper resolutions. ",
+      "prefill": "A",
+      "purge": [
+        "3e8008f496f91d87921379ce0f21ba8e22920869db7a007bb23351d2cde92e53",
+        "1be2f1759aed3ef297614c4126bf6a98138ea93bfe2dcb9b37809d84cd48c730",
+        "098e01a4a5a2c855b491d0eac7dcc3544390994463f05c60cad34a3f0a41d513"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "C"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Thurra": {
+      "at": "2026-10-05T03:28:27.392Z",
+      "decidedAt": "2026-10-05T03:28:24.020Z",
+      "decision": "hold",
+      "note": "no longer needed",
+      "prefill": "A"
+    },
+    "RSW_TruffleMole": {
+      "at": "2026-10-05T03:29:33.405Z",
+      "decidedAt": "2026-10-05T03:28:38.873Z",
+      "decision": "B",
+      "note": "Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level.",
+      "prefill": "A"
+    },
+    "RSW_Ulgga": {
+      "at": "2026-10-05T03:31:30.186Z",
+      "decidedAt": "2026-10-05T03:30:13.684Z",
+      "decision": "redo",
+      "note": "Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level.",
+      "prefill": "A",
+      "purge": [
+        "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a",
+        "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
+        "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Ultracactus": {
+      "at": "2026-10-05T03:38:44.071Z",
+      "decidedAt": "2026-10-05T03:38:00.163Z",
+      "decision": "redo",
+      "note": "This is supposed to be in the most extreme desert. It is supposed to be semi-transparent and mostly pale clear with only a hint of green. Rename this to Ultriss Pad. RimMandrake tier.",
+      "prefill": "hold"
+    },
+    "RSW_Uvak": {
+      "at": "2026-10-08T05:24:03.615Z",
+      "decidedAt": "2026-10-08T05:23:47.357Z",
+      "decision": "C",
+      "note": "Will need to redo flying art too",
+      "prefill": "A",
+      "purge": [
+        "28a13db922200f77112d72bc110136bbf04e759012f5e80e83df3f15956c9fe0",
+        "6c66d250767552996743b5a61f63a4b32051ca053924171dbd316b004641d482",
+        "de165f017ed92394d71fc2b8e0632bfd7259f6f58397aecf9629e32c568c33eb"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:24:03.615Z"
+    },
+    "RSW_Varactyl": {
+      "at": "2026-10-08T05:25:05.095Z",
+      "decidedAt": "2026-10-08T05:25:05.095Z",
+      "decision": "D",
+      "note": "",
+      "picks": {
+        "_byname": "D",
+        "swanimals/Varactyl/Varactyl_m": "B"
+      },
+      "prefill": "A",
+      "purge": [
+        "ffd6100e6cd84fd108aeae10ac0ea268080b3d4817295099e9d030deecc382b4",
+        "0d199a741d26cbc9eed6b8d6b9e1dab1c4e734906e81e60c2ff27420539eb14d",
+        "2c6b0b81f0f8c6d812f0ed79be9d33fa9889e80657aaf81832fde9b55de5a684"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "D",
+        "E",
+        "F"
+      ],
+      "variantsAt": "2026-10-08T05:24:09.730Z"
+    },
+    "RSW_VellaraBloom": {
+      "at": "2026-10-08T05:28:04.684Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:28:04.684Z"
+    },
+    "RSW_Voorpak": {
+      "at": "2026-10-08T05:25:14.959Z",
+      "decidedAt": "2026-10-08T05:25:12.005Z",
+      "decision": "D",
+      "note": "Bizarre little furball with bird-like legs. Follow canon closely. Do not make cartoonish. Two antenna-like tufts on head. ",
+      "prefill": "A",
+      "purge": [
+        "b660632fdcdaf338d71cb734e6c8b2edc5097996a0a331a0928c504e5130ed3d",
+        "0f2c3fc58793ae1870b1e67d809b70f50944e63a3c72f9acf8cbdb962bb8a2e6",
+        "f4f121dfc2d25040ef23803edd4bd16dd49fc574bdf9689fb3f8a2ab8913900e"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:25:14.959Z"
+    },
+    "RSW_Vosska": {
+      "at": "2026-10-05T03:32:17.798Z",
+      "decision": "A",
+      "note": "Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand",
+      "prefill": "A",
+      "purge": [],
+      "purgeTouched": true,
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-05T03:31:59.068Z"
+    },
+    "RSW_Worrt": {
+      "at": "2026-10-08T05:25:45.695Z",
+      "decidedAt": "2026-10-08T05:25:44.248Z",
+      "decision": "E",
+      "note": "",
+      "picks": {
+        "swanimals/Worrt/Worrt_Swimming": "C",
+        "swanimals/Worrt/Worrt_j": "D"
+      },
+      "prefill": "A",
+      "purge": [
+        "85cdba37080657ec73a2aaffb545fa9047856d94fba3ca17ab103aaee10fc7af",
+        "9712e4e24e8ab98b32091de0dde517cfe4fb2758cf8e19fa32a46add7eb91d91",
+        "153ae21be8519183a063a2be6ea724fe28e9744b3edfd0e49305df8910b5854d",
+        "72d5bf14a18d6b35ad9ca89e8e17b535c03ee8bad15ebc7b406288c249d88302",
+        "a20ba19fd943ca9f36bceec6a83fb4897ce1b8a0f7db824c56f56c029de4acf1",
+        "f393a11d4a583f599237f626a68e16158f3f8253e8c8733e451d598163217b3d"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "E"
+      ],
+      "variantsAt": "2026-10-08T05:25:39.819Z"
+    },
+    "RSW_Wraid": {
+      "at": "2026-10-08T05:25:55.182Z",
+      "decidedAt": "2026-10-08T05:25:53.693Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "fa325a03bf871c368b6917cac286f4a77245d798d39990d29852efe6d2d68c81",
+        "cc8590378d6c424274722bc85f155244411cc9ed4f684bec7027019fdbcf4053",
+        "2e230da5ae927e65119021a718fbf91102ad80db701576b6ef2784116086e682"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-08T05:25:52.495Z"
+    },
+    "RSW_WraidAlpha": {
+      "at": "2026-10-08T05:02:09.625Z",
+      "decidedAt": "2026-10-08T05:02:03.477Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "2e230da5ae927e65119021a718fbf91102ad80db701576b6ef2784116086e682",
+        "cc8590378d6c424274722bc85f155244411cc9ed4f684bec7027019fdbcf4053",
+        "fa325a03bf871c368b6917cac286f4a77245d798d39990d29852efe6d2d68c81"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-08T05:02:09.625Z"
+    },
+    "RSW_Zeer": {
+      "at": "2026-10-08T05:26:51.921Z",
+      "decidedAt": "2026-10-08T05:26:45.623Z",
+      "decision": "I",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "a0357d174d6941afe5c9c0aabd7b8d1519d2c174bb0afc1ee849d41fc30aeafa",
+        "ee3fd25271cd30015ab07db10d20362dc40d96cc515a022602dac46cfdbb6e08",
+        "b72b209a71f3d5e72a52b6f511d0f1d532fc8f1e9d3c4105c50ef59243ec2371",
+        "97f08847047fb9ebbcb673e48570a4cbb3d9feeb1792ea7914577f3018bd6784",
+        "ece63d10dd3b4a82dcb26dcaf16d897bb44662caf0df6f00173f7884568cd8d0",
+        "0b382d5eb4845a0db25b86cb4cfe5508eaef621e376a0be9e2680aae72aa9964",
+        "bb61e38dd27c32a84a32795e1d5316f842c85edc4ea940a119af064ff623123d",
+        "ff3962d86f0b3b971609b579b5841d425f682d6aa0e60279a81dd0418e2e9f8d",
+        "5d29a30f6a712e2c404cd6937a1d153104b54cb1a92b2c2ee8a0faa2e532037a",
+        "64faa7145d816db15dd1936d2068331c5c170026785d1df6df9a177c64074c01",
+        "042237a607981a393462b87c9587b7d52894725901be120fadbbd77ef53f6f9c",
+        "b02e70a42b8ea6e80ac29545ddfabedc380e23d0f690893fb9b32be2cb090217",
+        "ae37acfaa7da9df4f8cf87de69e90167cd368749c665bf098d2112881739834a",
+        "dbe0e454471a6530262efac1b3a096ac85e9dbb4dc6e2f575c78a55a2c263d32",
+        "25c4cbb7fe58d27e490e6d269b28394d69402ed2fb0ceb4a04e517f9fddbfaf9",
+        "5960814d6a766c839d563066f29b9d15b99e16b1a70f2cf73970b3b39cb14610"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "I"
+      ],
+      "variantsAt": "2026-10-08T05:26:51.921Z"
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-04T20:38:52-0700",
+    "by": "owner (Lukas)",
+    "evidence": "sidecar writeCount 670; owner said in chat 'I just completed the Long Shade — flora & fauna art.'",
+    "state": "ruled"
+  },
+  "savedAt": "2026-10-07T22:29:03-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "desert_sheet_2026-10-04",
+  "snapshot": "infrastructure/state/art/sheets/desert_sheet_2026-10-04.snapshot.json",
+  "snapshotId": "f22208a82306d1d2",
+  "writeCount": 901
+}

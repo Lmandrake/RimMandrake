@@ -159,7 +159,7 @@
     <labelMale>bantha bull</labelMale>
     <labelFemale>bantha cow</labelFemale>
     <wildGroupSize>3~9</wildGroupSize>
-    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphicChance>0</alternateGraphicChance>  <!-- owner 2026-10-08 picked the canon-coloured render F (swanimals/Bantha/BanthaR, no colour mask): the donor colour tints would muddy it. Texture variants G-J await his wiring ruling. -->
     <alternateGraphics>
       <li>
         <color>(140,74,39)</color>
@@ -221,8 +221,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Bantha/BanthaW</texPath>
-          <shaderType>CutoutComplex</shaderType>
+          <texPath>swanimals/Bantha/BanthaR</texPath>
+          <shaderType>Cutout</shaderType>
           <drawSize>2</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -230,8 +230,8 @@
           </shadowData>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>swanimals/Bantha/BanthaW</texPath>
-          <shaderType>CutoutComplex</shaderType>
+          <texPath>swanimals/Bantha/BanthaR</texPath>
+          <shaderType>Cutout</shaderType>
           <drawSize>1.8</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -245,8 +245,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Bantha/BanthaW</texPath>
-          <shaderType>CutoutComplex</shaderType>
+          <texPath>swanimals/Bantha/BanthaR</texPath>
+          <shaderType>Cutout</shaderType>
           <drawSize>3.0</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
@@ -254,9 +254,8 @@
           </shadowData>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>swanimals/Bantha/BanthaW</texPath>
-          <shaderType>CutoutComplex</shaderType>
-          <color>(67,38,32)</color>
+          <texPath>swanimals/Bantha/BanthaR</texPath>
+          <shaderType>Cutout</shaderType>
           <drawSize>2.7</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>

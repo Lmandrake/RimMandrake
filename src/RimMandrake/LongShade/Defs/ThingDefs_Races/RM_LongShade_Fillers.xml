@@ -53,7 +53,7 @@
     <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04: "Keep art, rename it Chorn."): renamed from RM_Sollak / "sollak". texPaths unchanged so the kept art still binds. -->
     <defName>RM_Chorn</defName>
     <label>chorn</label>
-    <description>A leggy, tower-shouldered giant that never hurries and never has to: a standing herd of chorn is its own patch of shade, each animal shading the next, and nothing that lives out on the open sand challenges one on purpose. They cross the widest gaps this desert has by simply outlasting the heat that would kill anything smaller.</description>
+    <description>A towering, long-legged giant five cells across, with a flat, rocky slab of a back, a raised hump over the shoulders and a long, hooked, beaked head on a thick neck. Its hide is cracked and mottled ochre and rust, like sun-baked stone. A chorn never hurries: a standing herd is its own patch of shade, each animal shading the next, and nothing on the open sand challenges one on purpose. They cross the widest gaps in the desert by outlasting the heat that would kill anything smaller.</description>
     <statBases>
       <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>500</MarketValue>
@@ -129,22 +129,22 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Sollak/RM_Sollak</texPath>
-          <drawSize>2.0</drawSize>
+          <drawSize>2.27</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Sollak/RM_Sollak</texPath>
-          <drawSize>3.2</drawSize>
+          <drawSize>3.64</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Sollak/RM_Sollak</texPath>
-          <drawSize>4.4</drawSize>
+          <drawSize>5.0</drawSize>
           <shadowData>
-            <volume>(0.7, 0.55, 0.55)</volume>
-            <offset>(0,0,-0.25)</offset>
+            <volume>(0.8, 0.63, 0.63)</volume>
+            <offset>(0,0,-0.28)</offset>
           </shadowData>
         </bodyGraphicData>
       </li>

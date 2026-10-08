@@ -142,22 +142,11 @@
 		<race>RSW_GreatDevourer</race>
 		<combatPower>200</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
-		<alternateGraphicChance>1</alternateGraphicChance>
-		<alternateGraphics>
-			<li>
-				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
-			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer2</texPath>
-			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer3</texPath>
-			</li>
-		</alternateGraphics>
+		<!-- Owner 2026-10-08 (Long Shade sheet, pick A, "Not SW"): our render replaces the three Alpha Animals donor alternates. -->
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RSW_GreatDevourer/RSW_GreatDevourer</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
@@ -167,7 +156,7 @@
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RSW_GreatDevourer/RSW_GreatDevourer</texPath>
 					<drawSize>2.5</drawSize>
 					<shadowData>
 						<volume>(0.3, 0.3, 0.3)</volume>
@@ -181,7 +170,7 @@
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RSW_GreatDevourer/RSW_GreatDevourer</texPath>
 					<drawSize>3.5</drawSize>
 					<shadowData>
 						<volume>(0.4, 0.4, 0.4)</volume>
