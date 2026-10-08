@@ -49,13 +49,7 @@ namespace RimMandrake.WreckedMachines
 
         public static float RatioFor(MachineGrade grade)
         {
-            switch (grade)
-            {
-                case MachineGrade.Wrecked: return WreckedMachinesSettings.wreckedRatio;
-                case MachineGrade.Kludged: return WreckedMachinesSettings.kludgedRatio;
-                case MachineGrade.Refurbished: return WreckedMachinesSettings.refurbishedRatio;
-                default: return 1f;
-            }
+            return RM_WreckedMachinesKernel.RatioFor((int)grade, WreckedMachinesSettings.Ladder);
         }
     }
 
@@ -67,24 +61,30 @@ namespace RimMandrake.WreckedMachines
     {
         public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map, Thing thingToIgnore = null, Thing thing = null)
         {
-            if (!WreckedMachinesSettings.requireLowerGradeUnderneath || thing != null)
-                return true;
             WreckedMachineGrade ext = checkingDef.GetModExtension<WreckedMachineGrade>();
-            if (ext == null || ext.grade == MachineGrade.Wrecked)
-                return true;
-
-            List<Thing> things = loc.GetThingList(map);
-            for (int i = 0; i < things.Count; i++)
+            var lines = new List<string>();
+            var grades = new List<int>();
+            if (WreckedMachinesSettings.requireLowerGradeUnderneath && thing == null && ext != null && ext.grade != MachineGrade.Wrecked)
             {
-                Thing t = things[i];
-                if (t == thingToIgnore || t.Position != loc) continue;
-                ThingDef d = t.def;
-                if (t is Blueprint || t is Frame)
-                    d = t.def.entityDefToBuild as ThingDef;
-                WreckedMachineGrade other = d?.GetModExtension<WreckedMachineGrade>();
-                if (other != null && other.line == ext.line && other.grade < ext.grade)
-                    return true;
+                List<Thing> things = loc.GetThingList(map);
+                for (int i = 0; i < things.Count; i++)
+                {
+                    Thing t = things[i];
+                    if (t == thingToIgnore || t.Position != loc) continue;
+                    ThingDef d = t.def;
+                    if (t is Blueprint || t is Frame)
+                        d = t.def.entityDefToBuild as ThingDef;
+                    WreckedMachineGrade other = d?.GetModExtension<WreckedMachineGrade>();
+                    if (other != null)
+                    {
+                        lines.Add(other.line);
+                        grades.Add((int)other.grade);
+                    }
+                }
             }
+            if (RM_WreckedMachinesKernel.AllowsPlacing(WreckedMachinesSettings.requireLowerGradeUnderneath, thing != null, ext != null,
+                    ext != null ? (int)ext.grade : 0, ext?.line, lines, grades))
+                return true;
             return new AcceptanceReport("Must be built over a lower grade of the same machine, in the same place.");
         }
     }
@@ -125,7 +125,7 @@ namespace RimMandrake.WreckedMachines
             List<ThingDef> defs = EmanatorDefs;
             for (int d = 0; d < defs.Count; d++)
             {
-                int stage = Mathf.Min((int)defs[d].GetModExtension<WreckedMachineGrade>().grade - 1, def.stages.Count - 1);
+                int stage = RM_WreckedMachinesKernel.EmanatorStage((int)defs[d].GetModExtension<WreckedMachineGrade>().grade, def.stages.Count);
                 if (stage <= best) continue;
                 List<Thing> list = p.Map.listerThings.ThingsOfDef(defs[d]);
                 for (int i = 0; i < list.Count; i++)
@@ -187,9 +187,9 @@ namespace RimMandrake.WreckedMachines
             {
                 float baseMood = VanillaSoothe.stages[0].baseMoodEffect;
                 if (SalvagedSoothe.stages.Count > 0)
-                    SalvagedSoothe.stages[0].baseMoodEffect = baseMood * WreckedMachinesSettings.kludgedRatio;
+                    SalvagedSoothe.stages[0].baseMoodEffect = RM_WreckedMachinesKernel.EmanatorMood(baseMood, WreckedMachinesSettings.Ladder.kludged);
                 if (SalvagedSoothe.stages.Count > 1)
-                    SalvagedSoothe.stages[1].baseMoodEffect = baseMood * WreckedMachinesSettings.refurbishedRatio;
+                    SalvagedSoothe.stages[1].baseMoodEffect = RM_WreckedMachinesKernel.EmanatorMood(baseMood, WreckedMachinesSettings.Ladder.refurbished);
             }
         }
 
@@ -203,8 +203,9 @@ namespace RimMandrake.WreckedMachines
             CompProperties_Power theirs = original.GetCompProperties<CompProperties_Power>();
             if (mine == null || theirs == null) return;
             float originalBase = (float)BasePowerField.GetValue(theirs);
-            if (originalBase >= 0f) return;
-            BasePowerField.SetValue(mine, originalBase * ratio);
+            float? scaled = RM_WreckedMachinesKernel.ScaledPowerOutput(originalBase, ratio);
+            if (scaled == null) return;
+            BasePowerField.SetValue(mine, scaled.Value);
         }
     }
 }

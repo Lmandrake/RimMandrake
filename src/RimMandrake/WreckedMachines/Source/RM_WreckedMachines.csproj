@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="WreckedMachinesMod.cs" />
     <Compile Include="WreckedMachinesLadder.cs" />
+    <Compile Include="Kernel\RM_WreckedMachinesKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>
