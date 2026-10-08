@@ -100,3 +100,5 @@ Decision taken by question card (a click, not an owner quote): run every ✕ exc
 `art.py purge` takes one sha and has no dry-run or exclusion flag, so a filtered loop over the decisions file called `artledger.purge` directly with `release_keep=False`.
 - 296 marks: 195 already purged earlier, **82 purged now**, 2 HoardVenomvine held (both pictures still on disk; wait for `LEANINGSCRUB_VENOMVINE_SITTING_1`), **17 refused and left alone**.
 - The 17 are live in a mod or carry an owner keep: RSW_Eopie 6 (3 live, 3 kept), RSW_Lothcat 2 (live), RSW_Scurrier 6 (kept), RSW_Strill 3 (kept). Ingest would have released those keeps; that was not done. They need his word.
+
+**Scurrier male installed 2026-10-08** (decision taken by question card, a click): B installed as `Scurrier_m_{east,north,south}.png` via `art.py install` (ruling 9bef29092ae5f0d40665, sheet's per-graphic B pick); female `Scurrier_f` (E) untouched, C not used. Not deployed.
