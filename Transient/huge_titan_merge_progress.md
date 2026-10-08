@@ -14,3 +14,6 @@
 - [x] mutations: seam 18/18, titan 31/31, plant 26/26
 - [x] inbound refs, validation.py merge, walk merge
 - [ ] run_selftests + commit/push
+- [x] committed+pushed c954ccdca
+- [ ] walk plan
+- [x] walk plan Transient/huge_titan_walk_plan_2026-10-07.md
