@@ -13,6 +13,7 @@
 - "Gorgs, also known as chubas, was a general term used for several species of amphibians used
   as food… available for seven wupiupi in the markets of Mos Espa… Jabba Desilijic often ate
   gorgs" — https://starwars.fandom.com/wiki/Gorg (canon)
+- Canon: "gorg" is a general term for several species of non-sentient amphibian (class amphibian per Absolutely Everything You Need to Know), with the named canon subspecies Castilon gorg and Iridium Mountain gorg; the canon page gives no height, length or tail description, and no canon "longtail gorg" taxon exists. The Castilon gorg Bitey is the pet of Flix and Orka in Star Wars Resistance. — https://starwars.fandom.com/wiki/Gorg , https://starwars.fandom.com/wiki/Castilon_gorg , https://starwars.fandom.com/wiki/Bitey
 - Legends infobox: height 0.2 m, length up to 0.3 m, amphibian, herbivore, native to Tatooine —
   https://starwars.fandom.com/wiki/Gorg/Legends
 - Legends: during drought gorgs hibernate in burrows inside a cocoon of hardened saliva;

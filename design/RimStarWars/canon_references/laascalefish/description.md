@@ -7,7 +7,7 @@
 
 The Laa, also known as the Fantailed Laa fish, were a species of scalefish found on the planet Naboo and the moon Jedha. They lived alongside six other scalefish species in the waters around the city Otoh Gunga in Lake Paonga, and could also be found in the Abyss, where they were preyed upon indiscriminately by the large colo claw fish and opee sea killers that dwelt there. Tiny yobshrimp lived in the gills of tee scalefish, and they were then licked out and eaten by laa.
 
-**Biology and appearance** Laa had orange and peach colored skin with an elongated snout. They had two antennalike appendages located between their yellow eyes that streamed behind their body. The tails that were used for propulsion were curved.
+**Biology and appearance** Laa had orange and peach colored skin with an elongated snout. They had two antennalike appendages located between their yellow eyes that streamed behind their body. The tails that were used for propulsion were curved. The canon infobox gives skin colour as green, white and red with orange mottle (Star Wars Jedi: Survivor) and eye colour yellow (Star Wars Bestiary, Vol. 1). Laa first appeared, unidentified, in The Phantom Menace and were identified as the Fantailed Laa fish in Jedi: Survivor (2023). Source: https://starwars.fandom.com/wiki/Laa
 ### Legends — https://starwars.fandom.com/wiki/Laa/Legends
 
 The laa was a scalefish native to the oceans of Naboo.
@@ -17,7 +17,7 @@ The laa was a scalefish native to the oceans of Naboo.
 Its own predators included sees and opee sea killers.
 
 ## Visual brief
-Viewed 2026-10-04. Image 1 is canon (a live-action/CGI fish, "Fantailed Laa"); images 2 and 3 are
+Viewed 2026-10-04. Image 1 is canon (the video-game render of the "Fantailed Laa fish" from Star Wars Jedi: Survivor, 2023); images 2 and 3 are
 LEGENDS (a 3D render and an ink-and-wash sheet showing laa eating a yobshrimp).
 - **LOUD DISAGREEMENT on colour**: canon prose says orange and peach; the canon image is TEAL/blue-
   green on the back with a pale peach-cream belly and a RED lip, with orange-red speckle on the

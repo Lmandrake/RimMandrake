@@ -7,14 +7,16 @@
 > from the pages; visual brief and Must show written 2026-10-04 from viewing the images.
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Marsh_haunt
+### Legends (this page is Legends continuity; there is no canon marsh haunt) — https://starwars.fandom.com/wiki/Marsh_haunt
 
 A marsh haunt was a Force-using red-eyed creature.
 
-**Biology** The marsh haunt had dull, peeling, gray-green skin, camouflaging it in the swampy terrains in which it primarily lived. Its bipedal stance and skull set deeply between its shoulders gave its silhouette the appearance of a humanoid lacking a head. Marsh haunts would occasionally leave their swampy homes to scavenge and acquire small prey in civilized areas. While non-sentient, they worked in loose packs of two to eight creatures to ambush prey, with some of them using their Force powers to scare potential prey toward the rest.
+**Biology** The marsh haunt had dull, peeling, gray-green skin, camouflaging it in the swampy terrains in which it primarily lived. Its bipedal stance and skull set deeply between its shoulders gave its silhouette the appearance of a humanoid lacking a head. Infobox: native to Abraxin (The Complete Star Wars Encyclopedia), swamp habitat, gray-green skin, red eyes, Force-sensitive; first appearance Darth Plagueis (Legends novel); sources Power of the Jedi Sourcebook, Jedi Academy Training Manual. They were native to Abraxin in the Tion Cluster but could be found on many worlds of the Mid and Outer Rim. https://starwars.fandom.com/wiki/Marsh_haunt
+
+Marsh haunts would occasionally leave their swampy homes to scavenge and acquire small prey in civilized areas. While non-sentient, they worked in loose packs of two to eight creatures to ambush prey, with some of them using their Force powers to scare potential prey toward the rest.
 
 ## Visual brief
-Only ONE image: a CANON comic cover frame (`Ursemadu.jpg`, two Jedi in a swamp confronting a marsh haunt). It is a single, partial view, and the creature is mostly out of frame, so details of legs and lower body are UNSEEN.
+Only ONE image: a LEGENDS illustration by Joe Corroney from the Power of the Jedi Sourcebook (`Ursemadu.jpg`, Ur-Sema Du and Kai Justiss fighting a marsh haunt; https://starwars.fandom.com/wiki/File:Ursemadu.jpg). It is a single, partial view, and the creature is mostly out of frame, so details of legs and lower body are UNSEEN.
 - **Form**: a huge, hulking, blotchy mass looming over two humanoid Jedi (who are chest-deep in swamp water). It is far taller than a person; a rounded, hunched, headless-looking bulk with the 'head' sunk into the shoulders (agrees with the prose).
 - **Skin**: dark teal-green to black-green, leathery, ragged and peeling, with pale blue-grey highlights, mottled with darker blotches and trailing strands that look like moss or hanging vines, so it camouflages into the swamp.
 - **Features**: a dense cluster of round dark red berry-like knobs or bulbs heaped on the top of the mass (where a head would be), reading as clustered red eyes or growths; the prose gives red eyes. Huge claw-fingered forelimbs hang down with raking dark claws. A face, mouth or legs are not shown.
@@ -30,10 +32,10 @@ Only ONE image: a CANON comic cover frame (`Ursemadu.jpg`, two Jedi in a swamp c
 not yet assessed
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Marsh_haunt (canon; wikitext pulled via the API 2026-10-04)
+- https://starwars.fandom.com/wiki/Marsh_haunt (Legends continuity; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Marsh haunt`; wiki caption: infobox image. File: `Ursemadu.jpg` — https://static.wikia.nocookie.net/starwars/images/e/e3/Ursemadu.jpg/revision/latest?cb=20091120185751
+- `wookieepedia_canon_1.webp` — page `Marsh haunt` (Legends continuity despite the filename); wiki caption: infobox image. File: `Ursemadu.jpg` — https://static.wikia.nocookie.net/starwars/images/e/e3/Ursemadu.jpg/revision/latest?cb=20091120185751
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
