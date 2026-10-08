@@ -1059,8 +1059,8 @@
        it (RM_Miasma.xml's own wildAnimals + RM_StrandingPoolsExtension). -->
   <ThingDef ParentName="RM_SiltLamprey">
     <defName>RM_SiltLampreyJuv</defName>
-    <label>young silt lamprey</label>
-    <description>A silt lamprey not yet grown into the round maw that makes the adult the swarm's nasty edge. Still working the shallows for what it can latch onto.</description>
+    <label>gillclamper</label>
+    <description>The young of the silt lamprey, raised in the Miasma's warm stranding pools before the open sea takes it. A gillclamper is a finger-thick, eel-slick body behind a sucker of hooked rasps, which it fixes into the gill-slits of other young fish and feeds from while they swim. It has not yet grown the adult's full round maw; for now it latches on, clamps tight, and lets its host do the travelling.</description>
     <race>
       <lifeStageAges Inherit="False">
         <li>
@@ -1077,7 +1077,7 @@
 
   <PawnKindDef ParentName="RM_SiltLamprey_Kind">
     <defName>RM_SiltLampreyJuv</defName>
-    <label>young silt lamprey</label>
+    <label>gillclamper</label>
     <race>RM_SiltLampreyJuv</race>
     <lifeStages Inherit="False">
       <li>

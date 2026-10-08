@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Miasma_Rename.xml          RimUtinni Patches — new file 2026-10-07
+
+       Owner's Miasma art sheet rulings (Transient/biome_ffar/miasma_sheet_2026-10-05.decisions.json,
+       rows timestamped 2026-10-08; recorded in design/Jawa/worldbuilding/biomes/
+       noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md, Batch 4b).
+       Donor ThingDef + PawnKindDef pairs get a label/description patch on the
+       PatchOperationConditional gate pattern of Slime_Rename.xml. LABEL/DESCRIPTION ONLY
+       (plus the sharpshrimp's meatLabel, which carries the stem); no defName, stat or art
+       field is touched. AA_DecayDrake -> fermatalis lives in Slime_Rename.xml (one def,
+       one name, already patched there). -->
+
+  <!-- ============== AA_Lockjaw -> siezer — owner: "Rename Siezer. ... a toothy lock-jawed whale with flippers that pushes itself through the mud." ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Lockjaw"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Lockjaw"]/label</xpath>
+          <value><label>siezer</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Lockjaw"]/description</xpath>
+          <value><description>A mud-whale of the Miasma's channels: a short, tapering body driven by four broad flippers, carrying a head fully half its own size. Most of that head is jaw — ranks of overlapping teeth on a hinge so heavy that once it closes, it does not open again until the siezer decides. It hauls itself through the silt half-submerged, a long grey ridge with two small eyes, slow and unhurried in everything but the bite. It prefers the channels' own wildlife to people, but nothing it has seized has ever been pulled free.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Lockjaw"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Lockjaw"]/label</xpath>
+      <value><label>siezer</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Mantrap -> lastvine — owner: "Totally rewrite description. Rename it as a Lastvine." ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Mantrap"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Mantrap"]/label</xpath>
+          <value><label>lastvine</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Mantrap"]/description</xpath>
+          <value><description>At rest the lastvine passes for part of the root-maze: a closed, leathery pod on a knot of roots, its heavy head hung low like fruit too ripe to hold itself up. It is not a plant. When something comes near, the pod rears up on its roots and splits into a single enormous maw ringed with hooked, fang-like thorns, a nest of tentacles writhing inside it. It has no arms. It drags itself after its prey on root-like legs, slowly and hungrily, and spits a burning acid at whatever it cannot reach. It feeds on light when it must, and on flesh when it can.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Mantrap"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Mantrap"]/label</xpath>
+      <value><label>lastvine</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_RaptorShrimp -> sharpshrimp — owner: "Rename to Sharpshrimp. Redo description." ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_RaptorShrimp"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RaptorShrimp"]/label</xpath>
+          <value><label>sharpshrimp</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RaptorShrimp"]/description</xpath>
+          <value><description>A crustacean as tall as a man, stalking the reed-beds on jointed legs, its forelimbs ending in two long serrated blades. The sharpshrimp hunts from cover, motionless among the stems for hours with only its stalked eyes turning, then lunges faster than the eye can follow. Its shell turns bullets, and its flesh knits back almost as fast as it is cut — a sharpshrimp is not dead until it has stopped moving for a long while. People who lose companions in the Miasma's reeds rarely see what took them.</description></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_RaptorShrimp"]/race/meatLabel</xpath>
+          <value><meatLabel>sharpshrimp flesh</meatLabel></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_RaptorShrimp"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_RaptorShrimp"]/label</xpath>
+      <value><label>sharpshrimp</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Thermadon -> duskfire — owner: "Redo description. Rename Duskfire." ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Thermadon"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Thermadon"]/label</xpath>
+          <value><label>duskfire</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Thermadon"]/description</xpath>
+          <value><description>A long-legged black hunter the size of a crouching man, its abdomen swollen with paired chemical glands that show a dull ember-red through the chitin as the light fails. When it is threatened the duskfire mixes the two and hurls the result: a gout of burning fluid that clings and spreads. It keeps to the drier root-ridges and hunts at twilight. Never fight one near anything you want to keep — wooden walls, stores and fields burn first.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Thermadon"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_Thermadon"]/label</xpath>
+      <value><label>duskfire</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== VFEI2_BlackSwarmling -> ondrukka — owner: "Picture good, rewrite the description please and rename. (name invented: ondrukka)" ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VFEI2_BlackSwarmling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEI2_BlackSwarmling"]/label</xpath>
+          <value><label>ondrukka</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEI2_BlackSwarmling"]/description</xpath>
+          <value><description>Glossy black grubs no longer than a hand, crawling in loose, chittering heaps through the Miasma's leaf-rot. Ondrukka are the young of something larger: left alone, each one eventually seals itself into a cocoon and splits out as an adult of the dark hive — and nothing about the grub tells you which kind. Slow, soft and easy to crush, they are harmless on their own, and other animals give a heap of them a wide berth all the same. What matters is how many there are, and how long they have been left.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="VFEI2_BlackSwarmling"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="VFEI2_BlackSwarmling"]/label</xpath>
+      <value><label>ondrukka</label></value>
+    </match>
+  </Operation>
+
+</Patch>

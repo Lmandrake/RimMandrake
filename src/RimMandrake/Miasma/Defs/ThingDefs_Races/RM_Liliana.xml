@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- RM_Liliana — the Miasma's wingless silk moth, RimMandrake tier.
+
+       Owner, Miasma sheet 2026-10-08 (row RSW_AaroxisDendoria): "RimMandrake tier, not SW.
+       Rewrite its description to indicate that it produces silk nonstop even in adulthood.
+       Rename it Liliana." Ported from SWBestiary's RSW_AaroxisDendoria (BiomesTeam port) on the
+       SEA_BEASTS_TIER_RULING_1 / biome-sitting Q12 pattern: the def is copied whole into the
+       biome's own mod under an RM_ defName, stats verbatim, with its silk and eggs ported
+       alongside (RM_Liliana_Items.xml) and its in-game art copied byte-for-byte under
+       Textures/Things/Pawn/Animal/RM_Liliana/ so nothing depends on mandrake.rsw.swbestiary.
+       Dropped in the port: leatherDef RSW_GrayChitin (LeatherAmount is 0, so it yielded
+       nothing). Eggs hatch RM_Liliana directly — the RSW larva/pupa chain it came from has no
+       metamorphosis comp and depends on SW-tier think trees and life stages.
+       RSW_AaroxisDendoria itself stays in SWBestiary only because the frozen RUT_Miasma twin
+       still names it; RM_Miasma casts RM_Liliana. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Liliana</defName>
+    <label>liliana</label>
+    <description>A heavy, wingless moth the size of a dog, its crimson body padded in a constant mantle of its own silk. Most moths spin once, as larvae, and never again; the liliana never stops. Its silk glands run from the day it hatches to the day it dies, so an adult goes about wrapped in a slowly thickening shroud of fine red thread that can be gathered every few days. It cannot fly and will not fight unless cornered, and it lays its eggs deep in the root-maze, where the silk stays damp. The silk is soft, warm and prized.</description>
+    <statBases>
+      <MoveSpeed>2</MoveSpeed>
+      <LeatherAmount>0</LeatherAmount>
+      <MarketValue>110</MarketValue>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>0.3</Wildness>
+    </statBases>
+    <race>
+      <hasGenders>true</hasGenders>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <baseBodySize>1</baseBodySize>
+      <baseHealthScale>1</baseHealthScale>
+      <baseHungerRate>0.8</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.40</manhunterOnDamageChance>
+      <body>BeetleLike</body>
+      <roamMtbDays>4</roamMtbDays>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RM_LilianaSilk</woolDef>
+        <shearIntervalDays>10</shearIntervalDays>
+        <woolAmount>30</woolAmount>
+      </li>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RM_EggLilianaFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RM_EggLilianaUnfertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>10</eggFertilizationCountMax>
+        <eggLayIntervalDays>15</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5.2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalInsect</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Liliana</defName>
+    <label>liliana</label>
+    <race>RM_Liliana</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liliana/RM_Liliana</texPath>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liliana/Dessicated_RM_Liliana_east</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liliana/RM_Liliana</texPath>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liliana/Dessicated_RM_Liliana_east</texPath>
+          <drawSize>1.1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liliana/RM_Liliana</texPath>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liliana/Dessicated_RM_Liliana_east</texPath>
+          <drawSize>1.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

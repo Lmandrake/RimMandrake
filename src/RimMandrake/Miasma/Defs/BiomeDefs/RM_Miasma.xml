@@ -256,14 +256,15 @@
       <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 (owner 2026-10-04, Long Shade sheet: "Move this to the Miasma Biome and shrink by half, should be Rim Mandrake tier"): the ommok, moved here from the Long Shade (def stays in mandrake.rm.longshade's RM_LongShade_Fauna.xml, same composed mod). Weight carried over verbatim from its Long Shade row; PROVISIONAL. -->
       <RM_Ommok MayRequire="mandrake.rm.biomes">0.025</RM_Ommok>
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin -->
-      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals,oskarpotocki.vfe.insectoid2">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin -->
-      <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator -->
-      <AA_Mantrap MayRequire="sarg.alphaanimals">0.2</AA_Mantrap>  <!-- mantrap - root-ambush -->
-      <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- raptor shrimp - channel-predator -->
-      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - composter -->
+      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals,oskarpotocki.vfe.insectoid2">0.5</VFEI2_BlackSwarmling>  <!-- ondrukka (renamed from black swarmlings, Miasma sheet 2026-10-08) - vermin -->
+      <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- siezer (renamed from lockjaw, Miasma sheet 2026-10-08) - channel-predator -->
+      <AA_Mantrap MayRequire="sarg.alphaanimals">0.2</AA_Mantrap>  <!-- lastvine (renamed from mantrap, Miasma sheet 2026-10-08) - root-ambush -->
+      <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- sharpshrimp (renamed from raptor shrimp, Miasma sheet 2026-10-08) - channel-predator -->
+      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- fermatalis (renamed from decay drake, Miasma sheet 2026-10-08) - composter -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - strange -->
-      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.1</AA_Slurrypede>  <!-- slurrypede - composter -->
-      <AA_Thermadon MayRequire="sarg.alphaanimals">0.1</AA_Thermadon>  <!-- thermadon - channel-predator -->
+      <AA_Thermadon MayRequire="sarg.alphaanimals">0.1</AA_Thermadon>  <!-- duskfire (renamed from thermadon, Miasma sheet 2026-10-08) - channel-predator -->
+      <!-- Miasma sheet 2026-10-08 (owner, row RSW_AaroxisDendoria: "RimMandrake tier, not SW ... Rename it Liliana"): the wingless silk moth, ported RSW_AaroxisDendoria -> RM_Liliana (Defs/ThingDefs_Races/RM_Liliana.xml), weight 0.3 carried over from WildAnimals_Miasma.xml. AA_Slurrypede CUT from this roster by the same sheet ("cut from this biome"; scoped to the Miasma only). -->
+      <RM_Liliana>0.3</RM_Liliana>  <!-- liliana - strange; wingless silk moth -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

@@ -29,13 +29,12 @@
     RSW_Vornskyr    0.15  strange
     RSW_Zakkeg      0.05  big-wanderer
 
-  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 8 further rows —
+  mandrake.rsw.swbestiary (this repo's own Star Wars ports), 7 further rows —
   all juveniles of a genuine CANON parent (mee/faa/laa scalefish, pale
   yobshrimp, opee sea killer):
     RSW_PodWorm          0.5   large grazer (bodySize 4, not a predator)
     RSW_CrestedDragon    0.4   channel-predator
     RSW_MeeJuv           0.4   nursery, juvenile-locked (MIASMA_NURSERY_KINDS_1)
-    RSW_AaroxisDendoria  0.3   strange
     RSW_FaaJuv           0.3   nursery, juvenile-locked
     RSW_LaaJuv           0.3   nursery, juvenile-locked
     RSW_YobshrimpJuv     0.3   nursery, juvenile-locked
@@ -51,6 +50,9 @@
   (RM_SeaBeasts_Invented.xml, mandrake.rm.terminalbiomes), at the same
   0.25 commonality, MayRequire-gated on that mod instead since the parent
   adults live there.
+
+  Miasma sheet 2026-10-08: RSW_AaroxisDendoria removed — owner moved it to the
+  RimMandrake tier as RM_Liliana, cast inline in RM_Miasma.xml.
 
   LEFT OUT (roster eviction, not carried into either mod - rosters/
   the_miasma.json's own evictions[]): RSW_Kreetle (-> AridShrubland),
@@ -83,7 +85,6 @@
         <RSW_PodWorm>0.5</RSW_PodWorm>
         <RSW_CrestedDragon>0.4</RSW_CrestedDragon>
         <RSW_MeeJuv>0.4</RSW_MeeJuv>
-        <RSW_AaroxisDendoria>0.3</RSW_AaroxisDendoria>
         <RSW_FaaJuv>0.3</RSW_FaaJuv>
         <RSW_LaaJuv>0.3</RSW_LaaJuv>
         <RSW_YobshrimpJuv>0.3</RSW_YobshrimpJuv>
