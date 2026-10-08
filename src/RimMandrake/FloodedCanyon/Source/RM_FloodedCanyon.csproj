@@ -62,6 +62,7 @@
     <Compile Include="RM_TarruqHushPatch.cs" />
     <Compile Include="RM_CrackedLandsFlora.cs" />
     <Compile Include="RM_LedgeRefuge.cs" />
+    <Compile Include="RM_MercyLedges.cs" />
     <Compile Include="Debug\RM_FloodedCanyonDebugActions.cs" />
     <Compile Include="Kernel\RM_FloodKernel.cs" />
     <Compile Include="Kernel\RM_RefugeKernel.cs" />

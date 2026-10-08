@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FloodedCanyon_MercyLedges.xml   CRACKEDLANDS_LEDGES_OF_MERCY_1
+
+  GenStepDef for RM_GenStep_MercyLedges (Source/RM_MercyLedges.cs).
+  Registration: Patches/RM_FloodedCanyon_MercyLedges_Register.xml.
+
+  order 245: after RocksFromGrid (200), Terrain (210) and RemoveTinyIslands
+  (240) - the wall faces exist - and just before RM_GenStep_FossilStrata
+  (250), so the ledges take their high faces before seams are seeded and a
+  seam is never carved away.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_GenStep_MercyLedges</defName>
+    <order>245</order>
+    <genStep Class="RimMandrake.FloodedCanyon.RM_GenStep_MercyLedges" />
+  </GenStepDef>
+
+</Defs>

@@ -11,34 +11,45 @@ across the canyon below. Inscriptions call the flood *"the mercy that kills, the
 warnings, neutral visitors and trained animals try to reach the nearest ledge. Inspectable carvings
 and one-shot memories; no campaign precepts. Each ships a Mod Settings toggle.
 
-## what already exists to hook
+## form (ruled)
 
-- `RM_MapComponent_CanyonFlood` now has a Herald phase and a `pendingSeed` (where the water will
-  arrive), chosen when the warning begins. Chimes toll at POSITIONS on a far-corner→seed line
-  (`ChimeCell`). Once chime-line anchors exist as things, replace those positions with the nearest
-  anchors.
-- Flood cells exclude any cell with an edifice (`Eligible`), so a ledge built as an edifice is
-  never flooded.
+**Decision taken by question card 2026-10-08: the ledge is CUT INTO THE CLIFF FACE** (a KCSG-style
+structure on cliff cells). Built as our own GenStep, not a KCSG def: FloodedCanyon is RM tier and
+depends only on Harmony + FlowWorks, so no framework dependency was added.
 
-## open questions (owner)
+## built
 
-1. **What is a "high ledge" in RimWorld**, which has no elevation? Options: a walkable edifice
-   platform (never flooded, because flood cells skip edifices); a KCSG structure cut into a cliff
-   face; or a terrain band beside natural walls that `Eligible` excludes. Each changes placement and
-   art.
-2. **The inscription lines and carving descriptions** are lore in the owner's voice (review §G:
-   "drafted lines must go to him"). Draft them for him; do not ship them unreviewed.
-3. **One-shot memory**: mood value and duration for reading a carving. Choosing one would invent a
-   number.
-4. **Art** for the ledge, the worn figures, the offerings and the chime line. Check artpipe
-   `done/`, `_artsrc/` and `registry.jsonl` first.
+- `Source/RM_LedgeRefuge.cs`: refuge/anchor marker extensions; the warning-phase sweep that sends
+  neutral visitors and the player's trained animals to the nearest reachable ledge cell and holds
+  them there; the flood never takes a refuge cell; chimes toll from the nearest anchor.
+- `Source/RM_MercyLedges.cs` + `Defs/GenStepDefs/RM_FloodedCanyon_MercyLedges.xml` (order 245) +
+  `Patches/RM_FloodedCanyon_MercyLedges_Register.xml` (MapCommonBase): carves 2-6 pockets (up to 3
+  wide, 2 deep) into HIGH natural-rock faces, floors them with the rock's smoothed stone and one
+  `RM_MercyLedge` per cell; cuts one `RM_MercyCarving` and one `RM_ChimeLineAnchor` into each
+  pocket's walls; places as many anchors again on other high faces.
+- `Defs/ThingDefs_Buildings/RM_MercyLedges.xml`: `RM_MercyLedge` (non-edifice, standable, refuge
+  extension), `RM_MercyCarving` (wall cell, `CompRM_MercyCarving`: inspect shows one inscription line
+  and a reader count; a humanlike within 2.9 cells with line of sight gains the memory once per
+  carving), `RM_ChimeLineAnchor` (wall cell, anchor extension). All unclaimable, so the player
+  cannot deconstruct them.
+- `Defs/ThoughtDefs/RM_MercyCarving.xml`: `RM_ReadMercyCarving`, **PROVISIONAL +4 mood for 2 days**
+  (numbers ruling 2026-10-03).
+- Settings: "Ledges cut into the cliff faces (worldgen)" and "Reading a ledge carving lifts the
+  mood", beside the existing refuge and anchor toggles.
+- Debug: "Carve mercy ledges now (current map)" runs the carver on any map; "Report ledge refuge"
+  now also prints `carvings=` and `carvingReaders=`.
+- PROVISIONAL numbers: 0.5 ledges per 10k cells clamped 2-6, 30 cells between ledges, 20 between
+  free anchors, 5-cell edge margin, read radius 2.9.
 
-## build once answered
+## owed
 
-GenStep placing the ledges outside floodable ground; a flood-phase hook that, during Herald and
-Warned, gives neutral visitors and the player's trained animals a goto job to the nearest reachable
-ledge (sonnet; escalate to opus if the lord AI fights the engine); an inspectable carving building
-with the one-shot thought; chime-line anchor things that `RingChime` uses in place of positions.
+1. **Inscription lines and all descriptions are PLACEHOLDERS.** Drafts for the owner's review:
+   `Transient/ledges_inscriptions_draft_20261008.md`. His chosen lines go into the
+   `<inscriptions>` list and the descriptions.
+2. **Art is PLACEHOLDER** (vanilla party-spot / small-sculpture / torch-lamp textures, tinted).
+   artpipe searched 2026-10-08 (ledge, carving, chime, inscription, offering, mercy, canyon): nothing
+   for this subject. Not queued: the subject's art is not yet approved.
+3. Old offerings are described on the carving only; no separate offering things.
 
 ## criteria
 

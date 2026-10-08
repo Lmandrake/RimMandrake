@@ -100,6 +100,22 @@ namespace RimMandrake.FloodedCanyon
             Log.Message("[RMFloodedCanyonDebug] " + comp.DebugStateReport());
         }
 
+        // Runs the worldgen ledge carver on the CURRENT map (any biome), so a
+        // quicktest map gets real ledges, carvings and anchors without a new
+        // world. Ignores the worldgen setting; prints what it cut and the
+        // refuge state after.
+        [DebugAction(CAT, "Carve mercy ledges now (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void CarveLedges()
+        {
+            Map map = Find.CurrentMap;
+            RM_MapComponent_LedgeRefuge comp = map?.GetComponent<RM_MapComponent_LedgeRefuge>();
+            if (comp == null) { Log.Error("[RMFloodedCanyonDebug] no RM_MapComponent_LedgeRefuge on this map."); return; }
+            RM_MercyLedges.Result r = RM_MercyLedges.Generate(map, null);
+            Log.Message("[RMFloodedCanyonDebug] carved ledges=" + r.ledges + " ledgeCells=" + r.ledgeCells
+                + " carvings=" + r.carvings + " anchorsPlaced=" + r.anchors + " " + comp.DebugStateReport());
+        }
+
         // Test surface until a ledge def exists: nine standable dry cells
         // nearest the map centre become refuge cells.
         [DebugAction(CAT, "Mark debug refuge ledge at map centre (current map)",

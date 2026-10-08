@@ -9,13 +9,10 @@ namespace RimMandrake.FloodedCanyon
     // LEDGES OF MERCY — the refuge half (CRACKEDLANDS_LEDGES_OF_MERCY_1).
     //
     // "During warnings, neutral visitors and trained animals try to reach
-    // the nearest ledge." What a ledge IS physically (a walkable edifice
-    // platform, a KCSG piece cut into a cliff, a terrain band by the walls)
-    // is the owner's open question, so this file does not decide it. It
-    // works on ANY ThingDef that carries RM_RefugeLedgeExtension: every
-    // standable cell a spawned ledge thing occupies is a refuge cell. When
-    // the form is ruled, the ledge def gains the extension and this machinery
-    // needs no change.
+    // the nearest ledge." It works on ANY ThingDef that carries
+    // RM_RefugeLedgeExtension: every standable cell a spawned ledge thing
+    // occupies is a refuge cell. The shipped ledge is RM_MercyLedge, cut into
+    // the cliff face at map generation (RM_MercyLedges.cs).
     //
     //   * The flood never takes a refuge cell (RM_MapComponent_CanyonFlood.
     //     Eligible asks IsRefugeCell) — an edifice ledge was already safe;
@@ -29,9 +26,8 @@ namespace RimMandrake.FloodedCanyon
     //   * Chime-line anchors (RM_ChimeAnchorExtension): RingChime tolls from
     //     the anchor nearest each staged position instead of the position.
     //
-    // NOT here, deliberately: the ledge def itself, the GenStep placing it,
-    // the inscriptions and carvings (owner's lore lines), the one-shot
-    // memory. See the item.
+    // The ledge def, its GenStep, the carving and its one-shot memory live
+    // in RM_MercyLedges.cs and Defs/ThingDefs_Buildings/RM_MercyLedges.xml.
     // ════════════════════════════════════════════════════════════════════
 
     // Marker: this thing is a refuge ledge. Its standable occupied cells are
@@ -311,11 +307,32 @@ namespace RimMandrake.FloodedCanyon
             return string.Format(
                 "refuge: enabled={0} anchorsEnabled={1} ledgeDefs={2} anchorDefs={3} anchors={4} refugeCells={5} "
                 + "debugCells={6} seekers={7} onLedge={8} enRoute={9} sentTotal={10} heldTotal={11} "
-                + "lastSweepTick={12} lastSeekers={13} lastOnLedge={14} lastNoReach={15} nowTick={16}",
+                + "lastSweepTick={12} lastSeekers={13} lastOnLedge={14} lastNoReach={15} nowTick={16} "
+                + "carvings={17} carvingReaders={18}",
                 RM_FloodedCanyonSettings.ledgeRefugeEnabled, RM_FloodedCanyonSettings.chimeAnchorsEnabled,
                 LedgeDefs.Count, AnchorDefs.Count, AnchorCount(), refugeCells.Count, debugCells.Count,
                 seekers, onLedge, enRoute, sentTotal, heldTotal, lastSweepTick, lastSeekers, lastOnLedge,
-                lastNoReach, Find.TickManager.TicksGame);
+                lastNoReach, Find.TickManager.TicksGame, CarvingCount(out int readers), readers);
+        }
+
+        private int CarvingCount(out int readers)
+        {
+            readers = 0;
+            ThingDef def = RM_FloodedCanyonDefOf.RM_MercyCarving;
+            if (def == null)
+            {
+                return 0;
+            }
+            List<Thing> things = map.listerThings.ThingsOfDef(def);
+            for (int i = 0; i < things.Count; i++)
+            {
+                CompRM_MercyCarving c = things[i].TryGetComp<CompRM_MercyCarving>();
+                if (c != null)
+                {
+                    readers += c.ReaderCount;
+                }
+            }
+            return things.Count;
         }
 
         public override void FinalizeInit()

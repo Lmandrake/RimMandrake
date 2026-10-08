@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FloodedCanyon_MercyLedges_Register.xml   CRACKEDLANDS_LEDGES_OF_MERCY_1
+
+  Adds RM_GenStep_MercyLedges to Core's abstract MapCommonBase genSteps, the
+  same route as RM_FloodedCanyon_FossilStrata_Register.xml. Biome- and
+  setting-gated inside the class, so it is inert off the canyon unless the
+  flood's "other biomes" setting is on.
+
+  Conditional, not a bare Add: an absent list must not error.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+      <value>
+        <li>RM_GenStep_MercyLedges</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
