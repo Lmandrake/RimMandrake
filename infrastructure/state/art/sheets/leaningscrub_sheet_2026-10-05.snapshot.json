@@ -1,6 +1,6 @@
 {
  "biome": "RM_LeaningScrub",
- "built": "2026-10-07T23:14:00-0700",
+ "built": "2026-10-08T00:03:28-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
@@ -250,26 +250,38 @@
     },
     "D": {
      "single": "ad2a19174ed564483e1009420a1add0e528a830009b02ff4d42e5954b61b250c"
+    },
+    "E": {
+     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
+    },
+    "F": {
+     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_CrownVenomvine",
     "B": "Things/Plant/RM_CrownVenomvine",
     "C": "Things/Plant/RM_CrownVenomvine",
-    "D": "Things/Plant/RM_CrownVenomvine"
+    "D": "Things/Plant/RM_CrownVenomvine",
+    "E": "Things/Plant/RM_CrownVenomvine",
+    "F": "Things/Plant/RM_CrownVenomvine"
    },
    "labels": {
     "A": "our deployed art (render RM_CrownVenomvine) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_CrownVenomvine_v1",
     "C": "render leaningscrub_crownvenomvine_b_v1_single",
-    "D": "render leaningscrub_crownvenomvine_c_v1_single"
+    "D": "render leaningscrub_crownvenomvine_c_v1_single",
+    "E": "render 0vv_crown_venomvine_v1",
+    "F": "render 0vv_crown_venomvine_v2"
    },
    "res": "Things/Plant/RM_CrownVenomvine",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "crownvenomvine"
   },
@@ -342,26 +354,38 @@
     },
     "D": {
      "single": "f9ecfc380d398ecdda01e7f4327882e7fab2bbeab59edfa23ced3fd443c99ee0"
+    },
+    "E": {
+     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
+    },
+    "F": {
+     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_DrippingVenomvine",
     "B": "Things/Plant/RM_DrippingVenomvine",
     "C": "Things/Plant/RM_DrippingVenomvine",
-    "D": "Things/Plant/RM_DrippingVenomvine"
+    "D": "Things/Plant/RM_DrippingVenomvine",
+    "E": "Things/Plant/RM_DrippingVenomvine",
+    "F": "Things/Plant/RM_DrippingVenomvine"
    },
    "labels": {
     "A": "our deployed art (render RM_DrippingVenomvine) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_DrippingVenomvine_v1",
     "C": "render leaningscrub_drippingvenomvine_b_v1_single",
-    "D": "render leaningscrub_drippingvenomvine_c_v1_single"
+    "D": "render leaningscrub_drippingvenomvine_c_v1_single",
+    "E": "render 0vv_dripping_venomvine_v1",
+    "F": "render 0vv_dripping_venomvine_v2"
    },
    "res": "Things/Plant/RM_DrippingVenomvine",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "drippingvenomvine"
   },
@@ -573,17 +597,149 @@
    "columns": {
     "A": {
      "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+    },
+    "B": {
+     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
+    },
+    "C": {
+     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
+    },
+    "D": {
+     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
+    },
+    "E": {
+     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
+    },
+    "F": {
+     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
+    },
+    "G": {
+     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
+    },
+    "H": {
+     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
+    },
+    "I": {
+     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
+    },
+    "J": {
+     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
+    },
+    "K": {
+     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
+    },
+    "L": {
+     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
+    },
+    "M": {
+     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
+    },
+    "N": {
+     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
+    },
+    "O": {
+     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
+    },
+    "P": {
+     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
+    },
+    "Q": {
+     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
+    },
+    "R": {
+     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
+    },
+    "S": {
+     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
+    },
+    "T": {
+     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
+    },
+    "U": {
+     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
+    },
+    "V": {
+     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
+    },
+    "W": {
+     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Venomvine"
+    "A": "Things/Plant/RM_Venomvine",
+    "B": "Things/Plant/RM_Venomvine",
+    "C": "Things/Plant/RM_Venomvine",
+    "D": "Things/Plant/RM_Venomvine",
+    "E": "Things/Plant/RM_Venomvine",
+    "F": "Things/Plant/RM_Venomvine",
+    "G": "Things/Plant/RM_Venomvine",
+    "H": "Things/Plant/RM_Venomvine",
+    "I": "Things/Plant/RM_Venomvine",
+    "J": "Things/Plant/RM_Venomvine",
+    "K": "Things/Plant/RM_Venomvine",
+    "L": "Things/Plant/RM_Venomvine",
+    "M": "Things/Plant/RM_Venomvine",
+    "N": "Things/Plant/RM_Venomvine",
+    "O": "Things/Plant/RM_Venomvine",
+    "P": "Things/Plant/RM_Venomvine",
+    "Q": "Things/Plant/RM_Venomvine",
+    "R": "Things/Plant/RM_Venomvine",
+    "S": "Things/Plant/RM_Venomvine",
+    "T": "Things/Plant/RM_Venomvine",
+    "U": "Things/Plant/RM_Venomvine",
+    "V": "Things/Plant/RM_Venomvine",
+    "W": "Things/Plant/RM_Venomvine"
    },
    "labels": {
-    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render 0vv_crown_venomvine_v1",
+    "C": "render 0vv_crown_venomvine_v2",
+    "D": "render 0vv_desert_venomvine_v1",
+    "E": "render 0vv_desert_venomvine_v2",
+    "F": "render 0vv_desert_venomvine_v3",
+    "G": "render 0vv_dripping_venomvine_v1",
+    "H": "render 0vv_dripping_venomvine_v2",
+    "I": "render 0vv_hoard_venomvine_v1",
+    "J": "render 0vv_hoard_venomvine_v2",
+    "K": "render 0vv_hollow_venomvine_v2",
+    "L": "render 0vv_hoard_venomvine_v3",
+    "M": "render 0vv_hoard_venomvine_v4",
+    "N": "render 0vv_hollow_venomvine_v1",
+    "O": "render 0vv_quench_venomvine_spent_v1",
+    "P": "render 0vv_quench_venomvine_spent_v2",
+    "Q": "render 0vv_quench_venomvine_v1",
+    "R": "render 0vv_quench_venomvine_v2",
+    "S": "render 0vv_quench_venomvine_v3",
+    "T": "render 0vv_quench_venomvine_v4",
+    "U": "render 0vv_rearing_venomvine_reared_v1",
+    "V": "render 0vv_rearing_venomvine_reared_v2",
+    "W": "render 0vv_rearing_venomvine_v2"
    },
    "res": "Things/Plant/RM_Venomvine",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W"
    ],
    "subject_key": "hoardvenomvine"
   },
@@ -600,26 +756,38 @@
     },
     "D": {
      "single": "a0f99562f38e0f6376083891d654e8f555018af3dab4e7e0968fa96dfc8c7df1"
+    },
+    "E": {
+     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
+    },
+    "F": {
+     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_HollowVenomvine",
     "B": "Things/Plant/RM_HollowVenomvine",
     "C": "Things/Plant/RM_HollowVenomvine",
-    "D": "Things/Plant/RM_HollowVenomvine"
+    "D": "Things/Plant/RM_HollowVenomvine",
+    "E": "Things/Plant/RM_HollowVenomvine",
+    "F": "Things/Plant/RM_HollowVenomvine"
    },
    "labels": {
     "A": "our deployed art (render RM_HollowVenomvine) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_HollowVenomvine_v1",
     "C": "render leaningscrub_hollowvenomvine_b_v1_single",
-    "D": "render leaningscrub_hollowvenomvine_c_v1_single"
+    "D": "render leaningscrub_hollowvenomvine_c_v1_single",
+    "E": "render 0vv_hollow_venomvine_v2",
+    "F": "render 0vv_hollow_venomvine_v1"
    },
    "res": "Things/Plant/RM_HollowVenomvine",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "hollowvenomvine"
   },
@@ -683,17 +851,149 @@
    "columns": {
     "A": {
      "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+    },
+    "B": {
+     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
+    },
+    "C": {
+     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
+    },
+    "D": {
+     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
+    },
+    "E": {
+     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
+    },
+    "F": {
+     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
+    },
+    "G": {
+     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
+    },
+    "H": {
+     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
+    },
+    "I": {
+     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
+    },
+    "J": {
+     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
+    },
+    "K": {
+     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
+    },
+    "L": {
+     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
+    },
+    "M": {
+     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
+    },
+    "N": {
+     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
+    },
+    "O": {
+     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
+    },
+    "P": {
+     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
+    },
+    "Q": {
+     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
+    },
+    "R": {
+     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
+    },
+    "S": {
+     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
+    },
+    "T": {
+     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
+    },
+    "U": {
+     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
+    },
+    "V": {
+     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
+    },
+    "W": {
+     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Venomvine"
+    "A": "Things/Plant/RM_Venomvine",
+    "B": "Things/Plant/RM_Venomvine",
+    "C": "Things/Plant/RM_Venomvine",
+    "D": "Things/Plant/RM_Venomvine",
+    "E": "Things/Plant/RM_Venomvine",
+    "F": "Things/Plant/RM_Venomvine",
+    "G": "Things/Plant/RM_Venomvine",
+    "H": "Things/Plant/RM_Venomvine",
+    "I": "Things/Plant/RM_Venomvine",
+    "J": "Things/Plant/RM_Venomvine",
+    "K": "Things/Plant/RM_Venomvine",
+    "L": "Things/Plant/RM_Venomvine",
+    "M": "Things/Plant/RM_Venomvine",
+    "N": "Things/Plant/RM_Venomvine",
+    "O": "Things/Plant/RM_Venomvine",
+    "P": "Things/Plant/RM_Venomvine",
+    "Q": "Things/Plant/RM_Venomvine",
+    "R": "Things/Plant/RM_Venomvine",
+    "S": "Things/Plant/RM_Venomvine",
+    "T": "Things/Plant/RM_Venomvine",
+    "U": "Things/Plant/RM_Venomvine",
+    "V": "Things/Plant/RM_Venomvine",
+    "W": "Things/Plant/RM_Venomvine"
    },
    "labels": {
-    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render 0vv_crown_venomvine_v1",
+    "C": "render 0vv_crown_venomvine_v2",
+    "D": "render 0vv_desert_venomvine_v1",
+    "E": "render 0vv_desert_venomvine_v2",
+    "F": "render 0vv_desert_venomvine_v3",
+    "G": "render 0vv_dripping_venomvine_v1",
+    "H": "render 0vv_dripping_venomvine_v2",
+    "I": "render 0vv_hoard_venomvine_v1",
+    "J": "render 0vv_hoard_venomvine_v2",
+    "K": "render 0vv_hollow_venomvine_v2",
+    "L": "render 0vv_hoard_venomvine_v3",
+    "M": "render 0vv_hoard_venomvine_v4",
+    "N": "render 0vv_hollow_venomvine_v1",
+    "O": "render 0vv_quench_venomvine_spent_v1",
+    "P": "render 0vv_quench_venomvine_spent_v2",
+    "Q": "render 0vv_quench_venomvine_v1",
+    "R": "render 0vv_quench_venomvine_v2",
+    "S": "render 0vv_quench_venomvine_v3",
+    "T": "render 0vv_quench_venomvine_v4",
+    "U": "render 0vv_rearing_venomvine_reared_v1",
+    "V": "render 0vv_rearing_venomvine_reared_v2",
+    "W": "render 0vv_rearing_venomvine_v2"
    },
    "res": "Things/Plant/RM_Venomvine",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W"
    ],
    "subject_key": "quenchvenomvine"
   },
@@ -701,17 +1001,149 @@
    "columns": {
     "A": {
      "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+    },
+    "B": {
+     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
+    },
+    "C": {
+     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
+    },
+    "D": {
+     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
+    },
+    "E": {
+     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
+    },
+    "F": {
+     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
+    },
+    "G": {
+     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
+    },
+    "H": {
+     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
+    },
+    "I": {
+     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
+    },
+    "J": {
+     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
+    },
+    "K": {
+     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
+    },
+    "L": {
+     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
+    },
+    "M": {
+     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
+    },
+    "N": {
+     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
+    },
+    "O": {
+     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
+    },
+    "P": {
+     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
+    },
+    "Q": {
+     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
+    },
+    "R": {
+     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
+    },
+    "S": {
+     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
+    },
+    "T": {
+     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
+    },
+    "U": {
+     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
+    },
+    "V": {
+     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
+    },
+    "W": {
+     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Venomvine"
+    "A": "Things/Plant/RM_Venomvine",
+    "B": "Things/Plant/RM_Venomvine",
+    "C": "Things/Plant/RM_Venomvine",
+    "D": "Things/Plant/RM_Venomvine",
+    "E": "Things/Plant/RM_Venomvine",
+    "F": "Things/Plant/RM_Venomvine",
+    "G": "Things/Plant/RM_Venomvine",
+    "H": "Things/Plant/RM_Venomvine",
+    "I": "Things/Plant/RM_Venomvine",
+    "J": "Things/Plant/RM_Venomvine",
+    "K": "Things/Plant/RM_Venomvine",
+    "L": "Things/Plant/RM_Venomvine",
+    "M": "Things/Plant/RM_Venomvine",
+    "N": "Things/Plant/RM_Venomvine",
+    "O": "Things/Plant/RM_Venomvine",
+    "P": "Things/Plant/RM_Venomvine",
+    "Q": "Things/Plant/RM_Venomvine",
+    "R": "Things/Plant/RM_Venomvine",
+    "S": "Things/Plant/RM_Venomvine",
+    "T": "Things/Plant/RM_Venomvine",
+    "U": "Things/Plant/RM_Venomvine",
+    "V": "Things/Plant/RM_Venomvine",
+    "W": "Things/Plant/RM_Venomvine"
    },
    "labels": {
-    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render 0vv_crown_venomvine_v1",
+    "C": "render 0vv_crown_venomvine_v2",
+    "D": "render 0vv_desert_venomvine_v1",
+    "E": "render 0vv_desert_venomvine_v2",
+    "F": "render 0vv_desert_venomvine_v3",
+    "G": "render 0vv_dripping_venomvine_v1",
+    "H": "render 0vv_dripping_venomvine_v2",
+    "I": "render 0vv_hoard_venomvine_v1",
+    "J": "render 0vv_hoard_venomvine_v2",
+    "K": "render 0vv_hollow_venomvine_v2",
+    "L": "render 0vv_hoard_venomvine_v3",
+    "M": "render 0vv_hoard_venomvine_v4",
+    "N": "render 0vv_hollow_venomvine_v1",
+    "O": "render 0vv_quench_venomvine_spent_v1",
+    "P": "render 0vv_quench_venomvine_spent_v2",
+    "Q": "render 0vv_quench_venomvine_v1",
+    "R": "render 0vv_quench_venomvine_v2",
+    "S": "render 0vv_quench_venomvine_v3",
+    "T": "render 0vv_quench_venomvine_v4",
+    "U": "render 0vv_rearing_venomvine_reared_v1",
+    "V": "render 0vv_rearing_venomvine_reared_v2",
+    "W": "render 0vv_rearing_venomvine_v2"
    },
    "res": "Things/Plant/RM_Venomvine",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W"
    ],
    "subject_key": "rearingvenomvine"
   },
@@ -759,17 +1191,149 @@
    "columns": {
     "A": {
      "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+    },
+    "B": {
+     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
+    },
+    "C": {
+     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
+    },
+    "D": {
+     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
+    },
+    "E": {
+     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
+    },
+    "F": {
+     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
+    },
+    "G": {
+     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
+    },
+    "H": {
+     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
+    },
+    "I": {
+     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
+    },
+    "J": {
+     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
+    },
+    "K": {
+     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
+    },
+    "L": {
+     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
+    },
+    "M": {
+     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
+    },
+    "N": {
+     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
+    },
+    "O": {
+     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
+    },
+    "P": {
+     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
+    },
+    "Q": {
+     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
+    },
+    "R": {
+     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
+    },
+    "S": {
+     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
+    },
+    "T": {
+     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
+    },
+    "U": {
+     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
+    },
+    "V": {
+     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
+    },
+    "W": {
+     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Venomvine"
+    "A": "Things/Plant/RM_Venomvine",
+    "B": "Things/Plant/RM_Venomvine",
+    "C": "Things/Plant/RM_Venomvine",
+    "D": "Things/Plant/RM_Venomvine",
+    "E": "Things/Plant/RM_Venomvine",
+    "F": "Things/Plant/RM_Venomvine",
+    "G": "Things/Plant/RM_Venomvine",
+    "H": "Things/Plant/RM_Venomvine",
+    "I": "Things/Plant/RM_Venomvine",
+    "J": "Things/Plant/RM_Venomvine",
+    "K": "Things/Plant/RM_Venomvine",
+    "L": "Things/Plant/RM_Venomvine",
+    "M": "Things/Plant/RM_Venomvine",
+    "N": "Things/Plant/RM_Venomvine",
+    "O": "Things/Plant/RM_Venomvine",
+    "P": "Things/Plant/RM_Venomvine",
+    "Q": "Things/Plant/RM_Venomvine",
+    "R": "Things/Plant/RM_Venomvine",
+    "S": "Things/Plant/RM_Venomvine",
+    "T": "Things/Plant/RM_Venomvine",
+    "U": "Things/Plant/RM_Venomvine",
+    "V": "Things/Plant/RM_Venomvine",
+    "W": "Things/Plant/RM_Venomvine"
    },
    "labels": {
-    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render 0vv_crown_venomvine_v1",
+    "C": "render 0vv_crown_venomvine_v2",
+    "D": "render 0vv_desert_venomvine_v1",
+    "E": "render 0vv_desert_venomvine_v2",
+    "F": "render 0vv_desert_venomvine_v3",
+    "G": "render 0vv_dripping_venomvine_v1",
+    "H": "render 0vv_dripping_venomvine_v2",
+    "I": "render 0vv_hoard_venomvine_v1",
+    "J": "render 0vv_hoard_venomvine_v2",
+    "K": "render 0vv_hollow_venomvine_v2",
+    "L": "render 0vv_hoard_venomvine_v3",
+    "M": "render 0vv_hoard_venomvine_v4",
+    "N": "render 0vv_hollow_venomvine_v1",
+    "O": "render 0vv_quench_venomvine_spent_v1",
+    "P": "render 0vv_quench_venomvine_spent_v2",
+    "Q": "render 0vv_quench_venomvine_v1",
+    "R": "render 0vv_quench_venomvine_v2",
+    "S": "render 0vv_quench_venomvine_v3",
+    "T": "render 0vv_quench_venomvine_v4",
+    "U": "render 0vv_rearing_venomvine_reared_v1",
+    "V": "render 0vv_rearing_venomvine_reared_v2",
+    "W": "render 0vv_rearing_venomvine_v2"
    },
    "res": "Things/Plant/RM_Venomvine",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W"
    ],
    "subject_key": "sheddingvenomvine"
   },
@@ -871,17 +1435,149 @@
    "columns": {
     "A": {
      "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+    },
+    "B": {
+     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
+    },
+    "C": {
+     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
+    },
+    "D": {
+     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
+    },
+    "E": {
+     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
+    },
+    "F": {
+     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
+    },
+    "G": {
+     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
+    },
+    "H": {
+     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
+    },
+    "I": {
+     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
+    },
+    "J": {
+     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
+    },
+    "K": {
+     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
+    },
+    "L": {
+     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
+    },
+    "M": {
+     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
+    },
+    "N": {
+     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
+    },
+    "O": {
+     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
+    },
+    "P": {
+     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
+    },
+    "Q": {
+     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
+    },
+    "R": {
+     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
+    },
+    "S": {
+     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
+    },
+    "T": {
+     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
+    },
+    "U": {
+     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
+    },
+    "V": {
+     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
+    },
+    "W": {
+     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Venomvine"
+    "A": "Things/Plant/RM_Venomvine",
+    "B": "Things/Plant/RM_Venomvine",
+    "C": "Things/Plant/RM_Venomvine",
+    "D": "Things/Plant/RM_Venomvine",
+    "E": "Things/Plant/RM_Venomvine",
+    "F": "Things/Plant/RM_Venomvine",
+    "G": "Things/Plant/RM_Venomvine",
+    "H": "Things/Plant/RM_Venomvine",
+    "I": "Things/Plant/RM_Venomvine",
+    "J": "Things/Plant/RM_Venomvine",
+    "K": "Things/Plant/RM_Venomvine",
+    "L": "Things/Plant/RM_Venomvine",
+    "M": "Things/Plant/RM_Venomvine",
+    "N": "Things/Plant/RM_Venomvine",
+    "O": "Things/Plant/RM_Venomvine",
+    "P": "Things/Plant/RM_Venomvine",
+    "Q": "Things/Plant/RM_Venomvine",
+    "R": "Things/Plant/RM_Venomvine",
+    "S": "Things/Plant/RM_Venomvine",
+    "T": "Things/Plant/RM_Venomvine",
+    "U": "Things/Plant/RM_Venomvine",
+    "V": "Things/Plant/RM_Venomvine",
+    "W": "Things/Plant/RM_Venomvine"
    },
    "labels": {
-    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render 0vv_crown_venomvine_v1",
+    "C": "render 0vv_crown_venomvine_v2",
+    "D": "render 0vv_desert_venomvine_v1",
+    "E": "render 0vv_desert_venomvine_v2",
+    "F": "render 0vv_desert_venomvine_v3",
+    "G": "render 0vv_dripping_venomvine_v1",
+    "H": "render 0vv_dripping_venomvine_v2",
+    "I": "render 0vv_hoard_venomvine_v1",
+    "J": "render 0vv_hoard_venomvine_v2",
+    "K": "render 0vv_hollow_venomvine_v2",
+    "L": "render 0vv_hoard_venomvine_v3",
+    "M": "render 0vv_hoard_venomvine_v4",
+    "N": "render 0vv_hollow_venomvine_v1",
+    "O": "render 0vv_quench_venomvine_spent_v1",
+    "P": "render 0vv_quench_venomvine_spent_v2",
+    "Q": "render 0vv_quench_venomvine_v1",
+    "R": "render 0vv_quench_venomvine_v2",
+    "S": "render 0vv_quench_venomvine_v3",
+    "T": "render 0vv_quench_venomvine_v4",
+    "U": "render 0vv_rearing_venomvine_reared_v1",
+    "V": "render 0vv_rearing_venomvine_reared_v2",
+    "W": "render 0vv_rearing_venomvine_v2"
    },
    "res": "Things/Plant/RM_Venomvine",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W"
    ],
    "subject_key": "swornvenomvine"
   },
@@ -1041,6 +1737,72 @@
     },
     "E": {
      "single": "1bd194eebf9f346e8bebd377a3ebe579248d14b4c1a7d73d69937a60db293d30"
+    },
+    "F": {
+     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
+    },
+    "G": {
+     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
+    },
+    "H": {
+     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
+    },
+    "I": {
+     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
+    },
+    "J": {
+     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
+    },
+    "K": {
+     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
+    },
+    "L": {
+     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
+    },
+    "M": {
+     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
+    },
+    "N": {
+     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
+    },
+    "O": {
+     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
+    },
+    "P": {
+     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
+    },
+    "Q": {
+     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
+    },
+    "R": {
+     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
+    },
+    "S": {
+     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
+    },
+    "T": {
+     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
+    },
+    "U": {
+     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
+    },
+    "V": {
+     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
+    },
+    "W": {
+     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
+    },
+    "X": {
+     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
+    },
+    "Y": {
+     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
+    },
+    "Z": {
+     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
+    },
+    "a": {
+     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
     }
    },
    "graphic_of": {
@@ -1048,14 +1810,58 @@
     "B": "Things/Plant/RM_Venomvine",
     "C": "_byname",
     "D": "_byname",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "Things/Plant/RM_Venomvine",
+    "G": "Things/Plant/RM_Venomvine",
+    "H": "Things/Plant/RM_Venomvine",
+    "I": "Things/Plant/RM_Venomvine",
+    "J": "Things/Plant/RM_Venomvine",
+    "K": "Things/Plant/RM_Venomvine",
+    "L": "Things/Plant/RM_Venomvine",
+    "M": "Things/Plant/RM_Venomvine",
+    "N": "Things/Plant/RM_Venomvine",
+    "O": "Things/Plant/RM_Venomvine",
+    "P": "Things/Plant/RM_Venomvine",
+    "Q": "Things/Plant/RM_Venomvine",
+    "R": "Things/Plant/RM_Venomvine",
+    "S": "Things/Plant/RM_Venomvine",
+    "T": "Things/Plant/RM_Venomvine",
+    "U": "Things/Plant/RM_Venomvine",
+    "V": "Things/Plant/RM_Venomvine",
+    "W": "Things/Plant/RM_Venomvine",
+    "X": "Things/Plant/RM_Venomvine",
+    "Y": "Things/Plant/RM_Venomvine",
+    "Z": "Things/Plant/RM_Venomvine",
+    "a": "Things/Plant/RM_Venomvine"
    },
    "labels": {
     "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes",
     "B": "render ls_regen_RM_Venomvine_v1",
     "C": "render RM_VenomvineThicket_v2",
     "D": "render leaningscrub_venomvinethicket_c_v1_single",
-    "E": "render leaningscrub_venomvinethicket_b_v1_single"
+    "E": "render leaningscrub_venomvinethicket_b_v1_single",
+    "F": "render 0vv_crown_venomvine_v1",
+    "G": "render 0vv_crown_venomvine_v2",
+    "H": "render 0vv_desert_venomvine_v1",
+    "I": "render 0vv_desert_venomvine_v2",
+    "J": "render 0vv_desert_venomvine_v3",
+    "K": "render 0vv_dripping_venomvine_v1",
+    "L": "render 0vv_dripping_venomvine_v2",
+    "M": "render 0vv_hoard_venomvine_v1",
+    "N": "render 0vv_hoard_venomvine_v2",
+    "O": "render 0vv_hollow_venomvine_v2",
+    "P": "render 0vv_hoard_venomvine_v3",
+    "Q": "render 0vv_hoard_venomvine_v4",
+    "R": "render 0vv_hollow_venomvine_v1",
+    "S": "render 0vv_quench_venomvine_spent_v1",
+    "T": "render 0vv_quench_venomvine_spent_v2",
+    "U": "render 0vv_quench_venomvine_v1",
+    "V": "render 0vv_quench_venomvine_v2",
+    "W": "render 0vv_quench_venomvine_v3",
+    "X": "render 0vv_quench_venomvine_v4",
+    "Y": "render 0vv_rearing_venomvine_reared_v1",
+    "Z": "render 0vv_rearing_venomvine_reared_v2",
+    "a": "render 0vv_rearing_venomvine_v2"
    },
    "res": "Things/Plant/RM_Venomvine",
    "reserved": [
@@ -1063,7 +1869,29 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "a"
    ],
    "subject_key": "venomvinethicket"
   },
@@ -1119,17 +1947,149 @@
    "columns": {
     "A": {
      "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+    },
+    "B": {
+     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
+    },
+    "C": {
+     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
+    },
+    "D": {
+     "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
+    },
+    "E": {
+     "single": "0c44eb02d0dce1d09a9cae8a83b4c9829d78a729ccde40c143c644d4cc722498"
+    },
+    "F": {
+     "single": "b76d008bfd943c278bf5bcb923fcd1e5f7cb6c7547fbcb085a33d25abe0d3464"
+    },
+    "G": {
+     "single": "775bb9423afd93674c779073355ad597e97989ef6b18345ad4c623a1ea8dd555"
+    },
+    "H": {
+     "single": "80e99b422e78693776fdbf16eb3e8e3be3a7e00566bef5ebeca2412acd90c5ac"
+    },
+    "I": {
+     "single": "53bae6b33fc86cc4d419a2b9343200970a6579886dae5142c2e9818b91d61fee"
+    },
+    "J": {
+     "single": "de347c794233b695ade53635087819311af4602b1575cf296f13f15084067a30"
+    },
+    "K": {
+     "single": "f188f465d3df9618b89ddee696e8c45832d45639beb23896aad5b19400a09201"
+    },
+    "L": {
+     "single": "6346688fcf3d8c73ceea43d6f456b0affecc82206a479907c15c89d338b7238f"
+    },
+    "M": {
+     "single": "9a83e405a7d28ec7574a068ca44ac87186f733d4e788b63c2350d79170d73dec"
+    },
+    "N": {
+     "single": "132bde5be8ca4b422a515365749725ae74af0e0a586eff85cd900c7d3c835e96"
+    },
+    "O": {
+     "single": "86364a7db3c308183aea4cc64dba862217ca097c4410af16017bc28b5de98e4e"
+    },
+    "P": {
+     "single": "c9e42034d1f4b90f3e8090281769959f1854a55ef0bbcb409be4dd12c29d96e0"
+    },
+    "Q": {
+     "single": "f0721303d0b190a751841eeeb86edd503fa88b292ad9b2c47b82d04783603b76"
+    },
+    "R": {
+     "single": "0edcb618b82e661059eeb2f9ab183268825f5748b9c2a17b6fa658fb31bfc0c2"
+    },
+    "S": {
+     "single": "4c730478af757bec09a0cf7836cd2e2c8ebfe8f6b318136dd9750f9ef414ba4b"
+    },
+    "T": {
+     "single": "96300866440ae1735746e686aa08ed139ae6d97a016230be249397428c273140"
+    },
+    "U": {
+     "single": "f855197e03eb7299db2f7fa336383335fb4ebce33618eb4aac85c92a5c4e9082"
+    },
+    "V": {
+     "single": "94dff53a6f15186a5e172c1af704b2bc28605fb303c29788c9180028ec911a60"
+    },
+    "W": {
+     "single": "3b11bea423dc717c9e04cd7fc3c6b1b5a154fe28a682cd6a160bdddb48d88c1f"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Venomvine"
+    "A": "Things/Plant/RM_Venomvine",
+    "B": "Things/Plant/RM_Venomvine",
+    "C": "Things/Plant/RM_Venomvine",
+    "D": "Things/Plant/RM_Venomvine",
+    "E": "Things/Plant/RM_Venomvine",
+    "F": "Things/Plant/RM_Venomvine",
+    "G": "Things/Plant/RM_Venomvine",
+    "H": "Things/Plant/RM_Venomvine",
+    "I": "Things/Plant/RM_Venomvine",
+    "J": "Things/Plant/RM_Venomvine",
+    "K": "Things/Plant/RM_Venomvine",
+    "L": "Things/Plant/RM_Venomvine",
+    "M": "Things/Plant/RM_Venomvine",
+    "N": "Things/Plant/RM_Venomvine",
+    "O": "Things/Plant/RM_Venomvine",
+    "P": "Things/Plant/RM_Venomvine",
+    "Q": "Things/Plant/RM_Venomvine",
+    "R": "Things/Plant/RM_Venomvine",
+    "S": "Things/Plant/RM_Venomvine",
+    "T": "Things/Plant/RM_Venomvine",
+    "U": "Things/Plant/RM_Venomvine",
+    "V": "Things/Plant/RM_Venomvine",
+    "W": "Things/Plant/RM_Venomvine"
    },
    "labels": {
-    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_PillarArmB) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render 0vv_crown_venomvine_v1",
+    "C": "render 0vv_crown_venomvine_v2",
+    "D": "render 0vv_desert_venomvine_v1",
+    "E": "render 0vv_desert_venomvine_v2",
+    "F": "render 0vv_desert_venomvine_v3",
+    "G": "render 0vv_dripping_venomvine_v1",
+    "H": "render 0vv_dripping_venomvine_v2",
+    "I": "render 0vv_hoard_venomvine_v1",
+    "J": "render 0vv_hoard_venomvine_v2",
+    "K": "render 0vv_hollow_venomvine_v2",
+    "L": "render 0vv_hoard_venomvine_v3",
+    "M": "render 0vv_hoard_venomvine_v4",
+    "N": "render 0vv_hollow_venomvine_v1",
+    "O": "render 0vv_quench_venomvine_spent_v1",
+    "P": "render 0vv_quench_venomvine_spent_v2",
+    "Q": "render 0vv_quench_venomvine_v1",
+    "R": "render 0vv_quench_venomvine_v2",
+    "S": "render 0vv_quench_venomvine_v3",
+    "T": "render 0vv_quench_venomvine_v4",
+    "U": "render 0vv_rearing_venomvine_reared_v1",
+    "V": "render 0vv_rearing_venomvine_reared_v2",
+    "W": "render 0vv_rearing_venomvine_v2"
    },
    "res": "Things/Plant/RM_Venomvine",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W"
    ],
    "subject_key": "walkingvenomvine"
   },
