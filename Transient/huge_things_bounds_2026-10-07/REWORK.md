@@ -85,3 +85,8 @@ Found by the fuzz and fixed: the planner judged reachability in a window that sh
 - Deferred cells: a cell refused for a pawn/item stays open until the next retry (250 ticks) finds it clear; a stockpile under a footprint keeps an item there forever -> that cell never closes. Acceptable?
 - Union fallback: an unmeasured picture (RM_PaleTree's immature graphic is vanilla TreeAnima_Immature) blocks the union of the measured variants, scaled; the selection is the whole quad.
 - Planner cost at load: ~O(window cells x pending cells x passes) per giant (worst measured shape 118 cells, ~28x28 window); unbenchmarked in game.
+
+## Status (C2 pushed ebf7b5d28)
+run_selftests: 326/327; the one FAIL is bridgetools/selftest_tool_metadata.py (JawaBench DLL vs source, from ac8b24b82), not HugeThings.
+All HugeThings C# files are DIRTY under code_review_status (no full-file review yet).
+BENCH to see it live: python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod HugeThings (then --apply) and --mod for the Rot patch's mod (mandrake.rm.biomes / TheRot folder), with the game closed (DLL locked while running); cold load; on an existing save Reconcile re-takes every footprint on load.
