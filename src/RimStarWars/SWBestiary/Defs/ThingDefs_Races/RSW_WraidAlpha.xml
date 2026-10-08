@@ -218,6 +218,12 @@
     <combatPower>520</combatPower>
     <ecoSystemWeight>0.12</ecoSystemWeight>
     <wildGroupSize>1~1</wildGroupSize>
+    <alternateGraphicChance>0.5</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 1 variants equally likely -->
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/WraidAlpha/WraidAlphaV_D</texPath>
+      </li>
+    </alternateGraphics>
     <lifeStages>
       <li>
         <label>alpha wraidling</label>

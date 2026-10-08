@@ -175,19 +175,16 @@
     <combatPower>35</combatPower>
     <ecoSystemWeight>0.35</ecoSystemWeight>
     <wildGroupSize>2~4</wildGroupSize>
-    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphicChance>0.75</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 3 variants equally likely -->
     <alternateGraphics>
       <li>
-        <texPath>swanimals/FrilledGorg/FrilledGorgA</texPath>
-        <swimmingTexPath>swanimals/FrilledGorg/FrilledGorgA_Swimming</swimmingTexPath>
+        <texPath>swanimals/FrilledGorg/FrilledGorgV_G</texPath>
       </li>
       <li>
-        <texPath>swanimals/FrilledGorg/FrilledGorgB</texPath>
-        <swimmingTexPath>swanimals/FrilledGorg/FrilledGorgB_Swimming</swimmingTexPath>
+        <texPath>swanimals/FrilledGorg/FrilledGorgV_J</texPath>
       </li>
       <li>
-        <texPath>swanimals/FrilledGorg/FrilledGorgC</texPath>
-        <swimmingTexPath>swanimals/FrilledGorg/FrilledGorgC_Swimming</swimmingTexPath>
+        <texPath>swanimals/FrilledGorg/FrilledGorgV_M</texPath>
       </li>
     </alternateGraphics>
     <moveSpeedFactorByTerrainTag>

@@ -155,6 +155,15 @@
     <combatPower>275</combatPower>
     <ecoSystemWeight>0.30</ecoSystemWeight>
     <wildGroupSize>2~4</wildGroupSize>
+    <alternateGraphicChance>0.667</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 2 variants equally likely -->
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Varactyl/VaractylV_E</texPath>
+      </li>
+      <li>
+        <texPath>swanimals/Varactyl/VaractylV_F</texPath>
+      </li>
+    </alternateGraphics>
     <lifeStages>
       <li>
         <label>varactyl chick</label>
