@@ -30,6 +30,7 @@ frozen history; every new event lands in `events/<SEAT>.jsonl` beside it. A case
 opens `<tmp>/events.jsonl` directly reads an EMPTY ledger — use `_ledger_text()` /
 `_ledger_events()`.
 """
+import json
 import os
 import shutil
 import subprocess
@@ -1105,6 +1106,47 @@ def t_the_real_ledger_was_never_touched():
             assert marker not in body, (
                 "%s reached the REAL ledger at %s, which is append-only and has no "
                 "undo. RIMFLOW_LEDGER is not being honoured." % (marker, path))
+
+
+def t_a_take_in_another_clone_refuses_until_forced_or_stale():
+    """BRIDGE_LOCK_CROSS_CLONE_RACE_1: two seat clones keep separate ledgers, so a take
+    in one was invisible to the other until pushed (2026-10-07: both held it, two loads
+    killed). The shared lock file outside git is what the other clone sees at once."""
+    fresh()
+    shared = os.path.join(_tmp(), "BRIDGE_SHARED.json")
+    other = os.path.join(_tmp(), "clone_b")
+    os.makedirs(os.path.join(other, "items"), exist_ok=True)
+    env_a = lambda seat: env(seat, RIMFLOW_SHARED_BRIDGE=shared)
+    env_b = lambda seat: env(seat, RIMFLOW_SHARED_BRIDGE=shared,
+                             RIMFLOW_LEDGER=os.path.join(other, "events.jsonl"),
+                             RIMFLOW_ITEMS=os.path.join(other, "items"))
+    ok("bridge", "take", "--for", "load round", env=env_a("FOUNDRY"))
+    body = json.load(open(shared))
+    assert body.get("holder") == "FOUNDRY", "a take did not write the shared lock: %s" % body
+    refused(["bridge", "take", "--for", "my load"], "another clone",
+            "the other clone's live take was invisible", seat="BENCH", env_=env_b("BENCH"))
+    out = ok("bridge", "who", env=env_b("BENCH"))
+    assert "another clone" in out, "who hid the other clone's hold: %s" % out
+    # the holder's ordinary events keep the lock fresh
+    t0 = json.load(open(shared))["touched"]
+    # --force crosses it, and says so on the event
+    ok("bridge", "take", "--force", "--for", "urgent", env=env_b("BENCH"))
+    evs = []
+    d = os.path.join(other, "events")   # the ledger is shards beside the head (see _ledger_paths)
+    for f in (sorted(os.listdir(d)) if os.path.isdir(d) else []):
+        if f.endswith(".jsonl"):
+            evs += [json.loads(l) for l in open(os.path.join(d, f)) if l.strip()]
+    tk = [e for e in evs if e.get("event") == "bridge" and e.get("state") == "taken"]
+    assert tk and "another clone" in (tk[-1].get("override") or ""), tk
+    assert json.load(open(shared))["holder"] == "BENCH"
+    ok("bridge", "release", env=env_b("BENCH"))
+    assert json.load(open(shared)).get("holder") is None, "release left the shared lock held"
+    # a stale shared hold (older than the staleness window) does not block
+    json.dump({"holder": "BENCH", "since": "2020-01-01T00:00:00Z", "touched": "2020-01-01T00:00:00Z",
+               "clone": "/elsewhere"}, open(shared, "w"))
+    ok("bridge", "release", env=env_a("FOUNDRY"))
+    ok("bridge", "take", "--for", "after the stale one", env=env_a("FOUNDRY"))
+    assert t0 and json.load(open(shared))["holder"] == "FOUNDRY"
 
 
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]
