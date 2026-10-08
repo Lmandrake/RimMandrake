@@ -166,6 +166,36 @@ def main():
                                                        "purgeTouched": True, "purge": []}}}))
     check(ingest.ingest(dec)["rulings"] == 0, "a row touched only to purge records no keep ruling")
 
+    # owner rule 2026-10-07 22:33 PDT: a geometric placeholder is never installed, kept or a variant
+    from PIL import Image, ImageDraw
+    im = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    ImageDraw.Draw(im).ellipse((14, 14, 114, 114), fill=(120, 80, 40, 255), outline=(10, 10, 10, 255), width=3)
+    bio = BytesIO(); im.save(bio, "PNG")
+    circ = bio.getvalue()
+    scirc = L.store_put_bytes(circ)
+    try:
+        L.install(mod, rel, scirc, owner_said="keep the circle")
+        check(False, "a geometric placeholder is refused even on the owner's words")
+    except L.Refused as e:
+        check("placeholder" in str(e), "a geometric placeholder is refused even on the owner's words")
+    check(L.placeholder_refusal("Things/Beast/Beast_southm.png", circ) == "", "a mask is never judged a placeholder")
+    snap2 = {"sheetId": "p", "rows": {"Beast": {"subject_key": "beast", "columns": {"A": {"south": scirc}, "B": {"south": sgreen}},
+                                                "labels": {"A": "IN GAME now", "B": "render"}}}}
+    sp2 = tmp / "p.snapshot.json"
+    sp2.write_text(json.dumps(snap2))
+    dec2 = tmp / "p.decisions.json"
+    dec2.write_text(json.dumps({"snapshot": str(sp2), "savedBy": "serve_sheet.py", "writeCount": 1,
+                                "decisions": {"Beast": {"decision": "A", "note": "keep", "at": "2026-10-07T00:00:00Z",
+                                                        "decidedAt": "2026-10-07T00:00:00Z", "variants": ["A", "B"]}}}))
+    r = ingest.ingest(dec2, defer_redo_jobs=True)
+    rp = [x for x in L.Index().rulings if x.get("via", "").endswith("p.decisions.json")]
+    redo = [x for x in rp if x.get("verdict") == "redo" and x.get("raw_verdict") == "placeholder-pick"]
+    check(r["ok"] and redo and "placeholder" in redo[0].get("why", "") and r.get("placeholder_redo") == ["Beast:A"],
+          f"a pick of a placeholder column becomes a redo (regen request) with the reason recorded ({r})")
+    check(not any(scirc in ((x.get("target") or {}).get("shas") or []) and x.get("verdict") == "keep" for x in rp),
+          "no keep ruling ever names the placeholder")
+    check(any((x.get("target") or {}).get("shas") == [sgreen] for x in rp), "the real variant B is still kept")
+
     # the compare-sheet generator on a doubled texPath
     import art_sheet
     art_sheet.SG.SKIP_BROWSER = True

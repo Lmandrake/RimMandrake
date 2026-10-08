@@ -531,6 +531,25 @@ def is_mechanical_reason(reason: str | None) -> bool:
     return False
 
 
+PLACEHOLDER_RULE = ('owner, 2026-10-07 22:33 PDT: "make sure that at no time can geometric placeholder art ever '
+                    'remain a viable Variant or selection, ok?"')
+
+
+def placeholder_refusal(rel: str, data: bytes) -> str:
+    """'' when `data` may be installed at `rel`; else why not. A geometric placeholder (placeholder_detect) is never
+    installed by ANY authorisation — not his keep, not his words, not a mechanical tag. Masks and UI chrome are
+    flat by design and are not judged."""
+    r = rel.replace("\\", "/")
+    if r.startswith("UI/") or parse_texfile(r).get("mask"):
+        return ""
+    try:
+        import placeholder_detect as PD
+        why = PD.placeholder_reason(data)
+    except Exception as e:                             # noqa: BLE001
+        return f"UNMEASURED: placeholder check could not read the picture ({type(e).__name__}: {e}) — not installed"
+    return f"{rel}: {why} — a placeholder is never installed ({PLACEHOLDER_RULE})" if why else ""
+
+
 def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
             owner_said: str | None = None, reason: str | None = None,
             provenance: dict | None = None, dry_run: bool = False) -> dict:
@@ -551,6 +570,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         raise Refused(f"{sha[:12]} is not in the art store ({store_dir()}) — put it there first")
     if "/Textures/" in "/" + rel.replace("\\", "/") or rel.startswith("/"):
         raise Refused(f"rel must be the path UNDER Textures/, got {rel}")
+    why_ph = placeholder_refusal(rel, store_get(sha))
+    if why_ph:
+        raise Refused(why_ph)
     target = src_root().parent / mod / "Textures" / rel if not Path(mod).is_absolute() else Path(mod) / "Textures" / rel
     ruling = None
     if ruling_id:

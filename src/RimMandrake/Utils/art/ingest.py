@@ -11,6 +11,10 @@ Rules (design §3, owner rulings 2026-10-04):
   * Each row may carry `purge: [sha...]` — the owner's reject+purge. A purge of a live
     picture is refused (counted, reported); everything else is deleted from the store.
   * Nothing is installed. Installing is `art.py install`, a separate step.
+  * PLACEHOLDERS ARE NEVER KEPT (owner, 2026-10-07 22:33 PDT: "make sure that at no time can geometric placeholder
+    art ever remain a viable Variant or selection"). A pick naming a column whose pictures are all geometric
+    placeholders is recorded as a `redo` ruling (raw_verdict `placeholder-pick`, `why` says so) — a regen request —
+    and its in-game pictures are rejected; a placeholder variant is refused (listed under `placeholder_refused`).
   * REGEN JOBS CARRY HIS NOTE VERBATIM (scaled-game-image-review req 9). `--redo-jobs <jobs.json>` checks every job
     queued for the sheet: `target_def` must be a decided row, and when that row has a note the job's `owner_note`
     must contain it character for character; a `redo` row with no job is refused too. A sheet with `redo` decisions
@@ -22,6 +26,26 @@ import json
 from pathlib import Path
 
 import artledger as L
+
+_PH: dict = {}
+
+
+def placeholder_set(shas) -> str:
+    """The reason when EVERY picture of a column is a geometric placeholder (owner rule 2026-10-07 22:33 PDT), else ''.
+    A picture not in the store is not judged here (install refuses it anyway)."""
+    shas = [s for s in shas if s]
+    if not shas:
+        return ""
+    for s in shas:
+        if s not in _PH:
+            try:
+                import placeholder_detect as PD
+                _PH[s] = (PD.placeholder_reason(L.store_get(s)) or "") if L.store_has(s) else ""
+            except Exception:                           # noqa: BLE001
+                _PH[s] = ""
+        if not _PH[s]:
+            return ""
+    return _PH[shas[0]]
 
 
 def _note_text(on) -> str:
@@ -131,7 +155,17 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
         note = (v.get("note") or "").strip()
         cols = (srow or {}).get("columns") or {}
         if dec and srow and decided:
-            if dec in cols:
+            ph = placeholder_set(cols[dec].values()) if dec in cols else ""
+            if ph:
+                ev = {"type": "ruling", "id": L.det_id("ruling-sheet-placeholder", via, row, dec, v.get("at")),
+                      "target": {"row": row, "subject_key": srow.get("subject_key", ""), "column": dec},
+                      "verdict": "redo", "raw_verdict": "placeholder-pick", "by": "owner", "said": note,
+                      "note": note, "at": v.get("at"), "trust": "ruled", "via": via,
+                      "subject_key": srow.get("subject_key", ""), "source_file": via,
+                      "why": f"he picked column {dec}, which is a {ph}; a placeholder is never kept, so the pick "
+                             f"is a regen request ({L.PLACEHOLDER_RULE})"}
+                out.setdefault("placeholder_redo", []).append(f"{row}:{dec}")
+            elif dec in cols:
                 shas = sorted({s for s in cols[dec].values() if s})
                 ev = {"type": "ruling", "id": L.det_id("ruling-sheet", via, row, dec, v.get("at")),
                       "target": {"shas": shas, "column": dec, "row": row}, "verdict": "keep", "by": "owner",
@@ -152,6 +186,9 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                         out["rejected"] = out.get("rejected", 0) + 1
             # per-biome sheets: a row's extra graphics (swimming, flying …) carry their own pick
             for g, pl in sorted((v.get("picks") or {}).items()):
+                if pl in cols and pl != dec and placeholder_set(cols[pl].values()):
+                    out.setdefault("placeholder_refused", []).append(f"{row}:{g}:{pl} (pick)")
+                    continue
                 if pl in cols and pl != dec:
                     pev = {**ev, "id": L.det_id("ruling-sheet", via, row, pl, v.get("at")), "verdict": "keep",
                            "target": {"shas": sorted({s for s in cols[pl].values() if s}), "column": pl,
@@ -162,6 +199,9 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
         # kept variants: extra columns the owner marked as valid in-game variants of the pick
         if srow and decided:
             for vl in sorted(set(v.get("variants") or [])):
+                if vl in cols and vl != dec and placeholder_set(cols[vl].values()):
+                    out.setdefault("placeholder_refused", []).append(f"{row}:{vl} (variant)")
+                    continue
                 if vl in cols and vl != dec:
                     vev = {"type": "ruling", "id": L.det_id("ruling-sheet", via, row, vl, v.get("variantsAt") or v.get("at")),
                            "target": {"shas": sorted({s for s in cols[vl].values() if s}), "column": vl,
