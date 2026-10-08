@@ -1,6 +1,6 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-07T23:10:24-0700",
+ "built": "2026-10-08T00:04:15-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
@@ -326,17 +326,23 @@
    "columns": {
     "A": {
      "single": "123170c5435351b45a36987086c244c2b39b0cc4991c21d845622de5bb1f3532"
+    },
+    "B": {
+     "single": "b8e5560345068654ce74040d0aa01952d603a8a431cbac8d445194c7da4411f8"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Aphreen/RM_Aphreen_a"
+    "A": "Things/Plant/RM_Aphreen/RM_Aphreen_a",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Miasma"
+    "A": "IN GAME \u2014 Miasma",
+    "B": "render miasma_aphreen_v2"
    },
    "res": "Things/Plant/RM_Aphreen/RM_Aphreen_a",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "aphreen"
   },
@@ -375,20 +381,32 @@
     },
     "B": {
      "single": "268aace147126381485a037e971b9c679e3644f01d79a461e571327018bdece6"
+    },
+    "C": {
+     "single": "945461916ed00ae10eb62f7126d5e0c9c22df70ac82110cbd8a2122eaad2712f"
+    },
+    "D": {
+     "single": "2b9b675fca431be3682623553912facb7954bcb2756785a2ecdefa43db19396d"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Braskeen/RM_Braskeen",
-    "B": "Things/Plant/RM_Braskeen/RM_Braskeen"
+    "B": "Things/Plant/RM_Braskeen/RM_Braskeen",
+    "C": "Things/Plant/RM_Braskeen/RM_Braskeen",
+    "D": "Things/Plant/RM_Braskeen/RM_Braskeen"
    },
    "labels": {
     "A": "render miasma_braskeen_closed",
-    "B": "render miasma_braskeen_open"
+    "B": "render miasma_braskeen_open",
+    "C": "render miasma_braskeen_closed_v2",
+    "D": "render miasma_braskeen_open_v2"
    },
    "res": "Things/Plant/RM_Braskeen/RM_Braskeen",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "braskeen"
   },
@@ -655,18 +673,24 @@
    "columns": {
     "A": {
      "single": "c1e742dd3a07e5f77ccf99b4342b4877231c912fdf98b7c456f390c275130752"
+    },
+    "C": {
+     "single": "cd5432e003b97e4c82ceebaaf1a1d34f373c797b0a007ee9d4ed67c6330250a7"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Nemreth/RM_Nemreth_a"
+    "A": "Things/Plant/RM_Nemreth/RM_Nemreth_a",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Miasma"
+    "A": "IN GAME \u2014 Miasma",
+    "C": "render miasma_nemreth_varc_v1"
    },
    "res": "Things/Plant/RM_Nemreth/RM_Nemreth_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "nemreth"
   },
@@ -1125,20 +1149,36 @@
      "east": "a6fcbae3a838d9cf3de2100f64a59ec0dccce4411e98a933780b4a8257d63efe",
      "north": "53f3136f47c898f1d7146013a3f4e4f9b18ac66e8f2fb3dfb4cb842748f2fdc3",
      "south": "e4c1c5872d406aeffe7e4fdde67ce70e49c9eaf0ee6fd8cd7af4b74ad9950486"
+    },
+    "C": {
+     "east": "567196f3446321c0069a25adf4a855cdda7ed20722bc288cc26df07ed1097ad4",
+     "north": "2d50da4b1890d1a025d31a7461a0c5ada6c8c39c8f977df7e8be3ac4a4eb6bcf",
+     "south": "15823783c95ce0df62cd71e4420aaaf7d90ce479ee85c8f3cb39c7391dd3fdd7"
+    },
+    "D": {
+     "east": "37904cf020e51f60fb038e2d0c532d6d7ea0e3c847d786d7b6a43a302f38dee8",
+     "north": "3f788c7396c4b86b4f5e969b999c7d0ce001fb39153a3da171d62536d1844ede",
+     "south": "5d3030bae48b34bf2c9d498208935ca8c4caaa368ee15778728f588832627020"
     }
    },
    "graphic_of": {
     "A": "swanimals/Blarth/Blarth",
-    "B": "swanimals/Blarth/Blarth_Swimming"
+    "B": "swanimals/Blarth/Blarth_Swimming",
+    "C": "swanimals/Blarth/Blarth",
+    "D": "swanimals/Blarth/Blarth"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render miasma_canon_blarth_v1",
+    "D": "render miasma_canon_blarth_v1_swim"
    },
    "res": "swanimals/Blarth/Blarth",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "blarth"
   },
@@ -1190,20 +1230,60 @@
      "4_east": "1c7d71e7634424b82145b38032a508cc51b982df2d6ba01a6372e00d3313c264",
      "4_north": "0c56858ce24445a0dd1e0d8de1845368092d60f1ff7bff46f1a3e6512b3199a0",
      "4_south": "ff76ed6cdb8873799d48f16820968f0d0f94c839c3f05f046864b06dec7ad131"
+    },
+    "C": {
+     "east": "66f68252415381463ca7a69db8f711e3514f4121dc8c19b29efd31615f4874a9",
+     "north": "3557155dc98778ab60c5d13e342a55cd9b665832652d7e83d7b05fa579cc300e",
+     "south": "35de466cebc57399edc4a2d47220e6bf9be877f3213253a73beff6be4f7c659f"
+    },
+    "D": {
+     "east": "c353cc8232884a7138d6e43ddb380a11f9ad12fda78a2424cde4c13b5eb6df40",
+     "north": "206b504edfa4ab9c3c83c4a379d6b027cc0590ef96060b2523d7f1c7392759df",
+     "south": "96058f1e6dce82c256e9d1ec26cc331ab2f304cc3f112bd5415c1ac1bdb73684"
+    },
+    "E": {
+     "east": "0a6ac13e0ca37072d9ae26d0bd62dc484cb8c8074da8fbc0e17c5f18911f2fab",
+     "north": "f4279ccfa6b6d75aeb6b9c26dd97dd362bc9ed7c605302a865991cbd368b6b6e",
+     "south": "04cc77429617b1b01808073178c56df9b36d79a8fb24b461fbae08dd6ed0fd67"
+    },
+    "F": {
+     "east": "89d1b3d29f5d2e111df1d9415b4ab67d585654ed86edc6be3dd5a27ee745af98",
+     "north": "da20108a85531c4461dee3759a00e78be67e01763d800bd99b5796054fd42b0a",
+     "south": "c36e7da26e9b5d8244d06c2e80e2e17958b8cc750f4566c53c9547338a2a7407"
+    },
+    "G": {
+     "east": "9af29fcd13d99c52dc5faa8fa956e326f7cdcefa05ce2ecaf48b9be89d0e0fa1",
+     "north": "ea1388f2d735049f86eac37e42100d03620e1e179bb3a23eaadc3e3b29f592d1",
+     "south": "c4f7a3f799021da8dfea31346111502d4b999b8a699431046c2c20357ccacce9"
     }
    },
    "graphic_of": {
     "A": "swanimals/Bogwing/Bogwing",
-    "B": "_flip:swanimals/Bogwing/Bogwing_Flying_"
+    "B": "_flip:swanimals/Bogwing/Bogwing_Flying_",
+    "C": "swanimals/Bogwing/Bogwing",
+    "D": "swanimals/Bogwing/Bogwing",
+    "E": "swanimals/Bogwing/Bogwing",
+    "F": "swanimals/Bogwing/Bogwing",
+    "G": "swanimals/Bogwing/Bogwing"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 Bogwing_Flying_"
+    "B": "IN GAME \u2014 Bogwing_Flying_",
+    "C": "render miasma_canon_bogwing_flying_1_v1",
+    "D": "render miasma_canon_bogwing_flying_2_v1 \u2014 failed canon check",
+    "E": "render miasma_canon_bogwing_flying_3_v1",
+    "F": "render miasma_canon_bogwing_flying_4_v1",
+    "G": "render miasma_canon_bogwing_v1"
    },
    "res": "swanimals/Bogwing/Bogwing",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "bogwing"
   },
@@ -1313,17 +1393,24 @@
      "north": "1008b853d1d490754e333178c2158a73fdc3a45f4bf6be89316f0f0844ed5b3e",
      "south": "55af2c54c4b709786102e98e72514c3c1b383b17574bd458d6037009552e41ea",
      "west": "c44ea06bfd6200098043917c3c03bf30131d21e9c885d1776594c17d90797750"
+    },
+    "B": {
+     "east": "25cc3345c0991216465ebdf982c7ac754d83e33890b85584b46feb8392bee0ec",
+     "south": "3ad52af0d6beae8456edeeb3bf8f223b2525b62463e056e5397c2afbaf11b00a"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/SeaBeasts/Laa/Laa"
+    "A": "Things/Pawn/Animal/SeaBeasts/Laa/Laa",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render miasma_canon_laajuv_v2"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Laa/Laa",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "laajuv"
   },
@@ -1338,20 +1425,36 @@
      "east": "3dcc7a57d88b7e67efca3a06a17c58b70d0375689a41357ca2f684f07af2b642",
      "north": "1db7933ec7479a7be8bfe8d4aca9ffcb8efefee25ac25891f7cf47cdf3896952",
      "south": "a3be0ca75983d551f245f1daf13abb364bfb9917344e3e056a03872cd6c4b0eb"
+    },
+    "C": {
+     "east": "c10655545ed3ea7ec28c62f5920bd3054b6e7a64baafe75820241400988dfebb",
+     "north": "394fd39f2ffa9754ac0a191286bf4ef4215fbd14306fa7889ffbcf03d0eeb051",
+     "south": "272465855c4760d496406c0cba729aa68c7d3493cbfb4f85fa178fe9ac7655fa"
+    },
+    "D": {
+     "east": "076999eb20f9dbf6c848d25f93c601ee7d32d002b73648475e9cb0af58302b9e",
+     "north": "2c3c3e7acf26508cebc7373d876f786fec9c6520faa3826eb6e0087a82b5c2d9",
+     "south": "ec99b492eeac5c14f22999e5b01fca8e8c13ecc7606fd0cb49e87e602d168d5c"
     }
    },
    "graphic_of": {
     "A": "swanimals/MarshHaunt/MarshHaunt",
-    "B": "swanimals/MarshHaunt/MarshHaunt_Swimming"
+    "B": "swanimals/MarshHaunt/MarshHaunt_Swimming",
+    "C": "swanimals/MarshHaunt/MarshHaunt",
+    "D": "swanimals/MarshHaunt/MarshHaunt"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary",
+    "C": "render miasma_canon_marshhaunt_v1",
+    "D": "render miasma_canon_marshhaunt_v1_swim"
    },
    "res": "swanimals/MarshHaunt/MarshHaunt",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "marshhaunt"
   },
@@ -1564,24 +1667,32 @@
      "east": "4987d4160186fa1734d47dfc222f06396f5b5013f191c7b319eeffa43bf5e005",
      "north": "4fa636bae7e9bdc68f8fcda9ee223b59574601d56c84c4191f6a4bd3f0ca3669",
      "south": "06b9551f9a25de7ee79d371d4557345c5a46969293042d6ddb9d22dd7543635c"
+    },
+    "E": {
+     "east": "363cb566ecf64c4cb90c15982ddf742a5a6667a3970f2ff738290eb7bc6afcc2",
+     "north": "a045090062d7f77d2d61f07af293ebe68a9bac67bca3bfe0f595e62366bd4c73",
+     "south": "09ec9432058c26638c7669d3154d8b5a849c04de5d9d51151c9daa5f24d847bc"
     }
    },
    "graphic_of": {
     "A": "swanimals/Vornskyr/Vornskyr",
     "B": "swanimals/Vornskyr/Vornskyr",
-    "C": "swanimals/Vornskyr/Vornskyr"
+    "C": "swanimals/Vornskyr/Vornskyr",
+    "E": "swanimals/Vornskyr/Vornskyr"
    },
    "labels": {
     "A": "IN GAME \u2014 VornskyrArtOverride",
     "B": "render canon_vornskyr_v1",
-    "C": "history VornskyrArtOverride 2026-09-13"
+    "C": "history VornskyrArtOverride 2026-09-13",
+    "E": "render miasma_canon_vornskyr_v2"
    },
    "res": "swanimals/Vornskyr/Vornskyr",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "vornskyr"
   },
@@ -1659,17 +1770,24 @@
      "north": "bbb416bfa70b9cc06aec2dda3c42b50bea040c00c56939ad575dcb31f84f7820",
      "south": "7f02236c0f4a73884d72354cf513f638086b20e1de4efeb47b9478e75ca402bf",
      "west": "c76b334a3564f934688523fa1f8d65152cc1707e591f8cdd48ea772d325130b8"
+    },
+    "B": {
+     "east": "6fba121ba3b6364c039528faff0acfd4c14cd6b1b4dd5d86821696892d448be5",
+     "south": "00a46fae9c4f04f80ac774faab0e1c14eb71944bdd43b9f5aa81554cf99bb118"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp"
+    "A": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render miasma_canon_yobshrimpjuv_v1 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "yobshrimpjuv"
   },
@@ -1689,24 +1807,32 @@
      "east": "62eecf79281dbbc892b691dcf74a59f2f5c294b7903f91d2648e08db0b560666",
      "north": "81372f44bb81f87841e0eebd537769e90829380f7c6f1ca93c3f7077a839bb04",
      "south": "3e8f3a5b7d85896128f646853cca4efc3035e92d9ef78d47d1a8c1aa8a618a1b"
+    },
+    "E": {
+     "east": "562096263f995574978bb85c1506e3407c37e14edf77435bf0e27d34e64f0466",
+     "north": "aadd791b99d0c65cd0f60079f81f881d1b7bfe5bc1a838d1188417c27499d8a0",
+     "south": "a63c30625827b0f40892bc40c96ffdcc3b544f7f49e37b97d94d72648a3e6210"
     }
    },
    "graphic_of": {
     "A": "swanimals/Zakkeg/Zakkeg",
     "B": "swanimals/Zakkeg/Zakkeg",
-    "C": "swanimals/Zakkeg/Zakkeg"
+    "C": "swanimals/Zakkeg/Zakkeg",
+    "E": "swanimals/Zakkeg/Zakkeg"
    },
    "labels": {
     "A": "IN GAME \u2014 ZakkegArtOverride",
     "B": "render canon_zakkeg_v1",
-    "C": "history ZakkegArtOverride 2026-09-11"
+    "C": "history ZakkegArtOverride 2026-09-11",
+    "E": "render miasma_canon_zakkeg_v2"
    },
    "res": "swanimals/Zakkeg/Zakkeg",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "zakkeg"
   },
