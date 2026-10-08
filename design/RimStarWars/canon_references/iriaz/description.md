@@ -4,10 +4,12 @@
 
 ## Sourced text (Wookieepedia)
 **Important provenance note**: Iriaz is a *Star Wars Legends* (old expanded
-universe) creature, not current Disney canon — its only real appearance is as
-a cut/unused creature model from *Star Wars: Knights of the Old Republic*
-(2003); it's referenced only in unseen dialogue in the shipped game ("Murdered
-Settler" quest) about a hunter who claimed to be out hunting iriaz. All
+universe) creature, not current Disney canon — it was intended to appear in *Star Wars:
+Knights of the Old Republic* (2003) but the living creature was cut. The
+shipped game still has the "Murdered Settler" quest dialogue (a suspect
+claims to be out hunting iriaz) and Davik Kang's mounted iriaz head in his
+Taris estate trophy room; the Wookieepedia appearance list marks KOTOR as
+"Head only". Mods can restore the dormant model. All
 Wookieepedia material on it is Legends-tagged. Iriaz were docile, herbivorous,
 horned herd animals native to the grassland planet Dantooine, grazing on
 grasses, berries, and shoots near the Jedi Enclave. Not normally aggressive,

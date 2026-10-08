@@ -11,6 +11,8 @@ Hrumphs were a type of non-sentient quadrupedal herbivore found in the swamps of
 **Biology and appearance** Hrumphs were a type of broad-backed non-sentient herbivore found in the swamps of the Mid Rim planet Naboo. They had four legs ending in white furred black feet and stood between three and four meters tall at the shoulder, weighing over thirty kilograms. The creature's skin was lightly tanned but was interrupted by a smattering of purple dots that began at the hrumph's stomach and then increased in concentration moving toward the herbivore's spine, where they morphed into a series of cartilaginous indigo spikes.
 
 The spots also continued into a streak of purple in the hrumph's otherwise white fur tail. A hrumph's head consisted of a black beak beneath a purple crest with two small blue eyes atop it. Above these, the creature's four long horns protruded upwards, primarily white in color but with blue patterning and black tips. The herbivores used these horns together with their highly sensitive ears to scout for predators and avoid them.
+Canon provenance (https://starwars.fandom.com/wiki/Hrumph): the sole canon source is *Star Wars Bestiary, Vol. 1: Creatures of the Galaxy* (2024, text S.T. Bende, art Iris Compiet); the species originated in Legends (first appearance *Star Wars Episode I: The Gungan Frontier*, 1999). The canon page states "over thirty kilograms" and "three to four meters tall at the shoulder" as the Bestiary's own wording. The canon page does not repeat the Legends behaviours below (kneeling to feed, charging, leaping, single calf, defensive circle).
+
 ### Legends — https://starwars.fandom.com/wiki/Hrumph/Legends
 
 The hrumphs were powerful, thick-necked herbivores native to the Gungan Swamps of the Mid Rim planet Naboo.

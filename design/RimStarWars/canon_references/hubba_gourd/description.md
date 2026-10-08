@@ -5,10 +5,10 @@
 ## Sourced text (Wookieepedia)
 ### Legends — https://starwars.fandom.com/wiki/Hubba_gourd/Legends
 
-A tough-skinned melon-like fruit that grew in rock recesses and in the shadow of cliffs on Tatooine; the staple food of Jawas and Tusken Raiders (*hubba* is Jawaese for "the staff of life"). Gourds could be **round or elongated**. They were normally **covered with tiny reflective crystals** that shielded them from solar exposure. Inside: tough stringy fibres and a sour fluid; seeds pale and transparent. **Green while growing, turning yellowish when ripe**; ripe fruit gave off a distinctive smell. Infobox: "tough-skinned, yellowish, elongated or round melon".
+A tough-skinned melon-like fruit that grew in rock recesses and in the shadow of cliffs on Tatooine; the staple food of Jawas and Tusken Raiders (*hubba* is Jawaese for "the staff of life"). Gourds could be **round or elongated**. They were normally **covered with tiny reflective crystals** that shielded them from solar exposure. Inside: tough stringy fibres and a sour fluid; seeds pale and transparent. **Green while growing, turning yellowish when ripe**; ripe fruit gave off a distinctive smell. The text describes only the fruit and where it grew (rock recesses, shadows of cliffs); it gives no leaves, stems, plant height or growth habit. Food uses: hubba bread, chips, juice. Legends also records the Ithorian Momaw Nadon working on a hybrid hubba gourd (Tales from the Mos Eisley Cantina, "The Sand Tender"). Infobox: "tough-skinned, yellowish, elongated or round melon".
 
 ### Canon — https://starwars.fandom.com/wiki/Hubba_gourd
-Canon has only a stub ("a type of gourd"), from Visual Encyclopedia / Tales from the Galaxy's Edge. No appearance text.
+Canon has only a stub ("a type of gourd"), from Visual Encyclopedia / Tales from the Galaxy's Edge. No appearance text. The canon page lists *Star Wars: The Visual Encyclopedia* (2017, type: gourd) and a mention in *Tales from the Galaxy's Edge: Last Call*, and notes the gourd was created for Legends in *Tales from the Mos Eisley Cantina*.
 
 ## Visual brief
 Viewed `wookieepedia_legends_1.webp` (Fact File illustration): one elongated, ribbed, pointed-oval pod, orange-yellow with rust-brown patches and a rough lumpy skin, stem scar at the bottom.

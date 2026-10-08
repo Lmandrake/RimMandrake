@@ -13,7 +13,11 @@ Reeks were large, muscular quadrupeds native to the planet Ylesia that could als
 Though naturally herbivores, a starved reek could become a ravenous meat-eater and change its skin color to a deep red, while on other worlds they could be brown, gray, or sometimes yellow. Those bred in the Petranaki Arena were purposely fed meat in order to increase their overall aggression, and were equipped with nose rings to be used by handlers. Their sprawling posture and immense weight made them relatively slow-moving. They sported two large cheek horns that could be used for head-locking in combat with another reek as a show of dominance within a herd; these fights could end in the death of one of the reeks.
 
 Reeks from the Codian Moon lived in small herds.
+
+Canon infobox (https://starwars.fandom.com/wiki/Reek): height 2.24 m, length 4 m, mass 1100 kg, skin colour red and gray, habitat grassland; the canon page says the 2.24 m height (Encyclopedia and Databank) conflicts with *Star Wars Journeys: Beginnings* (4.04 m, which is the Legends length). Canon names no Iridonian subspecies.
 ### Legends — https://starwars.fandom.com/wiki/Reek/Legends
+
+**Iridonian reek** (a Legends subspecies, *The New Essential Guide to Alien Species*; the only Iridonian-specific source): bred by the Zabrak as war mounts, fed plant matter instead of meat, which turned the skin **gray**; skin resisted sharp and blunt weapons; **horns much sharper and longer** than other reeks' and decorated with Zabrak-style tattoos; encouraged to fight for mates so they were less likely to buck or bolt. Male horns are larger than female horns across all reeks.
 
 The reek was a large thick-skinned, horned, rhino-esque quadruped, native to Ylesia. Subspecies could be found on Iridonia, Kashyyyk and Ithor. They could also be found on Tatooine and in ranches on the Codian Moon and Saleucami.
 
@@ -26,7 +30,7 @@ Reeks were usually found in herds and resided in the mossy grasslands and were v
 While reeks were not terribly fast, they were intelligent. If given patient, gentle training, they could make excellent pack animals.
 
 ## Visual brief
-Entry covers the reek (the slug names the Iridonian subspecies, but no image is Iridonia-specific; Legends says the subspecies is identified only by skin mottling). Four images: one canon render, three Legends.
+Entry covers the reek (the slug names the Iridonian subspecies, but no image is Iridonia-specific; the Legends page says mottling identifies subspecies in general, but its Iridonian section specifies gray skin, sharper and longer tattooed horns and tougher hide). Four images: one canon render, three Legends.
 - **Silhouette (all four agree):** a massive, low-slung, rhino/triceratops-like quadruped. Sprawling, wide-set, splayed stance with thick, columnar front legs and a hunched, domed back; head carried low and forward. Short, thick neck. Big three-toed feet with heavy blunt claws/hooves.
 - **Horns (the defining feature):** one tall single central horn rising from the nose/brow (curved slightly back, long as the head or longer), plus **two big cheek horns that curve out and forward from the sides of the lower face/jaw like tusks**. Horns are pale cream/bone with a darker base; in the SWTOR-style render (`legends_3`) the nose horn is black.
 - **Colour:** disagreement between sources, which matches the text (skin colour depends on diet and subspecies). `canon_1` and `legends_2` show the **meat-fed red form**: a bright blood-red knobbly head and neck/shoulders against a dark olive-brown body and legs. `legends_1` is an all-brown/rust-red form with pale legs. `legends_3` is a grey-lilac hide with black wart-studs and green glowing patches (Rakghoul-plague-infected, per its caption: do not use as a base colour). Base form per text and Legends: brown. Sprites need a brown base and a red aggressive variant.

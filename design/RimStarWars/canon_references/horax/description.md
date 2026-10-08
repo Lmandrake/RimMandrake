@@ -27,13 +27,19 @@ Two tiers, same core creature:
   Nelvaan's low gravity). Blue skin, **orange eyes**, a **large spiked and
   clubbed tail**, large fangs outside the mouth, and horns on the end of the
   snout. Solitary and territorial; pairs only for mating or territorial
-  fights. In 19 BBY, Anakin Skywalker killed one after it attacked him,
+  fights. Carnivorous: the snout horns are shovel-like, used to uproot trees
+  and split open siltcrawler burrows to eat the hibernating colonies; four
+  enormous saber-like fangs protrude from the maw. The Legends infobox gives
+  habitat "Not cold" and the text says horaxes did not fare well in extreme
+  cold (the Techno Union siphon generator's ice age thinned the population),
+  so the snowy setting is not an adaptation to cold
+  (https://starwars.fandom.com/wiki/Horax/Legends). In 19 BBY, Anakin Skywalker killed one after it attacked him,
   Obi-Wan Kenobi, and a clone squad on Nelvaan, disrupting a young
   Nelvaanian's initiation ritual in the process (the "Battle of Nelvaan").
   The Behind-the-Scenes note on the canon page confirms directly: the
   creature "was originally created for Chapter 22" of the Legends
-  microseries — i.e. current canon is a text-only re-statement of the same
-  Legends design (blue, horned, fanged), not a redesign.
+  microseries. The canon page is text only and carries no image; the blue,
+  horned, fanged description matches the Legends design.
 
 **Both tiers agree on the load-bearing facts: this is a huge, blue-skinned,
 horned-and-fanged reptile, not a small or drab creature.**

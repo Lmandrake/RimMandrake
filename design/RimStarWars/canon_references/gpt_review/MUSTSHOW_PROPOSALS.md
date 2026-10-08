@@ -120,3 +120,103 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 
 ### mudhorn
 - Must show: reword "entirely covered in ... fur" to "extensively covered, with bare creased hide visible on the face"; reason: infobox skin Gray + hair Brown and the entry's own brief notes exposed facial hide. Source: https://starwars.fandom.com/wiki/Mudhorn
+
+## Batch 05
+### horax
+- Add Must show bullet: enormous quadrupedal scale relative to a humanoid (Legends: over 15 m tall). Reason: most consequential feature absent from checklist. Source: https://starwars.fandom.com/wiki/Horax/Legends
+- Add Engine limits/note: snow setting does not imply cold adaptation (Legends habitat "Not cold"). Source: https://starwars.fandom.com/wiki/Horax/Legends
+### hrumph
+- Consider Must show note "canon text says lightly tanned; selected illustrations read cool grey-lavender" (already the entry's Visual brief position). Reason: GPT calls "not tan" categorical; owner/library policy decides. Source: https://starwars.fandom.com/wiki/Hrumph
+### hssiss
+- Must show line 1: change "thick tail about as long as the body" to match 3 m body + 1 m tail. Reason: contradicts the cited prose. Source: https://starwars.fandom.com/wiki/Hssiss
+- Relabel reference set continuity as Legends (entry header/Must show context). Reason: base-title page is Legends-tagged. Source: https://starwars.fandom.com/wiki/Hssiss
+### hubba_gourd
+- Must show line 1: drop "not on a tall plant"; mark plant stems/leaves/height as unspecified by sources. Reason: sources describe only the fruit and that it grew in rock recesses/cliff shadows. Source: https://starwars.fandom.com/wiki/Hubba_gourd/Legends
+### igitz
+- Must show last bullet "Pet-sized, small" is fine (text: "small amphibians"); Must show "finned back end" matches prose. Only action: relabel entry continuity as Legends. Source: https://starwars.fandom.com/wiki/Igitz
+### insectomorph
+- Must show line 3: drop "(reared, leaping-insect stance)"; text gives hind legs twice front length only. Source: https://starwars.fandom.com/wiki/Insectomorph/Legends
+- Must show line 6: "no shiny chitinous segmentation / bony/skeletal" is image-derived; sources class it Arthropod, no material stated. Mark as image observation only. Source: https://starwars.fandom.com/wiki/Insectomorph
+- Must show line 5: "Glowing red eye(s)" -> "Red eye(s)" (text says red only). Source: https://starwars.fandom.com/wiki/Insectomorph
+### iriaz
+- Must show "Smooth hide with no visible fur": no source text describes the skin; "pelts" is the only word. Mark as image observation. Source: https://starwars.fandom.com/wiki/Iriaz
+- Must show "Four legs" etc. unchanged; horn count is owner art spec (ruling), not source-derived. Flag in Must show as "owner art specification". Source: https://starwars.fandom.com/wiki/Iriaz
+### iridonianreek
+- Must show line 4 ("Brown base colour, with a red-headed meat-fed variant"): for the Iridonian subspecies the sourced colour is gray, with sharper, longer, tattooed horns and compact tough hide; the brown/red is the generic reek. Decide: generic reek or Iridonian. Source: https://starwars.fandom.com/wiki/Reek/Legends
+- Add Must show note: canon reek height 2.24 m, length 4 m. Source: https://starwars.fandom.com/wiki/Reek
+### jakobeast
+- Must show line 3: "long thick curved ivory tusks" conflicts with Legends text "two thin tusks"; mark as image observation. Source: https://starwars.fandom.com/wiki/Jakobeast/Legends
+- Add Must show/canon note: canon variant = brown fur (TROS fur, Visual Dictionary); grey/white stripes are Legends only. Source: https://starwars.fandom.com/wiki/Jakobeast
+### jamel
+- Must show lines 2-5 (stripes, blue-grey mottling, brow nubs, neck flaps, toes, trooper height) are concept-sheet observations; text-sourced core is tall spindly legs, large hump, drawn-out face, red snout, yellow skin, black eyes. Mark the rest "concept art detail". Source: https://starwars.fandom.com/wiki/Jamel
+
+## Batch 08
+# Proposals batch 08
+
+### mynock
+- Must show "Small body with huge, broad... wings": reword so scale is not implied small; canon length is 1.6 to 2 m, 8 kg. Reason: GPT claim verified against infobox. Source https://starwars.fandom.com/wiki/Mynock
+- Must show tail ("whip-like tail ending in a small flare") and eye-stalks/legs: mark as reference-specific (Legends art); canon wikitext gives no tail anatomy and Legends says legs vary (some legless). Source https://starwars.fandom.com/wiki/Mynock/Legends
+
+### neebray
+- Must show "Adult form: thin whip tendrils below the jaw": canon says ONE long tendril from jaw underside (stub on infants); propose "a long tendril under the jaw". Source https://starwars.fandom.com/wiki/Neebray
+- Must show adult line: record that adult wingspan is gigantic (record 1,674 m) and needs space-scale handling; add Engine limits note (adult space form vs terrestrial livestock scale). Source same.
+
+### nerf
+- Must show "Curved horns": canon infobox says four curving horns (SW 2015 #17); consider "curving horns (canon infobox: four; illustrations show two large)". Source https://starwars.fandom.com/wiki/Nerf
+
+### nuna
+- Must show "Heavy domed/ridged shell-like back": canon says nunas are flightless BIRDS; "shell-like" risks turtle plates. Propose "hunched domed/ridged back" without shell wording. Source https://starwars.fandom.com/wiki/Nuna
+- Must show "no feather texture, beak or wings anywhere": canon says nunas could grow blue and red feathers (Doctor Aphra (2016) #33). Propose dropping the blanket "no feather" and keeping "no wings". Source same. (Owner ruling 2026-09-14 selected the infobox image; do not override that image choice.)
+
+### nysillin
+- Must show "Grown in dense rows as a crop": that is the farm presentation (Akira village crop), not a wild-plant feature; relabel as cultivated-only. Source https://starwars.fandom.com/wiki/Nysillin
+- Must show "pods": mark as "teardrop-shaped spotted terminal structures (botanical identity not stated by any source)". Source same.
+
+### ollopom
+- Must show "Pale, semi-translucent... legs... claws tipped violet": translucency and violet claw tips are image-derived, not in any text source; consider marking optional. Source https://starwars.fandom.com/wiki/Ollopom (no mention).
+
+### opeeseakiller
+- Must show "Bulbous orange-red eyes": canon says yellow eyes (Phantom Menace); propose "bulbous yellow to amber eyes (images read orange-red)". Source https://starwars.fandom.com/wiki/Opee_sea_killer
+- Must show antennae "with dark blue-purple lure tips": canon says only "antennae used as lures"; lure-tip colour/length image-derived; mark reference-specific. Source same.
+- Engine limits: aquatic ambush predator, 20 m scale, jet propulsion movement. Source same.
+
+### orray
+- Must show/visual: add wild (intact long tail) vs arena (tail removed, stump capped with metal, saddled) variants; canon states both. Source https://starwars.fandom.com/wiki/Orray
+
+### paleyobshrimp
+- Must show (all four lines): label as "Legends-derived provisional design (Wildlife of Star Wars sketch)"; canon establishes only a small aquatic decapod native to Naboo. Purple shell, swordlike rostrum and huge scissor claws are not canon. Source https://starwars.fandom.com/wiki/Yobshrimp and https://starwars.fandom.com/wiki/Yobshrimp_Noodle_Salad
+
+### pekopeko
+- Must show "elongated, toothy-looking beak/skull": no source mentions teeth; canon says "prominent beak". Propose "distinctive strong beak profile; no invented teeth". Source https://starwars.fandom.com/wiki/Peko-peko
+- Must show gold crest and gold tail edging: only the Battlefront II painting shows them; mark reference-specific. Source same. (Owner ruled 2026-09-14 for `wookieepedia_fieldguide.jpg`; do not override.)
+
+## Batch 12
+# Proposals batch 12
+### womprat
+- Must show line 1: replace "a bit bigger than a big dog" with "large (canon: not much bigger than two metres in length, axis uncertain)". Reason: canon figure is a length, not a dog comparison. Source https://starwars.fandom.com/wiki/Womp_rat
+- Must show line 2: label grey-black hide as the Galactic Atlas / Alien Archive design; brown shaggy BoBF design is also canon. Source same.
+### woolamander
+- Must show 2 and 3: mark cream-white belly band, mandrill-like face and eye colour as image-dependent. Canon text says only blue fur with patches of red and yellow. Source https://starwars.fandom.com/wiki/Woolamander
+### worrt
+- Must show: add "very large mouth and long purple prehensile tongue (ambush predator)" as a priority line; canon distinctions list toothy mouth and purple prehensile tongue. Source https://starwars.fandom.com/wiki/Worrt
+- Must show last line: record 1.5 m height (Databank).
+### wraid
+- Must show: prefix "Legends appearance reference"; replace mandatory gorilla fists and permanently folded hind legs with posture of the chosen model (page says only very powerful front legs, two small back legs, claws, sharp teeth). Source https://starwars.fandom.com/wiki/Wraid
+### wyyyschokk
+- Must show: add "ordinary Fallen Order model; the Albino Wyyyschokk subspecies is exempt from the ordinary colour checklist". Reason: Albino Wyyyschokk is a canon subspecies. Source https://starwars.fandom.com/wiki/Wyyyschokk
+- Must show: add "taller than 2 m, giant-spider proportions with prominent mandibles" (Bestiary height; mandibles fire the web enzyme). Source same.
+- Engine limits currently reads "none known"; propose "not assessed" (no engine test performed).
+### yobshrimp
+- Must show: label lilac-purple shell, green eyes and long spiky pincers as "Legends plate appearance (adopted)", not canon; no canon appearance exists. Source https://starwars.fandom.com/wiki/Yobshrimp/Legends
+- Must show: add "tiny, aquatic presentation". Source https://starwars.fandom.com/wiki/Yobshrimp
+- Cooked-form line belongs to a separate food-item checklist, not the living animal.
+### ysalamir
+- Must show: split into canon-supported (lizard-like, four eyes) and Legends living-design choices (white fur per Fate of the Jedi: Abyss infobox, 50 cm, bark-gripping claws, climbing posture, golden painted colour). Source https://starwars.fandom.com/wiki/Ysalamiri and /Legends
+- Must show line 2: the "four-eyed" detail is canon (BTS gallery); ear-flaps, spots and prehensile tail depend on the chosen Legends painting.
+### zakkeg
+- Must show: prefix "Legends living appearance"; drop "battle tank scale" in favour of "greater than 4 m long (Operation: Shadowpoint)"; delete the parenthetical about a darker brown-black variant being a separate life stage. Source https://starwars.fandom.com/wiki/Zakkeg/Legends
+- Colour: the red anchor is KOTOR II's quote but the KOTOR II model image (Zakkeg.jpg) is dark; the rust-red render is the SWTOR Cartel Market pet. The owner ruled the red image; flag that the ruling picked a SWTOR pet render mislabelled as KOTOR II. Source https://starwars.fandom.com/wiki/File:JuvenileZakkeg.png
+- Engine limits currently reads "none known"; propose "not assessed".
+### zeer
+- Must show: add height reference 15 ft (about 4.57 m) height and 9 ft length; horns "swiveling" per source, so head shape of horns is unresolved against the "swept back, fixed" reading. Source https://starwars.fandom.com/wiki/Zeer
+- Engine limits currently reads "none known"; propose "not assessed".
