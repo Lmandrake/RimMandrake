@@ -36,6 +36,10 @@
   Art: Zeev, Uvva, Karrun, Dubbol, Lozh and Saava carry their own render
   (Things/Item/Fish/<defName>, owner's Greentide sheet picks 2026-10-08).
   Tuun and LungerFry still borrow a vanilla plant sprite until theirs land.
+
+  RM_ScaaLumsigh (last in this file) is NOT one of the RUT_ duplicates: a new
+  river fish the owner asked for on the Twilight Sea sheet, wearing the faa's
+  old picture (see its own comment).
 -->
 <Defs>
 
@@ -208,6 +212,26 @@
     <statBases>
       <MarketValue>12</MarketValue>
     </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_ScaaLumsigh — river fish, uncommon. Owner, Twilight Sea sheet 2026-10-07 (RSW_Faa row):
+       "existing fish images can be remade into a new fish: Scaa Lumsigh for fishing in the Greentide
+       rivers. Move this image to that fishing source". Art = the faa's old east facing, carried by the
+       art ledger (TWILIGHT_ART_REUSE_ELSEWHERE_1 item 1). -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_ScaaLumsigh</defName>
+    <label>scaa lumsigh</label>
+    <description>A deep-bodied river fish scaled in green and old gold, with a single seam of cold blue light running nose to tail. It hangs in the slow water under the root causeways and flashes that seam when startled, so a disturbed shoal lights the whole channel for a heartbeat and goes dark. Firm, sweet flesh; the glow fades within an hour of the catch.</description>
+    <graphicData>
+      <texPath>Things/Item/Fish/RM_ScaaLumsigh</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
     <comps>
       <li Class="CompProperties_Rottable">
         <daysToRotStart>2</daysToRotStart>

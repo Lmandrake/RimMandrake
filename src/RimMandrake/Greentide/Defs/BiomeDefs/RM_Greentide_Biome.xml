@@ -244,6 +244,7 @@
         <RM_Lozh>0.3</RM_Lozh>
         <RM_Saava>0.25</RM_Saava>
         <RM_Tuun>0.15</RM_Tuun>
+        <RM_ScaaLumsigh>0.2</RM_ScaaLumsigh>
       </freshwater_Uncommon>
       <rareCatchesSetMaker>RM_RareGreentideCatches</rareCatchesSetMaker>
     </fishTypes>
