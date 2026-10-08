@@ -429,8 +429,12 @@ class Fake(object):
         return {"success": True, "pawns": rows}
 
     def t_pawn_get(self, pawn=None, **k):
-        p = self.pawns[pawn]
-        return {"success": True, "pawns": [{"id": pawn, "mentalState": p["mental"]}]}
+        # The real jawa/pawn_get carries NO mental-state field (live 2026-10-08); the mock used to invent
+        # one, which is how a validation that could never pass live passed here.
+        return {"success": True, "pawns": [{"thingId": pawn}]}
+
+    def t_pawn_mental(self, pawn=None, action="list", **k):
+        return {"success": True, "action": action, "currentState": self.pawns[pawn]["mental"] or None}
 
     def t_set_draft(self, **k):
         return {"success": True}

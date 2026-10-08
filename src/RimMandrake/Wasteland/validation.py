@@ -1858,6 +1858,10 @@ def middenshell_procession(t):
 
         with _comp(t, "incident_is_blocked_when_the_body_is_switched_off", independent=True, toggle="middenshellEnabled"):
             _set(t, middenshellEnabled=False)
+            # IncidentWorker.CanFireNow memoises its CanFireNowSub answer per game tick
+            # (lastCheckCanRunTick), and the ON arm above asked at this same paused tick, so
+            # without a tick the OFF ask is served the cached True (2026-10-08 acc_biomes FAIL).
+            t.wait_ticks(2)
             r = t.bridge_call("jawa/fire_incident", incidentDef="RM_MiddenshellArrives", dryRun=True)
             _restore(t, ["middenshellEnabled"])
             if _live(t) and (r or {}).get("success"):
@@ -1980,10 +1984,23 @@ def rite_of_tipping(t):
         with _comp(t, "tipping_off_refuses_the_offer", independent=True, toggle="tippingEnabled"):
             if _live(t) and not box.get("fired"):
                 _unmeasured(t, "the ON arm never produced a contract, so a refusal proves nothing")
+            # jawa/fire_quest -> QuestUtility.GenerateQuestAndMakeAvailable -> QuestGen.Generate runs
+            # RunInt and never TestRun, so it makes the contract whatever the toggle says. The
+            # player's only route is the RM_RiteOfTipping incident (IncidentWorker_GiveQuest), whose
+            # CanFireNowSub asks QuestScriptDef.CanRun -> root.TestRun -> our TestRunInt. Ask THAT,
+            # with an ON control first (earliestDay 8 / minRefireDays can refuse it on their own).
+            # Both CanFireNow and CanRun memoise per tick, so a tick separates the two asks.
+            t.wait_ticks(2)
+            on = t.bridge_call("jawa/fire_incident", incidentDef="RM_RiteOfTipping", dryRun=True)
+            if _live(t) and not (on or {}).get("canFireNow"):
+                _unmeasured(t, "RM_RiteOfTipping cannot fire even with tippingEnabled=true, so an OFF refusal "
+                               "proves nothing: %s" % str(on)[:300])
             _set(t, tippingEnabled=False)
-            r = t.bridge_call("jawa/fire_quest", questDef="RM_Quest_RiteOfTipping", accept=True)
-            if _live(t) and (r or {}).get("success"):
-                _fail("a Rite of Tipping contract was made with tippingEnabled=false (TestRunInt must refuse)")
+            t.wait_ticks(2)
+            r = t.bridge_call("jawa/fire_incident", incidentDef="RM_RiteOfTipping", dryRun=True)
+            if _live(t) and (r or {}).get("canFireNow"):
+                _fail("RM_RiteOfTipping can still offer the contract with tippingEnabled=false (TestRunInt must refuse): %s"
+                      % str(r)[:300])
     finally:
         _restore(t, ["tippingEnabled"])
         _teardown(t)

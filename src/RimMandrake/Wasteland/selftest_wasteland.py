@@ -523,13 +523,33 @@ class WLGame(MockGame):
     def can_fire_shell(self):
         return (self.biome() == "RM_Wasteland" and self.on("middenshellEnabled") and self.shell() is None and self.pending is None)
 
+    def _can_fire_now(self, name, compute):
+        """IncidentWorker.CanFireNow memoises its CanFireNowSub answer per game tick (RimSage, 1.6), and
+        QuestScriptDef.CanRun does the same: a second ask on the same paused tick gets the first answer."""
+        memo = self.__dict__.setdefault("_cfn_memo", {})
+        hit = memo.get(name)
+        if hit is not None and hit[0] == self.ticks:
+            return hit[1]
+        v = compute()
+        memo[name] = (self.ticks, v)
+        return v
+
     def t_jawa_fire_incident(self, p):
+        if p.get("incidentDef") == "RM_RiteOfTipping":
+            # IncidentWorker_GiveQuest -> QuestScriptDef.CanRun -> TestRunInt (reads tippingEnabled)
+            can = self._can_fire_now("RM_RiteOfTipping", lambda: (
+                self.biome() == "RM_Wasteland" and self.on("tippingEnabled")) or "tipping_always" in self.brk)
+            if p.get("dryRun"):
+                return {"success": can, "canFireNow": can, "message": "canFireNow=%s" % can}
+            return {"success": False}
         if p.get("incidentDef") != "RM_MiddenshellArrives":
             return {"success": False}
-        can = self.can_fire_shell() or ("incident_always" in self.brk)
+        can = self._can_fire_now("RM_MiddenshellArrives",
+                                 lambda: self.can_fire_shell() or ("incident_always" in self.brk))
         if p.get("dryRun"):
-            return {"success": can, "message": "canFireNow=%s" % can}
-        if not can:
+            return {"success": can, "canFireNow": can, "message": "canFireNow=%s" % can}
+        # a real fire goes through TryExecute, which never consults the CanFireNow memo
+        if not (self.can_fire_shell() or ("incident_always" in self.brk)):
             return {"success": False}
         if self.on("middenshellProcessionEnabled") and "no_omen" not in self.brk:
             self.pending = {"at": self.ticks + self.set["middenshellOmenHours"] * 2500, "next": self.ticks + 60}
@@ -543,8 +563,8 @@ class WLGame(MockGame):
     def t_jawa_fire_quest(self, p):
         if p.get("questDef") != "RM_Quest_RiteOfTipping":
             return {"success": False}
-        if not (self.biome() == "RM_Wasteland" and self.on("tippingEnabled")) and "tipping_always" not in self.brk:
-            return {"success": False}
+        # QuestUtility.GenerateQuestAndMakeAvailable runs RunInt and never TestRun, so the real tool makes the
+        # contract whatever tippingEnabled says (live 2026-10-08); the toggle is honoured only on the incident.
         if "no_faction" in self.brk:
             return {"success": False}
         self.quests.append({"name": "The Rite of Tipping", "state": "Ongoing"})
