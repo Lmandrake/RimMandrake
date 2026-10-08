@@ -30,7 +30,7 @@ together two earlier docs, which stay as provenance:
 
 - **Rust Cathedral:** *"Making a watcher here that looked like a little stalk that rose up like a
   camera and just watched and rotated to watch, then always pulled away when approached would be
-  hilarious and very Star Wars."* The clekk is a camera stalk. Feasibility and options: §5.
+  hilarious and very Star Wars."* The Watcher is a camera stalk. Design: §5.
 - **Grey Sea:** *"That is not a watcher, that's its own creepy thing. Add an independent watcher
   that hides in place."* The fessk is not a member. The Grey Sea's member is the drossik (§3.2).
 - **Contagion:** *"Of course it can get another creature. Just make one."* The Contagion's member
@@ -218,7 +218,7 @@ roster. Each member is added at its biome's own sitting.
 | the Chill (propane lakes) | **pralq** | NEW | `RM_SolidPropane` [W] | heat | a frost-crust sitter at the lake margin that flinches from warmth | Can never be transported (R-H10). `animalDensity` is 0.08 (`RM_TheChill.xml`). |
 | Pyrelands | **ttekku** | NEW | `RM_FE_Ash_Heavy` | fire | an ash-hole sitter that pops up after a fire passes | "ttekku up" means the ground is safe to walk. `RM_Ashwallow` is the sibling burrow-on-fire grazer and stays separate. |
 | Rot | **mollugh** | NEW | `RM_TheRotSoilRich` | — | a fungus/animal that pulls itself under its own cap | Lives on the rot soil; its cap is drawn into its peek art. Ban 2 fits. Existing alternative: **`RM_Grellik`**, "the growth hides it among the caps". But it is vermin that breeds back, so a hide-and-flush pest is a design risk. |
-| Rust Cathedral | **clekk** | NEW (machine) | `RM_RustCathedral_CrackedMetalSoil` | — | a little camera stalk that rises out of a deck seam, turns its head to follow you, and pulls back down into the seam when you come near | **Mechanical wildlife on the living-bolt shape** (not organic, not tameable, not butcherable into meat), so ban 7 does not bar it. Its text never says why it watches (ban 1). The stalk animation and head tracking are §5; how the head turns is Q8. |
+| Rust Cathedral | **Watcher** (`RM_Watcher`) | NEW (machine) | `RM_RustCathedral_CrackedMetalSoil` | — | a little camera stalk that rises out of a deck seam, turns its head to follow you, and pulls back down into the seam when you come near. **Very shy:** see 5.7 | **Mechanical wildlife on the living-bolt shape** (not organic, not tameable, not butcherable into meat), so ban 7 does not bar it. Its text never says why it watches (ban 1). The stalk animation and head tracking are §5. The rise/track behaviour belongs to this biome's Watcher only; no other member uses it. |
 | Scald | **hveshk** | NEW | `RUT_ScaldMargin` [W] | steam (`RM_SteamDevil`) | a sinter-rim sitter on the shore, never in the boil (ban 4) | The margin is named in `RM_TheScald.xml`. Not fish-sized and not on the floor, so it owes no catch def. |
 | Sump | **thossa** | NEW | `RM_TarShallow` [W] | — | only its eye-blister breaks the tar surface | "thossa gone" means the tar is unsafe to cross. Laid: UNMEASURED (the Sump's own fauna cite `RM_TarShallow`). |
 | Twilight Sea | **yennith** | NEW | `RM_SeaFloorGround` | — | a fan of three eyestalks from a silt tube | **Sea rule:** fish-sized, so it owes a floor def **and** a `fishTypes` catch. `RM_Kellu` ("hiding in the fronds by day") is a mobile hunter, so it is not taken. |
@@ -235,7 +235,7 @@ roster. Each member is added at its biome's own sitting.
 
 - 27 shipping biomes, one member each.
 - **2 existing primaries:** the piinnok (built) and the tarruq.
-- **25 new**: the 22 names of the first pitch, the clekk (Rust Cathedral), the illuvek
+- **25 new**: the 22 names of the first pitch, the Watcher (Rust Cathedral), the illuvek
   (Contagion) and the drossik (Grey Sea). The illuvek and the drossik had zero hits in `src/`,
   `design/` and `infrastructure/state/items` and zero Wookieepedia search results on 2026-10-08
   (probes: `korrum` 62 files; `dewback` 10 results).
@@ -267,7 +267,7 @@ row, re-checks its bans, sets its cue numbers, and names the sign family:
 - **hole:** soil, ash, crust
 - **ripple ring:** tar, propane, margin water, slime
 - **pock:** ice, floor
-- **seam glint:** deck plate (the clekk's hatch)
+- **seam glint:** deck plate (the Watcher's hatch)
 
 The item's third criterion ("one member per biome proven on a quicktest map") is therefore a
 27-sitting target, not one build.
@@ -276,16 +276,8 @@ The item's third criterion ("one member per biome proven on a quicktest map") is
 
 Ruled, so not asked again: hide in place + sign; the flinch cue; standalone mod; one medium each,
 ground or water; the piinnok's ground, pictures, taming and hunting; all biomes; the full cue set;
-the Rust Cathedral's member is a machine camera stalk; the fessk is not a watcher; the Contagion
+the Rust Cathedral's member is a machine camera stalk named literally "Watcher", with an eight-step head pan and very shy behaviour (this biome only); the fessk is not a watcher; the Contagion
 gets a new creature.
-
-**Q8. The clekk's head: how should it turn to follow you?** (Feasibility and evidence: §5.)
-- **(a) Four steps:** it snaps between north, east, south and west, as the piinnok does now.
-  Cheapest: about half a day and 9 small drawings. It reads as a head turning, not panning.
-- **(b) Eight steps, eased** (recommended): it pans toward you in 45° steps and sweeps idly when
-  nobody is near. About a day and 11–12 drawings. It reads as a camera following you.
-- **(c) Free spin:** perfectly smooth, the way a Centurion turns its gun. About half a day and 7
-  drawings, but the head must be drawn from above, so it reads as a tiny turret.
 
 ## 5. The Rust Cathedral camera stalk: feasibility (2026-10-08)
 
@@ -302,14 +294,14 @@ That is three things: **(1)** a stalk that extends and retracts, **(2)** a head 
 follow a pawn, **(3)** pulling away when approached. **(3) is already the kit's flinch-and-hide
 cycle** (§1.1). (1) and (2) are new rendering work.
 
-**Short answer: all three are possible in RimWorld 1.6 without new art tricks. The extend and
-retract use the engine's own keyframe animation system. The head can turn in four steps with no
-new code, in eight steps with a small amount of code, or smoothly with the same code that turns
-a Centurion's gun.**
+**Short answer: possible in RimWorld 1.6 without new art tricks. The extend and retract use the
+engine's own keyframe animation system. The head turns in eight 45-degree steps, eased toward its
+target, using a small amount of code. Owner ruling 2026-10-08: eight span, named literally "Watcher",
+Rust Cathedral only, very shy.**
 
 ### 5.2 What the engine can do (RimSage, decompiled 1.6, read 2026-10-08)
 
-| symbol read | what it says | what it gives the clekk |
+| symbol read | what it says | what it gives the Watcher |
 |---|---|---|
 | `Verse.AnimationDef` | an animation has `durationTicks`, a `loopMode`, and `keyframeParts` keyed by a render-node tag | one animation per motion: *rise*, *retract*, *idle sway* |
 | `Verse.Keyframe` | each keyframe holds `tick`, `offset` (Vector3), `angle`, `scale` (Vector3) and an optional `graphicState` | the stalk can move up, grow, tilt and swap pictures per keyframe |
@@ -321,7 +313,7 @@ a Centurion's gun.**
 | `Verse.PawnRenderNodeWorker.RotationFor` / `ScaleFor` (both `public virtual`) | rotation and scale are computed per draw from props + animation, and a subclass may add to them | a custom worker can add *any* angle to the head node |
 | `Verse.PawnRenderNodeWorker_TurretGun.RotationFor` + `RimWorld.CompTurretGun.CompTick` | the worker multiplies in `turretComp.curRotation`; the comp sets that float every tick from `(target − DrawPos).AngleFlat()`. Used on **pawns**: `Mech_Centurion`, `Mech_Warqueen`, `Mech_Diabolus` (`Races_Mechanoids_SuperHeavy.xml`) | **vanilla already turns one part of a moving pawn freely to track a target.** That is our tracking head, minus the gun |
 | `RimWorld.TurretTop.TurretTopTick` | with no target, a turret sweeps idly at 0.26°/tick for 140 ticks, then pauses 150–350 ticks | a ready-made "looking around" idle for when nobody is near |
-| `Pawn_RotationTracker.FaceCell` (what the kit calls now, `RM_JobDriver_Watch.cs` l.154) | sets the pawn's `Rot4`: north, east, south, west only | today's piinnok "tracking" is four-step; this is option A below |
+| `Pawn_RotationTracker.FaceCell` (what the kit calls now, `RM_JobDriver_Watch.cs` l.154) | sets the pawn's `Rot4`: north, east, south, west only | today's piinnok "tracking" is four-step; the Watcher replaces it with the eight-step pan (5.6) |
 
 **Two engine limits to design around:**
 
@@ -339,11 +331,11 @@ a Centurion's gun.**
 | piece | path | what it lends |
 |---|---|---|
 | The whole kit: watch, flinch, hide, sign, flush, medium lock, cues | `src/RimMandrake/Watchers` | the behaviour. The owner's "always pulled away when approached" is the kit's flinch, unchanged |
-| A custom animal body worker that picks a graphic state per draw | `src/RimMandrake/TheForge/Source/RM_PawnRenderNodeWorker_DormantBody.cs` + `TheForge/Defs/PawnRenderTreeDefs/RM_DormantAnimalBody.xml` | the pattern for choosing a head picture by look direction (option B), and a working custom `PawnRenderTreeDef` in our tree |
+| A custom animal body worker that picks a graphic state per draw | `src/RimMandrake/TheForge/Source/RM_PawnRenderNodeWorker_DormantBody.cs` + `TheForge/Defs/PawnRenderTreeDefs/RM_DormantAnimalBody.xml` | the pattern for choosing a head picture by look direction (the eight-step pan), and a working custom `PawnRenderTreeDef` in our tree |
 | A Harmony postfix that swaps an animal into its alternate graphic slot | `src/RimMandrake/CreatureBehaviors/Source/RM_SandBuriedGraphic.cs` | not needed here; listed so nobody rebuilds it |
-| The living bolt: a mechanoid-fleshed wild creature with its **own whole think tree** | `src/RimMandrake/RustCathedral/Defs/ThingDefs_Races/RM_LivingBolt.xml`, `RustCathedral/Defs/ThinkTreeDefs/RM_ThinkTree_LivingBolt.xml` | the def shape for a machine creature. **Important:** a mechanoid-fleshed race is never an Animal, so the kit's `Animal_PreWander` splice never reaches it. The clekk needs its own small tree listing `RM_JobGiver_Watch` and `RM_JobGiver_WanderInMedium`, as the bolt has its own. No kit C# changes for that |
-| The bolts' attitude freeze | `RM_ThinkNode_ConditionalAttitudeBand` (same tree) | optional: the clekks could freeze with the bolts when the place's mood drops. Data only. Not proposed unless the owner wants it |
-| The piinnok's tracking | `RM_JobDriver_Watch.cs` l.152–154 | four-step `FaceCell`. Option A keeps exactly this |
+| The living bolt: a mechanoid-fleshed wild creature with its **own whole think tree** | `src/RimMandrake/RustCathedral/Defs/ThingDefs_Races/RM_LivingBolt.xml`, `RustCathedral/Defs/ThinkTreeDefs/RM_ThinkTree_LivingBolt.xml` | the def shape for a machine creature. **Important:** a mechanoid-fleshed race is never an Animal, so the kit's `Animal_PreWander` splice never reaches it. The Watcher needs its own small tree listing `RM_JobGiver_Watch` and `RM_JobGiver_WanderInMedium`, as the bolt has its own. No kit C# changes for that |
+| The bolts' attitude freeze | `RM_ThinkNode_ConditionalAttitudeBand` (same tree) | optional: the Watchers could freeze with the bolts when the place's mood drops. Data only. Not proposed unless the owner wants it |
+| The piinnok's tracking | `RM_JobDriver_Watch.cs` l.152–154 | four-step `FaceCell`. The Watcher does not use it; its head is driven by the tracked angle (5.6) |
 
 **What does not exist anywhere in `src/`:** a keyframe `AnimationDef`, and a render node turned
 by a comp angle. Both are new to this repo, though both are vanilla mechanisms.
@@ -356,7 +348,7 @@ hawk (CLAUDE.md flyer section) because it wiggles one fixed texture and cannot e
 Frozen sheet: `design/Jawa/worldbuilding/biomes/the_rust_cathedral.md` §6.
 
 - **Ban 7, no ordinary wildlife** ("nothing organic spawns here that isn't §4's short list"). The
-  clekk is not organic. It follows the living bolts' precedent exactly: mechanical "wildlife",
+  Watcher is not organic. It follows the living bolts' precedent exactly: mechanical "wildlife",
   mechanoid flesh, not tameable, not butchered into meat. Its only yield is a component or steel,
   as the bolt's `butcherProducts`.
 - **Ban 1, no §GM truth in player text.** Its description says what it **does** and never **why**.
@@ -374,34 +366,32 @@ Frozen sheet: `design/Jawa/worldbuilding/biomes/the_rust_cathedral.md` §6.
 |---|---|---|
 | seam hatch (the base, flush with the deck) | 1 | doubles as the still pose when the stalk is down |
 | stalk segment | 2–3 | telescoping segments, each slid up by an offset keyframe. That beats stretching one texture, which smears it |
-| head, by look direction | A: 3 · B: 5 · C: 1 | A: north / east / south (west mirrors east). B: 8 directions from 5 drawn (the three west-side ones mirror). C: one top-down lens dome |
+| head, by look direction | 5 | 8 directions from 5 drawn (the three west-side ones mirror) |
 | moving body (a small crawler base for relocating along the seams) | 3 | north / east / south |
 | sign (seam glint) | 1 | the readable mark while it is down |
 | corpse | 0 | a mechanoid-fleshed race has none, as with the living bolt |
 
-Total: about **9 sprites for A, 11–12 for B, 7 for C.** All are small (the bolt draws at 0.1),
+Total: about **11–12 sprites.** All are small (the bolt draws at 0.1),
 which suits the artpipe. **No flight is involved, so the no-unattended-flyer-test rule doesn't
 apply.** A live quicktest proof with screenshots is allowed.
 
-### 5.6 Options, effort and the recommendation
+### 5.6 Design and effort
 
-Every option uses the same rise and retract: a keyframe `AnimationDef` (*rise*, held with
-`LoopMode.Clamp`; *retract*, ending with `LoopMode.End`), with the stalk's pivot at its foot. Each
-option adds two Mod Settings toggles (stalk animation; smooth tracking), and falling back to the
-plain still pose is the all-off state.
+Rise and retract: a keyframe `AnimationDef` (*rise*, held with `LoopMode.Clamp`; *retract*, ending
+with `LoopMode.End`), with the stalk's pivot at its foot. Two Mod Settings toggles (stalk
+animation; smooth tracking); the plain still pose is the all-off state.
 
-| option | how the head turns | new code | art | effort (agent build + one live quicktest) | trade-off |
-|---|---|---|---|---|---|
-| **A. Four-step** | it snaps between facing north, east, south, west (what the piinnok does now) | the retract-before-hide change, plus an `AnimationDef` hook on `RM_WatcherExtension` | ~9 | about half a day | cheapest. The turn is a snap, so it reads more like a head turning than a camera panning |
-| **B. Eight-step pan** (recommended) | a head picture per 45°, picked from a tracked angle. The angle eases toward its target a few degrees per tick, with the turret's idle sweep when nobody is near | A, plus a head worker (the Forge `DormantBody` pattern) and a tracked angle on `RM_CompWatcher`, the easing as a Verse-free kernel function fuzzed in `WatcherFuzz.cs` | ~11–12 | about a day | reads as a camera panning to follow you. Costs two extra head drawings. The steps are visible at 45° but small at the clekk's size |
-| **C. Free spin** | the head spins smoothly to any angle, exactly as a Centurion's gun does | A, plus a worker like `PawnRenderNodeWorker_TurretGun` reading the comp's angle | ~7 | about half a day | perfectly smooth, but only works for a lens drawn from above. It will read as a tiny turret, not a camera on a stalk |
-| **D. A building, not a creature** | `TurretTop`-style draw on a building | a new building class | ~6 | about half a day | smooth and simple, but it loses the kit: not wildlife, no roster row, no flush or hunt, no sign. **Not recommended** |
+**Head turn: eight-step pan** (owner ruling 2026-10-08, "Eight span is good"). A head picture per
+45 degrees, picked from a tracked angle. The angle eases toward its target a few degrees per tick,
+with the turret's idle sweep when nobody is near. New code: the retract-before-hide change, an
+`AnimationDef` hook on `RM_WatcherExtension`, a head worker (the Forge `DormantBody` pattern) and a
+tracked angle on `RM_CompWatcher`, with the easing as a Verse-free kernel function fuzzed in
+`WatcherFuzz.cs`. Art: about 11-12 drawings. Effort: about a day (agent build plus one live
+quicktest). It reads as a camera panning to follow you.
 
-**Recommendation: B.** It is the version that matches "rose up like a camera and just watched and
-rotated to watch". It reuses two vanilla systems (keyframe animation; the turret's tracked angle
-and idle sweep) and one pattern already working in our tree (the Forge worker). The tracking code
-goes into the kit, not the clekk, so any later watcher can turn its head the same way. The piinnok
-could adopt it too, but only if the owner asks.
+**Scope: the Rust Cathedral only.** The rise/track behaviour is this biome's Watcher alone, not a
+kit-wide mode; no other biome's member rises on a stalk or pans its head. Build it as data and
+hooks on this creature, not as a kit option other members can switch on.
 
 **Risks, said plainly:**
 
@@ -416,3 +406,17 @@ could adopt it too, but only if the owner asks.
 three `AnimationDef`s; its own think tree; a seam-glint sign; the kit changes for the chosen
 option; the art; one live quicktest showing rise, track, retract and the sign. It goes in at the
 Rust Cathedral's own sitting, like every member.
+
+### 5.7 Shyness (owed design parameter; numbers PROVISIONAL)
+
+Owner, 2026-10-08, typed: *"it should be very shy when approached."* The Watcher is the shyest
+member of the kit: it hides from a small distance, drops fast, and stays down a long time.
+
+| parameter | direction | provisional value |
+|---|---|---|
+| flinch radius | small: it notices and pulls back before anything gets close | PROVISIONAL, tune in the quicktest |
+| retract speed | fast: a short *retract* animation | PROVISIONAL |
+| re-emerge delay | long: it stays down well after the pawn has left | PROVISIONAL |
+
+These are `RM_WatcherExtension` fields on this creature's def, not kit defaults. The retract must
+finish before the hidden hediff goes on (see Risks above).
