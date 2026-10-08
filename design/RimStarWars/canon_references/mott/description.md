@@ -11,7 +11,7 @@
 
 Motts were a species of non-sentient, horn-nosed herbivorous mammals found on the planet of Naboo. They fed off swamp vegetation.
 
-**Biology and appearance** Motts were a mammalian species of stubby-legged quadrupeds that measured 1.10 meters at the shoulder. They had skin, sharp claws, small horns on their snouts. They had a high reproduction rate, with 15 young per litter. They were herbivores that fed on swamp vegetation.
+**Biology and appearance** Motts were a mammalian species of stubby-legged quadrupeds that measured 1.10 meters at the shoulder. They had skin, sharp claws, small horns on their snouts. They had a high reproduction rate, with 15 young per litter. They were herbivores that fed on swamp vegetation. Mass about 100 kg (Star Wars Bestiary, Vol. 1). Despite being herbivores, some motts could display aggressive behaviour (Obi-Wan and Anakin 2); they used their horns for defence, mating disputes and rooting in mud for food, and their flesh was eaten by sentients (The Visual Encyclopedia). A mott appears in the stampede and at the Gungan Sacred Place in The Phantom Menace, as a computer-generated creation. Source: https://starwars.fandom.com/wiki/Mott
 ### Legends — https://starwars.fandom.com/wiki/Mott/Legends
 
 Motts were medium sized, semi-aquatic herbivores (about 1 meter at the shoulder) native to the Gungan swamps of Naboo.

@@ -89,3 +89,34 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 - Must show bullet 3: "a hooked dark lower tusk" -> "two lower-jaw tusks" (Legends prose: two tusks on the lower jaw); horn nubs optional. Source: https://starwars.fandom.com/wiki/Tee-muss/Legends
 - Must show bullet 5: "Two broad cream-coloured hooved toes" -> mark provisional; Legends says odd-toed. Source: same.
 - Must show bullet 2: mane/mottling are render-derived, not in text.
+
+## Batch 07
+# Proposals batch 07
+
+### laascalefish
+- Rewrite Must show chin-filament bullet to "two long filaments streaming behind; bulb attachment per the single chosen reference" and make eye colour provisional (canon text: yellow). Reason: canon text places both appendages between the eyes; bulb is Legends dorsal. Source: https://starwars.fandom.com/wiki/Laa
+
+### lavaflea
+- Drop "back about waist-to-chest height" and "lava-orange rim light"/"charcoal-black" as mandatory; canon says red skin and 4-5 m height. Source: https://starwars.fandom.com/wiki/Lava_flea
+
+### longtailgorg
+- Relabel entry as "gorg - tailed film depiction" and link it to the `gorg` entry; make "tail roughly body length" reference-matched. Reason: canon page treats gorg as a general term for several species, no canon longtail taxon. Source: https://starwars.fandom.com/wiki/Gorg
+
+### lothcat
+- Must show coat bullet: replace "orange-amber ... (white-fluffy is the alternate)" with "fawn/dark yellow/brown or white coat with dark spotting, per one identified Canon individual". Reason: canon infobox lists fawn, dark yellow, brown, white; white cat appears in Rebels. Source: https://starwars.fandom.com/wiki/Loth-cat
+- Must show: make "webbed/three-toed" and "tail curled over the back" reference-dependent; size note 0.54 m tall, 0.94 m long. Source: same.
+
+### lylek
+- Must show: add a separate queen note ("gigantic lylek queen, unseen in references") rather than a visual requirement; demote "pincer-arms read as extra heads" to optional. Reason: canon text gives only spiked pincers and mandibles with a pair of tentacles near them. Source: https://starwars.fandom.com/wiki/Lylek
+
+### marshhaunt
+- Relabel the entry Legends everywhere (done in prose); in Must show drop "far taller than a person", the clustered red berry-eyes and trailing moss strands as mandatory; keep bipedal headless silhouette with skull set between shoulders, peeling gray-green skin, red eyes. Reason: Legends-only subject; text gives no size or eye count. Source: https://starwars.fandom.com/wiki/Marsh_haunt
+
+### massiff
+- Must show: "short, thick limbs" and eye colour made reference-dependent; relabel the AotC frame as canon film evidence. Reason: canon page gives only 'squat quadruped about 1 m high'; Outlaws render differs. Source: https://starwars.fandom.com/wiki/Massiff
+
+### meescalefish
+- Must show: drop "One very long ... longer than the body" to "poisonous spine(s) along the centreline"; make whiskers and blue tail tips reference-dependent; add that Koboh Survivor mee have hundreds of small razor-like teeth. Reason: canon text says a poisonous spine, no length or count; Survivor adds teeth. Source: https://starwars.fandom.com/wiki/Mee
+
+### mudhorn
+- Must show: reword "entirely covered in ... fur" to "extensively covered, with bare creased hide visible on the face"; reason: infobox skin Gray + hair Brown and the entry's own brief notes exposed facial hide. Source: https://starwars.fandom.com/wiki/Mudhorn

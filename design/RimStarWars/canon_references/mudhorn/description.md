@@ -6,15 +6,15 @@
 Mudhorns were large, non-sentient, omnivorous horned creatures native to the
 desert-and-cave planet Arvala-7. Wookieepedia infobox: gray skin, brown hair,
 brownish-yellow eyes, a large frontal horn, a lipless mouth. Size ~2.57m tall,
-~5.47m long. Biology text: "had a large horn, flat teeth, and long, wooly fur
+~5.47m long (both from The Mandalorian Visual Guide; class ungulate; https://starwars.fandom.com/wiki/Mudhorn). Biology text: "had a large horn, flat teeth, and long, wooly fur
 ... often coated in mud" — oviparous, laying a single large woolly-shelled egg
-per clutch prized as a delicacy by Jawas, with yellow yolk inside. Canon role:
+per clutch (also stated on https://starwars.fandom.com/wiki/Mudhorn_egg, which says nests are buried in muddy cave-nests on Arvala-7) prized as a delicacy by Jawas, with yellow yolk inside. Canon role:
 first appeared in *The Mandalorian* Chapter 2 ("The Child", 2019) — Din Djarin
 fights and kills a mudhorn guarding its cave to retrieve its egg, with Grogu's
 Force-assist turning the fight; the Armorer later declares the mudhorn Din's
 personal signet (a stylized mudhorn skull/horn mark), which becomes the crest
 of the new Clan Mudhorn founded with Din and Grogu, appearing throughout the
-rest of the series and *The Book of Boba Fett* as his armor's chest insignia.
+rest of the series and *The Book of Boba Fett* (Chapter 8 "Redemption" onward; the wiki does not say where on the armour it is worn).
 Also appeared as a zoo animal, in captivity at Lonisa City Zoo, in *The High
 Republic: Race to Crashpoint Tower* (231 BBY).
 

@@ -201,3 +201,82 @@ Format per row: entry | claim | verdict | source
 - Canon existence does not import Legends biology (shyrack, silooth, snoruuk, strill) | VERIFIED: canon pages for all four are stubs/limited
 - Unsuffixed URL does not prove illustration continuity | VERIFIED: shirotrap images sit on a Legends page labelled Canon in entry
 - Interpretive anatomy (caterpillar shiro, shell skalder, two-toed tee-muss, four-legged strill) | VERIFIED as image-derived, with text conflicts noted in each entry
+
+## Batch 07
+| entry | claim | VERDICT | source |
+|---|---|---|---|
+| laascalefish | Fantailed Laa image is from Jedi: Survivor (game), not "live-action/CGI" | VERIFIED | https://starwars.fandom.com/wiki/Laa (Behind the scenes; Survivor ID) |
+| laascalefish | Chin bulb not established by canon text (canon: two appendages between eyes; Legends: dorsal bulb) | VERIFIED (text); image placement UNVERIFIABLE | https://starwars.fandom.com/wiki/Laa , /Laa/Legends |
+| laascalefish | Small size from yobshrimp diet is insufficient | VERIFIED | page gives no height/length |
+| laascalefish | Teal palette vs orange/peach: source-specific | VERIFIED | canon text orange+peach (Bestiary); infobox green/white/red with orange mottle (Survivor) |
+| laascalefish | Eye colour blue-black vs yellow needs image check | UNVERIFIABLE (images); text says yellow | https://starwars.fandom.com/wiki/Laa |
+| laascalefish | laa-tee-yobshrimp relationship is canon (AEYNTK) | VERIFIED | https://starwars.fandom.com/wiki/Laa |
+| lavaflea | Canon image not a Clone Wars render; ROTS depicts fleas | VERIFIED (infobox file is LavaFlea-CVDNE.png; ROTS first appearance) | https://starwars.fandom.com/wiki/Lava_flea |
+| lavaflea | Canon article reports 4-5 m (BMF 33), so 4 m not Legends-only | VERIFIED | https://starwars.fandom.com/wiki/Lava_flea infobox |
+| lavaflea | Canon colour is red (not mandatory charcoal) | VERIFIED (infobox skincolor Red, ROTS) | same |
+| lavaflea | Armour from exoskeleton, 30 m leap, minerals diet canon (GEG / BMF) | VERIFIED | same |
+| lavaflea | Crystalline worm stage Legends-only | VERIFIED | Lava_flea/Legends only |
+| lavaflea | Seated rider does not give waist-to-chest height; glowing eyes/proboscis need image check | UNVERIFIABLE | no text support |
+| longtailgorg | No separate canon "longtail gorg" taxon; cited Legends list does not establish one | VERIFIED | https://starwars.fandom.com/wiki/Gorg (canon: general term, subspecies Castilon, Iridium Mountain); search for "longtail gorg" returns no title |
+| longtailgorg | Film frames are Canon evidence even on Legends pages | UNVERIFIABLE from page text (Gorg lists TPM and ROTJ as canon appearances; ROTJ first appearance) | https://starwars.fandom.com/wiki/Gorg |
+| longtailgorg | 0.2 m / 0.3 m / herbivore / Tatooine / saliva cocoon are Legends-only | VERIFIED (canon page has none of these; Legends infobox height 0.2 m, cocoon in Field Guide text) | Gorg vs Gorg/Legends |
+| longtailgorg | Green image "figure" palette claim lacks provenance | UNVERIFIABLE (page text gives no figure statement) | Gorg |
+| longtailgorg | Gorgs are an umbrella; Canon gorgs sold as food, some kept as companions (Bitey) | VERIFIED | https://starwars.fandom.com/wiki/Gorg ; https://starwars.fandom.com/wiki/Bitey (pet of Flix and Orka) |
+| lothcat | White loth-cats are canon (Rebels), not to be dismissed | VERIFIED | https://starwars.fandom.com/wiki/Loth-cat (infobox white; Legacy, Flight of the Defender) |
+| lothcat | SWTOR model is Legends evidence | VERIFIED | https://starwars.fandom.com/wiki/Loth-cat/Legends |
+| lothcat | Loth-cat is a tooka relative (class feline, "member of the feline tooka species") | VERIFIED | https://starwars.fandom.com/wiki/Loth-cat |
+| lothcat | Loth-rats are prey; domestication possible but difficult | VERIFIED | same |
+| lothcat | ~0.5 m height plausible | VERIFIED (0.54 m, Star Wars Life Size) | same infobox |
+| lothcat | Ahsoka used a physical loth-cat puppet; modern images not all CGI | UNVERIFIABLE (page says only "live-action appearances") | same |
+| lothcat | Murley Databank distinguishes him from a pet | UNVERIFIABLE (Databank not in page text) | same |
+| lothcat | Exposed legs not webbed / three toes / chin pouch / crouched posture need image check; loth-cats stand, walk, run | UNVERIFIABLE | no text |
+| lylek | Legends Bright Lands must not replace canon equatorial-forest habitat | VERIFIED | https://starwars.fandom.com/wiki/Lylek (canon infobox) vs /Lylek/Legends |
+| lylek | Blaster resistance supported, invulnerability not | VERIFIED (head shot can kill) | https://starwars.fandom.com/wiki/Lylek |
+| lylek | Legends tail-barb paralysis not Canon | VERIFIED as Legends-only; canon has Goll's quote "poisoned tentacles" (poison itself canon, mechanism unspecified) | Lylek , Lylek/Legends |
+| lylek | Queen has six legs and four tentacles (Lords of the Sith) | UNVERIFIABLE (not in page text; page says only "gigantic lylek queen") | https://starwars.fandom.com/wiki/Lylek |
+| lylek | Sources: Crystal Crown, Temptation of the Force, Galactic Atlas | VERIFIED | Lylek (appearances, infobox image SWGA) |
+| lylek | Swarm/cannibal/underground nests are the gameplay-relevant facts | VERIFIED (hordes, bigger dismember smaller, nests up to 15 sq km) | Lylek |
+| lylek | "Thin stilt legs" too delicate; pincer-heads, eye on tips, tentacle attachment | UNVERIFIABLE (images only) | none |
+| marshhaunt | Entry labelled Canon but the Wookieepedia page is Legends | VERIFIED | https://starwars.fandom.com/wiki/Marsh_haunt (Top|leg, Legends links, Darth Plagueis first appearance) |
+| marshhaunt | Image is from Power of the Jedi Sourcebook, not a comic cover | VERIFIED | https://starwars.fandom.com/wiki/File:Ursemadu.jpg (source PotJ sourcebook, artist Joe Corroney) |
+| marshhaunt | Origin Abraxin; packs of 2-8, scavenging near settlements | VERIFIED | Marsh_haunt page |
+| marshhaunt | Text establishes red eyes only, not berry cluster; moss strands not anatomy; "far taller" unmeasurable | VERIFIED (text gives no count/height) ; image reading UNVERIFIABLE | Marsh_haunt page |
+| massiff | AotC frame is canon evidence though image sits on Legends page | VERIFIED (canon page cites Film II for colours and black eyes) | https://starwars.fandom.com/wiki/Massiff |
+| massiff | "Canine" not grounds for fur; stout, scales, spikes, armoured hide | VERIFIED (class reptile and canine; bony plate armour, leathery skin) | same |
+| massiff | "Stopping at nothing" overstates; trained massiffs calm | VERIFIED (phrase is in canon text from Bestiary, but Mandalorian ch.9 and trained-guard text show calm; both on page) | same |
+| massiff | Legends "new pair of antlers annually" must not be Canon | VERIFIED (Legends page only) | https://starwars.fandom.com/wiki/Massiff/Legends |
+| massiff | Roasted and eaten in Andor | VERIFIED (cited to Andor "I Have Friends Everywhere"; already in entry) | Massiff |
+| massiff | Hound and Grizzer; Mandalorian ch.9 | VERIFIED | Massiff |
+| massiff | Outlaws differences not a separate species; independent origin on both planets unproven | UNVERIFIABLE (page lists origin Tatooine and Geonosis; no statement on evolution) | Massiff |
+| meescalefish | Herbivore (VE) and predator (Survivor) discrepancy should be preserved | VERIFIED (page has Conflicting banner VE vs Survivor) | https://starwars.fandom.com/wiki/Mee |
+| meescalefish | Daggert / jumbo daggert are Legends-only | VERIFIED | https://starwars.fandom.com/wiki/Mee/Legends |
+| meescalefish | Yellow-and-brown and spine from Visual Encyclopedia; teeth from Survivor | VERIFIED | Mee infobox refs |
+| meescalefish | "Exactly one spine", whiskers, palm-sized scale, teeth in illustration | UNVERIFIABLE (page gives no size, one "poisonous spine" in infobox) | Mee |
+| meescalefish | Poison spine does not give toxin potency | VERIFIED (page says only "poisonous spine") | Mee |
+| mott | 15 young per litter is canon (Alien Archive), not a Legends leak | VERIFIED | https://starwars.fandom.com/wiki/Mott |
+| mott | Canon ~1.1 m at shoulder; horn use rooting, defence, mating disputes; eaten by sentients | VERIFIED | same |
+| mott | Obi-Wan and Anakin 2 aggressive mott | VERIFIED | same |
+| mott | Stampede and Sacred Place appearances in TPM (CG) | VERIFIED | same |
+| mott | Communes, mudbank burrows, pets, young riding adults are Legends-only | VERIFIED | https://starwars.fandom.com/wiki/Mott/Legends |
+| mott | Lack of webbing does not contradict semi-aquatic | UNVERIFIABLE (canon page has no aquatic statement; Legends says semi-aquatic) | Mott pages |
+| mott | Almost naked, joint wrinkles, toe count, horn nub, juvenile colour, palette | UNVERIFIABLE (image-only) | none |
+| mudhorn | Din's signet is on right shoulder pauldron, not chest | UNVERIFIABLE (wiki says only that the mudhorn became the signet; entry's "chest insignia" removed as unsupported) | https://starwars.fandom.com/wiki/Mudhorn |
+| mudhorn | Grey skin and brown hair compatible; "entirely covered" conflicts with exposed face | VERIFIED (infobox skin Gray, hair Brown; entry's own brief notes bare facial patches) | https://starwars.fandom.com/wiki/Mudhorn |
+| mudhorn | One egg from one nest does not establish single-egg clutch | REFUTED | Mudhorn page: "oviparous, laying a single egg per clutch"; Mudhorn_egg: "lay only a single egg per clutch" |
+| mudhorn | "Woolly-shelled" should describe the exterior, not shell composition | VERIFIED (page: egg exterior woolly) | https://starwars.fandom.com/wiki/Mudhorn |
+| mudhorn | 2.57 x 5.47 m dimensions lack an identified source | REFUTED (infobox cites The Mandalorian Visual Guide for height and length) | https://starwars.fandom.com/wiki/Mudhorn |
+| mudhorn | Lonisa City Zoo captive mudhorn in Race to Crashpoint Tower; captivity not domestication | VERIFIED | same |
+| mudhorn | Omnivory unconfirmed | REFUTED (infobox diet Omnivorous, Mandalorian Visual Guide) | same |
+| mudhorn | Blaster-bolt dissipation by mud-caked hide (Databank) | UNVERIFIABLE (Databank text not on the wiki page) | none |
+| mudhorn | Chapter 2 events: charging, egg, Jawa delicacy, Grogu | VERIFIED | same |
+
+## Cross-entry problems
+| claim | VERDICT | source |
+|---|---|---|
+| Continuity classification unreliable: marsh haunt is Legends; film frames remain Canon on Legends pages | VERIFIED (marsh haunt page is Legends; Massiff page cites AotC film as canon source) | https://starwars.fandom.com/wiki/Marsh_haunt , Massiff |
+| longtail gorg overlaps the gorg entry; no separate canon species | VERIFIED (search for the title returns none; Gorg is the umbrella page) | https://starwars.fandom.com/wiki/Gorg |
+| Loth-cat belongs with tooka | VERIFIED ("member of the feline tooka species") | https://starwars.fandom.com/wiki/Loth-cat |
+| Laa and mee are distinct scalefish | VERIFIED (separate pages, both scalefish) | Laa, Mee |
+| Variant rules (juvenile defs, morphs, toe counts, dimorphism) exceed evidence | UNVERIFIABLE as a general claim; consistent with the pages, none of which gives juvenile or sex data | n/a |
+| All ten entries describe animals; none is a plant | VERIFIED (all ten wiki pages are creature/animal articles) | all ten pages |
+| Repeated wiki prose and copied images are not independent corroboration | UNVERIFIABLE (methodology) | n/a |
