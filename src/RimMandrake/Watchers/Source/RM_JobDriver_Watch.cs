@@ -21,7 +21,7 @@ namespace RimMandrake.Watchers
     /// </summary>
     public class RM_JobDriver_Watch : JobDriver
     {
-        private const int StepInterval = 30;
+        private const int StepInterval = RM_WatcherKernel.StepInterval;
 
         private bool hidden;
         private int hiddenUntilTick = -1;
@@ -84,63 +84,76 @@ namespace RimMandrake.Watchers
         private void Step(RM_WatcherExtension ext)
         {
             Map map = pawn.Map;
-            if (map == null || !RM_WatchersSettings.watchersEnabled || !RM_WatcherUtility.OnMedium(pawn, ext))
+            if (map == null)
             {
                 EndJobWith(JobCondition.InterruptForced);
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            Pawn nearest = RM_WatcherUtility.NearestOther(pawn, ext, out bool inFlinch);
-            bool geo = RM_WatcherUtility.GeophoneFires(pawn, ext);
-
-            if (!hidden)
+            bool onMedium = RM_WatcherUtility.OnMedium(pawn, ext);
+            // Short-circuit order kept: the scans only run once the watch is known to continue.
+            Pawn nearest = null;
+            bool inFlinch = false, geo = false, hunted = false, hungry = false;
+            if (RM_WatchersSettings.watchersEnabled && onMedium)
             {
-                bool hunted = map.designationManager.DesignationOn(pawn, DesignationDefOf.Hunt) != null;
-                if (RM_WatchersSettings.hideAndFlinch && (inFlinch || geo || hunted))
+                nearest = RM_WatcherUtility.NearestOther(pawn, ext, out inFlinch);
+                geo = RM_WatcherUtility.GeophoneFires(pawn, ext);
+                hunted = !hidden && map.designationManager.DesignationOn(pawn, DesignationDefOf.Hunt) != null;
+                hungry = pawn.needs?.food != null && pawn.needs.food.CurLevelPercentage < ext.emergeWhenFoodBelow;
+            }
+            StepFlags f = RM_WatcherKernel.DecideStep(new StepIn
+            {
+                watchersEnabled = RM_WatchersSettings.watchersEnabled, onMedium = onMedium, hidden = hidden,
+                hideAndFlinch = RM_WatchersSettings.hideAndFlinch, turnToFace = RM_WatchersSettings.turnToFace,
+                hasNearest = nearest != null, inFlinch = inFlinch, geophone = geo, hunted = hunted,
+                signMissing = hidden && (sign == null || sign.Destroyed), hungry = hungry,
+                now = now, hiddenUntil = hiddenUntilTick, watchStart = watchStartTick, maxWatchTicks = ext.maxWatchTicks,
+            });
+            if ((f & StepFlags.EndInterrupted) != 0)
+            {
+                EndJobWith(JobCondition.InterruptForced);
+                return;
+            }
+            if ((f & StepFlags.Hide) != 0)
+            {
+                if ((f & StepFlags.DropHunt) != 0)
                 {
-                    if (hunted)
-                    {
-                        // Flush-only (Q4, 2026-10-03): a peeking watcher cannot be hunted. It sinks
-                        // and the order comes off, saying how to get it.
-                        map.designationManager.TryRemoveDesignationOn(pawn, DesignationDefOf.Hunt);
-                    }
-                    sign = RM_WatcherUtility.Hide(pawn, ext);
-                    hidden = true;
-                    hiddenUntilTick = now + (int)(ext.hideTicks.RandomInRange * RM_WatchersSettings.emergeDelayScale);
-                    if (hunted)
-                    {
-                        Messages.Message("RM_Watchers_HuntSank".Translate(pawn.LabelShort), sign, MessageTypeDefOf.RejectInput, false);
-                    }
-                    return;
+                    // Flush-only (Q4, 2026-10-03): a peeking watcher cannot be hunted. It sinks
+                    // and the order comes off, saying how to get it.
+                    map.designationManager.TryRemoveDesignationOn(pawn, DesignationDefOf.Hunt);
                 }
-                if (RM_WatchersSettings.turnToFace && nearest != null)
+                sign = RM_WatcherUtility.Hide(pawn, ext);
+                hidden = true;
+                hiddenUntilTick = RM_WatcherKernel.HiddenUntil(now, ext.hideTicks.RandomInRange, RM_WatchersSettings.emergeDelayScale);
+                if ((f & StepFlags.DropHunt) != 0)
                 {
-                    pawn.rotationTracker.FaceCell(nearest.Position);
-                }
-                if (now - watchStartTick >= ext.maxWatchTicks)
-                {
-                    EndJobWith(JobCondition.Succeeded);
+                    Messages.Message("RM_Watchers_HuntSank".Translate(pawn.LabelShort), sign, MessageTypeDefOf.RejectInput, false);
                 }
                 return;
             }
-
-            // Hidden. A sign destroyed by something else (a building placed over it) is put back.
-            if (sign == null || sign.Destroyed)
+            if ((f & StepFlags.RestoreSign) != 0)
             {
+                // A sign destroyed by something else (a building placed over it) is put back.
                 sign = (RM_WatcherSign)ThingMaker.MakeThing(ext.signDef);
                 sign.owner = pawn;
                 GenSpawn.Spawn(sign, pawn.Position, map);
             }
-            bool hungry = pawn.needs?.food != null && pawn.needs.food.CurLevelPercentage < ext.emergeWhenFoodBelow;
-            if (!RM_WatchersSettings.hideAndFlinch || hungry || (now >= hiddenUntilTick && !inFlinch && !geo))
+            if ((f & StepFlags.Emerge) != 0)
             {
                 RM_WatcherUtility.Emerge(pawn, ext, ref sign, true);
                 hidden = false;
+            }
+            if ((f & StepFlags.ResetWatchClock) != 0)
+            {
                 watchStartTick = now;
-                if (hungry)
-                {
-                    EndJobWith(JobCondition.Succeeded);
-                }
+            }
+            if ((f & StepFlags.Face) != 0)
+            {
+                pawn.rotationTracker.FaceCell(nearest.Position);
+            }
+            if ((f & StepFlags.EndSucceeded) != 0)
+            {
+                EndJobWith(JobCondition.Succeeded);
             }
         }
     }

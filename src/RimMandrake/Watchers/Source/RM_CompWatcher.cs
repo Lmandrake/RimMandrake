@@ -25,8 +25,8 @@ namespace RimMandrake.Watchers
     /// </summary>
     public class RM_CompWatcher : ThingComp
     {
-        private const int CheckInterval = 250;
-        private const int NoMediumRecheckTicks = 7500;
+        private const int CheckInterval = RM_WatcherKernel.CheckInterval;
+        private const int NoMediumRecheckTicks = RM_WatcherKernel.NoMediumRecheckTicks;
 
         public int boltUntilTick = -1;
         public int noMediumUntilTick = -1;
@@ -68,13 +68,9 @@ namespace RimMandrake.Watchers
                 RM_WatcherUtility.Emerge(pawn, e, ref none, false);
                 RemoveStraySigns(pawn, e);
             }
-            if (!RM_WatchersSettings.watchersEnabled || !RM_WatchersSettings.stayOnMedium || !e.HasMedium
-                || pawn.Downed || pawn.InMentalState || Bolting || NoMediumReachable
-                || RM_WatcherUtility.OnMedium(pawn, e))
-            {
-                return;
-            }
-            if (cur != null && !IdleJobs.Contains(cur.defName))
+            if (!RM_WatcherKernel.ShouldSeekMedium(RM_WatchersSettings.watchersEnabled, RM_WatchersSettings.stayOnMedium, e.HasMedium,
+                    pawn.Downed, pawn.InMentalState, Bolting, NoMediumReachable, RM_WatcherUtility.OnMedium(pawn, e),
+                    cur != null, cur != null && IdleJobs.Contains(cur.defName)))
             {
                 return;
             }

@@ -23,30 +23,20 @@ namespace RimMandrake.Watchers
                 return null;
             }
             RM_CompWatcher comp = pawn.GetComp<RM_CompWatcher>();
-            if (comp == null || comp.Bolting)
-            {
-                return null;
-            }
-            // It only ever watches (and so only ever hides) on its medium.
-            if (!RM_WatcherUtility.OnMedium(pawn, ext))
-            {
-                return null;
-            }
-            if (!RM_WatchersSettings.hideAndFlinch && !RM_WatchersSettings.turnToFace)
-            {
-                return null;
-            }
             // Below the emerge threshold the job would hide then end at once (hungry), and this giver
             // would re-issue it: a hide/emerge loop every ~60 ticks whenever food is out of reach.
-            if (pawn.needs?.food != null && pawn.needs.food.CurLevelPercentage < ext.emergeWhenFoodBelow)
+            // It only ever watches (and so only ever hides) on its medium.
+            if (!RM_WatcherKernel.WatchGiverPre(true, RM_WatchersSettings.watchersEnabled, true, false, false, true,
+                    comp != null, comp != null && comp.Bolting, RM_WatcherUtility.OnMedium(pawn, ext),
+                    RM_WatchersSettings.hideAndFlinch, RM_WatchersSettings.turnToFace,
+                    pawn.needs?.food != null, pawn.needs?.food != null ? pawn.needs.food.CurLevelPercentage : 1f,
+                    ext.emergeWhenFoodBelow))
             {
                 return null;
             }
-            if (Rand.Chance(ext.wanderChance))
-            {
-                return null;
-            }
-            if (RM_WatcherUtility.ActiveWatchers(pawn.Map) >= RM_WatchersSettings.maxActivePerMap)
+            // The roll first: the map-wide scan only runs for an animal that did not just decide to wander.
+            if (Rand.Chance(ext.wanderChance)
+                || !RM_WatcherKernel.WatchGiverCapOk(false, RM_WatcherUtility.ActiveWatchers(pawn.Map), RM_WatchersSettings.maxActivePerMap))
             {
                 return null;
             }

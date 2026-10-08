@@ -15,7 +15,7 @@ namespace RimMandrake.Watchers
     {
         public static float FlinchRadius(RM_WatcherExtension ext)
         {
-            return ext.flinchRadius * RM_WatchersSettings.flinchRadiusScale;
+            return RM_WatcherKernel.FlinchRadius(ext.flinchRadius, RM_WatchersSettings.flinchRadiusScale);
         }
 
         /// <summary>Nearest spawned pawn that is not its own kind within the watch radius, and
@@ -28,12 +28,9 @@ namespace RimMandrake.Watchers
             {
                 return null;
             }
-            float watchSq = ext.watchRadius * ext.watchRadius;
-            float flinch = FlinchRadius(ext);
-            float flinchSq = flinch * flinch;
-            Pawn best = null;
-            float bestSq = float.MaxValue;
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+            var others = new List<Pawn>(pawns.Count);
+            var distSq = new List<float>(pawns.Count);
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
@@ -41,22 +38,11 @@ namespace RimMandrake.Watchers
                 {
                     continue;
                 }
-                float d = (p.Position - watcher.Position).LengthHorizontalSquared;
-                if (d > watchSq)
-                {
-                    continue;
-                }
-                if (d <= flinchSq)
-                {
-                    inFlinch = true;
-                }
-                if (d < bestSq)
-                {
-                    bestSq = d;
-                    best = p;
-                }
+                others.Add(p);
+                distSq.Add((p.Position - watcher.Position).LengthHorizontalSquared);
             }
-            return best;
+            int best = RM_WatcherKernel.Nearest(distSq, ext.watchRadius, FlinchRadius(ext), out inFlinch);
+            return best < 0 ? null : others[best];
         }
 
         // CreatureBehaviors' RM_SandSwimUtility.SubmergedSwimmersNear(Map, IntVec3, float, float, List<Pawn>)
@@ -224,9 +210,9 @@ namespace RimMandrake.Watchers
             }
             Map map = watcher.Map;
             // Designator_Hunt's own faction rule (RimSage 1.6): never mark a tamed or humanlike-faction animal.
-            if (RM_WatchersSettings.flushMarksHunt && flusher.Faction == Faction.OfPlayer
-                && (watcher.Faction == null || !watcher.Faction.def.humanlikeFaction)
-                && map.designationManager.DesignationOn(watcher, DesignationDefOf.Hunt) == null)
+            if (RM_WatcherKernel.FlushMarksHunt(RM_WatchersSettings.flushMarksHunt, flusher.Faction == Faction.OfPlayer,
+                    watcher.Faction != null, watcher.Faction != null && watcher.Faction.def.humanlikeFaction,
+                    map.designationManager.DesignationOn(watcher, DesignationDefOf.Hunt) != null))
             {
                 map.designationManager.AddDesignation(new Designation(watcher, DesignationDefOf.Hunt));
             }

@@ -44,7 +44,7 @@ namespace RimMandrake.Watchers
                 }
                 if (comp != null)
                 {
-                    comp.noMediumUntilTick = Find.TickManager.TicksGame + 7500;
+                    comp.noMediumUntilTick = Find.TickManager.TicksGame + RM_WatcherKernel.NoMediumRecheckTicks;
                 }
                 return null;
             }
