@@ -66,9 +66,18 @@ def main(argv):
     if os.path.abspath(mod) != os.path.abspath(DEFAULT_MOD):
         files = [f for f in files if os.sep + "Wreckage" + os.sep not in f] + glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True)
     byname, bydef, tagdef = {}, {}, {}
+    all_defnames = set()
+    RELEVANT = ("RM_WreckWeathering", "WreckFamil", "SalvageLoot", "RM_GenStep_WreckField", "RM_WreckList", "RM_WreckDensity", "ThingSetMakerDef")
     for p in files:
         try:
-            root = ET.parse(p).getroot()
+            txt = read(p)
+        except OSError:
+            continue
+        all_defnames.update(re.findall(r"<defName>\s*([^<\s]+)\s*</defName>", txt))      # cheap: every def name anywhere (for 'does it exist')
+        if not any(k in txt for k in RELEVANT) and "HediffDef" not in txt:
+            continue                                                                      # only wreck-related files are parsed (the full parse of src/ is ~7 s)
+        try:
+            root = ET.fromstring(txt.encode("utf-8"))
         except ET.ParseError:
             continue
         for d in root:
@@ -89,13 +98,14 @@ def main(argv):
             hops += 1
         return None
 
-    patch_text = ""
+    patch_parts = []
     for p in glob.glob(os.path.join(src_root, "*", "*", "Patches", "**", "*.xml"), recursive=True):
-        patch_text += read(p)
+        patch_parts.append(read(p))
+    patch_text = "\n".join(patch_parts)
     VANILLA = {"ShipChunk", "ShipChunk_Mech"}      # Core defs a wreck list may name directly
 
     def known(nm):
-        return ("ThingDef", nm) in bydef or nm in VANILLA or f"<defName>{nm}</defName>" in patch_text
+        return nm in all_defnames or nm in VANILLA or f"<defName>{nm}</defName>" in patch_text
 
     weath = {dn: d for (tag, dn), d in bydef.items() if tag == "RM_WreckWeatheringDef"}
     makers = {dn for (tag, dn) in bydef if tag == "ThingSetMakerDef"}

@@ -71,7 +71,7 @@ class Ctx:
 
 def index_others(ctx):
     """defName set / Names / (tag, defName) pairs of every other mod under src/, plus text added by patches."""
-    names, defs, bymod, patch_text, packages = set(), set(), {}, "", {}
+    names, defs, bymod, patch_parts, packages = set(), set(), {}, [], {}
     for p in glob.glob(os.path.join(ctx.src_dir, "*", "*", "Defs", "**", "*.xml"), recursive=True):
         parts = os.path.relpath(p, ctx.src_dir).split(os.sep)
         mod = parts[1]
@@ -91,7 +91,7 @@ def index_others(ctx):
     for p in glob.glob(os.path.join(ctx.src_dir, "*", "*", "Patches", "**", "*.xml"), recursive=True):
         if os.path.relpath(p, ctx.src_dir).split(os.sep)[1] == ctx.mod:
             continue
-        patch_text += read(p)
+        patch_parts.append(read(p))
     for p in glob.glob(os.path.join(ctx.src_dir, "*", "*", "About", "About.xml")):
         try:
             pid = ET.parse(p).getroot().findtext("packageId")
@@ -99,7 +99,7 @@ def index_others(ctx):
             continue
         if pid:
             packages[pid.lower()] = p
-    return names, defs, bymod, patch_text, packages
+    return names, defs, bymod, "\n".join(patch_parts), packages
 
 
 def common(ctx):
