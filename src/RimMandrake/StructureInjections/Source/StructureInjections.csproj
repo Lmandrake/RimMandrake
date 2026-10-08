@@ -35,6 +35,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_PlanKernel.cs" />
     <Compile Include="RimplacePlan.cs" />
     <Compile Include="GenStep_RimplacePlan.cs" />
     <Compile Include="GenStep_Whisper_NoOp.cs" />

@@ -133,21 +133,10 @@ namespace RimMandrake.StructureInjections
                 anchorCenter = found.OccupiedRect().CenterCell;
             }
 
-            if (anchorCenter.HasValue && plan.HasFootprint)
-            {
-                var planCenterX = plan.FootprintX + plan.FootprintW / 2;
-                var planCenterZ = plan.FootprintZ + plan.FootprintH / 2;
-                dx = anchorCenter.Value.x - planCenterX + offsetX;
-                dz = anchorCenter.Value.z - planCenterZ + offsetZ;
-            }
-            else if (centerOnMap && plan.HasFootprint)
-            {
-                var mapCenter = map.Center;
-                var planCenterX = plan.FootprintX + plan.FootprintW / 2;
-                var planCenterZ = plan.FootprintZ + plan.FootprintH / 2;
-                dx = mapCenter.x - planCenterX + offsetX;
-                dz = mapCenter.z - planCenterZ + offsetZ;
-            }
+            var mapCenter = map.Center;
+            RM_PlanKernel.Offset(plan.HasFootprint, plan.FootprintX, plan.FootprintZ, plan.FootprintW, plan.FootprintH,
+                anchorCenter.HasValue, anchorCenter.HasValue ? anchorCenter.Value.x : 0, anchorCenter.HasValue ? anchorCenter.Value.z : 0,
+                centerOnMap, mapCenter.x, mapCenter.z, offsetX, offsetZ, out dx, out dz);
 
             ApplyPlan(map, plan, dx, dz, planFile ?? "(debug)");
         }
@@ -227,7 +216,7 @@ namespace RimMandrake.StructureInjections
             // ConnectMaxDist AT SPAWN; a transmitter appearing afterwards
             // does not retroactively claim it (same trap compile_calls'
             // comment documents for the live path).
-            var byPriority = plan.Things
+            var byPriority = RM_PlanKernel.TransmittersFirst(plan.Things
                 .Select(t => new { t, def2 = DefDatabase<ThingDef>.GetNamedSilentFail(t.DefName) })
                 .Where(x =>
                 {
@@ -239,7 +228,7 @@ namespace RimMandrake.StructureInjections
                     }
                     return true;
                 })
-                .OrderByDescending(x => x.def2.EverTransmitsPower);
+                .ToList(), x => x.def2.EverTransmitsPower);
 
             foreach (var x in byPriority)
                 RunItem(sourceLabel, "THING", x.t.DefName, () => SpawnThing(map, x.t, x.def2, dx, dz, sourceLabel));
@@ -308,7 +297,13 @@ namespace RimMandrake.StructureInjections
         private static void ExecuteClear(Map map, PlanClear c, int dx, int dz)
         {
             var rect = new CellRect(c.X + dx, c.Z + dz, c.W, c.H);
-            bool all = c.Mode == "all";
+            RM_PlanKernel.ClearMode mode = RM_PlanKernel.ParseClearMode(c.Mode);
+            if (mode == RM_PlanKernel.ClearMode.Unknown)
+            {
+                // an unknown mode used to clear softly without a word; a typo'd "all" would leave the rock standing under the structure
+                Log.Error("[RimMandrake.StructureInjections] CLEAR: unknown mode '" + c.Mode + "' at (" + c.X + "," + c.Z + ") - clearing softly.");
+            }
+            bool all = mode == RM_PlanKernel.ClearMode.All;
             foreach (var cell in rect)
             {
                 if (!cell.InBounds(map)) continue;
@@ -344,14 +339,6 @@ namespace RimMandrake.StructureInjections
         // not through a wall). This is engine-side by necessity: a plan is
         // authored at small offline coordinates and the real map edge is only
         // known here.
-        private static readonly IntVec3[] RunDirVecs =
-        {
-            new IntVec3(0, 0, 1),   // N
-            new IntVec3(1, 0, 0),   // E
-            new IntVec3(0, 0, -1),  // S
-            new IntVec3(-1, 0, 0),  // W
-        };
-
         private static void ExecuteRun(Map map, PlanRun r, int dx, int dz, string sourceLabel)
         {
             var def = DefDatabase<ThingDef>.GetNamedSilentFail(r.DefName);
@@ -361,47 +348,42 @@ namespace RimMandrake.StructureInjections
                           r.DefName + "' (plan " + sourceLabel + ")");
                 return;
             }
-            int dirIdx = "NESW".IndexOf(r.Dir, System.StringComparison.Ordinal);
+            int dirIdx = RM_PlanKernel.DirIndex(r.Dir);
             if (dirIdx < 0)
             {
                 Log.Error("[RimMandrake.StructureInjections] RUN: unknown dir '" + r.Dir +
                           "' (plan " + sourceLabel + ")");
                 return;
             }
-            var step = RunDirVecs[dirIdx];
             ThingDef stuffDef = null;
             if (r.Stuff != null)
                 stuffDef = DefDatabase<ThingDef>.GetNamedSilentFail(r.Stuff);
 
-            var cell = new IntVec3(r.X + dx, 0, r.Z + dz);
             int placed = 0;
-            while (cell.InBounds(map))
-            {
-                var here = map.thingGrid.ThingsListAtFast(cell);
-                bool alreadyThis = false;
-                bool blocked = false;
-                foreach (var t in here)
+            RM_PlanKernel.WalkRun(r.X + dx, r.Z + dz, dirIdx, map.Size.x, map.Size.z,
+                (x, z) =>
                 {
-                    if (t.def == def) { alreadyThis = true; continue; }
-                    // A conduit-class transmitter (the thing this RUN is
-                    // itself extending, or any other transmitter) never
-                    // blocks a run - two wires may share a cell. Anything
-                    // else impassable stops the line.
-                    if (t.def.passability == Traversability.Impassable && !t.def.EverTransmitsPower)
-                        blocked = true;
-                }
-                if (blocked) break;
-                if (!alreadyThis)
+                    bool alreadyThis = false;
+                    bool blocked = false;
+                    foreach (var t in map.thingGrid.ThingsListAtFast(new IntVec3(x, 0, z)))
+                    {
+                        if (t.def == def) { alreadyThis = true; continue; }
+                        // A conduit-class transmitter (the thing this RUN is itself extending, or any other transmitter) never
+                        // blocks a run - two wires may share a cell. Anything else impassable stops the line.
+                        if (t.def.passability == Traversability.Impassable && !t.def.EverTransmitsPower)
+                            blocked = true;
+                    }
+                    return blocked ? RM_PlanKernel.RunProbe.Blocked : alreadyThis ? RM_PlanKernel.RunProbe.AlreadyThere : RM_PlanKernel.RunProbe.Free;
+                },
+                (x, z) =>
                 {
                     var thing = ThingMaker.MakeThing(def, StuffFor(def, stuffDef));
                     // GenSpawn.Spawn returns null (and logs its own error) on failure rather than
                     // throwing - counting placed unconditionally let `placed == 0` below stay
                     // silent on a run that spawned fewer things than cells walked.
-                    if (GenSpawn.Spawn(thing, cell, map, WipeMode.Vanish) != null)
+                    if (GenSpawn.Spawn(thing, new IntVec3(x, 0, z), map, WipeMode.Vanish) != null)
                         placed++;
-                }
-                cell += step;
-            }
+                });
             if (placed == 0)
                 Log.Warning("[RimMandrake.StructureInjections] RUN of '" + r.DefName +
                             "' from (" + r.X + "," + r.Z + ") " + r.Dir +
@@ -423,7 +405,7 @@ namespace RimMandrake.StructureInjections
         // one - a mapgen template must never spawn a colonist.
         private static void ExecutePawn(Map map, PlanPawn p, int dx, int dz, string sourceLabel)
         {
-            if (p.Faction == "player")
+            if (RM_PlanKernel.ClassifyFaction(p.Faction) == RM_PlanKernel.FactionKind.Refused)
             {
                 Log.Error("[RimMandrake.StructureInjections] PAWN: refusing faction=player " +
                           "for '" + p.KindDef + "' (plan " + sourceLabel + ") - a mapgen " +
@@ -437,8 +419,15 @@ namespace RimMandrake.StructureInjections
                           p.KindDef + "' (plan " + sourceLabel + ")");
                 return;
             }
+            RM_PlanKernel.PawnState state = RM_PlanKernel.ParsePawnState(p.State);
+            if (state == RM_PlanKernel.PawnState.Unknown)
+            {
+                Log.Error("[RimMandrake.StructureInjections] PAWN: unknown state '" + p.State + "' for '" + p.KindDef + "' (plan " + sourceLabel +
+                          ") - not spawned (a typo'd state used to kill the pawn).");
+                return;
+            }
             Faction faction = null;
-            if (p.Faction != "wild" && !string.IsNullOrEmpty(p.Faction))
+            if (RM_PlanKernel.ClassifyFaction(p.Faction) == RM_PlanKernel.FactionKind.Named)
             {
                 var factionDef = DefDatabase<FactionDef>.GetNamedSilentFail(p.Faction);
                 faction = factionDef != null ? Find.FactionManager.FirstFactionOfDef(factionDef) : null;
@@ -471,7 +460,7 @@ namespace RimMandrake.StructureInjections
                 return;
             }
 
-            if (p.State == "alive") return;
+            if (state == RM_PlanKernel.PawnState.Alive) return;
 
             pawn.Kill(null);
             var corpse = pawn.Corpse;
@@ -482,7 +471,7 @@ namespace RimMandrake.StructureInjections
                             "(plan " + sourceLabel + ") - left as a fresh kill.");
                 return;
             }
-            if (p.State == "dessicated" || p.State == "skeleton")
+            if (state == RM_PlanKernel.PawnState.Dessicated)
             {
                 var rot = corpse.GetComp<CompRottable>();
                 rot?.RotImmediately(RotStage.Dessicated);

@@ -91,11 +91,36 @@ namespace RimMandrake.StructureInjections
 
         public static RimplacePlan Parse(string path)
         {
+            return ParseLines(File.ReadAllLines(path));
+        }
+
+        /// <summary>Parses plan lines. A malformed line (too few fields, a non-number where a cell is expected) throws a FormatException that names
+        /// the line number, so a corrupt plan is refused whole and says where, instead of an index-out-of-range with no location.</summary>
+        public static RimplacePlan ParseLines(IEnumerable<string> lines)
+        {
             var plan = new RimplacePlan();
-            foreach (var raw in File.ReadAllLines(path))
+            int lineNo = 0;
+            foreach (var raw in lines)
+            {
+                lineNo++;
+                try
+                {
+                    plan.ParseOne(raw);
+                }
+                catch (System.Exception ex) when (ex is System.IndexOutOfRangeException || ex is System.FormatException || ex is System.OverflowException)
+                {
+                    throw new System.FormatException("plan line " + lineNo + " is malformed (" + ex.GetType().Name + "): " + raw);
+                }
+            }
+            return plan;
+        }
+
+        private void ParseOne(string raw)
+        {
+            var plan = this;
             {
                 var line = raw.TrimEnd();
-                if (line.Length == 0 || line[0] == '#') continue;
+                if (line.Length == 0 || line[0] == '#') return;
                 var f = line.Split('\t');
                 switch (f[0])
                 {
@@ -171,7 +196,6 @@ namespace RimMandrake.StructureInjections
                         break;
                 }
             }
-            return plan;
         }
     }
 }
