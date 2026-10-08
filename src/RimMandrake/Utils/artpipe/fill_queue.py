@@ -345,8 +345,11 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
 
     # csv.DictReader gives '' (not a missing key) for a blank cell, and
     # int('') raises — `row.get('priority') or 100` treats a blank cell the
-    # same as an absent one instead of crashing the whole file.
-    priority = int(row.get("priority") or 100)
+    # same as an absent one instead of crashing the whole file. Test for
+    # blank explicitly: `or 100` also swallowed a deliberate priority 0
+    # (falsy), filing the 2026-10-07 Miasma "priority 0" wave at 100.
+    _p = row.get("priority")
+    priority = 100 if _p is None or str(_p).strip() == "" else int(_p)
 
     # ARTPIPE_FACING_COHERENCE_1 §2: a multi-facing row with an "east" facing
     # gets east as the fresh-generated MASTER; north/south (if also
