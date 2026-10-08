@@ -37,6 +37,7 @@ for p in (_UTILS, os.path.join(_UTILS, "modcheck")):
     if p not in sys.path:
         sys.path.insert(0, p)
 
+import harness_run                                                       # noqa: E402
 import judge                                                              # noqa: E402
 from northstar_driver import PASS, FAIL, UNMEASURED                       # noqa: E402
 from northstar_driver import bars as B                                    # noqa: E402
@@ -118,7 +119,7 @@ def claude_runner(model, timeout):
             cmd = ["claude", "-p", prompt_for(local), "--output-format", "json",
                    "--model", model, "--allowed-tools", "Read"]
             try:
-                r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=d)
+                r = harness_run.run(cmd, timeout, cwd=d)  # rm-harness.slice, not the seat
             except FileNotFoundError:
                 return False, "`claude` not found on PATH"
             except subprocess.TimeoutExpired:
