@@ -7,7 +7,8 @@ Source: `Transient/biome_ffar/miasma_sheet_2026-10-05.decisions.json` (human row
 - [x] existing-art search per subject (`artpipe_state.py find`, sanity probe `korrum` = 18 hits)
 - [x] canon entries read (Vornskyr, LaaJuv→laascalefish, OpeeSeaKillerJuv→opeeseakiller, YobshrimpJuv→paleyobshrimp, Zakkeg, Blarth, Blixus, MarshHaunt, Bogwing)
 - [x] jobs filed: 52 rows → 92 jobs, `Transient/biome_art_refresh_2026-10-07/miasma_regen_jobs.json` (built by `build_miasma_regen_jobs.py` beside it). Daemon (pid 441, `artpiped.py -N 5`) claimed the first 5 within seconds; nothing else was pending, so these are positions 1–92.
-- [ ] census (canon_gap_census.md)
+- [x] census → `canon_gap_census.md` (+ `.json`, `canon_gap_census.py`, `canon_gap_census_md.py`, sonnet visual verdicts `canon_gap_census_visual.jsonl`). 169 canon rows / 115 defs on 21 sheets; 137 rows / 104 defs are gaps. 104 rows (83 defs) still show donor art never regenerated, 63 of them with a canon-briefed render already sitting on the sheet uninstalled. Of the 38 defs whose in-game art is ours, 10 CONTRADICT Must show, 10 PARTIAL, 18 PASS.
+- Daemon canon gate on the first finished jobs: vornskyr_v2 east 5/5, opeejuv east 7/7 (gpt-6.1-sol grader).
 
 ## Jobs filed (priority 0, item BIOME_FLORAFAUNA_ART_REVIEW_1, owner notes verbatim in `owner_note` + prompt lead)
 - **RSW_Vornskyr**: `miasma_canon_vornskyr_v2` (3 jobs, 512px, canon vornskyr)
