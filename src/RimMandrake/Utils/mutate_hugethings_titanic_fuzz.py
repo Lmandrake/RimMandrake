@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Mutation proof for the TitanicCreatures fuzz: plants each defect in the kernel (RM_TitanicKernel.cs), demands the fuzz FAILS, restores the
+"""Mutation proof for the titan half of the Huge Things fuzz: plants each defect in the titan kernel (RM_TitanicKernel.cs), demands the fuzz FAILS, restores the
 file byte-identical. Exit 0 only if every mutation was caught. The first entry is the ORIGINAL shipped defect (a T3 titan crushed
 non-buildings for the T1 damage, less than a T2): the fuzz must have caught it.
 
-    python3 src/RimMandrake/Utils/mutate_titaniccreatures_fuzz.py [name-substring]
+    python3 src/RimMandrake/Utils/mutate_hugethings_titanic_fuzz.py [name-substring]
 """
 import os
 import sys
@@ -13,8 +13,8 @@ sys.path.insert(0, HERE)
 from mutate_explosivegrowth_fuzz import run_mutations  # noqa: E402
 
 # Equivalent mutants (not listed): clamp-above on the yield factor (the slider caps the floor at 1), the b = max(size, floor) guard (the clamp hides it),
-# the DefQualifies ternary in OverrideFootprint (force-in always qualifies; removed from the kernel), and the day length (lint_titaniccreatures_defs.py pins 60000).
-KERNEL = "src/RimMandrake/TitanicCreatures/Source/Kernel/RM_TitanicKernel.cs"
+# the DefQualifies ternary in OverrideFootprint (force-in always qualifies; removed from the kernel), and the day length (lint_hugethings_titanic_defs.py pins 60000).
+KERNEL = "src/RimMandrake/HugeThings/Source/Kernel/RM_TitanicKernel.cs"
 MUTATIONS = [
     ("T3 crush hits softer than T2 (original bug)", "return (tier >= T2 ? CrushDamageHeavy : CrushDamageLight) * multiplier;", "return (tier == T2 ? CrushDamageHeavy : CrushDamageLight) * multiplier;"),
     ("T3 floor exclusive", "if (bodySize >= t3) tier = T3;", "if (bodySize > t3) tier = T3;"),
@@ -50,4 +50,4 @@ MUTATIONS = [
 ]
 
 if __name__ == "__main__":
-    sys.exit(run_mutations(KERNEL, "selftest_titaniccreatures_fuzz.py", MUTATIONS, sys.argv[1] if len(sys.argv) > 1 else None))
+    sys.exit(run_mutations(KERNEL, "selftest_hugethings_fuzz.py", MUTATIONS, sys.argv[1] if len(sys.argv) > 1 else None))

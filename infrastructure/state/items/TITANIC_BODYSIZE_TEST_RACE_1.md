@@ -3,10 +3,10 @@
 Filed 2026-10-07 from the GREEN-MIN / L2 sweeps (Transient/*_20261007.md).
 
 ## spec
-TitanicCreatures five `not_driven` rows (T2/T3 tiers, yield curve, roof, footprint) are UNMEASURED because no vanilla race has baseBodySize >= 8 (max 5.0: Dreadmeld, Moose) so no Titanic-tier creature can be spawned in a vanilla list. Options: (a) a tiny test race ThingDef with bodySize 8 and 20 in the harness-only test mod; (b) a JawaBench tool that overrides a live pawn's BodySize / tier. Prefer whichever is cheaper to keep honest; evidence Transient/titanic_harness_20261007.md and live_recheck2_20261007.md line 17.
+Huge Things' titan `not_driven` rows (TitanicCreatures merged into HugeThings 2026-10-07) (T2/T3 tiers, yield curve, roof, footprint) are UNMEASURED because no vanilla race has baseBodySize >= 8 (max 5.0: Dreadmeld, Moose) so no Titanic-tier creature can be spawned in a vanilla list. Options: (a) a tiny test race ThingDef with bodySize 8 and 20 in the harness-only test mod; (b) a JawaBench tool that overrides a live pawn's BodySize / tier. Prefer whichever is cheaper to keep honest; evidence Transient/titanic_harness_20261007.md and live_recheck2_20261007.md line 17.
 
 ## verify
-Spawn the test creature on a quicktest map and run the TitanicCreatures validation script.
+Spawn the test creature on a quicktest map and run the HugeThings validation script (our own T2/T3 races are listed in Transient/huge_titan_walk_plan_2026-10-07.md).
 
 ## criteria
 A1: a test race (bodySize 8 and 20) or BodySize-override bridge tool exists and is documented in the rimbridge-companion tool list.

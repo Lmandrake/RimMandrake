@@ -1,5 +1,6 @@
 using System.Linq;
 using Verse;
+using RimMandrake.HugeThings;
 
 namespace RimMandrake.TitanicCreatures
 {
@@ -13,8 +14,33 @@ namespace RimMandrake.TitanicCreatures
     public static class TitanicTierUtility
     {
         private static RM_TitanicTierDef cachedThresholds;
+        private static readonly RM_TitanicTierDef customThresholds = new RM_TitanicTierDef { defName = "RM_TitanicTiers_ModSettings" };
 
+        /// <summary>
+        /// The ladder in force: the player's custom tiers (Mod Settings, giant animals on, custom tiers on, and strictly rising),
+        /// else the shipped RM_TitanicTierDef. Which races carry the wake comp and the Large Pawns rows are decided from this at
+        /// startup, so a change that moves a race across T1 needs a restart (the settings label says so); runtime tiers follow
+        /// it at once.
+        /// </summary>
         public static RM_TitanicTierDef Thresholds
+        {
+            get
+            {
+                if (RM_HugeThingsSettings.TierThresholdsCustomActive
+                    && RM_TitanicKernel.ThresholdsValid(RM_HugeThingsSettings.tierT1MinBodySize, RM_HugeThingsSettings.tierT2MinBodySize,
+                                                        RM_HugeThingsSettings.tierT3MinBodySize))
+                {
+                    customThresholds.t1MinBodySize = RM_HugeThingsSettings.tierT1MinBodySize;
+                    customThresholds.t2MinBodySize = RM_HugeThingsSettings.tierT2MinBodySize;
+                    customThresholds.t3MinBodySize = RM_HugeThingsSettings.tierT3MinBodySize;
+                    return customThresholds;
+                }
+                return ShippedThresholds;
+            }
+        }
+
+        /// <summary>The shipped ladder, Defs/TitanicTierDefs/RM_TitanicTierDef.xml.</summary>
+        public static RM_TitanicTierDef ShippedThresholds
         {
             get
             {

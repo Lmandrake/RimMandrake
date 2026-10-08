@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 using Verse.AI;
+using RimMandrake.HugeThings;
 
 namespace RimMandrake.TitanicCreatures
 {
@@ -18,7 +19,7 @@ namespace RimMandrake.TitanicCreatures
 
         // GenDate.TicksPerHour (2500) * the player-tunable hour count.
         private static float WorkPerSession =>
-            GenDate.TicksPerHour * RM_TitanicCreaturesSettings.corpseSiteWorkHoursPerSession;
+            GenDate.TicksPerHour * RM_HugeThingsSettings.corpseSiteWorkHoursPerSession;
 
         private Building_TitanicCorpseSite Site => job.targetA.Thing as Building_TitanicCorpseSite;
 

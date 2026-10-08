@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Verse;
+using RimMandrake.HugeThings;
 
 namespace RimMandrake.TitanicCreatures
 {
@@ -16,7 +17,7 @@ namespace RimMandrake.TitanicCreatures
     {
         private static void Prefix(Pawn __instance, ref float efficiency)
         {
-            if (!RM_TitanicCreaturesSettings.yieldCurveEnabled) return;
+            if (!RM_HugeThingsSettings.YieldCurveActive) return;
             TitanicTier tier = TitanicTierUtility.GetTier(__instance);
             if (tier != TitanicTier.T1 && tier != TitanicTier.T2)
             {

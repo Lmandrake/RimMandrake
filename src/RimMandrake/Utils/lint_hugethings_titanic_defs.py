@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Offline lint of TitanicCreatures (mandrake.rm.titaniccreatures): the generic mod lint (lint_mod_defs.py) plus data checks it cannot see.
+"""Offline lint of Huge Things (mandrake.rm.hugethings; Titanic Creatures merged into it 2026-10-07): the generic mod lint
+(lint_mod_defs.py) plus the titan-half data checks it cannot see.
 
   tc-ladder     exactly one RM_TitanicTierDef, 0 < t1 < t2 < t3, and the C# field initialisers (the hardcoded fallback used when the
                 XML fails to load) agree with the shipped XML
@@ -10,7 +11,7 @@
                 and its crush damage numbers are the ones the settings text promises (light < heavy)
   tc-defof      every [DefOf] field of the mod names a def its XML defines
 
-    python3 src/RimMandrake/Utils/lint_titaniccreatures_defs.py [--quiet] [--mod-dir D]
+    python3 src/RimMandrake/Utils/lint_hugethings_titanic_defs.py [--quiet] [--mod-dir D]
 """
 import contextlib
 import glob
@@ -25,7 +26,7 @@ sys.path.insert(0, HERE)
 import lint_mod_defs  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-DEFAULT_MOD = os.path.join(REPO, "src", "RimMandrake", "TitanicCreatures")
+DEFAULT_MOD = os.path.join(REPO, "src", "RimMandrake", "HugeThings")
 
 
 def read(p):
@@ -37,7 +38,7 @@ def main(argv):
     mod = argv[argv.index("--mod-dir") + 1] if "--mod-dir" in argv else DEFAULT_MOD
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
-        rc = lint_mod_defs.run("TitanicCreatures", ["--mod-dir", mod])
+        rc = lint_mod_defs.run("HugeThings", ["--mod-dir", mod])
     gl = buf.getvalue().splitlines()
     if rc == 2:
         print("\n".join(gl))
@@ -61,10 +62,17 @@ def main(argv):
         v = [float(tiers[0].findtext(k, "nan")) for k in ("t1MinBodySize", "t2MinBodySize", "t3MinBodySize")]
         if not (0 < v[0] < v[1] < v[2]):
             E("tc-ladder", f"tier floors {v} are not 0 < t1 < t2 < t3")
-        td = read(os.path.join(src, "Tiering", "RM_TitanicTierDef.cs"))
+        td = read(os.path.join(src, "Titanic", "Tiering", "RM_TitanicTierDef.cs"))
         cs = [float(x) for x in re.findall(r"public float t[123]MinBodySize = ([0-9.]+)f;", td)]
         if cs != v:
             E("tc-ladder", f"C# fallback floors {cs} differ from the shipped XML {v} (the XML-missing fallback would tier differently)")
+        st = read(os.path.join(src, "RM_HugeThingsSettings.cs"))
+        ms = [float(x) for x in re.findall(r"public static float tierT[123]MinBodySize = ([0-9.]+)f;", st)]
+        if ms != v:
+            E("tc-ladder", f"Mod Settings custom-tier defaults {ms} differ from the shipped XML {v} (turning custom tiers on would move every titan)")
+        m = re.search(r"public static int giantPlantSmashMinTier = (\d+);", st)
+        if not m or not 1 <= int(m.group(1)) <= 3:
+            E("tc-ladder", f"giantPlantSmashMinTier default {m.group(1) if m else '(missing)'} is not a tier 1..3")
 
     # tc-crush
     seen = {}
@@ -86,6 +94,9 @@ def main(argv):
             E("tc-crush", f"{dn}: minTier {d.findtext('minTier')!r} is not T1/T2/T3")
         if d.findtext("crushable") not in ("true", "false"):
             E("tc-crush", f"{dn}: crushable {d.findtext('crushable')!r} is not true/false")
+    trunk = [d for d in rows if d.findtext("thing") == "RM_HugeTrunkBlocker"]
+    if not trunk or trunk[0].findtext("crushable") != "false":
+        E("tc-crush", "the RM_HugeTrunkBlocker row is missing or crushable (a giant is smashed only through GiantSmash, once per step)")
     chunks = [d for d in rows if d.findtext("category") == "Chunks"]
     if not chunks or chunks[0].findtext("crushable") != "false":
         E("tc-crush", "the Chunks row is missing or crushable (chunks are deliberately protected until individually ruled)")
@@ -105,7 +116,7 @@ def main(argv):
     kernel = read(kp)
     if re.search(r"^\s*using\s+(Verse|RimWorld|UnityEngine|HarmonyLib)", kernel, flags=re.M):
         E("tc-kernel", "the kernel imports Verse/RimWorld/UnityEngine/HarmonyLib (the fuzz build would break)")
-    csproj = read(os.path.join(src, "RM_TitanicCreatures.csproj"))
+    csproj = read(os.path.join(src, "RM_HugeThings.csproj"))
     if 'Compile Remove="SelfTest' not in csproj and 'EnableDefaultCompileItems>false' not in csproj:
         E("tc-kernel", "the csproj does not keep Source/SelfTest out of the mod assembly (a second Main and the fuzz would compile into the mod)")
     m = re.search(r"public const int TicksPerDay = (\d+);", kernel)
@@ -118,7 +129,7 @@ def main(argv):
 
     # tc-defof
     defs_text = "\n".join(read(p) for p in glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True))
-    for f in glob.glob(os.path.join(src, "*DefOf.cs")):
+    for f in glob.glob(os.path.join(src, "**", "*DefOf.cs"), recursive=True):
         for dn in re.findall(r"public static \w+ (RM_\w+);", read(f)):
             n["defof"] += 1
             if f"<defName>{dn}</defName>" not in defs_text:
@@ -133,7 +144,7 @@ def main(argv):
             print(l)
     for l in errs:
         print(l)
-    print(f"titaniccreatures lint (data): {n['tiers']} tier def, {n['rules']} crush rows, {n['keys']} keys, {n['defof']} DefOf fields, {len(errs)} ERROR, {len(warns)} WARN")
+    print(f"hugethings titan lint (data): {n['tiers']} tier def, {n['rules']} crush rows, {n['keys']} keys, {n['defof']} DefOf fields, {len(errs)} ERROR, {len(warns)} WARN")
     return 1 if errs else 0
 
 

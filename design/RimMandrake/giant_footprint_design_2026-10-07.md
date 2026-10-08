@@ -16,7 +16,7 @@ Item: `HUGE_THINGS_FOOTPRINT_1`. Mod: `src/RimMandrake/HugeThings` (`mandrake.rm
 - **Cover, decision taken by question card 2026-10-07 20:38 PDT:** trunk cells give partial cover, and shots that hit
   them damage the giant itself, once per projectile / blast.
 - Then, typed: *"This might be an extractable mod to handle "huge plants" and "huge animals" together?"* So this
-  is its own standalone free mod, not a biome kit: The Rot and TitanicCreatures opt in.
+  is its own standalone free mod, not a biome kit: The Rot opts in, and its titan half (Titanic Creatures, merged in 2026-10-07) opts every tiered race in.
 
 ## The problem
 
@@ -84,7 +84,8 @@ Generated, not hand-tuned: see the header of `TheRot/Patches/RotGiants_HugeFootp
 
 ## TitanicCreatures
 
-TitanicCreatures now depends on Huge Things and opts every tiered race in (`HugeThingsApi.OptInPawn`, called from
+Titanic Creatures merged into Huge Things on 2026-10-07 (owner: "Merge into one mod called Huge Things"); its code is
+the titan half under `src/RimMandrake/HugeThings/Source/Titanic/`, and it opts every tiered race in (`HugeThingsApi.OptInPawn`, called from
 its existing startup pass), so a titan can be clicked anywhere on its drawn body. Nothing moved out of it: its
 footprint is Large Pawns' (via `LargePawnsBridge`, which is driven by Titanic's own tier ladder), and its wake,
 roof avoidance, yield curve and corpse site are titan behaviour, not "huge" machinery. TitanicCreatures is not in
@@ -97,7 +98,7 @@ roof avoidance, yield curve and corpse site are titan behaviour, not "huge" mach
 
 ## Load order
 
-After Harmony and Large Pawns, before `mandrake.rm.titaniccreatures` and `mandrake.rm.biomes`. Added to
+After Harmony and Large Pawns, before `mandrake.rm.biomes` (Titanic Creatures has since merged into this mod). Added to
 `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` directly before `mandrake.rm.biomes`.
 
 ## Open

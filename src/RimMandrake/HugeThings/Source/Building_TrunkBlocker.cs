@@ -38,10 +38,18 @@ namespace RimMandrake.HugeThings
         public override void PreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
         {
             absorbed = true;   // the cell itself never takes damage (it has no hit points to take it with)
-            Plant p = owner;
-            if (p == null || p.Destroyed || !p.Spawned || dinfo.Amount <= 0f) return;
-            if (!Dedup.ShouldForward(Find.TickManager.TicksGame, SourceKey(dinfo), p.thingIDNumber)) return;
+            if (!RM_HugeThingsSettings.PlantTrunkDamageActive) return;   // Mod Settings: cover only, the plant is unharmed
+            ForwardToPlant(owner, dinfo);
+        }
+
+        /// <summary>The one damage route into a giant plant from its trunk or from a titan smashing it: once per (tick, source,
+        /// plant), so a beam over several trunk cells, or one titan step brushing several, is one hit. True if it was dealt.</summary>
+        public static bool ForwardToPlant(Plant p, DamageInfo dinfo)
+        {
+            if (p == null || p.Destroyed || !p.Spawned || dinfo.Amount <= 0f) return false;
+            if (!Dedup.ShouldForward(Find.TickManager.TicksGame, SourceKey(dinfo), p.thingIDNumber)) return false;
             p.TakeDamage(dinfo);
+            return true;
         }
 
         /// <summary>A hit's source: instigator, weapon and damage def. Two hits in one tick from the same source on the same

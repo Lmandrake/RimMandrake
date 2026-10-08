@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Verse;
+using RimMandrake.HugeThings;
 
 namespace RimMandrake.TitanicCreatures
 {
@@ -49,6 +50,8 @@ namespace RimMandrake.TitanicCreatures
 
         private static void TryReconcile()
         {
+            // Mod Settings (restart): giant animals off, or the Large Pawns footprint off, leaves Large Pawns' own ladder untouched.
+            if (!RM_HugeThingsSettings.LargePawnsFootprintActive) return;
             try
             {
                 Type mainType = GenTypes.GetTypeInAnyAssembly(LargePawnsMainTypeName);

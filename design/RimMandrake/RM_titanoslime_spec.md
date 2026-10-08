@@ -45,7 +45,7 @@ The slime's own mass leaks away when it starves, when it leaves slime terrain, a
 | label | *titanoslime* — stage labels in §3 |
 | campaign wiring | `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml` `wildAnimals` + `design/Jawa/worldbuilding/biomes/rosters/the_slime.json` (§6) |
 | DLC | none. ⛔ Do NOT reuse vanilla `CompDevourer`/`ConsumeLeap_Devourer`/`DevourerDigest`/`DevourerDigesting`: the class is in the core assembly but every def it references (`JobDefOf.DevourerDigest`, `AnimationDefOf.DevourerDigesting`, `AbilityDefOf.ConsumeLeap_Devourer`, `PawnFlyer_ConsumeLeap`) is `Defs/Anomaly/` content — MEASURED. The mod is base-game and stays so. §4 is the rewrite. |
-| ecosystem | rides `mandrake.rm.titaniccreatures` (tier/wake/corpse-site) and `neku.largepawns` (footprint) **when present**, by construction: both key off `pawn.BodySize` at runtime (`TitanicTierUtility.GetTier` reads `pawn.BodySize`; Large Pawns' `GetSize` reads `pawn.BodySize` once `bodySizeFactor > 1`, per `research/large_pawns_decompile_2026-09-09.md` §resolution-order). Absent either, it degrades to a single-cell pawn with a big sprite. No reference to either assembly. |
+| ecosystem | rides `mandrake.rm.hugethings` (its titan half, formerly `mandrake.rm.titaniccreatures`: tier/wake/corpse-site) and `neku.largepawns` (footprint) **when present**, by construction: both key off `pawn.BodySize` at runtime (`TitanicTierUtility.GetTier` reads `pawn.BodySize`; Large Pawns' `GetSize` reads `pawn.BodySize` once `bodySizeFactor > 1`, per `research/large_pawns_decompile_2026-09-09.md` §resolution-order). Absent either, it degrades to a single-cell pawn with a big sprite. No reference to either assembly. |
 
 **Why it belongs in the biome sheet's world.** `the_slime.md` §1 names the body's imperative —
 *"forever seeking to ingest, analyze, recombine, store, and multiply"* — and §4 evicted the
@@ -406,7 +406,7 @@ rostered; no incident spawns it elsewhere in v1.
 Per the spike doctrine (prove on one def, measure, report). Everything below is inside
 `src/RimMandrake/GelatinousSlime/`.
 
-| # | piece | size | gate (quicktest, minimal list + GelatinousSlime + TitanicCreatures + Large Pawns + **all five DLC**) |
+| # | piece | size | gate (quicktest, minimal list + GelatinousSlime + HugeThings + Large Pawns + **all five DLC**) |
 |---|---|---|---|
 | 1 | XML: race, kind ×5 stages, 5 LifeStageDefs, BodyDef, ToolCapacityDef, ManeuverDef, two biome `wildAnimals` lines, roster JSON row | S | `measure count ThingDef` shows `RM_Titanoslime`; `jawa/spawn_pawn` places one; `jawa/list_things` reports BodySize 6 |
 | 2 | `RM_CompEngulfer` growth half (lock stage from `absorbedMass`, records poll, starve/dry decay, stage messages) | M | dev-set `absorbedMass` 12 via a debug gizmo → BodySize 16, drawSize 6, Titanic tier T2, Large Pawns 3×3 (wait 60 ticks — its cache); save, reload, all four unchanged |
@@ -438,7 +438,7 @@ sound picks, and whether GelatinousSlime is on the campaign's full mod list righ
 (FROZEN) · `biomes/rosters/the_slime.json` · `design/RimMandrake/RM_gelatinous_slime_mod.md` ·
 `design/Jawa/worldbuilding/sarlacc_spec.md` · `design/Jawa/worldbuilding/creature_size_model.md` ·
 `src/RimMandrake/GelatinousSlime/` (About, `Gelatid.xml`, `SlimeBiome.cs`, `SlimeMod.cs`) ·
-`src/RimMandrake/TitanicCreatures/` (About, `RM_TitanicTierDef.xml`, `TitanicTierUtility.cs`,
+`src/RimMandrake/HugeThings/` (titan half under `Source/Titanic/`; About, `RM_TitanicTierDef.xml`, `TitanicTierUtility.cs`,
 `RM_TitanicExtension.cs`, `Patch_CorpseSiteConversion.cs`) · `research/large_pawns_decompile_2026-09-09.md`
 · `src/RimMandrake/CreatureBehaviors/Source/RM_CompGrappler.cs`, `RM_CompAquaticAmbusher.cs` ·
 `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Slime.xml` · decompile (RimSage): `CompDevourer.cs`,

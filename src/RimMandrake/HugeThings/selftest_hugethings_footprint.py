@@ -300,7 +300,7 @@ def root_only_giants_are_made_impassable_and_stay_cuttable():
     root_only = sorted(dn for dn, (_s, vs) in patch_table().items() if vs and all(len(v[2]) == 0 for v in vs.values()))
     assert root_only == ["AB_GiantAgarilux"], root_only
     core = open(os.path.join(HERE, "Source", "HugeThingsCore.cs"), encoding="utf-8").read()
-    assert "RootRule.RootImpassable(RM_HugeThingsSettings.plantTrunkEnabled, ext.blockingSupported, counts)" in core
+    assert "RootRule.RootImpassable(RM_HugeThingsSettings.PlantTrunkActive, ext.blockingSupported, counts)" in core
     assert "def.passability = Traversability.Impassable;" in core
     assert "AB_GiantAgarilux" not in core and "GiantAgarilux" not in core, "a hand-tuned exception crept in"
     for needle in ("PathEndMode.Touch", "WorkGiver_PlantsCut", "WorkGiver_GrowerHarvest", "TouchPathEndModeUtility.AddAllowedAdjacentRegions"):

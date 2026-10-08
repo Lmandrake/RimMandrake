@@ -154,5 +154,113 @@
   "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
   "old": "            for (int i = 0; i < contactCountsPerVariant.Count; i++) if (contactCountsPerVariant[i] != 0) return false;\n            return true;",
   "new": "            for (int i = 0; i < contactCountsPerVariant.Count; i++) if (contactCountsPerVariant[i] == 0) return true;\n            return false;"
+ },
+ {
+  "name": "smash ignores the smash tier",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "&& tier >= minTier;\n",
+  "new": "&& true;\n"
+ },
+ {
+  "name": "smash tier exclusive (T3 never smashes by default)",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "tier > 0 && minTier >= 1 && minTier <= 3 && tier >= minTier;",
+  "new": "tier > 0 && minTier >= 1 && minTier <= 3 && tier > minTier;"
+ },
+ {
+  "name": "smash ignores its toggle",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "return enabled && tier > 0",
+  "new": "return tier > 0"
+ },
+ {
+  "name": "smash tier setting unchecked",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "tier > 0 && minTier >= 1 && minTier <= 3 && tier",
+  "new": "tier > 0 && tier"
+ },
+ {
+  "name": "no reach ring on the west side",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "int ax = x0 - Reach,",
+  "new": "int ax = x0,"
+ },
+ {
+  "name": "no reach ring on the north side",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "bz = z1 + Reach;",
+  "new": "bz = z1;"
+ },
+ {
+  "name": "reach of two cells",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "public const int Reach = 1;",
+  "new": "public const int Reach = 2;"
+ },
+ {
+  "name": "a giant smashed once per solid cell",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "if (seen.Add(s.Owner)) owners.Add(s.Owner);",
+  "new": "owners.Add(s.Owner);"
+ },
+ {
+  "name": "smash order follows the map's thing order",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "            owners.Sort();\n",
+  "new": ""
+ },
+ {
+  "name": "smash damage ignores the multiplier",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "Math.Max(0f, heavyBlow * multiplier)",
+  "new": "Math.Max(0f, heavyBlow)"
+ },
+ {
+  "name": "smash damage may go negative",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "Math.Max(0f, heavyBlow * multiplier)",
+  "new": "heavyBlow * multiplier"
+ },
+ {
+  "name": "default smash tier is T2",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "public const int DefaultMinTier = 3;",
+  "new": "public const int DefaultMinTier = 2;"
+ },
+ {
+  "name": "plant behaviours ignore the giant-plants master",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "public static bool Plant(bool giantPlants, bool feature) => giantPlants && feature;",
+  "new": "public static bool Plant(bool giantPlants, bool feature) => feature;"
+ },
+ {
+  "name": "animal behaviours ignore the giant-animals master",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "public static bool Animal(bool giantAnimals, bool feature) => giantAnimals && feature;",
+  "new": "public static bool Animal(bool giantAnimals, bool feature) => feature;"
+ },
+ {
+  "name": "wake options run with the wake off",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "public static bool Wake(bool giantAnimals, bool wake, bool feature) => giantAnimals && wake && feature;",
+  "new": "public static bool Wake(bool giantAnimals, bool wake, bool feature) => giantAnimals && feature;"
+ },
+ {
+  "name": "smashing runs with giant plants off",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "=> giantPlants && giantAnimals && wake && smash;",
+  "new": "=> giantAnimals && wake && smash;"
+ },
+ {
+  "name": "a giant stays off the crush table with giant plants off",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "public static bool IsGiantForWake(bool giantPlants, bool isGiantPlantOrTrunk) => giantPlants && isGiantPlantOrTrunk;",
+  "new": "public static bool IsGiantForWake(bool giantPlants, bool isGiantPlantOrTrunk) => isGiantPlantOrTrunk;"
+ },
+ {
+  "name": "the crush table touches giants",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeTitanKernel.cs",
+  "old": "public static bool WakeMayCrush(bool isGiantPlantOrTrunk) => !isGiantPlantOrTrunk;",
+  "new": "public static bool WakeMayCrush(bool isGiantPlantOrTrunk) => true;"
  }
 ]

@@ -707,15 +707,6 @@
     "status": "RED",
     "ts": 1791288379.6864936
   },
-  "TitanicCreatures": {
-    "hash": "9dbeaf304238922982eb98da82a18a91594c484ac96d2bf8dc52d19a6ff30310",
-    "minor": null,
-    "owner_review": null,
-    "refused": null,
-    "run_id": "TitanicCreatures@1791400114",
-    "status": "RED",
-    "ts": 1791400114.5684628
-  },
   "TrophyCraft": {
     "hash": "1c4eaf2f2205e2689205fb4d87d107c21f5bab42e12800a9b257f66581a22ebb",
     "minor": null,

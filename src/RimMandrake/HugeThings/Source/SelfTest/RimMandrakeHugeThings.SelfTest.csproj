@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    HugeThings offline fuzz, Approach B (same shape as BlueDesert/GelatinousSlime). Plain net8.0, zero RimWorld/Unity
+    HugeThings offline fuzz (plants, titans merged from Titanic Creatures 2026-10-07, and the seam), Approach B (same shape as BlueDesert/GelatinousSlime). Plain net8.0, zero RimWorld/Unity
     references: ../Kernel/*.cs are the PRODUCTION files the mod compiles, pulled in directly. A `using Verse;` landing
     in one of them breaks this build - that is the guard rail working.
     Run (builds on Windows via winbuild staging, then runs the exe):
@@ -24,7 +24,11 @@
   <ItemGroup>
     <Compile Include="..\Kernel\RM_HugeFootprintKernel.cs" />
     <Compile Include="..\Kernel\RM_HugeClaimsKernel.cs" />
+    <Compile Include="..\Kernel\RM_HugeTitanKernel.cs" />
+    <Compile Include="..\Kernel\RM_TitanicKernel.cs" />
     <Compile Include="HugeThingsFuzz.cs" />
+    <Compile Include="HugeTitanFuzz.cs" />
+    <Compile Include="TitanicFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

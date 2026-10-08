@@ -6,27 +6,41 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Huge plants and huge animals that behave like their size.
+  <description>Huge plants and huge animals that behave like their size. Mass has consequences.
 
 The engine gives every plant and every pawn one cell, however big it is drawn. A
 mushroom twenty cells across can only be clicked on the cell it grows from,
 pawns walk straight through its stem, and walls get built inside it. A beast
-drawn the size of a house can only be selected by clicking near its middle.
+the size of a house walks through a doorway, hides behind a sandbag and gets
+penned like a chicken.
 
 Huge Things fixes that for anything that opts in:
 
-- A huge PLANT gets a solid trunk. Its stem blocks a small patch of cells
-  (sized per species, and grown into as the plant grows), so pawns walk around
-  it and nothing can be built inside it. You still walk under its cap, the way
-  you walk under a tree. Clicking anywhere on the trunk selects the plant.
-  Cutting, harvesting, burning and save/load all work as usual; when the plant
-  dies or is cut down, the trunk goes with it.
-- A huge ANIMAL (or any pawn) gets a selection hitbox the size of its drawn
-  body, so clicking anywhere on it selects it.
+- A huge PLANT gets a solid trunk. The cells where its art touches the ground
+  are solid (measured per species, and grown into as the plant grows), so pawns
+  walk around it and nothing can be built inside it. You still walk under its
+  cap. Clicking anywhere on its picture selects it. Trunks give partial cover,
+  and shots into them hurt the plant.
+- A huge ANIMAL gets a selection hitbox the size of its drawn body.
+- A TITAN (any creature of body size 4 or more, or one a mod opts in) gets a
+  size tier. Heavy, colossal and titanic creatures crush crates and plants,
+  breach walls, hole thin roofs and leave rubble as they walk, struggle under
+  overhead mountain, butcher for a curved yield, and the largest leave a corpse
+  that becomes a harvest site worked over days.
+- The biggest titans smash through giant plants, damaging them as they push
+  past; smaller titans go around the trunks like walls.
 
-This is the engine only. Nothing is huge until a mod opts it in, by giving a
-plant the RM_HugePlantExtension or a pawn's race the RM_HugePawnExtension
-modExtension. Every mechanic has a Mod Settings toggle.</description>
+With Large Pawns (neku.largepawns) loaded, titans also occupy 2x2 to 4x4
+cells, using this mod's tiers; without it they stay one cell and everything
+else still works.
+
+Mod Settings: one master switch for giant plants and one for giant animals,
+each with every detailed behaviour and its tuning beneath. All off is vanilla.
+
+This is the engine only. A plant opts in with the RM_HugePlantExtension, a
+race with the RM_HugePawnExtension or RM_TitanicExtension modExtension (or
+simply a large enough body size). This mod replaces "RimMandrake: Titanic
+Creatures" (mandrake.rm.titaniccreatures), which is now part of it.</description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>
@@ -37,11 +51,16 @@ modExtension. Every mechanic has a Mod Settings toggle.</description>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>brrainz.harmony</li>
-    <!-- Its CustomRectForSelector postfix runs at Priority.Last so ours wins over Large Pawns' square when both apply. -->
+    <!-- Its CustomRectForSelector postfix runs at Priority.Last so ours wins over Large Pawns' square when both apply; and the
+         titan half's reconciliation (LargePawnsBridge.cs, reflection only, never a dependency) rewrites Large Pawns' ladder,
+         which needs its table populated first. -->
     <li>neku.largepawns</li>
   </loadAfter>
   <loadBefore>
-    <li>mandrake.rm.titaniccreatures</li>
     <li>mandrake.rm.biomes</li>
   </loadBefore>
+  <incompatibleWith>
+    <!-- merged into this mod 2026-10-07: running both would patch every titan twice -->
+    <li>mandrake.rm.titaniccreatures</li>
+  </incompatibleWith>
 </ModMetaData>

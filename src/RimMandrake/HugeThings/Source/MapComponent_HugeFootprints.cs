@@ -213,6 +213,7 @@ namespace RimMandrake.HugeThings
         private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags)
         {
             Dictionary<long, int> counts = new Dictionary<long, int>();
+            if (!RM_HugeThingsSettings.PlantItemPushActive) return new Dictionary<long, List<long>>();   // Mod Settings: cell stays open
             int now = Find.TickManager.TicksGame;
             foreach (long k in mine)
             {
@@ -383,6 +384,34 @@ namespace RimMandrake.HugeThings
             List<Plant> list = new List<Plant>(outPlants);
             list.Sort((a, b) => a.thingIDNumber.CompareTo(b.thingIDNumber));
             return list;
+        }
+
+        /// <summary>
+        /// Giant plants' solid cells in an area, for a titan smashing through (HugeTitan kernel, GiantSmash.Owners): every realized
+        /// trunk cell (owned by the plant its hits forward to) and every giant's own cell. Walks the area's cells, never the map.
+        /// </summary>
+        public List<SolidCell> SolidCellsIn(CellRect area, Dictionary<int, Plant> plants)
+        {
+            List<SolidCell> cells = new List<SolidCell>();
+            foreach (IntVec3 c in area)
+            {
+                if (!c.InBounds(map)) continue;
+                if (realized.TryGetValue(Key(c), out Building_TrunkBlocker b) && b.owner != null && !b.owner.Destroyed && b.owner.Spawned)
+                {
+                    cells.Add(new SolidCell(c.x, c.z, b.owner.thingIDNumber));
+                    plants[b.owner.thingIDNumber] = b.owner;
+                }
+                List<Thing> things = c.GetThingList(map);
+                for (int i = 0; i < things.Count; i++)
+                {
+                    if (things[i] is Plant p && !p.Destroyed && comps.ContainsKey(p.thingIDNumber))
+                    {
+                        cells.Add(new SolidCell(c.x, c.z, p.thingIDNumber));
+                        plants[p.thingIDNumber] = p;
+                    }
+                }
+            }
+            return cells;
         }
 
         /// <summary>Called when Mod Settings change: every plant re-takes its footprint over the next ticks.</summary>

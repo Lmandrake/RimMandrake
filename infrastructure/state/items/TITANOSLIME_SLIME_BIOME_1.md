@@ -229,7 +229,7 @@ lifeStage graphic); that count is expected and is not a defect.
 1. `python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod GelatinousSlime`
    (read the plan), then `--apply`. The DLL cannot be written while the game
    runs, so this must happen with RimWorld closed.
-2. Build the test list: minimal + `GelatinousSlime` + `TitanicCreatures` +
+2. Build the test list: minimal + `GelatinousSlime` + `HugeThings` (Titanic Creatures merged in) +
    Large Pawns + **all five DLC** (`modset_builder.py`; DLC is mandatory on every
    tier by the 2026-09-19 ruling). A quicktest map is ~90 s.
 3. Run spec §8's seven gates in order. The dev gizmos needed by gates 2 and 4 are
@@ -269,7 +269,7 @@ assembly. A deployed-but-inactive mod is inert.
 
 ⇒ The remaining shutdown-window work is **steps 2 and 3 only**:
 
-2. Build a list of minimal + `GelatinousSlime` + `TitanicCreatures` + Large Pawns +
+2. Build a list of minimal + `GelatinousSlime` + `HugeThings` (Titanic Creatures merged in) + Large Pawns +
    **all five DLC** (a standing ruling: every test list carries all five expansions),
    then quicktest (~90 s).
 3. Run the spec's §8 seven gates. The dev gizmos *DEV: +6/-6 absorbed mass* and

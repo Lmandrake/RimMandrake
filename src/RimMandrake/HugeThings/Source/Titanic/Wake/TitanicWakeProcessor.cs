@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
+using RimMandrake.HugeThings;
 
 namespace RimMandrake.TitanicCreatures
 {
@@ -23,7 +24,7 @@ namespace RimMandrake.TitanicCreatures
         public static void ProcessFootprint(Pawn titan, TitanicTier tier)
         {
             // MOD_OPTIONS_RETROFIT_1: master switch for the whole wake.
-            if (!RM_TitanicCreaturesSettings.wakeEnabled) return;
+            if (!RM_HugeThingsSettings.WakeActive) return;
 
             Map map = titan.Map;
             CellRect rect = titan.OccupiedRect();
@@ -35,6 +36,30 @@ namespace RimMandrake.TitanicCreatures
                 }
                 ProcessCell(c, map, tier, titan);
             }
+            SmashGiantPlants(rect, map, tier, titan);
+        }
+
+        /// <summary>
+        /// Owner ruling 2026-10-07 (decision taken by question card): the biggest titans smash through giant plants and damage
+        /// them; smaller titans path around giant trunks as walls. A trunk is impassable, so a smasher meets it beside its
+        /// footprint, never inside it: every giant with a solid cell in the footprint or the ring around it takes one heavy crush
+        /// blow per step, through the plant's own damage route (Building_TrunkBlocker.ForwardToPlant, deduplicated per tick,
+        /// titan and plant), until it falls and its trunk goes with it. Which tier smashes is a Mod Setting (T3 by default).
+        /// </summary>
+        private static void SmashGiantPlants(CellRect rect, Map map, TitanicTier tier, Pawn titan)
+        {
+            int minTier = RM_HugeThingsSettings.giantPlantSmashMinTier;
+            bool active = RM_HugeThingsSettings.GiantPlantSmashActive;
+            if (!GiantSmash.Smashes((int)tier, minTier, active)) return;
+            MapComponent_HugeFootprints mc = map.GetComponent<MapComponent_HugeFootprints>();
+            if (mc == null || mc.Count == 0) return;
+            Dictionary<int, Plant> plants = new Dictionary<int, Plant>();
+            List<SolidCell> solid = mc.SolidCellsIn(rect.ExpandedBy(GiantSmash.Reach), plants);
+            float damage = GiantSmash.Damage(RM_TitanicKernel.CrushDamageHeavy, RM_HugeThingsSettings.wakeCrushDamageMultiplier);
+            foreach (int id in GiantSmash.Owners((int)tier, minTier, active, rect.minX, rect.minZ, rect.maxX, rect.maxZ, solid))
+            {
+                Building_TrunkBlocker.ForwardToPlant(plants[id], new DamageInfo(DamageDefOf.Crush, damage, instigator: titan));
+            }
         }
 
         private static void ProcessCell(IntVec3 c, Map map, TitanicTier tier, Pawn titan)
@@ -42,7 +67,7 @@ namespace RimMandrake.TitanicCreatures
             ProcessRoof(c, map, tier);
             ProcessCrushables(c, map, tier, titan);
 
-            if (RM_TitanicKernel.LeavesFilth((int)tier, Rand.Chance(RM_TitanicCreaturesSettings.wakeFilthTrailChance)))
+            if (RM_TitanicKernel.LeavesFilth((int)tier, Rand.Chance(RM_HugeThingsSettings.wakeFilthTrailChance)))
             {
                 FilthMaker.TryMakeFilth(c, map, ThingDefOf.Filth_RubbleRock);
             }
@@ -64,6 +89,7 @@ namespace RimMandrake.TitanicCreatures
         /// </summary>
         private static void ProcessRoof(IntVec3 c, Map map, TitanicTier tier)
         {
+            if (!RM_HugeThingsSettings.RoofHolingActive) return;
             RoofDef roof = c.GetRoof(map);
             if (RM_TitanicKernel.HolesRoof((int)tier, roof != null, roof != null && roof.isThickRoof))
             {
@@ -92,6 +118,13 @@ namespace RimMandrake.TitanicCreatures
                     // out of scope for the wake.
                     continue;
                 }
+                // A giant plant and its trunk are never on the crush table while giant plants are on: smashers reach them through
+                // SmashGiantPlants (one blow per step), and smaller titans leave them standing.
+                bool giant = t is Building_TrunkBlocker || (t is Plant && t.TryGetComp<CompHugeFootprint>() != null);
+                if (!GiantSmash.WakeMayCrush(HugeGates.IsGiantForWake(RM_HugeThingsSettings.giantPlantsEnabled, giant)))
+                {
+                    continue;
+                }
                 if (!CrushTableUtility.IsCrushableAtTier(t, tier))
                 {
                     continue;
@@ -103,7 +136,7 @@ namespace RimMandrake.TitanicCreatures
                     continue;
                 }
 
-                float damage = RM_TitanicKernel.CrushDamage((int)tier, RM_TitanicCreaturesSettings.wakeCrushDamageMultiplier);
+                float damage = RM_TitanicKernel.CrushDamage((int)tier, RM_HugeThingsSettings.wakeCrushDamageMultiplier);
                 t.TakeDamage(new DamageInfo(DamageDefOf.Crush, damage, instigator: titan));
             }
         }

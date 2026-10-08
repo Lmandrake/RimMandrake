@@ -53,7 +53,7 @@ Settings screen:**
 RimMandrake: Aftermath, CreatureBehaviors, EnvironmentalHazards, FlowWorks,
 Graffiti, Greentide, Inhabited, LoreStages, ManyWaters, MovingDunes, Ninefold,
 Pits, ProximityHatch, Pyrelands, RaidRedesigner, RimProperty, RustChrome,
-SacredGraffiti, ShipVermin, StructureInjections, TitanicCreatures, Visibility,
+SacredGraffiti, ShipVermin, StructureInjections, TitanicCreatures (now HugeThings), Visibility,
 WeatherSuite.
 RimStarWars: Armoury, BrainWorms, DesertVehicleReskin, Droidworks,
 JawaIonWeapons, JawaRules, SWBestiary (two settings entries, JawaIkee +

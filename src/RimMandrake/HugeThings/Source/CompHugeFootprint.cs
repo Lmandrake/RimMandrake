@@ -99,8 +99,8 @@ namespace RimMandrake.HugeThings
                 BlockScale = RM_HugeThingsSettings.plantTrunkScale,
                 Flip = flip,
                 Measured = measured,
-                Blocking = RM_HugeThingsSettings.plantTrunkEnabled && ext.blockingSupported,
-                Selecting = RM_HugeThingsSettings.plantSelectionEnabled,
+                Blocking = RM_HugeThingsSettings.PlantTrunkActive && ext.blockingSupported,
+                Selecting = RM_HugeThingsSettings.PlantSelectionActive,
                 OldEnough = p.Growth >= ext.minGrowthToBlock,
             };
         }
@@ -149,7 +149,7 @@ namespace RimMandrake.HugeThings
         public CellRect? SelectRect()
         {
             Plant p = Plant;
-            if (p == null || Ext == null || !p.Spawned || !RM_HugeThingsSettings.plantSelectionEnabled) return null;
+            if (p == null || Ext == null || !p.Spawned || !RM_HugeThingsSettings.PlantSelectionActive) return null;
             FootprintSignature sig = Signature(out HugeMask m);
             return selectCache.Get(sig, s =>
             {
