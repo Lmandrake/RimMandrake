@@ -1,0 +1,1 @@
+A git fetch from a 10G-capped seat window can OOM-kill the window (shmem from the 5.5 GiB pack). Run it outside the seat scope: systemd-run --user --scope --quiet -p MemoryMax=20G git fetch origin main — worked 2026-10-07 19:3x, window survived.
