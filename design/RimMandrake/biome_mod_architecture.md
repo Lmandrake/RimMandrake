@@ -249,6 +249,8 @@ Whether their folders sit in the live Mods directory is UNMEASURED here.
   `RSW_Diggerpede` — belong in Utinni. The 2 `sarg.alphaanimals` and 1
   `oskarpotocki.vfe.insectoid2` rows are inline-eligible, which is Q9's real scope.
   `RUT_Sytheclaw` is a campaign original per §7 Q10, not Star Wars.
+  (2026-10-08, owner card: the diggerpede is renamed gristle and ported to `RM_Gristle`, cast inline
+  in `RM_Greentide` — it was never canon; `RSW_Diggerpede` survives only for the frozen `RUT_Greentide`.)
   ✅ **The Utinni PATCH half of step 2 — the ANIMALS — is BUILT** (2026-09-22):
   `UtinniPatches/Patches/WildAnimals_Greentide.xml`, all 27 rows, sum 9.318, verified
   row-for-row and weight-for-weight against the frozen `RUT_` def. Per the owner's

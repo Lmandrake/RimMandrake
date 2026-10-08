@@ -146,5 +146,14 @@
     "abyss_gekkrith_v1"
    ]
   }
+ },
+ "RM_Greentide": {
+  "RSW_Diggerpede": {
+   "new_label": "gristle",
+   "new_defName": "RM_Gristle",
+   "jobs": [
+    "regen_gt_gristle_v2"
+   ]
+  }
  }
 }

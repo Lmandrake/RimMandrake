@@ -936,7 +936,7 @@
  {
   "id": "regen_gt_gristle_v2",
   "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
-  "target_def": "RSW_Diggerpede",
+  "target_def": "RM_Gristle",
   "prompt": "Owner's note, verbatim, overrides everything below: \"Rename the Gristle, make it realistic\" RimWorld creature sprite, the gristle (no canon-library entry exists; invented creature): a long, flat-plated burrower the length of a man, every segment carrying a pair of short digging legs, the head armoured in a heavy shovel-edged shield with hooked mandibles, a body of tough rubbery muscle over a chitin frame. Make it REALISTIC: believable arthropod anatomy, segmented plates, real chitin texture. One animal, whole body, centred.",
   "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background.",
   "canvas_w": 256,
@@ -955,7 +955,7 @@
   "canon_reference": [
    "/mnt/d/Luke/dev/_artstore/8d/8dd840148f9ac32d719335e21571ea299cc99ce83b1f58b8a97bbdac2e7ffb0f.png"
   ],
-  "target_texpath": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede"
+  "target_texpath": "Things/Pawn/Animal/RM_Gristle/RM_Gristle"
  },
  {
   "id": "regen_gt_saluksis_v2",

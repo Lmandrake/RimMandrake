@@ -583,7 +583,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `RSW_Creature_Mantrap` | mantrap | the_cracked_lands | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
 | `RSW_CrestedDragon` | crested dragon | the_miasma | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
 | `RSW_CrystalFairyMole` | crystal fairy mole | the_scarlands | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
-| `RSW_Diggerpede` | diggerpede | the_greentide | RimMandrake: SW — Bestiary | NONCANON | donor art | gristle (owner, Greentide sheet 2026-10-08) |
+| `RM_Gristle` (was `RSW_Diggerpede`) | gristle | the_greentide | RimMandrake: Greentide | NONCANON | donor art (regen queued) | gristle (owner, Greentide sheet 2026-10-08; RM_ port by card 2026-10-07) |
 | `RSW_FoundryBeetle` | foundry beetle | the_scarlands | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
 | `RSW_Gembug` | gembug | the_lantern_deeps | RimMandrake: SW — Bestiary | NONCANON |  done:3 |  |
 | `RSW_ImperialToad` | imperial toad | arid_shrubland | RimMandrake: SW — Bestiary | NONCANON | donor art |  |

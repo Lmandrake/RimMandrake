@@ -184,14 +184,14 @@
       "band": "floor-vermin",
       "commonality": 0.4,
       "def": "VFEI2_Swarmling",
-      "law": "§4 filth-and-sprouts carpet is the strategy working; comm trimmed 1.0→0.4 (design choice); Greentide sheet 2026-10-08 (owner): renamed saluksis (Greentide_Rename.xml), description rewritten, more-alien art regen queued",
+      "law": "§4 filth-and-sprouts carpet is the strategy working; comm trimmed 1.0→0.4 (design choice); Greentide sheet 2026-10-08 (owner): renamed saluksis (Greentide_Rename.xml), description rewritten, more-alien art regen queued; ported to RM_Gristle (owner card 2026-10-07 22:20 PDT), cast inline in RM_Greentide.xml at 0.4, removed from WildAnimals_Greentide.xml; RSW_Diggerpede kept only for the frozen RUT_Greentide",
       "label": "saluksis"
     },
     {
       "action": "keep",
       "band": "floor-predator",
       "commonality": 0.4,
-      "def": "RSW_Diggerpede",
+      "def": "RM_Gristle",
       "law": "§4 no pursuit ban here; root-tangle predator; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_Diggerpede to the already-ported, already-wired RSW_ name (RUT_Greentide at 0.4); Greentide sheet 2026-10-08 (owner): \"Rename the Gristle, make it realistic\" — renamed gristle, description rewritten in RSW_BiomesTeamPort_Races.xml, art regen queued",
       "label": "gristle"
     },

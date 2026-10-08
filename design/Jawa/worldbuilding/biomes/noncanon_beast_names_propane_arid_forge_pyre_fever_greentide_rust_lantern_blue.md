@@ -200,7 +200,7 @@ one the two drafts join.
 
 | defName | current label | the creature | drafted label | alternate | why |
 |---|---|---|---|---|---|
-| `RSW_Diggerpede` | diggerpede | bs 1.5 subterranean predator that burrows "faster than most can run", live-bearing; floor-predator 0.4 — the no-pursuit ban does not apply here | **thandrel** | wemmock | *thand-* the ground giving way, *-rel* the register's tail (skerrel, mourvel). "Digger" + "-pede" is English glued to Latin. |
+| `RSW_Diggerpede` → `RM_Gristle` (owner: **gristle**, 2026-10-08; supersedes the thandrel draft) | diggerpede | bs 1.5 subterranean predator that burrows "faster than most can run", live-bearing; floor-predator 0.4 — the no-pursuit ban does not apply here | **thandrel** | wemmock | *thand-* the ground giving way, *-rel* the register's tail (skerrel, mourvel). "Digger" + "-pede" is English glued to Latin. |
 | `AA_SmallButterfly` | small butterflies | bs 0.01 "a flutter of small butterflies", vanishes on death; owner: *"move to jungle"* — Greentide and Fever Wood | **nellith** | flenneth | A word that is already plural in the mouth: *nell-* soft, *-ith* many. A swarm def, so the label reads as the swarm, as *swarmlings* does. "Butterfly" is the Earth insect. |
 
 **Not drafted:** `VFEI2_Swarmling` *nunda* — batch 2. `AA_Needlepost` *skorra*, `AA_Wildpawn`
@@ -471,7 +471,7 @@ exclusions above by script; 168 rows in scope, 0 UNRESOLVED). Class as in Append
 | `RSW_Creature_Mantrap` | mantrap | the_cracked_lands | NONCANON | batch 2 · saqqat |
 | `RSW_CrestedDragon` | crested dragon | the_miasma | NONCANON | batch 2 · dunkara |
 | `RSW_CrystalFairyMole` | crystal fairy mole | the_scarlands | NONCANON | batch 2 · pittok |
-| `RSW_Diggerpede` | diggerpede | the_greentide | NONCANON | batch 3 · thandrel |
+| `RSW_Diggerpede` | diggerpede | the_greentide | NONCANON | batch 3 · owner named it gristle 2026-10-08, ported to `RM_Gristle` |
 | `RSW_FoundryBeetle` | foundry beetle | the_scarlands | NONCANON | batch 2 · takkret |
 | `RSW_Gembug` | gembug | the_lantern_deeps | NONCANON | batch 3 · quozzik |
 | `RSW_ImperialToad` | imperial toad | arid_shrubland | NONCANON | batch 3 · pattu |
