@@ -12,7 +12,8 @@ Description=RimMandrake seat memory watchdog (memory.events / shmem)
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/memwatch.py
+# --no-host: powershell.exe launched from a service pops a console window that steals the owner's focus (owner 2026-10-08)
+ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/memwatch.py --no-host
 Nice=10
 MemoryMax=256M
 TimeoutStartSec=50s
