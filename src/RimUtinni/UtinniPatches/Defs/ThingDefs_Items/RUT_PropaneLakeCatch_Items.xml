@@ -36,7 +36,8 @@
     <label>fessu</label>
     <description>A hand-wide, paper-thin fish-thing that is more crystal than flesh: a translucent lattice of frozen hydrocarbon grown around a thread of something alive, flat as a snowflake, drifting edge-on through the fuel where the snow falls thickest. It feeds by growing — each night's fall adds a rim to it, and an old fessu is a plate. Landed it steams in the cold, and it is so light it can be held up to the aurora and read through. Cooked it is a thin bitter wafer that burns blue if you leave it in the pan.</description>
     <graphicData>
-      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantA</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until the RM_FessuCatch catch painting (phfix_RM_FessuCatch_a/_b) is installed here as Things/Item/Fish/RUT_Fessu; was borrowing Things/Plant/SweetheartPlant/SweetheartPlantA. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -60,7 +61,8 @@
     <label>krellik</label>
     <description>A crab-thing plated in hydrocarbon frost, each plate a clear crystal grown from the fuel snow and shed and regrown nightly, so a krellik is always half new. It walks the solid propane at the lake's edge and the floor beneath, picking at the crystal flora's fallen fragments, and it is the one thing on the shore the Frostmite will not eat — the shell is too cold even for that. Cracked, the plates ring like glass. The meat inside is dense and oily and takes fire the moment it dries.</description>
     <graphicData>
-      <texPath>Things/Plant/PincushionPlant/PincushionPlantC</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until the RM_KrellikCatch catch painting (phfix_RM_KrellikCatch_a/_b) is installed here as Things/Item/Fish/RUT_Krellik; was borrowing Things/Plant/PincushionPlant/PincushionPlantC. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -88,7 +90,8 @@
     <label>oddu</label>
     <description>Kin to the rime nodule and the reason anyone fishes this shore: a fist-sized shell-thing that sits in the fuel and does what the nodule does on land — draws propane out of its surroundings into a sac of clear jelly that is, eaten, a very mild euphoric. The shell is frost-white and closes when the aurora fades. Raised from the lake it is cold enough to burn, and the scrapers of the Flats carry them home in mittens to eat by the tap-wire, which is as close to a good evening as the nightside offers.</description>
     <graphicData>
-      <texPath>Things/Plant/JadePlant/JadePlantC</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until the RM_OdduCatch catch painting (phfix_RM_OdduCatch_a/_b) is installed here as Things/Item/Fish/RUT_Oddu; was borrowing Things/Plant/JadePlant/JadePlantC. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -112,7 +115,8 @@
     <label>oovu</label>
     <description>A bell of frozen hydrocarbon jelly that rides at the surface of the fuel where the snow lands, catching it — a floating cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. Netted it is a bell of propane with a frost crust, and the shore-folk keep them for the lamp, not the pot: an oovu on a wire burns steadily for an hour.</description>
     <graphicData>
-      <texPath>Things/Plant/AloeVera/AloeVeraA</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until the RM_OovuCatch catch painting (phfix_RM_OovuCatch_a/_b) is installed here as Things/Item/Fish/RUT_Oovu; was borrowing Things/Plant/AloeVera/AloeVeraA. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -139,7 +143,7 @@
     <label>iliss</label>
     <description>A wire-thin eel the length of a forearm, black, with a spine of conductive mineral that the auroral ground currents run through — it lives along the bed of the lake where the electrojet's currents cross, and on a reconnection night the whole floor of a bay hums with them. It hunts nothing; it feeds on the charge, or on what the charge kills. Landed on a wet line it bites with a shock that has knocked scrapers down. Cooked, it is a good oily eel. Raw, it is still live in a sense that matters.</description>
     <graphicData>
-      <texPath>Things/Plant/Schlumbergera/SchlumbergeraC</texPath>
+      <texPath>Things/Item/Fish/RUT_Iliss</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -165,7 +169,8 @@
     <label>tarnn</label>
     <description>A colony, not a creature — or a creature that grew like a colony. A branching lattice of clear crystal the size of a bucket, half of it frozen hydrocarbon and half of it something alive threaded through the crystal, growing a hand's width every night from the fuel snow and fracturing back when the aurora is weak. It is the sea's version of the crystal flora on the shore, and nobody has decided which side of the line it stands on. A net brings up a piece of it. The piece keeps growing on the shore for a day, then stops. Chipped and boiled it is bitter and it is barely food; dried it is the best kindling on the nightside.</description>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaC</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until the RM_TarnnCatch catch painting (phfix_RM_TarnnCatch_a/_b) is installed here as Things/Item/Fish/RUT_Tarnn; was borrowing Things/Plant/Echeveria/EcheveriaC. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -192,7 +197,7 @@
     <label>zhiil</label>
     <description>The young of the thing that makes the V-wake. Hand-long, black, ridged, a body built of the same propane-native chemistry as its parent and already agitated by anything that moves in the fuel — a zhiil in a net thrashes until it freezes solid, and then it is a spiny black icicle that thaws back to thrashing on the fire. Scrapers who have fished up a zhiil pull the line and leave, because the parent is a thing that attacks pipe on sight and has a fairly clear idea of where its young went.</description>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantC</texPath>
+      <texPath>Things/Item/Fish/RUT_Zhiil</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>

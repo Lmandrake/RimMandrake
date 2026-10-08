@@ -37,7 +37,7 @@
     <label>coolant eel</label>
     <description>A pale, eyeless eel as long as a forearm, cold to the touch long after it leaves the water. Its skin is smooth and faintly metallic, and it goes on twitching for a while after it stops living. Buyers off-plateau pay well for one.</description>
     <graphicData>
-      <texPath>Things/Item/Fish/Dogfish</texPath>
+      <texPath>Things/Item/Fish/RM_CoolantEelCatch</texPath>
     </graphicData>
     <statBases>
       <MarketValue>18</MarketValue>
