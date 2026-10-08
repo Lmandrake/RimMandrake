@@ -58,23 +58,11 @@ namespace RimMandrake.HugeThings
             RM_HugePawnExtension ext = pawn?.def.GetModExtension<RM_HugePawnExtension>();
             if (ext == null || !pawn.Spawned || !RM_HugeThingsSettings.pawnHitboxEnabled) return null;
             Vector2 drawn = pawn.ageTracker?.CurKindLifeStage?.bodyGraphicData?.drawSize ?? Vector2.one;
-            int w = FootprintMath.HitboxSide(drawn.x, ext.hitboxFraction, RM_HugeThingsSettings.pawnHitboxScale);
-            int h = FootprintMath.HitboxSide(drawn.y, ext.hitboxFraction, RM_HugeThingsSettings.pawnHitboxScale);
             CellRect foot = pawn.OccupiedRect();   // Large Pawns' square when it is loaded, else one cell
-            if (w <= foot.Width && h <= foot.Height)
-            {
-                return foot.Area > 1 ? foot : (CellRect?)null;
-            }
-            CellRect body = FootprintMath.CentredRect(pawn.DrawPos.ToIntVec3(), w, h);
-            return Union(body, foot);
+            return FootprintMath.PawnHitbox(drawn.x, drawn.y, ext.hitboxFraction, RM_HugeThingsSettings.pawnHitboxScale, foot, pawn.DrawPos.ToIntVec3());
         }
 
-        public static CellRect Union(CellRect a, CellRect b)
-        {
-            int minX = Mathf.Min(a.minX, b.minX), minZ = Mathf.Min(a.minZ, b.minZ);
-            int maxX = Mathf.Max(a.maxX, b.maxX), maxZ = Mathf.Max(a.maxZ, b.maxZ);
-            return new CellRect(minX, minZ, maxX - minX + 1, maxZ - minZ + 1);
-        }
+        public static CellRect Union(CellRect a, CellRect b) => FootprintMath.Union(a, b);
     }
 
     /// <summary>

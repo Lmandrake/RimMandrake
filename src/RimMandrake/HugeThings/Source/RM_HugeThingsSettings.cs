@@ -7,7 +7,7 @@ namespace RimMandrake.HugeThings
     // defaults = shipped behaviour, all-off = vanilla.
     public class RM_HugeThingsSettings : ModSettings
     {
-        public const float MaxTrunkScale = 1.5f;
+        public const float MaxTrunkScale = RM_FootprintKernel.MaxTrunkScale;
 
         public static bool plantTrunkEnabled = true;
         public static bool plantSelectionEnabled = true;
@@ -40,7 +40,7 @@ namespace RimMandrake.HugeThings
             list.CheckboxLabeled("Click anywhere on a huge animal to select it", ref pawnHitboxEnabled,
                 "A huge creature can be selected by clicking anywhere on its drawn body. Off: only near its middle.");
             list.Label("  Hitbox size: " + pawnHitboxScale.ToString("0.00") + "x");
-            pawnHitboxScale = list.Slider(pawnHitboxScale, 0.5f, 1.5f);
+            pawnHitboxScale = list.Slider(pawnHitboxScale, 0.5f, MaxTrunkScale);
             list.End();
         }
     }

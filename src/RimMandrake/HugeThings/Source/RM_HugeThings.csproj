@@ -35,6 +35,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- default globbing is ON for this mod: keep the offline fuzz project (net8 Exe) out of the mod assembly -->
+    <Compile Remove="SelfTest\**" />
+    <Compile Remove="obj\**" />
+    <Compile Remove="bin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
 

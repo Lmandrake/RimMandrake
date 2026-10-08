@@ -76,10 +76,7 @@ namespace RimMandrake.HugeThings
         /// <summary>The largest rect any setting could ask for, for re-linking after load.</summary>
         private CellRect MaxRect()
         {
-            RM_HugePlantExtension ext = Ext;
-            int w = FootprintMath.Scaled(ext.trunkWidth, RM_HugeThingsSettings.MaxTrunkScale);
-            int d = FootprintMath.Scaled(ext.Depth, RM_HugeThingsSettings.MaxTrunkScale);
-            return FootprintMath.NorthRect(parent.Position, w, d).ExpandedBy(1);
+            return FootprintMath.MaxRect(parent.Position, Ext);
         }
 
         private void Relink(Map map)
@@ -117,40 +114,33 @@ namespace RimMandrake.HugeThings
             if (!linked) Relink(map);
 
             CellRect want = DesiredTrunk();
+            // drop blockers that are gone first, so the plan sees only live ones
             for (int i = blockers.Count - 1; i >= 0; i--)
             {
                 Building_TrunkBlocker b = blockers[i];
-                if (b == null || b.Destroyed || !b.Spawned)
-                {
-                    blockers.RemoveAt(i);
-                }
-                else if (want.IsEmpty || !want.Contains(b.Position))
-                {
-                    b.Destroy(DestroyMode.Vanish);
-                    blockers.RemoveAt(i);
-                }
+                if (b == null || b.Destroyed || !b.Spawned) blockers.RemoveAt(i);
             }
-            if (want.IsEmpty) return;
+            var cells = new List<long>(blockers.Count);
+            for (int i = 0; i < blockers.Count; i++) cells.Add(RM_FootprintKernel.Pack(blockers[i].Position.x, blockers[i].Position.z));
+            RM_TrunkPlan plan = RM_FootprintKernel.Plan(new RM_KRect(want.minX, want.minZ, want.Width, want.Height), p.Position.x, p.Position.z, cells,
+                (x, z) => new IntVec3(x, 0, z).InBounds(map), (x, z) => CellTakesTrunk(new IntVec3(x, 0, z), map));
+            for (int i = plan.destroyIndexes.Count - 1; i >= 0; i--)
+            {
+                Building_TrunkBlocker b = blockers[plan.destroyIndexes[i]];
+                b.Destroy(DestroyMode.Vanish);
+                blockers.RemoveAt(plan.destroyIndexes[i]);
+            }
+            if (plan.spawnCells.Count == 0) return;
 
             ThingDef blockerDef = HugeThingsDefOf.RM_HugeTrunkBlocker;
-            foreach (IntVec3 c in want)
+            foreach (long k in plan.spawnCells)
             {
-                if (c == p.Position || !c.InBounds(map) || HasOwnBlocker(c)) continue;
-                if (!CellTakesTrunk(c, map)) continue;
+                var c = new IntVec3(RM_FootprintKernel.PackedX(k), 0, RM_FootprintKernel.PackedZ(k));
                 Building_TrunkBlocker b = (Building_TrunkBlocker)ThingMaker.MakeThing(blockerDef);
                 b.owner = p;
                 GenSpawn.Spawn(b, c, map, WipeMode.VanishOrMoveAside);
                 blockers.Add(b);
             }
-        }
-
-        private bool HasOwnBlocker(IntVec3 c)
-        {
-            for (int i = 0; i < blockers.Count; i++)
-            {
-                if (blockers[i].Position == c) return true;
-            }
-            return false;
         }
 
         /// <summary>
@@ -161,18 +151,18 @@ namespace RimMandrake.HugeThings
         /// </summary>
         public static bool CellTakesTrunk(IntVec3 c, Map map)
         {
-            if (!c.Walkable(map)) return false;
+            bool walkable = c.Walkable(map), pawn = false, building = false, planned = false, indestructible = false, tree = false;
             List<Thing> list = c.GetThingList(map);
             for (int i = 0; i < list.Count; i++)
             {
                 Thing t = list[i];
-                if (t is Pawn) return false;
-                if (t.def.category == ThingCategory.Building) return false;
-                if (t.def.IsBlueprint || t.def.IsFrame) return false;
-                if (!t.def.destroyable) return false;
-                if (t is Plant pl && (pl.def.plant.IsTree || pl.def.HasModExtension<RM_HugePlantExtension>())) return false;
+                if (t is Pawn) pawn = true;
+                if (t.def.category == ThingCategory.Building) building = true;
+                if (t.def.IsBlueprint || t.def.IsFrame) planned = true;
+                if (!t.def.destroyable) indestructible = true;
+                if (t is Plant pl && (pl.def.plant.IsTree || pl.def.HasModExtension<RM_HugePlantExtension>())) tree = true;
             }
-            return true;
+            return RM_FootprintKernel.CellTakesTrunk(walkable, pawn, building, planned, indestructible, tree);
         }
     }
 }
