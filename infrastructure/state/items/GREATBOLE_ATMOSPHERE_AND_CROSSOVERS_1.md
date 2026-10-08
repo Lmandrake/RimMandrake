@@ -35,9 +35,9 @@ built and reusable.
    blocked on the roster; the reagent wiring itself is not built.
 7. **Royal Rind's Contagion/Miasma stat wiring** — `RM_Apparel_RindCoat` ships today with the
    vanilla-stat portion (`ArmorRating_Heat`, `Insulation_Heat`, `Insulation_Cold`, ruled numbers).
-   The Scald/Contagion/Miasma custom-stat portion (`RM_ScaldProtection` etc.) is blocked on
-   `design/RimMandrake/scald_steam_and_hazards_spec.md`'s own still-unbuilt StatDef work — do not
-   invent that StatDef family here; it belongs to that spec.
+   The Scald portion is done: Scald protection is `ArmorRating_Heat` (`SCALD_FOLD_INTO_HEAT_1`).
+   The Contagion/Miasma custom-stat portion is blocked on those biomes' own StatDef work — do not
+   invent that StatDef family here.
 
 ## Watch out
 

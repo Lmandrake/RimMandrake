@@ -14,7 +14,7 @@ invented here**: the song (§5), thermal sanctuary (§7), the pilgrims (§8a), b
 shipping `RM_Greatbole` — checked 2026-09-25, still OWED, only a mechanism-proof placeholder
 exists), Gorbeleth toxin as the sealant's reagent (blocked on Gorbeleth's own roster entry, not
 built anywhere yet), and the deeper Contagion/Miasma stat wiring on Royal Rind (blocked on
-`scald_steam_and_hazards_spec.md`'s own still-unbuilt `RM_ScaldProtection`/hazard StatDefs).
+those biomes' hazard StatDefs; the Scald needs none, its protection is `ArmorRating_Heat`).
 
 ---
 

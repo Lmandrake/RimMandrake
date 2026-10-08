@@ -26,8 +26,8 @@
   Tuning (all INVENTED, forge_kit_spec.md F1's own figures): burst MTB mean
   10 in-game hours; burst duration 20-40 in-game minutes; flash window 2
   in-game hours from burst start; scald damage ~4 per 60-tick interval,
-  unroofed only (fireweed-fiber gear via RM_ArmorRating_Scald is the
-  admission ticket, per RM_ScaldArmor.xml and owner card 2: "boiling rain
+  unroofed only (heat armor, ArmorRating_Heat, is the admission ticket -
+  RUT_Scald uses vanilla's Heat armor category - per owner card 2: "boiling rain
   is survivable once... never instant death from one burst" - the ~4/60
   cadence unroofed/unarmored is brutal but not lethal in one pass).
 -->

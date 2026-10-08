@@ -2,11 +2,14 @@
 <!--
   RUT_ScaldExposure.xml                  TerminalBiomes
   ==========================================================================
-  SCALD_STEAM_WEATHER_DESIGN_1 step 4 ("Exposure clock", XML only, three
-  defs), built 2026-09-26. The other two are RM_ScaldProtection
-  (EnvironmentalHazards/Defs/StatDefs/) and RUT_ScaldSteamCarrier
-  (../GameConditionDefs/), which grants this hediff to every eligible pawn
-  so its own comp can run at all.
+  SCALD_STEAM_WEATHER_DESIGN_1 step 4 ("Exposure clock"), built
+  2026-09-26. RUT_ScaldSteamCarrier (../GameConditionDefs/) grants this
+  hediff to every eligible pawn so its own comp can run at all.
+
+  The clock's protection stat is vanilla ArmorRating_Heat, summed over worn
+  apparel (SCALD_FOLD_INTO_HEAT_1, decision taken by question card
+  2026-10-08: one kind of heat, and a steam burn is an injury, so heat
+  ARMOR answers it, not insulation). Any heat-armored garment slows it.
 
   The owner's brief was one sentence: make the steam "beautiful and
   interesting (and deadly without protective gear)". This def is the deadly
@@ -124,7 +127,7 @@
         <onlyDuringWeather>RUT_ScaldSteam</onlyDuringWeather>
         <severityPerDayExposed>0.6</severityPerDayExposed>
         <severityPerDayUnexposed>-0.35</severityPerDayUnexposed>
-        <protectionStat>RM_ScaldProtection</protectionStat>
+        <protectionStat>ArmorRating_Heat</protectionStat>
         <minDriveFactor>0.08</minDriveFactor>
         <affects>Flesh</affects>
         <immuneThingDefs>

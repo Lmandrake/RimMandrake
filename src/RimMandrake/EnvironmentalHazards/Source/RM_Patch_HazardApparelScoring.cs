@@ -5,8 +5,8 @@ using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
 {
-    // HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1. RM_ScaldProtection,
-    // RM_WetBulbProtection (both this mod) and RM_SheenProtection (TheRot,
+    // HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1. RM_WetBulbProtection (this
+    // mod) and RM_SheenProtection (TheRot,
     // MayRequire mandrake.rm.environmentalhazards so it can never be loaded
     // without this mod) are "Apparel"-category StatDefs summed at runtime by
     // HazardTargeting.SumApparelStat/RM_GameCondition_WetBulb's own private
@@ -17,7 +17,8 @@ namespace RimMandrake.EnvironmentalHazards
     // reading the decompiled 1.6 method via RimSage 2026-09-27) sums
     // ArmorRating_Sharp/Blunt, Insulation_Cold, def.apparel.scoreOffset and
     // GetSpecialApparelScoreOffset() — nothing reads an arbitrary
-    // Apparel-category stat, and nothing reads these three by name. So a
+    // Apparel-category stat, nothing reads these by name, and nothing reads
+    // ArmorRating_Heat either. So a
     // pawn never gains score for picking up a boil-suit and never will,
     // no matter which XML list the stat sits in.
     //
@@ -38,7 +39,10 @@ namespace RimMandrake.EnvironmentalHazards
     // So the stats stay exactly where they are; only the scorer changes.
     //
     // FIX: postfix ApparelScoreRaw and add each hazard-protection stat's
-    // value straight onto the score, the same weight class as
+    // value straight onto the score, plus ArmorRating_Heat, which IS the
+    // Scald steam clock's protection stat since SCALD_FOLD_INTO_HEAT_1 (one
+    // kind of heat, decision taken by question card 2026-10-08), the same
+    // weight class as
     // ArmorRating_Sharp/Blunt two lines above it in that method — a boil-suit
     // now reads as better apparel unconditionally, the same way body armor
     // does, rather than only when some detector decides the pawn "needs" it.
@@ -89,7 +93,7 @@ namespace RimMandrake.EnvironmentalHazards
 
             try
             {
-                float bonus = ap.GetStatValue(RM_HazardApparelScoringStatDefOf.RM_ScaldProtection)
+                float bonus = ap.GetStatValue(StatDefOf.ArmorRating_Heat)
                             + ap.GetStatValue(RM_HazardApparelScoringStatDefOf.RM_WetBulbProtection);
 
                 if (SheenProtectionStat != null)
@@ -109,7 +113,6 @@ namespace RimMandrake.EnvironmentalHazards
     [DefOf]
     public static class RM_HazardApparelScoringStatDefOf
     {
-        public static StatDef RM_ScaldProtection;
         public static StatDef RM_WetBulbProtection;
 
         static RM_HazardApparelScoringStatDefOf()

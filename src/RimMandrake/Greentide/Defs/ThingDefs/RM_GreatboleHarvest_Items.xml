@@ -11,15 +11,14 @@
      RM_Apparel_RindCoat is NOT a Stuff-selectable garment here — making
      RM_RoyalRind a full StuffDef so any vanilla leather garment could be
      tailored from it is a genuine engine question (does StuffPropertiesDef
-     support a statOffset the way this needs, for the Contagion/Scald/Miasma
-     clocks) that is UNMEASURED and belongs to
-     scald_steam_and_hazards_spec.md's own still-unbuilt RM_ScaldProtection
-     work, not invented here. RindCoat instead is a bespoke recipe/apparel
-     with the numbers the gear matrix already ruled
-     (ArmorRating_Heat/insulation) applied directly as statBases — real and
-     valid today, with the Contagion/Scald/Miasma custom-stat portion of
-     "protection against our own killing biomes" (spec §3b1) deferred to
-     that other spec's own StatDef work. -->
+     support a statOffset the way this needs, for the Contagion/Miasma
+     clocks) that is UNMEASURED. RindCoat instead is a bespoke
+     recipe/apparel with the numbers the gear matrix already ruled
+     (ArmorRating_Heat/insulation) applied directly as statBases. Scald
+     protection IS ArmorRating_Heat (SCALD_FOLD_INTO_HEAT_1), so the coat
+     already slows the Scald steam clock; the Contagion/Miasma custom-stat
+     portion of "protection against our own killing biomes" (spec §3b1)
+     is still deferred. -->
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
@@ -181,12 +180,12 @@
       <MarketValue>320</MarketValue>
       <Mass>2.6</Mass>
       <Flammability>0.4</Flammability>
-      <!-- RULED, gear matrix row 58 ("moderate"): ArmorRating_Heat 0.45.
-           RM_ScaldProtection 0.60 (the same row's other ruled figure) is
-           DEFERRED — see this file's own header; that stat does not exist
-           yet and inventing it here would be authoring a different spec's
-           whole StatDef, not this item's fruit/rind work. -->
-      <ArmorRating_Heat>0.45</ArmorRating_Heat>
+      <!-- Gear matrix row 58 ("moderate") ruled ArmorRating_Heat 0.45 and
+           a scald-clock figure of 0.60. Scald protection folded into
+           ArmorRating_Heat (SCALD_FOLD_INTO_HEAT_1, decision taken by
+           question card 2026-10-08), so the coat carries the larger
+           figure, the same rule RM_ScaldGear.xml applies. -->
+      <ArmorRating_Heat>0.60</ArmorRating_Heat>
       <Insulation_Heat>35</Insulation_Heat>
       <Insulation_Cold>35</Insulation_Cold>
       <EquipDelay>2</EquipDelay>

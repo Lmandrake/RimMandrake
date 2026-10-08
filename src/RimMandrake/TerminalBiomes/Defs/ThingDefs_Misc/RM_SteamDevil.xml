@@ -5,8 +5,8 @@
   ============================================================================
   greentide_kit_spec.md M3 ("Scald damage + steam devils"): "a wandering
   white column of boiling vapor spins off the river". Only the vortex ships
-  here — the Scald damage-type trio (RUT_Scald/RM_ScaldArmor/
-  RM_ArmorRating_Scald) already shipped under FORGE_MECHANICS_1 F1.
+  here — its damage, RUT_Scald (vanilla Heat armor category), already
+  shipped under FORGE_MECHANICS_1 F1.
 
   Def shape cribbed from vanilla's own Tornado ThingDef (Data/Core/Defs/
   ThingDefs_Misc/Ethereal_Various.xml, read directly off the live install

@@ -6,7 +6,7 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // GREENTIDE_MECHANICS_2 M3 remainder build (greentide_kit_spec.md M3,
     // "Scald damage + steam devils"). Only the vortex half is unbuilt — the
-    // Scald damage-type trio (RUT_Scald/RM_ScaldArmor/RM_ArmorRating_Scald)
+    // RUT_Scald DamageDef (vanilla Heat armor category)
     // already shipped under FORGE_MECHANICS_1 F1 and is NOT re-shipped here;
     // this extension only carries the vortex's own tuning, including a
     // pointer at that already-shipped DamageDef.

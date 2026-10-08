@@ -119,41 +119,30 @@ sheet's "fire is not the tool" makes it the only defense line).
 **Reconciled 2026-09-13 (GREENTIDE_MECHANICS_2 spike pass): the damage-type
 half already shipped, elsewhere, under FORGE_MECHANICS_1's own explicit
 contingency.** `forge_kit_spec.md` F1 states verbatim: "using RUT_Scald (the
-greentide kit M3's DamageDef with its RM_ScaldArmor armor category;
+greentide kit M3's DamageDef ...;
 cross-kit reuse — if the greentide build slips, the def is XML and ships
 here first)." It slipped (this item wasn't even filed until today), so F1
 shipped it first, exactly as its own contingency named:
 
 - `RUT_Scald` DamageDef —
-  `src/RimUtinni/UtinniPatches/Defs/DamageDefs/RUT_Scald.xml`
-- `RM_ScaldArmor` DamageArmorCategoryDef —
-  `src/RimMandrake/EnvironmentalHazards/Defs/DamageArmorCategoryDefs/RM_ScaldArmor.xml`
-- `RM_ArmorRating_Scald` StatDef —
-  `src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_ArmorRating_Scald.xml`
+  `src/RimMandrake/TerminalBiomes/Defs/DamageDefs/RUT_Scald.xml`, armor
+  category vanilla `Heat` (one kind of heat, `SCALD_FOLD_INTO_HEAT_1`)
 
-Do NOT re-ship these — the below `armorCategory`/DamageWorker ❓ is already
-settled by the shipped def's own header (`DamageArmorCategoryDef.
-armorRatingStat` is plain data, no DamageWorker override needed; vanilla's
-`ArmorUtility` reads `DamageDef.armorCategory` directly). **Only the steam
+Do NOT re-ship it. **Only the steam
 devil vortex (`RUT_SteamDevil` ThingDef + `RM_WanderingVortex` class) remains
 unbuilt** — zero hits for either name anywhere in `src/` as of this pass.
 
 **Player experience.** A wandering white column of boiling vapor spins off the
-river — a steam devil. It scalds what it crosses (a wet burn that armor built
-for flame doesn't stop), knocks weak trees down, and drags the ground-fog up
+river — a steam devil. It scalds what it crosses (a wet burn; heat armor
+blunts it), knocks weak trees down, and drags the ground-fog up
 into itself. Rare, visible from far off, and it does not care about your walls'
 flammability.
 
 **Engine route.** Two pieces:
 
-- **Scald**: `RUT_Scald` DamageDef — XML only. `armorCategory` is a def field
-  *(verified, `Source/Verse/DamageDef.cs:77`)*: point it at a new
-  `RM_ScaldArmor` DamageArmorCategoryDef so heat/flame armor stats don't apply
-  (only dedicated wet-kit gear grants the new armor stat). Not a Flame-class
-  damage → no ignition, so "ignores flammability" is free. ❓ verify no
-  DamageWorker override is needed for the armor stat to resolve (vanilla wires
-  armorCategory → armor StatDef; confirm the linkage field on
-  DamageArmorCategoryDef before build).
+- **Scald**: `RUT_Scald` DamageDef — XML only, `armorCategory` vanilla `Heat`
+  (one kind of heat: heat armor protects). Not a Flame-class
+  damage → no ignition, so "ignores flammability" is free.
 - **Steam devil**: `RUT_SteamDevil` ThingDef with new class
   `RM_WanderingVortex : ThingWithComps`, cribbed structurally from vanilla
   `Tornado` *(verified, `Source/RimWorld/Tornado.cs` — `Tornado : ThingWithComps`;

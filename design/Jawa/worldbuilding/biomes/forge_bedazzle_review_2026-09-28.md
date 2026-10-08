@@ -102,7 +102,7 @@ live quicktest still owed:
 
 | F# | mechanic | state |
 |---|---|---|
-| F1 | Boiling-rain pulse + scald + flash flora | SHIPPED: `RM_GameCondition_WeatherPulse`, `RM_MapComponent_FlashCycle`, `RUT_Plant_FlashFlora` (×8 growth in window / ×0.05 outside), `RUT_Scald` DamageDef + `RM_ScaldArmor`/`RM_ArmorRating_Scald` |
+| F1 | Boiling-rain pulse + scald + flash flora | SHIPPED: `RM_GameCondition_WeatherPulse`, `RM_MapComponent_FlashCycle`, `RUT_Plant_FlashFlora` (×8 growth in window / ×0.05 outside), `RUT_Scald` DamageDef (vanilla `Heat` armor category since `SCALD_FOLD_INTO_HEAT_1`) |
 | F2 | Beldon tibanna tap | SHIPPED: `RM_CompGatherableGas` (CompMilkable-shape), `RUT_TibannaTap_BeldonWiring.xml` (FindMod-gated onto RSW_Beldon, 12 gas / 2 days), `RUT_TibannaGas` item (placeholder price; **DEPLOY_HOLD, no art**). Ban-5 linter: only consumer is the tap — monopoly holds by construction |
 | F3 | Vapor-column flight layer | SHIPPED (classes): `RM_MapComponent_VaporColumns` (columns from steam geysers / CompActiveGasEmitter / dangerous+avoidWander terrain), `RM_CompVaporDrifter`, `RUT_VaporDrifter_AerofleetWiring.xml`; ThinkTree wander-root wiring proven but thin |
 | F4 | Foundry tower dungeon | SHIPPED (shell): `RUT_FoundryTowerEntrance` (MapPortal → `RUT_FoundryFloor` 80×80 pocket map, temp 70 °C, LavaDeep melt channels via `RM_GenStep_TerrainChannels`, salvage cache + tender spawn gensteps, `RUT_FoundryTowerScatter` on player maps). One floor per owner card 1 (RULED 2026-09-12); interiors are vanilla ScatterRuinsSimple stand-ins; tender pawnkind NOT cast; **both buildings DEPLOY_HOLD, no art** |
@@ -150,7 +150,7 @@ its art exists and sits unwired.
 |---|---|---|---|
 | 1 | Unique mechanic | **HAVE (one half unwired)** | The closed boiling-rain pulse is real, shipped and biome-scale: `RM_ForgePulse` on the BiomeDef's own `biomeMapConditions` → `RM_GameCondition_WeatherPulse` (ForgeStill → MTB-10h BoilingRain bursts → `RUT_Scald` on the unroofed → 2 h flash window). No other biome does anything like it. ⚠️ But the flash-GROWTH half is engine-only: `RUT_Plant_FlashFlora` (×8 in-window / ×0.05 outside) is used as thingClass by **zero plant defs anywhere** (git grep this pass — only the C# and one comment reference it). The sheet's "mosses drink in the seconds between fall and flash" is compiled and completely unexpressed in content. |
 | 2 | Discoverable technology | **PARTIAL** | F6's vent industry is built (`RUT_VentSmelter`/`VentForge`/`VentKiln`, +20% work speed, no fuel) — but all three keep their vanilla research prereqs (Smithing/Stonecutting/Electric smelting): nothing is DISCOVERED, nothing learned here is kept elsewhere. The foundry-tower salvage caches (`RUT_FoundrySalvageCache`) are marker-only loot with no teach. Slate A. |
-| 3 | Unique resources | **HAVE (thin)** | ⭐ Tibanna gas is real: `RUT_TibannaGas` + the beldon tap (`RM_CompGatherableGas`, 12/2 days), ban-5 monopoly linter-clean (only consumer is the tap). Caveats: placeholder MarketValue (TIBANNA_EMBARGO_PLOT_1 owns pricing), DEPLOY_HOLD no-art. The sheet's OTHER two headline resources are unbuilt: fireweed FIBER (the planet's heat-gear economy — no fiber item, no gear; `RM_ArmorRating_Scald` shipped with nothing granting it) and obsidian/volcanic glass (no owned TerrainDef or material def at all). |
+| 3 | Unique resources | **HAVE (thin)** | ⭐ Tibanna gas is real: `RUT_TibannaGas` + the beldon tap (`RM_CompGatherableGas`, 12/2 days), ban-5 monopoly linter-clean (only consumer is the tap). Caveats: placeholder MarketValue (TIBANNA_EMBARGO_PLOT_1 owns pricing), DEPLOY_HOLD no-art. The sheet's OTHER two headline resources are unbuilt: fireweed FIBER (the planet's heat-gear economy — no fiber item, no gear) and obsidian/volcanic glass (no owned TerrainDef or material def at all). |
 | 4 | Surprising creatures | **PARTIAL** | The "what" moments are all carried by canon/donor rows: RSW_Beldon (colossal gas-grazer you can milk for blaster gas — genuinely surprising, Utinni layer), AA_Metallovore (metal-eater), RSW_Maguana (magma camouflage). The RM tier's one owned creature, the fleet flier, is charming but modest. Every donor row sits under the 2026-09-20 blanket art-replace ruling, none replaced. |
 | 5 | GIANT beast | **PARTIAL** | The colossus exists but is canon and patch-layer only (RSW_Beldon 0.08, sky). The roster's two other giants — `Tibidee` (bodySize 12!) and `AA_ColossalAerofleet` (both 0.5 in `the_forge.json`) — are wired NOWHERE (left out during the pyramid-law small-share fix, still in the roster). The RM tier has no giant of any kind. Fill: the dhokkur. |
 | 6 | Gravship touch | **MISS** | Nothing. The kit assembly even carries the proven detection point (`RM_Patch_GravshipArrivalLetter`, GenStep_GravshipMarker postfix — BIOME_ARRIVAL_NARRATION_1) and only TheSump has wired a letter to it; the Forge has neither a letter nor any mechanical voice against the ship. Slate B. |
@@ -256,8 +256,8 @@ are a pipeline ask; needs a visual fallback (letter/alert) for muted players.
 **D. Fireweed Fiber — the heat-gear economy made real** *(marks 3 + 2; rank 4)*
 The sheet's headline resource ("the source material of the planet's heat-survival gear
 economy") built at last: fireweed harvest yields fiber, fiber + tailoring makes
-scald-gear (apparel granting `RM_ArmorRating_Scald` — the stat shipped 2026-09-13 and
-NOTHING in the repo grants it), and scald-gear is what lets a colonist work through a
+scald-gear (heat-armored apparel: Scald protection is `ArmorRating_Heat` since
+`SCALD_FOLD_INTO_HEAT_1`), and scald-gear is what lets a colonist work through a
 burst instead of sheltering. The biome that hurts you grows the thing that lets you
 endure it — and the gear is the export every other hot biome wants. *Engine:* pure XML
 (item, recipes, apparel statOffsets); the armor category and damage type already exist
@@ -312,5 +312,5 @@ the scorecard names its evidence, the four fills are collision-proven and
 checker-passed, and the slate is the movement-3 opening hand. Nothing here edits the
 frozen sheet, re-opens a frozen ruling, files an item, or queues art. Found-and-recorded
 for the sitting rather than acted on: the unwired `RUT_Plant_FlashFlora` class, the
-fleet flier's finished-but-unwired art, the granted-by-nothing `RM_ArmorRating_Scald`,
+fleet flier's finished-but-unwired art,
 the unwired Tibidee/ColossalAerofleet roster rows, and the three DEPLOY_HOLD art debts.*
