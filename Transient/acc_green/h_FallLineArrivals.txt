@@ -1,0 +1,20 @@
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\FallLineArrivals_20261008T164348Z.html
+CHAIN load_clean None {"name": "load_clean", "situational": null, "modal_check": null}
+    {"name": "no_errors_naming_this_mod", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/drain_log", "result": {"success": true, "message": "257 message(s) of 295 in the buffer.", "totalInBuffer": 29
+CHAIN defs None {"name": "defs", "situational": null, "modal_check": null}
+    {"name": "all_defs_resolve", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "15 of 15 def(s) resolved", "requested": 15, "foundCount": 15, "notFo
+CHAIN gate None {"name": "gate", "situational": null, "modal_check": null}
+    {"name": "off_fall_line_refused", "toggle": "onlyOnFallLine", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'onlyOnFallLine': True})", "result": true},
+    {"name": "anywhere_allows", "toggle": "onlyOnFallLine", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'onlyOnFallLine': False})", "result": true}, {"ca
+    {"name": "wrecks_toggle_off_refuses", "toggle": "wreckFallsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'wreckFallsEnabled': False})", "resu
+CHAIN wreck_falls_and_nests None {"name": "wreck_falls_and_nests", "situational": null, "modal_check": null}
+    {"name": "wreck_lands", "toggle": "wreckFallsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [], "scanned": 44528, "countReturned": 0, "countMatched"
+    {"name": "vermin_burst_from_wreck", "toggle": "wreckFallsEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: no ship-vermin came out of the wreck within 2600 ticks (0 -> 0)", "evidence": [{"call": "bridge_call jawa/list_pawns", "
+CHAIN specimen None {"name": "specimen", "situational": null, "modal_check": null}
+    {"name": "lab_rat_toggle_off_refuses", "toggle": "labRatEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'labRatEnabled': False})", "result": tr
+    {"name": "lab_rat_arrives_in_pod", "toggle": "labRatEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/fire_incident", "result": {"success": true, "message": "RUT_LabRatFalls fired with 35 points.", "inci
+CHAIN survivors None {"name": "survivors", "situational": null, "modal_check": null}
+    {"name": "survivor_toggle_off_refuses", "toggle": "survivorsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'survivorsEnabled': False})", "resu
+    {"name": "survivor_drifts_in_feral", "toggle": "survivorsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/fire_incident", "result": {"success": true, "message": "RUT_FallSurvivor fired with 35 points.",
+ALL_GREEN False FINDINGS 1
