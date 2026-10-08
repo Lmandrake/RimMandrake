@@ -118,6 +118,8 @@ namespace RimMandrake.OasisMaker.SelfTest
                 Check(RM_OasisKernel.Quality01(8, 15, 8, 30, 15, 45) == 0f && RM_OasisKernel.Quality01(30, 45, 8, 30, 15, 45) == 1f && RM_OasisKernel.Quality01(99, 99, 8, 30, 15, 45) == 1f, "quality is 0 at the floors, 1 at the ceilings and held there");
                 Check(Math.Abs(RM_OasisKernel.Quality01(30, 15, 8, 30, 15, 45) - 0.5f) < 1e-6 && Math.Abs(RM_OasisKernel.Quality01(8, 45, 8, 30, 15, 45) - 0.5f) < 1e-6, "one axis cannot buy more than half the quality");
                 Check(RM_OasisKernel.InverseLerp(5, 5, 9) == 0f, "InverseLerp with equal ends is 0 (Unity)");
+                Check(RM_OasisKernel.RadiusCap(6, 7, 0.5f) == 6 && RM_OasisKernel.RadiusCap(7, 8, 0.5f) == 8 && RM_OasisKernel.RadiusCap(6, 9, 0.5f) == 8, "radius cap ties round half to even (6.5 -> 6, 7.5 -> 8)");
+                Check(RM_OasisKernel.RadiusCap(6, 9, 0.1f) == 6 && RM_OasisKernel.RadiusCap(6, 9, 0.9f) == 9 && RM_OasisKernel.RadiusCap(6, 9, 0.2f) == 7, "radius cap rounds to nearest (6.3 -> 6, 8.7 -> 9, 6.6 -> 7)");
                 Check(RM_OasisKernel.RadiusCap(6, 9, 0f) == 6 && RM_OasisKernel.RadiusCap(6, 9, 1f) == 9 && RM_OasisKernel.RadiusCap(6, 9, 0.5f) == 8, "radius cap: 6 poor, 9 excellent, 7.5 rounds half to even (8)");
                 Check(RM_OasisKernel.SpeedMultiplier(0f) == 0.5f && RM_OasisKernel.SpeedMultiplier(1f) == 1.5f && RM_OasisKernel.SpeedMultiplier(0.5f) == 1f && RM_OasisKernel.SpeedMultiplier(7f) == 1.5f && RM_OasisKernel.SpeedMultiplier(-7f) == 0.5f, "speed runs 0.5x..1.5x and is held there");
                 // the verdict over every combination
@@ -148,6 +150,8 @@ namespace RimMandrake.OasisMaker.SelfTest
                     int cap = RM_OasisKernel.RadiusCap(minCap, maxCap, q);
                     Check(cap >= minCap && cap <= maxCap, "radius cap " + cap + " outside " + minCap + ".." + maxCap);
                     Check(RM_OasisKernel.RadiusCap(minCap, maxCap, Math.Min(1f, q + 0.1f)) >= cap, "radius cap fell as quality rose");
+                    double exactCap = minCap + (maxCap - minCap) * (double)q;
+                    if (Math.Abs(exactCap - Math.Floor(exactCap) - 0.5) > 1e-4) Check(cap == (int)Math.Round(exactCap), "radius cap " + cap + " for min " + minCap + ", max " + maxCap + ", quality " + F(q) + " (exact " + F(exactCap) + ")");
                     float sp = RM_OasisKernel.SpeedMultiplier(q);
                     Check(sp >= 0.5f - 1e-6f && sp <= 1.5f + 1e-6f && Math.Abs(sp - (0.5 + q)) < 1e-5, "speed " + F(sp) + " for quality " + F(q));
                     var v = RM_OasisKernel.Verdict(true, shade, rock, sf, rf);
@@ -325,6 +329,14 @@ namespace RimMandrake.OasisMaker.SelfTest
                         }
                         Check(RM_OasisKernel.RingDurationTicks(0, b, f, 60000) == (long)(b * 60000.0), "ring 0 lasts exactly the base ring days");
                     }
+                Check(RM_OasisKernel.RingDurationTicks(3, 3f, 1.5f, 60000) == 607500L && RM_OasisKernel.RingDurationTicks(8, 3f, 1.5f, 60000) == (long)(3.0 * Math.Pow(1.5, 8) * 60000), "ring durations grow geometrically (3 days x 1.5^3 = 10.125 days)");
+                foreach (int ringI in new[] { 0, 1, 2, 5 }) Check(RM_OasisKernel.PerRungTicks(ringI, 3f, 1.5f, 60000) == Math.Max(1L, (long)(3.0 * Math.Pow(1.5, ringI) * 60000) / RM_OasisKernel.RungsForRing(ringI)), "per-rung time for ring " + ringI);
+                {
+                    // a huge time skip in one call never grows past the cap
+                    int prog = 0, ringX = 0, climbedX = 0, rungs = 0;
+                    RM_OasisKernel.AdvanceGrowth(ref prog, ref ringX, ref climbedX, 2000000000 / 2, 1.5f, 2, 0.5f, 1.05f, 60000, rr => { rungs++; Check(rr < 2, "climbed ring " + rr + " past the cap of 2 rings"); });
+                    Check(ringX <= 2 && rungs <= RM_OasisKernel.RungsForRing(0) + RM_OasisKernel.RungsForRing(1), "a long skip grew past the radius cap (ring " + ringX + ", rungs " + rungs + ")");
+                }
                 Check(RM_OasisKernel.PerRungTicks(0, 0f, 1.5f, 60000) == 1L, "a zero base time must still advance (per-rung time at least 1)");
             }
             catch (Exception e) { fails.Add("growth extremes: " + e.Message); }
