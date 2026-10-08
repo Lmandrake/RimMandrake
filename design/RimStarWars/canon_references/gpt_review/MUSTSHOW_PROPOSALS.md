@@ -323,3 +323,47 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 - Must show "Bony head frill with multiple horns": text supports "multihorned" only; frill is image-only. Propose "multiple horns (text); frill (image-only)". Source: https://starwars.fandom.com/wiki/Corinathoth/Legends
 - Must show "Visibly smaller young present": page gives no young; propose drop or mark optional. Source: same.
 - Add must-show: gigantic/massive, slow-moving quadruped, short tail, orange hide with brown spots (Legends). Source: same.
+
+## Batch 09
+# Proposals batch 09
+
+### pikobis
+- Must show line 3 ("Olive-tan skin ...") and the 1 m / heron-size framing: the canon infobox gives skin colour Grey (Episode I) while the Must show asks olive-tan; consider rewording to "colour per the chosen reference; canon infobox says grey". Reason: sourced colour disagrees with the image-derived colour. Source: https://starwars.fandom.com/wiki/Pikobi
+- Must show line 5 "wading feet": webbed feet appear only in the Legends page (Field Guide), so mark as Legends-sourced. Source: https://starwars.fandom.com/wiki/Pikobi/Legends
+
+### porg
+- Must show last line: change "warm orange-tan cheek/eye patches" to "orange eye plumage on males only". Reason: the infobox and body text make orange plumage around the eyes a male trait. Source: https://starwars.fandom.com/wiki/Porg
+
+### pufferpig
+- Must show last bullet: drop "dog-sized, not pig-sized"; replace with "slightly under 1 m long uninflated". Reason: the page states uninflated size; "dog-sized" is the entry's own comparison. Source: https://starwars.fandom.com/wiki/Puffer_pig
+- Must show colour bullet: add that the infobox gives Yellow skin and Blue eyes (Idiot's Array). Source: https://starwars.fandom.com/wiki/Puffer_pig
+- Engine limits: note that inflation to a sphere conflicts with the 9 m x 60 cm text, so inflated form needs a separate sprite or is out of scope. Source: https://starwars.fandom.com/wiki/Puffer_pig
+
+### qormot
+- Add a header line to Must show: "Legends design (no canon article)". Reason: the only wiki page is a Legends article. Source: https://starwars.fandom.com/wiki/Qormot
+- Must show eye bullet is prose-sourced and is the single-eye anatomy; keep, but the "rears up on hind legs" bullet is image-only: prose says stocky quadrupeds, so make rearing optional. Source: https://starwars.fandom.com/wiki/Qormot
+
+### ronto
+- Must show colour bullet: the canon page text gives no colour; colour, nose horn, banding and warts come only from images. Consider marking them "per anchor film still" rather than categorical. Reason: wiki text lists only small eyes, pointed ears, beak-like mouth and facial skin flaps. Source: https://starwars.fandom.com/wiki/Ronto
+- Must show: "clawed/hoofed" is not decided by the text; pick one from the film still. Source: https://starwars.fandom.com/wiki/Ronto
+
+### runyip
+- Must show: bullets for "tall branching antlers", "tuft at tail tip" and "dark solid shoulder" are image-only; canon text says just "antlered heads", flexible nose, front-toe claw, stripes. Mark them reference-dependent. Source: https://starwars.fandom.com/wiki/Runyip
+- Must show: "Broad padded multi-toed feet with front claws" - canon says only a claw on the front toes. Source: https://starwars.fandom.com/wiki/Runyip
+
+### sandoaquamonster
+- Engine limits: add that the species is 160 to 200 m long and aquatic (infobox, Databank), so ordinary animal scale and pathing do not apply. Source: https://starwars.fandom.com/wiki/Sando_aqua_monster
+- Must show fluke bullet: canon text says only "finned claws"; the broad horizontal tail fluke is image-only. Mark reference-dependent. Source: https://starwars.fandom.com/wiki/Sando_aqua_monster
+
+### scurrier
+- Must show bullet "Semi-upright running posture, trunk near-horizontal": change to "ran on all fours in a fully horizontal posture; semi-upright stance and hind-limb standing at rest". Reason: canon text says running was fully horizontal. Source: https://starwars.fandom.com/wiki/Scurrier
+- Must show last bullet: the male-thick-curved/female-thin-straight horn rule is Legends-only; canon says only "some scurriers boasted antlers". Move the sex rule out of the canon checklist. Source: https://starwars.fandom.com/wiki/Scurrier/Legends
+
+### shaaks
+- Must show: add "approximately 1.8 m tall (canon infobox, Databank)". Reason: sourced height. Source: https://starwars.fandom.com/wiki/Shaak
+- Must show hide bullet: canon sources give only brown leathery skin; cream marbling or streaks come from images, so mark reference-dependent. Source: https://starwars.fandom.com/wiki/Shaak
+- Must show "three-toed feet": not in wiki text; image-only. Source: https://starwars.fandom.com/wiki/Shaak
+
+### shiro
+- Must show line 1 (green skin as colour anchor): the green skin is sourced only to Disney Infinity 3.0 and the page has a Noncanon banner; relabel the checklist "game adaptation (Disney Infinity 3.0 colour) over Legends shell anatomy". Source: https://starwars.fandom.com/wiki/Shiro
+- Must show lines 2-4 (ridged spiny shell, retractable extremities) are Legends-only (Field Guide); label them so. Source: https://starwars.fandom.com/wiki/Shiro/Legends

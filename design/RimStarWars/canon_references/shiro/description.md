@@ -23,7 +23,7 @@ Skin color is recorded in the infobox as green, sourced to the 2015 video
 game *Disney Infinity 3.0* — this is also their first canon appearance. The
 species originally appeared earlier in Legends, in the 1999 video game
 *Star Wars Episode I: The Gungan Frontier*. The canon-page text itself is
-very thin (one sentence) — the infobox art (`File:ShiroDisneyInfinity.png`)
+very thin (one sentence), and the page carries a Noncanon banner (`{{Top|ncc}}` and `{{Noncanon|canon=1}}`), so its canon status is flagged on the wiki itself and no independent canon reintroduction was found — the infobox art (`File:ShiroDisneyInfinity.png`)
 is the primary canon visual source.
 
 **Legends page (Shiro/Legends)**: much richer description. Shiros were
@@ -70,9 +70,9 @@ shot) read as duller, mud-toned brown-green — but note the Legends text
 itself explicitly says the animals accumulate mud and camouflage, so a
 "clean" green Shiro may simply not appear undirtied in any Legends art.
 **Treat the canon infobox image (`shirodisneyinfinity.png`) as the color
-anchor** (it is the current, non-Legends canon source, and its green skin
-color is also independently stated in the infobox text, not just visually
-inferred) — but use the Legends group shot (`shiros_group_legends.jpg`) as
+anchor** (it is the only post-2014 source, but the infobox green skin colour is
+sourced to the same *Disney Infinity 3.0* game, so the image and the infobox are
+one source counted twice, and the page carries a Noncanon banner) — but use the Legends group shot (`shiros_group_legends.jpg`) as
 the anchor for **body plan and shell texture** (hard ridged/spiny dome
 shell, stubby retractable head/legs/tail, turtle-like proportions), since
 the canon art is too low-detail/stylized to read shell texture from.
@@ -87,7 +87,7 @@ the canon art is too low-detail/stylized to read shell texture from.
 none known
 
 ## Watch out
-No local donor sprite exists: the RimWorld mod this defName comes from,
+No local donor sprite was located: the RimWorld mod this defName comes from,
 `mlie.starwarsanimalcollection` ("Star Wars Animal Collection", 1.6 release),
 is not installed or vendored anywhere in this repo, and its 1.6 build packs
 creature art inside Unity AssetBundles rather than loose PNGs, so there is no
