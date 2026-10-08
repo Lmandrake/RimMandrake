@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- FeverWood_Rename.xml       RimUtinni Patches — new file 2026-10-08
+
+       Owner's Feverwood art sheet ruling (Transient/biome_ffar/feverwood_sheet_2026-10-05.decisions.json,
+       row VFEI2_Megathrips, 2026-10-08: "Redo name and description."). He named no name, so
+       kasselith is invented in the Fever Wood's liquid-and-hiss register (check_pseudo_sw_name.py
+       pass; no src/ or design/ stem collision). Donor ThingDef + PawnKindDef pair on the
+       PatchOperationConditional gate pattern of Slime_Rename.xml / Miasma_Rename.xml.
+       LABEL/DESCRIPTION ONLY; no defName, stat or art field is touched. -->
+
+  <!-- ============== VFEI2_Megathrips -> kasselith ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VFEI2_Megathrips"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEI2_Megathrips"]/label</xpath>
+          <value><label>kasselith</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEI2_Megathrips"]/description</xpath>
+          <value><description>A narrow, hard-shelled insect the length of a forearm, built in plates like a folded blade, that works the Fever Wood's rotten trunks in endless files. Kasselith are hive workers, bred long ago for war: their mandibles shear through bark and armour alike, and glands behind the jaws spit an acid that burns exposed flesh. A kasselith cannot breed on its own — it belongs to a hive somewhere, and where one is seen boring into a trunk, more are already inside.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="VFEI2_Megathrips"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="VFEI2_Megathrips"]/label</xpath>
+      <value><label>kasselith</label></value>
+    </match>
+  </Operation>
+
+</Patch>

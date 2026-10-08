@@ -141,7 +141,7 @@
   <ThingDef ParentName="RM_FeverWoodBirdBase">
     <defName>RM_Chellow</defName>
     <label>chellow</label>
-    <description>Squat and round, with no feathers on its head at all — bare wrinkled skin and a translucent throat-fan it inflates to call, veined and lit faintly from behind. Easy to win over and easy to keep, a cultivated flock of chellow makes a private chorus outside the walls: as long as they are calling, the water below is quiet.</description>
+    <description>Squat and round, with no feathers on its head at all — bare wrinkled skin, no beak, and in place of a mouth a lipless flap of skin that it vibrates to whistle. Below it hangs a translucent throat-fan it inflates to carry the call, veined and lit faintly from behind. Easy to win over and easy to keep, a cultivated flock of chellow makes a private chorus outside the walls: as long as they are calling, the water below is quiet.</description>
     <statBases>
       <MarketValue>75</MarketValue>
       <Wildness>0.35</Wildness>
@@ -321,7 +321,7 @@
   <ThingDef ParentName="RM_FeverWoodBirdBase">
     <defName>RM_Skellick</defName>
     <label>skellick</label>
-    <description>Small and long-limbed, its plumes crumpled and unequal, sticking out at wrong angles as if damaged on purpose — the untidiest silhouette in the crown. It has learned to slip down and take small unattended things while nobody is looking, and it is very good at not being looked at.</description>
+    <description>A thief, and nothing else about it matters as much. Small and long-limbed, its plumes crumpled and unequal and sticking out at wrong angles as if damaged on purpose, it is the untidiest silhouette in the crown and somehow the hardest to notice. Skellick drop out of the boughs to take small unattended things — food, tools, anything that glints — and are back in the canopy before anyone looks up. Whatever goes missing near the Fever Wood, a skellick probably has it.</description>
     <statBases>
       <MarketValue>60</MarketValue>
       <Wildness>0.7</Wildness>

@@ -248,7 +248,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Grolth</defName>
     <label>grolth</label>
-    <description>A wet, dark hummock of a body with no head anyone has found, working the causeway margins so slowly it reads as part of the mud. A pale, dissolving slick spreads from under its front edge, and whatever dead thing that slick reaches is gone by morning. It does not chase. It does not need to: in the Fever Wood, something is always dying near the water.</description>
+    <description>A slumped, glistening mound of dark olive flesh, heaped in heavy folds and rolls with no head anyone has found, moss and lichen taking hold on its back as if it were a fallen log. It moves on short, splayed, toe-padded stumps, so slowly it reads as part of the mud. From under its front edge pours a pale, yellow-green slime that eats into whatever it touches, and the grolth leaves a dissolving trail of it wherever it has been. Anything dead that the slime reaches is gone by morning. It does not chase; in the Fever Wood, something is always dying near the water.</description>
     <statBases>
       <MoveSpeed>1.4</MoveSpeed>  <!-- PROVISIONAL: slow on purpose, never a chaser -->
       <MarketValue>90</MarketValue>  <!-- PROVISIONAL -->
@@ -479,7 +479,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Brathek</defName>
     <label>brathek</label>
-    <description>A heavy ringed grub the length of a forearm, pale and wet, with a dark rasping head-plate broader than the rest of it, so the tunnel it cuts is always wider than the animal. It is usually seen head-on in a gallery mouth, or as a slow moving bulge under bark. It eats wood, and it keeps eating.</description>
+    <description>A fat, ringed larva as long as a forearm, pale and wet, its soft body carried on rows of short gripper pegs that clamp into bark and hold it fast while it works. The front end is all mouth: a ring of hard rasping plates that grind into living wood a mouthful at a time, so the brathek does not bore so much as scrape its way in. It is usually seen half-buried in a gallery mouth, pegs braced against the rim, or as a slow-moving bulge under bark. It eats wood, and it keeps eating.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>  <!-- INVENTED / PROVISIONAL: slow and visible -->
       <MarketValue>120</MarketValue>  <!-- INVENTED / PROVISIONAL -->
@@ -581,7 +581,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Silloch</defName>
     <label>silloch</label>
-    <description>There is almost nothing to see: a flat mottled wedge the colour of wet bark, folded utterly motionless against a trunk, with only a pair of forward limbs held cocked. It does not stalk. It waits, sometimes for days, and then it is simply attached to something.</description>
+    <description>A flat, mottled wedge the colour and grain of wet bark, pressed so tightly against a trunk that the eye slides off it. Its legs are folded away beneath it; only two forward limbs are held cocked, hooked and ready. The silloch does not hunt. It picks a trunk on a path that small things use and goes still, sometimes for days, and when something small enough passes within reach it strikes once and holds on. Anything moving through the crown should assume the bark is watching.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>  <!-- PROVISIONAL: never needs to be fast -->
       <MarketValue>150</MarketValue>  <!-- PROVISIONAL -->
