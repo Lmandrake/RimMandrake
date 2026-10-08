@@ -169,27 +169,22 @@
     <combatPower>30</combatPower>
     <ecoSystemWeight>0.70</ecoSystemWeight>
     <wildGroupSize>2~5</wildGroupSize>
-    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphicChance>0.833</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 5 variants equally likely -->
     <alternateGraphics>
       <li>
-        <texPath>swanimals/Gorg/GorgA</texPath>
-        <swimmingTexPath>swanimals/Gorg/GorgA_Swimming</swimmingTexPath>
+        <texPath>swanimals/Gorg/GorgV_G</texPath>
       </li>
       <li>
-        <texPath>swanimals/Gorg/GorgB</texPath>
-        <swimmingTexPath>swanimals/Gorg/GorgB_Swimming</swimmingTexPath>
+        <texPath>swanimals/Gorg/GorgV_H</texPath>
       </li>
       <li>
-        <texPath>swanimals/Gorg/GorgC</texPath>
-        <swimmingTexPath>swanimals/Gorg/GorgC_Swimming</swimmingTexPath>
+        <texPath>swanimals/Gorg/GorgV_K</texPath>
       </li>
       <li>
-        <texPath>swanimals/Gorg/GorgD</texPath>
-        <swimmingTexPath>swanimals/Gorg/GorgD_Swimming</swimmingTexPath>
+        <texPath>swanimals/Gorg/GorgV_N</texPath>
       </li>
       <li>
-        <texPath>swanimals/Gorg/GorgE</texPath>
-        <swimmingTexPath>swanimals/Gorg/GorgE_Swimming</swimmingTexPath>
+        <texPath>swanimals/Gorg/GorgV_O</texPath>
       </li>
     </alternateGraphics>
     <lifeStages>

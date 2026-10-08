@@ -33,3 +33,11 @@ Source: `Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json` (the RM_Lo
 - Canon: Sketto N/S + 4 flight frames, TeeMuss N/S (+east at proper res), Falumpaset N/S (+512 east), Nerf N/S, Dewback N/S (4-cell canvas), Uvak flight, Shyrack flight (replaces the stray `_44_` frame), Gorg variant L and FrilledGorg variants I/K N/S at new unwired paths GorgV_L / FrilledGorgV_I / _K.
 - Non-canon: Landopus N/S of the half-buried F (new path landopus_buried — slot is a question), Dakkra rest N/S (RM_Dakkra_rest, already wired as stationaryGraphicData), Chorn redo (5 cells, 1024), Venomvine redo (def also tints it dark — check on arrival).
 - Picks whose masters sit in artpipe failed/ were attached as canon_reference instead of derive_from (daemon fails derive-from-failed).
+
+### Part 3 — owner's card answers (2026-10-07 22:48 PDT, decision taken by question card)
+- Animal variants replace the donor colour versions at all ages (`longshade_install_animal_variants.py`): Bantha G-J, Gorg G/H/K/N/O, FrilledGorg G/J/M, LongtailGorg G-L, Varactyl E/F, WraidAlpha D installed at swanimals/<Sp>/<Sp>V_<letter>; alternateGraphics rewritten to exactly those, chance n/(n+1). FrilledGorg A was ticked AND in his purge list: purge wins, not installed. Gorg L / FrilledGorg I,K get wired when their queued N/S land. Gorg variants carry no swim art (base swim graphic used).
+- Landopus: new standing octopus from F queued (regen_ls_x_landopus_standing_v1_{east,north,south}, priority 0). F + the queued landopus_buried N/S become the swimming set on arrival; cartoon D is retired at that install (retiring it now would leave the swim slot without art).
+- Dakkra fins-down moving pose queued (regen_ls_x_dakkra_moving_v1_{east,north,south}, priority 0) -> RM_Dakkra.
+- Leachmoss: redo dropped (no Leachmoss job was queued); B installed beside A as a Graphic_Random variant.
+- Great Devourer: no change (stays the RSW sarlacc seeker). Clodhopper C: not installed; its render is unpurged and in the art store, so it stays a sheet candidate.
+- Pavecrust/Dewfringe: five variants each is final. Venomvine: untouched (job regen_ls_x_venomvine_v2 pending).

@@ -159,37 +159,19 @@
     <labelMale>bantha bull</labelMale>
     <labelFemale>bantha cow</labelFemale>
     <wildGroupSize>3~9</wildGroupSize>
-    <alternateGraphicChance>0</alternateGraphicChance>  <!-- owner 2026-10-08 picked the canon-coloured render F (swanimals/Bantha/BanthaR, no colour mask): the donor colour tints would muddy it. Texture variants G-J await his wiring ruling. -->
+    <alternateGraphicChance>0.8</alternateGraphicChance>  <!-- owner 2026-10-07 card: his Long Shade sheet variant picks replace the donor colour versions at all ages; base + 4 variants equally likely -->
     <alternateGraphics>
       <li>
-        <color>(140,74,39)</color>
+        <texPath>swanimals/Bantha/BanthaV_G</texPath>
       </li>
       <li>
-        <color>(150,75,0)</color>
+        <texPath>swanimals/Bantha/BanthaV_H</texPath>
       </li>
       <li>
-        <color>(109,73,55)</color>
+        <texPath>swanimals/Bantha/BanthaV_I</texPath>
       </li>
       <li>
-        <color>(87,71,57)</color>
-      </li>
-      <li>
-        <color>(132,91,78)</color>
-      </li>
-      <li>
-        <color>(137,128,103)</color>
-      </li>
-      <li>
-        <color>(140,102,49)</color>
-      </li>
-      <li>
-        <color>(91,83,61)</color>
-      </li>
-      <li>
-        <color>(156,148,125)</color>
-      </li>
-      <li>
-        <color>(85,85,85)</color>
+        <texPath>swanimals/Bantha/BanthaV_J</texPath>
       </li>
     </alternateGraphics>
     <lifeStages>

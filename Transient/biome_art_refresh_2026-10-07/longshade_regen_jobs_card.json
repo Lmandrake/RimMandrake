@@ -1,0 +1,50 @@
+[
+ {
+  "id": "regen_ls_x_landopus_standing_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "JOE_Landopus",
+  "prompt": "RimWorld creature sprite: the landopus (thraia), a bad-tempered, sand-coloured land octopus-squid STANDING FULLY OUT OF THE SAND on its long, slender tentacles: the whole mantle visible with its scatter of odd vivid blue ringed circles, watchful eyes, the long slender tentacles splayed and carrying it, and the wicked slender parrot-like beak within. The attached image is the owner's accepted half-buried render of this very animal: same species, anatomy, colouring, markings and painted style, but now entirely above ground, no sand. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "north",
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground -- the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked",
+  "owner_note": "Landopus: F becomes the buried/swimming look. Generate a NEW standing octopus from F and retire cartoon D. (owner, question card 2026-10-07 22:48 PDT)",
+  "drawsize": 0.8,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9a/9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/landopus/landopus"
+ },
+ {
+  "id": "regen_ls_x_dakkra_moving_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dakkra",
+  "prompt": "RimWorld creature sprite: the dakkra, a close, low shadow-ambush predator the size of a large dog: lean and low with a wide mouth and heavy forelimbs, dark slate hide with a warm rust line down the spine, MOVING in the heat: every spine fin folded DOWN flat along the back and the tail-tip fan closed, mid-stride. The attached image is the owner's accepted RESTING render of this very individual with fins flared: draw exactly that animal -- same species, anatomy, colouring, markings, scale and painted style -- with the fins lowered. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "north",
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground -- the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked",
+  "owner_note": "Dakkra: generate a matching fins-down moving pose from his fins-up resting pick. (owner, question card 2026-10-07 22:48 PDT)",
+  "drawsize": 2.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/84/84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+ }
+]
