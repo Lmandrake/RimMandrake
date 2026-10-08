@@ -47,6 +47,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_AftermathKernel.cs" />
     <Compile Include="ChronicleEvent.cs" />
     <Compile Include="ChronicleEvents.cs" />
     <Compile Include="BattleOutcome.cs" />

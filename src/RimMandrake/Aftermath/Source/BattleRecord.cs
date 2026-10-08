@@ -41,38 +41,38 @@ namespace RimMandrake.Aftermath
             Map = map;
         }
 
-        // Live counts computed from current Pawn state — see
+        // Raiders seen spawned on the map at least once. A raider still inside a drop pod is not spawned, but has not left either.
+        private readonly HashSet<Pawn> seenSpawned = new HashSet<Pawn>();
+
+        public void NoteArrivals()
+        {
+            foreach (Pawn p in OriginalPawns)
+                if (p != null && p.Spawned) seenSpawned.Add(p);
+        }
+
+        public bool GraceExpired => RM_AftermathKernel.GraceExpired(OpenedTick, Find.TickManager.TicksGame);
+
+        private List<RM_RaiderObs> Observe()
+        {
+            NoteArrivals();
+            var obs = new List<RM_RaiderObs>(OriginalPawns.Count);
+            foreach (Pawn p in OriginalPawns)
+                if (p != null) obs.Add(new RM_RaiderObs(p.Dead || p.Downed, p.Spawned, seenSpawned.Contains(p)));
+            return obs;
+        }
+
+        // Live counts computed from current Pawn state - see
         // BattleOutcomeClassifier for why these three numbers (plus
         // ColonistCasualty) are all the classifier needs.
-        public int CountDeadOrDowned()
-        {
-            int n = 0;
-            foreach (Pawn p in OriginalPawns)
-                if (p != null && (p.Dead || p.Downed)) n++;
-            return n;
-        }
+        public int CountDeadOrDowned() => RM_AftermathKernel.CountDeadOrDowned(Observe());
 
-        public int CountSurvivedAndExited()
-        {
-            int n = 0;
-            foreach (Pawn p in OriginalPawns)
-                if (p != null && !p.Dead && !p.Downed && !p.Spawned) n++;
-            return n;
-        }
+        public int CountSurvivedAndExited() => RM_AftermathKernel.CountSurvivedAndExited(Observe(), GraceExpired);
 
-        // "All accounted for" — every original raider is either
-        // dead/downed or off the map. This is the fallback closing
-        // condition when no Lord was ever correlated (see
+        // "All accounted for" - every original raider is either dead/downed
+        // or has left the map after being seen on it. This is the fallback
+        // closing condition when no Lord was ever correlated (see
         // MapComponent_BattleRecorder), and is ALSO true the instant the
         // correlated Lord empties out, so polling it costs nothing extra.
-        public bool AllPawnsAccountedFor()
-        {
-            foreach (Pawn p in OriginalPawns)
-            {
-                if (p == null) continue;
-                if (!p.Dead && !p.Downed && p.Spawned) return false;
-            }
-            return true;
-        }
+        public bool AllPawnsAccountedFor() => RM_AftermathKernel.AllAccountedFor(Observe(), GraceExpired);
     }
 }

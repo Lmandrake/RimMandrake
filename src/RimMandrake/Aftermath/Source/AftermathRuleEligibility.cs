@@ -13,10 +13,8 @@ namespace RimMandrake.Aftermath
         public static bool IsEligible(RM_AftermathRuleDef def, BattleOutcome outcome, int survivors)
         {
             if (def == null) return false;
-            if (def.triggerKind != AftermathTriggerKind.BattleOutcome) return false;
-            if (def.triggerOutcomes == null || !def.triggerOutcomes.Contains(outcome)) return false;
-            if (survivors < def.minSurvivors) return false;
-            return true;
+            return RM_AftermathKernel.OutcomeEligible(def.triggerKind == AftermathTriggerKind.BattleOutcome,
+                def.triggerOutcomes != null && def.triggerOutcomes.Contains(outcome), survivors, def.minSurvivors);
         }
 
         // Rule 6 ("Zizzik's aftermath"). The trigger's own conditions --
@@ -39,8 +37,7 @@ namespace RimMandrake.Aftermath
         public static bool IsEligiblePrisonerHeldDuration(RM_AftermathRuleDef def, float heldDays)
         {
             if (def == null) return false;
-            if (def.triggerKind != AftermathTriggerKind.PrisonerHeldDuration) return false;
-            return heldDays >= def.minHeldDays;
+            return RM_AftermathKernel.HeldEligible(def.triggerKind == AftermathTriggerKind.PrisonerHeldDuration, heldDays, def.minHeldDays);
         }
     }
 }

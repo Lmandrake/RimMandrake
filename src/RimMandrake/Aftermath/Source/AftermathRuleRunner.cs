@@ -24,12 +24,12 @@ namespace RimMandrake.Aftermath
         // Rule 6's own window ("a mental break WITHIN 2 DAYS after a
         // battle"). MOD_OPTIONS_RETROFIT_1: tunable, default 2 days.
         private static int MentalBreakNearBattleWindowTicks =>
-            (int)(RM_AftermathSettings.mentalBreakWindowDays * GenDate.TicksPerDay);
+            RM_AftermathKernel.WindowTicks(RM_AftermathSettings.mentalBreakWindowDays);
 
         // Rule 4's own poll cadence - same 5000-tick (~2 in-game hour)
         // interval GameComponentTick already housekeeps `queued` on, so one
         // tick-modulo check covers both.
-        private const int HousekeepingIntervalTicks = 5000;
+        private const int HousekeepingIntervalTicks = RM_AftermathKernel.HousekeepingIntervalTicks;
 
         private List<QueuedAftermathMarker> queued = new List<QueuedAftermathMarker>();
 
@@ -49,8 +49,8 @@ namespace RimMandrake.Aftermath
         // clock and can fire again). IN-MEMORY ONLY, same documented
         // reload-resets-the-clock limitation as lastClosedByMap above: a
         // save/reload loses the partial hold time, not the mechanism.
-        private readonly Dictionary<Pawn, int> prisonerFirstSeenTick = new Dictionary<Pawn, int>();
-        private readonly HashSet<Pawn> prisonerFiredFor = new HashSet<Pawn>();
+        private readonly RM_PrisonerClock prisonerClock = new RM_PrisonerClock();
+        private readonly Dictionary<int, Pawn> prisonerById = new Dictionary<int, Pawn>();
 
         public AftermathRuleRunner(Game game)
         {
@@ -75,34 +75,19 @@ namespace RimMandrake.Aftermath
         // fallback poll uses for "is this battle over."
         private void PollPrisoners()
         {
+            // One pass over EVERY map's prisoners: the clock forgets anyone not in the whole set. (Polling map by map made each map's pass drop
+            // the other maps' prisoners from tracking and restart their clocks, so with two or more maps nobody was ever held long enough.)
+            int now = Find.TickManager.TicksGame;
+            prisonerById.Clear();
             foreach (Map map in Find.Maps)
+                foreach (Pawn prisoner in map.mapPawns.PrisonersOfColonySpawned)
+                    prisonerById[prisoner.thingIDNumber] = prisoner;
+            prisonerClock.Poll(now, prisonerById.Keys.ToList());
+
+            foreach (KeyValuePair<int, Pawn> kv in prisonerById.ToList())
             {
-                List<Pawn> current = map.mapPawns.PrisonersOfColonySpawned;
-                var currentSet = new HashSet<Pawn>(current);
-
-                // A pawn no longer one of our spawned prisoners here (escaped,
-                // released, died, rescued, transferred) drops out of tracking
-                // entirely - a later recapture is a fresh captivity episode
-                // with its own clock and its own chance to fire.
-                if (prisonerFirstSeenTick.Count > 0)
-                {
-                    foreach (Pawn tracked in prisonerFirstSeenTick.Keys.ToList())
-                    {
-                        if (currentSet.Contains(tracked)) continue;
-                        prisonerFirstSeenTick.Remove(tracked);
-                        prisonerFiredFor.Remove(tracked);
-                    }
-                }
-
-                int now = Find.TickManager.TicksGame;
-                foreach (Pawn prisoner in current)
-                {
-                    if (!prisonerFirstSeenTick.ContainsKey(prisoner)) prisonerFirstSeenTick[prisoner] = now;
-                    if (prisonerFiredFor.Contains(prisoner)) continue;
-
-                    float heldDays = (now - prisonerFirstSeenTick[prisoner]) / (float)GenDate.TicksPerDay;
-                    if (OnPrisonerHeldTooLong(prisoner, heldDays)) prisonerFiredFor.Add(prisoner);
-                }
+                if (prisonerClock.HasFired(kv.Key)) continue;
+                if (OnPrisonerHeldTooLong(kv.Value, prisonerClock.HeldDays(kv.Key, now))) prisonerClock.MarkFired(kv.Key);
             }
         }
 
@@ -178,7 +163,7 @@ namespace RimMandrake.Aftermath
             if (!lastClosedByMap.TryGetValue(map, out BattleRecord record) || record == null) return;
 
             int sinceBattle = Find.TickManager.TicksGame - record.ClosedTick;
-            if (sinceBattle < 0 || sinceBattle > MentalBreakNearBattleWindowTicks) return;
+            if (!RM_AftermathKernel.InMentalBreakWindow(sinceBattle, MentalBreakNearBattleWindowTicks)) return;
 
             // NinefoldBandBridge is a soft-hook reflection query (the mirror
             // of ChronicleSubscriber's soft-hook subscribe on Ninefold's own
@@ -229,7 +214,7 @@ namespace RimMandrake.Aftermath
             }
 
             float delayDays = Rand.Range(def.delayDaysMin, def.delayDaysMax);
-            int delayTicks = (int)(delayDays * GenDate.TicksPerDay);
+            int delayTicks = RM_AftermathKernel.DelayTicks(delayDays);
             int fireTick = Find.TickManager.TicksGame + delayTicks;
 
             IncidentParms parms = new IncidentParms
@@ -346,9 +331,7 @@ namespace RimMandrake.Aftermath
             int liveTotal = queued.Count(q => q.FireTick > now);
             int liveForFaction = queued.Count(q => q.FireTick > now && q.Faction == targetFaction);
 
-            if (liveForFaction >= MaxPerFaction) return false;
-            if (liveTotal >= MaxTotal) return false;
-            return true;
+            return RM_AftermathKernel.PassesDiscipline(liveForFaction, liveTotal, MaxPerFaction, MaxTotal);
         }
 
         private static void SendTelegraph(RM_AftermathRuleDef def, Faction telegraphFaction)
