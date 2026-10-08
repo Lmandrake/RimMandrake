@@ -39,14 +39,7 @@ namespace RimMandrake.SeaShores
             }
 
             seas = new Dictionary<BiomeDef, RM_SeaShoreExtension>();
-            terrainToSea = new Dictionary<TerrainDef, BiomeDef>();
-            HashSet<TerrainDef> ambiguous = new HashSet<TerrainDef>
-            {
-                TerrainDefOf.WaterOceanDeep,
-                TerrainDefOf.WaterOceanShallow,
-                TerrainDefOf.WaterDeep,
-                TerrainDefOf.WaterShallow
-            };
+            var seaTerrains = new List<RM_SeaKernel.SeaTerrains<BiomeDef, TerrainDef>>();
 
             foreach (BiomeDef biome in DefDatabase<BiomeDef>.AllDefsListForReading)
             {
@@ -56,29 +49,17 @@ namespace RimMandrake.SeaShores
                     continue;
                 }
                 seas[biome] = ext;
-
-                RegisterTerrain(DeepTerrainOf(biome), biome, ambiguous);
-                RegisterTerrain(ShallowTerrainOf(biome), biome, ambiguous);
+                seaTerrains.Add(new RM_SeaKernel.SeaTerrains<BiomeDef, TerrainDef>
+                    { Sea = biome, Deep = DeepTerrainOf(biome), Shallow = ShallowTerrainOf(biome) });
             }
 
-            foreach (TerrainDef t in ambiguous)
+            terrainToSea = RM_SeaKernel.BuildTerrainKeys(seaTerrains, new[]
             {
-                terrainToSea.Remove(t);
-            }
-        }
-
-        private static void RegisterTerrain(TerrainDef terrain, BiomeDef sea, HashSet<TerrainDef> ambiguous)
-        {
-            if (terrain == null || ambiguous.Contains(terrain))
-            {
-                return;
-            }
-            if (terrainToSea.TryGetValue(terrain, out BiomeDef existing) && existing != sea)
-            {
-                ambiguous.Add(terrain);
-                return;
-            }
-            terrainToSea[terrain] = sea;
+                TerrainDefOf.WaterOceanDeep,
+                TerrainDefOf.WaterOceanShallow,
+                TerrainDefOf.WaterDeep,
+                TerrainDefOf.WaterShallow
+            });
         }
 
         public static RM_SeaShoreExtension ExtensionOf(BiomeDef biome)
@@ -103,7 +84,7 @@ namespace RimMandrake.SeaShores
             {
                 return null;
             }
-            return ext.deepTerrain ?? sea.oceanDeepTerrain ?? sea.waterDeepTerrain ?? TerrainDefOf.WaterOceanDeep;
+            return RM_SeaKernel.FirstNonNull(ext.deepTerrain, sea.oceanDeepTerrain, sea.waterDeepTerrain, () => TerrainDefOf.WaterOceanDeep);
         }
 
         public static TerrainDef ShallowTerrainOf(BiomeDef sea)
@@ -113,7 +94,7 @@ namespace RimMandrake.SeaShores
             {
                 return null;
             }
-            return ext.shallowTerrain ?? sea.oceanShallowTerrain ?? sea.waterShallowTerrain ?? TerrainDefOf.WaterOceanShallow;
+            return RM_SeaKernel.FirstNonNull(ext.shallowTerrain, sea.oceanShallowTerrain, sea.waterShallowTerrain, () => TerrainDefOf.WaterOceanShallow);
         }
 
         // The sea a land tile faces: the one holding the most of its
@@ -133,8 +114,7 @@ namespace RimMandrake.SeaShores
                 return null;
             }
 
-            BiomeDef best = null;
-            int bestCount = 0;
+            var neighbourSeas = new List<BiomeDef>();
             lock (tmpNeighbours)
             {
                 tmpNeighbours.Clear();
@@ -142,27 +122,10 @@ namespace RimMandrake.SeaShores
                 for (int i = 0; i < tmpNeighbours.Count; i++)
                 {
                     BiomeDef biome = grid[tmpNeighbours[i]]?.PrimaryBiome;
-                    if (biome == null || !seas.ContainsKey(biome))
-                    {
-                        continue;
-                    }
-                    int count = 0;
-                    for (int j = 0; j < tmpNeighbours.Count; j++)
-                    {
-                        if (grid[tmpNeighbours[j]]?.PrimaryBiome == biome)
-                        {
-                            count++;
-                        }
-                    }
-                    if (count > bestCount || (count == bestCount && best != null
-                        && string.CompareOrdinal(biome.defName, best.defName) < 0))
-                    {
-                        best = biome;
-                        bestCount = count;
-                    }
+                    neighbourSeas.Add(biome != null && seas.ContainsKey(biome) ? biome : null);
                 }
             }
-            return best;
+            return RM_SeaKernel.PrimarySea(neighbourSeas, b => b.defName);
         }
 
         // True when this tile has at least one sea neighbour whose extension
@@ -213,17 +176,15 @@ namespace RimMandrake.SeaShores
             }
 
             TerrainDef terrain = map.terrainGrid.TerrainAt(cell);
-            if (terrain != null && terrainToSea.TryGetValue(terrain, out BiomeDef keyed))
+            BiomeDef keyed = null;
+            if (terrain != null)
             {
-                return keyed;
+                terrainToSea.TryGetValue(terrain, out keyed);
             }
 
             BiomeDef sea = PrimarySeaFor(map.Tile);
-            if (sea == null || terrain == null)
-            {
-                return null;
-            }
-            return (terrain == DeepTerrainOf(sea) || terrain == ShallowTerrainOf(sea)) ? sea : null;
+            return RM_SeaKernel.CellSea(keyed, sea, terrain != null,
+                sea != null && terrain == DeepTerrainOf(sea), sea != null && terrain == ShallowTerrainOf(sea));
         }
 
         // rootCell is Scribed and always set; WaterBody.cells is [Unsaved] and
@@ -247,17 +208,10 @@ namespace RimMandrake.SeaShores
             {
                 return EmptyBand;
             }
-            List<FishChance> preferred = uncommon
-                ? (saltwater ? fish.saltwater_Uncommon : fish.freshwater_Uncommon)
-                : (saltwater ? fish.saltwater_Common : fish.freshwater_Common);
-            if (!preferred.NullOrEmpty())
-            {
-                return preferred;
-            }
-            List<FishChance> fallback = uncommon
-                ? (saltwater ? fish.freshwater_Uncommon : fish.saltwater_Uncommon)
-                : (saltwater ? fish.freshwater_Common : fish.saltwater_Common);
-            return fallback ?? EmptyBand;
+            return RM_SeaKernel.BandFor(
+                uncommon ? (saltwater ? fish.saltwater_Uncommon : fish.freshwater_Uncommon) : (saltwater ? fish.saltwater_Common : fish.freshwater_Common),
+                uncommon ? (saltwater ? fish.freshwater_Uncommon : fish.saltwater_Uncommon) : (saltwater ? fish.freshwater_Common : fish.saltwater_Common),
+                EmptyBand);
         }
 
         // The biome whose fishTypes should answer for a fishing cell. Called
@@ -271,12 +225,8 @@ namespace RimMandrake.SeaShores
                 return land;
             }
             BiomeDef sea = SeaForCell(map, cell);
-            if (sea == null || sea.fishTypes == null)
-            {
-                return land;
-            }
             RM_SeaShoreExtension ext = ExtensionOf(sea);
-            return (ext != null && ext.providesCatch) ? sea : land;
+            return RM_SeaKernel.CatchTableApplies(true, true, sea != null, sea?.fishTypes != null, ext != null && ext.providesCatch) ? sea : land;
         }
     }
 }

@@ -44,6 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_SeaKernel.cs" />
     <Compile Include="RM_SeaShoreExtension.cs" />
     <Compile Include="RM_SeaShoreUtility.cs" />
     <Compile Include="RM_TileMutatorWorker_SeaCoast.cs" />

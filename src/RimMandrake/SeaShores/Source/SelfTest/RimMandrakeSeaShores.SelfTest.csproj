@@ -71,6 +71,7 @@
          call sites exercised here touch Find/Game/DefDatabase; the settings
          and Mod classes come along only because RM_SeaShoreUtility.FishBiomeFor
          names RM_SeaShoresSettings.Cur, which is never called from here. -->
+    <Compile Include="..\Kernel\RM_SeaKernel.cs" />
     <Compile Include="..\RM_SeaShoreExtension.cs" />
     <Compile Include="..\RM_SeaShoreUtility.cs" />
     <Compile Include="..\RM_SeaShoresSettings.cs" />

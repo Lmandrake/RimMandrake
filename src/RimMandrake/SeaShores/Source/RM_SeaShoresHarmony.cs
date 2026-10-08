@@ -43,7 +43,6 @@ namespace RimMandrake.SeaShores
     public static class RM_Patch_CoastDirectionAt
     {
         private static readonly List<PlanetTile> tmpNeighbours = new List<PlanetTile>();
-        private static readonly List<Rot4> tmpDirs = new List<Rot4>();
 
         public static void Postfix(PlanetTile tile, ref Rot4 __result)
         {
@@ -62,22 +61,17 @@ namespace RimMandrake.SeaShores
                 return;
             }
 
-            tmpDirs.Clear();
             tmpNeighbours.Clear();
             grid.GetTileNeighbors(tile, tmpNeighbours);
+            var dirs = new List<Rot4>();
+            var coasts = new List<bool>();
             for (int i = 0; i < tmpNeighbours.Count; i++)
             {
                 RM_SeaShoreExtension ext = RM_SeaShoreUtility.ExtensionOf(grid[tmpNeighbours[i]]?.PrimaryBiome);
-                if (ext == null || !ext.countsAsCoast)
-                {
-                    continue;
-                }
-                Rot4 dir = grid.GetRotFromTo(tile, tmpNeighbours[i]);
-                if (!tmpDirs.Contains(dir))
-                {
-                    tmpDirs.Add(dir);
-                }
+                dirs.Add(ext != null ? grid.GetRotFromTo(tile, tmpNeighbours[i]) : Rot4.Invalid);
+                coasts.Add(ext != null && ext.countsAsCoast);
             }
+            List<Rot4> tmpDirs = RM_SeaKernel.CoastDirections(dirs, coasts);
             if (tmpDirs.Count == 0)
             {
                 return;
@@ -152,7 +146,7 @@ namespace RimMandrake.SeaShores
             }
             BiomeDef sea = RM_SeaShoreUtility.SeaForWaterBody(__instance);
             RM_SeaShoreExtension ext = RM_SeaShoreUtility.ExtensionOf(sea);
-            if (ext == null || !ext.providesCatch || sea.fishTypes == null)
+            if (!RM_SeaKernel.CatchTableApplies(true, true, sea != null, sea?.fishTypes != null, ext != null && ext.providesCatch))
             {
                 return;
             }
@@ -162,7 +156,7 @@ namespace RimMandrake.SeaShores
 
             // Vanilla returns before rolling shouldHaveFish when the LAND biome
             // has no fishTypes at all, which is the common case beside a sea.
-            if (__instance.map.Biome.fishTypes == null)
+            if (RM_SeaKernel.RollShouldHaveFish(__instance.map.Biome.fishTypes != null))
             {
                 ___shouldHaveFish = Rand.Chance(
                     FishingUtility.ChanceForCommonFishFromWaterBodySizeCurve.Evaluate(__instance.Size));
