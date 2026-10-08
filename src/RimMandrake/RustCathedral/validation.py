@@ -673,6 +673,10 @@ def _build_suite():
                 if not _live(t):
                     continue
                 old = _raw(t, typ, "get", field).get("value")
+                if old is None and ty == "string":
+                    # LIVE 2026-10-08: crossBiomeBiomeList defaults to "" and the bridge reports an empty string as
+                    # no value. The set/read-back below still proves the field is registered; a missing field fails there.
+                    old = ""
                 if old is None:
                     raise ExpectationFailed("%s.%s: get returned no value" % (typ, field))
                 if ty == "bool":

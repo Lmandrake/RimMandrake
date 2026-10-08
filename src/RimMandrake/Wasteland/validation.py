@@ -515,6 +515,14 @@ def _spawn(t, kind, x, z, faction="none"):
     return pid
 
 
+def _wait_dose(t, n):
+    """Wait at least one vanilla toxic dose interval. LIVE 2026-10-08 (acc_biomes): every ToxicBuildup check here
+    waited 420-900 ticks, but ToxicUtility.CheckInterval is 3451 and both the storm layer (now % 3451 == 0) and
+    RM_CompAmbientDose (default checkIntervalTicks) dose only on that cadence, so a shorter window usually holds no
+    dose tick at all and reads 'never applies'. RimSage-confirmed: DoPawnToxicDamage adds ~0.023 per interval."""
+    t.wait_ticks(max(n, 3451 + 120))
+
+
 def _settle(t, pid):
     """A colonist that will not wander off to eat, sleep or fight: needs full, undrafted."""
     t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
@@ -928,7 +936,7 @@ def storm_ash_on(t):
             _weather(t, ASH)
 
         with _comp(t, "ash_storm_doses_an_unroofed_pawn", independent=True, toggle="stormDoseEnabled"):
-            t.wait_ticks(600)
+            _wait_dose(t, 600)
             if _live(t):
                 sev = _hed(t, box["c"], "ToxicBuildup")
                 _note(t, "ToxicBuildup after 600 ticks of ash storm", sev)
@@ -974,7 +982,7 @@ def storm_ash_off(t):
             _weather(t, ASH)
 
         with _comp(t, "dose_off_means_no_buildup", independent=True, toggle="stormDoseEnabled"):
-            t.wait_ticks(600)
+            _wait_dose(t, 600)
             if _live(t):
                 sev = _hed(t, box["c"], "ToxicBuildup")
                 if sev > 0:
@@ -1039,7 +1047,7 @@ def _named_storm_chain(weather, label):
                         _fail("no new message starting %r after the warning ended" % UNLEASH[weather])
 
             with _comp(t, "dose_begins_after_the_warning", independent=True, toggle="stormDoseEnabled"):
-                t.wait_ticks(450)
+                _wait_dose(t, 450)
                 if _live(t):
                     sev = _hed(t, box["c"], "ToxicBuildup")
                     if not sev > 0:
@@ -1078,7 +1086,7 @@ def named_storm_phases_off(t):
                     _fail("a warning message %r appeared with namedStormPhasesEnabled=false" % WARN[HALO])
 
         with _comp(t, "dose_starts_at_once_when_off", independent=True, toggle="namedStormPhasesEnabled"):
-            t.wait_ticks(420)
+            _wait_dose(t, 420)
             if _live(t):
                 sev = _hed(t, box["c"], "ToxicBuildup")
                 if not sev > 0:
@@ -1115,7 +1123,7 @@ def smolderback_room(t):
                 if _room_temp(t, ib[0] + 1, ib[1] + 1) >= 24.0:
                     _unmeasured(t, "the control room is already %s C, at or past the heat pusher's 26 C cap, so a "
                                    "heating effect cannot be told from none" % _room_temp(t, ib[0] + 1, ib[1] + 1))
-            t.wait_ticks(900)
+            _wait_dose(t, 900)
 
         with _comp(t, "smolderback_doses_its_own_room", independent=True, toggle="ambientDoseEnabled"):
             if _live(t):
@@ -1145,7 +1153,7 @@ def smolderback_room(t):
         with _comp(t, "dose_off_stops_dosing", independent=True, toggle="ambientDoseEnabled"):
             t.bridge_call("jawa/pawn_health", pawn=box.get("ca"), action="remove", hediff="ToxicBuildup")
             _set(t, ambientDoseEnabled=False)
-            t.wait_ticks(700)
+            _wait_dose(t, 700)
             if _live(t):
                 sev = _hed(t, box["ca"], "ToxicBuildup")
                 if sev > 0:
@@ -1166,7 +1174,7 @@ def smolderback_room(t):
             _restore(t, ["ambientDoseEnabled"])
             t.bridge_call("jawa/pawn_health", pawn=box.get("ca"), action="remove", hediff="ToxicBuildup")
             _set(t, wastelandEnabled=False)
-            t.wait_ticks(700)
+            _wait_dose(t, 700)
             if _live(t):
                 sev = _hed(t, box["ca"], "ToxicBuildup")
                 if sev > 0:
@@ -1775,7 +1783,7 @@ def middenshell_body(t):
             who = _spawn(t, "Colonist", fp[0] - 3, (fp[1] + fp[3]) // 2, "player")
             if _live(t):
                 _settle(t, who)
-            t.wait_ticks(500)
+            _wait_dose(t, 500)
             if _live(t):
                 sev = _hed(t, who, "ToxicBuildup")
                 if not sev > 0:

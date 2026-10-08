@@ -538,7 +538,7 @@ namespace RimMandrake.GelatinousSlime
                 // mark from this injection) and "B25's Reek doubles it".
                 if (SlimeDefs.SlimeMarked != null)
                 {
-                    float markIncrement = RM_SlimeLadder.MarkIncrement(comp.RiderGene == SlimeDefs.TheReek,
+                    float markIncrement = RM_SlimeLadder.MarkIncrement(SlimeDefs.TheReek != null && comp.RiderGene == SlimeDefs.TheReek,
                         SlimeDefs.PheromoneCharm != null && patient.genes != null && patient.genes.HasActiveGene(SlimeDefs.PheromoneCharm));
                     if (markIncrement > 0f)
                     {
