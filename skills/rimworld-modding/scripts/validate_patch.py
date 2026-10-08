@@ -1877,6 +1877,10 @@ def find_mod_root(path: str) -> str | None:
     return None
 
 
+_VANILLA_TEX_CACHE: dict = {}
+_TEXPATH_RE = re.compile(r"<(?:texPath|iconPath|uiIconPath|[A-Za-z]*TexPath)>([^<]+)<")
+
+
 class TextureIndex:
     """
     'Does this texPath exist?' answered by cached directory listings.
@@ -1923,6 +1927,10 @@ class TextureIndex:
         # calling that an ERROR is a false alarm - which on the first full-stack
         # run it duly was, twice, on Jawa_Patches.
         self.vanilla_loose = vanilla_loose
+        # Folders of the GAME's own Core/DLC (Data/<X>/), whose Defs/ name every
+        # vanilla texture path. Art inside the asset bundles cannot be listed,
+        # but a path an official def already uses is proof it exists.
+        self.vanilla_folders: list[str] = []
         self._listing: dict[str, dict[str, str]] = {}
 
     def _names(self, d: str) -> dict[str, str]:
@@ -1964,6 +1972,32 @@ class TextureIndex:
             if os.path.isdir(d):
                 return True
         return False
+
+    def vanilla_uses(self, texpath: str) -> bool:
+        """True if a Core/DLC def (Data/<X>/Defs) names this exact texture
+        path. Proves a bundled vanilla texture exists (RM_SeepStone ->
+        Things/Item/Resource/Jade, which Core's own Jade ThingDef uses, was a
+        false ERROR 2026-10-07 because the mod ships Things/Item/Resource/)."""
+        key = tuple(self.vanilla_folders)
+        if not key:
+            return False
+        paths = _VANILLA_TEX_CACHE.get(key)
+        if paths is None:
+            paths = set()
+            for fo in key:
+                for dp, _dn, fns in os.walk(os.path.join(fo, "Defs")):
+                    for fn in fns:
+                        if not fn.lower().endswith(".xml"):
+                            continue
+                        try:
+                            with open(os.path.join(dp, fn), encoding="utf-8",
+                                      errors="replace") as fh:
+                                for m in _TEXPATH_RE.finditer(fh.read()):
+                                    paths.add(m.group(1).strip().replace("\\", "/").lower())
+                        except OSError:
+                            pass
+            _VANILLA_TEX_CACHE[key] = paths
+        return texpath.replace("\\", "/").strip().strip("/").lower() in paths
 
     def find(self, texpath: str) -> tuple[str | None, bool]:
         """(absolute path of the first hit, exact-case) or (None, False)."""
@@ -2174,6 +2208,8 @@ def check_def_structure(root: ET.Element, path: str, f: Findings,
                 if tex is None:
                     continue
                 hit, exact = tex.find(tp)
+                if hit is None and tex.vanilla_uses(tp):
+                    continue        # an official def uses this exact path: it exists (bundled)
                 if hit is None:
                     top = tp.replace("\\", "/").strip("/").split("/")[0].lower()
                     mine = top in tex.own_top and tex.own_parent_exists(tp)
@@ -2277,7 +2313,11 @@ def _textures_for(path: str, mods: list[ModInfo] | None,
             except OSError:
                 pass
 
-    got = (TextureIndex(roots, own_top, vanilla_loose, own_roots=own), ships_dll)
+    tidx = TextureIndex(roots, own_top, vanilla_loose, own_roots=own)
+    for m in (mods or ()):
+        if (m.package_id or "").startswith("ludeon.rimworld"):
+            tidx.vanilla_folders.extend(m.folders or [m.folder])
+    got = (tidx, ships_dll)
     if cache is not None:
         cache[mod_root] = got
     return got

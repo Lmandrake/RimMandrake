@@ -220,35 +220,8 @@
     </comps>
   </ThingDef>
 
-  <!-- RUT_LampBlack — the §2D.rare headline prize. "The black the Compact
-       draws its world in" — kellu ink, a dye-and-chart resource. Same
-       ResourceBase/ExoticMisc shape as RUT_SeepStone/RUT_BrinePlate. -->
-  <ThingDef ParentName="ResourceBase">
-    <defName>RUT_LampBlack</defName>
-    <label>lamp-black</label>
-    <description>Thick, lightfast ink pressed from a kellu's own sac — black as the Grey, and the only black the Compact trusts for a chart that has to survive salt water and a decade in a tube. Dye-houses on the surface pay for it sight unseen; the deep's own dock kitchens will not touch a squid that hasn't already given its ink up.</description>
-    <graphicData>
-      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <thingCategories>
-      <li>ResourcesRaw</li>
-    </thingCategories>
-    <statBases>
-      <MaxHitPoints>50</MaxHitPoints>
-      <MarketValue>24</MarketValue>
-      <Mass>0.1</Mass>
-      <Flammability>0.5</Flammability>
-      <Beauty>0</Beauty>
-      <DeteriorationRate>2</DeteriorationRate>
-    </statBases>
-    <alwaysHaulable>true</alwaysHaulable>
-    <stackLimit>50</stackLimit>
-    <tradeability>Sellable</tradeability>
-    <tradeTags>
-      <li>ExoticMisc</li>
-    </tradeTags>
-  </ThingDef>
+  <!-- RUT_LampBlack is defined once, in mandrake.rm.terminalbiomes
+       (TerminalBiomes/Defs/ThingDefs_Items/RUT_TwilightFish_Niim.xml); a second copy here was a duplicate defName. -->
 
   <!-- SEA_FLOOR_AND_CATCH_PASS_1, 2026-09-24 — two NEW catches added per the
        owner's brief (design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md),
