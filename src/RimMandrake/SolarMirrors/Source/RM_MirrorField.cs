@@ -85,7 +85,9 @@ namespace RimMandrake.SolarMirrors
             int stonesN = ext.stones.RandomInRange;
             string lastWhy = "no site";
             int budget = step.maxEvaluations;      // whole-step cap on simulated light passes (validation pass 2)
-            for (int site = 0; site < step.siteAttempts && budget > 0; site++)
+            int perSolve = RM_MirrorFieldKernel.Configurations(n, d);
+            // stop once the budget cannot pay for one more solve: a site laid then would only be torn down (pass 3)
+            for (int site = 0; site < step.siteAttempts && (perSolve < 0 || budget >= perSolve); site++)
             {
                 if (!TryPlan(step, map, down, n, stonesN, out Plan plan))
                 {

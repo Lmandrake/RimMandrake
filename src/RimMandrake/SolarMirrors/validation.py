@@ -392,6 +392,12 @@ def _guard_checks(bad):
     comp = open(os.path.join(SRC, "RM_CompMirror.cs"), encoding="utf-8").read()
     if "aimDeferred = true;" not in comp or "ResolveDeferredAim(sun)" not in light:
         bad.append("pass 2: a mirror aimed at night commits a normal for an invented overhead sun")
+    if "m.ResolveDeferredAim(m.lastInDir);" not in light or "CollectorSource(m) > MinUseful)" not in light:
+        bad.append("pass 3: a relay aimed at night resolves its normal for the sun, not the beam that reaches it")
+    if "budget >= perSolve" not in field:
+        bad.append("pass 3: mapgen keeps laying and tearing down sites after the budget cannot pay for a solve")
+    if "aimMapId != parent.Map.uniqueID" not in comp or 'Scribe_Values.Look(ref aimFrom, "rmMirrorAimFrom"' not in comp:
+        bad.append("pass 3: a mirror moved (reinstall, gravship) keeps an absolute target on the wrong cell")
     if "AimInReach(target)" not in comp:
         bad.append("pass 2: a reinstalled mirror keeps an aim beyond its range (a held target is never range-checked again)")
     if "seal = null;" not in field:

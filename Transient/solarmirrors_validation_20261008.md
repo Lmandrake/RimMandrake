@@ -126,6 +126,18 @@ NEW kinds, all confirmed against the code here and fixed:
 Offline instruments for P2-1..3 are static guards (Verse code, not kernel); each seen RED on a planted edit. Mutations
 57/57 caught (#56 new).
 
+## Pass 3 — the pass-2 fixes reviewed
+
+A second independent reviewer found two defects the pass-2 fixes introduced and one older path:
+- **P3-1** a shaded RELAY aimed at night resolved its normal for the sun (wrong beam all day). Now resolved before the pass
+  only for a mirror standing in sun; a relay resolves after the pass from the beam that reached it (`r.inDir`).
+- **P3-2** once the budget could not pay one solve, the remaining ~37 sites still spawned, recomputed shade twice and tore
+  down. The site loop now stops at `budget < d^n`.
+- **P3-3** a mirror landed by gravship (plain `GenSpawn.Spawn`, engine `GravshipPlacementUtility`) kept an absolute target
+  on the new map whenever it happened to be in range. Aims now record `aimFrom`/`aimMapId` (saved); a mirror spawned
+  anywhere else drops its aim (covers reinstall too; range check kept).
+Each has a static guard seen RED on a planted edit. Rebuilt clean; fuzz 14,300/0; static PASS.
+
 ## Only a live run can prove
 
 (pending)

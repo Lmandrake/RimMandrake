@@ -46,6 +46,10 @@ namespace RimMandrake.SolarMirrors
         private int detentIndex = -1;
         // Saved (validation pass 2): aimed with no light to aim by (a re-aim job at night); the next sunlit pass sets the normal.
         private bool aimDeferred;
+        // Saved (validation pass 3): where the mirror stood, on which map, when its aim was set. A target is an absolute
+        // cell, so a mirror reinstalled elsewhere or carried by gravship drops it.
+        private IntVec3 aimFrom = IntVec3.Invalid;
+        private int aimMapId = -1;
 
         // Last light pass, for the inspect pane and rendering. Not saved.
         public float lastSource;
@@ -200,9 +204,12 @@ namespace RimMandrake.SolarMirrors
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            // Validation pass 2: a reinstalled mirror keeps its saved aim; an aim now out of reach is dropped, since a
-            // held target is never range-checked again (the targeter is the only range check).
-            if (!respawningAfterLoad && !Props.ancient && (target.IsValid && !AimInReach(target) || pendingTarget.IsValid && !AimInReach(pendingTarget)))
+            // Validation passes 2-3: a target is an absolute cell. A mirror spawned somewhere other than where it was aimed
+            // (reinstalled after minifying, landed by gravship) drops it, as does an aim now out of reach (a held target
+            // is never range-checked again; the targeter is the only range check).
+            bool moved = aimFrom.IsValid && (aimFrom != parent.Position || aimMapId != parent.Map.uniqueID);
+            if (!respawningAfterLoad && !Props.ancient && (target.IsValid || pendingTarget.IsValid)
+                && (moved || target.IsValid && !AimInReach(target) || pendingTarget.IsValid && !AimInReach(pendingTarget)))
             {
                 target = IntVec3.Invalid;
                 pendingTarget = IntVec3.Invalid;
@@ -252,6 +259,7 @@ namespace RimMandrake.SolarMirrors
                 CommitAim(cell);
                 return;
             }
+            MarkAimOrigin();
             pendingTarget = cell;
         }
 
@@ -272,8 +280,18 @@ namespace RimMandrake.SolarMirrors
         /// <summary>The re-aim job finished, or a heliostat was aimed. A static mirror commits the
         /// NORMAL its aim computes under the light it gets right now (design §2.7): from then on
         /// its spot follows that normal, and so sweeps when the sun moves.</summary>
+        private void MarkAimOrigin()
+        {
+            if (parent.Spawned)
+            {
+                aimFrom = parent.Position;
+                aimMapId = parent.Map.uniqueID;
+            }
+        }
+
         public void CommitAim(IntVec3 cell)
         {
+            MarkAimOrigin();
             target = cell;
             pendingTarget = IntVec3.Invalid;
             if (Props.ancient)
@@ -318,6 +336,8 @@ namespace RimMandrake.SolarMirrors
             Scribe_Values.Look(ref repairRequested, "rmMirrorRepairRequested", false);
             Scribe_Values.Look(ref detentIndex, "rmMirrorDetent", -1);
             Scribe_Values.Look(ref aimDeferred, "rmMirrorAimDeferred", false);
+            Scribe_Values.Look(ref aimFrom, "rmMirrorAimFrom", IntVec3.Invalid);
+            Scribe_Values.Look(ref aimMapId, "rmMirrorAimMap", -1);
             Scribe_Collections.Look(ref detents, "rmMirrorDetents", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && detents == null)
             {
