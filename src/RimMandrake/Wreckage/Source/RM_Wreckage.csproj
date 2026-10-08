@@ -36,6 +36,7 @@
     <Compile Include="RM_WreckWeathering.cs" />
     <Compile Include="RM_GenStep_WreckField.cs" />
     <Compile Include="RM_IncidentWorker_WreckFall.cs" />
+    <Compile Include="Kernel\RM_WreckageKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

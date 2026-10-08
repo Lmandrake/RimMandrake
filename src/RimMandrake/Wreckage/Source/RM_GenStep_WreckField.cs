@@ -102,10 +102,10 @@ namespace RimMandrake.Wreckage
         public override int SeedPart => 1612749307;
 
         private float EffectiveClusterChance =>
-            clusterChance >= 0f ? clusterChance : densityClass?.clusterChance ?? 0f;
+            RM_WreckageKernel.ClusterChance(clusterChance, densityClass?.clusterChance ?? 0f);
 
         private IntRange EffectiveClusterSize =>
-            clusterSizeRange.max >= 2 ? clusterSizeRange : densityClass?.clusterSizeRange ?? new IntRange(2, 4);
+            RM_WreckageKernel.UseOwnClusterSize(clusterSizeRange.max) ? clusterSizeRange : densityClass?.clusterSizeRange ?? new IntRange(2, 4);
 
         public IEnumerable<ThingDef> WreckDefs => wrecks.Where(w => w.thing != null).Select(w => w.thing);
 
@@ -123,35 +123,27 @@ namespace RimMandrake.Wreckage
             }
             usedSpots.Clear();
             int total = CalculateFinalCount(map);
-            int placed = 0;
-            int misses = 0;
-            while (placed < total && misses < 3)
-            {
-                pending = PickWreck();
-                if (!TryFindScatterCell(map, out IntVec3 anchor) || !TryPlace(pending, anchor, map))
+            IntVec3 anchor = IntVec3.Invalid;
+            RM_WreckageKernel.PlaceField(total,
+                () =>
                 {
-                    misses++;
-                    continue;
-                }
-                usedSpots.Add(anchor);
-                placed++;
-                if (placed < total && Rand.Chance(EffectiveClusterChance))
-                {
-                    // "Fell together": the rest of the cluster is near the anchor and ignores
-                    // minSpacing, which keeps separate fields apart, not a field's own pieces.
-                    int extra = EffectiveClusterSize.RandomInRange - 1;
-                    for (int i = 0; i < extra && placed < total; i++)
+                    pending = PickWreck();
+                    if (!TryFindScatterCell(map, out anchor) || !TryPlace(pending, anchor, map))
                     {
-                        ThingDef d = PickWreck();
-                        if (CellFinder.TryFindRandomCellNear(anchor, map, ClusterRadius,
-                                c => CanPlace(d, c, map, out _), out IntVec3 c2, 30)
-                            && TryPlace(d, c2, map))
-                        {
-                            placed++;
-                        }
+                        return false;
                     }
-                }
-            }
+                    usedSpots.Add(anchor);
+                    return true;
+                },
+                () => Rand.Chance(EffectiveClusterChance),
+                () => EffectiveClusterSize.RandomInRange,
+                () =>
+                {
+                    ThingDef d = PickWreck();
+                    return CellFinder.TryFindRandomCellNear(anchor, map, ClusterRadius,
+                               c => CanPlace(d, c, map, out _), out IntVec3 c2, 30)
+                           && TryPlace(d, c2, map);
+                });
             usedSpots.Clear();
             pending = null;
         }
@@ -163,20 +155,20 @@ namespace RimMandrake.Wreckage
 
         protected override int CalculateFinalCount(Map map)
         {
-            float density = Mathf.Max(0f, RM_WreckageSettings.wreckDensity);
+            float density = RM_WreckageSettings.wreckDensity;
             if (count >= 0)
             {
-                return Mathf.RoundToInt(count * density * GetPlacementFactor(map));
+                return RM_WreckageKernel.FixedCount(count, density, GetPlacementFactor(map));
             }
             FloatRange range = countPer10kCellsRange.max > 0f
                 ? countPer10kCellsRange
                 : densityClass?.countPer10kCellsRange ?? FloatRange.Zero;
-            float per10k = range.RandomInRange * density;
+            float per10k = RM_WreckageKernel.Per10k(range.RandomInRange, density);
             if (per10k <= 0f)
             {
                 return 0;
             }
-            return Mathf.RoundToInt(CountFromPer10kCells(per10k, map) * GetPlacementFactor(map));
+            return RM_WreckageKernel.ScaledCount(CountFromPer10kCells(per10k, map), GetPlacementFactor(map));
         }
 
         protected override bool CanScatterAt(IntVec3 loc, Map map)

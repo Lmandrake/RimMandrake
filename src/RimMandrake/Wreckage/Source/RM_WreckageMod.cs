@@ -33,24 +33,19 @@ namespace RimMandrake.Wreckage
 
         public static bool FieldDisabled(string key)
         {
-            return !disabledFields.NullOrEmpty() && disabledFields.Split(',').Any(k => k.Trim() == key);
+            return RM_WreckageKernel.FieldDisabled(disabledFields, key);
         }
 
         // A field runs when the master is on, its own key is not switched off here, and the
         // owning biome mod (if it registered a gate under the bare key) has its biome on.
         public static bool FieldActive(string key)
         {
-            return wreckFields && !key.NullOrEmpty() && !FieldDisabled(key) && RM_MechanicGates.Enabled(key);
+            return wreckFields && !key.NullOrEmpty() && RM_WreckageKernel.FieldActive(true, key, disabledFields, RM_MechanicGates.Enabled(key));
         }
 
         public static void SetFieldEnabled(string key, bool on)
         {
-            var keys = new List<string>((disabledFields ?? "").Split(',').Select(k => k.Trim()).Where(k => k.Length > 0 && k != key));
-            if (!on)
-            {
-                keys.Add(key);
-            }
-            disabledFields = string.Join(",", keys);
+            disabledFields = RM_WreckageKernel.SetFieldEnabled(disabledFields, key, on);
         }
 
         public override void ExposeData()
