@@ -61,6 +61,7 @@ namespace RimMandrake.LongShade.SelfTest
                             Check(Math.Abs(layers + progress - (ledger + 0.0)) < 1e-4 * (tends + 1) + 1e-4, "layers " + layers + " + progress " + F(progress) + " drifted from the gain ledger " + F(ledger));
                         }
                         else FullHeaps++;
+                        Check(layers <= Math.Floor(ledger + 1e-4 * (tends + 1)) + 0.0 || layers == maxLayers && ledger >= maxLayers - 1e-3 * (tends + 1), "layers " + layers + " exceed what the gains paid for (ledger " + F(ledger) + ")");
                         // a tend never skips a layer the gain has already paid for
                         Check(layers + progress > before + pBefore - 1e-6f, "a tend lost progress");
                     }
@@ -68,6 +69,7 @@ namespace RimMandrake.LongShade.SelfTest
                     // fresh heap, exact tend counts: n tends of gain g give floor(n*g) layers (the float must not owe a tend)
                     int l2 = 0; float p2 = 0f; int tendsNeeded = (int)Math.Ceiling(1.0 / gain - 1e-9);
                     for (int i = 0; i < tendsNeeded; i++) RM_LongShadeKernel.Tend(ref l2, ref p2, gain, 100);
+                    Check(l2 == (int)Math.Floor(tendsNeeded * (double)gain + 1e-4), "after " + tendsNeeded + " tends of " + F(gain) + " the heap holds " + l2 + " layers, " + (int)Math.Floor(tendsNeeded * (double)gain + 1e-4) + " were paid for");
                     Check(l2 >= 1, "after the " + tendsNeeded + " tends a gain of " + F(gain) + " promises, the heap still holds 0 layers (progress " + F(p2) + "): the float sum came up just short of 1");
                     // search
                     Check(RM_LongShadeKernel.SearchRolls(layers, 2) == layers * 2 && RM_LongShadeKernel.SearchRolls(0, 5) == 0, "search rolls");
@@ -236,6 +238,8 @@ namespace RimMandrake.LongShade.SelfTest
                             for (int i = 1; i < stops.Count; i++) Check((stops[i] - stops[i - 1]) * stride <= spacing + 1e-3f, "two stops along the road are " + F((stops[i] - stops[i - 1]) * stride) + " cells apart, more than the spacing " + F(spacing));
                         }
                     }
+                    Check(RM_LongShadeKernel.RoadSegments(160f, 12f, 1.5f, 160f, out float _) > 0 && RM_LongShadeKernel.RoadSegments(160.01f, 12f, 1.5f, 160f, out float _) == 0, "a gap of exactly the cap still gets a road; one hair over does not");
+                    Check(RM_LongShadeKernel.RoadSegments(18f, 12f, 1.5f, 160f, out float _) > 0 && RM_LongShadeKernel.RoadSegments(17.99f, 12f, 1.5f, 160f, out float _) == 0, "a gap of exactly 1.5 spacings gets a road; one hair under does not");
                     // --- dash / spacing arithmetic
                     int ring = r.Next(0, 4000); float maxDash = r.Next(5, 60);
                     float dash = RM_LongShadeKernel.DashCells(ring, 10, maxDash);
@@ -324,6 +328,7 @@ namespace RimMandrake.LongShade.SelfTest
                         Check(got == want, "Admits(rule " + rule + ", listed " + listed + ", max " + max + ", size " + size + ", herdOnly " + herdOnly + ", herd " + herd + ") = " + got);
                         if (max == 0f) Check(got == (!(rule && !listed) && !(herdOnly && !herd)), "a zero size cap must mean no size rule");
                     }
+                    Check(RM_LongShadeKernel.Admits(false, false, 0.7f, 0.7f, false, false) && !RM_LongShadeKernel.Admits(false, false, 0.7f, 0.7001f, false, false), "a body size equal to the cap is admitted; a hair over is not");
                     // first admitting rung
                     int stagesOpen = r.Next(0, count + 2); var admit = Enumerable.Range(0, count).Select(i => r.Next(3) == 0).ToList();
                     int first = RM_LongShadeKernel.FirstAdmitting(stagesOpen, count, i => admit[i]);
@@ -362,7 +367,7 @@ namespace RimMandrake.LongShade.SelfTest
                 {
                     int w = r.Next(20, 60), h = r.Next(20, 60);
                     var standable = new bool[w, h]; var shade = new float[w, h];
-                    for (int x = 0; x < w; x++) for (int z = 0; z < h; z++) { standable[x, z] = r.Next(8) != 0; shade[x, z] = (float)r.NextDouble(); }
+                    for (int x = 0; x < w; x++) for (int z = 0; z < h; z++) { standable[x, z] = r.Next(8) != 0; shade[x, z] = r.Next(6) == 0 ? 0.5f : (float)r.NextDouble(); }
                     int radius = r.Next(1, 9); float minShade = 0.5f;
                     Func<Ship, int, List<(int, int)>> oracle = null;
                     oracle = (ship, rad) =>
