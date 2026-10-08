@@ -57,6 +57,10 @@ namespace RimMandrake.FlowWorks
 
 		private int nextPulseTick = -1;
 
+		/// <summary>Fire-burn cadence while the depth engine is OFF only (GPT review #18). Not scribed: on load an
+		/// off-engine fire waits at most one interval for its next burn.</summary>
+		private int nextOffBurnTick = -1;
+
 		/// <summary>VISCOSITY (FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7): pulses run on this map, scribed so a viscous
 		/// fluid's every-Nth-pulse cadence survives a save. <see cref="RM_StockMath.FluidMovesThisPulse"/>.</summary>
 		private long pulseCount;
@@ -1005,18 +1009,25 @@ namespace RimMandrake.FlowWorks
 				RM_PitFillEffects.Tick(map, this);
 			}
 			int now = Find.TickManager.TicksGame;
+			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
+			{
+				// Nothing pours with the engine off, but a fire still burning (Tick above keeps its heat and harm)
+				// must still consume its fuel, or it burns forever (GPT FlowWorks review #18). It runs on its OWN
+				// timer: the pulse schedule stays frozen while the engine is off (E4 contract,
+				// flowworks_northstar_script_plan_2026-10-02.md E4), so switching it back on pulses at once.
+				// The first off-burn waits for the tick the pulse was due, so turning the engine off never burns early.
+				if (now >= Mathf.Max(nextPulseTick, nextOffBurnTick))
+				{
+					nextOffBurnTick = now + RimMandrakeFlowWorksSettings.PulseIntervalTicks;
+					liquidFire.BurnPulse(map, this, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
+				}
+				return;
+			}
 			if (now < nextPulseTick)
 			{
 				return;
 			}
 			nextPulseTick = now + RimMandrakeFlowWorksSettings.PulseIntervalTicks;
-			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
-			{
-				// Nothing pours with the engine off, but a fire still burning (Tick above keeps its heat and harm)
-				// must still consume its fuel, or it burns forever (GPT FlowWorks review #18).
-				liquidFire.BurnPulse(map, this, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
-				return;
-			}
 			DoPulse();
 		}
 
