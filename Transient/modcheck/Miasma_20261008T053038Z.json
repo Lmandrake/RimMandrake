@@ -1,0 +1,5110 @@
+{
+ "mod": "Miasma",
+ "stamp": "20261008T053038Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "roundtrip_biomeRarityFactor",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "biomeRarityFactor",
+         "fieldKind": "static",
+         "value": "1",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_f5b497b434c947219478a4acedf7c9b9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 130
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "biomeRarityFactor",
+         "fieldKind": "static",
+         "valueBefore": "1",
+         "valueAfter": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_844d0b2f71184b50a5cff75dd5bf697a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 41
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "biomeRarityFactor",
+         "fieldKind": "static",
+         "value": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_0572c1de86e14b1d91f7b02de4996ed9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "biomeRarityFactor",
+         "fieldKind": "static",
+         "valueBefore": "0.5",
+         "valueAfter": "1",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_743054020e674caaa95d48bbfe5490c8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_wardenSuccessionEnabled",
+      "toggle": "wardenSuccessionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "wardenSuccessionEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_e83903cd12554b3c8f9935758134e60c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "wardenSuccessionEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_1adf97759418475395c9d4f50bc8e685",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "wardenSuccessionEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_d0f24b803a2c47158a1738b8eb3fa26e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "wardenSuccessionEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_57ffb24e898c4afba94c6d7368c7e709",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_selfTameChancePerCheck",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "selfTameChancePerCheck",
+         "fieldKind": "static",
+         "value": "0.12",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_bf666d445a424214bc4d6f93d8c4464b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "selfTameChancePerCheck",
+         "fieldKind": "static",
+         "valueBefore": "0.12",
+         "valueAfter": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_592f5d3c8b794c4dbcbd7b0f4d702501",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "selfTameChancePerCheck",
+         "fieldKind": "static",
+         "value": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_b9e0a2c4ae7f449a814d70c61a95f6ad",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "selfTameChancePerCheck",
+         "fieldKind": "static",
+         "valueBefore": "0.5",
+         "valueAfter": "0.12",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_a0d84709c9744d2fa43f7201b8e722a6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_plantPredationEnabled",
+      "toggle": "plantPredationEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "plantPredationEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_28f5db2541b14126bd92ea05762e318a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "plantPredationEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_14b8073c58f44a84a1502678ac097e5c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "plantPredationEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_796a1838794c482bae00bcaa2674f23f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "plantPredationEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_752bd1f17a254cc1863a69e4e9aea8ac",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_pollinationGateEnabled",
+      "toggle": "pollinationGateEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "pollinationGateEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_ab103df6ef89422897bd092a6e3ae952",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "pollinationGateEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_9d62582fee6f45b09c278935aaf4ac2f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "pollinationGateEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_1b097a73b74d42cb883898b423930983",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "pollinationGateEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_b3d76bdb025b41ddafca96ff928b49ce",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_strandedDeformationEnabled",
+      "toggle": "strandedDeformationEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "strandedDeformationEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_10a5a7092e214ba2a971093bff98008a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "strandedDeformationEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_cc88d6e0d3e34407ad67bb62dbf016de",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "strandedDeformationEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_1bbbb50702ad4abea76948b79eec70f7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "strandedDeformationEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_3ee7852512c04a82949fe07799cb2001",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_strandedDeformationChance",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "strandedDeformationChance",
+         "fieldKind": "static",
+         "value": "0.25",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_d95864a4ca83413396f0af7ff9c8d162",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "strandedDeformationChance",
+         "fieldKind": "static",
+         "valueBefore": "0.25",
+         "valueAfter": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_197839da6f5342929b9b368da8d1e65e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "strandedDeformationChance",
+         "fieldKind": "static",
+         "value": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_dd85653e1b504eee8a9531556d2085fd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "strandedDeformationChance",
+         "fieldKind": "static",
+         "valueBefore": "0.5",
+         "valueAfter": "0.25",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_09b9c516978f45cca9ddb8671ddf0f33",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_ambushFrogHunts",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "ambushFrogHunts",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_e0017fb6fc6142eb9a7cb3a95d0329f4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "ambushFrogHunts",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_ea54760db5d04b12b899390ce881d378",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "ambushFrogHunts",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_4778af7455594869bea56f2eccde8fe0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "ambushFrogHunts",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_6ee8f34e9a3649058943b3b6a1a4c599",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_flotsamEnabled",
+      "toggle": "flotsamEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "flotsamEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_798495cdc748423abd9db5e7ebff9412",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "flotsamEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_40e6259e25964d0a91545d9b9d15e994",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "flotsamEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_cdf0e5b5992240efb724a1b0357018c6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "flotsamEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_e483f9d396634c29bcbda4d3be978830",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_flotsamAmount",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "flotsamAmount",
+         "fieldKind": "static",
+         "value": "1",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_55c45b54396e4fba87c06b327bc87a90",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "flotsamAmount",
+         "fieldKind": "static",
+         "valueBefore": "1",
+         "valueAfter": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_ccabbf3fb2aa4eb7bbf4c23f92f76e38",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "flotsamAmount",
+         "fieldKind": "static",
+         "value": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_23ebc641c304478e8f9393c3b033165e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "flotsamAmount",
+         "fieldKind": "static",
+         "valueBefore": "0.5",
+         "valueAfter": "1",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_bc407b78a8434540917763d3404ff410",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_youngCallEnabled",
+      "toggle": "youngCallEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "youngCallEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_c5fe13e1360a459a8200e5b8376bd69d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "youngCallEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_dcd425b45a5744e29c216536d71c330a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "youngCallEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_b352e058e93f48058a8b9ae1b243d4c8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "youngCallEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_adf1fe2cfbc3434a9a5b76824c24aa71",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_attarEnabled",
+      "toggle": "attarEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "attarEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_220ae0f9001c488ebf9cdbe4c984d823",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "attarEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_334fc88eb3f6422aa32da231ed3827ef",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "attarEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_33df0aab04d44a98a786f7a5fab7039c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "attarEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_51048a7957384ddc826c32d9a63ff767",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_decayCellsEnabled",
+      "toggle": "decayCellsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "decayCellsEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_c6b68feb25154564a83b26140bdf9f9c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "decayCellsEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_5287d02ee6ae4ee1ac3577a310f7c2a6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "decayCellsEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_4f62ab33678746a583f23d53506a48e3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "decayCellsEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_0d3e60da950c458e8312f45d3ee8649c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_decayCellPowerMultiplier",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "decayCellPowerMultiplier",
+         "fieldKind": "static",
+         "value": "1",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_57f47493fbcc4804a71c32b8ec9b73ac",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "decayCellPowerMultiplier",
+         "fieldKind": "static",
+         "valueBefore": "1",
+         "valueAfter": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_1ce18a56be484bd6b876fbdef39caa85",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "decayCellPowerMultiplier",
+         "fieldKind": "static",
+         "value": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_3f15a272bc3846a083466ea800e5d2bd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "decayCellPowerMultiplier",
+         "fieldKind": "static",
+         "valueBefore": "0.5",
+         "valueAfter": "1",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_92e77498ac644ad2b620be5811c2f19c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_rottingBedCorpsesEnabled",
+      "toggle": "rottingBedCorpsesEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "rottingBedCorpsesEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_2d8a95d8650f464980e708ae39ecb175",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "rottingBedCorpsesEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_1b72883587ed4af6834d89b945bcb6f2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "rottingBedCorpsesEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_3d03d88341e642dab66780b204eeee57",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "rottingBedCorpsesEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_c5c23c712f2844838bd9d8318af4d5f0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_rottingBedRotDays",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "rottingBedRotDays",
+         "fieldKind": "static",
+         "value": "3",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_4c0649fac0204d3dbe1e53f19ba8f708",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "rottingBedRotDays",
+         "fieldKind": "static",
+         "valueBefore": "3",
+         "valueAfter": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_ceab8a7e70614f58986c65f480d04f98",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "rottingBedRotDays",
+         "fieldKind": "static",
+         "value": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_d9d9f76fcfef4e9faf21605c77a3c16e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "rottingBedRotDays",
+         "fieldKind": "static",
+         "valueBefore": "0.5",
+         "valueAfter": "3",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_a7190df712f845369329136104081c31",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_mothersPriceEnabled",
+      "toggle": "mothersPriceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "mothersPriceEnabled",
+         "fieldKind": "static",
+         "value": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_9728c38c437248baa43eb6b36a21f598",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "mothersPriceEnabled",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_8cc4d3fd02894637aff8b82e09275de1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "mothersPriceEnabled",
+         "fieldKind": "static",
+         "value": "False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_02b74ab0dc0f41d5991c50f292cda404",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "mothersPriceEnabled",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_5f350b7d1ef2459f9c6e706e5e7c17f3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roundtrip_youngPriceOffset",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "youngPriceOffset",
+         "fieldKind": "static",
+         "value": "1500",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_854cabd91a2144bcaa2d040f9177e47b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "youngPriceOffset",
+         "fieldKind": "static",
+         "valueBefore": "1500",
+         "valueAfter": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_c1095789617d4dd886cfe3982c1072f5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "get",
+         "field": "youngPriceOffset",
+         "fieldKind": "static",
+         "value": "0.5",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_8caa12f674cb41a18f2cf2fff318adcc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "youngPriceOffset",
+         "fieldKind": "static",
+         "valueBefore": "0.5",
+         "valueAfter": "1500",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_af62a952b89c49c994fa7290889518c6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "switches_gate_mechanics",
+    "components": [
+     {
+      "name": "mechanics_stop_with_switch_off",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: predation (plant beside a wild scuttler), the pollination gate (worldgen plant pass) and stranded deformation (a stranding pool) each need a live Miasma quicktest map",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "salt_crust_free_tier",
+    "components": [
+     {
+      "name": "salt_crust_paints_without_campaign",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no 'Could not resolve' for a salt crust and a surge recede repainting land to RM_MiasmaSaltCrust need a tier without mandrake.rut.patches and a live Miasma map (also a bar for MIASMA_FIRST_SCRIPT_1)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "nursery_young_free_tier",
+    "components": [
+     {
+      "name": "four_young_defs_load",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "8 of 8 def(s) resolved",
+         "requested": 8,
+         "foundCount": 8,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "PawnKindDef/RM_CrimsonOpeeJuv",
+           "found": true,
+           "defName": "RM_CrimsonOpeeJuv",
+           "defType": "PawnKindDef",
+           "label": "young crimson opee",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "race": "RM_CrimsonOpeeJuv",
+            "lifeStages": [
+             "PawnKindLifeStage",
+             "PawnKindLifeStage"
+            ],
+            "alternateGraphicChance": 0.0,
+            "useFactionXenotypes": true,
+            "preventIdeo": false,
+            "studiableAsPrisoner": false,
+            "isBoss": false,
+            "moveSpeedFactorByTerrainTag": [
+             "KeyValuePair`2"
+            ],
+            "fixedChildBackstories": [],
+            "fixedAdultBackstories": [],
+            "backstoryCryptosleepCommonality": 0.0,
+            "minGenerationAge": 0,
+            "maxGenerationAge": 999999,
+            "factionLeader": false,
+            "allowOldAgeInjuries": true,
+            "generateInitialNonFamilyRelations": true,
+            "destroyGearOnDrop": false,
+            "canStrip": true,
+            "defendPointRadius": -1.0,
+            "factionHostileOnKill": false,
+            "factionHostileOnDeath": false,
+            "hostileToAll": false,
+            "forceNoDeathNotification": false,
+            "skipResistant": false,
+            "controlGroupPortraitZoom": 1.0,
+            "forceDeathOnDowned": false,
+            "immuneToGameConditionEffects": false,
+            "immuneToTraps": false,
+            "collidesWithPawns": true,
+            "ignoresPainShock": false,
+            "canMeleeAttack": true,
+            "basePrisonBreakMtbDays": 60.0,
+            "useFixedRotation": false,
+            "showInDebugSpawner": true,
+            "canOpenAnyDoor": false,
+            "canOpenDoors": true,
+            "royalTitleChance": 0.0,
+            "allowRoyalRoomRequirements": true,
+            "allowRoyalApparelRequirements": true,
+            "isFighter": true,
+            "combatPower": 150.0,
+            "canArriveManhunter": true,
+            "canBeSapper": false,
+            "isGoodBreacher": false,
+            "allowInMechClusters": true,
+            "maxPerGroup": 2147483647,
+            "isGoodPsychicRitualInvoker": false,
+            "canBeScattered": true,
+            "appearsRandomlyInCombatGroups": true,
+            "aiAvoidCover": false,
+            "acceptArrestChanceFactor": 1.0,
+            "canUseAvoidGrid": false,
+            "itemQuality": "Normal",
+            "forceNormalGearQuality": false,
+            "apparelAllowHeadgearChance": 1.0,
+            "ignoreApparelAllowChance": false,
+            "apparelIgnoreSeasons": false,
+            "apparelIgnorePollution": false,
+            "ignoreFactionApparelStuffRequirements": false,
+            "ignoreIdeoApparelColors": false,
+            "techHediffsChance": 0.0,
+            "techHediffsMaxAmount": 1,
+            "biocodeWeaponChance": 0.0,
+            "humanPregnancyChance": 0.03,
+            "nakedChance": 0.0,
+            "existingDamage": [],
+            "minApparelQuality": "Awful",
+            "maxApparelQuality": "Excellent",
+            "fixedInventory": [],
+            "invNutrition": 0.0,
+            "chemicalAddictionChance": 0.0,
+            "combatEnhancingDrugsChance": 0.0,
+            "forcedAddictions": [],
+            "trader": false,
+            "requiredWorkTags": "None",
+            "disabledWorkTags": "None",
+            "extraSkillLevels": 0,
+            "minTotalSkillLevels": 0,
+            "minBestSkillLevel": 0,
+            "ecoSystemWeight": 0.5,
+            "flyingAnimationFrameCount": 0,
+            "flyingAnimationTicksPerFrame": -1,
+            "flyingAnimationDrawSize": 1.0,
+            "flyingAnimationDrawSizeIsMultiplier": false,
+            "flyingAnimationInheritColors": false,
+            "defName": "RM_CrimsonOpeeJuv",
+            "label": "young crimson opee",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 8415,
+            "index": 407,
+            "fileName": "RM_SeaBeasts_Invented.xml",
+            "defNameHash": 1159579465,
+            "generated": false,
+            "debugRandomId": 51909
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_ThornbackColoJuv",
+           "found": true,
+           "defName": "RM_ThornbackColoJuv",
+           "defType": "PawnKindDef",
+           "label": "young thornback colo",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "race": "RM_ThornbackColoJuv",
+            "lifeStages": [
+             "PawnKindLifeStage",
+             "PawnKindLifeStage"
+            ],
+            "alternateGraphicChance": 0.0,
+            "useFactionXenotypes": true,
+            "preventIdeo": false,
+            "studiableAsPrisoner": false,
+            "isBoss": false,
+            "moveSpeedFactorByTerrainTag": [
+             "KeyValuePair`2"
+            ],
+            "fixedChildBackstories": [],
+            "fixedAdultBackstories": [],
+            "backstoryCryptosleepCommonality": 0.0,
+            "minGenerationAge": 0,
+            "maxGenerationAge": 999999,
+            "factionLeader": false,
+            "allowOldAgeInjuries": true,
+            "generateInitialNonFamilyRelations": true,
+            "destroyGearOnDrop": false,
+            "canStrip": true,
+            "defendPointRadius": -1.0,
+            "factionHostileOnKill": false,
+            "factionHostileOnDeath": false,
+            "hostileToAll": false,
+            "forceNoDeathNotification": false,
+            "skipResistant": false,
+            "controlGroupPortraitZoom": 1.0,
+            "forceDeathOnDowned": false,
+            "immuneToGameConditionEffects": false,
+            "immuneToTraps": false,
+            "collidesWithPawns": true,
+            "ignoresPainShock": false,
+            "canMeleeAttack": true,
+            "basePrisonBreakMtbDays": 60.0,
+            "useFixedRotation": false,
+            "showInDebugSpawner": true,
+            "canOpenAnyDoor": false,
+            "canOpenDoors": true,
+            "royalTitleChance": 0.0,
+            "allowRoyalRoomRequirements": true,
+            "allowRoyalApparelRequirements": true,
+            "isFighter": true,
+            "combatPower": 250.0,
+            "canArriveManhunter": true,
+            "canBeSapper": false,
+            "isGoodBreacher": false,
+            "allowInMechClusters": true,
+            "maxPerGroup": 2147483647,
+            "isGoodPsychicRitualInvoker": false,
+            "canBeScattered": true,
+            "appearsRandomlyInCombatGroups": true,
+            "aiAvoidCover": false,
+            "acceptArrestChanceFactor": 1.0,
+            "canUseAvoidGrid": false,
+            "itemQuality": "Normal",
+            "forceNormalGearQuality": false,
+            "apparelAllowHeadgearChance": 1.0,
+            "ignoreApparelAllowChance": false,
+            "apparelIgnoreSeasons": false,
+            "apparelIgnorePollution": false,
+            "ignoreFactionApparelStuffRequirements": false,
+            "ignoreIdeoApparelColors": false,
+            "techHediffsChance": 0.0,
+            "techHediffsMaxAmount": 1,
+            "biocodeWeaponChance": 0.0,
+            "humanPregnancyChance": 0.03,
+            "nakedChance": 0.0,
+            "existingDamage": [],
+            "minApparelQuality": "Awful",
+            "maxApparelQuality": "Excellent",
+            "fixedInventory": [],
+            "invNutrition": 0.0,
+            "chemicalAddictionChance": 0.0,
+            "combatEnhancingDrugsChance": 0.0,
+            "forcedAddictions": [],
+            "trader": false,
+            "requiredWorkTags": "None",
+            "disabledWorkTags": "None",
+            "extraSkillLevels": 0,
+            "minTotalSkillLevels": 0,
+            "minBestSkillLevel": 0,
+            "ecoSystemWeight": 0.8,
+            "flyingAnimationFrameCount": 0,
+            "flyingAnimationTicksPerFrame": -1,
+            "flyingAnimationDrawSize": 1.0,
+            "flyingAnimationDrawSizeIsMultiplier": false,
+            "flyingAnimationInheritColors": false,
+            "defName": "RM_ThornbackColoJuv",
+            "label": "young thornback colo",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 57521,
+            "index": 409,
+            "fileName": "RM_SeaBeasts_Invented.xml",
+            "defNameHash": -1517541526,
+            "generated": false,
+            "debugRandomId": 61474
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_ShaleGorgerJuv",
+           "found": true,
+           "defName": "RM_ShaleGorgerJuv",
+           "defType": "PawnKindDef",
+           "label": "young shale gorger",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "race": "RM_ShaleGorgerJuv",
+            "lifeStages": [
+             "PawnKindLifeStage",
+             "PawnKindLifeStage"
+            ],
+            "alternateGraphicChance": 0.0,
+            "useFactionXenotypes": true,
+            "preventIdeo": false,
+            "studiableAsPrisoner": false,
+            "isBoss": false,
+            "moveSpeedFactorByTerrainTag": [
+             "KeyValuePair`2"
+            ],
+            "fixedChildBackstories": [],
+            "fixedAdultBackstories": [],
+            "backstoryCryptosleepCommonality": 0.0,
+            "minGenerationAge": 0,
+            "maxGenerationAge": 999999,
+            "factionLeader": false,
+            "allowOldAgeInjuries": true,
+            "generateInitialNonFamilyRelations": true,
+            "destroyGearOnDrop": false,
+            "canStrip": true,
+            "defendPointRadius": -1.0,
+            "factionHostileOnKill": false,
+            "factionHostileOnDeath": false,
+            "hostileToAll": false,
+            "forceNoDeathNotification": false,
+            "skipResistant": false,
+            "controlGroupPortraitZoom": 1.0,
+            "forceDeathOnDowned": false,
+            "immuneToGameConditionEffects": false,
+            "immuneToTraps": false,
+            "collidesWithPawns": true,
+            "ignoresPainShock": false,
+            "canMeleeAttack": true,
+            "basePrisonBreakMtbDays": 60.0,
+            "useFixedRotation": false,
+            "showInDebugSpawner": true,
+            "canOpenAnyDoor": false,
+            "canOpenDoors": true,
+            "royalTitleChance": 0.0,
+            "allowRoyalRoomRequirements": true,
+            "allowRoyalApparelRequirements": true,
+            "isFighter": true,
+            "combatPower": 170.0,
+            "canArriveManhunter": true,
+            "canBeSapper": false,
+            "isGoodBreacher": false,
+            "allowInMechClusters": true,
+            "maxPerGroup": 2147483647,
+            "isGoodPsychicRitualInvoker": false,
+            "canBeScattered": true,
+            "appearsRandomlyInCombatGroups": true,
+            "aiAvoidCover": false,
+            "acceptArrestChanceFactor": 1.0,
+            "canUseAvoidGrid": false,
+            "itemQuality": "Normal",
+            "forceNormalGearQuality": false,
+            "apparelAllowHeadgearChance": 1.0,
+            "ignoreApparelAllowChance": false,
+            "apparelIgnoreSeasons": false,
+            "apparelIgnorePollution": false,
+            "ignoreFactionApparelStuffRequirements": false,
+            "ignoreIdeoApparelColors": false,
+            "techHediffsChance": 0.0,
+            "techHediffsMaxAmount": 1,
+            "biocodeWeaponChance": 0.0,
+            "humanPregnancyChance": 0.03,
+            "nakedChance": 0.0,
+            "existingDamage": [],
+            "minApparelQuality": "Awful",
+            "maxApparelQuality": "Excellent",
+            "fixedInventory": [],
+            "invNutrition": 0.0,
+            "chemicalAddictionChance": 0.0,
+            "combatEnhancingDrugsChance": 0.0,
+            "forcedAddictions": [],
+            "trader": false,
+            "requiredWorkTags": "None",
+            "disabledWorkTags": "None",
+            "extraSkillLevels": 0,
+            "minTotalSkillLevels": 0,
+            "minBestSkillLevel": 0,
+            "ecoSystemWeight": 0.5,
+            "flyingAnimationFrameCount": 0,
+            "flyingAnimationTicksPerFrame": -1,
+            "flyingAnimationDrawSize": 1.0,
+            "flyingAnimationDrawSizeIsMultiplier": false,
+            "flyingAnimationInheritColors": false,
+            "defName": "RM_ShaleGorgerJuv",
+            "label": "young shale gorger",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 44492,
+            "index": 408,
+            "fileName": "RM_SeaBeasts_Invented.xml",
+            "defNameHash": 1916376080,
+            "generated": false,
+            "debugRandomId": 51740
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_ReefbackJuv",
+           "found": true,
+           "defName": "RM_ReefbackJuv",
+           "defType": "PawnKindDef",
+           "label": "young reefback",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "race": "RM_ReefbackJuv",
+            "lifeStages": [
+             "PawnKindLifeStage",
+             "PawnKindLifeStage"
+            ],
+            "alternateGraphicChance": 0.0,
+            "useFactionXenotypes": true,
+            "preventIdeo": false,
+            "studiableAsPrisoner": false,
+            "isBoss": false,
+            "moveSpeedFactorByTerrainTag": [
+             "KeyValuePair`2"
+            ],
+            "fixedChildBackstories": [],
+            "fixedAdultBackstories": [],
+            "backstoryCryptosleepCommonality": 0.0,
+            "minGenerationAge": 0,
+            "maxGenerationAge": 999999,
+            "factionLeader": false,
+            "allowOldAgeInjuries": true,
+            "generateInitialNonFamilyRelations": true,
+            "destroyGearOnDrop": false,
+            "canStrip": true,
+            "defendPointRadius": -1.0,
+            "factionHostileOnKill": false,
+            "factionHostileOnDeath": false,
+            "hostileToAll": false,
+            "forceNoDeathNotification": false,
+            "skipResistant": false,
+            "controlGroupPortraitZoom": 1.0,
+            "forceDeathOnDowned": false,
+            "immuneToGameConditionEffects": false,
+            "immuneToTraps": false,
+            "collidesWithPawns": true,
+            "ignoresPainShock": false,
+            "canMeleeAttack": true,
+            "basePrisonBreakMtbDays": 60.0,
+            "useFixedRotation": false,
+            "showInDebugSpawner": true,
+            "canOpenAnyDoor": false,
+            "canOpenDoors": true,
+            "royalTitleChance": 0.0,
+            "allowRoyalRoomRequirements": true,
+            "allowRoyalApparelRequirements": true,
+            "isFighter": true,
+            "combatPower": 2000.0,
+            "canArriveManhunter": false,
+            "canBeSapper": false,
+            "isGoodBreacher": false,
+            "allowInMechClusters": true,
+            "maxPerGroup": 2147483647,
+            "isGoodPsychicRitualInvoker": false,
+            "canBeScattered": true,
+            "appearsRandomlyInCombatGroups": true,
+            "aiAvoidCover": false,
+            "acceptArrestChanceFactor": 1.0,
+            "canUseAvoidGrid": false,
+            "itemQuality": "Normal",
+            "forceNormalGearQuality": false,
+            "apparelAllowHeadgearChance": 1.0,
+            "ignoreApparelAllowChance": false,
+            "apparelIgnoreSeasons": false,
+            "apparelIgnorePollution": false,
+            "ignoreFactionApparelStuffRequirements": false,
+            "ignoreIdeoApparelColors": false,
+            "techHediffsChance": 0.0,
+            "techHediffsMaxAmount": 1,
+            "biocodeWeaponChance": 0.0,
+            "humanPregnancyChance": 0.03,
+            "nakedChance": 0.0,
+            "existingDamage": [],
+            "minApparelQuality": "Awful",
+            "maxApparelQuality": "Excellent",
+            "fixedInventory": [],
+            "invNutrition": 0.0,
+            "chemicalAddictionChance": 0.0,
+            "combatEnhancingDrugsChance": 0.0,
+            "forcedAddictions": [],
+            "trader": false,
+            "requiredWorkTags": "None",
+            "disabledWorkTags": "None",
+            "extraSkillLevels": 0,
+            "minTotalSkillLevels": 0,
+            "minBestSkillLevel": 0,
+            "ecoSystemWeight": 4.0,
+            "flyingAnimationFrameCount": 0,
+            "flyingAnimationTicksPerFrame": -1,
+            "flyingAnimationDrawSize": 1.0,
+            "flyingAnimationDrawSizeIsMultiplier": false,
+            "flyingAnimationInheritColors": false,
+            "defName": "RM_ReefbackJuv",
+            "label": "young reefback",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 35226,
+            "index": 410,
+            "fileName": "RM_SeaBeasts_Invented.xml",
+            "defNameHash": 219413694,
+            "generated": false,
+            "debugRandomId": 18798
+           }
+          },
+          {
+           "requested": "ThingDef/RM_CrimsonOpeeJuv",
+           "found": true,
+           "defName": "RM_CrimsonOpeeJuv",
+           "defType": "ThingDef",
+           "label": "young crimson opee",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "category": "Pawn",
+            "tickerType": "Normal",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": true,
+            "smallVolume": false,
+            "useHitPoints": false,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties",
+             "CompProperties_HoldingPlatformTarget",
+             "CompProperties_Studiable"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "recipes": [
+             "ExciseCarcinoma",
+             "AdministerMechSerumHealer",
+             "RemoveBodyPart",
+             "Euthanize",
+             "Anesthetize",
+             "CureScaria",
+             "Sterilize",
+             "CureBloodRot",
+             "TerminatePregnancy",
+             "SurgicalInspection",
+             "RemovePorcupineQuill",
+             "RM_ScrubTarred",
+             "RM_AdministerStellockLace"
+            ],
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": true,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "RealtimeOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": true,
+            "containedItemsSelectable": true,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": true,
+            "inspectorTabs": [
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType"
+            ],
+            "inspectorTabsResolved": [
+             "ITab_Pawn_Health",
+             "ITab_Pawn_Needs",
+             "ITab_Pawn_Character",
+             "ITab_Pawn_Training",
+             "ITab_Pawn_Social",
+             "ITab_Pawn_Guest",
+             "ITab_Pawn_Prisoner",
+             "ITab_Pawn_Slave",
+             "ITab_Pawn_Feeding",
+             "ITab_Genes",
+             "ITab_GenesPregnancy",
+             "ITab_Entity",
+             "ITab_Pawn_FormingCaravan",
+             "ITab_Pawn_Gear",
+             "ITab_Pawn_Log",
+             "ITab_AnimalGenes"
+            ],
+            "seeThroughFog": false,
+            "drawGUIOverlay": true,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "thingCategories": [
+             "Animals"
+            ],
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Flesh",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.0,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "tools": [
+             "Tool",
+             "Tool",
+             "Tool",
+             "Tool",
+             "Tool"
+            ],
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Standable",
+            "pathCost": 0,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Pawn",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RM_CrimsonOpeeJuv",
+            "label": "young crimson opee",
+            "description": "A crimson opee too young to have its adult bulk or temper, still keeping to the shallows where the older ones will not follow.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 8415,
+            "index": 2720,
+            "fileName": "RM_SeaBeasts_Invented.xml",
+            "defNameHash": 1159579465,
+            "generated": false,
+            "debugRandomId": 11798
+           }
+          },
+          {
+           "requested": "ThingDef/RM_ThornbackColoJuv",
+           "found": true,
+           "defName": "RM_ThornbackColoJuv",
+           "defType": "ThingDef",
+           "label": "young thornback colo",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "category": "Pawn",
+            "tickerType": "Normal",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": true,
+            "smallVolume": false,
+            "useHitPoints": false,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties",
+             "CompProperties_HoldingPlatformTarget",
+             "CompProperties_Studiable"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "recipes": [
+             "ExciseCarcinoma",
+             "AdministerMechSerumHealer",
+             "RemoveBodyPart",
+             "Euthanize",
+             "Anesthetize",
+             "CureScaria",
+             "Sterilize",
+             "CureBloodRot",
+             "TerminatePregnancy",
+             "SurgicalInspection",
+             "RemovePorcupineQuill",
+             "RM_ScrubTarred",
+             "RM_AdministerStellockLace"
+            ],
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": true,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "RealtimeOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": true,
+            "containedItemsSelectable": true,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": true,
+            "inspectorTabs": [
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType"
+            ],
+            "inspectorTabsResolved": [
+             "ITab_Pawn_Health",
+             "ITab_Pawn_Needs",
+             "ITab_Pawn_Character",
+             "ITab_Pawn_Training",
+             "ITab_Pawn_Social",
+             "ITab_Pawn_Guest",
+             "ITab_Pawn_Prisoner",
+             "ITab_Pawn_Slave",
+             "ITab_Pawn_Feeding",
+             "ITab_Genes",
+             "ITab_GenesPregnancy",
+             "ITab_Entity",
+             "ITab_Pawn_FormingCaravan",
+             "ITab_Pawn_Gear",
+             "ITab_Pawn_Log",
+             "ITab_AnimalGenes"
+            ],
+            "seeThroughFog": false,
+            "drawGUIOverlay": true,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "thingCategories": [
+             "Animals"
+            ],
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Flesh",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.0,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "tools": [
+             "Tool",
+             "Tool",
+             "Tool",
+             "Tool"
+            ],
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Standable",
+            "pathCost": 0,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Pawn",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RM_ThornbackColoJuv",
+            "label": "young thornback colo",
+            "description": "A thornback colo with its spines still soft and short, more nervous than dangerous.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 57521,
+            "index": 2722,
+            "fileName": "RM_SeaBeasts_Invented.xml",
+            "defNameHash": -1517541526,
+            "generated": false,
+            "debugRandomId": 31009
+           }
+          },
+          {
+           "requested": "ThingDef/RM_ShaleGorgerJuv",
+           "found": true,
+           "defName": "RM_ShaleGorgerJuv",
+           "defType": "ThingDef",
+           "label": "young shale gorger",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "category": "Pawn",
+            "tickerType": "Normal",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": true,
+            "smallVolume": false,
+            "useHitPoints": false,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties",
+             "CompProperties_HoldingPlatformTarget",
+             "CompProperties_Studiable"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "recipes": [
+             "ExciseCarcinoma",
+             "AdministerMechSerumHealer",
+             "RemoveBodyPart",
+             "Euthanize",
+             "Anesthetize",
+             "CureScaria",
+             "Sterilize",
+             "CureBloodRot",
+             "TerminatePregnancy",
+             "SurgicalInspection",
+             "RemovePorcupineQuill",
+             "RM_ScrubTarred",
+             "RM_AdministerStellockLace"
+            ],
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": true,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "RealtimeOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": true,
+            "containedItemsSelectable": true,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": true,
+            "inspectorTabs": [
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType"
+            ],
+            "inspectorTabsResolved": [
+             "ITab_Pawn_Health",
+             "ITab_Pawn_Needs",
+             "ITab_Pawn_Character",
+             "ITab_Pawn_Training",
+             "ITab_Pawn_Social",
+             "ITab_Pawn_Guest",
+             "ITab_Pawn_Prisoner",
+             "ITab_Pawn_Slave",
+             "ITab_Pawn_Feeding",
+             "ITab_Genes",
+             "ITab_GenesPregnancy",
+             "ITab_Entity",
+             "ITab_Pawn_FormingCaravan",
+             "ITab_Pawn_Gear",
+             "ITab_Pawn_Log",
+             "ITab_AnimalGenes"
+            ],
+            "seeThroughFog": false,
+            "drawGUIOverlay": true,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "thingCategories": [
+             "Animals"
+            ],
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Flesh",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.0,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "tools": [
+             "Tool",
+             "Tool",
+             "Tool",
+             "Tool"
+            ],
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Standable",
+            "pathCost": 0,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Pawn",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RM_ShaleGorgerJuv",
+            "label": "young shale gorger",
+            "description": "A shale gorger whose plates have not yet thickened, grazing the same grit as its elders but easy prey for anything with patience.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 44492,
+            "index": 2721,
+            "fileName": "RM_SeaBeasts_Invented.xml",
+            "defNameHash": 1916376080,
+            "generated": false,
+            "debugRandomId": 35933
+           }
+          },
+          {
+           "requested": "ThingDef/RM_ReefbackJuv",
+           "found": true,
+           "defName": "RM_ReefbackJuv",
+           "defType": "ThingDef",
+           "label": "young reefback",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "category": "Pawn",
+            "tickerType": "Normal",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": true,
+            "smallVolume": false,
+            "useHitPoints": false,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties",
+             "CompProperties_HoldingPlatformTarget",
+             "CompProperties_Studiable"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "recipes": [
+             "ExciseCarcinoma",
+             "AdministerMechSerumHealer",
+             "RemoveBodyPart",
+             "Euthanize",
+             "Anesthetize",
+             "CureScaria",
+             "Sterilize",
+             "CureBloodRot",
+             "TerminatePregnancy",
+             "SurgicalInspection",
+             "RemovePorcupineQuill",
+             "RM_ScrubTarred",
+             "RM_AdministerStellockLace"
+            ],
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": true,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "RealtimeOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": true,
+            "containedItemsSelectable": true,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": true,
+            "inspectorTabs": [
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType"
+            ],
+            "inspectorTabsResolved": [
+             "ITab_Pawn_Health",
+             "ITab_Pawn_Needs",
+             "ITab_Pawn_Character",
+             "ITab_Pawn_Training",
+             "ITab_Pawn_Social",
+             "ITab_Pawn_Guest",
+             "ITab_Pawn_Prisoner",
+             "ITab_Pawn_Slave",
+             "ITab_Pawn_Feeding",
+             "ITab_Genes",
+             "ITab_GenesPregnancy",
+             "ITab_Entity",
+             "ITab_Pawn_FormingCaravan",
+             "ITab_Pawn_Gear",
+             "ITab_Pawn_Log",
+             "ITab_AnimalGenes"
+            ],
+            "seeThroughFog": false,
+            "drawGUIOverlay": true,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "thingCategories": [
+             "Animals"
+            ],
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Flesh",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.0,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "tools": [
+             "Tool",
+             "Tool"
+            ],
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Standable",
+            "pathCost": 0,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Pawn",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RM_ReefbackJuv",
+            "label": "young reefback",
+            "description": "A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, and it drifts close to wherever the adults went.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 35226,
+            "index": 2723,
+            "fileName": "RM_SeaBeasts_Invented.xml",
+            "defNameHash": 219413694,
+            "generated": false,
+            "debugRandomId": 21132
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_927b36abdb334ac8a8aa6fd7838eb9b8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "young_strand_on_recede",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a recede on a free-only tier stranding at least one young (spawn many) needs a live Miasma map; the stranding pool is a map GenStep the bridge cannot regenerate",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "decay_cells",
+    "components": [
+     {
+      "name": "output_falls_with_feed_and_stops_empty",
+      "toggle": "decayCellsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofDecayCell(Verse.Map)",
+         "result": "full=600 low=222 off=0 empty=0 feeds=8 becameBed=True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_0645a461de7644e0ad7c01b78ff8c2da",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "switch_off_makes_no_power",
+      "toggle": "decayCellsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "lifetime_feed_turns_cell_into_rotting_bed",
+      "toggle": "decayCellsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "rotting_bed_corpses",
+    "components": [
+     {
+      "name": "corpse_leaves_bones_and_named_skull",
+      "toggle": "rottingBedCorpsesEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofCorpse(Verse.Map)",
+         "result": "accepts=True corpseGone=True bones=8 skull=True skullNamesSource=True bodySize=1.00 expectBones=8",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_56fd5afc66b942e9b677b389db11436b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "mothers_price",
+    "components": [
+     {
+      "name": "returning_a_young_wins_her_tolerance",
+      "toggle": "mothersPriceEnabled",
+      "beyond_toggle": false,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: return proof missing taken=1: ERROR no warden mother and no water cell for one on this map",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofReturn(Verse.Map)",
+         "result": "ERROR no warden mother and no water cell for one on this map",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_153524e9244c4592b0a82f20cb98f813",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "selling_a_young_betrays_her_forever",
+      "toggle": "mothersPriceEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "young_call",
+    "components": [
+     {
+      "name": "cry_and_mother_heads_for_water",
+      "toggle": "youngCallEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a placed stranded young emitting the cry, and its warden mother's CurJob target moving toward it and stopping at the water edge, need a live Miasma quicktest map with the bridge",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "ambush_frog_free_tier",
+    "components": [
+     {
+      "name": "bozzuga_defs_load",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_Bozzuga",
+           "found": true,
+           "defName": "RM_Bozzuga",
+           "defType": "ThingDef",
+           "label": "bozzuga",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "category": "Pawn",
+            "tickerType": "Normal",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": true,
+            "smallVolume": false,
+            "useHitPoints": false,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties",
+             "CompProperties_HoldingPlatformTarget",
+             "CompProperties_Studiable"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "recipes": [
+             "ExciseCarcinoma",
+             "AdministerMechSerumHealer",
+             "RemoveBodyPart",
+             "Euthanize",
+             "Anesthetize",
+             "CureScaria",
+             "Sterilize",
+             "CureBloodRot",
+             "TerminatePregnancy",
+             "SurgicalInspection",
+             "RemovePorcupineQuill",
+             "RM_ScrubTarred",
+             "RM_AdministerStellockLace"
+            ],
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": true,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "RealtimeOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": true,
+            "containedItemsSelectable": true,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": true,
+            "inspectorTabs": [
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType"
+            ],
+            "inspectorTabsResolved": [
+             "ITab_Pawn_Health",
+             "ITab_Pawn_Needs",
+             "ITab_Pawn_Character",
+             "ITab_Pawn_Training",
+             "ITab_Pawn_Social",
+             "ITab_Pawn_Guest",
+             "ITab_Pawn_Prisoner",
+             "ITab_Pawn_Slave",
+             "ITab_Pawn_Feeding",
+             "ITab_Genes",
+             "ITab_GenesPregnancy",
+             "ITab_Entity",
+             "ITab_Pawn_FormingCaravan",
+             "ITab_Pawn_Gear",
+             "ITab_Pawn_Log",
+             "ITab_AnimalGenes"
+            ],
+            "seeThroughFog": false,
+            "drawGUIOverlay": true,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "thingCategories": [
+             "Animals"
+            ],
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Flesh",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.0,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeTags": [
+             "AnimalExotic"
+            ],
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "tools": [
+             "Tool",
+             "Tool"
+            ],
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Standable",
+            "pathCost": 0,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Pawn",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RM_Bozzuga",
+            "label": "bozzuga",
+            "description": "A squat, wide-mouthed ambusher the colour of wet silt, mottled with salt-white warts, that sits half-sunk in the root-maze channels for days at a time with only its eyes showing. Nothing about it moves until something small comes within a lunge, and then the whole head is mouth. Karrolun, stranded young and anything else small enough to swallow whole are its diet; it has no interest in anything larger.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 8899,
+            "index": 2899,
+            "fileName": "RM_Bozzuga.xml",
+            "defNameHash": 990072366,
+            "generated": false,
+            "debugRandomId": 17402
+           }
+          },
+          {
+           "requested": "PawnKindDef/RM_Bozzuga",
+           "found": true,
+           "defName": "RM_Bozzuga",
+           "defType": "PawnKindDef",
+           "label": "bozzuga",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "race": "RM_Bozzuga",
+            "lifeStages": [
+             "PawnKindLifeStage",
+             "PawnKindLifeStage",
+             "PawnKindLifeStage"
+            ],
+            "alternateGraphicChance": 0.0,
+            "useFactionXenotypes": true,
+            "preventIdeo": false,
+            "studiableAsPrisoner": false,
+            "isBoss": false,
+            "moveSpeedFactorByTerrainTag": [],
+            "fixedChildBackstories": [],
+            "fixedAdultBackstories": [],
+            "backstoryCryptosleepCommonality": 0.0,
+            "minGenerationAge": 0,
+            "maxGenerationAge": 999999,
+            "factionLeader": false,
+            "allowOldAgeInjuries": true,
+            "generateInitialNonFamilyRelations": true,
+            "destroyGearOnDrop": false,
+            "canStrip": true,
+            "defendPointRadius": -1.0,
+            "factionHostileOnKill": false,
+            "factionHostileOnDeath": false,
+            "hostileToAll": false,
+            "forceNoDeathNotification": false,
+            "skipResistant": false,
+            "controlGroupPortraitZoom": 1.0,
+            "forceDeathOnDowned": false,
+            "immuneToGameConditionEffects": false,
+            "immuneToTraps": false,
+            "collidesWithPawns": true,
+            "ignoresPainShock": false,
+            "canMeleeAttack": true,
+            "basePrisonBreakMtbDays": 60.0,
+            "useFixedRotation": false,
+            "showInDebugSpawner": true,
+            "canOpenAnyDoor": false,
+            "canOpenDoors": true,
+            "royalTitleChance": 0.0,
+            "allowRoyalRoomRequirements": true,
+            "allowRoyalApparelRequirements": true,
+            "isFighter": true,
+            "combatPower": 70.0,
+            "canArriveManhunter": true,
+            "canBeSapper": false,
+            "isGoodBreacher": false,
+            "allowInMechClusters": true,
+            "maxPerGroup": 2147483647,
+            "isGoodPsychicRitualInvoker": false,
+            "canBeScattered": true,
+            "appearsRandomlyInCombatGroups": true,
+            "aiAvoidCover": false,
+            "acceptArrestChanceFactor": 1.0,
+            "canUseAvoidGrid": false,
+            "itemQuality": "Normal",
+            "forceNormalGearQuality": false,
+            "apparelAllowHeadgearChance": 1.0,
+            "ignoreApparelAllowChance": false,
+            "apparelIgnoreSeasons": false,
+            "apparelIgnorePollution": false,
+            "ignoreFactionApparelStuffRequirements": false,
+            "ignoreIdeoApparelColors": false,
+            "techHediffsChance": 0.0,
+            "techHediffsMaxAmount": 1,
+            "biocodeWeaponChance": 0.0,
+            "humanPregnancyChance": 0.03,
+            "nakedChance": 0.0,
+            "existingDamage": [],
+            "minApparelQuality": "Awful",
+            "maxApparelQuality": "Excellent",
+            "fixedInventory": [],
+            "invNutrition": 0.0,
+            "chemicalAddictionChance": 0.0,
+            "combatEnhancingDrugsChance": 0.0,
+            "forcedAddictions": [],
+            "trader": false,
+            "requiredWorkTags": "None",
+            "disabledWorkTags": "None",
+            "extraSkillLevels": 0,
+            "minTotalSkillLevels": 0,
+            "minBestSkillLevel": 0,
+            "ecoSystemWeight": 0.6,
+            "flyingAnimationFrameCount": 0,
+            "flyingAnimationTicksPerFrame": -1,
+            "flyingAnimationDrawSize": 1.0,
+            "flyingAnimationDrawSizeIsMultiplier": false,
+            "flyingAnimationInheritColors": false,
+            "defName": "RM_Bozzuga",
+            "label": "bozzuga",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 8898,
+            "index": 475,
+            "fileName": "RM_Bozzuga.xml",
+            "defNameHash": 990072366,
+            "generated": false,
+            "debugRandomId": 62075
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_f001f8e900f9498a94adf813a9854236",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "bozzuga_hunts",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a bozzuga hunting a karrolun needs both spawned on a Miasma map and a predator-hunt job read over ticks (jawa/pawn_jobs); not wired yet",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "swarm_composter_free_tier",
+    "components": [
+     {
+      "name": "swarm_karrobel_loam_defs_load",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "3 of 3 def(s) resolved",
+         "requested": 3,
+         "foundCount": 3,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_FeverSwarm",
+           "found": true,
+           "defName": "RM_FeverSwarm",
+           "defType": "ThingDef",
+           "label": "fever swarm",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "category": "Pawn",
+            "tickerType": "Normal",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": true,
+            "smallVolume": false,
+            "useHitPoints": false,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties",
+             "CompProperties_HoldingPlatformTarget",
+             "CompProperties_Studiable"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "recipes": [
+             "ExciseCarcinoma",
+             "AdministerMechSerumHealer",
+             "RemoveBodyPart",
+             "Euthanize",
+             "Anesthetize",
+             "CureScaria",
+             "Sterilize",
+             "CureBloodRot",
+             "TerminatePregnancy",
+             "SurgicalInspection",
+             "RemovePorcupineQuill",
+             "RM_ScrubTarred",
+             "RM_AdministerStellockLace"
+            ],
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": true,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "RealtimeOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": true,
+            "containedItemsSelectable": true,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": true,
+            "inspectorTabs": [
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType"
+            ],
+            "inspectorTabsResolved": [
+             "ITab_Pawn_Health",
+             "ITab_Pawn_Needs",
+             "ITab_Pawn_Character",
+             "ITab_Pawn_Training",
+             "ITab_Pawn_Social",
+             "ITab_Pawn_Guest",
+             "ITab_Pawn_Prisoner",
+             "ITab_Pawn_Slave",
+             "ITab_Pawn_Feeding",
+             "ITab_Genes",
+             "ITab_GenesPregnancy",
+             "ITab_Entity",
+             "ITab_Pawn_FormingCaravan",
+             "ITab_Pawn_Gear",
+             "ITab_Pawn_Log",
+             "ITab_AnimalGenes"
+            ],
+            "seeThroughFog": false,
+            "drawGUIOverlay": true,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 0.8,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "thingCategories": [
+             "Animals"
+            ],
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Flesh",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.0,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeTags": [
+             "AnimalInsect"
+            ],
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "tools": [
+             "Tool"
+            ],
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Standable",
+            "pathCost": 0,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Pawn",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RM_FeverSwarm",
+            "label": "fever swarm",
+            "description": "Individually a fingernail-length, wet-winged thing, gold-dusted and easy to miss. The fever swarm is never seen alone \u2014 only as a slow-drifting haze of them, thickest over flowering mangals at the heat of the day. That haze is the green-gold breath the Miasma is named for, seen up close: the same swarm that carries the biome's fevers from pawn to pawn is the only thing that carries pollen between its flowers. You cannot have the trees without the fever.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 52345,
+            "index": 2903,
+            "fileName": "RM_Miasma_FeverSwarmKarrobel.xml",
+            "defNameHash": -1079593278,
+            "generated": false,
+            "debugRandomId": 59524
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Karrobel",
+           "found": true,
+           "defName": "RM_Karrobel",
+           "defType": "ThingDef",
+           "label": "karrobel",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "category": "Pawn",
+            "tickerType": "Normal",
+            "stackLimit": 1,
+            "destroyable": true,
+            "rotatable": true,
+            "smallVolume": false,
+            "useHitPoints": false,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties",
+             "CompProperties_HoldingPlatformTarget",
+             "CompProperties_Studiable",
+             "CompProperties_GatherableGas",
+             "RM_CompProperties_VerminBreeder"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "recipes": [
+             "ExciseCarcinoma",
+             "AdministerMechSerumHealer",
+             "RemoveBodyPart",
+             "Euthanize",
+             "Anesthetize",
+             "CureScaria",
+             "Sterilize",
+             "CureBloodRot",
+             "TerminatePregnancy",
+             "SurgicalInspection",
+             "RemovePorcupineQuill",
+             "RM_ScrubTarred",
+             "RM_AdministerStellockLace"
+            ],
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": 0,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": true,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "RealtimeOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 99999.0,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": true,
+            "containedItemsSelectable": true,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": true,
+            "inspectorTabs": [
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType",
+             "RuntimeType"
+            ],
+            "inspectorTabsResolved": [
+             "ITab_Pawn_Health",
+             "ITab_Pawn_Needs",
+             "ITab_Pawn_Character",
+             "ITab_Pawn_Training",
+             "ITab_Pawn_Social",
+             "ITab_Pawn_Guest",
+             "ITab_Pawn_Prisoner",
+             "ITab_Pawn_Slave",
+             "ITab_Pawn_Feeding",
+             "ITab_Genes",
+             "ITab_GenesPregnancy",
+             "ITab_Entity",
+             "ITab_Pawn_FormingCaravan",
+             "ITab_Pawn_Gear",
+             "ITab_Pawn_Log",
+             "ITab_AnimalGenes"
+            ],
+            "seeThroughFog": false,
+            "drawGUIOverlay": true,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Uncounted",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": false,
+            "designateHaulable": false,
+            "thingCategories": [
+             "Animals"
+            ],
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Flesh",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.0,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeTags": [
+             "AnimalExotic"
+            ],
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "tools": [
+             "Tool",
+             "Tool"
+            ],
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Standable",
+            "pathCost": 0,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Pawn",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RM_Karrobel",
+            "label": "karrobel",
+            "description": "A thick, wedge-bodied scuttler, tapering to a hardened blade of a head it drives into the muck. Rarely seen whole \u2014 mostly it is a churned ring of castings and a pair of banded, mud-caked plates breaking the surface. Where it has worked, the ground turns rich: clean delta loam, cast up from whatever the Miasma's sin-soup was before.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "modExtensions": [
+             "RM_VerminPressureExtension"
+            ],
+            "shortHash": 62183,
+            "index": 2904,
+            "fileName": "RM_Miasma_FeverSwarmKarrobel.xml",
+            "defNameHash": 147780124,
+            "generated": false,
+            "debugRandomId": 44737
+           }
+          },
+          {
+           "requested": "ThingDef/RM_DeltaLoam",
+           "found": true,
+           "defName": "RM_DeltaLoam",
+           "defType": "ThingDef",
+           "label": "delta loam",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "category": "Item",
+            "tickerType": "Never",
+            "stackLimit": 75,
+            "destroyable": true,
+            "rotatable": false,
+            "smallVolume": false,
+            "useHitPoints": true,
+            "receivesSignals": false,
+            "comps": [
+             "CompProperties_Forbiddable"
+            ],
+            "virtualDefs": [],
+            "killedLeavingsChance": 1.0,
+            "forceLeavingsAllowed": false,
+            "smeltable": false,
+            "burnableByRecipe": false,
+            "randomizeRotationOnSpawn": false,
+            "isTechHediff": false,
+            "isUnfinishedThing": false,
+            "leaveResourcesWhenKilled": false,
+            "isFrameInt": false,
+            "hasInteractionCell": false,
+            "interactionCellIconReverse": false,
+            "forceDebugSpawnable": false,
+            "intricate": false,
+            "scatterableOnMapGen": true,
+            "deepCommonality": 0.0,
+            "deepCountPerCell": 300,
+            "deepCountPerPortion": -1,
+            "generateCommonality": 1.0,
+            "generateAllowChance": 1.0,
+            "alwaysFlee": false,
+            "messageOnDeteriorateInStorage": true,
+            "deteriorateFromEnvironmentalEffects": true,
+            "canDeteriorateUnspawned": false,
+            "canLoadIntoCaravan": true,
+            "isMechClusterThreat": false,
+            "minRewardCount": 1,
+            "preventSkyfallersLandingOn": false,
+            "relicChance": 0.0,
+            "allowedArchonexusCount": -1,
+            "possessionCount": 0,
+            "notifyMapRemoved": false,
+            "canScatterOver": true,
+            "genericMarketSellable": true,
+            "drawHighlight": false,
+            "drawHighlightOnlyForHostile": false,
+            "autoTargetNearbyIdenticalThings": false,
+            "preventDroppingThingsOn": false,
+            "hiddenWhileUndiscovered": false,
+            "disableImpassableShotOverConfigError": false,
+            "showInSearch": true,
+            "bringAlongOnGravship": true,
+            "preventSpawningInResourcePod": false,
+            "pathfinderDangerous": false,
+            "noRightClickDraftAttack": false,
+            "gravshipSpawnPriority": 1,
+            "preventGravshipLandingOn": false,
+            "canInteractThroughCorners": false,
+            "drawerType": "MapMeshOnly",
+            "drawOffscreen": false,
+            "hideAtSnowOrSandDepth": 0.45,
+            "drawDamagedOverlay": true,
+            "castEdgeShadows": false,
+            "staticSunShadowHeight": 0.0,
+            "useSameGraphicForGhost": false,
+            "useBlueprintGraphicAsGhost": false,
+            "randomStyleChance": 0.0,
+            "canEditAnyStyle": false,
+            "dontPrint": false,
+            "killedLeavingsExpandRect": 0,
+            "minifiedManualDraw": false,
+            "minifiedDrawScale": 1.0,
+            "deselectedSelectionBracketFactor": 1.0,
+            "selectable": true,
+            "containedPawnsSelectable": false,
+            "containedItemsSelectable": false,
+            "neverMultiSelect": false,
+            "isAutoAttackableMapObject": false,
+            "hasTooltip": false,
+            "seeThroughFog": false,
+            "drawGUIOverlay": true,
+            "drawGUIOverlayQuality": true,
+            "resourceReadoutPriority": "Middle",
+            "resourceReadoutAlwaysShow": false,
+            "drawPlaceWorkersWhileSelected": false,
+            "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+            "uiIconScale": 1.0,
+            "hasCustomRectForSelector": false,
+            "hideStats": false,
+            "hideInspect": false,
+            "onlyShowInspectString": false,
+            "hideMainDesc": false,
+            "alwaysHaulable": true,
+            "designateHaulable": false,
+            "thingCategories": [
+             "ResourcesRaw"
+            ],
+            "mineable": false,
+            "socialPropernessMatters": false,
+            "stealable": true,
+            "soundDrop": "Standard_Drop",
+            "soundPickup": "Standard_Pickup",
+            "soundInteract": "Standard_Pickup",
+            "soundImpactDefault": "BulletImpact_Ground",
+            "saveCompressible": false,
+            "isSaveable": true,
+            "holdsRoof": false,
+            "fillPercent": 0.0,
+            "coversFloor": false,
+            "neverOverlapFloors": false,
+            "surfaceType": "None",
+            "wipesPlants": false,
+            "blockPlants": false,
+            "blockLight": false,
+            "blockWind": false,
+            "blockWeather": false,
+            "tradeability": "All",
+            "tradeNeverStack": false,
+            "tradeNeverGenerateStacked": false,
+            "healthAffectsPrice": true,
+            "equippedAngleOffset": 0.0,
+            "equippedDistanceOffset": 0.0,
+            "equipmentType": "None",
+            "techLevel": "Undefined",
+            "violentTechHediff": false,
+            "destroyOnDrop": false,
+            "recoilPower": 1.0,
+            "recoilRelaxation": 10.0,
+            "rotateInShelves": true,
+            "mergeVerbGizmos": true,
+            "canBeUsedUnderRoof": true,
+            "statBases": [
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier",
+             "StatModifier"
+            ],
+            "passability": "Standable",
+            "pathCost": 14,
+            "pathCostIgnoreRepeat": true,
+            "fertility": -1.0,
+            "costStuffCount": 0,
+            "clearBuildingArea": true,
+            "resourcesFractionWhenDeconstructed": 0.5,
+            "forcePassableByFlyingPawns": false,
+            "forceMoveItemsBeforeConstruction": false,
+            "isAltar": false,
+            "useStuffTerrainAffordance": false,
+            "minMonolithLevel": 0,
+            "constructionSkillPrerequisite": 0,
+            "artisticSkillPrerequisite": 0,
+            "minTechLevelToBuild": "Undefined",
+            "maxTechLevelToBuild": "Undefined",
+            "requireInspectedGravEngine": false,
+            "altitudeLayer": "Item",
+            "canGenerateDefaultDesignator": true,
+            "ideoBuilding": false,
+            "specialDisplayRadius": 0.0,
+            "uiOrder": 2999.0,
+            "uiIconForStackCount": -1,
+            "uiIconAngle": 0.0,
+            "defName": "RM_DeltaLoam",
+            "label": "delta loam",
+            "description": "Clean, fertile soil worked loose and cast up by karrobel burrowing through the Miasma's muck. Where the karrobel have been, the ground turns rich and dark \u2014 the one export from this biome that arrives already refined.",
+            "ignoreConfigErrors": false,
+            "ignoreIllegalLabelCharacterConfigError": false,
+            "shortHash": 38020,
+            "index": 2875,
+            "fileName": "RM_DeltaLoam.xml",
+            "defNameHash": 1899503427,
+            "generated": false,
+            "debugRandomId": 13513
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_427a1ce7c3e3461cb7c54dd3949a7185",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "mangal_gated_on_swarm",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a gated mangal (RM_Thessamor) not spreading where no swarm lives needs a Miasma map's wild plant pass (worldgen/map gen), which the bridge cannot regenerate",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "flotsam_yard",
+    "components": [
+     {
+      "name": "flotsam_after_surge_in_root_lines",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: flotsam stacks standing on root-line cells after a debug surge and recede (and none on dry inland ground) need a live Miasma quicktest map",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "attar_glaze_and_balm",
+    "components": [
+     {
+      "name": "glaze_adds_beauty_and_only_once",
+      "toggle": "attarEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofGlaze(Verse.Map)",
+         "result": "glazable=True before=50.0 after=53.0 off=50.0 glazableAgain=False",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_0d24ba99be7d492b9df75ba86fe84c5e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "balm_fades_scar_not_fresh_wound",
+      "toggle": "attarEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofBalm(Verse.Map)",
+         "result": "scarBefore=5.0 scarAfter=2.0 freshBefore=2.0 freshAfter=2.0 freshStillThere=True",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_34f262a167554497affba0a36c27a61f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "attar_recipe_on_still",
+      "toggle": "attarEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "recipeUsers"
+         ],
+         "defs": [
+          {
+           "requested": "RecipeDef/RM_MakeAttar",
+           "found": true,
+           "defName": "RM_MakeAttar",
+           "defType": "RecipeDef",
+           "label": "render attar",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "recipeUsers": [
+             "RM_AttarStill"
+            ]
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_837095d6e743466c89b6c6da001597ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   "<suite.Component object at 0x0000021EE4F94B50>"
+  ],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Miasma.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

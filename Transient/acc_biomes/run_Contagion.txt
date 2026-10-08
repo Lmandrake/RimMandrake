@@ -1,0 +1,150 @@
+[contagion-note] shipped defs resolved: 110
+[contagion] 22:24:19 defs_resolve PASS 
+[contagion-note] biome roster: {"animals": 21, "plants": 12}
+[contagion] 22:24:19 biome_table_and_roster PASS 
+[contagion] 22:24:19 biome_roster_animals UNMEASURED UNMEASURED: wildAnimals is not serialisable by get_defs (non-public field): "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"; the roster is checked statically from the XML
+[contagion] 22:24:19 organ_patch_comps PASS 
+[contagion] 22:24:19 defaults PASS 
+[contagion] 22:24:19 biomeRarityFactor_roundtrip PASS 
+[contagion] 22:24:19 burnDamageFactor_roundtrip PASS 
+[contagion] 22:24:20 burnEnabled_roundtrip PASS 
+[contagion] 22:24:20 burnFrequency_roundtrip PASS 
+[contagion] 22:24:20 burnTellsEnabled_roundtrip PASS 
+[contagion] 22:24:20 cloudRepulsorEnabled_roundtrip PASS 
+[contagion] 22:24:20 coalescenceEnabled_roundtrip PASS 
+[contagion] 22:24:20 genomeOrganGrowingEnabled_roundtrip PASS 
+[contagion] 22:24:20 grownLimbsEnabled_roundtrip PASS 
+[contagion] 22:24:20 sunbeamNativeFactor_roundtrip PASS 
+[contagion] 22:24:20 unfinishedSpawnerEnabled_roundtrip PASS 
+[contagion] 22:24:20 site_ready_baseline UNMEASURED UNMEASURED: the map is already RM_Contagion: the off-Contagion arm needs a stock biome
+[contagion] 22:24:20 off_when_setting_off UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:24:20 holds_sky_clear UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:24:20 lapses_without_power UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:24:21 site_ready_spawner PASS 
+[contagion] 22:24:22 spawner_off_buds_nothing PASS 
+[contagion] 22:24:24 spawner_buds_unfinished PASS 
+[contagion] 22:24:24 unfinished_rolls_limbs_and_lifespan PASS 
+[contagion] 22:24:27 unfinished_dissolves_on_death PASS 
+[contagion] 22:24:28 retile_to_contagion UNMEASURED UNMEASURED: the map was already RM_Contagion; the control for 'the retile did it' is gone
+[contagion] 22:24:28 site_is_contagion PASS 
+[contagion] 22:24:35 burn_site_ready PASS 
+[contagion] 22:25:08 repulsor_forces_burn PASS 
+[contagion] 22:25:12 burn_harmless_at_zero_damage PASS 
+[contagion] 22:25:18 burn_doses_the_exposed_visitor PASS 
+[contagion] 22:25:18 burn_hurts_native_spares_armored PASS 
+[contagion] 22:25:18 native_dives_for_roof FAIL ExpectationFailed: the UV-shy native is at (54,174), not under the roof patch (131, 76, 8, 8)
+[contagion] 22:25:18 burn_off_means_no_harm UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:25:18 repulsor_off_lapses_burn UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:25:19 site_is_contagion PASS 
+[contagion] 22:25:22 natural_site_ready PASS 
+[contagion] 22:25:25 burn_off_never_schedules PASS 
+[contagion] 22:25:36 slow_frequency_defers_burn PASS 
+[contagion-note] natural burn condition row: [{"def": "RM_ContagionBurnCondition", "ticksLeft": 2499}]
+[contagion] 22:25:41 natural_burn_arrives_on_schedule PASS 
+[contagion] 22:25:42 site_is_contagion PASS 
+[contagion] 22:25:42 uv_site_ready PASS 
+[contagion-note] UV sunburn severity (native@6x, native@1x, person@6x): [30.0, 5.0, 0.0]
+[contagion] 22:25:42 uv_native_multiplier UNMEASURED UNMEASURED: no RM_UVSunburn severity read back ([30.0, 5.0, 0.0]): cannot compare
+[contagion] 22:25:42 site_is_contagion PASS 
+[contagion] 22:25:43 coalescence_site_ready PASS 
+[contagion] 22:25:44 coalescence_off_absorbs_nothing PASS 
+[contagion-note] after absorbing 6: {"left": 1, "stage": 2, "mass": 6}
+[contagion] 22:25:47 coalescence_absorbs_and_grows_a_stage PASS 
+[contagion] 22:25:49 coalescence_emits_manhunters_and_grows_on_its_own FAIL ExpectationFailed: no manhunter Unfinished emitted after 7000 ticks
+[contagion] 22:25:49 burn_collapses_it_into_monstrous_samples UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:25:49 monstrous_fixture UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:25:49 monstrous_gestation_grows_one_limb UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:25:49 grown_limbs_off_grows_organs UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 22:25:49 site_is_contagion PASS 
+[contagion] 22:25:49 genome_site_ready PASS 
+[contagion] 22:26:52 extraction_surgery_yields_sample UNMEASURED UNMEASURED: the surgery job could not start (patient not in a bed / giver unusable): {"isBillGiver": true, "usableBillGiver": true, "anyBillShouldDoNow": true, "usableAfterFueling": false, "pawnCanReserve": true, "isBurning": false, "pawnCanReserveInteractionCell": true, "reason": "UsableForBillsAft
+[contagion] 22:27:22 inject_starts_gestation FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[contagion] 22:27:22 gestation_dies_producing_one_organ_batch UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion-note] log scan: {"contagion errors": 0, "xref naming our defs": 0, "bufferLines": 632}
+[contagion] 22:27:54 log_clean PASS 
+[contagion] 22:27:54 restore_tile PASS 
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Contagion_20261008T052754Z.html
+CHAIN defs None {"name": "defs", "situational": null, "modal_check": null}
+    {"name": "defs_resolve", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "110 of 110 def(s) resolved", "requested": 110, "foundCount": 110, "notF
+    {"name": "biome_table_and_roster", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "no
+    {"name": "biome_roster_animals", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: wildAnimals is not serialisable by get_defs (non-public field): \"(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)\
+    {"name": "organ_patch_comps", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_def", "result": {"success": true, "defName": "Kidney", "defType": "ThingDef", "label": "kidney", "description": "
+CHAIN settings None {"name": "settings", "situational": null, "modal_check": null}
+    {"name": "defaults", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "biomeRarityFactor", "fieldKind": "static", "value"
+CHAIN settings_biomeRarityFactor None {"name": "settings_biomeRarityFactor", "situational": null, "modal_check": null}
+    {"name": "biomeRarityFactor_roundtrip", "toggle": "biomeRarityFactor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "biomeRarityFacto
+CHAIN settings_burnDamageFactor None {"name": "settings_burnDamageFactor", "situational": null, "modal_check": null}
+    {"name": "burnDamageFactor_roundtrip", "toggle": "burnDamageFactor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "burnDamageFactor",
+CHAIN settings_burnEnabled None {"name": "settings_burnEnabled", "situational": null, "modal_check": null}
+    {"name": "burnEnabled_roundtrip", "toggle": "burnEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "burnEnabled", "fieldKind": "
+CHAIN settings_burnFrequency None {"name": "settings_burnFrequency", "situational": null, "modal_check": null}
+    {"name": "burnFrequency_roundtrip", "toggle": "burnFrequency", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "burnFrequency", "fieldKi
+CHAIN settings_burnTellsEnabled None {"name": "settings_burnTellsEnabled", "situational": null, "modal_check": null}
+    {"name": "burnTellsEnabled_roundtrip", "toggle": "burnTellsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "burnTellsEnabled",
+CHAIN settings_cloudRepulsorEnabled None {"name": "settings_cloudRepulsorEnabled", "situational": null, "modal_check": null}
+    {"name": "cloudRepulsorEnabled_roundtrip", "toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "cloudRepul
+CHAIN settings_coalescenceEnabled None {"name": "settings_coalescenceEnabled", "situational": null, "modal_check": null}
+    {"name": "coalescenceEnabled_roundtrip", "toggle": "coalescenceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "coalescenceEna
+CHAIN settings_genomeOrganGrowingEnabled None {"name": "settings_genomeOrganGrowingEnabled", "situational": null, "modal_check": null}
+    {"name": "genomeOrganGrowingEnabled_roundtrip", "toggle": "genomeOrganGrowingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "
+CHAIN settings_grownLimbsEnabled None {"name": "settings_grownLimbsEnabled", "situational": null, "modal_check": null}
+    {"name": "grownLimbsEnabled_roundtrip", "toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "grownLimbsEnable
+CHAIN settings_sunbeamNativeFactor None {"name": "settings_sunbeamNativeFactor", "situational": null, "modal_check": null}
+    {"name": "sunbeamNativeFactor_roundtrip", "toggle": "sunbeamNativeFactor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sunbeamNativ
+CHAIN settings_unfinishedSpawnerEnabled None {"name": "settings_unfinishedSpawnerEnabled", "situational": null, "modal_check": null}
+    {"name": "unfinishedSpawnerEnabled_roundtrip", "toggle": "unfinishedSpawnerEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "un
+CHAIN repulsor_clear None {"name": "repulsor_clear", "situational": null, "modal_check": null}
+    {"name": "site_ready_baseline", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the map is already RM_Contagion: the off-Contagion arm needs a stock biome", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"
+    {"name": "off_when_setting_off", "toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows"
+    {"name": "holds_sky_clear", "toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [],
+    {"name": "lapses_without_power", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises":
+CHAIN spawner None {"name": "spawner", "situational": null, "modal_check": null}
+    {"name": "site_ready_spawner", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "ce
+    {"name": "spawner_off_buds_nothing", "toggle": "unfinishedSpawnerEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "unfinishedSp
+    {"name": "spawner_buds_unfinished", "toggle": "unfinishedSpawnerEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(250) -> 250 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_edb9f2d26
+    {"name": "unfinished_rolls_limbs_and_lifespan", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "2 pawn(s), 3 outside the rect.", "pawns": [{"i
+    {"name": "unfinished_dissolves_on_death", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_severity_adjust", "result": {"success": true, "severityChanged": true, "pawn": "The Unfinished", "he
+CHAIN site None {"name": "site", "situational": null, "modal_check": null}
+    {"name": "retile_to_contagion", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the map was already RM_Contagion; the control for 'the retile did it' is gone", "evidence": [{"call": "bridge_call jawa/map_info", "result":
+CHAIN burn_forced None {"name": "burn_forced", "situational": null, "modal_check": null}
+    {"name": "site_is_contagion", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "cel
+    {"name": "burn_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "cellC
+    {"name": "repulsor_forces_burn", "toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(3300) -> 3300 real tick(s) over 4 call(s)", "result": {"success": true, "stepId": "step_c0c14a5fbe544c
+    {"name": "burn_harmless_at_zero_damage", "toggle": "burnDamageFactor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(600) -> 600 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_06b1f5e6b3e2
+    {"name": "burn_doses_the_exposed_visitor", "toggle": "burnDamageFactor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "burnDamageFact
+    {"name": "burn_hurts_native_spares_armored", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "native_dives_for_roof", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: the UV-shy native is at (54,174), not under the roof patch (131, 76, 8, 8)", "evidence": [], "screenshots": [], "sequences": [], "checkpo
+    {"name": "burn_off_means_no_harm", "toggle": "burnEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "
+    {"name": "repulsor_off_lapses_burn", "toggle": "cloudRepulsorEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "sh
+CHAIN burn_natural None {"name": "burn_natural", "situational": null, "modal_check": null}
+    {"name": "site_is_contagion", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "cel
+    {"name": "natural_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "ce
+    {"name": "burn_off_never_schedules", "toggle": "burnEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "time_set_ticks +285000 (declared jump)", "result": {"success": true, "ticksRequested": 2981372, "ticksGameBefore": 269
+    {"name": "slow_frequency_defers_burn", "toggle": "burnFrequency", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "burnFrequency", "fiel
+    {"name": "natural_burn_arrives_on_schedule", "toggle": "burnFrequency", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "burnFrequency",
+CHAIN uv None {"name": "uv", "situational": null, "modal_check": null}
+    {"name": "site_is_contagion", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "cel
+    {"name": "uv_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "cellCou
+    {"name": "uv_native_multiplier", "toggle": "sunbeamNativeFactor", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: no RM_UVSunburn severity read back ([30.0, 5.0, 0.0]): cannot compare", "evidence": [{"call": "bridge_call jawa/mod_settin
+CHAIN coalescence None {"name": "coalescence", "situational": null, "modal_check": null}
+    {"name": "site_is_contagion", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "cel
+    {"name": "coalescence_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250,
+    {"name": "coalescence_off_absorbs_nothing", "toggle": "coalescenceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "coalescence
+    {"name": "coalescence_absorbs_and_grows_a_stage", "toggle": "coalescenceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_TheUnfinished
+    {"name": "coalescence_emits_manhunters_and_grows_on_its_own", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: no manhunter Unfinished emitted after 7000 ticks", "evidence": [{"call": "bridge_call jawa/inspect_string", "
+    {"name": "burn_collapses_it_into_monstrous_samples", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "show
+    {"name": "monstrous_fixture", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": nu
+    {"name": "monstrous_gestation_grows_one_limb", "toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": 
+    {"name": "grown_limbs_off_grows_organs", "toggle": "grownLimbsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "s
+CHAIN genome None {"name": "genome", "situational": null, "modal_check": null}
+    {"name": "site_is_contagion", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "cel
+    {"name": "genome_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 9, "sizeX": 250, "sizeZ": 250, "cel
+    {"name": "extraction_surgery_yields_sample", "toggle": "genomeOrganGrowingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the surgery job could not start (patient not in a bed / giver unusable): {\"isBillGiver\": true, \"usabl
+    {"name": "inject_starts_gestation", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "evidence": [{"call": "brid
+    {"name": "gestation_dies_producing_one_organ_batch", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "show
+CHAIN log None {"name": "log", "situational": null, "modal_check": null}
+    {"name": "log_clean", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/drain_log", "result": {"success": true, "message": "1 message(s) of 632 in the buffer.", "totalInBuffer": 632, "messages": [{
+CHAIN site_restore None {"name": "site_restore", "situational": null, "modal_check": null}
+    {"name": "restore_tile", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/world_tile_set", "result": {"success": true, "written": 1, "requested": 1, "errors": [], "clamped": [], "note": "Nothing i
+ALL_GREEN False FINDINGS 3

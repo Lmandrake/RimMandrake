@@ -1,0 +1,3334 @@
+{
+ "mod": "EnvironmentalHazards",
+ "stamp": "20261008T053113Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RM_EnvironmentalHazardsNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_EnvironmentalHazardsNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RM_EnvironmentalHazardsNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_45757192d99e48e89de8a8658fff776f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_shipped_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "29 of 29 def(s) resolved",
+         "requested": 29,
+         "foundCount": 29,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "DamageArmorCategoryDef/RM_ScaldArmor",
+           "found": true,
+           "defName": "RM_ScaldArmor",
+           "defType": "DamageArmorCategoryDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ScaldArmor"
+           }
+          },
+          {
+           "requested": "DamageDef/RM_VenomvineScratch",
+           "found": true,
+           "defName": "RM_VenomvineScratch",
+           "defType": "DamageDef",
+           "label": "venom scratch",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_VenomvineScratch"
+           }
+          },
+          {
+           "requested": "DutyDef/RM_AnchorGuard",
+           "found": true,
+           "defName": "RM_AnchorGuard",
+           "defType": "DutyDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_AnchorGuard"
+           }
+          },
+          {
+           "requested": "HediffDef/RM_AnimalSporeAllergy",
+           "found": true,
+           "defName": "RM_AnimalSporeAllergy",
+           "defType": "HediffDef",
+           "label": "spore allergy",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_AnimalSporeAllergy"
+           }
+          },
+          {
+           "requested": "HediffDef/RM_SporeAllergy",
+           "found": true,
+           "defName": "RM_SporeAllergy",
+           "defType": "HediffDef",
+           "label": "spore allergy",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SporeAllergy"
+           }
+          },
+          {
+           "requested": "HediffDef/RM_VenomvineVenom",
+           "found": true,
+           "defName": "RM_VenomvineVenom",
+           "defType": "HediffDef",
+           "label": "thorn venom",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_VenomvineVenom"
+           }
+          },
+          {
+           "requested": "IncidentDef/RM_Disease_AnimalSporeAllergy",
+           "found": true,
+           "defName": "RM_Disease_AnimalSporeAllergy",
+           "defType": "IncidentDef",
+           "label": "spore allergy (animals)",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Disease_AnimalSporeAllergy"
+           }
+          },
+          {
+           "requested": "IncidentDef/RM_Disease_SporeAllergy",
+           "found": true,
+           "defName": "RM_Disease_SporeAllergy",
+           "defType": "IncidentDef",
+           "label": "spore allergy",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Disease_SporeAllergy"
+           }
+          },
+          {
+           "requested": "JobDef/RM_DisarmLotteryTrap",
+           "found": true,
+           "defName": "RM_DisarmLotteryTrap",
+           "defType": "JobDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_DisarmLotteryTrap"
+           }
+          },
+          {
+           "requested": "JobDef/RM_EatStructure",
+           "found": true,
+           "defName": "RM_EatStructure",
+           "defType": "JobDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_EatStructure"
+           }
+          },
+          {
+           "requested": "JobDef/RM_GnawTreeBase",
+           "found": true,
+           "defName": "RM_GnawTreeBase",
+           "defType": "JobDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_GnawTreeBase"
+           }
+          },
+          {
+           "requested": "JobDef/RM_PourSolvent",
+           "found": true,
+           "defName": "RM_PourSolvent",
+           "defType": "JobDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_PourSolvent"
+           }
+          },
+          {
+           "requested": "JobDef/RM_WorkLottery",
+           "found": true,
+           "defName": "RM_WorkLottery",
+           "defType": "JobDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WorkLottery"
+           }
+          },
+          {
+           "requested": "MentalStateDef/RM_WaterTruceRetribution",
+           "found": true,
+           "defName": "RM_WaterTruceRetribution",
+           "defType": "MentalStateDef",
+           "label": "water-truce retribution",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WaterTruceRetribution"
+           }
+          },
+          {
+           "requested": "StatDef/RM_ArmorRating_Scald",
+           "found": true,
+           "defName": "RM_ArmorRating_Scald",
+           "defType": "StatDef",
+           "label": "armor - scald",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ArmorRating_Scald"
+           }
+          },
+          {
+           "requested": "StatDef/RM_ScaldProtection",
+           "found": true,
+           "defName": "RM_ScaldProtection",
+           "defType": "StatDef",
+           "label": "scald-steam protection",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ScaldProtection"
+           }
+          },
+          {
+           "requested": "StatDef/RM_WetBulbProtection",
+           "found": true,
+           "defName": "RM_WetBulbProtection",
+           "defType": "StatDef",
+           "label": "wet-bulb protection",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WetBulbProtection"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_FlameStatuary",
+           "found": true,
+           "defName": "RM_FlameStatuary",
+           "defType": "ThingDef",
+           "label": "flame statuary",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_FlameStatuary"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Leachmoss",
+           "found": true,
+           "defName": "RM_Leachmoss",
+           "defType": "ThingDef",
+           "label": "leachmoss",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Leachmoss"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Parasol",
+           "found": true,
+           "defName": "RM_Parasol",
+           "defType": "ThingDef",
+           "label": "parasol",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Parasol"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_ShadeTent",
+           "found": true,
+           "defName": "RM_ShadeTent",
+           "defType": "ThingDef",
+           "label": "shade tent",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ShadeTent"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_SunShield",
+           "found": true,
+           "defName": "RM_SunShield",
+           "defType": "ThingDef",
+           "label": "sun shield",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SunShield"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Venomvine",
+           "found": true,
+           "defName": "RM_Venomvine",
+           "defType": "ThingDef",
+           "label": "venomvine",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Venomvine"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_VenomvineThicket",
+           "found": true,
+           "defName": "RM_VenomvineThicket",
+           "defType": "ThingDef",
+           "label": "venomvine thicket",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_VenomvineThicket"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_GnawTreeBase_Consume",
+           "found": true,
+           "defName": "RM_GnawTreeBase_Consume",
+           "defType": "ThinkTreeDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_GnawTreeBase_Consume"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_AnchorBehaviors",
+           "found": true,
+           "defName": "RM_ThinkTree_AnchorBehaviors",
+           "defType": "ThinkTreeDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_AnchorBehaviors"
+           }
+          },
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_StrandingBehaviors",
+           "found": true,
+           "defName": "RM_ThinkTree_StrandingBehaviors",
+           "defType": "ThinkTreeDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_StrandingBehaviors"
+           }
+          },
+          {
+           "requested": "WorkGiverDef/RM_DisarmLotteryTrap",
+           "found": true,
+           "defName": "RM_DisarmLotteryTrap",
+           "defType": "WorkGiverDef",
+           "label": "disarm lottery trap",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_DisarmLotteryTrap"
+           }
+          },
+          {
+           "requested": "WorkGiverDef/RM_WorkLottery",
+           "found": true,
+           "defName": "RM_WorkLottery",
+           "defType": "WorkGiverDef",
+           "label": "dig lottery shaft",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WorkLottery"
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_ecdb160f72cf440c99c3488f5653662f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "acceleratedRotCorpseMultiplier_round_trips",
+      "toggle": "acceleratedRotCorpseMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "acceleratedRotEnabled_round_trips",
+      "toggle": "acceleratedRotEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "acceleratedRotItemMultiplier_round_trips",
+      "toggle": "acceleratedRotItemMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "areaAttacksEnabled_round_trips",
+      "toggle": "areaAttacksEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "biomeArrivalLettersEnabled_round_trips",
+      "toggle": "biomeArrivalLettersEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "biomeGlowMultiplierEnabled_round_trips",
+      "toggle": "biomeGlowMultiplierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "bodySizeBarrierEnabled_round_trips",
+      "toggle": "bodySizeBarrierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "bodySizeBarrierThreadCostMultiplier_round_trips",
+      "toggle": "bodySizeBarrierThreadCostMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breaklightEnabled_round_trips",
+      "toggle": "breaklightEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "bubbleSailorScattererEnabled_round_trips",
+      "toggle": "bubbleSailorScattererEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "contactVenomEnabled_round_trips",
+      "toggle": "contactVenomEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "contactVenomLethal_round_trips",
+      "toggle": "contactVenomLethal",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "contactVenomScratchMultiplier_round_trips",
+      "toggle": "contactVenomScratchMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "crecheDespoilMemoryEnabled_round_trips",
+      "toggle": "crecheDespoilMemoryEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "dryAirBlowerEnabled_round_trips",
+      "toggle": "dryAirBlowerEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "environmentalDamageEnabled_round_trips",
+      "toggle": "environmentalDamageEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "gasEffectsEnabled_round_trips",
+      "toggle": "gasEffectsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "gasEmittersEnabled_round_trips",
+      "toggle": "gasEmittersEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "glasswalkSlipChancePerSweep_round_trips",
+      "toggle": "glasswalkSlipChancePerSweep",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "glasswalkSlipEnabled_round_trips",
+      "toggle": "glasswalkSlipEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "gradientSurgeEnabled_round_trips",
+      "toggle": "gradientSurgeEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "grazingSuppressionHookEnabled_round_trips",
+      "toggle": "grazingSuppressionHookEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "groundRefusalEnabled_round_trips",
+      "toggle": "groundRefusalEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "hazardApparelAIAwarenessEnabled_round_trips",
+      "toggle": "hazardApparelAIAwarenessEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "hazardDamageMultiplier_round_trips",
+      "toggle": "hazardDamageMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "latentHazardArmingEnabled_round_trips",
+      "toggle": "latentHazardArmingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "leachmossEnabled_round_trips",
+      "toggle": "leachmossEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "livePrepStrictViability_round_trips",
+      "toggle": "livePrepStrictViability",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "livingBolesEnabled_round_trips",
+      "toggle": "livingBolesEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "livingProduceHeatEnabled_round_trips",
+      "toggle": "livingProduceHeatEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "livingRegrowthEnabled_round_trips",
+      "toggle": "livingRegrowthEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "livingRegrowthRateMultiplier_round_trips",
+      "toggle": "livingRegrowthRateMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "localGrowthAuraEnabled_round_trips",
+      "toggle": "localGrowthAuraEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "mirrorPoolsEnabled_round_trips",
+      "toggle": "mirrorPoolsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "periodicInspirationEnabled_round_trips",
+      "toggle": "periodicInspirationEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "pollinationGateEnabled_round_trips",
+      "toggle": "pollinationGateEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "rootCausewaysEnabled_round_trips",
+      "toggle": "rootCausewaysEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "scaledExplosionsEnabled_round_trips",
+      "toggle": "scaledExplosionsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "sentinelGraveWardsEnabled_round_trips",
+      "toggle": "sentinelGraveWardsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "sheenExposureEnabled_round_trips",
+      "toggle": "sheenExposureEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "sporeCloudEnabled_round_trips",
+      "toggle": "sporeCloudEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "steamDevilEnabled_round_trips",
+      "toggle": "steamDevilEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "strandingPoolsEnabled_round_trips",
+      "toggle": "strandingPoolsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "sumpLivingMapEnabled_round_trips",
+      "toggle": "sumpLivingMapEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "sumpLivingMapPace_round_trips",
+      "toggle": "sumpLivingMapPace",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "sunlightScaldEnabled_round_trips",
+      "toggle": "sunlightScaldEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarBeastEnabled_round_trips",
+      "toggle": "tarBeastEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarBeastMaxBuildings_round_trips",
+      "toggle": "tarBeastMaxBuildings",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarBeastPace_round_trips",
+      "toggle": "tarBeastPace",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarBeastPumpWakeFactor_round_trips",
+      "toggle": "tarBeastPumpWakeFactor",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarBelchEnabled_round_trips",
+      "toggle": "tarBelchEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarBelchRadius_round_trips",
+      "toggle": "tarBelchRadius",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarCoatingEnabled_round_trips",
+      "toggle": "tarCoatingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarSolventGodDeltaShkaar_round_trips",
+      "toggle": "tarSolventGodDeltaShkaar",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarSolventGodDeltaZizzik_round_trips",
+      "toggle": "tarSolventGodDeltaZizzik",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarSolventManhunter_round_trips",
+      "toggle": "tarSolventManhunter",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarSolventMinCount_round_trips",
+      "toggle": "tarSolventMinCount",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarSolventPourEnabled_round_trips",
+      "toggle": "tarSolventPourEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarSolventStrongRequired_round_trips",
+      "toggle": "tarSolventStrongRequired",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "targetedHediffAbilityEnabled_round_trips",
+      "toggle": "targetedHediffAbilityEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tarredHediffEnabled_round_trips",
+      "toggle": "tarredHediffEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "treasureConscienceEnabled_round_trips",
+      "toggle": "treasureConscienceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "treeFallEnabled_round_trips",
+      "toggle": "treeFallEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "warblingGlowEnabled_round_trips",
+      "toggle": "warblingGlowEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "warblingGlowSpeedMultiplier_round_trips",
+      "toggle": "warblingGlowSpeedMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wardenCrecheScattererEnabled_round_trips",
+      "toggle": "wardenCrecheScattererEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "warmGroundEnabled_round_trips",
+      "toggle": "warmGroundEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "warmGroundOffsetCelsius_round_trips",
+      "toggle": "warmGroundOffsetCelsius",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "waterAgitationDensity_round_trips",
+      "toggle": "waterAgitationDensity",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "waterAgitationEnabled_round_trips",
+      "toggle": "waterAgitationEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "waterTruceRadius_round_trips",
+      "toggle": "waterTruceRadius",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "waterTruceRetributionEnabled_round_trips",
+      "toggle": "waterTruceRetributionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "waterTruceSuppressionEnabled_round_trips",
+      "toggle": "waterTruceSuppressionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "weatherPulseEnabled_round_trips",
+      "toggle": "weatherPulseEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wetBulbOverwhelmEnabled_round_trips",
+      "toggle": "wetBulbOverwhelmEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "harmony_rules_armed",
+    "components": [
+     {
+      "name": "control_unpatched_method_has_no_owner",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GenCelestial",
+         "methodName": "NoSuchMethodZZ",
+         "methodCount": 0,
+         "methods": [],
+         "ticksGame": 3371842,
+         "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+         "operation": {
+          "OperationId": "op_27adf23d3e8644ff98c36e2c4fce2135",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "GenCelestial_CurCelestialSunGlow_postfix_armed",
+      "toggle": "biomeGlowMultiplierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GenCelestial",
+         "methodName": "CurCelestialSunGlow",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CurCelestialSunGlow",
+           "declaringType": "RimWorld.GenCelestial",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "com.alphabiomes",
+             "priority": 400,
+             "patchMethod": "AlphaBiomes.AlphaBiomes_GenCelestial_CurCelestialSunGlow_Patch.AvoidTheLight",
+             "patchAssembly": "AlphaBiomes"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.BiomeGlowPatches.CurCelestialSunGlow_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_a5d5b3eaa4934166aaaeee5f40b6437d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "ConditionalStatAffecter_InSunlight_Applies_postfix_armed",
+      "toggle": "biomeGlowMultiplierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "ConditionalStatAffecter_InSunlight",
+         "methodName": "Applies",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Applies",
+           "declaringType": "Verse.ConditionalStatAffecter_InSunlight",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "com.alphabiomes",
+             "priority": 400,
+             "patchMethod": "AlphaBiomes.AlphaBiomes_ConditionalStatAffecter_InSunlight_Applies_Patch.VampiresAreFine",
+             "patchAssembly": "AlphaBiomes"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.BiomeGlowPatches.InSunlightApplies_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_275cf39fd8a0443d8347650fdc2df6a2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "PathFinder_CreateRequest_prefix_armed",
+      "toggle": "bodySizeBarrierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "PathFinder",
+         "methodName": "CreateRequest",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CreateRequest",
+           "declaringType": "Verse.PathFinder",
+           "prefixCount": 2,
+           "postfixCount": 0,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Hediffs.PhasingPatches.CreateRequest_Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_BodySizeBarrierPatches.CreateRequest_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_b562ea6f08c44450a2e9bb59906a46e7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Pawn_PathFollower_GetPawnCellBaseCostOverride_postfix_armed",
+      "toggle": "bodySizeBarrierEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Pawn_PathFollower",
+         "methodName": "GetPawnCellBaseCostOverride",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "GetPawnCellBaseCostOverride",
+           "declaringType": "Verse.AI.Pawn_PathFollower",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_BodySizeBarrierPatches.GetPawnCellBaseCostOverride_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_1d7512fa32914b8793c35d83327e1eca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Thing_PostApplyDamage_postfix_armed",
+      "toggle": "waterTruceRetributionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Thing",
+         "methodName": "PostApplyDamage",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "PostApplyDamage",
+           "declaringType": "Verse.Thing",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.divinginteraction",
+             "priority": 400,
+             "patchMethod": "RimMandrake.DivingInteraction.Patch_Thing_PostApplyDamage.Postfix",
+             "patchAssembly": "RimMandrake.DivingInteraction"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_WaterTruceDamagePatches.PostApplyDamage_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_68a5ac44d62e46618c469fe547b71795",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "FoodUtility_IsAcceptablePreyFor_postfix_armed",
+      "toggle": "waterTruceSuppressionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "FoodUtility",
+         "methodName": "IsAcceptablePreyFor",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "IsAcceptablePreyFor",
+           "declaringType": "RimWorld.FoodUtility",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_WaterTruceHuntSuppression.IsAcceptablePreyFor_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_686c1f2df5ab441987d4b477a565e482",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "JobDriver_PredatorHunt_MakeNewToils_postfix_armed",
+      "toggle": "waterTruceSuppressionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "JobDriver_PredatorHunt",
+         "methodName": "MakeNewToils",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "MakeNewToils",
+           "declaringType": "RimWorld.JobDriver_PredatorHunt",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_WaterTruceHuntSuppression.MakeNewToils_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_bf55bc04a98b4b13bae763f71b515c9e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "WildPlantSpawner_CalculatePlantsWhichCanGrowAt_postfix_armed",
+      "toggle": "leachmossEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "WildPlantSpawner",
+         "methodName": "CalculatePlantsWhichCanGrowAt",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CalculatePlantsWhichCanGrowAt",
+           "declaringType": "RimWorld.WildPlantSpawner",
+           "prefixCount": 0,
+           "postfixCount": 4,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_LeachmossWildSpawnGatePatch.CalculatePlantsWhichCanGrowAt_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_PollinationGatePatch.CalculatePlantsWhichCanGrowAt_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            },
+            {
+             "owner": "mandrake.rm.longshade",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LongShade.RM_Patch_DewfringeWildSpawnGate.CalculatePlantsWhichCanGrowAt_Postfix",
+             "patchAssembly": "RimMandrake.LongShade"
+            },
+            {
+             "owner": "mandrake.rm.pyrelands.wildplantallowlist",
+             "priority": 400,
+             "patchMethod": "RimMandrake.Pyrelands.Patch_EnforcePyrelandsWildPlantAllowlist.Postfix",
+             "patchAssembly": "FireEcologyHook"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_19d33ed394bb4d699ac848b52a3e84ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "GenStep_GravshipMarker_Generate_postfix_armed",
+      "toggle": "biomeArrivalLettersEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GenStep_GravshipMarker",
+         "methodName": "Generate",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Generate",
+           "declaringType": "RimWorld.GenStep_GravshipMarker",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_GravshipArrivalLetter.Generate_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_fed5c2fcd5a14461b38b53795c7ebced",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 14
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "IncidentWorker_ChanceFactorNow_postfix_armed",
+      "toggle": "crecheDespoilMemoryEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "IncidentWorker",
+         "methodName": "ChanceFactorNow",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "ChanceFactorNow",
+           "declaringType": "RimWorld.IncidentWorker",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_CrecheDespoilManhunterFactorPatch.ChanceFactorNow_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            },
+            {
+             "owner": "mandrake.rm.leaningscrub",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LeaningScrub.RM_WindCalendarPatches.ChanceFactorNow_Postfix",
+             "patchAssembly": "RimMandrake.LeaningScrub"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_37c4e1a897704814a1ac0a57cd51519f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "CompTemperatureRuinable_CompTick_prefix_armed",
+      "toggle": "livePrepStrictViability",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "CompTemperatureRuinable",
+         "methodName": "CompTick",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CompTick",
+           "declaringType": "RimWorld.CompTemperatureRuinable",
+           "prefixCount": 1,
+           "postfixCount": 0,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_LivePrepViability.CompTick_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_6832a3565d7b4ff1972d718d8e95724d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "JobGiver_OptimizeApparel_ApparelScoreRaw_postfix_armed",
+      "toggle": "hazardApparelAIAwarenessEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "JobGiver_OptimizeApparel",
+         "methodName": "ApparelScoreRaw",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "ApparelScoreRaw",
+           "declaringType": "RimWorld.JobGiver_OptimizeApparel",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_HazardApparelScoring.ApparelScoreRaw_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_0707abba374d42c090201ab8117f2d1c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "TradeDeal_TryExecute_prefix_armed",
+      "toggle": "treasureConscienceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "TradeDeal",
+         "methodName": "TryExecute",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "TryExecute",
+           "declaringType": "RimWorld.TradeDeal",
+           "prefixCount": 3,
+           "postfixCount": 3,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Prefix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Postfix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_d61ba5ba9e6243e3b4a29f9548329a52",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "TradeDeal_TryExecute_postfix_armed",
+      "toggle": "treasureConscienceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "TradeDeal",
+         "methodName": "TryExecute",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "TryExecute",
+           "declaringType": "RimWorld.TradeDeal",
+           "prefixCount": 3,
+           "postfixCount": 3,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Prefix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Postfix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_03956dcbfd0a4c6784609641bbedbe6e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "BackCompatibility_BackCompatibleDefName_postfix_armed",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "BackCompatibility",
+         "methodName": "BackCompatibleDefName",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "BackCompatibleDefName",
+           "declaringType": "Verse.BackCompatibility",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_DefAliasPatches.BackCompatibleDefName_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_8e0f7c0a67af459cb0b41d941bd9fac8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "BackCompatibility_BackCompatibleTerrainWithShortHash_postfix_armed",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "BackCompatibility",
+         "methodName": "BackCompatibleTerrainWithShortHash",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "BackCompatibleTerrainWithShortHash",
+           "declaringType": "Verse.BackCompatibility",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_DefAliasPatches.BackCompatibleTerrainWithShortHash_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_e7ab9755d3b841c8a3291460f2782eb7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Plant_IngestedCalculateAmounts_postfix_armed",
+      "toggle": "grazingSuppressionHookEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Plant",
+         "methodName": "IngestedCalculateAmounts",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "IngestedCalculateAmounts",
+           "declaringType": "RimWorld.Plant",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_GrazingSuppressionHookPatch.IngestedCalculateAmounts_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_b4791c55cca448479c94b19740fab452",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "def_aliases_resolve",
+    "components": [
+     {
+      "name": "saved_old_names_load_as_new_defs",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofAliases(System.String)",
+         "result": "PASS 33 ok, 0 bad: PASS RUT_Tarred->RM_Tarred; PASS RUT_TarredThought->RM_TarredThought; PASS RUT_WeakTarSolvent->RM_WeakTarSolvent; PASS RUT_StrongTarSolvent->RM_StrongTarSolvent; PASS RUT_ThrummelSeepwax->RM_ThrummelSeepwax; PASS RUT_TarRuinedGoods->RM_TarRuinedGoods; PASS RUT_TarVault->RM_TarVault; PASS RUT_GaslightLamp->RM_GaslightLamp; PASS RUT_Sumpgas->RM_TarGas; PASS RUT_Duckboards->RM_Duckboards; PASS RUT_Glasswalk->RM_Glasswalk; PASS RUT_GaslightChemistry->RM_GaslightChemistry; PASS RUT_TarRendering->RM_TarRendering; PASS RUT_ScrubTarred->RM_ScrubTarred; PASS RUT_Bitumen->RM_Bitumen; PASS RUT_SteamDevil->RM_SteamDevil; PASS RUT_SteamDevilAppears->RM_SteamDevilAppears; PASS RUT_RoilWeather->RM_RoilWeather; PASS RUT_BreaklightClear->RM_BreaklightClear; PASS RUT_RoilLock->RM_RoilLock; PASS RUT_GreentideWetBulbLock->RM_GreentideWetBulbLock; PASS RUT_BreaklightCondition->RM_BreaklightCondition; PASS RUT_Breaklight->RM_Breaklight; PASS RUT_GreatboleFruitfall->RM_GreatboleFruitfall; PASS RUT_WetBulbOverwhelm->RM_WetBulbOverwhelm; PASS RUT_DryAirAversion->RM_DryAirAversion; PASS RUT_DryAirBlower->RM_DryAirBlower; PASS RUT_RootCauseway->RM_RootCauseway; PASS RUT_ToxinSealant->RM_ToxinSealedFloor; PASS RUT_GreatboleHeartwood->RM_GreatboleHeartwood; PASS RUT_GreatboleCore->RM_GreatboleCore; PASS RUT_GreatboleTrunkSegment->RM_GreatboleTrunkSegment; PASS RUT_GreatboleDeadHusk->RM_GreatboleDeadHusk; ",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_d9b46aab3fd64f80975a9e03e28e3a64",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "sump_living_map",
+    "components": [
+     {
+      "name": "living_map_responders_on",
+      "toggle": "sumpLivingMapEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofRewrite(System.String)",
+         "result": "PASS mode=on seen=16 rings=1 crust=16 dreadEarly=False dreadLate=True soffeth=6 mirrelin=12",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_8043bcaac3ec49ae9a9a156c3639739d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "living_map_responders_off",
+      "toggle": "sumpLivingMapEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofRewrite(System.String)",
+         "result": "PASS mode=off seen=0 rings=0 crust=0 dreadEarly=False dreadLate=False soffeth=0 mirrelin=0",
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_3e4474f61f0449d7a48a975d54ef6dd6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "contact_venom_wiring",
+    "components": [
+     {
+      "name": "venom_hediff_is_lethal_at_one",
+      "toggle": "contactVenomLethal",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "lethalSeverity"
+         ],
+         "defs": [
+          {
+           "requested": "HediffDef/RM_VenomvineVenom",
+           "found": true,
+           "defName": "RM_VenomvineVenom",
+           "defType": "HediffDef",
+           "label": "thorn venom",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "lethalSeverity": 1.0
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_4ab724422c1748a5b4f5625c26eff757",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "map_mechanics_wiring",
+    "components": [
+     {
+      "name": "gas_emitters_toggle_gates_and_wiring_resolves",
+      "toggle": "gasEmittersEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "periodic_area_attack_toggle_gates_and_wiring_resolves",
+      "toggle": "areaAttacksEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "environmental_weather_toggle_gates_and_wiring_resolves",
+      "toggle": "environmentalDamageEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "scaled_explosion_death_action_toggle_gates_and_wiring_resolves",
+      "toggle": "scaledExplosionsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "water_truce_retribution_toggle_gates_and_wiring_resolves",
+      "toggle": "waterTruceRetributionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "MentalStateDef/RM_WaterTruceRetribution",
+           "found": true,
+           "defName": "RM_WaterTruceRetribution",
+           "defType": "MentalStateDef",
+           "label": "water-truce retribution",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WaterTruceRetribution"
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_d423db4bca94492d9cffa8f1ac280a3c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "living_boles_regrowth_toggle_gates_and_wiring_resolves",
+      "toggle": "livingRegrowthEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "stranding_pools_toggle_gates_and_wiring_resolves",
+      "toggle": "strandingPoolsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThinkTreeDef/RM_ThinkTree_StrandingBehaviors",
+           "found": true,
+           "defName": "RM_ThinkTree_StrandingBehaviors",
+           "defType": "ThinkTreeDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ThinkTree_StrandingBehaviors"
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_9a2559c8e8574d8794aeb13ff8b1f274",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tar_coating_toggle_gates_and_wiring_resolves",
+      "toggle": "tarCoatingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "accelerated_rot_toggle_gates_and_wiring_resolves",
+      "toggle": "acceleratedRotEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "sheen_scald_toggle_gates_and_wiring_resolves",
+      "toggle": "sheenExposureEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "3 of 3 def(s) resolved",
+         "requested": 3,
+         "foundCount": 3,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "StatDef/RM_ScaldProtection",
+           "found": true,
+           "defName": "RM_ScaldProtection",
+           "defType": "StatDef",
+           "label": "scald-steam protection",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ScaldProtection"
+           }
+          },
+          {
+           "requested": "StatDef/RM_ArmorRating_Scald",
+           "found": true,
+           "defName": "RM_ArmorRating_Scald",
+           "defType": "StatDef",
+           "label": "armor - scald",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ArmorRating_Scald"
+           }
+          },
+          {
+           "requested": "DamageArmorCategoryDef/RM_ScaldArmor",
+           "found": true,
+           "defName": "RM_ScaldArmor",
+           "defType": "DamageArmorCategoryDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_ScaldArmor"
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_7c391b00861c4295b6e926c5395c938a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "venomvine_scratch_toggle_gates_and_wiring_resolves",
+      "toggle": "contactVenomEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "4 of 4 def(s) resolved",
+         "requested": 4,
+         "foundCount": 4,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "DamageDef/RM_VenomvineScratch",
+           "found": true,
+           "defName": "RM_VenomvineScratch",
+           "defType": "DamageDef",
+           "label": "venom scratch",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_VenomvineScratch"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Venomvine",
+           "found": true,
+           "defName": "RM_Venomvine",
+           "defType": "ThingDef",
+           "label": "venomvine",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Venomvine"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_VenomvineThicket",
+           "found": true,
+           "defName": "RM_VenomvineThicket",
+           "defType": "ThingDef",
+           "label": "venomvine thicket",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_VenomvineThicket"
+           }
+          },
+          {
+           "requested": "HediffDef/RM_VenomvineVenom",
+           "found": true,
+           "defName": "RM_VenomvineVenom",
+           "defType": "HediffDef",
+           "label": "thorn venom",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_VenomvineVenom"
+           }
+          }
+         ],
+         "ticksGame": 3371842,
+         "operation": {
+          "OperationId": "op_c453ad26ff2b4b4484de56091bb6756e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 3371842
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "living_boles_genstep_toggle_gates_and_wiring_resolves",
+      "toggle": "livingBolesEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "map_mechanics",
+    "components": [
+     {
+      "name": "gas_emitters_and_gas_effects",
+      "toggle": "gasEmittersEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "periodic_area_attack",
+      "toggle": "areaAttacksEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "environmental_weather_and_latent_hazard",
+      "toggle": "environmentalDamageEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "scaled_explosion_death_action",
+      "toggle": "scaledExplosionsEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "water_truce_retribution_and_suppression",
+      "toggle": "waterTruceRetributionEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "living_boles_regrowth_tree_fall",
+      "toggle": "livingRegrowthEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "stranding_pools_and_gradient_axis",
+      "toggle": "strandingPoolsEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tar_coating_belch_and_glasswalk_slip",
+      "toggle": "tarCoatingEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "accelerated_rot_warm_ground_living_produce",
+      "toggle": "acceleratedRotEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "sheen_scald_and_live_preparations",
+      "toggle": "sheenExposureEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "venomvine_scratch_and_body_size_barrier",
+      "toggle": "contactVenomEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "worldgen_scatterers_and_gen_steps",
+      "toggle": "livingBolesEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\EnvironmentalHazards.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

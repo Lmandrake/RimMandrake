@@ -1,0 +1,1729 @@
+{
+ "mod": "Wreckage",
+ "stamp": "20261008T050106Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "load",
+    "components": [
+     {
+      "name": "no_errors_naming_this_mod",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/drain_log",
+        "result": {
+         "success": true,
+         "message": "267 message(s) of 554 in the buffer.",
+         "totalInBuffer": 554,
+         "messages": [
+          {
+           "type": "Warning",
+           "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=228 elapsedMs=229",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=229",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=229 elapsedMs=229",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to get a resource \"UI/Commands/TryReconnect\" from a different thread. All resources must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to get a resource \"UI/Designators/Cancel\" from a different thread. All resources must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "[RimMandrake: Baroque Biomes] Patch operation Verse.PatchOperationFindMod(RimMandrake: Baroque Biomes) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\TheSump\\Patches\\RUT_SumpDuskLock_BiomeWiring.xml",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not resolve cross-reference: No Verse.ThingDef named Leather_Chitin found to give to Verse.RaceProperties Verse.RaceProperties",
+           "repeats": 3
+          },
+          {
+           "type": "Error",
+           "text": "Config error in Eclipse: world-targeting incident has a biome restriction list",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in SolarFlare: world-targeting incident has a biome restriction list",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in Aurora: world-targeting incident has a biome restriction list",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ash_Trace: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ash_Light: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ground_Sand: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ground_Gravel: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ground_Soil: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ground_SoilRich: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ash_Trace: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ash_Light: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ground_Sand: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ground_Gravel: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ground_Soil: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Config error in RM_FE_Ground_SoilRich: burnedDef is flammable",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Cannot init Graphic of class Verse.Graphic_Linked",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/DosimeterLawn",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/VaultRoot",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Pusberry",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/RM_Etchant",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/RM_DielectricGel",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/RM_Etchant",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Item/ToxicMeat/ToxicMeat_b' for def 'RM_SorruthCatch' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/JadePlant/JadePlantB' for def 'RM_HolluCatch' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_OommokSkeleton",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_MuurrokSkeleton",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_GuzzkaSkeleton",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_VozzikSkeleton",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/AA_EggBeetle",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/AA_Chitin",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path swresource/Leather_Heavy",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path swresource/Meat_Saurian",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Item/Resource/RM_SweetlineToken' for def 'RM_SweetlineToken' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/AloeVera/AloeVeraA' for def 'RM_Zeev' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/Peyote/PeyoteA' for def 'RM_Uvva' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/PincushionPlant/PincushionPlantA' for def 'RM_Karrun' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/SweetheartPlant/SweetheartPlantA' for def 'RM_Dubbol' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Lozh' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/Schlumbergera/SchlumbergeraA' for def 'RM_Saava' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/JadePlant/JadePlantA' for def 'RM_Tuun' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_LungerFry' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Things/Item/Plant/RM_YearningFruitHarvested' for def 'RM_YearningFruitHarvested' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "MatFrom with null sourceTex.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Failed to find any textures at Animal/RockTroll/RockTroll while constructing Multi(initPath=Animal/RockTroll/RockTroll, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 69483433]\n  at Verse.Graphic_Linked.get_MatSingle () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Graphic.get_MatNorth () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Graphic.MatAt (Verse.Rot4 rot, Verse.Thing thing) [0x00020] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.BuildableDef.ResolveIcon () [0x00074] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.ThingDef.ResolveIcon () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.BuildableDef.<PostLoad>b__78_0 () [0x00021] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 ",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Type RM_CompAerosolScreen probably needs a StaticConstructorOnStartup attribute, because it has a field domeMat of type Material. All assets must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=22 elapsedMs=40065",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1343 elapsedMs=41409",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=41410",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=41412",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=41412",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=41412",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=41412",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=2 elapsedMs=41414",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=5 elapsedMs=41419",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=41420",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=41420",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=41424",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=44 elapsedMs=41469",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=1403 elapsedMs=41469",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=44 elapsedMs=41469",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 24298,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "[JawaBench] JawaBenchTerrainTools.GetDefs was given 1 argument(s) it does not declare and the bridge DROPPED them silently: typeNames. Accepted: ctx, cancellationToken, defs, fields, limit, deep",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Could not load Texture2D at 'Biomes/PoisonForest' in any active mod or in base resources.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser40680",
+           "repeats": 8
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9]\n  at Verse.HediffComp_Invisibility.get_ShouldBeVisible () [0x00006] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.HediffComp_Invisibility.get_FadePct () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.HediffComp_Invisibility.get_PsychologicallyVisible () [0x00008] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.InvisibilityUtility.IsPsychologicallyInvisible (Verse.Pawn pawn) [0x00025] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.PawnRenderer.PawnNeedsHediffMaterial (Verse.PawnRenderFlags& renderFlags) [0x00003] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.PawnRenderer.get_DefaultRenderFlagsNow () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.PawnRenderer.EnsureGraphicsInitialized () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.PawnRenderer.DynamicDrawPhaseAt (Verse.DrawPhase phase, UnityEngine.Vector3 drawLoc, System.Nullable`1[T] rotOverride, System.Boolean neverAimWeapon) [0x00003] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Pawn.DynamicDrawPhaseAt (Verse.DrawPhase phase, UnityEngine.Vector3 drawLoc, System.Boolean flip) [0x0000f] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Corpse.DynamicDrawPhaseAt (Verse.DrawPhase phase, UnityEngine.Vector3 drawLoc, System.Boolean flip) [0x0001d] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Thing.DynamicDrawPhase (Verse.DrawPhase phase) [0x00017] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.DynamicDrawManager.DrawDynamicThings () [0x0006f] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Map.MapUpdate () [0x000d4] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Game.UpdatePlay () [0x00049] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Root_Play.Update () [0x00032] in <61e4173561894da49d210260257b5097>:0 ",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 5
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Muffalo44745 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot register drawable Corpse_Muffalo44771 while drawing is in progress. Things shouldn't be spawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 6
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Muffalo44746 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot register drawable Corpse_Muffalo44772 while drawing is in progress. Things shouldn't be spawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 6
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Muffalo44747 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot register drawable Corpse_Muffalo44773 while drawing is in progress. Things shouldn't be spawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 6
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Muffalo44754 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot register drawable Corpse_Muffalo44774 while drawing is in progress. Things shouldn't be spawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 6
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Muffalo44755 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot register drawable Corpse_Muffalo44775 while drawing is in progress. Things shouldn't be spawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 6
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Muffalo44756 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot register drawable Corpse_Muffalo44776 while drawing is in progress. Things shouldn't be spawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 29
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable RM_LivingBolt40319 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable RM_HullBolt40316 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Mech_Lancer40320 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable RM_HullBolt40318 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable RM_HullBolt40317 while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 99
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9]\n  at Verse.HediffComp_Invisibility.get_ShouldBeVisible () [0x00006] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.HediffComp_Invisibility.get_FadePct () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.HediffComp_Invisibility.get_PsychologicallyVisible () [0x00008] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.InvisibilityUtility.IsPsychologicallyInvisible (Verse.Pawn pawn) [0x00025] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.PawnRenderer.PawnNeedsHediffMaterial (Verse.PawnRenderFlags& renderFlags) [0x00003] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.PawnRenderer.get_DefaultRenderFlagsNow () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.PawnRenderer.EnsureGraphicsInitialized () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.PawnRenderer.DynamicDrawPhaseAt (Verse.DrawPhase phase, UnityEngine.Vector3 drawLoc, System.Nullable`1[T] rotOverride, System.Boolean neverAimWeapon) [0x00003] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Pawn.DynamicDrawPhaseAt (Verse.DrawPhase phase, UnityEngine.Vector3 drawLoc, System.Boolean flip) [0x0000f] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Corpse.DynamicDrawPhaseAt (Verse.DrawPhase phase, UnityEngine.Vector3 drawLoc, System.Boolean flip) [0x0001d] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Thing.DynamicDrawPhase (Verse.DrawPhase phase) [0x00017] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.DynamicDrawManager.DrawDynamicThings () [0x0006f] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Map.MapUpdate () [0x000d4] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Game.UpdatePlay () [0x00049] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Root_Play.Update () [0x00032] in <61e4173561894da49d210260257b5097>:0 ",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 99
+          },
+          {
+           "type": "Error",
+           "text": "Faction Kofardos Federation of def OutlanderCivil has no usable PawnGroupMakers for parms groupKind=Trader, tile=24298,0, inhabitants=False, points=973, faction=Kofardos Federation, ideo=, traderKind=Caravan_Outlander_CombatSupplier, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 99
+          },
+          {
+           "type": "Error",
+           "text": "Faction Kofardos Federation of def OutlanderCivil has no usable PawnGroupMakers for parms groupKind=Trader, tile=24298,0, inhabitants=False, points=616, faction=Kofardos Federation, ideo=, traderKind=Caravan_Outlander_CombatSupplier, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 99
+          },
+          {
+           "type": "Error",
+           "text": "Faction Kofardos Federation of def OutlanderCivil has no usable PawnGroupMakers for parms groupKind=Trader, tile=24298,0, inhabitants=False, points=779, faction=Kofardos Federation, ideo=, traderKind=Caravan_Outlander_CombatSupplier, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 99
+          },
+          {
+           "type": "Error",
+           "text": "Faction Kofardos Federation of def OutlanderCivil has no usable PawnGroupMakers for parms groupKind=Trader, tile=24298,0, inhabitants=False, points=906, faction=Kofardos Federation, ideo=, traderKind=Caravan_Outlander_CombatSupplier, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 99
+          },
+          {
+           "type": "Error",
+           "text": "Faction Covenant of L\u00e9covas of def TribeCivil has no usable PawnGroupMakers for parms groupKind=Trader, tile=24298,0, inhabitants=False, points=898, faction=Covenant of L\u00e9covas, ideo=, traderKind=Caravan_Neolithic_ShamanMerchant, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 18
+          },
+          {
+           "type": "Error",
+           "text": "Faction Covenant of L\u00e9covas of def TribeCivil has no usable PawnGroupMakers for parms groupKind=Trader, tile=24298,0, inhabitants=False, points=966, faction=Covenant of L\u00e9covas, ideo=, traderKind=Caravan_Neolithic_WarMerchant, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Root level exception in Update(): System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7DB141B9] Duplicate stacktrace, see ref for original",
+           "repeats": 44
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Braddock while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot register drawable Mote_ThoughtBad while drawing is in progress. Things shouldn't be spawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Warning",
+           "text": "Cannot deregister drawable Mitsuya while drawing is in progress. Things shouldn't be despawned in Draw methods.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48496",
+           "repeats": 12
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48499",
+           "repeats": 8
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.",
+           "repeats": 1
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing RM_CauldronVent56293",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48500",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48497",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48498",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48499",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48496",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing RM_CauldronVent56293",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48500",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48497",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48498",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48499",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48496",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing RM_CauldronVent56293",
+           "repeats": 4
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing VoidMonolith52281",
+           "repeats": 9
+          },
+          {
+           "type": "Error",
+           "text": "Tried to destroy non-destroyable thing SteamGeyser48501",
+           "repeats": 4
+          }
+         ],
+         "ticksGame": 633972,
+         "operation": {
+          "OperationId": "op_699cb442f6494d528bb30da2b6f3843a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 633972
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "defs",
+    "components": [
+     {
+      "name": "loot_tables_resolve",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "9 of 9 def(s) resolved",
+         "requested": 9,
+         "foundCount": 9,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Scrap",
+           "found": true,
+           "defName": "RM_SalvageLoot_Scrap",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Scrap"
+           }
+          },
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Hull",
+           "found": true,
+           "defName": "RM_SalvageLoot_Hull",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Hull"
+           }
+          },
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Tank",
+           "found": true,
+           "defName": "RM_SalvageLoot_Tank",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Tank"
+           }
+          },
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Carapace",
+           "found": true,
+           "defName": "RM_SalvageLoot_Carapace",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Carapace"
+           }
+          },
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Sealed",
+           "found": true,
+           "defName": "RM_SalvageLoot_Sealed",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Sealed"
+           }
+          },
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Hull_Rare",
+           "found": true,
+           "defName": "RM_SalvageLoot_Hull_Rare",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Hull_Rare"
+           }
+          },
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Tank_Rare",
+           "found": true,
+           "defName": "RM_SalvageLoot_Tank_Rare",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Tank_Rare"
+           }
+          },
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Carapace_Rare",
+           "found": true,
+           "defName": "RM_SalvageLoot_Carapace_Rare",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Carapace_Rare"
+           }
+          },
+          {
+           "requested": "ThingSetMakerDef/RM_SalvageLoot_Sealed_Rare",
+           "found": true,
+           "defName": "RM_SalvageLoot_Sealed_Rare",
+           "defType": "ThingSetMakerDef",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_SalvageLoot_Sealed_Rare"
+           }
+          }
+         ],
+         "ticksGame": 633972,
+         "operation": {
+          "OperationId": "op_e73fffb55db84697b72906c506005607",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 633972
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "scald_wrecks_resolve",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "3 of 3 def(s) resolved",
+         "requested": 3,
+         "foundCount": 3,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RUT_ScaldWreckHull",
+           "found": true,
+           "defName": "RUT_ScaldWreckHull",
+           "defType": "ThingDef",
+           "label": "scalded hull section",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RUT_ScaldWreckHull"
+           }
+          },
+          {
+           "requested": "ThingDef/RUT_ScaldWreckTank",
+           "found": true,
+           "defName": "RUT_ScaldWreckTank",
+           "defType": "ThingDef",
+           "label": "scalded tank wreck",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RUT_ScaldWreckTank"
+           }
+          },
+          {
+           "requested": "ThingDef/RUT_ScaldWreckFrame",
+           "found": true,
+           "defName": "RUT_ScaldWreckFrame",
+           "defType": "ThingDef",
+           "label": "scalded frame wreck",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RUT_ScaldWreckFrame"
+           }
+          }
+         ],
+         "ticksGame": 633972,
+         "operation": {
+          "OperationId": "op_2a9606e8a97d4f0298c23683e05fc13a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 633972
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "scald_field_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "GenStepDef/RM_WreckField_Scald",
+           "found": true,
+           "defName": "RM_WreckField_Scald",
+           "defType": "GenStepDef",
+           "label": "Scald",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_WreckField_Scald"
+           }
+          }
+         ],
+         "ticksGame": 633972,
+         "operation": {
+          "OperationId": "op_7a746563868e4057ba3e59e0bb5ca1b0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 633972
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "mapgen",
+    "components": [
+     {
+      "name": "scald_field_on_shallows_only",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: UNMEASURED: needs a FRESH Scald map; list_things RUT_ScaldWreck* then every occupied cell's terrain must carry RUT_ScaldShallow",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wreck_fields_off_new_map_empty",
+      "toggle": "wreckFields",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "density_scales_count",
+      "toggle": "wreckDensity",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   "<suite.Component object at 0x000002302814CFC0>"
+  ],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Wreckage.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

@@ -1,0 +1,181 @@
+[creaturebehaviors] 22:21:26 writer_patched PASS 
+[creaturebehaviors] 22:22:05 walker_lays_prints FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[creaturebehaviors] 22:22:40 invisible_walker_recorded_flagged FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[creaturebehaviors] 22:23:14 toggle_off_no_prints FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[creaturebehaviors] 22:23:14 stillsand_moving_sand_erases_print PASS 
+[creaturebehaviors] 22:23:14 control_absent_type_reads_absent PASS 
+[creaturebehaviors] 22:23:14 verminBreeding_wired_and_gated PASS 
+[creaturebehaviors] 22:23:15 gnaw_wired_and_gated PASS 
+[creaturebehaviors] 22:23:15 eatCleanable_wired_and_gated PASS 
+[creaturebehaviors] 22:23:15 seekShade_wired_and_gated PASS 
+[creaturebehaviors] 22:23:15 seekMarkedTerrain_wired_and_gated PASS 
+[creaturebehaviors] 22:23:16 sunScald_wired_and_gated PASS 
+[creaturebehaviors] 22:23:16 senseWeb_wired_and_gated PASS 
+[creaturebehaviors] 22:23:16 chewAnchors_wired_and_gated PASS 
+[creaturebehaviors] 22:23:16 frontCreep_wired_and_gated PASS 
+[creaturebehaviors] 22:23:17 aquaticAmbush_wired_and_gated PASS 
+[creaturebehaviors] 22:23:17 parentalEnrage_wired_and_gated PASS 
+[creaturebehaviors] 22:23:17 drumLure_wired_and_gated PASS 
+[creaturebehaviors] 22:23:18 all_fields_at_shipped_defaults PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_adhesiveSlickEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_ambientHeatPusherEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_aquaticAmbushEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_brineBatteryDischargeEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_chewAnchorsBehaviorEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_creatureHeatSoundsEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_dashRingEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_directedAssaultBehaviorEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_directionalShadeEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_drinkerFluidSacsEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_drumLureEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_dungSeedingEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_eatCleanableBehaviorEnabled PASS 
+[creaturebehaviors] 22:23:18 toggle_roundtrip_falseShadeAmbushEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_filterFeedingEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_frontCreepEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_glareBlindEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_gnawBehaviorEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_grapplerHoldEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_guardianAlarmEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_heatDrivenBurstEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_heatSoundscapeEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_homeTetherEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_kinMendingEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_kindFromElevationEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_lanceEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_lanceFriendlyPull PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_mirageEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_movingShadeEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_parasolShadeEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_parentalEnrageEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_pinnedSunEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_proximitySoundscapeEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_reactionDetectionEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_reactionSourceSpawnEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_reactionSuppressionEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_sandBuriedGraphicEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_sandGlareEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_sandSwimDroidImmunity PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_sandSwimEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_seedPassageEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_seekMarkedTerrainBehaviorEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_seekShadeBehaviorEnabled PASS 
+[creaturebehaviors] 22:23:19 toggle_roundtrip_senseWebEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_shadeGridEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_shadeHopEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_shadeSeekingWanderEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_shadeStaggerEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_shadeTentEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_shadowFollowEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_sightBlockEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_sightBlockRangedFire PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_silenceCueEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_soulchimePsychicStunEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_soulchimeShardArmorEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_soulchimeTameSootheEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_speciesSpacingEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_sunHeatEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_sunLoadBarEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_sunPathingEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_sunScaldEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_sunScaldReadsShade PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_sunShieldEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_tracksEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_verminBreedingEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_wildLeaveNoticeEnabled PASS 
+[creaturebehaviors] 22:23:20 toggle_roundtrip_woundLinkEnabled PASS 
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\CreatureBehaviors_20261008T052321Z.html
+CHAIN track_grid None {"name": "track_grid", "situational": null, "modal_check": null}
+    {"name": "writer_patched", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/harmony_patches", "result": {"success": true, "typeName": "Pawn_FilthTracker", "methodName": "Notify_EnteredNewCell", "me
+    {"name": "walker_lays_prints", "toggle": null, "beyond_toggle": true, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "evidence": [{"call": "bridge_cal
+    {"name": "invisible_walker_recorded_flagged", "toggle": null, "beyond_toggle": true, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "evidence": [{"cal
+    {"name": "toggle_off_no_prints", "toggle": "tracksEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "evidence": [{"call
+    {"name": "stillsand_moving_sand_erases_print", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 24298, "tileValid": true, "mapId": 7, "sizeX": 250, "s
+CHAIN mechanic_toggles None {"name": "mechanic_toggles", "situational": null, "modal_check": null}
+    {"name": "control_absent_type_reads_absent", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.NoSuchType_Probe", 
+    {"name": "verminBreeding_wired_and_gated", "toggle": "verminBreedingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.R
+    {"name": "gnaw_wired_and_gated", "toggle": "gnawBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.RM_JobDriver_
+    {"name": "eatCleanable_wired_and_gated", "toggle": "eatCleanableBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehavio
+    {"name": "seekShade_wired_and_gated", "toggle": "seekShadeBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.RM_
+    {"name": "seekMarkedTerrain_wired_and_gated", "toggle": "seekMarkedTerrainBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.Creat
+    {"name": "sunScald_wired_and_gated", "toggle": "sunScaldEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.RM_Hediff_Sun
+    {"name": "senseWeb_wired_and_gated", "toggle": "senseWebEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.RM_MapCompone
+    {"name": "chewAnchors_wired_and_gated", "toggle": "chewAnchorsBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors
+    {"name": "frontCreep_wired_and_gated", "toggle": "frontCreepEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.RM_MapCom
+    {"name": "aquaticAmbush_wired_and_gated", "toggle": "aquaticAmbushEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.RM_
+    {"name": "parentalEnrage_wired_and_gated", "toggle": "parentalEnrageEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.R
+    {"name": "drumLure_wired_and_gated", "toggle": "drumLureEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.CreatureBehaviors.RM_CompDrumLu
+CHAIN settings None {"name": "settings", "situational": null, "modal_check": null}
+    {"name": "all_fields_at_shipped_defaults", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "adhesiveSlickEnabled", "field
+    {"name": "toggle_roundtrip_adhesiveSlickEnabled", "toggle": "adhesiveSlickEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "adh
+    {"name": "toggle_roundtrip_ambientHeatPusherEnabled", "toggle": "ambientHeatPusherEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "fiel
+    {"name": "toggle_roundtrip_aquaticAmbushEnabled", "toggle": "aquaticAmbushEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "aqu
+    {"name": "toggle_roundtrip_brineBatteryDischargeEnabled", "toggle": "brineBatteryDischargeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set
+    {"name": "toggle_roundtrip_chewAnchorsBehaviorEnabled", "toggle": "chewAnchorsBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "
+    {"name": "toggle_roundtrip_creatureHeatSoundsEnabled", "toggle": "creatureHeatSoundsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "fi
+    {"name": "toggle_roundtrip_dashRingEnabled", "toggle": "dashRingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "dashRingEnabl
+    {"name": "toggle_roundtrip_directedAssaultBehaviorEnabled", "toggle": "directedAssaultBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": 
+    {"name": "toggle_roundtrip_directionalShadeEnabled", "toggle": "directionalShadeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field"
+    {"name": "toggle_roundtrip_drinkerFluidSacsEnabled", "toggle": "drinkerFluidSacsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field"
+    {"name": "toggle_roundtrip_drumLureEnabled", "toggle": "drumLureEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "drumLureEnabl
+    {"name": "toggle_roundtrip_dungSeedingEnabled", "toggle": "dungSeedingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "dungSee
+    {"name": "toggle_roundtrip_eatCleanableBehaviorEnabled", "toggle": "eatCleanableBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set",
+    {"name": "toggle_roundtrip_falseShadeAmbushEnabled", "toggle": "falseShadeAmbushEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field"
+    {"name": "toggle_roundtrip_filterFeedingEnabled", "toggle": "filterFeedingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "fil
+    {"name": "toggle_roundtrip_frontCreepEnabled", "toggle": "frontCreepEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "frontCree
+    {"name": "toggle_roundtrip_glareBlindEnabled", "toggle": "glareBlindEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "glareBlin
+    {"name": "toggle_roundtrip_gnawBehaviorEnabled", "toggle": "gnawBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "gnawB
+    {"name": "toggle_roundtrip_grapplerHoldEnabled", "toggle": "grapplerHoldEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "grapp
+    {"name": "toggle_roundtrip_guardianAlarmEnabled", "toggle": "guardianAlarmEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "gua
+    {"name": "toggle_roundtrip_heatDrivenBurstEnabled", "toggle": "heatDrivenBurstEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": 
+    {"name": "toggle_roundtrip_heatSoundscapeEnabled", "toggle": "heatSoundscapeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "h
+    {"name": "toggle_roundtrip_homeTetherEnabled", "toggle": "homeTetherEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "homeTethe
+    {"name": "toggle_roundtrip_kinMendingEnabled", "toggle": "kinMendingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "kinMendin
+    {"name": "toggle_roundtrip_kindFromElevationEnabled", "toggle": "kindFromElevationEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "fiel
+    {"name": "toggle_roundtrip_lanceEnabled", "toggle": "lanceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "lanceEnabled", "fie
+    {"name": "toggle_roundtrip_lanceFriendlyPull", "toggle": "lanceFriendlyPull", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "lanceFrie
+    {"name": "toggle_roundtrip_mirageEnabled", "toggle": "mirageEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "mirageEnabled", "
+    {"name": "toggle_roundtrip_movingShadeEnabled", "toggle": "movingShadeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "movingS
+    {"name": "toggle_roundtrip_parasolShadeEnabled", "toggle": "parasolShadeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "paras
+    {"name": "toggle_roundtrip_parentalEnrageEnabled", "toggle": "parentalEnrageEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "p
+    {"name": "toggle_roundtrip_pinnedSunEnabled", "toggle": "pinnedSunEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "pinnedSunEn
+    {"name": "toggle_roundtrip_proximitySoundscapeEnabled", "toggle": "proximitySoundscapeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "
+    {"name": "toggle_roundtrip_reactionDetectionEnabled", "toggle": "reactionDetectionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "fiel
+    {"name": "toggle_roundtrip_reactionSourceSpawnEnabled", "toggle": "reactionSourceSpawnEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "
+    {"name": "toggle_roundtrip_reactionSuppressionEnabled", "toggle": "reactionSuppressionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "
+    {"name": "toggle_roundtrip_sandBuriedGraphicEnabled", "toggle": "sandBuriedGraphicEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "fiel
+    {"name": "toggle_roundtrip_sandGlareEnabled", "toggle": "sandGlareEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sandGlareEn
+    {"name": "toggle_roundtrip_sandSwimDroidImmunity", "toggle": "sandSwimDroidImmunity", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "s
+    {"name": "toggle_roundtrip_sandSwimEnabled", "toggle": "sandSwimEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sandSwimEnabl
+    {"name": "toggle_roundtrip_seedPassageEnabled", "toggle": "seedPassageEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "seedPas
+    {"name": "toggle_roundtrip_seekMarkedTerrainBehaviorEnabled", "toggle": "seekMarkedTerrainBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "actio
+    {"name": "toggle_roundtrip_seekShadeBehaviorEnabled", "toggle": "seekShadeBehaviorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "fiel
+    {"name": "toggle_roundtrip_senseWebEnabled", "toggle": "senseWebEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "senseWebEnabl
+    {"name": "toggle_roundtrip_shadeGridEnabled", "toggle": "shadeGridEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "shadeGridEn
+    {"name": "toggle_roundtrip_shadeHopEnabled", "toggle": "shadeHopEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "shadeHopEnabl
+    {"name": "toggle_roundtrip_shadeSeekingWanderEnabled", "toggle": "shadeSeekingWanderEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "fi
+    {"name": "toggle_roundtrip_shadeStaggerEnabled", "toggle": "shadeStaggerEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "shade
+    {"name": "toggle_roundtrip_shadeTentEnabled", "toggle": "shadeTentEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "shadeTentEn
+    {"name": "toggle_roundtrip_shadowFollowEnabled", "toggle": "shadowFollowEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "shado
+    {"name": "toggle_roundtrip_sightBlockEnabled", "toggle": "sightBlockEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sightBloc
+    {"name": "toggle_roundtrip_sightBlockRangedFire", "toggle": "sightBlockRangedFire", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sig
+    {"name": "toggle_roundtrip_silenceCueEnabled", "toggle": "silenceCueEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "silenceCu
+    {"name": "toggle_roundtrip_soulchimePsychicStunEnabled", "toggle": "soulchimePsychicStunEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set",
+    {"name": "toggle_roundtrip_soulchimeShardArmorEnabled", "toggle": "soulchimeShardArmorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "
+    {"name": "toggle_roundtrip_soulchimeTameSootheEnabled", "toggle": "soulchimeTameSootheEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "
+    {"name": "toggle_roundtrip_speciesSpacingEnabled", "toggle": "speciesSpacingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "s
+    {"name": "toggle_roundtrip_sunHeatEnabled", "toggle": "sunHeatEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sunHeatEnabled"
+    {"name": "toggle_roundtrip_sunLoadBarEnabled", "toggle": "sunLoadBarEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sunLoadBa
+    {"name": "toggle_roundtrip_sunPathingEnabled", "toggle": "sunPathingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sunPathin
+    {"name": "toggle_roundtrip_sunScaldEnabled", "toggle": "sunScaldEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sunScaldEnabl
+    {"name": "toggle_roundtrip_sunScaldReadsShade", "toggle": "sunScaldReadsShade", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sunScal
+    {"name": "toggle_roundtrip_sunShieldEnabled", "toggle": "sunShieldEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sunShieldEn
+    {"name": "toggle_roundtrip_tracksEnabled", "toggle": "tracksEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "tracksEnabled", "
+    {"name": "toggle_roundtrip_verminBreedingEnabled", "toggle": "verminBreedingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "v
+    {"name": "toggle_roundtrip_wildLeaveNoticeEnabled", "toggle": "wildLeaveNoticeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": 
+    {"name": "toggle_roundtrip_woundLinkEnabled", "toggle": "woundLinkEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "woundLinkEn
+CHAIN every_shipped_def_reads_back None {"name": "every_shipped_def_reads_back", "situational": null, "modal_check": null}
+    {"name": "every_shipped_def_is_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "38 of 38 def(s) resolved", "requested": 38, "foundCount":
+    {"name": "shipped_scalar_fields_match_xml", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount"
+ALL_GREEN False FINDINGS 3
