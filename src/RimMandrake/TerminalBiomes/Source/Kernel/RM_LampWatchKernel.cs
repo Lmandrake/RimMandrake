@@ -14,7 +14,7 @@ namespace RimMandrake.TerminalBiomes
         public HashSet<int> Scraped = new HashSet<int>();
         public HashSet<int> Answered = new HashSet<int>();
 
-        public static int ThresholdTicks(float burnHours) { return (int)Math.Round(burnHours * 2500f, MidpointRounding.AwayFromZero); }
+        public static int ThresholdTicks(float burnHours) { return (int)Math.Round(burnHours * 2500f); }
 
         public int LitTicksOf(int id) { int v; return Lit.TryGetValue(id, out v) ? v : 0; }
 

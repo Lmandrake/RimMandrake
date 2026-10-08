@@ -100,7 +100,7 @@ namespace RimMandrake.TerminalBiomes
             if (surge && centre) cadence = Math.Max(1, cadence / 2);
             if (!isPawn) cadence *= 2;
             float s = Math.Max(0.05f, strength);
-            return Math.Max(1, (int)Math.Round(cadence / s, MidpointRounding.AwayFromZero));
+            return Math.Max(1, (int)Math.Round(cadence / s) /* half-to-even, as Mathf.RoundToInt */);
         }
 
         // One drift step from (x,z): Stop when there is no current, no direction, or the next cell is out of the map or not

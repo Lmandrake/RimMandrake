@@ -448,6 +448,7 @@ namespace RimMandrake.TerminalBiomes.SelfTest
                 Check(c1 >= 1 && c2 >= 1 && c2 <= c1, "a stronger current was slower or the cadence hit 0");
                 Check(RM_ChannelKernel.CadenceFor(lane, surge, har, false, s1) >= RM_ChannelKernel.CadenceFor(lane, surge, har, true, s1), "an item drifted faster than a pawn");
             }
+            Check(RM_ChannelKernel.CadenceFor(2, false, false, true, 2f) == 22 && RM_ChannelKernel.CadenceFor(1, false, false, true, 4f) == 22 && RM_ChannelKernel.CadenceFor(2, false, false, true, 6f) == 8, "CHANNEL_CADENCE_ROUNDING_DRIFT_1: exact .5 quotients round half-to-even as Mathf.RoundToInt did (22.5 -> 22, 22.5 -> 22, 7.5 -> 8)");
             Check(RM_ChannelKernel.CadenceFor(2, false, false, true, 0f) == 900 && RM_ChannelKernel.CadenceFor(2, false, false, true, -3f) == 900, "strength is floored at 0.05");
             // adopt a wrong-size grid
             var f = new ChannelField(5, 4);
