@@ -2,7 +2,7 @@
  "sheetId": "therot_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/therot_sheet_2026-10-05.snapshot.json",
- "snapshotId": "25ff90f314e71303",
+ "snapshotId": "58029c059aa9aaf1",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_TheRot",
  "reviewStatus": {
@@ -52,6 +52,11 @@
    "note": "",
    "prefill": "A"
   },
+  "RM_Durrok": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RM_Grellik": {
    "decision": "A",
    "note": "",
@@ -63,6 +68,16 @@
    "prefill": "A"
   },
   "RM_Illoth": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Mullgoth": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Shambles": {
    "decision": "A",
    "note": "",
    "prefill": "A"
@@ -96,16 +111,6 @@
    "decision": "A",
    "note": "",
    "prefill": "A"
-  },
-  "RSW_Durrok": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RSW_Mullgoth": {
-   "decision": "C",
-   "note": "",
-   "prefill": "C"
   },
   "RSW_ShiroTrap": {
    "decision": "A",

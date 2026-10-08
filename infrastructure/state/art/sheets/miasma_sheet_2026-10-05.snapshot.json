@@ -1,9 +1,9 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-06T21:06:29-0700",
+ "built": "2026-10-07T20:08:10-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_DecayDrake": {
    "columns": {
@@ -757,14 +757,14 @@
   "RM_Ommok": {
    "columns": {
     "A": {
-     "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
-     "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
-     "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
-    },
-    "B": {
      "east": "5a886bd59aca4df841bfacf82640eb2e0910ffe47684bbae79ee2f4ea4403481",
      "north": "dc65e88c249af4a1363557f5430021b4b292c327a3a9eac1eeaaf12a8f75b619",
      "south": "0bd92c393b1fa0d50ce1c1e6c01a099d74ecfab37f5bbd3336ed8858e0a04257"
+    },
+    "B": {
+     "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+     "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+     "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
     }
    },
    "graphic_of": {
@@ -773,7 +773,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 LongShade",
-    "B": "render RM_Ommok"
+    "B": "history LongShade 2026-09-29"
    },
    "res": "Things/Pawn/Animal/RM_Ommok/RM_Ommok",
    "reserved": [
@@ -1818,5 +1818,5 @@
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "851a1e7c69c9a22c"
+ "snapshotId": "73b8e05dfc9948aa"
 }

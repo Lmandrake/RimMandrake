@@ -1,0 +1,331 @@
+{
+  "biome": "RM_LanternDeeps",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 39,
+  "decisions": {
+    "RM_Blinker": {
+      "at": "2026-10-06T03:38:00.220Z",
+      "decidedAt": "2026-10-06T03:37:20.978Z",
+      "decision": "redo",
+      "note": "Nice image, but make it have three \"arms\" radiating out, pushing itself along, as though legless and clumsy. ",
+      "prefill": "A"
+    },
+    "RM_BloodropMoth": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_BovineBeetle": {
+      "at": "2026-10-06T03:41:08.266Z",
+      "decidedAt": "2026-10-06T03:41:08.266Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A"
+    },
+    "RM_BrellikBulb": {
+      "at": "2026-10-06T03:42:38.540Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "purge": [
+        "8929ed215e73bfd524c4508d339747a392075d66f5b7608b257a1aaad927026c"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Candler": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Chiller": {
+      "at": "2026-10-06T03:38:21.074Z",
+      "decidedAt": "2026-10-06T03:38:17.644Z",
+      "decision": "hold",
+      "note": "Too magical, cut",
+      "prefill": "A"
+    },
+    "RM_Cleaver": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_DeepMycelium": {
+      "at": "2026-10-06T03:43:42.295Z",
+      "decidedAt": "2026-10-06T03:43:40.296Z",
+      "decision": "E",
+      "note": "add variants",
+      "picks": {
+        "_byname": "E"
+      },
+      "prefill": "A",
+      "purge": [
+        "eb3267af878357e08bd1031426aa1061a2614e4cecb8436ba11241490dbc5c51",
+        "6552587c2df5217a8c6313dcc76f4140a9ba930ad38e89eaed898eaeb4d1fefd"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Drifter": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_FacetMothLarvae": {
+      "at": "2026-10-06T03:42:20.939Z",
+      "decidedAt": "2026-10-06T03:42:19.821Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A"
+    },
+    "RM_Gembug": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_GlowSlug": {
+      "at": "2026-10-06T03:40:42.773Z",
+      "decidedAt": "2026-10-06T03:40:40.551Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A"
+    },
+    "RM_Knocker": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_KuvraSpout": {
+      "at": "2026-10-06T03:42:59.534Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsAt": "2026-10-06T03:42:53.242Z"
+    },
+    "RM_Lanternstone_Sowable": {
+      "at": "2026-10-06T03:42:47.773Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-06T03:42:47.773Z"
+    },
+    "RM_Megapleura": {
+      "at": "2026-10-06T03:41:30.254Z",
+      "decidedAt": "2026-10-06T03:41:30.254Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A"
+    },
+    "RM_MossBeetleLarvae": {
+      "at": "2026-10-06T03:41:50.315Z",
+      "decidedAt": "2026-10-06T03:41:49.708Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A"
+    },
+    "RM_NurrikGill": {
+      "at": "2026-10-06T03:43:55.266Z",
+      "decision": "A",
+      "note": "add variant",
+      "prefill": "A"
+    },
+    "RM_OsskBramble": {
+      "at": "2026-10-06T03:44:09.623Z",
+      "decidedAt": "2026-10-06T03:44:07.133Z",
+      "decision": "hold",
+      "note": "cut don't need",
+      "prefill": "A"
+    },
+    "RM_Pooler": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_PrennaLace": {
+      "at": "2026-10-06T03:44:23.723Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "purge": [
+        "8fa4fe85a54fcfb04378ca925ec1284b3766cf261bd5604861153dfec5e773fe"
+      ],
+      "purgeTouched": true
+    },
+    "RM_QuorrFern": {
+      "at": "2026-10-06T03:44:37.509Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "purge": [
+        "95f377bf312efb42ffaa888a44f3e6341628f0e4591f67408e2e95caa4e4e73f"
+      ],
+      "purgeTouched": true
+    },
+    "RM_ShatterjawBeetle": {
+      "at": "2026-10-06T03:41:58.551Z",
+      "decidedAt": "2026-10-06T03:41:58.020Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A"
+    },
+    "RM_Shoal": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Sipper": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Slick": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Tapper": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_ThrakkCap": {
+      "at": "2026-10-06T03:44:46.232Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsAt": "2026-10-06T03:44:46.232Z"
+    },
+    "RM_TwitchingPuffer": {
+      "at": "2026-10-06T03:44:59.155Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "purge": [
+        "ebab863d05bdab245bb5a5b45b2437f2503b56cf004c71b3f0abea1826478459"
+      ],
+      "purgeTouched": true
+    },
+    "RM_VellokReed": {
+      "at": "2026-10-06T03:45:06.817Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "purge": [
+        "ba87b34f7a9436d65feefa5c33109cb5c626dffd1895c961ef48c99e0307d5ba"
+      ],
+      "purgeTouched": true
+    },
+    "RM_ZivvitTaper": {
+      "at": "2026-10-06T03:45:16.882Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "purge": [
+        "259c71777f6263a9158e731add420ce12bd91a51fde29943102488c41dab1b7e"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_BloodropMoth": {
+      "at": "2026-10-06T03:39:32.515Z",
+      "decision": "A",
+      "note": "I like it, but take eway its eyes. RimMandrake tier. ",
+      "prefill": "A",
+      "purge": [
+        "11e8e0974cb408eaf5296ef59fa5e341dd59763f639f37c65185bcad51814464",
+        "1d04505102b068678c0e43031756cb07911b7d42d81fdc34db5bf8472c088959",
+        "09392e00a033bba7d40b2ca39ac8a8fabe8f091e82b1369cb577fa9caa9d0e22"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_BovineBeetle": {
+      "at": "2026-10-06T03:41:04.059Z",
+      "decidedAt": "2026-10-06T03:41:01.056Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A",
+      "purge": [
+        "63ff6ce01132266d4a11fe4d100f0bf00693f166abc3d846a9458aaa9a4465e7",
+        "1b275937ab695dd9b797ebf61a333ffc38bcf58a28b5538c3a10913cd8e24788",
+        "34b1670bfa3471284227bf8cec1cd7b5daa12c3463850cc93b14f87cc14bff41",
+        "23788644daa70c792c26a727c771ed21e9b9f89b8620912a4b1c9e152e0fe95d",
+        "fbe676e6024b6833149193bd125b5d7897eac6d3416d631466125f3076c105d3",
+        "b77e6174df38cddd52dde5aca011cd133d7cdced0b5aec81feab3c968daa6911"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_FacetMothLarvae": {
+      "at": "2026-10-06T03:42:25.103Z",
+      "decision": "A",
+      "note": "I like but remove eyes. Rimmandrake tier",
+      "prefill": "A",
+      "purge": [
+        "807e4d0ff73b821060cd14b0248f4928f1d842526b81df8052323fa1d700c525",
+        "bb8842a43d16e4002dc07dacdb21ed2bf618ab80407508e9725b7fb89cc65c97",
+        "ced346acae7b745698ca8c2b8618a8484121437082c4090be3124f25c00c6ce4"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Gembug": {
+      "at": "2026-10-06T03:40:26.295Z",
+      "decidedAt": "2026-10-06T03:40:02.228Z",
+      "decision": "A",
+      "note": "I like it but the eyes are too warm-blood-style. Make them more like pale blue gems. Rimmandrake tier. ",
+      "prefill": "A"
+    },
+    "RSW_GlowSlug": {
+      "at": "2026-10-06T03:40:36.249Z",
+      "decidedAt": "2026-10-06T03:40:33.293Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A"
+    },
+    "RSW_Megapleura": {
+      "at": "2026-10-06T03:41:28.303Z",
+      "decision": "A",
+      "note": "I like but remove eyes, Mandrake tier",
+      "prefill": "A"
+    },
+    "RSW_MossBeetleLarvae": {
+      "at": "2026-10-06T03:41:44.963Z",
+      "decision": "A",
+      "note": "I like but remove eyes",
+      "prefill": "A",
+      "purge": [
+        "41796dfb29783bf4b7feb8b5fdaac9f4658e0a721b5236f6dc3f1055458d0548",
+        "cd18739cd2687d42acdda7805116f05e71b2bddfa8acd4130b812d2022c8e7d4",
+        "33d160e8b74c4470e1b6cda1d63f519c5b06bb0ac0b3b714e856a2bc69273642"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_ShatterjawBeetle": {
+      "at": "2026-10-06T03:41:56.066Z",
+      "decidedAt": "2026-10-06T03:41:55.445Z",
+      "decision": "hold",
+      "note": "cut dont need",
+      "prefill": "A"
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-05T20:45:17-0700",
+    "by": "owner (Lukas)",
+    "state": "ruled",
+    "evidence": "sidecar savedBy review-sheet-sidecar, savedAt 2026-10-05T20:45:17-0700; 28 rows carry an owner 'at' stamp 20:37-20:45; owner typed \"Finished lantern deep sheet\" (BENCH relay)"
+  },
+  "savedAt": "2026-10-05T20:45:17-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "lanterndeeps_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/lanterndeeps_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "9314c44a9f6fb7c7",
+  "writeCount": 81
+}

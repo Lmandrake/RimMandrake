@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheSump",
- "built": "2026-10-06T20:16:43-0700",
+ "built": "2026-10-07T20:22:20-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_Brindeth": {
    "columns": {
@@ -59,6 +59,7 @@
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "brommet"
   },
   "RM_Dorvel": {
@@ -649,16 +650,26 @@
     "A": {
      "single": "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
     },
+    "B": {
+     "single": "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786"
+    },
+    "C": {
+     "single": "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3"
+    },
     "D": {
      "single": "4b4dfee38878777a8e3023f91cd3034606b621e00be17c0e933693f708e34ab0"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/Ambrosia",
+    "B": "Things/Plant/Ambrosia",
+    "C": "Things/Plant/Ambrosia",
     "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
+    "B": "render ambrosia_v2",
+    "C": "donor original \u2014 Vanilla Textures Expanded",
     "D": "render gapall_RUT_Plant_Wick_v1"
    },
    "res": "Things/Plant/Ambrosia",
@@ -668,6 +679,7 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "wick"
   }
  },

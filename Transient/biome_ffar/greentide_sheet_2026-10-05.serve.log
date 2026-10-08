@@ -1,11 +1,13 @@
 
   sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\greentide_sheet_2026-10-05.html
   decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\greentide_sheet_2026-10-05.decisions.json
-             64 rows · 64 decided · NEVER reviewed (pre-fill only)
-  serving    http://localhost:44361/?t=IfAX3TsSfHwLxf-ZM7v0rw
+             65 rows · 65 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:36367/?t=i7OfoBXpzK19Bk1_NOalgA
              (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
               the ?t= token is what gates writes. Windows browser uses localhost.)
   stop       Ctrl-C
 
-  "GET /?t=IfAX3TsSfHwLxf-ZM7v0rw HTTP/1.1" 200 -
-  "GET /?t=IfAX3TsSfHwLxf-ZM7v0rw HTTP/1.1" 200 -
+  "GET /?t=i7OfoBXpzK19Bk1_NOalgA HTTP/1.1" 200 -
+  "GET /?t=i7OfoBXpzK19Bk1_NOalgA HTTP/1.1" 200 -
+  "GET /?t=i7OfoBXpzK19Bk1_NOalgA HTTP/1.1" 200 -
+  "GET /?t=i7OfoBXpzK19Bk1_NOalgA HTTP/1.1" 200 -

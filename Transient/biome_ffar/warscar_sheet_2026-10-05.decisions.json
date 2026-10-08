@@ -156,6 +156,56 @@
     "_byname": "B"
    },
    "prefill": "A"
+  },
+  "RM_ElectricGryllotalpa": {
+   "at": "2026-10-06T05:26:21.831Z",
+   "decidedAt": "2026-10-06T05:26:21.831Z",
+   "decision": "A",
+   "note": "",
+   "picks": {},
+   "carriedFrom": "SW_Electricgryllotalpa",
+   "carriedAt": "2026-10-07",
+   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
+  },
+  "RM_ElectricTick": {
+   "at": "2026-10-06T05:23:39.764Z",
+   "decidedAt": "2026-10-06T05:23:39.764Z",
+   "decision": "A",
+   "note": "",
+   "carriedFrom": "SW_Electrictick",
+   "carriedAt": "2026-10-07",
+   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
+  },
+  "RM_Bileworm": {
+   "decision": "A",
+   "note": "Rename to Bileworm",
+   "decidedAt": "2026-10-06T05:23:51.904Z",
+   "at": "2026-10-06T05:26:56.383Z",
+   "carriedFrom": "AA_Helixien",
+   "carriedAt": "2026-10-07",
+   "carriedBy": "BENCH helper: renamed/moved row (owner note: \"Rename to Bileworm\")"
+  },
+  "RM_JuggernautBeetle": {
+   "decision": "A",
+   "note": "Redo description",
+   "decidedAt": "2026-10-06T05:27:19.382Z",
+   "at": "2026-10-06T05:27:49.312Z",
+   "carriedFrom": "SW_Juggernautbeetles",
+   "carriedAt": "2026-10-07",
+   "carriedBy": "BENCH helper: renamed/moved row (renamed port)"
+  },
+  "RM_Rimclaw": {
+   "decision": "A",
+   "prefill": "A",
+   "note": "",
+   "carriedFrom": "RG_Rimclaw",
+   "carriedRuledAt": "2026-10-06T05:28:25.992Z",
+   "agentInference": {
+    "not_owner_ruling": true,
+    "by": "agent (BENCH helper) 2026-10-07",
+    "pick": "A",
+    "basis": "your 2026-10-06 note on RG_Rimclaw ('redo description'; old art purged, extra graphic B picked) was executed as the renamed RM_Rimclaw; its in-game set is shown, you have not ruled on it"
+   }
   }
  },
  "posture": "pick-one",

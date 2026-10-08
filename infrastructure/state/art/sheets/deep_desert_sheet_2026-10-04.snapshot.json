@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-06T19:53:09-0700",
+ "built": "2026-10-07T20:20:56-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -767,20 +767,15 @@
      "east": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
      "north": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
      "south": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4"
-    },
-    "I": {
-     "south": "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534"
     }
    },
    "graphic_of": {
     "A": "swanimals/Gizka/Gizka",
-    "F": "swanimals/Gizka/Gizka",
-    "I": "swanimals/Gizka/Gizka"
+    "F": "swanimals/Gizka/Gizka"
    },
    "labels": {
     "A": "IN GAME \u2014 GizkaArtOverride",
-    "F": "history GizkaArtOverride 2026-09-17",
-    "I": "render pyrelands_gizka_v1"
+    "F": "history GizkaArtOverride 2026-09-17"
    },
    "res": "swanimals/Gizka/Gizka",
    "reserved": [
@@ -1237,5 +1232,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "e5bf187273b6577a"
+ "snapshotId": "4475817683b648ff"
 }

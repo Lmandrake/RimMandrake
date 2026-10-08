@@ -1,9 +1,9 @@
 {
  "biome": "RM_Warscar",
- "built": "2026-10-06T20:17:23-0700",
+ "built": "2026-10-07T20:23:37-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_Helixien": {
    "columns": {
@@ -31,6 +31,7 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "helixien"
   },
   "AA_SpinedGow": {
@@ -75,6 +76,7 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "spinedgow"
   },
   "RG_Rimclaw": {
@@ -93,17 +95,24 @@
      "east": "621d90f4beecac09509289b072f30eaccf4d941ddfc27120a81e1b85e4488eeb",
      "north": "ab47f5fef9166f6ab8baa85e4d0f8f9cf454393bfd67aa3b11497545d2ae000c",
      "south": "156395370bf9ff627cdf19cd7ab9a908480ac86c719f360425d77c679ddb8c0b"
+    },
+    "D": {
+     "east": "03af9f9eaafacfee86efb1f6b1da20fa1e8ac1b8e803fe400f3a72802f365083",
+     "north": "1fedd2d398e41b10a2e100fa4d98b300e6384301cac3a15183434f74fb6be11e",
+     "south": "a912b693e72eb200cfc293c99232eb7ac31a712281897f989bf4aea91780ea9d"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/ReGrowth/Rimclaw/BabyRimclaw",
     "B": "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw",
-    "C": "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw"
+    "C": "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw",
+    "D": "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw"
    },
    "labels": {
     "A": "IN GAME \u2014 ReGrowth 2",
     "B": "IN GAME \u2014 RimclawArtOverride",
-    "C": "history RimclawArtOverride 2026-09-13"
+    "C": "history RimclawArtOverride 2026-09-13",
+    "D": "donor original \u2014 ReGrowth 2"
    },
    "res": "Things/Pawn/Animal/ReGrowth/Rimclaw/BabyRimclaw",
    "reserved": [
@@ -112,7 +121,28 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "rimclaw"
+  },
+  "RM_Bileworm": {
+   "columns": {
+    "A": {
+     "east": "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
+     "north": "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
+     "south": "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands"
+   },
+   "res": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "bileworm"
   },
   "RM_Chatrak": {
    "columns": {
@@ -134,6 +164,46 @@
     "B"
    ],
    "subject_key": "chatrak"
+  },
+  "RM_ElectricGryllotalpa": {
+   "columns": {
+    "A": {
+     "east": "247c2982e007d3d0abc8e3d761049149e980932e99b39a26369ae9029d0d10bf",
+     "north": "9676fefbf6b36de5e99d364a0a596883499d371fcaa40b79a3ce39b4cc2c7a5a",
+     "south": "027ca7f11b21fa6819a5a89960d1d8fcc2f37bae25afdd6f080b587dac936b0a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands"
+   },
+   "res": "Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "electricgryllotalpa"
+  },
+  "RM_ElectricTick": {
+   "columns": {
+    "A": {
+     "east": "77a4292c9965e65a85899b04b807ed6d4ea4c4920a9b4dd13cd23434fde32491",
+     "north": "51cd45a03ba38bd6eca7c3ad49967c6b92002b3cc361a2d724a2f833cddaee27",
+     "south": "c1ad1dae766325ea5321a28563c2786dc4092c5fef42cc0d3e0e849ed5a0c843"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_ElectricTick/RM_ElectricTick"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands"
+   },
+   "res": "Things/Pawn/Animal/RM_ElectricTick/RM_ElectricTick",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "electrictick"
   },
   "RM_Glower": {
    "columns": {
@@ -159,6 +229,26 @@
    ],
    "subject_key": "glower"
   },
+  "RM_JuggernautBeetle": {
+   "columns": {
+    "A": {
+     "east": "49671bc0ae9d708f6cda8e96a731781a8ed832e39a7f41cd2a65e95e6eb0ff1c",
+     "north": "c0989539a2c01b49dc386c137b4d2980a5ef2228e507408e411eacd553f4b53a",
+     "south": "253ed102b700a03b3c4e5c9d7c1f42b9bc1f79a129f864ef2a5f9720bdf19430"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_JuggernautBeetle/RM_JuggernautBeetle"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands"
+   },
+   "res": "Things/Pawn/Animal/RM_JuggernautBeetle/RM_JuggernautBeetle",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "juggernautbeetle"
+  },
   "RM_Pallbearer": {
    "columns": {
     "A": {
@@ -178,6 +268,26 @@
     "A"
    ],
    "subject_key": "pallbearer"
+  },
+  "RM_Rimclaw": {
+   "columns": {
+    "A": {
+     "east": "925b20823132e5981ace220accf280ab3f0b370a04f8507fbeed771fe7e3df47",
+     "north": "8293d4d6d9763514bee6537a43f0b359b7898b2085241fb0fdab6fc452a19faa",
+     "south": "848f63d564d9fa833c67048afb0f15392224e658453361031f3a6feb8e3b2d75"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands"
+   },
+   "res": "Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "rimclaw"
   },
   "RM_ScarRoach": {
    "columns": {
@@ -290,6 +400,7 @@
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "crystalfairymole"
   },
   "RSW_FoundryBeetle": {
@@ -451,6 +562,7 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "electricgryllotalpa"
   },
   "SW_Electrictick": {
@@ -479,6 +591,7 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "electrictick"
   },
   "SW_Juggernautbeetles": {
@@ -507,6 +620,7 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "juggernautbeetles"
   }
  },

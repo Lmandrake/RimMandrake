@@ -1,232 +1,232 @@
 {
-  "biome": "RM_TheScald",
-  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
-  "decidedCount": 23,
-  "decisions": {
-    "RM_Bladderboil": {
-      "at": "2026-10-06T03:46:24.553Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "aa52c42dea8e0b811fbfa712ee0224b800f1377f95a34e1ca5256e8e2d57ca78",
-        "22e6f2b7e5524b65d3fac3054efa446cc507aaf8f49e7a65ac7a0c990eeade83"
-      ],
-      "purgeTouched": true
-    },
-    "RM_BladderboilCatch": {
-      "at": "2026-10-06T03:53:28.129Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
-        "B",
-        "C",
-        "D"
-      ],
-      "variantsAt": "2026-10-06T03:53:28.129Z"
-    },
-    "RM_Crowncarpet": {
-      "at": "2026-10-06T03:53:16.472Z",
-      "decidedAt": "2026-10-06T03:52:55.843Z",
-      "decision": "redo",
-      "note": "Make it like an oily, shiny mat of bacteria with various random colorations within. Organic-looking, not neon. ",
-      "prefill": "A",
-      "purge": [
-        "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786",
-        "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3",
-        "17e9a7704effa59355dcb2741d59c596f30695b34fdc5201a2ad51fc4ee3b6c8",
-        "41e7aa57747810f0ccbc176b8ba60d77fcee9ac9259e4d52c99a5e47fdab71e4",
-        "f02b189595e29326568115a5c27d29c4af772510b764854edd612e0dbb94da80",
-        "1484602934bc731c7065583197b1c25a3df4dcdee02c903301ddc7f85bbe08e7"
-      ],
-      "purgeTouched": true
-    },
-    "RM_Doss": {
-      "at": "2026-10-07T14:38:15.744Z",
-      "decidedAt": "2026-10-07T14:38:13.852Z",
-      "decision": "C",
-      "note": "Too cartoonish, try again",
-      "prefill": "A",
-      "purge": [
-        "e13906b0c20350cba187db4856cf6acc11db9be2279ca76de0a2b9f1806d79d3",
-        "4956f595461cb83db285905e6ee1fb32775e46b7dadbd9df55e984e718977a43"
-      ],
-      "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
-      "variantsAt": "2026-10-07T14:38:15.744Z"
-    },
-    "RM_DossCatch": {
-      "at": "2026-10-06T03:53:37.541Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C"
-      ],
-      "variantsAt": "2026-10-06T03:53:37.541Z"
-    },
-    "RM_Eesh": {
-      "at": "2026-10-06T03:47:44.688Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "45f0b4dfc0352ab80504397c8ade98015dbe5a72cee8d2a19b5e2e85e4c02394",
-        "42c923f04d5fcf318feecb9ffc29821a161610b77fd74db7e6f15b9a0d61a1b3"
-      ],
-      "purgeTouched": true
-    },
-    "RM_EeshCatch": {
-      "at": "2026-10-06T03:53:44.940Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C"
-      ],
-      "variantsAt": "2026-10-06T03:53:44.940Z"
-    },
-    "RM_Ekkel": {
-      "at": "2026-10-06T03:47:47.716Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "caa230bd40f4bac6728fa6ef0905dfb23afd843dc00382e79c50a014d755b589"
-      ],
-      "purgeTouched": true
-    },
-    "RM_EkkelCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_ElderSando": {
-      "at": "2026-10-06T03:52:28.625Z",
-      "decidedAt": "2026-10-06T03:52:26.778Z",
-      "decision": "hold",
-      "note": "redundant",
-      "prefill": "A"
-    },
-    "RM_Karrash": {
-      "at": "2026-10-06T03:48:28.309Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "f18bcc779d4ec1e2280c9a69b1303162d99a0ae140842bf0da6902578182dfc4",
-        "387d7dcab2470b66d89430c7b49537ad09a58c68eb9109c6b966252e713129e9"
-      ],
-      "purgeTouched": true
-    },
-    "RM_KarrashCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Muddal": {
-      "at": "2026-10-06T03:48:50.652Z",
-      "decision": "A",
-      "note": "Rename the Iridai",
-      "prefill": "A",
-      "purge": [
-        "b0c4fc2fe2c6fe4b80addb7804acf662287a46ab737147aab6f635482b9fb0bf",
-        "b855975720300f0a68f49e9dc4f67267095b5728effedeea560ce5054fb1b2ba"
-      ],
-      "purgeTouched": true
-    },
-    "RM_MuddalCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Noohm": {
-      "at": "2026-10-06T03:49:08.512Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
-        "f6d90283fce0c02ed0bfb57300a8fb35610692931ffc9b33d92bced57eb75995"
-      ],
-      "purgeTouched": true
-    },
-    "RM_Saal": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_ScaldWalker": {
-      "at": "2026-10-06T03:47:10.514Z",
-      "decision": "A",
-      "note": "Rename to Iridesce",
-      "prefill": "A"
-    },
-    "RM_Shulla": {
-      "at": "2026-10-06T03:50:26.045Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
-      ],
-      "purgeTouched": true
-    },
-    "RM_ShullaCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Thuum": {
-      "at": "2026-10-06T03:51:25.819Z",
-      "decidedAt": "2026-10-06T03:50:48.331Z",
-      "decision": "redo",
-      "note": "I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.",
-      "prefill": "A",
-      "purge": [
-        "24b0cc141fd659c0231309ee4bcc61af8c84b58b12ea4c567894affb6578c3fc",
-        "acaf7b136ce563d06b1e71f3cc2a8df45afdf872ff9b46b7e46a222a631a15cc"
-      ],
-      "purgeTouched": true
-    },
-    "RM_ThuumCatch": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RSW_ElderSando": {
-      "at": "2026-10-06T03:52:23.384Z",
-      "decidedAt": "2026-10-06T03:51:49.515Z",
-      "decision": "A",
-      "note": "Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier. ",
-      "prefill": "A"
-    },
-    "RSW_SandoAquaMonster": {
-      "at": "2026-10-06T03:50:20.351Z",
-      "decidedAt": "2026-10-06T03:50:07.141Z",
-      "decision": "redo",
-      "note": "Move this to the Twilight Sea, it does not belong in the Scald. look carefully at the canon art. It is NOT a giant feline thing. ",
-      "prefill": "A"
-    }
+ "biome": "RM_TheScald",
+ "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+ "decidedCount": 23,
+ "decisions": {
+  "RM_Bladderboil": {
+   "at": "2026-10-06T03:46:24.553Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "aa52c42dea8e0b811fbfa712ee0224b800f1377f95a34e1ca5256e8e2d57ca78",
+    "22e6f2b7e5524b65d3fac3054efa446cc507aaf8f49e7a65ac7a0c990eeade83"
+   ],
+   "purgeTouched": true
   },
-  "posture": "pick-one",
-  "reviewStatus": {
-    "at": "2026-10-05T20:53:45-0700",
-    "by": "owner (Lukas)",
-    "evidence": "sidecar savedBy review-sheet-sidecar, savedAt 2026-10-05T20:53:45-0700; 17 rows carry an owner 'at' stamp 20:46-20:53; owner typed \"Finished with the scald sheet\" (BENCH relay)",
-    "state": "ruled"
+  "RM_BladderboilCatch": {
+   "at": "2026-10-06T03:53:28.129Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "B",
+    "C",
+    "D"
+   ],
+   "variantsAt": "2026-10-06T03:53:28.129Z"
   },
-  "savedAt": "2026-10-07T07:38:16-0700",
-  "savedBy": "review-sheet-sidecar",
-  "sheetId": "thescald_sheet_2026-10-05",
-  "snapshot": "infrastructure/state/art/sheets/thescald_sheet_2026-10-05.snapshot.json",
-  "snapshotId": "3e970bb2e9f3ce82",
-  "writeCount": 76
+  "RM_Crowncarpet": {
+   "at": "2026-10-06T03:53:16.472Z",
+   "decidedAt": "2026-10-06T03:52:55.843Z",
+   "decision": "redo",
+   "note": "Make it like an oily, shiny mat of bacteria with various random colorations within. Organic-looking, not neon. ",
+   "prefill": "A",
+   "purge": [
+    "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786",
+    "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3",
+    "17e9a7704effa59355dcb2741d59c596f30695b34fdc5201a2ad51fc4ee3b6c8",
+    "41e7aa57747810f0ccbc176b8ba60d77fcee9ac9259e4d52c99a5e47fdab71e4",
+    "f02b189595e29326568115a5c27d29c4af772510b764854edd612e0dbb94da80",
+    "1484602934bc731c7065583197b1c25a3df4dcdee02c903301ddc7f85bbe08e7"
+   ],
+   "purgeTouched": true
+  },
+  "RM_Doss": {
+   "at": "2026-10-07T14:38:15.744Z",
+   "decidedAt": "2026-10-07T14:38:13.852Z",
+   "decision": "C",
+   "note": "Too cartoonish, try again",
+   "prefill": "A",
+   "purge": [
+    "e13906b0c20350cba187db4856cf6acc11db9be2279ca76de0a2b9f1806d79d3",
+    "4956f595461cb83db285905e6ee1fb32775e46b7dadbd9df55e984e718977a43"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "C"
+   ],
+   "variantsAt": "2026-10-07T14:38:15.744Z"
+  },
+  "RM_DossCatch": {
+   "at": "2026-10-06T03:53:37.541Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "A",
+    "B",
+    "C"
+   ],
+   "variantsAt": "2026-10-06T03:53:37.541Z"
+  },
+  "RM_Eesh": {
+   "at": "2026-10-06T03:47:44.688Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "45f0b4dfc0352ab80504397c8ade98015dbe5a72cee8d2a19b5e2e85e4c02394",
+    "42c923f04d5fcf318feecb9ffc29821a161610b77fd74db7e6f15b9a0d61a1b3"
+   ],
+   "purgeTouched": true
+  },
+  "RM_EeshCatch": {
+   "at": "2026-10-06T03:53:44.940Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "A",
+    "B",
+    "C"
+   ],
+   "variantsAt": "2026-10-06T03:53:44.940Z"
+  },
+  "RM_Ekkel": {
+   "at": "2026-10-06T03:47:47.716Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "caa230bd40f4bac6728fa6ef0905dfb23afd843dc00382e79c50a014d755b589"
+   ],
+   "purgeTouched": true
+  },
+  "RM_EkkelCatch": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_ElderSando": {
+   "at": "2026-10-06T03:52:28.625Z",
+   "decidedAt": "2026-10-06T03:52:26.778Z",
+   "decision": "hold",
+   "note": "redundant",
+   "prefill": "A"
+  },
+  "RM_Karrash": {
+   "at": "2026-10-06T03:48:28.309Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "f18bcc779d4ec1e2280c9a69b1303162d99a0ae140842bf0da6902578182dfc4",
+    "387d7dcab2470b66d89430c7b49537ad09a58c68eb9109c6b966252e713129e9"
+   ],
+   "purgeTouched": true
+  },
+  "RM_KarrashCatch": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Muddal": {
+   "at": "2026-10-06T03:48:50.652Z",
+   "decision": "A",
+   "note": "Rename the Iridai",
+   "prefill": "A",
+   "purge": [
+    "b0c4fc2fe2c6fe4b80addb7804acf662287a46ab737147aab6f635482b9fb0bf",
+    "b855975720300f0a68f49e9dc4f67267095b5728effedeea560ce5054fb1b2ba"
+   ],
+   "purgeTouched": true
+  },
+  "RM_MuddalCatch": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Noohm": {
+   "at": "2026-10-06T03:49:08.512Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
+    "f6d90283fce0c02ed0bfb57300a8fb35610692931ffc9b33d92bced57eb75995"
+   ],
+   "purgeTouched": true
+  },
+  "RM_Saal": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_ScaldWalker": {
+   "at": "2026-10-06T03:47:10.514Z",
+   "decision": "A",
+   "note": "Rename to Iridesce",
+   "prefill": "A"
+  },
+  "RM_Shulla": {
+   "at": "2026-10-06T03:50:26.045Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+   ],
+   "purgeTouched": true
+  },
+  "RM_ShullaCatch": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Thuum": {
+   "at": "2026-10-06T03:51:25.819Z",
+   "decidedAt": "2026-10-06T03:50:48.331Z",
+   "decision": "redo",
+   "note": "I like the dull rainbows along its body length. Make its head armored. Make all three directions look like the same creature. Rename it to a Shimmer Eel.",
+   "prefill": "A",
+   "purge": [
+    "24b0cc141fd659c0231309ee4bcc61af8c84b58b12ea4c567894affb6578c3fc",
+    "acaf7b136ce563d06b1e71f3cc2a8df45afdf872ff9b46b7e46a222a631a15cc"
+   ],
+   "purgeTouched": true
+  },
+  "RM_ThuumCatch": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_ElderSando": {
+   "at": "2026-10-06T03:52:23.384Z",
+   "decidedAt": "2026-10-06T03:51:49.515Z",
+   "decision": "A",
+   "note": "Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier. ",
+   "prefill": "A"
+  },
+  "RSW_SandoAquaMonster": {
+   "at": "2026-10-06T03:50:20.351Z",
+   "decidedAt": "2026-10-06T03:50:07.141Z",
+   "decision": "redo",
+   "note": "Move this to the Twilight Sea, it does not belong in the Scald. look carefully at the canon art. It is NOT a giant feline thing. ",
+   "prefill": "A"
+  }
+ },
+ "posture": "pick-one",
+ "reviewStatus": {
+  "at": "2026-10-05T20:53:45-0700",
+  "by": "owner (Lukas)",
+  "evidence": "sidecar savedBy review-sheet-sidecar, savedAt 2026-10-05T20:53:45-0700; 17 rows carry an owner 'at' stamp 20:46-20:53; owner typed \"Finished with the scald sheet\" (BENCH relay)",
+  "state": "ruled"
+ },
+ "savedAt": "2026-10-07T07:38:16-0700",
+ "savedBy": "review-sheet-sidecar",
+ "sheetId": "thescald_sheet_2026-10-05",
+ "snapshot": "infrastructure/state/art/sheets/thescald_sheet_2026-10-05.snapshot.json",
+ "snapshotId": "3e970bb2e9f3ce82",
+ "writeCount": 76
 }

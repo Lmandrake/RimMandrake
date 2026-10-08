@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-06T21:08:11-0700",
+ "built": "2026-10-07T20:07:12-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -685,6 +685,26 @@
    ],
    "subject_key": "kissaveth"
   },
+  "RM_Mullgoth": {
+   "columns": {
+    "A": {
+     "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
+     "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
+     "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary"
+   },
+   "res": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "mullgoth"
+  },
   "RM_RavenNettle": {
    "columns": {
     "A": {
@@ -983,42 +1003,6 @@
    ],
    "subject_key": "lylek"
   },
-  "RSW_Mullgoth": {
-   "columns": {
-    "A": {
-     "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
-     "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
-     "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
-    },
-    "B": {
-     "east": "77efac86d35edcbf90eb71f4eb929b426367b7e98e6b912f0a0a89268d6ddbb4",
-     "north": "0a9255469f40284fdee664b64d3bca3d9e38e10f24b0c7ea2961c1800fd627ad",
-     "south": "858e5aefcd48e559a80bccb155a53fe1be03c7d8f86b4fbc44340254f358dd9c"
-    },
-    "C": {
-     "east": "810032c86cf70324085ff51cc2a40d3b7577ad27dde681d1842f74406f056d49",
-     "north": "f38d8ae5dc9995e0f6a6c8bf49131b60372288fa9bd57e1c54d721365d49df8f",
-     "south": "db618cec3690bcaa734f15402d3d9daad9895a26105119ee593b70369841aae8"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-    "B": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-    "C": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 WildpodArtOverride",
-    "B": "history WildpodArtOverride 2026-09-13",
-    "C": "history WildpodArtOverride 2026-09-20"
-   },
-   "res": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "subject_key": "mullgoth"
-  },
   "RSW_Mynock": {
    "columns": {
     "A": {
@@ -1279,5 +1263,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "03d9116c14735686"
+ "snapshotId": "ee1d5c31993bafe3"
 }

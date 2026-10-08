@@ -1,9 +1,9 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-06T19:21:58-0700",
+ "built": "2026-10-07T20:20:10-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_Dwommo": {
    "columns": {
@@ -143,12 +143,13 @@
     "A": "Things/Pawn/Animal/Glurro/RM_Glurro"
    },
    "labels": {
-    "A": "render RM_Glurro"
+    "A": "IN GAME \u2014 GelatinousSlime"
    },
    "res": "Things/Pawn/Animal/Glurro/RM_Glurro",
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "glurro"
   },
   "RM_Plant_Bellows": {
@@ -162,13 +163,13 @@
    },
    "graphic_of": {
     "A": "Things/Plant/Bush",
-    "B": "_byname"
+    "B": "Things/Plant/RM_Bellows/RM_Bellows"
    },
    "labels": {
     "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render gapall_RM_Plant_Bellows_v1"
    },
-   "res": null,
+   "res": "Things/Plant/RM_Bellows/RM_Bellows",
    "reserved": [
     "A",
     "B"
@@ -186,13 +187,13 @@
    },
    "graphic_of": {
     "A": "Things/Plant/Dandelion",
-    "B": "_byname"
+    "B": "Things/Plant/RM_Readerbloom/RM_Readerbloom"
    },
    "labels": {
     "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render RM_Readerbloom"
    },
-   "res": null,
+   "res": "Things/Plant/RM_Readerbloom/RM_Readerbloom",
    "reserved": [
     "A",
     "B"
@@ -215,10 +216,10 @@
     }
    },
    "graphic_of": {
-    "C": "_byname",
-    "D": "_byname",
-    "E": "_byname",
-    "F": "_byname"
+    "C": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
+    "D": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
+    "E": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
+    "F": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass"
    },
    "labels": {
     "C": "render RM_SlimeGrass",
@@ -226,7 +227,7 @@
     "E": "render slime_slimegrass_var_c",
     "F": "render slime_slimegrass_var_d"
    },
-   "res": null,
+   "res": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
    "reserved": [
     "A",
     "B",
@@ -253,10 +254,10 @@
     }
    },
    "graphic_of": {
-    "B": "_byname",
-    "C": "_byname",
-    "D": "_byname",
-    "E": "_byname"
+    "B": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
+    "C": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
+    "D": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
+    "E": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk"
    },
    "labels": {
     "B": "render RM_Thumbstalk",
@@ -264,7 +265,7 @@
     "D": "render slime_thumbstalk_var_c",
     "E": "render slime_thumbstalk_var_d"
    },
-   "res": null,
+   "res": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
    "reserved": [
     "A",
     "B",
