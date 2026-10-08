@@ -5006,6 +5006,9 @@ namespace JawaBench.BridgeTools
                 catch (Exception fex) { outp[f.Name] = "(threw: " + fex.GetType().Name + ")"; continue; }
                 if (v == null) { outp[f.Name] = null; continue; }
                 if (v is Def d) { outp[f.Name] = d.defName; continue; }
+                // A System.Type (compClass, workerClass) renders as its bare Name, as DeepSerializeValue does;
+                // it used to fall to the list branch's item-type name and read 'RuntimeType'.
+                if (v is Type vt) { outp[f.Name] = vt.Name; continue; }
                 var t = v.GetType();
                 if (t.IsPrimitive || v is string || t.IsEnum || v is decimal)
                 {
@@ -5019,6 +5022,9 @@ namespace JawaBench.BridgeTools
                     {
                         if (it == null) { items.Add(null); continue; }
                         if (it is Def id) { items.Add(id.defName); continue; }
+                        // BRIDGE_KILL_HOSTILES_TOOL_1 A2: List<Type> (DesignationCategoryDef.specialDesignatorClasses)
+                        // came back as six 'RuntimeType' strings, so no harness could name a designator class.
+                        if (it is Type itT) { items.Add(itT.Name); continue; }
                         var it2 = it.GetType();
                         if (it2.IsPrimitive || it is string || it2.IsEnum)
                             items.Add(it2.IsEnum ? it.ToString() : it);
@@ -5066,6 +5072,7 @@ namespace JawaBench.BridgeTools
                         catch (Exception pex) { outp[w] = "(threw: " + pex.GetType().Name + ")"; break; }
                         if (pv == null) { outp[w] = null; break; }
                         if (pv is Def pd) { outp[w] = pd.defName; break; }
+                        if (pv is Type ptT) { outp[w] = ptT.Name; break; }
                         var pt = pv.GetType();
                         if (pt.IsPrimitive || pv is string || pt.IsEnum || pv is decimal)
                             outp[w] = pt.IsEnum ? pv.ToString() : pv;

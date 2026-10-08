@@ -14,3 +14,10 @@ A2: architect designator read returns real designator/def names for a given cate
 A3: both documented in the rimbridge skill tool list.
 
 NEXT: claim this item and start with criterion A1.
+
+## built 2026-10-08 (FOUNDRY belt, offline; companion not deployed)
+
+- A1: `jawa/kill_hostiles` in `JawaBenchHostileTools.cs` (GenHostility.HostileTo(pawn, player); faction/pawn filters, dryRun, destroyCorpses; returns killed ids, `survivorsNonHostile` control and `hostilesLeft`).
+- A2: `jawa/get_defs` now renders a `System.Type` field or list item as its bare class name (the deep path already did), so `DesignationCategoryDef.specialDesignatorClasses` reads e.g. `Designator_Deepfire`, not `RuntimeType`.
+- A3 (skill tool list) left for a skill-curation session (skills are edited only there).
+- Owed: deploy (`build.py --gm --apply` with the game closed), then the quicktest proof.
