@@ -75,12 +75,9 @@ namespace RimMandrake.Wreckage
             {
                 return false;
             }
-            if (ext.requiredMutators.NullOrEmpty())
-            {
-                return true;
-            }
             IList<TileMutatorDef> on = map.TileInfo?.Mutators;
-            return on != null && ext.requiredMutators.Any(m => on.Contains(m));
+            return RM_WreckageKernel.MapAllowed(true, ext.requiredMutators.NullOrEmpty() ? 0 : ext.requiredMutators.Count,
+                on != null && !ext.requiredMutators.NullOrEmpty() && ext.requiredMutators.Any(m => on.Contains(m)));
         }
 
         public static bool TryFindCell(ThingDef skyfaller, ThingDef wreck, Map map, IntVec3 near, int nearMaxDist, out IntVec3 cell)

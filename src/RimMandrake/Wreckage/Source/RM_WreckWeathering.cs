@@ -89,7 +89,7 @@ namespace RimMandrake.Wreckage
         [Unsaved(false)]
         private bool applied;
 
-        public static readonly string[] MidTiers = { "Hull", "Tank", "Carapace" };
+        public static readonly string[] MidTiers = RM_WreckageKernel.MidTiers;
 
         public override IEnumerable<string> ConfigErrors()
         {
@@ -111,7 +111,7 @@ namespace RimMandrake.Wreckage
                 return;
             }
             applied = true;
-            td.resourcesFractionWhenDeconstructed = Mathf.Clamp01(td.resourcesFractionWhenDeconstructed * weathering.yieldFactor);
+            td.resourcesFractionWhenDeconstructed = RM_WreckageKernel.YieldFraction(td.resourcesFractionWhenDeconstructed, weathering.yieldFactor);
             if (td.label.NullOrEmpty() && !weathering.labelPrefix.NullOrEmpty())
             {
                 td.label = weathering.labelPrefix + " wreck";
@@ -124,23 +124,18 @@ namespace RimMandrake.Wreckage
                 }
                 td.killedLeavings.AddRange(weathering.extraLeavings);
             }
-            if (weathering.noLoot && td.comps != null)
-            {
-                foreach (CompProperties cp in td.comps)
-                {
-                    if (cp is RM_CompProperties_SalvageLoot loot)
-                    {
-                        loot.noLoot = true;
-                        loot.rareChance = 0f;
-                    }
-                }
-            }
             if (td.comps != null)
             {
+                int shift = weathering.lootTierShift + extraTierShift;
                 foreach (CompProperties cp in td.comps)
                 {
                     if (cp is RM_CompProperties_SalvageLoot loot)
                     {
+                        // "nothing inside" first, then the tier shift (landing on Scrap removes the rare roll: Scrap has no rare table, design 3c)
+                        LootFold folded = RM_WreckageKernel.Fold(loot.lootTier, loot.rareChance, loot.noLoot, weathering.noLoot, shift);
+                        loot.lootTier = folded.tier;
+                        loot.rareChance = folded.rareChance;
+                        loot.noLoot = folded.noLoot;
                         if (weathering.extraLoot != null && loot.extraLoot == null)
                         {
                             loot.extraLoot = weathering.extraLoot;
@@ -153,42 +148,13 @@ namespace RimMandrake.Wreckage
                     }
                 }
             }
-            int shift = weathering.lootTierShift + extraTierShift;
-            if (shift != 0 && td.comps != null)
-            {
-                foreach (CompProperties cp in td.comps)
-                {
-                    if (cp is RM_CompProperties_SalvageLoot loot)
-                    {
-                        loot.lootTier = ShiftTier(loot.lootTier, shift);
-                        if (loot.lootTier == "Scrap")
-                        {
-                            loot.rareChance = 0f; // Scrap has no rare table (design §3c)
-                        }
-                    }
-                }
-            }
         }
 
         // PROVISIONAL ladder: Scrap(0) < Hull/Tank/Carapace(1) < Sealed(2). A mid tier
         // shifted up becomes Sealed, down becomes Scrap; Scrap shifted up becomes Hull.
         public static string ShiftTier(string tier, int shift)
         {
-            int rank = tier == "Scrap" ? 0 : tier == "Sealed" ? 2 : 1;
-            int to = Mathf.Clamp(rank + shift, 0, 2);
-            if (to == rank)
-            {
-                return tier;
-            }
-            if (to == 0)
-            {
-                return "Scrap";
-            }
-            if (to == 2)
-            {
-                return "Sealed";
-            }
-            return rank == 0 ? "Hull" : tier;
+            return RM_WreckageKernel.ShiftTier(tier, shift);
         }
     }
 }

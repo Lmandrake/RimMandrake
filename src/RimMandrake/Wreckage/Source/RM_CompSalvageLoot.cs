@@ -103,10 +103,7 @@ namespace RimMandrake.Wreckage
             float generosity = RM_WreckageSettings.lootGenerosity;
             foreach (Thing t in loot)
             {
-                if (t.def.stackLimit > 1 && !Mathf.Approximately(generosity, 1f))
-                {
-                    t.stackCount = Mathf.Clamp(Mathf.RoundToInt(t.stackCount * generosity), 1, t.def.stackLimit);
-                }
+                t.stackCount = RM_WreckageKernel.ScaleStack(t.stackCount, t.def.stackLimit, generosity);
                 GenPlace.TryPlaceThing(t, cell, previousMap, ThingPlaceMode.Near);
             }
         }
@@ -120,11 +117,8 @@ namespace RimMandrake.Wreckage
             {
                 return;
             }
-            float severity = Props.salvageHediffSeverity;
-            if (Props.salvageHediff == HediffDefOf.ToxicBuildup)
-            {
-                severity *= Mathf.Max(0f, 1f - salvager.GetStatValue(StatDefOf.ToxicResistance));
-            }
+            bool toxic = Props.salvageHediff == HediffDefOf.ToxicBuildup;
+            float severity = RM_WreckageKernel.HazardDose(Props.salvageHediffSeverity, toxic, toxic ? salvager.GetStatValue(StatDefOf.ToxicResistance) : 0f);
             if (severity > 0f)
             {
                 HealthUtility.AdjustSeverity(salvager, Props.salvageHediff, severity);
@@ -137,13 +131,12 @@ namespace RimMandrake.Wreckage
         // No pawn known (a debug destroy) = 1x.
         public float RareChanceFor(Pawn salvager)
         {
-            float factor = 1f;
+            int level = 0;
             if (RM_WreckageSettings.skillScalesRare && salvager?.skills != null)
             {
-                int level = salvager.skills.GetSkill(SkillDefOf.Construction).Level;
-                factor = Mathf.Lerp(0.25f, 2f, level / 20f);
+                level = salvager.skills.GetSkill(SkillDefOf.Construction).Level;
             }
-            return Mathf.Clamp01(Props.rareChance * factor);
+            return RM_WreckageKernel.RareChance(Props.rareChance, RM_WreckageSettings.skillScalesRare, salvager?.skills != null, level);
         }
 
         public override string CompInspectStringExtra()
