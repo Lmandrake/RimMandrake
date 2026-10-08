@@ -46,7 +46,7 @@ namespace RimMandrake.ShipVermin
 			{
 				CalculateNextSpawnTick();
 			}
-			if (!respawningAfterLoad && !burstDone && burstTick < 0 && Props.initialBurst.max > 0)
+			if (RM_VerminKernel.BurstShouldSchedule(respawningAfterLoad, burstDone, burstTick, Props.initialBurst.max))
 			{
 				burstTick = Find.TickManager.TicksGame + Props.initialBurstDelayTicks.RandomInRange;
 			}
@@ -55,20 +55,15 @@ namespace RimMandrake.ShipVermin
 		public override void CompTick()
 		{
 			base.CompTick();
-			if (!parent.Spawned)
-			{
-				return;
-			}
-			if (!ShipVerminSettings.wreckSpawningEnabled)
-			{
-				return; // mod option: wreck-anchored nests disabled entirely
-			}
-			if (!burstDone && burstTick >= 0 && Find.TickManager.TicksGame >= burstTick)
+			// mod option wreckSpawningEnabled: wreck-anchored nests disabled entirely
+			RM_VerminKernel.NestStep step = RM_VerminKernel.Step(parent.Spawned, ShipVerminSettings.wreckSpawningEnabled,
+				burstDone, burstTick, nextSpawnTick, Find.TickManager.TicksGame);
+			if (step.Burst)
 			{
 				burstDone = true;
 				SpawnBurst(Props.initialBurst.RandomInRange, sendLetter: true);
 			}
-			if (Find.TickManager.TicksGame < nextSpawnTick)
+			if (!step.Attempt)
 			{
 				return;
 			}
@@ -78,8 +73,7 @@ namespace RimMandrake.ShipVermin
 
 		private void CalculateNextSpawnTick()
 		{
-			float mult = Mathf.Max(0.01f, ShipVerminSettings.wreckSpawnRateMultiplier);
-			int intervalTicks = Mathf.Max(1, Mathf.RoundToInt(Props.nestSpawnIntervalDays.RandomInRange * 60000f / mult));
+			int intervalTicks = RM_VerminKernel.NestIntervalTicks(Props.nestSpawnIntervalDays.RandomInRange, ShipVerminSettings.wreckSpawnRateMultiplier);
 			nextSpawnTick = Find.TickManager.TicksGame + intervalTicks;
 		}
 
@@ -105,7 +99,7 @@ namespace RimMandrake.ShipVermin
 
 			RM_MapComponent_VerminPopulation population = map.GetComponent<RM_MapComponent_VerminPopulation>();
 			int currentPop = population?.GetPopulation(Props.populationGroupTag) ?? 0;
-			if (population != null && currentPop >= Props.populationHardCap)
+			if (RM_VerminKernel.SpawnRefusal(true, population != null, currentPop, Props.populationHardCap, true, true, true) == RM_VerminKernel.Refusal.PopulationCap)
 			{
 				// at the shared "nuisance unless there are many" hard cap — same gate RM_CompVerminBreeder respects
 				return Report(verbose, $"population cap reached ({currentPop}/{Props.populationHardCap}, tag '{Props.populationGroupTag}')");

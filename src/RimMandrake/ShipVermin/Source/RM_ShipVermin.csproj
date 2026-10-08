@@ -44,6 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_VerminKernel.cs" />
     <Compile Include="RM_Alert_ShipVermin.cs" />
     <Compile Include="RM_ShipVerminMod.cs" />
     <Compile Include="RM_CompProperties_VerminNest.cs" />

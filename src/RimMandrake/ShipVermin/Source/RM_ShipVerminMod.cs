@@ -83,36 +83,36 @@ namespace RimMandrake.ShipVermin
             {
                 return PickEnabledNestSpecies();
             }
-            List<(PawnKindDef kind, float w)> pool = new List<(PawnKindDef, float)>();
+            var asPairs = new List<KeyValuePair<string, float>>();
             foreach (RM_VerminWeight vw in weights)
             {
-                if (vw == null || vw.kind.NullOrEmpty() || vw.weight <= 0f || !RosterAllows(vw.kind))
+                if (vw != null)
                 {
-                    continue;
-                }
-                PawnKindDef kind = Resolve(vw.kind);
-                if (kind != null)
-                {
-                    pool.Add((kind, vw.weight));
+                    asPairs.Add(new KeyValuePair<string, float>(vw.kind, vw.weight));
                 }
             }
+            List<KeyValuePair<PawnKindDef, float>> pool = RM_VerminKernel.BuildPool(asPairs, RosterAllows, Resolve);
             if (pool.Count == 0)
             {
                 return null;
             }
-            return pool.RandomElementByWeight(e => e.w).kind;
+            var ws = new List<float>();
+            foreach (KeyValuePair<PawnKindDef, float> e in pool)
+            {
+                ws.Add(e.Value);
+            }
+            return pool[RM_VerminKernel.PickByWeight(ws, Rand.Value)].Key;
         }
 
         private static bool RosterAllows(string kind)
         {
+            var slots = new List<RM_VerminKernel.RosterSlot>();
             foreach ((string kind, Func<bool> enabled) slot in NestSpeciesRoster)
             {
-                if (slot.kind == kind || Resolve(slot.kind)?.defName == kind)
-                {
-                    return slot.enabled();
-                }
+                string slotKind = slot.kind;
+                slots.Add(new RM_VerminKernel.RosterSlot { Kind = slotKind, Enabled = slot.enabled(), ResolvedName = () => Resolve(slotKind)?.defName });
             }
-            return true;
+            return RM_VerminKernel.RosterAllows(slots, kind);
         }
 
         public override void ExposeData()

@@ -127,7 +127,6 @@ namespace RimMandrake.ShipVermin
         private List<IntVec3> AffectedCells(LocalTargetInfo target)
         {
             tmpCells.Clear();
-            Vector3 origin = Pawn.Position.ToVector3Shifted().Yto0();
             IntVec3 aim = target.Cell.ClampInsideMap(Pawn.Map);
             if (Pawn.Position == aim)
             {
@@ -136,17 +135,13 @@ namespace RimMandrake.ShipVermin
 
             // Push the aim point out to exactly our range along the same
             // heading, so a close click still produces a full-length cone.
-            float dist = (aim - Pawn.Position).LengthHorizontal;
-            float dx = (aim.x - Pawn.Position.x) / dist;
-            float dz = (aim.z - Pawn.Position.z) / dist;
-            aim.x = Mathf.RoundToInt(Pawn.Position.x + dx * Props.range);
-            aim.z = Mathf.RoundToInt(Pawn.Position.z + dz * Props.range);
+            RM_VerminKernel.AimPoint(Pawn.Position.x, Pawn.Position.z, aim.x, aim.z, Props.range, out int aimX, out int aimZ);
+            aim.x = aimX;
+            aim.z = aimZ;
 
-            float heading = Vector3.SignedAngle(aim.ToVector3Shifted().Yto0() - origin, Vector3.right, Vector3.up);
-            float halfWidth = Props.lineWidthEnd / 2f;
-            float hypotenuse = Mathf.Sqrt(
-                Mathf.Pow((aim - Pawn.Position).LengthHorizontal, 2f) + Mathf.Pow(halfWidth, 2f));
-            float halfAngle = Mathf.Rad2Deg * Mathf.Asin(halfWidth / hypotenuse);
+            double halfAngle = RM_VerminKernel.HalfAngleDeg((aim - Pawn.Position).LengthHorizontal, Props.lineWidthEnd);
+            double aimDx = aim.x - Pawn.Position.x;
+            double aimDz = aim.z - Pawn.Position.z;
 
             int cellCount = GenRadial.NumCellsInRadius(Props.range);
             for (int i = 0; i < cellCount; i++)
@@ -156,8 +151,7 @@ namespace RimMandrake.ShipVermin
                 {
                     continue;
                 }
-                float cellAngle = Vector3.SignedAngle(cell.ToVector3Shifted().Yto0() - origin, Vector3.right, Vector3.up);
-                if (Mathf.Abs(Mathf.DeltaAngle(cellAngle, heading)) <= halfAngle)
+                if (RM_VerminKernel.InCone(cell.x - Pawn.Position.x, cell.z - Pawn.Position.z, aimDx, aimDz, halfAngle))
                 {
                     tmpCells.Add(cell);
                 }
