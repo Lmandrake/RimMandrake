@@ -3,10 +3,12 @@
 **defName**: `Kinrath` (third-party, mlie.starwarsanimalcollection, not vendored — see Watch out)
 
 ## Sourced text (Wookieepedia)
-**Two separate creatures share the name "Kinrath" across Star Wars canon
-tiers, and they are NOT visually the same design** — this is a bigger split
-than the usual current-canon/Legends text variance seen elsewhere in this
-library:
+**One named species, two continuity depictions, and they are NOT visually the
+same design.** Wookieepedia's current-canon page equates kinrath with
+"Netcasters" (Disney+ subtitles call the netcaster a kinrath, and *The Secrets
+of the Wookiees* confirms the two are the same), while the Legends page
+describes the older KOTOR animal. The canon page does not import the KOTOR
+traits (e.g. blindness), and the two bodies read differently:
 
 - **Legends (`Kinrath/Legends`) — the KOTOR-era creature**, sourced to
   *Star Wars: Knights of the Old Republic* and *KOTOR II*. Large,
@@ -34,10 +36,16 @@ library:
   in-universe unified with — the KOTOR kinrath**: Disney+ subtitles call
   the netcaster a "kinrath," and *Star Wars: The Secrets of the Wookiees*
   confirms the two are the same species. An earlier, unfinished *Clone
-  Wars* episode (only a leaked clip survives, shown at Celebration
-  Anaheim 2015) used a more upright, mantis-postured precursor design
-  before the concept was reworked into the "Tribe" episode's spoon-bodied
-  version.
+  Wars* episode (a clip was shown at the Untold Clone Wars panel,
+  Celebration Anaheim 2015; eight netcasters attack Wookiees and Clone
+  Force 99, spitting web from a frontal appendage) preceded the "Tribe"
+  rework (https://starwars.fandom.com/wiki/Kinrath). Canon behaviour per
+  "Tribe": arboreal, nest in vast webs, cocoon prey in silk and lift it into
+  the nest, stand on three legs and flourish the fourth leg's claws when
+  threatened, let non-hostile intruders pass, and are venomous; Wookiees
+  summoned them by pounding on trees. Each claw is surrounded by
+  petal-shaped flaps that open to reveal it. Canon also says kinrath eggs
+  sometimes held a Dantari crystal (*Gadgets and Gear*).
 
 **Net read: both tiers agree the creature is warm yellow/gold/tan-brown in
 base color — there is no text/image color disagreement here, unlike the

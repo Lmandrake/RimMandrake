@@ -12,16 +12,13 @@ Krykna were predatory, non-sentient, spider-like creatures native to Atollon. Th
 Although they could be connected with through the Force, it was extremely difficult, as they were highly sensitive to negative emotions.
 
 ## Visual brief
-Viewed 2026-10-04. All four images are canon: two Rebels CGI renders (1, 2), an in-show frame
-(3, Sabine shooting one) and Ralph McQuarrie's "knobby white spider" painting (4), the design's
-origin.
+Viewed 2026-10-04. Images 1-3 depict the canon krykna: two Rebels CGI renders (1, 2) and an in-show frame
+(3, Sabine shooting one). Image 4 is Ralph McQuarrie's "knobby white spider" painting of a Dagobah
+lifeform (Legends novel *Darksaber*, *The Illustrated Star Wars Universe*): design ancestry only, hosted on the krykna page's Behind the scenes, not a krykna and not a scale reference.
 - **Silhouette**: a pale spider-like creature with a small head-front slung low between the
   legs and a huge smooth bulbous egg-shaped abdomen that rises tall and upright behind it,
   so the animal is tall (the abdomen towers over the legs and over a human in image 4).
-- **Legs (loud)**: SIX long legs are the count in the prose, but the renders show what looks like
-  eight spindly, many-jointed, bone-like legs radiating wide (image 1 shows 4+4 in view; count is
-  unclear from any single angle). Each leg is thin with knobby swollen joints, tapering to a
-  single sharp dark claw. Legs sprawl far wider than the body is long.
+- **Legs**: SIX legs per canon (infobox and text, *Rebels* "The Mystery of Chopper Base"; Garazeb: "More than two legs is just... excessive"). The pedipalps beside the beaked mouth are mouthparts, not a seventh and eighth leg. Legs are thin with knobby swollen joints, tapering to a sharp dark claw, and sprawl far wider than the body is long.
 - **Head/face**: tiny relative to the abdomen. A flat face with a cluster of four round black bead
   eyes (two pairs, goggle-like, one pair over the other), a small round open mouth, and (image 2) two
   short curved fangs/pedipalps beside the mouth. Ring-shaped joint collars at the leg roots.
@@ -30,11 +27,9 @@ origin.
   hide is dry and leathery-stony, not shiny chitin and not hairy.
 - **Texture**: wrinkled, dry, finely pitted skin, bone-like segmented legs; the McQuarrie painting
   shows a more knobby, rumpled abdomen.
-- **Size cues**: the McQuarrie scene and Sabine frame show it far bigger than a human, roughly
-  2-3 humans tall at the abdomen, living in hives full of cocoons.
-- **Prose vs images**: prose gives six legs and "beaked mouth"; the images show spider-like eight-leg
-  radiation and a small round mouth with fangs, not an obvious beak. Trust images on count of
-  visible limbs but flag it as unresolved.
+- **Size cues**: the McQuarrie scene and Sabine frame show it far bigger than a human, living in hives full of cocoons; the infobox gives height 2 m (6 ft 7 in; *Dawn of Rebellion*, Comprehensive Guide). Image 4 is not a scale reference.
+- **Mouth**: canon text says a beaked mouth surrounded by a pair of fanged pedipalps; an image angle that reads as a round opening does not remove the beak.
+- **Other canon facts** (https://starwars.fandom.com/wiki/Krykna): skin gray, eyes black, blaster-resistant but eyes vulnerable, webs produced, repelled by sensor beacons, feeds on dokma; the Force can calm them (Kanan in "The Holocrons of Fate"), so they are hard to tame, not untamable.
 
 ## Must show
 - [ ] Small flat face slung low with a cluster of round black bead eyes and a tiny mouth with two short fangs

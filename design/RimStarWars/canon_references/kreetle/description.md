@@ -19,7 +19,7 @@ listed as *Shell*, *Ten legs*, *Large jaws*. Body text is more specific:
 **reddish-brown exoskeleton**, and large mandibles." Habitat: burrows,
 desert, forest, swamp, urban; diet omnivorous, though behavior text also
 says they "fed on flesh, whether living or dead" and attacked in groups of
-four-to-five. A larger, more aggressive variant race exists, the
+four-to-five. The same page also says kreetles "thrived on garbage and vegetable remains" and often lived in abandoned profogg burrows, and (Jedi Power Battles) shared a symbiotic relationship with slaatik hagworms in the Lianorm Swamp. A larger, more aggressive variant race exists, the
 "Overkreetle." Gungans on Naboo used kreetles as nutcrackers and also ate
 them. First appeared in the *Star Wars Episode I: The Gungan Frontier*
 game; also appears in *Jedi Power Battles*, *Republic Commando* (rendered
@@ -54,8 +54,8 @@ all four candidates show the same basic body plan and there is no dramatic
   ribbed-shell, many-legged body plan and pink eye-glints, but the shell
   renders as **olive/khaki-brown** rather than reddish-maroon — noticeably
   more green-brown than the other three sources. This is a genuine
-  cross-image disagreement, not a text/image one: body plan and eye color
-  agree everywhere, but SWG's coloring skews duller/greener while the
+  cross-image disagreement, not a text/image one: body plan agrees
+  everywhere and eyes read yellow or as pink glints (render highlights, not necessarily iris colour), but SWG's coloring skews duller/greener while the
   *Republic Commando*-era art and screenshots both skew red.
 
 **Net read**: a low, domed, segmented/ribbed shell (pillbug or hermit-crab

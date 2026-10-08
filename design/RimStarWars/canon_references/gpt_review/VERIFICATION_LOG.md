@@ -554,3 +554,102 @@ Format per row: entry | claim | verdict | source
 - A film image on a Legends page stays film evidence (worrt ROTJ): VERIFIED.
 - "No engine limits known" vs "not assessed": three entries (wyyyschokk, zakkeg, zeer) assert "none known"; proposals ask for "not assessed". Engine limits text not edited per rules.
 - Palette differences are not subspecies/dimorphism: UNVERIFIABLE, no source asserts any, except Albino Wyyyschokk (VERIFIED subspecies).
+
+## Batch 06
+| entry | claim | VERDICT | source |
+|---|---|---|---|
+| jerba | Not a juvenile bantha / "smaller relative"; no established relationship | VERIFIED (page gives no relation) | https://starwars.fandom.com/wiki/Jerba |
+| jerba | No Book of Boba Fett Tusken-mount jerba | VERIFIED (not in Appearances list; sentence deleted) | https://starwars.fandom.com/wiki/Jerba |
+| jerba | Tosche Station (tethers) vs Docking Bay 94 conflated | VERIFIED (page says only Tosche Station, Anchorhead; Docking Bay text deleted) | https://starwars.fandom.com/wiki/Jerba |
+| jerba | Both "shaggy" and Han's "smooth-haired" have support | VERIFIED (both on page) | https://starwars.fandom.com/wiki/Jerba |
+| jerba | Leia boots / hide uses; Helmet Collection cite | VERIFIED (Helmet Collection 23, Complete Visual Dictionary New Ed.) | https://starwars.fandom.com/wiki/Jerba |
+| jerba | Horn curvature, undershot jaw, teeth, "more agile than bantha" unconfirmed | UNVERIFIABLE from page text (page: "ridged horns" only; no agility claim) | https://starwars.fandom.com/wiki/Jerba |
+| jerba | Broad mouth/long ears check vs Alien Archive | UNVERIFIABLE (image; owner already ruled Alien Archive image) | - |
+| jimvu | Jimvu is Legends, not current canon | VERIFIED ({{Top\|leg}}, links to /Legends, sources Field Guide 2001 + CSWE 2008; label fixed) | https://starwars.fandom.com/wiki/Jimvu |
+| jimvu | Six legs central; overlapping illustration no reason to reduce | VERIFIED (text "six-legged"; entry already follows text) | https://starwars.fandom.com/wiki/Jimvu |
+| jimvu | Remove "defenseless... beak nose" unless source says so | REFUTED (page says "considered defenseless from predators if not for their speed and their beak nose"; text kept) | https://starwars.fandom.com/wiki/Jimvu |
+| jimvu | Preyed on by veermok and narglatch in Gungan swamps | VERIFIED (already in entry) | https://starwars.fandom.com/wiki/Jimvu |
+| jimvu | Toes, claws, scalelessness, colours | UNVERIFIABLE (image-only; page has no such text) | - |
+| kinrath | Depictions of one species, not two biological species | VERIFIED (Disney+ subtitles; Secrets of the Wookiees confirms same; design based on KOTOR kinrath; heading rewritten) | https://starwars.fandom.com/wiki/Kinrath |
+| kinrath | KOTOR: four legs + separate leg-like poisonous face appendage (not a neck ending in a head) | VERIFIED text (Legends page: "four legs and a leg-like, poisonous appendage coming out of their faces"); neck-with-head wording is entry's image reading, proposal filed | https://starwars.fandom.com/wiki/Kinrath/Legends |
+| kinrath | Blindness is Legends only | VERIFIED (only on Legends page; canon page: six eyes) | https://starwars.fandom.com/wiki/Kinrath/Legends |
+| kinrath | "Only a leaked clip survives" misleading; clip shown at Untold Clone Wars panel, Celebration Anaheim 2015 | VERIFIED (page Behind the scenes; text fixed) | https://starwars.fandom.com/wiki/Kinrath |
+| kinrath | Dantooine/crystal material has canon refs (Gadgets and Gear) | VERIFIED (canon page: caves on Dantooine, Dantari crystal in eggs, G&G; added) | https://starwars.fandom.com/wiki/Kinrath |
+| kinrath | Canon netcasters: arboreal, sticky-web nests, need not attack harmless visitors; Wookiees summon them in Tribe | VERIFIED (added) | https://starwars.fandom.com/wiki/Kinrath |
+| kinrath | Databank Netcasters supports peaceful distinction | UNVERIFIABLE directly (wiki cites Databank for arboreal/webs; peaceful distinction is cited to Tribe) | https://starwars.fandom.com/wiki/Kinrath |
+| kinrath | Viper/hive kinrath are KOTOR Legends variants | VERIFIED | https://starwars.fandom.com/wiki/Kinrath/Legends |
+| kinrath | Universal "no blue", flower organ function | UNVERIFIABLE (page: yellow/golden; no function stated) | - |
+| klorslug | K'lor'slug is a named dejarik creature in current canon; design predates the Jango comic | VERIFIED (dejarik piece in ANH 1st appearance; Appearances list) | https://starwars.fandom.com/wiki/K%27lor%27slug |
+| klorslug | Textual description is pink; do not force mandatory orange-red | VERIFIED (infobox skincolor Pink, Ewoks book) | https://starwars.fandom.com/wiki/K%27lor%27slug |
+| klorslug | Noe'ha'on/Korriban/Taris belong to Legends | VERIFIED (entry already placed them under Legends page) | https://starwars.fandom.com/wiki/K%27lor%27slug/Legends |
+| klorslug | Shakari/Rotta sequence is real, from The Mandalorian and Grogu | VERIFIED (cited on canon page: unleashed in the Pits on Shakari) | https://starwars.fandom.com/wiki/K%27lor%27slug |
+| klorslug | Dimensions unavailable from supplied descriptions | REFUTED in part (infobox height 1.98 m, cited to Databank; added) | https://starwars.fandom.com/wiki/K%27lor%27slug |
+| klorslug | Swamp origin only speculation | VERIFIED ("speculated to be swamp-dwellers", Alien Archive) | https://starwars.fandom.com/wiki/K%27lor%27slug |
+| klorslug | Eye placement, paired limbs, tooth rings, spiked bulb | UNVERIFIABLE from text (Legends text has concentric rings of teeth) | - |
+| klorslug | Remove Kirithin image as decisive evidence | VERIFIED as sound practice (entry already marks it ambiguous, low confidence) | - |
+| kowakianmonkeylizard | Fur not exclusively Legends; Databank says tufts of fur | UNVERIFIABLE (canon page text says "feathers", "downy plumage", "tuft or crest"; no fur; Databank not on page) | https://starwars.fandom.com/wiki/Kowakian_monkey-lizard |
+| kowakianmonkeylizard | Blue/yellow/orange render is one palette; many colours incl. tan/brown | VERIFIED (page lists red, blue, yellow, brown, green, purple, orange; olive-brown Vranki's monkey-lizards) | https://starwars.fandom.com/wiki/Kowakian_monkey-lizard |
+| kowakianmonkeylizard | Pilf and Pikk Mukmuk are different individuals | VERIFIED (Pikk: tank; Pilf: caption of red individual) | https://starwars.fandom.com/wiki/Kowakian_monkey-lizard |
+| kowakianmonkeylizard | Tool/weapon use is evidence of intelligence, not universal | VERIFIED as a reading (page: able to wield blaster, repair starship, tank) | https://starwars.fandom.com/wiki/Kowakian_monkey-lizard |
+| kowakianmonkeylizard | Kowak homeworld; larger relative is ape-lizard | VERIFIED | https://starwars.fandom.com/wiki/Kowakian_monkey-lizard |
+| kowakianmonkeylizard | Salacious Crumb is 0.7 m (Databank) | UNVERIFIABLE (page gives average height 58-70 cm for species) | https://starwars.fandom.com/wiki/Kowakian_monkey-lizard |
+| kowakianmonkeylizard | Cackling, mimicry, food stealing | VERIFIED | https://starwars.fandom.com/wiki/Kowakian_monkey-lizard |
+| kowakianmonkeylizard | Egg-laying, tree nests, matriarchal groups from Legends book | UNVERIFIABLE (not on canon page; Legends page truncated here) | - |
+| kowakianmonkeylizard | Red lips, face mask, 12 kg need own references | VERIFIED partly (12 kg and 58-70 cm are on canon page; lips/mask image-only) | https://starwars.fandom.com/wiki/Kowakian_monkey-lizard |
+| kraytdragon | "Four-legged only Legends" / "big brow horns Legends only" are wrong; canon canyon krayts are horned | VERIFIED (Canyon krayt: "head covered with a multitude of horns", canon) | https://starwars.fandom.com/wiki/Canyon_krayt_dragon |
+| kraytdragon | Legends greater krayts are also many-legged | VERIFIED (Legends: greater krayts had ten legs) | https://starwars.fandom.com/wiki/Krayt_dragon/Legends |
+| kraytdragon | Entry should name leviathan krayt dragon as the shipping target | VERIFIED (sixteen limbs/venom are leviathan traits per Krayt dragon and Leviathan pages; prose now labels forms) | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| kraytdragon | Leviathan sixteen limbs, spiny tail, bony armoured head, acid spray | VERIFIED | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| kraytdragon | Legends 45 m / 2000 kg must not set leviathan size; leviathan ~184 m | VERIFIED (infobox length 184 m, height 28.68 m; 45 m is Legends text) | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| kraytdragon | Mandalorian episode has human/bantha scale cues; "none shown directly" false | UNVERIFIABLE from wikitext (visual claim); entry wording narrowed to the two supplied images | - |
+| kraytdragon | Bantha bait, sarlacc cavity, coordinated hunt, pearl in Ch.9 | VERIFIED partly (sarlacc pit, Tuskens+Mos Pelgo hunt, pearl, meat; bantha bait not on page) | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| kraytdragon | ANH skeleton and Obi-Wan's cry relevant | VERIFIED (skeleton in ANH; Legends: Obi-Wan mimicked hunting cry) | https://starwars.fandom.com/wiki/Krayt_dragon |
+| kraytdragon | Side barb, upward tail curl, limb clustering, smooth dome | UNVERIFIABLE (image-only) | - |
+| kraytdragon | Universal acid attack across all forms unproven | VERIFIED as caution (canon page: "if threatened could project venom", general; leviathan specifically spits ichor) | https://starwars.fandom.com/wiki/Krayt_dragon |
+| kreetle | Keep named Legends kreetle distinct from unidentified Galaxy's Edge creature | VERIFIED (page: {{Top\|leg\|canon=Unidentified creature (Ronto Roasters)}}; "albeit still unidentified") | https://starwars.fandom.com/wiki/Kreetle |
+| kreetle | "Eye colour agrees everywhere" contradicts pink glint note | VERIFIED (internal inconsistency; wording fixed; wiki eyecolor Yellow) | https://starwars.fandom.com/wiki/Kreetle |
+| kreetle | 3 vs 5 leg pairs is a representation discrepancy | VERIFIED (page: five pairs, rendered with three pairs in Republic Commando) | https://starwars.fandom.com/wiki/Kreetle |
+| kreetle | Several screenshots of one game model not independent corroboration | VERIFIED as reasoning (Commando shots share one model) | https://starwars.fandom.com/wiki/Kreetle |
+| kreetle | Garbage and vegetable diet; not obligate flesh-eater | VERIFIED (both statements on page; added) | https://starwars.fandom.com/wiki/Kreetle |
+| kreetle | Slaatik hagworm symbiosis | VERIFIED (cited to Jedi Power Battles; mechanism not given; added) | https://starwars.fandom.com/wiki/Kreetle |
+| kreetle | Overkreetles distinct large aggressive variant | VERIFIED | https://starwars.fandom.com/wiki/Kreetle |
+| kreetle | Size, human-sized exclusion, olive variant being biological | UNVERIFIABLE (no size on page; olive is SWG render) | - |
+| kreetle | Field-guide yellow eyes, spotted head, reddish brown | VERIFIED partly (page: yellow eyes, brown skin, reddish-brown exoskeleton from Wildlife; spotted head image-only) | https://starwars.fandom.com/wiki/Kreetle |
+| krykna | Six walking legs (Databank/Rebels); pedipalps not a leg pair | VERIFIED (infobox "Six legs", text "six-legged", beaked mouth + pair of fanged pedipalps; entry's "eight legs" reading deleted) | https://starwars.fandom.com/wiki/Krykna |
+| krykna | McQuarrie painting is design ancestry, not a canon krykna; "all four images canon" conflates | VERIFIED (Behind the scenes: krykna based on McQuarrie art of Dagobah knobby white spider, Legends origin) | https://starwars.fandom.com/wiki/Krykna |
+| krykna | Don't transfer Dagobah knobby white spider/gnarltree lifecycle | VERIFIED (separate pages: Knobby white spider/Legends; krykna page only notes ancestry) | https://starwars.fandom.com/wiki/Krykna |
+| krykna | Beaked mouth should be kept | VERIFIED (text: beaked mouths surrounded by fanged pedipalps) | https://starwars.fandom.com/wiki/Krykna |
+| krykna | "Two to three humans tall" unproven; Databank only larger than human | REFUTED/VERIFIED in part (infobox height 2 m, 6 ft 7 in; entry's 2-3 humans deleted) | https://starwars.fandom.com/wiki/Krykna |
+| krykna | Four eyes, green-grey tint | UNVERIFIABLE (page: eyes black, skin gray; counts image-only) | https://starwars.fandom.com/wiki/Krykna |
+| krykna | Blaster resistance not total immunity | VERIFIED (eyes vulnerable; lightsabers and grenades work) | https://starwars.fandom.com/wiki/Krykna |
+| krykna | Sensor markers repel; Force contact possible but hard | VERIFIED | https://starwars.fandom.com/wiki/Krykna |
+| krykna | Underground nests, cocoons, dokma prey | VERIFIED | https://starwars.fandom.com/wiki/Krykna |
+| krykna | Dokma association, steps into shadow (Bendu) | VERIFIED | https://starwars.fandom.com/wiki/Krykna |
+| kwi | Kwi page is Legends, not current canon | VERIFIED ({{Top\|leg}}, Legends-linked sources; labels fixed) | https://starwars.fandom.com/wiki/Kwi |
+| kwi | Ordinary Kwi are herbivorous semi-sentient, not "big predator" | VERIFIED (infobox diet Herbivore, designation Semi-sentient; "big predator" deleted) | https://starwars.fandom.com/wiki/Kwi |
+| kwi | Rhoa Kwi carnivorous variant is distinct | VERIFIED (page lists Rhoa Kwi as a separate tribe; carnivory itself not stated on this page) | https://starwars.fandom.com/wiki/Kwi |
+| kwi | Red eyes, black spade teeth, black tongue, lavender crown stated in text | VERIFIED (text; image-based yellow/pale replacement stays as visual note, not text) | https://starwars.fandom.com/wiki/Kwi |
+| kwi | Supplied size 3 m x 4 m overlooked ("no scale reference") | VERIFIED (infobox height 3 m, length 4 m; added) | https://starwars.fandom.com/wiki/Kwi |
+| kwi | Descent from Kwa; Blue Desert People in Courtship; Infinity's End arc | VERIFIED (page: SW 1998 #24-26, CoPL) | https://starwars.fandom.com/wiki/Kwi |
+| kwi | Riding a Kwi a rare honour | VERIFIED (Shadow Academy cite) | https://starwars.fandom.com/wiki/Kwi |
+| kwi | Tiger stripes, slit pupils, digit counts, claws | UNVERIFIABLE (image-only) | - |
+| kwi | No current-canon reintroduction | UNVERIFIABLE-by-absence; none listed on page | https://starwars.fandom.com/wiki/Kwi |
+| kybuck | Legends kybuck is bipedal; no canon-biped vs Legends-quadruped divide | UNVERIFIABLE from wiki text (Legends page: ungulate, "similar in appearance to the tauntauns", no limb count); canon page does say "stood on two hoofed feet"; entry's quadruped claim softened to unresolved | https://starwars.fandom.com/wiki/Kybuck/Legends |
+| kybuck | Saddle/harness/mane don't make it quadrupedal | UNVERIFIABLE (image reading) | - |
+| kybuck | Yoda is a poor basis for horse-sized | UNVERIFIABLE (no size on Legends page) | https://starwars.fandom.com/wiki/Kybuck/Legends |
+| kybuck | Galaxy of Creatures "Kybuck" is canon Kashyyyk reference | VERIFIED (canon page cites SWKids Galaxy of Creatures for Kashyyyk form; Appearances GoC Kybuck; added) | https://starwars.fandom.com/wiki/Kybuck |
+| kybuck | Shili/Kashyyyk differences are population descriptions, not subspecies | VERIFIED (page describes by location, no subspecies field) | https://starwars.fandom.com/wiki/Kybuck |
+| kybuck | "Over thirty-three" Yoda kybucks needs source | VERIFIED as sourced (Legends: "over thirty three kybucks ... before 115 BBY until 19 BBY") but irrelevant to art | https://starwars.fandom.com/wiki/Kybuck/Legends |
+| kybuck | Swift horned furred hoofed biped with tail, small forelimbs | VERIFIED partly (canon: curved horns, brown fur, two hoofed feet; tail not on page) | https://starwars.fandom.com/wiki/Kybuck |
+| kybuck | Tales of the Jedi "Life and Death": Shili herd prey of Pav-ti | VERIFIED | https://starwars.fandom.com/wiki/Kybuck |
+| kybuck | Short adds migration with vanserv flowers, kicking | UNVERIFIABLE (not on page; Legends page has leaping kicks) | - |
+| kybuck | Riding/domestication Legends only | VERIFIED (Legends: chieftains domesticated, Yoda's mounts; canon page: none) | https://starwars.fandom.com/wiki/Kybuck/Legends |
+| kybuck | Speed, litters, mating for life, horns by sex are Legends | VERIFIED (Legends: 90 km/h, mated for life, 2-3 foals, males short horns) | https://starwars.fandom.com/wiki/Kybuck/Legends |
+
+## Cross-entry problems
+- No duplicate species among the ten (VERIFIED): netcasters are kinrath per the wiki; canyon/greater/leviathan are under the krayt umbrella.
+- Jimvu and Kwi are Legends-labelled on the wiki (VERIFIED, entries corrected); kreetle's named biology is Legends with only an unidentified Galaxy's Edge creature in canon (VERIFIED).
+- Jerba not a young bantha (VERIFIED, nothing on page); kybuck not an established Legends quadruped: UNVERIFIABLE from the Legends page text (no limb count).
+- Krykna borrowed knobby-white-spider art: the Dagobah/Legends spider is ancestry only (VERIFIED, Behind the scenes; entry corrected).
+- Kinrath, krykna, wyyyschokk, Mandalorian ice spiders distinct: VERIFIED (wiki says Wyyyschokk was the earlier idea replaced by netcasters; knobby white ice spider is a separate page).
+- Provenance separation of renders, concept art, toys, repeated game assets: sound practice, not a factual claim (UNVERIFIABLE).

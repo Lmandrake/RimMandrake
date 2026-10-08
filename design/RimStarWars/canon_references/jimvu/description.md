@@ -4,7 +4,8 @@
 
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Jimvu
+### Legends only — https://starwars.fandom.com/wiki/Jimvu
+The page is tagged Legends (`{{Top|leg}}`, all links to /Legends); sources are *The Wildlife of Star Wars: A Field Guide* (2001) and *The Complete Star Wars Encyclopedia* (2008). No current-canon appearance is listed.
 
 The jimvu was a large, agile, six-legged reptilian creature native to the planet Naboo. A capable runner due to their six legs, they were considered defenseless from predators if not for their speed and their beak nose. The neck of a jimvu was covered in a row of short knobs. Their predators were the veermok and narglatch, both of which could be found in the Gungan swamps of Naboo.
 
@@ -27,10 +28,10 @@ One image (canon page, file `Jimvu-woswfg.jpg`, pencil and watercolour plate). I
 not yet assessed
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Jimvu (canon; wikitext pulled via the API 2026-10-04)
+- https://starwars.fandom.com/wiki/Jimvu (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Jimvu`; wiki caption: infobox image. File: `Jimvu-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/0/0f/Jimvu-woswfg.jpg/revision/latest?cb=20070203135137
+- `wookieepedia_canon_1.webp` — LEGENDS page `Jimvu`; wiki caption: infobox image. File: `Jimvu-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/0/0f/Jimvu-woswfg.jpg/revision/latest?cb=20070203135137
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

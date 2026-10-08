@@ -5,7 +5,7 @@
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/K%27lor%27slug
 
-K'lor'slugs were a species whose appearance was used for one of the holographic pieces in the game dejarik. Pink, tubular beasts, they had suction cup-like mouths and sharp teeth, and were clawed, multilimbed creatures considered to be fearsome and nightmarish. They were speculated to be swamp-dwellers from the Outer Rim Territories.
+K'lor'slugs were a species whose appearance was used for one of the holographic pieces in the game dejarik. Pink, tubular beasts, they had suction cup-like mouths and sharp teeth, and were clawed, multilimbed creatures considered to be fearsome and nightmarish. Height 1.98 m (infobox, cited to the Databank). The piece first appears as a dejarik hologram in *A New Hope* (1977); the living animal appears in *Revelations* (2023) #1 "Stolen Hope" and *The Mandalorian and Grogu*. They were speculated to be swamp-dwellers from the Outer Rim Territories.
 
 By around 33 BBY, a k'lor'slug had been stolen from a zoo on Valo and taken to Nar Shaddaa, where it was intended to be sold on to a buyer assembling a set of living dejarik pieces as a gift to Jabba the Hutt. Around 14 ABY, a k'lor'slug was one of several creatures and gladiators belonging to species featured in dejarik that was unleashed upon the Mandalorian Din Djarin and Rotta the Hutt in the Pits on the moon Shakari, almost choking Rotta to death, before escaping the arena and wreaking havoc on civilians, entering a train and attacking the passengers.
 ### Legends — https://starwars.fandom.com/wiki/K%27lor%27slug/Legends
