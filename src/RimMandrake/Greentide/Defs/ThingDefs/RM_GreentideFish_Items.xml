@@ -37,9 +37,9 @@
   (Things/Item/Fish/<defName>, owner's Greentide sheet picks 2026-10-08).
   Tuun and LungerFry still borrow a vanilla plant sprite until theirs land.
 
-  RM_ScaaLumsigh (last in this file) is NOT one of the RUT_ duplicates: a new
-  river fish the owner asked for on the Twilight Sea sheet, wearing the faa's
-  old picture (see its own comment).
+  RM_ScaaLumsigh and RM_Vashuu (last in this file) are NOT RUT_ duplicates:
+  new river fish the owner asked for on the Twilight Sea sheet, wearing the
+  faa's and the mee's old pictures (see their own comments).
 -->
 <Defs>
 
@@ -235,6 +235,27 @@
     <comps>
       <li Class="CompProperties_Rottable">
         <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- RM_Vashuu — river shoal fish, common. Owner, Twilight Sea sheet 2026-10-07 (RSW_Mee row):
+       "move this fish art to the Greentide rivers as fishable"; built 2026-10-08 (decision taken by
+       question card). The NAME IS INVENTED by the agent, not the owner's. Art = the mee's old east
+       facing, carried by the art ledger (TWILIGHT_ART_REUSE_ELSEWHERE_1 item 2). River fish carry no
+       living floor counterpart (that rule is for the seas). -->
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_Vashuu</defName>
+    <label>vashuu</label>
+    <description>A round, palm-sized river fish the grey-blue of rain on slate, with a dotted line of pale lights along each flank. Vashuu school in the shallows by the hundred and blink their lights together when anything crosses the water above them, so a wading hunter walks through a ripple of blue that runs ahead of every step. Common, mild, and easy to net when the lights give them away.</description>
+    <graphicData>
+      <texPath>Things/Item/Fish/RM_Vashuu</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.5</daysToRotStart>
         <rotDestroys>true</rotDestroys>
       </li>
     </comps>

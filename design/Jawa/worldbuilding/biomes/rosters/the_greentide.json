@@ -299,6 +299,11 @@
         "commonality": 0.2,
         "def": "RM_ScaaLumsigh",
         "note": "owner, Twilight Sea sheet 2026-10-07: new Greentide river fish from the faa's old art; cast inline in RM_Greentide freshwater_Uncommon"
+      },
+      {
+        "commonality": 0.3,
+        "def": "RM_Vashuu",
+        "note": "owner, Twilight Sea sheet 2026-10-07 + card 2026-10-08: new Greentide river fish from the mee's old art; NAME INVENTED by the agent; cast inline in RM_Greentide freshwater_Common"
       }
     ],
     "ruling": "Fish, graded by the dying river (§3): clean-to-living reaches carry scalefish shoals (SW analogs, no Earth names); downstream brine reaches and the river graves carry none — the water dies before the fish law does. Binding mechanism (wildAnimals water spawn vs Odyssey fishing table) decided at generation."
