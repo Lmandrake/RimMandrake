@@ -30,6 +30,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.LoreStages;
 using RimWorld;
 using Verse;
@@ -192,8 +193,24 @@ namespace RimMandrake.LoreStages.SelfTest
             return f;
         }
 
-        private static int Main()
+        private static int Main(string[] args)
         {
+            // Seeded fuzz mode (python3 src/RimMandrake/Utils/selftest_lorestages_fuzz.py): runs ONLY the fuzz, so the hand-written
+            // case tally the validation chain reads (N/N passed) never changes.
+            if (args.Any(a => a.StartsWith("--fuzz", StringComparison.Ordinal)))
+            {
+                double scale = 1;
+                int i = Array.IndexOf(args, "--fuzz-scale");
+                if (i >= 0) scale = double.Parse(args[i + 1], System.Globalization.CultureInfo.InvariantCulture);
+                int? one = null;
+                i = Array.IndexOf(args, "--fuzz-seed");
+                if (i >= 0) one = int.Parse(args[i + 1]);
+                string only = null;
+                i = Array.IndexOf(args, "--fuzz-only");
+                if (i >= 0) only = args[i + 1];
+                return LoreStagesFuzz.Run(scale, one, only) ? 0 : 1;
+            }
+
             Console.WriteLine("RimMandrake.LoreStages selftest (STAGED_LORE_BUILD_1)");
             Console.WriteLine();
 

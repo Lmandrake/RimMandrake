@@ -36,7 +36,7 @@ def main():
 
     gc = "GameComponent_LoreStage.cs"
     for label, edit, want in (
-        ("toggle no longer zeroes", (gc, "? GetStage(ladderId) : 0;", "? GetStage(ladderId) : GetStage(ladderId);"), "EffectiveStage"),
+        ("toggle no longer zeroes", (gc, "EffectiveStage(RM_LoreStagesSettings.stagedTextEnabled, GetStage(ladderId))", "EffectiveStage(true, GetStage(ladderId))"), "EffectiveStage"),
         ("apply bypasses the toggle", (gc, "tables,\n                EffectiveStage,", "tables,\n                GetStage,"), "ResetAndApply"),
         ("stages not scribed", (gc, '"loreStages"', '"loreStagez"'), "not Scribed"),
         ("FinalizeInit stops applying", (gc, "base.FinalizeInit();\n            Apply();", "base.FinalizeInit();"), "FinalizeInit"),

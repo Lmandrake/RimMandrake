@@ -173,28 +173,28 @@ namespace RimMandrake.LoreStages
                         Baselines[key] = baseline;
                     }
 
-                    string value = baseline.pristine;
-                    int best = int.MinValue;
+                    // Highest rung at or below the current stage wins. An explicit stage-0 rung therefore overrides the
+                    // snapshotted baseline, which is the authoring escape hatch for "shipped text is not rung zero".
+                    int pick = -1;
                     if (target.stages != null)
                     {
+                        var rungStages = new List<int>(target.stages.Count);
+                        var rungHasText = new List<bool>(target.stages.Count);
                         foreach (LoreStageText rung in target.stages)
                         {
-                            if (rung?.text == null) continue;
-                            // Highest rung at or below the current stage wins.
-                            // An explicit stage-0 rung therefore overrides the
-                            // snapshotted baseline, which is the authoring
-                            // escape hatch for "shipped text is not rung zero".
-                            if (rung.stage <= stage && rung.stage > best)
-                            {
-                                best = rung.stage;
-                                value = rung.text;
-                            }
+                            rungStages.Add(rung == null ? 0 : rung.stage);
+                            rungHasText.Add(rung?.text != null);
                         }
+                        pick = RM_LoreStageKernel.ChooseRung(rungStages, rungHasText, stage);
                     }
 
-                    fi.SetValue(def, value);
+                    // A ladder with no rung at this stage has nothing to say: it must NOT write the shipped text back, because
+                    // pass 1 already restored it and another ladder (a later table) may have staged the very same field.
+                    if (pick < 0) continue;
+
+                    fi.SetValue(def, target.stages[pick].text);
                     touched.Add(def);
-                    if (best != int.MinValue) applied++;
+                    applied++;
                 }
             }
 

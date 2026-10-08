@@ -113,7 +113,7 @@ def mechanism_static_problems(read=None):
     gc = re.sub(r"//[^\n]*", "", read("GameComponent_LoreStage.cs"))
     mod = read("RM_LoreStagesMod.cs")
     bad = []
-    if not re.search(r"EffectiveStage\s*\(string\s+\w+\)\s*\{\s*return\s+RM_LoreStagesSettings\.stagedTextEnabled\s*\?\s*GetStage\(\w+\)\s*:\s*0\s*;", gc):
+    if not re.search(r"EffectiveStage\s*\(string\s+\w+\)\s*\{\s*return\s+RM_LoreStageKernel\.EffectiveStage\(\s*RM_LoreStagesSettings\.stagedTextEnabled\s*,\s*GetStage\(\w+\)\s*\)\s*;", gc):
         bad.append("EffectiveStage no longer returns 0 when stagedTextEnabled is off")
     if not re.search(r"ResetAndApply\(\s*tables\s*,\s*EffectiveStage\s*,", gc):
         bad.append("Apply does not feed EffectiveStage to ResetAndApply (the toggle would gate nothing)")

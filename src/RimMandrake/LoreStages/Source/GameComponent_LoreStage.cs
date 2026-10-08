@@ -66,12 +66,7 @@ namespace RimMandrake.LoreStages
             if (ladderId.NullOrEmpty()) return false;
 
             RM_LoreStageTableDef table = TableFor(ladderId);
-            if (table != null && table.maxStage > 0 && stage > table.maxStage)
-            {
-                stage = table.maxStage;
-            }
-
-            if (stage < 0) stage = 0;
+            stage = RM_LoreStageKernel.ClampStage(stage, table != null ? table.maxStage : 0);
 
             bool changed = GetStage(ladderId) != stage;
             stages[ladderId] = stage;
@@ -133,7 +128,7 @@ namespace RimMandrake.LoreStages
         // `stages`.
         private int EffectiveStage(string ladderId)
         {
-            return RM_LoreStagesSettings.stagedTextEnabled ? GetStage(ladderId) : 0;
+            return RM_LoreStageKernel.EffectiveStage(RM_LoreStagesSettings.stagedTextEnabled, GetStage(ladderId));
         }
 
         /// <summary>Re-applies immediately — called live from the Mod Settings checkbox.</summary>

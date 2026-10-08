@@ -41,6 +41,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_LoreStageKernel.cs" />
     <Compile Include="LoreStageText.cs" />
     <Compile Include="LoreStageTarget.cs" />
     <Compile Include="RM_LoreStageTableDef.cs" />
