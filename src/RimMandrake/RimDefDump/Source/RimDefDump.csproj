@@ -37,6 +37,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_DumpKernel.cs" />
     <Compile Include="DefDumper.cs" />
     <Compile Include="DefReflector.cs" />
     <Compile Include="JsonWriter.cs" />
