@@ -1,0 +1,82 @@
+[
+ [
+  "ProofStuffTable",
+  "",
+  "STUFF Cloth: range=9.0 snap=0.120 maxMass=72.0 | DevilstrandCloth: range=12.0 snap=0.060 maxMass=120.0 | Hyperweave: range=15.6 snap=0.024 maxMass=192.0"
+ ],
+ [
+  "ProofPull",
+  "Cloth,raider",
+  "LANCE stuff=Cloth mode=raider canWork=True roped=True startDist=9.0 endDist=7.0 cellsMoved=2 steps=3 outcome=struggle snaps=1 range=9.0 snapChance=0.120 maxMass=72.0 rigging=0.00"
+ ],
+ [
+  "ProofPull",
+  "Cloth,wall",
+  "LANCE stuff=Cloth mode=wall canWork=True roped=True startDist=9.0 endDist=9.0 cellsMoved=0 steps=1 outcome=wall snaps=0 range=9.0 snapChance=0.120 maxMass=72.0 rigging=10.00"
+ ],
+ [
+  "ProofPull",
+  "Cloth,unmanned",
+  "LANCE stuff=Cloth mode=unmanned canWork=False roped=False startDist=9.0 endDist=9.0 cellsMoved=0 steps=0 outcome=none snaps=0 range=9.0 snapChance=0.120 maxMass=72.0 rigging=10.00"
+ ],
+ [
+  "ProofPull",
+  "Cloth,heavy",
+  "LANCE stuff=Cloth mode=heavy canWork=False roped=False startDist=9.0 endDist=9.0 cellsMoved=0 steps=0 outcome=mass snaps=1 range=9.0 snapChance=0.120 maxMass=72.0 rigging=0.00"
+ ],
+ [
+  "ProofPull",
+  "Cloth,downed",
+  "LANCE stuff=Cloth mode=downed canWork=True roped=True startDist=9.0 endDist=1.0 cellsMoved=8 steps=9 outcome=arrived snaps=0 range=9.0 snapChance=0.120 maxMass=72.0 rigging=8.00"
+ ],
+ [
+  "ProofPull",
+  "DevilstrandCloth,raider",
+  "LANCE stuff=DevilstrandCloth mode=raider canWork=True roped=True startDist=9.0 endDist=6.0 cellsMoved=3 steps=4 outcome=struggle snaps=1 range=12.0 snapChance=0.060 maxMass=120.0 rigging=0.00"
+ ],
+ [
+  "ProofPull",
+  "DevilstrandCloth,wall",
+  "LANCE stuff=DevilstrandCloth mode=wall canWork=True roped=True startDist=9.0 endDist=9.0 cellsMoved=0 steps=1 outcome=wall snaps=0 range=12.0 snapChance=0.060 maxMass=120.0 rigging=10.00"
+ ],
+ [
+  "ProofPull",
+  "DevilstrandCloth,unmanned",
+  "LANCE stuff=DevilstrandCloth mode=unmanned canWork=False roped=False startDist=9.0 endDist=9.0 cellsMoved=0 steps=0 outcome=none snaps=0 range=12.0 snapChance=0.060 maxMass=120.0 rigging=10.00"
+ ],
+ [
+  "ProofPull",
+  "DevilstrandCloth,heavy",
+  "LANCE stuff=DevilstrandCloth mode=heavy canWork=False roped=False startDist=9.0 endDist=9.0 cellsMoved=0 steps=0 outcome=mass snaps=1 range=12.0 snapChance=0.060 maxMass=120.0 rigging=0.00"
+ ],
+ [
+  "ProofPull",
+  "DevilstrandCloth,downed",
+  "LANCE stuff=DevilstrandCloth mode=downed canWork=True roped=True startDist=9.0 endDist=1.0 cellsMoved=8 steps=9 outcome=arrived snaps=0 range=12.0 snapChance=0.060 maxMass=120.0 rigging=8.00"
+ ],
+ [
+  "ProofPull",
+  "Hyperweave,raider",
+  "LANCE stuff=Hyperweave mode=raider canWork=True roped=True startDist=9.0 endDist=1.0 cellsMoved=8 steps=9 outcome=arrived snaps=0 range=15.6 snapChance=0.024 maxMass=192.0 rigging=8.00"
+ ],
+ [
+  "ProofPull",
+  "Hyperweave,wall",
+  "LANCE stuff=Hyperweave mode=wall canWork=True roped=True startDist=9.0 endDist=9.0 cellsMoved=0 steps=1 outcome=wall snaps=0 range=15.6 snapChance=0.024 maxMass=192.0 rigging=10.00"
+ ],
+ [
+  "ProofPull",
+  "Hyperweave,unmanned",
+  "LANCE stuff=Hyperweave mode=unmanned canWork=False roped=False startDist=9.0 endDist=9.0 cellsMoved=0 steps=0 outcome=none snaps=0 range=15.6 snapChance=0.024 maxMass=192.0 rigging=10.00"
+ ],
+ [
+  "ProofPull",
+  "Hyperweave,heavy",
+  "LANCE stuff=Hyperweave mode=heavy canWork=False roped=False startDist=9.0 endDist=9.0 cellsMoved=0 steps=0 outcome=mass snaps=1 range=15.6 snapChance=0.024 maxMass=192.0 rigging=0.00"
+ ],
+ [
+  "ProofPull",
+  "Hyperweave,downed",
+  "LANCE stuff=Hyperweave mode=downed canWork=True roped=True startDist=9.0 endDist=1.0 cellsMoved=8 steps=9 outcome=arrived snaps=0 range=15.6 snapChance=0.024 maxMass=192.0 rigging=8.00"
+ ]
+]
