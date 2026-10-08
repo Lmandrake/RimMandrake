@@ -41,13 +41,24 @@ Mod Settings toggle per feature; every DLC is assumed present.
 ## owner rulings (card, 2026-10-08, typed)
 
 - **Scope:** *"All biomes. It's a new fixture."* Every shipping biome gets a member; the Rust
-  Cathedral's is a machine, under its own ban question (pitch Q7).
+  Cathedral's is a machine (the clekk camera stalk, below).
 - **Media:** *"Ground and water for now. And we can bake in their little holes and things as part
   of their art."* No Thing-medium.
 - **Cues:** *"Full set."* Built 2026-10-08: seven optional per-member cues (gas, heat, fire, steam,
   shade, buried, light) on `RM_WatcherExtension.cues`, one Mod Settings toggle each.
 - **Q9 answer** (terrain-dependent look): recorded with the RimSage symbols read in
   `design/RimMandrake/watcher_creatures_pitch.md` §2.
+
+## owner rulings (second card, 2026-10-08, typed)
+
+- **Rust Cathedral:** *"Making a watcher here that looked like a little stalk that rose up like a
+  camera and just watched and rotated to watch, then always pulled away when approached would be
+  hilarious and very Star Wars."* The clekk is a camera stalk; feasibility in pitch §5, open
+  question Q8 (how the head turns).
+- **Grey Sea:** *"That is not a watcher, that's its own creepy thing. Add an independent watcher
+  that hides in place."* The fessk is off the list; the member is the new drossik.
+- **Contagion:** *"Of course it can get another creature. Just make one."* The member is the new
+  illuvek.
 
 ## criteria
 
