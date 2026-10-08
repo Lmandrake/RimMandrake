@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREYSEA_FLOOR_PASS_1 weather check, 2026-10-08. MEASURED: a seabed-layer floor map's biome is the tile's
+     PrimaryBiome, i.e. RM_SeabedFloor_GreySea, whose baseWeatherCommonalities was empty (CopyLife copies flora and
+     cast, not weather). So RM_GreySaltSnow, listed only on RM_GreySea (the hatch pocket-map path), never fell on a
+     layer floor map, and the hull-crust salt-snow multiplier never triggered. Same Clear:SaltSnow ratio as the sea;
+     Fog dropped (a surface water-delivery weather, not a floor one). Guarded by the WeatherDef existing (a
+     top-level MayRequire on an Operation is inert). -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/WeatherDef[defName="RM_GreySaltSnow"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_SeabedFloor_GreySea"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_SeabedFloor_GreySea"]</xpath>
+        <value>
+          <baseWeatherCommonalities>
+            <Clear>12</Clear>
+            <RM_GreySaltSnow>6</RM_GreySaltSnow>
+          </baseWeatherCommonalities>
+        </value>
+      </match>
+    </match>
+  </Operation>
+</Patch>
