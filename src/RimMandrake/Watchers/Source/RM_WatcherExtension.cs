@@ -62,29 +62,11 @@ namespace RimMandrake.Watchers
             {
                 yield return e;
             }
-            if (hiddenHediff == null)
+            foreach (string err in RM_WatcherKernel.ConfigErrors(hiddenHediff != null, signDef != null,
+                signDef != null && typeof(RM_WatcherSign).IsAssignableFrom(signDef.thingClass), flinchRadius, watchRadius,
+                hideTicks.min, hideTicks.max, maxWatchTicks, boltTicks, wanderChance, emergeWhenFoodBelow, geophoneMinBodySize))
             {
-                yield return "RM_WatcherExtension: hiddenHediff is null (it could never hide)";
-            }
-            if (signDef == null)
-            {
-                yield return "RM_WatcherExtension: signDef is null (a hidden watcher must leave a sign)";
-            }
-            else if (!typeof(RM_WatcherSign).IsAssignableFrom(signDef.thingClass))
-            {
-                yield return "RM_WatcherExtension: signDef " + signDef.defName + " thingClass is not RM_WatcherSign";
-            }
-            if (flinchRadius <= 0f || watchRadius < flinchRadius)
-            {
-                yield return "RM_WatcherExtension: need 0 < flinchRadius <= watchRadius";
-            }
-            if (hideTicks.min <= 0 || hideTicks.max < hideTicks.min)
-            {
-                yield return "RM_WatcherExtension: hideTicks range invalid";
-            }
-            if (maxWatchTicks <= 0 || boltTicks <= 0)
-            {
-                yield return "RM_WatcherExtension: maxWatchTicks and boltTicks must be positive";
+                yield return "RM_WatcherExtension: " + err;
             }
         }
     }
