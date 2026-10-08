@@ -32,7 +32,7 @@ def main():
         return 1
     os.makedirs(os.path.join(STAGE, "SelfTest"), exist_ok=True)
     shutil.copy2(os.path.join(HERE, "Source", "RM_KnockbackMath.cs"), os.path.join(STAGE, "RM_KnockbackMath.cs"))
-    for f in ("Program.cs", "RimMandrakeExplosiveKnockback.SelfTest.csproj"):
+    for f in ("Program.cs", "KnockbackFuzz.cs", "RimMandrakeExplosiveKnockback.SelfTest.csproj"):
         shutil.copy2(os.path.join(HERE, "Source", "SelfTest", f), os.path.join(STAGE, "SelfTest", f))
     with open(os.path.join(tempfile.gettempdir(), "explosiveknockback_selftest.lock"), "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
