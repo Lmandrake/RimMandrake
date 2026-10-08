@@ -22,10 +22,12 @@ The engine and the split: the mechanism is mandrake.rm.lorestages (RimMandrake t
     <li>
       <packageId>mandrake.rm.lorestages</packageId>
       <displayName>RimMandrake: Lore Stages</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>mandrake.rut.antiquities</packageId>
       <displayName>Antiquities</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <!-- HARD dependency, not a preference: RM_LoreStageTableDef is a Def subclass

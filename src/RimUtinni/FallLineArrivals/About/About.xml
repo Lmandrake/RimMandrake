@@ -13,6 +13,7 @@
     <li>
       <packageId>mandrake.rm.shipvermin</packageId>
       <displayName>RimMandrake: Ship Vermin</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

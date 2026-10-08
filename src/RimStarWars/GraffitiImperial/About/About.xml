@@ -16,7 +16,7 @@ Art: queued, not yet generated (see the item's own note on what's owed) - asemic
     <li>
       <packageId>mandrake.rm.graffiti</packageId>
       <displayName>RimMandrake: Graffiti Framework</displayName>
-      <steamWorkshopUrl />
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
 

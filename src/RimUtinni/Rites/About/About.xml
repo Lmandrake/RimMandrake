@@ -24,6 +24,7 @@ design/Jawa/research_review/functionless_tech_candidates.md.</description>
     <li>
       <packageId>mandrake.rut.antiquities</packageId>
       <displayName>Antiquities</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

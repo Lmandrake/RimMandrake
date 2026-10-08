@@ -15,6 +15,7 @@
     <li>
       <packageId>mandrake.rm.flowworks</packageId>
       <displayName>RimMandrake: FlowWorks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

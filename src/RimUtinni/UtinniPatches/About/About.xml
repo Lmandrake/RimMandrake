@@ -30,11 +30,12 @@
     <li>
       <packageId>mandrake.rm.weathersuite</packageId>
       <displayName>RimMandrake: SW — Weather Suite</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Baroque Biomes</displayName>
-      <steamWorkshopUrl />
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
 <loadAfter>

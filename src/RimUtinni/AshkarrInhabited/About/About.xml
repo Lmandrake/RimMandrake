@@ -17,6 +17,7 @@ Data only — districts, cast slots and the security profile are schema instance
     <li>
       <packageId>mandrake.rm.inhabited</packageId>
       <displayName>Inhabited (local)</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

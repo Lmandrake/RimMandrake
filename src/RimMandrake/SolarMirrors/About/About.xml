@@ -15,6 +15,7 @@
     <li>
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Biomes</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <!-- The shade grid, pinned sun and glare-blind hediff live in CreatureBehaviors, which is folded

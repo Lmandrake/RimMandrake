@@ -19,6 +19,7 @@ LOAD ORDER: after SpeakUp (and after any mod that edits the same interactions). 
     <li>
       <packageId>JPT.speakup</packageId>
       <displayName>SpeakUp</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2502518544</steamWorkshopUrl>
     </li>
   </modDependencies>
   <loadAfter>

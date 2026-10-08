@@ -18,6 +18,7 @@
            names RM_Crowncarpet, so this dependency is hard, not loadAfter-only. -->
       <packageId>mandrake.rm.luminouspigment</packageId>
       <displayName>RimMandrake: Luminous Pigment</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <!-- GREYSEA_BRINE_ELDERS_1, 2026-09-26: RM_BrineElder's thingClass is
@@ -30,6 +31,7 @@
            dependency honest instead of implicit. -->
       <packageId>mandrake.rm.divinginteraction</packageId>
       <displayName>RimMandrake: Diving Interaction</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <!-- TERMINALBIOMES_EH_HARD_DEP_1, 2026-09-26: RM_TerminalBiomesMod.cs
@@ -43,6 +45,7 @@
            to make close_over() see it. -->
       <packageId>mandrake.rm.environmentalhazards</packageId>
       <displayName>RimMandrake: Environmental Hazards</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <!-- TWILIGHT_PANE_STRIKE_1, 2026-09-27: RM_Patch_GravEngineLaunchGate.cs
@@ -72,6 +75,7 @@
            current reads the weir's arrester. -->
       <packageId>mandrake.rm.flowworks</packageId>
       <displayName>RimMandrake: FlowWorks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>
