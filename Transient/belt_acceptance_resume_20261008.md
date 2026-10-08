@@ -25,5 +25,5 @@ Stillsand rc=124 pass=60 fail=0 [stillsand] 08:55:42 pour_blooms_on_sand PASS
 16:45 harness tier done (see above). FlowWorks tier applied + launched
 16:56 FlowWorks suite ABORT: stale DLL (running assembly sha != repo e8bc2fe88aef, SluiceGate source landed w/o rebuilt DLL). Rebuilding via winbuild
 ## Final state 2026-10-08 ~10:10 PDT
-- FlowWorks tier: DLL was stale vs source (SluiceGate landed unbuilt); rebuilt with winbuild, redeployed, relaunched; sha matched. Run output Transient/acc_green/fw_FlowWorks2.txt: repeated blocks; consistent MOD FAILs in the pulse engine vs oracle (E5 sinks, E6 rain, E2 determinism, G every-cell, E4 scheduled) -- real findings, unresolved.
+- FlowWorks tier: DLL was stale vs source (SluiceGate landed unbuilt); rebuilt with winbuild, redeployed, relaunched; sha matched. Run output Transient/acc_green/fw_FlowWorks2.txt is the OFFLINE tier only (MockDesert, 'loaded mock sha'): its repeated blocks are O-LIVE-NEG's fault-injection mock runs, red by design. Real offline reds were O9 (stale earlier-dug assertion vs the 2026-10-06 cell-index ruling) and O-LIVE-NEG (dll_stale abort) -- both fixed, see Transient/belt_fw_pulse_20261008.md. No live v2 run at the current hash exists yet.
 - Not recorded via rimflow verify: results are mixed harness/mod and no outstanding criterion was cleanly passed this sitting.

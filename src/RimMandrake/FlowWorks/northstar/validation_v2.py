@@ -1066,7 +1066,8 @@ def o9_shared_source(claim=False):
     corner, and opposite off a 1-cell source), every orientation, both dig orders. The fixed walk
     (claim=False): both fill to n*D within n*D pulses, identically, and rest; a LIMITED body's stock
     is conserved every pulse, fully delivered, and split by the stated rule -- each pulse the
-    earlier-dug channel's inlet is paid first, so an odd stock gives it the one extra level.
+    channel whose inlet has the LOWER cell index (z*width+x) is paid first, so an odd stock gives it
+    the one extra level, whichever was dug first (owner ruling 2026-10-06; RM_FlowKernel.Pulse).
     claim=True is the shipped-until-fix walk and must go red (the second-dug channel stalls)."""
     probs, n = [], 4
     pairs = [("E", "N"), ("N", "W"), ("W", "S"), ("S", "E"), ("E", "W"), ("N", "S")]
@@ -1099,13 +1100,15 @@ def o9_shared_source(claim=False):
                         probs.append("%s: the two channels' vectors differ" % tag)
                 else:
                     got = {d: sum(hist[d][-1]) for d in runs}
-                    if got[first] != 3 or got[second] != 2:
-                        probs.append("%s: split %s (rule: earlier-dug gets the odd level, 3/2)" % (tag, got))
+                    low = min(runs, key=lambda d: o.idx(runs[d][0]))
+                    high = second if low == first else first
+                    if got[low] != 3 or got[high] != 2:
+                        probs.append("%s: split %s (rule: lower-index inlet %s gets the odd level, 3/2)" % (tag, got, low))
                 if not _is_fixed_point(o):
                     probs.append("%s: not at rest" % tag)
     return Check("O9", not probs, "; ".join(probs[:8]) or
                  "%d pairs x 2 dig orders: limitless -> both full at pulse %d, identical; stock 5 -> conserved, "
-                 "split 3/2 to the earlier-dug channel; all at rest" % (len(pairs), n))
+                 "split 3/2 to the lower-index inlet, either dig order; all at rest" % (len(pairs), n))
 
 
 def o8_lint():
@@ -3413,7 +3416,7 @@ def selftest_live_mock():
         st = {x["id"]: x["status"] for x in r["rows"]}
         if any(st.get(row) in ("PASS", None) for row in rows) and not r["aborted"]:
             probs.append("fault %s: rows %s stayed %s" % (fault, rows, [st.get(x) for x in rows]))
-        elif r["aborted"] and fault not in ("settings_drift",):
+        elif r["aborted"] and fault not in ("settings_drift", "dll_stale"):   # both fold L2 red, then abort by design (d07fd3b37)
             probs.append("fault %s aborted the run instead of failing its row: %s" % (fault, r["aborted"]))
     return Check("O-LIVE-NEG", not probs, "; ".join(probs)[:900] or
                  "clean mock run green (%d rows, %d ticks); all %d faults turned their rows red"
