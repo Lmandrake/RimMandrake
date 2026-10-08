@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="RM_AcousticScannerMod.cs" />
     <Compile Include="RM_AcousticPayloadExtension.cs" />
+    <Compile Include="Kernel\RM_AcousticKernel.cs" />
     <Compile Include="RM_AcousticBanding.cs" />
     <Compile Include="RM_MapComponent_AcousticReading.cs" />
     <Compile Include="RM_Building_AcousticSounder.cs" />

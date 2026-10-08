@@ -16,10 +16,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.dirname(HERE)
 
 
-def run(mod, script, plants):
+def run(mod, script, plants, keep=()):
     tmp = tempfile.mkdtemp(prefix="lintplant_")
     copy = os.path.join(tmp, mod)
-    shutil.copytree(os.path.join(SRC, mod), copy, ignore=shutil.ignore_patterns("Textures", "Assemblies", "__pycache__", "obj", "bin", "Languages", "About"))
+    shutil.copytree(os.path.join(SRC, mod), copy, ignore=shutil.ignore_patterns(*[x for x in ("Textures", "Assemblies", "__pycache__", "obj", "bin", "Languages", "About") if x not in keep]))
 
     def lint():
         p = subprocess.run([sys.executable, os.path.join(HERE, script), "--mod-dir", copy, "--quiet"], capture_output=True, text=True)

@@ -22,7 +22,7 @@ namespace RimMandrake.AcousticScanner
 
         public RM_MapComponent_AcousticReading(Map map) : base(map) { }
 
-        public bool Active => expiresTick > 0 && Find.TickManager.TicksGame < expiresTick && bands.Count > 0;
+        public bool Active => RM_AcousticKernel.OverlayActive(expiresTick, Find.TickManager.TicksGame, bands.Count);
 
         public void SetReading(List<RM_AcousticBand> newBands, List<Color> targetColors,
             List<string> targetLabels, int durationTicks)
@@ -30,7 +30,7 @@ namespace RimMandrake.AcousticScanner
             bands = newBands ?? new List<RM_AcousticBand>();
             colors = targetColors ?? new List<Color>();
             labels = targetLabels ?? new List<string>();
-            expiresTick = Find.TickManager.TicksGame + Mathf.Max(1, durationTicks);
+            expiresTick = RM_AcousticKernel.OverlayExpiry(Find.TickManager.TicksGame, durationTicks);
         }
 
         public void Clear()

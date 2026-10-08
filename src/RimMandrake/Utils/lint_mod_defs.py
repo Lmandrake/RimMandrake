@@ -27,7 +27,7 @@ class SiblingText(str):
         return re.search(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"(?![A-Za-z0-9_])", str(self)) is not None
 
 
-def run(mod_name, argv, known_missing_art=()):
+def run(mod_name, argv, known_missing_art=(), require_xml=True, require_settings=True, instance_settings=False):
     mod = os.path.join(SRC, mod_name)
     if "--mod-dir" in argv:
         mod = argv[argv.index("--mod-dir") + 1]
@@ -41,7 +41,7 @@ def run(mod_name, argv, known_missing_art=()):
     defs_xml = sorted(glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True))
     patch_xml = sorted(glob.glob(os.path.join(mod, "Patches", "**", "*.xml"), recursive=True))
     sanity = {"xml": len(defs_xml) + len(patch_xml), "classes": len([k for k in our if "." not in k])}
-    if sanity["xml"] == 0 or sanity["classes"] == 0:
+    if (sanity["xml"] == 0 and require_xml) or sanity["classes"] == 0:
         print(f"LINT UNMEASURED: found {sanity} - wrong --mod-dir?")
         return 2
 
@@ -141,8 +141,18 @@ def run(mod_name, argv, known_missing_art=()):
                 E("driver-kind", f"JobDef {d.findtext('defName')} in {os.path.relpath(p, mod)} has no driverClass")
 
     # ---- C# side ----
-    src_files = [f for f in glob.glob(os.path.join(mod, "Source", "**", "*.cs"), recursive=True)
-                 if os.sep + "SelfTest" + os.sep not in f and os.sep + "obj" + os.sep not in f]
+    # a test/fuzz project lives in its own Source subfolder (own csproj, or a SelfTest*/ *Fuzz / *SelfTest folder): never the mod's code
+    def _test_project(path):
+        parts = os.path.relpath(os.path.dirname(path), os.path.join(mod, "Source")).split(os.sep)
+        if parts == ["."]:
+            return False
+        for i, part in enumerate(parts):
+            if part in ("obj", "bin") or re.search(r"SelfTest|Fuzz", part):
+                return True
+            if glob.glob(os.path.join(mod, "Source", *parts[:i + 1], "*.csproj")):
+                return True
+        return False
+    src_files = [f for f in glob.glob(os.path.join(mod, "Source", "**", "*.cs"), recursive=True) if not _test_project(f)]
     csprojs = [p for p in glob.glob(os.path.join(mod, "Source", "*.csproj"))]
     if len(csprojs) != 1:
         print(f"LINT UNMEASURED: expected one csproj in {mod}/Source, found {csprojs}")
@@ -150,11 +160,12 @@ def run(mod_name, argv, known_missing_art=()):
     csproj_name = os.path.basename(csprojs[0])
     csproj = open(csprojs[0], encoding="utf-8-sig").read()
     listed = {i.replace("\\", "/") for i in re.findall(r'Compile Include="([^"]+)"', csproj)}
+    default_glob = not re.search(r"<EnableDefaultCompileItems>\s*false\s*</EnableDefaultCompileItems>", csproj, re.I)
     all_text = {}
     for f in src_files:
         rel = os.path.relpath(f, os.path.join(mod, "Source")).replace(os.sep, "/")
         all_text[rel] = strip_comments(open(f, encoding="utf-8-sig", errors="replace").read())
-        if rel not in listed:
+        if rel not in listed and not default_glob:
             E("compile-listed", f"Source/{rel} is not in {csproj_name} (compiles into nothing, silently)")
     for i in listed:
         if not os.path.exists(os.path.join(mod, "Source", i.replace("/", os.sep))):
@@ -195,6 +206,7 @@ def run(mod_name, argv, known_missing_art=()):
                 else:
                     E("defof-resolves", f"[DefOf] {m.group(1)}.{nm} ({typ}) has no such def in this mod's Defs or any other RimMandrake mod's")
 
+    _PS = r"public (?:static )?" if instance_settings else r"public static "
     # settings: the ModSettings subclass, wherever it lives in Source
     sfile, sname, sbody, st = None, None, "", ""
     for rel, txt in all_text.items():
@@ -202,55 +214,59 @@ def run(mod_name, argv, known_missing_art=()):
         if sm:
             sfile, sname, sbody, st = rel, sm.group(1), txt[sm.end():], txt
             break
-    if sname is None:
+    if sname is None and not require_settings:
+        decl = {}
+    elif sname is None:
         print("LINT UNMEASURED: no ModSettings subclass found")
         return 2
-    decl = {n: (t, v.strip()) for t, n, v in re.findall(r"public static ([\w<>\[\]]+)\s+(\w+)\s*=(?!>)\s*([^;]+);", sbody)}
-    scribed = re.findall(r'Scribe_Values\.Look\(ref\s+(\w+),\s*"(\w+)",\s*([^,)]*)[,)]', sbody)
-    if not decl or not scribed:
-        print("LINT UNMEASURED: no settings fields or Scribe calls parsed")
-        return 2
-    seen_keys, seen_fields = {}, {}
-    norm = lambda v: v.strip().rstrip("f").lower()
-    for fld, key, dflt in scribed:
-        if fld not in decl:
-            E("settings-scribed", f"Scribe_Values.Look(ref {fld}) names an undeclared field")
-            continue
-        if fld in seen_fields:
-            E("settings-scribed", f"field {fld} is Scribed twice")
-        seen_fields[fld] = key
-        if key != fld:
-            E("settings-scribed", f'field {fld} is saved under key "{key}" (key and field differ)')
-        if key in seen_keys and seen_keys[key] != fld:
-            E("settings-scribed", f'key "{key}" is used by both {seen_keys[key]} and {fld}')
-        seen_keys[key] = fld
-        if norm(dflt) != norm(decl[fld][1]):
-            E("settings-scribed", f"field {fld} initialises to {decl[fld][1]} but Scribes default {dflt.strip()} (a reset-to-default would change behaviour)")
-    # array settings are saved through a list: Scribe_Collections.Look(ref list, "<field>", ...) counts as that field's Scribe
-    for key in re.findall(r'Scribe_Collections\.Look\(ref\s+\w+,\s*"(\w+)"', sbody):
-        if key in decl and decl[key][0].endswith("[]"):
-            seen_fields[key] = key
-    for fld in decl:
-        if fld not in seen_fields:
-            E("settings-scribed", f"settings field {fld} is declared but never Scribed (setting is lost on restart)")
-    outside = "\n".join(t for r, t in all_text.items() if r != sfile)
-    # the settings window may live in the Mod class (any file with DoSettingsWindowContents / DoWindowContents)
-    ui = "\n".join(re.sub(r"(public static [\w<>\[\]]+\s+\w+\s*=(?!>)[^;]*;|Scribe_Values\.Look\([^;]*;)", "", t)
-                    for t in all_text.values() if re.search(r"DoSettingsWindowContents|DoWindowContents", t))
-    # a field read inside an expression-bodied property of the settings class (`public static bool XActive => A && xEnabled;`) is read
-    props = " ".join(re.findall(r"public static [\w<>\[\]]+\s+\w+\s*=>\s*([^;]+);", sbody))
-    # a field read inside a method of the settings class itself (FieldDisabled() reading disabledFields) is read
-    inner = re.sub(r"(public static [\w<>\[\]]+\s+\w+\s*=(?!>)[^;]*;|Scribe_\w+\.Look\([^;]*;)", "", sbody)
-    for fld in decl:
-        pat = r"\b" + fld + r"\b"
-        if not re.search(pat, outside) and not re.search(sname + r"\." + fld + r"\b", st) and not re.search(pat, props) and not re.search(pat, inner):
-            W("settings-scribed", f"settings field {fld} is never read by any code (dead toggle)")
-        if not re.search(pat, ui):
-            W("settings-scribed", f"settings field {fld} has no control in the settings window")
-    for m in sorted(set(re.findall(sname + r"\.(\w+)", code))):
-        if m not in decl and m not in ("DoWindowContents", "DoSettingsWindowContents", "ExposeData", "Instance"):
-            if re.match(r"[a-z]", m):
-                E("settings-scribed", f"code reads {sname}.{m} which is not a declared field")
+    if sname is not None:
+        decl = {n: (t, v.strip()) for t, n, v in re.findall(_PS + r"([\w<>\[\]]+)\s+(\w+)\s*=(?!>)\s*([^;]+);", sbody)}
+        scribed = re.findall(r'Scribe_Values\.Look\(ref\s+(\w+),\s*"(\w+)",\s*([^,)]*)[,)]', sbody)
+        if not decl or not scribed:
+            print("LINT UNMEASURED: no settings fields or Scribe calls parsed")
+            return 2
+        seen_keys, seen_fields = {}, {}
+        norm = lambda v: v.strip().rstrip("f").lower()
+        for fld, key, dflt in scribed:
+            if fld not in decl:
+                E("settings-scribed", f"Scribe_Values.Look(ref {fld}) names an undeclared field")
+                continue
+            if fld in seen_fields:
+                E("settings-scribed", f"field {fld} is Scribed twice")
+            seen_fields[fld] = key
+            if key != fld:
+                E("settings-scribed", f'field {fld} is saved under key "{key}" (key and field differ)')
+            if key in seen_keys and seen_keys[key] != fld:
+                E("settings-scribed", f'key "{key}" is used by both {seen_keys[key]} and {fld}')
+            seen_keys[key] = fld
+            if norm(dflt) != norm(decl[fld][1]):
+                E("settings-scribed", f"field {fld} initialises to {decl[fld][1]} but Scribes default {dflt.strip()} (a reset-to-default would change behaviour)")
+        # array settings are saved through a list: Scribe_Collections.Look(ref list, "<field>", ...) counts as that field's Scribe
+        for key in re.findall(r'Scribe_Collections\.Look\(ref\s+\w+,\s*"(\w+)"', sbody):
+            if key in decl and decl[key][0].endswith("[]"):
+                seen_fields[key] = key
+        for fld in decl:
+            if fld not in seen_fields:
+                E("settings-scribed", f"settings field {fld} is declared but never Scribed (setting is lost on restart)")
+        outside = "\n".join(t for r, t in all_text.items() if r != sfile)
+        # the settings window may live in the Mod class (any file with DoSettingsWindowContents / DoWindowContents)
+        ui = "\n".join(re.sub(r"(" + _PS + r"[\w<>\[\]]+\s+\w+\s*=(?!>)[^;]*;|Scribe_Values\.Look\([^;]*;)", "", t)
+                        for t in all_text.values() if re.search(r"DoSettingsWindowContents|DoWindowContents", t))
+        # a field read inside an expression-bodied property of the settings class (`public static bool XActive => A && xEnabled;`) is read
+        props = " ".join(re.findall(_PS + r"[\w<>\[\]]+\s+\w+\s*=>\s*([^;]+);", sbody))
+        # a field read inside a method of the settings class itself (FieldDisabled() reading disabledFields) is read
+        inner = re.sub(r"(" + _PS + r"[\w<>\[\]]+\s+\w+\s*=(?!>)[^;]*;|Scribe_\w+\.Look\([^;]*;)", "", sbody)
+        for fld in decl:
+            pat = r"\b" + fld + r"\b"
+            if not re.search(pat, outside) and not re.search(sname + r"\." + fld + r"\b", st) and not re.search(pat, props) and not re.search(pat, inner):
+                W("settings-scribed", f"settings field {fld} is never read by any code (dead toggle)")
+            if not re.search(pat, ui):
+                W("settings-scribed", f"settings field {fld} has no control in the settings window")
+        for m in sorted(set(re.findall(sname + r"\.(\w+)", code))):
+            if m not in decl and m not in ("DoWindowContents", "DoSettingsWindowContents", "ExposeData", "Instance"):
+                if re.match(r"[a-z]", m):
+                    E("settings-scribed", f"code reads {sname}.{m} which is not a declared field")
+
 
     # wired: classes of the right kind that nothing references
     _sib = {}
