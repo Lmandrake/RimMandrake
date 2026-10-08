@@ -56,7 +56,8 @@ def autocrlf():
 
 def git(*args, target=None, check=True):
     env = dict(os.environ)
-    cmd = ["git", "--git-dir=" + GIT_DIR, "-c", "core.autocrlf=" + autocrlf()]
+    cmd = ["git", "--git-dir=" + GIT_DIR, "-c", "core.autocrlf=" + autocrlf(),
+           "-c", "gc.autoDetach=false"]   # a detached auto-gc is killed at unit exit, leaking tmp_pack_*
     if target:
         env["GIT_INDEX_FILE"] = index_for(target)
         cmd.append("--work-tree=" + target)
