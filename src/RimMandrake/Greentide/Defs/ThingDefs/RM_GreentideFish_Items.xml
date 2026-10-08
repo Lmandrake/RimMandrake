@@ -33,13 +33,9 @@
   single deliberate override, MarketValue 12 — "the Greentide's one prize
   fish."
 
-  Placeholder art (owed, not generated this pass): every texPath below
-  reuses the same non-fish vanilla plant sprite its RUT_ counterpart already
-  cites (validated clean there) — CLAUDE.md's "check for existing art before
-  queuing more" found nothing generated for any of these 8 subjects in
-  infrastructure/artpipe/done/, _artsrc/ or registry.jsonl (MEASURED,
-  2026-09-26), so there is nothing to reuse from a finished job either; the
-  placeholder convention stands until a real art pass lands.
+  Art: Zeev, Uvva, Karrun, Dubbol, Lozh and Saava carry their own render
+  (Things/Item/Fish/<defName>, owner's Greentide sheet picks 2026-10-08).
+  Tuun and LungerFry still borrow a vanilla plant sprite until theirs land.
 -->
 <Defs>
 
@@ -49,7 +45,7 @@
     <label>zeev</label>
     <description>A hand-long river squid, green-gold, that lives in the fast clean reaches and moves the way the river does -- one hard pulse and gone. Shoals of them ride the current down through the root causeways and pulse back up at night. Fast to catch, faster to spoil. Its ink is nothing special. Its cousin's is.</description>
     <graphicData>
-      <texPath>Things/Plant/AloeVera/AloeVeraA</texPath>
+      <texPath>Things/Item/Fish/RM_Zeev</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -71,7 +67,7 @@
     <label>uvva</label>
     <description>A bladder-bodied grazer that hangs under the surface with its mouth open, waiting for the fruit-fall. When the canopy drops its crop the uvva rise in a crowd and gorge -- a fed uvva bloats, spins slowly, and passes seed downstream before it starts again. The river's seed-carrier. Sweet, faintly fizzy, and it does the same to you.</description>
     <graphicData>
-      <texPath>Things/Plant/Peyote/PeyoteA</texPath>
+      <texPath>Things/Item/Fish/RM_Uvva</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -93,7 +89,7 @@
     <label>karrun</label>
     <description>A flat, wide, root-brown crab-thing that lives in the churnmud between the roots, walking on the same swallowed things the mud hides -- and it finds them. A dropped tool, a lost boot, a coin: the karrun carries it about for a while for reasons of its own. Line-fishers along the causeways pull them up holding things. The claws are the eating; the rest is mud.</description>
     <graphicData>
-      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <texPath>Things/Item/Fish/RM_Karrun</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -116,7 +112,7 @@
     <label>dubbol</label>
     <description>The riverbed is carpeted in filth and sprouts, and this is what eats the filth. A thick, warty, arm-long sweeper of the river floor, moving through the settled muck below the causeways at the pace of a thing that has never been chased. Where the dubbol are thick the water runs clean enough to drink, nearly. Leathery, and it keeps.</description>
     <graphicData>
-      <texPath>Things/Plant/SweetheartPlant/SweetheartPlantA</texPath>
+      <texPath>Things/Item/Fish/RM_Dubbol</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -140,7 +136,7 @@
     <label>lozh</label>
     <description>Lives inside the drowned root causeways, in the channels the roots leave when they rot from within -- an eel the colour of wet bark, thick as a wrist, that hunts along the root-roads at night and ambushes from the same holes travelers step over by day. It is why nobody sleeps with a hand in the water.</description>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Item/Fish/RM_Lozh</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <comps>
@@ -157,7 +153,7 @@
     <label>saava</label>
     <description>A wide, thin, freshwater bell that rides the standing fog over the river, half in the water and half in the air, trailing stinging threads a body-length down. Under the fog you cannot see them; you feel them. Not lethal. Memorable.</description>
     <graphicData>
-      <texPath>Things/Plant/Schlumbergera/SchlumbergeraA</texPath>
+      <texPath>Things/Item/Fish/RM_Saava</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
