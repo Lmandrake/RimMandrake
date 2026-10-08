@@ -1,0 +1,4039 @@
+{
+ "mod": "Wasteland",
+ "stamp": "20261008T212510Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "gripper",
+    "components": [
+     {
+      "name": "site_ready_gripper",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 542 thing(s) across 841 cell(s).",
+         "cellsExamined": 841,
+         "outOfBounds": 0,
+         "destroyed": 542,
+         "pawnsSkipped": 0,
+         "perCategory": {
+          "Building": 450,
+          "Plant": 78,
+          "Item": 14
+         },
+         "samples": [
+          {
+           "x": 156,
+           "z": 169,
+           "def": "Limestone",
+           "category": "Building"
+          },
+          {
+           "x": 156,
+           "z": 170,
+           "def": "Limestone",
+           "category": "Building"
+          },
+          {
+           "x": 156,
+           "z": 171,
+           "def": "Limestone",
+           "category": "Building"
+          },
+          {
+           "x": 156,
+           "z": 172,
+           "def": "Limestone",
+           "category": "Building"
+          },
+          {
+           "x": 156,
+           "z": 173,
+           "def": "Limestone",
+           "category": "Building"
+          },
+          {
+           "x": 156,
+           "z": 174,
+           "def": "Limestone",
+           "category": "Building"
+          },
+          {
+           "x": 156,
+           "z": 175,
+           "def": "Limestone",
+           "category": "Building"
+          },
+          {
+           "x": 156,
+           "z": 177,
+           "def": "RM_Dewshrooms",
+           "category": "Plant"
+          }
+         ],
+         "ticksGame": 11268,
+         "operation": {
+          "OperationId": "op_4ddc4cc60dfb4104a75ad40ef95b7981",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 425
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_terrain_batch",
+        "result": {
+         "success": true,
+         "message": "Applied 1/1 op(s): 841 cell(s) changed, 0 already correct.",
+         "layer": "top",
+         "opsRequested": 1,
+         "opsApplied": 1,
+         "cellsRequested": 841,
+         "cellsChanged": 841,
+         "cellsAlreadyCorrect": 0,
+         "cellsOutOfBounds": 0,
+         "cellsFailedVerify": 0,
+         "refreshed": true,
+         "cellsRefreshed": 841,
+         "errors": [],
+         "samples": [
+          {
+           "x": 156,
+           "z": 156,
+           "before": "Limestone_Rough",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 157,
+           "before": "Limestone_Rough",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 158,
+           "before": "Limestone_Rough",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 159,
+           "before": "Limestone_Rough",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 160,
+           "before": "Limestone_Rough",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 161,
+           "before": "Limestone_Rough",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 162,
+           "before": "Limestone_Rough",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 163,
+           "before": "Limestone_Rough",
+           "after": "Soil",
+           "applied": true
+          }
+         ],
+         "mapSize": {
+          "x": 250,
+          "z": 250
+         },
+         "ticksGame": 11268,
+         "operation": {
+          "OperationId": "op_c2bb758aec114d7e8e09c45d280ffe0b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_roof_batch",
+        "result": {
+         "success": true,
+         "message": "Roofed 402 cell(s) across 1 op(s).",
+         "opsRequested": 1,
+         "cellsChanged": 402,
+         "cellsFailedVerify": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "None": 402
+         },
+         "errors": [],
+         "ticksGame": 11268,
+         "operation": {
+          "OperationId": "op_fce6b6f233d349b5a9e32edaa4a61a7c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_fog",
+        "result": {
+         "success": true,
+         "action": "unfog",
+         "cellsChanged": 0,
+         "foggedCellsBefore": 9421,
+         "foggedCellsNow": 9421,
+         "mapArea": 62500,
+         "ticksGame": 11268,
+         "operation": {
+          "OperationId": "op_198134fb325149229dac794c69ead58b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_pollution",
+        "result": {
+         "success": true,
+         "rect": {
+          "x": 156,
+          "z": 156,
+          "w": 29,
+          "h": 29
+         },
+         "cellsRequested": 841,
+         "cellsEverPollutable": 841,
+         "cellsChanged": 0,
+         "totalPollutionAfter": 0,
+         "totalPollutionPercentAfter": 0.0,
+         "ticksGame": 11268,
+         "operation": {
+          "OperationId": "op_cd371b8277aa47dfa1749ac5939ff262",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/log_autoopen_suppress",
+        "result": {
+         "success": true,
+         "action": "get",
+         "installed": true,
+         "target": "Verse.Log.TryOpenLogWindow",
+         "suppressed": true,
+         "suppressions": 3,
+         "note": "Auto-open is suppressed. The debug menu's manual log window still works by hand.",
+         "operation": {
+          "OperationId": "op_cb79d0019de84acc945090403ea30041",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 12
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 RM_Gripper in faction (none).",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "RM_Gripper71451",
+           "name": "Gripper",
+           "kindRequested": "RM_Gripper",
+           "kindActual": "RM_Gripper",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 170,
+           "z": 170,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 11268,
+         "operation": {
+          "OperationId": "op_8953e221cd7b4c77be1ac37f7201b935",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/spawn_thing",
+        "result": {
+         "success": true,
+         "thingId": "Thing_Gold71453",
+         "defName": "Gold",
+         "label": "Gold x5",
+         "stackCount": 5,
+         "cell": {
+          "x": 174,
+          "z": 170
+         },
+         "operation": {
+          "OperationId": "op_2e83a67fc66d463eaa2187a59bcb5a1a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 11
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wild_gripper_spawns_carrying_scrap",
+      "toggle": "gripperSpawnsCarrying",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 37238 examined.",
+         "matched": 1,
+         "examined": 37238,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_Gripper71451",
+           "defName": "RM_Gripper",
+           "label": "gripper",
+           "x": 170,
+           "z": 170,
+           "className": "Verse.Pawn",
+           "inspect": [
+            "Male, age 4",
+            "Gripping: Component"
+           ]
+          }
+         ],
+         "ticksGame": 11268,
+         "operation": {
+          "OperationId": "op_cf8c6facf44c46e180c205e3e8c5e710",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "gripper's starting haul",
+        "result": "Male, age 4 | Gripping: Component"
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "steal_swaps_scrap_for_gold",
+      "toggle": "gripperTheftEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Gold71453",
+           "def": "Gold",
+           "label": "Gold x5",
+           "x": 174,
+           "z": 170,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 5,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          }
+         ],
+         "scanned": 37238,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 22,
+         "perDef": {
+          "Gold": 1
+         },
+         "ticksGame": 11268,
+         "message": "1 of 1 matching thing(s) returned, 37238 examined.",
+         "operation": {
+          "OperationId": "op_d732be53f3c94545a239a4da8a5410d8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "requestedJobDef": "RM_GripperSteal",
+         "afterJobDef": "RM_GripperSteal",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_3787bb1db7464999ba5fc43181fafe4d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 68316
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11268
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(500) -> 500 real tick(s) over 2 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_37fd4e2c3aa64506abd85a7cb5281791",
+         "status": "completed",
+         "requestedTicks": 234,
+         "completedTicks": 234,
+         "remainingTicks": 0,
+         "startTicksGame": 11534,
+         "endTicksGame": 11768,
+         "advancedTicks": 234,
+         "initialFrame": 27910,
+         "lastFrame": 28143,
+         "advancedFrames": 234,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T21:21:40.9254799+00:00",
+         "completedAtUtc": "2026-10-08T21:21:50.8097548+00:00",
+         "message": "Advanced 234 game tick(s) across 234 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 11768
+         },
+         "operation": {
+          "OperationId": "op_03b47aa7cf804966a22c594f4136e5c0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9905
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 37239 examined.",
+         "matched": 1,
+         "examined": 37239,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_Gripper71451",
+           "defName": "RM_Gripper",
+           "label": "gripper",
+           "x": 181,
+           "z": 162,
+           "className": "Verse.Pawn",
+           "inspect": [
+            "Male, age 4",
+            "Gripping: Gold x5"
+           ]
+          }
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_2f468895da4d4632b685fc8328a6d8fd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "hurt_gripper_drops_its_haul",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 0.8453478,
+           "hediffsBefore": 1,
+           "hediffsAfter": 2,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 0.8453478,
+           "hediffsBefore": 1,
+           "hediffsAfter": 2,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_9b04276c6a0b4acaa186079d7f4692bc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 23
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 2,
+           "hediffsAfter": 3,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 2,
+           "hediffsAfter": 3,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_b4e743875f4a4910b300156fb9b02d83",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 3,
+           "hediffsAfter": 4,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 3,
+           "hediffsAfter": 4,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_2afd357de1084bfa8c53aca795268e19",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 4,
+           "hediffsAfter": 4,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 4,
+           "hediffsAfter": 4,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_89cc11a9730f47668c3a7393d5b2c259",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 4,
+           "hediffsAfter": 5,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 4,
+           "hediffsAfter": 5,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_24ed7b799ea841b0912de1db5a27f865",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 0.822748065,
+           "hediffsBefore": 5,
+           "hediffsAfter": 6,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 0.822748065,
+           "hediffsBefore": 5,
+           "hediffsAfter": 6,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_eb558c4d71de447390fbfa7262291eb2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 6,
+           "hediffsAfter": 7,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 6,
+           "hediffsAfter": 7,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_c76ea6962fbf46b199524a7e4135ef15",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 0.849838853,
+           "hediffsBefore": 7,
+           "hediffsAfter": 8,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 0.849838853,
+           "hediffsBefore": 7,
+           "hediffsAfter": 8,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_fb143d23accb42a488e030c43a01cb1e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 8,
+           "hediffsAfter": 9,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 8,
+           "hediffsAfter": 9,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_6c3b8b9a77854cc08f0650761a19b64a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/damage",
+        "result": {
+         "success": true,
+         "message": "Damaged 1 thing(s) with Blunt 1.",
+         "damageDef": "Blunt",
+         "harmsHealth": true,
+         "targetsHit": 1,
+         "colonistsSkipped": 0,
+         "bodyPartNotOnTarget": 0,
+         "results": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 9,
+           "hediffsAfter": 10,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "targets": [
+          {
+           "id": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "isPawn": true,
+           "bodyPartTargeted": true,
+           "hitPointsBefore": -1,
+           "hitPointsAfter": -1,
+           "destroyed": false,
+           "totalDamageDealt": 1.0,
+           "hediffsBefore": 9,
+           "hediffsAfter": 10,
+           "downed": false,
+           "dead": false,
+           "stunTicksLeft": 0
+          }
+         ],
+         "resultCount": 1,
+         "verdictFields": [
+          "downed",
+          "dead",
+          "destroyed"
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_48ac239c84f54363bb86d171640917aa",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "18 pawn(s).",
+         "pawns": [
+          {
+           "id": "Human637",
+           "name": "Sergio",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 119,
+           "z": 100,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "Yak14067",
+           "name": "Jezebel",
+           "kind": "Yak",
+           "kindDef": "Yak",
+           "def": "Yak",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 111,
+           "z": 107,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 2.1
+          },
+          {
+           "id": "Human640",
+           "name": "Kaleun",
+           "kind": "Colonist",
+           "kindDef": "Colonist",
+           "def": "Human",
+           "hasGenes": true,
+           "xenotype": "Baseliner",
+           "xenotypeLabel": "baseliner",
+           "uniqueXenotype": false,
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "isPlayer": true,
+           "hostile": false,
+           "x": 115,
+           "z": 96,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Humanlike",
+           "bodySize": 1.0
+          },
+          {
+           "id": "RM_Illoth37706",
+           "name": "Illoth",
+           "kind": "RM_Illoth",
+           "kindDef": "RM_Illoth",
+           "def": "RM_Illoth",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 199,
+           "z": 69,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.77
+          },
+          {
+           "id": "RM_Brullith37707",
+           "name": "Brullith",
+           "kind": "RM_Brullith",
+           "kindDef": "RM_Brullith",
+           "def": "RM_Brullith",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 199,
+           "z": 220,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 4.0
+          },
+          {
+           "id": "RM_ThozzikQueen37708",
+           "name": "Thozzik queen",
+           "kind": "RM_ThozzikQueen",
+           "kindDef": "RM_ThozzikQueen",
+           "def": "RM_ThozzikQueen",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 137,
+           "z": 97,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 1.0
+          },
+          {
+           "id": "RM_ThozzikColonyQueen37709",
+           "name": "Thozzik queen",
+           "kind": "RM_ThozzikColonyQueen",
+           "kindDef": "RM_ThozzikColonyQueen",
+           "def": "RM_ThozzikColonyQueen",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 80,
+           "z": 174,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 1.0
+          },
+          {
+           "id": "RM_Hwelgrue37710",
+           "name": "Hwelgrue",
+           "kind": "RM_Hwelgrue",
+           "kindDef": "RM_Hwelgrue",
+           "def": "RM_Hwelgrue",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 179,
+           "z": 41,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 8.0
+          },
+          {
+           "id": "RM_Shambles37711",
+           "name": "The shambles",
+           "kind": "RM_Shambles",
+           "kindDef": "RM_Shambles",
+           "def": "RM_Shambles",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 32,
+           "z": 90,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 1.6
+          },
+          {
+           "id": "RM_Thozzik37712",
+           "name": "Thozzik",
+           "kind": "RM_Thozzik",
+           "kindDef": "RM_Thozzik",
+           "def": "RM_Thozzik",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 160,
+           "z": 240,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.32
+          },
+          {
+           "id": "RM_Shambles37713",
+           "name": "The shambles",
+           "kind": "RM_Shambles",
+           "kindDef": "RM_Shambles",
+           "def": "RM_Shambles",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 245,
+           "z": 95,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 1.6
+          },
+          {
+           "id": "RM_ThozzikColony37714",
+           "name": "Thozzik",
+           "kind": "RM_ThozzikColony",
+           "kindDef": "RM_ThozzikColony",
+           "def": "RM_ThozzikColony",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 154,
+           "z": 131,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.32
+          },
+          {
+           "id": "RM_ThozzikColony37715",
+           "name": "Thozzik",
+           "kind": "RM_ThozzikColony",
+           "kindDef": "RM_ThozzikColony",
+           "def": "RM_ThozzikColony",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 156,
+           "z": 134,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.32
+          },
+          {
+           "id": "RM_Thozzik37716",
+           "name": "Thozzik",
+           "kind": "RM_Thozzik",
+           "kindDef": "RM_Thozzik",
+           "def": "RM_Thozzik",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 130,
+           "z": 124,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.32
+          },
+          {
+           "id": "RM_Skerrith37717",
+           "name": "Skerrith",
+           "kind": "RM_Skerrith",
+           "kindDef": "RM_Skerrith",
+           "def": "RM_Skerrith",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 142,
+           "z": 174,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 2.0
+          },
+          {
+           "id": "RM_Skerrith37718",
+           "name": "Skerrith",
+           "kind": "RM_Skerrith",
+           "kindDef": "RM_Skerrith",
+           "def": "RM_Skerrith",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 160,
+           "z": 195,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 2.0
+          },
+          {
+           "id": "RM_Skerrith37719",
+           "name": "Skerrith",
+           "kind": "RM_Skerrith",
+           "kindDef": "RM_Skerrith",
+           "def": "RM_Skerrith",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 150,
+           "z": 167,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Insectoid",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 2.0
+          },
+          {
+           "id": "RM_Gripper71451",
+           "name": "Gripper",
+           "kind": "RM_Gripper",
+           "kindDef": "RM_Gripper",
+           "def": "RM_Gripper",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 181,
+           "z": 162,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.2
+          }
+         ],
+         "returned": 18,
+         "truncated": 0,
+         "totalOnMap": 18,
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_095ee37706484c3ead1168f39a75d316",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 37241 examined.",
+         "matched": 1,
+         "examined": 37241,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_Gripper71451",
+           "defName": "RM_Gripper",
+           "label": "gripper",
+           "x": 181,
+           "z": 162,
+           "className": "Verse.Pawn",
+           "inspect": [
+            "Male, age 4"
+           ]
+          }
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_bc3cd39d16844342a9aecfbeca952c9f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "theft_off_gripper_spawns_empty_handed",
+      "toggle": "gripperTheftEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'gripperTheftEnabled': False})",
+        "result": true
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 RM_Gripper in faction (none).",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "RM_Gripper72652",
+           "name": "Gripper",
+           "kindRequested": "RM_Gripper",
+           "kindActual": "RM_Gripper",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 178,
+           "z": 176,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_cb19ee6ba60d4282a227f8163ba23538",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 37242 examined.",
+         "matched": 1,
+         "examined": 37242,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_Gripper72652",
+           "defName": "RM_Gripper",
+           "label": "gripper",
+           "x": 178,
+           "z": 176,
+           "className": "Verse.Pawn",
+           "inspect": [
+            "Female, age <color=#87F6F6FF>3 quadrums</color>"
+           ]
+          }
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_6f5342c5763b47479356eb645aa4f350",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "spawns_carrying_off_gripper_spawns_empty_handed",
+      "toggle": "gripperSpawnsCarrying",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'gripperSpawnsCarrying': False})",
+        "result": true
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 RM_Gripper in faction (none).",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "RM_Gripper72653",
+           "name": "Gripper",
+           "kindRequested": "RM_Gripper",
+           "kindActual": "RM_Gripper",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 162,
+           "z": 176,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_f7270f1fe964487ba1945cb4da38db40",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 37243 examined.",
+         "matched": 1,
+         "examined": 37243,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_Gripper72653",
+           "defName": "RM_Gripper",
+           "label": "gripper",
+           "x": 162,
+           "z": 176,
+           "className": "Verse.Pawn",
+           "inspect": [
+            "Male, age <color=#87F6F6FF>2 quadrums</color>"
+           ]
+          }
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_285c27fe55b944efa2091de835e42986",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tamed_gripper_never_steals",
+      "toggle": "gripperTheftEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/destroy_bulk",
+        "result": {
+         "success": true,
+         "dryRun": false,
+         "filter": "factionlessAnimals",
+         "matchedCount": 17,
+         "destroyed": [
+          {
+           "thingId": "RM_Illoth37706",
+           "def": "RM_Illoth",
+           "label": "Illoth"
+          },
+          {
+           "thingId": "RM_Brullith37707",
+           "def": "RM_Brullith",
+           "label": "Brullith"
+          },
+          {
+           "thingId": "RM_ThozzikQueen37708",
+           "def": "RM_ThozzikQueen",
+           "label": "Thozzik queen"
+          },
+          {
+           "thingId": "RM_ThozzikColonyQueen37709",
+           "def": "RM_ThozzikColonyQueen",
+           "label": "Thozzik queen"
+          },
+          {
+           "thingId": "RM_Hwelgrue37710",
+           "def": "RM_Hwelgrue",
+           "label": "Hwelgrue"
+          },
+          {
+           "thingId": "RM_Shambles37711",
+           "def": "RM_Shambles",
+           "label": "The shambles"
+          },
+          {
+           "thingId": "RM_Thozzik37712",
+           "def": "RM_Thozzik",
+           "label": "Thozzik"
+          },
+          {
+           "thingId": "RM_Shambles37713",
+           "def": "RM_Shambles",
+           "label": "The shambles"
+          },
+          {
+           "thingId": "RM_ThozzikColony37714",
+           "def": "RM_ThozzikColony",
+           "label": "Thozzik"
+          },
+          {
+           "thingId": "RM_ThozzikColony37715",
+           "def": "RM_ThozzikColony",
+           "label": "Thozzik"
+          },
+          {
+           "thingId": "RM_Thozzik37716",
+           "def": "RM_Thozzik",
+           "label": "Thozzik"
+          },
+          {
+           "thingId": "RM_Skerrith37717",
+           "def": "RM_Skerrith",
+           "label": "Skerrith"
+          },
+          {
+           "thingId": "RM_Skerrith37718",
+           "def": "RM_Skerrith",
+           "label": "Skerrith"
+          },
+          {
+           "thingId": "RM_Skerrith37719",
+           "def": "RM_Skerrith",
+           "label": "Skerrith"
+          },
+          {
+           "thingId": "RM_Gripper71451",
+           "def": "RM_Gripper",
+           "label": "Gripper"
+          },
+          {
+           "thingId": "RM_Gripper72652",
+           "def": "RM_Gripper",
+           "label": "Gripper"
+          },
+          {
+           "thingId": "RM_Gripper72653",
+           "def": "RM_Gripper",
+           "label": "Gripper"
+          }
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_835d426f3a2f4b9f9f13b4ca23abbe22",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/spawn_thing",
+        "result": {
+         "success": true,
+         "thingId": "Thing_Gold72654",
+         "defName": "Gold",
+         "label": "Gold x5",
+         "stackCount": 5,
+         "cell": {
+          "x": 174,
+          "z": 164
+         },
+         "operation": {
+          "OperationId": "op_f9d8dc2310664a1da1ad1bf58144b316",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 RM_Gripper in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "RM_Gripper72655",
+           "name": "Gripper 1",
+           "kindRequested": "RM_Gripper",
+           "kindActual": "RM_Gripper",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 170,
+           "z": 164,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 11768,
+         "operation": {
+          "OperationId": "op_3a91f7e8843747f781d7fbb7461de38c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Gold72654",
+           "def": "Gold",
+           "label": "Gold x5",
+           "x": 174,
+           "z": 164,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 5,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          }
+         ],
+         "scanned": 37228,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 8,
+         "perDef": {
+          "Gold": 1
+         },
+         "ticksGame": 11768,
+         "message": "1 of 1 matching thing(s) returned, 37228 examined.",
+         "operation": {
+          "OperationId": "op_654851e3a9194dd3b9ec3e9f62ed2776",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": false,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "requestedJobDef": "RM_GripperSteal",
+         "afterJobDef": "GotoWander",
+         "nowRunningRequested": false,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "note": "Job was accepted (enqueued) but curJob after 60 tick(s) is 'GotoWander', not 'RM_GripperSteal' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+         "operation": {
+          "OperationId": "op_7976d6d932c3487793349e4678eafa80",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 68548
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 11768
+         }
+        }
+       },
+       {
+        "call": "tamed gripper's job after the order",
+        "result": {
+         "success": false,
+         "accepted": true,
+         "afterJobDef": "GotoWander",
+         "nowRunningRequested": false
+        }
+       },
+       {
+        "call": "wait_ticks(500) -> 500 real tick(s) over 2 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_ac1fc095a684477f89897e7905377848",
+         "status": "completed",
+         "requestedTicks": 224,
+         "completedTicks": 224,
+         "remainingTicks": 0,
+         "startTicksGame": 12044,
+         "endTicksGame": 12268,
+         "advancedTicks": 224,
+         "initialFrame": 32621,
+         "lastFrame": 32844,
+         "advancedFrames": 224,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T21:23:10.8828639+00:00",
+         "completedAtUtc": "2026-10-08T21:23:19.3848812+00:00",
+         "message": "Advanced 224 game tick(s) across 224 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 12268
+         },
+         "operation": {
+          "OperationId": "op_1883270d5f0244cdbf57dc1cdbf9b4cc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 8534
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 37169 examined.",
+         "matched": 1,
+         "examined": 37169,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_Gripper72655",
+           "defName": "RM_Gripper",
+           "label": "Gripper 1",
+           "x": 161,
+           "z": 155,
+           "className": "Verse.Pawn",
+           "inspect": [
+            "Male gripper, age 2 of New Arrivals",
+            "Wandering."
+           ]
+          }
+         ],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_3f7cc88366fb4e3bab995ebe0b14ca95",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 31
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Gold72654",
+           "def": "Gold",
+           "label": "Gold x5",
+           "x": 174,
+           "z": 164,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 5,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          }
+         ],
+         "scanned": 37169,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 8,
+         "perDef": {
+          "Gold": 1
+         },
+         "ticksGame": 12268,
+         "message": "1 of 1 matching thing(s) returned, 37169 examined.",
+         "operation": {
+          "OperationId": "op_47efa78fb3264439941c3b22b781b0c6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 33
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "Gold still beside the tamed gripper",
+        "result": [
+         5
+        ]
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "flora_harvest",
+    "components": [
+     {
+      "name": "site_ready_flora",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 841 cell(s).",
+         "cellsExamined": 841,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 0,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_7792de03ba2148d7972d8d78ae7f732a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_terrain_batch",
+        "result": {
+         "success": true,
+         "message": "Applied 1/1 op(s): 0 cell(s) changed, 841 already correct.",
+         "layer": "top",
+         "opsRequested": 1,
+         "opsApplied": 1,
+         "cellsRequested": 841,
+         "cellsChanged": 0,
+         "cellsAlreadyCorrect": 841,
+         "cellsOutOfBounds": 0,
+         "cellsFailedVerify": 0,
+         "refreshed": false,
+         "cellsRefreshed": 0,
+         "errors": [],
+         "samples": [
+          {
+           "x": 156,
+           "z": 156,
+           "before": "Soil",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 157,
+           "before": "Soil",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 158,
+           "before": "Soil",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 159,
+           "before": "Soil",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 160,
+           "before": "Soil",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 161,
+           "before": "Soil",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 162,
+           "before": "Soil",
+           "after": "Soil",
+           "applied": true
+          },
+          {
+           "x": 156,
+           "z": 163,
+           "before": "Soil",
+           "after": "Soil",
+           "applied": true
+          }
+         ],
+         "mapSize": {
+          "x": 250,
+          "z": 250
+         },
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_ce7b50df429b4817b3226d6cd09a2686",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_roof_batch",
+        "result": {
+         "success": true,
+         "message": "Roofed 0 cell(s) across 1 op(s).",
+         "opsRequested": 1,
+         "cellsChanged": 0,
+         "cellsFailedVerify": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {},
+         "errors": [],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_599f57d963f64cd39711bead20987931",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_fog",
+        "result": {
+         "success": true,
+         "action": "unfog",
+         "cellsChanged": 0,
+         "foggedCellsBefore": 9421,
+         "foggedCellsNow": 9421,
+         "mapArea": 62500,
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_76b03d4165db454c82cd203f74545227",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_pollution",
+        "result": {
+         "success": true,
+         "rect": {
+          "x": 156,
+          "z": 156,
+          "w": 29,
+          "h": 29
+         },
+         "cellsRequested": 841,
+         "cellsEverPollutable": 841,
+         "cellsChanged": 0,
+         "totalPollutionAfter": 0,
+         "totalPollutionPercentAfter": 0.0,
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_f99e1c3c36264dd6816ddf00024c4cef",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/log_autoopen_suppress",
+        "result": {
+         "success": true,
+         "action": "get",
+         "installed": true,
+         "target": "Verse.Log.TryOpenLogWindow",
+         "suppressed": true,
+         "suppressions": 3,
+         "note": "Auto-open is suppressed. The debug menu's manual log window still works by hand.",
+         "operation": {
+          "OperationId": "op_89d892d5c798401ab3bad3d69b3c7a5f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Human73794",
+           "name": "Mike",
+           "kindRequested": "Colonist",
+           "kindActual": "Colonist",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 160,
+           "z": 170,
+           "spawned": true,
+           "xenotype": "Baseliner",
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_fbd3279d98c846999bf6ac626430ccf3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_need",
+        "result": {
+         "success": true,
+         "action": "need",
+         "notes": [
+          "set Food to 1"
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Food",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "Rest",
+           "level": 0.9299494,
+           "pct": 0.9299494
+          },
+          {
+           "need": "Joy",
+           "level": 0.5387442,
+           "pct": 0.5387442
+          },
+          {
+           "need": "Beauty",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Comfort",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Indoors",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "DrugDesire",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RoomSize",
+           "level": 0.5,
+           "pct": 0.5
+          }
+         ],
+         "memories": [],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_59cb114393954912949686185a93885e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_need",
+        "result": {
+         "success": true,
+         "action": "need",
+         "notes": [
+          "set Rest to 1"
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Food",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "Rest",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "Joy",
+           "level": 0.5387442,
+           "pct": 0.5387442
+          },
+          {
+           "need": "Beauty",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Comfort",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Indoors",
+           "level": 1.0,
+           "pct": 1.0
+          },
+          {
+           "need": "DrugDesire",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RoomSize",
+           "level": 0.5,
+           "pct": 0.5
+          }
+         ],
+         "memories": [],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_6640ced2c97d4b7f81f9154c29f1b26a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_draft",
+        "result": {
+         "success": true,
+         "drafted": false,
+         "fireAtWill": true,
+         "operation": {
+          "OperationId": "op_667a6e2c9b784dc8b290c1f9a2532daf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_pawn_skill",
+        "result": {
+         "success": true,
+         "skill": "Plants",
+         "before": {
+          "levelRaw": 8,
+          "levelEffective": 8,
+          "passion": "Major",
+          "xp": 0.0,
+          "disabled": false
+         },
+         "after": {
+          "levelRaw": 20,
+          "levelEffective": 20,
+          "passion": "Major",
+          "xp": 0.0
+         },
+         "wroteLevel": 20,
+         "readBackMatches": true,
+         "note": "levelEffective includes aptitudes; levelRaw is what was written. Compare against levelRaw.",
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_d305d2f65ee145dea149c00d1eb8d7db",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_work_priority",
+        "result": {
+         "success": true,
+         "requested": 0,
+         "readBack": 0,
+         "manualPrioritiesOn": false,
+         "operation": {
+          "OperationId": "op_a659a3e1db424cdca42ec4c6b65344b2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/destroy_bulk",
+        "result": {
+         "success": true,
+         "dryRun": false,
+         "filter": "nonColonists",
+         "matchedCount": 2,
+         "destroyed": [
+          {
+           "thingId": "Yak14067",
+           "def": "Yak",
+           "label": "Jezebel"
+          },
+          {
+           "thingId": "RM_Gripper72655",
+           "def": "RM_Gripper",
+           "label": "Gripper 1"
+          }
+         ],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_311f218fa9a649caab8fba2eb8c7e92e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_plants",
+        "result": {
+         "success": true,
+         "message": "Planted 1, cleared 0.",
+         "planted": 1,
+         "cleared": 0,
+         "rejected": 0,
+         "rejectionReasons": {},
+         "cellsSkippedByDensity": 0,
+         "cellsOutOfBounds": 0,
+         "growth": 1.0,
+         "errors": [],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_0c612490c4b84d769a1efc53cfbf19eb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_plants",
+        "result": {
+         "success": true,
+         "message": "Planted 1, cleared 0.",
+         "planted": 1,
+         "cleared": 0,
+         "rejected": 0,
+         "rejectionReasons": {},
+         "cellsSkippedByDensity": 0,
+         "cellsOutOfBounds": 0,
+         "growth": 1.0,
+         "errors": [],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_033636a2966c49c49bd921d7194b7379",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_plants",
+        "result": {
+         "success": true,
+         "message": "Planted 1, cleared 0.",
+         "planted": 1,
+         "cleared": 0,
+         "rejected": 0,
+         "rejectionReasons": {},
+         "cellsSkippedByDensity": 0,
+         "cellsOutOfBounds": 0,
+         "growth": 1.0,
+         "errors": [],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_9cc4f8e07a084a8c83365261bbdcb14a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_plants",
+        "result": {
+         "success": true,
+         "message": "Planted 1, cleared 0.",
+         "planted": 1,
+         "cleared": 0,
+         "rejected": 0,
+         "rejectionReasons": {},
+         "cellsSkippedByDensity": 0,
+         "cellsOutOfBounds": 0,
+         "growth": 1.0,
+         "errors": [],
+         "ticksGame": 12268,
+         "operation": {
+          "OperationId": "op_843381f0f1ba41d1804c3e7f1a152fd5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_VaultRoot73797",
+           "def": "RM_VaultRoot",
+           "label": "Vault-root tree",
+           "x": 170,
+           "z": 174,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 190,
+           "maxHitPoints": 190
+          }
+         ],
+         "scanned": 37168,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {
+          "RM_VaultRoot": 1
+         },
+         "ticksGame": 12268,
+         "message": "1 of 1 matching thing(s) returned, 37168 examined.",
+         "operation": {
+          "OperationId": "op_d827339f1f76439fa7670518850a5a7a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 37168,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {},
+         "ticksGame": 12268,
+         "message": "NOTHING MATCHED. 37168 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_fe862948d0cd47ac8f8d9841c25f7c38",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_Pusberry73798",
+           "def": "RM_Pusberry",
+           "label": "Pusberry",
+           "x": 172,
+           "z": 174,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 140,
+           "maxHitPoints": 140
+          }
+         ],
+         "scanned": 37168,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {
+          "RM_Pusberry": 1
+         },
+         "ticksGame": 12268,
+         "message": "1 of 1 matching thing(s) returned, 37168 examined.",
+         "operation": {
+          "OperationId": "op_d856f2126d4647b0b6fdb3d06bd30d62",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 37168,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {},
+         "ticksGame": 12268,
+         "message": "NOTHING MATCHED. 37168 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_75dd10d41d264267a2df2bd9c0343edb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_Boilbulb73799",
+           "def": "RM_Boilbulb",
+           "label": "Boilbulb",
+           "x": 174,
+           "z": 174,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 70,
+           "maxHitPoints": 70
+          }
+         ],
+         "scanned": 37168,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {
+          "RM_Boilbulb": 1
+         },
+         "ticksGame": 12268,
+         "message": "1 of 1 matching thing(s) returned, 37168 examined.",
+         "operation": {
+          "OperationId": "op_876623219e5346d6afbdf21615c57d70",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 37168,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {},
+         "ticksGame": 12268,
+         "message": "NOTHING MATCHED. 37168 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_858f3958af544cc791b9ea8752c95491",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_Wartshrub73800",
+           "def": "RM_Wartshrub",
+           "label": "Wartshrub",
+           "x": 176,
+           "z": 174,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 90,
+           "maxHitPoints": 90
+          }
+         ],
+         "scanned": 37168,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {
+          "RM_Wartshrub": 1
+         },
+         "ticksGame": 12268,
+         "message": "1 of 1 matching thing(s) returned, 37168 examined.",
+         "operation": {
+          "OperationId": "op_1c9eedfda7424563ae4ccd04b8fef8d6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 37168,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {},
+         "ticksGame": 12268,
+         "message": "NOTHING MATCHED. 37168 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_78958a26b5714d74b3b4421ad0261c90",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "harvest_yields_WoodLog_from_RM_VaultRoot",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "requestedJobDef": "Harvest",
+         "afterJobDef": "Harvest",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_473ba9dd23ec44299c45612bc64159a3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17199
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12268
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(250) -> 250 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_a1bb36754a8147fc960cbfec0b06ac96",
+         "status": "completed",
+         "requestedTicks": 250,
+         "completedTicks": 250,
+         "remainingTicks": 0,
+         "startTicksGame": 12268,
+         "endTicksGame": 12518,
+         "advancedTicks": 250,
+         "initialFrame": 33969,
+         "lastFrame": 34218,
+         "advancedFrames": 250,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T21:23:38.0790003+00:00",
+         "completedAtUtc": "2026-10-08T21:23:48.1101686+00:00",
+         "message": "Advanced 250 game tick(s) across 250 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 12518
+         },
+         "operation": {
+          "OperationId": "op_032ce6a385c14a01bb38559ee1bc74c7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 10049
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_VaultRoot73797",
+           "def": "RM_VaultRoot",
+           "label": "Vault-root tree",
+           "x": 170,
+           "z": 174,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 190,
+           "maxHitPoints": 190
+          }
+         ],
+         "scanned": 37361,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {
+          "RM_VaultRoot": 1
+         },
+         "ticksGame": 12518,
+         "message": "1 of 1 matching thing(s) returned, 37361 examined.",
+         "operation": {
+          "OperationId": "op_d82875100d3a43638a1b3c9862c21218",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12518
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(250) -> 250 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_5342eb9ff3c94c20837f44a843700956",
+         "status": "completed",
+         "requestedTicks": 250,
+         "completedTicks": 250,
+         "remainingTicks": 0,
+         "startTicksGame": 12518,
+         "endTicksGame": 12768,
+         "advancedTicks": 250,
+         "initialFrame": 34228,
+         "lastFrame": 34477,
+         "advancedFrames": 250,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T21:23:48.2134143+00:00",
+         "completedAtUtc": "2026-10-08T21:23:57.8204914+00:00",
+         "message": "Advanced 250 game tick(s) across 250 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 12768
+         },
+         "operation": {
+          "OperationId": "op_aa83bf18611743a19bc870aa18b85b31",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9627
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 37203,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {},
+         "ticksGame": 12768,
+         "message": "NOTHING MATCHED. 37203 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_4606bd8a0f184c619eb69c99094f82d6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12768
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "WoodLog74794",
+           "def": "WoodLog",
+           "label": "Wood x25",
+           "x": 169,
+           "z": 173,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 25,
+           "hitPoints": 150,
+           "maxHitPoints": 150
+          }
+         ],
+         "scanned": 37203,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {
+          "WoodLog": 1
+         },
+         "ticksGame": 12768,
+         "message": "1 of 1 matching thing(s) returned, 37203 examined.",
+         "operation": {
+          "OperationId": "op_4206f2283b2846db9a2be75ae8dd060e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 30
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12768
+         }
+        }
+       },
+       {
+        "call": "WoodLog stacks",
+        "result": [
+         25
+        ]
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "harvest_yields_RawBerries_from_RM_Pusberry",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "beforeJobDef": "Wait_Wander",
+         "requestedJobDef": "Harvest",
+         "afterJobDef": "Harvest",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_9bef27a64a74499eb3361934de2d5d5c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17182
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 12768
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(250) -> 250 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_754728f047164300be5666452bb9ed9c",
+         "status": "completed",
+         "requestedTicks": 250,
+         "completedTicks": 250,
+         "remainingTicks": 0,
+         "startTicksGame": 12768,
+         "endTicksGame": 13018,
+         "advancedTicks": 250,
+         "initialFrame": 35518,
+         "lastFrame": 35767,
+         "advancedFrames": 250,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T21:24:15.0983092+00:00",
+         "completedAtUtc": "2026-10-08T21:24:24.6402007+00:00",
+         "message": "Advanced 250 game tick(s) across 250 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 13018
+         },
+         "operation": {
+          "OperationId": "op_976a725881154ceaae9517a2ba316a41",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 9561
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 37388,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {},
+         "ticksGame": 13018,
+         "message": "NOTHING MATCHED. 37388 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_23b5d2d985dd4b88839a13b6a533d959",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 13018
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RawBerries75976",
+           "def": "RawBerries",
+           "label": "Berries x11",
+           "x": 171,
+           "z": 173,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 11,
+           "hitPoints": 60,
+           "maxHitPoints": 60
+          }
+         ],
+         "scanned": 37388,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {
+          "RawBerries": 1
+         },
+         "ticksGame": 13018,
+         "message": "1 of 1 matching thing(s) returned, 37388 examined.",
+         "operation": {
+          "OperationId": "op_24bbf7959f0d4bd28b820796bb3a2fa9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 13018
+         }
+        }
+       },
+       {
+        "call": "RawBerries stacks",
+        "result": [
+         11
+        ]
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "harvest_yields_RawPotatoes_from_RM_Boilbulb",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "beforeJobDef": "GotoWander",
+         "requestedJobDef": "Harvest",
+         "afterJobDef": "Harvest",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_3c4a6557de8444b0b40e5f3913f62707",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17231
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 13018
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(250) -> 250 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_36301cae6cc44ea0a3cc0a17b1c93ab6",
+         "status": "completed",
+         "requestedTicks": 250,
+         "completedTicks": 250,
+         "remainingTicks": 0,
+         "startTicksGame": 13018,
+         "endTicksGame": 13268,
+         "advancedTicks": 250,
+         "initialFrame": 36814,
+         "lastFrame": 37063,
+         "advancedFrames": 250,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T21:24:42.0416295+00:00",
+         "completedAtUtc": "2026-10-08T21:24:48.2959965+00:00",
+         "message": "Advanced 250 game tick(s) across 250 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 13268
+         },
+         "operation": {
+          "OperationId": "op_8ce2bb6b13b94de3b47f68467176bea4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6285
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 37262,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {},
+         "ticksGame": 13268,
+         "message": "NOTHING MATCHED. 37262 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_1d6f21e695b042b186e12cffa58afa0e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 13268
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RawPotatoes76069",
+           "def": "RawPotatoes",
+           "label": "Potatoes x5",
+           "x": 173,
+           "z": 173,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 5,
+           "hitPoints": 60,
+           "maxHitPoints": 60
+          }
+         ],
+         "scanned": 37262,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 7,
+         "perDef": {
+          "RawPotatoes": 1
+         },
+         "ticksGame": 13268,
+         "message": "1 of 1 matching thing(s) returned, 37262 examined.",
+         "operation": {
+          "OperationId": "op_25098ea2f5ad4c4fb3ec6dbba7ee6159",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 13268
+         }
+        }
+       },
+       {
+        "call": "RawPotatoes stacks",
+        "result": [
+         5
+        ]
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "harvest_yields_Chemfuel_from_RM_Wartshrub",
+      "toggle": null,
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "beforeJobDef": "Wait_Wander",
+         "requestedJobDef": "Harvest",
+         "afterJobDef": "Harvest",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_224dd11d62b94740951ee99e254e1df8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17232
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 13268
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(250) -> 250 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_eb61501398c048d1976bf03ea168867a",
+         "status": "completed",
+         "requestedTicks": 250,
+         "completedTicks": 250,
+         "remainingTicks": 0,
+         "startTicksGame": 13268,
+         "endTicksGame": 13518,
+         "advancedTicks": 250,
+         "initialFrame": 38107,
+         "lastFrame": 38356,
+         "advancedFrames": 250,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T21:25:05.6942404+00:00",
+         "completedAtUtc": "2026-10-08T21:25:09.9772958+00:00",
+         "message": "Advanced 250 game tick(s) across 250 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 13518
+         },
+         "operation": {
+          "OperationId": "op_c1b0dd46ae72461fa976e45b9f28d69f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 4315
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 37363,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 8,
+         "perDef": {},
+         "ticksGame": 13518,
+         "message": "NOTHING MATCHED. 37363 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_374d4b4120724b7d8df8278aaf72c94c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 13518
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Chemfuel76324",
+           "def": "Chemfuel",
+           "label": "Chemfuel x4",
+           "x": 175,
+           "z": 173,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 4,
+           "hitPoints": 50,
+           "maxHitPoints": 50
+          }
+         ],
+         "scanned": 37363,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 8,
+         "perDef": {
+          "Chemfuel": 1
+         },
+         "ticksGame": 13518,
+         "message": "1 of 1 matching thing(s) returned, 37363 examined.",
+         "operation": {
+          "OperationId": "op_e8e97ba450bb46d687a0b3a9c5db8620",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 13518
+         }
+        }
+       },
+       {
+        "call": "Chemfuel stacks",
+        "result": [
+         4
+        ]
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Wasteland.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true
+ }
+}
