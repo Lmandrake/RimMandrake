@@ -1,0 +1,56 @@
+[
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "canon": "sketto",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.25,
+  "background": "transparent",
+  "priority": 0,
+  "owner_note": "Please follow canon closely and regenerate N and S. Yes, now do North and South. (2026-10-08) help out the sketto ... can be made into a flyer with a stable body.",
+  "id": "sketto_fly_master_v1",
+  "facings": [
+   "east"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
+  "derive_from": "longshade_rsw_sketto_v1_east",
+  "prompt": "Edit the attached accepted render of this exact sketto into its IN-FLIGHT pose. Keep the same individual: same head, same open fanged mouth with the two long curved tusk-fangs hanging from the upper jaw, same cream-pink skin, same tan banding, same amber veined wings, same painted matte style, same scale. Change only the pose: body held level and straight along a horizontal line as if gliding; neck extended forward in line with the body, head pointing right; all four thin spindly clawed legs folded tight up under the belly so they barely break the belly line; the very long whip-like tail held STRAIGHT and trailing directly behind, level with the body, as long as the body or longer, ending in its small fin-tuft (not coiled, not curled). Wings: all four narrow veined wings raised high at the top of the upstroke, two forewings and two hindwings, rooted at one fixed shoulder point; the near-side pair drawn in front of the body, the far-side pair behind it. Wing membranes pale and translucent-looking by paint alone: light amber membrane, darker veins, no glow, no blur, no motion streaks. Whole animal inside the canvas with margin. No ground, no shadow, no outline."
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "canon": "sketto",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.25,
+  "background": "transparent",
+  "priority": 0,
+  "owner_note": "Please follow canon closely and regenerate N and S. Yes, now do North and South. (2026-10-08) help out the sketto ... can be made into a flyer with a stable body.",
+  "id": "sketto_fly_master_v1",
+  "facings": [
+   "south"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
+  "derive_from": "sketto_fly_master_v1_east",
+  "prompt": "Front view, face toward the viewer: head toward the BOTTOM of the canvas with face and both tusk-fangs readable, body a straight vertical spine, tail trailing straight UP the canvas to its fin-tuft, all four wings spread out to both sides symmetrically and raised (upstroke), legs tucked out of sight under the body."
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "canon": "sketto",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.25,
+  "background": "transparent",
+  "priority": 0,
+  "owner_note": "Please follow canon closely and regenerate N and S. Yes, now do North and South. (2026-10-08) help out the sketto ... can be made into a flyer with a stable body.",
+  "id": "sketto_fly_master_v1",
+  "facings": [
+   "north"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
+  "derive_from": "sketto_fly_master_v1_east",
+  "prompt": "Rear view, seen from behind, no face or eyes visible: head toward the TOP of the canvas, back and spine visible, tail trailing straight DOWN the canvas to its fin-tuft, all four wings spread out to both sides symmetrically and raised (upstroke), legs tucked out of sight."
+ }
+]

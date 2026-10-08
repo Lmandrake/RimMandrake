@@ -137,3 +137,41 @@ Floors are measured from the donor's own Sketto, which has the same anatomy and 
 | `regen_ls_canon_sketto_flying_1_v1_south`, `flying_4_v1_{east,north,south}` | failed (worker exit 1, no image) | **Do not requeue.** Frame 4 is a copy of frame 2 in the new design, and frame 1 S comes from the new master |
 
 Replace them with the 12 jobs in §4/§5 plus the lock script. The accepted east (B, live since `e49edf505`) remains the identity source for all of it.
+
+## 8. Pilot built — 2026-10-08
+
+**Lock script:** `D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\art\flyer_lock.py`, with its selftest `selftest_flyer_lock.py` beside it (22/22 PASS; fixtures under `/home/mandrake/rm/scratch/BENCH/flyer_lock/selftest`). The script has three verbs:
+- `lock` is stage D. It aligns each frame to the plate (±8 px), rejects a re-posed body, keeps the wing pixels and writes the plate's exact RGBA everywhere else. It ping-pongs the frames, so frame 4 is a byte copy of frame 2.
+- `compose` is the layer recipe from the flyer study §3.1: wing-only layers over or under a wingless body.
+- `check` applies the §6 acceptance: the locked share against the floors E 0.45 / S 0.38 / N 0.38, plate pixels outside the wings 100% byte-identical, the 256² canvas, a margin of at least 6 px and the ping-pong rule.
+
+The selftest has a sanity probe: the same frames left unlocked score 0.0 plate identity, and redrawn bodies score a share of 0.002. Both fail, so the checker can fail.
+
+**Changes from §4–§5 needed to file the jobs:**
+1. **Row A is split into three rows.** If the row carries an explicit `derive_from`, `fill_queue` derives EVERY facing from that job. That would have made S and N edits of B, not of the E master. So E derives from `longshade_rsw_sketto_v1_east`, and S and N each derive from `sketto_fly_master_v1_east`.
+2. **The camera phrase "top-down" is removed from the S/N view lines and the wing prompts.** `common._FACING_CONTRADICTIONS` refuses any facing job that says "top-down", because the owner ruled that an overhead camera is never a facing. S now opens *"Front view, face toward the viewer:"* and N opens *"Rear view, seen from behind, no face or eyes visible:"*. The wing prompts say "north/south views". The rest of every line is verbatim. ⚠️ So the S/N masters are front and back views at vanilla elevation, not the donor's top-down views. If they lose the tail, that is the place to look.
+3. **The re-pose gate uses opaque coverage of the plate (≥ 0.92), not §4 C's "covered by non-wing pixels".** In the E level pose the wings lie along the body line and legitimately cover it, so the literal metric would reject the right answer. That literal metric is still reported as `body_cover`, for information only.
+4. `fill_queue` prepends its derive prefix (*"Derive this facing from the attached accepted master … Do not restyle."*) to every derived job. No canon image is attached to any of them, so the old CANON-REFERENCE redraw wiring (§1) is gone.
+
+**Filed (stage 1, priority 0):** `sketto_fly_master_v1_east`, `sketto_fly_master_v1_south` and `sketto_fly_master_v1_north`. The daemon holds S and N in `pending/` until the E master has a done manifest and PNG. Rows: `D:\Luke\dev\RimMandrake\Transient\sketto_pilot_2026-10-08\stage1_masters.json`.
+
+**Stage 2 is NOT filed, deliberately.** The queue can wait for a master to *finish*, but it cannot wait for the owner to *accept* it, and §4 makes his look at the three masters the gate before stage B. The nine rows (3 plates plus 6 wing poses, each `derive_from` its facing's master) are dry-run clean in `D:\Luke\dev\RimMandrake\Transient\sketto_pilot_2026-10-08\stage2_plates_wings.json`. Once he OKs the masters:
+
+    python3 src/RimMandrake/Utils/artpipe/fill_queue.py --input Transient/sketto_pilot_2026-10-08/stage2_plates_wings.json
+
+If a master is redone as v2, bump the `derive_from` values in that file first.
+
+**Then lock, per facing f ∈ east, south, north** (frame 1 is the master itself; `A=/mnt/d/Luke/dev/_artpipe/_artsrc`):
+
+    python3 src/RimMandrake/Utils/art/flyer_lock.py lock --facing f --prefix Sketto_Flying_ \
+      --plate $A/sketto_fly_plate_v1_f/sketto_fly_plate_v1_f.png \
+      --frame $A/sketto_fly_master_v1_f/sketto_fly_master_v1_f.png \
+      --frame $A/sketto_fly_wing2_v1_f/sketto_fly_wing2_v1_f.png \
+      --frame $A/sketto_fly_wing3_v1_f/sketto_fly_wing3_v1_f.png \
+      --out Transient/sketto_pilot_2026-10-08/locked --report Transient/sketto_pilot_2026-10-08/lock_f.json
+
+Exit 1 means a frame was re-posed or a floor was missed. The report says which. Nothing is installed into `src/` Textures. Install is a separate step, after the owner rules.
+
+**What the owner looks at, and where:**
+1. **Now (once rendered):** the three masters, at `D:\Luke\dev\_artpipe\_artsrc\sketto_fly_master_v1_east\sketto_fly_master_v1_east.png`, plus the `_south` and `_north` equivalents beside it. Check that each is the same cream-amber individual as B, with legs tucked, the tail straight and the wings up.
+2. **After stage 2 and the lock:** the 12 locked frames, in `D:\Luke\dev\RimMandrake\Transient\sketto_pilot_2026-10-08\locked\`, with the `lock_<f>.json` reports beside them.
