@@ -43,8 +43,8 @@
     },
     {
       "def": "BMT_BovineBeetle",
-      "disposition": "moved",
-      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: ROT_FLORA_FAUNA_VERDICTS_1 TASK 2 (2026-09-19) moved this species to the Lantern Deeps as its Grabber (RSW_BovineBeetle, RUT_LanternDeeps.xml) and removed it from RM_TheRot.xml's wildAnimals. This roster row was stale (still listed here under the dead donor name after the move); removed 2026-09-21."
+      "disposition": "cut:deleted-from-game",
+      "reason": "ROT_ROSTER_DEAD_DONOR_NAMES_1: ROT_FLORA_FAUNA_VERDICTS_1 TASK 2 (2026-09-19) moved this species to the Lantern Deeps as its Grabber (RSW_BovineBeetle, RUT_LanternDeeps.xml) and removed it from RM_TheRot.xml's wildAnimals. This roster row was stale (still listed here under the dead donor name after the move); removed 2026-09-21. | The species (RSW_BovineBeetle, the grabber) was deleted from the game 2026-10-08 (decision taken by question card)."
     },
     {
       "def": "BMT_Megakrill",

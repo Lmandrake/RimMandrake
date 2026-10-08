@@ -74,27 +74,6 @@
   </ThingDef>
 
   <!-- sorruth — pillar-rasp snail, uncommon shore-dredge. -->
-  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RM_SorruthCatch</defName>
-    <label>sorruth</label>
-    <description>A fist-sized, mineral-caked shell dredged from a Grey Sea pool margin — the pillar-rasp snail, still trailing a crust of the sea's own chemistry. Uncommon; most stay on their columns.</description>
-    <graphicData>
-      <texPath>Things/Item/ToxicMeat/ToxicMeat_b</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <statBases>
-      <Nutrition>0.12</Nutrition>
-      <MarketValue>6</MarketValue>
-      <Mass>0.35</Mass>
-    </statBases>
-    <comps>
-      <li Class="CompProperties_Rottable">
-        <daysToRotStart>3</daysToRotStart>
-        <rotDestroys>true</rotDestroys>
-      </li>
-    </comps>
-  </ThingDef>
-
   <!-- sallik — crustacean, common (1.2). "salt-hermit." Renamed from
        RUT_Sallik, GREYSEA_CATCH_TIER_RENAME_1. Suffixed Catch: RM_Sallik is
        the living floor pawn (RM_GreySeaFloorLife.xml). -->

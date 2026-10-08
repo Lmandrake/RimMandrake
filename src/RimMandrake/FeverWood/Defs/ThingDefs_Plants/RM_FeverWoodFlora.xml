@@ -94,37 +94,6 @@
   </ThingDef>
 
   <ThingDef ParentName="PlantBaseNonEdible">
-    <defName>RM_Skethral</defName>
-    <label>skethral</label>
-    <description>Shorter and wider than a thulvane, and visibly reaching: its heavy limbs grow horizontally toward its neighbours and fuse where they meet, so two skethrals read as one arch. Bark smooth and pale at the joins, scarred where limbs have knitted. This is the tree that grows the boughway roads — the in-fiction reason the crown is interlocked at all.</description>
-    <statBases>
-      <MaxHitPoints>140</MaxHitPoints>
-      <Flammability>0.3</Flammability>
-    </statBases>
-    <graphicData>
-      <texPath>Things/Plant/RM_Skethral/RM_Skethral_a</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <shadowData>
-        <volume>(0.3, 0.4, 0.3)</volume>
-      </shadowData>
-    </graphicData>
-    <selectable>true</selectable>
-    <pathCost>40</pathCost>
-    <plant>
-      <fertilityMin>0.5</fertilityMin>
-      <fertilitySensitivity>0.3</fertilitySensitivity>
-      <growDays>35</growDays>
-      <dieIfLeafless>false</dieIfLeafless>
-      <visualSizeRange>2.2~3.0</visualSizeRange>
-      <wildOrder>1</wildOrder>
-      <wildClusterRadius>3</wildClusterRadius>
-      <wildClusterWeight>5</wildClusterWeight>
-      <interferesWithRoof>true</interferesWithRoof>
-      <blockAdjacentSow>true</blockAdjacentSow>
-    </plant>
-  </ThingDef>
-
-  <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_Varnoth</defName>
     <label>varnoth</label>
     <description>Rooted in a mirror pool itself, on a tripod of prop-roots clear of the surface, its trunk leaning out over the water. Its lower bark is stained and polished to a wet black by the pool. Nothing grows beneath it. Its timber is the best in the biome — and it stands inside the reach, so reward and hazard are the same object.</description>

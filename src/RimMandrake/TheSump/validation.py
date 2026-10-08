@@ -11,7 +11,7 @@ CHAINS
                      notFound; held defs are reported UNMEASURED-by-hold, never as failures.
   settings_roundtrip every `public static` bool/float of RM_TheSumpSettings: default / write / restore (numerics compared numerically).
   biome_wiring       the BiomeDef's densities; UNMEASURED on a real map until the one terminal repaint (0 tiles by design).
-  map_mechanics      Deep Black mere, tar vault, moat/fuse post, dig lottery, tar beast, mouse trail, wick garden, dusk lock: UNMEASURED,
+  map_mechanics      Deep Black mere, tar vault, moat/fuse post, dig lottery, tar beast, mouse trail, dusk lock: UNMEASURED,
                      each naming the map/event the bridge cannot generate.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
@@ -440,9 +440,6 @@ def _build_suite():
         with t.component("sump_mouse_filth_trail", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'RUT_Filth_MouseTrack needs a sump mouse walking on tar (not yet measured live)')
-        with t.component("wick_garden_crop", beyond_toggle=True):
-            if _live(t):
-                _unmeasured(t, 'RUT_Plant_Wick resolves in defs_resolve; growth, glow and harvest need a sown plant and game days on a Sump map')
         with t.component("permanent_dusk_lock", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'RUT_SumpDuskLock/RUT_SumpWeather resolve, but their wiring patch targets the BiomeDef; the lock holding the sky at dusk needs an RM_TheSump map')

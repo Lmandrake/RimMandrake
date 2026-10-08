@@ -13,33 +13,15 @@ or in PathfindingFramework.*/VEF.AnimalBehaviours.* (neither mod active on
 this list), are dropped - the creature keeps its stats/body/art, not the
 donor-framework-only behaviour (pack defense hediff, lure-prey AI, filth
 trail, water-walker/floating, dig-periodically, custom thing-eater, animal
-spawner comps, hermaphroditic-mate job giver, corpse spawner). Two
-non-resident adult forms (RSW_RoyalRhino, RSW_ShatterjawBeetle) are ported
-as back-end evolveIntoPawnKindDef targets for their resident larva/pupa
-stages, decided "out" for biome residency but required for the vanilla
-evolve mechanism not to dangle - not added to any biome cast.
+spawner comps, hermaphroditic-mate job giver, corpse spawner). One
+non-resident adult form (RSW_RoyalRhino) is ported alongside its larva/pupa
+stages, decided "out" for biome residency - not added to any biome cast.
+(The shatterjaw beetle and its line were deleted 2026-10-08, owner by card.)
 Texture texPaths repathed to swanimals/BiomesTeam/<original path>, files
 copied verbatim from the donor mods' own Textures trees.
 
 -->
 <Defs>
-  <ThoughtDef>
-    <defName>RSW_AteRawGastropod</defName>
-    <thoughtClass>Thought_FoodEaten</thoughtClass>
-    <showBubble>true</showBubble>
-    <icon>Things/Mote/ThoughtSymbol/Food</icon>
-    <durationDays>1</durationDays>
-    <stages>
-      <li>
-        <label>ate raw gastropod</label>
-        <description>I had to eat raw gastropod. We should be cooking that kind of food before eating it, or at least add some salt.</description>
-        <baseMoodEffect>-2</baseMoodEffect>
-      </li>
-    </stages>
-    <nullifyingGenes>
-      <li MayRequire="Ludeon.RimWorld.Biotech">RobustDigestion</li>
-    </nullifyingGenes>
-  </ThoughtDef>
   <DamageDef ParentName="BluntBase" Name="RSW_BluntToxicAttackBase" Abstract="true">
     <additionalHediffs>
       <li>

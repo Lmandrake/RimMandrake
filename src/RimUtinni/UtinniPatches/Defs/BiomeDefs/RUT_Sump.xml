@@ -16,8 +16,7 @@
     its BiomeWiring patch, RUT_TarMoat/RUT_TarSpent, RUT_MoatFusePost,
     RUT_BeastBulge + its GenStep/Register/DreadRegistration, RUT_DigShaft,
     RUT_DigStratumTable, RUT_Filth_MouseTrack, RUT_Placeholder_SumpMouseRace/
-    RUT_Placeholder_SumpMouse, RUT_ThinkTree_SumpMouseWander, RUT_Plant_Wick,
-    RUT_WickStem) moved with their defNames UNCHANGED into mandrake.rm.thesump's
+    RUT_Placeholder_SumpMouse, RUT_ThinkTree_SumpMouseWander) moved with their defNames UNCHANGED into mandrake.rm.thesump's
     own Defs/ and Patches/ trees — this def's own references below (RM_Tarred
     via the shared EnvironmentalHazards modExtension, and the dusk lock wired
     externally) keep resolving exactly as before, since RUT_SumpDuskLock/

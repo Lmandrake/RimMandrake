@@ -948,8 +948,8 @@
     },
     {
       "def": "RSW_ImperialToad",
-      "disposition": "cut",
-      "reason": "Leaning Scrub sheet 2026-10-05 (owner): \"no longer needed\"; cut from RUT_AridShrubland too at f19fcfdcc (decision taken by question card)."
+      "disposition": "cut:deleted-from-game",
+      "reason": "Leaning Scrub sheet 2026-10-05 (owner): \"no longer needed\"; cut from RUT_AridShrubland too at f19fcfdcc (decision taken by question card). Deleted from the game 2026-10-08 (decision taken by question card): def, pawnkind and every reference removed."
     }
   ],
   "fauna": [

@@ -140,6 +140,11 @@
       "def": "JRWProtosolpuga",
       "disposition": "homeless-reserve",
       "reason": "dinosaur-mod lane, 0% recognizability survival (prep §10.4 deeper-cut)"
+    },
+    {
+      "def": "RSW_GlowSlug",
+      "disposition": "cut:deleted-from-game",
+      "reason": "Lantern Deeps sheet 2026-10-05 (owner): \"cut dont need\"; deleted from the game 2026-10-08 (decision taken by question card) and removed from RUT_FeverWood."
     }
   ],
   "fauna": [
@@ -157,13 +162,6 @@
       "def": "VFEI2_Megathrips",
       "law": "§4 borers eating cave-systems into living wood; small patient predator allowed by §4; Feverwood sheet 2026-10-08 (owner): \"Redo name and description.\" — renamed kasselith (invented), description rewritten in FeverWood_Rename.xml",
       "label": "kasselith"
-    },
-    {
-      "action": "keep",
-      "band": "sap-drinker",
-      "commonality": 0.5,
-      "def": "RSW_GlowSlug",
-      "law": "§4 sap-drinkers at the bark; spd 0.8 (MEASURED) — the stillness incarnate; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_GlowSlug to the already-ported, already-wired RSW_ name (RUT_FeverWood at 0.5)"
     },
     {
       "action": "adjust-keep",

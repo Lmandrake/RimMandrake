@@ -56,7 +56,6 @@
       <li><plant>RUT_ScorchedStars</plant><top>None</top></li>              <!-- hoarder, hard call 1 -->
       <li><plant>RUT_TreeMartyr</plant><top>None</top></li>
       <li><plant>RUT_HeatsinkFungus</plant><top>None</top></li>
-      <li><plant>RUT_Plant_Wick</plant><top>None</top></li>
       <li><plant>RUT_Placeholder_GreentideGiantTree</plant><top>None</top></li>
       <li><plant>RUT_TwinkleSpikeTestPlant</plant><top>None</top></li>
     </plants>
