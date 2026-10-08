@@ -5,10 +5,10 @@ Source: `Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json` (the RM_Lo
 ## Status
 - [x] decisions read
 - [x] install / purge
-- [ ] regen queued
+- [x] regen queued
 - [x] names / descriptions / tiers / cuts (descriptions; no new renames/tiers/cuts were asked today)
-- [ ] def changes
-- [ ] validate + selftests
+- [x] def changes (rest are follow-ups)
+- [x] validate + selftests (335/336; only JawaBench tool_metadata, known)
 - [ ] commits
 
 ## Log
@@ -27,3 +27,9 @@ Source: `Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json` (the RM_Lo
 ### Descriptions / sizes (done, sonnet helper, longshade_descriptions.md)
 - Fresh descriptions from the art: Oreclaw, Ski'ra'lim, Dunejelly (from pick D), Chorn.
 - Chorn drawSize 4.4 -> 5.0 (all stages x1.136, shadow scaled); Dewback adult 3 -> 4 (stages scaled; shadow not scaled).
+
+### Part 2 — regen (done, sonnet helper; see longshade_regen.md)
+- 63 jobs at priority 0 (`build_longshade_regen_jobs.py` -> `longshade_regen_jobs.json`), pending positions 314–376 of 388, behind every miasma_/regen_fw_/regen_gt_ job; canon first (314–368).
+- Canon: Sketto N/S + 4 flight frames, TeeMuss N/S (+east at proper res), Falumpaset N/S (+512 east), Nerf N/S, Dewback N/S (4-cell canvas), Uvak flight, Shyrack flight (replaces the stray `_44_` frame), Gorg variant L and FrilledGorg variants I/K N/S at new unwired paths GorgV_L / FrilledGorgV_I / _K.
+- Non-canon: Landopus N/S of the half-buried F (new path landopus_buried — slot is a question), Dakkra rest N/S (RM_Dakkra_rest, already wired as stationaryGraphicData), Chorn redo (5 cells, 1024), Venomvine redo (def also tints it dark — check on arrival).
+- Picks whose masters sit in artpipe failed/ were attached as canon_reference instead of derive_from (daemon fails derive-from-failed).

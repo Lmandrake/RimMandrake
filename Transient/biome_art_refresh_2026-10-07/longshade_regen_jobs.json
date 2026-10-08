@@ -1,0 +1,832 @@
+[
+ {
+  "id": "regen_ls_canon_sketto_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please follow canon closely and regenerate N and S\" RimWorld creature sprite of the Star Wars canon sketto, SOUTH view: a small, lean, dragonfly-like reptile: a slim elongated body, a long thin neck, a small narrow wedge-shaped head with a mouth full of fangs and two long curved tusk-like fangs hanging from the upper jaw, four narrow long translucent insect-like veined wings (two pairs), a very long thin whip-like tail as long as the body or longer ending in a small tuft or fan, and four thin spindly clawed legs. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Follow the canon closely. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "sketto",
+  "owner_note": "Please follow canon closely and regenerate N and S",
+  "drawsize": 1.25,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a1/a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto"
+ },
+ {
+  "id": "regen_ls_canon_sketto_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please follow canon closely and regenerate N and S\" RimWorld creature sprite of the Star Wars canon sketto, NORTH view: a small, lean, dragonfly-like reptile: a slim elongated body, a long thin neck, a small narrow wedge-shaped head with a mouth full of fangs and two long curved tusk-like fangs hanging from the upper jaw, four narrow long translucent insect-like veined wings (two pairs), a very long thin whip-like tail as long as the body or longer ending in a small tuft or fan, and four thin spindly clawed legs. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Follow the canon closely. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "sketto",
+  "owner_note": "Please follow canon closely and regenerate N and S",
+  "drawsize": 1.25,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a1/a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto"
+ },
+ {
+  "id": "regen_ls_canon_sketto_flying_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please follow canon closely and regenerate N and S\" RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a small, lean, dragonfly-like reptile: a slim elongated body, a long thin neck, a small narrow wedge-shaped head with a mouth full of fangs and two long curved tusk-like fangs hanging from the upper jaw, four narrow long translucent insect-like veined wings (two pairs), a very long thin whip-like tail as long as the body or longer ending in a small tuft or fan, and four thin spindly clawed legs. In flight, body level, legs tucked, wings raised high at the top of the upstroke. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the flying view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "sketto",
+  "owner_note": "Please follow canon closely and regenerate N and S",
+  "drawsize": 1.25,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a1/a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_1"
+ },
+ {
+  "id": "regen_ls_canon_sketto_flying_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please follow canon closely and regenerate N and S\" RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a small, lean, dragonfly-like reptile: a slim elongated body, a long thin neck, a small narrow wedge-shaped head with a mouth full of fangs and two long curved tusk-like fangs hanging from the upper jaw, four narrow long translucent insect-like veined wings (two pairs), a very long thin whip-like tail as long as the body or longer ending in a small tuft or fan, and four thin spindly clawed legs. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the flying view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "sketto",
+  "owner_note": "Please follow canon closely and regenerate N and S",
+  "drawsize": 1.25,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a1/a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_2"
+ },
+ {
+  "id": "regen_ls_canon_sketto_flying_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please follow canon closely and regenerate N and S\" RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a small, lean, dragonfly-like reptile: a slim elongated body, a long thin neck, a small narrow wedge-shaped head with a mouth full of fangs and two long curved tusk-like fangs hanging from the upper jaw, four narrow long translucent insect-like veined wings (two pairs), a very long thin whip-like tail as long as the body or longer ending in a small tuft or fan, and four thin spindly clawed legs. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the flying view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "sketto",
+  "owner_note": "Please follow canon closely and regenerate N and S",
+  "drawsize": 1.25,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a1/a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_3"
+ },
+ {
+  "id": "regen_ls_canon_sketto_flying_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please follow canon closely and regenerate N and S\" RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a small, lean, dragonfly-like reptile: a slim elongated body, a long thin neck, a small narrow wedge-shaped head with a mouth full of fangs and two long curved tusk-like fangs hanging from the upper jaw, four narrow long translucent insect-like veined wings (two pairs), a very long thin whip-like tail as long as the body or longer ending in a small tuft or fan, and four thin spindly clawed legs. In flight, body level, legs tucked, wings level and rising mid-upstroke. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the flying view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "sketto",
+  "owner_note": "Please follow canon closely and regenerate N and S",
+  "drawsize": 1.25,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a1/a1f3365ce9760d391504bee62a58f9779364598df485ad0d2bb76cedc3871227.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/sketto/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_4"
+ },
+ {
+  "id": "regen_ls_canon_teemuss_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_TeeMuss",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now make North and South and the proper resolutions. \" RimWorld creature sprite of the Star Wars canon tee-muss, EAST (side) view, REDRAWN AT THE PROPER FULL RESOLUTION (512x512): a long-legged, deep-chested camel-like ungulate with knobby knees, an arched neck carried forward, a long thin tail with a dark brush, mottled tan to sandy-brown short hide with a shaggy darker gold mane along neck and back, a heavy blunt wrinkled head with a short trunk-like nose boss, small horn nubs and a hooked dark lower tusk, long wide pointed dark ears bent back, and broad two-toed cream hooves. The FIRST attached image is the owner's accepted render at too low a resolution: reproduce that exact individual, pose and colouring, but sharp and detailed at full size. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "teemuss",
+  "owner_note": "Good! Now make North and South and the proper resolutions. ",
+  "drawsize": 3.0,
+  "oversize_reason": "drawSize 3.0 cells x 128 px/cell",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6a/6a35577644c24efbde61eb255afe01f4458996eb9a7f985e4dcf90641b3236a7.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/teemuss/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/TeeMuss/TeeMuss"
+ },
+ {
+  "id": "regen_ls_canon_teemuss_v1_ns",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_TeeMuss",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now make North and South and the proper resolutions. \" RimWorld creature sprite of the tee-muss at full resolution (512x512): a long-legged, deep-chested camel-like ungulate with knobby knees, an arched neck carried forward, a long thin tail with a dark brush, mottled tan to sandy-brown short hide with a shaggy darker gold mane along neck and back, a heavy blunt wrinkled head with a short trunk-like nose boss, small horn nubs and a hooked dark lower tusk, long wide pointed dark ears bent back, and broad two-toed cream hooves. Same individual as the accepted east render.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "teemuss",
+  "owner_note": "Good! Now make North and South and the proper resolutions. ",
+  "drawsize": 3.0,
+  "oversize_reason": "drawSize 3.0 cells x 128 px/cell",
+  "derive_from": "regen_ls_canon_teemuss_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/teemuss/wookieepedia_canon_1.webp",
+   "/mnt/d/Luke/dev/_artstore/6a/6a35577644c24efbde61eb255afe01f4458996eb9a7f985e4dcf90641b3236a7.png"
+  ],
+  "target_texpath": "swanimals/TeeMuss/TeeMuss"
+ },
+ {
+  "id": "regen_ls_canon_falumpaset_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Falumpaset",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now make N and S views.\" RimWorld creature sprite of the Star Wars canon falumpaset, EAST (side) view, redrawn at the def's full resolution (512x512) so the set matches: a huge barrel-bodied, heavy-rumped herbivore on long thick legs, a long thick downward-sloping neck and a smallish head held low with a droopy pendulous lip, small round ears and eyes, no horns; tan to mid-brown finely wrinkled short-haired hide with scattered dark brown spots and a lighter belly; broad splayed dark feet with darker lower legs; a short thin tail with a small tuft. The FIRST attached image is the owner's accepted render (256 px): reproduce that exact individual, pose and colouring, sharp at full size. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "falumpaset",
+  "owner_note": "Good! Now make N and S views.",
+  "drawsize": 4.0,
+  "oversize_reason": "drawSize 4.0 cells x 128 px/cell",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/00/005cc2e9131f6f4c52cd030dee215172dcbcd58f0b0db86980b8ba6153fd8785.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/falumpaset/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Falumpaset/Falumpaset"
+ },
+ {
+  "id": "regen_ls_canon_falumpaset_v1_ns",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Falumpaset",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now make N and S views.\" RimWorld creature sprite of the falumpaset: a huge barrel-bodied, heavy-rumped herbivore on long thick legs, a long thick downward-sloping neck and a smallish head held low with a droopy pendulous lip, small round ears and eyes, no horns; tan to mid-brown finely wrinkled short-haired hide with scattered dark brown spots and a lighter belly; broad splayed dark feet with darker lower legs; a short thin tail with a small tuft. Same individual as the accepted east render.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "falumpaset",
+  "owner_note": "Good! Now make N and S views.",
+  "drawsize": 4.0,
+  "oversize_reason": "drawSize 4.0 cells x 128 px/cell",
+  "derive_from": "regen_ls_canon_falumpaset_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/falumpaset/wookieepedia_canon_1.webp",
+   "/mnt/d/Luke/dev/_artstore/00/005cc2e9131f6f4c52cd030dee215172dcbcd58f0b0db86980b8ba6153fd8785.png"
+  ],
+  "target_texpath": "swanimals/Falumpaset/Falumpaset"
+ },
+ {
+  "id": "regen_ls_canon_nerf_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Nerf",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now do N and S too\" RimWorld creature sprite of the Star Wars canon nerf, SOUTH view (the female/default graphic): a heavy stocky bison-like bovine: humped shoulders higher than the rump, a big shaggy head carried low, long coarse thick curly deep chocolate-brown fur forming a heavy mane over shoulders and neck, short strong legs with dark hoof feet, two dark grey curved horns sweeping out and up, a broad dark grey muzzle, small eyes under the fur and a thin hairless rope-like tail. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "nerf",
+  "owner_note": "Good! Now do N and S too",
+  "drawsize": 2.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/ef/effceaee76228b401f0a77e1fb330c01a71c6509d2358315b6a3aa7732d98c7d.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/nerf/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Nerf/Nerf_f"
+ },
+ {
+  "id": "regen_ls_canon_nerf_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Nerf",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now do N and S too\" RimWorld creature sprite of the Star Wars canon nerf, NORTH view (the female/default graphic): a heavy stocky bison-like bovine: humped shoulders higher than the rump, a big shaggy head carried low, long coarse thick curly deep chocolate-brown fur forming a heavy mane over shoulders and neck, short strong legs with dark hoof feet, two dark grey curved horns sweeping out and up, a broad dark grey muzzle, small eyes under the fur and a thin hairless rope-like tail. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "nerf",
+  "owner_note": "Good! Now do N and S too",
+  "drawsize": 2.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/ef/effceaee76228b401f0a77e1fb330c01a71c6509d2358315b6a3aa7732d98c7d.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/nerf/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Nerf/Nerf_f"
+ },
+ {
+  "id": "regen_ls_canon_dewback_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Dewback",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now make North and South versions of that creature, and make it four cells wide.\" RimWorld creature sprite of the Star Wars canon dewback, EAST (side) view, drawn FOUR CELLS WIDE: the animal fills the full 512px canvas width (128 px per cell), a long, low-slung scaly reptile with a warm olive-green to yellow-green hide, darker and more mottled toward the back ridge, raised pebbled scale texture, a long heavy tail, a broad blunt-snouted head with a wide mouth and short thick legs built to carry a rider. The FIRST attached image is the owner's accepted render at only 256 px: reproduce that exact individual and colouring but redrawn large, sharp and detailed. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "dewback",
+  "owner_note": "Good! Now make North and South versions of that creature, and make it four cells wide.",
+  "drawsize": 4.0,
+  "oversize_reason": "owner: make it four cells wide; 4 cells x 128 px/cell = 512",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/98/983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dewback/wookieepedia_infobox.jpg"
+  ],
+  "target_texpath": "swanimals/Dewback/Dewback"
+ },
+ {
+  "id": "regen_ls_canon_dewback_v1_ns",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Dewback",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now make North and South versions of that creature, and make it four cells wide.\" RimWorld creature sprite of the dewback, drawn FOUR CELLS WIDE (fills the 512px canvas): a long, low-slung scaly reptile with a warm olive-green to yellow-green hide, darker and more mottled toward the back ridge, raised pebbled scale texture, a long heavy tail, a broad blunt-snouted head with a wide mouth and short thick legs built to carry a rider. Same individual as the accepted east render.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "dewback",
+  "owner_note": "Good! Now make North and South versions of that creature, and make it four cells wide.",
+  "drawsize": 4.0,
+  "oversize_reason": "owner: make it four cells wide; 4 cells x 128 px/cell = 512",
+  "derive_from": "regen_ls_canon_dewback_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/dewback/wookieepedia_infobox.jpg",
+   "/mnt/d/Luke/dev/_artstore/98/983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df.png"
+  ],
+  "target_texpath": "swanimals/Dewback/Dewback"
+ },
+ {
+  "id": "regen_ls_canon_uvak_flying_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Uvak",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Will need to redo flying art too\" RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a wyvern-like flying mount: a heavy scaled reptilian torso, strong hind legs with dark four-toed talons, a long thick tapering tail, a long neck, a bird-like head with a long thick hooked raven-like beak and a wide red mouth interior, an emerald eye, dark grey pebbled hide and large bat-style leathery wings with visible finger-bone ribs and red-orange to pink membrane. In flight, body level, legs tucked, wings raised high at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "uvak",
+  "owner_note": "Will need to redo flying art too",
+  "drawsize": 3.5,
+  "derive_from": "longshade_rsw_uvak_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/uvak/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Uvak/Uvak_Flying_1"
+ },
+ {
+  "id": "regen_ls_canon_uvak_flying_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Uvak",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Will need to redo flying art too\" RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a wyvern-like flying mount: a heavy scaled reptilian torso, strong hind legs with dark four-toed talons, a long thick tapering tail, a long neck, a bird-like head with a long thick hooked raven-like beak and a wide red mouth interior, an emerald eye, dark grey pebbled hide and large bat-style leathery wings with visible finger-bone ribs and red-orange to pink membrane. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "uvak",
+  "owner_note": "Will need to redo flying art too",
+  "drawsize": 3.5,
+  "derive_from": "longshade_rsw_uvak_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/uvak/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Uvak/Uvak_Flying_2"
+ },
+ {
+  "id": "regen_ls_canon_uvak_flying_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Uvak",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Will need to redo flying art too\" RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a wyvern-like flying mount: a heavy scaled reptilian torso, strong hind legs with dark four-toed talons, a long thick tapering tail, a long neck, a bird-like head with a long thick hooked raven-like beak and a wide red mouth interior, an emerald eye, dark grey pebbled hide and large bat-style leathery wings with visible finger-bone ribs and red-orange to pink membrane. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "uvak",
+  "owner_note": "Will need to redo flying art too",
+  "drawsize": 3.5,
+  "derive_from": "longshade_rsw_uvak_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/uvak/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Uvak/Uvak_Flying_3"
+ },
+ {
+  "id": "regen_ls_canon_uvak_flying_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Uvak",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Will need to redo flying art too\" RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a wyvern-like flying mount: a heavy scaled reptilian torso, strong hind legs with dark four-toed talons, a long thick tapering tail, a long neck, a bird-like head with a long thick hooked raven-like beak and a wide red mouth interior, an emerald eye, dark grey pebbled hide and large bat-style leathery wings with visible finger-bone ribs and red-orange to pink membrane. In flight, body level, legs tucked, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "uvak",
+  "owner_note": "Will need to redo flying art too",
+  "drawsize": 3.5,
+  "derive_from": "longshade_rsw_uvak_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/uvak/wookieepedia_canon_1.webp"
+  ],
+  "target_texpath": "swanimals/Uvak/Uvak_Flying_4"
+ },
+ {
+  "id": "regen_ls_canon_shyrack_flying_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Shyrack",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"going to have to regenerate those flyers\" RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a bat/pterosaur-like eyeless flier: a heavy bulbous pot-bellied body, two large leathery bat wings with dark bony struts and purple membrane, a blunt wrinkled domed pinkish-tan head with deep folds and a toothed mouth and NO eyes, long thin hind legs with large hooked dark talons, a thin sinuous tail, a tan pinkish-flesh body with blue-violet limbs. In flight, body level, legs tucked, wings raised high at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "shyrack",
+  "owner_note": "going to have to regenerate those flyers",
+  "drawsize": 2.0,
+  "derive_from": "longshade_rsw_shyrack_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shyrack/wookieepedia_legends_1.webp"
+  ],
+  "target_texpath": "swanimals/Shyrack/Shyrack_Flying_1"
+ },
+ {
+  "id": "regen_ls_canon_shyrack_flying_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Shyrack",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"going to have to regenerate those flyers\" RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a bat/pterosaur-like eyeless flier: a heavy bulbous pot-bellied body, two large leathery bat wings with dark bony struts and purple membrane, a blunt wrinkled domed pinkish-tan head with deep folds and a toothed mouth and NO eyes, long thin hind legs with large hooked dark talons, a thin sinuous tail, a tan pinkish-flesh body with blue-violet limbs. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "shyrack",
+  "owner_note": "going to have to regenerate those flyers",
+  "drawsize": 2.0,
+  "derive_from": "longshade_rsw_shyrack_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shyrack/wookieepedia_legends_1.webp"
+  ],
+  "target_texpath": "swanimals/Shyrack/Shyrack_Flying_2"
+ },
+ {
+  "id": "regen_ls_canon_shyrack_flying_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Shyrack",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"going to have to regenerate those flyers\" RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a bat/pterosaur-like eyeless flier: a heavy bulbous pot-bellied body, two large leathery bat wings with dark bony struts and purple membrane, a blunt wrinkled domed pinkish-tan head with deep folds and a toothed mouth and NO eyes, long thin hind legs with large hooked dark talons, a thin sinuous tail, a tan pinkish-flesh body with blue-violet limbs. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "shyrack",
+  "owner_note": "going to have to regenerate those flyers",
+  "drawsize": 2.0,
+  "derive_from": "longshade_rsw_shyrack_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shyrack/wookieepedia_legends_1.webp"
+  ],
+  "target_texpath": "swanimals/Shyrack/Shyrack_Flying_3"
+ },
+ {
+  "id": "regen_ls_canon_shyrack_flying_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Shyrack",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"going to have to regenerate those flyers\" RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: a bat/pterosaur-like eyeless flier: a heavy bulbous pot-bellied body, two large leathery bat wings with dark bony struts and purple membrane, a blunt wrinkled domed pinkish-tan head with deep folds and a toothed mouth and NO eyes, long thin hind legs with large hooked dark talons, a thin sinuous tail, a tan pinkish-flesh body with blue-violet limbs. In flight, body level, legs tucked, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "canon": "shyrack",
+  "owner_note": "going to have to regenerate those flyers",
+  "drawsize": 2.0,
+  "derive_from": "longshade_rsw_shyrack_v1_east",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/shyrack/wookieepedia_legends_1.webp"
+  ],
+  "target_texpath": "swanimals/Shyrack/Shyrack_Flying_4"
+ },
+ {
+  "id": "regen_ls_canon_gorg_l_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Make sure all variants have N, E, S\" RimWorld creature sprite, SOUTH view of a colour/pattern VARIANT of a gorg, a hunched, long-clawed, big-headed bipedal predator-lizard of the desert. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Good! Make sure all variants have N, E, S",
+  "drawsize": 1.05,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/e4/e4bb1cc09df37068bd8d917806f806df22624d153f98e197e381d6d7d8ef775a.png"
+  ],
+  "target_texpath": "swanimals/Gorg/GorgV_L"
+ },
+ {
+  "id": "regen_ls_canon_gorg_l_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gorg",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Make sure all variants have N, E, S\" RimWorld creature sprite, NORTH view of a colour/pattern VARIANT of a gorg, a hunched, long-clawed, big-headed bipedal predator-lizard of the desert. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Good! Make sure all variants have N, E, S",
+  "drawsize": 1.05,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/e4/e4bb1cc09df37068bd8d917806f806df22624d153f98e197e381d6d7d8ef775a.png"
+  ],
+  "target_texpath": "swanimals/Gorg/GorgV_L"
+ },
+ {
+  "id": "regen_ls_canon_frilledgorg_i_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Make sure all the variants have N, E, S\" RimWorld creature sprite, SOUTH view of a colour/pattern VARIANT of a frilled gorg, a gorg with a ragged frill of leaf-like flaps around its head and body. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Good! Make sure all the variants have N, E, S",
+  "drawsize": 1.5,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6a/6a6703fea4af107b96be3424a5fb6bb8d37bd6193e1ad7321dc9b229e07e5d4f.png"
+  ],
+  "target_texpath": "swanimals/FrilledGorg/FrilledGorgV_I"
+ },
+ {
+  "id": "regen_ls_canon_frilledgorg_i_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Make sure all the variants have N, E, S\" RimWorld creature sprite, NORTH view of a colour/pattern VARIANT of a frilled gorg, a gorg with a ragged frill of leaf-like flaps around its head and body. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Good! Make sure all the variants have N, E, S",
+  "drawsize": 1.5,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6a/6a6703fea4af107b96be3424a5fb6bb8d37bd6193e1ad7321dc9b229e07e5d4f.png"
+  ],
+  "target_texpath": "swanimals/FrilledGorg/FrilledGorgV_I"
+ },
+ {
+  "id": "regen_ls_canon_frilledgorg_k_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Make sure all the variants have N, E, S\" RimWorld creature sprite, SOUTH view of a colour/pattern VARIANT of a frilled gorg, a gorg with a ragged frill of leaf-like flaps around its head and body. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Good! Make sure all the variants have N, E, S",
+  "drawsize": 1.5,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/55/55679c277b67fb6c05138c045871ab36ae4fb38c84b1777fad80871bdf5eac93.png"
+  ],
+  "target_texpath": "swanimals/FrilledGorg/FrilledGorgV_K"
+ },
+ {
+  "id": "regen_ls_canon_frilledgorg_k_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_FrilledGorg",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Make sure all the variants have N, E, S\" RimWorld creature sprite, NORTH view of a colour/pattern VARIANT of a frilled gorg, a gorg with a ragged frill of leaf-like flaps around its head and body. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Good! Make sure all the variants have N, E, S",
+  "drawsize": 1.5,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/55/55679c277b67fb6c05138c045871ab36ae4fb38c84b1777fad80871bdf5eac93.png"
+  ],
+  "target_texpath": "swanimals/FrilledGorg/FrilledGorgV_K"
+ },
+ {
+  "id": "regen_ls_x_landopus_buried_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "JOE_Landopus",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good. Now make N and S.\" RimWorld creature sprite, SOUTH view: a bad-tempered, sand-coloured land octopus-squid HALF-BURIED IN RIPPLED SAND: the lower body and most of the arms buried, only the upper mantle with its scatter of odd vivid blue ringed circles, the watchful eyes, a few long slender tentacle tips and the wicked slender parrot-like beak emerging from the surface. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Same half-buried-in-sand look. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground -- the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked",
+  "owner_note": "Good. Now make N and S.",
+  "drawsize": 0.8,
+  "derive_from": "ls_regen_JOE_Landopus_swim_v1_east",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9a/9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/landopus/landopus_buried"
+ },
+ {
+  "id": "regen_ls_x_landopus_buried_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "JOE_Landopus",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good. Now make N and S.\" RimWorld creature sprite, NORTH view: a bad-tempered, sand-coloured land octopus-squid HALF-BURIED IN RIPPLED SAND: the lower body and most of the arms buried, only the upper mantle with its scatter of odd vivid blue ringed circles, the watchful eyes, a few long slender tentacle tips and the wicked slender parrot-like beak emerging from the surface. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Same half-buried-in-sand look. North is a true rear view from directly behind: no face, no eyes visible. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground -- the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked",
+  "owner_note": "Good. Now make N and S.",
+  "drawsize": 0.8,
+  "derive_from": "ls_regen_JOE_Landopus_swim_v1_east",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9a/9a6b1b3634b21b475917af6a3955c5721742d8c8c499ec2af1bf09f00e8ceb17.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/landopus/landopus_buried"
+ },
+ {
+  "id": "regen_ls_x_dakkra_rest_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dakkra",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now make North and South versions of C\" RimWorld creature sprite, SOUTH view: the dakkra, a close, low shadow-ambush predator the size of a large dog: lean and low with a wide mouth and heavy forelimbs, dark slate hide with a warm rust line down the spine, AT REST in the shade: every spine fin fully erected and flared up in a tall fan of thin veined rust-to-apricot membrane and the tail-tip fan fully spread, crouched low and coiled in ambush. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Fins flared. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground -- the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked",
+  "owner_note": "Good! Now make North and South versions of C",
+  "drawsize": 2.0,
+  "derive_from": "ls_regen_RM_Dakkra_rest_v1_east",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/84/84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest"
+ },
+ {
+  "id": "regen_ls_x_dakkra_rest_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dakkra",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now make North and South versions of C\" RimWorld creature sprite, NORTH view: the dakkra, a close, low shadow-ambush predator the size of a large dog: lean and low with a wide mouth and heavy forelimbs, dark slate hide with a warm rust line down the spine, AT REST in the shade: every spine fin fully erected and flared up in a tall fan of thin veined rust-to-apricot membrane and the tail-tip fan fully spread, crouched low and coiled in ambush. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Fins flared. North is a true rear view from directly behind: no face, no eyes visible. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground -- the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked",
+  "owner_note": "Good! Now make North and South versions of C",
+  "drawsize": 2.0,
+  "derive_from": "ls_regen_RM_Dakkra_rest_v1_east",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/84/84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest"
+ },
+ {
+  "id": "regen_ls_x_chorn_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Chorn",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make this thing 5 cells wide please, regenerate but keep roughly the same otherwise. Regenerate description.\" RimWorld creature sprite, the chorn (formerly sollak): a towering, long-legged giant five cells across with a flat rocky slab of a back, a raised hump over the shoulders and a long hooked beaked head on a thick neck; hide cracked and mottled ochre and rust like sun-baked stone; a standing herd is its own patch of shade. The attached image is the current in-game EAST render: keep roughly the same animal, colouring and anatomy, but draw it FIVE CELLS WIDE -- the animal fills the full width of the 1024px canvas (the def draws it at 5.0 cells), huge and monumental, sharp, detailed. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground -- the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked",
+  "owner_note": "Make this thing 5 cells wide please, regenerate but keep roughly the same otherwise. Regenerate description.",
+  "drawsize": 5.0,
+  "oversize_reason": "owner: five cells wide; 5 x 128 = 640 px -> 1024 canvas (next power of two)",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/21/210138f8e50ee80e046f4b79d6adb376d482e0df884b7094f577292a290f23d1.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/RM_Sollak/RM_Sollak"
+ },
+ {
+  "id": "regen_ls_x_venomvine_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Venomvine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"REDO THE VENOM VINE!! Totally wrong art.\" RimWorld plant sprite, painterly vanilla-RimWorld flora style: the desert venomvine, a low, matted tangle of thick woody rust-dark runners sprawling flat across the ground, the whole plant in dark rust-umber and dried-blood brown with NO green anywhere. Short recurved thorns line the undersides of the runners in paler bone-tan and catch the light so the hooks read clearly. A few runners lift slightly into low arches but nothing stands tall: a wide, snarled, ankle-high thicket that reads as hostile and territorial at a glance -- a thorny vine, absolutely NOT a pillar, arm, column or limb. Single plant, one tangle, seen at the slight isometric RimWorld camera angle, centred, no ground scenery.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically/botanically believable, never cartoonish; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "long shade register: an open desert of ochre deep-sand sheets and pale-gold cracked hardpan under a perpetual golden hour: the sun pinned on the horizon forever, apricot at the horizon and rose, the last ten minutes before dusk that never end; lit surfaces warm amber, ochre and rust, every shaded fold a cool violet-blue (that warm/cool split is the signature); light the subject with a warm apricot key from the front-top and cool violet in its own undersides and recesses, but bake NO cast shadow onto the ground -- the engine draws the long parallel shadows; no night, no rain and nothing rain-slicked",
+  "owner_note": "REDO THE VENOM VINE!! Totally wrong art.",
+  "drawsize": 1.2,
+  "target_texpath": "Things/Plant/RM_Venomvine"
+ }
+]
