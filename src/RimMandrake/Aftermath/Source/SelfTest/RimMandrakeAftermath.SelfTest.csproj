@@ -69,6 +69,7 @@
     <!-- The REAL production source files, compiled in directly - none of
          these have any Find/Game/DefDatabase dependency at the call sites
          exercised here. -->
+    <Compile Include="..\Kernel\RM_AftermathKernel.cs" />
     <Compile Include="..\BattleOutcome.cs" />
     <Compile Include="..\BattleOutcomeClassifier.cs" />
     <Compile Include="..\AftermathTriggerKind.cs" />
