@@ -141,3 +141,15 @@ Each has a static guard seen RED on a planted edit. Rebuilt clean; fuzz 14,300/0
 ## Only a live run can prove
 
 (pending)
+
+## Pass 4 — fresh full read, no new kind
+
+Read all 11 C# files, both kernels, the 5 def files, the patch, About, settings screen and the language file fresh (no
+reviewer, no bridge). Checked: kernel acyclicity and relay order, hysteresis/held/strict sets, Generate budget, aim
+provenance (aimFrom/aimMapId, aimDeferred), save/load of positional lists, mapgen order (engine MapGenerator: FinalizeInit
+runs before MapGenerated, so Reverify reads a fresh shade grid; BiomeDef.extraGenSteps exists), Translate arity of all 108
+keys against the language file (0 missing, 0 unused, every placeholder count matches), XML inheritance, patch xpaths.
+Results: validation.py STATIC PASS (0), fuzz 14,300/0 (foreground, one run). No code changed, DLL untouched.
+No new KIND of problem. One nit left unfixed on purpose: a hand-edited negative `heliostatPower` in the settings file makes
+heliostats produce power (the slider is 50-500; no other setting can benefit from an out-of-range value). Same class as the
+settings clamps already swept in pass 1, so it is not a new kind.
