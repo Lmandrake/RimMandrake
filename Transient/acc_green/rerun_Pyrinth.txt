@@ -1,0 +1,25 @@
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Pyrinth_20261008T141210Z.html
+CHAIN defs_resolve None {"name": "defs_resolve", "situational": null, "modal_check": null}
+    {"name": "control_probe_can_say_absent", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "0 of 1 def(s) resolved; 1 not found", "requested": 1, "f
+    {"name": "every_deployed_def_resolves", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "13 of 13 def(s) resolved", "requested": 13, "foundCount":
+CHAIN settings_roundtrip None {"name": "settings_roundtrip", "situational": null, "modal_check": null}
+    {"name": "settings_probe_finds_fields", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN ore_and_donor_identity None {"name": "ore_and_donor_identity", "situational": null, "modal_check": null}
+    {"name": "mineable_ore_yield_matches_xml", "toggle": null, "beyond_toggle": true, "verdict": "UNMEASURED", "detail": "UNMEASURED: get_defs returned no mineable fields: {'mineableThing': '(no such field)', 'mineableYield': '(no such field)'}", "evidence": [{"ca
+CHAIN furniture_and_weapon None {"name": "furniture_and_weapon", "situational": null, "modal_check": null}
+    {"name": "torch_family_glows_heats_and_carries_the_ladder", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "flame_furniture_gives_meditation_focus", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "spark_effecters_resolve_to_attached_motes_that_fire", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "pyrinth_blade_tools_hit_and_the_edge_and_point_sear", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "every_reference_and_patch_target_resolves_inside_the_pack", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "no_finding_escapes_the_five_bars_above", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "torch_family_glow_and_heat_in_play", "toggle": null, "beyond_toggle": true, "verdict": "UNMEASURED", "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped
+    {"name": "pyrinth_blade_damage_in_a_fight", "toggle": null, "beyond_toggle": true, "verdict": "UNMEASURED", "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped nu
+    {"name": "medieval_overhaul_heater_cost_patch", "toggle": null, "beyond_toggle": true, "verdict": "UNMEASURED", "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shippe
+    {"name": "royalty_throne_room_patch", "toggle": null, "beyond_toggle": true, "verdict": "UNMEASURED", "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped numbers,
+    {"name": "lantern_deeps_scatter_gate", "toggle": null, "beyond_toggle": true, "verdict": "UNMEASURED", "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped numbers
+CHAIN every_shipped_def_reads_back None {"name": "every_shipped_def_reads_back", "situational": null, "modal_check": null}
+    {"name": "every_shipped_def_is_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "13 of 13 def(s) resolved", "requested": 13, "foundCount":
+    {"name": "shipped_scalar_fields_match_xml", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "2 of 2 def(s) resolved", "requested": 2, "foundCount"
+ALL_GREEN False FINDINGS 0
