@@ -254,6 +254,10 @@ def _build_suite():
         if value is not None:
             kw["value"] = str(value)
         r = t.session.call("jawa/mod_settings_field", **kw)
+        if action == "set" and isinstance(r, dict) and r.get("success"):
+            # jawa/mod_settings_field only writes the static; the mod's own refresh is Mod.WriteSettings -> RefreshAllMaps,
+            # which the settings window calls and the bridge does not (MEASURED 2026-10-08: toggle off left 10 blockers).
+            t.session.call("jawa/static_call", type="RimMandrake.HugeThings.MapComponent_HugeFootprints", method="RefreshAllMaps")
         return r if isinstance(r, dict) else {}
 
     def _put(t, field, value):
@@ -568,8 +572,7 @@ def _build_suite():
                     _unmeasured(t, "the un-tiered control (%s) left filth or lost plants (%r): the lane is not clean, so the "
                                    "differential is invalid" % (CONTROL, m))
                 elif m["beast_filth"] < 1:
-                    raise ExpectationFailed("a %s walked a 15-cell lane and left no rubble (0.35 chance per cell step makes "
-                                            "this ~1 in 10^3): %r" % (BEAST, m))
+                    raise ExpectationFailed("%r: a %s walked a 15-cell lane and left no rubble (0.35 chance per cell step makes this ~1 in 10^3)" % (m, BEAST))
                 elif m["beast_plants"] >= 6:
                     raise ExpectationFailed("a %s walked over six 5-HP plants and crushed none: %r" % (BEAST, m))
         with t.component("wake_off_leaves_no_trail", toggle="wakeEnabled"):
