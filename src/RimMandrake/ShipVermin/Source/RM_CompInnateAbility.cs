@@ -43,19 +43,15 @@ namespace RimMandrake.ShipVermin
         public override void CompTickRare()
         {
             base.CompTickRare();
-            if (granted || !ShipVerminSettings.fuelSpewEnabled)
+            switch (RM_VerminKernel.InnateGrant(granted, ShipVerminSettings.fuelSpewEnabled, Props.ability == null, parent is Pawn))
             {
-                return;
+                case RM_VerminKernel.Grant.Nothing:
+                    return;
+                case RM_VerminKernel.Grant.MarkGrantedOnly:
+                    granted = true;
+                    return;
             }
-            if (Props.ability == null)
-            {
-                granted = true;
-                return;
-            }
-            if (!(parent is Pawn pawn))
-            {
-                return;
-            }
+            Pawn pawn = (Pawn)parent;
             if (pawn.abilities == null)
             {
                 pawn.abilities = new Pawn_AbilityTracker(pawn);
