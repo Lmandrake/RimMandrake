@@ -77,3 +77,19 @@ Filed `LEANINGSCRUB_VENOMVINE_SITTING_1` (for BENCH, needs owner + game up). It 
 | `RSW_Skorra` | hold |  | Just cut this, not needed | **cut** | old name of RM_Skorra; same cut |
 | `RSW_Urusai` | C | IN GAME — SWBestiary | Redo to canon imagery | **art-queued** | waits on artpipe: 6 job file(s) pending (regen_ls2_canon_urusai…) |
 | `RSW_Whisperbird` | F | render leaningscrub_whisperbird_v1 — failed c | Good! Now north, south, and flying frames | **art-queued** | east is live; north/south + flying frames: 14 job files pending (regen_ls2_canon_whisperbird…) |
+
+## Follow-ups 2026-10-08
+
+**Art queued at priority 0** (via `fill_queue.py`, rows in `Transient/leaningscrub_ls3_jobs_2026-10-08.json`; each carries his sheet note verbatim as `owner_note`, the picked column's art as `canon_reference`, canon entry where one exists). 19 job files:
+- `ls3_fuzz_{a,b}_v1`, `ls3_tanglefuzz_{a,b}_v1`, `ls3_whipfuzz_{a,b}_v1` (variations of the picked look)
+- `ls3_wildhealroot_{a,b}_v1` (more realistic and special, variations)
+- `ls3_nysyllin_{a,b}_v1` (realistic, two variants, canon `nysillin`)
+- `ls3_pufferpig_v1_{east,south,north}`, `ls3_qormot_v1_{east,south,north}` (more realistic, canon entries)
+- `ls3_ronto_v1_{east,south,north}` (one variant, canon `ronto`)
+
+**Def edits**
+- `RSW_Kreetle` (our SWBestiary def): all three life stages' drawSize scaled to 0.15 / 0.22 / 0.30 (adult 1.0 -> 0.3, body and dessicated). The report said adult was 0.75; that is the juvenile stage, the adult was 1.0.
+- `RM_Durrok` description rewritten to the image (low barrel body, no hump, no visible head, glossy hair ropes, lichen mats): `src/RimStarWars/SWBestiary/Defs/DesertPort/RSW_DesertPortMisc_Races.xml`.
+- `RM_Dustflutter` wildGroupSize 8~20 -> 40~100 ("great numbers"; its description already says a hundred): `src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml`. drawSize 0.3 was already done.
+
+**Not done: `RSW_Scurrier` install.** The ruling is contradictory on the sheet: row pick C, but the per-graphic picks keep E for the female (live, PROTECTED owner-kept `Scurrier_f`) and B for the male. Installing C would overwrite a protected owner-kept picture, so nothing was installed. Needs his answer: is C meant to replace E?

@@ -815,7 +815,7 @@
     <label>dustflutter</label>
     <race>RM_Dustflutter</race>
     <combatPower>4</combatPower>
-    <wildGroupSize>8~20</wildGroupSize>
+    <wildGroupSize>40~100</wildGroupSize>
     <ecoSystemWeight>0.02</ecoSystemWeight>
     <lifeStages>
       <li>
