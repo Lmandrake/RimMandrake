@@ -75,11 +75,15 @@
         <shaderType>EdgeDetect</shaderType>
         <drawSize>2</drawSize>
       </blueprintGraphicData>
+      <!-- doorTopGraphic removed: its textures (…_Top) were never installed, so the game logged a missing texture and drew a bad graphic.
+           The renders sit in artpipe _artsrc (RUT_AncientAirlock_Top east/north/south, Large_Top east/south; Large_Top north FAILED);
+           put this block back when `art install` lands them:
       <doorTopGraphic>
         <texPath>Things/Building/Ancient/RUT_AncientAirlock_Top</texPath>
         <graphicClass>Graphic_Multi</graphicClass>
         <drawSize>(2.2, 2.2)</drawSize>
       </doorTopGraphic>
+      -->
     </building>
     <comps>
       <li Class="CompProperties_Forbiddable">
@@ -149,11 +153,15 @@
         <shaderType>EdgeDetect</shaderType>
         <drawSize>(2.6, 3.1)</drawSize>
       </blueprintGraphicData>
+      <!-- doorTopGraphic removed: its textures (…_Top) were never installed, so the game logged a missing texture and drew a bad graphic.
+           The renders sit in artpipe _artsrc (RUT_AncientAirlock_Top east/north/south, Large_Top east/south; Large_Top north FAILED);
+           put this block back when `art install` lands them:
       <doorTopGraphic>
         <texPath>Things/Building/Ancient/RUT_AncientAirlock_Large_Top</texPath>
         <graphicClass>Graphic_Multi</graphicClass>
         <drawSize>(3, 2.4)</drawSize>
       </doorTopGraphic>
+      -->
     </building>
     <comps>
       <li Class="CompProperties_Forbiddable">

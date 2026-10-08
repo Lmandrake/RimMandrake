@@ -19,6 +19,10 @@
   live-effect deliverable) patches the LIVE donor def directly instead === see
   src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepGatePyrinth.xml.</description>
 
+  <incompatibleWith>
+    <li>det.epochspyrinth</li>
+  </incompatibleWith>
+
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Royalty</li>
