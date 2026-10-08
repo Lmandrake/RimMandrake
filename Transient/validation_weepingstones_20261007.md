@@ -1,0 +1,31 @@
+# WeepingStones validation (Approach B), 2026-10-07 - DONE, nothing committed
+
+## Kernels (Verse-free, `src/RimMandrake/WeepingStones/Source/Kernel/`, all in RM_WeepingStones.csproj)
+- `RM_PoolKernel.cs` - stocked-pool READ gauge (`RM_PoolStockState` enum moved here), feed clock (UnfedDays / NeedsFeed), and the per-pulse dice `Decide` (starvation decay, vhorrin emergence crowded 0.02 / crashed 0.01 x odds, vizhik escape) with the original RNG consumption order. RM_MapComponent_PoolStock.Pulse and RM_PoolBody call it; the pulse now applies the kernel's decisions (kill / convert / escape by index).
+- `RM_CondenserKernel.cs` - walking-condenser phase machine (Settled -> Waiting -> Walking -> Settled, no-site fallback, arrival), pool growth radius, the drying schedule, ancient-condenser water accumulator. `RM_CondenserPhase` moved here. RM_CompWalkingCondenser.CompTick is now: build state, one kernel `Tick`, act on the flags.
+- `RM_ClaimKernel.cs` - condenser-quest exclusive claim (ClaimStillHeld, OffersOpen, Withdraws, Cleanup, the new RivalWithdrawsOnAccept) and the faction-slot selection (`Resolve`, `FactionInfo`; `RM_FactionSlotFallback` moved here). RM_CondenserQuests.cs calls it.
+- Rejected: JobDrivers / WorkGivers (reservations, toils, haul targets), Zone/Designator, BiomeWorker, Oasis mutator (all Verse state), Harvest meat (one RNG range).
+
+## Fuzz
+`python3 src/RimMandrake/Utils/selftest_weepingstones_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only pool|condenser|claim|slot]` (net8.0 project `Source/SelfTest/RimMandrakeWeepingStones.SelfTest.csproj`).
+- pool: gauge vs an independent ladder; dice may fire only under their conditions (fed uncrowded pen never decays or breeds), RNG rolls consumed exactly when a chance is strictly in (0,1); at most one vhorrin per pulse; indices in range; feed clock exact; units: exhaustive gauge table, 200k-pulse empirical rates for 0.03 / 0.02 / 0.01 / 0.05 within 5 sigma.
+- condenser (over a mock terrain grid with original-terrain memory): phase order and durations (>= season, >= 1 day, <= 3 days walking), arrival/no-site state, radius in [1,max] and never regrows while drying, pool grows BEFORE the season check, pool cells == water cells, no stale water once Settled and not drying, a moving crab never leaves a pool undrying, a pool of N cells takes dryDays +-1 poll to dry, setting off dries everything, terrain returns to baseline; units: growth mean steps vs perStep, DryKeep linear/monotone/never instant, old-save adoption, water accumulator cadence and cap.
+- claim (mock QuestManager): at most one Ongoing claim quest, it holds the claim, claim never names a finished quest, a success settles, nothing unaccepted outlives a held claim; units: full truth tables for OffersOpen / Withdraws.
+- slot: Resolve vs an explicit-scan oracle (usability, preferred order, goodwill, per-fallback tie rules).
+- Seeds: default 3000 pool / 1500 condenser / 3000 claim / 5000 slot (1.4 s). `--fuzz-scale 25`: 75,001 + 37,501 + 75,001 + 125,000 cases, 9.7M steps, 17 s, 0 failures. Reached at scale 25: 1.5M pulses, 28,159 emergences, 62,531 waits / 33,039 walks / 32,678 arrivals / 13,506 no-site, 51,848 pools dried, 49,704 claim accepts, 41,057 rival withdrawals.
+
+## Mutation (20 planted, 20 caught, all restored byte-identical)
+`python3 src/RimMandrake/Utils/mutate_kernel_fuzz.py selftest_weepingstones_fuzz.py <mutations.json>`. Planted: UnfedDays half-days; NeedsFeed `>=`->`>`; Thin threshold; starvation off by one; vhorrin breeds over a vhorrin; crowded/crashed chances swapped; Chance rolls at 1; arrival forgets the old pool (the stranded-water defect); drying 20x too fast (the old instant dry); waiting half a day; walk timeout 30 days; pool grows while drying; radius uncapped; offer withdraws itself; rivals not withdrawn on accept; success does not settle; offers open after settling; slot ignores hostility; preferred picks lowest goodwill; water spawns at the cap.
+
+## Lint
+`python3 src/RimMandrake/Utils/lint_weepingstones_defs.py [--quiet] [--mod-dir D]`: 25 defs + 4 patch files, 43 classes, 35 class/def refs, 5 field checks, 5 drivers, 8 settings: 0 ERROR, 0 WARN. 7 planted defects caught (class typo x2, field typo, csproj omission, key default mismatch, missing Scribe).
+
+## Defects
+- FIXED (real) the pool dried in minutes, not `dryDays`: `StepDrying` restored `max(1, ceil(count / (dryDays*60000/250)))` cells per 250-tick poll, recomputed from the shrinking count, so any pool under 960 cells lost one cell per poll. A radius-5 (81 cell) pool dried in 81 polls = 0.34 day against the stated 4 ("never instant"). The schedule is now linear from the pool size when drying began (`dryStartCount`, a new Scribed field, -1 on old saves = adopt the current count): a pool of N cells takes dryDays. BEHAVIOUR CHANGE: drying is now ~12x slower than before.
+- FIXED (latent, exposed by the fix above) arrival cleared `drying` while pool cells remained, so a pool not yet dry when the crab arrived would have stayed water forever at the old site; arrival now keeps drying, and a new pool does not grow while the old one is still drying.
+- FIXED (real, narrow) two simultaneous condenser offers (capture and keep-free) could both be accepted inside the 250-tick poll: `PreQuestAccept` overwrote the claim and the first quest stayed Ongoing, giving two live claims. Accepting now withdraws every other unaccepted claim offer at once (`RivalWithdrawsOnAccept`). Unrun in game: `Quest.End(InvalidPreAcceptance)` is called from inside `PreQuestAccept` on a different quest, the same call `QuestPartTick` already makes.
+- Not a defect (restructure): grow-then-season-check order is preserved by passing a `materialise` callback into the kernel tick; a first version that grew after the tick decision started drying with 0 cells (fuzz caught it).
+- NOTE harvest destroys the stock and yields nothing when the species has no `<Kind>Meat` def (silent loss); not changed.
+
+## Build
+`python3 src/RimMandrake/Utils/winbuild.py src/RimMandrake/WeepingStones/Source/RM_WeepingStones.csproj` -> 0 warnings 0 errors; `WeepingStones/Assemblies/RimMandrake.WeepingStones.dll` + `.srchash` rebuilt and left UNCOMMITTED. `selftest_weepingstones.py` (suite) still passes. Not wired into run_selftests.py.

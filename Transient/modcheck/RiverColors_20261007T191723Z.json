@@ -1,0 +1,109 @@
+{
+ "mod": "RiverColors",
+ "stamp": "20261007T191723Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "mod_settings",
+    "components": [
+     {
+      "name": "setting_enabled_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.Utinni.RiverColors.RiverColorsSettings, {'enabled': 'false'})",
+        "result": true
+       },
+       {
+        "call": "set_setting(RimMandrake.Utinni.RiverColors.RiverColorsSettings, {'enabled': 'true'})",
+        "result": true
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "harmony_patches_installed",
+    "components": [
+     {
+      "name": "patched_WorldDrawLayer_Paths_GeneratePaths",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "WorldDrawLayer_Paths",
+         "methodName": "GeneratePaths",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "GeneratePaths",
+           "declaringType": "RimWorld.Planet.WorldDrawLayer_Paths",
+           "prefixCount": 1,
+           "postfixCount": 0,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "mandrake.rut.rivercolors",
+             "priority": 400,
+             "patchMethod": "RimMandrake.Utinni.RiverColors.Patch_WorldDrawLayer_Paths_GeneratePaths.Prefix",
+             "patchAssembly": "RimMandrake.Utinni.RiverColors"
+            }
+           ],
+           "postfixes": [],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_8c542fc369af4e3e923e80c4d9e77f18",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": null,
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true
+ }
+}

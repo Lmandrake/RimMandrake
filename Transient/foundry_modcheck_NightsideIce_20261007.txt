@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\cli.py", line 363, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\cli.py", line 261, in main
+    results = runner.run(mods, debug=args.debug, dry_run=args.dry_run,
+                         situational=args.situational, policy=args.policy)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\runner.py", line 723, in run
+    emit_verify(item_id, mod_folder, "min+%s" % mod_folder, summary,
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               sheet_path)
+               ^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\runner.py", line 617, in emit_verify
+    raise RuntimeError("rimflow verify FAILED: %s" % (r.stdout + r.stderr).strip())
+RuntimeError: rimflow verify FAILED: REFUSED: I cannot tell which seat I am, and I will not guess.
+  `seat` is on every event, every permission check reads it, and the ledger is append-only â€”
+  a wrong seat is a permanent lie in a file with no delete.
+  Fix it with ONE of:
+    rimflow <verb> --seat BUILD
+    export RIMFLOW_SEAT=BUILD
+    ./src/RimMandrake/Utils/set_agent_window.sh BUILD   (then reopen the tab)

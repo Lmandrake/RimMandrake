@@ -1,0 +1,4367 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "shipped_defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: shipped defs did not load (a def with an unresolvable field is discarded silently): notFound=['RM_DefAliasDef/RM_SteamDevilRenameAliases'] foundCount=24 of 25",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "24 of 25 def(s) resolved; 1 not found",
+        "requested": 25,
+        "foundCount": 24,
+        "notFound": [
+         "RM_DefAliasDef/RM_SteamDevilRenameAliases"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_ChillCrater",
+          "found": true,
+          "defName": "RM_ChillCrater",
+          "defType": "BiomeDef",
+          "label": "the Chill crater",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChillCrater"
+          }
+         },
+         {
+          "requested": "BiomeDef/RM_GreySea",
+          "found": true,
+          "defName": "RM_GreySea",
+          "defType": "BiomeDef",
+          "label": "the Grey Sea",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GreySea"
+          }
+         },
+         {
+          "requested": "BiomeDef/RM_TheChill",
+          "found": true,
+          "defName": "RM_TheChill",
+          "defType": "BiomeDef",
+          "label": "the Chill",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TheChill"
+          }
+         },
+         {
+          "requested": "BiomeDef/RM_TheScald",
+          "found": true,
+          "defName": "RM_TheScald",
+          "defType": "BiomeDef",
+          "label": "the Scald",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TheScald"
+          }
+         },
+         {
+          "requested": "BiomeDef/RM_TwilightSea",
+          "found": true,
+          "defName": "RM_TwilightSea",
+          "defType": "BiomeDef",
+          "label": "the Twilight Sea",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TwilightSea"
+          }
+         },
+         {
+          "requested": "RM_DefAliasDef/RM_SteamDevilRenameAliases",
+          "found": false,
+          "defType": "RM_DefAliasDef",
+          "defName": "RM_SteamDevilRenameAliases",
+          "error": "No def TYPE named 'RM_DefAliasDef'."
+         },
+         {
+          "requested": "ThingDef/RM_CubicSculpture",
+          "found": true,
+          "defName": "RM_CubicSculpture",
+          "defType": "ThingDef",
+          "label": "cubic sculpture",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CubicSculpture"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_SpherePlant",
+          "found": true,
+          "defName": "RM_SpherePlant",
+          "defType": "ThingDef",
+          "label": "sphere plant",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SpherePlant"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GlassVeilKelp",
+          "found": true,
+          "defName": "RM_GlassVeilKelp",
+          "defType": "ThingDef",
+          "label": "glass veil kelp",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GlassVeilKelp"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BrineCrown",
+          "found": true,
+          "defName": "RM_BrineCrown",
+          "defType": "ThingDef",
+          "label": "brine crown",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BrineCrown"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MosaicFanPalm",
+          "found": true,
+          "defName": "RM_MosaicFanPalm",
+          "defType": "ThingDef",
+          "label": "mosaic fan palm",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MosaicFanPalm"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_SaltChimneyVine",
+          "found": true,
+          "defName": "RM_SaltChimneyVine",
+          "defType": "ThingDef",
+          "label": "salt chimney vine",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SaltChimneyVine"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_CruciblePod",
+          "found": true,
+          "defName": "RM_CruciblePod",
+          "defType": "ThingDef",
+          "label": "crucible pod",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CruciblePod"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_SaltBladeGrey",
+          "found": true,
+          "defName": "RM_SaltBladeGrey",
+          "defType": "ThingDef",
+          "label": "salt-rimed blade",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SaltBladeGrey"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Masonmat",
+          "found": true,
+          "defName": "RM_Masonmat",
+          "defType": "ThingDef",
+          "label": "masonmat",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Masonmat"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Rimebeard",
+          "found": true,
+          "defName": "RM_Rimebeard",
+          "defType": "ThingDef",
+          "label": "rimebeard",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Rimebeard"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Mournweft",
+          "found": true,
+          "defName": "RM_Mournweft",
+          "defType": "ThingDef",
+          "label": "mournweft",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Mournweft"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Milkwell",
+          "found": true,
+          "defName": "RM_Milkwell",
+          "defType": "ThingDef",
+          "label": "milkwell",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Milkwell"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Hoarstock",
+          "found": true,
+          "defName": "RM_Hoarstock",
+          "defType": "ThingDef",
+          "label": "hoarstock",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Hoarstock"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Saltswoon",
+          "found": true,
+          "defName": "RM_Saltswoon",
+          "defType": "ThingDef",
+          "label": "saltswoon",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Saltswoon"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Stillbloom",
+          "found": true,
+          "defName": "RM_Stillbloom",
+          "defType": "ThingDef",
+          "label": "stillbloom",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Stillbloom"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Brinecomb",
+          "found": true,
+          "defName": "RM_Brinecomb",
+          "defType": "ThingDef",
+          "label": "brine comb",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brinecomb"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Neverset",
+          "found": true,
+          "defName": "RM_Neverset",
+          "defType": "ThingDef",
+          "label": "neverset",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Neverset"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Murkblush",
+          "found": true,
+          "defName": "RM_Murkblush",
+          "defType": "ThingDef",
+          "label": "murkblush",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Murkblush"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Slackwax",
+          "found": true,
+          "defName": "RM_Slackwax",
+          "defType": "ThingDef",
+          "label": "slackwax",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Slackwax"
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_ef11b318117548e5bd96a27b58e80eec",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "control_absent_def_reads_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_masterEnabled",
+   "components": [
+    {
+     "name": "masterEnabled_round_trips",
+     "toggle": "masterEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_scaldEnabled",
+   "components": [
+    {
+     "name": "scaldEnabled_round_trips",
+     "toggle": "scaldEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_chillEnabled",
+   "components": [
+    {
+     "name": "chillEnabled_round_trips",
+     "toggle": "chillEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightSeaEnabled",
+   "components": [
+    {
+     "name": "twilightSeaEnabled_round_trips",
+     "toggle": "twilightSeaEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greySeaEnabled",
+   "components": [
+    {
+     "name": "greySeaEnabled_round_trips",
+     "toggle": "greySeaEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_chillCryoponicsEnabled",
+   "components": [
+    {
+     "name": "chillCryoponicsEnabled_round_trips",
+     "toggle": "chillCryoponicsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_chillFloorBedEnabled",
+   "components": [
+    {
+     "name": "chillFloorBedEnabled_round_trips",
+     "toggle": "chillFloorBedEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_chillWaxProcessionEnabled",
+   "components": [
+    {
+     "name": "chillWaxProcessionEnabled_round_trips",
+     "toggle": "chillWaxProcessionEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_scaldS1SteamSkyEnabled",
+   "components": [
+    {
+     "name": "scaldS1SteamSkyEnabled_round_trips",
+     "toggle": "scaldS1SteamSkyEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_scaldS2SteamCatchEnabled",
+   "components": [
+    {
+     "name": "scaldS2SteamCatchEnabled_round_trips",
+     "toggle": "scaldS2SteamCatchEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_scaldS4VentFieldsEnabled",
+   "components": [
+    {
+     "name": "scaldS4VentFieldsEnabled_round_trips",
+     "toggle": "scaldS4VentFieldsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_scaldS5SailWalkerEnabled",
+   "components": [
+    {
+     "name": "scaldS5SailWalkerEnabled_round_trips",
+     "toggle": "scaldS5SailWalkerEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_scaldS7SteamExposureEnabled",
+   "components": [
+    {
+     "name": "scaldS7SteamExposureEnabled_round_trips",
+     "toggle": "scaldS7SteamExposureEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_scaldS1bVentFlashEnabled",
+   "components": [
+    {
+     "name": "scaldS1bVentFlashEnabled_round_trips",
+     "toggle": "scaldS1bVentFlashEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_suulkEnabled",
+   "components": [
+    {
+     "name": "suulkEnabled_round_trips",
+     "toggle": "suulkEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_suulkFrequencyMultiplier",
+   "components": [
+    {
+     "name": "suulkFrequencyMultiplier_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_vauliskEnabled",
+   "components": [
+    {
+     "name": "vauliskEnabled_round_trips",
+     "toggle": "vauliskEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightPaneStrikeEnabled",
+   "components": [
+    {
+     "name": "twilightPaneStrikeEnabled_round_trips",
+     "toggle": "twilightPaneStrikeEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightPaneStrikeFrequency",
+   "components": [
+    {
+     "name": "twilightPaneStrikeFrequency_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightDeckAccumulationEnabled",
+   "components": [
+    {
+     "name": "twilightDeckAccumulationEnabled_round_trips",
+     "toggle": "twilightDeckAccumulationEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightDeckAccumulationRate",
+   "components": [
+    {
+     "name": "twilightDeckAccumulationRate_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_channelCurrentEnabled",
+   "components": [
+    {
+     "name": "channelCurrentEnabled_round_trips",
+     "toggle": "channelCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_channelCurrentStrength",
+   "components": [
+    {
+     "name": "channelCurrentStrength_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_channelFirstEntryWarning",
+   "components": [
+    {
+     "name": "channelFirstEntryWarning_round_trips",
+     "toggle": "channelFirstEntryWarning",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_crossBiomeEnabled",
+   "components": [
+    {
+     "name": "crossBiomeEnabled_round_trips",
+     "toggle": "crossBiomeEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_crossBiomeEverywhere",
+   "components": [
+    {
+     "name": "crossBiomeEverywhere_round_trips",
+     "toggle": "crossBiomeEverywhere",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_crossBiomeBiomeList",
+   "components": [
+    {
+     "name": "crossBiomeBiomeList_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: mod_settings_field crossBiomeBiomeList did not take: wrote '', read back None",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_crossBiomeCoverage",
+   "components": [
+    {
+     "name": "crossBiomeCoverage_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightWellDriftEnabled",
+   "components": [
+    {
+     "name": "twilightWellDriftEnabled_round_trips",
+     "toggle": "twilightWellDriftEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightDriftCadence",
+   "components": [
+    {
+     "name": "twilightDriftCadence_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightChainAvailability",
+   "components": [
+    {
+     "name": "twilightChainAvailability_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightSuulkPressureScalingEnabled",
+   "components": [
+    {
+     "name": "twilightSuulkPressureScalingEnabled_round_trips",
+     "toggle": "twilightSuulkPressureScalingEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightCagesPassableBeneath",
+   "components": [
+    {
+     "name": "twilightCagesPassableBeneath_round_trips",
+     "toggle": "twilightCagesPassableBeneath",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightSunSphereGraceDays",
+   "components": [
+    {
+     "name": "twilightSunSphereGraceDays_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_twilightChartsAgeEnabled",
+   "components": [
+    {
+     "name": "twilightChartsAgeEnabled_round_trips",
+     "toggle": "twilightChartsAgeEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyHullCrustEnabled",
+   "components": [
+    {
+     "name": "greyHullCrustEnabled_round_trips",
+     "toggle": "greyHullCrustEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyHullCrustRate",
+   "components": [
+    {
+     "name": "greyHullCrustRate_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyHullCrustSaltSnowMultiplier",
+   "components": [
+    {
+     "name": "greyHullCrustSaltSnowMultiplier_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyHullCrustBerthMultiplier",
+   "components": [
+    {
+     "name": "greyHullCrustBerthMultiplier_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyLampDrawnEnabled",
+   "components": [
+    {
+     "name": "greyLampDrawnEnabled_round_trips",
+     "toggle": "greyLampDrawnEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyLampWatcherEnabled",
+   "components": [
+    {
+     "name": "greyLampWatcherEnabled_round_trips",
+     "toggle": "greyLampWatcherEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyLampGiantEnabled",
+   "components": [
+    {
+     "name": "greyLampGiantEnabled_round_trips",
+     "toggle": "greyLampGiantEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyLampGiantBurnHours",
+   "components": [
+    {
+     "name": "greyLampGiantBurnHours_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_greyLampGiantMinRadius",
+   "components": [
+    {
+     "name": "greyLampGiantMinRadius_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_channelSinkOutcome",
+   "components": [
+    {
+     "name": "channelSinkOutcome_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_undersurgeFrequency",
+   "components": [
+    {
+     "name": "undersurgeFrequency_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "natives_tolerate_floor",
+   "components": [
+    {
+     "name": "natives_comfy_min_below_floor_in_source",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "natives_comfy_min_below_floor_live",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Heemin",
+          "found": true,
+          "defName": "RM_Heemin",
+          "defType": "ThingDef",
+          "label": "heemin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 4.5
+            },
+            {
+             "stat": "MarketValue",
+             "value": 6.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.7
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_205d8edfe35248bbb3cf18479d1acb7a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Oovanam",
+          "found": true,
+          "defName": "RM_Oovanam",
+          "defType": "ThingDef",
+          "label": "oovanam",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 2.0
+            },
+            {
+             "stat": "MarketValue",
+             "value": 8.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.6
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_2b8c91711bcc403abc75d778f0839b11",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Hoolen",
+          "found": true,
+          "defName": "RM_Hoolen",
+          "defType": "ThingDef",
+          "label": "hoolen",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 3.5
+            },
+            {
+             "stat": "MarketValue",
+             "value": 9.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.6
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_abb22c663fad4137b0f514d01c08d17c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Vaunoom",
+          "found": true,
+          "defName": "RM_Vaunoom",
+          "defType": "ThingDef",
+          "label": "vaunoom",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 28.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 5.5
+            },
+            {
+             "stat": "MarketValue",
+             "value": 220.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.95
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_997f381c11914cb281d6c6e3c5f5eb22",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Fessu",
+          "found": true,
+          "defName": "RM_Fessu",
+          "defType": "ThingDef",
+          "label": "fessu",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 1.0
+            },
+            {
+             "stat": "MarketValue",
+             "value": 6.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.5
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_32284aec4a23479ab1dd7d32a9c07765",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Krellik",
+          "found": true,
+          "defName": "RM_Krellik",
+          "defType": "ThingDef",
+          "label": "krellik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 1.6
+            },
+            {
+             "stat": "MarketValue",
+             "value": 8.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.55
+            },
+            {
+             "stat": "ArmorRating_Blunt",
+             "value": 0.15
+            },
+            {
+             "stat": "ArmorRating_Sharp",
+             "value": 0.2
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_7ee2ca706f7249cc97fafa1507347cc1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Oddu",
+          "found": true,
+          "defName": "RM_Oddu",
+          "defType": "ThingDef",
+          "label": "oddu",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 0.3
+            },
+            {
+             "stat": "MarketValue",
+             "value": 9.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.3
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_efce82bcf8a744f4a492b59ebebbf255",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Oovu",
+          "found": true,
+          "defName": "RM_Oovu",
+          "defType": "ThingDef",
+          "label": "oovu",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 0.8
+            },
+            {
+             "stat": "MarketValue",
+             "value": 3.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.4
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_63b70e4e5ee1471894e89fa737df2163",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Iliss",
+          "found": true,
+          "defName": "RM_Iliss",
+          "defType": "ThingDef",
+          "label": "iliss",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 2.2
+            },
+            {
+             "stat": "MarketValue",
+             "value": 10.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.7
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_2f67ae42217f4662ad77f06f24d9de97",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Tarnn",
+          "found": true,
+          "defName": "RM_Tarnn",
+          "defType": "ThingDef",
+          "label": "tarnn",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 0.3
+            },
+            {
+             "stat": "MarketValue",
+             "value": 12.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.2
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_d58f0260ac1944a3b7f5ba071ed3e146",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "statBases"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Zhiil",
+          "found": true,
+          "defName": "RM_Zhiil",
+          "defType": "ThingDef",
+          "label": "zhiil",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "statBases": [
+            {
+             "stat": "Mass",
+             "value": 60.0
+            },
+            {
+             "stat": "Flammability",
+             "value": 0.7
+            },
+            {
+             "stat": "LeatherAmount",
+             "value": 40.0
+            },
+            {
+             "stat": "ToxicResistance",
+             "value": 0.5
+            },
+            {
+             "stat": "MoveSpeed",
+             "value": 2.8
+            },
+            {
+             "stat": "MarketValue",
+             "value": 8.0
+            },
+            {
+             "stat": "ComfyTemperatureMin",
+             "value": -150.0
+            },
+            {
+             "stat": "ComfyTemperatureMax",
+             "value": -30.0
+            },
+            {
+             "stat": "Wildness",
+             "value": 0.8
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_1eaaf58b7df3414388c09079bb35a88d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "floor_roster_trimmed",
+   "components": [
+    {
+     "name": "chill_roster_is_the_floor_natives",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "saal_one_name",
+   "components": [
+    {
+     "name": "creature_and_catch_both_labelled_saal",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ekkel_carries_simmerlace_lore",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "catch_free_tier",
+   "components": [
+    {
+     "name": "chill_catch_is_free_tier_and_alive_on_the_floor",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "seas_catch_alive",
+   "components": [
+    {
+     "name": "every_sea_catch_has_a_living_floor_body",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "settings_wiring",
+   "components": [
+    {
+     "name": "every_field_scribed_exposed_and_compiled",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "biome_animal_density",
+   "components": [
+    {
+     "name": "rostered_biomes_have_density_above_zero",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "animalDensity"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_TheScald",
+          "found": true,
+          "defName": "RM_TheScald",
+          "defType": "BiomeDef",
+          "label": "the Scald",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "animalDensity": 0.15
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_0e34403d3f1443989e0ba946c8fee165",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 37
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "animalDensity"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_GreySea",
+          "found": true,
+          "defName": "RM_GreySea",
+          "defType": "BiomeDef",
+          "label": "the Grey Sea",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "animalDensity": 0.1
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_eff1f259d560443c82ff6d16ed729646",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "animalDensity"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_TheChill",
+          "found": true,
+          "defName": "RM_TheChill",
+          "defType": "BiomeDef",
+          "label": "the Chill",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "animalDensity": 0.08
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_2d38c5cbac424a2f81121150272848e1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "animalDensity"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_TwilightSea",
+          "found": true,
+          "defName": "RM_TwilightSea",
+          "defType": "BiomeDef",
+          "label": "the Twilight Sea",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "animalDensity": 0.1
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_e3328e2a5dfa4c28b894fc77eddcc46d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "terrains_paint",
+   "components": [
+    {
+     "name": "site_ready_terrain_row",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "clear_area(24)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 67 thing(s) across 576 cell(s); 8 pawn(s) left alone.",
+        "cellsExamined": 576,
+        "outOfBounds": 0,
+        "destroyed": 67,
+        "pawnsSkipped": 8,
+        "perCategory": {
+         "Filth": 9,
+         "Item": 14,
+         "Plant": 1,
+         "Building": 10,
+         "Mote": 33
+        },
+        "samples": [
+         {
+          "x": 113,
+          "z": 113,
+          "def": "Filth_RubbleRock",
+          "category": "Filth"
+         },
+         {
+          "x": 113,
+          "z": 114,
+          "def": "Filth_RubbleRock",
+          "category": "Filth"
+         },
+         {
+          "x": 114,
+          "z": 113,
+          "def": "Filth_RubbleRock",
+          "category": "Filth"
+         },
+         {
+          "x": 122,
+          "z": 118,
+          "def": "RM_SymbiontHusk",
+          "category": "Item"
+         },
+         {
+          "x": 122,
+          "z": 134,
+          "def": "Plant_Grass",
+          "category": "Plant"
+         },
+         {
+          "x": 126,
+          "z": 125,
+          "def": "PowerConduit",
+          "category": "Building"
+         },
+         {
+          "x": 127,
+          "z": 125,
+          "def": "PowerConduit",
+          "category": "Building"
+         },
+         {
+          "x": 128,
+          "z": 125,
+          "def": "RM_LightningBreaker",
+          "category": "Building"
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_c20f425b495245448d4983ed3f59522c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 38
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 1 cell(s) changed, 0 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 1,
+        "cellsChanged": 1,
+        "cellsAlreadyCorrect": 0,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 1,
+        "errors": [],
+        "samples": [
+         {
+          "x": 113,
+          "z": 123,
+          "before": "Gravel",
+          "after": "Concrete",
+          "applied": true
+         }
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_33c36de3dd0b401e8be061d4123e7162",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "control_vanilla_terrain_reads_back",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "Concrete:113,123,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "Concrete"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_39f93700f0fa4b978983eb696e871c94",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_biome_terrain_paints_and_reads_back",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/set_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Applied 17/17 op(s): 17 cell(s) changed, 0 already correct.",
+        "layer": "top",
+        "opsRequested": 17,
+        "opsApplied": 17,
+        "cellsRequested": 17,
+        "cellsChanged": 17,
+        "cellsAlreadyCorrect": 0,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 17,
+        "errors": [],
+        "samples": [
+         {
+          "x": 113,
+          "z": 125,
+          "before": "Soil",
+          "after": "RM_BankSilt",
+          "applied": true
+         },
+         {
+          "x": 114,
+          "z": 125,
+          "before": "Soil",
+          "after": "RM_BankSilt_Rich",
+          "applied": true
+         },
+         {
+          "x": 115,
+          "z": 125,
+          "before": "Soil",
+          "after": "RM_ChillCraterGlass",
+          "applied": true
+         },
+         {
+          "x": 116,
+          "z": 125,
+          "before": "Soil",
+          "after": "RM_SaltCrustShore",
+          "applied": true
+         },
+         {
+          "x": 117,
+          "z": 125,
+          "before": "Soil",
+          "after": "RM_BrineChannel",
+          "applied": true
+         },
+         {
+          "x": 118,
+          "z": 125,
+          "before": "Soil",
+          "after": "RM_ChimneySeepFloor",
+          "applied": true
+         },
+         {
+          "x": 119,
+          "z": 125,
+          "before": "Soil",
+          "after": "RM_BrinePoolShallow",
+          "applied": true
+         },
+         {
+          "x": 120,
+          "z": 125,
+          "before": "Soil",
+          "after": "RM_BrinePoolDeep",
+          "applied": true
+         }
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_03c77f2e601b495cb919a799a915bb70",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_BankSilt:113,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_BankSilt"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_6f732194eb1f45dc9c2edcd00738b1b8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_BankSilt_Rich:114,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_BankSilt_Rich"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_a3fc3581aada4a588d814871f68826f2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_ChillCraterGlass:115,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_ChillCraterGlass"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_dd0edc0ef08b4c5590f4cb4a83529cae",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_SaltCrustShore:116,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_SaltCrustShore"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_c2fa9e715d434d6aac1e4404d73e6e92",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_BrineChannel:117,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_BrineChannel"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_67cfcc4ddcc44fbba632cb9c693e33e0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_ChimneySeepFloor:118,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_ChimneySeepFloor"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_cbc484aa7ff44b7391f75f37aaf43085",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_BrinePoolShallow:119,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_BrinePoolShallow"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_61f9c677e9c24bb0b4aee3bebcdfc2b9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_BrinePoolDeep:120,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_BrinePoolDeep"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_92a546c6eaf140b39c67a5bb9cd72446",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_TheChillDeep:121,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_TheChillDeep"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_024dde166151464fb3b5b037fbe2ccff",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RM_SolidPropane:122,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RM_SolidPropane"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_b0adfee33a6249fbb83995c876b498fb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RUT_ScaldMargin:123,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RUT_ScaldMargin"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_8a12c7f2e0d94194b0e1d295da4bb77d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RUT_ScaldWaterDeep:124,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RUT_ScaldWaterDeep"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_7084b6923f2644e4828728e305570003",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RUT_ScaldWaterOceanDeep:125,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RUT_ScaldWaterOceanDeep"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_3fe9ea42361e4532ad8539ba411200b3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RUT_ScaldWaterMovingChestDeep:126,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RUT_ScaldWaterMovingChestDeep"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_5cc09c5c448748b982b2925f88e57fae",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RUT_ScaldWaterShallow:127,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RUT_ScaldWaterShallow"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_9bd9bd6ad6a2481ca8304ecc1867a8c8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RUT_ScaldWaterOceanShallow:128,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RUT_ScaldWaterOceanShallow"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_d518bddb81c4464daa370a31159e4ab3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Read 1 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+        "layer": "top",
+        "ops": "RUT_ScaldWaterMovingShallow:129,125,1,1",
+        "cellsRequested": 1,
+        "cellsRead": 1,
+        "cellsOutOfBounds": 0,
+        "cellsNullTerrain": 0,
+        "distinctTerrains": [
+         "RUT_ScaldWaterMovingShallow"
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "mapId": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_6936db1e15e5448b9ee8e7542638dc10",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "cryoponics_vat",
+   "components": [
+    {
+     "name": "site_ready_vat_and_control_grower",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "clear_area(16)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 0 thing(s) across 256 cell(s); 7 pawn(s) left alone.",
+        "cellsExamined": 256,
+        "outOfBounds": 0,
+        "destroyed": 0,
+        "pawnsSkipped": 7,
+        "perCategory": {},
+        "samples": [],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_ffe59403c0094198aed3feb1eae65712",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 2 thing(s) of 2 requested across 2 of 2 op(s).",
+        "opsRequested": 2,
+        "spawned": 2,
+        "failed": 0,
+        "thingsRequested": 2,
+        "thingsPlaced": 2,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_ChillCryoponicsVat": 1,
+         "HydroponicsBasin": 1
+        },
+        "errors": [],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_c21aecda7250482ea87b2d256679eefe",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_ChillCryoponicsVat96504",
+          "def": "RM_ChillCryoponicsVat",
+          "label": "Cryoponics vat",
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 220,
+          "maxHitPoints": 220
+         }
+        ],
+        "scanned": 30864,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 37,
+        "perDef": {
+         "RM_ChillCryoponicsVat": 1
+        },
+        "ticksGame": 775546,
+        "message": "1 of 1 matching thing(s) returned, 30864 examined.",
+        "operation": {
+         "OperationId": "op_3067f28d5d074c24ac09fb94796f4738",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "HydroponicsBasin96505",
+          "def": "HydroponicsBasin",
+          "label": "Hydroponics basin",
+          "x": 130,
+          "z": 125,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 180,
+          "maxHitPoints": 180
+         }
+        ],
+        "scanned": 30864,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 37,
+        "perDef": {
+         "HydroponicsBasin": 1
+        },
+        "ticksGame": 775546,
+        "message": "1 of 1 matching thing(s) returned, 30864 examined.",
+        "operation": {
+         "OperationId": "op_324f05fe97ee448db2a1a48e75215f38",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "vat_reports_a_cryogenic_bath_line",
+     "toggle": "chillCryoponicsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 30864 examined.",
+        "matched": 1,
+        "examined": 30864,
+        "threw": 0,
+        "things": [
+         {
+          "id": "HydroponicsBasin96505",
+          "defName": "HydroponicsBasin",
+          "label": "hydroponics basin",
+          "x": 130,
+          "z": 125,
+          "className": "RimWorld.Building_PlantGrower",
+          "inspect": [
+           "Power needed: 70 W",
+           "Not connected to power.",
+           "Growing season here now."
+          ]
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_4fcf11e723f14037bd9aa9312652d10a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 30864 examined.",
+        "matched": 1,
+        "examined": 30864,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_ChillCryoponicsVat96504",
+          "defName": "RM_ChillCryoponicsVat",
+          "label": "cryoponics vat",
+          "x": 125,
+          "z": 125,
+          "className": "RimMandrake.TerminalBiomes.RM_Building_CryoGrower",
+          "inspect": [
+           "Power needed: 220 W",
+           "Not connected to power.",
+           "Cannot grow (bad seasonal temperature).",
+           "Cryogenic bath: offline (needs power)"
+          ]
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_0f668e3f53f34963978ed84637963e72",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "powered_bath_runs_and_toggle_off_goes_offline",
+     "toggle": "chillCryoponicsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the 'running' state needs the vat on a powered grid and plants sown in it; no bridge tool wires a power net, so only the class wiring above is provable on a bland map",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "the 'running' state needs the vat on a powered grid and plants sown in it; no bridge tool wires a power net, so only the class wiring above is provable on a bland map"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "wax_procession",
+   "components": [
+    {
+     "name": "wax_giant_wired_in_source",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "site_ready_hesuun",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "clear_area(24)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 2 thing(s) across 576 cell(s); 8 pawn(s) left alone.",
+        "cellsExamined": 576,
+        "outOfBounds": 0,
+        "destroyed": 2,
+        "pawnsSkipped": 8,
+        "perCategory": {
+         "Building": 2
+        },
+        "samples": [
+         {
+          "x": 125,
+          "z": 125,
+          "def": "RM_ChillCryoponicsVat",
+          "category": "Building"
+         },
+         {
+          "x": 130,
+          "z": 124,
+          "def": "HydroponicsBasin",
+          "category": "Building"
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_06376332a56047fbb9e8e5d6376daada",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "spawn_pawn RM_Hesuun hostile=False",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 RM_Hesuun in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "RM_Hesuun96506",
+          "name": "Hesuun 1",
+          "kindRequested": "RM_Hesuun",
+          "kindActual": "RM_Hesuun",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_3dc3f6eb188d4fbcaa71b1eccc0f163a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 30863,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 38,
+        "perDef": {},
+        "ticksGame": 775546,
+        "message": "NOTHING MATCHED. 30863 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_0fc47089b7b94260afe5c8b8d15abdea",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "killed_colony_spoils_into_hydrocarbon_flesh",
+     "toggle": "chillWaxProcessionEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_force_incapacitate",
+       "result": {
+        "success": true,
+        "action": "kill",
+        "downedBefore": false,
+        "deadBefore": false,
+        "downedAfter": false,
+        "deadAfter": true,
+        "changed": true,
+        "hediffCount": 0,
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_d4ceec31170e486aae5bd39fe5d975d3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) -> 60 real tick(s) over 1 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_a9ddb0b9bf984b1cad65d6f49e4d3bf1",
+        "status": "completed",
+        "requestedTicks": 60,
+        "completedTicks": 60,
+        "remainingTicks": 0,
+        "startTicksGame": 775546,
+        "endTicksGame": 775606,
+        "advancedTicks": 60,
+        "initialFrame": 120063,
+        "lastFrame": 120122,
+        "advancedFrames": 60,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T17:59:45.9181828+00:00",
+        "completedAtUtc": "2026-10-07T17:59:46.9031494+00:00",
+        "message": "Advanced 60 game tick(s) across 60 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 775606
+        },
+        "operation": {
+         "OperationId": "op_1e2c54fbbf0c45a3a2df5c4b240ed40f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1015
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_HydrocarbonFlesh96508",
+          "def": "RM_HydrocarbonFlesh",
+          "label": "Hydrocarbon flesh x12",
+          "x": 125,
+          "z": 124,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 12,
+          "hitPoints": 50,
+          "maxHitPoints": 50
+         }
+        ],
+        "scanned": 30865,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 36,
+        "perDef": {
+         "RM_HydrocarbonFlesh": 1
+        },
+        "ticksGame": 775606,
+        "message": "1 of 1 matching thing(s) returned, 30865 examined.",
+        "operation": {
+         "OperationId": "op_6fd0466bb0d84bdea462c1e92fd17856",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sheet_extruded_at_a_pause_after_the_walk",
+     "toggle": "chillWaxProcessionEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the countdown is 90000 ticks of walking (ticksBetweenSheets) before the first sheet at a pause; a wait of that length is not a bland-map check, and no tool seeds the comp's countdown",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "the countdown is 90000 ticks of walking (ticksBetweenSheets) before the first sheet at a pause; a wait of that length is not a bland-map check, and no tool seeds the comp's countdown"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "scald_steam_sky",
+   "components": [
+    {
+     "name": "steam_lock_pulses_weather_and_flash",
+     "toggle": "scaldS1SteamSkyEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RUT_ScaldSteamLock/RM_GameCondition_WeatherPulse and the vent flash need a Scald map (an environmental-hazards weather pulse over a steam biome) and a way to read the running condition",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RUT_ScaldSteamLock/RM_GameCondition_WeatherPulse and the vent flash need a Scald map (an environmental-hazards weather pulse over a steam biome) and a way to read the running condition"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "scald_steam_catch",
+   "components": [
+    {
+     "name": "condenser_collects_steam",
+     "toggle": "scaldS2SteamCatchEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RUT_SteamCatch condensing needs a Scald map with a vent and ticks of steam; no reader for the condenser's stored resource",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RUT_SteamCatch condensing needs a Scald map with a vent and ticks of steam; no reader for the condenser's stored resource"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "scald_vent_fields",
+   "components": [
+    {
+     "name": "vents_scatter_and_erupt",
+     "toggle": "scaldS4VentFieldsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RUT_ScaldVent geysers are placed by a GenStep on a NEW Scald map; the gate acts at generation (worldgen-affecting), so a held bland map cannot show it",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RUT_ScaldVent geysers are placed by a GenStep on a NEW Scald map; the gate acts at generation (worldgen-affecting), so a held bland map cannot show it"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "scald_sail_walker",
+   "components": [
+    {
+     "name": "walker_surfaces_and_sails_scatter",
+     "toggle": "scaldS5SailWalkerEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RUT_WalkerSurfacing and the sail scatterer need a Scald map and a Scald-gated incident",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RUT_WalkerSurfacing and the sail scatterer need a Scald map and a Scald-gated incident"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "scald_steam_exposure",
+   "components": [
+    {
+     "name": "steam_carrier_inflicts_scald_exposure",
+     "toggle": "scaldS7SteamExposureEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RUT_ScaldSteamCarrier and the RUT_ScaldExposure hediff need a Scald map under steam and an unprotected pawn; no way to start the condition on a bland map",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RUT_ScaldSteamCarrier and the RUT_ScaldExposure hediff need a Scald map under steam and an unprotected pawn; no way to start the condition on a bland map"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "twilight_suulk",
+   "components": [
+    {
+     "name": "suulk_arrival_and_vaulisk_lure",
+     "toggle": "suulkEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_SuulkArrival and the Vaulisk lure are Twilight-sea incidents and a GenStep; need the sea-floor map",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RM_SuulkArrival and the Vaulisk lure are Twilight-sea incidents and a GenStep; need the sea-floor map"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "twilight_channel_current",
+   "components": [
+    {
+     "name": "current_carries_pawns_and_sink_outcome_applies",
+     "toggle": "channelCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_MapComponent_ChannelCurrent exists only on a generated Twilight map with channels; the sink outcome and undersurge frequency are read from a running current",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RM_MapComponent_ChannelCurrent exists only on a generated Twilight map with channels; the sink outcome and undersurge frequency are read from a running current"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "twilight_pane_strike",
+   "components": [
+    {
+     "name": "veil_pane_falls_and_deck_accumulates",
+     "toggle": "twilightPaneStrikeEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_VeilFallPaneStrike and RM_VeilPane deck accumulation need a Twilight map with panes and the gravship launch gate",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RM_VeilFallPaneStrike and RM_VeilPane deck accumulation need a Twilight map with panes and the gravship launch gate"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "twilight_well_drift",
+   "components": [
+    {
+     "name": "well_ledger_drifts_and_sun_sphere_cultures",
+     "toggle": "twilightWellDriftEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_MapComponent_WellLedger and RM_Building_SunSphere stages run over days on a Twilight map",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RM_MapComponent_WellLedger and RM_Building_SunSphere stages run over days on a Twilight map"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "twilight_cages_passable",
+   "components": [
+    {
+     "name": "cage_passability_follows_the_setting",
+     "toggle": "twilightCagesPassableBeneath",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_TwilightPassabilityApplier writes ThingDef.passability only from the settings WINDOW frame, which a bridge setter never triggers",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "RM_TwilightPassabilityApplier writes ThingDef.passability only from the settings WINDOW frame, which a bridge setter never triggers"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "cross_biome",
+   "components": [
+    {
+     "name": "scald_mechanics_outside_the_scald",
+     "toggle": "crossBiomeEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: WORLDGEN-AFFECTING and inert: crossBiomeEnabled is reserved for a future pass (mod header), so there is nothing to read",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "WORLDGEN-AFFECTING and inert: crossBiomeEnabled is reserved for a future pass (mod header), so there is nothing to read"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "grey_hull_crust",
+   "components": [
+    {
+     "name": "ladder_rime_door_crust_gate",
+     "toggle": "greyHullCrustEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a parked gravship on an RM_GreySea floor map (seabed layer); proof said ''",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofState with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofState(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_bd995f152469468eb67b02e91fea4887",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      },
+      {
+       "call": "UNMEASURED",
+       "result": "needs a parked gravship on an RM_GreySea floor map (seabed layer); proof said ''"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "grey_lamp_response",
+   "components": [
+    {
+     "name": "burn_brings_watcher_scrape_and_giant",
+     "toggle": "greyLampGiantEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs an RM_GreySea floor map with a lit powered lamp of glow radius >= 12; proof said 'not a Grey Sea map: RM_Contagion'",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofBurn(System.String)",
+        "result": "not a Grey Sea map: RM_Contagion",
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_422a756e38544e41b577d13105de2e22",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      },
+      {
+       "call": "UNMEASURED",
+       "result": "needs an RM_GreySea floor map with a lit powered lamp of glow radius >= 12; proof said 'not a Grey Sea map: RM_Contagion'"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "settings_restored",
+   "components": [
+    {
+     "name": "all_settings_at_shipped_defaults",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: settings left off their shipped default by an earlier arm: [('crossBiomeBiomeList', None, '')]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000020BB0E974D0>",
+  "<suite.Component object at 0x0000020BB0F36D00>",
+  "<suite.Component object at 0x0000020BB0F36F10>"
+ ],
+ "refused": "",
+ "walk": null
+}

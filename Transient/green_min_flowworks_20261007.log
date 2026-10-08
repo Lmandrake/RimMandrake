@@ -1,0 +1,32 @@
+    -> VERIFIED in sync
+
+Nothing to do; already in sync. No restart needed.
+  wrote      -> ModsConfig.xml (11 active)
+  restore with: python src/RimMandrake/Utils/modset_builder.py --restore
+bridge up 13:59:36
+E8_player_dig          PASS                designated cell dug by a colonist: D=1 terrain RM_Channel_Empty after 720 ticks (cap 1945, MiningSpeed 2.44)
+E6_roof_readback       PASS                roofed excavated cells [(182, 60)]
+E6_rain_fills_unroofed PASS                rate 0.258 x 4 pulses: unroofed F=1, roofed twin F=0, every excavated cell == oracle
+P1_width_matrix        PASS                held {T,T,T;F,F,T} as owner Q4 rules; all spawned; held -> 0 lip cells reachable + no map edge: 1x1_small small=True(reach 0/8); 1x1_large large=False(reach 8/8); trench_small small=True(reach 0/16); trench_large large=False(reach 16/16); 2x2_small small=True(reach 0/12); 2x2_large large=True(reach 
+P2_fillin_releases_large PASS                fill-in (161,101) -> D 3; large at (160,100): width 1 held False lip 12/12
+P3_walk_in_held        FAIL       MOD      walked in False; held None spawned None; descents 0->0 (own 0) fall 0.0; lip None/None; ordered out: canReach True, ended (166, 103)
+P4_ladder_frees        FAIL       MOD      ladder spawned True hasLadder True; held None lip None/None; ordered out: arrived True; pawn off-cell fill 0
+P4b_ladder_raised_strands FAIL       MOD      raised True (Ladder_up:_nobody_can_climb_down_or_out.): held True lip 0/8, ordered out canReach False | lowered False (Ladder_down:_your_people_climb;_prisoners_only_in_a_prison_break.): held False lip 8/8; pawn ok fill 0
+P5n_own_faction_carveout FAIL       MOD      carve-out ON (shipped): colonist in False captured None held None descents 0->0; out True; pawn off-cell fill 0
+X1_pawn_height_ladder  FAIL       MOD      ['D2: SINK id=Hare39367 cell=132,70 depth=2 fill=0 fluid=none sink=0.5 drawDz=-0.5 moving=False wallOverHead=0.6 enabled=True', 'D3: SINK id=Hare39368 cell=133,70 depth=3 fill=0 fluid=none sink=0.5 drawDz=-0.5 moving=False wallOverHead=0.9 enabled=True', 'D4: SINK id=Hare39369 cell=134,70 depth=4 fi
+X2_pawn_lowers_walking_in FAIL       MOD      walked D0->D4 arrived False: sink 0 -> 0 (drawDz 0) 
+X3_pawn_rises_walking_out FAIL       MOD      walked D4->D0 arrived True: sink 0 -> 0 (drawDz 0) 
+X4_pit_wall_over_head  FAIL       MOD      colonist on D=4 drawn 0 cells down; wall over crown 0 x a person's height (owner: walls 20% above the head, >= 1.2)
+X5_slime_occupant_below_surface FAIL       MOD      D=4 cell holding RM_Fluid_SlimeGreen F=2: occupant drawn 0.5 down (dry D=4: 1.20), drawDz -0.5
+X7_tar_front_lags_water PASS                gravity staircase D1..D4, one level each: after 3 pulses water at step 3, tar at 0; after 12 water 3, tar 2 (stride 6 PROVISIONAL = 360/60 ticksPerTile); levels 1/1; pulse 200 viscosity True
+X6_two_fluids_distinct PASS                tar row 4 levels drawn ['RM_Fill_Tar_Brim'] | water row+junction 4 levels drawn ['RM_Fill_Water_Brim'] | junction RM_Fluid_Water F=1 (water reached it first, one level by gravity; tar refused: no-mix) | wrong-fluid cells []
+X7n_viscosity_off      PASS                viscosityEnabled OFF: a tar staircase moved like water, step 3 after 3 pulses (levels 1, ['RM_Fluid_Tar'])
+X8_cover_hides_pit     PASS                4 deck cells over D=4 (RM_Channel_Superdeep) print Soil, the surrounding surface; gives way: Gives_way_under_40_kg_on_the_whole_cover.
+X9_cover_deck_uniform  PASS                deck prints ['Soil']; ring terrain ['Soil'] (one surface: no seam between deck cells or at the lip; the frame is still the judge's)
+X10_canal_fire         PASS                burning >=3 run cells ok, no flame off the run ok, persists 250 ticks ok, spent: all F=0 ok, spent: ashed ok, spent: none alight ok | flames 6 -> 6 -> 0, off-run [], ash 6, F>0 left [] | FIRE burning 0 | front pending 0 | burned levels 6 | trace [(10913, 10932, 60, '111000'), (11513, 11532, 60, '000
+T0n_fluid_switch_refused PASS                set_active_fluid Tar after classification+fill: success=False, activeFluidRaw RM_Fluid_Water
+E9_log_budget          PASS                0 FlowWorks errors, 0 ledger imbalances, exactly 1 sanctioned conservation exception; 0 other error lines []
+Z_settings_restored    PASS                13 touched settings back to shipped defaults
+result -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\validation_v2_result_20261007T140351.json
+LIVE: NOT GREEN  ticks 11512  wall 253.9s  calls 874  {'PASS': 50, 'FAIL': 9, 'UNMEASURED': 0, 'UNCOVERED': 0, 'UNBUILT': 0, 'SKIP': 0}
+FWDONE 14:03:51

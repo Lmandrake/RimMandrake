@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\cli.py", line 363, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\cli.py", line 261, in main
+    results = runner.run(mods, debug=args.debug, dry_run=args.dry_run,
+                         situational=args.situational, policy=args.policy)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\runner.py", line 675, in run
+    raise RuntimeError(
+        "deploy of %s FAILED: %s"
+        % (mod_folder, (r.stdout + r.stderr).strip()[-500:]))
+RuntimeError: deploy of NightsideIce FAILED: id argument: '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods/RimMandrake.Biomes/Biomes/RustCathedral/Assemblies/RimMandrake.RustCathedral.Hum.dll'
+  ! 1 file(s) NOT written for this mod (locked by the running game, or permissions). Nothing here is deployed until they are.
+    -> STILL DIFFERS: ['Biomes/RustCathedral/Assemblies/RimMandrake.RustCathedral.Hum.dll']
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+EXIT 1

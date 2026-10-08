@@ -1,0 +1,3470 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "shipped_defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "8 of 8 def(s) resolved",
+        "requested": 8,
+        "foundCount": 8,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RUT_DroidJobFault",
+          "found": true,
+          "defName": "RUT_DroidJobFault",
+          "defType": "HediffDef",
+          "label": "seized drive train",
+          "modName": "RimUtinni: Droid Repair Jobs",
+          "packageId": "mandrake.rut.droidrepairjobs",
+          "fields": {
+           "defName": "RUT_DroidJobFault"
+          }
+         },
+         {
+          "requested": "HistoryEventDef/RUT_DroidJobFineWork",
+          "found": true,
+          "defName": "RUT_DroidJobFineWork",
+          "defType": "HistoryEventDef",
+          "label": "fitted better parts than we paid for",
+          "modName": "RimUtinni: Droid Repair Jobs",
+          "packageId": "mandrake.rut.droidrepairjobs",
+          "fields": {
+           "defName": "RUT_DroidJobFineWork"
+          }
+         },
+         {
+          "requested": "HistoryEventDef/RUT_DroidJobHonestWork",
+          "found": true,
+          "defName": "RUT_DroidJobHonestWork",
+          "defType": "HistoryEventDef",
+          "label": "repaired our droid honestly",
+          "modName": "RimUtinni: Droid Repair Jobs",
+          "packageId": "mandrake.rut.droidrepairjobs",
+          "fields": {
+           "defName": "RUT_DroidJobHonestWork"
+          }
+         },
+         {
+          "requested": "HistoryEventDef/RUT_DroidJobShoddyWork",
+          "found": true,
+          "defName": "RUT_DroidJobShoddyWork",
+          "defType": "HistoryEventDef",
+          "label": "fobbed us off with worn parts",
+          "modName": "RimUtinni: Droid Repair Jobs",
+          "packageId": "mandrake.rut.droidrepairjobs",
+          "fields": {
+           "defName": "RUT_DroidJobShoddyWork"
+          }
+         },
+         {
+          "requested": "HistoryEventDef/RUT_DroidJobNeglected",
+          "found": true,
+          "defName": "RUT_DroidJobNeglected",
+          "defType": "HistoryEventDef",
+          "label": "never touched the droid we brought",
+          "modName": "RimUtinni: Droid Repair Jobs",
+          "packageId": "mandrake.rut.droidrepairjobs",
+          "fields": {
+           "defName": "RUT_DroidJobNeglected"
+          }
+         },
+         {
+          "requested": "HistoryEventDef/RUT_DroidJobDroidKept",
+          "found": true,
+          "defName": "RUT_DroidJobDroidKept",
+          "defType": "HistoryEventDef",
+          "label": "kept a droid we left in their care",
+          "modName": "RimUtinni: Droid Repair Jobs",
+          "packageId": "mandrake.rut.droidrepairjobs",
+          "fields": {
+           "defName": "RUT_DroidJobDroidKept"
+          }
+         },
+         {
+          "requested": "HistoryEventDef/RUT_DroidJobDroidDestroyed",
+          "found": true,
+          "defName": "RUT_DroidJobDroidDestroyed",
+          "defType": "HistoryEventDef",
+          "label": "lost the droid we left in their care",
+          "modName": "RimUtinni: Droid Repair Jobs",
+          "packageId": "mandrake.rut.droidrepairjobs",
+          "fields": {
+           "defName": "RUT_DroidJobDroidDestroyed"
+          }
+         },
+         {
+          "requested": "QuestScriptDef/RUT_DroidRepairJob",
+          "found": true,
+          "defName": "RUT_DroidRepairJob",
+          "defType": "QuestScriptDef",
+          "modName": "RimUtinni: Droid Repair Jobs",
+          "packageId": "mandrake.rut.droidrepairjobs",
+          "fields": {
+           "defName": "RUT_DroidRepairJob"
+          }
+         }
+        ],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_17e164934c4344169ac2b8e77aa10ef7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 34
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "droidworks_defs_the_quest_names_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "19 of 19 def(s) resolved",
+        "requested": 19,
+        "foundCount": 19,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Leg_Inferior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Leg_Inferior",
+          "defType": "HediffDef",
+          "label": "leg actuator (inferior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Leg_Inferior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Manipulator_Inferior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Manipulator_Inferior",
+          "defType": "HediffDef",
+          "label": "manipulator arm (inferior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Manipulator_Inferior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Sensor_Inferior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Sensor_Inferior",
+          "defType": "HediffDef",
+          "label": "sensor (inferior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Sensor_Inferior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Motivator_Inferior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Motivator_Inferior",
+          "defType": "HediffDef",
+          "label": "motivator (inferior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Motivator_Inferior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Servo_Inferior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Servo_Inferior",
+          "defType": "HediffDef",
+          "label": "servo (inferior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Servo_Inferior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Leg_Standard",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Leg_Standard",
+          "defType": "HediffDef",
+          "label": "leg actuator (standard)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Leg_Standard"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Manipulator_Standard",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Manipulator_Standard",
+          "defType": "HediffDef",
+          "label": "manipulator arm (standard)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Manipulator_Standard"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Sensor_Standard",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Sensor_Standard",
+          "defType": "HediffDef",
+          "label": "sensor (standard)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Sensor_Standard"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Motivator_Standard",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Motivator_Standard",
+          "defType": "HediffDef",
+          "label": "motivator (standard)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Motivator_Standard"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Servo_Standard",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Servo_Standard",
+          "defType": "HediffDef",
+          "label": "servo (standard)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Servo_Standard"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Leg_Superior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Leg_Superior",
+          "defType": "HediffDef",
+          "label": "leg actuator (superior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Leg_Superior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Manipulator_Superior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Manipulator_Superior",
+          "defType": "HediffDef",
+          "label": "manipulator arm (superior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Manipulator_Superior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Sensor_Superior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Sensor_Superior",
+          "defType": "HediffDef",
+          "label": "sensor (superior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Sensor_Superior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Motivator_Superior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Motivator_Superior",
+          "defType": "HediffDef",
+          "label": "motivator (superior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Motivator_Superior"
+          }
+         },
+         {
+          "requested": "HediffDef/RSW_DW_PartEffect_Servo_Superior",
+          "found": true,
+          "defName": "RSW_DW_PartEffect_Servo_Superior",
+          "defType": "HediffDef",
+          "label": "servo (superior)",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_PartEffect_Servo_Superior"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RSW_DW_KotORDroidColonist_T3UD",
+          "found": true,
+          "defName": "RSW_DW_KotORDroidColonist_T3UD",
+          "defType": "PawnKindDef",
+          "label": "specialist droid",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_KotORDroidColonist_T3UD"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RSW_DW_KotORDroidColonist_R8009UD",
+          "found": true,
+          "defName": "RSW_DW_KotORDroidColonist_R8009UD",
+          "defType": "PawnKindDef",
+          "label": "utility droid",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_KotORDroidColonist_R8009UD"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RSW_DW_KotORDroidColonist_GE3LD",
+          "found": true,
+          "defName": "RSW_DW_KotORDroidColonist_GE3LD",
+          "defType": "PawnKindDef",
+          "label": "labor droid",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_KotORDroidColonist_GE3LD"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RSW_DW_KotORDroidGood_3C",
+          "found": true,
+          "defName": "RSW_DW_KotORDroidGood_3C",
+          "defType": "PawnKindDef",
+          "label": "utility droid",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "defName": "RSW_DW_KotORDroidGood_3C"
+          }
+         }
+        ],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_000f1492a9a74261b64c6b5977734306",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "control_absent_def_reads_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "QuestScriptDef/RUT_DroidRepairJob_NoSuchControl"
+        ],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "QuestScriptDef/RUT_DroidRepairJob_NoSuchControl",
+          "found": false,
+          "defType": "QuestScriptDef",
+          "defName": "RUT_DroidRepairJob_NoSuchControl"
+         }
+        ],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_62d4060cab0041deb44ecc00533f12af",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_paymentMultiplier",
+   "components": [
+    {
+     "name": "paymentMultiplier_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "flip_wealthAndReputationScaling",
+   "components": [
+    {
+     "name": "wealthAndReputationScaling_round_trips",
+     "toggle": "wealthAndReputationScaling",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "payment_scaling",
+   "components": [
+    {
+     "name": "flat_payment_quotes_320_512_128",
+     "toggle": "wealthAndReputationScaling",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: quest_lifecycle(list) shows no new droid-repair quest after fire_quest succeeded: {'success': True, 'message': 'RUT_DroidRepairJob available as quest 6 \"Repair Job\" at 35 points, State=NotYetAccepted.', 'quest': 'RUT_DroidRepairJob', 'questId': 6, 'questName': 'Repair Job', 'state'",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/quest_lifecycle",
+       "result": {
+        "success": true,
+        "action": "list",
+        "count": 6,
+        "quests": [
+         {
+          "id": 0,
+          "name": "The Unfinished Line",
+          "state": "EndedFailed",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 1,
+          "name": "The Count",
+          "state": "EndedSuccess",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 2,
+          "name": "The Unfinished Line",
+          "state": "EndedFailed",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 3,
+          "name": "The Envoy",
+          "state": "EndedSuccess",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 4,
+          "name": "The Pattern Cores",
+          "state": "EndedFailed",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 5,
+          "name": "The Reckoning of Debts",
+          "state": "NotYetAccepted",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": false
+         }
+        ],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_1149f888d1dd42f6bdf33aca34c7bf61",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_quest",
+       "result": {
+        "success": true,
+        "message": "RUT_DroidRepairJob available as quest 6 \"Repair Job\" at 35 points, State=NotYetAccepted.",
+        "quest": "RUT_DroidRepairJob",
+        "questId": 6,
+        "questName": "Repair Job",
+        "state": "NotYetAccepted",
+        "accepted": false,
+        "hidden": false,
+        "challengeRating": 1,
+        "ticksUntilExpiry": 158643,
+        "points": 35.0,
+        "questCountAfter": 7,
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_20307ae1a5f44f3581ebe6d84e478b31",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/quest_lifecycle",
+       "result": {
+        "success": true,
+        "action": "list",
+        "count": 7,
+        "quests": [
+         {
+          "id": 0,
+          "name": "The Unfinished Line",
+          "state": "EndedFailed",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 1,
+          "name": "The Count",
+          "state": "EndedSuccess",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 2,
+          "name": "The Unfinished Line",
+          "state": "EndedFailed",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 3,
+          "name": "The Envoy",
+          "state": "EndedSuccess",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 4,
+          "name": "The Pattern Cores",
+          "state": "EndedFailed",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": true
+         },
+         {
+          "id": 5,
+          "name": "The Reckoning of Debts",
+          "state": "NotYetAccepted",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": false
+         },
+         {
+          "id": 6,
+          "name": "Repair Job",
+          "state": "NotYetAccepted",
+          "points": 0.0,
+          "requiresAccepter": false,
+          "historical": false
+         }
+        ],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_9a6bf1263b204a6f969331dc0f536881",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      },
+      {
+       "call": "UNMEASURED",
+       "result": "quest_lifecycle(list) shows no new droid-repair quest after fire_quest succeeded: {'success': True, 'message': 'RUT_DroidRepairJob available as quest 6 \"Repair Job\" at 35 points, State=NotYetAccepted.', 'quest': 'RUT_DroidRepairJob', 'questId': 6, 'questName': 'Repair Job', 'state'"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "payment_multiplier_scales_every_tier",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the flat arm never produced a readable quote, so the multiplier arm has no baseline",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "the flat arm never produced a readable quote, so the multiplier arm has no baseline"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "wealth_and_reputation_arm_of_the_payment",
+     "toggle": "wealthAndReputationScaling",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the scaled amount is base x tech-level factor x goodwill factor of whichever settlement the generator picks; no bridge read names that faction before the quote, so only the flat arm is provable here",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "the scaled amount is base x tech-level factor x goodwill factor of whichever settlement the generator picks; no bridge read names that faction before the quote, so only the flat arm is provable here"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "fault_hediff",
+   "components": [
+    {
+     "name": "site_ready_two_droids",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "clear_area(12)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 0 thing(s) across 144 cell(s).",
+        "cellsExamined": 144,
+        "outOfBounds": 0,
+        "destroyed": 0,
+        "pawnsSkipped": 0,
+        "perCategory": {},
+        "samples": [],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_18ce3abafee84555ad6f17e73e9151c7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      },
+      {
+       "call": "spawn_pawn RSW_DW_KotORDroidColonist_T3UD hostile=False",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 RSW_DW_KotORDroidColonist_T3UD in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "RSW_DW_Race_guy762_DroidRace_T3series9848",
+          "name": "Lu",
+          "kindRequested": "RSW_DW_KotORDroidColonist_T3UD",
+          "kindActual": "RSW_DW_KotORDroidColonist_T3UD",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_662387cf8d0a45f89350b519e6aec572",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 RSW_DW_KotORDroidColonist_T3UD in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "RSW_DW_Race_guy762_DroidRace_T3series9849",
+          "name": "Samantha",
+          "kindRequested": "RSW_DW_KotORDroidColonist_T3UD",
+          "kindActual": "RSW_DW_KotORDroidColonist_T3UD",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_9ca51a2a3e0a455a95bd6f3af8881c11",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "fault_lands_on_a_droid_and_only_that_droid",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RUT_DroidJobFault (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 3,
+        "hediffs": [
+         {
+          "def": "HeartArteryBlockage",
+          "part": "Heart",
+          "severity": 0.063
+         },
+         {
+          "def": "RSW_DW_FormatTier",
+          "severity": 3.0
+         },
+         {
+          "def": "RUT_DroidJobFault",
+          "severity": 1.0
+         }
+        ],
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_a312cc5dd3c742488af8cbc935fd8681",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) -> 60 real tick(s) over 1 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_38cda6d8d2ef4f01ba37e5eec2caacae",
+        "status": "completed",
+        "requestedTicks": 60,
+        "completedTicks": 60,
+        "remainingTicks": 0,
+        "startTicksGame": 11981,
+        "endTicksGame": 12041,
+        "advancedTicks": 60,
+        "initialFrame": 290503,
+        "lastFrame": 290562,
+        "advancedFrames": 60,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:37:21.9752626+00:00",
+        "completedAtUtc": "2026-10-07T15:37:22.9591663+00:00",
+        "message": "Advanced 60 game tick(s) across 60 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 12041
+        },
+        "operation": {
+         "OperationId": "op_7c7933c8c84f4644b843e5f6b1f18ce7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1015
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "22 pawn(s).",
+        "pawns": [
+         {
+          "id": "LothWolf3471",
+          "name": "Pombo",
+          "kind": "LothWolf",
+          "kindDef": "LothWolf",
+          "def": "LothWolf",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 112,
+          "z": 148,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 3.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Dementia",
+             "label": "dementia",
+             "severity": 0.001,
+             "part": "Brain",
+             "partLabel": "brain"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.85,
+            "Moving": 0.85,
+            "Manipulation": 0.85,
+            "Talking": 0.6,
+            "Eating": 0.85,
+            "Sight": 1.0,
+            "Hearing": 0.75,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human391",
+          "name": "Dragoon",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 114,
+          "z": 146,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch scar (itchy)",
+             "severity": 4.0,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "BadBack",
+             "label": "bad back",
+             "severity": 0.001,
+             "part": "Spine",
+             "partLabel": "spine"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.318115,
+             "part": "Head",
+             "partLabel": "head"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 7.24766827,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 3.6238327,
+             "part": "Femur",
+             "partLabel": "right femur"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.218263,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.024432,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 9.446204,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 5.880086,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 1.87439871,
+             "part": "Humerus",
+             "partLabel": "left humerus"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.589547,
+             "part": "Shoulder",
+             "partLabel": "right shoulder"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 7.243807,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 3.52885818,
+             "part": "Ribcage",
+             "partLabel": "ribcage"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.63,
+            "Moving": 0.2,
+            "Manipulation": 0.24,
+            "Talking": 0.63,
+            "Eating": 0.63,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 0.93,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.9023724,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Lylek9544",
+          "name": "Lylek",
+          "kind": "RSW_Lylek",
+          "kindDef": "RSW_Lylek",
+          "def": "RSW_Lylek",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 23,
+          "z": 62,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 5.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Armadillo9545",
+          "name": "Armadillo",
+          "kind": "Armadillo",
+          "kindDef": "Armadillo",
+          "def": "Armadillo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 140,
+          "z": 230,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Iguana9546",
+          "name": "Iguana",
+          "kind": "Iguana",
+          "kindDef": "Iguana",
+          "def": "Iguana",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 92,
+          "z": 112,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9547",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 29,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9548",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 249,
+          "z": 30,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9549",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 248,
+          "z": 38,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Gunshot",
+             "label": "old gunshot (itchy)",
+             "severity": 3.0,
+             "part": "Tail",
+             "partLabel": "vestigial tail stump"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.01875,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9550",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 34,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9551",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 34,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9722",
+          "name": "Angel",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 165,
+          "z": 198,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9724",
+          "name": "Jake",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 172,
+          "z": 190,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Gunshot",
+             "label": "old gunshot",
+             "severity": 3.0,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.93,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9725",
+          "name": "Sandoval",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Hussar",
+          "xenotypeLabel": "hussar",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 161,
+          "z": 202,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "GeneticDrugNeed",
+             "label": "go-juice dependency",
+             "severity": 0.0240000021
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human9805",
+          "name": "W",
+          "kind": "StrangerInBlack",
+          "kindDef": "StrangerInBlack",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 156,
+          "z": 205,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Stab",
+             "label": "stab scar",
+             "severity": 6.0,
+             "part": "Arm",
+             "partLabel": "right arm"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.89,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9829",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 142,
+          "z": 212,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9830",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 167,
+          "z": 204,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9831",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 165,
+          "z": 189,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_BunkerBug9832",
+          "name": "Bunkerbug",
+          "kind": "RSW_BunkerBug",
+          "kindDef": "RSW_BunkerBug",
+          "def": "RSW_BunkerBug",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 177,
+          "z": 199,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 4.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Rat9837",
+          "name": "Lab rat",
+          "kind": "RUT_LabRat",
+          "kindDef": "RUT_LabRat",
+          "def": "Rat",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 243,
+          "z": 13,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_SalvageAssistDroid9845",
+          "name": "Bear",
+          "kind": "RSW_DW_OuterRim_SalvageAssistDroid",
+          "kindDef": "RSW_DW_OuterRim_SalvageAssistDroid",
+          "def": "RSW_DW_Race_OuterRim_SalvageAssistDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 124,
+          "z": 247,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch scar (itchy)",
+             "severity": 2.0,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            },
+            {
+             "def": "RUT_Hediff_Feral",
+             "label": "feral",
+             "severity": 0.5
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_guy762_DroidRace_T3series9848",
+          "name": "Lu",
+          "kind": "RSW_DW_KotORDroidColonist_T3UD",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "def": "RSW_DW_Race_guy762_DroidRace_T3series",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.65,
+          "health": {
+           "hediffs": [
+            {
+             "def": "HeartArteryBlockage",
+             "label": "artery blockage (minor)",
+             "severity": 0.063,
+             "part": "Heart",
+             "partLabel": "heart"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            },
+            {
+             "def": "RUT_DroidJobFault",
+             "label": "seized drive train",
+             "severity": 1.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.99,
+            "Moving": 0.53,
+            "Manipulation": 0.69,
+            "Talking": 0.99,
+            "Eating": 0.99,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 0.95,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_guy762_DroidRace_T3series9849",
+          "name": "Samantha",
+          "kind": "RSW_DW_KotORDroidColonist_T3UD",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "def": "RSW_DW_Race_guy762_DroidRace_T3series",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.65,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 22,
+        "truncated": 0,
+        "totalOnMap": 22,
+        "ticksGame": 12041,
+        "operation": {
+         "OperationId": "op_7b95455db70b4d11a818128bcf17cdae",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 12041
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "22 pawn(s).",
+        "pawns": [
+         {
+          "id": "LothWolf3471",
+          "name": "Pombo",
+          "kind": "LothWolf",
+          "kindDef": "LothWolf",
+          "def": "LothWolf",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 112,
+          "z": 148,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 3.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Dementia",
+             "label": "dementia",
+             "severity": 0.001,
+             "part": "Brain",
+             "partLabel": "brain"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.85,
+            "Moving": 0.85,
+            "Manipulation": 0.85,
+            "Talking": 0.6,
+            "Eating": 0.85,
+            "Sight": 1.0,
+            "Hearing": 0.75,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human391",
+          "name": "Dragoon",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 114,
+          "z": 146,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch scar (itchy)",
+             "severity": 4.0,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "BadBack",
+             "label": "bad back",
+             "severity": 0.001,
+             "part": "Spine",
+             "partLabel": "spine"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.318115,
+             "part": "Head",
+             "partLabel": "head"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 7.24766827,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 3.6238327,
+             "part": "Femur",
+             "partLabel": "right femur"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.218263,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.024432,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 9.446204,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 5.880086,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 1.87439871,
+             "part": "Humerus",
+             "partLabel": "left humerus"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.589547,
+             "part": "Shoulder",
+             "partLabel": "right shoulder"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 7.243807,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 3.52885818,
+             "part": "Ribcage",
+             "partLabel": "ribcage"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.63,
+            "Moving": 0.2,
+            "Manipulation": 0.24,
+            "Talking": 0.63,
+            "Eating": 0.63,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 0.93,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.9023724,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Lylek9544",
+          "name": "Lylek",
+          "kind": "RSW_Lylek",
+          "kindDef": "RSW_Lylek",
+          "def": "RSW_Lylek",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 23,
+          "z": 62,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 5.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Armadillo9545",
+          "name": "Armadillo",
+          "kind": "Armadillo",
+          "kindDef": "Armadillo",
+          "def": "Armadillo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 140,
+          "z": 230,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Iguana9546",
+          "name": "Iguana",
+          "kind": "Iguana",
+          "kindDef": "Iguana",
+          "def": "Iguana",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 92,
+          "z": 112,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9547",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 29,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9548",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 249,
+          "z": 30,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9549",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 248,
+          "z": 38,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Gunshot",
+             "label": "old gunshot (itchy)",
+             "severity": 3.0,
+             "part": "Tail",
+             "partLabel": "vestigial tail stump"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.01875,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9550",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 34,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9551",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 34,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9722",
+          "name": "Angel",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 165,
+          "z": 198,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9724",
+          "name": "Jake",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 172,
+          "z": 190,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Gunshot",
+             "label": "old gunshot",
+             "severity": 3.0,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.93,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9725",
+          "name": "Sandoval",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Hussar",
+          "xenotypeLabel": "hussar",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 161,
+          "z": 202,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "GeneticDrugNeed",
+             "label": "go-juice dependency",
+             "severity": 0.0240000021
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human9805",
+          "name": "W",
+          "kind": "StrangerInBlack",
+          "kindDef": "StrangerInBlack",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 156,
+          "z": 205,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Stab",
+             "label": "stab scar",
+             "severity": 6.0,
+             "part": "Arm",
+             "partLabel": "right arm"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.89,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9829",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 142,
+          "z": 212,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9830",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 167,
+          "z": 204,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9831",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 165,
+          "z": 189,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_BunkerBug9832",
+          "name": "Bunkerbug",
+          "kind": "RSW_BunkerBug",
+          "kindDef": "RSW_BunkerBug",
+          "def": "RSW_BunkerBug",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 177,
+          "z": 199,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 4.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Rat9837",
+          "name": "Lab rat",
+          "kind": "RUT_LabRat",
+          "kindDef": "RUT_LabRat",
+          "def": "Rat",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 243,
+          "z": 13,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_SalvageAssistDroid9845",
+          "name": "Bear",
+          "kind": "RSW_DW_OuterRim_SalvageAssistDroid",
+          "kindDef": "RSW_DW_OuterRim_SalvageAssistDroid",
+          "def": "RSW_DW_Race_OuterRim_SalvageAssistDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 124,
+          "z": 247,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch scar (itchy)",
+             "severity": 2.0,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            },
+            {
+             "def": "RUT_Hediff_Feral",
+             "label": "feral",
+             "severity": 0.5
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_guy762_DroidRace_T3series9848",
+          "name": "Lu",
+          "kind": "RSW_DW_KotORDroidColonist_T3UD",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "def": "RSW_DW_Race_guy762_DroidRace_T3series",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.65,
+          "health": {
+           "hediffs": [
+            {
+             "def": "HeartArteryBlockage",
+             "label": "artery blockage (minor)",
+             "severity": 0.063,
+             "part": "Heart",
+             "partLabel": "heart"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            },
+            {
+             "def": "RUT_DroidJobFault",
+             "label": "seized drive train",
+             "severity": 1.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.99,
+            "Moving": 0.53,
+            "Manipulation": 0.69,
+            "Talking": 0.99,
+            "Eating": 0.99,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 0.95,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_guy762_DroidRace_T3series9849",
+          "name": "Samantha",
+          "kind": "RSW_DW_KotORDroidColonist_T3UD",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "def": "RSW_DW_Race_guy762_DroidRace_T3series",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.65,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 22,
+        "truncated": 0,
+        "totalOnMap": 22,
+        "ticksGame": 12041,
+        "operation": {
+         "OperationId": "op_6861fa1d948b474d8a6aedc88f5cde12",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 12041
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "pickup_grading",
+   "components": [
+    {
+     "name": "fitted_part_tier_decides_fine_honest_shoddy_neglected",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: grading runs at the PickupDue signal after a 5-9 day job timer (jobTicks); no bridge tool fires a quest signal, and a seeded part-effect hediff plus a faked timer would test the harness rather than the quest",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "grading runs at the PickupDue signal after a 5-9 day job timer (jobTicks); no bridge tool fires a quest signal, and a seeded part-effect hediff plus a faked timer would test the harness rather than the quest"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "pickup_goodwill",
+   "components": [
+    {
+     "name": "each_outcome_changes_goodwill_with_its_history_event",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a finished job (see pickup_grading) and a read of the faction tab's history-event line, which no bridge tool exposes",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "needs a finished job (see pickup_grading) and a read of the faction tab's history-event line, which no bridge tool exposes"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "pickup_payout",
+   "components": [
+    {
+     "name": "silver_arrives_at_the_landing_spot_for_the_graded_tier",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a finished job; PaySilver drops stacks at the pickup spot only after PickupDue",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "needs a finished job; PaySilver drops stacks at the pickup spot only after PickupDue"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "droid_kept_or_destroyed",
+   "components": [
+    {
+     "name": "kept_and_destroyed_droid_outcomes_are_distinct_events",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs the lodger droid to be arrested or killed during a live job and the lodgers.Arrested / .Destroyed signals to fire",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "needs the lodger droid to be arrested or killed during a live job and the lodgers.Arrested / .Destroyed signals to fire"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "random_pool_firing",
+   "components": [
+    {
+     "name": "quest_is_offered_by_the_storyteller_with_progress_score_4",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: rootSelectionWeight 1.1, rootMinProgressScore 4 and minRefireDays 15 are storyteller-pool behaviour over days; fire_quest bypasses the pool, so selection itself is not provable on a bland map",
+     "evidence": [
+      {
+       "call": "UNMEASURED",
+       "result": "rootSelectionWeight 1.1, rootMinProgressScore 4 and minRefireDays 15 are storyteller-pool behaviour over days; fire_quest bypasses the pool, so selection itself is not provable on a bland map"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "settings_restored",
+   "components": [
+    {
+     "name": "all_settings_at_shipped_defaults",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null
+}

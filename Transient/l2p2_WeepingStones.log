@@ -1,0 +1,71 @@
+[ws-note] Player.log scan: {"lines": 338, "hits": [], "game-wide config/xref lines (instrument probe)": 18}
+[ws] 10:37:26 player_log_names_no_weepingstones_error PASS 
+[ws] 10:37:26 resolve_probe_sees_absence PASS 
+[ws] 10:37:26 defs_resolve_race_things PASS 
+[ws] 10:37:26 defs_resolve_pawnkinds PASS 
+[ws] 10:37:26 defs_resolve_items PASS 
+[ws] 10:37:26 defs_resolve_plants PASS 
+[ws] 10:37:26 defs_resolve_recipes PASS 
+[ws] 10:37:26 defs_resolve_thoughts PASS 
+[ws] 10:37:26 defs_resolve_jobs PASS 
+[ws] 10:37:26 defs_resolve_workgivers PASS 
+[ws] 10:37:26 defs_resolve_set_makers PASS 
+[ws] 10:37:26 defs_resolve_biome PASS 
+[ws] 10:37:26 defs_resolve_buildings PASS 
+[ws] 10:37:26 defs_resolve_letters PASS 
+[ws] 10:37:26 defs_pair_up_by_convention PASS 
+[ws] 10:37:26 biome_probe_ready PASS 
+[ws] 10:37:26 biome_flags_and_densities PASS 
+[ws-note] wild animals rows not asserted (their donor mod is not on this tier): []
+[ws] 10:37:26 wild_animals_wired PASS 
+[ws-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[ws] 10:37:26 wild_plants_wired PASS 
+[ws] 10:37:26 vhorrin_never_ambient_and_probe_is_honest PASS 
+[ws] 10:37:26 stocked_catch_has_living_counterpart PASS 
+[ws] 10:37:26 fish_types_wired PASS 
+[ws-note] modExtensions: ["radius", "10.0", "heatKind", "lowSun", "heatOffsetC", "14.0", "maxHeatOffsetC", "70.0", "bodySizeExponent", "0.5", "minBodySizeFactor", "0.25"]
+[ws] 10:37:26 water_truce_extension_present PASS 
+[ws] 10:37:26 sun_heat_extension_present PASS 
+[ws] 10:37:27 no_dead_windhour_text PASS 
+[ws] 10:37:27 recipes_on_both_stoves PASS 
+[ws] 10:37:27 rottable_items_tick PASS 
+[ws] 10:37:27 setting_default_on_and_assembly_loaded PASS 
+[ws-note] pen designator row: {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "kind": "designator", "applicationKind": "designation", "label": "Pool pen", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen"}
+[ws] 10:37:27 designator_listed_when_on PASS 
+[ws] 10:37:27 designator_hidden_when_off UNMEASURED UNMEASURED: pool-pen designator still listed (row visible=None) with stockedPoolsEnabled=false; source Visible reads the setting, so this is a stale deployed DLL or a cached bridge listing; redeploy and re-run, or look at the Zone tab
+[ws] 10:37:27 vhorrinOddsMultiplier_slider_roundtrip PASS 
+[ws] 10:37:28 vizhikEscapeChance_slider_roundtrip PASS 
+[ws] 10:37:28 condenserSeasonDays_slider_roundtrip PASS 
+[ws] 10:37:28 waterTruceRadius_slider_roundtrip PASS 
+[ws] 10:37:28 suppression_source_wired PASS 
+[ws] 10:37:28 suppression_toggle_default_and_roundtrip PASS 
+[ws] 10:37:28 condenser_defs_wired PASS 
+[ws] 10:37:28 dewsilk_defs_wired PASS 
+[ws] 10:37:29 dewsilk_toggle_default_and_roundtrip PASS 
+[ws] 10:37:29 tamed_mirrik_yield_cocoons UNMEASURED UNMEASURED: needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map (tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired
+[ws] 10:37:29 oasis_source_wired PASS 
+[ws-note] Oasis.workerClass not serialisable by get_defs (instrument limit): true
+[ws] 10:37:29 oasis_def_accepts_our_biome PASS 
+[ws] 10:37:29 oasis_toggle_default_and_roundtrip PASS 
+[ws] 10:37:29 oasis_map_census UNMEASURED UNMEASURED: needs a generated Weeping Stones Oasis-mutator map (census per def with jawa/list_things: zero Plant_TreePalm/Plant_RatPalm/TreePalma/VEE_Plant_DatePalm/Plant_Grass/Plant_GrayGrass, native RM_Dewblade count > 0 as the can-it-see probe, and a vanilla Desert oasis control still growing pal
+[ws] 10:37:30 site_ready_pen_zone PASS 
+[ws-note] designating dry floor: {"success": false, "dryRun": false, "designator": {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 19, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen"}, "requestedCellCount": 16, "acceptedCellCount": 0, "appliedCellCount": 0, "rejectedCellCount": 16, "acceptedCells": [], "rejectedCells": [{"x": 162, "z": 176, "accepted": false, "reason": "Pool pens can only be designated over open water."}, {"x": 1
+[ws] 10:37:30 pen_refuses_dry_floor PASS 
+[ws] 10:37:30 pen_covers_exactly_the_water PASS 
+[ws] 10:37:32 site_ready_net PASS 
+[ws-note] fate of the chain's pawns: {"Human51496": {"x": 164, "z": 174, "spawned": true, "dead": false, "downed": false, "health": {"hediffs": [{"def": "Scratch", "label": "scratch", "severity": 2.63157582, "part": "Leg", "partLabel": "left leg"}, {"def": "Scratch", "label": "scratch", "severity": 2.551576, "part": "Foot", "partLabel": "left foot"}, {"def": "BloodLoss", "label": "blood loss (minor)", "severity": 0.003114691}], "capacities": {"Consciousness": 1.0, "Moving": 0.89, "Manipulation": 1.0, "Talking": 1.0, "Eating": 1.0, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.0647894, "bleedRate": 0.310989082}}, "RM_Skarrin51499": null}
+[ws] 10:38:58 net_turns_wild_pawn_into_breeding_stock PASS 
+[ws] 10:39:00 site_ready_stock PASS 
+[ws-note] fate of the chain's pawns: {"Human85964": {"x": 169, "z": 166, "spawned": true, "dead": false, "downed": false, "health": {"hediffs": [], "capacities": {"Consciousness": 1.0, "Moving": 1.0, "Manipulation": 1.0, "Talking": 1.0, "Eating": 1.0, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.0, "bleedRate": 0.0}}}
+[ws] 10:40:34 stock_releases_species_pawn_into_pen PASS 
+[ws] 10:40:36 site_ready_stock_dry PASS 
+[ws-note] fate of the chain's pawns: {"Human85983": {"x": 166, "z": 162, "spawned": true, "dead": false, "downed": false, "health": {"hediffs": [], "capacities": {"Consciousness": 1.0, "Moving": 1.0, "Manipulation": 1.0, "Talking": 1.0, "Eating": 1.0, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.0, "bleedRate": 0.0}}}
+[ws] 10:42:10 stock_outside_pen_releases_nothing FAIL ExpectationFailed: a skarrin was released at a cell outside any pen (1)
+[ws] 10:42:11 site_ready_feed PASS 
+[ws-note] fate of the chain's pawns: {"Human86004": {"x": 164, "z": 173, "spawned": true, "dead": false, "downed": false, "health": {"hediffs": [], "capacities": {"Consciousness": 1.0, "Moving": 1.0, "Manipulation": 1.0, "Talking": 1.0, "Eating": 1.0, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.0, "bleedRate": 0.0}}}
+[ws] 10:43:40 feed_consumes_food_at_the_pen PASS 
+[ws] 10:43:42 site_ready_harvest PASS 
+[ws-note] fate of the chain's pawns: {"Human86028": {"x": 166, "z": 175, "spawned": true, "dead": false, "downed": false, "health": {"hediffs": [{"def": "Scratch", "label": "scratch scar", "severity": 4.0, "part": "Arm", "partLabel": "right arm"}, {"def": "Bruise", "label": "bruise", "severity": 1.26, "part": "Torso", "partLabel": "torso"}, {"def": "Bruise", "label": "bruise", "severity": 1.34, "part": "Leg", "partLabel": "right leg"}], "capacities": {"Consciousness": 1.0, "Moving": 0.98, "Manipulation": 0.93, "Talking": 1.0, "Eating": 1.0, "Sight": 1.0, "Hearing": 1.0, "Breathing": 1.0, "BloodFiltration": 1.0, "BloodPumping": 1.0, "Metabolism": 1.0}, "capacityErrors": [], "painTotal": 0.0325, "bleedRate": 0.0}}, "RM_Skarrin86031": null}
+[ws-note] harvest meat stacks: [2]
+[ws] 10:45:11 harvest_yields_species_meat PASS 
+[ws] 10:45:13 site_ready_cull PASS 

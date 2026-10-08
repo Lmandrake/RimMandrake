@@ -1,0 +1,82 @@
+{
+  "mod": "IshkoDarkLandmarks",
+  "mode": "live",
+  "started_utc": "2026-10-07T20:56:37Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (no `## north star` section in \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\IshkoDarkLandmarks.md)",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "511 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "FAIL",
+      "evidence": "ticksGame=1 but jawa/map_info gave no map ({'success': False, 'message': 'A companion tool was built against a different RimBridgeServer.Sdk API than the running RimBridgeServer host provides. Rebuild/redeploy RimBridgeServer and the companion mod, then restart RimWorld so both load the same SDK version.', 'exception': \"System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.TypeLoadException: Could not load type of field 'JawaBench.BridgeTools.JawaBenchTerrainTools+<>c:<>9__296_1' (143) due to: Could not resolve type with token 01000090 from typeref (expected class 'RimMandrake.GimmeSomeSlack.Core.LaidPiece' in assembly 'RimMandrakeGimmeSomeSlack, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null') assembly:RimMandrakeGimmeSomeSlack, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null type:RimMandrake.GimmeSomeSlack.Core.LaidPiece member:(null)\\r\\n[Ref 52D58F66] Duplicate stacktrace, see ref for original\\r\\n   --- End of inner exception stack trace ---\\r\\n[Ref 4F15419F]\\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n  at RimBridgeServer.AnnotatedExtensionCapabilityProvider.InvokeMethodAsync (RimBridgeServer.AnnotatedExtensionCapabilityProvider+ToolClass toolClass, System.Reflection.MethodInfo method, System.Collections.Generic.IDictionary`2[TKey,TValue] arguments, RimBridgeServer.Sdk.IRimBridgeContext sdkContext, System.Threading.CancellationToken cancellationToken) [0x0004b] in <3b96934e59bd4a10a8a17586c6464df1>:0 \\n--- End of stack trace from previous location where exception was thrown ---\\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n  at RimBridgeServer.RimBridgeAsyncScheduler+<>c__DisplayClass5_0.<RunAsync>b__1 (System.Object _) [0x000ce] in <3b96934e59bd4a10a8a17586c6464df1>:0 \\n--- End of stack trace from previous location where exception was thrown ---\\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n  at RimBridgeServer.Core.OperationRunner.RunAsync (System.Func`1[TResult] func, RimBridgeServer.Core.OperationExecutionOptions options) [0x00107] in <180d5ade2d6d4609998ff7b2086e323a>:0 \", 'operation': {'OperationId': 'op_5767e954d2df43c88bc2cbed0ef4ba05', 'Status': 'Failed', 'Success': False, 'DurationMs': 2, 'Error': {'Code': 'capability.sdk_mismatch', 'Message': 'A companion tool was built against a different RimBridgeServer.Sdk API than the running RimBridgeServer host provides. Rebuild/redeploy RimBridgeServer and the companion mod, then restart RimWorld so both load the same SDK version.', 'ExceptionType': 'System.TypeLoadException', 'Details': \"System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.TypeLoadException: Could not load type of field 'JawaBench.BridgeTools.JawaBenchTerrainTools+<>c:<>9__296_1' (143) due to: Could not resolve type with token 01000090 from typeref (expected class 'RimMandrake.GimmeSomeSlack.Core.LaidPiece' in assembly 'RimMandrakeGimmeSomeSlack, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null') assembly:RimMandrakeGimmeSomeSlack, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null type:RimMandrake.GimmeSomeSlack.Core.LaidPiece member:(null)\\r\\n[Ref 52D58F66] Duplicate stacktrace, see ref for original\\r\\n   --- End of inner exception stack trace ---\\r\\n[Ref 4F15419F]\\n  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n  at RimBridgeServer.AnnotatedExtensionCapabilityProvider.InvokeMethodAsync (RimBridgeServer.AnnotatedExtensionCapabilityProvider+ToolClass toolClass, System.Reflection.MethodInfo method, System.Collections.Generic.IDictionary`2[TKey,TValue] arguments, RimBridgeServer.Sdk.IRimBridgeContext sdkContext, System.Threading.CancellationToken cancellationToken) [0x0004b] in <3b96934e59bd4a10a8a17586c6464df1>:0 \\n--- End of stack trace from previous location where exception was thrown ---\\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n  at RimBridgeServer.RimBridgeAsyncScheduler+<>c__DisplayClass5_0.<RunAsync>b__1 (System.Object _) [0x000ce] in <3b96934e59bd4a10a8a17586c6464df1>:0 \\n--- End of stack trace from previous location where exception was thrown ---\\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \\n  at RimBridgeServer.Core.OperationRunner.RunAsync (System.Func`1[TResult] func, RimBridgeServer.Core.OperationExecutionOptions options) [0x00107] in <180d5ade2d6d4609998ff7b2086e323a>:0 \"}}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 1}})",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "11 active, sha256 1cc6b62c52e66ad0 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    },
+    {
+      "name": "deployed_matches_repo:IshkoDarkLandmarks",
+      "status": "PASS",
+      "evidence": "3 files identical (textures by size)",
+      "required": true
+    }
+  ],
+  "refused": "game_loaded FAIL",
+  "all_green": false,
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "timing": {
+    "n": 5,
+    "total_ms": 229.13,
+    "mean_ms": 45.826,
+    "p50_ms": 14.3729,
+    "p95_ms": 155.8513,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 1,
+        "mean_ms": 155.8513,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 1,
+        "mean_ms": 14.3729,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 1,
+        "mean_ms": 4.6261,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 12.1751,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 42.1044,
+        "errors": 0
+      }
+    }
+  },
+  "mod_hash": "412061a42261b5bd8dbc8dbb6eaedd8d9d4e4e4cb65d06278413e08b78c9319f"
+}

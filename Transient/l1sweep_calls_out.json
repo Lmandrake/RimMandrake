@@ -1,0 +1,1009 @@
+[
+ {
+  "tool": "jawa/mod_settings_field",
+  "args": {
+   "typeName": "RimMandrake.TheForge.RM_TheForgeSettings",
+   "action": "list"
+  },
+  "result": {
+   "success": true,
+   "action": "list",
+   "typeName": "RimMandrake.TheForge.RM_TheForgeSettings",
+   "count": 45,
+   "fields": [
+    {
+     "name": "modEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "weatherPulseEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "tibannaTapRate",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "vaporColumnImmunity",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "towerScatterCount",
+     "type": "Int32",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "dieOffRingDensity",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "ventWorkSpeedBonus",
+     "type": "Single",
+     "kind": "static",
+     "value": "1.2"
+    },
+    {
+     "name": "grandCycleEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "gasWashEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "cycleFloodingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "lavaFreezeEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "meltBackDestroys",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "floatstoneBloomEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "cycleDormancyEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "cycleTelegraphLetters",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "keelworkEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "keelRingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "spunstoneStudyEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "floatstoneDoorEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "spunstoneHullEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "forgeVoicesEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "forgeVoicesVisualCues",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "dhuvvoxClockEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhuvvoxRunSoundEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhuvvoxSwarmEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeFrontsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeObscureEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeSoakEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeHeatEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeAdaptedExempt",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeStrength",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "skyColumnGridEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "skyAshSpiralsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "skyColumnHuntEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "jossurStoopEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "skyColumnHighlightEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhokkurWakeEffectsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhokkurPathMemoryEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhokkurPassesToPolish",
+     "type": "Int32",
+     "kind": "static",
+     "value": "3"
+    },
+    {
+     "name": "dhokkurTrailsFade",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "dhokkurTrailFadeDays",
+     "type": "Single",
+     "kind": "static",
+     "value": "60"
+    },
+    {
+     "name": "dhokkurWallShoveEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhokkurShoveMode",
+     "type": "Int32",
+     "kind": "static",
+     "value": "0"
+    },
+    {
+     "name": "dhokkurShoveDamagePct",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.25"
+    },
+    {
+     "name": "DhokkurWearCooldownTicks",
+     "type": "Int32",
+     "kind": "static",
+     "value": "30000"
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_f2c6338f04be42abb32c28b40fdfeb0c",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 120
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ {
+  "tool": "jawa/mod_settings_field",
+  "args": {
+   "typeName": "RimMandrake.EnvironmentalHazards.RM_EnvironmentalHazardsSettings",
+   "action": "list"
+  },
+  "result": {
+   "success": true,
+   "action": "list",
+   "typeName": "RimMandrake.EnvironmentalHazards.RM_EnvironmentalHazardsSettings",
+   "count": 76,
+   "fields": [
+    {
+     "name": "gasEmittersEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "gasEffectsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "areaAttacksEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "latentHazardArmingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "environmentalDamageEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "scaledExplosionsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "targetedHediffAbilityEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "biomeGlowMultiplierEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "hazardDamageMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "weatherPulseEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "localGrowthAuraEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "periodicInspirationEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "wardenCrecheScattererEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "crecheDespoilMemoryEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "bubbleSailorScattererEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "strandingPoolsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "livingBolesEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "livingRegrowthEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "livingRegrowthRateMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "rootCausewaysEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "wetBulbOverwhelmEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dryAirBlowerEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "treeFallEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "breaklightEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "steamDevilEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "sporeCloudEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "acceleratedRotEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "acceleratedRotItemMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "12"
+    },
+    {
+     "name": "acceleratedRotCorpseMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "20"
+    },
+    {
+     "name": "livingProduceHeatEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "warmGroundEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "warmGroundOffsetCelsius",
+     "type": "Single",
+     "kind": "static",
+     "value": "18"
+    },
+    {
+     "name": "sheenExposureEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "livePrepStrictViability",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "treasureConscienceEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "sunlightScaldEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "mirrorPoolsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "leachmossEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "contactVenomEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "contactVenomScratchMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "tarBeastEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "tarBeastPace",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "tarBeastMaxBuildings",
+     "type": "Single",
+     "kind": "static",
+     "value": "8"
+    },
+    {
+     "name": "tarBeastPumpWakeFactor",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "tarSolventPourEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "tarSolventManhunter",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "tarSolventStrongRequired",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "tarSolventMinCount",
+     "type": "Single",
+     "kind": "static",
+     "value": "5"
+    },
+    {
+     "name": "tarSolventGodDeltaShkaar",
+     "type": "Single",
+     "kind": "static",
+     "value": "8"
+    },
+    {
+     "name": "tarSolventGodDeltaZizzik",
+     "type": "Single",
+     "kind": "static",
+     "value": "8"
+    },
+    {
+     "name": "contactVenomLethal",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "bodySizeBarrierEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "bodySizeBarrierThreadCostMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "glasswalkSlipEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "glasswalkSlipChancePerSweep",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.02"
+    },
+    {
+     "name": "tarCoatingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "tarredHediffEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "warblingGlowEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "warblingGlowSpeedMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "waterTruceRetributionEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "waterTruceSuppressionEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "WaterTruceRadiusDefault",
+     "type": "Single",
+     "kind": "static",
+     "value": "10"
+    },
+    {
+     "name": "waterTruceRadius",
+     "type": "Single",
+     "kind": "static",
+     "value": "10"
+    },
+    {
+     "name": "groundRefusalEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "pollinationGateEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "waterAgitationEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "waterAgitationDensity",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "tarBelchEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "tarBelchRadius",
+     "type": "Single",
+     "kind": "static",
+     "value": "9"
+    },
+    {
+     "name": "biomeArrivalLettersEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "sentinelGraveWardsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "gradientSurgeEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "grazingSuppressionHookEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "hazardApparelAIAwarenessEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "sumpLivingMapEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "sumpLivingMapPace",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_e2776ad0936a4aa1bbd77f2d62d544c0",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 112
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ {
+  "tool": "jawa/mod_settings_field",
+  "args": {
+   "typeName": "RimMandrake.Greentide.RM_GreentideSettings",
+   "action": "list"
+  },
+  "result": {
+   "success": true,
+   "action": "list",
+   "typeName": "RimMandrake.Greentide.RM_GreentideSettings",
+   "count": 34,
+   "fields": [
+    {
+     "name": "mireEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "buriedCacheEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "mireSeverityMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "plantDensity",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.99"
+    },
+    {
+     "name": "movementDifficulty",
+     "type": "Single",
+     "kind": "static",
+     "value": "4"
+    },
+    {
+     "name": "crossBiomeEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "crossBiomeEverywhere",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "crossBiomeBiomeList",
+     "type": "String",
+     "kind": "static"
+    },
+    {
+     "name": "crossBiomeCoverage",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "frenzyEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "frenzySeverityMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "feverMarkEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "feverMarkGrantsImmunity",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "StenchGrenadeBaseRadius",
+     "type": "Single",
+     "kind": "static",
+     "value": "3.6"
+    },
+    {
+     "name": "stenchGrenadeEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "stenchGrenadeRadiusMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "canopySwarmEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "vurrakAmbushEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "vurrakTriggerBodySize",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.6"
+    },
+    {
+     "name": "vurrakFirstRevealPause",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "stellockLaceEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "stellockBranchChance",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.125"
+    },
+    {
+     "name": "stellockLaceHours",
+     "type": "Single",
+     "kind": "static",
+     "value": "12"
+    },
+    {
+     "name": "thurrockFellingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "thurrockFellingPace",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "thurrockProvokedWallDamage",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "roilEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "fruitfallEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "greatboleShakingThreshold",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.4"
+    },
+    {
+     "name": "greatboleHealingThreshold",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.6"
+    },
+    {
+     "name": "greatboleCatastropheThreshold",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.7"
+    },
+    {
+     "name": "greatboleCatastropheEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "greatboleSeedPlantingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "greatboleServantsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_99a0ef7047df4241a535aeaae0a670e5",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 111
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ }
+]

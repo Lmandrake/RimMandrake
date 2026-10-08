@@ -1,0 +1,16 @@
+land cells 17000
+0 True Applied 4/4 op(s): 0 cell(s) changed, 2000 already correct.
+4 True Applied 4/4 op(s): 0 cell(s) changed, 2000 already correct.
+8 True Applied 4/4 op(s): 0 cell(s) changed, 2000 already correct.
+12 True Applied 4/4 op(s): 0 cell(s) changed, 2000 already correct.
+16 True Applied 4/4 op(s): 0 cell(s) changed, 2000 already correct.
+20 False Applied 4/4 op(s): 55 cell(s) changed, 1945 already correct, WARNING 8 did not read back.
+24 True Applied 4/4 op(s): 1124 cell(s) changed, 876 already correct.
+28 True Applied 4/4 op(s): 832 cell(s) changed, 1168 already correct.
+32 True Applied 2/2 op(s): 512 cell(s) changed, 488 already correct.
+Counter({'Soil': 500}) Counter({'ToxicWaterShallow': 250, 'Soil': 250})
+0 2500 nettles 0 42s
+1 5000 nettles 0 84s
+2 7500 nettles 0 126s
+3 10000 nettles 0 168s
+4 12500 nettles 0 211s

@@ -1,0 +1,227 @@
+{
+  "mod": "IshkoDarkLandmarks",
+  "mode": "live",
+  "started_utc": "2026-10-07T20:57:41Z",
+  "expected": [],
+  "expected_source": "walk is DRAFT (no `## north star` section in \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\IshkoDarkLandmarks.md)",
+  "bars": [
+    {
+      "id": "source.defs_gated_on_odyssey",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "source.icons_supplied_by_art_mod",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "defs.RUT_LightlessSink_resolves",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "defs.RUT_ShadowedOverhang_resolves",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "defs.RUT_ColdLavaTube_resolves",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "placement.RUT_LightlessSink_places_with_anchor",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "placement.RUT_ShadowedOverhang_places_with_anchor",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    },
+    {
+      "id": "placement.RUT_ColdLavaTube_places_with_anchor",
+      "status": "PASS",
+      "functional": true,
+      "evidence": "PASS"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "511 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "12 active, sha256 382221dc42ec6d78 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    },
+    {
+      "name": "deployed_matches_repo:IshkoDarkLandmarks",
+      "status": "PASS",
+      "evidence": "3 files identical (textures by size)",
+      "required": true
+    }
+  ],
+  "components": [
+    {
+      "chain": "source",
+      "name": "defs_gated_on_odyssey",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "source",
+      "name": "icons_supplied_by_art_mod",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "RUT_LightlessSink_resolves",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "RUT_ShadowedOverhang_resolves",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "defs",
+      "name": "RUT_ColdLavaTube_resolves",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "placement",
+      "name": "RUT_LightlessSink_places_with_anchor",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "placement",
+      "name": "RUT_ShadowedOverhang_places_with_anchor",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "placement",
+      "name": "RUT_ColdLavaTube_places_with_anchor",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "bar_text": {},
+  "bar_text_source": "no VALIDATED walk",
+  "summary": {
+    "PASS": 8,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "all_green": true,
+  "timing": {
+    "n": 26,
+    "total_ms": 1233.204,
+    "mean_ms": 47.4309,
+    "p50_ms": 49.9667,
+    "p95_ms": 86.2186,
+    "by_tool": {
+      "jawa/static_call": {
+        "n": 1,
+        "mean_ms": 151.2649,
+        "errors": 0
+      },
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 14.3594,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 2,
+        "mean_ms": 45.9065,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 12.3933,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 57.5366,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 39.6986,
+        "errors": 0
+      },
+      "jawa/get_defs": {
+        "n": 3,
+        "mean_ms": 46.7361,
+        "errors": 0
+      },
+      "jawa/world_mutators_get": {
+        "n": 4,
+        "mean_ms": 55.1556,
+        "errors": 0
+      },
+      "jawa/world_landmarks_set": {
+        "n": 6,
+        "mean_ms": 50.1619,
+        "errors": 0
+      },
+      "jawa/world_mutators_set": {
+        "n": 3,
+        "mean_ms": 53.7525,
+        "errors": 0
+      }
+    }
+  },
+  "mod_hash": "412061a42261b5bd8dbc8dbb6eaedd8d9d4e4e4cb65d06278413e08b78c9319f"
+}

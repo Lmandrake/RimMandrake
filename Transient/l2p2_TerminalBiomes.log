@@ -1,0 +1,83 @@
+[tb] 10:59:26 shipped_defs_resolve FAIL ExpectationFailed: shipped defs did not load (a def with an unresolvable field is discarded silently): notFound=['RM_DefAliasDef/RM_SteamDevilRenameAliases'] foundCount=24 of 25
+[tb] 10:59:26 control_absent_def_reads_absent UNMEASURED upstream failed -- this chain's state is meaningless
+[tb] 10:59:27 masterEnabled_round_trips PASS 
+[tb] 10:59:27 scaldEnabled_round_trips PASS 
+[tb] 10:59:27 chillEnabled_round_trips PASS 
+[tb] 10:59:28 twilightSeaEnabled_round_trips PASS 
+[tb] 10:59:28 greySeaEnabled_round_trips PASS 
+[tb] 10:59:28 chillCryoponicsEnabled_round_trips PASS 
+[tb] 10:59:28 chillFloorBedEnabled_round_trips PASS 
+[tb] 10:59:29 chillWaxProcessionEnabled_round_trips PASS 
+[tb] 10:59:29 scaldS1SteamSkyEnabled_round_trips PASS 
+[tb] 10:59:29 scaldS2SteamCatchEnabled_round_trips PASS 
+[tb] 10:59:30 scaldS4VentFieldsEnabled_round_trips PASS 
+[tb] 10:59:30 scaldS5SailWalkerEnabled_round_trips PASS 
+[tb] 10:59:30 scaldS7SteamExposureEnabled_round_trips PASS 
+[tb] 10:59:31 scaldS1bVentFlashEnabled_round_trips PASS 
+[tb] 10:59:31 suulkEnabled_round_trips PASS 
+[tb] 10:59:31 suulkFrequencyMultiplier_round_trips PASS 
+[tb] 10:59:31 vauliskEnabled_round_trips PASS 
+[tb] 10:59:32 twilightPaneStrikeEnabled_round_trips PASS 
+[tb] 10:59:32 twilightPaneStrikeFrequency_round_trips PASS 
+[tb] 10:59:32 twilightDeckAccumulationEnabled_round_trips PASS 
+[tb] 10:59:33 twilightDeckAccumulationRate_round_trips PASS 
+[tb] 10:59:33 channelCurrentEnabled_round_trips PASS 
+[tb] 10:59:33 channelCurrentStrength_round_trips PASS 
+[tb] 10:59:34 channelFirstEntryWarning_round_trips PASS 
+[tb] 10:59:34 crossBiomeEnabled_round_trips PASS 
+[tb] 10:59:34 crossBiomeEverywhere_round_trips PASS 
+[tb] RESTORE FAILED crossBiomeBiomeList: mod_settings_field crossBiomeBiomeList did not take: wrote '', read back None
+[tb] 10:59:34 crossBiomeBiomeList_round_trips FAIL ExpectationFailed: mod_settings_field crossBiomeBiomeList did not take: wrote '', read back None
+[tb] 10:59:35 crossBiomeCoverage_round_trips PASS 
+[tb] 10:59:35 twilightWellDriftEnabled_round_trips PASS 
+[tb] 10:59:35 twilightDriftCadence_round_trips PASS 
+[tb] 10:59:36 twilightChainAvailability_round_trips PASS 
+[tb] 10:59:36 twilightSuulkPressureScalingEnabled_round_trips PASS 
+[tb] 10:59:36 twilightCagesPassableBeneath_round_trips PASS 
+[tb] 10:59:37 twilightSunSphereGraceDays_round_trips PASS 
+[tb] 10:59:37 twilightChartsAgeEnabled_round_trips PASS 
+[tb] 10:59:37 greyHullCrustEnabled_round_trips PASS 
+[tb] 10:59:37 greyHullCrustRate_round_trips PASS 
+[tb] 10:59:38 greyHullCrustSaltSnowMultiplier_round_trips PASS 
+[tb] 10:59:38 greyHullCrustBerthMultiplier_round_trips PASS 
+[tb] 10:59:38 greyLampDrawnEnabled_round_trips PASS 
+[tb] 10:59:39 greyLampWatcherEnabled_round_trips PASS 
+[tb] 10:59:39 greyLampGiantEnabled_round_trips PASS 
+[tb] 10:59:39 greyLampGiantBurnHours_round_trips PASS 
+[tb] 10:59:40 greyLampGiantMinRadius_round_trips PASS 
+[tb] 10:59:40 channelSinkOutcome_round_trips PASS 
+[tb] 10:59:40 undersurgeFrequency_round_trips PASS 
+[tb] 10:59:40 natives_comfy_min_below_floor_in_source PASS 
+[tb] 10:59:41 natives_comfy_min_below_floor_live PASS 
+[tb] 10:59:41 chill_roster_is_the_floor_natives PASS 
+[tb] 10:59:41 creature_and_catch_both_labelled_saal PASS 
+[tb] 10:59:42 ekkel_carries_simmerlace_lore PASS 
+[tb] 10:59:42 chill_catch_is_free_tier_and_alive_on_the_floor PASS 
+[tb] 10:59:42 every_sea_catch_has_a_living_floor_body PASS 
+[tb] 10:59:43 every_field_scribed_exposed_and_compiled PASS 
+[tb] 10:59:43 rostered_biomes_have_density_above_zero PASS 
+[tb] 10:59:44 site_ready_terrain_row PASS 
+[tb] 10:59:44 control_vanilla_terrain_reads_back PASS 
+[tb] 10:59:45 every_biome_terrain_paints_and_reads_back PASS 
+[tb] 10:59:45 site_ready_vat_and_control_grower PASS 
+[tb] 10:59:45 vat_reports_a_cryogenic_bath_line PASS 
+[tb] 10:59:45 powered_bath_runs_and_toggle_off_goes_offline UNMEASURED UNMEASURED: the 'running' state needs the vat on a powered grid and plants sown in it; no bridge tool wires a power net, so only the class wiring above is provable on a bland map
+[tb] 10:59:45 wax_giant_wired_in_source PASS 
+[tb] 10:59:45 site_ready_hesuun PASS 
+[tb] 10:59:46 killed_colony_spoils_into_hydrocarbon_flesh PASS 
+[tb] 10:59:46 sheet_extruded_at_a_pause_after_the_walk UNMEASURED UNMEASURED: the countdown is 90000 ticks of walking (ticksBetweenSheets) before the first sheet at a pause; a wait of that length is not a bland-map check, and no tool seeds the comp's countdown
+[tb] 10:59:47 steam_lock_pulses_weather_and_flash UNMEASURED UNMEASURED: RUT_ScaldSteamLock/RM_GameCondition_WeatherPulse and the vent flash need a Scald map (an environmental-hazards weather pulse over a steam biome) and a way to read the running condition
+[tb] 10:59:47 condenser_collects_steam UNMEASURED UNMEASURED: RUT_SteamCatch condensing needs a Scald map with a vent and ticks of steam; no reader for the condenser's stored resource
+[tb] 10:59:47 vents_scatter_and_erupt UNMEASURED UNMEASURED: RUT_ScaldVent geysers are placed by a GenStep on a NEW Scald map; the gate acts at generation (worldgen-affecting), so a held bland map cannot show it
+[tb] 10:59:47 walker_surfaces_and_sails_scatter UNMEASURED UNMEASURED: RUT_WalkerSurfacing and the sail scatterer need a Scald map and a Scald-gated incident
+[tb] 10:59:47 steam_carrier_inflicts_scald_exposure UNMEASURED UNMEASURED: RUT_ScaldSteamCarrier and the RUT_ScaldExposure hediff need a Scald map under steam and an unprotected pawn; no way to start the condition on a bland map
+[tb] 10:59:47 suulk_arrival_and_vaulisk_lure UNMEASURED UNMEASURED: RM_SuulkArrival and the Vaulisk lure are Twilight-sea incidents and a GenStep; need the sea-floor map
+[tb] 10:59:47 current_carries_pawns_and_sink_outcome_applies UNMEASURED UNMEASURED: RM_MapComponent_ChannelCurrent exists only on a generated Twilight map with channels; the sink outcome and undersurge frequency are read from a running current
+[tb] 10:59:47 veil_pane_falls_and_deck_accumulates UNMEASURED UNMEASURED: RM_VeilFallPaneStrike and RM_VeilPane deck accumulation need a Twilight map with panes and the gravship launch gate
+[tb] 10:59:47 well_ledger_drifts_and_sun_sphere_cultures UNMEASURED UNMEASURED: RM_MapComponent_WellLedger and RM_Building_SunSphere stages run over days on a Twilight map
+[tb] 10:59:47 cage_passability_follows_the_setting UNMEASURED UNMEASURED: RM_TwilightPassabilityApplier writes ThingDef.passability only from the settings WINDOW frame, which a bridge setter never triggers
+[tb] 10:59:47 scald_mechanics_outside_the_scald UNMEASURED UNMEASURED: WORLDGEN-AFFECTING and inert: crossBiomeEnabled is reserved for a future pass (mod header), so there is nothing to read
+[tb] 10:59:47 ladder_rime_door_crust_gate UNMEASURED UNMEASURED: needs a parked gravship on an RM_GreySea floor map (seabed layer); proof said ''
+[tb] 10:59:47 burn_brings_watcher_scrape_and_giant UNMEASURED UNMEASURED: needs an RM_GreySea floor map with a lit powered lamp of glow radius >= 12; proof said 'not a Grey Sea map: RM_Contagion'
+[tb] 10:59:49 all_settings_at_shipped_defaults FAIL ExpectationFailed: settings left off their shipped default by an earlier arm: [('crossBiomeBiomeList', None, '')]
+TerminalBiomes done all_green= False None

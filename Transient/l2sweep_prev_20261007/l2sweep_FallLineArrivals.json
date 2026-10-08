@@ -1,0 +1,4782 @@
+{
+ "chains": [
+  {
+   "name": "load_clean",
+   "components": [
+    {
+     "name": "no_errors_naming_this_mod",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "280 message(s) of 317 in the buffer.",
+        "totalInBuffer": 317,
+        "messages": [
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: The Reckoning dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: The Reckoning dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Jawa Fall Line Arrivals dependency (mandrake.rm.shipvermin) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimStarWars: Imperial Graffiti dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Greentide Raid Ant dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Hostile Flora dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Kinetic Arms dependency (mandrake.rm.explosiveknockback) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Propane Lake Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Pyrelands Mechanics dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Baroque Biomes dependency (mandrake.rm.luminouspigment) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Baroque Biomes dependency (mandrake.rm.flowworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Salvation Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Rust Cathedral Roaches dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Scarlands Ladder dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Ship Vermin dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Shokk dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Shokkweave Economy dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Solar Mirrors dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Bestiary dependency (OskarPotocki.VFE.Insectoid2) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Bestiary dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Bestiary dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: The Unfinished Line dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: The Unfinished Line dependency (mandrake.rut.droidrepairjobs) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Warcasket dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Wildsteam Egg Bounty dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Wildsteam Egg Bounty dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=156 elapsedMs=156",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=156",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=156 elapsedMs=156",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to get a resource \"UI/Commands/TryReconnect\" from a different thread. All resources must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to get a resource \"UI/Designators/Cancel\" from a different thread. All resources must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <linkFlags><li>Custom3</li></linkFlags> doesn't correspond to any field in type ThingDef. Context: <ThingDef ParentName=\"BuildingBase\"><category>Building</category><thingClass>Building</thingClass><soundImpactDefault>BulletImpact_Ground</soundImpactDefault><selectable>true</selectable><drawerType>MapMeshOnly</drawerType><altitudeLayer>FloorEmplacement</altitudeLayer><terrainAffordanceNeeded>Light</terrainAffordanceNeeded><repairEffect>Repair</repairEffect><leaveResourcesWhenKilled>false</leaveResourcesWhenKilled><filthLeaving>Filth_RubbleBuilding</filthLeaving><statBases><SellPriceFactor>0.70</SellPriceFactor><MaxHitPoints>30</MaxHitPoints><WorkToBuild>30</WorkToBuild><Flammability>1.0</Flammability><Beauty>-1</Beauty></statBases><defName>RM_LiquidHose</defName><label>liquid hose</label><description>A run of patched rubber hose on scrap clamps. Hoses join every liquid tank they touch into one line with the pumps, stills and works on it, so a pump at the shore can fill a tank across the base. Cheap, quick to lay, and easy to cut. Machines and tanks can stand over it.</description><graphicData><texPath>Things/Building/Linked/PowerConduit_Atlas</texPath><graphicClass>Graphic_Linked</graphicClass><color>(90,140,190)</color><linkFlags><li>Custom3</li></linkFlags><damageData><rect>(0,0.35,1,0.3)</rect></damageData></graphicData><uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath><uiIconColor>(90,140,190)</uiIconColor><passability>Standable</passability><linkFlags><li>Custom3</li></linkFlags><useHitPoints>true</useHitPoints><rotatable>false</rotatable><neverMultiSelect>false</neverMultiSelect><placingDraggableDimensions>1</placingDraggableDimensions><clearBuildingArea>false</clearBuildingArea><designationCategory>Production</designationCategory><costList><Steel>1</Steel></costList><building><isEdifice>false</isEdifice><isInert>true</isInert><ai_chillDestination>false</ai_chillDestination><expandHomeArea>false</expandHomeArea></building><modExtensions><li Class=\"RimMandrake.FlowWorks.Machinery.RM_LiquidHoseExtension\" /></modExtensions></ThingDef>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <placingDraggableDimensions>1</placingDraggableDimensions> doesn't correspond to any field in type ThingDef. Context: <ThingDef ParentName=\"BuildingBase\"><category>Building</category><thingClass>Building</thingClass><soundImpactDefault>BulletImpact_Ground</soundImpactDefault><selectable>true</selectable><drawerType>MapMeshOnly</drawerType><altitudeLayer>FloorEmplacement</altitudeLayer><terrainAffordanceNeeded>Light</terrainAffordanceNeeded><repairEffect>Repair</repairEffect><leaveResourcesWhenKilled>false</leaveResourcesWhenKilled><filthLeaving>Filth_RubbleBuilding</filthLeaving><statBases><SellPriceFactor>0.70</SellPriceFactor><MaxHitPoints>30</MaxHitPoints><WorkToBuild>30</WorkToBuild><Flammability>1.0</Flammability><Beauty>-1</Beauty></statBases><defName>RM_LiquidHose</defName><label>liquid hose</label><description>A run of patched rubber hose on scrap clamps. Hoses join every liquid tank they touch into one line with the pumps, stills and works on it, so a pump at the shore can fill a tank across the base. Cheap, quick to lay, and easy to cut. Machines and tanks can stand over it.</description><graphicData><texPath>Things/Building/Linked/PowerConduit_Atlas</texPath><graphicClass>Graphic_Linked</graphicClass><color>(90,140,190)</color><linkFlags><li>Custom3</li></linkFlags><damageData><rect>(0,0.35,1,0.3)</rect></damageData></graphicData><uiIconPath>Things/Building/Linked/PowerConduit_MenuIcon</uiIconPath><uiIconColor>(90,140,190)</uiIconColor><passability>Standable</passability><linkFlags><li>Custom3</li></linkFlags><useHitPoints>true</useHitPoints><rotatable>false</rotatable><neverMultiSelect>false</neverMultiSelect><placingDraggableDimensions>1</placingDraggableDimensions><clearBuildingArea>false</clearBuildingArea><designationCategory>Production</designationCategory><costList><Steel>1</Steel></costList><building><isEdifice>false</isEdifice><isInert>true</isInert><ai_chillDestination>false</ai_chillDestination><expandHomeArea>false</expandHomeArea></building><modExtensions><li Class=\"RimMandrake.FlowWorks.Machinery.RM_LiquidHoseExtension\" /></modExtensions></ThingDef>",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to use an uninitialized DefOf of type ThingDefOf. DefOfs are initialized right after all defs all loaded. Uninitialized DefOfs will return only nulls. (hint: don't use DefOfs as default field values in Defs, try to resolve them in ResolveReferences() instead)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Exception loading def from file RM_Thurrock.xml: System.ArgumentException: Could not find type named RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttackSecondary from node <li Class=\"RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttackSecondary\"><radius>1.9</radius><tickIntervalTicks>60</tickIntervalTicks><damageDef>Blunt</damageDef><damageAmount>30</damageAmount><minSeverity>0.9</minSeverity><pawnMultiplier>0</pawnMultiplier><buildingMultiplier>1</buildingMultiplier><plantMultiplier>0</plantMultiplier><itemMultiplier>0</itemMultiplier><sparedNaturalRock>true</sparedNaturalRock><sparesCarrier>true</sparesCarrier><requiresAwake>true</requiresAwake></li>\r\nParameter name: node\r\n[Ref F781E70A]\n  at Verse.DirectXmlToObjectNew.ResolveTypeForNode (System.Type defaultType, System.Xml.XmlNode node) [0x0005a] in <61e4173561894da49d210260257b5097>:0 \n(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndSetListField_Verse_HediffCompProperties(object,System.Reflection.FieldInfo,System.Xml.XmlNode,System.Type)\n(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndReturnDef_Verse_Def(int,int,System.Xml.XmlNode,System.Type)\n  at Verse.DirectXmlToObjectNew.DefFromNodeNew (System.Xml.XmlNode node, Verse.LoadableXmlAsset loadingAsset) [0x000dd] in <61e4173561894da49d210260257b5097>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find a type named BiomesPlus.BiomeWorker_PoisonForest",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find a type named VanillaBiomes.BiomeWorker_Badlands",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find a type named ReGrowthCore.UniversalBiomeWorker",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find a type named BiomeWorker_CypreJungle",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find a type named BiomesPlus.BiomeWorker_Wasteland",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find a type named VanillaBiomes.BiomeWorker_DesertOasis",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class=\"QuestNode_End\"><inSignal>EggHatched</inSignal><outcome>Success</outcome><sendStandardLetter>true</sendStandardLetter><successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent></li>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class=\"QuestNode_End\"><inSignal>EggFoundBeforeHatch</inSignal><outcome>Fail</outcome><sendStandardLetter>true</sendStandardLetter><goodwillChangeAmount>-25</goodwillChangeAmount><goodwillChangeFactionOf>$target</goodwillChangeFactionOf><goodwillChangeReason>RUT_HistoryEvent_ReckoningAttempt</goodwillChangeReason><failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent></li>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class=\"QuestNode_End\"><inSignal>EggHatched</inSignal><outcome>Success</outcome><sendStandardLetter>true</sendStandardLetter><successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent></li>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class=\"QuestNode_End\"><inSignal>EggFoundBeforeHatch</inSignal><outcome>Fail</outcome><sendStandardLetter>true</sendStandardLetter><goodwillChangeAmount>-25</goodwillChangeAmount><goodwillChangeFactionOf>$target</goodwillChangeFactionOf><goodwillChangeReason>RUT_HistoryEvent_ReckoningAttempt</goodwillChangeReason><failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent></li>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimMandrake: SW \u2014 Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName=\"DA_LeviathanCrab\"]/race/wildBiomes) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\SWBestiary\\Patches\\SeasWaterline\\Waterline_Lane1.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/PawnKindDef[defName=\"AncientSoldierBoss\"]/weaponTags/li[text()=\"IndustrialGunAdvanced\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\AncientArsenal_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName=\"BMT_GreyLady\"]/statBases) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\BiomeFloraStatAdjustments_Generated.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName=\"RG_Plant_AridGrass\"]/statBases) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\BiomeFloraStatAdjustments_Generated.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName=\"RG_Plant_CreepStern\"]/statBases) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\BiomeFloraStatAdjustments_Generated.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName=\"RG_Plant_CrimsonCushion\"]/statBases) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\BiomeFloraStatAdjustments_Generated.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName=\"RG_Plant_Dervish\"]/statBases) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\BiomeFloraStatAdjustments_Generated.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationSequence(count=60, lastFailedOperation=Verse.PatchOperationReplace(Defs/PawnKindDef[defName=\"BMT_Thrumbungus\"]/lifeStages/li[1]/bodyGraphicData/drawSize)) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\CreatureResize_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeWookiee\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeGamorrean\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeHerglic\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeTrandoshan\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeTogorian\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeLasat\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeFeeorin\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeSithMassassi\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeAqualish\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeCathar\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeChagrian\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeGungan\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeKaleesh\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeKlatoonian\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName=\"RSW_RimMandrakeNelvaanian\"]/genes/li[text()=\"BS_GiantWeaponWielder\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\GiantWeaponWielders_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationFindMod(Alpha Animals) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\Ikee_Rename.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_MandrakeJawa\"]/genes/li[text()=\"RUT_Jawa_MessImmune\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\JawaMessImmunity.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/BiomeDef[defName=\"HorrorWastes\"]/texture) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\JawaTerrain_HorrorWastes.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_MandrakeJawa\"]/genes/li[text()=\"MinTemp_SmallDecrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_MandrakeJawa\"]/genes/li[text()=\"MaxTemp_SmallIncrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_RimMandrakeJawa\"]/genes/li[text()=\"MinTemp_SmallDecrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_RimMandrakeJawa\"]/genes/li[text()=\"MaxTemp_SmallIncrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_RimMandrakeHutt\"]/genes/li[text()=\"MinTemp_SmallDecrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_RimMandrakeTusken\"]/genes/li[text()=\"MinTemp_SmallDecrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_RimMandrakeTusken\"]/genes/li[text()=\"MaxTemp_SmallIncrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_RimMandrakeWookiee\"]/genes/li[text()=\"MinTemp_SmallDecrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_RimMandrakeWookiee\"]/genes/li[text()=\"MaxTemp_SmallIncrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_Jawa_Xeno_Gamorrean\"]/genes/li[text()=\"MinTemp_SmallDecrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName=\"RSW_Jawa_Xeno_Gamorrean\"]/genes/li[text()=\"MaxTemp_SmallIncrease\"]) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\UtinniPatches\\Patches\\XenotypeTolerances_Ashkarr.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference to Verse.ThingDef named guy762_MandoHelmet_supercom (wanter=apparelRequired)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_PrimitiveFabrication",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.StatDef named EBSG_SkillLossRate found to give to RimWorld.StatModifier (null stat)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Formatting",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reboot",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No Verse.HediffDef named RM_ThurrockShatter found to give to RimMandrake.CreatureBehaviors.CompProperties_GrantHediff RimMandrake.CreatureBehaviors.CompProperties_GrantHediff",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Bolting",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Spiking",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_ShopRepair",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reassembly",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No Verse.TerrainDef named CypreJungleMud found to give to RimWorld.BiomeDef RUT_Greentide",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No Verse.WeatherDef named RSW_SW_RedFog found to give to RimWorld.WeatherCommonalityRecord RimWorld.WeatherCommonalityRecord",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Wasteboar. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Toxscorpion. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Toxiguana. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Toxlion. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Toxbear. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Toxafox. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Pestigator. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Hydra. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Wasteffalo. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.PawnKindDef named VAEWaste_Wastedeer. There are 1326 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.JobDef named VAEWaste_AttackTree. There are 443 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.JobDef named VAEWaste_AttackSelf. There are 443 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.JobDef named VAEWaste_EatWastepack. There are 443 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.HediffDef named VAEWaste_LongToxflu. There are 677 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.HediffDef named VAEWaste_Toxflu. There are 677 defs of this type loaded.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in Eclipse: world-targeting incident has a biome restriction list",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in SolarFlare: world-targeting incident has a biome restriction list",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in Aurora: world-targeting incident has a biome restriction list",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ash_Trace: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ash_Light: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Sand: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Gravel: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Soil: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_SoilRich: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in CannibalPirate: has a required meme which is not allowed: Cannibal",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in PirateYttakin: has a required meme which is not allowed: AnimalPersonhood",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_LineCycleRoll: PrioritizeNewest is not supported with sustainers.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RUT_Jawa_Homestead_Heavy: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 300, so could end up weaponless.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RUT_Jawa_Homestead_Specialist: Cheapest weapon with one of my weaponTags costs 530 but weaponMoney min is 450, so could end up weaponless.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RUT_Jawa_DeepDesert_Grunt: Cheapest weapon with one of my weaponTags costs 164.25 but weaponMoney min is 150, so could end up weaponless.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_DesalPlant_Kludged: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_DesalPlant_Repaired: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_DetoxWorks_Kludged: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_DetoxWorks_Repaired: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_TarRefinery_Kludged: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_TarRefinery_Repaired: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_PumpingStation_Kludged: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_PumpingStation_Repaired: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RUT_Jawa_Junkers_Specialist: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 200, so could end up weaponless.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_WM_AutomatedSmelter_Refurbished: is minifiable but not in any thing category",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RUT_ShieldGenerator: is minifiable but not in any thing category",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_TractionLance: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ash_Trace: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_LongShadeWreckSpeeder: graphicData defines a shadowInfo but staticSunShadowHeight > 0",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ash_Light: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Sand: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Gravel: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Soil: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_SoilRich: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_LongShadeWreckSpeeder: graphicData defines a shadowInfo but staticSunShadowHeight > 0",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_WM_Distillation_Kludged: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_WM_Distillation_Repaired: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_WM_Distillation_Kludged: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_WM_Distillation_Repaired: impassable, player-buildable building that can be shot/seen over.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in Frame_RM_TractionLance: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Cannot init Graphic of class Verse.Graphic_Linked",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/DosimeterLawn",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/VaultRoot",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Pusberry",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_Etchant",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_DielectricGel",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_Etchant",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_OommokSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_MuurrokSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_GuzzkaSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_VozzikSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Item/Resource/RM_SweetlineToken' for def 'RM_SweetlineToken' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Item/Plant/RM_YearningFruitHarvested' for def 'RM_YearningFruitHarvested' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find any textures at Animal/RockTroll/RockTroll while constructing Multi(initPath=Animal/RockTroll/RockTroll, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find any textures at Things/Pawn/Animal/Terrorworm/TerrorWorm while constructing Multi(initPath=Things/Pawn/Animal/Terrorworm/TerrorWorm, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_KraytSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_GreaterKraytSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_WarWyrmSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path swresource/RSW_ZakkroEgg",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/DosimeterLawn",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/VaultRoot",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 69483433]\n  at Verse.Graphic_Linked.get_MatSingle () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Graphic.get_MatNorth () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Graphic.MatAt (Verse.Rot4 rot, Verse.Thing thing) [0x00020] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.BuildableDef.ResolveIcon () [0x00074] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.ThingDef.ResolveIcon () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.BuildableDef.<PostLoad>b__78_0 () [0x00021] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=19 elapsedMs=102619",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1189 elapsedMs=103808",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=103809",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=103810",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=103810",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=103810",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=103810",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=103811",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=103814",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=103814",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=1 elapsedMs=103815",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=103818",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=19 elapsedMs=103837",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=1219 elapsedMs=103838",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=20 elapsedMs=103838",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Error in WorldGenStep: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref A710D823]\n  at RimWorld.IdeoFoundation_Deity.FillDeity (RimWorld.IdeoFoundation_Deity+Deity deity) [0x00078] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.IdeoFoundation_Deity.GenerateNewDeity () [0x00006] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.IdeoFoundation_Deity.GenerateDeities () [0x00056] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.IdeoFoundation_Deity.Init (RimWorld.IdeoGenerationParms parms) [0x00032] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.IdeoGenerator.MakeFixedIdeo (RimWorld.IdeoGenerationParms parms) [0x00010] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.FactionIdeosTracker.ChooseOrGenerateIdeo (RimWorld.IdeoGenerationParms parms) [0x000a0] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.FactionGenerator.NewGeneratedFaction (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionGeneratorParms parms) [0x0008a] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX OskarPotocki.VEF: Void VEF.Planet.VanillaExpandedFramework_FactionGenerator_NewGeneratedFaction_Patch:Postfix(PlanetLayer layer, FactionGeneratorParms parms, Faction& __result)\n  at RimWorld.FactionGenerator.CreateFactionAndAddToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x00065] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.FactionGenerator.AddFactionToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.FactionGenerator.InitializeFactions (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x000b0] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.FactionGenerator.GenerateFactionsIntoWorldLayer (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x0000d] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.Planet.WorldGenStep_Factions.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00006] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 102146,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.StarWars.WeatherSuite] no PlanetGeometryDef loaded \u2014 terminator-band and nightside-band checks will always return false. The RimUtinni wiring mod ships the one Ash'karr needs.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Ascendant Helix is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Deepwater Compact is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Free Droid Enclaves is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Geonosian Foundry Hive is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Hutt Cartel is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction Deepwater Compact of def RUT_Jawa_DeepwaterCompact has no usable PawnGroupMakers for parms groupKind=Trader, tile=102146,0, inhabitants=False, points=876, faction=Deepwater Compact, ideo=, traderKind=Caravan_Outlander_CombatSupplier, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Exception running QuestNode_ExtraFaction: System.ArgumentNullException: Value cannot be null.\r\nParameter name: source\r\n[Ref 567EF7DB]\n  at System.Linq.Enumerable.ToList[TSource] (System.Collections.Generic.IEnumerable`1[T] source) [0x0000d] in <1f993cbf88314b1baa1e10ca917bdc64>:0 \n  at RimWorld.QuestGen.QuestNode_ExtraFaction.RunInt () [0x000b1] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.QuestGen.QuestNode.Run () [0x00015] in <61e4173561894da49d210260257b5097>:0 \n\nSlate vars:\nenclaveFaction=Free Droid Enclaves\r\nhiveFaction=Geonosian Foundry Hive\r\ninSignal=Quest1.Initiate\r\njobTicks=360000\r\nlodgers=Karina, Buddy, Illy\r\nmap=Map-0-PlayerHome\r\npayFine=320\r\npayHonest=200\r\npayShoddy=80\r\npoints=35\r\nsettlement=Settlement Hisca (tile=56451,0)\r\nwalkInSpot=(249, 0, 15)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Exception running QuestNode_ExtraFaction: System.ArgumentNullException: Value cannot be null.\r\nParameter name: source\r\n[Ref 567EF7DB] Duplicate stacktrace, see ref for original\n\nSlate vars:\nenclaveFaction=Free Droid Enclaves\r\nenvoys=Vivian, Lamp, Ciderman, Baum\r\nescorts=Ciderman, Baum\r\nhiveEnvoys=Vivian, Lamp\r\nhiveFaction=Geonosian Foundry Hive\r\ninSignal=Quest3.Initiate\r\nmap=Map-0-PlayerHome\r\npoints=35\r\nsettlement=Settlement Hisca (tile=56451,0)\r\nstayTicks=240000\r\nwalkInSpot=(249, 0, 0)",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Tried to use SetRelationDirect for factions which use goodwill. The relation would be overriden by goodwill anyway. faction=Geonosian Foundry Hive, other=PlayerColony",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Expression \"round(baseReward  *  randFloat(1.8, 2.2))\" evaluated to NaN.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Exception running QuestNode_TradeRequest_RandomOfferDuration: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 7F6868A5]\n  at RimWorld.QuestGen.QuestNode_TradeRequest_RandomOfferDuration.RunInt () [0x00027] in <61e4173561894da49d210260257b5097>:0 \n  at RimWorld.QuestGen.QuestNode.Run () [0x00015] in <61e4173561894da49d210260257b5097>:0 \n\nSlate vars:\nbaseReward=550\r\ninSignal=Quest5.Initiate\r\nmap=Map-0-PlayerHome\r\npayAmount=0\r\npoints=35\r\nrewardValue=550\r\nsite=Site Outpost (tile=94689,0)\r\nsiteFaction=The Ohnaka Gang\r\nsitePartCount=1\r\nsitePartDefs=Outpost\r\nsitePartsParams=RimWorld.Planet.SitePartDefWithParams\r\nsiteTile=94689,0\r\ntarget=Wedge",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Invalid reward generation params: rewardValue is 0",
+          "repeats": 3
+         },
+         {
+          "type": "Error",
+          "text": "Grammar unresolvable. Root 'questDescription'\n\nGRAMMAR RESOLUTION TRACE\r\n1    questDescription \u2192 [cartelFaction_name] controls the door off-world and the water on the way to it. [target_nameDef], of [siteFaction_name], owes them a debt and will not pay. The Cartel wants it closed \u2014 how is your business.\\n\\n\\nThree ways to close it: hand the Cartel the silver yourself (roughly [payAmount_money]); go to [target_pronoun]'s outpost and settle it in the open, at the cost of [siteFaction_name]'s goodwill; or carry an ollathrix egg in and leave it somewhere undetected. It hatches in the night. No one need ever know how [target_nameDef] died \u2014 except you.\n       cartelFaction_name \u2192 UNRESOLVABLE\r\n2      target_nameDef \u2192 <color=#D09B61FF>Wedge</color>\r\n2      siteFaction_name \u2192 <color=#FF3333FF>The Ohnaka Gang</color>\r\n2      payAmount_money \u2192 $0\r\n2      target_pronoun \u2192 he\r\n2      siteFaction_name \u2192 <color=#FF3333FF>The Ohnaka Gang</color>\r\n2      target_nameDef \u2192 <color=#D09B61FF>Wedge</color>\n     questDescription \u2192 UNRESOLVABLE\r\n\r\nCONSTANTS\r\nOutpost_exists                         True\r\nsitePart                               Outpost\r\ntarget_faction                         PirateYttakin\r\ntarget_flesh                           Normal\r\ntarget_gender                          Male\r\ntarget_genderResolved                  Male\r\ntarget_cubeInterest                    False\r\ntarget_faction_temporary               False\r\ntarget_faction_hasLeader               True\r\nsiteFaction_temporary                  False\r\nsiteFaction_hasLeader                  True\r\nsiteFaction_leader_faction             PirateYttakin\r\nsiteFaction_leader_factionLeader       True\r\nsiteFaction_leader_flesh               Normal\r\nsiteFaction_leader_gender              Male\r\nsiteFaction_leader_genderResolved      Male\r\nsiteFaction_leader_cubeInterest        False\r\nsiteFaction                            PirateYttakin\r\npayAmount_average                      0\r\npayAmount_min                          0\r\npayAmount_max                          0\r\npayAmount                              0\r\n\r\nCUSTOM RULES\r\n\u25a0questDescription \u2192 [cartelFaction_name] controls the door off-world and the water on the way to it. [target_nameDef], of [siteFaction_name], owes them a debt and will not pay. The Cartel wants it closed \u2014 how is your business.\\n\\n\\nThree ways to close it: hand the Cartel the silver yourself (roughly [payAmount_money]); go to [target_pronoun]'s outpost and settle it in the open, at the cost of [siteFaction_name]'s goodwill; or carry an ollathrix egg in and leave it somewhere undetected. It hatches in the night. No one need ever know how [target_nameDef] died \u2014 except you.\r\n\u25a0sitePart0_description \u2192 there's an enemy outpost at the site guarded by (*Threat)1 yttakin(/Threat)\r\n\u25a0label \u2192 outpost\r\n\u25a0labelPlural \u2192 outposts\r\n\u25a0description \u2192 A small, guarded outpost.\r\n\u25a0definite \u2192 the outpost\r\n\u25a0indefinite \u2192 a outpost\r\n\u25a0possessive \u2192 its\r\n\u25a0enemiesCount \u2192 1\r\n\u25a0enemiesLabel \u2192 yttakin\r\n\u25a0allSitePartsDescriptions \u2192 there's an enemy outpost at the site guarded by <color=#D46F68FF>1 yttakin</color>.\r\n\u25a0allSitePartsDescriptionsExceptFirst \u2192 there may be danger there.\r\n\u25a0allRewardsDescriptions \u2192 transport pods with the following resources will arrive (total value <color=#DBB40CFF>$351</color>):\\n\\n  - Thrixweave x39\r\n\u25a0allRewardsDescriptionsExceptItems \u2192 \r\n\u25a0allRewardsDescriptions \u2192 transport pods with the following resources will arrive (total value <color=#DBB40CFF>$550</color>):\\n\\n  - Uranium x55\r\\n  - Joywire\r\n\u25a0allRewardsDescriptionsExceptItems \u2192 \r\n\u25a0target_nameFull \u2192 <color=#D09B61FF>Stephen 'Wedge' Eckman</color>\r\n\u25a0target_label \u2192 <color=#D09B61FF>Wedge</color>\r\n\u25a0target_labelNoParenthesis \u2192 <color=#D09B61FF>human</color>\r\n\u25a0target_definite \u2192 <color=#D09B61FF>Wedge</color>\r\n\u25a0target_nameDef \u2192 <color=#D09B61FF>Wedge</color>\r\n\u25a0target_indefinite \u2192 <color=#D09B61FF>Wedge</color>\r\n\u25a0target_nameIndef \u2192 <color=#D09B61FF>Wedge</color>\r\n\u25a0target_pronoun \u2192 he\r\n\u25a0target_possessive \u2192 his\r\n\u25a0target_objective \u2192 him\r\n\u25a0target_factionName \u2192 <color=#FF3333FF>The Ohnaka Gang</color>\r\n\u25a0target_kind \u2192 villager\r\n\u25a0target_kindPlural \u2192 villagers\r\n\u25a0target_title \u2192 intelligence agent\r\n\u25a0target_titleIndef \u2192 a intelligence agent\r\n\u25a0target_titleDef \u2192 the intelligence agent\r\n\u25a0target_age \u2192 21\r\n\u25a0target_chronologicalAge \u2192 21\r\n\u25a0target_relationInfo \u2192 \r\n\u25a0target_alienRace \u2192 Human\r\n\u25a0target_faction_name \u2192 <color=#FF3333FF>The Ohnaka Gang</color>\r\n\u25a0target_faction_pawnSingular \u2192 yttakin\r\n\u25a0target_faction_pawnSingularDef \u2192 the yttakin\r\n\u25a0target_faction_pawnSingularIndef \u2192 a yttakin\r\n\u25a0target_faction_pawnsPlural \u2192 yttakin\r\n\u25a0target_faction_pawnsPluralDef \u2192 the yttakin\r\n\u25a0target_faction_pawnsPluralIndef \u2192 yttakin\r\n\u25a0target_faction_leaderTitle \u2192 Captain\r\n\u25a0target_faction_royalFavorLabel \u2192 null_output\r\n\u25a0siteFaction_name \u2192 <color=#FF3333FF>The Ohnaka Gang</color>\r\n\u25a0siteFaction_pawnSingular \u2192 yttakin\r\n\u25a0siteFaction_pawnSingularDef \u2192 the yttakin\r\n\u25a0siteFaction_pawnSingularIndef \u2192 a yttakin\r\n\u25a0siteFaction_pawnsPlural \u2192 yttakin\r\n\u25a0siteFaction_pawnsPluralDef \u2192 the yttakin\r\n\u25a0siteFaction_pawnsPluralIndef \u2192 yttakin\r\n\u25a0siteFaction_leaderTitle \u2192 Captain\r\n\u25a0siteFaction_royalFavorLabel \u2192 null_output\r\n\u25a0siteFaction_leader_nameFull \u2192 <color=#D09B61FF>Yutong Li</color>\r\n\u25a0siteFaction_leader_label \u2192 <color=#D09B61FF>Li</color>\r\n\u25a0siteFaction_leader_labelNoParenthesis \u2192 <color=#D09B61FF>human</color>\r\n\u25a0siteFaction_leader_definite \u2192 <color=#D09B61FF>Li</color>\r\n\u25a0siteFaction_leader_nameDef \u2192 <color=#D09B61FF>Li</color>\r\n\u25a0siteFaction_leader_indefinite \u2192 <color=#D09B61FF>Li</color>\r\n\u25a0siteFaction_leader_nameIndef \u2192 <color=#D09B61FF>Li</color>\r\n\u25a0siteFaction_leader_pronoun \u2192 he\r\n\u25a0siteFaction_leader_possessive \u2192 his\r\n\u25a0siteFaction_leader_objective \u2192 him\r\n\u25a0siteFaction_leader_factionName \u2192 <color=#FF3333FF>The Ohnaka Gang</color>\r\n\u25a0siteFaction_leader_kind \u2192 boss\r\n\u25a0siteFaction_leader_kindPlural \u2192 bosses\r\n\u25a0siteFaction_leader_title \u2192 flaneur\r\n\u25a0siteFaction_leader_titleIndef \u2192 a flaneur\r\n\u25a0siteFaction_leader_titleDef \u2192 the flaneur\r\n\u25a0siteFaction_leader_age \u2192 22\r\n\u25a0siteFaction_leader_chronologicalAge \u2192 22\r\n\u25a0siteFaction_leader_relationInfo \u2192 \r\n\u25a0siteFaction_leader_alienRace \u2192 Human\r\n\u25a0payAmount \u2192 0\r\n\u25a0payAmount_duration \u2192 <color=#87F6F6FF>0 seconds</color>\r\n\u25a0payAmount_money \u2192 $0\r\n\u25a0payAmount_percent \u2192 0%\r\n\u25a0payAmount_average \u2192 0\r\n\u25a0payAmount_average_duration \u2192 <color=#87F6F6FF>0 seconds</color>\r\n\u25a0payAmount_average_money \u2192 $0\r\n\u25a0payAmount_average_percent \u2192 0%\r\n\u25a0payAmount_min \u2192 0\r\n\u25a0payAmount_min_duration \u2192 <color=#87F6F6FF>0 seconds</color>\r\n\u25a0payAmount_min_money \u2192 $0\r\n\u25a0payAmount_min_percent \u2192 0%\r\n\u25a0payAmount_max \u2192 0\r\n\u25a0payAmount_max_duration \u2192 <color=#87F6F6FF>0 seconds</color>\r\n\u25a0payAmount_max_money \u2192 $0\r\n\u25a0payAmount_max_percent \u2192 0%\n",
+          "repeats": 1
+         }
+        ],
+        "ticksGame": 8061,
+        "operation": {
+         "OperationId": "op_9b65711422444771aa7865899c6e53e3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "defs",
+   "components": [
+    {
+     "name": "all_defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "15 of 15 def(s) resolved",
+        "requested": 15,
+        "foundCount": 15,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "IncidentDef/RUT_FallArrival",
+          "found": true,
+          "defName": "RUT_FallArrival",
+          "defType": "IncidentDef",
+          "label": "wreck falls",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallArrival"
+          }
+         },
+         {
+          "requested": "IncidentDef/RUT_LabRatFalls",
+          "found": true,
+          "defName": "RUT_LabRatFalls",
+          "defType": "IncidentDef",
+          "label": "specimen",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_LabRatFalls"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RUT_LabRat",
+          "found": true,
+          "defName": "RUT_LabRat",
+          "defType": "PawnKindDef",
+          "label": "lab rat",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_LabRat"
+          }
+         },
+         {
+          "requested": "IncidentDef/RUT_FallSurvivor",
+          "found": true,
+          "defName": "RUT_FallSurvivor",
+          "defType": "IncidentDef",
+          "label": "feral survivor",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallSurvivor"
+          }
+         },
+         {
+          "requested": "HediffDef/RUT_Hediff_Feral",
+          "found": true,
+          "defName": "RUT_Hediff_Feral",
+          "defType": "HediffDef",
+          "label": "feral",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_Hediff_Feral"
+          }
+         },
+         {
+          "requested": "HediffDef/RUT_Hediff_FeralScar",
+          "found": true,
+          "defName": "RUT_Hediff_FeralScar",
+          "defType": "HediffDef",
+          "label": "Fall Line scar",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_Hediff_FeralScar"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RUT_FeralSurvivor",
+          "found": true,
+          "defName": "RUT_FeralSurvivor",
+          "defType": "PawnKindDef",
+          "label": "feral survivor",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FeralSurvivor"
+          }
+         },
+         {
+          "requested": "ThinkTreeDef/RUT_FeralDroidInsert",
+          "found": true,
+          "defName": "RUT_FeralDroidInsert",
+          "defType": "ThinkTreeDef",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FeralDroidInsert"
+          }
+         },
+         {
+          "requested": "TileMutatorDef/RUT_FallLine",
+          "found": true,
+          "defName": "RUT_FallLine",
+          "defType": "TileMutatorDef",
+          "label": "the Fall Line",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallLine"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Hull",
+          "found": true,
+          "defName": "RUT_FallWreck_Hull",
+          "defType": "ThingDef",
+          "label": "wrecked hull rib",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Hull"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Cargo",
+          "found": true,
+          "defName": "RUT_FallWreck_Cargo",
+          "defType": "ThingDef",
+          "label": "wrecked cargo section",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Cargo"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Tank",
+          "found": true,
+          "defName": "RUT_FallWreck_Tank",
+          "defType": "ThingDef",
+          "label": "wrecked fuel tank",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Tank"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Hull",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Hull",
+          "defType": "ThingDef",
+          "label": "wrecked hull rib (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Hull"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Cargo",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Cargo",
+          "defType": "ThingDef",
+          "label": "wrecked cargo section (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Cargo"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Tank",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Tank",
+          "defType": "ThingDef",
+          "label": "wrecked fuel tank (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Tank"
+          }
+         }
+        ],
+        "ticksGame": 8061,
+        "operation": {
+         "OperationId": "op_60a71728ade0499bae0789abf65c61b6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 43
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "gate",
+   "components": [
+    {
+     "name": "off_fall_line_refused",
+     "toggle": "onlyOnFallLine",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'onlyOnFallLine': True})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_FallArrival canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_FallArrival",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 8061,
+        "operation": {
+         "OperationId": "op_df1ef4b08bec40c188ae7d2b38f567e6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_LabRatFalls canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_LabRatFalls",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 8061,
+        "operation": {
+         "OperationId": "op_f590cd1960574e56be2d79a001677a15",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "anywhere_allows",
+     "toggle": "onlyOnFallLine",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: onlyOnFallLine OFF but RUT_FallArrival cannot fire (no skyfaller cell?)",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'onlyOnFallLine': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_FallArrival canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_FallArrival",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 8061,
+        "operation": {
+         "OperationId": "op_c45027aaec8542e188ede11cdfaa6152",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "wrecks_toggle_off_refuses",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "wreck_falls_and_nests",
+   "components": [
+    {
+     "name": "wreck_lands",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7745,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 13,
+        "perDef": {},
+        "ticksGame": 8061,
+        "message": "NOTHING MATCHED. 7745 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_57533bd311664455956baffb352d6f9b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7745,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 13,
+        "perDef": {},
+        "ticksGame": 8061,
+        "message": "NOTHING MATCHED. 7745 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_7b8da870cbd148a3ac4559e618bc615c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7745,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 13,
+        "perDef": {},
+        "ticksGame": 8061,
+        "message": "NOTHING MATCHED. 7745 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_99d2dfcdd6a44a7e96d53872da6a3e12",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_FallArrival fired with 35 points.",
+        "incident": "RUT_FallArrival",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 8061,
+        "operation": {
+         "OperationId": "op_0a72f9ed274045bfb7da86a259c01ee2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8061
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) -> 600 real tick(s) over 1 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_c3082d17d82047be9e06d2b4ea44e277",
+        "status": "completed",
+        "requestedTicks": 600,
+        "completedTicks": 600,
+        "remainingTicks": 0,
+        "startTicksGame": 8061,
+        "endTicksGame": 8661,
+        "advancedTicks": 600,
+        "initialFrame": 286230,
+        "lastFrame": 286829,
+        "advancedFrames": 600,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:36:12.1017254+00:00",
+        "completedAtUtc": "2026-10-07T15:36:22.0851238+00:00",
+        "message": "Advanced 600 game tick(s) across 600 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 8661
+        },
+        "operation": {
+         "OperationId": "op_20c35680e6f346f68aec2805bcab2035",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10016
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RUT_FallWreck_Hull9803",
+          "def": "RUT_FallWreck_Hull",
+          "label": "Wrecked hull rib",
+          "x": 165,
+          "z": 204,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 300,
+          "maxHitPoints": 300
+         }
+        ],
+        "scanned": 7753,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 14,
+        "perDef": {
+         "RUT_FallWreck_Hull": 1
+        },
+        "ticksGame": 8661,
+        "message": "1 of 1 matching thing(s) returned, 7753 examined.",
+        "operation": {
+         "OperationId": "op_74f981092f444790af3fea30e0bba4d6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8661
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7753,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 14,
+        "perDef": {},
+        "ticksGame": 8661,
+        "message": "NOTHING MATCHED. 7753 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_3ec9d43278894f2896389c06bff01d1d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8661
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7753,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 14,
+        "perDef": {},
+        "ticksGame": 8661,
+        "message": "NOTHING MATCHED. 7753 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_8ed326d8ef3949b9a5df1d670b34bfbe",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8661
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "vermin_burst_from_wreck",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "14 pawn(s).",
+        "pawns": [
+         {
+          "id": "LothWolf3471",
+          "name": "Pombo",
+          "kind": "LothWolf",
+          "kindDef": "LothWolf",
+          "def": "LothWolf",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 103,
+          "z": 99,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 3.5
+         },
+         {
+          "id": "Human391",
+          "name": "Dragoon",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 114,
+          "z": 146,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Lylek9544",
+          "name": "Lylek",
+          "kind": "RSW_Lylek",
+          "kindDef": "RSW_Lylek",
+          "def": "RSW_Lylek",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 18,
+          "z": 51,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 5.0
+         },
+         {
+          "id": "Armadillo9545",
+          "name": "Armadillo",
+          "kind": "Armadillo",
+          "kindDef": "Armadillo",
+          "def": "Armadillo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 152,
+          "z": 219,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "Iguana9546",
+          "name": "Iguana",
+          "kind": "Iguana",
+          "kindDef": "Iguana",
+          "def": "Iguana",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 73,
+          "z": 115,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "RSW_Massiff9547",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 244,
+          "z": 30,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9548",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 248,
+          "z": 30,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9549",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 26,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9550",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 242,
+          "z": 32,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9551",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 248,
+          "z": 25,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9722",
+          "name": "Angel",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 125,
+          "z": 59,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9724",
+          "name": "Jake",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 112,
+          "z": 58,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9725",
+          "name": "Sandoval",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Hussar",
+          "xenotypeLabel": "hussar",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 123,
+          "z": 66,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human9805",
+          "name": "W",
+          "kind": "StrangerInBlack",
+          "kindDef": "StrangerInBlack",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 241,
+          "z": 207,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         }
+        ],
+        "returned": 14,
+        "truncated": 0,
+        "totalOnMap": 14,
+        "ticksGame": 8661,
+        "operation": {
+         "OperationId": "op_6d69d9a03a44448aa46b190cf8b97058",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 8661
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(2600) -> 2600 real tick(s) over 5 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_1ed8fb1baed541319469ae48e630686c",
+        "status": "completed",
+        "requestedTicks": 197,
+        "completedTicks": 197,
+        "remainingTicks": 0,
+        "startTicksGame": 11064,
+        "endTicksGame": 11261,
+        "advancedTicks": 197,
+        "initialFrame": 289263,
+        "lastFrame": 289459,
+        "advancedFrames": 197,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:37:02.6507446+00:00",
+        "completedAtUtc": "2026-10-07T15:37:05.9188323+00:00",
+        "message": "Advanced 197 game tick(s) across 197 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 11261
+        },
+        "operation": {
+         "OperationId": "op_025c43bc66974cea83062bd6200ace80",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 3299
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "18 pawn(s).",
+        "pawns": [
+         {
+          "id": "LothWolf3471",
+          "name": "Pombo",
+          "kind": "LothWolf",
+          "kindDef": "LothWolf",
+          "def": "LothWolf",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 117,
+          "z": 146,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 3.5
+         },
+         {
+          "id": "Human391",
+          "name": "Dragoon",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 114,
+          "z": 146,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Lylek9544",
+          "name": "Lylek",
+          "kind": "RSW_Lylek",
+          "kindDef": "RSW_Lylek",
+          "def": "RSW_Lylek",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 16,
+          "z": 62,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 5.0
+         },
+         {
+          "id": "Armadillo9545",
+          "name": "Armadillo",
+          "kind": "Armadillo",
+          "kindDef": "Armadillo",
+          "def": "Armadillo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 145,
+          "z": 226,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "Iguana9546",
+          "name": "Iguana",
+          "kind": "Iguana",
+          "kindDef": "Iguana",
+          "def": "Iguana",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 90,
+          "z": 114,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "RSW_Massiff9547",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 249,
+          "z": 32,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9548",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 246,
+          "z": 38,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9549",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 32,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9550",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 241,
+          "z": 36,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9551",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 242,
+          "z": 33,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9722",
+          "name": "Angel",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 201,
+          "z": 174,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9724",
+          "name": "Jake",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 201,
+          "z": 163,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9725",
+          "name": "Sandoval",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Hussar",
+          "xenotypeLabel": "hussar",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 197,
+          "z": 176,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human9805",
+          "name": "W",
+          "kind": "StrangerInBlack",
+          "kindDef": "StrangerInBlack",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 189,
+          "z": 187,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Mynock9829",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 148,
+          "z": 202,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12
+         },
+         {
+          "id": "RSW_Mynock9830",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 169,
+          "z": 203,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12
+         },
+         {
+          "id": "RSW_Mynock9831",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 163,
+          "z": 196,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12
+         },
+         {
+          "id": "RSW_BunkerBug9832",
+          "name": "Bunkerbug",
+          "kind": "RSW_BunkerBug",
+          "kindDef": "RSW_BunkerBug",
+          "def": "RSW_BunkerBug",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 174,
+          "z": 202,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 4.0
+         }
+        ],
+        "returned": 18,
+        "truncated": 0,
+        "totalOnMap": 18,
+        "ticksGame": 11261,
+        "operation": {
+         "OperationId": "op_ad99eebea46c4acd9fc25014899531b0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11261
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "specimen",
+   "components": [
+    {
+     "name": "lab_rat_toggle_off_refuses",
+     "toggle": "labRatEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'labRatEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_LabRatFalls canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_LabRatFalls",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 11261,
+        "operation": {
+         "OperationId": "op_d1db1cb396fb4c25a30a7539a18a1b4c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11261
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'labRatEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "lab_rat_arrives_in_pod",
+     "toggle": "labRatEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_LabRatFalls fired with 35 points.",
+        "incident": "RUT_LabRatFalls",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 11261,
+        "operation": {
+         "OperationId": "op_fecc03d682e9472f98ddd2bf980f2305",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11261
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) -> 600 real tick(s) over 1 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_2e3f88cb57e5483db90033554ca6d654",
+        "status": "completed",
+        "requestedTicks": 600,
+        "completedTicks": 600,
+        "remainingTicks": 0,
+        "startTicksGame": 11261,
+        "endTicksGame": 11861,
+        "advancedTicks": 600,
+        "initialFrame": 289490,
+        "lastFrame": 290089,
+        "advancedFrames": 600,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:37:06.4339002+00:00",
+        "completedAtUtc": "2026-10-07T15:37:16.4179146+00:00",
+        "message": "Advanced 600 game tick(s) across 600 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 11861
+        },
+        "operation": {
+         "OperationId": "op_1137e86e6ecc4f14972d383424ec71ab",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10015
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "19 pawn(s).",
+        "pawns": [
+         {
+          "id": "LothWolf3471",
+          "name": "Pombo",
+          "kind": "LothWolf",
+          "kindDef": "LothWolf",
+          "def": "LothWolf",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 116,
+          "z": 149,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 3.5
+         },
+         {
+          "id": "Human391",
+          "name": "Dragoon",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 114,
+          "z": 146,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Lylek9544",
+          "name": "Lylek",
+          "kind": "RSW_Lylek",
+          "kindDef": "RSW_Lylek",
+          "def": "RSW_Lylek",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 23,
+          "z": 62,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 5.0
+         },
+         {
+          "id": "Armadillo9545",
+          "name": "Armadillo",
+          "kind": "Armadillo",
+          "kindDef": "Armadillo",
+          "def": "Armadillo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 140,
+          "z": 228,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "Iguana9546",
+          "name": "Iguana",
+          "kind": "Iguana",
+          "kindDef": "Iguana",
+          "def": "Iguana",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 94,
+          "z": 114,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "RSW_Massiff9547",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 29,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9548",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 249,
+          "z": 30,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9549",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 35,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9550",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 248,
+          "z": 33,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9551",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 245,
+          "z": 36,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9722",
+          "name": "Angel",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 173,
+          "z": 191,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9724",
+          "name": "Jake",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 181,
+          "z": 185,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9725",
+          "name": "Sandoval",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Hussar",
+          "xenotypeLabel": "hussar",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 169,
+          "z": 194,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human9805",
+          "name": "W",
+          "kind": "StrangerInBlack",
+          "kindDef": "StrangerInBlack",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 164,
+          "z": 199,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Mynock9829",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 138,
+          "z": 220,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12
+         },
+         {
+          "id": "RSW_Mynock9830",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 169,
+          "z": 206,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12
+         },
+         {
+          "id": "RSW_Mynock9831",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 165,
+          "z": 190,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12
+         },
+         {
+          "id": "RSW_BunkerBug9832",
+          "name": "Bunkerbug",
+          "kind": "RSW_BunkerBug",
+          "kindDef": "RSW_BunkerBug",
+          "def": "RSW_BunkerBug",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 177,
+          "z": 199,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 4.0
+         },
+         {
+          "id": "Rat9837",
+          "name": "Lab rat",
+          "kind": "RUT_LabRat",
+          "kindDef": "RUT_LabRat",
+          "def": "Rat",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 243,
+          "z": 11,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2
+         }
+        ],
+        "returned": 19,
+        "truncated": 0,
+        "totalOnMap": 19,
+        "ticksGame": 11861,
+        "operation": {
+         "OperationId": "op_0940081637bf47cf9ca0f2ba909c7fea",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11861
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "survivors",
+   "components": [
+    {
+     "name": "survivor_toggle_off_refuses",
+     "toggle": "survivorsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'survivorsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_FallSurvivor canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_FallSurvivor",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 11861,
+        "operation": {
+         "OperationId": "op_d088a281d0ac4ef395e88fbd899e22c4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11861
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'survivorsEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "survivor_drifts_in_feral",
+     "toggle": "survivorsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_FallSurvivor fired with 35 points.",
+        "incident": "RUT_FallSurvivor",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 11861,
+        "operation": {
+         "OperationId": "op_ba8c4271cec04f8ba4b72e2fabea3361",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11861
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(120) -> 120 real tick(s) over 1 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_cbcb8788136345d4810fed64e80611dd",
+        "status": "completed",
+        "requestedTicks": 120,
+        "completedTicks": 120,
+        "remainingTicks": 0,
+        "startTicksGame": 11861,
+        "endTicksGame": 11981,
+        "advancedTicks": 120,
+        "initialFrame": 290120,
+        "lastFrame": 290239,
+        "advancedFrames": 120,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:37:16.9338302+00:00",
+        "completedAtUtc": "2026-10-07T15:37:18.919108+00:00",
+        "message": "Advanced 120 game tick(s) across 120 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 11981
+        },
+        "operation": {
+         "OperationId": "op_d31d412e5fbe4a769bd864f6cef2c0e8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 2015
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "20 pawn(s).",
+        "pawns": [
+         {
+          "id": "LothWolf3471",
+          "name": "Pombo",
+          "kind": "LothWolf",
+          "kindDef": "LothWolf",
+          "def": "LothWolf",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 113,
+          "z": 148,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 3.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Dementia",
+             "label": "dementia",
+             "severity": 0.001,
+             "part": "Brain",
+             "partLabel": "brain"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.85,
+            "Moving": 0.85,
+            "Manipulation": 0.85,
+            "Talking": 0.6,
+            "Eating": 0.85,
+            "Sight": 1.0,
+            "Hearing": 0.75,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human391",
+          "name": "Dragoon",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 114,
+          "z": 146,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch scar (itchy)",
+             "severity": 4.0,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "BadBack",
+             "label": "bad back",
+             "severity": 0.001,
+             "part": "Spine",
+             "partLabel": "spine"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.318115,
+             "part": "Head",
+             "partLabel": "head"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 7.24766827,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 3.6238327,
+             "part": "Femur",
+             "partLabel": "right femur"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.218263,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.024432,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 9.446204,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 5.880086,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 1.87439871,
+             "part": "Humerus",
+             "partLabel": "left humerus"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 8.589547,
+             "part": "Shoulder",
+             "partLabel": "right shoulder"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (Imperial Labor Droid fist)",
+             "severity": 7.243807,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (Imperial Labor Droid fist)",
+             "severity": 3.52885818,
+             "part": "Ribcage",
+             "partLabel": "ribcage"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.63,
+            "Moving": 0.2,
+            "Manipulation": 0.24,
+            "Talking": 0.63,
+            "Eating": 0.63,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 0.93,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.9023724,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Lylek9544",
+          "name": "Lylek",
+          "kind": "RSW_Lylek",
+          "kindDef": "RSW_Lylek",
+          "def": "RSW_Lylek",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 23,
+          "z": 62,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 5.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Armadillo9545",
+          "name": "Armadillo",
+          "kind": "Armadillo",
+          "kindDef": "Armadillo",
+          "def": "Armadillo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 140,
+          "z": 230,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Iguana9546",
+          "name": "Iguana",
+          "kind": "Iguana",
+          "kindDef": "Iguana",
+          "def": "Iguana",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 92,
+          "z": 112,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9547",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 29,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9548",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 249,
+          "z": 30,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9549",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 248,
+          "z": 37,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Gunshot",
+             "label": "old gunshot (itchy)",
+             "severity": 3.0,
+             "part": "Tail",
+             "partLabel": "vestigial tail stump"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.01875,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9550",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 248,
+          "z": 33,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Massiff9551",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 34,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9722",
+          "name": "Angel",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 167,
+          "z": 196,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9724",
+          "name": "Jake",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 175,
+          "z": 188,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Gunshot",
+             "label": "old gunshot",
+             "severity": 3.0,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.93,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_ImperialLaborDroid9725",
+          "name": "Sandoval",
+          "kind": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "def": "RSW_DW_Race_OuterRim_ImperialLaborDroid",
+          "hasGenes": true,
+          "xenotype": "Hussar",
+          "xenotypeLabel": "hussar",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 164,
+          "z": 199,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "GeneticDrugNeed",
+             "label": "go-juice dependency",
+             "severity": 0.0240000021
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human9805",
+          "name": "W",
+          "kind": "StrangerInBlack",
+          "kindDef": "StrangerInBlack",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 158,
+          "z": 205,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Stab",
+             "label": "stab scar",
+             "severity": 6.0,
+             "part": "Arm",
+             "partLabel": "right arm"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.89,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9829",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 140,
+          "z": 215,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9830",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 169,
+          "z": 206,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_Mynock9831",
+          "name": "Mynock",
+          "kind": "RSW_Mynock",
+          "kindDef": "RSW_Mynock",
+          "def": "RSW_Mynock",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 165,
+          "z": 189,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.12,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_BunkerBug9832",
+          "name": "Bunkerbug",
+          "kind": "RSW_BunkerBug",
+          "kindDef": "RSW_BunkerBug",
+          "def": "RSW_BunkerBug",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 177,
+          "z": 199,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 4.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Rat9837",
+          "name": "Lab rat",
+          "kind": "RUT_LabRat",
+          "kindDef": "RUT_LabRat",
+          "def": "Rat",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 243,
+          "z": 13,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_SalvageAssistDroid9845",
+          "name": "Bear",
+          "kind": "RSW_DW_OuterRim_SalvageAssistDroid",
+          "kindDef": "RSW_DW_OuterRim_SalvageAssistDroid",
+          "def": "RSW_DW_Race_OuterRim_SalvageAssistDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 124,
+          "z": 246,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch scar (itchy)",
+             "severity": 2.0,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            },
+            {
+             "def": "RUT_Hediff_Feral",
+             "label": "feral",
+             "severity": 0.5
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 20,
+        "truncated": 0,
+        "totalOnMap": 20,
+        "ticksGame": 11981,
+        "operation": {
+         "OperationId": "op_4e66c93822824c5faf3644e8958c2b5f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 11981
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001DCEE167800>"
+ ],
+ "refused": "",
+ "walk": null
+}

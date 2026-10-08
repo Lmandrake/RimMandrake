@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>modcheck: RiverColors</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#faf7f2;color:#2a231c;margin:2em}
+h1{color:#1a7f37} table{border-collapse:collapse;width:100%;margin-bottom:2em}
+td,th{border:1px solid #ccc;padding:.4em .6em;text-align:left;vertical-align:top;font-size:.9em}
+th{background:#eee2d0} .shot{font-family:monospace;font-size:.8em;color:#666}
+.vis{font-size:.85em;margin-top:.3em}
+</style></head><body>
+<h1>RiverColors -- GREEN</h1>
+<h2>mod_settings</h2><table><tr><th>component</th><th>toggle</th><th>verdict</th><th>detail</th><th>evidence</th></tr><tr><td>setting_enabled_round_trips</td><td>beyond-toggle</td><td style="color:#1a7f37">PASS</td><td></td><td>set_setting(RimMandrake.Utinni.RiverColors.RiverColorsSettings, {&#x27;enabled&#x27;: &#x27;false&#x27;}) -&gt; True<br>set_setting(RimMandrake.Utinni.RiverColors.RiverColorsSettings, {&#x27;enabled&#x27;: &#x27;true&#x27;}) -&gt; True</td></tr></table><h2>harmony_patches_installed</h2><table><tr><th>component</th><th>toggle</th><th>verdict</th><th>detail</th><th>evidence</th></tr><tr><td>patched_WorldDrawLayer_Paths_GeneratePaths</td><td>beyond-toggle</td><td style="color:#1a7f37">PASS</td><td></td><td>bridge_call jawa/harmony_patches -&gt; {&#x27;success&#x27;: True, &#x27;typeName&#x27;: &#x27;WorldDrawLayer_Paths&#x27;, &#x27;methodName&#x27;: &#x27;GeneratePaths&#x27;, &#x27;methodCount&#x27;: 1, &#x27;methods&#x27;: [{&#x27;method&#x27;: &#x27;GeneratePaths&#x27;, &#x27;declaringType&#x27;: &#x27;RimWorld.Planet.WorldDrawLayer_Paths&#x27;, &#x27;prefixCount&#x27;: 1, &#x27;postfixCount&#x27;: 0, &#x27;transpilerCount&#x27;: 0, &#x27;finalizerCount&#x27;: 0, &#x27;prefixes&#x27;: [{&#x27;owner&#x27;: &#x27;mandrake.rut.rivercolors&#x27;, &#x27;priority&#x27;: 400, &#x27;patchMethod&#x27;: &#x27;RimMandrake.Utinni.RiverColors.Patch_WorldDrawLayer_Paths_GeneratePaths.Prefix&#x27;, &#x27;patchAssembly&#x27;: &#x27;RimMandrake.Utinni.RiverColors&#x27;}], &#x27;postfixes&#x27;: [], &#x27;transpilers&#x27;: [], &#x27;finalizers&#x27;: []}], &#x27;ticksGame&#x27;: 30441, &#x27;operation&#x27;: {&#x27;OperationId&#x27;: &#x27;op_8c542fc369af4e3e923e80c4d9e77f18&#x27;, &#x27;Status&#x27;: &#x27;Completed&#x27;, &#x27;Success&#x27;: True, &#x27;DurationMs&#x27;: 16}, &#x27;state&#x27;: {&#x27;programState&#x27;: &#x27;Playing&#x27;, &#x27;hasCurrentGame&#x27;: True, &#x27;paused&#x27;: True, &#x27;timeSpeed&#x27;: &#x27;Paused&#x27;, &#x27;tick&#x27;: 30441}}</td></tr></table>
+</body></html>

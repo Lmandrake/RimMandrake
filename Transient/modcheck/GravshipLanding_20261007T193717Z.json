@@ -1,0 +1,312 @@
+{
+ "mod": "GravshipLanding",
+ "stamp": "20261007T193717Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "mod_ships_no_defs",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RM_GravshipLandingNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_GravshipLandingNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RM_GravshipLandingNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_d1d2fe22a09a4f518992c4126ed6888d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "revealOutdoorsBeforeLanding_round_trips",
+      "toggle": "revealOutdoorsBeforeLanding",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "reveal_gate_armed",
+    "components": [
+     {
+      "name": "control_nonexistent_method_has_no_owner",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GenStep_GravshipMarker",
+         "methodName": "NoSuchMethodZZ",
+         "methodCount": 0,
+         "methods": [],
+         "ticksGame": 430356,
+         "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+         "operation": {
+          "OperationId": "op_23006d3a841241199f90c7b70c4176e3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "postfix_attached_to_gravship_marker_generate",
+      "toggle": "revealOutdoorsBeforeLanding",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "GenStep_GravshipMarker",
+         "methodName": "Generate",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Generate",
+           "declaringType": "RimWorld.GenStep_GravshipMarker",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.gravshiplanding",
+             "priority": 400,
+             "patchMethod": "RimMandrake.GravshipLanding.Patch_GenStep_GravshipMarker_Generate.Postfix",
+             "patchAssembly": "RimMandrakeGravshipLanding"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_GravshipArrivalLetter.Generate_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_5891c4801bc547909e0dcd65e7282291",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "arrival_map_reveal",
+    "components": [
+     {
+      "name": "outdoor_cells_unfogged_on_arrival_map",
+      "toggle": "revealOutdoorsBeforeLanding",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofReveal(System.String)",
+         "result": "outdoor=416/416 interiorFogged=9/9 off_unfogged=0 nonarrival_unfogged=0",
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_fd07a9006b294031bca8d29e77dfa1a2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 59
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roofed_interiors_stay_fogged",
+      "toggle": "revealOutdoorsBeforeLanding",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "toggle_off_leaves_vanilla_fog",
+      "toggle": "revealOutdoorsBeforeLanding",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "non_arrival_map_is_a_no_op",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\GravshipLanding.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true
+ }
+}

@@ -1,0 +1,85 @@
+[cauldron]-note shipped defs resolved: 44
+[cauldron] 09:46:47 defs_resolve PASS 
+[cauldron] 09:46:47 acid_wiring_shape PASS 
+[cauldron] 09:46:47 flora_expansion_shape PASS 
+[cauldron] 09:46:47 fexxil_venom_shape PASS 
+[cauldron] 09:46:48 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 09:46:48 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 09:46:48 biome_roster PASS 
+[cauldron] 09:46:49 biome_worker_and_terrain PASS 
+[cauldron] 09:46:49 nettle_habitat_wired PASS 
+[cauldron] 09:46:49 vent_habitat_wired PASS 
+[cauldron] 09:46:49 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 09:46:49 weathers_selectable PASS 
+[cauldron] 09:46:51 defaults FAIL ExpectationFailed: settings not at shipped defaults (or field missing): {'ventSilenceDays': '0.05'}
+[cauldron] 09:46:51 vexxissAttacksIgniter_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 condensateGardensEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 ventsEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 ventFalterMessage_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 ventGardensEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 vexxithDoorEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 dewfallBeadsEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 dewfallSaturationEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 assayFlecksEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 vexxissPrintsEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:46:51 biomeRarityFactor_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note comps: {"RM_Suush": ["CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive"], "RM_Vexxiss": ["CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour"]}
+[cauldron] 09:46:51 suush_and_vexxiss_comps PASS 
+[cauldron] 09:46:51 zisska_yields_and_toxic_meat PASS 
+[cauldron] 09:46:51 acid_site_ready PASS 
+[cauldron]-note AcidBurn 20: hp before/after: {"swall": [300, 280], "vdoor": [320, 320], "vwall": [480, 480]}
+[cauldron] 09:46:51 vexxith_acid_proof PASS 
+[cauldron]-note AcidBurn 20 with the toggle OFF: vexxith wall hp before/after: [480, 460]
+[cauldron] 09:46:52 vexxith_acid_toggle_off PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 09:46:52 fauna_spawns PASS 
+[cauldron] 09:46:52 suush_can_fly PASS 
+[cauldron] 09:47:00 suush_ignores_melee PASS 
+[cauldron]-note shot suush row / melee control still there: [null, true]
+[cauldron] 09:47:07 suush_detonates_when_shot PASS 
+[cauldron]-note flora set: {"asked": 17, "lost": []}
+[cauldron] 09:47:09 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 09:47:10 assay_grades PASS 
+[cauldron] 09:47:10 assay_toggle_off PASS 
+[cauldron] 09:47:10 assay_factor_scales PASS 
+[cauldron] 09:47:11 yield_site_ready PASS 
+[cauldron]-note martyr harvest 1 (factor 1.0): wood / steel: [15, 6]
+[cauldron] 09:48:02 harvest_pays_metal PASS 
+[cauldron]-note martyr harvest 2 (factor 2.0): wood / steel: [15, 12]
+[cauldron] 09:48:53 yield_factor_scales PASS 
+[cauldron] 09:48:54 yield_toggle_off FAIL ExpectationFailed: ordered_job(Harvest) failed: {'success': False, 'message': "No spawned thing on this map with id 'RM_TreeMartyr77290'.", 'operation': {'OperationId': 'op_2ecf374f77bc4f4cb2e8de3c90c0fab0', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'programState': 'Playin
+[cauldron]-note map-biome native / non-native herbivore picked: [null, "Deer"]
+[cauldron]-note weather transition factor after the wait: 1.0
+[cauldron] 09:50:04 bloom_site_ready PASS 
+[cauldron]-note outdoor colonist hediff: {"def": "RM_VentMetalLoad", "label": "metal load (trace)", "severity": 0.0012}
+[cauldron] 09:50:04 bloom_loads_exposed PASS 
+[cauldron] 09:50:04 bloom_no_double_tax PASS 
+[cauldron] 09:50:04 bloom_spares_roofed PASS 
+[cauldron] 09:50:04 bloom_spares_natives UNMEASURED UNMEASURED: this map's biome offers no native/non-native herbivore pair to compare
+[cauldron] 09:50:06 bloom_toggle_off PASS 
+[cauldron]-note severity at factor 2.0 vs 1.0 (ratio): [0.0024, 0.0012, 2.0]
+[cauldron] 09:50:07 bloom_factor_scales PASS 
+[cauldron] 09:50:08 water_site_ready UNMEASURED UNMEASURED: a 'Vexxiss poisoning water' letter is already on the stack before the vexxiss wades
+[cauldron] 09:50:08 water_poison_on UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:50:08 water_letter_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:50:08 water_letter_cooldown UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:50:08 water_letter_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:50:08 water_poison_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note vexxiss job BeatFire seen / fire polls with a fire standing: [true, 1]
+[cauldron] 09:50:09 fire_warden_beats_fire PASS 
+[cauldron]-note OFF arm: BeatFire seen / fire polls: [false, 18]
+[cauldron] 09:50:28 fire_warden_toggle_off PASS 
+[cauldron]-note fresh vent output / state: [0.28, "recovering"]
+[cauldron] 09:50:28 vents_site_ready PASS 
+[cauldron] 09:50:29 vent_weather_multiplier FAIL ExpectationFailed: a vent under scatter-dusk reads output 0.28x, expected 1.00x
+[cauldron] 09:50:29 vent_falter_precedes_bloom UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:50:29 vent_exposure_is_local UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:50:29 vexxiss_drinks_vent UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:50:29 vent_silences_and_recovers UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 519}
+[cauldron] 09:50:29 log_clean PASS 
+Cauldron done all_green= False None

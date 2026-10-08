@@ -1,0 +1,52 @@
+[bdesert-note] shipped defs resolved: 70
+[bdesert] 10:57:07 defs_resolve PASS 
+[bdesert] 10:57:07 flora_expansion_shape PASS 
+[bdesert-note] BiomeDef weather table: {"Clear": 60.0, "RM_Haze": 15.0, "RM_IceSandDrift": 15.0, "RM_IceFog": 10.0, "Fog": 0, "Rain": 0, "DryThunderstorm": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "SnowGentle": 0, "SnowHard": 0, "GrayPall": 0, "Windy": 0, "Overcast": 0, "Blizzard": 0}
+[bdesert] 10:57:07 biome_weather_table PASS 
+[bdesert] 10:57:07 biome_carrier_condition PASS 
+[bdesert-note] biome roster states (AA_Thunderbeast follows the mod list): {"RM_Dorrak": "spawning", "RM_Dovvik": "spawning", "RM_Krissek": "spawning", "RM_Murrek": "spawning", "RM_Ossivel": "spawning", "RM_Utikka": "spawning", "RM_Vekkit": "spawning", "RM_Vhaulk": "spawning", "RM_Vrisk": "spawning", "RM_Zhaaz": "spawning", "RM_Palefloss": "spawning", "RM_Glassfern": "spawning", "RM_Chimeglobe": "spawning", "RM_Virr": "spawning", "RM_Qeshra": "spawning", "RM_Kethevar": "spawning", "RM_Lisqueth": "spawning", "RM_Vashpuk": "spawning", "AA_Thunderbeast": "absent"}
+[bdesert] 10:57:07 biome_roster_and_density PASS 
+[bdesert] 10:57:07 charge_comps_wired PASS 
+[bdesert] 10:57:07 rack_needs_no_power PASS 
+[bdesert] 10:57:07 ablation_and_murrek_wired PASS 
+[bdesert] 10:57:09 defaults PASS 
+[bdesert] 10:57:09 burnerHaloEnabled_roundtrip PASS 
+[bdesert] 10:57:09 crackCueEnabled_roundtrip PASS 
+[bdesert] 10:57:10 murrekReseedEnabled_roundtrip PASS 
+[bdesert] 10:57:10 ablationSalvageEnabled_roundtrip PASS 
+[bdesert] 10:57:10 ablationPaceFactor_roundtrip PASS 
+[bdesert] 10:57:10 vhaulkRoadDaysFactor_roundtrip PASS 
+[bdesert] 10:57:11 vhaulkStayDaysFactor_roundtrip PASS 
+[bdesert-note] natives spawned: {"asked": 10, "bad": []}
+[bdesert] 10:57:12 natives_spawn_charged PASS 
+[bdesert] 10:57:12 vrisk_can_fly PASS 
+[bdesert-note] flora set: {"asked": 8, "lost": ["RM_Palefloss", "RM_Glassfern", "RM_Chimeglobe", "RM_Virr", "RM_Qeshra", "RM_Kethevar", "RM_Lisqueth", "RM_Vashpuk"], "rejectionReasons": {"RM_Palefloss": {"terrain or conditions cannot support RM_Palefloss": 1}, "RM_Glassfern": {"terrain or conditions cannot support RM_Glassfern": 1}, "RM_Chimeglobe": {"terrain or conditions cannot support RM_Chimeglobe": 1}, "RM_Virr": {"terrain or conditions cannot support RM_Virr": 1}, "RM_Qeshra": {"terrain or conditions cannot support RM_Qeshra": 1}, "RM_Kethevar": {"terrain or conditions cannot support RM_Kethevar": 1}, "RM_Lisqueth": {"terrain or conditions cannot support RM_Lisqueth": 1}, "RM_Vashpuk": {"terrain or conditions cannot support RM_Vashpuk": 1}}, "tileTempCache": {"success": true, "completed": true, "tilesScanned": 1, "staleTotal": 0, "hilliness": {"cached": 0, "stale": 0}, "secondaryBiome": {"cached": 1, "stale": 0}, "minTemp": {"cached": 1, "stale": 0, "checked_": true}, "maxTemp": {"cached": 1, "stale": 0, "checked_": true}, "newlyPopulated": 0, "examples": [], "exampleCap": 5, "examplesTruncated": false, "refusedCount": 0, "refused": [], "populateRequested": false, "note": "A non-zero staleTotal means 
+[bdesert] 10:57:15 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Palefloss', 'RM_Glassfern', 'RM_Chimeglobe', 'RM_Virr', 'RM_Qeshra', 'RM_Kethevar', 'RM_Lisqueth', 'RM_Vashpuk'] (reasons {'RM_Palefloss': {'terrain or conditions cannot support RM_Palefloss': 1}, 'RM_Glassfern': {'terrain or condi
+[bdesert] 10:57:17 plant_death_chains UNMEASURED UNMEASURED: chain ON: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert] 10:57:17 plant_death_toggle_off_no_chain UNMEASURED UNMEASURED: chain OFF: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert] 10:57:17 plant_death_master_off_no_chain UNMEASURED UNMEASURED: master OFF: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert-note] warm arms: {"amb": 17.751152, "low": 5.0, "high": 25.75}
+[bdesert] 10:57:18 warm_site_ready UNMEASURED UNMEASURED: only 0 of 3 palefloss stand on the warm pad
+[bdesert] 10:57:18 warm_threshold_above_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:57:18 warm_toggle_off_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:57:18 warm_detonates_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:57:19 dorrak_site_ready PASS 
+[bdesert] 10:57:20 hump_hit_kills UNMEASURED UNMEASURED: dorrak(hump,on) vanished from list_pawns after a hit
+[bdesert] 10:57:20 leg_hit_does_not_kill UNMEASURED UNMEASURED: jawa/damage(Cut 60 on RM_Dorrak91763) refused: {'success': False, 'message': "No thing with id 'RM_Dorrak91763' on this map.", 'operation': {'OperationId': 'op_1cf4ec252c6143c982af0e4589bffaeb', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing
+[bdesert] 10:57:20 hump_toggle_off_ordinary_part UNMEASURED UNMEASURED: jawa/damage(Cut 60 on RM_Dorrak91764) refused: {'success': False, 'message': "No thing with id 'RM_Dorrak91764' on this map.", 'operation': {'OperationId': 'op_beb5fc395d6b41b79ce40076e3cda678', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'programState': 'Playing
+[bdesert-note] krissek death, detonations ON: {"krissek_dead": true, "near": true, "far": false}
+[bdesert] 10:57:25 krissek_death_blasts PASS 
+[bdesert-note] krissek death, detonations OFF: {"krissek_dead": true, "near": false, "far": false}
+[bdesert] 10:57:29 krissek_off_quiet PASS 
+[bdesert-note] heat_kill_detonates: Flame 9999: {"vhaulk_dead": true, "witness": true, "control": false}
+[bdesert] 10:57:34 heat_kill_detonates PASS 
+[bdesert-note] kinetic_kill_does_not: Cut 9999: {"vhaulk_dead": true, "witness": false, "control": false}
+[bdesert] 10:57:37 kinetic_kill_does_not PASS 
+[bdesert-note] emp_on_living_detonates: EMP 100: {"vhaulk_dead": true, "witness": true, "control": false}
+[bdesert] 10:57:41 emp_on_living_detonates PASS 
+[bdesert-note] heat_gate_off_any_death_detonates: Cut 9999: {"vhaulk_dead": true, "witness": true, "control": false}
+[bdesert] 10:57:45 heat_gate_off_any_death_detonates PASS 
+[bdesert-note] emp_trap_off_is_ordinary_damage: EMP 100: {"vhaulk_dead": false, "witness": false, "control": false}
+[bdesert] 10:57:49 emp_trap_off_is_ordinary_damage PASS 
+[bdesert-note] native_toggle_off_no_blast: Flame 9999: {"vhaulk_dead": true, "witness": false, "control": false}
+[bdesert] 10:57:52 native_toggle_off_no_blast PASS 

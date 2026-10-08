@@ -1,0 +1,101 @@
+[creaturebehaviors] 02:11:49 writer_patched UNMEASURED UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\r\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 5
+[creaturebehaviors] 02:11:49 walker_lays_prints UNMEASURED UNMEASURED: current map is 'AridShrubland'; the only wired track surface is RM_Stillsand sand (no Warscar film yet)
+[creaturebehaviors] 02:11:49 invisible_walker_recorded_flagged UNMEASURED UNMEASURED: current map is 'AridShrubland'; the only wired track surface is RM_Stillsand sand (no Warscar film yet)
+[creaturebehaviors] 02:11:49 toggle_off_no_prints UNMEASURED UNMEASURED: current map is 'AridShrubland'; the only wired track surface is RM_Stillsand sand (no Warscar film yet)
+[creaturebehaviors] 02:11:49 stillsand_moving_sand_erases_print UNMEASURED UNMEASURED: current map is 'AridShrubland'; the only wired track surface is RM_Stillsand sand (no Warscar film yet)
+[creaturebehaviors] 02:11:49 control_absent_type_reads_absent PASS 
+[creaturebehaviors] 02:11:50 verminBreeding_wired_and_gated PASS 
+[creaturebehaviors] 02:11:50 gnaw_wired_and_gated PASS 
+[creaturebehaviors] 02:11:51 eatCleanable_wired_and_gated PASS 
+[creaturebehaviors] 02:11:51 seekShade_wired_and_gated PASS 
+[creaturebehaviors] 02:11:52 seekMarkedTerrain_wired_and_gated PASS 
+[creaturebehaviors] 02:11:52 sunScald_wired_and_gated PASS 
+[creaturebehaviors] 02:11:52 senseWeb_wired_and_gated PASS 
+[creaturebehaviors] 02:11:53 chewAnchors_wired_and_gated PASS 
+[creaturebehaviors] 02:11:53 frontCreep_wired_and_gated PASS 
+[creaturebehaviors] 02:11:54 aquaticAmbush_wired_and_gated PASS 
+[creaturebehaviors] 02:11:54 parentalEnrage_wired_and_gated PASS 
+[creaturebehaviors] 02:11:55 drumLure_wired_and_gated PASS 
+[creaturebehaviors] 02:12:00 all_fields_at_shipped_defaults PASS 
+[creaturebehaviors] 02:12:00 toggle_roundtrip_adhesiveSlickEnabled PASS 
+[creaturebehaviors] 02:12:00 toggle_roundtrip_ambientHeatPusherEnabled PASS 
+[creaturebehaviors] 02:12:00 toggle_roundtrip_aquaticAmbushEnabled PASS 
+[creaturebehaviors] 02:12:00 toggle_roundtrip_brineBatteryDischargeEnabled PASS 
+[creaturebehaviors] 02:12:01 toggle_roundtrip_chewAnchorsBehaviorEnabled PASS 
+[creaturebehaviors] 02:12:01 toggle_roundtrip_creatureHeatSoundsEnabled PASS 
+[creaturebehaviors] 02:12:01 toggle_roundtrip_dashRingEnabled PASS 
+[creaturebehaviors] 02:12:01 toggle_roundtrip_directedAssaultBehaviorEnabled PASS 
+[creaturebehaviors] 02:12:01 toggle_roundtrip_directionalShadeEnabled PASS 
+[creaturebehaviors] 02:12:01 toggle_roundtrip_drinkerFluidSacsEnabled PASS 
+[creaturebehaviors] 02:12:02 toggle_roundtrip_drumLureEnabled PASS 
+[creaturebehaviors] 02:12:02 toggle_roundtrip_dungSeedingEnabled PASS 
+[creaturebehaviors] 02:12:02 toggle_roundtrip_eatCleanableBehaviorEnabled PASS 
+[creaturebehaviors] 02:12:02 toggle_roundtrip_falseShadeAmbushEnabled PASS 
+[creaturebehaviors] 02:12:02 toggle_roundtrip_filterFeedingEnabled PASS 
+[creaturebehaviors] 02:12:02 toggle_roundtrip_frontCreepEnabled PASS 
+[creaturebehaviors] 02:12:02 toggle_roundtrip_glareBlindEnabled PASS 
+[creaturebehaviors] 02:12:03 toggle_roundtrip_gnawBehaviorEnabled PASS 
+[creaturebehaviors] 02:12:03 toggle_roundtrip_grapplerHoldEnabled PASS 
+[creaturebehaviors] 02:12:03 toggle_roundtrip_guardianAlarmEnabled PASS 
+[creaturebehaviors] 02:12:03 toggle_roundtrip_heatDrivenBurstEnabled PASS 
+[creaturebehaviors] 02:12:03 toggle_roundtrip_heatSoundscapeEnabled PASS 
+[creaturebehaviors] 02:12:03 toggle_roundtrip_homeTetherEnabled PASS 
+[creaturebehaviors] 02:12:03 toggle_roundtrip_kinMendingEnabled PASS 
+[creaturebehaviors] 02:12:04 toggle_roundtrip_kindFromElevationEnabled PASS 
+[creaturebehaviors] 02:12:04 toggle_roundtrip_lanceEnabled PASS 
+[creaturebehaviors] 02:12:04 toggle_roundtrip_lanceFriendlyPull PASS 
+[creaturebehaviors] 02:12:04 toggle_roundtrip_mirageEnabled PASS 
+[creaturebehaviors] 02:12:04 toggle_roundtrip_movingShadeEnabled PASS 
+[creaturebehaviors] 02:12:04 toggle_roundtrip_parasolShadeEnabled PASS 
+[creaturebehaviors] 02:12:05 toggle_roundtrip_parentalEnrageEnabled PASS 
+[creaturebehaviors] 02:12:05 toggle_roundtrip_pinnedSunEnabled PASS 
+[creaturebehaviors] 02:12:05 toggle_roundtrip_proximitySoundscapeEnabled PASS 
+[creaturebehaviors] 02:12:05 toggle_roundtrip_reactionDetectionEnabled PASS 
+[creaturebehaviors] 02:12:05 toggle_roundtrip_reactionSourceSpawnEnabled PASS 
+[creaturebehaviors] 02:12:05 toggle_roundtrip_reactionSuppressionEnabled PASS 
+[creaturebehaviors] 02:12:05 toggle_roundtrip_sandBuriedGraphicEnabled PASS 
+[creaturebehaviors] 02:12:06 toggle_roundtrip_sandGlareEnabled PASS 
+[creaturebehaviors] 02:12:06 toggle_roundtrip_sandSwimDroidImmunity PASS 
+[creaturebehaviors] 02:12:06 toggle_roundtrip_sandSwimEnabled PASS 
+[creaturebehaviors] 02:12:06 toggle_roundtrip_seedPassageEnabled PASS 
+[creaturebehaviors] 02:12:06 toggle_roundtrip_seekMarkedTerrainBehaviorEnabled PASS 
+[creaturebehaviors] 02:12:06 toggle_roundtrip_seekShadeBehaviorEnabled PASS 
+[creaturebehaviors] 02:12:06 toggle_roundtrip_senseWebEnabled PASS 
+[creaturebehaviors] 02:12:07 toggle_roundtrip_shadeGridEnabled PASS 
+[creaturebehaviors] 02:12:07 toggle_roundtrip_shadeHopEnabled PASS 
+[creaturebehaviors] 02:12:07 toggle_roundtrip_shadeSeekingWanderEnabled PASS 
+[creaturebehaviors] 02:12:07 toggle_roundtrip_shadeStaggerEnabled PASS 
+[creaturebehaviors] 02:12:07 toggle_roundtrip_shadeTentEnabled PASS 
+[creaturebehaviors] 02:12:07 toggle_roundtrip_shadowFollowEnabled PASS 
+[creaturebehaviors] 02:12:08 toggle_roundtrip_sightBlockEnabled PASS 
+[creaturebehaviors] 02:12:08 toggle_roundtrip_sightBlockRangedFire PASS 
+[creaturebehaviors] 02:12:08 toggle_roundtrip_silenceCueEnabled PASS 
+[creaturebehaviors] 02:12:08 toggle_roundtrip_soulchimePsychicStunEnabled PASS 
+[creaturebehaviors] 02:12:08 toggle_roundtrip_soulchimeShardArmorEnabled PASS 
+[creaturebehaviors] 02:12:08 toggle_roundtrip_soulchimeTameSootheEnabled PASS 
+[creaturebehaviors] 02:12:08 toggle_roundtrip_speciesSpacingEnabled PASS 
+[creaturebehaviors] 02:12:09 toggle_roundtrip_sunHeatEnabled PASS 
+[creaturebehaviors] 02:12:09 toggle_roundtrip_sunLoadBarEnabled PASS 
+[creaturebehaviors] 02:12:09 toggle_roundtrip_sunPathingEnabled PASS 
+[creaturebehaviors] 02:12:09 toggle_roundtrip_sunScaldEnabled PASS 
+[creaturebehaviors] 02:12:09 toggle_roundtrip_sunScaldReadsShade PASS 
+[creaturebehaviors] 02:12:09 toggle_roundtrip_sunShieldEnabled PASS 
+[creaturebehaviors] 02:12:09 toggle_roundtrip_tracksEnabled PASS 
+[creaturebehaviors] 02:12:10 toggle_roundtrip_verminBreedingEnabled PASS 
+[creaturebehaviors] 02:12:10 toggle_roundtrip_wildLeaveNoticeEnabled PASS 
+[creaturebehaviors] 02:12:10 toggle_roundtrip_woundLinkEnabled PASS 
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\cli.py", line 363, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\cli.py", line 261, in main
+    results = runner.run(mods, debug=args.debug, dry_run=args.dry_run,
+                         situational=args.situational, policy=args.policy)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\runner.py", line 725, in run
+    emit_verify(item_id, mod_folder, "min+%s" % mod_folder, summary,
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               sheet_path)
+               ^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\runner.py", line 619, in emit_verify
+    raise RuntimeError("rimflow verify FAILED: %s" % (r.stdout + r.stderr).strip())
+RuntimeError: rimflow verify FAILED: verify names item MODCHECK_CREATUREBEHAVIORS_RUN_1, which has never been filed

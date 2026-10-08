@@ -1,0 +1,663 @@
+{
+ "chains": [
+  {
+   "name": "mapgen_log",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "plant_census",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "animal_census",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "grass_cover",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "ruins",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "burn_line",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "startup_and_def_wiring",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "ground_ash_ladder",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "fire_tick_effects",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "ashfall_weather_accumulation",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "ashfall_drifts",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "cinderfall",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "blackrain",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "no_ordinary_rain",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "scorchfruit_fire_born",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "scorchfruit_produces",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "scorchfruit_spoils",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "firehawk",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "furnace_warmth",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "furnace_room",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "burrowers",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "embergrass_regrow",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "fulgurite",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "ullai_and_giant",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not make the Pyrelands site (map 1) current: 'RM_Contagion'",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "sand_shovel",
+   "components": [
+    {
+     "name": "sand_carries_the_dig_yield",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shovel_yields_glass_sand_and_leaves_gravel",
+     "toggle": "sandShovelEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofShovel()",
+        "result": "SHOVEL accepts True | offRefuses True | yield RM_GlassSand x5 | terrain RM_FE_Ground_Gravel | orderGone True",
+        "ticksGame": 770977,
+        "operation": {
+         "OperationId": "op_709c194cf070494a9f77911a89281255",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 42
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 770977
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "lightning_breaker",
+   "components": [
+    {
+     "name": "metal_and_sand_at_the_forge",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "research_only_in_the_pyrelands",
+     "toggle": "breakerPyrelandsOnly",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofGate(System.String)",
+        "result": "GATE canStart=False holdsPyrelands=False gated=True prereqsDone=True finished=False",
+        "ticksGame": 770977,
+        "operation": {
+         "OperationId": "op_c47161aabf81411d9cc48f7e03f3529d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 43
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 770977
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "short_circuit_trips_and_spares_the_far_side",
+     "toggle": "lightningBreakerEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofTrip(System.String)",
+        "result": "TRIP oneNetBefore=True tripped=True storedA=0 storedB=600 splitAfter=True fuel=30->20",
+        "ticksGame": 770977,
+        "operation": {
+         "OperationId": "op_70859e9dcae5487e8cec83caa7e6c6d8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 107
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 770977
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\short_circuit_trips_and_spares_the_far_side_1791395781.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001C0DEAD02F0>",
+  "<suite.Component object at 0x000001C0DE9EE5D0>",
+  "<suite.Component object at 0x000001C0DE9EE490>",
+  "<suite.Component object at 0x000001C0DEA3CB00>",
+  "<suite.Component object at 0x000001C0DEA3CC30>",
+  "<suite.Component object at 0x000001C0DEA11910>",
+  "<suite.Component object at 0x000001C0DEA29BF0>",
+  "<suite.Component object at 0x000001C0DEA29D00>",
+  "<suite.Component object at 0x000001C0DEACC050>",
+  "<suite.Component object at 0x000001C0DE9B3E50>",
+  "<suite.Component object at 0x000001C0DEB0CF50>",
+  "<suite.Component object at 0x000001C0DEB0D310>",
+  "<suite.Component object at 0x000001C0DEA39EF0>",
+  "<suite.Component object at 0x000001C0DEA38BB0>",
+  "<suite.Component object at 0x000001C0DEA6AF70>",
+  "<suite.Component object at 0x000001C0DEAE4B90>",
+  "<suite.Component object at 0x000001C0DEAE4950>",
+  "<suite.Component object at 0x000001C0DEA15B20>",
+  "<suite.Component object at 0x000001C0DEA15E90>",
+  "<suite.Component object at 0x000001C0DEA15F40>",
+  "<suite.Component object at 0x000001C0DEA15FF0>",
+  "<suite.Component object at 0x000001C0DEA160A0>",
+  "<suite.Component object at 0x000001C0DEA16150>",
+  "<suite.Component object at 0x000001C0DEA16C50>"
+ ],
+ "refused": "",
+ "walk": null
+}

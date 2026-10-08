@@ -1,0 +1,212 @@
+[
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_Filth_SettledFilm",
+   "fields": "modExtensions"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [
+    "modExtensions"
+   ],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_Filth_SettledFilm",
+     "found": true,
+     "defName": "RM_Filth_SettledFilm",
+     "defType": "ThingDef",
+     "label": "settled film",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "modExtensions": [
+       "RM_TrackSurfaceExtension"
+      ]
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_f022b07c07a443ef849e603e07807537",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 40
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.Greentide.RM_Plant_Greatbole"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.Greentide.RM_Plant_Greatbole",
+   "resolved": true,
+   "assembly": "RimMandrake.Greentide, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\Greentide\\Assemblies\\RimMandrake.Greentide.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "f4bf26b9-ce51-41c2-8a45-48126e6470d7",
+   "assemblyFileSha256": "08e6eb06a6c3d51b20ebedc0a86638be555c47560f944835170b3c2d5d5543a6",
+   "assemblyFileMvid": "f4bf26b9-ce51-41c2-8a45-48126e6470d7",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 58,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 1
+   },
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_b405efeaee4840538ea06ec1f8ef40f4",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 98
+   }
+  }
+ },
+ {
+  "tool": "jawa/static_call",
+  "args": {
+   "type": "RimMandrake.RustCathedral.Hum.RM_MapComponent_BiomeAttitude",
+   "method": "GetStanding",
+   "args": "current"
+  },
+  "result": {
+   "success": true,
+   "method": "System.Nullable`1[System.Int32] GetStanding(Verse.Map)",
+   "result": "null",
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_9085dddae5744390855ffedd8c2c0976",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 28
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/map_info",
+  "args": {},
+  "result": {
+   "success": true,
+   "tile": 57483,
+   "tileValid": true,
+   "mapId": 0,
+   "sizeX": 250,
+   "sizeZ": 250,
+   "cellCount": 62500,
+   "tileInfo": {
+    "biome": "TropicalRainforest",
+    "hilliness": "Flat",
+    "hillinessInt": 1,
+    "elevation": 403.05,
+    "rainfall": 3273.69678,
+    "swampiness": 0.1252979,
+    "temperature": 28.7942963,
+    "pollution": 0.0,
+    "waterCovered": false,
+    "isSurfaceTile": true
+   },
+   "mapBiome": "TropicalRainforest",
+   "mapBiomeLabel": "tropical rainforest",
+   "outdoorTempNow": 20.29706,
+   "latitude": 7.524643,
+   "longitude": -1.04123223,
+   "season": "PermanentSummer",
+   "mapParent": {
+    "defName": "Settlement",
+    "label": "Colony",
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals"
+   },
+   "playerSettlementsOnThisTile": 1,
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_b0fe4c46c1cc484c8d306ea38e8607a0",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/spawn_pawn",
+  "args": {
+   "kindDef": "RM_Oorrik",
+   "x": 150,
+   "z": 125,
+   "faction": "none",
+   "count": 1
+  },
+  "result": {
+   "success": true,
+   "message": "Spawned 1/1 RM_Oorrik in faction (none).",
+   "spawnedCount": 1,
+   "failedCount": 0,
+   "substitutedCount": 0,
+   "pawns": [
+    {
+     "ok": true,
+     "id": "RM_Oorrik47065",
+     "name": "Oorrik",
+     "kindRequested": "RM_Oorrik",
+     "kindActual": "RM_Oorrik",
+     "kindSubstituted": false,
+     "hostile": false,
+     "x": 150,
+     "z": 125,
+     "spawned": true,
+     "xenotypeApplied": true
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_cf9535c73dec4132b1114fc9da4e9b5b",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 41
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ }
+]

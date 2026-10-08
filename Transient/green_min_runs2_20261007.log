@@ -1,0 +1,248 @@
+=== START PyrelandsMechanics 13:28:36
+}
+[modcheck] PyrelandsMechanics: no ledger item MODCHECK_PYRELANDSMECHANICS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\PyrelandsMechanics_20261007T202903Z.html only
+PyrelandsMechanics   GREEN
+=== END PyrelandsMechanics 13:29:04
+=== START Greentide 13:29:04
+}
+[gt] 13:29:37 shipped_defs_resolve PASS 
+[gt] 13:29:37 control_absent_def_reads_absent PASS 
+[gt] 13:29:37 mireEnabled_round_trips PASS 
+[gt] 13:29:37 buriedCacheEnabled_round_trips PASS 
+[gt] 13:29:38 mireSeverityMultiplier_round_trips PASS 
+[gt] 13:29:38 plantDensity_round_trips PASS 
+[gt] 13:29:38 movementDifficulty_round_trips PASS 
+[gt] 13:29:38 crossBiomeEnabled_round_trips PASS 
+[gt] 13:29:39 crossBiomeEverywhere_round_trips PASS 
+[gt] 13:29:39 crossBiomeBiomeList_round_trips PASS 
+[gt] 13:29:39 crossBiomeCoverage_round_trips PASS 
+[gt] 13:29:40 frenzyEnabled_round_trips PASS 
+[gt] 13:29:40 frenzySeverityMultiplier_round_trips PASS 
+[gt] 13:29:40 feverMarkEnabled_round_trips PASS 
+[gt] 13:29:41 feverMarkGrantsImmunity_round_trips PASS 
+[gt] 13:29:41 stenchGrenadeEnabled_round_trips PASS 
+[gt] 13:29:41 stenchGrenadeRadiusMultiplier_round_trips PASS 
+[gt] 13:29:41 canopySwarmEnabled_round_trips PASS 
+[gt] 13:29:42 vurrakAmbushEnabled_round_trips PASS 
+[gt] 13:29:42 vurrakTriggerBodySize_round_trips PASS 
+[gt] 13:29:42 vurrakFirstRevealPause_round_trips PASS 
+[gt] 13:29:43 stellockLaceEnabled_round_trips PASS 
+[gt] 13:29:43 stellockBranchChance_round_trips PASS 
+[gt] 13:29:43 stellockLaceHours_round_trips PASS 
+[gt] 13:29:44 thurrockFellingEnabled_round_trips PASS 
+[gt] 13:29:44 thurrockFellingPace_round_trips PASS 
+[gt] 13:29:44 thurrockProvokedWallDamage_round_trips PASS 
+[gt] 13:29:44 roilEnabled_round_trips PASS 
+[gt] 13:29:45 fruitfallEnabled_round_trips PASS 
+[gt] 13:29:45 greatboleShakingThreshold_round_trips PASS 
+[gt] 13:29:45 greatboleHealingThreshold_round_trips PASS 
+[gt] 13:29:46 greatboleCatastropheThreshold_round_trips PASS 
+[gt] 13:29:46 greatboleCatastropheEnabled_round_trips PASS 
+[gt] 13:29:46 greatboleSeedPlantingEnabled_round_trips PASS 
+[gt] 13:29:47 greatboleServantsEnabled_round_trips PASS 
+[gt] 13:29:52 site_ready_mire PASS 
+[gt] 13:29:52 mire_applies_on_churnmud PASS 
+[gt] 13:29:52 mire_skips_concrete_and_sealed_floor PASS 
+[gt] 13:29:57 mire_master_switch_off PASS 
+[gt] 13:29:57 site_ready_escalation PASS 
+[gt] 13:30:02 stuck_pawn_stays_stuck_alone PASS 
+[gt] 13:30:11 free_mired_job_pulls_the_pawn_out PASS 
+[gt] 13:30:12 site_ready_swallow PASS 
+[gt] 13:30:26 swallow_buries_on_churnmud_only PASS 
+[gt] 13:30:42 buried_cache_switch_off_keeps_items PASS 
+[gt] 13:30:47 dig_out_job_restores_the_buried_item PASS 
+[gt] 13:30:48 site_ready_dose PASS 
+[gt] 13:30:59 dose_gives_frenzy PASS 
+[gt] 13:31:09 frenzy_master_switch_off_gives_none PASS 
+[gt] 13:31:20 fever_mark_gates_the_dose PASS 
+[gt] 13:31:20 fever_mark_earned_by_surviving_the_coma UNMEASURED UNMEASURED: the mark is earned only when a tended Frenzy that reached the collapse stage ends: days of game time and a tending pawn; needs a seeded hediff at the collapse stage and a tend (a state-seeding tool is owed)
+[gt] 13:31:20 ambient_frenzy_incident UNMEASURED UNMEASURED: RM_IncidentWorker_FrenzyDisease: a dry-run fire_incident reports success=False with canFireNow=False, so it is no instrument; firing it for real needs a map the incident is eligible on
+[gt] 13:31:20 biome_carries_the_settings_density PASS 
+[gt] vurrak colonist: DISGUISED=True -> STRUCK Human70211
+[gt] 13:31:21 vurrak_bites_a_person PASS 
+[gt] vurrak hare: DISGUISED=True -> REVEALED Hare70217
+[gt] 13:31:21 vurrak_hare_only_reveals PASS 
+[gt] 13:31:21 vurrak_toggle_off_refused PASS 
+[gt] 13:31:21 churnmud_seeded_once_on_a_fresh_non_greentide_map UNMEASURED UNMEASURED: WORLDGEN-AFFECTING: RM_MapComponent_CrossBiomeChurnmud runs once on a freshly generated map; needs a new map generated with crossBiomeEnabled on, which the harness cannot do on a held map
+[gt] 13:31:21 stench_smoke_radius_follows_multiplier UNMEASURED UNMEASURED: needs a thrown grenade and an explosion-radius read; no bridge reader for the smoke cloud
+[gt] 13:31:21 krannock_spawn_gate UNMEASURED UNMEASURED: canopySwarmEnabled is a deliberate no-op until the Krannock is rostered at the biome's own review sitting (About.xml)
+[gt] 13:31:21 harvest_ladder_fires_each_rung_once_and_catastrophe_is_final PASS 
+[gt] 13:31:21 spine_defs_shipped_and_wired_onto_rm_greentide PASS 
+[gt] 13:31:21 roil_lock_absent_on_a_new_map_with_roil_off UNMEASURED UNMEASURED: WORLDGEN-AFFECTING: biomeMapConditions apply in BiomeConditionMapComponent.MapGenerated, so the toggle needs a freshly generated Greentide map; the harness cannot do that on a held map
+[gt] 13:31:21 fruitfall_spawns_grubs_near_a_live_bole UNMEASURED UNMEASURED: needs a generated Greentide map with a registered greatbole and a forced RM_GreatboleFruitfall
+[gt] 13:31:23 all_settings_at_shipped_defaults PASS 
+[modcheck] Greentide: no ledger item MODCHECK_GREENTIDE_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Greentide_20261007T203123Z.html only
+Greentide            RED  (state)
+=== END Greentide 13:31:25
+=== START CreatureBehaviors 13:31:25
+}
+[creaturebehaviors] 13:31:52 writer_patched PASS 
+[creaturebehaviors] 13:36:57 walker_lays_prints UNMEASURED UNMEASURED: the map was not ready 300 s after Regenerate Current Map
+[creaturebehaviors] 13:37:14 invisible_walker_recorded_flagged PASS 
+[creaturebehaviors] 13:37:31 toggle_off_no_prints PASS 
+[creaturebehaviors] 13:37:31 stillsand_moving_sand_erases_print PASS 
+[creaturebehaviors] 13:37:32 control_absent_type_reads_absent PASS 
+[creaturebehaviors] 13:37:32 verminBreeding_wired_and_gated PASS 
+[creaturebehaviors] 13:37:33 gnaw_wired_and_gated PASS 
+[creaturebehaviors] 13:37:33 eatCleanable_wired_and_gated PASS 
+[creaturebehaviors] 13:37:34 seekShade_wired_and_gated PASS 
+[creaturebehaviors] 13:37:34 seekMarkedTerrain_wired_and_gated PASS 
+[creaturebehaviors] 13:37:34 sunScald_wired_and_gated PASS 
+[creaturebehaviors] 13:37:35 senseWeb_wired_and_gated PASS 
+[creaturebehaviors] 13:37:35 chewAnchors_wired_and_gated PASS 
+[creaturebehaviors] 13:37:36 frontCreep_wired_and_gated PASS 
+[creaturebehaviors] 13:37:36 aquaticAmbush_wired_and_gated PASS 
+[creaturebehaviors] 13:37:36 parentalEnrage_wired_and_gated PASS 
+[creaturebehaviors] 13:37:37 drumLure_wired_and_gated PASS 
+[creaturebehaviors] 13:37:42 all_fields_at_shipped_defaults PASS 
+[creaturebehaviors] 13:37:42 toggle_roundtrip_adhesiveSlickEnabled PASS 
+[creaturebehaviors] 13:37:42 toggle_roundtrip_ambientHeatPusherEnabled PASS 
+[creaturebehaviors] 13:37:43 toggle_roundtrip_aquaticAmbushEnabled PASS 
+[creaturebehaviors] 13:37:43 toggle_roundtrip_brineBatteryDischargeEnabled PASS 
+[creaturebehaviors] 13:37:43 toggle_roundtrip_chewAnchorsBehaviorEnabled PASS 
+[creaturebehaviors] 13:37:43 toggle_roundtrip_creatureHeatSoundsEnabled PASS 
+[creaturebehaviors] 13:37:43 toggle_roundtrip_dashRingEnabled PASS 
+[creaturebehaviors] 13:37:43 toggle_roundtrip_directedAssaultBehaviorEnabled PASS 
+[creaturebehaviors] 13:37:43 toggle_roundtrip_directionalShadeEnabled PASS 
+[creaturebehaviors] 13:37:44 toggle_roundtrip_drinkerFluidSacsEnabled PASS 
+[creaturebehaviors] 13:37:44 toggle_roundtrip_drumLureEnabled PASS 
+[creaturebehaviors] 13:37:44 toggle_roundtrip_dungSeedingEnabled PASS 
+[creaturebehaviors] 13:37:44 toggle_roundtrip_eatCleanableBehaviorEnabled PASS 
+[creaturebehaviors] 13:37:44 toggle_roundtrip_falseShadeAmbushEnabled PASS 
+[creaturebehaviors] 13:37:44 toggle_roundtrip_filterFeedingEnabled PASS 
+[creaturebehaviors] 13:37:45 toggle_roundtrip_frontCreepEnabled PASS 
+[creaturebehaviors] 13:37:45 toggle_roundtrip_glareBlindEnabled PASS 
+[creaturebehaviors] 13:37:45 toggle_roundtrip_gnawBehaviorEnabled PASS 
+[creaturebehaviors] 13:37:45 toggle_roundtrip_grapplerHoldEnabled PASS 
+[creaturebehaviors] 13:37:45 toggle_roundtrip_guardianAlarmEnabled PASS 
+[creaturebehaviors] 13:37:45 toggle_roundtrip_heatDrivenBurstEnabled PASS 
+[creaturebehaviors] 13:37:45 toggle_roundtrip_heatSoundscapeEnabled PASS 
+[creaturebehaviors] 13:37:46 toggle_roundtrip_homeTetherEnabled PASS 
+[creaturebehaviors] 13:37:46 toggle_roundtrip_kinMendingEnabled PASS 
+[creaturebehaviors] 13:37:46 toggle_roundtrip_kindFromElevationEnabled PASS 
+[creaturebehaviors] 13:37:46 toggle_roundtrip_lanceEnabled PASS 
+[creaturebehaviors] 13:37:46 toggle_roundtrip_lanceFriendlyPull PASS 
+[creaturebehaviors] 13:37:46 toggle_roundtrip_mirageEnabled PASS 
+[creaturebehaviors] 13:37:46 toggle_roundtrip_movingShadeEnabled PASS 
+[creaturebehaviors] 13:37:47 toggle_roundtrip_parasolShadeEnabled PASS 
+[creaturebehaviors] 13:37:47 toggle_roundtrip_parentalEnrageEnabled PASS 
+[creaturebehaviors] 13:37:47 toggle_roundtrip_pinnedSunEnabled PASS 
+[creaturebehaviors] 13:37:47 toggle_roundtrip_proximitySoundscapeEnabled PASS 
+[creaturebehaviors] 13:37:47 toggle_roundtrip_reactionDetectionEnabled PASS 
+[creaturebehaviors] 13:37:47 toggle_roundtrip_reactionSourceSpawnEnabled PASS 
+[creaturebehaviors] 13:37:48 toggle_roundtrip_reactionSuppressionEnabled PASS 
+[creaturebehaviors] 13:37:48 toggle_roundtrip_sandBuriedGraphicEnabled PASS 
+[creaturebehaviors] 13:37:48 toggle_roundtrip_sandGlareEnabled PASS 
+[creaturebehaviors] 13:37:48 toggle_roundtrip_sandSwimDroidImmunity PASS 
+[creaturebehaviors] 13:37:48 toggle_roundtrip_sandSwimEnabled PASS 
+[creaturebehaviors] 13:37:48 toggle_roundtrip_seedPassageEnabled PASS 
+[creaturebehaviors] 13:37:48 toggle_roundtrip_seekMarkedTerrainBehaviorEnabled PASS 
+[creaturebehaviors] 13:37:49 toggle_roundtrip_seekShadeBehaviorEnabled PASS 
+[creaturebehaviors] 13:37:49 toggle_roundtrip_senseWebEnabled PASS 
+[creaturebehaviors] 13:37:49 toggle_roundtrip_shadeGridEnabled PASS 
+[creaturebehaviors] 13:37:49 toggle_roundtrip_shadeHopEnabled PASS 
+[creaturebehaviors] 13:37:49 toggle_roundtrip_shadeSeekingWanderEnabled PASS 
+[creaturebehaviors] 13:37:49 toggle_roundtrip_shadeStaggerEnabled PASS 
+[creaturebehaviors] 13:37:49 toggle_roundtrip_shadeTentEnabled PASS 
+[creaturebehaviors] 13:37:50 toggle_roundtrip_shadowFollowEnabled PASS 
+[creaturebehaviors] 13:37:50 toggle_roundtrip_sightBlockEnabled PASS 
+[creaturebehaviors] 13:37:50 toggle_roundtrip_sightBlockRangedFire PASS 
+[creaturebehaviors] 13:37:50 toggle_roundtrip_silenceCueEnabled PASS 
+[creaturebehaviors] 13:37:50 toggle_roundtrip_soulchimePsychicStunEnabled PASS 
+[creaturebehaviors] 13:37:50 toggle_roundtrip_soulchimeShardArmorEnabled PASS 
+[creaturebehaviors] 13:37:51 toggle_roundtrip_soulchimeTameSootheEnabled PASS 
+[creaturebehaviors] 13:37:51 toggle_roundtrip_speciesSpacingEnabled PASS 
+[creaturebehaviors] 13:37:51 toggle_roundtrip_sunHeatEnabled PASS 
+[creaturebehaviors] 13:37:51 toggle_roundtrip_sunLoadBarEnabled PASS 
+[creaturebehaviors] 13:37:51 toggle_roundtrip_sunPathingEnabled PASS 
+[creaturebehaviors] 13:37:51 toggle_roundtrip_sunScaldEnabled PASS 
+[creaturebehaviors] 13:37:51 toggle_roundtrip_sunScaldReadsShade PASS 
+[creaturebehaviors] 13:37:52 toggle_roundtrip_sunShieldEnabled PASS 
+[creaturebehaviors] 13:37:52 toggle_roundtrip_tracksEnabled PASS 
+[creaturebehaviors] 13:37:52 toggle_roundtrip_verminBreedingEnabled PASS 
+[creaturebehaviors] 13:37:52 toggle_roundtrip_wildLeaveNoticeEnabled PASS 
+[creaturebehaviors] 13:37:52 toggle_roundtrip_woundLinkEnabled PASS 
+[modcheck] CreatureBehaviors: no ledger item MODCHECK_CREATUREBEHAVIORS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\CreatureBehaviors_20261007T203753Z.html only
+CreatureBehaviors    RED  (state)
+=== END CreatureBehaviors 13:37:58
+=== START LuminousPigment 13:37:58
+}
+[deepfire-note] mod error lines already in the buffer: 0
+[deepfire] 13:38:32 log_baseline_recorded PASS 
+[deepfire-note] defs requested/found: {"requested": 59, "found": 59, "notFound": []}
+[deepfire] 13:38:32 all_defs_resolve PASS 
+[deepfire] 13:38:32 patches_applied FAIL ExpectationFailed: DeepfireOrdersPatch did not register both designators in Orders: ['RuntimeType', 'RuntimeType', 'RuntimeType', 'RuntimeType', 'RuntimeType', 'RuntimeType']
+[deepfire] 13:38:32 mechanics_wired_to_defs UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:38:43 mat_alive_control PASS 
+[deepfire] 13:38:51 mat_dies_on_clock PASS 
+[deepfire] 13:39:02 mat_dies_when_chilled PASS 
+[deepfire] 13:39:02 locked_before_sighting PASS 
+[deepfire] 13:39:02 unlocked_after_sighting FAIL ExpectationFailed: set_plants RM_Crowncarpet failed: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Crowncarpet": 1}, "cellsSkippedByDensity": 0, "cellsOutOfBounds": 0, "growt
+[deepfire] 13:39:03 apply_reaches_defs PASS 
+[deepfire] 13:39:03 glowtank_toggle PASS 
+[deepfire] 13:39:04 press_unbuildable PASS 
+[deepfire] 13:39:04 cuisine_recipes_toggle PASS 
+[deepfire] 13:39:04 press_buildable_finishes_research UNMEASURED UNMEASURED: research_availability does not report whether the project is finished: {"success": true, "canStartNow": false, "prerequisitesCompleted": true, "playerHasAnyAppropriateResearchBench": false, "benchRequired": false, "techprintRequirementMet": true, "playerMechanitorRequirementMet": true, "
+[deepfire-note] glow: {"stackBefore": 0.0, "stackAfter": 0.5, "controlAfter": 0.0}
+[deepfire] 13:39:05 stack_glows PASS 
+[deepfire] 13:39:06 stack_glow_toggle PASS 
+[deepfire] 13:39:06 press_is_a_powered_bench FAIL ExpectationFailed: press draw is -0.0025 per tick; shipped pressPower=150 W is -2.5 per tick
+[deepfire] 13:39:06 powered_press_refines UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:39:06 unpowered_press_refuses UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:39:06 unseeded_tank_says_so PASS 
+[deepfire] 13:39:59 blackout_kills_seed UNMEASURED UNMEASURED: the tank never accepted a seed culture within 2000 ticks
+[deepfire] 13:40:17 wall_coat_via_real_job PASS 
+[deepfire-note] glow rgb before/after Structure_Blue: {"before": [30, 30, 30], "after": [6, 17, 32]}
+[deepfire] 13:40:18 glow_colour_follows_paint PASS 
+[deepfire] 13:40:18 three_coats_then_refused PASS 
+[deepfire] 13:40:19 remove_coats_clears_glow PASS 
+[deepfire] 13:40:19 max_coats_setting PASS 
+[deepfire] 13:40:20 walls_paintable_toggle PASS 
+[deepfire] 13:40:20 furniture_paintable_toggle PASS 
+[deepfire] 13:40:21 apparel_paintable_toggle PASS 
+[deepfire] 13:40:21 weapons_paintable_toggle PASS 
+[deepfire] 13:40:57 painting_enabled_blocks_ai UNMEASURED UNMEASURED: control: with paintingEnabled=True no colonist coated a designated wall in 2000 ticks (the real AI path is known to be unreliable; the forced-job chain above is the proven route)
+[deepfire] 13:40:57 floor_baseline PASS 
+[deepfire] 13:40:57 floor_coat_lights_in_four_blocks PASS 
+[deepfire] 13:40:57 floor_tracks_vanilla_paint PASS 
+[deepfire] 13:40:57 floor_strip_clears_everything PASS 
+[deepfire] 13:40:57 floor_removed_takes_coat_with_it PASS 
+[deepfire] 13:40:57 art_quality_bumps_once PASS 
+[deepfire] 13:40:57 legendary_caps_but_still_charges PASS 
+[deepfire] 13:40:57 art_bump_toggle PASS 
+[deepfire] 13:40:57 wall_beauty_bonus_exact_and_not_doubled FAIL ExpectationFailed: thing_stats Beauty failed: {"success": false, "message": "No thing id resolved. Nothing was measured.", "details": {"refused": [{"thing": "58258", "reason": "NoSuchThingId", "message": "No live thing with id '58258' on any loaded map, in any pawn's equipment, apparel or inventory.
+[deepfire] 13:40:58 coat_over_a_stockpile_displaces_nothing PASS 
+[deepfire] 13:40:58 emptied_cells_accept_storage PASS 
+[deepfire] 13:40:58 coated_wall_stands_beside_its_proxy PASS 
+[deepfire] 13:40:58 coated_walker_carries_a_light PASS 
+[deepfire] 13:41:15 light_follows_the_walker FAIL ExpectationFailed: 32 of 54 samples had the proxy off the pawn's cell or the cell unlit: [{"action": "reportWalker", "found": true, "spawned": true, "ticks": 6810, "x": 127, "z": 104, "tracked": true, "proxyX": 127, "proxyZ": 104, "groundGlow": 1, "skyGlow": 1, "roofed": false, "glowingInDark": fals
+[deepfire] 13:41:15 stripping_the_garment_darkens_the_pawn UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:15 worn_light_toggle UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:15 dark_combat_trade_in_twenty_pairs UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:15 combat_penalty_toggle UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:37 styling_station_lacquers_a_parka FAIL ExpectationFailed: after the job the parka reads coats=1 with 21 deepfire left (expected 1 and 0)
+[deepfire] 13:41:37 styling_lacquer_toggle UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:37 titled_pawn_in_two_coats FAIL ExpectationFailed: a Deepfire thought is active before anyone wears anything: {"action": "reportPair", "found": true, "titled": {"isTitled": true, "displayScore": 0, "ownRoomScore": 0, "RM_WearingDeepfireTitled": {"active": false, "stage": -1, "liveMood": 0}, "RM_WearingDeepfireCommon": {"active": f
+[deepfire] 13:41:37 status_toggle UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:37 commoner_in_two_coats_offends_the_titled UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:37 lit_bedroom_lifts_its_owner UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:37 public_room_impresses_a_visitor_once UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 13:41:37 first_coat_moves_every_god PASS 
+[deepfire] 13:41:37 second_coat_moves_no_god PASS 
+[deepfire] 13:41:37 worn_first_coat_is_harsher_on_ishko PASS 
+[deepfire] 13:41:37 a_gods_own_idol_moves_it_by_fifteen PASS 
+[deepfire] 13:41:37 sale_of_deepfire_moves_mobunloo PASS 
+[deepfire] 13:41:38 gods_react_toggle PASS 
+[deepfire] 13:41:38 fourteen_families_and_fifteen_recipes PASS 
+[deepfire] 13:41:38 shore_mats_setting_flips PASS 
+[deepfire] 13:41:38 floors_paintable_setting_flips PASS 
+[deepfire] 13:41:39 ishko_idol_setting_flips PASS 
+[deepfire] 13:41:39 hediff_glow_setting_flips PASS 
+[deepfire] 13:41:39 rankless_setting_flips PASS 
+[deepfire] 13:41:39 settings_fields_found PASS 
+[deepfire] 13:41:55 every_scalar_field_round_trips PASS 
+[deepfire] 13:41:55 no_error_lines_from_this_mod PASS 
+[modcheck] LuminousPigment: no ledger item MODCHECK_LUMINOUSPIGMENT_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\LuminousPigment_20261007T204156Z.html only
+LuminousPigment      RED  (state)
+=== END LuminousPigment 13:41:57
+ALLDONE

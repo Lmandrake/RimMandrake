@@ -1,0 +1,67 @@
+[
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttackSecondary"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttackSecondary",
+   "resolved": false,
+   "inAllTypesByIdentity": false,
+   "allTypesNameMatches": 0,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": -1,
+   "carryingMods": [],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 6855
+   },
+   "ticksGame": 6855,
+   "operation": {
+    "OperationId": "op_eaa363fde5cd47da980329a2af963907",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 94
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttack"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttack",
+   "resolved": true,
+   "assembly": "RimMandrake.EnvironmentalHazards, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\_Kits\\EnvironmentalHazards\\Assemblies\\RimMandrake.EnvironmentalHazards.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "e642c123-c8e4-469b-b066-eb8659bd3c2f",
+   "assemblyFileSha256": "a42d30cdab4d219b5e6301b9bf0c9888318504d994143305367e0119e27d1557",
+   "assemblyFileMvid": "e642c123-c8e4-469b-b066-eb8659bd3c2f",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 330,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 6855
+   },
+   "ticksGame": 6855,
+   "operation": {
+    "OperationId": "op_a5ae37f1e46b4b1b8db8e9760db3eac2",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 84
+   }
+  }
+ }
+]

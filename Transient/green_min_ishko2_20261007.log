@@ -1,0 +1,8 @@
+[1 stop] game exited
+[2 tier] wrote      -> ModsConfig.xml (12 active)
+[3 deploy] --mod IshkoDarkLandmarks -> Nothing to do; already in sync. No restart needed.
+[3 deploy] --mod AshkarrLandmarkArt -> Nothing to do; already in sync. No restart needed.
+[4 launch] bridge up after 20 s
+[5 world] get_game_info: {"status": "game_loaded", "ticksGame": 1, "mapCount": 1, "selectedPawns": [], "operation": {"OperationId": "op_1cdc4b42d5414b
+[6 run] exit 0 in 3 s; log Transient/northstar/IshkoDarkLandmarks_session_20261007T135744.log
+IshkoDarkLandmarks: GREEN  PASS=8 FAIL=0 UNMEASURED=0  calls=26 mean=47.431ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\IshkoDarkLandmarks_20261007T205744Z.json

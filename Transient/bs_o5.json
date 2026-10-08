@@ -1,0 +1,81 @@
+[
+ {
+  "tool": "jawa/harmony_patches",
+  "args": {
+   "typeName": "GameCondition_ToxicFallout"
+  },
+  "result": {
+   "success": true,
+   "typeName": "GameCondition_ToxicFallout",
+   "methodCount": 1,
+   "methods": [
+    {
+     "method": "DoCellSteadyEffects",
+     "declaringType": "RimWorld.GameCondition_ToxicFallout",
+     "prefixCount": 2,
+     "postfixCount": 0,
+     "transpilerCount": 0,
+     "finalizerCount": 0,
+     "prefixes": [
+      {
+       "owner": "mandrake.rm.warscar.totchak",
+       "priority": 400,
+       "patchMethod": "RimMandrake.Scarlands.RM_AerosolScreenPatches_FalloutCell.Prefix",
+       "patchAssembly": "RimMandrake.Warscar"
+      },
+      {
+       "owner": "mandrake.rm.warscar.chotrix",
+       "priority": 400,
+       "patchMethod": "RimMandrake.Scarlands.RM_AerosolScreenPatches_FalloutCell.Prefix",
+       "patchAssembly": "RimMandrake.Warscar"
+      }
+     ],
+     "postfixes": [],
+     "transpilers": [],
+     "finalizers": []
+    }
+   ],
+   "ticksGame": 378264,
+   "operation": {
+    "OperationId": "op_a967f1d53617450fbc8d7c342f4626fe",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 7
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 378264
+   }
+  }
+ },
+ {
+  "tool": "jawa/harmony_patches",
+  "args": {
+   "typeName": "NoxiousHazeUtility"
+  },
+  "result": {
+   "success": true,
+   "typeName": "NoxiousHazeUtility",
+   "methodCount": 0,
+   "methods": [],
+   "ticksGame": 378264,
+   "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+   "operation": {
+    "OperationId": "op_3a05c2ec3b1e45f89cf369131f30b787",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 15
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 378264
+   }
+  }
+ }
+]

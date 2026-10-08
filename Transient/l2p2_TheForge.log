@@ -1,0 +1,106 @@
+[forge-note] Player.log scan: {"lines": 693, "hits": [], "log cap reached": 0, "game-wide config/xref lines (instrument probe)": 31}
+[forge] 10:05:30 player_log_names_no_forge_error PASS 
+[forge] 10:05:30 resolve_probe_sees_absence PASS 
+[forge] 10:05:30 defs_resolve_races PASS 
+[forge] 10:05:30 defs_resolve_pawnkinds PASS 
+[forge] 10:05:30 defs_resolve_plants PASS 
+[forge] 10:05:30 defs_resolve_items PASS 
+[forge] 10:05:30 defs_resolve_buildings PASS 
+[forge] 10:05:30 defs_resolve_terrain PASS 
+[forge] 10:05:30 defs_resolve_weather PASS 
+[forge] 10:05:30 defs_resolve_conditions PASS 
+[forge] 10:05:30 defs_resolve_hediffs PASS 
+[forge] 10:05:30 defs_resolve_research PASS 
+[forge] 10:05:31 defs_resolve_sounds PASS 
+[forge] 10:05:31 defs_resolve_render_trees PASS 
+[forge] 10:05:31 defs_resolve_biome PASS 
+[forge] 10:05:31 plants_mesh_count_is_perfect_square PASS 
+[forge] 10:05:31 cycle_terrains_are_temporary PASS 
+[forge] 10:05:31 scald_damage_def_resolves PASS 
+[forge] 10:05:31 native_dormancy_comps_wired PASS 
+[forge] 10:05:31 flyers_carry_flight_stat PASS 
+[forge] 10:05:31 floatstone_only_from_gardens PASS 
+[forge] 10:05:31 keel_brace_needs_spunstone_research PASS 
+[forge] 10:05:31 spunstone_parts_need_spunstone_research PASS 
+[forge] 10:05:31 engine_links_keel_brace PASS 
+[forge] 10:05:31 biome_probe_ready PASS 
+[forge] 10:05:31 biome_densities_live PASS 
+[forge-note] wild animals rows not asserted (their donor mod is not on this tier): ["AA_Aerofleet (needs sarg.alphaanimals)", "AA_ColossalAerofleet (needs sarg.alphaanimals)", "AA_CrescendoAnole (needs sarg.alphaanimals)", "AA_Metallovore (needs sarg.alphaanimals)"]
+[forge] 10:05:31 wild_animals_wired PASS 
+[forge-note] wild plants rows not asserted (their donor mod is not on this tier): ["IronScruff_Bindweed (needs IronScruff.PrimordialGeysers)", "IronScruff_PrimordialGrass (needs IronScruff.PrimordialGeysers)", "IronScruff_PrimordialTallGrass (needs IronScruff.PrimordialGeysers)"]
+[forge] 10:05:31 wild_plants_wired PASS 
+[forge] 10:05:31 natives_spawn_and_probe_is_honest PASS 
+[forge] 10:05:31 biome_map_condition_is_forge_pulse PASS 
+[forge] 10:05:31 biome_declares_ambient_heat PASS 
+[forge] 10:05:31 biome_lava_patchmakers PASS 
+[forge] 10:05:31 settings_at_shipped_defaults PASS 
+[forge] 10:05:31 scaffolding_settings_declared_and_inert PASS 
+[forge] 10:05:32 project_hidden_until_studied UNMEASURED UNMEASURED: spunstone is already revealed in this game: run on a FRESH game ([RMTheForgeDebug] spunstone points=0 revealed=True projectHidden=False canStart=False)
+[forge] 10:05:32 study_toggle_off_shows_project UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 10:05:32 reveal_opens_project UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 10:05:32 keel_default_saving PASS 
+[forge] 10:05:32 keel_off_zeroes_saving PASS 
+[forge] 10:05:32 keel_ring_wired PASS 
+[forge] 10:05:32 dhuvvox_scuttle_wired PASS 
+[forge] 10:05:32 spunstone_parts_source_floatstone_only_and_gated PASS 
+[forge-note] spunstone parts UNMEASURED: "door speed and airtightness in play, and the menu gate after a restart: no bridge tool reads them; the defs resolving is checked in defs_resolve"
+[forge] 10:05:32 spunstone_hull_gate_keyed_on_toggle PASS 
+[forge] 10:05:35 site_ready_cycle PASS 
+[forge] 10:05:35 cycle_starts_in_still_heat PASS 
+[forge] 10:05:37 gas_wash_ignites PASS 
+[forge] 10:06:03 rain_forces_boiling_weather_and_floods PASS 
+[forge] 10:06:03 rain_erupts_dhuvvox_swarm PASS 
+[forge] 10:06:06 freeze_crusts_lava PASS 
+[forge] 10:06:06 rain_end_reseals_swarm_with_signs PASS 
+[forge] 10:06:06 crust_is_walkable PASS 
+[forge] 10:06:08 growth_blooms_floatstone PASS 
+[forge] 10:06:08 cracks_drift_gardens_and_glow PASS 
+[forge] 10:06:09 melt_restores_lava_and_counts_losses PASS 
+[forge] 10:06:09 telegraph_letters_sent PASS 
+[forge] 10:06:14 site_ready_arms PASS 
+[forge] 10:06:19 gas_wash_off_no_ignitions PASS 
+[forge] 10:06:47 flooding_off_no_floods PASS 
+[forge] 10:06:47 freeze_off_closes_cycle_early PASS 
+[forge] 10:06:50 bloom_off_no_gardens PASS 
+[forge] 10:06:51 melt_gentle_spares_pawn_and_items PASS 
+[forge] 10:06:55 cycle_off_melts_back_gently PASS 
+[forge] 10:06:56 telegraph_off_sends_no_letters PASS 
+[forge] 10:07:08 cycle_gate_off_pulse_toggle_never_starts PASS 
+[forge] 10:07:19 cycle_gate_off_grand_cycle_toggle_never_starts PASS 
+[forge] 10:07:31 cycle_gate_off_master_toggle_never_starts PASS 
+[forge] 10:07:37 site_ready_hiss FAIL ExpectationFailed: precondition: a hiss letter is already on the stack
+[forge] 10:07:37 hiss_not_sent_with_gas_wash_off UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 10:07:37 hiss_letter_sent_before_gas_wash UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 10:07:42 site_ready_voices PASS 
+[forge] 10:07:45 voices_off_no_cue PASS 
+[forge] 10:07:47 visual_cue_message_names_phase PASS 
+[forge] 10:08:03 site_ready_dormancy PASS 
+[forge] 10:08:03 natives_seal_in_still_heat PASS 
+[forge] 10:08:09 dormancy_off_clears_sealed_line PASS 
+[forge] 10:08:19 fresh_natives_seal PASS 
+[forge] 10:08:24 rain_wakes_all_natives PASS 
+[forge] 10:08:30 dhuvvox_clock_shows_countdown_and_slows PASS 
+[forge] 10:08:35 clock_off_removes_slowing PASS 
+[forge] 10:08:42 dry_growth_seals_dhokkur_only PASS 
+[forge] 10:08:43 site_ready_harvest PASS 
+[forge-note] RM_Floatstone stacks: []
+[forge] 10:09:59 floatstone_garden_yields_floatstone FAIL ExpectationFailed: no RM_Floatstone after a forced harvest of 2 mature garden(s)
+[forge] 10:10:08 site_ready_plume PASS 
+[forge] 10:10:10 plume_front_spawns_and_lives PASS 
+[forge] 10:10:15 plume_soaks_ground PASS 
+[forge] 10:10:20 soak_off_adds_no_puddles PASS 
+[forge] 10:10:21 fronts_off_clears_fronts PASS 
+[forge] 10:10:22 plume_source_launches_from_new_crust PASS 
+[forge] 10:10:22 plume_source_obscures_with_blind_smoke PASS 
+[forge] 10:10:22 plume_source_heat_is_ambient_temperature PASS 
+[forge] 10:10:22 plume_source_exempts_vapour_adapted PASS 
+[forge] 10:10:22 plume_source_strength_scales PASS 
+[forge-note] plume UNMEASURED: "BlindSmoke density/accuracy, AmbientTemperature offset and heatstroke rate, adapted exemption in play: no bridge tool reads them"
+[forge] 10:10:22 sky_source_grid_is_a_dirty_safe_section_layer PASS 
+[forge] 10:10:22 sky_source_spirals_are_cosmetic_flecks PASS 
+[forge] 10:10:22 sky_source_hunt_scores_columns PASS 
+[forge] 10:10:22 sky_source_jossur_stoop_uses_flight_stats PASS 
+[forge] 10:10:22 sky_source_highlight_is_selection_only PASS 
+[forge] 10:10:22 sky_source_debug_report_exists PASS 
+[forge-note] sky UNMEASURED: "the haze mesh, ash spirals, prey-score effect, a stoop in play and the outline: no bridge tool reads them and flyer flight is never live-hunted; run 'Forge sky: report' by hand for the counters"
+TheForge done all_green= False None

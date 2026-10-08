@@ -1,0 +1,1840 @@
+{
+ "mod": "GizkaStowaway",
+ "stamp": "20261007T191543Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RSW_GizkaNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RSW_GizkaNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RSW_GizkaNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_19a177f70b0b4bd39187f647fce692be",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_shipped_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "5 of 5 def(s) resolved",
+         "requested": 5,
+         "foundCount": 5,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "HediffDef/RSW_GizkaBaitPoison",
+           "found": true,
+           "defName": "RSW_GizkaBaitPoison",
+           "defType": "HediffDef",
+           "label": "gizka bait poisoning",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "defName": "RSW_GizkaBaitPoison"
+           }
+          },
+          {
+           "requested": "HediffDef/RSW_GizkaFecundity",
+           "found": true,
+           "defName": "RSW_GizkaFecundity",
+           "defType": "HediffDef",
+           "label": "shipboard fecundity",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "defName": "RSW_GizkaFecundity"
+           }
+          },
+          {
+           "requested": "RecipeDef/RSW_MakeGizkaBait",
+           "found": true,
+           "defName": "RSW_MakeGizkaBait",
+           "defType": "RecipeDef",
+           "label": "make gizka bait",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "defName": "RSW_MakeGizkaBait"
+           }
+          },
+          {
+           "requested": "ThingDef/RSW_GizkaBait",
+           "found": true,
+           "defName": "RSW_GizkaBait",
+           "defType": "ThingDef",
+           "label": "gizka bait",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "defName": "RSW_GizkaBait"
+           }
+          },
+          {
+           "requested": "ThoughtDef/RSW_GizkaWatchedCull",
+           "found": true,
+           "defName": "RSW_GizkaWatchedCull",
+           "defType": "ThoughtDef",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "defName": "RSW_GizkaWatchedCull"
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_e36fa54ea79243c18309709056950289",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "fecundity_comp_type_loaded",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "comps"
+         ],
+         "defs": [
+          {
+           "requested": "HediffDef/RSW_GizkaFecundity",
+           "found": true,
+           "defName": "RSW_GizkaFecundity",
+           "defType": "HediffDef",
+           "label": "shipboard fecundity",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "comps": [
+             {
+              "baseReplicateIntervalDays": 4.0,
+              "intervalStretchAtCap": 8.0,
+              "minBreedingTemperature": 12.0,
+              "minFoodLevel": 0.35,
+              "compClass": "HediffComp_GizkaFecundity"
+             }
+            ]
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_72d52d4c4a3e47aab50e7d53d6db40f9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "breedingRate_round_trips",
+      "toggle": "breedingRate",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "chewingEnabled_round_trips",
+      "toggle": "chewingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "cullGuiltEnabled_round_trips",
+      "toggle": "cullGuiltEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "discoveryFrequency_round_trips",
+      "toggle": "discoveryFrequency",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "globalBreedingRate_round_trips",
+      "toggle": "globalBreedingRate",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "populationCap_round_trips",
+      "toggle": "populationCap",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "stowawayEventsEnabled_round_trips",
+      "toggle": "stowawayEventsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "triggerGravship_round_trips",
+      "toggle": "triggerGravship",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "triggerQuest_round_trips",
+      "toggle": "triggerQuest",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "triggerSalvage_round_trips",
+      "toggle": "triggerSalvage",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "triggerTrade_round_trips",
+      "toggle": "triggerTrade",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "harmony_wiring",
+    "components": [
+     {
+      "name": "Scenario_PostGravshipLanded_patched_by_this_mod",
+      "toggle": "triggerGravship",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Scenario",
+         "methodName": "PostGravshipLanded",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "PostGravshipLanded",
+           "declaringType": "RimWorld.Scenario",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rsw.gizkastowaway",
+             "priority": 400,
+             "patchMethod": "RimMandrake.StarWars.GizkaStowaway.Patch_Scenario_PostGravshipLanded.Postfix",
+             "patchAssembly": "RimMandrakeGizkaStowaway"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_7846e281e6cb46fbbbd0cbb48621ce0c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Thing_Destroy_patched_by_this_mod",
+      "toggle": "triggerSalvage",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Thing",
+         "methodName": "Destroy",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Destroy",
+           "declaringType": "Verse.Thing",
+           "prefixCount": 5,
+           "postfixCount": 0,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "VFEInsectoidsMod",
+             "priority": 400,
+             "patchMethod": "VFEInsectoids.CompInsectSpawner+Thing_Destroy_Patch.Prefix",
+             "patchAssembly": "VFEInsectoids"
+            },
+            {
+             "owner": "mandrake.rm.warscar.totchak",
+             "priority": 400,
+             "patchMethod": "RimMandrake.Scarlands.Patch_Thing_Destroy.Prefix",
+             "patchAssembly": "RimMandrake.Warscar"
+            },
+            {
+             "owner": "mandrake.rm.warscar.chotrix",
+             "priority": 400,
+             "patchMethod": "RimMandrake.Scarlands.Patch_Thing_Destroy.Prefix",
+             "patchAssembly": "RimMandrake.Warscar"
+            },
+            {
+             "owner": "mandrake.rsw.gizkastowaway",
+             "priority": 400,
+             "patchMethod": "RimMandrake.StarWars.GizkaStowaway.Patch_Thing_Destroy_Salvage.Prefix",
+             "patchAssembly": "RimMandrakeGizkaStowaway"
+            },
+            {
+             "owner": "mandrake.jawabench.eventrecorder",
+             "priority": 400,
+             "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.DestroyPrefix",
+             "patchAssembly": "JawaBench.BridgeTools"
+            }
+           ],
+           "postfixes": [],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_6f934cdaaa954386b3817d604592653f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 17
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "TradeDeal_TryExecute_patched_by_this_mod",
+      "toggle": "triggerTrade",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "TradeDeal",
+         "methodName": "TryExecute",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "TryExecute",
+           "declaringType": "RimWorld.TradeDeal",
+           "prefixCount": 3,
+           "postfixCount": 4,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Prefix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Prefix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Factions.TradeDeal_TryExecute_Patch.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.luminouspigment",
+             "priority": 400,
+             "patchMethod": "RimMandrake.LuminousPigment.Patch_TradeDeal_DeepfireSold.Postfix",
+             "patchAssembly": "RimMandrakeLuminousPigment"
+            },
+            {
+             "owner": "mandrake.rm.environmentalhazards",
+             "priority": 400,
+             "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_TreasureSaleConscience.TryExecute_Postfix",
+             "patchAssembly": "RimMandrake.EnvironmentalHazards"
+            },
+            {
+             "owner": "mandrake.rsw.gizkastowaway",
+             "priority": 400,
+             "patchMethod": "RimMandrake.StarWars.GizkaStowaway.Patch_TradeDeal_TryExecute.Postfix",
+             "patchAssembly": "RimMandrakeGizkaStowaway"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_5e2b6a43da6c4facbef6198721f4c40b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Quest_End_patched_by_this_mod",
+      "toggle": "triggerQuest",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Quest",
+         "methodName": "End",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "End",
+           "declaringType": "RimWorld.Quest",
+           "prefixCount": 1,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_Quest_End_Patch.Prefix",
+             "patchAssembly": "VEF"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "mandrake.rsw.gizkastowaway",
+             "priority": 400,
+             "patchMethod": "RimMandrake.StarWars.GizkaStowaway.Patch_Quest_End.Postfix",
+             "patchAssembly": "RimMandrakeGizkaStowaway"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_0c6a0c64a38a4221b81110290c0c6149",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 14
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Pawn_Kill_patched_by_this_mod",
+      "toggle": "cullGuiltEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Pawn",
+         "methodName": "Kill",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "Kill",
+           "declaringType": "Verse.Pawn",
+           "prefixCount": 5,
+           "postfixCount": 3,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_WatchedBolts_Kill.Prefix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            },
+            {
+             "owner": "mandrake.rut.rustcathedralhum",
+             "priority": 400,
+             "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_HullBolts_Kill.Prefix",
+             "patchAssembly": "RimMandrake.RustCathedral.Hum"
+            },
+            {
+             "owner": "mandrake.rsw.gizkastowaway",
+             "priority": 400,
+             "patchMethod": "RimMandrake.StarWars.GizkaStowaway.Patch_Pawn_Kill_CullGuilt.Prefix",
+             "patchAssembly": "RimMandrakeGizkaStowaway"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Pawns.VanillaExpandedFramework_Pawn_Kill.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Postfix",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.jawabench.eventrecorder",
+             "priority": 400,
+             "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.KillPostfix",
+             "patchAssembly": "JawaBench.BridgeTools"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_db8317c3ceb74b6783414fb3663f6664",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 18
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "fecundity_state",
+    "components": [
+     {
+      "name": "gizka_with_fecundity_carries_it_control_does_not",
+      "toggle": "stowawayEventsEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: jawa/pawn_get has no hediffs list",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "PawnKindDef/Gizka",
+           "found": true,
+           "defName": "Gizka",
+           "defType": "PawnKindDef",
+           "label": "gizka",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "defName": "Gizka"
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_01307d7e3c364dae9cdcf1b169f19dc9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/map_info",
+        "result": {
+         "success": true,
+         "tile": 50383,
+         "tileValid": true,
+         "mapId": 0,
+         "sizeX": 250,
+         "sizeZ": 250,
+         "cellCount": 62500,
+         "tileInfo": {
+          "biome": "RM_TheRot",
+          "hilliness": "SmallHills",
+          "hillinessInt": 2,
+          "elevation": 157.52095,
+          "rainfall": 149.07164,
+          "swampiness": 0.0,
+          "temperature": -0.8516123,
+          "pollution": 0.0021645797,
+          "waterCovered": false,
+          "isSurfaceTile": true
+         },
+         "mapBiome": "RM_TheRot",
+         "mapBiomeLabel": "the Rot",
+         "outdoorTempNow": 21.11151,
+         "latitude": 49.39923,
+         "longitude": 36.491787,
+         "season": "Spring",
+         "mapParent": {
+          "defName": "Settlement",
+          "label": "Colony",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals"
+         },
+         "playerSettlementsOnThisTile": 1,
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_c15102cc34c74727b45187a987550f0c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "clear_area(12)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 2 thing(s) across 144 cell(s); 6 pawn(s) left alone.",
+         "cellsExamined": 144,
+         "outOfBounds": 0,
+         "destroyed": 2,
+         "pawnsSkipped": 6,
+         "perCategory": {
+          "Filth": 1,
+          "Item": 1
+         },
+         "samples": [
+          {
+           "x": 125,
+           "z": 125,
+           "def": "Filth_Blood",
+           "category": "Filth"
+          },
+          {
+           "x": 128,
+           "z": 125,
+           "def": "Corpse_RM_Chatrak",
+           "category": "Item"
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_4499c110865847d78ff1104d172c61e4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Gizka in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Gizka91761",
+           "name": "Gizka 1",
+           "kindRequested": "Gizka",
+           "kindActual": "Gizka",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_642c0123b8f34534bf671e34eeddaac2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Gizka in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Gizka91762",
+           "name": "Gizka 2",
+           "kindRequested": "Gizka",
+           "kindActual": "Gizka",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 129,
+           "z": 125,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_ac43137fcca74f5889735ab781a8d998",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_health",
+        "result": {
+         "success": true,
+         "action": "add",
+         "didWhat": "added RSW_GizkaFecundity (whole body)",
+         "partsAvailable": [
+          "Body",
+          "Tail",
+          "Spine",
+          "Stomach",
+          "Heart",
+          "Lung",
+          "Kidney",
+          "Liver",
+          "Neck",
+          "Head",
+          "Skull",
+          "Brain",
+          "Eye",
+          "Nose",
+          "AnimalJaw",
+          "Jowl",
+          "Leg",
+          "Foot"
+         ],
+         "hediffCount": 1,
+         "hediffs": [
+          {
+           "def": "RSW_GizkaFecundity",
+           "severity": 1.0
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_c9d56514dc0c45578db6678e5fe84d55",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Gizka91761",
+           "thingIdNumber": 91761,
+           "name": "Gizka 1",
+           "nameShort": "Gizka 1",
+           "kindDef": "Gizka",
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "gender": "Female",
+           "ageBiologicalYears": 7,
+           "ageChronologicalYears": 7,
+           "developmentalStage": "Adult",
+           "position": {
+            "x": 125,
+            "z": 125
+           },
+           "traits": [],
+           "skills": [],
+           "apparel": [],
+           "equipment": [],
+           "hediffs": [
+            {
+             "def": "RSW_GizkaFecundity",
+             "severity": 1.0
+            }
+           ],
+           "needs": [
+            {
+             "need": "Food",
+             "level": 0.1439771,
+             "pct": 0.799872756
+            },
+            {
+             "need": "Rest",
+             "level": 0.9127359,
+             "pct": 0.9127359
+            }
+           ]
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_356686d3e0fb4e1990a6f30d6d1d7ec3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "bait_poison",
+    "components": [
+     {
+      "name": "bait_item_and_recipe_resolve",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "3 of 3 def(s) resolved",
+         "requested": 3,
+         "foundCount": 3,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RSW_GizkaBait",
+           "found": true,
+           "defName": "RSW_GizkaBait",
+           "defType": "ThingDef",
+           "label": "gizka bait",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "defName": "RSW_GizkaBait"
+           }
+          },
+          {
+           "requested": "RecipeDef/RSW_MakeGizkaBait",
+           "found": true,
+           "defName": "RSW_MakeGizkaBait",
+           "defType": "RecipeDef",
+           "label": "make gizka bait",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "defName": "RSW_MakeGizkaBait"
+           }
+          },
+          {
+           "requested": "HediffDef/RSW_GizkaBaitPoison",
+           "found": true,
+           "defName": "RSW_GizkaBaitPoison",
+           "defType": "HediffDef",
+           "label": "gizka bait poisoning",
+           "modName": "RimMandrake: SW \u2014 Gizka Stowaway",
+           "packageId": "mandrake.rsw.gizkastowaway",
+           "fields": {
+            "defName": "RSW_GizkaBaitPoison"
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_20f6e87253a642e8b1c82a55d617086b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "poison_hediff_advances_on_a_gizka",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: pawn_get hediff rows carry no severity field",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "PawnKindDef/Gizka",
+           "found": true,
+           "defName": "Gizka",
+           "defType": "PawnKindDef",
+           "label": "gizka",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "defName": "Gizka"
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_bacb6149c632424bb63fd1a5f8b8789f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/map_info",
+        "result": {
+         "success": true,
+         "tile": 50383,
+         "tileValid": true,
+         "mapId": 0,
+         "sizeX": 250,
+         "sizeZ": 250,
+         "cellCount": 62500,
+         "tileInfo": {
+          "biome": "RM_TheRot",
+          "hilliness": "SmallHills",
+          "hillinessInt": 2,
+          "elevation": 157.52095,
+          "rainfall": 149.07164,
+          "swampiness": 0.0,
+          "temperature": -0.8516123,
+          "pollution": 0.0021645797,
+          "waterCovered": false,
+          "isSurfaceTile": true
+         },
+         "mapBiome": "RM_TheRot",
+         "mapBiomeLabel": "the Rot",
+         "outdoorTempNow": 21.11151,
+         "latitude": 49.39923,
+         "longitude": 36.491787,
+         "season": "Spring",
+         "mapParent": {
+          "defName": "Settlement",
+          "label": "Colony",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals"
+         },
+         "playerSettlementsOnThisTile": 1,
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_71e93f449c2a4b4f8b2ea6b70040fab6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Gizka in faction PlayerColony.",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Gizka91765",
+           "name": "Gizka 3",
+           "kindRequested": "Gizka",
+           "kindActual": "Gizka",
+           "kindSubstituted": false,
+           "faction": "PlayerColony",
+           "hostile": false,
+           "x": 133,
+           "z": 125,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_110a122c9c3c4504ba0e2707fb7ad486",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_health",
+        "result": {
+         "success": true,
+         "action": "add",
+         "didWhat": "added RSW_GizkaBaitPoison (whole body)",
+         "partsAvailable": [
+          "Body",
+          "Tail",
+          "Spine",
+          "Stomach",
+          "Heart",
+          "Lung",
+          "Kidney",
+          "Liver",
+          "Neck",
+          "Head",
+          "Skull",
+          "Brain",
+          "Eye",
+          "Nose",
+          "AnimalJaw",
+          "Jowl",
+          "Leg",
+          "Foot"
+         ],
+         "hediffCount": 2,
+         "hediffs": [
+          {
+           "def": "Gunshot",
+           "part": "Body",
+           "severity": 5.0
+          },
+          {
+           "def": "RSW_GizkaBaitPoison",
+           "severity": 0.15
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_fc02dce70eb349d1a8b6a347d2d2b213",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_get",
+        "result": {
+         "success": true,
+         "count": 1,
+         "pawns": [
+          {
+           "thingId": "Gizka91765",
+           "thingIdNumber": 91765,
+           "name": "Gizka 3",
+           "nameShort": "Gizka 3",
+           "kindDef": "Gizka",
+           "faction": "PlayerColony",
+           "factionName": "New Arrivals",
+           "gender": "Female",
+           "ageBiologicalYears": 8,
+           "ageChronologicalYears": 8,
+           "developmentalStage": "Adult",
+           "position": {
+            "x": 133,
+            "z": 125
+           },
+           "traits": [],
+           "skills": [],
+           "apparel": [],
+           "equipment": [],
+           "hediffs": [
+            {
+             "def": "Gunshot",
+             "part": "Body",
+             "severity": 5.0
+            },
+            {
+             "def": "RSW_GizkaBaitPoison",
+             "severity": 0.15
+            }
+           ],
+           "needs": [
+            {
+             "need": "Food",
+             "level": 0.118375257,
+             "pct": 0.6576403
+            },
+            {
+             "need": "Rest",
+             "level": 0.9061004,
+             "pct": 0.9061004
+            }
+           ]
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_2d035f9b26c2419b822d442ca269b3a2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "donor_patch",
+    "components": [
+     {
+      "name": "gizka_market_value_flattened_to_15",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "PawnKindDef/Gizka",
+           "found": true,
+           "defName": "Gizka",
+           "defType": "PawnKindDef",
+           "label": "gizka",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "defName": "Gizka"
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_dfacb226ce15442f91769c6b325fe77b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 44
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "statBases"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/Gizka",
+           "found": true,
+           "defName": "Gizka",
+           "defType": "ThingDef",
+           "label": "gizka",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "statBases": [
+             {
+              "stat": "Mass",
+              "value": 60.0
+             },
+             {
+              "stat": "Flammability",
+              "value": 0.7
+             },
+             {
+              "stat": "LeatherAmount",
+              "value": 40.0
+             },
+             {
+              "stat": "ToxicResistance",
+              "value": 0.5
+             },
+             {
+              "stat": "MoveSpeed",
+              "value": 3.0
+             },
+             {
+              "stat": "MarketValue",
+              "value": 15.0
+             },
+             {
+              "stat": "ComfyTemperatureMin",
+              "value": -3.6
+             },
+             {
+              "stat": "ComfyTemperatureMax",
+              "value": 79.7
+             },
+             {
+              "stat": "Wildness",
+              "value": 0.5
+             }
+            ]
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_d5fd271f25e34d3c8b3a6e6a61b3a9b8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "behaviour_rules",
+    "components": [
+     {
+      "name": "sliders_reach_their_defaults_and_discovery_can_be_silenced",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "four_triggers_each_gate_on_their_toggle_and_deliver_one",
+      "toggle": "stowawayEventsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "replication_stalls_cold_and_hungry_and_stops_at_the_cap",
+      "toggle": "populationCap",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "stage_bands_and_chewing_gates_hold",
+      "toggle": "chewingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "cull_guilt_gates_and_witness_rules_hold",
+      "toggle": "cullGuiltEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "mechanics_unmeasured",
+    "components": [
+     {
+      "name": "gravship_landing_delivers_one_tame_gizka",
+      "toggle": "triggerGravship",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs a real gravship landing (Scenario.PostGravshipLanded) and a 35 percent roll; the postfix is attached (harmony_wiring)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "salvage_trade_quest_hooks_deliver",
+      "toggle": "triggerSalvage",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: wreck deconstruction, a completed trade and a quest success each need a driven game event and a chance roll",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "fecundity_replicates_while_fed_and_warm",
+      "toggle": "breedingRate",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a replication interval of ~4 days needs game days of ticks and a fed warm gizka",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "population_cap_stops_breeding",
+      "toggle": "populationCap",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs a colony grown to the cap (22 per map) over game days",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "infestation_stage_chews_powered_buildings",
+      "toggle": "chewingEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs the Infestation stage (~3x the cute count) with a powered building in a shared room",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "cold_below_breeding_gate_stalls_replication",
+      "toggle": "stowawayEventsEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs a gizka room vented below 12 C and days of ticks; no verb sets a room temperature",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "cull_weighs_on_watching_colonists",
+      "toggle": "cullGuiltEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: needs a slaughter with colonist witnesses; the Pawn.Kill prefix is attached (harmony_wiring)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "global_breeding_slider_rescales_donor_fields",
+      "toggle": "globalBreedingRate",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: RSW_GizkaDonorTuning.Apply runs on WriteSettings or its button, not on a bridge field write; the live egg-layer fields have no reader here",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimStarWars\\GizkaStowaway.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

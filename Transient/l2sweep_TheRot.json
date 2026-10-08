@@ -1,0 +1,4267 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "control_probe_can_say_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "ThingDef/TheRotNoSuchDef_ZZ"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/TheRotNoSuchDef_ZZ",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "TheRotNoSuchDef_ZZ"
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_8b0bffa1acf04d208a61d37fd19234fb",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_deployed_def_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_TheRot",
+          "found": true,
+          "defName": "RM_TheRot",
+          "defType": "BiomeDef",
+          "label": "the Rot",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TheRot"
+          }
+         },
+         {
+          "requested": "BodyDef/RM_BeetleLikeWithStinger",
+          "found": true,
+          "defName": "RM_BeetleLikeWithStinger",
+          "defType": "BodyDef",
+          "label": "dragonfly-like",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BeetleLikeWithStinger"
+          }
+         },
+         {
+          "requested": "BodyDef/RM_HunchedBipedWithTail",
+          "found": true,
+          "defName": "RM_HunchedBipedWithTail",
+          "defType": "BodyDef",
+          "label": "hunched animal",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_HunchedBipedWithTail"
+          }
+         },
+         {
+          "requested": "BodyDef/RM_MantisLike",
+          "found": true,
+          "defName": "RM_MantisLike",
+          "defType": "BodyDef",
+          "label": "mantis-like",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MantisLike"
+          }
+         },
+         {
+          "requested": "BodyDef/RM_RotLarvaLike",
+          "found": true,
+          "defName": "RM_RotLarvaLike",
+          "defType": "BodyDef",
+          "label": "larva-like",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotLarvaLike"
+          }
+         },
+         {
+          "requested": "BodyDef/RM_RotMothLike",
+          "found": true,
+          "defName": "RM_RotMothLike",
+          "defType": "BodyDef",
+          "label": "mothlike",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotMothLike"
+          }
+         },
+         {
+          "requested": "BodyPartDef/RM_RotMothWing",
+          "found": true,
+          "defName": "RM_RotMothWing",
+          "defType": "BodyPartDef",
+          "label": "wing",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotMothWing"
+          }
+         },
+         {
+          "requested": "BodyPartDef/RM_Stinger",
+          "found": true,
+          "defName": "RM_Stinger",
+          "defType": "BodyPartDef",
+          "label": "stinger",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Stinger"
+          }
+         },
+         {
+          "requested": "BodyPartGroupDef/RM_FrontLeftScythe",
+          "found": true,
+          "defName": "RM_FrontLeftScythe",
+          "defType": "BodyPartGroupDef",
+          "label": "front left scythe",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FrontLeftScythe"
+          }
+         },
+         {
+          "requested": "BodyPartGroupDef/RM_FrontRightScythe",
+          "found": true,
+          "defName": "RM_FrontRightScythe",
+          "defType": "BodyPartGroupDef",
+          "label": "front right scythe",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FrontRightScythe"
+          }
+         },
+         {
+          "requested": "BodyPartGroupDef/RM_StingerGroup",
+          "found": true,
+          "defName": "RM_StingerGroup",
+          "defType": "BodyPartGroupDef",
+          "label": "stinger",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_StingerGroup"
+          }
+         },
+         {
+          "requested": "DamageDef/RM_Neurotoxin",
+          "found": true,
+          "defName": "RM_Neurotoxin",
+          "defType": "DamageDef",
+          "label": "neurotoxin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Neurotoxin"
+          }
+         },
+         {
+          "requested": "DamageDef/RM_StunningSpores",
+          "found": true,
+          "defName": "RM_StunningSpores",
+          "defType": "DamageDef",
+          "label": "stunning spores",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_StunningSpores"
+          }
+         },
+         {
+          "requested": "DamageDef/RM_ToxicSpores",
+          "found": true,
+          "defName": "RM_ToxicSpores",
+          "defType": "DamageDef",
+          "label": "toxic spores",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ToxicSpores"
+          }
+         },
+         {
+          "requested": "FactionDef/RM_Thozziks",
+          "found": true,
+          "defName": "RM_Thozziks",
+          "defType": "FactionDef",
+          "label": "thozziks",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Thozziks"
+          }
+         },
+         {
+          "requested": "GameConditionDef/RM_SheenExposureLock",
+          "found": true,
+          "defName": "RM_SheenExposureLock",
+          "defType": "GameConditionDef",
+          "label": "the Sheen's breath",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SheenExposureLock"
+          }
+         },
+         {
+          "requested": "GameConditionDef/RM_SporeCloud",
+          "found": true,
+          "defName": "RM_SporeCloud",
+          "defType": "GameConditionDef",
+          "label": "spore cloud",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SporeCloud"
+          }
+         },
+         {
+          "requested": "GenStepDef/RM_WreckField_TheRot",
+          "found": true,
+          "defName": "RM_WreckField_TheRot",
+          "defType": "GenStepDef",
+          "label": "The Rot",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WreckField_TheRot"
+          }
+         },
+         {
+          "requested": "GeneDef/RM_Gene_Furnaceblood",
+          "found": true,
+          "defName": "RM_Gene_Furnaceblood",
+          "defType": "GeneDef",
+          "label": "furnaceblood",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Gene_Furnaceblood"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_AgeReversalSated",
+          "found": true,
+          "defName": "RM_AgeReversalSated",
+          "defType": "HediffDef",
+          "label": "ageless-brew saturation",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_AgeReversalSated"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Bioregenerating",
+          "found": true,
+          "defName": "RM_Bioregenerating",
+          "defType": "HediffDef",
+          "label": "bioregenerating",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Bioregenerating"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_HediffSkulltopSpores",
+          "found": true,
+          "defName": "RM_HediffSkulltopSpores",
+          "defType": "HediffDef",
+          "label": "vekkra choker spores",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_HediffSkulltopSpores"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_KinMendingNetwork",
+          "found": true,
+          "defName": "RM_KinMendingNetwork",
+          "defType": "HediffDef",
+          "label": "kin mending",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_KinMendingNetwork"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_MatGrip",
+          "found": true,
+          "defName": "RM_MatGrip",
+          "defType": "HediffDef",
+          "label": "gripped by mat",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MatGrip"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Paralysis",
+          "found": true,
+          "defName": "RM_Paralysis",
+          "defType": "HediffDef",
+          "label": "paralysis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Paralysis"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_SheenCoating",
+          "found": true,
+          "defName": "RM_SheenCoating",
+          "defType": "HediffDef",
+          "label": "Sheen coating",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SheenCoating"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_SheenSymbiosis",
+          "found": true,
+          "defName": "RM_SheenSymbiosis",
+          "defType": "HediffDef",
+          "label": "Sheen symbiosis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SheenSymbiosis"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_SporeFlesh",
+          "found": true,
+          "defName": "RM_SporeFlesh",
+          "defType": "HediffDef",
+          "label": "spore flesh",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SporeFlesh"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_SporesBuildup",
+          "found": true,
+          "defName": "RM_SporesBuildup",
+          "defType": "HediffDef",
+          "label": "spore buildup",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SporesBuildup"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Sym_Mycoid",
+          "found": true,
+          "defName": "RM_Sym_Mycoid",
+          "defType": "HediffDef",
+          "label": "mycoid symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sym_Mycoid"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Sym_Nightwake",
+          "found": true,
+          "defName": "RM_Sym_Nightwake",
+          "defType": "HediffDef",
+          "label": "nightwake symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sym_Nightwake"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Sym_Quickflesh",
+          "found": true,
+          "defName": "RM_Sym_Quickflesh",
+          "defType": "HediffDef",
+          "label": "quickflesh symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sym_Quickflesh"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_Sym_Sheenblood",
+          "found": true,
+          "defName": "RM_Sym_Sheenblood",
+          "defType": "HediffDef",
+          "label": "sheenblood symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sym_Sheenblood"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_UnjoiningPurge",
+          "found": true,
+          "defName": "RM_UnjoiningPurge",
+          "defType": "HediffDef",
+          "label": "unjoining purge",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_UnjoiningPurge"
+          }
+         },
+         {
+          "requested": "IncidentDef/RM_SporeCloud",
+          "found": true,
+          "defName": "RM_SporeCloud",
+          "defType": "IncidentDef",
+          "label": "spore cloud",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SporeCloud"
+          }
+         },
+         {
+          "requested": "JobDef/RM_GutGraze",
+          "found": true,
+          "defName": "RM_GutGraze",
+          "defType": "JobDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutGraze"
+          }
+         },
+         {
+          "requested": "JobDef/RM_GutSwallow",
+          "found": true,
+          "defName": "RM_GutSwallow",
+          "defType": "JobDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutSwallow"
+          }
+         },
+         {
+          "requested": "LifeStageDef/RM_RotEusocialInsectNymphFirst",
+          "found": true,
+          "defName": "RM_RotEusocialInsectNymphFirst",
+          "defType": "LifeStageDef",
+          "label": "nymph",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotEusocialInsectNymphFirst"
+          }
+         },
+         {
+          "requested": "LifeStageDef/RM_RotEusocialInsectNymphSecond",
+          "found": true,
+          "defName": "RM_RotEusocialInsectNymphSecond",
+          "defType": "LifeStageDef",
+          "label": "immature",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotEusocialInsectNymphSecond"
+          }
+         },
+         {
+          "requested": "LifeStageDef/RM_RotInsectLarvalFirst",
+          "found": true,
+          "defName": "RM_RotInsectLarvalFirst",
+          "defType": "LifeStageDef",
+          "label": "larva",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotInsectLarvalFirst"
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_4cae1335fe3348a789a03015fdca2edf",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "LifeStageDef/RM_RotInsectLarvalSecound",
+          "found": true,
+          "defName": "RM_RotInsectLarvalSecound",
+          "defType": "LifeStageDef",
+          "label": "larva",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotInsectLarvalSecound"
+          }
+         },
+         {
+          "requested": "LifeStageDef/RM_RotInsectLarvalThird",
+          "found": true,
+          "defName": "RM_RotInsectLarvalThird",
+          "defType": "LifeStageDef",
+          "label": "larva",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotInsectLarvalThird"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Brogg",
+          "found": true,
+          "defName": "RM_Brogg",
+          "defType": "PawnKindDef",
+          "label": "brogg",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brogg"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Brullith",
+          "found": true,
+          "defName": "RM_Brullith",
+          "defType": "PawnKindDef",
+          "label": "brullith",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brullith"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Grellik",
+          "found": true,
+          "defName": "RM_Grellik",
+          "defType": "PawnKindDef",
+          "label": "grellik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Grellik"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Hwelgrue",
+          "found": true,
+          "defName": "RM_Hwelgrue",
+          "defType": "PawnKindDef",
+          "label": "hwelgrue",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Hwelgrue"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Illoth",
+          "found": true,
+          "defName": "RM_Illoth",
+          "defType": "PawnKindDef",
+          "label": "illoth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Illoth"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_IllothLarvae",
+          "found": true,
+          "defName": "RM_IllothLarvae",
+          "defType": "PawnKindDef",
+          "label": "illoth larva",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_IllothLarvae"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Shambles",
+          "found": true,
+          "defName": "RM_Shambles",
+          "defType": "PawnKindDef",
+          "label": "the shambles",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Shambles"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Skerrith",
+          "found": true,
+          "defName": "RM_Skerrith",
+          "defType": "PawnKindDef",
+          "label": "skerrith",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Skerrith"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Thozzik",
+          "found": true,
+          "defName": "RM_Thozzik",
+          "defType": "PawnKindDef",
+          "label": "thozzik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Thozzik"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_ThozzikColony",
+          "found": true,
+          "defName": "RM_ThozzikColony",
+          "defType": "PawnKindDef",
+          "label": "thozzik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikColony"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_ThozzikColonyQueen",
+          "found": true,
+          "defName": "RM_ThozzikColonyQueen",
+          "defType": "PawnKindDef",
+          "label": "thozzik queen",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikColonyQueen"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_ThozzikQueen",
+          "found": true,
+          "defName": "RM_ThozzikQueen",
+          "defType": "PawnKindDef",
+          "label": "thozzik queen",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikQueen"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_ThozzikSpawned",
+          "found": true,
+          "defName": "RM_ThozzikSpawned",
+          "defType": "PawnKindDef",
+          "label": "thozzik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikSpawned"
+          }
+         },
+         {
+          "requested": "QuestScriptDef/RM_NavigatorSalvageSite",
+          "found": true,
+          "defName": "RM_NavigatorSalvageSite",
+          "defType": "QuestScriptDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_NavigatorSalvageSite"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Brew_AgelessBrew",
+          "found": true,
+          "defName": "RM_Brew_AgelessBrew",
+          "defType": "RecipeDef",
+          "label": "brew ageless brew",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brew_AgelessBrew"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Brew_EuphoricBrew",
+          "found": true,
+          "defName": "RM_Brew_EuphoricBrew",
+          "defType": "RecipeDef",
+          "label": "brew lussa crown brew",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brew_EuphoricBrew"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Brew_MycoidSymbiont",
+          "found": true,
+          "defName": "RM_Brew_MycoidSymbiont",
+          "defType": "RecipeDef",
+          "label": "culture mycoid symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brew_MycoidSymbiont"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Brew_NightwakeSymbiont",
+          "found": true,
+          "defName": "RM_Brew_NightwakeSymbiont",
+          "defType": "RecipeDef",
+          "label": "culture nightwake symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brew_NightwakeSymbiont"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Brew_QuickfleshSymbiont",
+          "found": true,
+          "defName": "RM_Brew_QuickfleshSymbiont",
+          "defType": "RecipeDef",
+          "label": "culture quickflesh symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brew_QuickfleshSymbiont"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Brew_RegenerantBrew",
+          "found": true,
+          "defName": "RM_Brew_RegenerantBrew",
+          "defType": "RecipeDef",
+          "label": "brew regenerant brew",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brew_RegenerantBrew"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Brew_SheenbloodSymbiont",
+          "found": true,
+          "defName": "RM_Brew_SheenbloodSymbiont",
+          "defType": "RecipeDef",
+          "label": "culture sheenblood symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brew_SheenbloodSymbiont"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Brew_ToxicInjection",
+          "found": true,
+          "defName": "RM_Brew_ToxicInjection",
+          "defType": "RecipeDef",
+          "label": "fill toxic injection",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brew_ToxicInjection"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_FeedGutMother",
+          "found": true,
+          "defName": "RM_FeedGutMother",
+          "defType": "RecipeDef",
+          "label": "feed a body to the gut-mother",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FeedGutMother"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_IndustrialMedicineFromFungal",
+          "found": true,
+          "defName": "RM_IndustrialMedicineFromFungal",
+          "defType": "RecipeDef",
+          "label": "make medicine from fungal medicine",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_IndustrialMedicineFromFungal"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Make_ChemfuelFromBlastSpore",
+          "found": true,
+          "defName": "RM_Make_ChemfuelFromBlastSpore",
+          "defType": "RecipeDef",
+          "label": "make chemfuel from blast spore sac",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Make_ChemfuelFromBlastSpore"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Make_MushroomLeather",
+          "found": true,
+          "defName": "RM_Make_MushroomLeather",
+          "defType": "RecipeDef",
+          "label": "make mushroom leather",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Make_MushroomLeather"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_Make_UnjoiningDraught",
+          "found": true,
+          "defName": "RM_Make_UnjoiningDraught",
+          "defType": "RecipeDef",
+          "label": "make unjoining draught",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Make_UnjoiningDraught"
+          }
+         },
+         {
+          "requested": "RecipeDef/RM_SplitGutMother",
+          "found": true,
+          "defName": "RM_SplitGutMother",
+          "defType": "RecipeDef",
+          "label": "split a starter culture",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SplitGutMother"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_AdvancedFungi",
+          "found": true,
+          "defName": "RM_AdvancedFungi",
+          "defType": "ResearchProjectDef",
+          "label": "specialized fungi",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_AdvancedFungi"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_GutMotherCulture",
+          "found": true,
+          "defName": "RM_GutMotherCulture",
+          "defType": "ResearchProjectDef",
+          "label": "gut-mother culture",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutMotherCulture"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_UnjoiningDraught",
+          "found": true,
+          "defName": "RM_UnjoiningDraught",
+          "defType": "ResearchProjectDef",
+          "label": "unjoining draught",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_UnjoiningDraught"
+          }
+         },
+         {
+          "requested": "RimMandrake.EnvironmentalHazards.RM_TreasureConscienceDef/RM_RotTreasureConscience",
+          "found": true,
+          "defName": "RM_RotTreasureConscience",
+          "defType": "RM_TreasureConscienceDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotTreasureConscience"
+          }
+         },
+         {
+          "requested": "RimMandrake.TheRot.RM_NavigatorLogDef/RM_NavigatorLog",
+          "found": true,
+          "defName": "RM_NavigatorLog",
+          "defType": "RM_NavigatorLogDef",
+          "label": "the dead ship's log",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_NavigatorLog"
+          }
+         },
+         {
+          "requested": "RimMandrake.TheRot.RM_UnjoiningTargetsDef/RM_UnjoiningTargets",
+          "found": true,
+          "defName": "RM_UnjoiningTargets",
+          "defType": "RM_UnjoiningTargetsDef",
+          "label": "unjoining targets",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_UnjoiningTargets"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_Brogg_Angry",
+          "found": true,
+          "defName": "RM_Brogg_Angry",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brogg_Angry"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_Brogg_Call",
+          "found": true,
+          "defName": "RM_Brogg_Call",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brogg_Call"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_Brogg_Death",
+          "found": true,
+          "defName": "RM_Brogg_Death",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brogg_Death"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_Brogg_Wounded",
+          "found": true,
+          "defName": "RM_Brogg_Wounded",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brogg_Wounded"
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_4abc3f3d775e460cbcc7a340c1e837c6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "SoundDef/RM_CoreChirp",
+          "found": true,
+          "defName": "RM_CoreChirp",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CoreChirp"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_CorePing",
+          "found": true,
+          "defName": "RM_CorePing",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CorePing"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_GutKnocking",
+          "found": true,
+          "defName": "RM_GutKnocking",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutKnocking"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_GutKnocking_Failing",
+          "found": true,
+          "defName": "RM_GutKnocking_Failing",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutKnocking_Failing"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_GutKnocking_Weak",
+          "found": true,
+          "defName": "RM_GutKnocking_Weak",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutKnocking_Weak"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_GutScrabbling",
+          "found": true,
+          "defName": "RM_GutScrabbling",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutScrabbling"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_Pawn_Mantis_Call",
+          "found": true,
+          "defName": "RM_Pawn_Mantis_Call",
+          "defType": "SoundDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Pawn_Mantis_Call"
+          }
+         },
+         {
+          "requested": "StatDef/RM_RotBC_StuffPower_FlammabilityOffset",
+          "found": true,
+          "defName": "RM_RotBC_StuffPower_FlammabilityOffset",
+          "defType": "StatDef",
+          "label": "Flammability offset",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotBC_StuffPower_FlammabilityOffset"
+          }
+         },
+         {
+          "requested": "StatDef/RM_SheenProtection",
+          "found": true,
+          "defName": "RM_SheenProtection",
+          "defType": "StatDef",
+          "label": "Sheen protection",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SheenProtection"
+          }
+         },
+         {
+          "requested": "StuffCategoryDef/RM_ChitinStuff",
+          "found": true,
+          "defName": "RM_ChitinStuff",
+          "defType": "StuffCategoryDef",
+          "label": "chitin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChitinStuff"
+          }
+         },
+         {
+          "requested": "StuffCategoryDef/RM_GutMotherCulture",
+          "found": true,
+          "defName": "RM_GutMotherCulture",
+          "defType": "StuffCategoryDef",
+          "label": "gut-mother culture",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutMotherCulture"
+          }
+         },
+         {
+          "requested": "TerrainDef/RM_HeavyMushroomBridge",
+          "found": true,
+          "defName": "RM_HeavyMushroomBridge",
+          "defType": "TerrainDef",
+          "label": "heavy mushroom bridge",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_HeavyMushroomBridge"
+          }
+         },
+         {
+          "requested": "TerrainDef/RM_MoonlessCarpet",
+          "found": true,
+          "defName": "RM_MoonlessCarpet",
+          "defType": "TerrainDef",
+          "label": "moonless stripes carpet",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MoonlessCarpet"
+          }
+         },
+         {
+          "requested": "TerrainDef/RM_MushroomBridge",
+          "found": true,
+          "defName": "RM_MushroomBridge",
+          "defType": "TerrainDef",
+          "label": "mushroom bridge",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MushroomBridge"
+          }
+         },
+         {
+          "requested": "TerrainDef/RM_MushroomFloor",
+          "found": true,
+          "defName": "RM_MushroomFloor",
+          "defType": "TerrainDef",
+          "label": "mushroom floor",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MushroomFloor"
+          }
+         },
+         {
+          "requested": "TerrainDef/RM_MycelialMatting",
+          "found": true,
+          "defName": "RM_MycelialMatting",
+          "defType": "TerrainDef",
+          "label": "mycelial matting",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MycelialMatting"
+          }
+         },
+         {
+          "requested": "TerrainDef/RM_MycelialSoil",
+          "found": true,
+          "defName": "RM_MycelialSoil",
+          "defType": "TerrainDef",
+          "label": "mycelial soil",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MycelialSoil"
+          }
+         },
+         {
+          "requested": "TerrainDef/RM_TheRotGrass",
+          "found": true,
+          "defName": "RM_TheRotGrass",
+          "defType": "TerrainDef",
+          "label": "mycotic grass",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TheRotGrass"
+          }
+         },
+         {
+          "requested": "TerrainDef/RM_TheRotSoilRich",
+          "found": true,
+          "defName": "RM_TheRotSoilRich",
+          "defType": "TerrainDef",
+          "label": "rich mycotic soil",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TheRotSoilRich"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_AgelessCap",
+          "found": true,
+          "defName": "RM_AgelessCap",
+          "defType": "ThingDef",
+          "label": "orlath cap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_AgelessCap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_AmbrosyxShroom",
+          "found": true,
+          "defName": "RM_AmbrosyxShroom",
+          "defType": "ThingDef",
+          "label": "ambrosyx shroom",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_AmbrosyxShroom"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Apparel_ChitinSpiderHelmet",
+          "found": true,
+          "defName": "RM_Apparel_ChitinSpiderHelmet",
+          "defType": "ThingDef",
+          "label": "chitin spider helmet",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Apparel_ChitinSpiderHelmet"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Arpeau",
+          "found": true,
+          "defName": "RM_Arpeau",
+          "defType": "ThingDef",
+          "label": "churrun mast",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Arpeau"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BlastSpore",
+          "found": true,
+          "defName": "RM_BlastSpore",
+          "defType": "ThingDef",
+          "label": "blast spore sac",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BlastSpore"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BlastpodShroom",
+          "found": true,
+          "defName": "RM_BlastpodShroom",
+          "defType": "ThingDef",
+          "label": "kabbrik pod",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BlastpodShroom"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BleedingTooth",
+          "found": true,
+          "defName": "RM_BleedingTooth",
+          "defType": "ThingDef",
+          "label": "rhukk tooth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BleedingTooth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BrewingVessel",
+          "found": true,
+          "defName": "RM_BrewingVessel",
+          "defType": "ThingDef",
+          "label": "brewing vessel",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BrewingVessel"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Brightbell",
+          "found": true,
+          "defName": "RM_Brightbell",
+          "defType": "ThingDef",
+          "label": "tinnik bell",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brightbell"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Brogg",
+          "found": true,
+          "defName": "RM_Brogg",
+          "defType": "ThingDef",
+          "label": "brogg",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brogg"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Brullith",
+          "found": true,
+          "defName": "RM_Brullith",
+          "defType": "ThingDef",
+          "label": "brullith",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Brullith"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_CaveSpiderHead",
+          "found": true,
+          "defName": "RM_CaveSpiderHead",
+          "defType": "ThingDef",
+          "label": "cave spider head",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CaveSpiderHead"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ChitinPlating",
+          "found": true,
+          "defName": "RM_ChitinPlating",
+          "defType": "ThingDef",
+          "label": "chitin plating",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChitinPlating"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ChokingSpores",
+          "found": true,
+          "defName": "RM_ChokingSpores",
+          "defType": "ThingDef",
+          "label": "choking spores",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ChokingSpores"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_CrimsonCap",
+          "found": true,
+          "defName": "RM_CrimsonCap",
+          "defType": "ThingDef",
+          "label": "rhessa cap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CrimsonCap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Dewshrooms",
+          "found": true,
+          "defName": "RM_Dewshrooms",
+          "defType": "ThingDef",
+          "label": "sikkra lure",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dewshrooms"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_DulcisPlant",
+          "found": true,
+          "defName": "RM_DulcisPlant",
+          "defType": "ThingDef",
+          "label": "tamma sweetcap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DulcisPlant"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_EggFungalMantisFertilized",
+          "found": true,
+          "defName": "RM_EggFungalMantisFertilized",
+          "defType": "ThingDef",
+          "label": "fungal mimic mantis egg (fert.)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_EggFungalMantisFertilized"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_EggFungalMantisUnfertilized",
+          "found": true,
+          "defName": "RM_EggFungalMantisUnfertilized",
+          "defType": "ThingDef",
+          "label": "fungal mimic mantis egg (unfert.)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_EggFungalMantisUnfertilized"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_EggFungalWeevilFertilized",
+          "found": true,
+          "defName": "RM_EggFungalWeevilFertilized",
+          "defType": "ThingDef",
+          "label": "grellik egg (fert.)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_EggFungalWeevilFertilized"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_EggFungalWeevilUnfertilized",
+          "found": true,
+          "defName": "RM_EggFungalWeevilUnfertilized",
+          "defType": "ThingDef",
+          "label": "grellik egg (unfert.)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_EggFungalWeevilUnfertilized"
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_da0507b6f14d4d10a0aa239eddb90c7e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_EuphoricCrown",
+          "found": true,
+          "defName": "RM_EuphoricCrown",
+          "defType": "ThingDef",
+          "label": "lussa crown",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_EuphoricCrown"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FalseFruit",
+          "found": true,
+          "defName": "RM_FalseFruit",
+          "defType": "ThingDef",
+          "label": "pekk fruit",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FalseFruit"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FlakespireFungus",
+          "found": true,
+          "defName": "RM_FlakespireFungus",
+          "defType": "ThingDef",
+          "label": "tarrusk spire",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FlakespireFungus"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FragileChitin",
+          "found": true,
+          "defName": "RM_FragileChitin",
+          "defType": "ThingDef",
+          "label": "fragile chitin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FragileChitin"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FruitingBodies",
+          "found": true,
+          "defName": "RM_FruitingBodies",
+          "defType": "ThingDef",
+          "label": "pimmik mold",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FruitingBodies"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FungalGlowGooTorch",
+          "found": true,
+          "defName": "RM_FungalGlowGooTorch",
+          "defType": "ThingDef",
+          "label": "fungal glow goo torch",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FungalGlowGooTorch"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FungalMantisClaw",
+          "found": true,
+          "defName": "RM_FungalMantisClaw",
+          "defType": "ThingDef",
+          "label": "fungal mimic mantis claw",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FungalMantisClaw"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FungiponicsBasin",
+          "found": true,
+          "defName": "RM_FungiponicsBasin",
+          "defType": "ThingDef",
+          "label": "fungiponics basin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FungiponicsBasin"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_FurnaceCap",
+          "found": true,
+          "defName": "RM_FurnaceCap",
+          "defType": "ThingDef",
+          "label": "thurrom hearth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_FurnaceCap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Glimmerslime",
+          "found": true,
+          "defName": "RM_Glimmerslime",
+          "defType": "ThingDef",
+          "label": "glimmerslime",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Glimmerslime"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GlowGoo",
+          "found": true,
+          "defName": "RM_GlowGoo",
+          "defType": "ThingDef",
+          "label": "glow goo",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GlowGoo"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GlowGooTorch",
+          "found": true,
+          "defName": "RM_GlowGooTorch",
+          "defType": "ThingDef",
+          "label": "glow goo torch",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GlowGooTorch"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GreenArpeau",
+          "found": true,
+          "defName": "RM_GreenArpeau",
+          "defType": "ThingDef",
+          "label": "churrun mast",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GreenArpeau"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Grellik",
+          "found": true,
+          "defName": "RM_Grellik",
+          "defType": "ThingDef",
+          "label": "grellik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Grellik"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GreyLady",
+          "found": true,
+          "defName": "RM_GreyLady",
+          "defType": "ThingDef",
+          "label": "sylla lace",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GreyLady"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GrownFurnace",
+          "found": true,
+          "defName": "RM_GrownFurnace",
+          "defType": "ThingDef",
+          "label": "grown furnace",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GrownFurnace"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GutMotherSac",
+          "found": true,
+          "defName": "RM_GutMotherSac",
+          "defType": "ThingDef",
+          "label": "gut-mother sac",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutMotherSac"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GutMotherStarter",
+          "found": true,
+          "defName": "RM_GutMotherStarter",
+          "defType": "ThingDef",
+          "label": "gut-mother starter",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutMotherStarter"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_GutMotherVat",
+          "found": true,
+          "defName": "RM_GutMotherVat",
+          "defType": "ThingDef",
+          "label": "gut-mother vat",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutMotherVat"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Hwelgrue",
+          "found": true,
+          "defName": "RM_Hwelgrue",
+          "defType": "ThingDef",
+          "label": "hwelgrue",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Hwelgrue"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Illoth",
+          "found": true,
+          "defName": "RM_Illoth",
+          "defType": "ThingDef",
+          "label": "illoth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Illoth"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_IllothEggFertilized",
+          "found": true,
+          "defName": "RM_IllothEggFertilized",
+          "defType": "ThingDef",
+          "label": "illoth egg (fert.)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_IllothEggFertilized"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_IllothEggUnfertilized",
+          "found": true,
+          "defName": "RM_IllothEggUnfertilized",
+          "defType": "ThingDef",
+          "label": "illoth egg (unfert.)",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_IllothEggUnfertilized"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_IllothLarvae",
+          "found": true,
+          "defName": "RM_IllothLarvae",
+          "defType": "ThingDef",
+          "label": "illoth larva",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_IllothLarvae"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_LiveIngredient_AgelessCap",
+          "found": true,
+          "defName": "RM_LiveIngredient_AgelessCap",
+          "defType": "ThingDef",
+          "label": "orlath cap flesh",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LiveIngredient_AgelessCap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_LiveIngredient_EuphoricCrown",
+          "found": true,
+          "defName": "RM_LiveIngredient_EuphoricCrown",
+          "defType": "ThingDef",
+          "label": "lussa crown cap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LiveIngredient_EuphoricCrown"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_LiveIngredient_RegenerantVeil",
+          "found": true,
+          "defName": "RM_LiveIngredient_RegenerantVeil",
+          "defType": "ThingDef",
+          "label": "mirrash veil tissue",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LiveIngredient_RegenerantVeil"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_LivePrep_ToxicInjection",
+          "found": true,
+          "defName": "RM_LivePrep_ToxicInjection",
+          "defType": "ThingDef",
+          "label": "toxic injection",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LivePrep_ToxicInjection"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_LivingFurnaceCap",
+          "found": true,
+          "defName": "RM_LivingFurnaceCap",
+          "defType": "ThingDef",
+          "label": "living thurrom hearth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_LivingFurnaceCap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MedicineFungal",
+          "found": true,
+          "defName": "RM_MedicineFungal",
+          "defType": "ThingDef",
+          "label": "fungal medicine",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MedicineFungal"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MoonlessSilk",
+          "found": true,
+          "defName": "RM_MoonlessSilk",
+          "defType": "ThingDef",
+          "label": "moonless leather",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MoonlessSilk"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MoonlessStripesPlant",
+          "found": true,
+          "defName": "RM_MoonlessStripesPlant",
+          "defType": "ThingDef",
+          "label": "moonless stripes",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MoonlessStripesPlant"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MortalMorelPlant",
+          "found": true,
+          "defName": "RM_MortalMorelPlant",
+          "defType": "ThingDef",
+          "label": "vennik salve",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MortalMorelPlant"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MortalMorelPlantGrowable",
+          "found": true,
+          "defName": "RM_MortalMorelPlantGrowable",
+          "defType": "ThingDef",
+          "label": "vennik salve",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MortalMorelPlantGrowable"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MushroomLeather",
+          "found": true,
+          "defName": "RM_MushroomLeather",
+          "defType": "ThingDef",
+          "label": "mushroom leather",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MushroomLeather"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_MushroomLog",
+          "found": true,
+          "defName": "RM_MushroomLog",
+          "defType": "ThingDef",
+          "label": "mushroom log",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_MushroomLog"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Nogtyl",
+          "found": true,
+          "defName": "RM_Nogtyl",
+          "defType": "ThingDef",
+          "label": "brommok timber",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Nogtyl"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_NogtylMarsh",
+          "found": true,
+          "defName": "RM_NogtylMarsh",
+          "defType": "ThingDef",
+          "label": "brommok timber",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_NogtylMarsh"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Nuitae",
+          "found": true,
+          "defName": "RM_Nuitae",
+          "defType": "ThingDef",
+          "label": "nissik gill",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Nuitae"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_NuitaeMarsh",
+          "found": true,
+          "defName": "RM_NuitaeMarsh",
+          "defType": "ThingDef",
+          "label": "nissik gill",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_NuitaeMarsh"
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_780fdbca08f843ceb43622674b8d82f7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "40 of 40 def(s) resolved",
+        "requested": 40,
+        "foundCount": 40,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_PaleMoss",
+          "found": true,
+          "defName": "RM_PaleMoss",
+          "defType": "ThingDef",
+          "label": "lumma moss",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_PaleMoss"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_PaleTree",
+          "found": true,
+          "defName": "RM_PaleTree",
+          "defType": "ThingDef",
+          "label": "quellan tree",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_PaleTree"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Proj_BlastSporeSac",
+          "found": true,
+          "defName": "RM_Proj_BlastSporeSac",
+          "defType": "ThingDef",
+          "label": "blast spore sac",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Proj_BlastSporeSac"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Proj_ThrumbungusShroom",
+          "found": true,
+          "defName": "RM_Proj_ThrumbungusShroom",
+          "defType": "ThingDef",
+          "label": "thrumbungus mushroom",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Proj_ThrumbungusShroom"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Pusmelon",
+          "found": true,
+          "defName": "RM_Pusmelon",
+          "defType": "ThingDef",
+          "label": "gubbra gourd",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Pusmelon"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_RawDulcis",
+          "found": true,
+          "defName": "RM_RawDulcis",
+          "defType": "ThingDef",
+          "label": "dulcis",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RawDulcis"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_RegenerantVeil",
+          "found": true,
+          "defName": "RM_RegenerantVeil",
+          "defType": "ThingDef",
+          "label": "mirrash veil",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RegenerantVeil"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_RotMediumChitin",
+          "found": true,
+          "defName": "RM_RotMediumChitin",
+          "defType": "ThingDef",
+          "label": "tough chitin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotMediumChitin"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_RotWeakChitin",
+          "found": true,
+          "defName": "RM_RotWeakChitin",
+          "defType": "ThingDef",
+          "label": "brittle chitin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotWeakChitin"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_RotWreckFrame",
+          "found": true,
+          "defName": "RM_RotWreckFrame",
+          "defType": "ThingDef",
+          "label": "digested frame",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotWreckFrame"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_RotWreckHull",
+          "found": true,
+          "defName": "RM_RotWreckHull",
+          "defType": "ThingDef",
+          "label": "digested hull",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RotWreckHull"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_RuinedDriveCore",
+          "found": true,
+          "defName": "RM_RuinedDriveCore",
+          "defType": "ThingDef",
+          "label": "ruined drive core",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RuinedDriveCore"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_RustPuff",
+          "found": true,
+          "defName": "RM_RustPuff",
+          "defType": "ThingDef",
+          "label": "rustpuff",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RustPuff"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Sagecrust",
+          "found": true,
+          "defName": "RM_Sagecrust",
+          "defType": "ThingDef",
+          "label": "tavvik crust",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Sagecrust"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Shambles",
+          "found": true,
+          "defName": "RM_Shambles",
+          "defType": "ThingDef",
+          "label": "the shambles",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Shambles"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_SheenCasting",
+          "found": true,
+          "defName": "RM_SheenCasting",
+          "defType": "ThingDef",
+          "label": "Sheen casting",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SheenCasting"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Shinecap",
+          "found": true,
+          "defName": "RM_Shinecap",
+          "defType": "ThingDef",
+          "label": "dremmik cap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Shinecap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Skerrith",
+          "found": true,
+          "defName": "RM_Skerrith",
+          "defType": "ThingDef",
+          "label": "skerrith",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Skerrith"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Skulltop",
+          "found": true,
+          "defName": "RM_Skulltop",
+          "defType": "ThingDef",
+          "label": "vekkra choker",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Skulltop"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_SwallowedDriveCore",
+          "found": true,
+          "defName": "RM_SwallowedDriveCore",
+          "defType": "ThingDef",
+          "label": "swallowed drive core",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SwallowedDriveCore"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_SymbiontHusk",
+          "found": true,
+          "defName": "RM_SymbiontHusk",
+          "defType": "ThingDef",
+          "label": "symbiont husk",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SymbiontHusk"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Symbiont_Mycoid",
+          "found": true,
+          "defName": "RM_Symbiont_Mycoid",
+          "defType": "ThingDef",
+          "label": "mycoid symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Symbiont_Mycoid"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Symbiont_Nightwake",
+          "found": true,
+          "defName": "RM_Symbiont_Nightwake",
+          "defType": "ThingDef",
+          "label": "nightwake symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Symbiont_Nightwake"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Symbiont_Quickflesh",
+          "found": true,
+          "defName": "RM_Symbiont_Quickflesh",
+          "defType": "ThingDef",
+          "label": "quickflesh symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Symbiont_Quickflesh"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Symbiont_Sheenblood",
+          "found": true,
+          "defName": "RM_Symbiont_Sheenblood",
+          "defType": "ThingDef",
+          "label": "sheenblood symbiont",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Symbiont_Sheenblood"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Tea_AgeReversal",
+          "found": true,
+          "defName": "RM_Tea_AgeReversal",
+          "defType": "ThingDef",
+          "label": "ageless brew",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Tea_AgeReversal"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Tea_Bioregeneration",
+          "found": true,
+          "defName": "RM_Tea_Bioregeneration",
+          "defType": "ThingDef",
+          "label": "regenerant brew",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Tea_Bioregeneration"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Tea_Pleasure",
+          "found": true,
+          "defName": "RM_Tea_Pleasure",
+          "defType": "ThingDef",
+          "label": "lussa crown brew",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Tea_Pleasure"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Thozzik",
+          "found": true,
+          "defName": "RM_Thozzik",
+          "defType": "ThingDef",
+          "label": "thozzik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Thozzik"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ThozzikColony",
+          "found": true,
+          "defName": "RM_ThozzikColony",
+          "defType": "ThingDef",
+          "label": "thozzik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikColony"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ThozzikColonyQueen",
+          "found": true,
+          "defName": "RM_ThozzikColonyQueen",
+          "defType": "ThingDef",
+          "label": "thozzik queen",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikColonyQueen"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ThozzikQueen",
+          "found": true,
+          "defName": "RM_ThozzikQueen",
+          "defType": "ThingDef",
+          "label": "thozzik queen",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikQueen"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ThozzikSpawned",
+          "found": true,
+          "defName": "RM_ThozzikSpawned",
+          "defType": "ThingDef",
+          "label": "thozzik",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikSpawned"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ThozzikStinger",
+          "found": true,
+          "defName": "RM_ThozzikStinger",
+          "defType": "ThingDef",
+          "label": "thozzik stinger",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikStinger"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ThrumbungusShroom",
+          "found": true,
+          "defName": "RM_ThrumbungusShroom",
+          "defType": "ThingDef",
+          "label": "thrumbungus mushroom",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThrumbungusShroom"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_ToxiChitin",
+          "found": true,
+          "defName": "RM_ToxiChitin",
+          "defType": "ThingDef",
+          "label": "toxic chitin",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ToxiChitin"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_UnjoiningDraught",
+          "found": true,
+          "defName": "RM_UnjoiningDraught",
+          "defType": "ThingDef",
+          "label": "unjoining draught",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_UnjoiningDraught"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_VioletWimple",
+          "found": true,
+          "defName": "RM_VioletWimple",
+          "defType": "ThingDef",
+          "label": "pursk hood",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_VioletWimple"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Wrinklecap",
+          "found": true,
+          "defName": "RM_Wrinklecap",
+          "defType": "ThingDef",
+          "label": "rukka cap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Wrinklecap"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_WrinklecapMarsh",
+          "found": true,
+          "defName": "RM_WrinklecapMarsh",
+          "defType": "ThingDef",
+          "label": "rukka cap",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WrinklecapMarsh"
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_d2493fd5b8f94fc5ba6159194f786fa8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "8 of 8 def(s) resolved",
+        "requested": 8,
+        "foundCount": 8,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingSetMakerDef/RM_ThozzikRaidLootMaker",
+          "found": true,
+          "defName": "RM_ThozzikRaidLootMaker",
+          "defType": "ThingSetMakerDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThozzikRaidLootMaker"
+          }
+         },
+         {
+          "requested": "ThinkTreeDef/RM_GutGraze_Splice",
+          "found": true,
+          "defName": "RM_GutGraze_Splice",
+          "defType": "ThinkTreeDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GutGraze_Splice"
+          }
+         },
+         {
+          "requested": "ThoughtDef/RM_EuphoricBrewMemory",
+          "found": true,
+          "defName": "RM_EuphoricBrewMemory",
+          "defType": "ThoughtDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_EuphoricBrewMemory"
+          }
+         },
+         {
+          "requested": "ThoughtDef/RM_SoldRotTreasureMemory",
+          "found": true,
+          "defName": "RM_SoldRotTreasureMemory",
+          "defType": "ThoughtDef",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SoldRotTreasureMemory"
+          }
+         },
+         {
+          "requested": "WeatherDef/RM_SheenFall",
+          "found": true,
+          "defName": "RM_SheenFall",
+          "defType": "WeatherDef",
+          "label": "Sheen-fall",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SheenFall"
+          }
+         },
+         {
+          "requested": "WeatherDef/RM_SheenMist",
+          "found": true,
+          "defName": "RM_SheenMist",
+          "defType": "WeatherDef",
+          "label": "Sheen mist",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SheenMist"
+          }
+         },
+         {
+          "requested": "WeatherDef/RM_SheenStorm",
+          "found": true,
+          "defName": "RM_SheenStorm",
+          "defType": "WeatherDef",
+          "label": "Sheen tempest",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SheenStorm"
+          }
+         },
+         {
+          "requested": "WorkGiverDef/RM_DoBillsGutMother",
+          "found": true,
+          "defName": "RM_DoBillsGutMother",
+          "defType": "WorkGiverDef",
+          "label": "tend the gut-mother",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_DoBillsGutMother"
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_9cdd883af93f4b0f87476b62cb8dec2c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "settings_probe_finds_fields",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "acceleratedRot_round_trips",
+     "toggle": "acceleratedRot",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "acceleratedRotRate_round_trips",
+     "toggle": "acceleratedRotRate",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "crossBiomeBiomeList_round_trips",
+     "toggle": "crossBiomeBiomeList",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: crossBiomeBiomeList: get returned no value",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "crossBiomeCoverage_round_trips",
+     "toggle": "crossBiomeCoverage",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "crossBiomeEnabled_round_trips",
+     "toggle": "crossBiomeEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "crossBiomeEverywhere_round_trips",
+     "toggle": "crossBiomeEverywhere",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "guardianGroves_round_trips",
+     "toggle": "guardianGroves",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "gutMother_round_trips",
+     "toggle": "gutMother",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "gutMotherDigestHours_round_trips",
+     "toggle": "gutMotherDigestHours",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "gutMotherRecoveryChance_round_trips",
+     "toggle": "gutMotherRecoveryChance",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "gutMotherStarterValue_round_trips",
+     "toggle": "gutMotherStarterValue",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "healthSharing_round_trips",
+     "toggle": "healthSharing",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hwelgrue_round_trips",
+     "toggle": "hwelgrue",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hwelgrueCastingDays_round_trips",
+     "toggle": "hwelgrueCastingDays",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hwelgrueMapCap_round_trips",
+     "toggle": "hwelgrueMapCap",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hwelgrueRotMultiplier_round_trips",
+     "toggle": "hwelgrueRotMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hwelgrueSwallow_round_trips",
+     "toggle": "hwelgrueSwallow",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "livePreparations_round_trips",
+     "toggle": "livePreparations",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "livePreparationsStrictViability_round_trips",
+     "toggle": "livePreparationsStrictViability",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "livingProduceHeat_round_trips",
+     "toggle": "livingProduceHeat",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "livingProduceHeatPerUnit_round_trips",
+     "toggle": "livingProduceHeatPerUnit",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "navigatorCore_round_trips",
+     "toggle": "navigatorCore",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "navigatorPingHours_round_trips",
+     "toggle": "navigatorPingHours",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "navigatorPingsPerEntry_round_trips",
+     "toggle": "navigatorPingsPerEntry",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "navigatorRangeBonus_round_trips",
+     "toggle": "navigatorRangeBonus",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "navigatorRuinThreshold_round_trips",
+     "toggle": "navigatorRuinThreshold",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "navigatorShipDamageFactor_round_trips",
+     "toggle": "navigatorShipDamageFactor",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "paleTreeSpawn_round_trips",
+     "toggle": "paleTreeSpawn",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sheenExposure_round_trips",
+     "toggle": "sheenExposure",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sporeAllergy_round_trips",
+     "toggle": "sporeAllergy",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sporeAllergyIncidence_round_trips",
+     "toggle": "sporeAllergyIncidence",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sporeCloudIncidentWeight_round_trips",
+     "toggle": "sporeCloudIncidentWeight",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "swallowBellyCutDamage_round_trips",
+     "toggle": "swallowBellyCutDamage",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "swallowHoursPerBodySize_round_trips",
+     "toggle": "swallowHoursPerBodySize",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "swallowLoudness_round_trips",
+     "toggle": "swallowLoudness",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "swallowStrangerChance_round_trips",
+     "toggle": "swallowStrangerChance",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "theRotEnabled_round_trips",
+     "toggle": "theRotEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "unjoiningDraught_round_trips",
+     "toggle": "unjoiningDraught",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "unjoiningOrganDamage_round_trips",
+     "toggle": "unjoiningOrganDamage",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "unjoiningPurgeHours_round_trips",
+     "toggle": "unjoiningPurgeHours",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warmMat_round_trips",
+     "toggle": "warmMat",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warmMatWarmth_round_trips",
+     "toggle": "warmMatWarmth",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "biome_wiring",
+   "components": [
+    {
+     "name": "animal_and_plant_density_positive",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "animalDensity",
+         "plantDensity",
+         "workerClass"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_TheRot",
+          "found": true,
+          "defName": "RM_TheRot",
+          "defType": "BiomeDef",
+          "label": "the Rot",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "animalDensity": 1.9,
+           "plantDensity": 0.6,
+           "workerClass": "(no such field)"
+          }
+         }
+        ],
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_bcf55f0849d04a48bfcac0382826f69f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "biome_worker_class_loaded",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWorker()",
+        "result": "WORKER RimMandrake.TheRot.RM_BiomeWorker_TheRot | instance RM_BiomeWorker_TheRot",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_e3bc8348e59a4397ae64320b407d5ad6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "map_mechanics",
+   "components": [
+    {
+     "name": "sheen_exposure_ladder",
+     "toggle": "sheenExposure",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "accelerated_rot_on_living_ground",
+     "toggle": "acceleratedRot",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "living_produce_heat",
+     "toggle": "livingProduceHeat",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warm_living_ground",
+     "toggle": "warmMat",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "live_preparations_viability",
+     "toggle": "livePreparations",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "guardian_groves_lure_ring",
+     "toggle": "guardianGroves",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "health_sharing",
+     "toggle": "healthSharing",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pale_tree_wild_spawn",
+     "toggle": "paleTreeSpawn",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "spore_cloud_incident",
+     "toggle": "sporeCloudIncidentWeight",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cross_biome_opt_in",
+     "toggle": "crossBiomeEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "hwelgrue",
+   "components": [
+    {
+     "name": "map_cap_holds",
+     "toggle": "hwelgrueMapCap",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSpawn(Int32)",
+        "result": "HWELGRUE alive 1",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_2d196a6002794353b81d5d348adbb90f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "digest_keeps_metal_only",
+     "toggle": "hwelgrue",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDigest()",
+        "result": "GUT 1 | kept 1 | wood destroyed True | first MeleeWeapon_Knife",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_cf5ce54900cb4820b55d822beafc160d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "casting_polishes_contents",
+     "toggle": "hwelgrueCastingDays",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCasting()",
+        "result": "CAST castings on map 1 | dropped 1 | all full hp True | gut now 0",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_aa57bc34de894011aab50ab796b8da5c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "swallow_then_cut_out",
+     "toggle": "hwelgrueSwallow",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSwallow()",
+        "result": "SWALLOW held Paola | spawned False | inspect Something is still alive in there: Paola, about 24 hours.",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_44abeafbcbc3440887d6192e2728bba7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCut(Single)",
+        "result": "CUT released True | spawned True | inside none | via belly | hits 1 | dealt 173",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_e4c39cb0daad4cfabf1cfe3992e8d825",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "knocking_louder_early",
+     "toggle": "swallowLoudness",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofKnock(Single)",
+        "result": "KNOCK RM_GutKnocking | volume 0.85",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_10670260ac57447389e531867d9284c5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofKnock(Single)",
+        "result": "KNOCK RM_GutKnocking_Failing | volume 0.40",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_e395571cc2694c5b9b366ee6c26c32ec",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "one_core_per_world",
+     "toggle": "navigatorCore",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofClaim(Int32)",
+        "result": "CORE carriers 1 of 4 | world carrier RM_Hwelgrue96453 spent False pings 0",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_151e05a586c94ff9b38a4362299ccbfc",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ruined_below_threshold",
+     "toggle": "navigatorRuinThreshold",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDrop(Single)",
+        "result": "DROP RM_SwallowedDriveCore",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_787bc59496094159bd457ef933a64a4a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDrop(Single)",
+        "result": "DROP RM_RuinedDriveCore",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_d640c42c570540af8084ddb372a11dd3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "core_multiplies_total_range",
+     "toggle": "navigatorRangeBonus",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a gravship (engine + thrusters) with an installed, linked core; read RM_SwallowedCoreProof.ProofRange before and after installing it",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ship_guns_wreck_the_core",
+     "toggle": "navigatorShipDamageFactor",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a gravship (engine + thrusters) with an installed, linked core; read RM_SwallowedCoreProof.ProofRange before and after installing it",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rest_accelerates_rot",
+     "toggle": "hwelgrueRotMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a gravship (engine + thrusters) with an installed, linked core; read RM_SwallowedCoreProof.ProofRange before and after installing it",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "gut_mother",
+   "components": [
+    {
+     "name": "research_needs_studied_sac",
+     "toggle": "gutMother",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofResearch()",
+        "result": "RESEARCH before studied False | canStart False || after studied True | canStart False",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_dfb02e1ed73d4a29aa6e62898e3b01bd",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "digest_returns_implants_and_gear",
+     "toggle": "gutMotherRecoveryChance",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: the vat did not return arm, rifle and parka and consume the body: VAT out 5 | BionicArm True | rifle False | parka True | corpse gone True",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDigest()",
+        "result": "VAT out 5 | BionicArm True | rifle False | parka True | corpse gone True",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_c95081292d254ba49bbd732548ef4a26",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hungry_vat_is_dormant",
+     "toggle": "gutMotherDigestHours",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "starter_keeps_and_trades",
+     "toggle": "gutMotherStarterValue",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "navigator_log",
+   "components": [
+    {
+     "name": "entry_every_n_pings",
+     "toggle": "navigatorPingsPerEntry",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPings(Int32)",
+        "result": "LOG pings 0 | entries 0 | sites 0 | quests 0",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_5a8a024f91ad4988be16f0e0563209d9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPings(Int32)",
+        "result": "LOG pings 4 | entries 1 | sites 0 | quests 0",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_532918348e9d4b0aa04c8a3fe37acfad",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPings(Int32)",
+        "result": "LOG pings 8 | entries 2 | sites 1 | quests 1",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_3089810beebb4b4b82842d1e4b4dc02d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 128
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "carrier_death_cuts_log",
+     "toggle": "navigatorCore",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofKillThenPing(Int32)",
+        "result": "KILLED entries 2 -> 2 | cut True",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_4ae1d77528e841b5bf8fabc17cdc933e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 37
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "landing_pings_at_once",
+     "toggle": "navigatorCore",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a living carrier on a map and a gravship landing there; RM_SwallowedCoreProof.ProofClaim pings 0 -> 1, and 0 with no carrier",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "unjoining",
+   "components": [
+    {
+     "name": "purges_parasites_and_symbionts",
+     "toggle": "unjoiningDraught",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDraught(System.String)",
+        "result": "UNJOIN left 0 | purge True | husks 1 | scars 1 | horror emerging False",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_6d32340792f848b189b4900a3303258c",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clean_patient_only_purges",
+     "toggle": "unjoiningOrganDamage",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDraught(System.String)",
+        "result": "UNJOIN left 0 | purge True | husks 0 | scars 1 | horror emerging False",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_7b050b4fdfb34f9c906c3042906afe5d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "forces_metalhorror_out",
+     "toggle": "unjoiningPurgeHours",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDraught(System.String)",
+        "result": "UNJOIN left 0 | purge True | husks 0 | scars 1 | horror emerging True",
+        "ticksGame": 775546,
+        "operation": {
+         "OperationId": "op_9f8a75294c194246bb0a2f00d877b8af",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775546
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x00000147029631D0>",
+  "<suite.Component object at 0x00000147029666D0>"
+ ],
+ "refused": "",
+ "walk": null
+}

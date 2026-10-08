@@ -1,0 +1,2 @@
+not recorded: refused at preflight (game_loaded FAIL) -- a site verdict, not the mod's
+IshkoDarkLandmarks: REFUSED  PASS=0 FAIL=0 UNMEASURED=0  calls=5 mean=45.826ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\IshkoDarkLandmarks_20261007T205638Z.json

@@ -1,0 +1,372 @@
+{
+ "mod": "PyrelandsMechanics",
+ "stamp": "20261007T202903Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "mod_settings",
+    "components": [
+     {
+      "name": "setting_arsonJusticeEnabled_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'arsonJusticeEnabled': 'false'})",
+        "result": true
+       },
+       {
+        "call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'arsonJusticeEnabled': 'true'})",
+        "result": true
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "setting_fireRiteEnabled_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'fireRiteEnabled': 'false'})",
+        "result": true
+       },
+       {
+        "call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'fireRiteEnabled': 'true'})",
+        "result": true
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "setting_flameHarvestEnabled_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'flameHarvestEnabled': 'false'})",
+        "result": true
+       },
+       {
+        "call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'flameHarvestEnabled': 'true'})",
+        "result": true
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "incidents_answer",
+    "components": [
+     {
+      "name": "dry_run_RUT_FlameHarvest",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/fire_incident",
+        "result": {
+         "success": false,
+         "message": "RUT_FlameHarvest canFireNow=False (dry run, nothing fired).",
+         "incident": "RUT_FlameHarvest",
+         "category": "Misc",
+         "canFireNow": false,
+         "fired": false,
+         "windowsOpened": [],
+         "blockedByDialog": false,
+         "points": 35.0,
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_13637a9bcb484bdf83b6a1892537097b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "dry_run_RUT_FireRaid",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/fire_incident",
+        "result": {
+         "success": false,
+         "message": "RUT_FireRaid canFireNow=False (dry run, nothing fired).",
+         "incident": "RUT_FireRaid",
+         "category": "ThreatBig",
+         "canFireNow": false,
+         "fired": false,
+         "windowsOpened": [],
+         "blockedByDialog": false,
+         "points": 35.0,
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_ea5ca7e0102747c1b31bf63973c2bf50",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "every_shipped_def_reads_back",
+    "components": [
+     {
+      "name": "every_shipped_def_is_loaded",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "3 of 3 def(s) resolved",
+         "requested": 3,
+         "foundCount": 3,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "DutyDef/RUT_RiteHarvest",
+           "found": true,
+           "defName": "RUT_RiteHarvest",
+           "defType": "DutyDef",
+           "modName": "RimMandrake: Utinni \u2014 Pyrelands Mechanics",
+           "packageId": "mandrake.rut.pyrelandsmechanics",
+           "fields": {
+            "defName": "RUT_RiteHarvest"
+           }
+          },
+          {
+           "requested": "IncidentDef/RUT_FlameHarvest",
+           "found": true,
+           "defName": "RUT_FlameHarvest",
+           "defType": "IncidentDef",
+           "label": "flame harvest",
+           "modName": "RimMandrake: Utinni \u2014 Pyrelands Mechanics",
+           "packageId": "mandrake.rut.pyrelandsmechanics",
+           "fields": {
+            "defName": "RUT_FlameHarvest"
+           }
+          },
+          {
+           "requested": "IncidentDef/RUT_FireRaid",
+           "found": true,
+           "defName": "RUT_FireRaid",
+           "defType": "IncidentDef",
+           "label": "fire raid",
+           "modName": "RimMandrake: Utinni \u2014 Pyrelands Mechanics",
+           "packageId": "mandrake.rut.pyrelandsmechanics",
+           "fields": {
+            "defName": "RUT_FireRaid"
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_32499562a31e40dd8f3380b9eb2ad1ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shipped_scalar_fields_match_xml",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label"
+         ],
+         "defs": [
+          {
+           "requested": "DutyDef/RUT_RiteHarvest",
+           "found": true,
+           "defName": "RUT_RiteHarvest",
+           "defType": "DutyDef",
+           "modName": "RimMandrake: Utinni \u2014 Pyrelands Mechanics",
+           "packageId": "mandrake.rut.pyrelandsmechanics",
+           "fields": {}
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_478f5b558dff480599306abd28c056ad",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label"
+         ],
+         "defs": [
+          {
+           "requested": "IncidentDef/RUT_FlameHarvest",
+           "found": true,
+           "defName": "RUT_FlameHarvest",
+           "defType": "IncidentDef",
+           "label": "flame harvest",
+           "modName": "RimMandrake: Utinni \u2014 Pyrelands Mechanics",
+           "packageId": "mandrake.rut.pyrelandsmechanics",
+           "fields": {
+            "label": "flame harvest"
+           }
+          },
+          {
+           "requested": "IncidentDef/RUT_FireRaid",
+           "found": true,
+           "defName": "RUT_FireRaid",
+           "defType": "IncidentDef",
+           "label": "fire raid",
+           "modName": "RimMandrake: Utinni \u2014 Pyrelands Mechanics",
+           "packageId": "mandrake.rut.pyrelandsmechanics",
+           "fields": {
+            "label": "fire raid"
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_37993590bbf24f7ca9c6544febee4044",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": null,
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true
+ }
+}

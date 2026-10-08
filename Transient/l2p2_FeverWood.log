@@ -1,0 +1,96 @@
+[fw-note] Player.log scan: {"lines": 685, "hits": [], "game-wide config/xref lines (instrument probe)": 31}
+[fw] 09:51:01 player_log_names_no_feverwood_error PASS 
+[fw] 09:51:19 hidden_raider_factions_have_a_name_source PASS 
+[fw-note] folded standalone packageIds checked: 30
+[fw] 09:51:19 no_mayrequire_names_a_folded_standalone_mod PASS 
+[fw] 09:51:19 no_top_level_operation_carries_mayrequire PASS 
+[fw] 09:51:19 campaign_patches_and_free_def_tier_leaks_closed PASS 
+[fw] 09:51:19 free_text_names_no_canon_and_dianoga_patches_guarded PASS 
+[fw-note] dianoga tier: {"swTier": false, "wrong": []}
+[fw] 09:51:19 limbs_named_for_the_loaded_tier PASS 
+[fw] 09:51:20 resolve_probe_sees_absence PASS 
+[fw] 09:51:20 defs_resolve_biome_BiomeDef PASS 
+[fw] 09:51:20 defs_resolve_designation_DesignationDef PASS 
+[fw] 09:51:20 defs_resolve_faction_FactionDef PASS 
+[fw] 09:51:20 defs_resolve_hediff_HediffDef PASS 
+[fw] 09:51:20 defs_resolve_incident_IncidentDef PASS 
+[fw] 09:51:20 defs_resolve_job_JobDef PASS 
+[fw] 09:51:20 defs_resolve_mapgeneration_GenStepDef PASS 
+[fw] 09:51:20 defs_resolve_terrain_TerrainDef PASS 
+[fw] 09:51:20 defs_resolve_buildings_ThingDef PASS 
+[fw] 09:51:20 defs_resolve_items_RecipeDef PASS 
+[fw] 09:51:20 defs_resolve_items_ThingDef PASS 
+[fw] 09:51:20 defs_resolve_plants_ThingDef PASS 
+[fw] 09:51:20 defs_resolve_races_PawnKindDef PASS 
+[fw] 09:51:20 defs_resolve_races_ThingDef PASS 
+[fw] 09:51:20 defs_resolve_workgiver_WorkGiverDef PASS 
+[fw] 09:51:20 defs_named_in_code_exist PASS 
+[fw] 09:51:20 biome_probe_ready PASS 
+[fw] 09:51:20 biome_flags_and_densities PASS 
+[fw-note] wild animals rows not asserted (their donor mod is not on this tier): ["VFEI2_Megathrips (needs oskarpotocki.vfe.insectoid2)"]
+[fw] 09:51:20 wild_animals_wired PASS 
+[fw-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[fw] 09:51:20 wild_plants_wired PASS 
+[fw] 09:51:20 probe_states_are_honest PASS 
+[fw] 09:51:20 hazard_and_hive_extensions_present UNMEASURED UNMEASURED: get_defs lists the biome's modExtensions by field values with no class names (214 entries): class presence is not answerable this way
+[fw] 09:51:21 crown_sound_and_heat_kind PASS 
+[fw] 09:51:21 gensteps_registered_on_their_map_generator PASS 
+[fw] 09:51:21 orders_designators_listed PASS 
+[fw] 09:51:21 suppressant_recipe_on_the_machining_table UNMEASURED UNMEASURED: the vanilla component recipe is not readable from TableMachining.recipes (control), so the list is not trustworthy: ['ButcherCorpseMechanoid']
+[fw] 09:51:21 failed_tame_hook_is_patched_in PASS 
+[fw] 09:51:23 all_fields_at_shipped_defaults_and_assembly_loaded FAIL ExpectationFailed: settings not at their shipped defaults (or a field is not reachable by name): {'tentacleUraniumSuppressionEnabled': 'False'}
+[fw] 09:51:23 toggle_roundtrip_antHiveDungeonEnabled PASS 
+[fw] 09:51:23 toggle_roundtrip_antHiveFarmChamberEnabled PASS 
+[fw] 09:51:24 toggle_roundtrip_antHiveParasiteChamberEnabled PASS 
+[fw] 09:51:24 toggle_roundtrip_antHiveSealingEnabled PASS 
+[fw] 09:51:24 toggle_roundtrip_antTheftEnabled PASS 
+[fw] 09:51:24 toggle_roundtrip_brathekBoresWood PASS 
+[fw] 09:51:25 toggle_roundtrip_broodRansomEnabled PASS 
+[fw] 09:51:25 toggle_roundtrip_kurrethColumnEnabled PASS 
+[fw] 09:51:25 toggle_roundtrip_naturalPlacementEnabled PASS 
+[fw] 09:51:25 toggle_roundtrip_oilBoilEnabled PASS 
+[fw] 09:51:26 toggle_roundtrip_oilBoilWakesDeep PASS 
+[fw] 09:51:26 toggle_roundtrip_sapSuckerMishandleRefusalEnabled PASS 
+[fw] 09:51:26 toggle_roundtrip_sekkulaathTankEnabled PASS 
+[fw] 09:51:26 toggle_roundtrip_sillochAmbushEnabled PASS 
+[fw] 09:51:27 toggle_roundtrip_tentacleBestiaryEnabled PASS 
+[fw] 09:51:27 toggle_roundtrip_tentacleGreatEmergenceEnabled PASS 
+[fw] 09:51:27 toggle_roundtrip_tentacleUraniumSuppressionEnabled PASS 
+[fw] 09:51:27 toggle_roundtrip_twoFrontLureEnabled PASS 
+[fw] 09:51:28 toggle_roundtrip_twoFrontLureLockOnceTriggered PASS 
+[fw] 09:51:28 bough_soil_fertile_for_every_crown_plant PASS 
+[fw] 09:51:28 rottable_items_tick PASS 
+[fw] 09:51:28 site_ready_ladder PASS 
+[fw] 09:51:29 severe_damage_severs_the_limb_and_drops_flesh PASS 
+[fw] 09:51:31 a_killing_blow_still_drops_flesh PASS 
+[fw] 09:51:36 mild_damage_retreats_without_dropping_anything PASS 
+[fw] 09:51:36 site_ready_porter PASS 
+[fw-note] porter loot: [["RM_OssagrelSap", 2]]
+[fw] 09:51:57 unmolested_porter_deposits_loot_then_withdraws PASS 
+[fw] 09:52:34 a_hit_porter_vanishes_and_brings_nothing PASS 
+[fw] 09:52:34 site_ready_lash PASS 
+[fw] 09:52:46 lash_spares_a_pawn_outside_its_range PASS 
+[fw] 09:52:59 lash_cuts_a_pawn_inside_its_range PASS 
+[fw] 09:53:00 site_ready_tank PASS 
+[fw] 09:53:00 tank_reads_occupant_fed PASS 
+[fw] 09:53:01 a_hit_below_the_threshold_keeps_the_tank_shut PASS 
+[fw] 09:53:03 a_heavy_hit_breaches_the_tank_and_the_juvenile_escapes_remembering PASS 
+[fw] 09:53:05 with_the_tank_toggle_off_the_same_hit_breaks_nothing FAIL ExpectationFailed: with sekkulaathTankEnabled=false an occupant still escaped
+[fw] 09:53:05 site_ready_brood PASS 
+[fw] 09:53:05 a_young_cask_reads_the_deeps_restlessness PASS 
+[fw] 09:53:05 with_the_brood_toggle_off_the_cask_says_nothing PASS 
+[fw] 09:53:06 site_ready_foul_pool PASS 
+[fw] 09:53:40 job_consumes_the_configured_amount_and_announces_suppression FAIL ExpectationFailed: the charge was spent but no 'clouds and stills' message appeared (the suppression was not applied)
+[fw] 09:55:01 with_the_toggle_off_the_charge_is_spent_and_nothing_is_announced FAIL ExpectationFailed: with the toggle off the job consumed 0, expected the same 5
+[fw] 09:55:02 site_ready_RM_Vaulm PASS 
+[fw] 09:55:02 RM_Vaulm_refuses_with_its_hediff_when_hurt PASS 
+[fw] 09:55:46 RM_Vaulm_refusal_is_cooldown_gated_not_a_roll UNMEASURED UNMEASURED: RM_Vaulm left the pad during the cooldown wait
+[fw] 09:55:46 site_ready_RM_Drommath PASS 
+[fw] 09:55:46 RM_Drommath_refuses_with_its_hediff_when_hurt PASS 
+[fw] 09:56:30 RM_Drommath_refusal_is_cooldown_gated_not_a_roll UNMEASURED UNMEASURED: RM_Drommath left the pad during the cooldown wait
+[fw] 09:56:31 site_ready_stake PASS 
+[fw] 09:56:31 an_empty_stake_reads_no_bait PASS 
+[fw] 09:57:06 haul_to_stake_chains_the_downed_bait PASS 
+[fw] 09:57:06 a_baited_stake_reads_baited PASS 
+[fw] 09:57:06 destroying_the_stake_frees_the_bait PASS 
+[fw] 09:57:08 site_ready_flora PASS 
