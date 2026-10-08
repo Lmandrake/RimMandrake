@@ -27,22 +27,20 @@ namespace RimMandrake.OasisMaker
     {
         public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc, Rot4 rot, Map map, Thing thingToIgnore = null, Thing thing = null)
         {
-            if (!RM_OasisMakerSettings.masterEnabled)
-            {
-                return true; // disabled mechanic never blocks a placement
-            }
             RM_OasisPlacementScorer.Score score = RM_OasisPlacementScorer.ScoreAt(map, CenterCellFor(checkingDef, loc, rot));
-            if (score.MeetsFloor())
+            // a disabled mechanic never blocks a placement
+            switch (RM_OasisKernel.Verdict(RM_OasisMakerSettings.masterEnabled, score.shade, score.rock,
+                        RM_OasisMakerSettings.shadeScoreFloor, RM_OasisMakerSettings.rockScoreFloor))
             {
-                return true;
+                case RM_OasisPlacement.Allowed:
+                    return true;
+                case RM_OasisPlacement.NeedsBoth:
+                    return "RM_OasisMaker_NeedsBoth".Translate();
+                case RM_OasisPlacement.NeedsShade:
+                    return "RM_OasisMaker_NeedsShade".Translate();
+                default:
+                    return "RM_OasisMaker_NeedsRock".Translate();
             }
-            bool needsShade = score.shade < RM_OasisMakerSettings.shadeScoreFloor;
-            bool needsRock = score.rock < RM_OasisMakerSettings.rockScoreFloor;
-            if (needsShade && needsRock)
-            {
-                return "RM_OasisMaker_NeedsBoth".Translate();
-            }
-            return needsShade ? "RM_OasisMaker_NeedsShade".Translate() : "RM_OasisMaker_NeedsRock".Translate();
         }
 
         public override void DrawGhost(ThingDef def, IntVec3 loc, Rot4 rot, Color ghostCol, Thing thing = null)
@@ -72,8 +70,7 @@ namespace RimMandrake.OasisMaker
             if (meetsFloor)
             {
                 float quality = score.Quality01();
-                radius = Mathf.RoundToInt(Mathf.Lerp(
-                    RM_OasisMakerSettings.minRadiusCap, RM_OasisMakerSettings.maxRadiusCap, quality));
+                radius = RM_OasisKernel.RadiusCap(RM_OasisMakerSettings.minRadiusCap, RM_OasisMakerSettings.maxRadiusCap, quality);
                 fieldColor = Designator_Place.CanPlaceColor.ToOpaque();
             }
             else

@@ -33,10 +33,31 @@ namespace RimMandrake.OasisMaker
     /// </summary>
     public static class RM_OasisPlacementScorer
     {
-        private const int ShadeSearchRadius = 2;
         private const float ShadeCastingFillPercentThreshold = 0.8f;
         private const float ShadeCastingPlantVisualSize = 1.5f;
-        private const float ShadeThreshold = 0.5f;
+        private const float ShadeThreshold = RM_OasisKernel.ShadeThreshold;
+
+        /// <summary>The map as the kernel's scoring reads it. One shared instance (main thread only): ContributingCells asks per cell.</summary>
+        private sealed class MapGrid : IOasisGrid
+        {
+            public Map map;
+
+            public bool InBounds(int x, int z) => new IntVec3(x, 0, z).InBounds(map);
+
+            public bool Roofed(int x, int z) => map.roofGrid.Roofed(new IntVec3(x, 0, z));
+
+            public bool CastsShade(int x, int z) => RM_OasisPlacementScorer.CastsShade(new IntVec3(x, 0, z), map);
+
+            public bool IsRock(int x, int z) => IsRockCell(map, new IntVec3(x, 0, z));
+        }
+
+        private static readonly MapGrid SharedGrid = new MapGrid();
+
+        private static MapGrid GridFor(Map map)
+        {
+            SharedGrid.map = map;
+            return SharedGrid;
+        }
 
         public readonly struct Score
         {
@@ -51,8 +72,7 @@ namespace RimMandrake.OasisMaker
 
             public bool MeetsFloor()
             {
-                return shade >= RM_OasisMakerSettings.shadeScoreFloor
-                    && rock >= RM_OasisMakerSettings.rockScoreFloor;
+                return RM_OasisKernel.MeetsFloor(shade, rock, RM_OasisMakerSettings.shadeScoreFloor, RM_OasisMakerSettings.rockScoreFloor);
             }
 
             /// 0..1, clamped, from how far shade/rock sit above their floors
@@ -60,11 +80,8 @@ namespace RimMandrake.OasisMaker
             /// spot cannot buy full quality on one axis alone.
             public float Quality01()
             {
-                float shadeQ = Mathf.InverseLerp(RM_OasisMakerSettings.shadeScoreFloor,
-                    RM_OasisMakerSettings.shadeScoreExcellent, shade);
-                float rockQ = Mathf.InverseLerp(RM_OasisMakerSettings.rockScoreFloor,
-                    RM_OasisMakerSettings.rockScoreExcellent, rock);
-                return Mathf.Clamp01((shadeQ + rockQ) / 2f);
+                return RM_OasisKernel.Quality01(shade, rock, RM_OasisMakerSettings.shadeScoreFloor, RM_OasisMakerSettings.shadeScoreExcellent,
+                    RM_OasisMakerSettings.rockScoreFloor, RM_OasisMakerSettings.rockScoreExcellent);
             }
         }
 
@@ -79,28 +96,7 @@ namespace RimMandrake.OasisMaker
         // a cached per-map grid exactly like RM_MapComponent_ShadeGrid.
         public static Score ScoreAt(Map map, IntVec3 center)
         {
-            int radius = RM_OasisMakerSettings.scoringRadius;
-            int shade = 0;
-            int rock = 0;
-            for (int dz = -radius; dz <= radius; dz++)
-            {
-                for (int dx = -radius; dx <= radius; dx++)
-                {
-                    IntVec3 cell = new IntVec3(center.x + dx, center.y, center.z + dz);
-                    if (!cell.InBounds(map))
-                    {
-                        continue;
-                    }
-                    if (ShadeAt(map, cell) >= ShadeThreshold)
-                    {
-                        shade++;
-                    }
-                    if (IsRockCell(map, cell))
-                    {
-                        rock++;
-                    }
-                }
-            }
+            RM_OasisKernel.ScoreAt(GridFor(map), center.x, center.z, RM_OasisMakerSettings.scoringRadius, out int shade, out int rock);
             return new Score(shade, rock);
         }
 
@@ -120,37 +116,7 @@ namespace RimMandrake.OasisMaker
 
         public static float ShadeAt(Map map, IntVec3 cell)
         {
-            if (!cell.InBounds(map))
-            {
-                return 0f;
-            }
-            if (map.roofGrid.Roofed(cell))
-            {
-                return 1f;
-            }
-            float best = 0f;
-            for (int dz = -ShadeSearchRadius; dz <= ShadeSearchRadius; dz++)
-            {
-                for (int dx = -ShadeSearchRadius; dx <= ShadeSearchRadius; dx++)
-                {
-                    if (dx == 0 && dz == 0)
-                    {
-                        continue;
-                    }
-                    IntVec3 neighbor = new IntVec3(cell.x + dx, cell.y, cell.z + dz);
-                    if (!neighbor.InBounds(map) || !CastsShade(neighbor, map))
-                    {
-                        continue;
-                    }
-                    float dist = Mathf.Sqrt(dx * dx + dz * dz);
-                    float score = Mathf.Clamp01(1f - dist / (ShadeSearchRadius + 1));
-                    if (score > best)
-                    {
-                        best = score;
-                    }
-                }
-            }
-            return best;
+            return RM_OasisKernel.ShadeAt(GridFor(map), cell.x, cell.z);
         }
 
         private static bool CastsShade(IntVec3 cell, Map map)

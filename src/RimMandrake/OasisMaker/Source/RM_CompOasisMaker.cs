@@ -13,13 +13,6 @@ namespace RimMandrake.OasisMaker
         }
     }
 
-    public enum RM_OasisMakerState : byte
-    {
-        Dormant,
-        Attuning,
-        Working,
-    }
-
     /// <summary>
     /// OASIS_MAKER_BUILD_1 §2. The whole machine: no power, no fuel, no
     /// MapComponent — everything is scribed on this comp and dies with the
@@ -49,8 +42,7 @@ namespace RimMandrake.OasisMaker
         // Margin ladder terminates at SoilRich; pool ladder pushes on to a
         // real WaterShallow pool. Both confirmed real Core TerrainDefs
         // (defs.sqlite, 2026-09-24). SoftSand is folded onto Sand's rung.
-        private static readonly string[] MarginLadder = { "Sand", "Gravel", "Soil", "SoilRich" };
-        private static readonly string[] PoolLadder = { "Sand", "Gravel", "Soil", "Mud", "Marsh", "WaterShallow" };
+        // (the ladders themselves live in RM_OasisKernel so the offline fuzz walks the SAME rungs)
 
         public RM_OasisMakerState state = RM_OasisMakerState.Dormant;
         private int ticksInState;
@@ -65,79 +57,20 @@ namespace RimMandrake.OasisMaker
         private int lockedRadiusCap;
         private float lockedSpeedMultiplier;
 
-        private const int RareTickInterval = 250;
+        private const int RareTickInterval = RM_OasisKernel.RareTickInterval;
 
         public override void CompTickRare()
         {
             base.CompTickRare();
-            if (!RM_OasisMakerSettings.masterEnabled || !parent.Spawned)
+            // The state machine, the one-time quality lock and "nothing converts while invalid" are RM_OasisKernel.Step (offline-fuzzed).
+            // Spec §2: losing shade/rock drops Attuning/Working back to Dormant; currentRing, ringRungsClimbed and rungProgressTicks are
+            // scribed, so regaining validity resumes exactly where it stopped ("it never un-makes anything"). A re-attune must NOT re-roll
+            // lockedRadiusCap/lockedSpeedMultiplier (qualityLocked guards that: only the first Attuning->Working locks).
+            RM_OasisKernel.Step(ref state, ref ticksInState, RM_OasisMakerSettings.masterEnabled, parent.Spawned, ValidNow,
+                RM_OasisMakerSettings.attuningDays, GenDate.TicksPerDay, ref qualityLocked, LockQuality, currentRing, lockedRadiusCap, out bool grow);
+            if (grow)
             {
-                return;
-            }
-
-            switch (state)
-            {
-                case RM_OasisMakerState.Dormant:
-                    if (ValidNow())
-                    {
-                        state = RM_OasisMakerState.Attuning;
-                        ticksInState = 0;
-                    }
-                    break;
-
-                case RM_OasisMakerState.Attuning:
-                    if (!ValidNow())
-                    {
-                        // §2: losing shade/rock drops it back to Dormant;
-                        // nothing converted yet at this stage, so there is
-                        // nothing to preserve.
-                        state = RM_OasisMakerState.Dormant;
-                        ticksInState = 0;
-                        break;
-                    }
-                    ticksInState += RareTickInterval;
-                    if (ticksInState >= RM_OasisMakerSettings.attuningDays * GenDate.TicksPerDay)
-                    {
-                        // §2/§3: "a one-time commitment, not continuously
-                        // rescaled by later terrain changes near the
-                        // machine" (see the class doc comment and
-                        // qualityLocked's own field). A machine that drops
-                        // back to Dormant (losing shade/rock) and later
-                        // re-attunes must NOT re-roll lockedRadiusCap/
-                        // lockedSpeedMultiplier from whatever the site scores
-                        // today — currentRing etc. persist across the cycle,
-                        // so a re-lock could shrink the cap below progress
-                        // already made and falsely read as "the oasis is
-                        // made." Only the first Attuning->Working transition
-                        // locks quality; qualityLocked itself was the
-                        // intended guard for this and was previously never
-                        // checked.
-                        if (!qualityLocked)
-                        {
-                            LockQuality();
-                        }
-                        state = RM_OasisMakerState.Working;
-                        ticksInState = 0;
-                    }
-                    break;
-
-                case RM_OasisMakerState.Working:
-                    if (!ValidNow())
-                    {
-                        // §2: "it never un-makes anything" — currentRing,
-                        // ringRungsClimbed and rungProgressTicks are all
-                        // scribed, so regaining validity later (Dormant ->
-                        // Attuning -> Working again) resumes exactly here.
-                        state = RM_OasisMakerState.Dormant;
-                        ticksInState = 0;
-                        break;
-                    }
-                    if (currentRing >= lockedRadiusCap)
-                    {
-                        return; // "The oasis is made."
-                    }
-                    AdvanceGrowth(RareTickInterval);
-                    break;
+                AdvanceGrowth(RareTickInterval);
             }
         }
 
@@ -157,45 +90,16 @@ namespace RimMandrake.OasisMaker
         {
             RM_OasisPlacementScorer.Score score = RM_OasisPlacementScorer.ScoreAt(parent.Map, CenterCell);
             float quality = score.Quality01();
-            lockedRadiusCap = Mathf.RoundToInt(Mathf.Lerp(
-                RM_OasisMakerSettings.minRadiusCap, RM_OasisMakerSettings.maxRadiusCap, quality));
-            lockedSpeedMultiplier = Mathf.Lerp(0.5f, 1.5f, quality);
+            lockedRadiusCap = RM_OasisKernel.RadiusCap(RM_OasisMakerSettings.minRadiusCap, RM_OasisMakerSettings.maxRadiusCap, quality);
+            lockedSpeedMultiplier = RM_OasisKernel.SpeedMultiplier(quality);
             qualityLocked = true;
-        }
-
-        private static string[] LadderForRing(int ringIndex) => ringIndex == 0 ? PoolLadder : MarginLadder;
-
-        private static int RungsForRing(int ringIndex) => LadderForRing(ringIndex).Length - 1;
-
-        private long RingDurationTicks(int ringIndex)
-        {
-            double days = RM_OasisMakerSettings.baseRingDays
-                * System.Math.Pow(RM_OasisMakerSettings.ringGrowthFactor, ringIndex);
-            return (long)(days * GenDate.TicksPerDay);
-        }
-
-        private long PerRungTicks(int ringIndex)
-        {
-            return System.Math.Max(1L, RingDurationTicks(ringIndex) / RungsForRing(ringIndex));
         }
 
         private void AdvanceGrowth(int deltaTicks)
         {
-            rungProgressTicks += (int)(deltaTicks * lockedSpeedMultiplier);
-
-            while (currentRing < lockedRadiusCap && rungProgressTicks >= PerRungTicks(currentRing))
-            {
-                rungProgressTicks -= (int)PerRungTicks(currentRing);
-                AdvanceRingOneRung(currentRing, LadderForRing(currentRing));
-                ringRungsClimbed++;
-
-                if (ringRungsClimbed >= RungsForRing(currentRing))
-                {
-                    currentRing++;
-                    ringRungsClimbed = 0;
-                    rungProgressTicks = 0;
-                }
-            }
+            RM_OasisKernel.AdvanceGrowth(ref rungProgressTicks, ref currentRing, ref ringRungsClimbed, deltaTicks, lockedSpeedMultiplier, lockedRadiusCap,
+                RM_OasisMakerSettings.baseRingDays, RM_OasisMakerSettings.ringGrowthFactor, GenDate.TicksPerDay,
+                ring => AdvanceRingOneRung(ring));
         }
 
         /// Advances every eligible cell in the given ring band by exactly one
@@ -204,7 +108,7 @@ namespace RimMandrake.OasisMaker
         /// constructed floor, water outside the pool zone, or a cell that
         /// already reached the ladder's terminal terrain) is silently
         /// skipped — that skip IS "only natural loose terrains convert."
-        private void AdvanceRingOneRung(int ringIndex, string[] ladder)
+        private void AdvanceRingOneRung(int ringIndex)
         {
             Map map = parent.Map;
             if (map == null)
@@ -212,8 +116,7 @@ namespace RimMandrake.OasisMaker
                 return;
             }
             IntVec3 center = CenterCell;
-            int lo = ringIndex == 0 ? 0 : ringIndex + 1;
-            int hi = ringIndex == 0 ? 1 : ringIndex + 1;
+            RM_OasisKernel.RingBand(ringIndex, out int lo, out int hi);
             for (int dz = -hi; dz <= hi; dz++)
             {
                 for (int dx = -hi; dx <= hi; dx++)
@@ -228,24 +131,24 @@ namespace RimMandrake.OasisMaker
                     {
                         continue;
                     }
-                    AdvanceCell(map, cell, ladder);
+                    AdvanceCell(map, cell, ringIndex);
                 }
             }
         }
 
-        private static void AdvanceCell(Map map, IntVec3 cell, string[] ladder)
+        private static void AdvanceCell(Map map, IntVec3 cell, int ringIndex)
         {
             TerrainDef current = map.terrainGrid.TerrainAt(cell);
             if (current == null)
             {
                 return;
             }
-            int idx = IndexInLadder(ladder, current);
-            if (idx < 0 || idx >= ladder.Length - 1)
+            string nextName = RM_OasisKernel.NextTerrain(ringIndex, current.defName);
+            if (nextName == null)
             {
                 return; // ineligible origin, or already at/past this ladder's terminal rung
             }
-            TerrainDef next = DefDatabase<TerrainDef>.GetNamed(ladder[idx + 1], errorOnFail: false);
+            TerrainDef next = DefDatabase<TerrainDef>.GetNamed(nextName, errorOnFail: false);
             if (next == null)
             {
                 return;
@@ -255,19 +158,6 @@ namespace RimMandrake.OasisMaker
             {
                 RM_OasisPoolIntegration.NotifyPoolCellCreated(map, cell);
             }
-        }
-
-        private static int IndexInLadder(string[] ladder, TerrainDef td)
-        {
-            string name = td.defName == "SoftSand" ? "Sand" : td.defName;
-            for (int i = 0; i < ladder.Length; i++)
-            {
-                if (ladder[i] == name)
-                {
-                    return i;
-                }
-            }
-            return -1;
         }
 
         public override string CompInspectStringExtra()
