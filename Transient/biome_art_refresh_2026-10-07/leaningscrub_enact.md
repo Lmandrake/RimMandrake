@@ -1,0 +1,43 @@
+# Leaning Scrub sheet — enactment (2026-10-07/08, BENCH helper)
+
+Source: `Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json` (owner rows = those with `at`).
+
+## Status
+- [x] Venomvine root cause
+- [x] Venomvine restore (sheet rebuild: pending)
+- [x] Venomvine regen queued (front of queue)
+- [x] Long Shade venomvine job folded / tint reported
+- [x] decisions read (rest of sheet)
+- [ ] install / purge
+- [ ] regen queued
+- [ ] names / descriptions / tiers / cuts
+- [ ] validate + selftests
+- [ ] commits
+
+## Venomvine
+Decisions md5 9986b4a3… (writeCount 521, savedAt 2026-10-07T22:50:10-0700); copy: infrastructure/state/art_rulings/2026-10-08_leaningscrub_sheet_2026-10-05.decisions.json.
+`art.py ingest --defer-redo-jobs`: 177 rulings, 49 rejected, 195 purged, 3 refused (Eopie S/E/N bytes he KEPT on the Long Shade sheet).
+
+### Root cause
+- The "white pillar" is sha 9e0e6c1d33b1 = `_artsrc/RM_PillarArmB_east` (a Contagion monstrous-limb render). Artpipe job `rmvenomvine_v1`
+  (2026-09-21, prompt: "a low, matted tangle") came back with those exact bytes, and **bbe171ebc** (2026-09-26, COLLECTION_GRAPHIC_ON_FLAT_PNG_1)
+  wired it as `EnvironmentalHazards/Textures/Things/Plant/RM_Venomvine/RM_Venomvine_a.png` on a facts-PASS without looking.
+  RM_Venomvine and RM_VenomvineThicket (same texPath by design) have shown it ever since.
+- **7753208e5** (2026-10-06) added the six new forms (Rearing/Walking/Hoard/Quench/Sworn/Shedding) all pointing at the same folder as a "placeholder", so 8 defs wore it.
+- The same bytes are also RM_Kudda_east / RSW_Kudda_east (2154ef2ea) — a second wrong-subject wiring, out of this sheet's scope, not touched.
+- The Long Shade helper did NOT add a tint: RM_Venomvine has carried `<color>(112,68,48)</color>` since 10033074a and the thicket `(78,47,33)` since 4d41826a8; its note only flagged it. Tints are not the pillar's cause (the PNG itself is white/grey) but would multiply real rust/near-black renders toward black, so both were removed.
+
+### Restored / wired (art ledger installs, `leaningscrub_venomvine_install.py`)
+- RM_VenomvineThicket -> own folder `Things/Plant/RM_VenomvineThicket/_a` = RM_VenomvineThicket_v2 (his 10-06 pick C, ruling 74428c23…). His B (02098c) he also purged himself — not installed.
+- RM_Venomvine `_a` -> interim real render leaningscrub_venomvinethicket_c (acfe6b, the low tangle its brief describes), mechanical reason.
+- Six forms -> own folders `Things/Plant/RM_<Form>Venomvine/_a`, interim = his kept thicket render (mechanical reason) until their own renders land.
+- Crown (B + A,C,D), Dripping (B + A,C,D), Hollow (A + B,C,D): his ticked variants installed as `_b/_c/_d` beside `_a` (rulings from ingest).
+- No venomvine def references the pillar bytes any more. Pillar NOT purged (live in Kudda east and PillarArmB).
+
+### Regen (`build_venomvine_regen_jobs.py` -> `venomvine_regen_jobs.json`): 43 jobs, priority 0, ids `0vv_*` -> pending positions 1–43 of 433 (artpiped claims by (priority, filename)).
+- desert RM_Venomvine 4 (folds the withdrawn `regen_ls_x_venomvine_v2`, moved to `_artpipe/_withdrawn/`; his LS note verbatim)
+- Rearing 4 + reared state 2, Walking 4, Hoard 4, Quench 4 + spent state 2, Sworn 4, Shedding 4 (fresh, from the 2026-10-03 pitch art briefs; Hoard/Quench/Rearing carry his note verbatim, the rest his chat words)
+- Thicket 3, Twitcher 2, Dripping 2, Hollow 2, Crown 2 (anchored on his accepted picture as first canon_reference)
+
+## Rest of sheet
+(pending)
