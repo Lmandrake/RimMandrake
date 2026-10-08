@@ -78,7 +78,7 @@ Status: DONE (audit + enactment). Selftests 337/337. Nothing deployed.
 | thescald | RSW_ElderSando → RM_GrippingTerror, Twilight Sea; RSW_SandoAquaMonster → Twilight Sea | "It does not belong in the Scald." | done | — |
 | twilightsea | RM_SaltBladeTwilight → Grey Sea, less solitary | "Move it there" | done | 9f77e21e2 |
 | twilightsea | RM_Hollu B render → new creature Dancing Skresh | | done | 9f77e21e2 |
-| twilightsea | RSW_Faa old art → new Greentide river fish "Scaa Lumsigh" | "Move this image to that fishing source" | **missing → ENACTED**: `RM_ScaaLumsigh` (Greentide fish file, RM_Greentide freshwater_Uncommon 0.2), old faa east facing installed via the art ledger under his RSW_Faa ruling | this commit |
+| twilightsea | RSW_Faa old art → new Greentide river fish "Scaa Lumsigh" | "Move this image to that fishing source" | **missing → ENACTED**: `RM_ScaaLumsigh` (Greentide fish file, RM_Greentide freshwater_Uncommon 0.2), old faa east facing installed via the art ledger under his RSW_Faa ruling | 588cfd395 |
 | twilightsea | RSW_Mee old art → Greentide river fish | "move this fish art to the Greentide rivers as fishable" | **missing — needs a name** (question 1) | — |
 | twilightsea | RM_Niim old art | "can be kept for fishing elsewhere" | kept in the art store, nothing purged; where is unnamed (question 2) | — |
 
