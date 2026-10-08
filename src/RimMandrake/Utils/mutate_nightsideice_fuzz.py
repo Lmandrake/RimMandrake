@@ -1,0 +1,100 @@
+#!/usr/bin/env python3
+"""Mutation proof for the NightsideIce fuzz: plants each defect in the kernel (RM_NightsideIceKernel.cs), demands the fuzz FAILS, restores
+the file byte-identical. Exit 0 only if every mutation was caught.
+
+    python3 src/RimMandrake/Utils/mutate_nightsideice_fuzz.py [name-substring]
+"""
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from mutate_explosivegrowth_fuzz import run_mutations  # noqa: E402
+
+KERNEL = "src/RimMandrake/NightsideIce/Source/Kernel/RM_NightsideIceKernel.cs"
+MUTATIONS = [
+    ("clamp01 lets values above 1 through", "return v < 0f ? 0f : (v > 1f ? 1f : v);", "return v < 0f ? 0f : v;"),
+    ("room heat counts cold rooms", "return delta > 0f ? delta * cellCount * RoomWeight : 0f;", "return delta * cellCount * RoomWeight;"),
+    ("room heat ignores cell count", "return delta > 0f ? delta * cellCount * RoomWeight : 0f;", "return delta > 0f ? delta * RoomWeight : 0f;"),
+    ("room weight changed", "RoomWeight = 0.002f", "RoomWeight = 0.02f"),
+    ("fire weight changed", "FireWeight = 20f", "FireWeight = 10f"),
+    ("fire ignores its size", "return fireSize * FireWeight;", "return FireWeight;"),
+    ("power weight changed", "PowerWeight = 0.01f", "PowerWeight = 0.1f"),
+    ("power heat sign flipped", "return -powerOutput * PowerWeight;", "return powerOutput * PowerWeight;"),
+    ("target not saturating", "return 1f - (float)Math.Exp(-raw / Math.Max(1f, scale));", "return Clamp01(raw / Math.Max(1f, scale));"),
+    ("target scale floor gone", "Math.Max(1f, scale)", "scale"),
+    ("target scale inverted", "-raw / Math.Max(1f, scale)", "-raw * Math.Max(1f, scale)"),
+    ("target never reaches zero", "return 1f - (float)Math.Exp(-raw / Math.Max(1f, scale));", "return 0.01f + 1f - (float)Math.Exp(-raw / Math.Max(1f, scale));"),
+    ("ease jumps to the target", "float t = 0.5f;", "float t = 1f;"),
+    ("ease too slow", "float t = 0.5f;", "float t = 0.25f;"),
+    ("ease unclamped", "return Clamp01(dial + (target - dial) * Clamp01(t));", "return dial + (target - dial) * Clamp01(t);"),
+    ("dial offset moved", "DialTickOffset = 71", "DialTickOffset = 70"),
+    ("breach offset on the dial tick", "BreachTickOffset = 76", "BreachTickOffset = 71"),
+    ("breach offset 4 after", "BreachTickOffset = 76", "BreachTickOffset = 75"),
+    ("dial every half hour", "return ticksGame % IntervalTicks == DialTickOffset;", "return ticksGame % (IntervalTicks / 2) == DialTickOffset;"),
+    ("hottest takes the last of a tie", "if (working[i] && heatPerSecond[i] > bestHeat)", "if (working[i] && heatPerSecond[i] >= bestHeat)"),
+    ("hottest picks a non-working heater", "if (working[i] && heatPerSecond[i] > bestHeat)", "if (heatPerSecond[i] > bestHeat)"),
+    ("hottest picks the coolest", "if (working[i] && heatPerSecond[i] > bestHeat)", "if (working[i] && (best < 0 || heatPerSecond[i] < bestHeat))"),
+    ("hottest accepts zero heat", "float bestHeat = 0f;", "float bestHeat = -1f;"),
+    ("source cache window 251", "return now - readTick < SourceCacheTicks", "return now - readTick <= SourceCacheTicks"),
+    ("source cache window doubled", "SourceCacheTicks = 250", "SourceCacheTicks = 500"),
+    ("source cache serves a dead heater", "&& (!hasCached || cachedStillWorking);", ";"),
+    ("breach chance without the square", "return Clamp01(frequencyScale * dial * dial / 24f);", "return Clamp01(frequencyScale * dial / 24f);"),
+    ("breach chance per half day", "return Clamp01(frequencyScale * dial * dial / 24f);", "return Clamp01(frequencyScale * dial * dial / 12f);"),
+    ("breach chance ignores the scale", "return Clamp01(frequencyScale * dial * dial / 24f);", "return Clamp01(dial * dial / 24f);"),
+    ("breach chance unclamped", "return Clamp01(frequencyScale * dial * dial / 24f);", "return frequencyScale * dial * dial / 24f;"),
+    ("roll made while a crack is open", "if (!applies || crackOpen || now < cooldownUntil) return false;", "if (!applies || now < cooldownUntil) return false;"),
+    ("roll made during the cooldown", "if (!applies || crackOpen || now < cooldownUntil) return false;", "if (!applies || crackOpen) return false;"),
+    ("roll made off the biome", "if (!applies || crackOpen || now < cooldownUntil) return false;", "if (crackOpen || now < cooldownUntil) return false;"),
+    ("cooldown exclusive", "now < cooldownUntil", "now <= cooldownUntil"),
+    ("threshold exclusive", "return !(dial < BreachThreshold);", "return dial > BreachThreshold;"),
+    ("threshold moved", "BreachThreshold = 0.15f", "BreachThreshold = 0.2f"),
+    ("cooldown one day", "CooldownTicks = 2 * TicksPerDay", "CooldownTicks = 1 * TicksPerDay"),
+    ("shivven count unclamped", "return 2 + (int)Math.Round(Clamp01(dial) * 6f);", "return 2 + (int)Math.Round(dial * 6f);"),
+    ("shivven count rounds up", "(int)Math.Round(Clamp01(dial) * 6f)", "(int)Math.Ceiling(Clamp01(dial) * 6f)"),
+    ("shivven count rounds down", "(int)Math.Round(Clamp01(dial) * 6f)", "(int)Math.Floor(Clamp01(dial) * 6f)"),
+    ("shivven count base 3", "return 2 + (int)Math.Round", "return 3 + (int)Math.Round"),
+    ("shivven count away from zero", "(int)Math.Round(Clamp01(dial) * 6f)", "(int)Math.Round(Clamp01(dial) * 6f, MidpointRounding.AwayFromZero)"),
+    ("taught countdown floor gone", "return teach ? Math.Max(1, firstCountdownHours) : laterRoll;", "return teach ? firstCountdownHours : laterRoll;"),
+    ("taught countdown ignores the setting", "return teach ? Math.Max(1, firstCountdownHours) : laterRoll;", "return teach ? 24 : laterRoll;"),
+    ("later cracks use the setting", "return teach ? Math.Max(1, firstCountdownHours) : laterRoll;", "return Math.Max(1, firstCountdownHours);"),
+    ("edge band min exclusive", "return nearestSquared >= 9f && nearestSquared <= 144f;", "return nearestSquared > 9f && nearestSquared <= 144f;"),
+    ("edge band max exclusive", "return nearestSquared >= 9f && nearestSquared <= 144f;", "return nearestSquared >= 9f && nearestSquared < 144f;"),
+    ("edge band wider", "nearestSquared <= 144f", "nearestSquared <= 169f"),
+    ("edge band nearer", "nearestSquared >= 9f", "nearestSquared >= 4f"),
+    ("crack 6h warning at 5h", "ticksLeft <= 6 * TicksPerHour", "ticksLeft <= 5 * TicksPerHour"),
+    ("crack 6h warning repeats", "if (!warned6 && ticksLeft <= 6 * TicksPerHour)", "if (ticksLeft <= 6 * TicksPerHour)"),
+    ("crack 1h warning repeats", "if (!warned1 && ticksLeft <= TicksPerHour)", "if (ticksLeft <= TicksPerHour)"),
+    ("crack warns when untaught", "if (taught && warningsOn)", "if (warningsOn)"),
+    ("crack warns when muted", "if (taught && warningsOn)", "if (taught)"),
+    ("crack 6h flag not set", "warned6 = true;\n                    say6 = true;", "say6 = true;"),
+    ("crack 1h flag not set", "warned1 = true;\n                    say1 = true;", "say1 = true;"),
+    ("crack breaks one look late", "return ticksLeft <= 0;", "return ticksLeft < 0;"),
+    ("crack breaks early", "return ticksLeft <= 0;", "return ticksLeft <= 60;"),
+    ("touch ring includes the footprint", "return inRing && !inside;", "return inRing;"),
+    ("touch ring is two wide", "x >= minX - 1 && x <= maxX + 1 && z >= minZ - 1 && z <= maxZ + 1", "x >= minX - 2 && x <= maxX + 2 && z >= minZ - 2 && z <= maxZ + 2"),
+    ("touch ring ignores z", "x >= minX - 1 && x <= maxX + 1 && z >= minZ - 1 && z <= maxZ + 1", "x >= minX - 1 && x <= maxX + 1"),
+    ("score off the ice is distance", "if (!onIce) return 0f;", ""),
+    ("score of a touching cell is 0", "if (Touches(x, z, minX, minZ, maxX, maxZ)) return -1f;", "if (Touches(x, z, minX, minZ, maxX, maxZ)) return 0f;"),
+    ("score is distance not squared", "return dx * dx + dz * dz;", "return Math.Abs(dx) + Math.Abs(dz);"),
+    ("diagonal ignores the first neighbour", "return g.Standable(toX, fromZ) && g.Standable(fromX, toZ)", "return g.Standable(fromX, toZ)"),
+    ("diagonal ignores the second neighbour", "return g.Standable(toX, fromZ) && g.Standable(fromX, toZ)", "return g.Standable(toX, fromZ)"),
+    ("diagonal ignores ice at the corners", "&& (!iceOnly || (g.IsIce(toX, fromZ) && g.IsIce(fromX, toZ)));", ";"),
+    ("diagonal needs only one corner on ice", "(g.IsIce(toX, fromZ) && g.IsIce(fromX, toZ))", "(g.IsIce(toX, fromZ) || g.IsIce(fromX, toZ))"),
+    ("leg index off by one", "return Math.Max(0, Math.Min(legCells, pathCount) - 1);", "return Math.Min(legCells, pathCount);"),
+    ("leg index unclamped below", "return Math.Max(0, Math.Min(legCells, pathCount) - 1);", "return Math.Min(legCells, pathCount) - 1;"),
+    ("path ignores the budget", "while (queue.Count > 0 && budget-- > 0)", "while (queue.Count > 0)"),
+    ("path budget off by one", "while (queue.Count > 0 && budget-- > 0)", "while (queue.Count > 0 && --budget > 0)"),
+    ("path leaves the ice", "if (startOnIce && !g.IsIce(nx, nz)) continue;", ""),
+    ("path ignores walls", "|| !g.InBounds(nx, nz) || !g.Standable(nx, nz)) continue;", "|| !g.InBounds(nx, nz)) continue;"),
+    ("path ignores the map edge", "|| !g.InBounds(nx, nz) || !g.Standable(nx, nz)) continue;", "|| !g.Standable(nx, nz)) continue;"),
+    ("path cuts corners", "if (i >= 4 && !DiagonalOk(g, c.Key, c.Value, nx, nz, startOnIce)) continue;", ""),
+    ("path diagonals treated as cardinal", "if (i >= 4 && !DiagonalOk", "if (i >= 8 && !DiagonalOk"),
+    ("path off the ice stops late", "if (!startOnIce && cIce)\n                {\n                    best = c;      // off the ice: the first ice reached is the way home\n                    break;\n                }", "if (!startOnIce && cIce)\n                {\n                    best = c;\n                }"),
+    ("path prefers farther cells", "if (s < bestScore)", "if (s > bestScore)"),
+    ("path ties go to the last", "if (s < bestScore)", "if (s <= bestScore)"),
+    ("path ignores the start's own score", "float bestScore = Score(startX, startZ, srcX, srcZ, minX, minZ, maxX, maxZ, startOnIce);", "float bestScore = float.MaxValue;"),
+]
+
+if __name__ == "__main__":
+    sys.exit(run_mutations(KERNEL, "selftest_nightsideice_fuzz.py", MUTATIONS, sys.argv[1] if len(sys.argv) > 1 else None))
