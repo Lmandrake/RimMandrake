@@ -5,7 +5,8 @@
     Engine only; content opts in by modExtension. Design:
     design/RimMandrake/giant_footprint_design_2026-10-07.md.
     Build: python3 src/RimMandrake/Utils/winbuild.py HugeThings  (net472, Harmony from brrainz.harmony
-    at runtime, never copied local). Default compile globbing is ON: every .cs under Source/ compiles.
+    at runtime, never copied local). Compile items are EXPLICIT (SelfTest/ is its own net8.0 fuzz project):
+    a new .cs needs a Compile line here.
   -->
 
   <PropertyGroup>
@@ -13,6 +14,7 @@
     <LangVersion>latest</LangVersion>
     <AssemblyName>RM_HugeThings</AssemblyName>
     <RootNamespace>RimMandrake.HugeThings</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <Version>1.0.0</Version>
 
     <OutputPath>..\Assemblies\</OutputPath>
@@ -35,10 +37,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- default globbing is ON for this mod: keep the offline fuzz project (net8 Exe) out of the mod assembly -->
-    <Compile Remove="SelfTest\**" />
-    <Compile Remove="obj\**" />
-    <Compile Remove="bin\**" />
+    <Compile Include="Kernel\RM_HugeFootprintKernel.cs" />
+    <Compile Include="Building_TrunkBlocker.cs" />
+    <Compile Include="CompHugeFootprint.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="FootprintMath.cs" />
+    <Compile Include="HugeThingsCore.cs" />
+    <Compile Include="MapComponent_HugeFootprints.cs" />
+    <Compile Include="RM_HugeThingsSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

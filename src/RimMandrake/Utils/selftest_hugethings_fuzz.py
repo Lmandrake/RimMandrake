@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Approach B fuzz of the Huge Things kernel (src/RimMandrake/HugeThings/Source/Kernel/RM_FootprintKernel.cs), no game.
+"""Approach B fuzz of the Huge Things footprint kernel (HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs), no game.
 
-Seeded fuzz with explicit invariants: footprint arithmetic, trunk and click rects, the MaxRect re-link cover, pawn hitboxes, the
-trunk-blocker reconcile plan over random worlds and a growth-and-settings lifecycle. Built through winbuild.stage_build
-(dotnet.exe is Windows-native), then run. The older selftest_hugethings_footprint.py pins the shipped per-species table.
+Seeded random plants (root, drawSize, visualSizeRange, growth, jitter, flip, Mod Settings multiplier, a random mask shaped like
+measure_huge_plant_masks.py's) against the production kernel: selection holds every blocked cell and the whole picture, blocked
+cells stay inside the picture, full growth reproduces the measured mask (mirrored when flipped), growth is monotonic for a solid
+base, every seed replays identically. Same wrapper shape as selftest_therot_fuzz.py.
 
-    python3 src/RimMandrake/Utils/selftest_hugethings_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only math|trunk|pawn|plan|units]
+    python3 src/RimMandrake/Utils/selftest_hugethings_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only any|full|boundary|symmetry|determinism]
+
+A failing case prints as `FAIL family seed N: message`; --fuzz-seed N replays it.
 """
 import os
 import subprocess
@@ -21,8 +24,7 @@ CSPROJ = os.path.join(SELFTEST, "RimMandrakeHugeThings.SelfTest.csproj")
 
 
 def main(argv):
-    rc, rec = winbuild.stage_build(CSPROJ, stage_name="HugeThingsFuzzSelfTest",
-                                   extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "HugeThings", "Source", "Kernel")])
+    rc, rec = winbuild.stage_build(CSPROJ, stage_name="HugeThingsFuzzSelfTest")
     if rc:
         print("selftest build FAILED")
         return rc

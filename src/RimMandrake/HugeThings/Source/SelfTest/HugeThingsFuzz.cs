@@ -1,330 +1,314 @@
-// Approach B for Huge Things: seeded fuzz over the Verse-free kernel the mod calls (../Kernel/RM_FootprintKernel.cs):
-//   math   rounding (half up, exhaustively around every .5), growth scale bounds / monotonicity, Scaled never zero for a real dimension
-//   trunk  trunk and click rects over random extensions / growth / scale: root on the south edge and inside the width, young plants block
-//          nothing, the trunk grows monotonically, the click area covers the trunk, MaxRect (re-link after load) covers every rect any
-//          slider position can ask for
-//   pawn   hitbox: contains the footprint, empty only when vanilla is right, monotone in the scale, side >= 1
-//   plan   the blocker reconcile over random worlds: never leaves a blocker outside the wanted trunk, fills every cell it may,
-//          never spawns on the root / out of the map / on a refused cell, idempotent; and a growth-and-settings lifecycle where the
-//          blocker set equals the wanted trunk minus the root at every step
-//   units  cell-eligibility table exhaustively, pack/unpack round trip, rect helpers
-// A failing case is printed as `family seed N: message | detail`; --fuzz-seed N replays it.
+// Approach B for HugeThings: seeded fuzz over the Verse-free footprint kernel (../Kernel/RM_HugeFootprintKernel.cs).
+// Families (each case is one random plant: root cell, drawSize, visualSizeRange, growth, jitter, flip, Mod Settings
+// multiplier, and a random mask shaped the way measure_huge_plant_masks.py shapes real ones):
+//   any          on every case: the selection rect holds every blocked cell and the whole drawn picture; every blocked
+//                cell's centre is inside the drawn picture; the root cell is never blocked; nothing south of the root
+//                when the quad is bottom-anchored on it (drawSize <= 1)
+//   full         at full growth, settings 1, drawSize 1, any jitter: the blocked cells ARE the measured cells, mirrored
+//                exactly when flipped
+//   any (also)   the kernel's blocked cells equal an INDEPENDENT double-precision forward oracle written from Plant.Print's
+//                formulas (drawSize != 1 included), ignoring only cells within Eps of an edge; no duplicates
+//   boundary     growths that put an edge within 1e-4 of a cell centre, nudged both ways, against the oracle
+//   symmetry     integer translation moves the footprint with the root; a mirrored mask with the opposite flip is identical
+// Growth -> cells nesting is NOT an invariant (GPT review #10; a ring of roots scaled up truly moves outward).
+//   determinism  the same seed gives byte-identical results
+// A failing case prints as `FAIL family seed N: message`; --fuzz-seed N replays it.
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using K = RimMandrake.HugeThings.RM_HugeFootprintKernel;
 
 namespace RimMandrake.HugeThings.SelfTest
 {
     internal static class HugeThingsFuzz
     {
-        public static long Cases, Steps, Spawned, Destroyed, Refused, Grown, EmptyTrunks, BigTrunks, Unions;
-        private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
-        private static string S(RM_KRect r) { return r.IsEmpty ? "empty" : $"({r.minX},{r.minZ}){r.w}x{r.h}"; }
+        public static long Cases, Checks;
+        private const float JitterMargin = 0.06f;   // measure_huge_plant_masks.py JITTER_MARGIN
 
-        private static List<string> Loop(string name, int n, int seed, Action<Random> one)
+        private static void Check(bool ok, string msg)
         {
-            var fails = new List<string>();
+            Checks++;
+            if (!ok) throw new Exception(msg);
+        }
+
+        internal sealed class Plant
+        {
+            public int RootX, RootZ;
+            public float DrawX, VMin, VMax, Growth, Jx, Jz, Scale;
+            public bool Flip;
+            public HugeMask Mask;
+
+            public float Visual(float g) => VMin + (VMax - VMin) * g;
+        }
+
+        private static float R(Random r, float a, float b) => a + (float)r.NextDouble() * (b - a);
+
+        /// <summary>A random mask in the tool's measurement frame (drawSize 1 at full growth, bottom on the root's south
+        /// edge): a visible box, and contact cells inside it (centre within the box, less the jitter margin in x), never
+        /// the root. star: a solid base box containing the bottom-centre, so the region is star-shaped about it.</summary>
+        internal static HugeMask MakeMask(Random r, float size, bool star)
+        {
+            var m = new HugeMask { MeasuredSize = size };
+            if (star)
+            {
+                m.U0 = R(r, 0f, 0.45f);
+                m.U1 = R(r, 0.55f, 1f);
+                m.V0 = 0f;
+                m.V1 = R(r, 0.3f, 1f);
+            }
+            else
+            {
+                m.U0 = R(r, 0f, 0.45f);
+                m.U1 = R(r, Math.Max(m.U0 + 0.05f, 0.5f), 1f);
+                m.V0 = R(r, 0f, 0.3f);
+                m.V1 = R(r, Math.Max(m.V0 + 0.1f, 0.4f), 1f);
+            }
+            float left = 0.5f - size / 2f;
+            int n = (int)Math.Ceiling(size);
+            // star: a solid band of rows from the bottom, columns spanning the root; else a random blob
+            int rows = star ? 1 + r.Next(Math.Max(1, n / 2)) : n;
+            int halfW = 1 + r.Next(Math.Max(1, n / 2));
+            for (int dz = 0; dz < rows; dz++)
+            {
+                for (int dx = (int)Math.Floor(left) - 1; dx <= (int)Math.Ceiling(left + size); dx++)
+                {
+                    if (dx == 0 && dz == 0) continue;
+                    float cu = (dx + 0.5f - left) / size, cv = (dz + 0.5f) / size;
+                    if (!(m.U0 + JitterMargin / size <= cu && cu <= m.U1 - JitterMargin / size && m.V0 <= cv && cv <= m.V1)) continue;
+                    if (star)
+                    {
+                        if (Math.Abs(dx) <= halfW) m.Contact.Add(K.Key(dx, dz));
+                    }
+                    else if (r.NextDouble() < 0.35)
+                    {
+                        m.Contact.Add(K.Key(dx, dz));
+                    }
+                }
+            }
+            return m;
+        }
+
+        internal static Plant MakePlant(int seed, bool star)
+        {
+            var r = new Random(seed);
+            var p = new Plant
+            {
+                RootX = r.Next(-50, 300),
+                RootZ = r.Next(-50, 300),
+                DrawX = r.NextDouble() < 0.5 ? 1f : R(r, 0.5f, 2f),
+                VMin = R(r, 1f, 8f),
+                Growth = (float)r.NextDouble(),
+                Jx = R(r, -0.05f, 0.05f),
+                Jz = R(r, -0.05f, 0.05f),
+                Flip = r.Next(2) == 0,
+                Scale = r.NextDouble() < 0.4 ? 1f : R(r, 0.5f, 1.5f),
+            };
+            p.VMax = p.VMin + R(r, 0f, 18f);
+            p.Mask = MakeMask(r, p.DrawX * p.VMax, star);
+            return p;
+        }
+
+        private static string Fmt(List<long> cells) => string.Join(" ", cells.Select(k => K.KeyX(k) + "," + K.KeyZ(k)));
+
+        // ---- the independent oracle: double precision, FORWARD mapping straight from Plant.Print's formulas --------------
+        // Each measured contact cell is pushed forward into the world as a rectangle; a world cell is blocked when its centre
+        // lies in one of those rectangles, inside the drawn picture, inside the blocking quad, and is not the root. Cells whose
+        // centre sits within Eps of any edge are AMBIGUOUS (float vs double may round either way) and excluded from the
+        // comparison, never from the run.
+        private const double Eps = 2e-3;
+
+        internal static HashSet<long> Oracle(Plant p, float visual, out HashSet<long> ambiguous)
+        {
+            ambiguous = new HashSet<long>();
+            var outCells = new HashSet<long>();
+            double cx = p.RootX + 0.5 + p.Jx, cz = p.RootZ + 0.5 + p.Jz;
+            if (cz - visual / 2.0 < p.RootZ) cz = p.RootZ + visual / 2.0;     // Plant.Print: compares with visual, not side
+            double side = (double)p.DrawX * visual;
+            double qx = cx - side / 2.0, qz = cz - side / 2.0;
+            double pu0 = p.Flip ? 1 - p.Mask.U1 : p.Mask.U0, pu1 = p.Flip ? 1 - p.Mask.U0 : p.Mask.U1;
+            double px0 = qx + pu0 * side, px1 = qx + pu1 * side, pz0 = qz + p.Mask.V0 * side, pz1 = qz + p.Mask.V1 * side;
+            double bs = side * p.Scale, bx0 = cx - bs / 2.0, bz0 = qz;
+            double S = p.Mask.MeasuredSize, left = 0.5 - S / 2.0;
+            if (S <= 0 || bs <= 0 || p.Mask.Contact.Count == 0) return outCells;
+            var rects = new List<double[]>();
+            foreach (long k in p.Mask.Contact)
+            {
+                int dx = K.KeyX(k), dz = K.KeyZ(k);
+                double u0 = (dx - left) / S, u1 = (dx + 1 - left) / S, v0 = dz / S, v1 = (dz + 1) / S;
+                if (p.Flip) { double t = 1 - u1; u1 = 1 - u0; u0 = t; }
+                rects.Add(new[] { bx0 + u0 * bs, bz0 + v0 * bs, bx0 + u1 * bs, bz0 + v1 * bs });
+            }
+            int xa = (int)Math.Floor(Math.Min(bx0, px0)) - 1, xb = (int)Math.Ceiling(Math.Max(bx0 + bs, px1)) + 1;
+            int za = (int)Math.Floor(Math.Min(bz0, pz0)) - 1, zb = (int)Math.Ceiling(Math.Max(bz0 + bs, pz1)) + 1;
+            for (int z = za; z <= zb; z++)
+            {
+                for (int x = xa; x <= xb; x++)
+                {
+                    double ux = x + 0.5, uz = z + 0.5;
+                    bool near = Math.Abs(ux - px0) < Eps || Math.Abs(ux - px1) < Eps || Math.Abs(uz - pz0) < Eps || Math.Abs(uz - pz1) < Eps
+                             || Math.Abs(ux - bx0) < Eps || Math.Abs(ux - bx0 - bs) < Eps || Math.Abs(uz - bz0) < Eps || Math.Abs(uz - bz0 - bs) < Eps;
+                    bool hit = false;
+                    foreach (double[] r in rects)
+                    {
+                        if (Math.Abs(ux - r[0]) < Eps || Math.Abs(ux - r[2]) < Eps || Math.Abs(uz - r[1]) < Eps || Math.Abs(uz - r[3]) < Eps)
+                        {
+                            if (ux > r[0] - Eps && ux < r[2] + Eps && uz > r[1] - Eps && uz < r[3] + Eps) near = true;
+                        }
+                        if (ux > r[0] && ux < r[2] && uz > r[1] && uz < r[3]) hit = true;
+                    }
+                    long key = K.Key(x, z);
+                    if (near) { ambiguous.Add(key); continue; }
+                    bool inPic = ux > px0 && ux < px1 && uz > pz0 && uz < pz1;
+                    bool inQuad = ux > bx0 && ux < bx0 + bs && uz > bz0 && uz < bz0 + bs;
+                    if (hit && inPic && inQuad && !(x == p.RootX && z == p.RootZ)) outCells.Add(key);
+                }
+            }
+            return outCells;
+        }
+
+        internal static void CheckOracle(Plant p, float visual, List<long> got, string where)
+        {
+            HashSet<long> want = Oracle(p, visual, out HashSet<long> amb);
+            var g = new HashSet<long>(got);
+            Check(g.Count == got.Count, where + ": duplicate cells in the kernel's output");
+            g.ExceptWith(amb);
+            want.ExceptWith(amb);
+            if (!g.SetEquals(want))
+            {
+                var extra = g.Except(want).ToList();
+                var miss = want.Except(g).ToList();
+                Check(false, where + ": kernel != oracle; extra [" + Fmt(extra) + "] missing [" + Fmt(miss) + "]");
+            }
+        }
+
+        internal static string CaseAny(int seed)
+        {
+            Plant p = MakePlant(seed, false);
+            HugeQuad q = K.Quad(p.RootX, p.RootZ, p.DrawX, p.Visual(p.Growth), p.Jx, p.Jz);
+            List<long> blocked = K.ContactCells(p.RootX, p.RootZ, q, p.Scale, p.Flip, p.Mask);
+            CheckOracle(p, p.Visual(p.Growth), blocked, "any");
+            CellBox pic = K.PictureBox(q, p.Mask, p.Flip);
+            CellBox sel = K.SelectBox(p.RootX, p.RootZ, pic, blocked);
+            K.PictureBounds(q, p.Mask, p.Flip, out float x0, out float z0, out float x1, out float z1);
+            foreach (long c in blocked)
+            {
+                int x = K.KeyX(c), z = K.KeyZ(c);
+                Check(sel.Contains(x, z), "selection misses blocked cell " + x + "," + z);
+                Check(x + 0.5f >= x0 && x + 0.5f <= x1 && z + 0.5f >= z0 && z + 0.5f <= z1,
+                      "blocked cell " + x + "," + z + " is outside the drawn picture");
+                Check(!(x == p.RootX && z == p.RootZ), "the root cell is blocked");
+                if (p.DrawX <= 1f) Check(z >= p.RootZ, "blocked cell " + x + "," + z + " is south of the root");
+            }
+            Check(sel.MinX <= Math.Floor(x0) && sel.MinZ <= Math.Floor(z0), "selection starts inside the picture");
+            Check(sel.MaxX + 1 >= x1 && sel.MaxZ + 1 >= z1, "selection ends inside the picture");
+            Check(sel.Contains(p.RootX, p.RootZ), "selection misses the root cell");
+            return Fmt(blocked) + "|" + sel.MinX + "," + sel.MinZ + "," + sel.MaxX + "," + sel.MaxZ;
+        }
+
+        internal static string CaseFull(int seed)
+        {
+            Plant p = MakePlant(seed, (seed & 1) == 0);
+            p.DrawX = 1f;                      // the tool's frame: drawSize 1
+            var r = new Random(seed ^ 0x5eed);
+            var m = MakeMask(r, p.VMax, (seed & 1) == 0);
+            p.Mask = m;
+            HugeQuad q = K.Quad(p.RootX, p.RootZ, 1f, p.VMax, p.Jx, p.Jz);
+            List<long> got = K.ContactCells(p.RootX, p.RootZ, q, 1f, p.Flip, m);
+            var want = new HashSet<long>(m.Contact.Select(k => K.Key(p.RootX + (p.Flip ? -K.KeyX(k) : K.KeyX(k)), p.RootZ + K.KeyZ(k))));
+            Check(want.SetEquals(got), "full growth blocked != measured" + (p.Flip ? " (flipped)" : "") + ": got [" + Fmt(got) +
+                  "] want [" + Fmt(want.ToList()) + "]");
+            return Fmt(got);
+        }
+
+        /// <summary>Cell-boundary crossings: the growth is chosen so a picture or quad edge lands within 1e-4 of a cell
+        /// centre or edge, then nudged both ways; the kernel must agree with the oracle on every unambiguous cell.</summary>
+        internal static string CaseBoundary(int seed)
+        {
+            Plant p = MakePlant(seed, false);
+            var r = new Random(seed ^ 0xb0b);
+            // side = drawX * visual; aim the quad's top edge (qz + side) at a half-integer
+            float target = (float)Math.Floor(p.RootZ + p.VMin * p.DrawX) + 0.5f + r.Next(0, 6);
+            float visual = Math.Max(p.VMin, Math.Min(p.VMax, (target - p.RootZ) / Math.Max(0.01f, (p.DrawX + 1f) / 2f)));
+            var sb = new List<string>();
+            foreach (float d in new[] { -1e-4f, 0f, 1e-4f })
+            {
+                float v = visual + d;
+                HugeQuad q = K.Quad(p.RootX, p.RootZ, p.DrawX, v, p.Jx, p.Jz);
+                List<long> got = K.ContactCells(p.RootX, p.RootZ, q, p.Scale, p.Flip, p.Mask);
+                CheckOracle(p, v, got, "boundary");
+                sb.Add(got.Count.ToString());
+            }
+            return string.Join(",", sb);
+        }
+
+        /// <summary>Translation and double mirroring at the geometry level: moving the root by an integer moves every
+        /// blocked cell by it; mirroring the mask AND flipping gives the same cells.</summary>
+        internal static string CaseSymmetry(int seed)
+        {
+            Plant p = MakePlant(seed, false);
+            p.DrawX = 1f;
+            p.Jx = 0f;
+            HugeQuad q = K.Quad(p.RootX, p.RootZ, 1f, p.Visual(p.Growth), 0f, p.Jz);
+            List<long> a = K.ContactCells(p.RootX, p.RootZ, q, p.Scale, p.Flip, p.Mask);
+            int tx = 37, tz = -11;
+            HugeQuad q2 = K.Quad(p.RootX + tx, p.RootZ + tz, 1f, p.Visual(p.Growth), 0f, p.Jz);
+            var b = new HashSet<long>(K.ContactCells(p.RootX + tx, p.RootZ + tz, q2, p.Scale, p.Flip, p.Mask));
+            var moved = new HashSet<long>(a.Select(k => K.Key(K.KeyX(k) + tx, K.KeyZ(k) + tz)));
+            // translation is exact only away from float rounding at large coordinates: compare through the oracle's ambiguity
+            Oracle(p, p.Visual(p.Growth), out HashSet<long> amb);
+            var ambMoved = new HashSet<long>(amb.Select(k => K.Key(K.KeyX(k) + tx, K.KeyZ(k) + tz)));
+            moved.ExceptWith(ambMoved);
+            b.ExceptWith(ambMoved);
+            Check(moved.SetEquals(b), "translation by " + tx + "," + tz + " changed the footprint");
+            var mirror = new HugeMask { U0 = 1 - p.Mask.U1, U1 = 1 - p.Mask.U0, V0 = p.Mask.V0, V1 = p.Mask.V1, MeasuredSize = p.Mask.MeasuredSize };
+            foreach (long k in p.Mask.Contact) mirror.Contact.Add(K.Key(-K.KeyX(k), K.KeyZ(k)));
+            var c = new HashSet<long>(K.ContactCells(p.RootX, p.RootZ, q, p.Scale, !p.Flip, mirror));
+            var a2 = new HashSet<long>(a);
+            a2.ExceptWith(amb);
+            c.ExceptWith(amb);
+            Check(a2.SetEquals(c), "mirrored mask + opposite flip != original");
+            return a.Count.ToString();
+        }
+
+        private static bool Family(string name, int n, int? one, Func<int, string> run)
+        {
+            int fails = 0;
             for (int i = 0; i < n; i++)
             {
+                int seed = one ?? (i * 7919 + name.Length * 104729);
                 Cases++;
-                try { one(new Random(seed + i)); } catch (Exception e) { fails.Add($"{name} seed {seed + i}: {e.Message}"); if (fails.Count >= 3) break; }
+                try
+                {
+                    run(seed);
+                }
+                catch (Exception e)
+                {
+                    if (fails++ < 5) Console.WriteLine("FAIL " + name + " seed " + seed + ": " + e.Message);
+                }
+                if (one.HasValue) break;
             }
-            return fails;
+            Console.WriteLine((fails == 0 ? "PASS " : "FAIL ") + name + ": " + (one.HasValue ? 1 : n) + " cases, " + fails + " failed");
+            return fails == 0;
         }
 
-        // ════════════════════════ math ════════════════════════
-        private static List<string> Math_(int n, int seed)
+        public static bool Run(double scale, int? one, string only)
         {
-            var fails = Loop("math", n, seed, r =>
-            {
-                Steps++;
-                // round half up, with the .5 boundaries probed exactly
-                for (int k = -6; k <= 12; k++)
-                {
-                    Check(RM_FootprintKernel.RoundHalfUp(k + 0.5f) == k + 1, $"RoundHalfUp({k}.5) = {RM_FootprintKernel.RoundHalfUp(k + 0.5f)}, want {k + 1}");
-                    Check(RM_FootprintKernel.RoundHalfUp(k + 0.49f) == k, $"RoundHalfUp({k}.49)");
-                }
-                float v = (float)(r.NextDouble() * 40 - 10);
-                Check(Math.Abs(RM_FootprintKernel.RoundHalfUp(v) - v) <= 0.5f + 1e-4f, $"RoundHalfUp({v}) is more than half a cell away");
-                // growth scale
-                float vmin = (float)(r.NextDouble() * 6), vmax = r.Next(8) == 0 ? 0f : vmin + (float)(r.NextDouble() * 8);
-                float prev = -1f;
-                for (int i = 0; i <= 20; i++)
-                {
-                    float gs = RM_FootprintKernel.GrowthScale(vmin, vmax, i / 20f);
-                    Check(gs >= 0f && gs <= 1f, $"GrowthScale {gs} outside 0..1 (min {vmin} max {vmax})");
-                    Check(gs >= prev - 1e-6f, "GrowthScale fell as growth rose");
-                    prev = gs;
-                }
-                Check(RM_FootprintKernel.GrowthScale(vmin, vmax, -5f) == RM_FootprintKernel.GrowthScale(vmin, vmax, 0f), "negative growth not clamped to 0");
-                Check(RM_FootprintKernel.GrowthScale(vmin, vmax, 7f) == RM_FootprintKernel.GrowthScale(vmin, vmax, 1f), "growth above 1 not clamped to 1");
-                if (vmax > vmin && vmin >= 0f)
-                {
-                    Check(Math.Abs(RM_FootprintKernel.GrowthScale(vmin, vmax, 0f) - vmin / vmax) < 1e-5f, $"a seedling is drawn at {RM_FootprintKernel.GrowthScale(vmin, vmax, 0f)}, the def says {vmin / vmax} of full size");
-                    Check(Math.Abs(RM_FootprintKernel.GrowthScale(vmin, vmax, 0.5f) - (vmin + vmax) / 2f / vmax) < 1e-5f, "half-grown is not halfway between the drawn sizes");
-                }
-                if (vmax > 0f) Check(Math.Abs(RM_FootprintKernel.GrowthScale(vmin, vmax, 1f) - Math.Min(1f, 1f)) < 1e-5f || vmin > vmax, "fully grown is not full size");
-                else Check(RM_FootprintKernel.GrowthScale(vmin, vmax, 0.3f) == 1f, "a plant with no drawn range is not full size");
-                // scaled
-                int full = r.Next(-2, 9);
-                float sc = (float)(r.NextDouble() * 3);
-                int sd = RM_FootprintKernel.Scaled(full, sc);
-                if (full <= 0) Check(sd == 0, "a non-positive dimension scaled to " + sd);
-                else { Check(sd >= 1, $"Scaled({full},{sc}) = {sd} < 1"); Check(RM_FootprintKernel.Scaled(full, sc + 0.25f) >= sd, "Scaled not monotone in the scale"); }
-            });
-            return fails;
-        }
-
-        // ════════════════════════ trunk ════════════════════════
-        private static List<string> Trunk(int n, int seed)
-        {
-            return Loop("trunk", n, seed, r =>
-            {
-                int rx = r.Next(-50, 250), rz = r.Next(-50, 250);
-                int tw = r.Next(1, 6), td = r.Next(0, 6), sh = r.Next(0, 10);
-                float minG = new[] { 0f, 0.25f, 0.25f, 0.5f, 0.9f }[r.Next(5)];
-                float vmin = (float)(r.NextDouble() * 5), vmax = vmin + 1f + (float)(r.NextDouble() * 6);
-                float mult = new[] { 0.5f, 0.75f, 1f, 1f, 1.25f, 1.5f }[r.Next(6)];
-                RM_KRect prevT = RM_KRect.Empty; bool wasNonEmpty = false;
-                int depth = RM_FootprintKernel.DepthOf(tw, td), stem = RM_FootprintKernel.StemOf(tw, td, sh);
-                Check(depth == (td > 0 ? td : tw) && stem == (sh > 0 ? sh : depth), "Depth/Stem fallbacks");
-                RM_KRect max = RM_FootprintKernel.MaxRect(rx, rz, tw, td);
-                for (int i = 0; i <= 20; i++)
-                {
-                    Steps++;
-                    float g = i / 20f;
-                    float gs = RM_FootprintKernel.GrowthScale(vmin, vmax, g);
-                    RM_KRect t = RM_FootprintKernel.TrunkRect(rx, rz, tw, td, minG, gs, g, mult);
-                    RM_KRect sel = RM_FootprintKernel.SelectRect(rx, rz, tw, td, sh, gs, mult);
-                    if (g < minG) Check(t.IsEmpty, $"growth {g} < {minG} still blocks {S(t)}");
-                    if (t.IsEmpty) { EmptyTrunks++; Check(!wasNonEmpty || true, ""); }
-                    else
-                    {
-                        Check(t.Area >= 2, "a one-cell trunk was returned (the plant alone is one cell)");
-                        Check(t.minZ == rz, $"trunk south edge {t.minZ} is not the root row {rz}");
-                        Check(t.Contains(rx, rz), $"trunk {S(t)} does not contain the root cell ({rx},{rz}), so the plant cannot be reached from the south to cut it");
-                        Check(!t.Contains(rx, rz - 1), "the cell south of the root is trunk");
-                        Check(max.Contains(t.minX, t.minZ) && max.Contains(t.MaxX, t.MaxZ), $"MaxRect {S(max)} does not cover trunk {S(t)} (re-link after load would orphan blockers)");
-                        Check(!sel.IsEmpty, "a trunk with no click area");
-                        { float sc = gs * RM_FootprintKernel.ClampScale(mult); int wantH = Math.Max(RM_FootprintKernel.Scaled(depth, sc), RM_FootprintKernel.Scaled(stem, sc)); Check(sel.h == wantH, $"click area height {sel.h}, the taller of trunk depth and stem is {wantH}"); }
-                        Check(sel.minX == t.minX && sel.w == t.w && sel.minZ == t.minZ && sel.h >= t.h, $"click area {S(sel)} does not cover trunk {S(t)}");
-                        if (t.w >= 3 && t.h >= 3) BigTrunks++;
-                        if (wasNonEmpty) Check(t.w >= prevT.w && t.h >= prevT.h, $"the trunk shrank while growing: {S(prevT)} -> {S(t)}");
-                        prevT = t; wasNonEmpty = true;
-                    }
-                    if (!sel.IsEmpty) { Check(sel.Contains(rx, rz), "click area misses the root cell"); Check(sel.minZ == rz, "click area not anchored on the root row"); }
-                    if (wasNonEmpty) Check(!t.IsEmpty, "the trunk vanished while growing");
-                    // any settings value, slider or hand-edited file (up to 4x, or negative): the trunk stays inside MaxRect
-                    float mm = (float)(r.NextDouble() * 5 - 0.5);
-                    RM_KRect t2 = RM_FootprintKernel.TrunkRect(rx, rz, tw, td, 0f, gs, 1f, mm);
-                    if (!t2.IsEmpty) Check(max.Contains(t2.minX, t2.minZ) && max.Contains(t2.MaxX, t2.MaxZ), $"MaxRect {S(max)} misses trunk {S(t2)} at settings value {mm}");
-                }
-            });
-        }
-
-        // ════════════════════════ pawn ════════════════════════
-        private static List<string> Pawn(int n, int seed)
-        {
-            return Loop("pawn", n, seed, r =>
-            {
-                Steps++;
-                float dx = (float)(r.NextDouble() * 14), dy = (float)(r.NextDouble() * 14), frac = 0.3f + (float)(r.NextDouble() * 0.6f);
-                int fw = r.Next(1, 4), fh = r.Next(1, 4);
-                var foot = new RM_KRect(r.Next(0, 100), r.Next(0, 100), fw, fh);
-                int cx = foot.minX + r.Next(-2, fw + 2), cz = foot.minZ + r.Next(-2, fh + 2);
-                RM_KRect prev = RM_KRect.Empty;
-                foreach (float mult in new[] { 0.5f, 0.75f, 1f, 1.25f, 1.5f })
-                {
-                    Check(RM_FootprintKernel.HitboxSide(dx, frac, mult) >= 1, "hitbox side under 1");
-                    RM_KRect h = RM_FootprintKernel.PawnHitbox(dx, dy, frac, mult, foot, cx, cz);
-                    int w = RM_FootprintKernel.HitboxSide(dx, frac, mult), hh = RM_FootprintKernel.HitboxSide(dy, frac, mult);
-                    if (w <= fw && hh <= fh && foot.Area <= 1) Check(h.IsEmpty, $"a body no bigger than a one-cell footprint returned hitbox {S(h)} (vanilla's cell selection is right there)");
-                    if (h.IsEmpty) Check(w <= fw && hh <= fh && foot.Area <= 1, $"empty hitbox but body {w}x{hh} vs footprint {fw}x{fh}");
-                    else
-                    {
-                        Check(h.minX <= foot.minX && h.minZ <= foot.minZ && h.MaxX >= foot.MaxX && h.MaxZ >= foot.MaxZ, $"hitbox {S(h)} does not contain the footprint {S(foot)}");
-                        if (!(w <= fw && hh <= fh)) { Unions++; Check(h.w >= w && h.h >= hh, $"hitbox {S(h)} is smaller than the body {w}x{hh}"); }
-                        else Check(h.minX == foot.minX && h.w == foot.w, "a body inside its footprint changed the footprint");
-                    }
-                    if (!prev.IsEmpty && !h.IsEmpty) Check(h.Area >= prev.Area, $"hitbox shrank as the scale rose: {S(prev)} -> {S(h)}");
-                    if (!h.IsEmpty) prev = h;
-                }
-                Check(RM_FootprintKernel.HitboxSide(dx, frac, 50f) == RM_FootprintKernel.HitboxSide(dx, frac, RM_FootprintKernel.MaxTrunkScale), "a hand-edited hitbox scale of 50 is not clamped to the slider ceiling");
-                Check(RM_FootprintKernel.HitboxSide(dx, frac, -3f) == 1, "a negative hitbox scale is not clamped to side 1");
-                var a = new RM_KRect(r.Next(0, 30), r.Next(0, 30), r.Next(1, 6), r.Next(1, 6));
-                var b = new RM_KRect(r.Next(0, 30), r.Next(0, 30), r.Next(1, 6), r.Next(1, 6));
-                RM_KRect u = RM_FootprintKernel.Union(a, b);
-                Check(u.Contains(a.minX, a.minZ) && u.Contains(a.MaxX, a.MaxZ) && u.Contains(b.minX, b.minZ) && u.Contains(b.MaxX, b.MaxZ), "Union does not contain its operands");
-                RM_KRect u2 = RM_FootprintKernel.Union(b, a);
-                Check(u.minX == u2.minX && u.minZ == u2.minZ && u.w == u2.w && u.h == u2.h, "Union not commutative");
-                Check(u.Area <= (Math.Max(a.MaxX, b.MaxX) - Math.Min(a.minX, b.minX) + 1) * (Math.Max(a.MaxZ, b.MaxZ) - Math.Min(a.minZ, b.minZ) + 1), "Union bigger than the bounding box");
-            });
-        }
-
-        // ════════════════════════ plan ════════════════════════
-        private static List<string> Plan(int n, int seed)
-        {
-            return Loop("plan", n, seed, r =>
-            {
-                // --- one random reconcile ---
-                int rx = r.Next(0, 30), rz = r.Next(0, 30);
-                RM_KRect want = r.Next(5) == 0 ? RM_KRect.Empty : RM_FootprintKernel.NorthRect(rx, rz, r.Next(1, 7), r.Next(1, 7));
-                int W = 34, H = 40;
-                var refused = new HashSet<long>();
-                for (int i = 0; i < r.Next(0, 12); i++) refused.Add(RM_FootprintKernel.Pack(rx + r.Next(-4, 5), rz + r.Next(0, 7)));
-                var live = new List<long>();
-                var seen = new HashSet<long>();
-                for (int i = 0; i < r.Next(0, 14); i++)
-                {
-                    long k = RM_FootprintKernel.Pack(rx + r.Next(-6, 8), rz + r.Next(-3, 9));
-                    if (seen.Add(k)) live.Add(k);
-                }
-                Func<int, int, bool> inb = (x, z) => x >= 0 && z >= 0 && x < W && z < H;
-                Func<int, int, bool> takes = (x, z) => !refused.Contains(RM_FootprintKernel.Pack(x, z));
-                RM_TrunkPlan plan = RM_FootprintKernel.Plan(want, rx, rz, live, inb, takes);
-                Steps += live.Count + want.Area;
-                Check(plan.destroyIndexes.Distinct().Count() == plan.destroyIndexes.Count && plan.destroyIndexes.All(i => i >= 0 && i < live.Count), "destroy indexes invalid or repeated");
-                Check(plan.spawnCells.Distinct().Count() == plan.spawnCells.Count, "a cell is planned twice");
-                var finalSet = new HashSet<long>(live.Where((k, i) => !plan.destroyIndexes.Contains(i)));
-                foreach (long k in plan.spawnCells)
-                {
-                    int x = RM_FootprintKernel.PackedX(k), z = RM_FootprintKernel.PackedZ(k);
-                    Check(want.Contains(x, z), $"spawn ({x},{z}) is outside the wanted trunk {S(want)}");
-                    Check(!(x == rx && z == rz), "a blocker planned on the plant's own cell");
-                    Check(inb(x, z), $"spawn ({x},{z}) is out of the map");
-                    Check(takes(x, z), $"spawn ({x},{z}) is on a cell that refuses a trunk");
-                    Check(!finalSet.Contains(k), $"spawn ({x},{z}) already has a blocker");
-                    finalSet.Add(k); Spawned++;
-                }
-                Destroyed += plan.destroyIndexes.Count;
-                foreach (long k in finalSet) Check(want.Contains(RM_FootprintKernel.PackedX(k), RM_FootprintKernel.PackedZ(k)), "a blocker survives outside the wanted trunk");
-                for (int i = 0; i < live.Count; i++)
-                {
-                    bool inside = want.Contains(RM_FootprintKernel.PackedX(live[i]), RM_FootprintKernel.PackedZ(live[i]));
-                    Check(plan.destroyIndexes.Contains(i) == !inside, $"blocker {i} {(inside ? "inside" : "outside")} the trunk was {(inside ? "destroyed" : "kept")}");
-                }
-                if (want.IsEmpty) { Check(plan.spawnCells.Count == 0, "spawns planned for an empty trunk"); Check(finalSet.Count == 0, "blockers left for an empty trunk"); }
-                for (int z = want.minZ; !want.IsEmpty && z <= want.MaxZ; z++)
-                    for (int x = want.minX; x <= want.MaxX; x++)
-                    {
-                        long k = RM_FootprintKernel.Pack(x, z);
-                        bool need = !(x == rx && z == rz) && inb(x, z) && takes(x, z);
-                        if (need) Check(finalSet.Contains(k), $"wanted cell ({x},{z}) was not filled");
-                        else if (!(x == rx && z == rz) && !live.Contains(k)) { Check(!finalSet.Contains(k), $"a blocker appeared on unwanted cell ({x},{z})"); if (inb(x, z)) Refused++; }
-                    }
-                // idempotent
-                var again = RM_FootprintKernel.Plan(want, rx, rz, finalSet.ToList(), inb, takes);
-                Check(again.destroyIndexes.Count == 0 && again.spawnCells.Count == 0, "a second reconcile still had work to do");
-            });
-        }
-
-        private static List<string> Lifecycle(int n, int seed)
-        {
-            return Loop("plan-life", n, seed, r =>
-            {
-                int rx = r.Next(10, 20), rz = r.Next(10, 20), tw = r.Next(1, 5), td = r.Next(0, 5);
-                float minG = 0.25f, vmin = 3f, vmax = 9f;
-                var blockers = new List<long>();
-                float mult = 1f;
-                for (int step = 0; step < 60; step++)
-                {
-                    Steps++;
-                    float g = Math.Min(1f, step / 40f);
-                    if (r.Next(8) == 0) { mult = new[] { 0.5f, 1f, 1.5f }[r.Next(3)]; Grown++; }
-                    bool enabled = r.Next(15) != 0;
-                    RM_KRect want = enabled ? RM_FootprintKernel.TrunkRect(rx, rz, tw, td, minG, RM_FootprintKernel.GrowthScale(vmin, vmax, g), g, mult) : RM_KRect.Empty;
-                    var plan = RM_FootprintKernel.Plan(want, rx, rz, blockers, (x, z) => true, (x, z) => true);
-                    foreach (int i in plan.destroyIndexes.OrderByDescending(i => i)) blockers.RemoveAt(i);
-                    blockers.AddRange(plan.spawnCells);
-                    var expect = new HashSet<long>();
-                    for (int z = want.minZ; !want.IsEmpty && z <= want.MaxZ; z++) for (int x = want.minX; x <= want.MaxX; x++) if (!(x == rx && z == rz)) expect.Add(RM_FootprintKernel.Pack(x, z));
-                    Check(expect.SetEquals(blockers), $"step {step}: blockers {blockers.Count} differ from the wanted trunk minus the root {expect.Count} ({S(want)})");
-                }
-            });
-        }
-
-        // ════════════════════════ units ════════════════════════
-        private static List<string> Units()
-        {
-            var fails = new List<string>();
-            Action<string, Action> t = (name, a) => { Cases++; Steps++; try { a(); } catch (Exception e) { fails.Add("units seed 0: " + name + ": " + e.Message); } };
-            t("cell eligibility table", () =>
-            {
-                for (int m = 0; m < 64; m++)
-                {
-                    bool[] f = Enumerable.Range(0, 6).Select(i => (m >> i & 1) == 1).ToArray();
-                    bool got = RM_FootprintKernel.CellTakesTrunk(f[0], f[1], f[2], f[3], f[4], f[5]);
-                    Check(got == (f[0] && !f[1] && !f[2] && !f[3] && !f[4] && !f[5]), "CellTakesTrunk " + string.Join("", f.Select(x => x ? 1 : 0)));
-                }
-            });
-            t("pack round trip", () =>
-            {
-                foreach (int x in new[] { 0, 1, -1, 12345, -12345, int.MaxValue, int.MinValue })
-                    foreach (int z in new[] { 0, 1, -1, 999, -999, int.MaxValue, int.MinValue })
-                    {
-                        long k = RM_FootprintKernel.Pack(x, z);
-                        Check(RM_FootprintKernel.PackedX(k) == x && RM_FootprintKernel.PackedZ(k) == z, $"pack({x},{z}) did not round trip");
-                    }
-            });
-            t("even widths lean east, odd centre", () =>
-            {
-                Check(RM_FootprintKernel.NorthRect(10, 10, 2, 2).minX == 10, "width 2 should start on the root column");
-                Check(RM_FootprintKernel.NorthRect(10, 10, 3, 3).minX == 9, "width 3 should start one west");
-                Check(RM_FootprintKernel.NorthRect(10, 10, 4, 4).minX == 9, "width 4 should start one west (leans east)");
-                Check(RM_FootprintKernel.CentredRect(10, 10, 4, 4).minZ == 9, "even centred rects lean north");
-            });
-            t("rect helpers", () =>
-            {
-                Check(RM_KRect.Empty.IsEmpty && !RM_KRect.Empty.Contains(0, 0), "Empty contains a cell");
-                Check(new RM_KRect(0, 0, 0, 5).IsEmpty && new RM_KRect(0, 0, 5, -1).IsEmpty, "zero/negative extent is not empty");
-                Check(new RM_KRect(2, 3, 4, 5).MaxX == 5 && new RM_KRect(2, 3, 4, 5).MaxZ == 7 && new RM_KRect(2, 3, 4, 5).Area == 20, "rect corners");
-                var e = new RM_KRect(2, 3, 4, 5).ExpandedBy(1);
-                Check(e.minX == 1 && e.minZ == 2 && e.w == 6 && e.h == 7, "ExpandedBy");
-            });
-            t("a young plant of the shipped table blocks nothing, a grown one does", () =>
-            {
-                RM_KRect young = RM_FootprintKernel.TrunkRect(50, 50, 3, 3, 0.25f, RM_FootprintKernel.GrowthScale(5.14f, 9f, 0.15f), 0.15f, 1f);
-                RM_KRect half = RM_FootprintKernel.TrunkRect(50, 50, 3, 3, 0.25f, RM_FootprintKernel.GrowthScale(5.14f, 9f, 0.5f), 0.5f, 1f);
-                RM_KRect full = RM_FootprintKernel.TrunkRect(50, 50, 3, 3, 0.25f, 1f, 1f, 1f);
-                Check(young.IsEmpty, "a 15% grown plant blocks");
-                Check(half.w == 2 && half.h == 2 && half.minX == 50, "the half-grown 3x3 trunk is not 2x2 at x=50: " + S(half));
-                Check(full.w == 3 && full.h == 3 && full.minX == 49, "the full 3x3 trunk is not 3x3 at x=49: " + S(full));
-            });
-            return fails;
-        }
-
-        public static bool Run(double scale, int? oneSeed, string only)
-        {
-            var sw = Stopwatch.StartNew();
+            int N(int baseN) => Math.Max(scale > 0 ? 1 : 0, (int)(baseN * scale));
             bool ok = true;
-            int N(int n) { return oneSeed.HasValue ? 1 : (int)(n * scale); }
-            int Sd(int baseSeed) { return oneSeed ?? baseSeed; }
-            var fam = new (string name, Func<List<string>> run)[]
+            if (only == null || only == "any") ok &= Family("any", N(20000), one, CaseAny);
+            if (only == null || only == "full") ok &= Family("full", N(5000), one, CaseFull);
+            if (only == null || only == "boundary") ok &= Family("boundary", N(5000), one, CaseBoundary);
+            if (only == null || only == "symmetry") ok &= Family("symmetry", N(3000), one, CaseSymmetry);
+            if (only == null || only == "determinism")
             {
-                ("math", () => Math_(N(3000), Sd(1))),
-                ("trunk", () => Trunk(N(4000), Sd(1))),
-                ("pawn", () => Pawn(N(3000), Sd(1))),
-                ("plan", () => Plan(N(6000), Sd(1)).Concat(Lifecycle(N(1500), Sd(1))).ToList()),
-                ("units", () => Units()),
-            };
-            foreach (var f in fam)
-            {
-                if (only != null && f.name != only) continue;
-                long c0 = Cases, s0 = Steps; var t = Stopwatch.StartNew();
-                var fails = f.run();
-                Console.WriteLine($"fuzz {f.name}: {Cases - c0} cases, {Steps - s0} steps, {t.Elapsed.TotalSeconds:F2}s, {(fails.Count == 0 ? "0 failures" : fails.Count + " FAILURES")}");
-                foreach (var m in fails) Console.WriteLine("FAIL " + m);
-                if (fails.Count > 0) ok = false;
+                ok &= Family("determinism", N(500), one, s =>
+                {
+                    Check(CaseAny(s) == CaseAny(s) && CaseBoundary(s) == CaseBoundary(s) && CaseFull(s) == CaseFull(s), "a seed replayed differently");
+                    return "";
+                });
             }
-            if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
-            if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            if (only == null && !oneSeed.HasValue && scale >= 1)
-            {
-                Console.WriteLine($"reached: spawned {Spawned}, destroyed {Destroyed}, refused cells {Refused}, empty trunks {EmptyTrunks}, big trunks {BigTrunks}, hitbox unions {Unions}, scale changes {Grown}");
-                if (Spawned == 0 || Destroyed == 0 || Refused == 0 || EmptyTrunks == 0 || BigTrunks == 0 || Unions == 0 || Grown == 0) { Console.WriteLine("FAIL fuzz never reached spawn / destroy / refusal / empty / big trunk / union / scale change (blind)"); ok = false; }
-            }
-            Console.WriteLine($"hugethings fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
+            Console.WriteLine("hugethings fuzz: " + Cases + " cases, " + Checks + " checks");
+            Console.WriteLine(ok ? "ALL PASS" : "FAILURES");
             return ok;
         }
     }
