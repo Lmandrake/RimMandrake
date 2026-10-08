@@ -50,3 +50,8 @@ Source: `Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json` (owner 
 - RSW_Shiro variant B: ingest skips variant clicks on purge-touched rows without decidedAt; once a ruling exists, install ShiroB_* in ShiroArtOverride + alternateGraphics on RSW_Shiro.
 - RM_AcousticPayload_Greentide.xml still has a "something lying in wait" target reading only RM_Sytheclaw (now absent from the Greentide).
 - Gristle is an invented-style name on an RSW_ def; Q11a would let it move to RM_ tier — not asked, not done.
+
+### Owner card follow-ups (2026-10-07 22:20 PDT, decision taken by question card)
+- Gristle -> RM tier: new RM_Gristle (Greentide/Defs/ThingDefs_Races/RM_Gristle.xml; SW deps swapped for vanilla lifestages, Megascarab voice, no leather; comfy -25/75.8 as pinned), art byte-copied via ledger to Things/Pawn/Animal/RM_Gristle, cast inline in RM_Greentide 0.4, removed from WildAnimals_Greentide.xml; pending regen_gt_gristle_v2 jobs + jobs json repointed; sheet_row_overrides + subject alias gristle->diggerpede; roster json and three design docs updated. RSW_Diggerpede kept ONLY because the frozen RUT_Greentide.xml still names it (and AnimalTolerances_Ashkarr pins it).
+- Shiro B: ruling e6371c756a12be99aadc recorded (decision taken on the review sheet); ShiroB_{S,E,N} installed in ShiroArtOverride; RSW_Shiro alternateGraphics (chance 0.5).
+- selftests 335/336 (only bridgetools tool_metadata, stale DLL).
