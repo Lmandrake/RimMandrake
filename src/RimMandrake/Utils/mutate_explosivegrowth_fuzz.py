@@ -31,7 +31,7 @@ def run_mutations(kernel_rel, wrapper, mutations, only=None):
             open(kernel, "wb").write(text.replace(old, new, 1).encode("utf-8"))
             time.sleep(5)
             os.utime(kernel, None)
-            p = subprocess.run([sys.executable, os.path.join(HERE, wrapper)], capture_output=True, text=True)
+            p = subprocess.run([sys.executable, os.path.join(HERE, wrapper)], capture_output=True, text=True, errors="replace")
             out = p.stdout + p.stderr
             built = "Build succeeded" in out or "fuzz " in out
             if p.returncode != 0 and built and "FAIL" in out and "error CS" not in out:
