@@ -25,7 +25,7 @@ def bundle(mod):
                 continue
             parts.append(chunk)
             size += len(chunk)
-    path = f"/tmp/gptreview_{mod}.txt"
+    path = os.path.join(ROOT, "Transient", f"gptreview_{mod}.txt")
     open(path, "w").write(f"MOD: {mod}\n" + "".join(parts))
     return path
 
