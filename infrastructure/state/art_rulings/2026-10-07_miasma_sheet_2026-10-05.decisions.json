@@ -1,0 +1,728 @@
+{
+  "biome": "RM_Miasma",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 63,
+  "decisions": {
+    "AA_DecayDrake": {
+      "at": "2026-10-08T03:45:19.380Z",
+      "decidedAt": "2026-10-08T03:44:00.201Z",
+      "decision": "B",
+      "note": "Rename the Fermatalis. Keep the mechanic. Rewrite the description. A significant creature for Star Wars Cuisine: it induces fermentation of almost anything and massively accelerates it. ",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "AA_Helixien": {
+      "decision": "B",
+      "note": "",
+      "prefill": "B"
+    },
+    "AA_Lockjaw": {
+      "at": "2026-10-08T03:49:08.929Z",
+      "decidedAt": "2026-10-08T03:48:57.811Z",
+      "decision": "redo",
+      "note": "Rename Siezer. Make it have a MASSIVE head half the size of its relatively reduced body. Do not make it an alligator, more like a toothy lock-jawed whale with flippers that pushes itself through the mud. Avoid crocodile or aligator! Make it alien. Try again. Ignore the special toxin/disease stuff.",
+      "prefill": "A",
+      "purge": [
+        "570aa3b9f4ab75df14f9accfbad24d5970ed1067745e453591487a850293617e",
+        "f948206e2e4db23a3ecc2f01d944488c127b65a2f00a157e85cdf76bf17a44f7",
+        "718616bda9a8944e216ca8053e577de257c5f26dc667afc25d350cb349f295db",
+        "32517ac4bcbd67f6d82d72b752c838af2c460a8f1d22e558d2fa4cec8afa9323",
+        "cc009ef0de9dc098e8f71f7708d93b2b96244f4d00f90a217ec559210a75e504",
+        "bbbb5c5519ea2f5ea3db4d7c4a8cb678f867803499aae8bc821060890c016927",
+        "99a517059cf78a467f9693f8152ed67074b721446d191872b68ea31a7891b56b",
+        "6879730bb01fe34c5c8622580f915fa4ba78e9226209f4945ce5215860fa340a",
+        "b545208b559ab4d88d4ad74fa1848da69971fdbade96594c9f5dd4528b788eb0",
+        "9d97b22f62a2293746b75b7bccaa64d516afe51b540af886a1e51bbeabcb8750",
+        "279fa3a30986988c4de0f8e7914a8c4494c0c87eaad6881d7bfd633b1aae4805",
+        "6e0e4c3eb870f76f4b22378e3aca2b70400f6414b7b2515164852b07dfdcc5fc",
+        "ac5c3251808d4f0132344854c7faf80296abde805fd36b36b984f08c19605188"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L"
+      ],
+      "variantsDefault": true
+    },
+    "AA_Mantrap": {
+      "at": "2026-10-08T03:51:24.071Z",
+      "decidedAt": "2026-10-08T03:49:47.096Z",
+      "decision": "E",
+      "note": "Based on E, regenerate ALL art for this. A terrifying single-mouthed thing with fang-like thorns around its mouth, no arms, root-like lets pulling itself along hungrily. Needs both calm, closed-mouth, sessile-like imagery with head hung like a ripe pod... and then that same pod reared up horrifying into a huge gaping maw and actively writing tentacles. Totally rewrite description. Rename it as a Lastvine.",
+      "prefill": "A",
+      "purge": [
+        "59a2c8a46e141443c9c041a8cce36f63f9ce2b0efa9a71a562b55cd8ea5c53ca",
+        "4439de18f6d26ddffb4fe2f6ff5252a8b380b9e795647d18f648abd13f1ab90f",
+        "cc79ab2cdd30341f339e9fd2374a6f36c82de7dae941cf8de47dbbcf8e2130c2",
+        "0a87017de19c6882744d411db229e4a201541e9a6c9f0285f2f4a13840510184",
+        "5ebfc3726523f778670d25ec838afaa9efd5fec2d53b49ddbdbbef94cce6d0c4",
+        "7ed9b10335828766c00bb710d97420624743856f57d290c1eadf0b220847eff7",
+        "2e3e0a9af339ad58b89ef4bd6edf5c46fddd5b9bbece38d51c0a9fb3ae1ee305",
+        "13681d3f00b37acc202724159d3bafbfac165018c26ad6206d8f0c7597808bbb",
+        "14bb57f1d400a32829ea378aa6b385610b98b97af43397d0f73aeeed81b39c55",
+        "8094444617567d8f0485d46c337df6bd6814eebfae3d7caa839e4e55080054e3",
+        "4ba5d288e328718b0a41376692b097db699a8a20856c4b6e1dfa10adde0ae0c7"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M"
+      ],
+      "variantsDefault": true
+    },
+    "AA_RaptorShrimp": {
+      "at": "2026-10-08T03:53:12.236Z",
+      "decision": "A",
+      "note": "Rename to Sharpshrimp. Redo description.",
+      "prefill": "A",
+      "purge": [
+        "0fbc904693956a905ca8c8a851fccbb35f8d1332cd6fad413456f7abcabb65ce",
+        "2e8106c1717cd2fc771adaed68a9e9e8d468a46cf9f1dc6a2deccf856de346f3",
+        "d776aee8cf163875db46ac0a51e64e9cc24063b27e0464c9ca374a466ef2f27f"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "AA_Slurrypede": {
+      "at": "2026-10-08T03:53:47.528Z",
+      "decidedAt": "2026-10-08T03:53:44.781Z",
+      "decision": "hold",
+      "note": "cut from this biome",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "AA_Thermadon": {
+      "at": "2026-10-08T03:55:50.613Z",
+      "decision": "A",
+      "note": "Redo description. Rename Duskfire.",
+      "prefill": "A",
+      "purge": [
+        "7edd77bb89ef84d807e3ff137ecf5713aa7dc6b76ebe103681d8c91786b5c592",
+        "949321697f27751440b7f49cf1191e68e5203baa2498c6ae1cfb82556c8f3743",
+        "0c9a1d7338c1623796fcda595b4203afcc858d8e976d170b4df338c6e015ba87"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Aphreen": {
+      "at": "2026-10-08T03:59:36.222Z",
+      "decidedAt": "2026-10-08T03:59:32.645Z",
+      "decision": "redo",
+      "note": "less cartoon like",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Bozzuga": {
+      "at": "2026-10-08T03:43:44.180Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "a13859878844cf2aea48fb260085e410fe1cb1a3d2c1001e02972fde156ee656"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A"
+      ],
+      "variantsAt": "2026-10-08T03:43:44.180Z"
+    },
+    "RM_Braskeen": {
+      "at": "2026-10-08T03:59:51.015Z",
+      "decidedAt": "2026-10-08T03:59:47.095Z",
+      "decision": "redo",
+      "note": "less cartoonish",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Brelloch": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_CrimsonOpeeJuv": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_FeverSwarm": {
+      "at": "2026-10-08T03:45:37.844Z",
+      "decidedAt": "2026-10-08T03:45:35.304Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T03:45:37.844Z"
+    },
+    "RM_Ilbareen": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Immarel": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Ismerrow": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Karravel": {
+      "at": "2026-10-08T03:45:47.187Z",
+      "decidedAt": "2026-10-08T03:45:47.187Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T03:45:45.962Z"
+    },
+    "RM_Karrimeth": {
+      "at": "2026-10-08T03:45:58.475Z",
+      "decidedAt": "2026-10-08T03:45:56.640Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T03:45:58.475Z"
+    },
+    "RM_Karrobel": {
+      "at": "2026-10-08T03:46:09.529Z",
+      "decidedAt": "2026-10-08T03:46:09.529Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T03:46:05.927Z"
+    },
+    "RM_Karrolun": {
+      "at": "2026-10-08T03:46:22.472Z",
+      "decidedAt": "2026-10-08T03:46:22.472Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T03:46:20.142Z"
+    },
+    "RM_Nemreth": {
+      "at": "2026-10-08T04:01:00.311Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "purge": [
+        "af9b80be2d14b9e8205ea1db64fafd91e56c0f824201b6348a322ec9548ff094"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Nogtyl": {
+      "at": "2026-10-08T04:01:04.746Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [],
+      "variantsDefault": true
+    },
+    "RM_Nyssolet": {
+      "at": "2026-10-08T04:00:56.430Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Ollamane": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Ommok": {
+      "decision": "B",
+      "note": "",
+      "prefill": "B"
+    },
+    "RM_Ommolyn": {
+      "at": "2026-10-08T04:01:33.281Z",
+      "decidedAt": "2026-10-08T04:01:20.990Z",
+      "decision": "redo",
+      "note": "Too plain, more alien swamp, add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Pallasheen": {
+      "at": "2026-10-08T04:01:37.533Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Quennath": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_ReefbackJuv": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_RustNipperJuv": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Sarrash": {
+      "at": "2026-10-08T04:01:43.734Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_ShaleGorgerJuv": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_SiltLampreyJuv": {
+      "at": "2026-10-08T03:59:08.557Z",
+      "decision": "A",
+      "note": "Rename a Gillclamper, redo description.",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Thessamor": {
+      "at": "2026-10-08T04:01:54.845Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_ThornbackColoJuv": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Thrannock": {
+      "at": "2026-10-08T04:02:00.826Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Ullavess": {
+      "at": "2026-10-08T04:02:03.445Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Vellamine": {
+      "at": "2026-10-08T04:02:05.857Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Velluric": {
+      "at": "2026-10-08T04:02:16.334Z",
+      "decidedAt": "2026-10-08T04:02:09.932Z",
+      "decision": "redo",
+      "note": "too simple, try again, add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Wessaline": {
+      "at": "2026-10-08T04:02:23.973Z",
+      "decision": "A",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_AaroxisDendoria": {
+      "at": "2026-10-08T03:41:33.213Z",
+      "decision": "A",
+      "note": "RimMandrake tier, not SW. Rewrite its description to indicate that it produces silk nonstop even in adulthood. Rename it Liliana.",
+      "prefill": "A",
+      "purge": [
+        "7e00924a4f42843952ccdb33531dbb58d7c8f696abf6a312ec3be7daa2c34245",
+        "d3f458d01a2a8264610637ff441a307e99409587628887deeefb64d7467c63da",
+        "2c2443a7296dd04e340de576ed6636658a6d490a9e33b1e08a3623aa20d0fb8d"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A"
+      ],
+      "variantsAt": "2026-10-08T03:41:33.213Z"
+    },
+    "RSW_Anooba": {
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "swanimals/Anooba/Anooba_m": "C"
+      },
+      "prefill": "A"
+    },
+    "RSW_Blarth": {
+      "at": "2026-10-08T03:42:28.861Z",
+      "decidedAt": "2026-10-08T03:42:21.281Z",
+      "decision": "redo",
+      "note": "There's no new art!",
+      "picks": {
+        "swanimals/Blarth/Blarth_Swimming": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Blixus": {
+      "at": "2026-10-08T03:42:41.913Z",
+      "decidedAt": "2026-10-08T03:42:39.080Z",
+      "decision": "redo",
+      "note": "No new art!",
+      "picks": {
+        "swanimals/Blixus/Blixus_Swimming": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Bogwing": {
+      "at": "2026-10-08T03:42:58.952Z",
+      "decidedAt": "2026-10-08T03:42:58.952Z",
+      "decision": "redo",
+      "note": "",
+      "picks": {
+        "_flip:swanimals/Bogwing/Bogwing_Flying_": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_CrestedDragon": {
+      "at": "2026-10-08T03:43:55.725Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "4b26c6ebc8fcb39511fe1241e1e7cb903561a2e4b19ea24f1dc0d3a626f49a3a",
+        "f45ba5eb9123ef915be5c05041f6fa0936205485729f1dd174aeeb2bfe3ce664",
+        "b93cf6913e4ba27725e026a17448f706332a6ca60a3b4338cf94810cf17357a7"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_FaaJuv": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RSW_Grank": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RSW_LaaJuv": {
+      "at": "2026-10-08T03:56:59.656Z",
+      "decidedAt": "2026-10-08T03:56:56.088Z",
+      "decision": "redo",
+      "note": "follow canon precisely",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_MarshHaunt": {
+      "at": "2026-10-08T03:51:45.794Z",
+      "decidedAt": "2026-10-08T03:51:45.794Z",
+      "decision": "redo",
+      "note": "",
+      "picks": {
+        "swanimals/MarshHaunt/MarshHaunt_Swimming": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_MeeJuv": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RSW_OpeeSeaKillerJuv": {
+      "at": "2026-10-08T03:54:43.202Z",
+      "decidedAt": "2026-10-08T03:54:36.863Z",
+      "decision": "redo",
+      "note": "Follow canon image precisely",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_PodWorm": {
+      "at": "2026-10-08T03:52:41.271Z",
+      "decidedAt": "2026-10-08T03:51:55.939Z",
+      "decision": "redo",
+      "note": "Rename to Hell's Lantern. Venomous and slow. Redo description and art.",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Runyip": {
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "swanimals/Runyip/Runyip_Swimming": "C",
+        "swanimals/Runyip/Runyip_j": "D",
+        "swanimals/Runyip/Runyip_j_Swimming": "E"
+      },
+      "prefill": "A"
+    },
+    "RSW_RustNipperJuv": {
+      "at": "2026-10-08T03:58:29.638Z",
+      "decidedAt": "2026-10-08T03:58:26.906Z",
+      "decision": "hold",
+      "note": "not SW tier",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Shiro": {
+      "at": "2026-10-08T03:53:26.924Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "481a1f1e5132bd0a9d1da7bbd5574e0224e94eac30dd872afbfe8f9e5e722b64",
+        "89fb3421c8aa6683e7f3d8cde93f66bd1150a90c1d0c00076877a022fca332d3",
+        "56b29f4a33734ff74139de8f888aff9e92bdda1a66b53ad359711fe4dba5a4a4"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsAt": "2026-10-08T03:53:26.924Z"
+    },
+    "RSW_SiltLampreyJuv": {
+      "at": "2026-10-08T03:59:09.912Z",
+      "decidedAt": "2026-10-08T03:59:09.912Z",
+      "decision": "hold",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Vornskyr": {
+      "at": "2026-10-08T03:56:31.693Z",
+      "decidedAt": "2026-10-08T03:56:16.526Z",
+      "decision": "redo",
+      "note": "Follow canon precisely.",
+      "prefill": "A",
+      "purge": [
+        "9ab9b55048bab254edb252697db9bff742606bff5011e6badf2316f2a311fe17",
+        "d6c7c5cf18e51c013be6bbdab8f984d493c92424a8ca60cb149218e645032c3d",
+        "9df7890bc6cf693f254124faf924f05d5be733e9b8671f67dc7fd37e41dcb9b2",
+        "2c1c0a49536acd6809296100493e80b4aa6e1604967a6066a7f8f3275f88e1b5",
+        "791d8827bd0e92c368fbb5348283a5d87bb8014dc07ad9a9e923e8e4414edf35",
+        "c4eb469157e78cd42be0aa1110d7d881287bd64c94362d86fc707a828c27cc19",
+        "06b9551f9a25de7ee79d371d4557345c5a46969293042d6ddb9d22dd7543635c",
+        "4987d4160186fa1734d47dfc222f06396f5b5013f191c7b319eeffa43bf5e005",
+        "4fa636bae7e9bdc68f8fcda9ee223b59574601d56c84c4191f6a4bd3f0ca3669"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Whisperbird": {
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_flip:swanimals/Whisperbird/Whisperbird_Flying_": "E"
+      },
+      "prefill": "A"
+    },
+    "RSW_YobshrimpJuv": {
+      "at": "2026-10-08T03:57:17.769Z",
+      "decidedAt": "2026-10-08T03:57:11.007Z",
+      "decision": "redo",
+      "note": "follow purple canon precisely",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Zakkeg": {
+      "at": "2026-10-08T03:58:02.898Z",
+      "decidedAt": "2026-10-08T03:57:58.872Z",
+      "decision": "redo",
+      "note": "follow red canon precisely",
+      "prefill": "A",
+      "purge": [
+        "3e8f3a5b7d85896128f646853cca4efc3035e92d9ef78d47d1a8c1aa8a618a1b",
+        "62eecf79281dbbc892b691dcf74a59f2f5c294b7903f91d2648e08db0b560666",
+        "81372f44bb81f87841e0eebd537769e90829380f7c6f1ca93c3f7077a839bb04",
+        "e7acf002c1cd7e717318be4f6c8196ca888a023f06e7062b206ea1943b502fda",
+        "e98c63c87796fa78deff871619a967398533bf06bf3097480d8c6e0e1e5b2f3c",
+        "25ad043bbfbc8861e50c5a9729badb93ed68db2fe4dfc9d0f4d1f87380a15f14",
+        "e6007f2f15d0c85dbf249895fd75232f465bee26e1d7f06a75f07882e3b57e54",
+        "944bc1cb66caeb649ebcea5614d27cd3df37311d17f73a78f74a261243e19985",
+        "78336fa757e868de62d3bf3761a13ae0fdda2ab3acb16e22ac04baf0e6f23ffc"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsDefault": true
+    },
+    "VFEI2_BlackSwarmling": {
+      "at": "2026-10-08T03:41:51.341Z",
+      "decidedAt": "2026-10-08T03:41:28.247Z",
+      "decision": "B",
+      "note": "Picture good, rewrite the description please and rename. ",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "VFEI2_Swarmling": {
+      "at": "2026-10-08T03:55:02.659Z",
+      "decidedAt": "2026-10-08T03:54:53.044Z",
+      "decision": "redo",
+      "note": "I like the bulbous butt, but make it sickly green please",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-07T21:02:24-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "miasma_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/miasma_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "73b8e05dfc9948aa",
+  "writeCount": 216
+}
