@@ -80,6 +80,10 @@ Per batch (every 250 ticks, the Pyrelands ashfall cadence), K random unroofed ce
   candidate that is shadowed or lower-depth than its neighbors — deposition prefers low
   cells, so **pits and cleared lanes refill from the rule itself, free** (the owner's
   pit mechanic is not a feature, it's a corollary).
+- **Water banks the sand** (owner, by card 2026-10-07; `MOVINGDUNES_WATER_BANKS_SAND_1`):
+  a hop that meets a cell that cannot hold sand (water, space) lands on the last cell
+  before it, exactly like a wall's lee, so a shore builds a bank and a lake never eats
+  sand. The leeward edge and the depth cap are the only ways a moved slab leaves.
 ### The edge condition: source/sink, not toroidal (RULED — designed here, committed)
 
 The owner's fast-dune case (violent windstorms marching dunes clear across the map)

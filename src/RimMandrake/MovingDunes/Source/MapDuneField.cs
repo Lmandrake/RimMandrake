@@ -23,6 +23,13 @@ namespace RimMandrake.MovingDunes
         public void SetDepth(int x, int z, float depth) { grid.SetDepth(new IntVec3(x, 0, z), depth); }
         public bool Roofed(int x, int z) { return map.roofGrid.Roofed(new IntVec3(x, 0, z)); }
 
+        /// <summary>The terrain half of Patch_SandGrid_CanHaveSand (water and space refuse sand); the edifice half is BlocksSand.</summary>
+        public bool CanHoldSand(int x, int z)
+        {
+            TerrainDef terrain = map.terrainGrid.TerrainAt(new IntVec3(x, 0, z));
+            return terrain == null || terrain.holdSnowOrSand;
+        }
+
         public bool BlocksSand(int x, int z)
         {
             Building edifice = new IntVec3(x, 0, z).GetEdifice(map);
