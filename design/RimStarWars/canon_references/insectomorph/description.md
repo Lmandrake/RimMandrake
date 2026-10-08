@@ -17,10 +17,13 @@ Legends flavors that agree closely with each other:
   mounts by "Dug cavaliers" on Malastare. Gray hide marked with
   **greenish-yellow stripes**, red eyes. Moved on four legs ending in two
   long toe-like pads; **hind legs roughly twice the length of the front legs
-  and considerably more muscular** (a hopping/leaping-insect gait implied).
+  and considerably more muscular** (the page states the proportions only; it
+  does not describe a gait).
   Short, blunt head set low between the shoulders of the front legs, with a
   wide, sharp-toothed mouth. History: ridden into the Battle of Malastare (22
-  BBY) armed with electrostaves; several were shot down by Separatist battle
+  BBY in Legends; the canon Battle of Malastare page dates it 21 BBY, citing
+  *Star Wars: Timelines*, https://starwars.fandom.com/wiki/Battle_of_Malastare)
+  armed with electrostaves (the riders' weapons, not part of the animal); several were shot down by Separatist battle
   droid blaster fire during a cavalry charge.
 - Both tiers first-appeared in the same two episodes: *The Clone Wars* "The
   Zillo Beast" (S2E18, first) and "The Zillo Beast Strikes Back" (S2E19,
@@ -41,13 +44,13 @@ description closely:
 - `wookieepedia_infobox.jpg` — the canon infobox render (isolated on
   transparent background, a Dug cavalier mounted on top): a low-slung,
   spider/mantis-like arthropod body with **four long, jointed, skeletal-
-  looking legs** ending in multi-toed claws/pads. Legs are **tan/gold with
+  looking legs** ending in pads (Legends text: two long toe-like pads per foot). Legs are **tan/gold with
   dark brown horizontal banding stripes** — this is the clearest read of the
   "yellow[-green] stripes" the Legends text describes; the "gray" the text
   also cites reads more as the bone-white/gray undertone of the leg
   segments than a dominant body color. The head is small, blunt, and set low
   and forward between the front legs — wide mouth lined with visible sharp
-  teeth, and one unmistakable **glowing red eye**. No wings, no visible
+  teeth, and one unmistakable red eye (the text says only "red" eyes; the glow is how the render draws it). No wings, no visible
   exoskeleton segmentation beyond the leg joints (reads more like a
   skeletal/bony arthropod than a shiny chitinous beetle). The rider carries
   an electrostaff (glowing cyan/blue crackling head) matching the

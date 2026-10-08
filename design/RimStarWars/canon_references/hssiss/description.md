@@ -3,7 +3,9 @@
 **defName**: `RSW_Hssiss` — in-repo label "hssiss"; no variants
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Hssiss
+### Legends (the base-title Hssiss page is tagged Legends; no separate canon page exists) — https://starwars.fandom.com/wiki/Hssiss
+
+Sources are all pre-2014 Legends material: *Tales of the Jedi* comics (1995), *Star Wars: Knights of the Old Republic II: The Sith Lords*, *The Essential Guide to Alien Species*, *The Dark Side Sourcebook*, *Book of Sith: Secrets from the Dark Side*. The infobox gives height 2 m and diet carnivorous, semi-sentient, Force-sensitive. Hunting in pairs is described only for the lakes of Ambria. Dark Lizards are listed as a hssiss subspecies.
 
 Hssiss, also called dark side dragons, were a lizard species with the ability to influence Force-sensitive beings around them. If bitten by a Hssiss, one would succumb to the effects of a dark side venom. Hssiss also had the ability to conceal themselves and become invisible, possibly doing so through the Force.
 
@@ -14,13 +16,12 @@ Hssiss inhabited caves, swamps, marshes, and wetlands and were usually at the to
 Dark Lizards were a species of hssiss.
 
 ## Visual brief
-Viewed 2026-10-04. All four images are canon, but they are four DIFFERENT artists' takes and they
+Viewed 2026-10-04. All four images are Legends-continuity illustrations (the page is Legends-tagged), and they are four DIFFERENT artists' takes and they
 disagree on colour: (1) infobox colour illustration, (2) comic panel (Ktriss, Great Bogga's pet),
 (3) a dark-scaled painted/rendered hssiss, (4) a painted dark-side-nebula scene. Image 1 is the
 cleanest and matches the prose; use it as the target.
 - **Silhouette**: a heavy, long-bodied lizard like a giant iguana/komodo crossed with a crocodile;
-  low, quadrupedal, sprawling stance with muscular thighs, long thick tail about as long as the
-  body. Image 3 crouches lower and more raptor-like.
+  low, quadrupedal, sprawling stance with muscular thighs, long thick tail (prose: 3 m body plus a 1 m tail, so the tail is about a third of the body length). Image 3 crouches lower and more raptor-like.
 - **Spikes (loud)**: a continuous double row of conical/serrated spikes runs down the back and
   the whole tail (image 1: spiky segmented ridge, tail ringed with spike rows; image 2: a dark
   comb of spines down back and tail) and climbs up the neck into a crest of tall spines behind the
