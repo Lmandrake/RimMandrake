@@ -69,36 +69,18 @@ namespace RimMandrake.FlameStatues
         }
 
         /// <summary>Fuel state only (flames and glow apply their own settings gates).</summary>
-        public bool Burning => refuelable == null || refuelable.HasFuel || !FlameStatuesSettings.consumeFuel;
+        public bool Burning => RM_FlameKernel.Burning(refuelable != null, refuelable != null && refuelable.HasFuel, FlameStatuesSettings.consumeFuel);
 
-        public bool FlamesShown => Burning && FlameStatuesSettings.flamePoints;
+        public bool FlamesShown => RM_FlameKernel.FlamesShown(Burning, FlameStatuesSettings.flamePoints);
 
         // CompGlower polls every sibling IThingGlower; CompRefuelable already darkens it when dry.
         public bool ShouldBeLitNow()
         {
-            return FlameStatuesSettings.glow && FlameStatuesSettings.flamePoints && Burning;
+            return RM_FlameKernel.LitNow(Burning, FlameStatuesSettings.flamePoints, FlameStatuesSettings.glow);
         }
 
-        public float QualityScale
-        {
-            get
-            {
-                if (!Props.qualityScalingEnabled || !FlameStatuesSettings.qualityScaling || quality == null)
-                {
-                    return 1f;
-                }
-                switch (quality.Quality)
-                {
-                    case QualityCategory.Awful: return 0.5f;
-                    case QualityCategory.Poor: return 0.7f;
-                    case QualityCategory.Good: return 1.2f;
-                    case QualityCategory.Excellent: return 1.4f;
-                    case QualityCategory.Masterwork: return 1.7f;
-                    case QualityCategory.Legendary: return 2f;
-                    default: return 1f;
-                }
-            }
-        }
+        public float QualityScale => RM_FlameKernel.QualityScale(Props.qualityScalingEnabled, FlameStatuesSettings.qualityScaling,
+            quality == null ? -1 : (int)quality.Quality);
 
         public override void CompTick()
         {
@@ -108,15 +90,17 @@ namespace RimMandrake.FlameStatues
                 return;
             }
             // a settings change mid-game reaches the glow here (CompGlower only re-polls on comp signals)
-            if (glower != null && parent.IsHashIntervalTick(250))
+            if (glower != null && parent.IsHashIntervalTick(RM_FlameKernel.PollInterval))
             {
                 glower.UpdateLit(parent.Map);
             }
             // "statues never run out": keep the tank topped so CompRefuelable never reports dry.
-            if (!FlameStatuesSettings.consumeFuel && refuelable != null && parent.IsHashIntervalTick(250)
-                && refuelable.Fuel < refuelable.Props.fuelCapacity)
+            float topUp = RM_FlameKernel.RefillAmount(FlameStatuesSettings.consumeFuel, refuelable != null,
+                parent.IsHashIntervalTick(RM_FlameKernel.PollInterval), refuelable != null ? refuelable.Fuel : 0f,
+                refuelable != null ? refuelable.Props.fuelCapacity : 0f);
+            if (topUp > 0f)
             {
-                refuelable.Refuel(refuelable.Props.fuelCapacity - refuelable.Fuel);
+                refuelable.Refuel(topUp);
             }
             int interval = Props.fireGlowFleckIntervalTicks;
             if (interval <= 0 || !FlameStatuesSettings.flecks || !FlamesShown)
@@ -124,11 +108,11 @@ namespace RimMandrake.FlameStatues
                 return;
             }
             float q = QualityScale;
-            int scaled = Mathf.Max(10, Mathf.RoundToInt(interval / q));
+            int scaled = RM_FlameKernel.FleckInterval(interval, q);
             for (int i = 0; i < Props.points.Count; i++)
             {
                 // per-point phase so the points do not puff in unison
-                if ((Find.TickManager.TicksGame + parent.thingIDNumber + i * 37) % scaled != 0)
+                if (!RM_FlameKernel.FleckDue(Find.TickManager.TicksGame, parent.thingIDNumber, i, scaled))
                 {
                     continue;
                 }
@@ -159,16 +143,15 @@ namespace RimMandrake.FlameStatues
             }
             float q = QualityScale;
             int id = parent.thingIDNumber;
-            int ticks = Find.TickManager.TicksGame + Mathf.Abs(id ^ 0x80FD52);
+            int ticks = RM_FlameKernel.AnimTicks(Find.TickManager.TicksGame, id);
             Vector3 basePos = parent.DrawPos;
             basePos.y += AltitudeBump;
             int radial = GenRadial.RadialPattern.Length;
             for (int i = 0; i < Props.points.Count; i++)
             {
                 RM_FlamePoint p = Props.points[i];
-                int step = ticks / 15 + i * 7;
-                int frame = Mathf.Abs(step ^ (id * 391 + i * 131)) % frames.Length;
-                Vector3 jitter = GenRadial.RadialPattern[Mathf.Abs(step + i * 3) % radial].ToVector3()
+                int frame = RM_FlameKernel.FrameIndex(ticks, id, i, frames.Length);
+                Vector3 jitter = GenRadial.RadialPattern[RM_FlameKernel.JitterIndex(ticks, i, radial)].ToVector3()
                                  / GenRadial.MaxRadialPatternRadius * MaxJitter;
                 float s = p.size * q;
                 Vector3 pos = basePos + p.offset + jitter * s;

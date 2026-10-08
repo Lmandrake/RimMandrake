@@ -36,6 +36,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_FlameKernel.cs" />
     <Compile Include="FlameStatuesMod.cs" />
     <Compile Include="RM_FlamePoints.cs" />
   </ItemGroup>
