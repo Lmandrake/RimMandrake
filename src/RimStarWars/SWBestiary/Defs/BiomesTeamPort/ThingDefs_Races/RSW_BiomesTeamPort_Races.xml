@@ -32,10 +32,10 @@ copied verbatim from the donor mods' own Textures trees.
 <Defs>
   <ThingDef ParentName="BaseInsect">
     <defName>RSW_PodWorm</defName>
-    <label>pod worm</label>
-    <description>Though large and intimidating, the appearance of this strange insectoid-like creature does not match with its otherwise passive nature. While it typically lives in insectoid hives as a part of the glow pod producing caste, it occasionally wanders off or gets captured and sold by humanoids.</description>
+    <label>hell's lantern</label>
+    <description>A great, slow, segmented worm-thing the size of a muffalo, its back studded with swollen pods that glow a sickly orange in the dusk of the root-maze. The hell's lantern crawls through the Miasma at barely a walking pace, grazing, paying no attention to anything around it — and it does not need to. Its mandibles carry a venom that leaves anything bitten sick and weakened, and every creature in the delta has learned to leave it be. The glowing pods can be milked for a luminous goo.</description>
     <statBases>
-      <MoveSpeed>2</MoveSpeed>
+      <MoveSpeed>1.5</MoveSpeed>  <!-- owner, Miasma sheet 2026-10-08: "Venomous and slow." -->
       <MarketValue>400</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <ComfyTemperatureMax>300</ComfyTemperatureMax>
@@ -108,7 +108,7 @@ copied verbatim from the donor mods' own Textures trees.
       <li>
         <label>mandibles</label>
         <capacities>
-          <li>Bite</li>
+          <li>ToxicBite</li>
         </capacities>
         <power>10</power>
         <cooldownTime>2</cooldownTime>
@@ -131,7 +131,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_PodWorm</defName>
-    <label>pod worm</label>
+    <label>hell's lantern</label>
     <race>RSW_PodWorm</race>
     <combatPower>50</combatPower>
     <canArriveManhunter>true</canArriveManhunter>

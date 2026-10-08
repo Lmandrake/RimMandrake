@@ -163,18 +163,20 @@
     </match>
   </Operation>
 
-  <!-- ============== AA_DecayDrake -> mubbaro (also Miasma, Poison Forest) ============== -->
+  <!-- ============== AA_DecayDrake -> fermatalis (also Miasma, Poison Forest) ==============
+       Owner, Miasma sheet 2026-10-08: "Rename the Fermatalis. Keep the mechanic. Rewrite the
+       description." Label applies planet-wide (one donor def, one name). -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/label</xpath>
-          <value><label>mubbaro</label></value>
+          <value><label>fermatalis</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_DecayDrake"]/description</xpath>
-          <value><description>A winged, flightless lizard that breathes out a slow ferment over any greenery nearby and then eats the result — getting thoroughly, contentedly drunk on it, which its four livers were apparently built to handle. Hard to tame, but a mubbaro that accepts you, especially with a drink in hand, makes a fine hunting companion.</description></value>
+          <value><description>A heavy, flightless drake with stunted wings folded over a bloated, sour-sweet belly. The fermatalis breathes out a living haze of yeasts and enzymes that sets almost anything organic around it fermenting, and drives the change at a furious pace: within hours the greenery where it has rested slumps into soft, bubbling mounds of mash. It eats the result and is usually drunk on it — four separate livers keep it alive through the habit. Cooks of the delta count it among the most valuable beasts in the Miasma, for whatever it breathes on ferments in a fraction of the usual time. Hard to tame, but a fermatalis that accepts you, especially if you bring a drink, makes a fine hunting companion.</description></value>
         </li>
       </operations>
     </match>
@@ -183,7 +185,7 @@
     <xpath>/Defs/PawnKindDef[defName="AA_DecayDrake"]</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef[defName="AA_DecayDrake"]/label</xpath>
-      <value><label>mubbaro</label></value>
+      <value><label>fermatalis</label></value>
     </match>
   </Operation>
 

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The liliana's silk and eggs, ported with RM_Liliana (see RM_Liliana.xml) from SWBestiary's
+       RSW_CrimsonSilk and RSW_EggAaroxisDendoria(Un)Fertilized; stats verbatim, art copied
+       byte-for-byte under this mod's Textures/. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_LilianaSilk</defName>
+    <label>liliana silk</label>
+    <description>Blood-red thread gathered from the liliana, the Miasma's wingless moth, which never stops spinning. Soft, warm and luxurious against the skin.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_LilianaSilk</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <StuffPower_Armor_Sharp>0.15</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.1</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>0.15</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>4</MarketValue>
+      <Mass>0.01</Mass>
+      <Flammability>0.9</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <minRewardCount>30</minRewardCount>
+    <stuffProps>
+      <categories>
+        <li>Fabric</li>
+      </categories>
+      <color>(123,57,57)</color>
+      <commonality>0.20</commonality>
+      <statFactors>
+        <Flammability>0.9</Flammability>
+        <MaxHitPoints>1.3</MaxHitPoints>
+        <Beauty>6</Beauty>
+        <Comfort>1.5</Comfort>
+      </statFactors>
+    </stuffProps>
+    <thingCategories>
+      <li>Wools</li>
+    </thingCategories>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_EggLilianaUnfertilized</defName>
+    <label>liliana egg (unfert.)</label>
+    <description>An unfertilized liliana egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_LilianaEgg</texPath>
+      <color>(117,63,63)</color>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>25.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_EggLilianaFertilized</defName>
+    <label>liliana egg (fert.)</label>
+    <description>A fertilized liliana egg. If all goes well, it should hatch into a liliana. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_LilianaEgg</texPath>
+      <color>(127,73,73)</color>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>50</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RM_Liliana</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

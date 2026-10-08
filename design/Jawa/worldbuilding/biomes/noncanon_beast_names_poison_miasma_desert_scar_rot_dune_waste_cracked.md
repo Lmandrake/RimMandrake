@@ -117,14 +117,14 @@ which the Slime owns. 9 stems, 11 roster defs.
 
 | defName | current label | the creature | drafted label | alternate | why |
 |---|---|---|---|---|---|
-| `VFEI2_Swarmling` · `VFEI2_BlackSwarmling` | swarmlings · black swarmlings | juvenile insectoids of the VFE hive / Black Hive; harmless, slow, metamorphose (bs 0.2) — also Wasteland, Greentide | **nunda** · **black nunda** | kinnu | Soft nasal plural-feeling word for a thing never seen singly; the Black Hive variant takes the plain modifier. ⚠️ **Scope flag 3** — a framework mod's juvenile stage; and `AA_Swarmling` is a different def already ruled *chittik*. |
+| `VFEI2_Swarmling` · `VFEI2_BlackSwarmling` | swarmlings · black swarmlings | juvenile insectoids of the VFE hive / Black Hive; harmless, slow, metamorphose (bs 0.2) — also Wasteland, Greentide | **nunda** · ~~black nunda~~ **ondrukka** (black swarmling; owner 2026-10-08 asked for a rename, name invented by BENCH in this batch's accent, checker-passed) | kinnu | Soft nasal plural-feeling word for a thing never seen singly; the Black Hive variant takes the plain modifier. ⚠️ **Scope flag 3** — a framework mod's juvenile stage; and `AA_Swarmling` is a different def already ruled *chittik*. |
 | `RSW_CrestedDragon` (+ eggs) | crested dragon | crest-headed wet lizard, "cute squeaky noises", channel predator (bs 0.7) | **dunkara** | ondura | The squeak is in the *-ka-*; *dun-* the wet weight before it. Art wave 6 coined *Verdaunt* for its prompt — an English compound, not a ruling (rule 9). (First draft *kondra* swapped — a real Wookieepedia page.) |
-| `RSW_AaroxisDendoria` (+ pupa, + larvae "cinnabar caterpillar", + eggs) | aaroxis dendoria | wingless engineered silk moth; crimson larva, red-bellied pupa (bs 1.0) | **ombuna** · **ombuna pupa** · **ombuna caterpillar** | nandoro | Round, humming, slow — a moth that never flies. Life stages keep the plain stage word (rule 4); "cinnabar caterpillar" loses its Earth-pigment name with the family. "Aaroxis dendoria" is a fake Latin binomial. |
-| `AA_RaptorShrimp` | raptor shrimp | regenerating, bullet-shrugging crustacean ambusher — "the grass has eyes" (bs 1.4) | **drangok** | kunggra | *dr-* the lunge out of the reeds, *-ang-* the delta's nasal, *-ok* the claw closing. Art wave 7's *Fenshear* is an English compound (rule 9). |
-| `AA_Mantrap` | mantrap | weaponised acid-spitting flytrap, root-maze ambusher (bs 2.0) | **undakka** | tondak | The trap in three beats: *un-* still, *-dak-* shut, *-ka* the acid. ⚠️ **Flag 2** — a second, different def in the Cracked Lands wears the same label "mantrap" and gets its own name there (*saqqat*). |
-| `AA_Lockjaw` | lockjaw | huge-bite shallows reptile, paralysing disease, not aggressive, slow (bs 2.5) | **enduk** | gungora | Short, blunt, a jaw closing on *-duk*. Also removes a half-collision: *Luudrian lockjaw* is a real canon creature. |
-| `AA_Thermadon` | thermadon | fire-breathing augmented Blackspider, thermal-grenade shock trooper (bs 1.5) | **skondu** | kandruk | Something built for a war: clipped *skon-* and a swallowed *-du*. "Thermadon" is Greek heat + Earth dinosaur suffix. |
-| `RSW_PodWorm` | pod worm | large, passive glow-pod caste of the hives, wanders off (bs 4.0) | **lundoba** | ongollu | Three slow open syllables for a bs-4 body that hurts nothing; *lund-* the bulk, *-oba* the pod. |
+| `RSW_AaroxisDendoria` (+ pupa, + larvae "cinnabar caterpillar", + eggs) | aaroxis dendoria | wingless engineered silk moth; crimson larva, red-bellied pupa (bs 1.0) | ~~ombuna~~ **liliana** — owner 2026-10-08: *"RimMandrake tier, not SW. … Rename it Liliana."* Ported to `RM_Liliana` (adult, silk, eggs) in `mandrake.rm.miasma`; the RSW_ pupa/larva stay with the frozen RUT_ twin | nandoro | Round, humming, slow — a moth that never flies. Life stages keep the plain stage word (rule 4); "cinnabar caterpillar" loses its Earth-pigment name with the family. "Aaroxis dendoria" is a fake Latin binomial. |
+| `AA_RaptorShrimp` | raptor shrimp | regenerating, bullet-shrugging crustacean ambusher — "the grass has eyes" (bs 1.4) | ~~drangok~~ **sharpshrimp** (owner 2026-10-08) | kunggra | *dr-* the lunge out of the reeds, *-ang-* the delta's nasal, *-ok* the claw closing. Art wave 7's *Fenshear* is an English compound (rule 9). |
+| `AA_Mantrap` | mantrap | weaponised acid-spitting flytrap, root-maze ambusher (bs 2.0) | ~~undakka~~ **lastvine** (owner 2026-10-08) | tondak | The trap in three beats: *un-* still, *-dak-* shut, *-ka* the acid. ⚠️ **Flag 2** — a second, different def in the Cracked Lands wears the same label "mantrap" and gets its own name there (*saqqat*). |
+| `AA_Lockjaw` | lockjaw | huge-bite shallows reptile, paralysing disease, not aggressive, slow (bs 2.5) | ~~enduk~~ **siezer** (owner 2026-10-08) | gungora | Short, blunt, a jaw closing on *-duk*. Also removes a half-collision: *Luudrian lockjaw* is a real canon creature. |
+| `AA_Thermadon` | thermadon | fire-breathing augmented Blackspider, thermal-grenade shock trooper (bs 1.5) | ~~skondu~~ **duskfire** (owner 2026-10-08) | kandruk | Something built for a war: clipped *skon-* and a swallowed *-du*. "Thermadon" is Greek heat + Earth dinosaur suffix. |
+| `RSW_PodWorm` | pod worm | large, passive glow-pod caste of the hives, wanders off (bs 4.0) | ~~lundoba~~ **hell's lantern** (owner 2026-10-08: *"Venomous and slow."* — bite made ToxicBite, MoveSpeed 2 → 1.5) | ongollu | Three slow open syllables for a bs-4 body that hurts nothing; *lund-* the bulk, *-oba* the pod. |
 | `JRWBeelzebufo` | (giant ambush frog; owner ruled 2026-09-10: **rename + redefine**, keep the body plan, alienise) | the biome's big sit-and-wait frog | **onggada** | dubbong | The owner asked for this rename in the roster. A croak made nasal — *ong-* from the throat, *-gada* the jump. "Beelzebufo" is an Earth fossil genus. |
 
 **Not drafted:** `AA_Helixien` *bileworm*, `AA_DecayDrake` *mubbrak*, `AA_Slurrypede` *thollum*
@@ -133,6 +133,26 @@ which the Slime owns. 9 stems, 11 roster defs.
 Grank, Marsh haunt, Runyip, Shiro, Vornskyr, Whisperbird, Zakkeg, Sando.
 
 Read aloud: nunda, dunkara, ombuna, drangok, undakka, enduk, skondu, lundoba, onggada.
+
+### Rulings — Miasma art sheet, 2026-10-08
+
+Owner's notes on `Transient/biome_ffar/miasma_sheet_2026-10-05.decisions.json` (rows with an `at`
+stamp), applied 2026-10-07/08 (labels + fresh descriptions together, as this doc requires):
+
+- `AA_DecayDrake` → **fermatalis** — *"Rename the Fermatalis. Keep the mechanic. Rewrite the
+  description. A significant creature for Star Wars Cuisine: it induces fermentation of almost
+  anything and massively accelerates it."* Patched in `Slime_Rename.xml` (one def, one name, so
+  the Slime's *mubbaro* is replaced there). No Cuisine mechanic is wired yet — the description
+  carries the identity only.
+- `AA_Lockjaw` → **siezer** — massive head half its body, toothy lock-jawed mud-whale with
+  flippers, alien, no toxin/disease angle.
+- `AA_Mantrap` → **lastvine** — single thorn-fanged maw, no arms, root-legs; hung-pod at rest,
+  rears into a tentacled gape.
+- `AA_RaptorShrimp` → **sharpshrimp**; `AA_Thermadon` → **duskfire**; `RM_SiltLampreyJuv` →
+  **gillclamper**; `RSW_PodWorm` → **hell's lantern** (venomous, slow); `RSW_AaroxisDendoria` →
+  **liliana** (RimMandrake tier, silk nonstop in adulthood); `VFEI2_BlackSwarmling` → **ondrukka**
+  (he asked for a rename without naming it).
+- Donor patches: `src/RimUtinni/UtinniPatches/Patches/Miasma_Rename.xml`.
 
 ---
 

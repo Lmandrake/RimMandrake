@@ -216,6 +216,11 @@
       "def": "Yobshrimp",
       "disposition": "move:RUT_TwilightSea",
       "reason": "owner review 2026-09 (round2 move mapping): Twilight Sea"
+    },
+    {
+      "def": "AA_Slurrypede",
+      "disposition": "cut",
+      "reason": "Miasma sheet 2026-10-08 (owner): \"cut from this biome\" — removed from RM_Miasma.xml wildAnimals; scoped to the Miasma only, it stays in every other biome that casts it"
     }
   ],
   "fauna": [
@@ -231,7 +236,9 @@
       "band": "vermin",
       "commonality": 0.5,
       "def": "VFEI2_BlackSwarmling",
-      "law": "§2 the drain"
+      "law": "§2 the drain; Miasma sheet 2026-10-08 (owner): renamed ondrukka, description rewritten",
+      "label": "ondrukka",
+      "description": "Glossy black grubs no longer than a hand, crawling in loose, chittering heaps through the Miasma's leaf-rot. Ondrukka are the young of something larger: left alone, each one eventually seals itself into a cocoon and splits out as an adult of the dark hive — and nothing about the grub tells you which kind. Slow, soft and easy to crush, they are harmless on their own, and other animals give a heap of them a wide berth all the same. What matters is how many there are, and how long they have been left."
     },
     {
       "action": "keep",
@@ -272,8 +279,10 @@
       "action": "keep",
       "band": "strange",
       "commonality": 0.3,
-      "def": "RSW_AaroxisDendoria",
-      "law": "§1 on the verge of something — slow alien oddity (spd 2.0 MEASURED); MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_AaroxisDendoria to the already-ported, already-wired RSW_ name (RUT_Miasma at 0.3). The Lantern Deeps sheet (2026-09-19) ruled this species CUT there; owner ruled 2026-09-21 that a sheet's cut is scoped to that sheet's biome only, so it stays admitted here"
+      "def": "RM_Liliana",
+      "law": "§1 on the verge of something — slow alien oddity (spd 2.0 MEASURED); MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_AaroxisDendoria to the already-ported, already-wired RSW_ name (RUT_Miasma at 0.3). The Lantern Deeps sheet (2026-09-19) ruled this species CUT there; owner ruled 2026-09-21 that a sheet's cut is scoped to that sheet's biome only, so it stays admitted here; Miasma sheet 2026-10-08 (owner): \"RimMandrake tier, not SW\" — ported RSW_AaroxisDendoria -> RM_Liliana (mandrake.rm.miasma, cast inline in RM_Miasma.xml), renamed liliana, description rewritten (silk nonstop in adulthood)",
+      "label": "liliana",
+      "description": "A heavy, wingless moth the size of a dog, its crimson body padded in a constant mantle of its own silk. Most moths spin once, as larvae, and never again; the liliana never stops. Its silk glands run from the day it hatches to the day it dies, so an adult goes about wrapped in a slowly thickening shroud of fine red thread that can be gathered every few days. It cannot fly and will not fight unless cornered, and it lays its eggs deep in the root-maze, where the silk stays damp. The silk is soft, warm and prized."
     },
     {
       "action": "import",
@@ -287,21 +296,27 @@
       "band": "channel-predator",
       "commonality": 0.2,
       "def": "AA_RaptorShrimp",
-      "law": "§4 the water crowds with life — crustacean predator"
+      "law": "§4 the water crowds with life — crustacean predator; Miasma sheet 2026-10-08 (owner): renamed sharpshrimp, description rewritten",
+      "label": "sharpshrimp",
+      "description": "A crustacean as tall as a man, stalking the reed-beds on jointed legs, its forelimbs ending in two long serrated blades. The sharpshrimp hunts from cover, motionless among the stems for hours with only its stalked eyes turning, then lunges faster than the eye can follow. Its shell turns bullets, and its flesh knits back almost as fast as it is cut — a sharpshrimp is not dead until it has stopped moving for a long while. People who lose companions in the Miasma's reeds rarely see what took them."
     },
     {
       "action": "keep",
       "band": "root-ambush",
       "commonality": 0.2,
       "def": "AA_Mantrap",
-      "law": "§3 the stilt-root maze is the terrain — root-maze ambusher"
+      "law": "§3 the stilt-root maze is the terrain — root-maze ambusher; Miasma sheet 2026-10-08 (owner): renamed lastvine, description rewritten",
+      "label": "lastvine",
+      "description": "At rest the lastvine passes for part of the root-maze: a closed, leathery pod on a knot of roots, its heavy head hung low like fruit too ripe to hold itself up. It is not a plant. When something comes near, the pod rears up on its roots and splits into a single enormous maw ringed with hooked, fang-like thorns, a nest of tentacles writhing inside it. It has no arms. It drags itself after its prey on root-like legs, slowly and hungrily, and spits a burning acid at whatever it cannot reach. It feeds on light when it must, and on flesh when it can."
     },
     {
       "action": "keep",
       "band": "channel-predator",
       "commonality": 0.2,
       "def": "AA_Lockjaw",
-      "law": "§4 the shallows' jaws; slow (spd 3.0 MEASURED)"
+      "law": "§4 the shallows' jaws; slow (spd 3.0 MEASURED); Miasma sheet 2026-10-08 (owner): renamed siezer, description rewritten",
+      "label": "siezer",
+      "description": "A mud-whale of the Miasma's channels: a short, tapering body driven by four broad flippers, carrying a head fully half its own size. Most of that head is jaw — ranks of overlapping teeth on a hinge so heavy that once it closes, it does not open again until the siezer decides. It hauls itself through the silt half-submerged, a long grey ridge with two small eyes, slow and unhurried in everything but the bite. It prefers the channels' own wildlife to people, but nothing it has seized has ever been pulled free."
     },
     {
       "action": "keep",
@@ -315,7 +330,9 @@
       "band": "channel-predator",
       "commonality": 0.1,
       "def": "AA_Thermadon",
-      "law": "§2 hot delta (42.8 °C median MEASURED)"
+      "law": "§2 hot delta (42.8 °C median MEASURED); Miasma sheet 2026-10-08 (owner): renamed duskfire, description rewritten",
+      "label": "duskfire",
+      "description": "A long-legged black hunter the size of a crouching man, its abdomen swollen with paired chemical glands that show a dull ember-red through the chitin as the light fails. When it is threatened the duskfire mixes the two and hurls the result: a gout of burning fluid that clings and spreads. It keeps to the drier root-ridges and hunts at twilight. Never fight one near anything you want to keep — wooden walls, stores and fields burn first."
     },
     {
       "action": "keep",
@@ -329,14 +346,9 @@
       "band": "composter",
       "commonality": 0.1,
       "def": "AA_DecayDrake",
-      "law": "§4 the composters — decay-feeding is the biome's engine"
-    },
-    {
-      "action": "adjust-keep",
-      "band": "composter",
-      "commonality": 0.1,
-      "def": "AA_Slurrypede",
-      "law": "§4 burrowing muck-worker digesting the sin-soup; comm 0.005→0.1 — composters are a named ring"
+      "law": "§4 the composters — decay-feeding is the biome's engine; Miasma sheet 2026-10-08 (owner): renamed fermatalis, description rewritten",
+      "label": "fermatalis",
+      "description": "A heavy, flightless drake with stunted wings folded over a bloated, sour-sweet belly. The fermatalis breathes out a living haze of yeasts and enzymes that sets almost anything organic around it fermenting, and drives the change at a furious pace: within hours the greenery where it has rested slumps into soft, bubbling mounds of mash. It eats the result and is usually drunk on it — four separate livers keep it alive through the habit. Cooks of the delta count it among the most valuable beasts in the Miasma, for whatever it breathes on ferments in a fraction of the usual time. Hard to tame, but a fermatalis that accepts you, especially if you bring a drink, makes a fine hunting companion."
     },
     {
       "action": "keep",
@@ -384,8 +396,8 @@
       "action": "import",
       "band": "nursery",
       "commonality": 0.25,
-      "def": "RSW_RustNipperJuv",
-      "law": "R11 nursery"
+      "def": "RM_RustNipperJuv",
+      "law": "R11 nursery; Miasma sheet 2026-10-08 (owner): \"not SW tier\" — the row names the RM_ def RM_RustNipperJuv (mandrake.rm.terminalbiomes, already cast in RM_Miasma.xml since SEA_BEASTS_TIER_RULING_1)"
     },
     {
       "action": "import",
@@ -405,7 +417,9 @@
       "action": "import",
       "commonality": 0.5,
       "def": "RSW_PodWorm",
-      "law": "owner review 2026-09 (round2 move mapping): Maisma; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_PodWorm to the ported RSW_ name and WIRED into RUT_Miasma at 0.5 (was admitted by the round2 mapping but never wired anywhere). CUT by the Lantern Deeps sheet 2026-09-19, which under the owner's 2026-09-21 ruling is scoped to the Deeps only. bodySize 4 (MEASURED); the biome still passes ECOSYSTEM_PYRAMID_LAW_1 at ~72% small-weighted commonality, down from 76.1%"
+      "law": "owner review 2026-09 (round2 move mapping): Maisma; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_PodWorm to the ported RSW_ name and WIRED into RUT_Miasma at 0.5 (was admitted by the round2 mapping but never wired anywhere). CUT by the Lantern Deeps sheet 2026-09-19, which under the owner's 2026-09-21 ruling is scoped to the Deeps only. bodySize 4 (MEASURED); the biome still passes ECOSYSTEM_PYRAMID_LAW_1 at ~72% small-weighted commonality, down from 76.1%; Miasma sheet 2026-10-08 (owner): renamed hell's lantern, description rewritten",
+      "label": "hell's lantern",
+      "description": "A great, slow, segmented worm-thing the size of a muffalo, its back studded with swollen pods that glow a sickly orange in the dusk of the root-maze. The hell's lantern crawls through the Miasma at barely a walking pace, grazing, paying no attention to anything around it — and it does not need to. Its mandibles carry a venom that leaves anything bitten sick and weakened, and every creature in the delta has learned to leave it be. The glowing pods can be milked for a luminous goo."
     },
     {
       "action": "import",
@@ -576,7 +590,7 @@
       "name": "rainbow flora suite (3-4 genuinely benign blooms)"
     }
   ],
-  "notes": "Donor animalDensity 6.5 is doctrine — record density as refugee CROWDING, so this roster stays deliberately thick. Three rings staffed: nursery (Grey Sea juveniles, R11), warden mothers (placed set-pieces, NEVER wildAnimals rows — new_defs), the stranded (new_defs). R11 lifecycle: wardens breed and are born here, adults live in the Grey Sea, elders return as crèche-guarding mothers — the wild roster carries only the YOUNG side; the adult rides the Grey Sea/terminator sheets.",
+  "notes": "Donor animalDensity 6.5 is doctrine — record density as refugee CROWDING, so this roster stays deliberately thick. Three rings staffed: nursery (Grey Sea juveniles, R11), warden mothers (placed set-pieces, NEVER wildAnimals rows — new_defs), the stranded (new_defs). R11 lifecycle: wardens breed and are born here, adults live in the Grey Sea, elders return as crèche-guarding mothers — the wild roster carries only the YOUNG side; the adult rides the Grey Sea/terminator sheets.\nMiasma sheet 2026-10-08 (owner): RM_SiltLampreyJuv (cast inline in RM_Miasma.xml, def in mandrake.rm.terminalbiomes) renamed gillclamper, description rewritten: The young of the silt lamprey, raised in the Miasma's warm stranding pools before the open sea takes it. A gillclamper is a finger-thick, eel-slick body behind a sucker of hooked rasps, which it fixes into the gill-slits of other young fish and feeds from while they swim. It has not yet grown the adult's full round maw; for now it latches on, clamps tight, and lets its host do the travelling.",
   "sheet": "the_miasma",
   "stat_adjustments": [],
   "tiles": 93
