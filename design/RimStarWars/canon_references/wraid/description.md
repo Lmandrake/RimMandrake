@@ -3,7 +3,7 @@
 **defName**: `RSW_Wraid` — in-repo label "wraid"; no variants
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Wraid
+### Legends only (no canon article exists; the page is tagged Legends and sources KOTOR) — https://starwars.fandom.com/wiki/Wraid
 
 Wraids were large reptilian creatures found on many desert planets around the galaxy, including Tatooine, Ruhnuk, and Korriban.
 
@@ -16,7 +16,7 @@ Despite their ferocious appearance and short temper, they were a popular quarry 
 Their skull plates were rumored to have medical uses, but the market for them was very specific. Wraidskin could be used to make armor such as Cerean wraidskin chestguards, Huttese wraidskin chestguards, Echani wraidskin chestguard, and Huttese wraidskin wristguards.
 
 ## Visual brief
-Viewed 2026-10-04. Both images are canon (video-game renders: a Star Wars: The Old Republic wraid on
+Viewed 2026-10-04. Both images are Legends (video-game renders: a Star Wars: The Old Republic wraid on
 sand, and an older Galaxies-era wraid on a Tatooine dune with Mos Eisley behind).
 - **Silhouette (loud: the defining trait)**: a HUGE-ARMED ape/gorilla-like knuckle-walker. The two
   forelegs are enormous, thick, muscular pillars, as thick as the body and far larger than the hind
@@ -46,11 +46,11 @@ sand, and an older Galaxies-era wraid on a Tatooine dune with Mos Eisley behind)
 not yet assessed
 
 ## Source URLs
-- https://starwars.fandom.com/wiki/Wraid (canon; wikitext pulled via the API 2026-10-04)
+- https://starwars.fandom.com/wiki/Wraid (LEGENDS-only article; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Wraid`; wiki caption: infobox image. File: `Wraid.png` — https://static.wikia.nocookie.net/starwars/images/2/2c/Wraid.png/revision/latest?cb=20150822193807
-- `wookieepedia_canon_2.webp` — CANON page `Wraid`; wiki caption: A Tatooine wraid.. File: `Wraid.jpg` — https://static.wikia.nocookie.net/starwars/images/7/72/Wraid.jpg/revision/latest?cb=20051125012708
+- `wookieepedia_canon_1.webp` — LEGENDS-only page `Wraid`; wiki caption: infobox image. File: `Wraid.png` — https://static.wikia.nocookie.net/starwars/images/2/2c/Wraid.png/revision/latest?cb=20150822193807
+- `wookieepedia_canon_2.webp` — LEGENDS-only page `Wraid`; wiki caption: A Tatooine wraid.. File: `Wraid.jpg` — https://static.wikia.nocookie.net/starwars/images/7/72/Wraid.jpg/revision/latest?cb=20051125012708
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

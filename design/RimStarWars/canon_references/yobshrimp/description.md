@@ -10,11 +10,13 @@
 ### Canon — https://starwars.fandom.com/wiki/Yobshrimp
 
 Yobshrimp were a species of tiny creature native to the planet Naboo. They were eaten by the seven species of scalefish found in Lake Paonga and in the Naboo Abyss. Tiny yobshrimp lived in the gills of tee scalefish, and were then licked out and eaten by laa scalefish. On the planet Batuu, fishing families cultivated the foreign yobshrimp for consumption, and Yobshrimp Noodle Salad was a dish available at Docking Bay 7 Food and Cargo in Black Spire Outpost on Batuu during the war between the First Order and the Resistance.
+
+**Sourcing notes** The Batuu cultivation statement is cited on the wiki to Galaxy's Edge "official backstory elements" that are not published and can be obtained only verbally from park cast members (weak, not inspectable). The tiny-creature / scalefish / gill relationships come from *Star Wars: Absolutely Everything You Need to Know* (2015), the first canon mention; the species originated in Legends in *The Gungan Frontier* (1999). Canon habitat is the waters of Lake Paonga and the Naboo Abyss; no canon page gives body colour, size or anatomy (https://starwars.fandom.com/wiki/Yobshrimp).
 ### Legends — https://starwars.fandom.com/wiki/Yobshrimp/Legends
 
 A yobshrimp was a carnivorous crustacean native to the shallow waters of Naboo, particularly the area of Lake Paonga. These clawed creatures were considered a dangerous delicacy by the Gungans, due to the fact they were served as a live cocktail.  
 
-They sometimes lived inside the gills of the tee, and were eaten from them by laa. They were natural competitors with yobcrabs and were the common prey of the blarth and the predatory scalefish.
+They sometimes lived inside the gills of the tee, and were eaten from them by laa (Wildlife of Star Wars: A Field Guide; habitat swamp / shallow water, category Aquatic creatures). They were natural competitors with yobcrabs and were the common prey of the blarth and the predatory scalefish.
 
 ## Visual brief
 Two images only, and the CANON one is NOT the animal: `wookieepedia_canon_1` is a photograph of Yobshrimp Noodle Salad (cooked, peeled, pink-orange curled shrimp in glass noodles with peppers and herbs), so it shows only that cooked shrimp are pale pink-orange and curl in a C shape. It tells nothing about the living creature. The LEGENDS infobox (`wookieepedia_legends_1`) is a painted illustration of the live animal, and is the only appearance evidence.
@@ -22,6 +24,7 @@ Two images only, and the CANON one is NOT the animal: `wookieepedia_canon_1` is 
 - **Colour**: lilac-purple to violet shell and legs, with darker purple or maroon spots and warty bumps along the shell edges and claws, and pale pink-white highlights; the background is aqua-green water or sand.
 - **Limbs**: four to five pairs of thin, jointed walking legs ending in small hooked claws, spread out like a crab's; and two much larger raised front arms of long, thin, spiky, pincer-like claws held up and forward, with flat blade-like scissors and thorn-like projections (they read like long swords or antlers), the biggest part of the silhouette.
 - **Size**: the Legends text says a delicacy served as a live cocktail, so small; the plate gives no scale, and the prose calls them 'tiny' (canon). The huge claws are stylised.
+- **Habitat note**: every source places the animal in water (Lake Paonga, Naboo Abyss, gills of scalefish, shallow swamp water), so a free-roaming land def (`RSW_YobshrimpLand`) needs an explicit adaptation reason.
 - **Disagreement**: the canon text calls them tiny creatures (the cooked photo is ordinary pink-orange prawn shape); the Legends plate shows purple, crab-like, long-clawed animals; two different looks. Not enough evidence to pick the correct live colour; the plate is the only painting.
 
 ## Must show

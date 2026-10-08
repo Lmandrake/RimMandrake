@@ -1,15 +1,17 @@
 # Ysalamiri
 
-**defName**: `SWPotF_RaceDef_ysalamir` — in-repo label "ysalamir" (canon name: ysalamiri); no variants
+**defName**: `SWPotF_RaceDef_ysalamir` — in-repo label "ysalamir" (Legends singular; ysalamiri is the Legends plural and the name canon uses, per https://starwars.fandom.com/wiki/Ysalamiri); no variants
 
 
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Ysalamiri
 
-Ysalamiri were four-eyed, lizard-like creatures. During the reign of the Galactic Empire, Imperial Grand Admiral Thrawn had two sculptures of ysalamiri made out of green, brown, and yellow material in his office aboard the Chimaera, placed behind his desk.
+Ysalamiri were four-eyed, lizard-like creatures. During the reign of the Galactic Empire, Imperial Grand Admiral Thrawn had two sculptures of ysalamiri made out of green, brown, and yellow material in his office aboard the Chimaera, placed behind his desk. These sculptures (*Star Wars Rebels*, "Through Imperial Eyes", 2017) are the only canon appearance of the species; the name and "four eyes" come from the episode guide's Behind-the-Scenes gallery. Canon gives no origin planet, size or living colour.
 ### Legends — https://starwars.fandom.com/wiki/Ysalamiri/Legends
 
 Ysalamiri were lizard-like tree-dwellers about 50 centimeters in length native to the planet Myrkr, most known for their ability to repel the Force by creating a Force-neutral bubble. This ability evolved in response to predation by the Force-sensitive vornskrs. Many ysalamiri grouped together would expand their Force-neutral bubble by varying distances&mdash;sometimes by kilometers.
+
+**Legends details** In *Heir to the Empire* they were furry, lizard-like creatures native to Myrkr (infobox hair colour: white, *Fate of the Jedi: Abyss*; class Amphibian per *The Wildlife of Star Wars: A Field Guide*; herbivorous). Zahn later clarified they suppress, rather than push back, the Force.
 
 **Biology and appearance** Adult ysalamiri grew up to 50 centimeters and hatched their young from bubble-like eggs.
 
@@ -23,6 +25,7 @@ Four images. The canon image is a stylised sculpture, not a living animal, so th
 - **`legends_1` (painting):** a **gold-tan to amber-orange climbing lizard** clinging to a tree trunk. **A long, flat, broad, almost duck-billed or triangular snout/head** with wide-set, small eyes (two visible on each side, one pair larger), a **short, fleshy ear-flap or frill behind each eye**, a **slim body with a long tail**, and a **row of dark oval spots/dashes down the spine and flanks and along the tail**. The legs are lizard-like with **big, hooked, curved claws that dig into the bark**. Throat loose and wrinkled. The pose is upright, climbing head-up.
 - **`legends_2` (painting, Myrkr):** several **bronze/golden-green, plump, smooth-skinned lizards** wrapped around a tree trunk, with a **long, thin, curling prehensile tail**, a rounded blunt head, small eyes, short limbs with small claws, the body folded flat to the bark; a faint dark ridge or flap along the back. More plump and salamander-like than `legends_1`.
 - **`legends_3` (sketch, with a blue-skinned humanoid):** a **tan-yellow lizard** with darker banding, **draped on a shoulder**, long snout, small horn-like bumps on the brow, a long banded tail wrapping around the arm: shows it is pet-sized.
+- **Fur note:** the Legends text calls ysalamiri *furry* lizard-like creatures with white hair, while the paintings show smooth-looking golden skin; the paintings are the only colour evidence for an implementation, the text is the only anatomy statement.
 - **Disagreement:** `canon_1` is a stylised, **green, finned, toothy** sculpture; the Legends paintings are **golden, smooth, tree-dwelling, toothless-looking lizards**. Trust the Legends paintings for a living animal and `canon_1` only for the "four eyes" detail; the paintings show only two eyes plus a small second pair at most, so the "four-eyed" count is not clear in any of them.
 - **Size:** 50 cm per the Legends text; `legends_3` shows it at roughly the size of a forearm.
 
