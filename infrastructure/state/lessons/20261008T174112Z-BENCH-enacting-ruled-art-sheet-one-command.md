@@ -1,0 +1,1 @@
+Enacting a ruled art sheet is ONE command: art.py enact <decisions.json> (dry-run) then --apply; --hold <subject> for rows awaiting a sitting. Conflicts (live/kept) are listed, never purged. Curation: point skills/scaled-game-image-review at it (design/RimMandrake/art_ledger_design_2026-10-04.md §8).
