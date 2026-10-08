@@ -7,9 +7,9 @@ Beldons are a large, non-sentient species native to the **gas giant
 Bespin**, living in herds in its lower atmosphere — **not** an aquatic
 plant-creature of Naboo (that assumption does not match canon; correcting
 it here). Infobox distinctions: "**Orange** gas bladders, fleshy fins, long
-tendrils." Length: **0.8–10 kilometers** (extreme size range — individual
-Beldons can be city-sized). Diet: atmospheric plankton and chemicals,
-metabolized into tibanna gas — the resource basis of Bespin's economy
+tendrils." Infobox length / body-text *width*: **0.8–10 kilometers** (the page itself
+uses both words for the same *Ultimate Star Wars* figure; extreme size range). Diet: atmospheric plankton and chemicals,
+gathered with long body tendrils and metabolized into tibanna gas — the resource basis of Bespin's economy
 (referenced directly in *Star Wars Battlefront II*: "If they make the
 Tibanna Gas the Empire needs, the Beldons are mission critical.").
 

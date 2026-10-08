@@ -7,7 +7,7 @@
 
 Bogwings were a reptavian species native to the planet Naboo. During Gulliball games played by Gungans, bogwings were released into the sky to signal halftime. Bogwings were known to be able to carry nine times their own weight. They were also very territorial. They could also be found on the swampy world of Dagobah, where they made their homes in gnarltrees. Other locations where they could be sighted were Aleen, Zygerria, Onderon, and Nal Hutta.
 
-There were two kinds of bogwings: the Greater Bogwing and the Lesser Bogwing.
+There were two kinds of bogwings: the Greater Bogwing (bluish-green) and the Lesser Bogwing (dark brown), per the infobox (*Nexus of Power*).
 ### Legends — https://starwars.fandom.com/wiki/Bogwing/Legends
 
 The bogwing was a flying reptavian native to Dagobah. It was very territorial and used its talons to pick up victims. It could carry up to nine times its own weight. Bogwings did not hatch from eggs but were born live. As bogwings spent most of their lives in flight, this resulted in the newborns being required to learn to fly immediately during the free-fall of their birth. Juvenile bogwings learned to hunt by watching older bogwings and would generally flock under the flightpath of successful hunters to eat any scraps the individual may drop in flight.
@@ -28,13 +28,12 @@ LEGENDS (a painted plate, and a film-style CGI still of a bogwing in flight in D
   two thin forelimbs/arms with clawed hands hang below the wing root (wing membrane is separate from
   the arms in the canon render).
 - **Colour**: canon render = teal/blue-green back, neck and legs with a pale grey-mauve belly and
-  brown-mauve wing membrane with dark green leading-edge bones; one round yellow-orange eye. The
+  brown-mauve wing membrane with dark green leading-edge bones; one round yellow-orange eye (the eye visible in profile; the species is not one-eyed). The
   Legends plate is grey-green and darker; the CGI still is mottled olive/moss-yellow with a red-ringed
   eye, i.e. swamp-camouflage. Palette is NOT consistent across images: teal-and-mauve (canon) vs
-  olive/grey (Legends) -- the canon image rules.
+  olive/grey (Legends) -- the canon image rules. Text: the greater bogwing is bluish-green and the lesser dark brown, so one teal render is the greater form.
 - **Texture**: smooth scaleless skin, faint dark banding on the tail and body; membranous wings.
-- **Size cues**: no scale reference in any image; prose says it can lift nine times its own weight, so
-  the body is small and light (not a giant), wingspan large relative to body.
+- **Size cues**: no scale reference in any image, and lifting nine times its own weight says nothing about absolute size. The only dimensions are Legends (*Behind the Magic*): length 1-5 m, wingspan 1-3 m (https://starwars.fandom.com/wiki/Bogwing/Legends).
 - **Prose vs images**: prose says only "reptavian, flying"; images agree it is wyvern/pterosaur-like
   and give the beak, whip tail and huge wings. Nothing contradicts. Greater vs lesser race: no image
   distinguishes them.

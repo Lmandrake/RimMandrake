@@ -32,11 +32,10 @@ Star Wars: The Mandalorian and Grogu. No Star Wars: Galaxies-specific detail
 was found in this pass (search results reference the SWG beast database but a
 direct fetch was not attempted — see Source URLs).
 
-The wiki text does **not** mention domestication specifically by Jawas or
-Tusken Raiders in the current article body — a general web search snippet
-claimed Tusken Raiders domesticate anoobas, but that line does not appear in
-the Wookieepedia wikitext pulled directly via the API, so it should be treated
-as unconfirmed/secondary until a primary source is found. The article's actual
+The current (canon) article body does **not** mention domestication by Jawas
+or Tusken Raiders. The **Legends** article does say Tusken Raiders domesticated
+anoobas as pets and guard animals, and calls the Citadel pack "striped"
+(https://starwars.fandom.com/wiki/Anooba/Legends). The article's actual
 domestication examples are all non-Tatooine-native individuals (Embo, a
 Kyuzo bounty hunter).
 

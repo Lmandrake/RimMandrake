@@ -20,7 +20,7 @@ navigate Kashyyyk's dense forest terrain during the Empire's occupation.
 Faced extinction from poachers during the Galactic Civil War. First
 appeared in *Star Wars Galaxies: Rage of the Wookiees* (2005).
 
-No infobox skincolor/size fields are populated on Wookieepedia — color and
+Diet is unspecified (Wookieepedia category "Creatures of unspecified diet"); fast metabolism and constant eating do not establish herbivory. Other Legends appearances: *Republic* 81-83. No infobox skincolor/size fields are populated on Wookieepedia — color and
 precise size come only from illustrations, not sourced text.
 
 ## Visual brief
@@ -40,8 +40,8 @@ color:
 Both agree: squat, low-slung reptilian mount with a long neck, spiky/horned
 head crest, heavy clawed feet, and a long tail — ridden by a single ground
 trooper with a simple saddle. Color varies from tan/brown to olive-green
-between the two images, which may simply reflect natural individual
-variation (as with real reptiles) rather than a hard disagreement.
+between the two images; the text says nothing about colour, so this shows two
+depictions, not a documented natural colour range.
 
 Our own donor sprite (`donor_current_sprite.png`) shows a **dark olive-green**
 body with a lighter tan/gold head crest and long tail — closer to the

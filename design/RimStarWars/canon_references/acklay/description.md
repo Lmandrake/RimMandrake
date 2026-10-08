@@ -19,8 +19,10 @@ which it would then spear with its pointed legs. The species had stretchy
 stomachs and three eyes."
 
 Acklays were used as execution beasts by the Geonosians in the Petranaki
-Arena on Geonosis, most famously the three-acklay scene in *Attack of the
-Clones* (Obi-Wan Kenobi, Anakin Skywalker, Padmé Amidala). Surprisingly
+Arena on Geonosis. At least two (a mated pair) were kept there as of 22 BBY,
+but a single acklay was unleashed in *Attack of the Clones*, steered toward
+Obi-Wan Kenobi by its picador (the same execution also loosed other beasts on
+Anakin and Padmé; this page names only the acklay). Surprisingly
 agile despite their size; strong enough to bite through a polearm and smash
 a stone pillar.
 
@@ -31,9 +33,12 @@ cream/yellow underside), a spider-crab body plan with a long upward-curving
 neck ending in a crested, elongated toothy head, and **six** thin, sharp,
 multi-jointed legs radiating from a small central body — two of the six
 function as raised grappling "arms" with hooked claws, the other four are
-walking/spearing legs. No visible shell/carapace plates are obvious in
-either image (the "bony nodules" read more as skin texture/ridges than
-armor plating). Both images are consistent on green coloration; no
+walking/spearing legs. The text calls the hide "a hard, shell-like carapace
+of bony nodules" (*Ultimate Star Wars*, per Wookieepedia), though neither image
+shows separate shell plates: the nodules read as hard studded/ridged hide.
+The chin organ that senses prey's bioelectricity is canon; its name,
+"silphum", is **Legends only**
+(https://starwars.fandom.com/wiki/Acklay/Legends). Both images are consistent on green coloration; no
 disagreement between the two canon images.
 
 **Disagreement with our own art**: the current SWBestiary donor sprite

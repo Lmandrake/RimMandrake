@@ -12,15 +12,15 @@ forests and mountains.
 Body: **two short arms, each with two clawed fingers**; a thick tail used for balance;
 hip joints set unusually high on the body; a large mouth with many sharp teeth that can
 chew through most materials. Omnivorous - grasses and weeds, but also other organisms,
-including their own kind. Egg-laying; in some accounts males were eaten by females after
-mating. Height about 2 m (Clone Wars) to 2.5-3 m (Endor); length about 4 m; lifespan
+including their own kind. Egg-laying (*Smuggler's Gambit*); males were eaten by females after
+mating (*The Mandalorian* Ch. 1, per the page). Height about 2 m (Clone Wars) to 2.5-3 m (Endor); the page gives no hip/shoulder reference point; length about 4 m; lifespan
 35-40 years.
 
 Colour: usually dark - blue, green, grey, brown or black - with lighter mottled patterns
 in blue or orange; skin colour "mottled brown"; eyes black. Cham Syndulla's blurrg had
 white head markings.
 
-Behaviour: very fast (outran AT-RTs, roughly 75 kph), strong load carriers, ill-tempered
+Behaviour: very fast (easily outpaced the Republic's AT-RTs, which top out at 75 kph on flat terrain; the 75 kph figure is the AT-RT's, not the blurrg's), strong load carriers, ill-tempered
 and vicious when provoked; one bucked a clone rider. Users: Ryloth's Twi'lek Resistance,
 Kuiil, Din Djarin. First canon appearance: "Liberty on Ryloth" (2009).
 
@@ -31,10 +31,10 @@ available either: the donor mod (mlie.starwarsanimalcollection) ships its art in
 AssetBundle, and the port deliberately does not reuse it.
 
 A heavy bipedal reptile with a big rounded body carried on two thick hind legs, hips high
-and tail thick and low-slung behind for balance. Head large and long-jawed with visible
+and tail thick and low-slung behind for balance. Head large with a large mouth and visible
 sharp teeth. **Two short forelimbs, each ending in two clawed fingers, held tucked against
 the chest** - short, not absent. Hide mottled: dark base (grey-brown / brown, blue-green
-allowed) with lighter mottled patches, paler belly. Mount-sized: about 2.4 cells at
+allowed) with lighter mottled patches (the page gives no belly colour). Mount-sized: about 2.4 cells at
 adult drawSize.
 
 **Discrepancy against the queued art.** Artpipe jobs `rsw_blurrg_v1_{south,east,north}`
