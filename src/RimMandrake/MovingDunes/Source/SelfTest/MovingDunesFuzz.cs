@@ -4,8 +4,9 @@
 //   influx     the windward source (RunInflux): debt, cap, band, bounded work
 //   wind       wind schedule, storm factors, the sun-bearing lock (DuneWindBearing against a vector oracle), choke sizing
 //   cache      burial gate, candidates, cache cap, absorb, reveal hysteresis, item conservation (RM_CacheKernel)
-// MASS CONSERVATION is the top invariant of transport: with the nudge off, total depth changes by exactly -Lost +DepositError, and
-// DepositError is only ever negative where the landing cannot hold sand or is at the depth cap.
+// MASS CONSERVATION is the top invariant of transport: total depth changes by exactly -Lost -CapOverflow +DepositError -ErodeError
+// +InPlaceDelta; with the nudge off DepositError is exactly 0. Water (a cell that cannot hold sand) never takes a slab: the hop banks
+// on the shore cell before it (MOVINGDUNES_WATER_BANKS_SAND_1), so the leeward edge and the depth cap are the only ways sand leaves.
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
 using System.Collections.Generic;
@@ -96,6 +97,7 @@ namespace RimMandrake.MovingDunes.SelfTest
             public void SetDepth(int x, int z, float v) { int i = z * W + x; if (!canHold[i]) return; d[i] = v < 0f ? 0f : (v > Max ? Max : v); }
             public bool Roofed(int x, int z) { return roofed[z * W + x]; }
             public bool BlocksSand(int x, int z) { return wall[z * W + x]; }
+            public bool CanHoldSand(int x, int z) { return canHold[z * W + x]; }
             public ArrField Clone() { var c = new ArrField(W, H); Array.Copy(d, c.d, d.Length); Array.Copy(canHold, c.canHold, d.Length); Array.Copy(roofed, c.roofed, d.Length); Array.Copy(wall, c.wall, d.Length); c.Max = Max; return c; }
         }
 
@@ -120,7 +122,7 @@ namespace RimMandrake.MovingDunes.SelfTest
         }
 
         private static readonly string[] TrNames = { "Batch", "Calm", "Wind", "Roof", "Wall" };
-        public static long Moves, OffMapMoves, InPlaceMoves, Vanished, Shadowed, Landed, Nudged;
+        public static long Moves, OffMapMoves, InPlaceMoves, Vanished, Shadowed, Landed, Nudged, WaterBanks;
 
         // independent single-slab oracle (exact, boundary nudge off)
         private static float OneSlab(ArrField f, int cx, int cz, int hop, int wx, int wz, TransportParams p, out bool moved, out bool off, out int lx, out int lz, out float vanish)
@@ -141,7 +143,7 @@ namespace RimMandrake.MovingDunes.SelfTest
                 int nx = cx + wx * s, nz = cz + wz * s;
                 if (nx < 0 || nz < 0 || nx >= f.W || nz >= f.H) { off = true; break; }
                 int ni = nz * f.W + nx;
-                if (f.roofed[ni] || f.wall[ni]) { landX = px; landZ = pz; land = 1; break; }
+                if (f.roofed[ni] || f.wall[ni] || !f.canHold[ni]) { landX = px; landZ = pz; land = 1; break; }   // roof lip, wall lee, shore
                 if (f.d[ni] < here - 0.02f) { landX = nx; landZ = nz; land = 1; break; }
                 px = nx; pz = nz;
             }
@@ -151,7 +153,8 @@ namespace RimMandrake.MovingDunes.SelfTest
             if (landX == cx && landZ == cz) { f.d[cz * f.W + cx] = here; return 0f; }
             moved = true; lx = landX; lz = landZ;
             int li = landZ * f.W + landX;
-            if (f.canHold[li]) { float nd = Math.Min(f.Max, f.d[li] + slab); vanish = slab - (nd - f.d[li]); f.d[li] = nd; } else vanish = slab;
+            if (!f.canHold[li]) throw new Exception("oracle: a landing that cannot hold sand");
+            { float nd = Math.Min(f.Max, f.d[li] + slab); vanish = slab - (nd - f.d[li]); f.d[li] = nd; }   // vanish is cap overflow only
             return 0f;
         }
 
@@ -210,18 +213,24 @@ namespace RimMandrake.MovingDunes.SelfTest
                             {
                                 int li = (int)dp[1] * f.W + (int)dp[0];
                                 Check(!f.wall[li] && !f.roofed[li], "a slab landed on a wall or under a roof" + where);
+                                Check(f.canHold[li], $"a slab landed on water at {(int)dp[0]},{(int)dp[1]}: the shore should have banked it" + where);
                                 Landed++;
                             }
                             // the mass ledger: exact identity from the batch's own accounting
                             float totalAfter = f.TotalDepth;
-                            Check(Near(totalAfter - totalBefore, -b.Lost + b.DepositError - b.ErodeError + b.InPlaceDelta, 1e-3 + 1e-5 * n), $"total depth moved {totalAfter - totalBefore}, ledger says {-b.Lost + b.DepositError - b.ErodeError + b.InPlaceDelta} (lost {b.Lost}, dep err {b.DepositError}, erode err {b.ErodeError})" + where);
-                            Check(b.DepositError <= (b.Moves + 1) * h + 1e-4 || true, "");
+                            float ledger = -b.Lost - b.CapOverflow + b.DepositError - b.ErodeError + b.InPlaceDelta;
+                            Check(Near(totalAfter - totalBefore, ledger, 1e-3 + 1e-5 * n), $"total depth moved {totalAfter - totalBefore}, ledger says {ledger} (lost {b.Lost}, cap overflow {b.CapOverflow}, dep err {b.DepositError}, erode err {b.ErodeError})" + where);
+                            Check(b.CapOverflow >= 0f && b.CapOverflow <= b.Moves * p.SlabSize + 1e-4f, "cap overflow outside [0, moves*slab]" + where);
+                            Check(Math.Abs(b.DepositError) <= (b.Moves + 1) * h + 1e-3, $"deposit error {b.DepositError} beyond the nudge: sand vanished somewhere other than the edge or the cap" + where);
+                            Check(b.WaterBanked >= 0 && b.WaterBanked <= b.Moves - b.OffMap, "water banks counted beyond the landed moves" + where);
+                            WaterBanks += b.WaterBanked;
                             if (!nudge)
                             {
                                 Check(b.ErodeError == 0f || Near(b.ErodeError, 0f, 1e-4), "erosion removed something other than the slab with the nudge off" + where);
                                 for (int i = 0; i < f.d.Length; i++) Check(Near(f.d[i], oracle.d[i], 1e-5), $"cell {i % f.W},{i / f.W}: kernel {f.d[i]}, oracle {oracle.d[i]}" + where);
                                 Check(Near(b.Lost, oLost, 1e-4), $"lost {b.Lost} vs oracle {oLost}" + where);
-                                Check(Near(-b.DepositError, oVanish, 1e-4), $"vanished {-b.DepositError} vs oracle {oVanish}" + where);
+                                Check(Near(b.DepositError, 0f, 1e-4), $"deposit error {b.DepositError} with the nudge off: a landing refused sand" + where);
+                                Check(Near(b.CapOverflow, oVanish, 1e-4), $"cap overflow {b.CapOverflow} vs oracle {oVanish}" + where);
                                 Check(b.OffMap == oOff && b.Moves - b.OffMap == oMoves, $"moves {b.Moves}/{b.OffMap}, oracle {oMoves}/{oOff}" + where);
                                 Vanished += (long)Math.Round(oVanish * 1000);
                             }
@@ -256,10 +265,26 @@ namespace RimMandrake.MovingDunes.SelfTest
                 int dir = r.Next(8);
                 int x0 = 2, x1 = W - 3, z0 = 2, z1 = H - 3;   // sources in the interior; hop 6 may still run off - count the loss
                 var b = RM_DuneKernel.RunTransport(f, RM_DuneKernel.WindDx[dir], RM_DuneKernel.WindDz[dir], 30, p, 0f, (lo, hi) => r.Next(lo, hi), (lo, hi) => r.Next(lo, hi + 1), null);
-                total0 += -b.Lost + b.DepositError - b.ErodeError + b.InPlaceDelta;
+                total0 += -b.Lost - b.CapOverflow + b.DepositError - b.ErodeError + b.InPlaceDelta;
                 Check(Near(f.TotalDepth, total0, 1e-2), $"running total {f.TotalDepth} drifted from the ledger {total0}");
                 Check(b.DepositError == 0f || Near(b.DepositError, 0f, 1e-5), "sand vanished on a field with nowhere to lose it");
             }
+            // a lake shore: the leeward third is water, the wind blows into it. Nothing can cross the water, nothing is near the cap,
+            // so every grain stays on land and piles against the shore (the owner's ruling: water banks the sand).
+            var lk = new ArrField(12, 12); lk.Max = 10f;
+            for (int z = 0; z < 12; z++) for (int x = 0; x < 12; x++) { int i = z * 12 + x; if (x >= 8) lk.canHold[i] = false; else lk.d[i] = (float)(r.NextDouble() * 0.6) + 0.1f; }
+            float lk0 = lk.TotalDepth, shore0 = 0f; for (int z = 0; z < 12; z++) shore0 += lk.d[z * 12 + 7];
+            int banks = 0;
+            for (int rep = 0; rep < 60; rep++)
+            {
+                var b = RM_DuneKernel.RunTransport(lk, 1, 0, 40, p, 0f, (lo, hi) => r.Next(lo, hi), (lo, hi) => r.Next(lo, hi + 1), null);
+                Check(b.Lost == 0f && b.OffMap == 0 && b.CapOverflow == 0f, $"sand crossed the lake or overflowed: lost {b.Lost}, off {b.OffMap}, overflow {b.CapOverflow}");
+                banks += b.WaterBanked;
+            }
+            Check(Near(lk.TotalDepth, lk0, 1e-3), $"a lake shore lost sand: {lk0} -> {lk.TotalDepth}");
+            for (int z = 0; z < 12; z++) for (int x = 8; x < 12; x++) Check(lk.d[z * 12 + x] == 0f, "water holds sand");
+            float shore1 = 0f; for (int z = 0; z < 12; z++) shore1 += lk.d[z * 12 + 7];
+            Check(banks > 0 && shore1 > shore0, $"the shore never banked: {banks} banks, shore {shore0} -> {shore1}");
             // categories: a nudged write never rests inside the boundary band
             var g = new ArrField(4, 4); g.Max = 1f;
             for (int t = 0; t < 200; t++)
@@ -565,10 +590,10 @@ namespace RimMandrake.MovingDunes.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: transport moves {Moves}, off-map {OffMapMoves}, in-place {InPlaceMoves}, landings {Landed}, shadowed {Shadowed}, vanished (milli-depth) {Vanished}, nudged batches {Nudged}; influx placed {Placed}, capped {Capped}; wind shifts {Shifts}, storms {Storms}, bearings {Bearings}; cache buries {Buries}, merges {Merges}, reveals {Reveals}, gate refusals {GateRefusals}");
+            Console.WriteLine($"reached: transport moves {Moves}, off-map {OffMapMoves}, in-place {InPlaceMoves}, landings {Landed}, water banks {WaterBanks}, shadowed {Shadowed}, cap overflow (milli-depth) {Vanished}, nudged batches {Nudged}; influx placed {Placed}, capped {Capped}; wind shifts {Shifts}, storms {Storms}, bearings {Bearings}; cache buries {Buries}, merges {Merges}, reveals {Reveals}, gate refusals {GateRefusals}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
-                if (Moves == 0 || OffMapMoves == 0 || InPlaceMoves == 0 || Landed == 0 || Shadowed == 0 || Vanished == 0 || Nudged == 0 || Placed == 0 || Capped == 0 || Shifts == 0 || Storms == 0 || Bearings == 0 || Buries == 0 || Merges == 0 || Reveals == 0 || GateRefusals == 0)
+                if (Moves == 0 || OffMapMoves == 0 || WaterBanks == 0 || InPlaceMoves == 0 || Landed == 0 || Shadowed == 0 || Vanished == 0 || Nudged == 0 || Placed == 0 || Capped == 0 || Shifts == 0 || Storms == 0 || Bearings == 0 || Buries == 0 || Merges == 0 || Reveals == 0 || GateRefusals == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"movingdunes fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

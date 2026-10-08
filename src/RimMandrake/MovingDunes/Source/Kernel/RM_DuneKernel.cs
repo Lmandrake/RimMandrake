@@ -19,6 +19,9 @@ namespace RimMandrake.MovingDunes
         bool Roofed(int x, int z);
         /// <summary>An edifice that cannot coexist with sand (a wall): sand banks against it.</summary>
         bool BlocksSand(int x, int z);
+        /// <summary>Ground that can hold sand at all: false for water and space (the terrain's holdSnowOrSand).
+        /// Sand hopping onto it banks on the last cell before it, like a wall (MOVINGDUNES_WATER_BANKS_SAND_1).</summary>
+        bool CanHoldSand(int x, int z);
     }
 
     public sealed class TransportParams
@@ -32,13 +35,18 @@ namespace RimMandrake.MovingDunes
     {
         /// <summary>Nominal depth that left the map over the leeward edge.</summary>
         public float Lost;
-        /// <summary>Sum over moves of (depth actually deposited - slab): negative when the landing clamped/refused or was nudged down.</summary>
+        /// <summary>Depth a landing could not take because it was at MaxDepth. The only way a moved slab still leaves the map's sand
+        /// apart from the leeward edge: water no longer eats it (it banks on the shore).</summary>
+        public float CapOverflow;
+        /// <summary>Sum over moves of (depth actually deposited - slab + cap overflow): only the boundary nudge, so exactly 0 with it off.</summary>
         public float DepositError;
         /// <summary>Sum over moves of (depth actually removed - slab): positive when the source was nudged down further.</summary>
         public float ErodeError;
         /// <summary>Net change of cells eroded and put straight back (the boundary nudge can leave them a hair off).</summary>
         public float InPlaceDelta;
         public int Moves, OffMap, InPlace, Attempts;
+        /// <summary>Moves whose hop met water (a cell that cannot hold sand) and banked on the shore cell before it.</summary>
+        public int WaterBanked;
     }
 
     public static class RM_DuneKernel
@@ -156,13 +164,14 @@ namespace RimMandrake.MovingDunes
                 int hop = rangeIncl(p.HopMin, p.HopMax);
                 int lx = 0, lz = 0; bool haveLanding = false;
                 int px = cx, pz = cz;
-                bool offMap = false;
+                bool offMap = false, atWater = false;
                 for (int s = 1; s <= hop; s++)
                 {
                     int nx = cx + wx * s, nz = cz + wz * s;
                     if (!InBounds(f, nx, nz)) { offMap = true; break; }
                     if (f.Roofed(nx, nz)) { lx = px; lz = pz; haveLanding = true; break; }   // banks at the lip of a roof
                     if (f.BlocksSand(nx, nz)) { lx = px; lz = pz; haveLanding = true; break; }   // the snowdrift behind a fence
+                    if (!f.CanHoldSand(nx, nz)) { lx = px; lz = pz; haveLanding = true; atWater = true; break; }   // the shore banks it (owner: water banks the sand)
                     if (f.GetDepth(nx, nz) < here - LowCellMargin) { lx = nx; lz = nz; haveLanding = true; break; }   // deposition prefers low
                     px = nx; pz = nz;
                 }
@@ -185,11 +194,14 @@ namespace RimMandrake.MovingDunes
                     continue;
                 }
                 b.Moves++;
+                if (atWater) b.WaterBanked++;
                 b.ErodeError += removed - slab;
                 float before = f.GetDepth(lx, lz);
+                float overflow = Math.Max(0f, before + slab - f.MaxDepth);
                 SetDepthHysteretic(f, lx, lz, before + slab, hysteresis);
                 float after = f.GetDepth(lx, lz);
-                b.DepositError += (after - before) - slab;
+                b.CapOverflow += overflow;
+                b.DepositError += (after - before) - slab + overflow;
                 if (onDeposit != null) onDeposit(lx, lz, before, after);
             }
             return b;
