@@ -242,6 +242,10 @@ namespace RimMandrake.HugeThings
             foreach (System.Type t in AccessTools.GetTypesFromAssembly(typeof(HugeThingsStartup).Assembly))
             {
                 if (t.Namespace != ns) continue;
+                // Only [HarmonyPatch] classes. PatchClassProcessor runs any method named Prepare/Cleanup/TargetMethod on the
+                // type it is given, so a JobDriver subclass (instance Cleanup(JobCondition)) threw TargetException and killed
+                // the titanic cctor before InjectWakeComps ran (HUGETHINGS_TITANIC_CCTOR_THROWS_1).
+                if (!t.IsDefined(typeof(HarmonyPatch), false)) continue;
                 harmony.CreateClassProcessor(t).Patch();
                 n++;
             }
