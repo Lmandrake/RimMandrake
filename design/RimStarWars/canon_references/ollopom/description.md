@@ -11,7 +11,7 @@ mistaken for pom petals, an aquatic plant that is also part of their own diet �
 in-universe naturalist Ardis San Tekka describes them as "flat, colorful herbivores...
 [that] more closely resemble aquatic lifeforms or even plants."
 
-Body plan and color, per the species infobox and body text:
+Body plan and color, per the species infobox and body text (skin and fur are distinct: skin pink and yellow with purple spots, fur green, tendrils pink; the broad flat head is the leaf-like structure):
 - **Skin**: pink and yellow(-green) with purple spots.
 - **Hair/fur**: green body fur, plus pink hair tendrils.
 - **Eyes**: light brown, used to watch for predators.
@@ -53,8 +53,8 @@ variation from medium/lighting:
   purple spotting.
 
 The one apparent disagreement is more about presentation than design: the "Ollie"
-prop photo reads noticeably more pink/magenta overall than the paintings, but this is
-consistent with the tank's dim purple/UV show lighting at Galaxy's Edge, not a
+prop photo reads noticeably more pink/magenta overall than the paintings, and this may be
+the tank's dim purple show lighting at Galaxy's Edge (an interpretation; no source states it) rather than a
 different color scheme — the same purple-spotted, green-yellow base and pink tendrils
 are still legible under that light. **Treat the 2024 Bestiary painting
 (`wookieepedia_bestiary_infobox.jpg`) as the anchor reference** — it's the newest,

@@ -15,8 +15,7 @@ the Petranaki Arena in Star Wars: Episode II — Attack of the Clones (2002), in
 the escape sequence where Padmé Amidala rides a loose orray during the First Battle of
 Geonosis. Design notes (behind-the-scenes): built for AOTC, designed by Doug Chiang
 with the final sculpt by Michael Murnane; the design has been described as a cross
-between an alligator and a horse. Considered extinct as a species after the fall of the
-New Republic. Diet/lifespan/habitat beyond "Geonosis desert" are not stated.
+between an alligator and a horse. Orrays used their long snouts to dig into nests and their teeth to crush eggs (Star Wars: The Visual Encyclopedia; https://starwars.fandom.com/wiki/Orray). The species is considered extinct per The Galactic Explorer's Guide. Lifespan is not stated.
 
 ## Visual brief
 All three candidate images agree closely — there is no text/image conflict here, and
