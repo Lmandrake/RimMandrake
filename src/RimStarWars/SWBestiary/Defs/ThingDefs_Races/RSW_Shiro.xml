@@ -148,6 +148,15 @@
     <race>RSW_Shiro</race>
     <combatPower>85</combatPower>
     <ecoSystemWeight>0.40</ecoSystemWeight>
+    <!-- Owner kept the canon_shiro_v1 render as a variant beside his pick A (Greentide sheet 2026-10-08,
+         "+ variant" tick; art ledger ruling e6371c756a12be99aadc). Art in ShiroArtOverride; the corpse keeps
+         the base dessicated texture. -->
+    <alternateGraphicChance>0.5</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Shiro/ShiroB</texPath>
+      </li>
+    </alternateGraphics>
     <lifeStages>
       <li>
         <bodyGraphicData>
