@@ -1,0 +1,1 @@
+A cross-session wake message can land in a different window than the idle one it describes; check the task-output path's session id before treating its context as yours, and recover the plan from that session's transcript and the latest handoff.
