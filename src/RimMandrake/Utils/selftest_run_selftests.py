@@ -17,6 +17,7 @@ from pathlib import Path
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
+import run_selftests as rs  # noqa: E402
 from run_selftests import UNMEASURED_PHRASE, run_one  # noqa: E402
 
 FAILS = []
@@ -62,10 +63,45 @@ with tempfile.TemporaryDirectory() as tmp:
         _, status, _, _ = run_one(p)
         eq(status, want, what)
 
+# The memory pen's report line: stripped from stderr, parsed, and only that line.
+err, rep = rs._split_marker("real stderr\n" + rs._MARKER + '{"ok": true, "oom_kill": 2}\nmore\n')
+eq(err, "real stderr\nmore\n", "wrapper marker is removed from the test's stderr")
+eq(rep, {"ok": True, "oom_kill": 2}, "wrapper marker parses")
+
+# Planted break, live where the pen exists: a test that blows a 128 MiB cap must come
+# back KILLED (never PASS, never a plain FAIL), even though it would exit 0 if it lived.
+pen_note = "memory pen: UNMEASURED here"
+harness, why = rs.probe_harness()
+if harness:
+    rs._HARNESS = harness
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            bomb = Path(tmp) / "bomb.py"
+            bomb.write_text("hog = [b'x' * (64 << 20) for _ in range(8)]\n")  # 512 MiB
+            _, status, _, detail = run_one(bomb, cap=128 << 20, est=0)
+            eq(status, "KILLED", "a test over its cap is KILLED-by-cap")
+            eq("KILLED by memory cap" in detail, True, "KILLED detail names the cap")
+            ok = Path(tmp) / "ok.py"
+            ok.write_text("print(open('/proc/self/cgroup').read())\n")
+            _, status, _, _ = run_one(ok, cap=256 << 20, est=0)
+            eq(status, "PASS", "a small test passes inside the pen")
+    finally:
+        rs._HARNESS = None
+    # Fail closed: outside the pen the wrapper refuses to run the test at all.
+    if not rs._in_harness(rs._cgroup_of("self")):
+        import subprocess
+        r = subprocess.run([sys.executable, rs.__file__, "--_harness-child", "--",
+                            sys.executable, "-c", "print('TEST RAN')"], capture_output=True, text=True)
+        eq((r.returncode, "TEST RAN" in r.stdout), (rs._PLACEMENT_RC, False),
+           "wrapper outside rm-harness.slice refuses and never runs the test")
+    pen_note = "memory pen: cap kill reads KILLED, small test PASSes in the pen"
+else:
+    print(f"memory pen probe failed ({why}) — those checks are UNMEASURED here")
+
 if FAILS:
     print("FAIL selftest_run_selftests.py")
     for f in FAILS:
         print("  " + f)
     sys.exit(1)
 print("ok  selftest_run_selftests.py — UNMEASURED/FAIL classification, "
-      "and the guard that stops an unmeasured child masking a real failure")
+      "and the guard that stops an unmeasured child masking a real failure; " + pen_note)
