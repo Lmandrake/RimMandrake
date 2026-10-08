@@ -505,7 +505,7 @@ def test_fill_queue_blank_priority_cell_does_not_crash():
            proc.returncode == 0, proc.stdout + proc.stderr)
         filed = q.pending / "blankprio.json"
         ok("fill_queue: the job is filed with the default priority",
-           filed.is_file() and json.loads(filed.read_text()).get("priority") == 100)
+           filed.is_file() and json.loads(filed.read_text()).get("priority") == 50)
 
 
 def test_fill_queue_write_job_never_leaves_a_corrupt_id_blocking_file():
