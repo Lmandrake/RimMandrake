@@ -480,11 +480,11 @@ def _map_rect(t):
 
 
 def _reset_pad(t, terrain="Soil"):
-    """Everything true before the first assertion: the pad empty (things AND pawns), flat natural floor,
-    unroofed, unfogged, no pollution."""
+    """Everything true before the first assertion: the pad empty of THINGS, flat natural floor, unroofed,
+    unfogged, no pollution. NOT pawns: jawa/destroy_batch never destroys a pawn whatever `categories` says (its own
+    description), so pawns from earlier chains survive -- use jawa/destroy_bulk where a stray pawn would matter."""
     rect = _pad_rect(t)
     t.bridge_call("jawa/destroy_batch", rects=rect, categories="All")
-    t.bridge_call("jawa/destroy_batch", rects=rect, categories="Pawn")
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, rect))
     t.bridge_call("jawa/set_roof_batch", ops=rect, roofDef="None")
     t.bridge_call("jawa/set_fog", action="unfog", rect=rect)
@@ -499,7 +499,6 @@ def _teardown(t):
     try:
         rect = _pad_rect(t)
         t.session.call("jawa/destroy_batch", rects=rect, categories="All")
-        t.session.call("jawa/destroy_batch", rects=rect, categories="Pawn")
     except Exception as ex:                       # teardown must never mask the chain's own verdict
         print("[wl] teardown failed: %s" % ex, file=sys.stderr, flush=True)
 
@@ -1363,19 +1362,31 @@ def gripper(t):
             _restore(t, ["gripperSpawnsCarrying"])
 
         with _comp(t, "tamed_gripper_never_steals", independent=True, toggle="gripperTheftEnabled"):
+            # The wild grippers above outlive _teardown (jawa/destroy_batch never destroys a pawn) and would steal
+            # this Gold themselves, muddying the "still lying there" read. Remove every wild animal first.
+            t.bridge_call("jawa/destroy_bulk", filter="factionlessAnimals", dryRun=False)
             _spawn_thing(t, "Gold", box["x"] + 4, box["z"] - 6, 5)
             g = _spawn(t, "RM_Gripper", box["x"], box["z"] - 6, "player")
-            gold = _things(t, "Gold", "%d,%d,3,3" % (box["x"] + 3, box["z"] - 7))
+            gold_rect = "%d,%d,3,3" % (box["x"] + 3, box["z"] - 7)
+            gold = _things(t, "Gold", gold_rect)
             if _live(t) and not gold:
                 _fail("precondition: the second Gold stack is missing")
             r = _order(t, pawnId=g, jobDef="RM_GripperSteal",
                               targetAId=(gold[0].get("id") if gold else None), count=5, waitTicks=60, timeoutSeconds=60)
-            if _live(t) and (r or {}).get("success") is False:
-                _unmeasured(t, "ordered_job refused to order the tamed gripper: %r" % r)
+            # RM_JobDriver_GripperSteal carries a job-wide FailOn(pawn.Faction != null), so on a tamed gripper the
+            # order is ACCEPTED and ends at once (LIVE 2026-10-08: accepted True, afterJobDef GotoWander, success
+            # False). That is the property under test, not a refused order. Only a non-accepted order is UNMEASURED;
+            # the wild control (steal_swaps_scrap_for_gold) proves the same order runs on a factionless gripper.
+            if _live(t) and (r or {}).get("accepted") is not True:
+                _unmeasured(t, "ordered_job did not accept the steal order on the tamed gripper: %r" % r)
+            _note(t, "tamed gripper's job after the order", {k: (r or {}).get(k) for k in
+                                                             ("success", "accepted", "afterJobDef", "nowRunningRequested")})
             t.wait_ticks(500)
             s = _inspect(t, g)
             if _live(t) and "gold" in s.lower():
                 _fail("a TAMED gripper stole (FailOn faction != null should end the job): %s" % s[:200])
+            # evidence only: a leftover colonist may legitimately haul the Gold, so its absence is not a verdict
+            _note(t, "Gold still beside the tamed gripper", [_stack(m) for m in _things(t, "Gold", gold_rect)])
     finally:
         _restore(t, ["gripperTheftEnabled", "gripperSpawnsCarrying"])
         _teardown(t)
@@ -1387,7 +1398,7 @@ def gripper(t):
 def flora_harvest(t):
     """The wasteland flora that name a harvested item yield it when a handler harvests a grown plant
     (plant.harvestedThingDef, read from the mod's own flora XML): one row of full-grown plants per species,
-    one handler, a queued forced Harvest on each."""
+    one handler with hauling off, a forced Harvest on each in turn, the product read the moment its plant is cut."""
     _enter(t)
     box = {}
     try:
@@ -1401,10 +1412,18 @@ def flora_harvest(t):
             box["handler"] = _spawn(t, "Colonist", x - 10, z, "player")
             if _live(t):
                 _settle(t, box["handler"])
-            # JobDriver_PlantWork rolls Rand.Value > PlantHarvestYield per harvest when harvestFailable (RimSage 1.6):
-            # a random colonist's low Plants skill failed 2 of 4 single-plant harvests LIVE 2026-10-08 (Pusberry,
-            # Wartshrub; VaultRoot and Boilbulb yielded). Plants 20 takes the roll out of the verdict.
+            # JobDriver_PlantWork rolls Rand.Value > PlantHarvestYield per harvest when harvestFailable (RimSage 1.6).
+            # Bushes and ground plants (PlantBase) are failable, so Plants 20 takes the roll out of the verdict; trees
+            # (TreeBase: RM_VaultRoot, RM_Pusberry) inherit harvestFailable=false and never roll at all.
             t.bridge_call("jawa/set_pawn_skill", pawn=box.get("handler"), skill="Plants", level=20)
+            # The handler must not haul the yield away before it is read.
+            t.bridge_call("jawa/set_work_priority", pawnId=box.get("handler"), workType="Hauling", priority=0)
+            # LIVE 2026-10-08 (x2): RawBerries never arrived from a grown RM_Pusberry while the other three yielded.
+            # Cause in the FIXTURE: jawa/destroy_batch never destroys a pawn, so the gripper chain's wild grippers
+            # (theft back ON after its restore) and the map's wild animals were still on the pad, and the four
+            # harvests were queued and read once after 4000 ticks. The berries (second in the queue) lay longest:
+            # stealable, edible and haulable. Clear every non-colonist, then harvest and read ONE plant at a time.
+            t.bridge_call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
             box["plants"] = {}
             for i, (plant, product) in enumerate(FLORA_PRODUCTS):
                 t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (plant, x + 2 * i, z + 4), growth=1.0)
@@ -1416,19 +1435,25 @@ def flora_harvest(t):
                     box["plants"][plant] = rows[0].get("id")
                     if _things(t, product, _pad_rect(t)):
                         _fail("precondition: %s already lying on the pad" % product)
-            for plant, product in FLORA_PRODUCTS:
-                _order(t, pawnId=box.get("handler"), jobDef="Harvest",
-                              targetAId=box["plants"].get(plant), queue=True, waitTicks=60)
-            t.wait_ticks(4000)
 
         for plant, product in FLORA_PRODUCTS:
             with _comp(t, "harvest_yields_%s_from_%s" % (product, plant), independent=True):
+                _order(t, pawnId=box.get("handler"), jobDef="Harvest",
+                       targetAId=box.get("plants", {}).get(plant), waitTicks=60)
+                gone = False
+                for _ in range(16):                   # <= 4000 ticks; stop as soon as the plant is cut
+                    t.wait_ticks(250)
+                    if not _live(t) or not _things(t, plant, _pad_rect(t)):
+                        gone = True
+                        break
                 if _live(t):
                     made = _things(t, product, _pad_rect(t))
                     _note(t, "%s stacks" % product, [_stack(m) for m in made])
+                    if not gone:
+                        _unmeasured(t, "the handler never finished harvesting the %s in 4000 ticks" % plant)
                     if not made:
-                        _fail("no %s after a forced harvest of a grown %s (harvestedThingDef is wired in the def; "
-                              "the yield never arrived)" % (product, plant))
+                        _fail("no %s right after a forced harvest cut a grown %s (harvestedThingDef is wired in the "
+                              "def; the yield never arrived)" % (product, plant))
     finally:
         _teardown(t)
 

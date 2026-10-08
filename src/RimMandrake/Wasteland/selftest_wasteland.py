@@ -241,9 +241,21 @@ class WLGame(MockGame):
         cats = str(p.get("categories") or "Plant")
         if cats == "All":
             self.thing_rows = [t for t in self.thing_rows if not _inside(t["x"], t["z"], r)]
-        if cats == "Pawn":
-            self.pawn_rows = [q for q in self.pawn_rows if not _inside(q["x"], q["z"], r)]
+        # LIVE: jawa/destroy_batch NEVER destroys a pawn, whatever `categories` says. An earlier fake removed them,
+        # which hid the fixture defect where stray pawns took the Pusberry's yield (2026-10-08).
         return {"success": True}
+
+    def t_jawa_destroy_bulk(self, p):
+        f = p.get("filter")
+        hit = [q for q in self.pawn_rows if not q["dead"] and (
+            (f == "factionlessAnimals" and q["faction"] is None and q["kindDef"] != "Colonist")
+            or (f == "nonColonists" and not (q["faction"] == "Player" and q["kindDef"] == "Colonist")))]
+        if not p.get("dryRun", True):
+            self.pawn_rows = [q for q in self.pawn_rows if q not in hit]
+        return {"success": True, "matchedCount": len(hit)}
+
+    def t_jawa_set_work_priority(self, p):
+        return {"success": self.pawn(p.get("pawnId")) is not None}
 
     def t_jawa_set_pollution(self, p):
         r = _rect(p["rect"])
@@ -386,9 +398,12 @@ class WLGame(MockGame):
         if q is None:
             return {"success": False}
         job, tid = p.get("jobDef"), p.get("targetAId")
+        if job == "RM_GripperSteal" and q["faction"] is not None and "tamed_steals" not in self.brk:
+            # LIVE shape: the job-wide FailOn(pawn.Faction != null) ends it at once -- accepted, not running
+            return {"success": False, "accepted": True, "afterJobDef": "GotoWander", "nowRunningRequested": False}
         if job == "RM_GripperSteal" and "steal_noop" not in self.brk:
             tgt = self.thing(tid)
-            if tgt is not None and q["faction"] is None and self.on("gripperTheftEnabled"):
+            if tgt is not None and (q["faction"] is None or "tamed_steals" in self.brk) and self.on("gripperTheftEnabled"):
                 q["inv"] = ["%s x%d" % (tgt["def"], tgt["stack"])]
                 self.thing_rows.remove(tgt)
         elif job in ("Harvest", "Ingest"):
@@ -672,6 +687,9 @@ class WLGame(MockGame):
                 if t["def"] == "RM_WasteCaskBay" and self.bay_leaks(t) and "no_leak" not in self.brk:
                     self.poll.update((t["x"] + i, t["z"] + 2) for i in range(6))
         # -- processors: no ticking needed (inspect reads onfeed)
+        # -- stray thief (the LIVE 2026-10-08 confound): a wild gripper takes harvest yield left lying 1000+ ticks
+        if any(q["kindDef"] == "RM_Gripper" and q["faction"] is None for q in living):
+            self.thing_rows = [t for t in self.thing_rows if t.get("born") is None or new - t["born"] < 1000]
         # -- queued harvest / ingest
         if crossed(old, new, 500):
             for pid, jobs in list(self.queue.items()):
@@ -680,10 +698,11 @@ class WLGame(MockGame):
                     t = self.thing(tid)
                     if t is None:
                         continue
-                    if job == "Harvest" and "flora_noop" not in self.brk:
+                    if job == "Harvest":                  # flora_noop: the plant is cut and yields nothing
                         prod = dict(V.FLORA_PRODUCTS).get(t["def"])
                         self.thing_rows.remove(t)
-                        self.add_thing(prod, t["x"], t["z"], 5)
+                        if "flora_noop" not in self.brk:
+                            self.add_thing(prod, t["x"], t["z"], 5, born=new)
                     elif job == "Ingest" and "no_shock" not in self.brk:
                         q = self.pawn(pid)
                         self.thing_rows.remove(t)
@@ -883,6 +902,7 @@ def main():
         ("always_empty", {"gripper.wild_gripper_spawns_carrying_scrap"}),
         ("steal_noop", {"gripper.steal_swaps_scrap_for_gold"}),
         ("no_drop", {"gripper.hurt_gripper_drops_its_haul"}),
+        ("tamed_steals", {"gripper.tamed_gripper_never_steals"}),
         ("flora_noop", {"flora_harvest.harvest_yields_%s_from_%s" % (q, p) for p, q in V.FLORA_PRODUCTS}),
         ("scatter_noop", {"brine_deposits.scatter_places_%s" % d for d in DEPOSIT_ITEM}),
         ("wrong_mined_item", {"brine_deposits.RM_BrineDeposit_Tekk_mines_to_RM_Tekk"}),
