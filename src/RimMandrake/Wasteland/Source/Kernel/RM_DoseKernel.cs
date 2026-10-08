@@ -33,7 +33,7 @@ namespace RimMandrake.Wasteland
             if (unitMass > 0.0001f)
             {
                 // Floor in double and clamp: a float-to-int cast of a huge or NaN quotient is undefined and wrapped to a negative.
-                double q = Math.Floor((double)maxCarryMass / unitMass);
+                double q = Math.Floor(maxCarryMass / unitMass); // quotient in float as Mathf.FloorToInt did (GRIPPER_THEFT_FLOOR_PRECISION_1)
                 byMass = double.IsNaN(q) ? 0 : (q >= int.MaxValue ? int.MaxValue : (q <= int.MinValue ? int.MinValue : (int)q));
             }
             return Math.Max(0, Math.Min(stackCount, Math.Min(maxUnitsTaken, byMass)));
