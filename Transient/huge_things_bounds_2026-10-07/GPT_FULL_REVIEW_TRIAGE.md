@@ -167,3 +167,14 @@ Rule check: no idea needs worldgen. D6.43 is explicitly map-gen only. Heat ideas
 - (c) Keep moving items, but skip quest items and anything someone is about to carry.
 
 **Also for him (scope, not a defect):** cards #4 and #5 of 2026-09-09 rule corpse camps, scavenger draw, and titan events with footfall warnings. None of them is built, and no live item carries them.
+
+## Owner rulings, 2026-10-07 23:10–23:15 PDT (question cards)
+
+- **Q1 titan body:** keep the real body inside the site (name, resurrection, funerals, extra parts survive; rot carries over).
+- **Q2, typed:** "It's not supposed to be accelerated rotting. Just normal rotting. It shouldn't be new code for the rotting." ⇒ sites rot exactly like a vanilla corpse via the kept body's own rot; delete any custom spoilage code. With the body kept, switching sites off naturally leaves ordinary corpses.
+- **Q3 yield:** smooth curve, no tier-2 jump.
+- **Q4 carcass in combat:** gunfire and blasts eat its remaining meat and leather; it still blocks.
+- **Q5, typed:** "Only when designated but starts designated." ⇒ carving is a designation like hunting, applied automatically when the site is created and removable by the player.
+- **Q6 trapped colonist:** keep the nearby check and add a warning letter naming the plant ("a colonist is trapped by the X, cut it").
+- **Q7 plant ages:** measure every art version (young, leafless, polluted) of every giant plant with the mask tool.
+- **Q8 items:** keep moving items gently, but never quest items or anything reserved for hauling; a failed move leaves the item and the root waits.
