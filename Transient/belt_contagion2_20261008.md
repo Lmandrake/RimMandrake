@@ -8,3 +8,4 @@
 - fake-bridge: order_pawn now runs the clock for waitTicks; Absorb models ring + approach, new break slow_walkers (expected []). Against the OLD harness the fake now reproduces BOTH live failures (healthy 57/59, slow_walkers reds coalescence_absorbs); new harness 59/59, 45/45 breaks.
 - no C# change: mod behaviour is correct for both (PressureActive gates on burnEnabled; Absorb eats anything in the ring next pass) -> no winbuild needed
 - run_selftests: 341/341 PASS
+- published 9e30748a2; rimflow implemented with owed A3/A5/A6 (L2 live)
