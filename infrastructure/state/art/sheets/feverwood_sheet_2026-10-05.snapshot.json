@@ -1,6 +1,6 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-10-08T00:01:54-0700",
+ "built": "2026-10-08T06:53:30-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
@@ -12,20 +12,32 @@
     },
     "B": {
      "single": "d1d29ffecf631507d18cad78c9b516c1441b9aedcb488a351ee9b9af5b906b3a"
+    },
+    "C": {
+     "single": "ec139cb2286d339324525b168f9dc34822dea03284557c77c81734f03dbe76aa"
+    },
+    "D": {
+     "single": "38ab3e7dce83801a99a3f8f9e23e9d2790c99f8dc611d3df3f3c1ae2bc66dbf9"
     }
    },
    "graphic_of": {
     "A": "swplants/HydenockTree",
-    "B": "swplants/HydenockTree"
+    "B": "swplants/HydenockTree",
+    "C": "swplants/HydenockTree",
+    "D": "swplants/HydenockTree"
    },
    "labels": {
     "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
-    "B": "render gapall_Plant_HydenockTree_Wild_v1"
+    "B": "render gapall_Plant_HydenockTree_Wild_v1",
+    "C": "render regen_fw_hydenocktree_varb_v1",
+    "D": "render regen_fw_hydenocktree_varc_v1"
    },
    "res": "swplants/HydenockTree",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "hydenocktree_wild"
   },
@@ -36,20 +48,32 @@
     },
     "B": {
      "single": "4049a36c5c68562da91bf2ac69e04d1cc021809c3bebf3cdd3f50ad4115f00fe"
+    },
+    "C": {
+     "single": "658a54cc56f76869b85449fbb007a40d1482facb5c6c601fc78408d5c6ad5e30"
+    },
+    "D": {
+     "single": "6532420b56014b8cce35b5b5ef7e26f3d6091554796a720e7fb99c414be5ccc1"
     }
    },
    "graphic_of": {
     "A": "swplants/JoganTree",
-    "B": "swplants/JoganTree"
+    "B": "swplants/JoganTree",
+    "C": "swplants/JoganTree",
+    "D": "swplants/JoganTree"
    },
    "labels": {
     "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
-    "B": "render gapall_Plant_JoganTree_Wild_v1"
+    "B": "render gapall_Plant_JoganTree_Wild_v1",
+    "C": "render regen_fw_jogantree_varb_v1",
+    "D": "render regen_fw_jogantree_varc_v1"
    },
    "res": "swplants/JoganTree",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "jogantree_wild"
   },
@@ -60,20 +84,38 @@
     },
     "B": {
      "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
+    },
+    "C": {
+     "single": "479d9be95ce6df53cd1eb494a814fe2707c44dd871402397f6d031419bc38077"
+    },
+    "D": {
+     "single": "c0b262e157da54a847ee0cd6b2fc2f3ee284d3e5ed3e66eca276a3a38408e26d"
+    },
+    "E": {
+     "single": "e97d1ba86c72bf807bf45dd5a30925ea9dc7d714d9f04d1f12dc41a86a7c5638"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Ammeth/RM_Ammeth_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_ammeth"
+    "B": "render feverwood_plant_ammeth",
+    "C": "render regen_fw_ammeth_v2a \u2014 failed canon check",
+    "D": "render regen_fw_ammeth_v2b",
+    "E": "render regen_fw_ammeth_v2c"
    },
    "res": "Things/Plant/RM_Ammeth/RM_Ammeth_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "ammeth"
   },
@@ -83,17 +125,25 @@
      "east": "b214e0814dd79d2f734ebcf9afeb6434f3e08c6242cdd95a01cc66db3a93117d",
      "north": "eb00abd90e594ba3d5d203372283e769b70c6728622d2a45fdac10502db8af26",
      "south": "c8407c3382a4bc859263f703eda2e20c811aafa6cefa359574dc93edcdec47ff"
+    },
+    "B": {
+     "east": "e375e2253fb6f8f71ca41f798754a0ce690636078c38186028fbf3847a6720f2",
+     "north": "fffc52a100ec11eb54022c48053806beaa9ad8407ebc3cf358bfaef8528316f7",
+     "south": "3a70bc925af7450075407e337354ce33e64ddcb702e000ff00b0f68b46d26f99"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Brathek/RM_Brathek"
+    "A": "Things/Pawn/Animal/RM_Brathek/RM_Brathek",
+    "B": "Things/Pawn/Animal/RM_Brathek/RM_Brathek"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood"
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render regen_fw_brathek_v2"
    },
    "res": "Things/Pawn/Animal/RM_Brathek/RM_Brathek",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "brathek"
   },
@@ -107,20 +157,57 @@
     "B": {
      "north": "47b6358f423419407d6f3a5f63fada2be1c978fa1910bd264318d08f0b090756",
      "south": "c840dac0441be38e353f195f60b678081a837ba289c0074473342ae405b643b9"
+    },
+    "C": {
+     "east": "4dc79bf67efab2a371e080e7f19cd1bfac3ca15d32aa1bc1c3ad51072f1fbe74",
+     "south": "9b02a0ad0fb33c743fe00d765082dd84ede45827c093c17524bb5d9a475274fa"
+    },
+    "D": {
+     "east": "8c6220e85c9c86663a2b4145c2190d2c0f870b8115d0c542f3210084e408d4f5",
+     "north": "99c6cdd98c5d2b0681ef0f5d593ada860466f0a6469007c60ef86f251177af76",
+     "south": "c39d1acee1f073d5e9a7dbbdb56a6fa750f38ef7cf6c0d93bcc56282dd144fdb"
+    },
+    "E": {
+     "east": "4bea7cc97d37e73fa56ee297826dabc3e41d7c4aa8cfb0d67dd6934e7b0dc795",
+     "north": "a5b3b1310e7c8e853c5d1ec66b6ff2f689ccd274725a331fdba7bee96405d8c9"
+    },
+    "F": {
+     "east": "67d2084620894fa6b406d0605ee3de5f3624a71e740a2e9ffdd322c8a695bab2",
+     "south": "074588836b7ab23c920b4bb003b9759b94a6ae6ecc30b6bf0fef44f5fe8fee3f"
+    },
+    "G": {
+     "east": "cadcef7c69acac288d577a3eb040032439722bf5778b9084e6961467bb357c8a",
+     "north": "2fb4b191c8c3f34a42b56582faa8f7cc6002611af10256bbd79b8acb6d9b7a1e",
+     "south": "c951d459de4dd1ec1a9404c8da3ac8f3033bc957cac227a63406a10281673fd0"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-    "B": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+    "B": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+    "C": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+    "D": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+    "E": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+    "F": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+    "G": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_chellow"
+    "B": "render feverwood_chellow",
+    "C": "render regen_fw_chellow_flying_1_v1",
+    "D": "render regen_fw_chellow_flying_2_v1",
+    "E": "render regen_fw_chellow_flying_3_v1",
+    "F": "render regen_fw_chellow_flying_4_v1",
+    "G": "render regen_fw_chellow_v2 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "chellow"
   },
@@ -131,20 +218,38 @@
     },
     "B": {
      "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
+    },
+    "C": {
+     "single": "166fa6792e1d4afd6faafe6d7eca513a2cedd3679a909175067f52d2cda903da"
+    },
+    "D": {
+     "single": "b7913294e120866632cb5411e92f1b29b0a9b1664ace0d88eaeecc36dcdb9933"
+    },
+    "E": {
+     "single": "3e488b126285b64180923ea342b81d738d12c0f6640505978e27a5b268aab7c3"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_cistrel"
+    "B": "render feverwood_plant_cistrel",
+    "C": "render regen_fw_cistrel_v2a \u2014 failed canon check",
+    "D": "render regen_fw_cistrel_v2b",
+    "E": "render regen_fw_cistrel_v2c"
    },
    "res": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "cistrel"
   },
@@ -155,20 +260,32 @@
     },
     "B": {
      "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
+    },
+    "C": {
+     "single": "c43cbbbd50a31d9f6e95b28f6fda720a10da0b75b78cfb1f9cff07d8b1152cdb"
+    },
+    "D": {
+     "single": "0c120a7c2431a5c98540be81a529922616a0ca38b74fb004bef3e0dc98625185"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Claithe/RM_Claithe_a",
-    "B": "Things/Plant/RM_Claithe/RM_Claithe_a"
+    "B": "Things/Plant/RM_Claithe/RM_Claithe_a",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "history FeverWood 2026-09-25",
-    "B": "IN GAME \u2014 FeverWood"
+    "B": "IN GAME \u2014 FeverWood",
+    "C": "render regen_fw_claithe_varb_v1",
+    "D": "render regen_fw_claithe_varc_v1"
    },
    "res": "Things/Plant/RM_Claithe/RM_Claithe_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "claithe"
   },
@@ -179,20 +296,38 @@
     },
     "B": {
      "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
+    },
+    "C": {
+     "single": "a6aedd99c0f1f8acd8cc52b26aabe8f16af0837ed43937d135cbc23fed403f2e"
+    },
+    "D": {
+     "single": "c4739f9c7c97fa3b8398a258dd70c270507fd6eac954b84b4b41cb1edb6c8ee7"
+    },
+    "E": {
+     "single": "4a22a45ebafe8e9f99afc0663bd6a51a3163a7f2b139aeabeec97325c80ea4c0"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Corvath/RM_Corvath_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_corvath"
+    "B": "render feverwood_plant_corvath",
+    "C": "render regen_fw_corvath_v2a \u2014 failed canon check",
+    "D": "render regen_fw_corvath_v2b",
+    "E": "render regen_fw_corvath_v2c"
    },
    "res": "Things/Plant/RM_Corvath/RM_Corvath_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "corvath"
   },
@@ -205,20 +340,26 @@
      "east": "1e5f05b071fddb47b3da685d9886a4e52154a6e868dd2648fc651dbdff2abdb6",
      "north": "434ede4062cc7b315305e0c514c16d499738f81c0d2ce2572dcbbbc0d9b62a91",
      "south": "b1ea569c7f64bf0c458b0c60b9dddbdd95a6a25191b26de39c26105f35e1c201"
+    },
+    "C": {
+     "north": "3942472ed0880ee41eeec3c161989eb24f5ae0d774fa9d071b1eb14953de4622"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
-    "B": "Things/Pawn/Animal/RM_Drommath/RM_Drommath"
+    "B": "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
+    "C": "Things/Pawn/Animal/RM_Drommath/RM_Drommath"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_drommath"
+    "B": "render feverwood_drommath",
+    "C": "render regen_fw_drommath_v2"
    },
    "res": "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "drommath"
   },
@@ -226,17 +367,29 @@
    "columns": {
     "A": {
      "single": "816cf4e9de3d0c67da130873adb06e7918c42e0d04323a2bb73318157e2807d8"
+    },
+    "B": {
+     "single": "875193f69bd9d6590e53a12d525a92ea4db1f1bc837f912e05b2ea5656c5b4f6"
+    },
+    "C": {
+     "single": "0c2e4b0f0c99c8b32ce34e36d30b9f5babc147d8af8947fda0116b95d5070a9d"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_GiantLeaf/RM_GiantLeaf_a"
+    "A": "Things/Plant/RM_GiantLeaf/RM_GiantLeaf_a",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood"
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render regen_fw_giantleaf_varb_v1",
+    "C": "render regen_fw_giantleaf_varc_v1"
    },
    "res": "Things/Plant/RM_GiantLeaf/RM_GiantLeaf_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "giantleaf"
   },
@@ -287,20 +440,32 @@
     },
     "B": {
      "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
+    },
+    "C": {
+     "single": "9b64838109a3fee0387a5e51419df75a889746a732fca5979042139f135191d8"
+    },
+    "D": {
+     "single": "17a42bb03ec4c8ac9d40ae50b4bdc0ba1c408a9ec326c62643448883cd492395"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Halquin/RM_Halquin_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_halquin"
+    "B": "render feverwood_plant_halquin",
+    "C": "render regen_fw_halquin_varb_v1",
+    "D": "render regen_fw_halquin_varc_v1"
    },
    "res": "Things/Plant/RM_Halquin/RM_Halquin_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "halquin"
   },
@@ -331,20 +496,32 @@
     },
     "B": {
      "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
+    },
+    "C": {
+     "single": "5798eaa5054281ad0f995f71e90dbddf13b36b63c1187ec3c46608ca96d833a3"
+    },
+    "D": {
+     "single": "a5f8b3ad6217ee552af6b74d8c1c0c2f84ee234d6e4ea80c688e6ff5d1f7f322"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Maulith/RM_Maulith_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_maulith"
+    "B": "render feverwood_plant_maulith",
+    "C": "render regen_fw_maulith_varb_v1",
+    "D": "render regen_fw_maulith_varc_v1"
    },
    "res": "Things/Plant/RM_Maulith/RM_Maulith_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "maulith"
   },
@@ -359,20 +536,58 @@
      "east": "4cf5bdffe576cb9c735c077d305458cd07a2f1b3f58f8ce86ce8caebc26a6ddd",
      "north": "8140e74b3c632a89afbc1fcb9bc0ef74a97155a8388ddfd5ed4c64ac7fd07e6a",
      "south": "0bf1f96e97ca15582c85ad353bf5dc50ae4de6acdbd7f4c1524ee76f7b82e9ed"
+    },
+    "C": {
+     "north": "21cb2c25114c05914dfa5d5c6ee200d03e90c65db13e1704514b174a362f90c9"
+    },
+    "D": {
+     "east": "d72a08a2064b6da86d781506185c72e97554e0e5af065cebaaeb50492108c091",
+     "north": "384c97f7c94eb8de1b40c77e7bc538bf503d44fb77fdc1e357ae31dcde0cf1fa",
+     "south": "4cf8b40151e4c5153b435a129f6b290c6371de4ec2a76f5b4c8ec431f6e32466"
+    },
+    "E": {
+     "east": "12c76db6b4232dd9100b05f03ec468167498f04e5a276330df875389d287732f",
+     "north": "62e4cf875a47e99a447b1b851ec7150d1a9dea0319016574cd806dec1a1b0a08",
+     "south": "f529f88240d4e1683da3ef2e633abcf688682f3f1d4685e2838d5c2278a553df"
+    },
+    "F": {
+     "east": "9cb5b19c17b1d2cb9a1d373977e897cfda5afe65327ef143e9ae578c2924ef75",
+     "north": "21fdabcf883e3237b459eead5bae78e70b5a6c05d4d0aa7a5bce225305e9b70a",
+     "south": "5cf46eea68254df585b0ea752446fab708b1fe5b34a31a9b47c1d6e7473a0011"
+    },
+    "G": {
+     "east": "db1a170d870a13c51d7cde9bfc28aee52be675e5d2d6f8559aa2b6136334e4fd",
+     "north": "db899189ce25be73c14b3e12864e3466f30806ef34fc525277abc7158a44193f",
+     "south": "5e3371935d6a472aa0496f41f4bfdf1d8892e383cafa2769c013165330e7e015"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
-    "B": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith"
+    "B": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+    "C": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+    "D": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+    "E": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+    "F": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+    "G": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_murrelith"
+    "B": "render feverwood_murrelith",
+    "C": "render regen_fw_murrelith_flying_1_v1",
+    "D": "render regen_fw_murrelith_flying_2_v1",
+    "E": "render regen_fw_murrelith_flying_3_v1",
+    "F": "render regen_fw_murrelith_flying_4_v1",
+    "G": "render regen_fw_murrelith_v2"
    },
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "murrelith"
   },
@@ -403,20 +618,32 @@
     },
     "B": {
      "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
+    },
+    "C": {
+     "single": "1040b1e05c8c757d3e04c573cbc7d978aca55123329d8e32231e6e14119a074d"
+    },
+    "D": {
+     "single": "50c5b77f28bee564f1e5bd39a961bfdb6b909666dac8b794e613b97b8e844d67"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_nubrith"
+    "B": "render feverwood_plant_nubrith",
+    "C": "render regen_fw_nubrith_varb_v1",
+    "D": "render regen_fw_nubrith_varc_v1"
    },
    "res": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "nubrith"
   },
@@ -459,17 +686,29 @@
    "columns": {
     "A": {
      "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
+    },
+    "B": {
+     "single": "655d217eaa24a5c7516f342b89fad15776a2ad9cf09f06bdfd4bc21b4e3c45c5"
+    },
+    "C": {
+     "single": "43f062ef77e51adf48516b452463d56864091d519f843203edc370b5ab999322"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Ossagrel/RM_Ossagrel_a"
+    "A": "Things/Plant/RM_Ossagrel/RM_Ossagrel_a",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood"
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render regen_fw_ossagrel_varb_v1",
+    "C": "render regen_fw_ossagrel_varc_v1"
    },
    "res": "Things/Plant/RM_Ossagrel/RM_Ossagrel_a",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "ossagrel"
   },
@@ -480,20 +719,32 @@
     },
     "B": {
      "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
+    },
+    "C": {
+     "single": "0dcea5f625b379c311e52f8da066c4b9a180a9df515fdc9eae4701fca41524b0"
+    },
+    "D": {
+     "single": "292e3896c6f8521f1b4c435519b6f35044875083502aa7fcb020922847e9ca27"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Plennith/RM_Plennith_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_plennith"
+    "B": "render feverwood_plant_plennith",
+    "C": "render regen_fw_plennith_varb_v1",
+    "D": "render regen_fw_plennith_varc_v1"
    },
    "res": "Things/Plant/RM_Plennith/RM_Plennith_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "plennith"
   },
@@ -504,20 +755,26 @@
     },
     "B": {
      "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
+    },
+    "C": {
+     "single": "1074ebb5b2d20a039cf60119bb043aad69f7bd4d16fc23ee585ad40d329a4dcb"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Seepril/RM_Seepril_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_seepril"
+    "B": "render feverwood_plant_seepril",
+    "C": "render regen_fw_seepril_varc_v1"
    },
    "res": "Things/Plant/RM_Seepril/RM_Seepril_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "seepril"
   },
@@ -600,20 +857,38 @@
     },
     "B": {
      "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
+    },
+    "C": {
+     "single": "8fa190ea6c65f28cacb7488348d7ea01f0b0b4a32bfe1ae7fcc17a45fb58deed"
+    },
+    "D": {
+     "single": "306a68348d81c61e7213062b359eccbd4f12a675a685db10dd315d0fc378798e"
+    },
+    "E": {
+     "single": "534ffe6c66e3279018d6c7ef7d6ea0d467c98c906d44f576cb722432bc8b748d"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Skimmel/RM_Skimmel_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_skimmel"
+    "B": "render feverwood_plant_skimmel",
+    "C": "render regen_fw_skimmel_v2a",
+    "D": "render regen_fw_skimmel_v2b",
+    "E": "render regen_fw_skimmel_v2c"
    },
    "res": "Things/Plant/RM_Skimmel/RM_Skimmel_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "skimmel"
   },
@@ -624,20 +899,38 @@
     },
     "B": {
      "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
+    },
+    "C": {
+     "single": "b89d0e4cf0f72207055153123d3ffbcc8f2a5c09fc387f61e6b5fab342558409"
+    },
+    "D": {
+     "single": "382278d0fa27a86bc1100fd0b141ada52bd9494dbd78d6c975fabe92ae335e91"
+    },
+    "E": {
+     "single": "f04c998222ba7aa8e5c40cb59574404593e4feaefdb54261959c0c4a66a0d6df"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Sodderel/RM_Sodderel_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_sodderel"
+    "B": "render feverwood_plant_sodderel",
+    "C": "render regen_fw_sodderel_v2a",
+    "D": "render regen_fw_sodderel_v2b",
+    "E": "render regen_fw_sodderel_v2c"
    },
    "res": "Things/Plant/RM_Sodderel/RM_Sodderel_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "sodderel"
   },
@@ -675,17 +968,25 @@
      "east": "366f2c9240b30dc76ef67c7535acca4fd6a25febe73ae8051337f627f66fd0e7",
      "north": "1962718829a147b4da06fae42f596ece3dd98ea01794688f68dda7bc96289998",
      "south": "54847e7e734444bf6cbd2e905bce313d5af6af84e07816fe5d2b69fc83abfc22"
+    },
+    "B": {
+     "east": "9f948da48edc5c8c06369b046a37e224bb7e65211c6157aeff9dd8bebf107c32",
+     "north": "8a24a788f4496614da31e262b21ca276724100a945e85fbba07134bb7fe4fc59",
+     "south": "81c56d936ee1f8437910ab26b0f3d6270b3a1845691169699c126d7e5e866770"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Thornbug/RM_Thornbug"
+    "A": "Things/Pawn/Animal/RM_Thornbug/RM_Thornbug",
+    "B": "Things/Pawn/Animal/RM_Thornbug/RM_Thornbug"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood"
+    "A": "IN GAME \u2014 FeverWood",
+    "B": "render regen_fw_thornbug_v2"
    },
    "res": "Things/Pawn/Animal/RM_Thornbug/RM_Thornbug",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "thornbug"
   },
@@ -696,20 +997,38 @@
     },
     "B": {
      "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
+    },
+    "C": {
+     "single": "b53eca0d6b52cab1ddce0ebdba3dcc3f74ecac4c9c3580867caacdf6fa4b3d15"
+    },
+    "D": {
+     "single": "a1a8ff78487b66f2443968af5d955ad92bce3287108b916d3744b6a9db120629"
+    },
+    "E": {
+     "single": "1d4fff451aa466492c11717d1a9d0e5a916aa7ff7226903582d1e004e7763006"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_thulvane"
+    "B": "render feverwood_plant_thulvane",
+    "C": "render regen_fw_thulvane_v2a",
+    "D": "render regen_fw_thulvane_v2b",
+    "E": "render regen_fw_thulvane_v2c"
    },
    "res": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "thulvane"
   },
@@ -720,20 +1039,32 @@
     },
     "B": {
      "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
+    },
+    "C": {
+     "single": "1e36fa17f34a148e3e1b53a0f3581122f75a39916dd4cc03660b7b32c8140071"
+    },
+    "D": {
+     "single": "5c3bc904cb1471e933aa8c0fa16b21e9ecd158486c6d9ea36bef530255e917bf"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Tullick/RM_Tullick_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_tullick"
+    "B": "render feverwood_plant_tullick",
+    "C": "render regen_fw_tullick_v2a",
+    "D": "render regen_fw_tullick_v2b"
    },
    "res": "Things/Plant/RM_Tullick/RM_Tullick_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "tullick"
   },
@@ -940,6 +1271,11 @@
      "east": "25f6bccdb4c11029c9d65213b114c683a98e2a8c4cf22aa1b37e341b72c22ec9",
      "north": "7805a6c8e8a9504818bce1b4f428c850d7bb5abbdf4ad4c663ac952d72c10cf7",
      "south": "8c6d4708bd91827ecb9170e44ab9883c3a144aad8badda6106d0fb143a3a950e"
+    },
+    "G": {
+     "east": "f14b3840aaed35af40db89d7607b051e8f5c23681dbdd7f560a4ca15bb8ee574",
+     "north": "a494ed01585563429a90cddd7706f8172648f19fff5c268e894c7f36058920c1",
+     "south": "6dfa9462c31fcaa8d3a0a0b884167a2d5c7f0eac77240251a91e469327bb2663"
     }
    },
    "graphic_of": {
@@ -947,14 +1283,16 @@
     "B": "swanimals/Fambaa/Fambaa",
     "D": "swanimals/Fambaa/Fambaa_Swimming",
     "E": "swanimals/Fambaa/Fambaa_j",
-    "F": "swanimals/Fambaa/Fambaa_j_Swimming"
+    "F": "swanimals/Fambaa/Fambaa_j_Swimming",
+    "G": "swanimals/Fambaa/Fambaa"
    },
    "labels": {
     "A": "IN GAME \u2014 FambaaArtOverride",
     "B": "history FambaaArtOverride 2026-09-11",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
-    "F": "IN GAME \u2014 SWBestiary"
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "render regen_fw_canon_fambaa_v1"
    },
    "res": "swanimals/Fambaa/Fambaa",
    "reserved": [
@@ -963,7 +1301,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "fambaa"
   },
@@ -973,17 +1312,25 @@
      "east": "80f34fa32f8850459378fab90f39a9189372d75e869456f49b097ce8d20925d3",
      "north": "06c241a95ee0ac436e7a9a31692d3049195f798e0fe5cff95214fe6d792dede2",
      "south": "6abd2d80da8a09c3271501a8d3e370b8776f1b844797a968b8d78f91f3ce3ce3"
+    },
+    "B": {
+     "east": "7a5cb9489047ba6b5a31e31561cc4e7fc032a991740d86ad58a206a33cf1d03b",
+     "north": "2f87d1691f424f5a94c771da9a2f5736de997fc19c67d656a1b1368c017fc111",
+     "south": "c9d531f1970eb65b59c274a7335d5343d1d9657bf5e5d04b967abd5358597a60"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Gelagrub/Gelagrub"
+    "A": "swanimals/Gelagrub/Gelagrub",
+    "B": "swanimals/Gelagrub/Gelagrub"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render regen_fw_canon_gelagrub_v1"
    },
    "res": "swanimals/Gelagrub/Gelagrub",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "gelagrub"
   },

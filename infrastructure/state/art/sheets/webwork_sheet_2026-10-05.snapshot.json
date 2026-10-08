@@ -1,6 +1,6 @@
 {
  "biome": "RM_Webwork",
- "built": "2026-10-08T00:04:44-0700",
+ "built": "2026-10-08T06:57:12-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
@@ -18,26 +18,32 @@
     },
     "D": {
      "single": "911f269f3713e33d588b08d4871412a22286248e91a294cf6b0a9dc307c0194f"
+    },
+    "E": {
+     "single": "3978815419a5389546f4f9e7e053968edd6dbed9317b62dbcd372db2c01110c7"
     }
    },
    "graphic_of": {
     "A": "swplants/TookeTrap",
     "B": "swplants/TookeTrap",
     "C": "swplants/TookeTrap",
-    "D": "swplants/TookeTrap"
+    "D": "swplants/TookeTrap",
+    "E": "swplants/TookeTrap"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Plant_TookeTrap_Wild_v1",
     "C": "render webwork_tooketrap_redo_v2",
-    "D": "render webwork_tooketrap_redo_v3"
+    "D": "render webwork_tooketrap_redo_v3",
+    "E": "render webwork_tooketrap_redo_v4"
    },
    "res": "swplants/TookeTrap",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "tooketrap_wild"
   },
@@ -70,21 +76,16 @@
     "A": {
      "single": "ef14b7600dbbf26eeacc577fe2f2ea063e38e38edee3e403520e7fb9c7b404d9"
     },
-    "B": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
     "C": {
      "single": "4db3f0a5e8f13badace3fd7e378ff7d366a2795b4ad482e0ee2fde980dfc1e76"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Brimlock/RM_Brimlock_a",
-    "B": "_byname",
     "C": "Things/Plant/RM_Brimlock/RM_Brimlock_a"
    },
    "labels": {
     "A": "history Webwork 2026-09-25",
-    "B": "render webwork_plant_brimlock",
     "C": "IN GAME \u2014 Webwork"
    },
    "res": "Things/Plant/RM_Brimlock/RM_Brimlock_a",
@@ -728,5 +729,5 @@
   }
  },
  "sheetId": "webwork_sheet_2026-10-05",
- "snapshotId": "136ea14f056d2df4"
+ "snapshotId": "6acc6458a7da5f4b"
 }

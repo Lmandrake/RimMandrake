@@ -1,6 +1,6 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-08T00:02:38-0700",
+ "built": "2026-10-08T06:54:20-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
@@ -1289,6 +1289,11 @@
      "east": "25f6bccdb4c11029c9d65213b114c683a98e2a8c4cf22aa1b37e341b72c22ec9",
      "north": "7805a6c8e8a9504818bce1b4f428c850d7bb5abbdf4ad4c663ac952d72c10cf7",
      "south": "8c6d4708bd91827ecb9170e44ab9883c3a144aad8badda6106d0fb143a3a950e"
+    },
+    "G": {
+     "east": "f14b3840aaed35af40db89d7607b051e8f5c23681dbdd7f560a4ca15bb8ee574",
+     "north": "a494ed01585563429a90cddd7706f8172648f19fff5c268e894c7f36058920c1",
+     "south": "6dfa9462c31fcaa8d3a0a0b884167a2d5c7f0eac77240251a91e469327bb2663"
     }
    },
    "graphic_of": {
@@ -1296,14 +1301,16 @@
     "B": "swanimals/Fambaa/Fambaa",
     "D": "swanimals/Fambaa/Fambaa_Swimming",
     "E": "swanimals/Fambaa/Fambaa_j",
-    "F": "swanimals/Fambaa/Fambaa_j_Swimming"
+    "F": "swanimals/Fambaa/Fambaa_j_Swimming",
+    "G": "swanimals/Fambaa/Fambaa"
    },
    "labels": {
     "A": "IN GAME \u2014 FambaaArtOverride",
     "B": "history FambaaArtOverride 2026-09-11",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
-    "F": "IN GAME \u2014 SWBestiary"
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "render regen_fw_canon_fambaa_v1"
    },
    "res": "swanimals/Fambaa/Fambaa",
    "reserved": [
@@ -1312,7 +1319,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "fambaa"
   },
@@ -1322,17 +1330,25 @@
      "east": "80f34fa32f8850459378fab90f39a9189372d75e869456f49b097ce8d20925d3",
      "north": "06c241a95ee0ac436e7a9a31692d3049195f798e0fe5cff95214fe6d792dede2",
      "south": "6abd2d80da8a09c3271501a8d3e370b8776f1b844797a968b8d78f91f3ce3ce3"
+    },
+    "B": {
+     "east": "7a5cb9489047ba6b5a31e31561cc4e7fc032a991740d86ad58a206a33cf1d03b",
+     "north": "2f87d1691f424f5a94c771da9a2f5736de997fc19c67d656a1b1368c017fc111",
+     "south": "c9d531f1970eb65b59c274a7335d5343d1d9657bf5e5d04b967abd5358597a60"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Gelagrub/Gelagrub"
+    "A": "swanimals/Gelagrub/Gelagrub",
+    "B": "swanimals/Gelagrub/Gelagrub"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render regen_fw_canon_gelagrub_v1"
    },
    "res": "swanimals/Gelagrub/Gelagrub",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "gelagrub"
   },
