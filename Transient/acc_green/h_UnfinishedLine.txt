@@ -1,0 +1,34 @@
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\UnfinishedLine_20261008T164359Z.html
+CHAIN load_clean None {"name": "load_clean", "situational": null, "modal_check": null}
+    {"name": "no_errors_naming_this_mod", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/drain_log", "result": {"success": true, "message": "257 message(s) of 295 in the buffer.", "totalInBuffer": 29
+CHAIN defs None {"name": "defs", "situational": null, "modal_check": null}
+    {"name": "all_defs_resolve", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "15 of 15 def(s) resolved", "requested": 15, "foundCount": 15, "notFo
+CHAIN gates None {"name": "gates", "situational": null, "modal_check": null}
+    {"name": "gate_report_reads", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofGates()", "result": "GATES closed: day 0 < 30"
+    {"name": "disabled_chain_closes_the_gate", "toggle": "chainEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings, {'chainEnabled': False})", "result": true
+CHAIN chain None {"name": "chain", "situational": null, "modal_check": null}
+    {"name": "parent_offers_and_accepts", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofOffer(Boolean)", "result": "CHAIN Ongo
+    {"name": "first_beat_is_the_count", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofNextBeat()", "result": "OFFERED RUT_Unfi
+    {"name": "one_beat_at_a_time", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofNextBeat()", "result": "REFUSED: a beat is al
+CHAIN truce None {"name": "truce", "situational": null, "modal_check": null}
+    {"name": "truce_holds_hive_neutral", "toggle": "brokeredTruceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofTruce(Boolean)", "re
+    {"name": "truce_off_does_nothing", "toggle": "brokeredTruceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofTruce(Boolean)", "resu
+CHAIN wild_pack None {"name": "wild_pack", "situational": null, "modal_check": null}
+    {"name": "pack_does_not_fight_itself", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofWildPack(Int32)", "result": "PACK 3 |
+CHAIN cores None {"name": "cores", "situational": null, "modal_check": null}
+    {"name": "beat3_offered_after_two_successes", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofOffer(Boolean)", "result": "CH
+    {"name": "cores_home_raises_the_broker", "toggle": "coreBrokerEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofCores(System.String
+    {"name": "selling_fails_the_chain", "toggle": "coreBrokerEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofCores(System.String)", "
+CHAIN first_light None {"name": "first_light", "situational": null, "modal_check": null}
+    {"name": "strike_faction_found", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofFirstLightSetup()", "result": "STRIKE Empir
+CHAIN tithe None {"name": "tithe", "situational": null, "modal_check": null}
+    {"name": "basket_and_lend_faction", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofTitheSetup()", "result": "TITHE 300 plas
+    {"name": "skill_gate_off_drops_the_floor", "toggle": "lendSkillGateEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings, {'lendSkillGateEnabled': False})"
+CHAIN world None {"name": "world", "situational": null, "modal_check": null}
+    {"name": "line_stands", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofWorld(System.String)", "result": "WORLD runs=True co
+    {"name": "volunteer_offered", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/faction_relations_set", "result": {"success": true, "message": "PlayerColony <-> RUT_Jawa_FreeDroidEnclaves: kind Host
+    {"name": "foundry_stock_is_good_grade", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofWorld(System.String)", "result": "ST
+    {"name": "line_off_stops_it", "toggle": "lineInWorldEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings, {'lineInWorldEnabled': False})", "result": true}
+    {"name": "strikes_off_never_ready", "toggle": "empireStrikesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofWorld(System.String)"
+ALL_GREEN True FINDINGS 0

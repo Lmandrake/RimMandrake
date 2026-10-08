@@ -20,3 +20,10 @@ Stillsand rc=124 pass=60 fail=0 [stillsand] 08:55:42 pour_blooms_on_sand PASS
 16:33 ShipShields def failed to load: needs Warscar (in biomes mod); acc_l1x tier lacked mandrake.rm.biomes -> added in modset_builder.py, relaunched
 16:36 ShipShields About depended on retired mandrake.rm.warscar (stale Mods/Scarlands stub shadowed it) -> now mandrake.rm.biomes; deployed; relaunch
 16:38 acc_l1x get_defs: all 6 resolve (SHIELD 5/5 after About dep fix). ShipShields fixed.
+16:38 tier acc_harness applied + launched
+16:44 acc_harness results: UnfinishedLine ALL_GREEN(21P); LuminousPigment settings_apply 8P; WreckedMachines 20P 1F(tiers_have_promised_shapes: wreckedRatio/kludgedRatio/refurbishedRatio never read) 1U; Droidworks 21P 1F(protocol_droid MakeTrader no trader) 1U; FallLineArrivals 10P 1F(vermin_burst: ShipVermin not in tier)
+16:45 harness tier done (see above). FlowWorks tier applied + launched
+16:56 FlowWorks suite ABORT: stale DLL (running assembly sha != repo e8bc2fe88aef, SluiceGate source landed w/o rebuilt DLL). Rebuilding via winbuild
+## Final state 2026-10-08 ~10:10 PDT
+- FlowWorks tier: DLL was stale vs source (SluiceGate landed unbuilt); rebuilt with winbuild, redeployed, relaunched; sha matched. Run output Transient/acc_green/fw_FlowWorks2.txt: repeated blocks; consistent MOD FAILs in the pulse engine vs oracle (E5 sinks, E6 rain, E2 determinism, G every-cell, E4 scheduled) -- real findings, unresolved.
+- Not recorded via rimflow verify: results are mixed harness/mod and no outstanding criterion was cleanly passed this sitting.

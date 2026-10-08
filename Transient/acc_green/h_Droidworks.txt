@@ -1,0 +1,39 @@
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Droidworks_20261008T164227Z.html
+CHAIN power_state_machine None {"name": "power_state_machine", "situational": null, "modal_check": null}
+    {"name": "format_tier_defaults_to_programmable", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_get", "result": {"success": true, "count": 1, "pawns": [{"thingId": "RSW_DW_Race_OuterRim_GNKD
+    {"name": "power_need_present", "toggle": "powerNeed", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_get", "result": {"success": true, "count": 1, "pawns": [{"thingId": "RSW_DW_Race_OuterRim_GNKDroid50823"
+    {"name": "empty_bar_powers_down", "toggle": "powerDownWhenEmpty", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_need", "result": {"success": true, "action": "need", "notes": ["set RSW_DW_Power to 0"], "ne
+    {"name": "reboot_restores_power", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_health", "result": {"success": true, "action": "remove", "didWhat": "removed RSW_DW_PoweredDown", "partsAvail
+CHAIN passive_charging None {"name": "passive_charging", "situational": null, "modal_check": null}
+    {"name": "nimbus_charges_in_range", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "RSW_DW_ChargeNimbus51632", "def": "RSW_DW_ChargeNim
+CHAIN detonation None {"name": "detonation", "situational": null, "modal_check": null}
+    {"name": "full_charge_detonates_on_death", "toggle": "detonation", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_need", "result": {"success": true, "action": "need", "notes": ["set RSW_DW_Power to 1"], "n
+CHAIN salvage_on_death None {"name": "salvage_on_death", "situational": null, "modal_check": null}
+    {"name": "head_drops_with_identity", "toggle": "headDrop", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": ["C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\head_drops_wit
+    {"name": "parts_drop_from_dead_droid", "toggle": "partDrop", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": ["C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\parts_drop_f
+CHAIN bolt_core None {"name": "bolt_core", "situational": null, "modal_check": null}
+    {"name": "resentment_accrues", "toggle": "boltResentment", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_get", "result": {"success": true, "count": 1, "pawns": [{"thingId": "Human53135", "thingIdNumber": 
+    {"name": "shear_on_damage", "toggle": "boltShear", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/damage", "result": {"success": true, "message": "Damaged 1 thing(s) with Blunt 25.", "damageDef": "Blunt", "harm
+    {"name": "mood_penalty_nearby", "toggle": "boltMoodPenalty", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_get", "result": {"success": true, "count": 1, "pawns": [{"thingId": "Human53135", "thingIdNumber"
+    {"name": "mental_break_suppressed_while_bolted", "toggle": "boltSuppressesMentalBreaks", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_need", "result": {"success": true, "action": "need", "notes": ["set M
+CHAIN bolt_rebellion_structural None {"name": "bolt_rebellion_structural", "situational": null, "modal_check": null}
+    {"name": "rebellion_recipe_wired", "toggle": "boltRebellion", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCou
+CHAIN wipe_and_drift_structural None {"name": "wipe_and_drift_structural", "situational": null, "modal_check": null}
+    {"name": "wipe_hediff_attaches", "toggle": "wipeStumble", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_health", "result": {"success": true, "action": "add", "didWhat": "added RSW_DW_RecentlyWiped (whole 
+    {"name": "quirk_pool_marked", "toggle": "wipeQuirks", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, 
+    {"name": "idiosyncrasy_pool_marked", "toggle": "personalityDrift", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "fou
+CHAIN hutt_captive_bolt_state None {"name": "hutt_captive_bolt_state", "situational": null, "modal_check": null}
+    {"name": "captive_bolt_state_reachable", "toggle": "huttCaptivesBolted", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_get", "result": {"success": true, "count": 1, "pawns": [{"thingId": "Human57736", "th
+CHAIN module_personality None {"name": "module_personality", "situational": null, "modal_check": null}
+    {"name": "module_grants_personality_on_wear", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_get", "result": {"success": true, "count": 1, "pawns": [{"thingId": "RSW_DW_Race_guy762_DroidRace
+CHAIN wild_droid_crash None {"name": "wild_droid_crash", "situational": null, "modal_check": null}
+    {"name": "wild_droid_crash_fires", "toggle": "wildDroidCrash", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "15 pawn(s).", "pawns": [{"id": "Human188", "nam
+CHAIN protocol_trade_advantage None {"name": "protocol_trade_advantage", "situational": null, "modal_check": null}
+    {"name": "protocol_droid_shifts_prices", "toggle": "protocolTrade", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: DroidworksProofs.MakeTrader did not build a trader: {'success': True, 'method': 'System.String MakeTrader(System.String
+CHAIN ion_overload_shutdown None {"name": "ion_overload_shutdown", "situational": null, "modal_check": null}
+    {"name": "ion_overload_shuts_down_droid", "toggle": "ionShutdown", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED(list): HediffDef RSW_JawaIon_Stun is not loaded -- Jawa Ion Weapons (mandrake.rsw.ionweapons) is absent from this mod list
+CHAIN mindstone_head_wiring None {"name": "mindstone_head_wiring", "situational": null, "modal_check": null}
+    {"name": "assemble_bill_accepts_mindstone_head", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "mindstone_marker_and_immunity_wired", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+ALL_GREEN False FINDINGS 1
