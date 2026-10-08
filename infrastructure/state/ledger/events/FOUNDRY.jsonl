@@ -3859,3 +3859,4 @@
 {"seat":"FOUNDRY","event":"file","id":"MIASMA_MOTHERS_PRICE_RETURN_SITE_1","title":"modcheck Miasma live (acc_biomes-15, RM_Miasma map): mothers_price/returning_a_young_wins_her_tolerance FAILS 'no warden mother and no water cell for one on this map' (site/harness, should be UNMEASURED not FAIL). Evidence Transient/modcheck/Miasma_20261008*.json","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-08T05:31:33Z","tsn":1791437493321683109}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-08T05:31:44Z","tsn":1791437504729049253}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY acc_green_min sitting","ts":"2026-10-08T05:32:26Z","tsn":1791437546567884710}
+{"seat":"FOUNDRY","event":"lease","id":"WATCHER_CREATURES_MOD_1","action":"take","token":"FOUNDRY.pid12082.228b73fa","expires":"2026-10-08T14:34:23Z","ts":"2026-10-08T13:49:23Z","tsn":1791467363609966900}
