@@ -169,27 +169,27 @@
         <labelPlural>kreetle maggots</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle_j</texPath>
-          <drawSize>0.5</drawSize>
+          <drawSize>0.15</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle_j_Dessicated</texPath>
-          <drawSize>0.5</drawSize>
+          <drawSize>0.15</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.22</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle_Dessicated</texPath>
-          <drawSize>0.75</drawSize>
+          <drawSize>0.22</drawSize>
         </dessicatedBodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.3</drawSize>
           <shadowData>
             <volume>(0.2, 0.3, 0.2)</volume>
             <offset>(0,0,0)</offset>
@@ -197,7 +197,7 @@
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>swanimals/Kreetle/Kreetle_Dessicated</texPath>
-          <drawSize>1.0</drawSize>
+          <drawSize>0.3</drawSize>
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>

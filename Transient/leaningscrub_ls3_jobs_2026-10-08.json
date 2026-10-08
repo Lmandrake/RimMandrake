@@ -1,0 +1,249 @@
+[
+ {
+  "id": "ls3_fuzz_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Fuzz",
+  "target_texpath": "Things/Plant/RM_Fuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the fuzz. A dense mat of fine silver-green fronds, never taller than the knee, combed permanently in one direction by a wind that never stops. Make a distinctly different individual of the same species from the attached accepted look (different growth form, size and density), clearly the same plant; the attached image is anatomy guidance, not a sprite to copy.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "variations",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9f/9fdb88f5f5e22ec0f684b950362d7717eac5a585191514f9b615c3988803f59c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_fuzz_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Fuzz",
+  "target_texpath": "Things/Plant/RM_Fuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the fuzz. A dense mat of fine silver-green fronds, never taller than the knee, combed permanently in one direction by a wind that never stops. Make a distinctly different individual of the same species from the attached accepted look (different growth form, size and density), clearly the same plant; the attached image is anatomy guidance, not a sprite to copy.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "variations",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9f/9fdb88f5f5e22ec0f684b950362d7717eac5a585191514f9b615c3988803f59c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_tanglefuzz_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Tanglefuzz",
+  "target_texpath": "Things/Plant/RM_Tanglefuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the tanglefuzz. Where a tanglefuzz grows the runs converge: a woody, knotted bush whose root-ball holds a hollow, and half the runway nation is dug in under one. Make a distinctly different individual of the same species from the attached accepted look (different growth form, size and density), clearly the same plant; the attached image is anatomy guidance, not a sprite to copy.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "variations",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c2/c23ead6d99a756f035aa0f4f708e170aa3bda0aec5e729af4d5edcabba569be6.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_tanglefuzz_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Tanglefuzz",
+  "target_texpath": "Things/Plant/RM_Tanglefuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the tanglefuzz. Where a tanglefuzz grows the runs converge: a woody, knotted bush whose root-ball holds a hollow, and half the runway nation is dug in under one. Make a distinctly different individual of the same species from the attached accepted look (different growth form, size and density), clearly the same plant; the attached image is anatomy guidance, not a sprite to copy.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "variations",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c2/c23ead6d99a756f035aa0f4f708e170aa3bda0aec5e729af4d5edcabba569be6.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_whipfuzz_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Whipfuzz",
+  "target_texpath": "Things/Plant/RM_Whipfuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the whipfuzz. The between-plant grass of the quincunx: thin silver blades that lie almost flat in the wind and never stop moving. Make a distinctly different individual of the same species from the attached accepted look (different growth form, size and density), clearly the same plant; the attached image is anatomy guidance, not a sprite to copy.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "variations",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f6/f61c07d486429ee383350bf3527198b589186de0200b2260153daf81523eda22.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_whipfuzz_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Whipfuzz",
+  "target_texpath": "Things/Plant/RM_Whipfuzz",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the whipfuzz. The between-plant grass of the quincunx: thin silver blades that lie almost flat in the wind and never stop moving. Make a distinctly different individual of the same species from the attached accepted look (different growth form, size and density), clearly the same plant; the attached image is anatomy guidance, not a sprite to copy.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "variations",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f6/f61c07d486429ee383350bf3527198b589186de0200b2260153daf81523eda22.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_wildhealroot_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_WildHealroot",
+  "target_texpath": "Things/Plant/RM_WildHealroot",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more realistic and special, variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild healroot. A slow-growing plant which yields herbal medicine when harvested. This wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates. Render it more realistic and special than the attached look, each a different individual (own growth form, size and density); the attached image is guidance, not a sprite to copy.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "more realistic and special, variations",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/60/608d78cff29d0c2bfc9582c157eea865527e09f4532a76956942ee3516ea28b9.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_wildhealroot_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_WildHealroot",
+  "target_texpath": "Things/Plant/RM_WildHealroot",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"more realistic and special, variations\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild healroot. A slow-growing plant which yields herbal medicine when harvested. This wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates. Render it more realistic and special than the attached look, each a different individual (own growth form, size and density); the attached image is guidance, not a sprite to copy.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "more realistic and special, variations",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/60/608d78cff29d0c2bfc9582c157eea865527e09f4532a76956942ee3516ea28b9.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_nysyllin_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_Nysyllin_Wild",
+  "target_texpath": "swplants/Nysillin",
+  "canon": "nysillin",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Ok, now make a realistic version based on this, two variants\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild nysyllin plant, a healing herb. Draw a realistic version based on the first attached image (the look he picked), kept true to the canon reference; this is variant a of two, a different individual (own growth form, size and density).",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Ok, now make a realistic version based on this, two variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d3/d3b2317d2a9182fd1c246a0e10574bd53725805ea63190451fc302de1608f406.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/nysillin/wookieepedia_canon_1.webp"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_nysyllin_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Plant_Nysyllin_Wild",
+  "target_texpath": "swplants/Nysillin",
+  "canon": "nysillin",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Ok, now make a realistic version based on this, two variants\" RimWorld plant sprite, painterly, seen from above at three-quarter game view: the wild nysyllin plant, a healing herb. Draw a realistic version based on the first attached image (the look he picked), kept true to the canon reference; this is variant b of two, a different individual (own growth form, size and density).",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Ok, now make a realistic version based on this, two variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d3/d3b2317d2a9182fd1c246a0e10574bd53725805ea63190451fc302de1608f406.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/nysillin/wookieepedia_canon_1.webp"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_pufferpig_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Pufferpig",
+  "target_texpath": "swanimals/Pufferpig/Pufferpig",
+  "canon": "pufferpig",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please make a more realistic variant now based on this version.\" RimWorld creature sprite, painterly: the Pufferpig, a non-sentient herbivorous porcine species native to Kyryll. The first attached image is the version he picked; make a more realistic version based on it, true to the canon reference.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, realistic and zoologically believable, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Please make a more realistic variant now based on this version.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c5/c5397f9673221b606c833303ca83e0a5318550307f999a5b1576f3b895a3f6b3.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/pufferpig/wookieepedia_canon_3.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/pufferpig/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/pufferpig/wookieepedia_canon_2.webp"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_qormot_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Qormot",
+  "target_texpath": "swanimals/Qormot/Qormot",
+  "canon": "qormot",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please make a more realistic version based on this version to consider\" RimWorld creature sprite, painterly: the qormot, an omnivorous forest creature from Yeshocq. The first attached image is the version he picked; make a more realistic version based on it, true to the canon reference.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, realistic and zoologically believable, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Please make a more realistic version based on this version to consider",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/14/145cdcb69e596f0cb5f456dd87550f0588d85dc048630067f5148939b991341d.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/qormot/wookieepedia_canon_1.webp"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "ls3_ronto_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Ronto",
+  "target_texpath": "swanimals/Ronto/Ronto",
+  "canon": "ronto",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please make one variant based on this version and canon to consider\" RimWorld creature sprite, painterly: the Ronto, a massive docile pack beast. The first attached image is the version he picked; make a more realistic version based on it, true to the canon reference.",
+  "style_notes": "Biome register: leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow. Painterly vanilla-RimWorld house style, matte, realistic and zoologically believable, no outlines, never cute; one centred subject on a transparent background, no ground, no props.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Please make one variant based on this version and canon to consider",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/4e/4ebf116287256fce9be206c0666c334997ca90786c62ff1fd2ddf01d988bc098.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/ronto/ellingson_concept_art.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/ronto/wookieepedia_infobox.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/ronto/mos_eisley_street.jpg"
+  ],
+  "biome_neutral": true
+ }
+]
