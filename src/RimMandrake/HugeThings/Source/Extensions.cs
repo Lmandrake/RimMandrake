@@ -1,30 +1,102 @@
+using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.HugeThings
 {
     /// <summary>
-    /// Opt-in for a huge PLANT: a solid trunk of trunkWidth x trunkDepth cells at full size, standing on
-    /// the plant's own cell and extending north (the way vanilla draws a single-mesh plant: its sprite's
-    /// base sits on the root cell's bottom edge, Plant.Print). The root cell itself stays the plant's,
-    /// so pawns can still reach it from the south to cut or harvest it.
+    /// One drawn picture of a huge plant (a Graphic_Random sub-texture, or the single texture), measured from the
+    /// art by measure_huge_plant_masks.py. Never hand-written: rerun the tool.
+    /// </summary>
+    public class HugePlantVariant
+    {
+        /// <summary>The texture's file name without extension; matched against the drawn sub-graphic's path.</summary>
+        public string texture;
+
+        /// <summary>Visible-pixel box in quad coordinates: u left->right, v bottom->top, both 0..1, unflipped.</summary>
+        public Vector2 opaqueMin = Vector2.zero;
+        public Vector2 opaqueMax = Vector2.one;
+
+        /// <summary>Ground-contact cells (dx, dz) relative to the root cell, at full growth (measuredSize), unflipped.</summary>
+        public List<IntVec2> contact = new List<IntVec2>();
+
+        [Unsaved] private HugeMask mask;
+
+        /// <summary>This variant as the kernel's mask. wholeQuad: the picture box is the full quad (an unmeasured
+        /// picture, whose extent is only known to be the quad).</summary>
+        public HugeMask Mask(float measuredSize, bool wholeQuad = false)
+        {
+            if (mask != null && !wholeQuad) return mask;
+            HugeMask m = wholeQuad
+                ? new HugeMask { U0 = 0f, V0 = 0f, U1 = 1f, V1 = 1f, MeasuredSize = measuredSize }
+                : new HugeMask { U0 = opaqueMin.x, V0 = opaqueMin.y, U1 = opaqueMax.x, V1 = opaqueMax.y, MeasuredSize = measuredSize };
+            for (int i = 0; i < contact.Count; i++) m.Contact.Add(RM_HugeFootprintKernel.Key(contact[i].x, contact[i].z));
+            if (!wholeQuad) mask = m;
+            return m;
+        }
+    }
+
+    /// <summary>
+    /// Opt-in for a huge PLANT. Selection wraps the whole drawn picture; pawns are blocked on the cells where the
+    /// art touches the ground (per variant, measured from the art), scaled with growth. The root cell itself is
+    /// never blocked: an impassable edifice there would wipe the plant (GenSpawn.SpawningWipes, BlocksPlanting).
+    /// An extension with no variants (HugeThingsApi.OptInPlant's default) still gets the whole-picture
+    /// selection and blocks nothing.
     /// </summary>
     public class RM_HugePlantExtension : DefModExtension
     {
-        /// <summary>Trunk width in cells at full size (centred on the root column; even widths lean east).</summary>
-        public int trunkWidth = 2;
+        /// <summary>drawSize.x * visualMax the contact cells were measured at (the full-growth quad side).</summary>
+        public float measuredSize = 0f;
 
-        /// <summary>Trunk depth in cells at full size, from the root row northward. 0 = same as width.</summary>
-        public int trunkDepth = 0;
-
-        /// <summary>How tall the drawn stem is, in cells, at full size: the click area runs this far north
-        /// even where the ground is not blocked. 0 = same as depth.</summary>
-        public int stemHeight = 0;
+        public List<HugePlantVariant> variants = new List<HugePlantVariant>();
 
         /// <summary>Below this growth the plant blocks nothing (a young fungus is not yet a wall).</summary>
         public float minGrowthToBlock = 0.25f;
 
-        public int Depth => trunkDepth > 0 ? trunkDepth : trunkWidth;
-        public int Stem => stemHeight > 0 ? stemHeight : Depth;
+        [Unsaved] private HugePlantVariant union;
+        [Unsaved] private HugeMask unionMask;
+
+        /// <summary>The kernel mask for the picture drawn: the measured variant, or the union over the whole quad.</summary>
+        public HugeMask MaskFor(HugePlantVariant v, bool measured)
+        {
+            if (measured) return v.Mask(measuredSize);
+            return unionMask ?? (unionMask = Union.Mask(measuredSize, wholeQuad: true));
+        }
+
+        public HugePlantVariant Find(string texture)
+        {
+            if (texture == null) return null;
+            for (int i = 0; i < variants.Count; i++)
+            {
+                if (variants[i].texture == texture) return variants[i];
+            }
+            return null;
+        }
+
+        /// <summary>For a picture the tool never measured (an immature or leafless graphic): every variant's
+        /// contact cells together, and the full quad as the picture.</summary>
+        public HugePlantVariant Union
+        {
+            get
+            {
+                if (union != null) return union;
+                HashSet<IntVec2> all = new HashSet<IntVec2>();
+                for (int i = 0; i < variants.Count; i++) all.UnionWith(variants[i].contact);
+                union = new HugePlantVariant { texture = null, contact = new List<IntVec2>(all) };
+                return union;
+            }
+        }
+
+        public override IEnumerable<string> ConfigErrors()
+        {
+            foreach (string e in base.ConfigErrors()) yield return e;
+            if (variants.Count > 0 && measuredSize <= 0f) yield return "RM_HugePlantExtension has variants but no measuredSize";
+            for (int i = 0; i < variants.Count; i++)
+            {
+                if (variants[i].texture.NullOrEmpty()) yield return "RM_HugePlantExtension variant " + i + " has no texture";
+                if (variants[i].contact.Contains(IntVec2.Zero)) yield return "RM_HugePlantExtension variant " + variants[i].texture + " blocks the root cell";
+            }
+        }
     }
 
     /// <summary>

@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    Huge Things offline fuzz, Approach B. Plain net8.0, zero RimWorld/Unity references: ../Kernel/*.cs are the
-    PRODUCTION files the mod compiles, pulled in directly. A `using Verse;` landing in one of them breaks this build -
-    that is the guard rail working.
+    HugeThings offline fuzz, Approach B (same shape as BlueDesert/GelatinousSlime). Plain net8.0, zero RimWorld/Unity
+    references: ../Kernel/*.cs are the PRODUCTION files the mod compiles, pulled in directly. A `using Verse;` landing
+    in one of them breaks this build - that is the guard rail working.
     Run (builds on Windows via winbuild staging, then runs the exe):
       python3 src/RimMandrake/Utils/selftest_hugethings_fuzz.py [fuzz knobs]
   -->
@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Kernel\RM_FootprintKernel.cs" />
+    <Compile Include="..\Kernel\RM_HugeFootprintKernel.cs" />
     <Compile Include="HugeThingsFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

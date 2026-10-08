@@ -1,0 +1,80 @@
+[
+ {
+  "name": "flipUv not mirrored in the blocked cells",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "                    if (flip) u = 1f - u;\n",
+  "new": ""
+ },
+ {
+  "name": "picture box ignores flipUv",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "            float u0 = flip ? 1f - m.U1 : m.U0;",
+  "new": "            float u0 = m.U0;"
+ },
+ {
+  "name": "no bottom anchoring (quad centred on the root cell)",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "            if (cz - visual / 2f < rootZ) cz = rootZ + visual / 2f;\n",
+  "new": ""
+ },
+ {
+  "name": "anchoring uses the drawn side, not the visual size",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "            if (cz - visual / 2f < rootZ) cz = rootZ + visual / 2f;",
+  "new": "            if (cz - drawSizeX * visual / 2f < rootZ) cz = rootZ + drawSizeX * visual / 2f;"
+ },
+ {
+  "name": "root cell blocked",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "                    if (x == rootX && z == rootZ) continue;\n",
+  "new": ""
+ },
+ {
+  "name": "blocked cells may leave the picture",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "                    if (cx < px0 || cx > px1 || cz < pz0 || cz > pz1) continue;\n",
+  "new": ""
+ },
+ {
+  "name": "selection forgets the root cell",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "            int minX = Math.Min(picture.MinX, rootX), minZ = Math.Min(picture.MinZ, rootZ);",
+  "new": "            int minX = picture.MinX, minZ = picture.MinZ;"
+ },
+ {
+  "name": "picture box drops its last column",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "            int maxX = Math.Max(minX, (int)Math.Ceiling(x1) - 1), maxZ = Math.Max(minZ, (int)Math.Ceiling(z1) - 1);\n            return new CellBox(minX, minZ, maxX, maxZ);",
+  "new": "            int maxX = Math.Max(minX, (int)Math.Floor(x1) - 1), maxZ = Math.Max(minZ, (int)Math.Ceiling(z1) - 1);\n            return new CellBox(minX, minZ, maxX, maxZ);"
+ },
+ {
+  "name": "contact row rounded instead of floored",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "                    int dz = (int)Math.Floor(v * m.MeasuredSize);",
+  "new": "                    int dz = (int)Math.Round(v * m.MeasuredSize);"
+ },
+ {
+  "name": "blocking scaled about the quad centre, not its bottom-centre",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "            float left = q.CentreX - bs / 2f, bottom = q.MinZ;",
+  "new": "            float left = q.CentreX - bs / 2f, bottom = q.MinZ + (q.Size - bs) / 2f;"
+ },
+ {
+  "name": "x jitter ignored by the blocking quad",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "            float cx = rootX + 0.5f + jitterX;",
+  "new": "            float cx = rootX + 0.5f;"
+ },
+ {
+  "name": "picture box starts at the quad bottom (ignores V0)",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "            z0 = q.MinZ + m.V0 * q.Size;",
+  "new": "            z0 = q.MinZ;"
+ },
+ {
+  "name": "contact column off by one (ceil instead of floor)",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
+  "old": "                    int dx = (int)Math.Floor(0.5f + (u - 0.5f) * m.MeasuredSize);",
+  "new": "                    int dx = (int)Math.Ceiling(0.5f + (u - 0.5f) * m.MeasuredSize);"
+ }
+]

@@ -3,9 +3,10 @@
 First script (HUGE_THINGS_FOOTPRINT_1). Walk: design/validation_walks/RimMandrake/HugeThings.md.
 Design: design/RimMandrake/giant_footprint_design_2026-10-07.md.
 
-THE MOD is an ENGINE: a plant carrying RM_HugePlantExtension gets a solid trunk (invisible impassable
-RM_HugeTrunkBlocker edifices on trunkWidth x trunkDepth cells north of its own cell, grown into with the plant)
-and a trunk-wide click area (Thing.CustomRectForSelector postfix); a race carrying RM_HugePawnExtension gets a
+THE MOD is an ENGINE: a plant carrying RM_HugePlantExtension is solid where its art touches the ground
+(invisible impassable RM_HugeTrunkBlocker edifices on the per-variant contact cells measured from the art by
+measure_huge_plant_masks.py, mirrored and scaled with the drawn picture) and is selected anywhere on its whole
+drawn picture (Thing.CustomRectForSelector postfix); a race carrying RM_HugePawnExtension gets a
 click area the size of its drawn body. The Rot opts in nine giants (TheRot/Patches/RotGiants_HugeFootprint.xml);
 TitanicCreatures opts in every tiered race.
 
@@ -13,8 +14,8 @@ CHAINS
   defs_resolve       RM_HugeTrunkBlocker resolves; a control name reads notFound.
   settings_roundtrip every `public static` bool/float of RM_HugeThingsSettings (5), numerically compared.
   harmony            Thing.get_CustomRectForSelector carries a postfix owned by mandrake.rm.hugethings.
-  trunk              a full-grown brommok timber (RM_Nogtyl, 3x3 trunk) gets exactly 8 blockers (the rect minus its
-                     own cell) and none south of it; a young one (growth 0.1) gets none; `plantTrunkEnabled` off
+  trunk              a full-grown brommok timber (RM_Nogtyl) gets exactly one of its variants' measured contact
+                     counts (which variant is drawn depends on the cell, as in Plant.Print) and none south of it; a young one (growth 0.1) gets none; `plantTrunkEnabled` off
                      clears them on the next refresh; cutting the plant removes them at once.
   not_driven         click selection (no tool reads CustomRectForSelector or simulates a map click), pawn hitbox,
                      save/load re-link, mapgen: UNMEASURED, each with its reason.
@@ -32,8 +33,7 @@ SETTINGS = "RimMandrake.HugeThings.RM_HugeThingsSettings"
 HARMONY_ID = "mandrake.rm.hugethings"
 CONTROL_ABSENT = "ThingDef/RM_HugeNoSuchDef_ZZ"
 BLOCKER = "RM_HugeTrunkBlocker"
-GIANT = "RM_Nogtyl"          # brommok timber: TheRot's own def (no donor mod needed), 3x3 trunk in the Rot patch
-GIANT_BLOCKERS = 8           # 3x3 minus the plant's own cell
+GIANT = "RM_Nogtyl"          # brommok timber: TheRot's own def (no donor mod needed), 12 cells drawn at full size
 REFRESH_TICKS = 2000         # MapComponent_HugeFootprints.RefreshInterval
 _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
 DEFAULTS = {"plantTrunkEnabled": True, "plantSelectionEnabled": True, "plantTrunkScale": 1.0,
@@ -58,13 +58,13 @@ def shipped_defs():
     return sorted(set(out))
 
 
-def giant_trunk():
-    """(w, d) the Rot patch gives GIANT, read from the patch (never a hand number)."""
+def giant_blockers():
+    """{variant texture: contact cell count} the Rot patch gives GIANT, read from the patch (never a hand number)."""
     p = os.path.join(HERE, "..", "TheRot", "Patches", "RotGiants_HugeFootprint.xml")
     for op in ET.parse(p).getroot():
         if 'defName="%s"' % GIANT in (op.findtext("xpath") or ""):
             li = op.find("match/value/li")
-            return int(li.findtext("trunkWidth")), int(li.findtext("trunkDepth"))
+            return dict((v.findtext("texture"), len(v.findall("contact/li"))) for v in li.findall("variants/li"))
     return None
 
 
@@ -92,8 +92,9 @@ def static_checks():
     mc = open(os.path.join(HERE, "Source", "MapComponent_HugeFootprints.cs"), encoding="utf-8").read()
     if "RefreshInterval = %d" % REFRESH_TICKS not in mc:
         bad.append("refresh interval moved; update REFRESH_TICKS (the toggle-off wait depends on it)")
-    if giant_trunk() is None or giant_trunk()[0] * giant_trunk()[1] - 1 != GIANT_BLOCKERS:
-        bad.append("the Rot patch no longer gives %s a trunk of %d+1 cells: %r" % (GIANT, GIANT_BLOCKERS, giant_trunk()))
+    gb = giant_blockers()
+    if not gb or min(gb.values()) < 2:
+        bad.append("the Rot patch no longer gives %s measured contact cells: %r" % (GIANT, gb))
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "HugeThings.md")):
         bad.append("walk missing")
     return bad
@@ -151,10 +152,9 @@ def _build_suite():
         return True
 
     def _rects(x, z):
-        trunk = "%d,%d,3,3" % (x - 1, z)          # NorthRect(root, 3, 3)
-        around = "%d,%d,7,8" % (x - 3, z - 2)     # trunk plus margin, incl. two rows south
-        south = "%d,%d,7,2" % (x - 3, z - 2)
-        return trunk, around, south
+        around = "%d,%d,17,17" % (x - 8, z - 2)   # the 12-cell quad plus margin, incl. two rows south
+        south = "%d,%d,17,2" % (x - 8, z - 2)
+        return around, south
 
     @suite.chain("defs_resolve")
     def defs_resolve(t):
@@ -205,14 +205,17 @@ def _build_suite():
         if _live(t):
             t.clear_area(size=30)
         x, z = t.anchor if t.anchor else (0, 0)
-        trunk_r, around_r, south_r = _rects(x, z)
-        with t.component("full_grown_giant_gets_a_solid_trunk", toggle="plantTrunkEnabled"):
+        around_r, south_r = _rects(x, z)
+        allowed = sorted(set((giant_blockers() or {}).values()))
+        baseline = {}
+        with t.component("full_grown_giant_gets_its_measured_footprint", toggle="plantTrunkEnabled"):
             if _live(t) and _stage(t, x, z, 1):
                 t.wait_ticks(120)
-                n, out, south = _count(t, BLOCKER, trunk_r), _count(t, BLOCKER, around_r), _count(t, BLOCKER, south_r)
-                if n != GIANT_BLOCKERS or out != GIANT_BLOCKERS:
-                    raise ExpectationFailed("%s at growth 1 has %d blockers in its 3x3 trunk, %d nearby (want %d and %d)"
-                                            % (GIANT, n, out, GIANT_BLOCKERS, GIANT_BLOCKERS))
+                out, south = _count(t, BLOCKER, around_r), _count(t, BLOCKER, south_r)
+                baseline["n"] = out
+                if out not in allowed:
+                    raise ExpectationFailed("%s at growth 1 has %d blockers nearby; its measured variants allow %r"
+                                            % (GIANT, out, allowed))
                 if south:
                     raise ExpectationFailed("%d blockers south of the plant: its own cell would be unreachable" % south)
         with t.component("toggle_off_clears_the_trunk", toggle="plantTrunkEnabled"):
@@ -228,7 +231,7 @@ def _build_suite():
                 t.wait_ticks(REFRESH_TICKS + 60)
         with t.component("cutting_the_plant_removes_the_trunk", toggle="plantTrunkEnabled"):
             if _live(t):
-                if _count(t, BLOCKER, around_r) != GIANT_BLOCKERS:
+                if not baseline.get("n") or _count(t, BLOCKER, around_r) != baseline["n"]:
                     _unmeasured(t, "the trunk did not come back after re-enabling: no baseline to cut")
                 else:
                     t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (x, z), categories="Plant")
@@ -245,7 +248,7 @@ def _build_suite():
     @suite.chain("not_driven")
     def not_driven(t):
         for name, why in (
-                ("click_anywhere_on_trunk_selects_plant", "no bridge tool reads Thing.CustomRectForSelector or simulates a map click"),
+                ("click_anywhere_on_picture_selects_plant", "no bridge tool reads Thing.CustomRectForSelector or simulates a map click"),
                 ("huge_pawn_hitbox_covers_drawn_body", "no RM_HugePawnExtension race in a mod-only list, and no selection-rect read tool"),
                 ("trunk_relinks_after_save_load", "needs a save/load round on a map with a giant"),
                 ("mapgen_giants_get_trunks", "needs a fresh Rot map generation")):
