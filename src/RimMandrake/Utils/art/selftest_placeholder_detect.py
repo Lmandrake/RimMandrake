@@ -91,6 +91,58 @@ def run() -> int:
         check(not bad, f"{len(pick)} real artpipe renders all classify REAL", bad[:3])
     else:
         check(False, "artpipe _artsrc unreachable: UNMEASURED, not a pass")
+    # part 3 (owner rule 2026-10-07 22:33 PDT): the GEOMETRIC detector, calibrated on the 21 shipped circles
+    # (bytes from the art store, so the probe survives their replacement) and on low-colour REAL painted sprites.
+    circles = {
+    "RM_Ammeth": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+    "RM_Cistrel": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+    "RM_Corvath": "069a3293603b7b07335cd5b1f950d38b422cea3b48960c2831678336bcdc6c05",
+    "RM_Halquin": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+    "RM_Maulith": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+    "RM_Nubrith": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+    "RM_Plennith": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+    "RM_Seepril": "069a3293603b7b07335cd5b1f950d38b422cea3b48960c2831678336bcdc6c05",
+    "RM_Skethral": "a1dd249a73aad0e68bf64a47429456a4d0b4275ab93fc1a75776e28ac00b5a82",
+    "RM_Skimmel": "c9135bff70ffa299824c9a58b4891e6938c2b42ef74723ccf03acf6708836fb6",
+    "RM_Sodderel": "069a3293603b7b07335cd5b1f950d38b422cea3b48960c2831678336bcdc6c05",
+    "RM_Thulvane": "a1dd249a73aad0e68bf64a47429456a4d0b4275ab93fc1a75776e28ac00b5a82",
+    "RM_Tullick": "c9135bff70ffa299824c9a58b4891e6938c2b42ef74723ccf03acf6708836fb6",
+    "RM_Varnoth": "a1dd249a73aad0e68bf64a47429456a4d0b4275ab93fc1a75776e28ac00b5a82",
+    "RM_Verrow": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+    "RM_Wanlith": "c9135bff70ffa299824c9a58b4891e6938c2b42ef74723ccf03acf6708836fb6",
+    "RM_Brennoth": "e34a12a61138f08702a603b800ade9755b25848ad0cbdc0b91989b02ef65e7ab",
+    "RM_Dulloth": "8f512995cc23679dd2a83b73c538968e49afb8124c4106e7bb41c1242c9d63ce",
+    "RM_Kollavane": "edd16ecc48183243f944e5ee252a496975955e28552c7b2bdb36b34a8fb1c08e",
+    "RM_Ruddreth": "590add898a7791919c445fd564571aa137236a68563c64bcaf0ea7f340734702",
+    "RM_Sorrivel": "b8b5856ddaaabd7071c518459fd6071aef4c136fbd2fad2247b0276ce16d37d1",
+    }
+    pos = [(n, L.store_get(s)) for n, s in circles.items() if L.store_has(s)]
+    check(len(pos) == 21, "probe can see all 21 known circle placeholders (art store)", len(pos))
+    tp = [n for n, b_ in pos if P.is_placeholder(b_)]
+    check(len(tp) == len(pos), f"geometric detector catches {len(tp)}/{len(pos)} known circles",
+          [n for n, _ in pos if n not in tp])
+    neg = []
+    for k in ("AloeVera", "JadePlant", "ScorchedStars"):
+        neg += glob.glob(str(P.SRC / f"RimUtinni/UtinniPatches/Textures/Things/Plant/{k}/*.png"))
+    neg += real
+    check(len(neg) >= 10, "probe can see the low-colour real sprites (AloeVera/JadePlant/ScorchedStars/Orruhmu)", len(neg))
+    fp = [f for f in neg if P.is_placeholder(f)]
+    check(not fp, f"0/{len(neg)} low-colour real sprites read as placeholder", fp[:3])
+    if arts:
+        fpa = [f for f in pick if P.is_placeholder(f)]
+        check(not fpa, f"0/{len(pick)} real artpipe renders read as placeholder", fpa[:3])
+    for name, draw in (("rect", lambda d_: d_.rectangle((10, 10, 110, 90), fill=(90, 120, 80, 255))),
+                       ("outlined circle", lambda d_: d_.ellipse((14, 14, 114, 114), fill=(120, 80, 40, 255),
+                                                                outline=(10, 10, 10, 255), width=3))):
+        im = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+        draw(ImageDraw.Draw(im))
+        im.save(d / "g.png")
+        check(P.is_placeholder(d / "g.png"), f"synthetic {name} is a geometric placeholder")
+    check(not P.is_placeholder(d / "painted.png"), "noisy painted round blob is not a geometric placeholder")
+    tri = P.is_placeholder(d / "wedge.png")
+    check(not tri, "a flat triangle is not claimed as circle/rect (FLAT rule covers it)")
+    print(f"calibration precision: {len(tp)} TP / {len(tp) + len(fp) + (len(fpa) if arts else 0)} flagged; "
+          f"recall {len(tp)}/{len(pos)}; negatives {len(neg) + (len(pick) if arts else 0)}")
     print(f"{len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

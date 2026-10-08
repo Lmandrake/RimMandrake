@@ -45,6 +45,28 @@ CANON = L.REPO_ROOT / "design" / "RimStarWars" / "canon_references"
 FACINGS = ("south", "east", "north", "west", "single")
 LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"   # >26 sets: lowercase continues
 NEAR = 10   # dHash bits: at or under this on every facing = near-duplicate (shown folded, never hidden)
+PH_NOSELECT = "placeholder — not selectable"
+_GEO_CACHE: dict = {}
+
+
+def geo_placeholder(faces: dict) -> str:
+    """Owner rule 2026-10-07 22:33 PDT: "make sure that at no time can geometric placeholder art ever remain a
+    viable Variant or selection". A set is a placeholder when EVERY archived picture in it is a flat geometric
+    shape (placeholder_detect.placeholder_reason); returns the reason, '' for real art or an empty set."""
+    shas = [s for s in (faces or {}).values() if s]
+    if not shas:
+        return ""
+    why = []
+    for s in shas:
+        if s not in _GEO_CACHE:
+            try:
+                _GEO_CACHE[s] = PD.placeholder_reason(L.store_get(s)) or "" if L.store_has(s) else ""
+            except Exception:                           # noqa: BLE001  unreadable = not judged here
+                _GEO_CACHE[s] = ""
+        if not _GEO_CACHE[s]:
+            return ""
+        why.append(_GEO_CACHE[s])
+    return why[0]
 
 
 # ─────────────────────────────────────────────────────────── load order ──
@@ -464,6 +486,8 @@ addEventListener('DOMContentLoaded', () => {
   };
   const orig = window.setDecision;
   if (typeof orig === 'function') window.setDecision = function (id, key, opts) {
+    const it_ = byId.get(id);
+    if (it_ && window.artNoSelect(it_).has(key)) { if (typeof showErr === 'function') showErr('Set ' + key + ' is placeholder art — it cannot be picked.'); return; }
     orig(id, key, opts);
     if (DEC[id]) { DEC[id].decidedAt = new Date().toISOString(); queue(id); }
   };
@@ -1019,23 +1043,27 @@ window.artDefaultVariants = (it, d) => {
   const purge = new Set((d && d.purge) || []);
   const out = [];
   for (const g of (it.graphics || [])) for (const c of g.cols) {
-    if (c.purgedLive || (c.kind === 'donor' && !c.ours) || out.includes(c.letter)) continue;
+    if (c.noSelect || c.purgedLive || (c.kind === 'donor' && !c.ours) || out.includes(c.letter)) continue;
     const shas = Object.values(c.faces || {});
     if (shas.length && shas.every(x => purge.has(x))) continue;
     out.push(c.letter);
   }
   return out.sort((a, b) => LETTER_ORDER.indexOf(a) - LETTER_ORDER.indexOf(b));
 };
+/* Owner rule 2026-10-07 22:33 PDT: a geometric placeholder set (c.noSelect) can never be a pick or a variant. */
+window.artNoSelect = it => new Set((it.graphics || []).flatMap(g => g.cols.filter(c => c.noSelect).map(c => c.letter)));
 window.artEnsureVariants = (it, rec) => {
   if (rec && !Object.prototype.hasOwnProperty.call(rec, 'variants')) {
     rec.variants = window.artDefaultVariants(it, rec); rec.variantsDefault = true;
   }
+  if (rec && Array.isArray(rec.variants)) { const ns = window.artNoSelect(it); rec.variants = rec.variants.filter(l => !ns.has(l)); }
 };
 const _itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
   const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
   const variants = new Set(Object.prototype.hasOwnProperty.call(d, 'variants') ? d.variants : window.artDefaultVariants(it, d));
+  window.artNoSelect(it).forEach(l => variants.delete(l));
   const cell = (c, f) => {
     const s = c.faces[f];
     if (!s) return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
@@ -1061,6 +1089,11 @@ const _itemBody = it => {
     const picked = g.primary ? d.decision === c.letter : picks[g.key] === c.letter;
     const tip = `${c.label}\n${c.detail}${c.ppc ? `\n\nresolution: ${c.srcPx[0]}×${c.srcPx[1]} px over the ${it.scale.kind === 'plant' ? 'quad' : 'drawSize'} = ${c.ppc} px/cell` : ''}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
     const vr = variants.has(c.letter);
+    if (c.noSelect) return `<div class="bs-set ac-${c.kind} bs-phcol" title="${esc(c.placeholder || '')}">
+      <div class="bs-head"><b>${c.letter}</b><span>${esc(c.short)}</span><i class="bs-ph">placeholder — not selectable</i></div>
+      ${faces(c, g)}
+      <div class="bs-foot"><i class="bs-novar">cannot be picked or kept as a variant</i></div>
+    </div>`;
     const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
       <div class="bs-head${c.purgedLive ? '' : ' bs-pick'}"${c.purgedLive ? '' : ` data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}"`} title="${esc(tip)}${c.purgedLive ? '' : '\n\nclick to pick this set'}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed, so it is listed here for reference only and cannot be picked.">you purged this — still live until a replacement is installed</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
@@ -1127,6 +1160,7 @@ const NEAR_BITS = %NEAR%;
 window.artToggleVariant = (id, letter) => {
   if (frozen) return;
   const it = byId.get(id); if (!it) return;
+  if (window.artNoSelect(it).has(letter)) { if (typeof showErr === 'function') showErr('Set ' + letter + ' is placeholder art — it cannot be kept as a variant.'); return; }
   const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
   window.artEnsureVariants(it, rec);
   const s = new Set(rec.variants || []);
@@ -1139,6 +1173,7 @@ window.artToggleVariant = (id, letter) => {
 window.artPick = (id, g, letter) => {
   if (frozen) return;
   const it = byId.get(id); if (!it) return;
+  if (window.artNoSelect(it).has(letter)) { if (typeof showErr === 'function') showErr('Set ' + letter + ' is placeholder art — it cannot be picked.'); return; }
   const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
   rec.picks = Object.assign({}, it.prefillPicks || {}, rec.picks || {});
   rec.picks[g] = letter; rec.decidedAt = new Date().toISOString();
@@ -1237,6 +1272,7 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
 .bs-noart{display:inline-block;font-size:12.5px;font-weight:700;color:#000;background:#e06c6c;padding:4px 10px;border-radius:5px;margin:5px 0 0}
 .bs-tier{border-color:#5a4a2a}.bs-canon{background:#3a2c10;color:#e8b64c}.bs-ours{background:#10283a;color:#8ac3e8}
+.bs-phcol{opacity:.45;filter:grayscale(1);cursor:not-allowed}.bs-phcol .bs-head{cursor:not-allowed}.bs-novar{font-size:.8em;color:#888}
 .bs-ph{background:#b3261e;color:#fff;font-style:normal;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;font-size:.8em}.bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
 .mark.bs-nocanon{color:#b9a27a;border-color:#4a3f2a;background:#15120c}
 .row.bs-flash{outline:3px solid #e8b64c}
@@ -1713,6 +1749,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             for c in allcols:
                 if c["kind"] == "live":
                     c["placeholder"] = "; ".join(_pv["reasons"])[:400]
+        for c in allcols:   # GEOMETRIC placeholder sets are shown greyed and can never be picked or kept as a variant
+            _g = geo_placeholder(c["faces"])
+            if _g:
+                c["placeholder"], c["noSelect"] = _g, True
         for g in graphics:
             letters = {id(c) for c in allcols}
             for c in g["cols"]:
@@ -1768,9 +1808,15 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
                 "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
-                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive")}
+                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "noSelect")}
                          | {"short": _short(c)} for c in g["cols"]]})
         letter, why, source = prim_pf
+        _nosel = {c["letter"] for g in gitems for c in g["cols"] if c.get("noSelect")}
+        picks = {k: v for k, v in picks.items() if v not in _nosel}
+        needs_art = bool(gitems) and (letter in _nosel or not [c for c in gitems[0]["cols"] if not c.get("noSelect")])
+        if needs_art:   # never prefill a placeholder: the row needs art
+            letter, why, source = "redo", ("NEEDS ART — the current art is a geometric placeholder, which can never be "
+                                           "picked or kept as a variant"), "none"
         no_art = not graphics
         if no_art:
             letter, why, source = "hold", "no art yet — held until a picture exists", "none"
@@ -1815,6 +1861,13 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                          + (f" — pick shown is the in-game set, an agent inference: {_ai.get('basis', '')}" if _ai else ""))
         if no_art:
             flags.append("NO ART YET")
+        if needs_art:
+            flags.append("NEEDS ART — placeholder only")
+        _bad = sorted({x for x in [_od.get("decision")] + list((_od.get("picks") or {}).values()) + list(_od.get("variants") or [])
+                       if x in _nosel})
+        if _bad:
+            flags.append(f"your ruling names placeholder set(s) {', '.join(_bad)} — a placeholder is not selectable; "
+                         "ingest turns it into a regen request")
         if missing:
             flags.append(f"{missing} picture(s) not archived — not shown")
         n_sets = sum(len(g["cols"]) for g in gitems)
@@ -1839,7 +1892,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
             "contested": source in ("inferred", "none"), "inferred": source == "inferred",
             "prefillPicks": picks, "graphics": gitems, "thumbs": thumbs, "canon": canon,
-            "letters": [c["letter"] for g in gitems if g["primary"] or g["res"] is None for c in g["cols"] if not c.get("purgedLive")],
+            "letters": [c["letter"] for g in gitems if g["primary"] or g["res"] is None for c in g["cols"]
+                        if not c.get("purgedLive") and not c.get("noSelect")],
             "related": [{"id": o, "label": labels[o], "why": w} for o, w in sorted(rel.get(key, {}).items())],
             "elsewhere": elsewhere.get(key, []),
             "noArt": no_art, "purgedHidden": purged_hidden.get(key, 0), "donorPurged": key in donor_purged,
