@@ -76,5 +76,59 @@
   "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeFootprintKernel.cs",
   "old": "                    int dx = (int)Math.Floor(0.5f + (u - 0.5f) * m.MeasuredSize);",
   "new": "                    int dx = (int)Math.Ceiling(0.5f + (u - 0.5f) * m.MeasuredSize);"
+ },
+ {
+  "name": "overlap: removing one owner frees a cell another still claims",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "                if (o.Count == 0)\n                {\n                    cellOwners.Remove(c);\n                    becameFree?.Add(c);\n                }",
+  "new": "                cellOwners.Remove(c);\n                becameFree?.Add(c);"
+ },
+ {
+  "name": "planner closes a cell with an item (it would be moved aside or destroyed)",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "(f & (CellFlags.Pawn | CellFlags.Item | CellFlags.Protected)) != 0) continue;\n                    int i",
+  "new": "(f & (CellFlags.Pawn | CellFlags.Protected)) != 0) continue;\n                    int i"
+ },
+ {
+  "name": "planner ignores pockets (a trapped pawn)",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "                        if (pass[j] && before[j] && !after[j]) ok = false;     // a cell that reached the border no longer does\n                    }\n                    for (int r",
+  "new": "                    }\n                    for (int r"
+ },
+ {
+  "name": "planner forgets root access",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "                        if (!RootServed(rootIdx[r], pass, after, w, h)) ok = false;",
+  "new": "                        if (false) ok = false;"
+ },
+ {
+  "name": "planner single pass (not idempotent)",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "                        progress = true;\n",
+  "new": "                        progress = false;\n"
+ },
+ {
+  "name": "cache key ignores the blocking scale",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "&& JitterX == o.JitterX && JitterZ == o.JitterZ && BlockScale == o.BlockScale && Flip == o.Flip",
+  "new": "&& JitterX == o.JitterX && JitterZ == o.JitterZ && Flip == o.Flip"
+ },
+ {
+  "name": "cache key ignores the root position",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "=> RootX == o.RootX && RootZ == o.RootZ && MaskId == o.MaskId",
+  "new": "=> RootZ == o.RootZ && MaskId == o.MaskId"
+ },
+ {
+  "name": "damage dedup never resets per tick",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "            if (nowTick != tick)\n            {\n                tick = nowTick;\n                seen.Clear();\n            }\n",
+  "new": "            tick = nowTick;\n"
+ },
+ {
+  "name": "damage dedup ignores the owner",
+  "file": "src/RimMandrake/HugeThings/Source/Kernel/RM_HugeClaimsKernel.cs",
+  "old": "            return seen.Add((sourceKey, ownerId));",
+  "new": "            return seen.Add((sourceKey, 0));"
  }
 ]

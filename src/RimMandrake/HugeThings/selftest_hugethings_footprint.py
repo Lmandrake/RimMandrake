@@ -304,7 +304,7 @@ def csharp_still_matches_this_mirror():
         assert needle in src, "RM_HugeFootprintKernel.cs lost `%s` -- update the mirror" % needle
     comp = open(os.path.join(HERE, "Source", "CompHugeFootprint.cs"), encoding="utf-8").read()
     for needle in ("Rand.Seed = p.Position.GetHashCode();", "Gen.RandomHorizontalVector(0.05f);", "bool f = Rand.Bool;",
-                   "Rand.Range(0, n)", "p.Growth < ext.minGrowthToBlock", "LerpThroughRange(p.Growth)"):
+                   "Rand.Range(0, n)", "p.Growth >= ext.minGrowthToBlock", "LerpThroughRange(p.Growth)", "Rand.PopState();"):
         assert needle in comp, "CompHugeFootprint.cs lost `%s` (Plant.Print replay)" % needle
     ext = open(os.path.join(HERE, "Source", "Extensions.cs"), encoding="utf-8").read()
     assert "minGrowthToBlock = 0.25f" in ext and "hitboxFraction = 0.6f" in ext

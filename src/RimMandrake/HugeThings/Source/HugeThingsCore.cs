@@ -39,6 +39,31 @@ namespace RimMandrake.HugeThings
                 def.comps.Add(new CompProperties_HugeFootprint());
             }
             def.hasCustomRectForSelector = true;
+            ValidateRenderer(def);
+        }
+
+        /// <summary>
+        /// The footprint replays vanilla Plant.Print's single-mesh branch (GPT review #7, #11). Anything else keeps the
+        /// whole-quad selection but blocks nothing, with one error naming why: a multi-mesh plant, a thingClass that
+        /// overrides Print, or a drawSize.x != 1 (the measurement frame assumes the quad's bottom is the root's south edge).
+        /// </summary>
+        public static void ValidateRenderer(ThingDef def)
+        {
+            RM_HugePlantExtension ext = def.GetModExtension<RM_HugePlantExtension>();
+            if (ext == null) return;
+            string why = null;
+            if (def.plant.maxMeshCount != 1) why = "maxMeshCount " + def.plant.maxMeshCount + " (Plant.Print's multi-mesh branch)";
+            else if (def.thingClass == null || !typeof(Plant).IsAssignableFrom(def.thingClass)) why = "thingClass is not a Plant";
+            else if (AccessTools.Method(def.thingClass, "Print", new[] { typeof(SectionLayer) })?.DeclaringType != typeof(Plant))
+                why = "thingClass " + def.thingClass.Name + " overrides Plant.Print";
+            else if (ext.variants.Count > 0 && (def.graphicData?.drawSize.x ?? 1f) != 1f)
+                why = "graphicData.drawSize.x " + def.graphicData.drawSize.x + " != 1";
+            else if (ext.variants.Count > 0 && ext.measuredSize > 0f
+                     && System.Math.Abs(ext.measuredSize - def.plant.visualSizeRange.max * (def.graphicData?.drawSize.x ?? 1f)) > 0.01f)
+                why = "measuredSize " + ext.measuredSize + " != drawSize.x * visualMax (resized since measuring: rerun the tool)";
+            ext.blockingSupported = why == null;
+            if (why != null)
+                Log.Error("[RimMandrake.HugeThings] " + def.defName + ": " + why + " -- it gets selection only, no ground footprint.");
         }
 
         public static void OptInPawn(ThingDef def, RM_HugePawnExtension ext = null)
@@ -82,13 +107,89 @@ namespace RimMandrake.HugeThings
             {
                 CompHugeFootprint comp = plant.GetComp<CompHugeFootprint>();
                 CellRect? r = comp?.SelectRect();
-                if (r.HasValue) __result = r;
+                if (r.HasValue) __result = __result.HasValue ? HugeThingsApi.Union(r.Value, __result.Value) : r;   // widen, never narrow
                 return;
             }
             if (__instance is Pawn pawn)
             {
                 CellRect? r = HugeThingsApi.PawnHitbox(pawn);
                 if (r.HasValue) __result = __result.HasValue ? HugeThingsApi.Union(r.Value, __result.Value) : r;
+            }
+        }
+    }
+
+    /// <summary>GenUI.ThingsUnderMouse adds a plant twice when its root cell is clicked (once as a cell thing, once through
+    /// its custom rect: the duplicate check looks only at the close-pawn list). Drop repeats, keeping the first, so click
+    /// cycling reaches everything underneath exactly once (GPT review #12).</summary>
+    [HarmonyPatch(typeof(GenUI), nameof(GenUI.ThingsUnderMouse))]
+    public static class Patch_GenUI_ThingsUnderMouse
+    {
+        public static void Postfix(List<Thing> __result)
+        {
+            if (__result == null || __result.Count < 2) return;
+            HashSet<Thing> seen = new HashSet<Thing>();
+            __result.RemoveAll(t => !seen.Add(t));
+        }
+    }
+
+    /// <summary>A blocker must not carve zones (GPT review #3, verified 1.6: Thing.SpawnSetup -> !CanOverlapZones ->
+    /// ZoneManager.Notify_NoZoneOverlapThingSpawned removes the cells and splits the zone, and removing the blocker never
+    /// gives them back). The zone keeps the cell; vanilla already refuses to store into it (StoreUtility.NoStorageBlockersIn:
+    /// an impassable non-item) or sow it (PlantUtility: BlocksPlanting).</summary>
+    [HarmonyPatch(typeof(ZoneManager), "Notify_NoZoneOverlapThingSpawned")]
+    public static class Patch_ZoneManager_NoZoneOverlap
+    {
+        public static bool Prefix(Thing thing) => !(thing is Building_TrunkBlocker);
+    }
+
+    /// <summary>Harvest changes growth without despawning: re-take the footprint now, not 2000 ticks later (GPT #14).</summary>
+    [HarmonyPatch(typeof(Plant), nameof(Plant.PlantCollected))]
+    public static class Patch_Plant_PlantCollected
+    {
+        public static void Postfix(Plant __instance)
+        {
+            CompHugeFootprint c = __instance.GetComp<CompHugeFootprint>();
+            if (c != null && __instance.Spawned) __instance.Map.GetComponent<MapComponent_HugeFootprints>()?.MarkDirty(c);
+        }
+    }
+
+    /// <summary>
+    /// An explosion over a giant's trunk cells hits the giant ONCE (owner ruling 2026-10-07 20:38): the blast's own
+    /// damagedThings list (DamageWorker.ExplosionDamageThing, verified 1.6) is the dedup, so a trunk cell is redirected to
+    /// its plant, and the plant is skipped if the blast already hit it (through another cell or its root).
+    /// DamageWorker_Vaporize overrides this method but calls base, so it is covered too.
+    /// </summary>
+    [HarmonyPatch(typeof(DamageWorker), "ExplosionDamageThing")]
+    public static class Patch_DamageWorker_ExplosionDamageThing
+    {
+        public static bool Prefix(ref Thing t, List<Thing> damagedThings)
+        {
+            if (!(t is Building_TrunkBlocker b)) return true;
+            if (!damagedThings.Contains(b)) damagedThings.Add(b);
+            Plant p = b.owner;
+            if (p == null || p.Destroyed || !p.Spawned || damagedThings.Contains(p)) return false;
+            t = p;
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// Gravship landing (GPT review #15; policy set by the coordinator 2026-10-07): a landing that clears any cell holding a
+    /// giant's blocker or root removes that giant, so no plant survives outside the ship with half a footprint and no
+    /// blocker regrows into the ship. Verified 1.6: GravshipPlacementUtility.ClearArea clears cell by cell.
+    /// </summary>
+    [HarmonyPatch(typeof(GravshipPlacementUtility), nameof(GravshipPlacementUtility.ClearArea))]
+    public static class Patch_Gravship_ClearArea
+    {
+        public static void Prefix(Map map, IntVec3 root, HashSet<IntVec3> clearCells)
+        {
+            MapComponent_HugeFootprints mc = map?.GetComponent<MapComponent_HugeFootprints>();
+            if (mc == null || clearCells == null || mc.Count == 0) return;
+            List<IntVec3> cells = new List<IntVec3>(clearCells.Count);
+            foreach (IntVec3 c in clearCells) cells.Add(root + c);
+            foreach (Plant p in mc.OwnersAt(cells))
+            {
+                if (!p.Destroyed) p.Destroy(DestroyMode.Vanish);
             }
         }
     }

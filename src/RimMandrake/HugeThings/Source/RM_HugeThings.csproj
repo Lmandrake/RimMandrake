@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Compile Include="Kernel\RM_HugeFootprintKernel.cs" />
+    <Compile Include="Kernel\RM_HugeClaimsKernel.cs" />
     <Compile Include="Building_TrunkBlocker.cs" />
     <Compile Include="CompHugeFootprint.cs" />
     <Compile Include="Extensions.cs" />
