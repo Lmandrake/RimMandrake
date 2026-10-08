@@ -19,9 +19,11 @@ namespace RimMandrake.HirePlaceless
     /// </summary>
     public static class HirePlacelessUtility
     {
-        public static int ComputeHireFeeSilver() => Mathf.Max(1, Mathf.RoundToInt(PropertySettings.hirePlacelessFeeSilver));
+        public static int ComputeHireFeeSilver() => RM_PropertyKernel.ConfiguredFee(PropertySettings.hirePlacelessFeeSilver);
 
         public static int CountSilverInInventory(Pawn pawn) => SalvageClaimFeeUtility.CountSilverInInventory(pawn);
+
+        public static bool TryPaySilver(Pawn pawn, int amount) => SalvageClaimFeeUtility.TryPaySilver(pawn, amount);
 
         public static void RemoveSilverFromInventory(Pawn pawn, int amount) => SalvageClaimFeeUtility.RemoveSilverFromInventory(pawn, amount);
     }

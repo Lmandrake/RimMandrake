@@ -14,13 +14,12 @@ namespace RimMandrake.Property
     {
         public static float LifetimeTicks(float recognizability)
         {
-            recognizability = Mathf.Clamp01(recognizability);
-            float days = Mathf.Lerp(
+            return RM_PropertyKernel.LifetimeTicks(
+                recognizability,
                 PropertyTuning.MinClaimLifetimeDays,
                 PropertyTuning.MaxClaimLifetimeDays,
-                recognizability);
-            days *= PropertySettings.claimLifetimeMultiplier;
-            return days * GenDate.TicksPerDay;
+                PropertySettings.claimLifetimeMultiplier,
+                GenDate.TicksPerDay);
         }
 
         // Linear decay from InitialStrength to 0 over LifetimeTicks(recognizability).
@@ -28,10 +27,7 @@ namespace RimMandrake.Property
         {
             if (ageTicks <= 0) return initialStrength;
 
-            float lifetime = LifetimeTicks(recognizability);
-            if (ageTicks >= lifetime) return 0f;
-
-            return initialStrength * (1f - ageTicks / lifetime);
+            return RM_PropertyKernel.EffectiveStrength(initialStrength, ageTicks, LifetimeTicks(recognizability));
         }
     }
 }

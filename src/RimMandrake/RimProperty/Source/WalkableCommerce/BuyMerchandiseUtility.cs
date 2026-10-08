@@ -35,12 +35,12 @@ namespace RimMandrake.WalkableCommerce
 
         public static int ComputePriceSilver(Thing thing)
         {
-            float unitValue = Mathf.Max(0f, thing.MarketValue);
-            float total = unitValue * Mathf.Max(1, thing.stackCount) * PropertySettings.walkableCommerceMarkup;
-            return Mathf.Max(MinPriceSilver, Mathf.RoundToInt(total));
+            return RM_PropertyKernel.Price(thing.MarketValue, thing.stackCount, PropertySettings.walkableCommerceMarkup);
         }
 
         public static int CountSilverInInventory(Pawn pawn) => SalvageClaimFeeUtility.CountSilverInInventory(pawn);
+
+        public static bool TryPaySilver(Pawn pawn, int amount) => SalvageClaimFeeUtility.TryPaySilver(pawn, amount);
 
         public static void RemoveSilverFromInventory(Pawn pawn, int amount) => SalvageClaimFeeUtility.RemoveSilverFromInventory(pawn, amount);
     }

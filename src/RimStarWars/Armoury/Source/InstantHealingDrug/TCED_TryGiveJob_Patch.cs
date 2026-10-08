@@ -23,14 +23,8 @@ public static class TCED_TryGiveJob_Patch
             return;
         }
         Thing drug = pawn.inventory.FindCombatEnhancingDrug();
-        if (drug != null)
-        {
-            CompDrug comp = drug.TryGetComp<CompDrug>();
-            if (comp != null && comp.Props is CompProperties_DrugInstantHeal)
-            {
-                ___onlyIfInDanger = true;
-            }
-        }
+        CompDrug comp = drug?.TryGetComp<CompDrug>();
+        ___onlyIfInDanger = RSW_CombatKernel.ForceOnlyInDanger(true, comp != null && comp.Props is CompProperties_DrugInstantHeal, ___onlyIfInDanger);
     }
 
     [HarmonyPostfix]
@@ -41,11 +35,10 @@ public static class TCED_TryGiveJob_Patch
         {
             return;
         }
-        if (__result != null || InstantHealingDrug.VerbSelfHediffType == null
-            || InstantHealingDrug.VSH_inDangerField == null || pawn == null
-            || pawn.equipment == null || pawn.apparel == null || pawn.VerbTracker?.AllVerbs == null
-            || Find.TickManager.TicksGame - pawn.mindState.lastHarmTick > RSW_ArmourySettings.InstantHealRecentHarmTicks
-            || Find.TickManager.TicksGame - pawn.mindState.lastTakeCombatEnhancingDrugTick < RSW_ArmourySettings.InstantHealReuseTicks)
+        bool plumbingOk = InstantHealingDrug.VerbSelfHediffType != null && InstantHealingDrug.VSH_inDangerField != null && pawn != null
+            && pawn.equipment != null && pawn.apparel != null && pawn.VerbTracker?.AllVerbs != null;
+        if (!plumbingOk || !RSW_CombatKernel.InstantHealDue(true, __result != null, true, Find.TickManager.TicksGame, pawn.mindState.lastHarmTick,
+            RSW_ArmourySettings.InstantHealRecentHarmTicks, pawn.mindState.lastTakeCombatEnhancingDrugTick, RSW_ArmourySettings.InstantHealReuseTicks))
         {
             return;
         }

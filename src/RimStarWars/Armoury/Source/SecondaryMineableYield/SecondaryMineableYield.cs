@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using RimMandrake.StarWars.Armoury;
 using RimWorld;
@@ -30,31 +31,22 @@ public class SecondaryMineableYield
             return;
         }
         ModExtension_SecondaryMineableYield modExtension = __instance.def.GetModExtension<ModExtension_SecondaryMineableYield>();
-        if (modExtension == null || Rand.Value > modExtension.mineableDropChance * RSW_ArmourySettings.secondaryYieldChance)
+        if (modExtension == null || !RSW_YieldKernel.Drops(Rand.Value, modExtension.mineableDropChance, RSW_ArmourySettings.secondaryYieldChance))
         {
             return;
         }
-        float remaining = modExtension.GetWeightSum;
-        float roll = Rand.Value * remaining;
-        SecondaryYieldEntry chosen = null;
+        List<float> weights = new List<float>(modExtension.entries.Count);
         foreach (SecondaryYieldEntry entry in modExtension.entries)
         {
-            remaining -= entry.randomWeight;
-            if (remaining < roll)
-            {
-                chosen = entry;
-                break;
-            }
+            weights.Add(entry.randomWeight);
         }
-        if (chosen == null)
+        int pick = RSW_YieldKernel.Pick(weights, Rand.Value);
+        if (pick < 0)
         {
             return;
         }
-        int count = Mathf.Max(1, Mathf.RoundToInt(chosen.EffectiveMineableYield * RSW_ArmourySettings.secondaryYieldAmount));
-        if (chosen.mineableYieldWasteable)
-        {
-            count = Mathf.Max(1, GenMath.RoundRandom(count * ___yieldPct));
-        }
+        SecondaryYieldEntry chosen = modExtension.entries[pick];
+        int count = RSW_YieldKernel.Count(chosen.EffectiveMineableYield, RSW_ArmourySettings.secondaryYieldAmount, chosen.mineableYieldWasteable, ___yieldPct, GenMath.RoundRandom);
         Thing thing = ThingMaker.MakeThing(chosen.mineableThing);
         thing.stackCount = count;
         GenPlace.TryPlaceThing(thing, __instance.Position, map, ThingPlaceMode.Near, delegate(Thing t, int i)
@@ -68,17 +60,12 @@ public class SecondaryMineableYield
 
     public static void Patch_PreApplyDamage(Mineable __instance, DamageInfo dinfo, bool absorbed)
     {
-        if (!RSW_ArmourySettings.secondaryYieldEnabled)
+        ModExtension_SecondaryMineableYield modExtension = __instance.def.GetModExtension<ModExtension_SecondaryMineableYield>();
+        Pawn instigator = dinfo.Instigator as Pawn;
+        if (RSW_YieldKernel.CreditsMiner(RSW_ArmourySettings.secondaryYieldEnabled, absorbed, __instance.def.building.mineableThing != null,
+            dinfo.Def == DamageDefOf.Mining, instigator != null, modExtension != null && !modExtension.entries.NullOrEmpty()))
         {
-            return;
-        }
-        if (!absorbed && __instance.def.building.mineableThing == null && dinfo.Def == DamageDefOf.Mining && dinfo.Instigator != null && dinfo.Instigator is Pawn instigator)
-        {
-            ModExtension_SecondaryMineableYield modExtension = __instance.def.GetModExtension<ModExtension_SecondaryMineableYield>();
-            if (modExtension != null && !modExtension.entries.NullOrEmpty())
-            {
-                __instance.Notify_TookMiningDamage(GenMath.RoundRandom(dinfo.Amount), instigator);
-            }
+            __instance.Notify_TookMiningDamage(GenMath.RoundRandom(dinfo.Amount), instigator);
         }
     }
 }

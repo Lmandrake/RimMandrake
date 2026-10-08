@@ -101,30 +101,19 @@ namespace RimMandrake.StarWars.SWBestiary
                     return;
                 }
 
-                if (comp.Props.fullyDestroyThing)
+                RSW_EatKernel.Bite bite = RSW_EatKernel.Chew(comp.Props.fullyDestroyThing, thing.def.useHitPoints, comp.Props.ignoreUseHitPoints,
+                    comp.Props.percentageOfDestruction, thing.MaxHitPoints, thing.HitPoints, thing.def.stackLimit, thing.stackCount);
+                if (bite.HitPoints != thing.HitPoints)
+                {
+                    thing.HitPoints = bite.HitPoints;
+                }
+                if (bite.StackCount != thing.stackCount)
+                {
+                    thing.stackCount = bite.StackCount;
+                }
+                if (bite.Destroy)
                 {
                     thing.Destroy();
-                }
-                else if (thing.def.useHitPoints && !comp.Props.ignoreUseHitPoints)
-                {
-                    thing.HitPoints -= Mathf.RoundToInt(thing.MaxHitPoints * comp.Props.percentageOfDestruction);
-                    if (thing.HitPoints <= 0)
-                    {
-                        thing.Destroy();
-                    }
-                }
-                else
-                {
-                    // Eat a fixed fraction of a FULL stack, not of what is
-                    // there — a lone steel bar still feeds the animal once and
-                    // then vanishes rather than being nibbled forever. Donor
-                    // behaviour, kept: the remainder below 10 is destroyed.
-                    int bite = Mathf.Max(1, Mathf.RoundToInt(comp.Props.percentageOfDestruction * thing.def.stackLimit));
-                    thing.stackCount -= bite;
-                    if (thing.stackCount < 10)
-                    {
-                        thing.Destroy();
-                    }
                 }
 
                 if (!actor.Dead && actor.needs?.food != null)

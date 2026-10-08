@@ -85,7 +85,7 @@ namespace RimMandrake.Webwork
 			int placed = 0;
 			foreach (IntVec3 cell in GenRadial.RadialCellsAround(center, ClutchRingRadius, false))
 			{
-				if (placed >= clutchCount)
+				if (!RM_EggRelayKernel.RingWantsMore(placed, clutchCount))
 				{
 					break;
 				}
@@ -97,7 +97,7 @@ namespace RimMandrake.Webwork
 				placed++;
 			}
 
-			if (placed == 0 && CellFinder.TryFindRandomCellNear(center, map, 4,
+			if (RM_EggRelayKernel.NeedsFallback(placed) && CellFinder.TryFindRandomCellNear(center, map, 4,
 				(IntVec3 c) => c != center && c.Standable(map), out IntVec3 fallback))
 			{
 				// Degrade gracefully rather than leaving the mother with no
@@ -121,7 +121,7 @@ namespace RimMandrake.Webwork
 				{
 					continue;
 				}
-				if (candidate.GetTerrain(map).fertility >= RichFertilityThreshold)
+				if (RM_EggRelayKernel.RichEnough(candidate.GetTerrain(map).fertility, RichFertilityThreshold))
 				{
 					result = candidate;
 					return true;
@@ -144,8 +144,7 @@ namespace RimMandrake.Webwork
 
 		private bool InBoundsWithMargin(Map map, IntVec3 cell)
 		{
-			return cell.x >= EdgeMargin && cell.z >= EdgeMargin
-				&& cell.x < map.Size.x - EdgeMargin && cell.z < map.Size.z - EdgeMargin;
+			return RM_EggRelayKernel.InBoundsWithMargin(cell.x, cell.z, map.Size.x, map.Size.z, EdgeMargin);
 		}
 	}
 }

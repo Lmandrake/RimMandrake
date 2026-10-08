@@ -26,8 +26,8 @@ namespace RimMandrake.AnimalTheft
         {
             if (!PropertySettings.animalTheftEnabled) return null;
             if (pawn?.Map == null) return null;
-            if (PropertySettings.animalTheftFrequencyMultiplier < 1f
-                && Rand.Value >= PropertySettings.animalTheftFrequencyMultiplier) return null;
+            if (!RM_PropertyKernel.TheftRollPasses(PropertySettings.animalTheftFrequencyMultiplier,
+                PropertySettings.animalTheftFrequencyMultiplier < 1f ? Rand.Value : 0f)) return null;
 
             return GenClosest.ClosestThing_Global_Reachable(
                 pawn.Position,
@@ -42,7 +42,7 @@ namespace RimMandrake.AnimalTheft
             {
                 if (t.def.category != ThingCategory.Item) return false;
                 if (t.IsForbidden(pawn)) return false;
-                if (t.GetStatValue(StatDefOf.Mass) > PropertySettings.animalTheftMaxItemMassKg) return false;
+                if (!RM_PropertyKernel.LightEnough(t.GetStatValue(StatDefOf.Mass), PropertySettings.animalTheftMaxItemMassKg)) return false;
                 if (!pawn.CanReserveAndReach(t, PathEndMode.ClosestTouch, Danger.Some)) return false;
                 return true;
             }

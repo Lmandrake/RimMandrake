@@ -22,9 +22,11 @@ namespace RimMandrake.Bribe
     /// </summary>
     public static class BribeUtility
     {
-        public static int ComputeBribeFeeSilver() => Mathf.Max(1, Mathf.RoundToInt(PropertySettings.bribeFeeSilver));
+        public static int ComputeBribeFeeSilver() => RM_PropertyKernel.ConfiguredFee(PropertySettings.bribeFeeSilver);
 
         public static int CountSilverInInventory(Pawn pawn) => SalvageClaimFeeUtility.CountSilverInInventory(pawn);
+
+        public static bool TryPaySilver(Pawn pawn, int amount) => SalvageClaimFeeUtility.TryPaySilver(pawn, amount);
 
         public static void RemoveSilverFromInventory(Pawn pawn, int amount) => SalvageClaimFeeUtility.RemoveSilverFromInventory(pawn, amount);
     }

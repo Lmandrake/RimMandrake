@@ -40,11 +40,8 @@ namespace RimMandrake.Warcasket
     // against standing/wading through open deep water.
     public class RM_MapComponent_HazardousTerrainImmersion : MapComponent
     {
-        private const int CheckIntervalTicks = 250;
-        private const float GainPerCheckUnprotected = 0.12f;
-        private const float HealPerCheckClear = -0.35f;
-        private const float HealPerCheckProtected = -0.1f;
-        private const float MinDriveFactor = 0.05f;
+        private const int CheckIntervalTicks = RM_WarcasketKernel.ImmersionCheckInterval;
+        private const float MinDriveFactor = RM_WarcasketKernel.MinDriveFactor;
 
         private int ticksUntilCheck = CheckIntervalTicks;
 
@@ -56,16 +53,15 @@ namespace RimMandrake.Warcasket
         {
             base.MapComponentTick();
 
-            if (!RM_WarcasketSettings.masterEnabled || !RM_WarcasketSettings.terrainImmersionEnabled)
+            if (!RM_WarcasketKernel.ImmersionActive(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.terrainImmersionEnabled))
             {
                 return;
             }
 
-            if (--ticksUntilCheck > 0)
+            if (!RM_WarcasketKernel.CheckDue(ref ticksUntilCheck))
             {
                 return;
             }
-            ticksUntilCheck = CheckIntervalTicks;
 
             // Snapshot: HealthUtility.AdjustSeverity can, in principle,
             // trigger death and mutate the live pawn list — same caution
@@ -93,33 +89,21 @@ namespace RimMandrake.Warcasket
             bool hazardous = IsHazardousCell(pawn.Position);
             bool hasHediff = pawn.health.hediffSet.HasHediff(RM_WarcasketDefOf.RM_TerrainImmersionHazard);
 
-            if (!hazardous)
+            float driveFactor = 1f;
+            if (hazardous)
             {
-                if (hasHediff)
-                {
-                    HealthUtility.AdjustSeverity(pawn, RM_WarcasketDefOf.RM_TerrainImmersionHazard, HealPerCheckClear);
-                }
-                return;
+                float protection = HazardTargeting.SumApparelStat(pawn, RM_WarcasketDefOf.RM_HazardousTerrainProtection);
+                driveFactor = HazardTargeting.ProtectionDriveFactor(protection, MinDriveFactor, 0f);
             }
 
-            float protection = HazardTargeting.SumApparelStat(pawn, RM_WarcasketDefOf.RM_HazardousTerrainProtection);
-            float driveFactor = HazardTargeting.ProtectionDriveFactor(protection, MinDriveFactor, 0f);
-
-            if (driveFactor <= 0f)
-            {
-                if (hasHediff)
-                {
-                    HealthUtility.AdjustSeverity(pawn, RM_WarcasketDefOf.RM_TerrainImmersionHazard, HealPerCheckProtected);
-                }
-                return; // gear alone holds the clock — nothing to apply
-            }
-
-            if (pawn.Dead)
+            // Clear ground heals fast; gear that holds the clock heals slowly (nothing to apply); otherwise the clock gains.
+            float delta = RM_WarcasketKernel.ImmersionDelta(hazardous, hasHediff, driveFactor);
+            if (delta == 0f || (delta > 0f && pawn.Dead))
             {
                 return;
             }
 
-            HealthUtility.AdjustSeverity(pawn, RM_WarcasketDefOf.RM_TerrainImmersionHazard, GainPerCheckUnprotected * driveFactor);
+            HealthUtility.AdjustSeverity(pawn, RM_WarcasketDefOf.RM_TerrainImmersionHazard, delta);
         }
 
         private bool IsHazardousCell(IntVec3 cell)
@@ -130,14 +114,12 @@ namespace RimMandrake.Warcasket
             }
 
             TerrainDef terrain = map.terrainGrid.TerrainAt(cell);
-            if (terrain == null || !terrain.IsWater)
-            {
-                return false;
-            }
 
             // Walkable water (a ford, a shallow brine margin) is ordinary
             // terrain, never the hazard — see file header.
-            return terrain.affordances == null || !terrain.affordances.Contains(TerrainAffordanceDefOf.Walkable);
+            return RM_WarcasketKernel.HazardousCell(true, terrain != null, terrain != null && terrain.IsWater,
+                terrain != null && terrain.affordances != null,
+                terrain != null && terrain.affordances != null && terrain.affordances.Contains(TerrainAffordanceDefOf.Walkable));
         }
     }
 }

@@ -67,85 +67,41 @@ namespace RimMandrake.StarWars.SWBestiary
         // ── gating ───────────────────────────────────────────────────────
         private static bool Eligible(Pawn pawn)
         {
-            if (!RSW_BeastMechanicsSettings.scrapHoardingEnabled)
-            {
-                return false;
-            }
-            if (pawn == null || pawn.Map == null || pawn.Dead || pawn.Downed)
-            {
-                return false;
-            }
-            if (pawn.TryGetComp<CompScrapHoarder>() == null)
-            {
-                return false;
-            }
-            if (!pawn.Awake())
-            {
-                return false;
-            }
-            if (pawn.mindState == null || pawn.mindState.anyCloseHostilesRecently)
-            {
-                return false;
-            }
-            if (pawn.health?.capacities != null
-                && !pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
+            // This node sits on every animal's think tree: the cheap gates run before the kernel's arguments are gathered.
+            if (!RSW_BeastMechanicsSettings.scrapHoardingEnabled || pawn == null || pawn.Map == null || pawn.Dead || pawn.Downed
+                || pawn.TryGetComp<CompScrapHoarder>() == null)
             {
                 return false;
             }
             Need_Food food = pawn.needs?.food;
-            if (food != null && food.CurLevelPercentage < pawn.RaceProps.FoodLevelPercentageWantEat)
-            {
-                return false;
-            }
             Need_Rest rest = pawn.needs?.rest;
-            if (rest != null && rest.CurLevelPercentage < 0.4f)
-            {
-                return false;
-            }
-            // An egg-bound bird lays first: JobGiver_LayEgg sits AFTER the
-            // Animal_PreMain hook, so without this it would never be reached.
             CompEggLayer eggs = pawn.TryGetComp<CompEggLayer>();
-            if (eggs != null && eggs.CanLayNow)
-            {
-                return false;
-            }
-            return true;
+            return RSW_HoardKernel.Eligible(true, true, true,
+                pawn.Awake(), pawn.mindState != null && !pawn.mindState.anyCloseHostilesRecently,
+                pawn.health?.capacities == null || pawn.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation),
+                food != null, food != null ? food.CurLevelPercentage : 0f, food != null ? pawn.RaceProps.FoodLevelPercentageWantEat : 0f,
+                rest != null, rest != null ? rest.CurLevelPercentage : 0f, eggs != null && eggs.CanLayNow);
         }
 
-        // ── finding the nest ─────────────────────────────────────────────
         private static Thing NearestNest(Pawn pawn, ThingDef nestDef, float radius)
         {
-            Thing best = null;
-            float bestDist = float.MaxValue;
             List<Thing> nests = pawn.Map.listerThings.ThingsOfDef(nestDef);
+            List<float> dist = new List<float>(nests.Count);
+            List<bool> spawned = new List<bool>(nests.Count);
             for (int i = 0; i < nests.Count; i++)
             {
-                Thing nest = nests[i];
-                if (!nest.Spawned)
-                {
-                    continue;
-                }
-                float dist = nest.Position.DistanceTo(pawn.Position);
-                if (dist > radius || dist >= bestDist)
-                {
-                    continue;
-                }
-                if (!pawn.CanReach(nest, PathEndMode.Touch, Danger.Deadly))
-                {
-                    continue;
-                }
-                best = nest;
-                bestDist = dist;
+                spawned.Add(nests[i].Spawned);
+                dist.Add(nests[i].Spawned ? nests[i].Position.DistanceTo(pawn.Position) : 0f);
             }
-            return best;
+            int best = RSW_HoardKernel.NearestNest(dist, spawned, i => pawn.CanReach(nests[i], PathEndMode.Touch, Danger.Deadly), radius);
+            return best < 0 ? null : nests[best];
         }
 
-        // ── building a nest ──────────────────────────────────────────────
         private static void TryBuildNest(Pawn pawn, ThingDef nestDef, CompProperties_ScrapHoarder props)
         {
             Map map = pawn.Map;
             List<Thing> existing = map.listerThings.ThingsOfDef(nestDef);
-            if (existing.Count >= props.maxNestsPerMap)
+            if (!RSW_HoardKernel.CanAddNest(existing.Count, props.maxNestsPerMap))
             {
                 return;
             }
@@ -171,54 +127,37 @@ namespace RimMandrake.StarWars.SWBestiary
 
             bool Validator(IntVec3 c)
             {
-                if (!c.InBounds(map) || !c.Standable(map) || c.Fogged(map))
-                {
-                    return false;
-                }
                 // 🔴 Never inside the player's base. Base-stealing is an
                 // UNRULED candidate (SCRAPNEST_BIRD_BASE_THEFT_1); a nest
                 // appearing in the colony would be that mechanic by accident.
-                if (map.areaManager.Home[c])
-                {
-                    return false;
-                }
-                if (c.GetEdifice(map) != null || c.GetFirstItem(map) != null)
-                {
-                    return false;
-                }
-                if (c.Roofed(map))
-                {
-                    return false;
-                }
-                if (!pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
-                {
-                    return false;
-                }
-                for (int i = 0; i < existing.Count; i++)
-                {
-                    if (existing[i].Position.DistanceTo(c) < props.minNestSpacing)
+                return RSW_HoardKernel.NestCellOk(c.InBounds(map),
+                    () => c.Standable(map) && !c.Fogged(map),
+                    () => map.areaManager.Home[c],
+                    () => c.GetEdifice(map) != null || c.GetFirstItem(map) != null,
+                    () => c.Roofed(map),
+                    () => pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly),
+                    () =>
                     {
-                        return false;
-                    }
-                }
-                if (requirePlantCover)
-                {
-                    bool nearPlant = false;
-                    for (int i = 0; i < GenAdj.AdjacentCells.Length; i++)
-                    {
-                        IntVec3 adj = c + GenAdj.AdjacentCells[i];
-                        if (adj.InBounds(map) && adj.GetPlant(map) != null)
+                        float nearest = float.MaxValue;
+                        for (int i = 0; i < existing.Count; i++)
                         {
-                            nearPlant = true;
-                            break;
+                            nearest = System.Math.Min(nearest, existing[i].Position.DistanceTo(c));
                         }
-                    }
-                    if (!nearPlant)
+                        return nearest;
+                    },
+                    props.minNestSpacing, requirePlantCover,
+                    () =>
                     {
+                        for (int i = 0; i < GenAdj.AdjacentCells.Length; i++)
+                        {
+                            IntVec3 adj = c + GenAdj.AdjacentCells[i];
+                            if (adj.InBounds(map) && adj.GetPlant(map) != null)
+                            {
+                                return true;
+                            }
+                        }
                         return false;
-                    }
-                }
-                return true;
+                    });
             }
         }
 
@@ -255,38 +194,23 @@ namespace RimMandrake.StarWars.SWBestiary
 
         private static bool IsTakeable(Thing t, Thing nest)
         {
-            if (t == null || !t.Spawned || t.stackCount <= 0)
+            if (t == null)
             {
                 return false;
             }
             Map map = t.Map;
-            if (map == null)
-            {
-                return false;
-            }
             // 🔴 THE BASE-STEALING GUARD. arid_shrubland.md §4's own text calls
             // birds robbing player bases a CANDIDATE, not a ruled mechanic, so
             // it is not built: anything inside the home area or in any storage
             // is off limits, and there is no setting that relaxes that. Ruling
-            // is owed on SCRAPNEST_BIRD_BASE_THEFT_1.
-            if (map.areaManager.Home[t.Position])
-            {
-                return false;
-            }
-            if (t.IsInAnyStorage())
-            {
-                return false;
-            }
-            if (t.Position.GetEdifice(map) is Building_Storage)
-            {
-                return false;
-            }
-            // Already at the nest — do not shuffle the hoard back and forth.
-            if (t.Position.DistanceTo(nest.Position) <= 2f)
-            {
-                return false;
-            }
-            return true;
+            // is owed on SCRAPNEST_BIRD_BASE_THEFT_1. (The kernel asks these in
+            // order and lazily; "already at the nest" keeps the hoard from being
+            // shuffled back and forth.)
+            return RSW_HoardKernel.Takeable(t.Spawned, t.stackCount, map != null,
+                () => map.areaManager.Home[t.Position],
+                () => t.IsInAnyStorage(),
+                () => t.Position.GetEdifice(map) is Building_Storage,
+                () => t.Position.DistanceTo(nest.Position));
         }
     }
 }

@@ -13,38 +13,31 @@ public abstract class DamageWorker_RaceHediffBase : DamageWorker_AddInjury
 {
     protected abstract bool AppliesTo(Pawn pawn);
 
+    // Mechanoids get an extra "stunned = true" after the hediff pass (DamageWorker_Ionization).
+    protected virtual bool StunsVictim => false;
+
     public override DamageResult Apply(DamageInfo dinfo, Thing thing)
     {
-        HediffDef hediffToAdd = null;
         ModExtension_HediffGiver modExtension = dinfo.Def.GetModExtension<ModExtension_HediffGiver>();
-        // MOD_OPTIONS_RETROFIT_1: leaving hediffToAdd null skips the whole
-        // block below, OnAppliedTo (the mechanoid stun) included, so the hit
-        // still deals its ordinary injury and nothing more.
-        if (modExtension != null && RSW_ArmourySettings.ionDamageEnabled)
-        {
-            hediffToAdd = modExtension.hediffToAdd;
-        }
         DamageResult result = base.Apply(dinfo, thing);
-        if (thing is Pawn pawn && hediffToAdd != null && AppliesTo(pawn))
+        // MOD_OPTIONS_RETROFIT_1: the kernel's gate is off when the mechanic is off, which skips the whole block
+        // below, the mechanoid stun included, so the hit still deals its ordinary injury and nothing more.
+        Pawn pawn = thing as Pawn;
+        StatDef resist = modExtension?.hediffResistanceStat;
+        RSW_IonKernel.Plan plan = RSW_IonKernel.Decide(RSW_ArmourySettings.ionDamageEnabled, modExtension != null, modExtension?.hediffToAdd != null,
+            pawn != null && AppliesTo(pawn), StunsVictim,
+            modExtension != null ? modExtension.severityFixed : 0f, RSW_ArmourySettings.ionSeverity, resist != null, resist != null ? resist.defaultBaseValue : 0f,
+            () => pawn.GetStatValue(resist), modExtension != null && modExtension.severityVariesBySize, pawn != null ? pawn.BodySize : 1f,
+            modExtension == null || modExtension.hediffAppliedToWholeBody, result.parts != null ? result.parts.Count : 0);
+        if (plan.Applies)
         {
-            float severity = modExtension.severityFixed * RSW_ArmourySettings.ionSeverity;
-            if (modExtension.hediffResistanceStat != null)
+            HediffDef hediffToAdd = modExtension.hediffToAdd;
+            if (plan.Hediffs > 0)
             {
-                float statValue = pawn.GetStatValue(modExtension.hediffResistanceStat);
-                severity = modExtension.hediffResistanceStat.defaultBaseValue > 0f
-                    ? severity * statValue
-                    : severity * (1f - statValue);
-            }
-            if (severity > 0f)
-            {
-                if (modExtension.severityVariesBySize)
-                {
-                    severity /= pawn.BodySize;
-                }
                 if (modExtension.hediffAppliedToWholeBody)
                 {
                     Hediff hediff = HediffMaker.MakeHediff(hediffToAdd, pawn);
-                    hediff.Severity = severity;
+                    hediff.Severity = plan.Severity;
                     pawn.health.AddHediff(hediff, null, dinfo);
                 }
                 else
@@ -52,18 +45,17 @@ public abstract class DamageWorker_RaceHediffBase : DamageWorker_AddInjury
                     foreach (BodyPartRecord part in result.parts)
                     {
                         Hediff hediff = HediffMaker.MakeHediff(hediffToAdd, pawn, part);
-                        hediff.Severity = severity;
+                        hediff.Severity = plan.Severity;
                         pawn.health.AddHediff(hediff, part, dinfo);
                     }
                 }
             }
-            OnAppliedTo(result, pawn);
+            if (plan.Stun)
+            {
+                result.stunned = true;
+            }
         }
         return result;
-    }
-
-    protected virtual void OnAppliedTo(DamageResult result, Pawn pawn)
-    {
     }
 }
 
@@ -96,8 +88,5 @@ public class DamageWorker_Organics : DamageWorker_RaceHediffBase
 // behavioral difference among the 5 race workers in the decompiled source.
 public class DamageWorker_Ionization : DamageWorker_Mechanoids
 {
-    protected override void OnAppliedTo(DamageResult result, Pawn pawn)
-    {
-        result.stunned = true;
-    }
+    protected override bool StunsVictim => true;
 }

@@ -115,8 +115,7 @@ namespace RimMandrake.Pyrelands
 
         public static float FurnaceSizeRatio(Verse.Pawn beast)
         {
-            float baseSize = beast?.RaceProps?.baseBodySize ?? FurnaceClassicBodySize;
-            return UnityEngine.Mathf.Max(0.25f, baseSize / FurnaceClassicBodySize);
+            return RM_FurnaceKernel.SizeRatio(beast?.RaceProps?.baseBodySize, FurnaceClassicBodySize);
         }
 
         /// <summary>Felt-temperature offset at the beast itself, degrees C, before the Mod Settings strength dial.

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using RimMandrake.Pyrelands;
 using RimWorld;
 using Verse;
 using Verse.AI.Group;
@@ -43,17 +44,10 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
 
             RimMandrake.Pyrelands.MapComponent_BurnLine watch = RimMandrake.Pyrelands.MapComponent_BurnLine.For(map);
-            if (watch == null || !watch.IsPyrelandsMap)
-            {
-                return false;
-            }
-            if (!watch.AnyBurn || watch.FireCount < PyrelandsMechanicsSettings.flameHarvestMinFires)
-            {
-                return false;
-            }
-
-            Faction tribes = PyrelandsFactions.TribesOrNull();
-            return tribes != null && !tribes.HostileTo(Faction.OfPlayer);
+            bool pyrelands = watch != null && watch.IsPyrelandsMap;
+            Faction tribes = pyrelands ? PyrelandsFactions.TribesOrNull() : null;
+            return RM_BurnKernel.HarvestCanFire(true, true, pyrelands, pyrelands && watch.AnyBurn, pyrelands ? watch.FireCount : 0,
+                PyrelandsMechanicsSettings.flameHarvestMinFires, tribes != null, tribes != null && tribes.HostileTo(Faction.OfPlayer));
         }
 
         protected override bool TryExecuteWorker(IncidentParms parms)

@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Compile Include="RM_SolarMirrorsMod.cs" />
+    <Compile Include="Kernel\RM_MirrorKernel.cs" />
     <Compile Include="RM_MirrorMath.cs" />
     <Compile Include="RM_CompMirror.cs" />
     <Compile Include="RM_CompLightReceiver.cs" />

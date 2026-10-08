@@ -80,23 +80,20 @@ namespace RimMandrake.Stillsand
         public float RateFactor()
         {
             RM_CompSunPowered sun = parent.TryGetComp<RM_CompSunPowered>();
-            if (sun == null || !sun.CanWork) return 0f;
-            float f = sun.SunFactor * RM_GlassChainSettings.stillRateMultiplier;
-            if (HasPearlLens()) f *= Props.pearlFactor;
-            return f;
+            if (sun == null) return 0f;
+            bool can = sun.CanWork;
+            return RM_SunKernel.StillRate(can, can ? sun.SunFactor : 0f, RM_GlassChainSettings.stillRateMultiplier,
+                can && HasPearlLens(), Props.pearlFactor);
         }
 
         public override void CompTickRare()
         {
             base.CompTickRare();
             if (!parent.Spawned || !EnabledInSettings) return;
-            if (!FindFeed(out Thing stock, out int units, out int litres)) { progress = 0f; return; }
-            float rate = RateFactor();
-            if (rate <= 0f) return;
-            progress += StepTicks * rate / Mathf.Max(1, Props.ticksPerCycle);
-            if (progress < 1f) return;
-            progress = 0f;
-            Consume(stock, units, litres);
+            bool hasFeed = FindFeed(out Thing stock, out int units, out int litres);
+            float rate = hasFeed ? RateFactor() : 0f;
+            progress = RM_SunKernel.StillStep(progress, hasFeed, rate, StepTicks, Props.ticksPerCycle, out bool fired);
+            if (fired) Consume(stock, units, litres);
         }
 
         /// <summary>Public so a test can run one cycle outright.</summary>
@@ -110,7 +107,7 @@ namespace RimMandrake.Stillsand
                 {
                     if (!Props.allowCorpses || corpse.InnerPawn == null) continue;
                     stock = t; units = 1;
-                    litres = Mathf.Max(1, Mathf.RoundToInt(corpse.InnerPawn.BodySize * Props.litresPerBodySize));
+                    litres = RM_SunKernel.CorpseLitres(corpse.InnerPawn.BodySize, Props.litresPerBodySize);
                     return true;
                 }
                 foreach (RM_StillFeed f in Props.feeds)

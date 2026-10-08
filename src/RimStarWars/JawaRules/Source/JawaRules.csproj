@@ -46,6 +46,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RSW_JawaRulesKernel.cs" />
     <Compile Include="JawaRules.cs" />
     <Compile Include="RSW_JawaRulesSettings.cs" />
     <Compile Include="PawnRenderNodeWorker_JawaHoodFallback.cs" />

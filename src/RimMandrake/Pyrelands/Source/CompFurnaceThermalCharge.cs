@@ -58,9 +58,9 @@ namespace RimMandrake.Pyrelands
         /// JobGiver_RUT_FurnaceThermalCycle (seek fire, or leave it alone).</summary>
         public float Charge => charge;
 
-        public bool WantsHeat => charge < PyrelandsTuning.FurnaceChargeSeekBelow;
+        public bool WantsHeat => RM_FurnaceKernel.WantsHeat(charge, PyrelandsTuning.FurnaceChargeSeekBelow);
 
-        public bool IsFullyCharged => charge >= PyrelandsTuning.FurnaceChargeAvoidAbove;
+        public bool IsFullyCharged => RM_FurnaceKernel.IsFullyCharged(charge, PyrelandsTuning.FurnaceChargeAvoidAbove);
 
         public override void PostExposeData()
         {
@@ -92,7 +92,7 @@ namespace RimMandrake.Pyrelands
         private void UpdateCharge(Pawn beast)
         {
             float step = ComputeChargeStep(beast.AmbientTemperature, AdjacentFireCount(beast) > 0);
-            charge = Mathf.Clamp01(charge + step);
+            charge = RM_FurnaceKernel.ClampCharge(charge + step);
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace RimMandrake.Pyrelands
         /// </summary>
         public void ApplyWorldTick(float ambientAtTile)
         {
-            charge = Mathf.Clamp01(charge + ComputeChargeStep(ambientAtTile, nearFire: false));
+            charge = RM_FurnaceKernel.ClampCharge(charge + ComputeChargeStep(ambientAtTile, nearFire: false));
         }
 
         /// <summary>
@@ -120,45 +120,13 @@ namespace RimMandrake.Pyrelands
         /// </summary>
         internal static float ComputeChargeStep(float ambient, bool nearFire)
         {
-            float step;
-
-            if (ambient >= PyrelandsTuning.FurnaceChargeAmbientC)
-            {
-                // Charge rate scales with how far above the threshold it is, so a
-                // 40 degC afternoon in the Deep Desert charges slowly over weeks
-                // and a burning grass cell charges in minutes. Capped so a
-                // freak 1000 degC reading cannot fill the capacitor in one tick.
-                float over = Mathf.Min(
-                    ambient - PyrelandsTuning.FurnaceChargeAmbientC,
-                    PyrelandsTuning.FurnaceChargeAmbientSpanC);
-                step = PyrelandsTuning.FurnaceChargePerCheckAtFullHeat
-                     * (over / PyrelandsTuning.FurnaceChargeAmbientSpanC);
-            }
-            else if (ambient <= PyrelandsTuning.FurnaceBleedAmbientC)
-            {
-                float under = Mathf.Min(
-                    PyrelandsTuning.FurnaceBleedAmbientC - ambient,
-                    PyrelandsTuning.FurnaceBleedAmbientSpanC);
-                step = -PyrelandsTuning.FurnaceBleedPerCheckAtFullCold
-                     * (under / PyrelandsTuning.FurnaceBleedAmbientSpanC);
-            }
-            else
-            {
-                // The dead band. A capacitor at rest holds its charge.
-                step = 0f;
-            }
-
-            // Standing in the burn is the fast lane, and it is what makes the
-            // Pyrelands leg of the cycle worth the walk. Counted rather than
-            // measured as temperature: AmbientTemperature at a burning cell is
-            // already high, but a beast walking the EDGE of a front would
-            // otherwise gain almost nothing.
-            if (nearFire)
-            {
-                step += PyrelandsTuning.FurnaceChargePerCheckNearFire;
-            }
-
-            return step;
+            // Charge rate scales with how far above the threshold it is (capped so a freak reading cannot fill the
+            // capacitor in one tick); a dead band holds; standing in the burn is the fast lane (counted, not measured:
+            // a beast on the EDGE of a front would otherwise gain almost nothing). RM_FurnaceKernel.ChargeStep.
+            return RM_FurnaceKernel.ChargeStep(ambient, nearFire,
+                PyrelandsTuning.FurnaceChargeAmbientC, PyrelandsTuning.FurnaceChargeAmbientSpanC, PyrelandsTuning.FurnaceChargePerCheckAtFullHeat,
+                PyrelandsTuning.FurnaceBleedAmbientC, PyrelandsTuning.FurnaceBleedAmbientSpanC, PyrelandsTuning.FurnaceBleedPerCheckAtFullCold,
+                PyrelandsTuning.FurnaceChargePerCheckNearFire);
         }
 
         private static int AdjacentFireCount(Pawn beast)

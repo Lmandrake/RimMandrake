@@ -56,6 +56,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RSW_LivestockKernel.cs" />
     <Compile Include="CompKilnBelly.cs" />
     <Compile Include="CompMoornakGrief.cs" />
     <Compile Include="RSW_LivestockSettings.cs" />

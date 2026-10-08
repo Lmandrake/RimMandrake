@@ -1,0 +1,170 @@
+[
+ {
+  "name": "oracle argv: backslashes before a quote not doubled",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "sb.Append('\\\\', backslashes * 2 + 1).Append('\"');",
+  "new": "sb.Append('\\\\', backslashes + 1).Append('\"');"
+ },
+ {
+  "name": "oracle argv: trailing backslashes not doubled",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "sb.Append('\\\\', backslashes * 2);\n                }\n                else if",
+  "new": "sb.Append('\\\\', backslashes);\n                }\n                else if"
+ },
+ {
+  "name": "oracle timeout: seconds*1000 wraps",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "long ms = (long)Math.Max(1, timeoutSeconds) * 1000L;",
+  "new": "long ms = (long)(Math.Max(1, timeoutSeconds) * 1000);"
+ },
+ {
+  "name": "oracle timeout: zero seconds allowed",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "long ms = (long)Math.Max(1, timeoutSeconds) * 1000L;",
+  "new": "long ms = (long)Math.Max(0, timeoutSeconds) * 1000L;"
+ },
+ {
+  "name": "oracle launch: claude listed twice",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "if (resolved != \"claude\")",
+  "new": "if (true)"
+ },
+ {
+  "name": "oracle launch: installed path tried twice",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "if (!list.Contains(installed))",
+  "new": "if (true)"
+ },
+ {
+  "name": "oracle retry: timeouts are retried",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "return !(e is TimeoutException) && !(e is FileNotFoundException);",
+  "new": "return !(e is FileNotFoundException);"
+ },
+ {
+  "name": "oracle retry: missing binary is retried",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "return !(e is TimeoutException) && !(e is FileNotFoundException);",
+  "new": "return !(e is TimeoutException);"
+ },
+ {
+  "name": "oracle retry: a second retry",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "for (int attempt = 0; attempt < 2; attempt++)",
+  "new": "for (int attempt = 0; attempt < 3; attempt++)"
+ },
+ {
+  "name": "oracle retry: first failure reported, not the last",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "lastFailure = e;",
+  "new": "lastFailure = lastFailure ?? e;"
+ },
+ {
+  "name": "oracle launch: a started-then-failed executable is not pinned",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "resolved = started;",
+  "new": "resolved = resolved;"
+ },
+ {
+  "name": "oracle classify: stderr leaks into a good reply",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "string content = (stdout ?? string.Empty).Trim();",
+  "new": "string content = ((stdout ?? string.Empty) + (stderr ?? string.Empty)).Trim();"
+ },
+ {
+  "name": "oracle classify: diagnostic prefers stdout",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "string diagnostic = (stderr ?? string.Empty).Trim();",
+  "new": "string diagnostic = (stdout ?? string.Empty).Trim();"
+ },
+ {
+  "name": "oracle classify: empty output is success",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "if (string.IsNullOrEmpty(content))",
+  "new": "if (content == null)"
+ },
+ {
+  "name": "oracle classify: diagnostic uncapped",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "Truncate(diagnostic, 300)",
+  "new": "Truncate(diagnostic, 3000)"
+ },
+ {
+  "name": "oracle budget: a refusal still counts as a call",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "reason = \"kill switch off\";",
+  "new": "callsToday++; reason = \"kill switch off\";"
+ },
+ {
+  "name": "oracle budget: the day never rolls back",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "if (today != lastResetDay)",
+  "new": "if (today > lastResetDay)"
+ },
+ {
+  "name": "oracle budget: one call too many",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "if (callsToday >= budgetPerDay)",
+  "new": "if (callsToday > budgetPerDay)"
+ },
+ {
+  "name": "oracle budget: kill switch ignored",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "if (!enabled)\n            {\n                reason",
+  "new": "if (false)\n            {\n                reason"
+ },
+ {
+  "name": "oracle delivery: fallback shipped unlinted",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "if (OracleValidator.TryValidateOhm(fallbackText, out rejectReason))",
+  "new": "if ((rejectReason = null) == null)"
+ },
+ {
+  "name": "oracle delivery: live reply shipped unlinted",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "if (OracleValidator.TryValidateOhm(content, out rejectReason))",
+  "new": "if ((rejectReason = null) == null)"
+ },
+ {
+  "name": "oracle delivery: safe default is not lint-clean",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "\"The old machines hum on, patient, waiting",
+  "new": "\"[The old machines hum on, patient, waiting"
+ },
+ {
+  "name": "oracle queue: one throwing delivery stops the drain",
+  "file": "src/RimMandrake/Oracle/Source/Kernel/OracleKernel.cs",
+  "old": "onError(e);\n                }",
+  "new": "onError(e);\n                    return ran;\n                }"
+ },
+ {
+  "name": "oracle lint: length cap off by one",
+  "file": "src/RimMandrake/Oracle/Source/OracleValidator.cs",
+  "old": "text.Length > MaxLength",
+  "new": "text.Length >= MaxLength"
+ },
+ {
+  "name": "oracle lint: closing bracket not caught",
+  "file": "src/RimMandrake/Oracle/Source/OracleValidator.cs",
+  "old": "text.IndexOf('[') >= 0 || text.IndexOf(']') >= 0",
+  "new": "text.IndexOf('[') >= 0"
+ },
+ {
+  "name": "oracle lint: Zizzik taboo gone",
+  "file": "src/RimMandrake/Oracle/Source/OracleValidator.cs",
+  "old": "lower.Contains(\"zizzik\")",
+  "new": "lower.Contains(\"zizzikk\")"
+ },
+ {
+  "name": "oracle lint: case-sensitive tells",
+  "file": "src/RimMandrake/Oracle/Source/OracleValidator.cs",
+  "old": "string lower = text.ToLowerInvariant();",
+  "new": "string lower = text;"
+ },
+ {
+  "name": "oracle prompt: the law stops forbidding 'part of me'",
+  "file": "src/RimMandrake/Oracle/Source/OracleRegisterBlocks.cs",
+  "old": "Never say \\\"part of me\\\", ",
+  "new": "Never say \\\"portion of me\\\", "
+ }
+]

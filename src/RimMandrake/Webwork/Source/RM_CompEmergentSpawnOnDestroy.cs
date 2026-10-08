@@ -48,15 +48,8 @@ namespace RimMandrake.Webwork
 		public override void PostDestroy(DestroyMode mode, Map previousMap)
 		{
 			base.PostDestroy(mode, previousMap);
-			if (!RM_WebworkSettings.emergentSpawnEnabled)
-			{
-				return;
-			}
-			if (previousMap == null || mode != DestroyMode.Vanish)
-			{
-				return;
-			}
-			if (!Rand.Chance(Props.spawnChance * RM_WebworkSettings.emergentSpawnChanceMultiplier))
+			if (!RM_EmergentKernel.Fires(RM_WebworkSettings.emergentSpawnEnabled, previousMap != null, mode == DestroyMode.Vanish,
+				Props.spawnChance, RM_WebworkSettings.emergentSpawnChanceMultiplier, Rand.Value))
 			{
 				return;
 			}

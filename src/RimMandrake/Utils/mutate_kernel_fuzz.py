@@ -33,7 +33,7 @@ def main(argv):
             open(path, "wb").write(text.replace(m["old"], m["new"]).encode("utf-8"))
             time.sleep(4)
             os.utime(path)
-            r = subprocess.run([sys.executable, os.path.join(HERE, wrapper)], capture_output=True, text=True, cwd=REPO)
+            r = subprocess.run([sys.executable, os.path.join(HERE, wrapper)], capture_output=True, text=True, errors="replace", cwd=REPO)
             out = r.stdout + r.stderr
             fails = [l for l in out.splitlines() if l.startswith("FAIL") or "FAILURES" in l or "build FAILED" in l or "BUILD FAILED" in l]
             if "BUILD FAILED" in out or "build FAILED" in out:

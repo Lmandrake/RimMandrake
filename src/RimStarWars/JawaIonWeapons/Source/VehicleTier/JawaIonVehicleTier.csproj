@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Remove="..\**\*.cs" />
     <Compile Include="*.cs" />
+    <Compile Include="..\Kernel\RSW_IonBuildupKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

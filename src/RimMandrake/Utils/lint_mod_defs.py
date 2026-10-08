@@ -21,6 +21,12 @@ from lint_scarlands_defs import (SRC, OUR_PREFIX, CLASS_ELEMS, STRICT_ROOTS, str
                                  scan_csharp, chain, issubclass_name)
 
 
+class SiblingText(str):
+    """Text of every other mod's defs/patches; `name in text` is a whole-identifier test."""
+    def __contains__(self, name):
+        return re.search(r"(?<![A-Za-z0-9_])" + re.escape(name) + r"(?![A-Za-z0-9_])", str(self)) is not None
+
+
 def run(mod_name, argv, known_missing_art=()):
     mod = os.path.join(SRC, mod_name)
     if "--mod-dir" in argv:
@@ -95,8 +101,11 @@ def run(mod_name, argv, known_missing_art=()):
                     checked["drivers"] += 1
                     if c is not None and not issubclass_name(allc, c, "JobDriver"):
                         E("driver-kind", f"{rel}: driverClass {t} does not derive from JobDriver")
-                if el.tag == "giverClass" and c is not None and not issubclass_name(allc, c, "WorkGiver"):
-                    E("driver-kind", f"{rel}: giverClass {t} does not derive from WorkGiver")
+                if el.tag == "giverClass" and c is not None:
+                    # a JoyGiverDef's giverClass is a JoyGiver (a different hierarchy from WorkGiver)
+                    want = "JoyGiver" if any(d.tag == "JoyGiverDef" and el in d.iter() for d in root) else "WorkGiver"
+                    if not issubclass_name(allc, c, want):
+                        E("driver-kind", f"{rel}: giverClass {t} does not derive from {want}")
                 if el.tag == "giverClass" and c is None and not t.split(".")[-1].startswith(OUR_PREFIX) and t.split(".")[-1] in our:
                     referenced.add(t.split(".")[-1])
             # every bare text value that names one of OUR classes counts as a reference (e.g. workerClass of a thinktree)
@@ -159,8 +168,10 @@ def run(mod_name, argv, known_missing_art=()):
                 referenced.add(g)
 
     other_defs = None
-    for m in re.finditer(r'GetNamed(SilentFail)?\("([^"]+)"', code):
+    for m in re.finditer(r'GetNamed(SilentFail)?\("([^"]+)"(\s*\+)?', code):
         silent, n = m.group(1), m.group(2)
+        if m.group(3):
+            continue   # "RM_Prefix_" + tier: a name built at run time has no single def to resolve
         checked["class-refs"] += 1
         if n.startswith(OUR_PREFIX) and not any(dn == n for (_, dn) in defnames):
             if other_defs is None:
@@ -228,9 +239,11 @@ def run(mod_name, argv, known_missing_art=()):
                     for t in all_text.values() if re.search(r"DoSettingsWindowContents|DoWindowContents", t))
     # a field read inside an expression-bodied property of the settings class (`public static bool XActive => A && xEnabled;`) is read
     props = " ".join(re.findall(r"public static [\w<>\[\]]+\s+\w+\s*=>\s*([^;]+);", sbody))
+    # a field read inside a method of the settings class itself (FieldDisabled() reading disabledFields) is read
+    inner = re.sub(r"(public static [\w<>\[\]]+\s+\w+\s*=(?!>)[^;]*;|Scribe_\w+\.Look\([^;]*;)", "", sbody)
     for fld in decl:
         pat = r"\b" + fld + r"\b"
-        if not re.search(pat, outside) and not re.search(sname + r"\." + fld + r"\b", st) and not re.search(pat, props):
+        if not re.search(pat, outside) and not re.search(sname + r"\." + fld + r"\b", st) and not re.search(pat, props) and not re.search(pat, inner):
             W("settings-scribed", f"settings field {fld} is never read by any code (dead toggle)")
         if not re.search(pat, ui):
             W("settings-scribed", f"settings field {fld} has no control in the settings window")
@@ -240,6 +253,18 @@ def run(mod_name, argv, known_missing_art=()):
                 E("settings-scribed", f"code reads {sname}.{m} which is not a declared field")
 
     # wired: classes of the right kind that nothing references
+    _sib = {}
+
+    def sibling_def_text():
+        if "t" not in _sib:
+            parts = []
+            for tier in glob.glob(os.path.join(os.path.dirname(SRC), "*")):
+                for xp in glob.glob(os.path.join(tier, "*", "Defs", "**", "*.xml"), recursive=True) + glob.glob(os.path.join(tier, "*", "Patches", "**", "*.xml"), recursive=True):
+                    if not xp.startswith(mod + os.sep):
+                        parts.append(open(xp, encoding="utf-8-sig", errors="replace").read())
+            _sib["t"] = SiblingText("\n".join(parts))
+        return _sib["t"]
+
     for name, c in sorted((k, v) for k, v in our.items() if "." not in k):
         if c.abstract or name in referenced:
             continue
@@ -250,6 +275,8 @@ def run(mod_name, argv, known_missing_art=()):
                 break
         if kind:
             used_in_code = len(re.findall(r"\b" + name + r"\b", code))
+            if used_in_code <= 1 and name in sibling_def_text():
+                continue   # a framework mod's class named by a sibling mod's defs (StructureInjections <- StructureInjectionsRUT)
             if used_in_code <= 1:
                 W("wired", f"{kind} subclass {name} ({os.path.relpath(c.path, mod)}) is referenced by no def, typeof() or other code")
 

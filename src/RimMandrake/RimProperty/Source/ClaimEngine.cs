@@ -40,16 +40,9 @@ namespace RimMandrake.Property
 
             if (candidates.Count == 0) return null;
 
-            candidates.Sort((a, b) =>
-            {
-                int byStrength = b.EffectiveStrength.CompareTo(a.EffectiveStrength);
-                if (byStrength != 0) return byStrength;
-
-                int bySpecificity = Specificity(b.Claimant).CompareTo(Specificity(a.Claimant));
-                if (bySpecificity != 0) return bySpecificity;
-
-                return b.TimestampTicks.CompareTo(a.TimestampTicks);
-            });
+            candidates.Sort((a, b) => RM_PropertyKernel.Order(
+                a.EffectiveStrength, Specificity(a.Claimant), a.TimestampTicks,
+                b.EffectiveStrength, Specificity(b.Claimant), b.TimestampTicks));
 
             return candidates[0];
         }
@@ -64,17 +57,11 @@ namespace RimMandrake.Property
         // against it and finds no actor that ever equals it - the thing is
         // permanently unauthorized to use by anyone.
         private static bool IsGhost(ClaimantRef c) =>
-            (c.Kind == ClaimantKind.Pawn && c.Pawn == null) ||
-            (c.Kind == ClaimantKind.Commons && c.Faction == null);
+            RM_PropertyKernel.IsGhost((byte)c.Kind, c.Pawn == null, c.Faction == null);
 
         private static int Specificity(ClaimantRef c)
         {
-            switch (c.Kind)
-            {
-                case ClaimantKind.Pawn: return 2;
-                case ClaimantKind.Commons: return 1;
-                default: return 0;
-            }
+            return RM_PropertyKernel.Specificity((byte)c.Kind);
         }
 
         // Territorial/Situational — spec item 3: computed, ZERO storage.
@@ -93,14 +80,15 @@ namespace RimMandrake.Property
         private static ClaimResolution? ResolveVirtualClaim(Thing thing, int nowTick)
         {
             Pawn possessor = FindPossessor(thing);
-            if (possessor != null)
+            int basis = RM_PropertyKernel.VirtualBasis(possessor != null, thing.Faction != null);
+            if (basis == RM_PropertyKernel.VirtualSituational)
             {
                 return new ClaimResolution(
                     ClaimantRef.OfPawn(possessor), PropertyTuning.SituationalClaimStrength,
                     ClaimBasis.Situational, isRecorded: false, timestampTicks: nowTick);
             }
 
-            if (thing.Faction != null)
+            if (basis == RM_PropertyKernel.VirtualTerritorial)
             {
                 return new ClaimResolution(
                     ClaimantRef.OfCommons(thing.Faction), PropertyTuning.TerritorialClaimStrength,

@@ -85,19 +85,15 @@ namespace RimMandrake.Stillsand
             }
         }
 
-        public bool CanWork => EnabledInSettings && SunFactor >= Props.minSunFactor;
+        public bool CanWork => RM_SunKernel.CanWork(EnabledInSettings, SunFactor, Props.minSunFactor);
 
         /// <summary>Multiplier on WorkTableWorkSpeedFactor.</summary>
         public float WorkSpeedFactor
         {
             get
             {
-                if (!Props.scaleWorkSpeed)
-                {
-                    return 1f;
-                }
-                return Mathf.Max(0.05f, SunFactor) * Props.workSpeedAtFullSun
-                       * RM_GlassChainSettings.sunWorkSpeedMultiplier;
+                return RM_SunKernel.WorkSpeed(Props.scaleWorkSpeed, Props.scaleWorkSpeed ? SunFactor : 1f, Props.workSpeedAtFullSun,
+                    RM_GlassChainSettings.sunWorkSpeedMultiplier);
             }
         }
 
@@ -143,56 +139,37 @@ namespace RimMandrake.Stillsand
                 return 0f;
             }
             RM_MapComponent_PinnedSun pinned = RM_MapComponent_PinnedSun.For(map);
-            if (pinned != null && pinned.IsActive)
-            {
-                float elev = pinned.SunElevationDegrees;
-                if (float.IsNaN(elev))
-                {
-                    return 0f;
-                }
-                return Mathf.Clamp01(Mathf.Sin(elev * Mathf.Deg2Rad));
-            }
-            return Mathf.Clamp01(GenCelestial.CurCelestialSunGlow(map));
+            bool pinnedActive = pinned != null && pinned.IsActive;
+            return RM_SunKernel.Intensity(pinnedActive, pinnedActive ? pinned.SunElevationDegrees : float.NaN,
+                pinnedActive ? 0f : GenCelestial.CurCelestialSunGlow(map));
         }
 
         /// <summary>Usable sun at a thing's position, 0..1, with the reason it is low.</summary>
         public static float FactorAt(Thing t, List<string> noSunWeathers, out string reason)
         {
-            reason = null;
             Map map = t?.Map;
-            if (map == null || !t.Spawned)
+            bool spawned = map != null && t.Spawned;
+            IntVec3 c = spawned ? t.Position : IntVec3.Invalid;
+            bool roofed = spawned && c.Roofed(map);
+            WeatherDef w = spawned ? map.weatherManager?.curWeather : null;
+            bool blotted = w != null && noSunWeathers != null && noSunWeathers.Contains(w.defName);
+            float sun = spawned && !roofed && !blotted ? Intensity(map) : 0f;
+            float shade = 0f;
+            if (sun > 0f)
             {
-                reason = "not spawned";
-                return 0f;
+                RM_MapComponent_ShadeGrid grid = RM_MapComponent_ShadeGrid.For(map);
+                shade = grid != null ? Mathf.Clamp01(grid.ShadeAt(c)) : 0f;
             }
-            IntVec3 c = t.Position;
-            if (c.Roofed(map))
+            float f = RM_SunKernel.Factor(spawned, roofed, blotted, sun, shade, out RM_SunReason why);
+            switch (why)
             {
-                reason = "under a roof";
-                return 0f;
-            }
-            WeatherDef w = map.weatherManager?.curWeather;
-            if (w != null && noSunWeathers != null && noSunWeathers.Contains(w.defName))
-            {
-                reason = "the sun is blotted out (" + w.label + ")";
-                return 0f;
-            }
-            float sun = Intensity(map);
-            if (sun <= 0f)
-            {
-                reason = "no sun";
-                return 0f;
-            }
-            RM_MapComponent_ShadeGrid grid = RM_MapComponent_ShadeGrid.For(map);
-            float shade = grid != null ? Mathf.Clamp01(grid.ShadeAt(c)) : 0f;
-            float f = sun * (1f - shade);
-            if (shade >= 0.5f)
-            {
-                reason = "in shade";
-            }
-            else if (f < 0.3f)
-            {
-                reason = "the sun is too low";
+                case RM_SunReason.NotSpawned: reason = "not spawned"; break;
+                case RM_SunReason.Roofed: reason = "under a roof"; break;
+                case RM_SunReason.Blotted: reason = "the sun is blotted out (" + w.label + ")"; break;
+                case RM_SunReason.NoSun: reason = "no sun"; break;
+                case RM_SunReason.InShade: reason = "in shade"; break;
+                case RM_SunReason.TooLow: reason = "the sun is too low"; break;
+                default: reason = null; break;
             }
             return f;
         }

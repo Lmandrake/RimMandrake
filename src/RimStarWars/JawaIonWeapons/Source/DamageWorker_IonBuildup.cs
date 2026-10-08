@@ -60,18 +60,9 @@ namespace RimMandrake.StarWars.JawaIonWeapons
             // player's per-mechanic switches. Off = no hediff is ever deposited;
             // base.Apply above has already run, so the bolt still lands and still
             // makes its noise.
-            if (!RSW_JawaIonWeaponsSettings.fleshBuildupEnabled)
-            {
-                return result;
-            }
-
             Pawn pawn = victim as Pawn;
-            if (pawn == null || pawn.Dead || pawn.health == null)
-            {
-                return result;
-            }
-
-            // Skip TRUE MECHANOIDS only -- not every non-flesh pawn.
+            List<DamageDefAdditionalHediff> entries = dinfo.Def?.additionalHediffs;
+            // Skip TRUE MECHANOIDS only -- not every non-flesh pawn (RSW_IonBuildupKernel.FleshBuildupApplies).
             //
             // This guard used to read `!pawn.RaceProps.IsFlesh`, on the
             // assumption that droids were already covered by causeStun. They
@@ -102,13 +93,9 @@ namespace RimMandrake.StarWars.JawaIonWeapons
             // medical tending of droids against the doctrine ruling, and makes
             // droid corpses rot -- which currently protects the salvage loop.
             // Full argument: runtime/droid_ruling.md.
-            if (pawn.RaceProps == null || pawn.RaceProps.IsMechanoid)
-            {
-                return result;
-            }
-
-            List<DamageDefAdditionalHediff> entries = dinfo.Def?.additionalHediffs;
-            if (entries == null)
+            if (!RSW_IonBuildupKernel.FleshBuildupApplies(RSW_JawaIonWeaponsSettings.fleshBuildupEnabled, pawn != null,
+                    pawn != null && pawn.Dead, pawn != null && pawn.health != null, pawn != null && pawn.RaceProps != null,
+                    pawn != null && pawn.RaceProps != null && pawn.RaceProps.IsMechanoid, entries != null))
             {
                 return result;
             }
@@ -121,13 +108,9 @@ namespace RimMandrake.StarWars.JawaIonWeapons
                     continue;
                 }
 
-                float severity = entry.severityFixed > 0f
-                    ? entry.severityFixed
-                    : entry.severityPerDamageDealt * dinfo.Amount;
-
-                // MOD_OPTIONS_RETROFIT_1: player multiplier on top of the XML number.
-                // Default 1.0 -> identical to shipped behavior.
-                severity *= RSW_JawaIonWeaponsSettings.stunBuildupMultiplier;
+                // The kernel: severityFixed wins if set, else severityPerDamageDealt * damage; then
+                // MOD_OPTIONS_RETROFIT_1's player multiplier (default 1.0 -> identical to shipped behavior)
+                // and the body-size barrier below.
 
                 // Owner ruling 2026-08-29 (ION_STUN_IGNORES_BODY_SIZE_1): the overload
                 // barrier scales with the SQUARE of the target's body size. A Human
@@ -140,7 +123,8 @@ namespace RimMandrake.StarWars.JawaIonWeapons
                 // The exponent is now the settings value bodySizeResistExponent, whose
                 // DEFAULT IS 2 -- i.e. the literal bodySize*bodySize this shipped with
                 // (BodySizeDivisor special-cases exactly 2, so no float drift).
-                severity /= RSW_JawaIonWeaponsSettings.BodySizeDivisor(pawn.BodySize);
+                float severity = RSW_IonBuildupKernel.FleshSeverity(entry.severityFixed, entry.severityPerDamageDealt, dinfo.Amount,
+                    RSW_JawaIonWeaponsSettings.stunBuildupMultiplier, RSW_JawaIonWeaponsSettings.BodySizeDivisor(pawn.BodySize));
 
                 if (severity <= 0f)
                 {
@@ -203,49 +187,21 @@ namespace RimMandrake.StarWars.JawaIonWeapons
         /// </summary>
         private void ApplyMachineTier(DamageInfo dinfo, Thing victim)
         {
-            // MOD_OPTIONS_RETROFIT_1: the machine/droid tier is its own switch.
-            if (!RSW_JawaIonWeaponsSettings.machineTierEnabled)
-            {
-                return;
-            }
-
+            // MOD_OPTIONS_RETROFIT_1: the machine/droid tier is its own switch. The kernel holds the gates and the maths:
+            // live spawned pawn with race props; FLESH IS THE BOTTOM TIER AND TAKES NO STUN (D1: a person must be worn
+            // down and gang-tackled, never disabled outright; that is the whole capture-not-kill pillar, and the buildup
+            // in Apply() is their tier); only the ion damage def carries the amounts; machines (mechanoid / drone) take
+            // the machine amount, droids the droid amount; x the machine-tier slider (default 1.0 -> unchanged); divided
+            // by the same body-size barrier as the flesh tier (ION_STUN_IGNORES_BODY_SIZE_1, owner 2026-08-29): StunHandler
+            // turns the amount into ticks (amount * 30) before EMPResistance, so scaling the amount scales the stun.
             Pawn pawn = victim as Pawn;
-            if (pawn == null || pawn.Dead || !pawn.Spawned || pawn.RaceProps == null)
-            {
-                return;
-            }
-
-            // FLESH IS THE BOTTOM TIER AND TAKES NO STUN. D1 is explicit that a person
-            // must be worn down and gang-tackled, never disabled outright; that is the
-            // whole capture-not-kill pillar. The buildup below Apply() is their tier.
-            if (pawn.RaceProps.IsFlesh)
-            {
-                return;
-            }
-
             IonDamageDef def = dinfo.Def as IonDamageDef;
-            if (def == null)
-            {
-                return;
-            }
-
-            bool machine = pawn.RaceProps.IsMechanoid || pawn.RaceProps.IsDrone;
-            float amount = machine ? def.empAmountMachine : def.empAmountDroid;
-            if (amount <= 0f)
-            {
-                return;
-            }
-
-            // MOD_OPTIONS_RETROFIT_1: player multiplier, default 1.0 -> unchanged.
-            amount *= RSW_JawaIonWeaponsSettings.machineTierMultiplier;
-
-            // Same body-size^2 ruling as the flesh tier (ION_STUN_IGNORES_BODY_SIZE_1,
-            // owner 2026-08-29) applied here too: a superheavy mech is BodySize-huge
-            // and should not drop as fast as a battle droid. StunHandler turns this
-            // amount into ticks (amount * 30) before EMPResistance, so scaling the
-            // amount itself scales the resulting stun duration the same way.
-            // Exponent from settings; default 2 is that ruled curve, unchanged.
-            amount /= RSW_JawaIonWeaponsSettings.BodySizeDivisor(pawn.BodySize);
+            bool live = pawn != null && !pawn.Dead && pawn.Spawned;
+            float amount = RSW_IonBuildupKernel.MachineAmount(RSW_JawaIonWeaponsSettings.machineTierEnabled, live, live && pawn.RaceProps != null,
+                live && pawn.RaceProps != null && pawn.RaceProps.IsFlesh, def != null,
+                live && pawn.RaceProps != null && (pawn.RaceProps.IsMechanoid || pawn.RaceProps.IsDrone),
+                def != null ? def.empAmountMachine : 0f, def != null ? def.empAmountDroid : 0f,
+                RSW_JawaIonWeaponsSettings.machineTierMultiplier, live ? RSW_JawaIonWeaponsSettings.BodySizeDivisor(pawn.BodySize) : 1f);
             if (amount <= 0f)
             {
                 return;
@@ -308,13 +264,8 @@ namespace RimMandrake.StarWars.JawaIonWeapons
             // MOD_OPTIONS_RETROFIT_1: shield-popping is its own switch. Off = this
             // extra dispatch never happens at all, so a shield belt absorbs ion fire
             // like any other shot.
-            if (!RSW_JawaIonWeaponsSettings.shieldBreakEnabled)
-            {
-                return;
-            }
-
             Pawn pawn = victim as Pawn;
-            if (pawn == null || pawn.Dead || !pawn.Spawned)
+            if (!RSW_IonBuildupKernel.ShieldBreaks(RSW_JawaIonWeaponsSettings.shieldBreakEnabled, pawn != null, pawn != null && pawn.Dead, pawn != null && pawn.Spawned))
             {
                 return;
             }

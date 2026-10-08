@@ -55,6 +55,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RSW_BeastKernel.cs" />
     <Compile Include="CompMetalEater.cs" />
     <Compile Include="JobGiver_EatMetal.cs" />
     <Compile Include="JobDriver_EatMetal.cs" />

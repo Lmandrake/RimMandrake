@@ -41,6 +41,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RSW_IonBuildupKernel.cs" />
     <Compile Include="DamageWorker_IonBuildup.cs" />
     <Compile Include="IonDamageDef.cs" />
     <Compile Include="RSW_JawaIonWeaponsSettings.cs" />

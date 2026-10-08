@@ -33,7 +33,7 @@ public class MinePocketJob : JobDriver
 
     protected Toil PrepareToUse()
     {
-        int scaledDuration = Mathf.Max(1, Mathf.RoundToInt(useDuration * RSW_ArmourySettings.minePocketDefuseTime));
+        int scaledDuration = RSW_CombatKernel.DefuseTicks(useDuration, RSW_ArmourySettings.minePocketDefuseTime);
         Toil toil = Toils_General.Wait(scaledDuration, TargetIndex.A)
             .WithProgressBarToilDelay(TargetIndex.A)
             .FailOnDespawnedNullOrForbidden(TargetIndex.A)
@@ -67,7 +67,7 @@ public class MinePocketJob : JobDriver
         Toil predefuse = ToilMaker.MakeToil("MakeNewToils");
         predefuse.initAction = delegate
         {
-            if (pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation) < 0.6f)
+            if (RSW_CombatKernel.DefuseOutcome(pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation)).Wick)
             {
                 TargetThingA.TryGetComp<CompExplosive>()?.StartWick();
             }
@@ -78,7 +78,7 @@ public class MinePocketJob : JobDriver
         Toil lastToil = ToilMaker.MakeToil("MakeNewToils");
         lastToil.initAction = delegate
         {
-            if (pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation) < 0.6f)
+            if (!RSW_CombatKernel.DefuseOutcome(pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation)).Spawn)
             {
                 return;
             }
@@ -94,7 +94,7 @@ public class MinePocketJob : JobDriver
         lastToil.defaultCompleteMode = ToilCompleteMode.Instant;
         lastToil.AddFinishAction(delegate
         {
-            if (pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation) >= 0.6f)
+            if (RSW_CombatKernel.DefuseOutcome(pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation)).Destroy)
             {
                 TargetThingA.Destroy();
             }

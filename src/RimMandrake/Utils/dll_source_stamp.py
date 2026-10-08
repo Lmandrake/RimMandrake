@@ -214,6 +214,13 @@ def expected_compile_set(cat, rev, csproj_repo_path, repo):
         if under_nested(p):
             continue
         expected.append(p)
+    # A default-glob project can still name a file OUTSIDE its own folder with an explicit
+    # <Compile Include="..\\Kernel\\X.cs"> (JawaIonVehicleTier shares the ion kernel). The glob never
+    # sees it, so add every explicit include that climbs out of the project dir.
+    for inc in _COMPILE_INCLUDE_RE.findall(text):
+        n = _norm(inc)
+        if n.startswith("../"):
+            expected.append(n)
     return sorted(set(expected)), project_dir
 
 
@@ -269,7 +276,8 @@ def recompute_stamp(cat, rev, stamp_repo_path, repo):
 
     union = sorted(set(recorded) | set(expected_paths))
     for p in union:
-        file_repo_path = project_dir + "/" + p
+        # normalise "..": a project may compile a sibling folder's file (../Kernel/X.cs); git cat-file rev:dir/../x finds nothing
+        file_repo_path = __import__("posixpath").normpath(project_dir + "/" + p)
         actual = cat.get("%s:%s" % (rev, file_repo_path))
         in_recorded = p in recorded
         in_expected = p in expected_paths

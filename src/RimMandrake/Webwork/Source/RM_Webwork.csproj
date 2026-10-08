@@ -48,6 +48,7 @@
     <Compile Include="RM_WebworkProof.cs" />
     <Compile Include="RM_UrravethRemains.cs" />
     <Compile Include="RM_UrravethProof.cs" />
+    <Compile Include="Kernel\RM_WebworkKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

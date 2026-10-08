@@ -42,7 +42,7 @@ namespace RimMandrake.Pyrelands
         // fulgurite toggle (STILLSAND_GLASS_LENS_CHAIN_1 §10(b)).
         internal static bool IsPyrelandsGround(TerrainDef terrain)
         {
-            return terrain != null && terrain.defName.StartsWith("RM_FE_");
+            return terrain != null && RM_FireEcoKernel.IsPyrelandsGround(terrain.defName);
         }
 
         // Shipped defaults for the numbers below now live as tunable fields on
@@ -91,11 +91,7 @@ namespace RimMandrake.Pyrelands
 
         internal static bool IsSandFamily(TerrainDef terrain)
         {
-            if (terrain == null) return false;
-            for (int i = 0; i < SandTerrainDefNames.Length; i++)
-                if (terrain.defName == SandTerrainDefNames[i])
-                    return true;
-            return false;
+            return terrain != null && RM_FireEcoKernel.IsSandFamily(terrain.defName, SandTerrainDefNames);
         }
 
         // Scorchable ground (our own clones OR vanilla Soil/Sand/Gravel/
@@ -103,10 +99,7 @@ namespace RimMandrake.Pyrelands
         // XML wiring, not hardcoded to the Pyrelands' terrain choices).
         internal static bool IsScorchableGround(TerrainDef terrain)
         {
-            if (terrain == null) return false;
-            string n = terrain.defName;
-            return n.StartsWith("RM_FE_Ground_")
-                || n == "Sand" || n == "Gravel" || n == "Soil" || n == "SoilRich";
+            return terrain != null && RM_FireEcoKernel.IsScorchableGround(terrain.defName);
         }
     }
 
@@ -125,10 +118,10 @@ namespace RimMandrake.Pyrelands
                 if (!RM_PyrelandsSettings.fulguriteEnabled) return;
                 if (map == null || !strikeLoc.IsValid || !strikeLoc.InBounds(map)) return;
                 TerrainDef terrain = strikeLoc.GetTerrain(map);
-                if (!FireEcologyHookMod.IsSandFamily(terrain)) return;
                 // The master switch governs the Pyrelands' own ground only, so Stillsand
                 // fulgurites do not need the Pyrelands on (STILLSAND_GLASS_LENS_CHAIN_1 §10(b)).
-                if (!RM_PyrelandsSettings.pyrelandsEnabled && FireEcologyHookMod.IsPyrelandsGround(terrain)) return;
+                if (!RM_FireEcoKernel.FulguriteMayRoll(true, true, FireEcologyHookMod.IsSandFamily(terrain),
+                        RM_PyrelandsSettings.pyrelandsEnabled, FireEcologyHookMod.IsPyrelandsGround(terrain))) return;
                 if (!Rand.Chance(RM_PyrelandsSettings.fulguriteChance)) return;
 
                 ThingDef fulguriteDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Fulgurite");
@@ -162,29 +155,26 @@ namespace RimMandrake.Pyrelands
         // True exactly once per Fire instance.
         private static bool MarkFireRolled(Fire fire)
         {
-            if (rolledFires.Count > 100000) rolledFires.Clear();
-            return rolledFires.Add(fire.thingIDNumber);
+            return RM_FireEcoKernel.MarkOnce(rolledFires, fire.thingIDNumber, 100000);
         }
 
         public static void Postfix(Fire __instance, int delta)
         {
             try
             {
-                if (!RM_PyrelandsSettings.pyrelandsEnabled) return;
-                if (!RM_PyrelandsSettings.ashDustingEnabled && !RM_PyrelandsSettings.scorchFruitEnabled) return;
-                if (__instance == null || !__instance.Spawned) return;
+                if (__instance == null) return;
                 // Pawn/animal-attached fires (a burning colonist, a boomrat that
                 // caught) are not ground fires - skip them entirely, or a lit
                 // pawn dusts ash and seeds scorch-fruit along its whole running
                 // path (flavor-wrong, and an ignite-a-boomrat exploit for free
                 // fruit). BENCH review finding, 2026-09-01.
-                if (__instance.parent != null) return;
                 Map map = __instance.Map;
                 IntVec3 pos = __instance.Position;
-                if (map == null || !pos.InBounds(map)) return;
-
-                TerrainDef terrain = pos.GetTerrain(map);
-                if (!FireEcologyHookMod.IsScorchableGround(terrain)) return;
+                bool usable = __instance.Spawned && map != null && pos.InBounds(map);
+                TerrainDef terrain = usable ? pos.GetTerrain(map) : null;
+                if (!RM_FireEcoKernel.FireTickMayRoll(RM_PyrelandsSettings.pyrelandsEnabled, RM_PyrelandsSettings.ashDustingEnabled,
+                        RM_PyrelandsSettings.scorchFruitEnabled, usable, __instance.parent != null,
+                        FireEcologyHookMod.IsScorchableGround(terrain))) return;
 
                 // Loose ash dusting — rides alongside vanilla's own
                 // unconditional Filth_Ash spawn (DamageWorker_Flame), does
@@ -192,7 +182,7 @@ namespace RimMandrake.Pyrelands
                 if (RM_PyrelandsSettings.ashDustingEnabled)
                 {
                     ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Filth_LooseAsh");
-                    if (ashFilth != null && Rand.Chance(RM_PyrelandsSettings.ashDustingChance * delta))
+                    if (ashFilth != null && Rand.Chance(RM_FireEcoKernel.DustChance(RM_PyrelandsSettings.ashDustingChance, delta)))
                     {
                         FilthMaker.TryMakeFilth(pos, map, ashFilth);
                     }
@@ -218,7 +208,7 @@ namespace RimMandrake.Pyrelands
                     // A map-wide burn runs hundreds of concurrent Fire things;
                     // uncapped this seeds an orchard, not a harvest. BENCH
                     // review finding, 2026-09-01.
-                    if (fruitDef != null && map.listerThings.ThingsOfDef(fruitDef).Count >= RM_PyrelandsSettings.scorchFruitMapCap)
+                    if (fruitDef != null && !RM_FireEcoKernel.UnderFruitCap(map.listerThings.ThingsOfDef(fruitDef).Count, RM_PyrelandsSettings.scorchFruitMapCap))
                     {
                         fruitDef = null;
                     }
@@ -299,41 +289,15 @@ namespace RimMandrake.Pyrelands
             // WORLDGEN-AFFECTING toggle: off means this biome never wins tile
             // placement on a newly generated world. An already-generated
             // planet is untouched — this only ever runs during generation.
-            if (!RM_PyrelandsSettings.biomeGenerationEnabled)
-            {
-                return -100f;
-            }
-            if (tile == null || tile.WaterCovered)
-            {
-                return -100f;
-            }
-
             PyrelandsBiomeRanges r = biome.GetModExtension<PyrelandsBiomeRanges>() ?? FallbackRanges;
 
-            if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
-            {
-                return 0f;
-            }
-            // Half-open on rainfall, matching vanilla's own workers exactly
-            // so the band edges butt up against theirs with no overlap.
-            if (tile.rainfall < r.rainfall.min || tile.rainfall >= r.rainfall.max)
-            {
-                return 0f;
-            }
-            if (tile.elevation < r.elevation.min || tile.elevation > r.elevation.max)
-            {
-                return 0f;
-            }
-            // Grass savanna, not highland: same exclusion BiomeWorker_Grasslands makes.
-            if (tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable)
-            {
-                return 0f;
-            }
-
-            float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
-            return r.baseScore
-                 + (tile.temperature - r.temperature.min) * r.degreeWeight
-                 + (tile.rainfall - r.rainfall.min) / divisor;
+            // Rainfall is half-open, matching vanilla's own workers exactly so the band edges butt up against theirs with no
+            // overlap; grass savanna, not highland (the exclusion BiomeWorker_Grasslands makes).
+            return RM_FireEcoKernel.BiomeScore(RM_PyrelandsSettings.biomeGenerationEnabled, tile != null, tile != null && tile.WaterCovered,
+                tile != null ? tile.temperature : 0f, tile != null ? tile.rainfall : 0f, tile != null ? tile.elevation : 0f,
+                tile != null && (tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable),
+                r.temperature.min, r.temperature.max, r.rainfall.min, r.rainfall.max, r.elevation.min, r.elevation.max,
+                r.baseScore, r.degreeWeight, r.rainfallDivisor);
         }
     }
 
@@ -415,35 +379,18 @@ namespace RimMandrake.Pyrelands
 
             bool isNativeBiome = map.Biome != null && map.Biome.defName == "RM_Pyrelands";
 
-            float rate;
-            if (current != null && current == ashFallWeather)
-            {
-                rate = 1f;
-            }
-            else if (current != null && current == cinderfallWeather)
-            {
-                rate = CinderfallRateFactor;
-            }
-            else if (!isNativeBiome && RM_PyrelandsSettings.AppliesToBiome(map.Biome))
-            {
-                // Cross-biome opt-in (MOD_OPTIONS_RETROFIT_1 §6a): an
-                // opted-in non-Pyrelands biome gets ambient ash drift
-                // regardless of its own current weather, scaled by
-                // crossBiomeCoverage. Off by default; never fires unless
-                // the owner names this biome or ticks "every biome".
-                rate = RM_PyrelandsSettings.crossBiomeCoverage;
-            }
-            else
+            // Cross-biome opt-in (MOD_OPTIONS_RETROFIT_1 §6a): an opted-in non-Pyrelands biome gets ambient ash drift regardless
+            // of its own current weather, scaled by crossBiomeCoverage. Off by default; never fires unless the owner names this
+            // biome or ticks "every biome". A rate of zero (coverage slider at 0) deposits nothing.
+            float rate = RM_FireEcoKernel.AshRate(current != null && current == ashFallWeather, current != null && current == cinderfallWeather,
+                CinderfallRateFactor, isNativeBiome, !isNativeBiome && RM_PyrelandsSettings.AppliesToBiome(map.Biome),
+                RM_PyrelandsSettings.crossBiomeCoverage, RM_PyrelandsSettings.ashfallRateMultiplier);
+            if (rate < 0f)
             {
                 return;
             }
 
-            rate *= RM_PyrelandsSettings.ashfallRateMultiplier;
-            int attempts = (int)((float)map.Area / CellsPerDepositAttempt * rate);
-            if (attempts < 1)
-            {
-                attempts = 1;
-            }
+            int attempts = RM_FireEcoKernel.AshAttempts(map.Area, CellsPerDepositAttempt, rate);
 
             try
             {

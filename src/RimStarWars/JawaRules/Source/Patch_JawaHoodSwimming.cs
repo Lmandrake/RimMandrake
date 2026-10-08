@@ -29,7 +29,7 @@ namespace RimMandrake.StarWars.JawaRules
 
     public static class JawaHoodRender
     {
-        public const PawnRenderFlags ApparelFlags = PawnRenderFlags.Clothes | PawnRenderFlags.Headgear;
+        public const PawnRenderFlags ApparelFlags = PawnRenderFlags.Clothes | PawnRenderFlags.Headgear;   // = RSW_HoodKernel.ApparelFlags (0x60), checked by the lint
 
         public static bool IsKeptHood(ThingDef def)
         {
@@ -39,7 +39,7 @@ namespace RimMandrake.StarWars.JawaRules
         // True when the swim rule applies to this draw: toggle on, swimming, not a portrait.
         public static bool SwimForceApplies(PawnDrawParms parms)
         {
-            return RSW_JawaRulesSettings.swimHoodEnabled && parms.swimming && !parms.Portrait;
+            return RSW_HoodKernel.SwimForceApplies(RSW_JawaRulesSettings.swimHoodEnabled, parms.swimming, parms.Portrait);
         }
 
         // The flags a kept hood is drawn under: vanilla's, plus Clothes|Headgear back
@@ -67,12 +67,15 @@ namespace RimMandrake.StarWars.JawaRules
             }
             try
             {
-                if (!JawaHoodRender.SwimForceApplies(__1) || !JawaHoodRender.IsKeptHood(__0?.apparel?.def))
-                {
-                    return;
-                }
-                reentry = true;
-                __result = __instance.CanDrawNow(__0, JawaHoodRender.EffectiveParms(__1));
+                bool applies = JawaHoodRender.SwimForceApplies(__1);
+                __result = RSW_HoodKernel.Postfix(__result, reentry, applies, applies && JawaHoodRender.IsKeptHood(__0?.apparel?.def), (int)__1.flags,
+                    flags =>
+                    {
+                        PawnDrawParms again = __1;
+                        again.flags = (PawnRenderFlags)flags;
+                        reentry = true;
+                        return __instance.CanDrawNow(__0, again);
+                    });
             }
             catch (Exception e)
             {

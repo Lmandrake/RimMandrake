@@ -77,11 +77,15 @@ namespace RimMandrake.Webwork
 			{
 				return;
 			}
-			if (Find.TickManager.TicksGame < nextRelayTick)
+			int now = Find.TickManager.TicksGame;
+			if (now < nextRelayTick)
 			{
 				return;
 			}
-			if (!MotherAlive(parent.Map))
+			ThingDef clutchDef = DefDatabase<ThingDef>.GetNamedSilentFail(Props.eggClutchDefName);
+			RelayPlan plan = RM_EggRelayKernel.Plan(now, nextRelayTick, MotherAlive(parent.Map), clutchDef != null,
+				clutchDef != null && ExistingClutchNearby(parent.Map, clutchDef));
+			if (plan == RelayPlan.DyingNest)
 			{
 				// A dying nest (§4a): no relay fires, but we keep checking
 				// on the ordinary interval rather than latching dead
@@ -90,8 +94,10 @@ namespace RimMandrake.Webwork
 				// own next check.
 				return;
 			}
-
-			TryRelay();
+			if (plan == RelayPlan.Place)
+			{
+				TryRelay();
+			}
 			CalculateNextRelayTick();
 		}
 
@@ -122,11 +128,6 @@ namespace RimMandrake.Webwork
 			}
 			Map map = parent.Map;
 
-			if (ExistingClutchNearby(map, clutchDef))
-			{
-				return; // supply not yet exhausted — no relay needed
-			}
-
 			int toPlace = Props.clutchesPerRelay.RandomInRange;
 			for (int i = 0; i < toPlace; i++)
 			{
@@ -142,13 +143,11 @@ namespace RimMandrake.Webwork
 
 		private bool ExistingClutchNearby(Map map, ThingDef clutchDef)
 		{
-			float radius = Props.clutchSearchRadius * 2f;
-			float radiusSq = radius * radius;
 			List<Thing> things = map.listerThings.ThingsOfDef(clutchDef);
 			for (int i = 0; i < things.Count; i++)
 			{
 				Thing t = things[i];
-				if (t != null && t.Spawned && (t.Position - parent.Position).LengthHorizontalSquared <= radiusSq)
+				if (t != null && t.Spawned && RM_EggRelayKernel.ClutchNearby(t.Position.x - parent.Position.x, t.Position.z - parent.Position.z, Props.clutchSearchRadius))
 				{
 					return true;
 				}
@@ -169,8 +168,7 @@ namespace RimMandrake.Webwork
 
 		private void CalculateNextRelayTick()
 		{
-			float mult = Mathf.Max(0.01f, RM_WebworkSettings.eggRelayIntervalMultiplier);
-			int intervalTicks = Mathf.Max(1, Mathf.RoundToInt(Props.relayIntervalDays.RandomInRange * 60000f * mult));
+			int intervalTicks = RM_EggRelayKernel.IntervalTicks(Props.relayIntervalDays.RandomInRange, RM_WebworkSettings.eggRelayIntervalMultiplier);
 			nextRelayTick = Find.TickManager.TicksGame + intervalTicks;
 		}
 

@@ -37,21 +37,11 @@ namespace RimMandrake.StarWars.JawaIonWeapons
 
         public override void TransformValue(StatRequest req, ref float val)
         {
-            if (!RSW_JawaIonWeaponsSettings.thirdPartyBodySizeScaling)
-            {
-                // Leave val at the StatDef's own defaultBaseValue of 1.0 — a
-                // neutral multiplier, so a third-party weapon keeps whatever
-                // scaling it had before this mod existed.
-                return;
-            }
-            if (req.Thing is Pawn pawn && pawn.BodySize > 0f)
-            {
-                float scaled = Mathf.Pow(pawn.BodySize, RemainderExponent);
-                if (scaled > 0f)
-                {
-                    val = 1f / scaled;
-                }
-            }
+            // Off, a non-pawn or a size of 0 leaves val at the StatDef's own defaultBaseValue of 1.0 -- a neutral
+            // multiplier, so a third-party weapon keeps whatever scaling it had before this mod existed.
+            Pawn pawn = req.Thing as Pawn;
+            val = RSW_IonBuildupKernel.InverseSizeValue(RSW_JawaIonWeaponsSettings.thirdPartyBodySizeScaling, pawn != null,
+                pawn != null ? pawn.BodySize : 0f, RSW_JawaIonWeaponsSettings.bodySizeResistExponent, val);
         }
 
         public override string ExplanationPart(StatRequest req)

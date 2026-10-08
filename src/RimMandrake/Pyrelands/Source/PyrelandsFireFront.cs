@@ -65,27 +65,14 @@ namespace RimMandrake.Pyrelands
         /// only ever runs on a Pyrelands map, on the watch interval.</summary>
         public void Tick()
         {
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.fireClockEnabled)
-            {
-                // Off means off, but keep the clock honest: re-arm from now, so
-                // switching the mechanism back on does not fire instantly with a
-                // months-overdue timer.
-                nextFrontTick = -1;
-                return;
-            }
-
-            int now = Find.TickManager.TicksGame;
-            if (nextFrontTick < 0)
-            {
-                Schedule(now);
-                return;
-            }
-            if (now < nextFrontTick)
+            // Off means off, but keep the clock honest: re-arm from now, so
+            // switching the mechanism back on does not fire instantly with a
+            // months-overdue timer (RM_BurnKernel.FrontTick does both).
+            bool enabled = RM_PyrelandsSettings.pyrelandsEnabled && RM_PyrelandsSettings.fireClockEnabled;
+            if (RM_BurnKernel.FrontTick(ref nextFrontTick, Find.TickManager.TicksGame, enabled, ScheduleTicks) != RM_FrontAction.Fire)
             {
                 return;
             }
-
-            Schedule(now);
 
             // DEEP_TRIBES_FIRE_RITE_1 — sometimes this scheduled burn is not the
             // biome's own, it is the Tribes'. The rite REPLACES the front rather
@@ -115,7 +102,7 @@ namespace RimMandrake.Pyrelands
         /// fixed, so the player learns "every few days" and never learns a tick
         /// count to farm.
         /// </summary>
-        private void Schedule(int now)
+        private static int ScheduleTicks()
         {
             // MOD_OPTIONS_RETROFIT_1 absorption: the per-number sliders that
             // used to live on mandrake.rut.pyrelandsmechanics' settings screen
@@ -124,8 +111,7 @@ namespace RimMandrake.Pyrelands
             // shipped defaults (PyrelandsTuning.FireFrontMinDays/MaxDays).
             float minDays = PyrelandsTuning.FireFrontMinDays;
             float maxDays = PyrelandsTuning.FireFrontMaxDays;
-            nextFrontTick = now + Mathf.RoundToInt(
-                Rand.Range(minDays, maxDays) * GenDate.TicksPerDay);
+            return RM_BurnKernel.ScheduleTicks(minDays, maxDays, Rand.Value, GenDate.TicksPerDay);
         }
 
         private IntVec3 lastOrigin = IntVec3.Invalid;
@@ -191,20 +177,17 @@ namespace RimMandrake.Pyrelands
             // A bearing for the LINE itself; the burn then walks off it in
             // whichever direction vanilla's own spread maths prefers.
             float angle = Rand.Range(0f, 360f);
-            Vector3 step = Quaternion.AngleAxis(angle, Vector3.up) * Vector3.forward;
 
             int width = PyrelandsTuning.FireFrontWidthCells;
-            int half = width / 2;
+            RM_BurnKernel.FrontLine(angle, width, out int[] offX, out int[] offZ);
             int lit = 0;
 
-            // Bug fixed here: `i <= half` gives 2*half+1 cells, which only equals
-            // `width` when width is odd — an even Mod Settings value (the slider
-            // allows 1..31, any integer) silently ignited one MORE cell than the
-            // settings label promised. `i < width - half` gives exactly `width`
-            // cells for both parities while leaving the odd case byte-identical.
-            for (int i = -half; i < width - half; i++)
+            // RM_BurnKernel.FrontLine gives exactly `width` DISTINCT cells at any bearing, for odd and even widths
+            // (an `i <= half` loop lit one cell too many on an even width; a unit Euclidean step truncated to cells
+            // folded a diagonal 9-wide line onto about 5 cells).
+            for (int i = 0; i < offX.Length; i++)
             {
-                IntVec3 cell = origin + (step * i).ToIntVec3();
+                IntVec3 cell = origin + new IntVec3(offX[i], 0, offZ[i]);
                 if (!IsLawfulFrontCell(cell))
                 {
                     continue;

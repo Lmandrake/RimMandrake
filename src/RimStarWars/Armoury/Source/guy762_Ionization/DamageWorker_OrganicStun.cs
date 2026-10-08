@@ -8,7 +8,7 @@ public class DamageWorker_OrganicStun : DamageWorker
     public override DamageResult Apply(DamageInfo dinfo, Thing victim)
     {
         DamageResult result = base.Apply(dinfo, victim);
-        if (RSW_ArmourySettings.ionDamageEnabled && victim is Pawn pawn && pawn.RaceProps.IsFlesh)
+        if (victim is Pawn pawn && RSW_IonKernel.OrganicStun(RSW_ArmourySettings.ionDamageEnabled, pawn.RaceProps.IsFlesh))
         {
             result.stunned = true;
         }

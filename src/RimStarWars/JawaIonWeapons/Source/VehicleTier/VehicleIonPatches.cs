@@ -164,39 +164,20 @@ namespace RimMandrake.StarWars.JawaIonWeapons
         /// </summary>
         public static void Postfix(VehiclePawn __instance, DamageInfo dinfo, bool absorbed)
         {
-            if (!absorbed) return;
-
-            // MOD_OPTIONS_RETROFIT_1: master switch on the whole vehicle tier, on
-            // top of the AppDomain probe in JawaIonVehicleTierMod that already
-            // skips this assembly's Harmony patching when Vehicle Framework is
-            // absent. This is the coarsest safe gate - the postfix returns before
-            // touching any VF state, so the vehicle keeps exactly the component
-            // damage VF's own PreApplyDamage already applied and nothing else.
-            if (!RSW_JawaIonWeaponsSettings.vehicleTierEnabled) return;
-
+            // The kernel holds the gates and the maths: absorbed hits only; MOD_OPTIONS_RETROFIT_1's master switch on the
+            // whole vehicle tier (on top of the AppDomain probe in JawaIonVehicleTierMod; the postfix touches no VF state
+            // before it); the ion damage def; a stat handler, a def and a stunner; the droid EMP amount (read by reflection
+            // so an older def still works) spread over the vehicle's footprint, x the vehicle-tier slider (default 1.0 -> the
+            // worked examples in this class's header stand), 30 ticks per point.
             DamageDef def = dinfo.Def;
-            if (def == null || def.defName != IonDamageDefName) return;
-
             VehicleStatHandler statHandler = __instance?.statHandler;
             VehicleDef vehicleDef = __instance?.VehicleDef;
-            if (statHandler == null || vehicleDef == null) return;
-
-            if (__instance.stances?.stunner == null) return;
-
-            float empAmountDroid = ReadFloatField(def, "empAmountDroid", FallbackEmpAmountDroid);
-            if (empAmountDroid <= 0f) return;
-
-            IntVec2 size = vehicleDef.Size;
-            float footprintArea = Math.Max(1, size.x * size.z);
-            float amount = empAmountDroid / footprintArea;
-
-            // MOD_OPTIONS_RETROFIT_1: player multiplier on the vehicle tier only.
-            // Default 1.0 -> the worked examples in this class's header stand
-            // exactly as documented.
-            amount *= RSW_JawaIonWeaponsSettings.vehicleTierMultiplier;
-            if (amount <= 0f) return;
-
-            int stunTicks = Mathf.RoundToInt(amount * 30f);
+            bool isIon = def != null && def.defName == IonDamageDefName;
+            float empAmountDroid = isIon ? ReadFloatField(def, "empAmountDroid", FallbackEmpAmountDroid) : 0f;
+            IntVec2 size = vehicleDef != null ? vehicleDef.Size : IntVec2.One;
+            int stunTicks = RSW_IonBuildupKernel.VehicleStunTicks(absorbed, RSW_JawaIonWeaponsSettings.vehicleTierEnabled, isIon,
+                statHandler != null && vehicleDef != null, __instance != null && __instance.stances?.stunner != null, empAmountDroid, size.x, size.z,
+                RSW_JawaIonWeaponsSettings.vehicleTierMultiplier);
             if (stunTicks <= 0) return;
 
             // VEHICLE_ION_TIER_1 - VF's own Patch_HealthAndStats.StunVehicle prefixes

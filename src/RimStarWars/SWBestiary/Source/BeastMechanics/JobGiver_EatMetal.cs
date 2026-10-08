@@ -15,26 +15,10 @@ namespace RimMandrake.StarWars.SWBestiary
 
         public override float GetPriority(Pawn pawn)
         {
-            if (!RSW_BeastMechanicsSettings.metalEatingEnabled)
-            {
-                return 0f;
-            }
             Need_Food food = pawn?.needs?.food;
-            if (food == null)
-            {
-                return 0f;
-            }
-            if (pawn.TryGetComp<CompMetalEater>() == null)
-            {
-                return 0f;
-            }
-            if (food.CurLevelPercentage < pawn.RaceProps.FoodLevelPercentageWantEat)
-            {
-                // Same number the donor used, and the same one vanilla's own
-                // JobGiver_GetFood returns for a hungry animal.
-                return 9.5f;
-            }
-            return 0f;
+            return RSW_EatKernel.Priority(RSW_BeastMechanicsSettings.metalEatingEnabled, food != null,
+                food != null && pawn.TryGetComp<CompMetalEater>() != null,
+                food != null ? food.CurLevelPercentage : 0f, food != null ? pawn.RaceProps.FoodLevelPercentageWantEat : 0f);
         }
 
         protected override Job TryGiveJob(Pawn pawn)
@@ -49,7 +33,7 @@ namespace RimMandrake.StarWars.SWBestiary
                 return null;
             }
             Need_Food food = pawn.needs?.food;
-            if (food == null || food.CurLevelPercentage >= pawn.RaceProps.FoodLevelPercentageWantEat)
+            if (food == null || !RSW_EatKernel.Hungry(food.CurLevelPercentage, pawn.RaceProps.FoodLevelPercentageWantEat))
             {
                 return null;
             }
@@ -83,10 +67,8 @@ namespace RimMandrake.StarWars.SWBestiary
 
             // Nothing edible reachable. Dig some up rather than starve — this is
             // what keeps the creature alive on a map that has no loose steel.
-            if (comp.Props.digThingIfMapEmpty
-                && !comp.Props.thingToDigIfMapEmpty.NullOrEmpty()
-                && food.CurLevelPercentage < food.PercentageThreshHungry
-                && pawn.Awake())
+            if (RSW_EatKernel.DigDue(comp.Props.digThingIfMapEmpty, !comp.Props.thingToDigIfMapEmpty.NullOrEmpty(),
+                food.CurLevelPercentage, food.PercentageThreshHungry, pawn.Awake()))
             {
                 ThingDef dugDef = DefDatabase<ThingDef>.GetNamedSilentFail(comp.Props.thingToDigIfMapEmpty);
                 if (dugDef != null)

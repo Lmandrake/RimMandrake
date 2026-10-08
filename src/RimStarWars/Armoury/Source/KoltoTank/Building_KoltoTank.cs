@@ -93,10 +93,7 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
             {
                 hediffOnEntry = DefDatabase<HediffDef>.GetNamed(entryName, false);
             }
-            if (KoltoTankComp.Props.multiplier > 0f)
-            {
-                ticksBetweenHealing = Mathf.RoundToInt(2500f * KoltoTankComp.Props.multiplier);
-            }
+            ticksBetweenHealing = RSW_KoltoKernel.TicksBetweenHealing(KoltoTankComp.Props.multiplier);
         }
         refuelableComp = GetComp<CompRefuelable>();
         powerComp = GetComp<CompPower>();
@@ -258,7 +255,7 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
                 9999f,
                 (Thing x) => !((Building_KoltoTank)x).HasAnyContents && traveler.CanReserve(x, 1, -1, null, ignoreOtherReservations));
             if (tank != null && !tank.forbiddable.Forbidden && tank.KoltoTankComp != null
-                && p.BodySize <= tank.KoltoTankComp.Props.bodySizeMax && p.BodySize >= tank.KoltoTankComp.Props.bodySizeMin)
+                && RSW_KoltoKernel.Fits(p.BodySize, tank.KoltoTankComp.Props.bodySizeMin, tank.KoltoTankComp.Props.bodySizeMax))
             {
                 return tank;
             }
@@ -274,31 +271,22 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
             return;
         }
         bool hasFuel = refuelableComp == null || refuelableComp.HasFuel;
-        bool hasPower;
-        if (powerTraderComp != null)
-        {
-            hasPower = powerTraderComp.PowerOn;
-        }
-        else if (powerComp != null)
-        {
-            hasPower = powerComp.TransmitsPowerNow;
-        }
-        else
-        {
-            hasPower = true;
-        }
-        if (!hasFuel || !hasPower)
+        bool hasPower = RSW_KoltoKernel.HasPower(powerTraderComp != null, powerTraderComp != null && powerTraderComp.PowerOn,
+            powerComp != null, powerComp != null && powerComp.TransmitsPowerNow);
+        int stepState = (int)state;
+        float stepFill = KoltoTankComp.fillPct;
+        RSW_KoltoKernel.Outcome outcome = RSW_KoltoKernel.Step(ref stepState, ref stepFill, KoltoTankComp.waterfillspeed, hasFuel, hasPower);
+        if (outcome == RSW_KoltoKernel.Outcome.Eject)
         {
             EjectContents();
             return;
         }
+        KoltoTankComp.fillPct = stepFill;
         switch (state)
         {
             case KoltoTankState.StartFilling:
-                KoltoTankComp.fillPct += KoltoTankComp.waterfillspeed;
-                if (KoltoTankComp.fillPct >= 1f)
+                if ((KoltoTankState)stepState == KoltoTankState.Full)
                 {
-                    KoltoTankComp.fillPct = 1f;
                     state = KoltoTankState.Full;
                     KoltoTankComp.SetFull();
                 }
@@ -309,9 +297,8 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
                 // mechanic off, so no def and no in-progress job is orphaned.
                 // The interval is recomputed here rather than in SpawnSetup so
                 // a slider change takes effect without a rebuild or reload.
-                if (RSW_ArmourySettings.koltoHealEnabled
-                    && Find.TickManager.TicksGame % RSW_ArmourySettings.KoltoHealInterval(ticksBetweenHealing) == 0
-                    && InnerPawn != null)
+                if (RSW_KoltoKernel.HealDue(RSW_ArmourySettings.koltoHealEnabled, Find.TickManager.TicksGame,
+                        RSW_ArmourySettings.KoltoHealInterval(ticksBetweenHealing), InnerPawn != null))
                 {
                     KoltoTankComp.HealPawnInjuries(InnerPawn);
                 }

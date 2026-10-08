@@ -171,7 +171,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             IntVec3 at = lead != null ? lead.Position : riteOrigin;
 
             int lit = watch.IgniteRiteFront(at, lead);
-            if (lit == 0 && at != riteOrigin)
+            if (RimMandrake.Pyrelands.RM_BurnKernel.RiteRetryAtOrigin(lit, at == riteOrigin))
             {
                 // They stopped somewhere that will not take a fire — a paved
                 // patch, the home area, too close to what the colony built. The

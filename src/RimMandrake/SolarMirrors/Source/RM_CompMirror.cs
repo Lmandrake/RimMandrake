@@ -53,6 +53,12 @@ namespace RimMandrake.SolarMirrors
         public bool HasAim => target.IsValid && normal != Vector3.zero;
         public Vector3 CommittedNormal => normal;
 
+        /// <summary>A tracking heliostat re-aimed during the light pass: keep that normal (design §5 E13).</summary>
+        public void CommitNormal(Vector3 n)
+        {
+            normal = n;
+        }
+
         private CompPowerTrader Power => parent.GetComp<CompPowerTrader>();
 
         /// <summary>True when this mirror tracks its target right now: a heliostat with power.</summary>
@@ -77,19 +83,21 @@ namespace RimMandrake.SolarMirrors
         {
             get
             {
-                float r = Props.reflectivity;
+                bool found = false;
+                float row = 0f;
                 if (parent.Stuff != null && Props.stuffReflectivity != null)
                 {
                     for (int i = 0; i < Props.stuffReflectivity.Count; i++)
                     {
                         if (Props.stuffReflectivity[i].stuff == parent.Stuff)
                         {
-                            r = Props.stuffReflectivity[i].value;
+                            found = true;
+                            row = Props.stuffReflectivity[i].value;
                             break;
                         }
                     }
                 }
-                return Mathf.Clamp01(r * RM_SolarMirrorsSettings.reflectivityMultiplier);
+                return RM_MirrorKernel.Reflectivity(Props.reflectivity, found, row, RM_SolarMirrorsSettings.reflectivityMultiplier);
             }
         }
 

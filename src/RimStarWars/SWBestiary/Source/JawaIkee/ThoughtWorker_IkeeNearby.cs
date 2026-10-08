@@ -34,18 +34,22 @@ namespace RimMandrake.StarWars.JawaIkee
 
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
-            if (!RSW_JawaIkeeSettings.ikeeThoughtEnabled) return ThoughtState.Inactive;
+            // Animals do not have opinions about other animals, and an unspawned or dead pawn has no map to search.
+            bool onMap = p != null && p.Spawned && p.Map != null;
+            bool humanlike = onMap && p.RaceProps != null && p.RaceProps.Humanlike;
+            var ext = humanlike ? def.GetModExtension<IkeeToleranceExtension>() : null;
+            float radius = ext?.radius ?? RSW_IkeeKernel.DefaultRadius;
 
-            // Animals do not have opinions about other animals, and an unspawned or
-            // dead pawn has no map to search.
-            if (p == null || !p.Spawned || p.Map == null) return ThoughtState.Inactive;
-            if (p.RaceProps == null || !p.RaceProps.Humanlike) return ThoughtState.Inactive;
+            // 🔑 No genes tracker means a baseliner-equivalent pawn: not tolerant.
+            XenotypeDef xeno = humanlike ? p.genes?.Xenotype : null;
+            bool tolerant = xeno != null && ext != null && ext.tolerantXenotypes.Contains(xeno);
 
-            var ext = def.GetModExtension<IkeeToleranceExtension>();
-            float radius = ext?.radius ?? 12f;
-            float radiusSq = radius * radius;
+            int stage = RSW_IkeeKernel.Stage(RSW_JawaIkeeSettings.ikeeThoughtEnabled, onMap, humanlike, () => IkeeNear(p, radius), tolerant);
+            return stage == RSW_IkeeKernel.Inactive ? ThoughtState.Inactive : ThoughtState.ActiveAtStage(stage);
+        }
 
-            bool seen = false;
+        private static bool IkeeNear(Pawn p, float radius)
+        {
             // ⚠️ AllPawnsSpawned is IReadOnlyList<Pawn> in 1.6, not List<Pawn>.
             IReadOnlyList<Pawn> all = p.Map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < all.Count; i++)
@@ -54,18 +58,11 @@ namespace RimMandrake.StarWars.JawaIkee
                 if (other == null || other == p) continue;
                 if (other.def == null || other.def.defName != IkeeDefName) continue;
                 if (other.Dead) continue;
-                if ((other.Position - p.Position).LengthHorizontalSquared > radiusSq) continue;
-                seen = true;
-                break;
+                IntVec3 d = other.Position - p.Position;
+                if (!RSW_IkeeKernel.Nearby(d.x, d.z, radius)) continue;
+                return true;
             }
-            if (!seen) return ThoughtState.Inactive;
-
-            // 🔑 No genes tracker means a baseliner-equivalent pawn: not tolerant.
-            XenotypeDef xeno = p.genes?.Xenotype;
-            if (xeno != null && ext != null && ext.tolerantXenotypes.Contains(xeno))
-                return ThoughtState.ActiveAtStage(0);
-
-            return ThoughtState.ActiveAtStage(1);
+            return false;
         }
     }
 }

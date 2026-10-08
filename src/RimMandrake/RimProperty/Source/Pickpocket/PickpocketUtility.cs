@@ -35,9 +35,9 @@ namespace RimMandrake.Pickpocket
             for (int i = 0; i < container.Count; i++)
             {
                 Thing item = container[i];
-                float value = Mathf.Max(0f, item.MarketValue) * Mathf.Max(1, item.stackCount);
-                if (value < PropertySettings.pickpocketMinItemValueSilver) continue;
-                if (value > bestValue)
+                float value = RM_PropertyKernel.ItemValue(item.MarketValue, item.stackCount);
+                if (!RM_PropertyKernel.WorthStealing(value, PropertySettings.pickpocketMinItemValueSilver)) continue;
+                if (RM_PropertyKernel.BeatsBest(value, bestValue))
                 {
                     bestValue = value;
                     best = item;

@@ -21,7 +21,7 @@ namespace RimMandrake.SolarMirrors
     // public hook, design §2.3): the grid pulls the light via AddLight inside every Recompute
     // and folds it into ShadeAt, the cached exposure and the path-cost grid, so pathing and the
     // herd patch graph see it under one GridVersion.
-    public class RM_MapComponent_MirrorLight : MapComponent, IRM_LightLayer
+    public class RM_MapComponent_MirrorLight : MapComponent, IRM_LightLayer, IRM_BeamWorld
     {
         private const float MinUseful = 0.02f;
         private const int MinTicksBetweenGridRebuilds = 60; // PROVISIONAL throttle (design §2.8 risk 2)
@@ -30,9 +30,14 @@ namespace RimMandrake.SolarMirrors
         private readonly List<RM_CompMirror> mirrorList = new List<RM_CompMirror>();
         private readonly HashSet<RM_CompLightReceiver> receivers = new HashSet<RM_CompLightReceiver>();
 
-        private float[] light;
-        private readonly List<int> litCells = new List<int>();
-        private readonly List<int> prevLitCells = new List<int>();
+        // The light pass itself is Kernel/RM_MirrorKernel.cs (Verse-free, fuzzed offline); this component builds its
+        // inputs from the comps and writes its results back.
+        private readonly RM_MirrorKernel.Pass pass = new RM_MirrorKernel.Pass();
+        private float[] light => pass.Light;
+        private List<int> litCells => pass.LitCells;
+        private RM_MirrorSpec[] specs = new RM_MirrorSpec[0];
+        private RM_MirrorResult[] results = new RM_MirrorResult[0];
+        private readonly Dictionary<RM_CompMirror, int> indexOf = new Dictionary<RM_CompMirror, int>();
         private int lastHash;
         private bool passRequested = true;
         private bool gridRebuildPending;
@@ -183,7 +188,7 @@ namespace RimMandrake.SolarMirrors
             base.MapComponentTick();
             EnsureRegistered();
             int now = Find.TickManager.TicksGame;
-            int interval = Mathf.Clamp(RM_SolarMirrorsSettings.passIntervalTicks, 125, 1000);
+            int interval = RM_MirrorKernel.PassInterval(RM_SolarMirrorsSettings.passIntervalTicks);
             if (passRequested || now % interval == 0)
             {
                 passRequested = false;
@@ -234,7 +239,7 @@ namespace RimMandrake.SolarMirrors
                 // PROVISIONAL: daylight from the clock's celestial glow, 0 at night (<= 0.1),
                 // full from 0.6 (vanilla's dusk ceiling) up.
                 float g = GenCelestial.CurCelestialSunGlow(map);
-                daylight = Mathf.Clamp01((g - 0.1f) / 0.5f);
+                daylight = RM_MirrorKernel.Daylight(g);
                 if (grid != null && grid.IsDirectional && !float.IsNaN(grid.SunElevationDegrees))
                 {
                     Vector2 d = grid.SunShadowDirection;
@@ -262,8 +267,8 @@ namespace RimMandrake.SolarMirrors
         /// <summary>The spot a mirror throws when centred on a cell: the mirror's own size.</summary>
         public void SpotCells(RM_CompMirror m, IntVec3 center, List<IntVec3> into)
         {
-            int size = Mathf.Max(1, m.Props.spotSize);
-            int lo = -(size - 1) / 2;
+            int size, lo;
+            RM_MirrorKernel.SpotRange(m.Props.spotSize, out size, out lo);
             for (int dx = 0; dx < size; dx++)
             {
                 for (int dz = 0; dz < size; dz++)
@@ -280,41 +285,60 @@ namespace RimMandrake.SolarMirrors
         /// <summary>Why a beam from this mirror to this cell is stopped, or null when it is clear.</summary>
         public string FirstBlocker(RM_CompMirror m, IntVec3 cell)
         {
-            if (!cell.InBounds(map))
+            int idx = mirrorList.IndexOf(m);
+            if (idx < 0)
             {
-                return BlockerEdge;
+                return cell.InBounds(map) ? null : BlockerEdge;
             }
-            CellRect own = m.parent.OccupiedRect();
-            IntVec3 from = m.parent.Position;
-            BeamWalk walk = new BeamWalk { comp = this, own = own, self = m.parent };
-            if (!RM_MirrorMath.LineClear(from.x, from.z, cell.x, cell.z, ref walk))
-            {
-                return walk.why;
-            }
-            if (!own.Contains(cell))
-            {
-                return CellBlocks(cell, m.parent);
-            }
-            return null;
+            return RM_MirrorKernel.FirstBlocker(this, SpecFor(m, 0f), idx, cell.x, cell.z);
         }
 
-        private struct BeamWalk : IRM_LineVisitor
-        {
-            public RM_MapComponent_MirrorLight comp;
-            public CellRect own;
-            public Thing self;
-            public string why;
+        // IRM_BeamWorld: the kernel's view of this map.
+        int IRM_BeamWorld.Width => map.Size.x;
+        int IRM_BeamWorld.Height => map.Size.z;
+        string IRM_BeamWorld.BlockerEdge => BlockerEdge;
+        string IRM_BeamWorld.BlockerSky => BlockerSky;
 
-            public bool Blocked(int x, int z)
+        string IRM_BeamWorld.CellBlocks(int x, int z, int mirrorIndex)
+        {
+            return CellBlocks(new IntVec3(x, 0, z), mirrorList[mirrorIndex].parent);
+        }
+
+        int IRM_BeamWorld.MirrorAt(int x, int z)
+        {
+            RM_CompMirror other = new IntVec3(x, 0, z).GetEdifice(map)?.TryGetComp<RM_CompMirror>();
+            return other != null && indexOf.TryGetValue(other, out int i) ? i : -1;
+        }
+
+        private RM_MirrorSpec SpecFor(RM_CompMirror m, float source)
+        {
+            CellRect own = m.parent.OccupiedRect();
+            Vector3 face = m.FacePoint;
+            IntVec3 pos = m.parent.Position;
+            return new RM_MirrorSpec
             {
-                IntVec3 c = new IntVec3(x, 0, z);
-                if (own.Contains(c))
-                {
-                    return false;
-                }
-                why = comp.CellBlocks(c, self);
-                return why != null;
-            }
+                faceX = face.x,
+                faceZ = face.z,
+                posX = pos.x,
+                posZ = pos.z,
+                minX = own.minX,
+                minZ = own.minZ,
+                maxX = own.maxX,
+                maxZ = own.maxZ,
+                footprintCells = m.parent.def.size.x * m.parent.def.size.z,
+                reflectivity = m.Reflectivity,
+                spotSize = m.Props.spotSize,
+                maxRange = m.Props.maxRange,
+                spawned = m.parent.Spawned,
+                hasAim = m.HasAim,
+                holdsTarget = m.HoldsTarget,
+                targetValid = m.Target.IsValid,
+                tracking = m.TrackingNow,
+                targetX = m.Target.x,
+                targetZ = m.Target.z,
+                savedNormal = RM_MirrorMath.To(m.CommittedNormal),
+                source = source
+            };
         }
 
         // Translated once: a blocked beam is re-tested every pass, and Translate allocates.
@@ -378,196 +402,71 @@ namespace RimMandrake.SolarMirrors
 
         // ── the pass ────────────────────────────────────────────────────
 
-        private struct Shot
-        {
-            public RM_CompMirror mirror;
-            public Vector3 inDir;
-            public float input;
-            public bool relayed;
-        }
-
-        private readonly List<Shot> queue = new List<Shot>();
-        private readonly List<Shot> next = new List<Shot>();
-        private readonly HashSet<RM_CompMirror> fired = new HashSet<RM_CompMirror>();
-        private readonly Dictionary<RM_CompMirror, float> relayIn = new Dictionary<RM_CompMirror, float>();
-        private readonly Dictionary<RM_CompMirror, Vector3> relayDir = new Dictionary<RM_CompMirror, Vector3>();
-
         public void Pass()
         {
-            int n = map.cellIndices.NumGridCells;
-            if (light == null || light.Length != n)
+            int count = mirrorList.Count;
+            if (specs.Length < count)
             {
-                light = new float[n];
-                litCells.Clear();
+                specs = new RM_MirrorSpec[count];
+                results = new RM_MirrorResult[count];
             }
-            prevLitCells.Clear();
-            prevLitCells.AddRange(litCells);
-            for (int k = 0; k < litCells.Count; k++)
+            indexOf.Clear();
+            for (int k = 0; k < count; k++)
             {
-                light[litCells[k]] = 0f;
+                indexOf[mirrorList[k]] = k;
             }
-            litCells.Clear();
-            beams.Clear();
-            fired.Clear();
-            queue.Clear();
 
             bool anyEffect = RM_SolarMirrorsSettings.shadeEffect || RM_SolarMirrorsSettings.glowEffect
                              || RM_SolarMirrorsSettings.blindingDefence || RM_SolarMirrorsSettings.solarFurnace
                              || RM_SolarMirrorsSettings.beamRender > 0;
             bool sunUp = TrySun(out Vector3 sun, out float daylight);
-            for (int k = 0; k < mirrorList.Count; k++)
+            for (int k = 0; k < count; k++)
             {
                 RM_CompMirror m = mirrorList[k];
-                m.lastFired = false;
-                m.lastRelayed = false;
-                m.lastDelivered = 0f;
-                m.lastEfficiency = 0f;
-                m.lastBlocker = null;
-                m.lastSpotCenter = IntVec3.Invalid;
-                m.lastSource = 0f;
-                m.lastInDir = Vector3.zero;
-                if (!anyEffect || !sunUp || !m.parent.Spawned || !m.HasAim && !(m.HoldsTarget && m.Target.IsValid))
-                {
-                    continue;
-                }
-                float src = CollectorSource(m) * daylight;
-                m.lastSource = src;
-                if (src > MinUseful)
-                {
-                    queue.Add(new Shot { mirror = m, inDir = sun, input = src });
-                }
+                bool eligible = anyEffect && sunUp && m.parent.Spawned && (m.HasAim || m.HoldsTarget && m.Target.IsValid);
+                specs[k] = SpecFor(m, eligible ? CollectorSource(m) : 0f);
             }
 
-            int depthCap = Mathf.Clamp(RM_SolarMirrorsSettings.maxChain, 1, 6);
-            for (int depth = 0; depth < depthCap && queue.Count > 0; depth++)
+            pass.Run(this, specs, count, results, anyEffect, sunUp, RM_MirrorMath.To(sun), daylight, RM_SolarMirrorsSettings.maxChain);
+
+            for (int k = 0; k < count; k++)
             {
-                next.Clear();
-                relayIn.Clear();
-                relayDir.Clear();
-                for (int q = 0; q < queue.Count; q++)
+                RM_CompMirror m = mirrorList[k];
+                RM_MirrorResult r = results[k];
+                m.lastFired = r.fired;
+                m.lastRelayed = r.relayed;
+                m.lastDelivered = r.delivered;
+                m.lastEfficiency = r.efficiency;
+                m.lastBlocker = r.blocker;
+                m.lastSpotCenter = r.hasSpot ? new IntVec3(r.spotX, 0, r.spotZ) : IntVec3.Invalid;
+                m.lastSource = r.source;
+                m.lastInDir = RM_MirrorMath.From(r.inDir);
+                if (r.commitNormal)
                 {
-                    Fire(queue[q]);
+                    m.CommitNormal(RM_MirrorMath.From(r.normal));
                 }
-                foreach (KeyValuePair<RM_CompMirror, float> kv in relayIn)
-                {
-                    if (!fired.Contains(kv.Key) && kv.Value > MinUseful)
-                    {
-                        next.Add(new Shot { mirror = kv.Key, inDir = relayDir[kv.Key], input = kv.Value, relayed = true });
-                    }
-                }
-                queue.Clear();
-                queue.AddRange(next);
             }
-            queue.Clear();
-            next.Clear();
+            beams.Clear();
+            for (int k = 0; k < pass.Beams.Count; k++)
+            {
+                RM_BeamOut b = pass.Beams[k];
+                beams.Add(new Beam { from = new Vector3(b.fromX, 0f, b.fromZ), to = new Vector3(b.toX, 0f, b.toZ), intensity = b.intensity });
+            }
 
             Publish();
-        }
-
-        private void Fire(Shot shot)
-        {
-            RM_CompMirror m = shot.mirror;
-            if (!fired.Add(m))
-            {
-                return; // acyclic: a mirror fires once per pass (design §2.2)
-            }
-            m.lastInDir = shot.inDir;
-            Vector3 nrm = m.NormalFor(shot.inDir);
-            if (nrm == Vector3.zero)
-            {
-                return;
-            }
-            float cos = RM_MirrorMath.Cosine(nrm, shot.inDir);
-            float output = shot.input * m.Reflectivity * cos;
-            m.lastEfficiency = cos;
-            if (output <= MinUseful)
-            {
-                return;
-            }
-            IntVec3 center;
-            Vector3 face = m.FacePoint;
-            if (m.HoldsTarget && m.Target.IsValid)
-            {
-                center = m.Target;
-            }
-            else
-            {
-                Vector3 outDir = RM_MirrorMath.Reflect(shot.inDir, nrm);
-                if (!RM_MirrorMath.GroundHit(face.x, face.y, face.z, outDir, m.Props.maxRange, out float hx, out float hz))
-                {
-                    m.lastBlocker = BlockerSky;
-                    return;
-                }
-                center = new IntVec3(Mathf.FloorToInt(hx), 0, Mathf.FloorToInt(hz));
-            }
-            if (!center.InBounds(map))
-            {
-                m.lastBlocker = BlockerEdge;
-                return;
-            }
-            scratchCells.Clear();
-            SpotCells(m, center, scratchCells);
-            int lit = 0;
-            for (int k = 0; k < scratchCells.Count; k++)
-            {
-                IntVec3 c = scratchCells[k];
-                string why = FirstBlocker(m, c);
-                if (why != null)
-                {
-                    m.lastBlocker ??= why;
-                    continue;
-                }
-                AddLight(c, output);
-                lit++;
-                Building e = c.GetEdifice(map);
-                RM_CompMirror other = e?.TryGetComp<RM_CompMirror>();
-                if (other != null && other != m && !fired.Contains(other))
-                {
-                    // Relay input: this beam's share of the other mirror's footprint.
-                    float share = output / Mathf.Max(1, other.parent.def.size.x * other.parent.def.size.z);
-                    relayIn.TryGetValue(other, out float had);
-                    relayIn[other] = had + share;
-                    relayDir[other] = (face - other.FacePoint).normalized;
-                }
-            }
-            if (lit == 0)
-            {
-                return;
-            }
-            m.lastFired = true;
-            m.lastRelayed = shot.relayed;
-            m.lastDelivered = output;
-            m.lastSpotCenter = center;
-            beams.Add(new Beam { from = new Vector3(face.x, 0f, face.z), to = RM_CompMirror.GroundPoint(center), intensity = output });
-        }
-
-        private void AddLight(IntVec3 c, float v)
-        {
-            int i = map.cellIndices.CellToIndex(c);
-            if (light[i] <= 0f)
-            {
-                litCells.Add(i);
-            }
-            light[i] += v;
         }
 
         /// <summary>Change detection on quantised light; a changed layer dirties glow on the
         /// changed cells and schedules one shade-grid rebuild (removals included).</summary>
         private void Publish()
         {
-            int hash = 17;
-            for (int k = 0; k < litCells.Count; k++)
-            {
-                int i = litCells[k];
-                hash = unchecked(hash * 31 + i * 7 + RM_MirrorMath.Quantise(light[i]));
-            }
-            hash = unchecked(hash * 31 + litCells.Count);
+            int hash = pass.ChangeHash();
             if (hash == lastHash)
             {
                 return;
             }
             lastHash = hash;
-            DirtyGlow(prevLitCells);
+            DirtyGlow(pass.PrevLitCells);
             DirtyGlow(litCells);
             gridRebuildPending = true;
         }
@@ -633,11 +532,11 @@ namespace RimMandrake.SolarMirrors
                     continue;
                 }
                 float l = LightAt(p.Position);
-                if (l < 0.5f || RM_GlareBlind.EyesProtected(p)) // PROVISIONAL threshold
+                if (l < 0.5f || RM_GlareBlind.EyesProtected(p)) // PROVISIONAL threshold (BlindGain repeats it)
                 {
                     continue;
                 }
-                float gain = RM_SolarMirrorsSettings.blindSeverityPerDay * Mathf.Min(1f, l) * interval / 60000f;
+                float gain = RM_MirrorKernel.BlindGain(l, RM_SolarMirrorsSettings.blindSeverityPerDay, interval);
                 HealthUtility.AdjustSeverity(p, glareBlind, gain);
             }
             pawnScratch.Clear();

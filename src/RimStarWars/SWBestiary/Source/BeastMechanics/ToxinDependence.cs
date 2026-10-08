@@ -28,8 +28,6 @@ namespace RimMandrake.StarWars.SWBestiary
     // ════════════════════════════════════════════════════════════════════
     public class RSW_Need_ToxinDependence : Need
     {
-        private const float GainPerTick = 0.0001f;
-        private const int IntervalTicks = 150;
 
         public RSW_Need_ToxinDependence(Pawn pawn) : base(pawn)
         {
@@ -42,8 +40,9 @@ namespace RimMandrake.StarWars.SWBestiary
         {
             get
             {
-                if (CurLevel > 0.1f) return DrugDesireCategory.Satisfied;
-                return CurLevel > 0.01f ? DrugDesireCategory.Desire : DrugDesireCategory.Withdrawal;
+                int category = RSW_ToxinKernel.Category(CurLevel);
+                return category == RSW_ToxinKernel.Satisfied ? DrugDesireCategory.Satisfied
+                    : category == RSW_ToxinKernel.Desire ? DrugDesireCategory.Desire : DrugDesireCategory.Withdrawal;
             }
         }
 
@@ -86,22 +85,10 @@ namespace RimMandrake.StarWars.SWBestiary
         {
             if (IsFrozen) return;
 
-            if (!RSW_BeastMechanicsSettings.toxinDependenceEnabled)
-            {
-                CurLevel = MaxLevel;
-                return;
-            }
-
-            bool fed = pawn.health.hediffSet.HasHediff(HediffDefOf.ToxicBuildup)
-                       || (pawn.Spawned && pawn.Position.IsPolluted(pawn.Map));
-            if (fed)
-            {
-                CurLevel += GainPerTick * IntervalTicks;
-            }
-            else
-            {
-                CurLevel -= def.fallPerDay / 60000f * IntervalTicks;
-            }
+            bool enabled = RSW_BeastMechanicsSettings.toxinDependenceEnabled;
+            bool fed = enabled && (pawn.health.hediffSet.HasHediff(HediffDefOf.ToxicBuildup)
+                       || (pawn.Spawned && pawn.Position.IsPolluted(pawn.Map)));
+            CurLevel = RSW_ToxinKernel.Next(CurLevel, MaxLevel, false, enabled, fed, def.fallPerDay);
         }
     }
 
@@ -136,7 +123,7 @@ namespace RimMandrake.StarWars.SWBestiary
             get
             {
                 RSW_Need_ToxinDependence need = Need;
-                return need != null && need.CurCategory == DrugDesireCategory.Withdrawal ? 1 : 0;
+                return need == null ? 0 : RSW_ToxinKernel.HediffStage(need.CurCategory == DrugDesireCategory.Withdrawal ? RSW_ToxinKernel.Withdrawal : RSW_ToxinKernel.Satisfied);
             }
         }
 

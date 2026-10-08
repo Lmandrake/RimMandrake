@@ -116,7 +116,11 @@ namespace RimMandrake.SalvageClaim
                 "Pay salvage claim fee (" + fee + " silver) on " + clickedThing.LabelShort,
                 delegate
                 {
-                    SalvageClaimFeeUtility.RemoveSilverFromInventory(actor, fee);
+                    if (!SalvageClaimFeeUtility.TryPaySilver(actor, fee))
+                    {
+                        Messages.Message("Not enough silver left to pay the salvage claim fee.", MessageTypeDefOf.RejectInput, false);
+                        return;
+                    }
                     // PropertyEngine.Fire's own Claim case (ClaimBasis.
                     // ClaimFeePaid, WasAuthorized = true unconditionally) IS
                     // the result this whole interaction exists to trigger —

@@ -85,15 +85,7 @@ namespace RimMandrake.Stillsand
 
         public int BandFor(float debt)
         {
-            int band = 0;
-            for (int i = 0; i < bandLitres.Count; i++)
-            {
-                if (debt >= bandLitres[i])
-                {
-                    band = i;
-                }
-            }
-            return band;
+            return RM_LedgerBook.BandFor(bandLitres, debt);
         }
 
         public bool CountsOn(Map map)
@@ -104,19 +96,14 @@ namespace RimMandrake.Stillsand
 
     public class RM_WaterLedger : GameComponent
     {
-        private float debt;
-        private float drawnTotal;
-        private float paidTotal;
-        private int openingSerial;
-        private int lastOpeningTick = -999999;
-        private int lastBand;
+        private readonly RM_LedgerBook book = new RM_LedgerBook();
 
         public RM_WaterLedger(Game game)
         {
         }
 
-        public float Debt => debt;
-        public int OpeningSerial => openingSerial;
+        public float Debt => book.debt;
+        public int OpeningSerial => book.openingSerial;
 
         /// <summary>The ledger def, or null: the RM tier ships none, so the whole ledger is inert there.</summary>
         public static RM_WaterLedgerDef ActiveDef => DefDatabase<RM_WaterLedgerDef>.AllDefsListForReading.FirstOrDefault();
@@ -136,11 +123,9 @@ namespace RimMandrake.Stillsand
             {
                 return;
             }
-            float before = ledger.debt;
-            ledger.debt += litres;
-            ledger.drawnTotal += litres;
-            ledger.AfterChange(map, def);
-            if (before < def.openingThresholdLitres && ledger.debt >= def.openingThresholdLitres)
+            RM_LedgerDraw drew = ledger.book.Draw(litres, def.bandLitres, def.goodwillPerBandUp, def.openingThresholdLitres);
+            AffectGoodwill(def, drew.goodwillDelta);
+            if (drew.crossedOpening)
             {
                 Notify_Opening(map, "the debt has grown past " + def.openingThresholdLitres.ToString("0") + " litres");
             }
@@ -153,12 +138,10 @@ namespace RimMandrake.Stillsand
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            if (now - ledger.lastOpeningTick < def.minTicksBetweenOpenings)
+            if (!ledger.book.TryOpen(now, def.minTicksBetweenOpenings))
             {
                 return;
             }
-            ledger.lastOpeningTick = now;
-            ledger.openingSerial++;
             Messages.Message(def.openingMessage.Formatted(reason.Named("REASON")).CapitalizeFirst(),
                 MessageTypeDefOf.NeutralEvent, historical: true);
         }
@@ -170,10 +153,8 @@ namespace RimMandrake.Stillsand
             {
                 return 0f;
             }
-            float paid = Mathf.Min(litres, ledger.debt);
-            ledger.debt -= paid;
-            ledger.paidTotal += paid;
-            ledger.AfterChange(map, def);
+            float paid = ledger.book.Pay(litres, def.bandLitres, def.goodwillPerBandUp, out int goodwillDelta);
+            AffectGoodwill(def, goodwillDelta);
             return paid;
         }
 
@@ -185,12 +166,12 @@ namespace RimMandrake.Stillsand
             {
                 return 1f;
             }
-            return Mathf.Clamp(1f + ledger.debt / 100f * def.weightPerHundredLitres, 1f, Mathf.Max(1f, def.maxWeight));
+            return RM_LedgerBook.IncidentFactor(ledger.book.debt, def.weightPerHundredLitres, def.maxWeight);
         }
 
         public static int CurrentBand()
         {
-            return Live(out RM_WaterLedgerDef def, out RM_WaterLedger ledger) ? def.BandFor(ledger.debt) : -1;
+            return Live(out RM_WaterLedgerDef def, out RM_WaterLedger ledger) ? def.BandFor(ledger.book.debt) : -1;
         }
 
         public static string Describe()
@@ -199,17 +180,7 @@ namespace RimMandrake.Stillsand
             {
                 return null;
             }
-            return def.LabelCap + ": " + ledger.debt.ToString("0") + " litres owed (" + def.BandLabel(def.BandFor(ledger.debt)) + ")";
-        }
-
-        private void AfterChange(Map map, RM_WaterLedgerDef def)
-        {
-            int band = def.BandFor(debt);
-            if (band > lastBand && def.goodwillPerBandUp != 0)
-            {
-                AffectGoodwill(def, def.goodwillPerBandUp * (band - lastBand));
-            }
-            lastBand = band;
+            return def.LabelCap + ": " + ledger.book.debt.ToString("0") + " litres owed (" + def.BandLabel(def.BandFor(ledger.book.debt)) + ")";
         }
 
         public static void AffectGoodwill(RM_WaterLedgerDef def, int delta)
@@ -229,12 +200,12 @@ namespace RimMandrake.Stillsand
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref debt, "debt", 0f);
-            Scribe_Values.Look(ref drawnTotal, "drawnTotal", 0f);
-            Scribe_Values.Look(ref paidTotal, "paidTotal", 0f);
-            Scribe_Values.Look(ref openingSerial, "openingSerial", 0);
-            Scribe_Values.Look(ref lastOpeningTick, "lastOpeningTick", -999999);
-            Scribe_Values.Look(ref lastBand, "lastBand", 0);
+            Scribe_Values.Look(ref book.debt, "debt", 0f);
+            Scribe_Values.Look(ref book.drawnTotal, "drawnTotal", 0f);
+            Scribe_Values.Look(ref book.paidTotal, "paidTotal", 0f);
+            Scribe_Values.Look(ref book.openingSerial, "openingSerial", 0);
+            Scribe_Values.Look(ref book.lastOpeningTick, "lastOpeningTick", -999999);
+            Scribe_Values.Look(ref book.lastBand, "lastBand", 0);
         }
     }
 

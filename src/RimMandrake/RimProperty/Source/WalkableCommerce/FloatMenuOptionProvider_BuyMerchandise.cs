@@ -97,7 +97,11 @@ namespace RimMandrake.WalkableCommerce
                 "Buy " + clickedThing.LabelShort + " (" + price + " silver)",
                 delegate
                 {
-                    BuyMerchandiseUtility.RemoveSilverFromInventory(actor, price);
+                    if (!BuyMerchandiseUtility.TryPaySilver(actor, price))
+                    {
+                        Messages.Message("Not enough silver left to pay for that.", MessageTypeDefOf.RejectInput, false);
+                        return;
+                    }
                     // PropertyEngine.Fire's own Buy case already fully
                     // implements the result — see this method's doc comment.
                     PropertyEngine.Fire(new TakingEvent(clickedThing, actorRef, TakingAct.Buy, Find.TickManager.TicksGame));

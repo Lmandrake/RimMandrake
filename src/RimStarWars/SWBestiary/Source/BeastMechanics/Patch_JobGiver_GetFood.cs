@@ -21,16 +21,8 @@ namespace RimMandrake.StarWars.SWBestiary
         [HarmonyPrefix]
         public static bool Prefix(Pawn pawn)
         {
-            if (!RSW_BeastMechanicsSettings.metalEatingEnabled)
-            {
-                return true;
-            }
-            CompMetalEater comp = pawn?.TryGetComp<CompMetalEater>();
-            if (comp != null && comp.Props.blockNormalFood)
-            {
-                return false;
-            }
-            return true;
+            CompMetalEater comp = RSW_BeastMechanicsSettings.metalEatingEnabled ? pawn?.TryGetComp<CompMetalEater>() : null;
+            return !RSW_EatKernel.BlocksNormalFood(RSW_BeastMechanicsSettings.metalEatingEnabled, comp != null, comp != null && comp.Props.blockNormalFood);
         }
     }
 }

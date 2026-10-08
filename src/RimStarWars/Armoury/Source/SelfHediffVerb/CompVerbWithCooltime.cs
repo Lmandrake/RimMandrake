@@ -14,7 +14,7 @@ public class CompVerbWithCooltime : ThingComp, IVerbOwner
 
     public CompProperties_VerbWithCooltime PropsVWC => props as CompProperties_VerbWithCooltime;
 
-    public bool CanBeUsed => remainCooltimeTicks < 0;
+    public bool CanBeUsed => RSW_GearKernel.CanUse(remainCooltimeTicks);
 
     public VerbTracker VerbTracker => verbTracker ??= new VerbTracker(this);
 
@@ -31,15 +31,12 @@ public class CompVerbWithCooltime : ThingComp, IVerbOwner
     public override void CompTick()
     {
         base.CompTick();
-        if (remainCooltimeTicks >= 0)
-        {
-            remainCooltimeTicks--;
-        }
+        remainCooltimeTicks = RSW_GearKernel.Tick(remainCooltimeTicks);
     }
 
     public void UsedOnce()
     {
-        remainCooltimeTicks = Mathf.Max(0, Mathf.RoundToInt(PropsVWC.ticksCooldown * RSW_ArmourySettings.selfHediffCooldown));
+        remainCooltimeTicks = RSW_GearKernel.AfterUse(PropsVWC.ticksCooldown, RSW_ArmourySettings.selfHediffCooldown);
     }
 
     public override IEnumerable<Gizmo> CompGetWornGizmosExtra()

@@ -52,25 +52,21 @@ namespace RimMandrake.StarWars.SWBestiary
         public override void CompTickRare()
         {
             base.CompTickRare();
-            if (granted || !RSW_BeastMechanicsSettings.innateAbilitiesEnabled)
+            Pawn pawn = parent as Pawn;
+            switch (RSW_AbilityKernel.Decide(granted, RSW_BeastMechanicsSettings.innateAbilitiesEnabled, Props.ability != null, pawn != null))
             {
-                return;
+                case RSW_AbilityKernel.Step.MarkGrantedOnly:
+                    granted = true;
+                    break;
+                case RSW_AbilityKernel.Step.Grant:
+                    if (pawn.abilities == null)
+                    {
+                        pawn.abilities = new Pawn_AbilityTracker(pawn);
+                    }
+                    pawn.abilities.GainAbility(Props.ability);
+                    granted = true;
+                    break;
             }
-            if (Props.ability == null)
-            {
-                granted = true;
-                return;
-            }
-            if (!(parent is Pawn pawn))
-            {
-                return;
-            }
-            if (pawn.abilities == null)
-            {
-                pawn.abilities = new Pawn_AbilityTracker(pawn);
-            }
-            pawn.abilities.GainAbility(Props.ability);
-            granted = true;
         }
     }
 }

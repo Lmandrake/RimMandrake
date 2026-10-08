@@ -1,4 +1,5 @@
 using System.Linq;
+using RimMandrake.StarWars.Armoury;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -39,19 +40,10 @@ public class CompKoltoTank : ThingComp
 
     public bool WillHeal(Hediff hediff)
     {
-        if (hediff?.def == null)
-        {
-            return false;
-        }
-        if (!hediff.def.everCurableByItem || hediff.def.countsAsAddedPartOrImplant)
-        {
-            return false;
-        }
-        if (hediff.def.chronic || hediff.def == HediffDefOf.BloodLoss)
-        {
-            return true;
-        }
-        return hediff is Hediff_Injury injury && !injury.IsPermanent();
+        bool hasDef = hediff?.def != null;
+        Hediff_Injury injury = hediff as Hediff_Injury;
+        return RSW_KoltoKernel.WillHeal(hasDef, hasDef && hediff.def.everCurableByItem, hasDef && hediff.def.countsAsAddedPartOrImplant,
+            hasDef && hediff.def.chronic, hasDef && hediff.def == HediffDefOf.BloodLoss, injury != null, injury != null && injury.IsPermanent());
     }
 
     public void HealPawnInjuries(Pawn pawn)
