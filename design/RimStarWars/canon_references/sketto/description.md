@@ -13,6 +13,8 @@ At least one group of skettos inhabited Tatooine's Laguna Caves in 32 BBY, and d
 Around 34 ABY, a stuffed sketto specimen was kept by Dok-Ondar at his store on Batuu which he obtained from a bounty hunter.
 ### Legends — https://starwars.fandom.com/wiki/Sketto/Legends
 
+(Continuity: canon says skettos are nocturnal and shelter in the day; Legends says they emerge only at daybreak and twilight. Canon first appearance is *The Phantom Menace*, identified in *Complete Visual Dictionary, New Edition* 2018; also *Star Wars Outlaws*, *Outlaws: Low Red Moon*, Galaxy's Edge. Legends is from *The Wildlife of Star Wars: A Field Guide*; Legends eye colour is red.)
+
 Skettos were medium-sized, blood-sucking flying reptiles that dwelled in the caverns of Tatooine. Only emerging at daybreak and twilight, they possessed many rods in their eyes to assist their vision in low-light conditions as they ate airborne insects. Though reptilian, they were warm-blooded and gave birth to a single offspring at a time.
 
 Skettos would often gather loose bantha wool for nests.
@@ -23,7 +25,7 @@ In 32 BBY, during the Boonta Eve Classic podrace a group of skettos that inhabit
 
 ## Visual brief
 Three images: a canon prop photo (a stuffed sketto from Dok-Ondar's shop on Batuu) and two Legends watercolour sheets. Same overall shape, very different colour.
-- **Silhouette:** a small, lean, **dragonfly-like reptile**: a slim, elongated body, a long thin neck and a small, pointed head, **four narrow, long, translucent insect-like wings** (two forewings and two hindwings, held up and back or beating), and a **very long, thin, whip-like tail, about as long as the rest of the animal or longer** that ends in a small tuft or fan of feather-like fins in the Legends art. Text: four powerful legs, prehensile tail, wingspan up to 1 m.
+- **Silhouette:** a small, lean, **dragonfly-like reptile**: a slim, elongated body, a long thin neck and a small, pointed head, **four narrow, long, translucent insect-like wings** (two forewings and two hindwings, held up and back or beating), and a **very long, thin, whip-like tail, about as long as the rest of the animal or longer** that ends in a small tuft or fan of feather-like fins in the Legends art. Text: four powerful legs, prehensile tail, length (not wingspan) up to 1 m in both continuities (https://starwars.fandom.com/wiki/Sketto).
 - **Head:** a small, narrow, wedge or beak-shaped head with a wide mouth packed with fangs and **two long curved fangs/tusks pointing down from the upper jaw** (strong in both Legends images, hinted in the canon prop where the open mouth shows curved fangs). Eyes are large and orange-red in the Legends art and small in the prop.
 - **Limbs:** four thin, spindly, insect-like legs with long curved claws, tucked under the body in flight; in the canon prop two of them grip a dead branch, with small clawed hands.
 - **Colour disagreement:** canon prop (`canon_1`) is **pale cream-pink bare skin** with a lightly banded tan-striped tail and **amber-brown, veined wing membranes**: it looks like a dried or taxidermied specimen. Legends (`legends_1`, `legends_2`) is a **yellow-green/olive and pale-blue** body with horizontal banding on the tail, **translucent pale blue and yellow wings with dark veins and blotches**. Prose gives no colour. Use the prop for skin texture and wing placement and the Legends sheets for the wing, tail-tuft and fang shapes. Treat the colouring as unsettled.

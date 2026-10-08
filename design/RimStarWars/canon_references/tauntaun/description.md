@@ -17,6 +17,8 @@ handle the night, which falls below -60 C. Wild herds of about 25, led by a fema
 they burrow into snow for warmth and shelter in glacial caves heated from below. Omnivores.
 Swift, docile, up to 90 kph; migratory; prey of the wampa; domesticated as Rebel mounts.
 
+Legends-only additions (https://starwars.fandom.com/wiki/Tauntaun/Legends, the canon page has none of these): **two pairs of nostrils (four in all; the larger pair seals when lying down in snow)**; a **well-muscled tail extending a meter from the body** for balance; clawed feet and hands; **tridactyl feet with splayed toes** like snowshoes; swiveling ears; fur ranging gray to white over a blubber layer; they sought shelter at night, and without shelter hibernated (some breeds froze if woken after sundown); horn-butting matches over dominance common among **both males and females**; herds of twenty to thirty. Canon adds that a tauntaun head hung in Jabba's palace (*Return of the Jedi*) and a brown-furred head in a Gerrenthum cantina (*Inquisitors* 1) -- https://starwars.fandom.com/wiki/Tauntaun.
+
 ## Visual brief
 Three images viewed. `wookieepedia_tauntaun_swe.png` (Star Wars Encyclopedia render, 397x675,
 front view) and `wookieepedia_tauntaun_riders_boxart.png` (Legion box art, 600x940, rider, 3/4

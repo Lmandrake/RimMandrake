@@ -12,7 +12,13 @@ across the carapace**; head at the front of the carapace with **two yellow eyes*
 jaw of **yellowish jagged teeth**. Infobox: skin colour brown carapace, distinctions
 chitin-plated armour and large mandibles. Only mass deployment: the Battle of Kalsunor;
 descendants still live on Kalsunor. Height, mass and lifespan are unsourced and absent.
-Page: Silooth/Legends (the canon-continuity page is a different article). Fully read.
+Page: Silooth/Legends. Fully read.
+
+Legends extras (https://starwars.fandom.com/wiki/Silooth/Legends): the natural precursor was a docile swamp beetle; the Sith made it predatory and difficult to control, and it clacked its mandibles loudly before attacking. Acid sprays up to ten metres from sacs in the maw; excellent low-light vision but cannot see past ten metres. After Kalsunor the Sith struggled to control the marauding silooth and abandoned the world, leaving them behind. **Source conflict on limb count:** *The Dark Side Sourcebook* says eight legs; the *Jedi Academy Training Manual* and *Book of Sith* illustrations show six, and Wookieepedia assumes six because those are the later sources.
+
+### Canon — https://starwars.fandom.com/wiki/Silooth
+
+Canon only establishes the silooth as a type of Sith warbeast named in *The Bestiary of Darth Caldoth* (*Dooku: Jedi Lost*, 2019, audio drama; spelling confirmed by the script). Canon gives no anatomy, size or acid attack; all the detail above is Legends.
 
 ## Visual brief
 Two Wookieepedia images agree with each other; the donor does not read as the same animal.

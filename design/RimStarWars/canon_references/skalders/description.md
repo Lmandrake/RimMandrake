@@ -18,6 +18,8 @@ The skalder was a herbivorous non-sentient pachydermoid animal native to Doshar 
 
 These creatures also had thick hides to protect them from the acid geysers found on the desert fields they made their homes. A skalder hit by a blaster shot didn't appear to have been much affected due to its thick skin.
 
+Verified additions: height **3.5 metres** is stated on both pages (canon infobox, from *Absolutely Everything You Need to Know*; Legends infobox, from the *Clone Wars Character Encyclopedia*) -- https://starwars.fandom.com/wiki/Skalder. Canon distinction is "thick skin"; Legends infobox skin colour is gray and its diet is grass; Legends has the clones hunching down behind the hump on the neck for protection (https://starwars.fandom.com/wiki/Skalder/Legends). A blaster hit "didn't appear to have been much affected" -- thick skin, not stated immunity. Canon appearances: "The Gungan General" (first), "Bound for Rescue", and the audiobook *Pirate's Price*.
+
 ## Visual brief
 Two images: the CANON infobox render (a Clone Wars CG skalder being ridden by a clone trooper) and a frame of a herd running from a geyser (the Legends caption; both are the same Clone Wars design). They agree.
 - **Silhouette**: a stout, rounded, rhino-hippo-like pachyderm with a huge, thick, plate-like armoured hump or shell-like mantle that drapes from behind the head over the back, shoulders and neck like a heavy cloak or a turtle shell with skirt-like layered overlapping ridged plates; the head pokes out under it.
@@ -25,7 +27,7 @@ Two images: the CANON infobox render (a Clone Wars CG skalder being ridden by a 
 - **Head**: a broad, blunt, rounded dome head with a small round dark eye ringed by folded skin, a short trunk-like blunt snout with a small mouth, and two long, pale, bone-ivory tusks curving forward and out from the sides of the lower jaw (they stick out sideways and forward in the frame).
 - **Legs/feet**: short, thick pillar legs with large, dark, heavy feet with three clawed toes ending in pale curved claws; the toes look broad and dinosaur-like.
 - **Size**: bigger than a mount: a clone trooper sits atop the mantle in the render, so the back is about head height of a standing person or higher.
-- **Disagreement**: the text calls it a 'mammalian desert species with a hump'; the images show a layered, armour-like mantle, not a soft fat hump.
+- **Disagreement**: the text calls it a 'mammalian desert species with a hump'; the images show a layered, armour-like mantle, not a soft fat hump. The wiki text only says "a large hump protruding from the base of the neck" and "thick hides"; it never says shell or plates, so treat the layered-plate look as this CG depiction.
 
 ## Must show
 - [ ] Stout rounded pachyderm body with a thick armoured, layered, ridged mantle draped over neck, shoulders and back

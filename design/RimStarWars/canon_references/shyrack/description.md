@@ -11,8 +11,14 @@ Shyracks were large, bat-like avian creatures with razor like teeth native to th
 
 While ungainly and slow-moving with no eyes, shyracks were potentially dangerous pests, especially when they converged as a flock on an intruder. They were native to the Shyrack cave of Korriban and were natural rivals to the feared Tuk'ata.
 
+### Canon — https://starwars.fandom.com/wiki/Shyrack
+
+Shyracks were creatures that were likely to be encountered in caves (*Adventures in Wild Space: The Cold*, the only canon appearance). Canon gives no anatomy, size or ecology; the detail above is Legends only.
+
+Legends extras: appearances include *Knights of the Old Republic*, *KOTOR II*, *The Old Republic* (codex source for the 63-year summer emergence and bluish droppings), and Shyracks are "natural rivals" of the Tuk'ata (https://starwars.fandom.com/wiki/Shyrack/Legends).
+
 ## Visual brief
-Viewed 2026-10-04. Both images are LEGENDS (no canon page or image exists). Image 1 is a painting
+Viewed 2026-10-04. Both images are LEGENDS (the only canon page is a one-line cave mention with no image). Image 1 is a painting
 (infobox) of one shyrack diving; image 2 is a tiny low-resolution (about 300x123) game still of a
 swarm -- usable only for silhouette.
 - **Silhouette**: a bat/pterosaur-like flier, with a heavy pot-bellied body hanging below two big
@@ -29,8 +35,7 @@ swarm -- usable only for silhouette.
 - **Colour**: tan to pinkish-flesh body with blue-violet limbs and purple wing membrane
   (image 1); the Legends text mentions bluish droppings. Palette comes from one painting; no second
   coloured source.
-- **Size cues**: text says "large"; image 2 shows swarm members each near the size of a person's torso
-  versus the cave rocks, so about man-size bats at most -- not confirmed.
+- **Size cues**: text says "large"; no measurement is sourced (the 300x123 swarm still cannot give a size).
 - **Prose vs images**: prose says "bat-like avian" with razor teeth; the images show bat-like
   leathery wings, no feathers.
 

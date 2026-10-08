@@ -18,12 +18,14 @@ Tee-muss were a species of domesticated farm animals native to the jungle planet
 
 **Description** Tee-muss were four legged odd-toed ungulate. They had a short proboscis and two tusks on their lower jaw. Their ears were long and normally bent and pointed outward, when the tee-muss was attacked or threatened, they pointed downward. The call of a tee-muss was an excellent transmitter for warnings.
 
+Verified additions: canon infobox colour tan and brown, quadruped, non-sentient, origin Onderon; battle mounts on Florrum ("A Necessary Bond"), nysillin farm animals on Felucia ("Bounty Hunters"), Onderon ("A War on Two Fronts"); Krennic's gloves were of tee-muss *calf* hide (*Rogue One: The Ultimate Visual Guide*; hide colour not stated). Legends infobox: class ungulate, tan skin, brown hair, "Proboscid", "Odd toes"; Legends prose: four-legged odd-toed ungulate, short proboscis, **two tusks on the lower jaw**, long ears bent outward and pointing downward when threatened -- https://starwars.fandom.com/wiki/Tee-muss/Legends. The text never mentions horn nubs, a mane or a hump.
+
 ## Visual brief
 One CANON image (`wookieepedia_canon_1`, a Clone Wars CG render of a tee-muss in riding harness with a blue-skinned rider). It differs from a camel mainly by the head.
 - **Silhouette**: a long-legged, deep-chested camel- or llama-like ungulate: slender long legs with knobby knees, a deep ribcage, a short level back, an arched neck carried forward and slightly down; a long thin tail ending in a dark tuft/brush hanging to the hock.
 - **Coat**: tan to light sandy-brown short, mottled hide with a patchy lighter and darker blotch pattern; a ragged mane of longer, shaggy, darker-gold fur running along the top of the neck and the back from the shoulders to the withers.
 - **Head**: heavy, blunt, wide and wrinkled head with a deep, camel-like muzzle and a short trunk-like boss or proboscis at the nose; a pair of small spike-like horn nubs on the snout and brow; and long, wide, pointed, dark-brown ears bent back and out (the Legends text: pointing down when threatened). Two tusks on the lower jaw hook down and forward (a dark curved lower tusk is visible below the chin).
-- **Feet**: two-toed hooves, cream-coloured, split into two broad toes (the text says odd-toed; the render shows two big cream hoof-toes plus nothing else, so the images and text disagree; trust the image).
+- **Feet**: two-toed hooves, cream-coloured, split into two broad toes (Legends text and infobox say odd-toed; the render shows two big cream hoof-toes, which may be perspective, stylisation or a hidden digit -- unresolved, canon gives no toe count).
 - **Size**: tall enough to ride; the rider sits on the back with his legs hanging near the mid-barrel; the back is about chest-to-shoulder height of a person or a bit higher.
 - **Harness**: pale teal-green straps and a saddle; the harness belongs to the rider rig only.
 

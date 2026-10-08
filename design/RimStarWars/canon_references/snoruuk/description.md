@@ -8,7 +8,11 @@ thirty plants**. They could be **herded by tapping one mushroom**, which made th
 move in the opposite direction. They searched for food and moisture, stopping to **take root in
 winter** to ride out bad weather. Source: Adventure Journal 10. The article is a short stub:
 colour, size, height and lifespan are unsourced and absent.
-Page: https://starwars.fandom.com/wiki/Snoruuk/Legends, fully read (1,675 chars).
+Page: https://starwars.fandom.com/wiki/Snoruuk/Legends, fully read (1,675 chars). It classes snoruuks as fungi, native to Gamorr and edible to Gamorreans (source wording "plants" is the page's own).
+
+### Canon — https://starwars.fandom.com/wiki/Snoruuk_mushroom
+
+Snoruuk mushrooms were a species of **red** mushroom native to Gamorr and edible by Gamorreans. By 228 BBY the Hutt Churo grew them (with coolsap shrubs) in a greenhouse laboratory on Nal Hutta to see whether they could thrive in its swamps (*The High Republic: Beware the Nameless*); a Gamorrean guard ate them. They could be made into a sauce for Ithorian Garden Loaf. First appearance: Galaxy's Edge (Docking Bay 7). Canon says nothing about movement, rings or rooting.
 
 ## Visual brief
 - `wookieepedia_snoruuk.jpg` (717x465, black-and-white ink drawing): a **cluster of seven
@@ -17,7 +21,7 @@ Page: https://starwars.fandom.com/wiki/Snoruuk/Legends, fully read (1,675 chars)
   limbs are drawn; they are plain mushrooms in a group. Colour is not shown.
 - `donor_current_sprite.png` (128x128): ONE mushroom with a **red cap** with darker spots, a
   grey underside and a **tan stalk with brown spots**. Agrees on the spotted dome-and-stalk
-  shape. Red is the donor's choice; canon gives no colour.
+  shape. Red matches canon (Snoruuk mushroom: red); the stalk colour is unsourced.
 - The prose says they walk; the drawing shows nothing about how. Do not give them eyes or
   legs the canon does not show.
 

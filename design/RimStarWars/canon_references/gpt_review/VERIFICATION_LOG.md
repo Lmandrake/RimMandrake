@@ -106,3 +106,98 @@ Format per row: entry | claim | verdict | source
 | Donor sprites never corroborate canon | VERIFIED (logic) | - |
 | Checklists confuse pose/phenotype with anatomy (raised limbs, tongue, stripes, tusks) | VERIFIED for acklay raised arms, anooba stripes; others UNVERIFIABLE | see entries |
 | Canon dimensions and draw sizes need separate fields (esp. Beldon) | UNVERIFIABLE as a rule; Beldon Engine limits already separates them | - |
+
+## Batch 10
+| entry | claim | VERDICT | source |
+|---|---|---|---|
+| shirotrap | "Canon" label unsupported; Shiro-trap page is Legends-only | VERIFIED | https://starwars.fandom.com/wiki/Shiro-trap ({{Top|leg}}) |
+| shirotrap | Shiro and plant are separate organisms | VERIFIED | Shiro-trap: "not a separate creature, but a symbiotic pairing" |
+| shirotrap | Shiro is slow hard-shelled reptile that retracts extremities; caterpillar not anatomy | VERIFIED | https://starwars.fandom.com/wiki/Shiro/Legends |
+| shirotrap | Mud/seeds in shell ridges; camouflage vs locomotion | VERIFIED | Shiro/Legends |
+| shirotrap | Diet veg + small invertebrates, eaten by Gungans, saw-toothed grank breaches shells | VERIFIED | Shiro/Legends |
+| shirotrap | Sources Gungan Frontier, Wildlife Field Guide are Legends | VERIFIED | Shiro-trap/Shiro/Legends Sources |
+| shirotrap | A canon Shiro exists separately (Disney Infinity 3.0, turtle-like, green) | VERIFIED (GPT told to cross-check Shiro page) | https://starwars.fandom.com/wiki/Shiro |
+| shirotrap | arm/neck, trap count, alt colours | UNVERIFIABLE | image-only |
+| shyrack | "Legends only / no canon page" too strong; canon mention in Adventures in Wild Space: The Cold | VERIFIED | https://starwars.fandom.com/wiki/Shyrack ("likely encountered in caves"; only appearance) |
+| shyrack | Canon mention does not establish detailed anatomy/ecology | VERIFIED | Shyrack page is one sentence |
+| shyrack | 63-year emergence + blue droppings from SWTOR codex (Legends) | VERIFIED | https://starwars.fandom.com/wiki/Shyrack/Legends (TORcite codex) |
+| shyrack | Eyeless, flight, swarm, Korriban caves defining | VERIFIED | Shyrack/Legends |
+| shyrack | Appearances KOTOR 1, 2, SWTOR | VERIFIED | Shyrack/Legends Appearances |
+| shyrack | Size from screenshot unreliable | VERIFIED (nothing sourced) | Shyrack/Legends has empty height/wingspan |
+| shyrack | Jedi Academy Training Manual cited for anatomy | VERIFIED as listed source | Shyrack/Legends Sources |
+| shyrack | echolocation | UNVERIFIABLE (not in page text; entry does not claim it) | -- |
+| shyrack | "bat-like avian" not implying feathers; palette depiction-specific | UNVERIFIABLE (interpretive) | -- |
+| silooth | Canon = Sith warbeast named in Dooku: Jedi Lost; does not confirm Legends anatomy | VERIFIED | https://starwars.fandom.com/wiki/Silooth |
+| silooth | TDSS says eight legs; JATM and Book of Sith show six; wiki chooses six | VERIFIED | https://starwars.fandom.com/wiki/Silooth/Legends BTS |
+| silooth | Precursor docile swamp beetle; mandible clacking before attack | VERIFIED | Silooth/Legends Behavior |
+| silooth | Acid spray, crushing jaws, Sith abandoned Kalsunor, hard to control | VERIFIED | Silooth/Legends |
+| silooth | "Bantha-sized" a loose comparison | VERIFIED (wiki itself says bantha-sized; no mass/height) | Silooth/Legends |
+| silooth | Donor anatomical failure | UNVERIFIABLE | not a wiki fact |
+| silooth | Sex differences, eggs, lifespan, dims | UNVERIFIABLE | absent from page |
+| sith_wyrm | Sources are Legends, not canon | VERIFIED (page {{Top|leg}}; entry already says LEGENDS) | https://starwars.fandom.com/wiki/Sith_wyrm |
+| sith_wyrm | "war wyrm" alias not established | VERIFIED (term absent from page) | Sith_wyrm wikitext |
+| sith_wyrm | Alchemically transformed exogorth, Naga Sadow, Yavin 4 | VERIFIED | Sith_wyrm History |
+| sith_wyrm | Exar Kun encounter in Dark Lords of the Sith 4 (death), 5 (corpse) | VERIFIED | Sith_wyrm Appearances |
+| sith_wyrm | Great Hunt implies more wyrms | VERIFIED (via KOTOR Campaign Guide) | Sith_wyrm History |
+| sith_wyrm | four eyes/limbless/snout feeler; temple scale | UNVERIFIABLE (image only; owner ruling untouched) | -- |
+| sith_wyrm | diet, lifecycle | UNVERIFIABLE | absent |
+| skalders | Hump/thick hide, not a turtle shell, in the text | VERIFIED | https://starwars.fandom.com/wiki/Skalder/Legends (hump at neck base, thick hides); canon "Thick skin" |
+| skalders | Blaster/acid resistance not immunity | VERIFIED | Skalder/Legends: "didn't appear to have been much affected" |
+| skalders | 3.5 m height (GPT: verify edition/continuity) | VERIFIED on both continuities | canon infobox (AEYNTK) and Legends infobox (TCWCE) |
+| skalders | "The Gungan General" shows skalders ridden near geysers | VERIFIED (episode is first appearance; Florrum mission) | Skalder page |
+| skalders | Episode label S1E12 | UNVERIFIABLE on page text | -- |
+| skalders | Herbivory, speed, geyser sensing | VERIFIED | Skalder |
+| skalders | Seated clone does not give shoulder height | VERIFIED (only 3.5 m figure sourced) | Skalder |
+| skalders | stripe palette, claw shape | UNVERIFIABLE | image-only |
+| skalders | Skalder vs skalders = naming only | VERIFIED | -- |
+| sketto | Canon length up to 1 m, not wingspan | VERIFIED | https://starwars.fandom.com/wiki/Sketto (|length=Up to 1 meter); entry's "wingspan up to 1 m" was wrong |
+| sketto | Four legs and four wings separate; dragonfly comparison not six-legged | VERIFIED | Sketto: "four powerful legs, ... four wings" |
+| sketto | Canon nocturnal vs Legends daybreak/twilight must stay labelled | VERIFIED | Sketto vs Sketto/Legends |
+| sketto | Live birth, bantha-wool nests, green blood are Legends only | VERIFIED | Sketto/Legends |
+| sketto | TPM cave swarm; Dok-Ondar specimen; Outlaws Sketto Chuga | VERIFIED | Sketto |
+| sketto | Dimorphism, lifespan, natural colour | UNVERIFIABLE | absent |
+| sketto | Tail tuft / double upper fangs not in text | VERIFIED (text silent; image-derived) | Sketto/Legends |
+| sketto | Stuffed specimen colour != living colour | UNVERIFIABLE (reasonable) | -- |
+| snoruuk | "canon gives no colour" wrong: canon snoruuk mushrooms are red | VERIFIED | https://starwars.fandom.com/wiki/Snoruuk_mushroom (|description=Red) |
+| snoruuk | A mushroom is a fungus; wiki classes snoruuk as fungi/mushroom | VERIFIED | Snoruuk/Legends |class=Fungi; canon class Mushroom |
+| snoruuk | Canon: Churo's Nal Hutta cultivation, Beware the Nameless | VERIFIED | Snoruuk_mushroom |
+| snoruuk | Canon does not confirm Legends ring movement/tap-herding/rooting | VERIFIED | canon page silent |
+| snoruuk | Gamorrean food; Legends AJ10 source | VERIFIED | both pages |
+| snoruuk | spots/gills image details; spores | UNVERIFIABLE | -- |
+| strill | Six legs and gliding skin are explicit Legends prose/infobox | VERIFIED | https://starwars.fandom.com/wiki/Strill/Legends |
+| strill | Canon: thick brown winter fur via Armorer mantle (Mandalorian Visual Guide); episode shows garment only | VERIFIED | https://starwars.fandom.com/wiki/Strill |
+| strill | Hermaphroditic reproduction | VERIFIED | Strill/Legends |
+| strill | Mird with Walon Vau; intelligent, loyal, scent-/tracker | VERIFIED (trackers, loyal, highly intelligent) | Strill/Legends |
+| strill | Carrying a full-grown Human male in flight | VERIFIED as stated in wiki prose | Strill/Legends (GPT said check original; wiki cites Triple Zero) |
+| strill | Canon is underdetermined; Legends anatomy not canon | VERIFIED | canon page stub |
+| strill | Image disagreements, waist-height, hairless look | UNVERIFIABLE (image-only) | -- |
+| strill | Brown vs gold fur seasonal explanation | UNVERIFIABLE (not stated) | -- |
+| strill | Entry's "six legs/membranes not required" should be required for Legends design | PARTLY: wiki states six legs and membranes, so a Legends-anatomy strill needs them; images disagree. Proposal only | Strill/Legends |
+| tauntaun | Four nostrils (two pairs) | VERIFIED, Legends only (canon page silent) | https://starwars.fandom.com/wiki/Tauntaun/Legends |
+| tauntaun | Tail: substantial base, not bare thread | PARTLY: canon "tails helped keep balance"; Legends "well-muscled tail extended a meter"; no base description | Tauntaun, Tauntaun/Legends |
+| tauntaun | Night cold dangerous without shelter | VERIFIED (Legends: sought shelter, hibernated; canon: could not handle chilling night extremes below -60 C) | Tauntaun, Tauntaun/Legends |
+| tauntaun | Databank 2 m at shoulder | UNVERIFIABLE via Databank; wiki canon infobox gives 1.3-2 m at shoulder and 2.7 m total | https://starwars.fandom.com/wiki/Tauntaun |
+| tauntaun | -60 C figure source | VERIFIED as wiki text ("often reached below -60C") but only a nightly low | Tauntaun |
+| tauntaun | Jabba's palace head in ROTJ | VERIFIED | Tauntaun "in his palace" |
+| tauntaun | Omnivory | VERIFIED | Tauntaun |
+| tauntaun | Females have larger curved horns / mating contests | REFUTED as stated: Legends says horn-butting by both males and females for dominance; no larger-horn claim | Tauntaun/Legends |
+| tauntaun | 15 subspecies | VERIFIED (canon infobox); Legends lists glacier/scaly/climbing/giant | Tauntaun |
+| tauntaun | Intact horns default; Luke's damaged horn individual | UNVERIFIABLE | -- |
+| tauntaun | Donor criticism, foot posture | UNVERIFIABLE | -- |
+| teemuss | Toe count: odd-toed (Legends) vs two visible divisions unresolved | VERIFIED (Legends says odd-toed; canon silent; entry's "trust the image" removed) | https://starwars.fandom.com/wiki/Tee-muss/Legends |
+| teemuss | Paired lower-jaw tusks (checklist says one) | VERIFIED (Legends: "two tusks on their lower jaw") | Tee-muss/Legends |
+| teemuss | Onderon origin, tan/brown, domestication, mount use | VERIFIED | https://starwars.fandom.com/wiki/Tee-muss |
+| teemuss | Calmness in combat from Databank | UNVERIFIABLE (Databank cited only as a source link) | -- |
+| teemuss | "Bounty Hunters" Felucia farm; "A War on Two Fronts" Onderon | VERIFIED (S2E17 / S5E2 numbers UNVERIFIABLE on page) | Tee-muss |
+| teemuss | Krennic gloves = calf hide; black leather not living colour | VERIFIED (calf hide); colour of leather unstated | Tee-muss |
+| teemuss | Purple kings' crown diet exclusive? | UNVERIFIABLE: wiki says "fed on" it only | Tee-muss |
+| teemuss | Horn nubs, mane, no hump | UNVERIFIABLE (image-only; text silent) | -- |
+| teemuss | tee-muss vs tee muss naming only | VERIFIED | -- |
+
+## Cross-entry problems
+- Duplicates: none; Skalder/skalders and tee-muss/tee muss are naming only | VERIFIED
+- Shiro-trap is a two-organism association (shiro + tooke-trap), not a species | VERIFIED (Shiro-trap page: "not a separate creature"); entry shirotrap relabeled Legends and cross-referenced shiro in text
+- Snoruuk is a fungus (wiki class Mushroom/Fungi) | VERIFIED
+- Canon existence does not import Legends biology (shyrack, silooth, snoruuk, strill) | VERIFIED: canon pages for all four are stubs/limited
+- Unsuffixed URL does not prove illustration continuity | VERIFIED: shirotrap images sit on a Legends page labelled Canon in entry
+- Interpretive anatomy (caterpillar shiro, shell skalder, two-toed tee-muss, four-legged strill) | VERIFIED as image-derived, with text conflicts noted in each entry
