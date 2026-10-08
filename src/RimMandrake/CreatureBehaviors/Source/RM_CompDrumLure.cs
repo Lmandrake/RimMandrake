@@ -50,6 +50,11 @@ namespace RimMandrake.CreatureBehaviors
         {
             base.CompTick();
 
+            if (!RM_CreatureBehaviorsSettings.drumLureEnabled && luredTarget != null)
+            {
+                ClearLure(removeHediff: true); // option off: release the target even while this carrier is downed/inactive
+            }
+
             if (!(parent is Pawn pawn) || !pawn.Spawned || pawn.Dead || pawn.Map == null || pawn.Downed)
             {
                 return;

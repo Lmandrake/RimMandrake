@@ -98,9 +98,9 @@ namespace RimMandrake.TerminalBiomes
             forcedFromClusterSize = null;
             __instance.clusterSize = realClusterSize;
 
-            if (!result.IsValid)
+            if (!__result || !result.IsValid)
             {
-                // Genuine failure (e.g. this map lays none of the required
+                // Genuine failure, or another patch refused the cell (e.g. this map lays none of the required
                 // terrain) — bail here rather than let anything downstream
                 // feed IntVec3.Invalid to a bounds-checked cell search.
                 if (Prefs.DevMode)

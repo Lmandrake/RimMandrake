@@ -128,20 +128,36 @@ namespace RimMandrake.GimmeSomeSlack
             if (mod == null) return "{\"success\":false,\"cmd\":\"settingsroundtrip\",\"error\":\"mod instance not found\"}";
             string folder = mod.Content.FolderName, handle = mod.GetType().Name;
             string file = System.IO.Path.Combine(GenFilePaths.ConfigFolderPath, GenText.SanitizeFilename("Mod_" + folder + "_" + handle + ".xml"));
-            GimmeSomeSlackSettings.style = CordStyle.Cybertek;
-            GimmeSomeSlackSettings.extCordColorMode = ExtCordColorMode.Single;
-            GimmeSomeSlackSettings.extCordColor = 3;
+            // GPT review 2026-10-08 #23: the pre-test settings are written to disk first and read back in finally, so a
+            // throw mid-test can leave neither Cybertek on disk nor defaults in memory
             GimmeSomeSlackMod.Settings.Write();
-            string text = System.IO.File.Exists(file) ? System.IO.File.ReadAllText(file) : "";
-            GimmeSomeSlackSettings.ResetToDefaults();
-            string mid = GimmeSomeSlackSettings.style + "/" + GimmeSomeSlackSettings.extCordColorMode + "/" + GimmeSomeSlackSettings.extCordColor;
-            LoadedModManager.ReadModSettings<GimmeSomeSlackSettings>(folder, handle);
-            string back = GimmeSomeSlackSettings.style + "/" + GimmeSomeSlackSettings.extCordColorMode + "/" + GimmeSomeSlackSettings.extCordColor;
-            GimmeSomeSlackSettings.style = s0;
-            GimmeSomeSlackSettings.extCordColorMode = m0;
-            GimmeSomeSlackSettings.extCordColor = c0;
-            GimmeSomeSlackMod.Settings.Write();
-            GimmeSomeSlackSettings.Apply();
+            string pre = System.IO.File.Exists(file) ? System.IO.File.ReadAllText(file) : null;
+            string text = "", mid = "", back = "";
+            try
+            {
+                GimmeSomeSlackSettings.style = CordStyle.Cybertek;
+                GimmeSomeSlackSettings.extCordColorMode = ExtCordColorMode.Single;
+                GimmeSomeSlackSettings.extCordColor = 3;
+                GimmeSomeSlackMod.Settings.Write();
+                text = System.IO.File.Exists(file) ? System.IO.File.ReadAllText(file) : "";
+                GimmeSomeSlackSettings.ResetToDefaults();
+                mid = GimmeSomeSlackSettings.style + "/" + GimmeSomeSlackSettings.extCordColorMode + "/" + GimmeSomeSlackSettings.extCordColor;
+                LoadedModManager.ReadModSettings<GimmeSomeSlackSettings>(folder, handle);
+                back = GimmeSomeSlackSettings.style + "/" + GimmeSomeSlackSettings.extCordColorMode + "/" + GimmeSomeSlackSettings.extCordColor;
+            }
+            finally
+            {
+                if (pre != null)
+                {
+                    System.IO.File.WriteAllText(file, pre);
+                    LoadedModManager.ReadModSettings<GimmeSomeSlackSettings>(folder, handle);   // every pre-test value back
+                }
+                GimmeSomeSlackSettings.style = s0;
+                GimmeSomeSlackSettings.extCordColorMode = m0;
+                GimmeSomeSlackSettings.extCordColor = c0;
+                GimmeSomeSlackMod.Settings.Write();
+                GimmeSomeSlackSettings.Apply();
+            }
             string restored = System.IO.File.Exists(file) ? System.IO.File.ReadAllText(file) : "";
             return "{\"success\":true,\"cmd\":\"settingsroundtrip\",\"file\":" + S(file) + ",\"written\":\"Cybertek/Single/3\",\"afterReset\":" + S(mid) +
                    ",\"readBack\":" + S(back) + ",\"fileHadStyle\":" + (text.Contains("<style>Cybertek</style>") ? "true" : "false") +

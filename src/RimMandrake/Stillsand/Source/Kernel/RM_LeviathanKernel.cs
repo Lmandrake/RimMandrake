@@ -112,7 +112,9 @@ namespace RimMandrake.Stillsand
         /// <summary>The muurrok re-appraises when it has no live target or on every 250th tick.</summary>
         public static bool ShouldRetarget(bool targetInvalid, int now)
         {
-            return targetInvalid || now % HuntRetargetInterval == 0;
+            // Only Interval-th ticks reach here, so test the window, not one exact tick
+            // (now % 250 == 0 coincides with now % 30 == 0 only every 750 ticks).
+            return targetInvalid || now % HuntRetargetInterval < Interval;
         }
 
         /// <summary>May the mirror beam be started on this check (every gate except the verb's own availability).</summary>

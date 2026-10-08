@@ -68,6 +68,9 @@ namespace RimMandrake.Stillsand
             {
                 if (!c.InBounds(map) || !c.Standable(map)) continue;
                 float d = (c - p.Position).LengthHorizontalSquared;
+                if (d >= bestD) continue;
+                // An unreachable cell would spend a call slot on a Goto that can never finish.
+                if (!p.CanReach(c, PathEndMode.OnCell, Danger.Deadly)) continue;
                 if (d < bestD) { bestD = d; best = c; }
             }
             return best;

@@ -74,10 +74,12 @@ namespace RimMandrake.Scarlands
             Pawn p = Pawn;
             if (p == null || !p.Spawned || p.Dead || !parent.IsHashIntervalTick(Props.checkIntervalTicks)) return;
             int now = Find.TickManager.TicksGame;
-            if (!RM_WarscarSettings.chotrixEnabled || p.Downed || now < revealUntil) { if (!RM_WarscarSettings.chotrixEnabled || p.Downed) Reveal(); return; }
-            // Hurt shortly after a bite: flee.
+            if (!RM_WarscarSettings.chotrixEnabled || p.Downed) { Reveal(); return; }
+            // Hurt shortly after a bite: flee. Checked before the reveal window returns, so a long reveal setting
+            // (up to 15 s = 900 ticks) cannot outlast this 600-tick window and silently disable the flight.
             if (now - lastStrike < 600 && now >= fleeUntil && p.health.summaryHealth.SummaryHealthPercent < Props.hurtBelow)
                 fleeUntil = now + Props.fleeTicks;
+            if (now < revealUntil) return;
             Cloak();
             // Heat shimmer when it runs: the readable sign for an invisible thing.
             if (p.pather != null && p.pather.Moving && p.jobs != null && p.jobs.curJob != null
@@ -206,7 +208,7 @@ namespace RimMandrake.Scarlands
         protected override Job TryGiveJob(Pawn pawn)
         {
             CompChotrix c = pawn.TryGetComp<CompChotrix>();
-            if (c == null || !c.Fleeing || pawn.Downed) return null;
+            if (c == null || !RM_WarscarSettings.chotrixEnabled || !c.Fleeing || pawn.Downed) return null;
             Pawn threat = null; float bestD = 30f * 30f;
             IReadOnlyList<Pawn> all = pawn.Map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < all.Count; i++)

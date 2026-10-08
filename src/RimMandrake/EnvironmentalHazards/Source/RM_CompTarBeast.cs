@@ -262,9 +262,9 @@ namespace RimMandrake.EnvironmentalHazards
         public override void CompTick()
         {
             base.CompTick();
-            if (!parent.Spawned || !parent.IsHashIntervalTick(250))
+            if (!RM_EnvironmentalHazardsSettings.tarBeastEnabled || !parent.Spawned || !parent.IsHashIntervalTick(250))
             {
-                return;
+                return; // mod option off: the pump relay must not wake a beast the option disables
             }
             float radius = Props.radius * RM_EnvironmentalHazardsSettings.tarBeastPumpWakeFactor;
             CompCanBeDormant dormant = parent.GetComp<CompCanBeDormant>();

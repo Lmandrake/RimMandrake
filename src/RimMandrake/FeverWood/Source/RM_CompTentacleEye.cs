@@ -28,7 +28,17 @@ namespace RimMandrake.FeverWood
 
             if (Find.TickManager.TicksGame - firstHitTick >= Props.retreatWindowTicks)
             {
-                Retreat();
+                // The ladder is judged on damage dealt "before it withdraws": moderate resolves when the window
+                // closes, so the player can keep pushing toward severe within the same window.
+                float maxHp = parent.MaxHitPoints > 0 ? parent.MaxHitPoints : 1;
+                if (damageThisWindow >= maxHp * Props.moderateDamageFraction)
+                {
+                    DriveOffMapWide();
+                }
+                else
+                {
+                    Retreat();
+                }
             }
         }
 
@@ -49,17 +59,13 @@ namespace RimMandrake.FeverWood
 
             float maxHp = parent.MaxHitPoints > 0 ? parent.MaxHitPoints : 1;
             bool severe = damageThisWindow >= maxHp * Props.severeDamageFraction;
-            bool moderate = damageThisWindow >= maxHp * Props.moderateDamageFraction;
             bool aboutToDie = parent.HitPoints <= 0 || parent.Destroyed;
 
             if (severe || aboutToDie)
             {
                 KillPermanently();
             }
-            else if (moderate)
-            {
-                DriveOffMapWide();
-            }
+            // MODERATE resolves at window close (CompTick), not on the hit.
         }
 
         private void DriveOffMapWide()

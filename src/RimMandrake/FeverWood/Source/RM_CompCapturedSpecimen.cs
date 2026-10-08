@@ -135,16 +135,25 @@ namespace RimMandrake.FeverWood
                 {
                     continue;
                 }
-                int last = lastProducedTick.TryGetValue(p.thing, out int t) ? t : Find.TickManager.TicksGame;
+                if (!lastProducedTick.TryGetValue(p.thing, out int last))
+                {
+                    // No clock yet (product added to an existing tank, or older save): start it now, or the
+                    // window would read 0 on every check and the product would never roll.
+                    lastProducedTick[p.thing] = Find.TickManager.TicksGame;
+                    continue;
+                }
                 if (!Rand.MTBEventOccurs(p.mtbDays, TicksPerDay, RM_TankKernel.ProductionWindow(Find.TickManager.TicksGame, last)))
                 {
                     continue;
                 }
 
-                lastProducedTick[p.thing] = Find.TickManager.TicksGame;
                 Thing produced = ThingMaker.MakeThing(p.thing);
                 produced.stackCount = Mathf.Clamp(p.countRange.RandomInRange, 1, p.thing.stackLimit);
-                GenPlace.TryPlaceThing(produced, parent.Position, parent.Map, ThingPlaceMode.Near);
+                if (!GenPlace.TryPlaceThing(produced, parent.Position, parent.Map, ThingPlaceMode.Near))
+                {
+                    continue; // nowhere to put it: the event stays pending (clock not advanced), nothing taught
+                }
+                lastProducedTick[p.thing] = Find.TickManager.TicksGame;
 
                 if (!taught && Props.teachesColonyWarning)
                 {
@@ -195,7 +204,7 @@ namespace RimMandrake.FeverWood
             }
             Map map = parent.Map;
             IntVec3 pos = parent.Position;
-            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(Props.occupantKindDefName);
+            PawnKindDef kind = YoungKind(Props); // same resolver as release (follows occupantLikeTank)
 
             if (!parent.Destroyed)
             {

@@ -19,6 +19,12 @@ namespace RimMandrake.CreatureBehaviors
 
         public RM_CompProperties_ProximityPsychicStun Props => (RM_CompProperties_ProximityPsychicStun)props;
 
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref lastTriggerTick, "rmPsychicStunLastTriggerTick", -999999);
+        }
+
         public override void CompTickRare()
         {
             base.CompTickRare();

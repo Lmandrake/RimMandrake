@@ -207,6 +207,12 @@ namespace RimMandrake.FlowWorks.LiquidTypes
 				{
 					continue;
 				}
+				// Skip a cell holding another liquid before ranking by room, so a roomier foreign cell never hides a
+				// compatible one beside it (GPT FlowWorks review #20). Same predicate TryPourLevel applies.
+				if (!RM_StockMath.FluidsCompatible(ex.FillAt(c) > 0, ex.FluidAt(c), fluid))
+				{
+					continue;
+				}
 				int room = ex.DepthAt(c) - ex.FillAt(c);
 				if (room > bestRoom)
 				{

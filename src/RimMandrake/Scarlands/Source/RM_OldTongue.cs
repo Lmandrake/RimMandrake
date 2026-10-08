@@ -78,7 +78,7 @@ namespace RimMandrake.Scarlands
                     for (int i = 0; i < All.Count; i++)
                     {
                         CompInscribedPanel o = All[i];
-                        if (o != this && !o.read && o.AnalysisID == AnalysisID && o.parent.Spawned)
+                        if (o != this && !o.read && o.AnalysisID == AnalysisID && o.parent.Spawned && o.parent.Map == parent.Map)
                             where.Add("(" + o.parent.Position.x + "," + o.parent.Position.z + ")");
                     }
                     if (where.Count > 0) sb.Append("; other unread: " + string.Join(" ", where.ToArray()));

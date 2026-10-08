@@ -190,9 +190,10 @@ namespace RimMandrake.Scarlands
         private int sweepNextTick;
         private List<IntVec3> buried = new List<IntVec3>();
 
+        private HashSet<int> liftHit = new HashSet<int>();   // pawns the current lift front already dosed (saved)
+
         // not saved
         private HashSet<int> craterIdx;
-        private readonly HashSet<int> liftHit = new HashSet<int>();
         private int lastBatchCell = -1;
 
         public MapComponent_Settling(Map map) : base(map) { }
@@ -217,6 +218,8 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref sweepCellsPerStep, "sweepCellsPerStep", 0);
             Scribe_Collections.Look(ref buried, "buried", LookMode.Value);
             if (buried == null) buried = new List<IntVec3>();
+            Scribe_Collections.Look(ref liftHit, "liftHit", LookMode.Value);
+            if (liftHit == null) liftHit = new HashSet<int>();
         }
 
         private bool OnWarscar { get { return RM_WarscarSettings.Governs(map.Biome); } }   // the Warscar, or an opted-in cross-biome map
@@ -271,6 +274,9 @@ namespace RimMandrake.Scarlands
             {
                 IntVec3 c = buried[i];
                 if (HasFilm(c)) continue; // the writer never lays on these; defensive
+                // Something built over the cell since generation: keep the record until the cell is clear again,
+                // never spawn into (and wipe) what stands there.
+                if (c.GetEdifice(map) != null || !c.Walkable(map)) continue;
                 int open = 0, film = 0;
                 for (int d = 0; d < 8; d++)
                 {
@@ -284,7 +290,7 @@ namespace RimMandrake.Scarlands
                 if (!ok) continue;
                 buried.RemoveAt(i);
                 Thing shell = ThingMaker.MakeThing(RM_SettlingDefOf.RM_BuriedOrdnance);
-                GenSpawn.Spawn(shell, c, map);
+                GenSpawn.Spawn(shell, c, map, WipeMode.VanishOrMoveAside);
                 Messages.Message("A clean round spot in the film: something lies under the slag.", new TargetInfo(c, map), MessageTypeDefOf.CautionInput, false);
             }
         }
@@ -295,6 +301,7 @@ namespace RimMandrake.Scarlands
         {
             windyTicks = 0;
             liftHit.Clear();
+            craterIdx = null;   // re-read crater bowls each Settling, so built or removed craters count
         }
 
         public void OnSettlingEnded()
@@ -365,12 +372,19 @@ namespace RimMandrake.Scarlands
 
         public override void MapComponentTick()
         {
-            if (!OnWarscar) return;
             int now = Find.TickManager.TicksGame;
-            if (sweepActive) SweepTick(now);
+            if (sweepActive) SweepTick(now);   // a sweep already under way finishes even if the map stops being governed
             if (now % SampleInterval != 0) return;
 
             GameCondition cond = map.gameConditionManager.GetActiveCondition(RM_SettlingDefOf.RM_Settling);
+            if (!OnWarscar)
+            {
+                // Opted out (cross-biome applicability turned off) mid-Settling: end the permanent condition here,
+                // or it would keep its toxic tick with nothing left to end it.
+                calmTicks = 0;
+                if (cond != null) cond.End();
+                return;
+            }
             if (!RM_WarscarSettings.settlingEnabled)
             {
                 calmTicks = 0;
@@ -509,6 +523,7 @@ namespace RimMandrake.Scarlands
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            this.FailOn(() => Shell == null || !Shell.defuseWanted);   // order cancelled mid-job
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             yield return Toils_General.Wait(300).FailOnDestroyedNullOrForbidden(TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A);
             Toil fin = new Toil();
@@ -585,6 +600,7 @@ namespace RimMandrake.Scarlands
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            this.FailOn(() => !(job.GetTarget(TargetIndex.A).Thing is Building_BuriedOrdnance s) || !s.triggerWanted);   // order cancelled mid-job
             yield return Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell);
             yield return Toils_General.Wait(90).FailOnDespawnedNullOrForbidden(TargetIndex.A);
             Toil fin = new Toil();
@@ -623,6 +639,7 @@ namespace RimMandrake.Scarlands
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            this.FailOn(() => !RM_WarscarSettings.warDustEnabled);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             yield return Toils_General.Wait(80).FailOnDestroyedNullOrForbidden(TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A);
             Toil fin = new Toil();

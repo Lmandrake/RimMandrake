@@ -366,6 +366,39 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: shut F={held} holds={holds} opened={opened} grate={grate} worstImbalance={worst}";
 		}
 
+		/// <summary>GPT FlowWorks review #10: a shut sluice in the sink band neither drains nor fills.</summary>
+		public static string SealedSinkHolds()
+		{
+			Func<bool, int> run = sealedGate =>
+			{
+				var w = new ArrayWorld(3, 1);
+				w.sink[0] = true;
+				w.k.edgeSinksEnabled = true;
+				w.k.depth[0] = 2; w.k.fill[0] = 2; w.cellFluid[0] = ArrayWorld.Water;
+				w.k.sealedCell = idx => sealedGate && idx == 0;
+				for (int p = 0; p < 10; p++) w.Pulse(new[] { 0 });
+				return w.k.fill[0];
+			};
+			int shut = run(true), open = run(false);
+			return shut == 2 && open == 0
+				? "OK: sealed sink keeps F=2; unsealed sink drains to 0"
+				: $"BROKEN: sealed sink F={shut} (want 2), unsealed F={open} (want 0)";
+		}
+
+		/// <summary>GPT FlowWorks review #28: a body of exactly maxCells is complete, not truncated.</summary>
+		public static string CollectBodyExactCapNotTruncated()
+		{
+			var src = new[] { true, true, true };
+			var found = new List<int>();
+			RM_FlowKernel.CollectBody(3, 1, 0, i => src[i], i => -1, 3, found, new List<int>(), new HashSet<int>(),
+				out bool _, out bool exact);
+			RM_FlowKernel.CollectBody(3, 1, 0, i => src[i], i => -1, 2, found, new List<int>(), new HashSet<int>(),
+				out bool _, out bool over);
+			return !exact && over && found.Count == 2
+				? "OK: 3 cells at cap 3 complete; at cap 2 truncated with 2 kept"
+				: $"BROKEN: exact={exact} (want false) over={over} (want true) kept={found.Count}";
+		}
+
 		public static string ScarceSupplyPaidByPosition()
 		{
 			Func<int[], (int a, int b)> run = order =>

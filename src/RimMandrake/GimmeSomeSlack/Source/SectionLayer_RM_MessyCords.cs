@@ -33,6 +33,8 @@ namespace RimMandrake.GimmeSomeSlack
         /// how many floor strands it left out for the per-frame ripple.</summary>
         public int plantVerts, plantOpenStrands, plantRoofedStrands, alphaMaxOpen, alphaMaxRoofed, rippleSkipped;
         private const int MaxMeshVerts = 65000;
+        /// <summary>Ribbons/quads dropped because a sub-mesh hit MaxMeshVerts (cumulative; probe-readable).</summary>
+        public static int OverflowDrops;
 
         public SectionLayer_RM_MessyCords(Section section) : base(section)
         {
@@ -212,7 +214,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (pts.Count < 2) return 0;
             LayerSubMesh sm = GetSubMesh(mat);
             int start = sm.verts.Count;
-            if (start + 2 * pts.Count > MaxMeshVerts) return 0;   // 16-bit index mesh: drop, never corrupt
+            if (start + 2 * pts.Count > MaxMeshVerts) { OverflowDrops++; return 0; }   // 16-bit index mesh: drop, never corrupt (counted: GPT review #15)
             float hw = width / 2f;
             double tile = width * 4.0;
             double u = s0 * 4.0;
@@ -243,7 +245,7 @@ namespace RimMandrake.GimmeSomeSlack
         {
             LayerSubMesh sm = GetSubMesh(mat);
             int start = sm.verts.Count;
-            if (start + 4 > MaxMeshVerts) return 0;
+            if (start + 4 > MaxMeshVerts) { OverflowDrops++; return 0; }
             float ca = Mathf.Cos(angle), sa = Mathf.Sin(angle);
             Vector2[] corners = { new Vector2(-sx, -sz), new Vector2(-sx, sz), new Vector2(sx, sz), new Vector2(sx, -sz) };
             Vector2[] uv = { new Vector2(u0, v0), new Vector2(u0, v1), new Vector2(u1, v1), new Vector2(u1, v0) };

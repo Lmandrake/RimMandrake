@@ -288,6 +288,9 @@ namespace RimMandrake.Stillsand
         public void ClearAll()
         {
             wetUntil.Clear();
+            // ...and the pour it drew swimmers to is wiped with it.
+            lastPourCell = IntVec3.Invalid;
+            drawUntilTick = -1;
         }
 
         public override void MapComponentTick()

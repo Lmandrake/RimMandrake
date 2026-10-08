@@ -1507,6 +1507,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(r.StartsWith("OK"), r);
             });
 
+            Case("Sealed_sink_does_not_drain", () =>
+            {
+                string r = FlowKernelFuzz.SealedSinkHolds();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+            Case("CollectBody_exact_cap_not_truncated", () =>
+            {
+                string r = FlowKernelFuzz.CollectBodyExactCapNotTruncated();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

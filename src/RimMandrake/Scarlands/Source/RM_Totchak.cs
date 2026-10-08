@@ -41,6 +41,8 @@ namespace RimMandrake.Scarlands
             if (!parent.Spawned || !parent.IsHashIntervalTick(Props.checkIntervalTicks)) return;
             CompCanBeDormant d = Dormant;
             if (d == null) return;
+            // Switched off while awake (announced or not): back to sleep, the same state a disabled waking gets.
+            if (d.Awake && !RM_WarscarSettings.totchakEnabled) { d.ToSleep(); announced = false; return; }
             if (d.Awake && !announced)
             {
                 announced = true;
@@ -163,6 +165,7 @@ namespace RimMandrake.Scarlands
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedOrNull(TargetIndex.A);
+            this.FailOn(() => !RM_WarscarSettings.totchakEnabled);
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             Toil bite = new Toil();
             bite.defaultCompleteMode = ToilCompleteMode.Never;

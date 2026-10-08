@@ -56,6 +56,25 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref bonusApplied, "deepfireBonusApplied", false);
         }
 
+        // A stackable injected target (e.g. a modded throwable weapon) must
+        // not merge differently-coated units, and a split piece keeps the
+        // coating and the one-time bonus latch (GPT review #2).
+        public override bool AllowStackWith(Thing other)
+        {
+            CompDeepfire o = other.TryGetComp<CompDeepfire>();
+            if (o == null) return base.AllowStackWith(other);
+            return coats == o.coats && bonusApplied == o.bonusApplied && base.AllowStackWith(other);
+        }
+
+        public override void PostSplitOff(Thing piece)
+        {
+            base.PostSplitOff(piece);
+            CompDeepfire o = piece.TryGetComp<CompDeepfire>();
+            if (o == null || o == this) return;
+            o.coats = coats;
+            o.bonusApplied = bonusApplied;
+        }
+
         // ThingWithComps.Notify_ColorChanged() (Verse/ThingWithComps.cs)
         // already calls this on every comp whenever a Building's paint or a
         // CompColorable's colour changes -- vanilla dye, Dub's Paint Shop,

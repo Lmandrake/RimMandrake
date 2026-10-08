@@ -147,32 +147,41 @@ namespace RimMandrake.DivingInteraction
                 return;
             }
 
-            for (int i = 0; i < SamplesPerTick; i++)
+            // Cosmetic draws on their own seeded stream (camera state must not shift gameplay Rand).
+            Rand.PushState(Gen.HashCombineInt(Find.TickManager.TicksGame, map.uniqueID));
+            try
             {
-                IntVec3 cell = new IntVec3(
-                    Rand.RangeInclusive(view.minX, view.maxX), 0,
-                    Rand.RangeInclusive(view.minZ, view.maxZ));
-
-                byte g = grade[map.cellIndices.CellToIndex(cell)];
-                if (g == 0 || cell.Fogged(map))
+                for (int i = 0; i < SamplesPerTick; i++)
                 {
-                    continue;
+                    IntVec3 cell = new IntVec3(
+                        Rand.RangeInclusive(view.minX, view.maxX), 0,
+                        Rand.RangeInclusive(view.minZ, view.maxZ));
+
+                    byte g = grade[map.cellIndices.CellToIndex(cell)];
+                    if (g == 0 || cell.Fogged(map))
+                    {
+                        continue;
+                    }
+
+                    bool hull = g == 2;
+                    if (!Rand.Chance(hull ? HullBoilChance : ThingBoilChance))
+                    {
+                        continue;
+                    }
+
+                    float size = hull
+                        ? Rand.Range(HullBoilSizeMin, HullBoilSizeMax)
+                        : Rand.Range(ThingBoilSizeMin, ThingBoilSizeMax);
+
+                    Vector3 loc = cell.ToVector3Shifted();
+                    loc.x += Rand.Range(-0.35f, 0.35f);
+                    loc.z += Rand.Range(-0.35f, 0.35f);
+                    FleckMaker.ThrowSmoke(loc, map, size);
                 }
-
-                bool hull = g == 2;
-                if (!Rand.Chance(hull ? HullBoilChance : ThingBoilChance))
-                {
-                    continue;
-                }
-
-                float size = hull
-                    ? Rand.Range(HullBoilSizeMin, HullBoilSizeMax)
-                    : Rand.Range(ThingBoilSizeMin, ThingBoilSizeMax);
-
-                Vector3 loc = cell.ToVector3Shifted();
-                loc.x += Rand.Range(-0.35f, 0.35f);
-                loc.z += Rand.Range(-0.35f, 0.35f);
-                FleckMaker.ThrowSmoke(loc, map, size);
+            }
+            finally
+            {
+                Rand.PopState();
             }
         }
 

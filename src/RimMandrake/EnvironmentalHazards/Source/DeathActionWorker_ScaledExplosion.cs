@@ -44,11 +44,15 @@ namespace RimMandrake.EnvironmentalHazards
             IntVec3 center = corpse.Position;
             Map map = corpse.Map;
 
-            // -1 is DoExplosion's own sentinel for "use damageDef.defaultDamage" —
-            // only a real configured amount is scaled by the mod option.
-            int damageAmount = p.damageAmount >= 0
-                ? Mathf.RoundToInt(p.damageAmount * Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier))
-                : p.damageAmount;
+            // -1 is DoExplosion's own sentinel for "use damageDef.defaultDamage";
+            // resolve it here so the mod option scales the default too (an
+            // unscaled sentinel kept default-damage explosions live at 0x).
+            int baseAmount = p.damageAmount >= 0
+                ? p.damageAmount
+                : (p.damageDef != null ? p.damageDef.defaultDamage : p.damageAmount);
+            int damageAmount = baseAmount >= 0
+                ? Mathf.RoundToInt(baseAmount * Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier))
+                : baseAmount;
 
             GenExplosion.DoExplosion(
                 center,

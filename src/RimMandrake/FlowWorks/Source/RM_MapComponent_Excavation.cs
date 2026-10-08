@@ -547,18 +547,20 @@ namespace RimMandrake.FlowWorks
 		/// <summary>§5's fill-in path will call this when displaced liquid has
 		/// nowhere to go. It is the ONE sanctioned exception to conservation of
 		/// mass in the whole design, so it is recorded and announced rather
-		/// than quietly dropped. The fill-in designator itself is program 2's.</summary>
-		public void NotifyOverflowDestroyed(float fillUnits)
+		/// than quietly dropped. The fill-in designator itself is program 2's.
+		/// Counted in grid LEVELS (the unit F is stored in), not stock units: the one caller,
+		/// ReportOverflow, passes levels and its player message says "level(s)".</summary>
+		public void NotifyOverflowDestroyed(float levels)
 		{
-			if (fillUnits <= 0f)
+			if (levels <= 0f)
 			{
 				return;
 			}
-			overflowDestroyedTotal += fillUnits;
+			overflowDestroyedTotal += levels;
 			if (Prefs.DevMode)
 			{
 				Log.Warning("[RimMandrake.FlowWorks] conservation exception: " +
-					fillUnits.ToString("F1") + " fill-units overflowed with nowhere to go and were " +
+					levels.ToString("F1") + " fill level(s) overflowed with nowhere to go and were " +
 					"destroyed (spec §5 — the only sanctioned case). Map total now " +
 					overflowDestroyedTotal.ToString("F1") + ".");
 			}
@@ -742,7 +744,9 @@ namespace RimMandrake.FlowWorks
 					{
 						continue;
 					}
-					if (IsExcavated(n) || IsSourceCell(n))
+					// A shut sluice seals its cell for displacement exactly as for the pulse (the kernel's sealedCell):
+					// liquid is neither credited into it nor conducted past it (GPT FlowWorks review #7).
+					if ((IsExcavated(n) || IsSourceCell(n)) && !RM_FlowDoorRules.SealsLiquid(map.edificeGrid[n]))
 					{
 						seen.Add(n);
 						queue.Enqueue(n);
@@ -990,16 +994,15 @@ namespace RimMandrake.FlowWorks
 			if (superdeepCellCount > 0)
 			{
 				superdeepTrap.Tick(map, this);
-				RM_PitExposure.Tick(map, this);
 			}
+			// Always (every 250 ticks, one hediff lookup per pawn): the exposure hediff has no severityPerDay comp, so
+			// this is its only recovery route, and it must keep running after the map's last pit is filled in
+			// (GPT FlowWorks review #19).
+			RM_PitExposure.Tick(map, this);
 			liquidFire.Tick(map, this);
 			if (excavatedCells.Count > 0)
 			{
 				RM_PitFillEffects.Tick(map, this);
-			}
-			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
-			{
-				return;
 			}
 			int now = Find.TickManager.TicksGame;
 			if (now < nextPulseTick)
@@ -1007,6 +1010,13 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			nextPulseTick = now + RimMandrakeFlowWorksSettings.PulseIntervalTicks;
+			if (!RimMandrakeFlowWorksSettings.depthEngineEnabled)
+			{
+				// Nothing pours with the engine off, but a fire still burning (Tick above keeps its heat and harm)
+				// must still consume its fuel, or it burns forever (GPT FlowWorks review #18).
+				liquidFire.BurnPulse(map, this, RimMandrakeFlowWorksSettings.PulseIntervalTicks);
+				return;
+			}
 			DoPulse();
 		}
 

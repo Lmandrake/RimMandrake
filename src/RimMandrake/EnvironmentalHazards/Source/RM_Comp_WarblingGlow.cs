@@ -106,7 +106,6 @@ namespace RimMandrake.EnvironmentalHazards
             v = Mathf.Clamp01(v + wavePrimary * p.valuePulseFraction * qualityScale);
             Color newColor = Color.HSVToRGB(h, s, v);
             newColor.a = 1f;
-            glowerCache.GlowColor = new ColorInt(newColor);
 
             // Radius: driven by the SECOND wave (different period) so the
             // light doesn't just get brighter and bigger in lockstep — it
@@ -115,9 +114,14 @@ namespace RimMandrake.EnvironmentalHazards
             float newRadius = Mathf.Max(0.1f, baseRadius * (1f + waveSecondary * p.radiusPulseFraction * qualityScale));
             if (!Mathf.Approximately(newRadius, glowerCache.GlowRadius))
             {
-                glowerCache.GlowRadius = newRadius;
-                glowerCache.ForceRegister(parent.Map);
+                glowerCache.GlowRadius = newRadius; // plain field write, no re-register
             }
+
+            // Set radius first, then colour: CompGlower's GlowColor setter
+            // de/re-registers the glower once, and only while it should be
+            // lit. The old trailing ForceRegister registered a second time
+            // per update and re-lit an unpowered or flicked-off lamp.
+            glowerCache.GlowColor = new ColorInt(newColor);
         }
 
         // Awful..Legendary -> 0.5x..2x, applied to both pulse fractions

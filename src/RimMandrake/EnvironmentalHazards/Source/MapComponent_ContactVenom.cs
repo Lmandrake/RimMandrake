@@ -102,10 +102,10 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             // Mod option: off means the plant stays where it is and does
-            // nothing — inert, not removed. Every clock already running
-            // FREEZES rather than resetting (no sampling, no pruning), so
-            // turning the option back on resumes instead of forgiving; the
-            // same posture every other timed mechanism in this kit takes.
+            // nothing — inert, not removed. No sampling and no pruning run
+            // while off, but the stored deadlines are absolute game ticks, so
+            // time spent disabled still counts: on re-enable an overdue row
+            // scratches on its next contact or is pruned at the next pass.
             if (!RM_EnvironmentalHazardsSettings.contactVenomEnabled)
             {
                 return;
@@ -126,7 +126,9 @@ namespace RimMandrake.EnvironmentalHazards
 
         private void Sample(int now)
         {
-            IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+            // Snapshot: a scratch can kill and despawn a pawn, which would
+            // shift the live list under the loop and skip the next pawn.
+            List<Pawn> pawns = new List<Pawn>(map.mapPawns.AllPawnsSpawned);
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn pawn = pawns[i];

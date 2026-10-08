@@ -358,6 +358,16 @@ namespace RimMandrake.FeverWood
         {
             RM_GameCondition_OilBoil.lastLightningTick = Find.TickManager.TicksGame;
         }
+
+        // DoStrike is static (IntVec3 strikeLoc, Map map, ref Mesh boltMesh): spark the struck cell on its own map
+        // directly, so a strike in the haze flashes even when its explosion lights no Fire thing.
+        public static void Postfix(IntVec3 strikeLoc, Map map)
+        {
+            if (map != null && strikeLoc.IsValid)
+            {
+                RM_OilBoil.TrySpark(map, strikeLoc, "a dry-lightning strike");
+            }
+        }
     }
 
     /// <summary>Proof hooks for the oil_boil chain (static_call, args "current").</summary>

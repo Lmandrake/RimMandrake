@@ -202,19 +202,26 @@ namespace RimMandrake.GimmeSomeSlack
                 return;
             }
             var sw = System.Diagnostics.Stopwatch.StartNew();
-            CordWorld world = CordWorldAdapter.Snapshot(map);
-            LastWorld = world;
             CordBuilder b = builder;
             List<LaidPiece> next;
-            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
-            Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
-            // stage 2: each run's pile art follows ITS look (strips in Modern, junction boxes otherwise); unstyled = default
-            opt.PileAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
-            try { next = b.Build(world, opt, c => LiveNow(c)); }
+            Dictionary<Cell, Aerial.CellStyle> styled;
+            // GPT review 2026-10-08 #10: the snapshot and style scan are guarded with the build, and a failure keeps the
+            // previously published pieces (a later regenerate retries) instead of publishing an empty map of cords
+            try
+            {
+                CordWorld world = CordWorldAdapter.Snapshot(map);
+                LastWorld = world;
+                BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+                styled = Aerial.ConduitStylePicker.CellStyles(map);
+                Dictionary<Cell, Aerial.CellStyle> st = styled;
+                // stage 2: each run's pile art follows ITS look (strips in Modern, junction boxes otherwise); unstyled = default
+                opt.PileAt = c => st.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
+                next = b.Build(world, opt, c => LiveNow(c));
+            }
             catch (Exception ex)
             {
-                if (!buildErrorLogged) { buildErrorLogged = true; Log.Error("[GimmeSomeSlack] cord build failed, drawing no cords: " + ex); }
-                next = new List<LaidPiece>();
+                if (!buildErrorLogged) { buildErrorLogged = true; Log.Error("[GimmeSomeSlack] cord build failed, keeping the previous cords: " + ex); }
+                return;
             }
             Builds++;
             LastRebuildMs = sw.Elapsed.TotalMilliseconds;
@@ -323,9 +330,10 @@ namespace RimMandrake.GimmeSomeSlack
         /// glow at each live tip (the sparks are thrown flecks and only fly while time runs).</summary>
         private void DrawLiveGlow()
         {
+            if (Find.CurrentMap != map) return;   // GPT review 2026-10-08 #14: another map never zeroes this map's counter
             LastGlowDraws = 0;
             if (!GimmeSomeSlackSettings.enabled || !SparksAllowed) return;
-            if (Find.CurrentMap != map || CordMaterials.LiveGlow == null || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
+            if (CordMaterials.LiveGlow == null || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             if (SectionLayer_RM_MessyCords.CutsceneHides) return;
             float t = Time.realtimeSinceStartup;
             float y = AltitudeLayer.MoteLow.AltitudeFor();
@@ -355,8 +363,9 @@ namespace RimMandrake.GimmeSomeSlack
                 foreach (CordEnd e in p.Ends)
                 {
                     if (!liveEnds.TryGetValue(e.NetCell, out bool live) || !live) continue;
+                    // the drip schedule owns wall ends; skipped BEFORE counting so they never starve floor ends (GPT review #7)
+                    if (e.Wall && GimmeSomeSlackSettings.downedWire) continue;
                     if (++n > MaxSparkingEnds) return;
-                    if (e.Wall && GimmeSomeSlackSettings.downedWire) continue;   // the drip schedule owns wall ends
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
                     int period = Mathf.Max(12, Mathf.RoundToInt((e.Wall ? 50 : 80) / k));
                     if ((tick + (h & 0x7fff)) % period != 0) continue;
@@ -453,9 +462,9 @@ namespace RimMandrake.GimmeSomeSlack
 
         private void Flush(ref Mesh m, Material mat)
         {
+            if (mv.Count == 0 || mat == null) return;   // GPT review #13: no native mesh until there is something to draw
             Mesh mesh = Fresh(ref m);
             mesh.Clear();
-            if (mv.Count == 0 || mat == null) return;
             mesh.SetVertices(mv);
             mesh.SetUVs(0, mu);
             mesh.SetTriangles(mt, 0);
@@ -463,15 +472,41 @@ namespace RimMandrake.GimmeSomeSlack
             Graphics.DrawMesh(mesh, Matrix4x4.identity, mat, 0);
         }
 
+        /// <summary>GPT review #13: the per-frame motion meshes are native Unity objects; free them with the map.</summary>
+        public override void MapRemoved()
+        {
+            base.MapRemoved();
+            void Kill(ref Mesh m) { if (m != null) { UnityEngine.Object.Destroy(m); m = null; } }
+            Kill(ref hiMesh);
+            for (int i = 0; i < floorMeshes.Length; i++) { Kill(ref floorMeshes[i]); Kill(ref faceMeshes[i]); Kill(ref rippleMeshes[i]); }
+        }
+
+        /// <summary>Any point of pts[from .. from+count) inside the view (GPT review #4: a long strand stays drawn while
+        /// any of it is on screen, not only while one sample point is).</summary>
+        private static bool AnyInView(CellRect view, List<V2> pts, int from, int count)
+        {
+            int end = Math.Min(pts.Count, from + count);
+            for (int i = Math.Max(0, from); i < end; i++)
+                if (view.Contains(CordWorldAdapter.I(pts[i].Floor))) return true;
+            return false;
+        }
+
         private void DrawMotion()
         {
+            if (Find.CurrentMap != map) return;   // GPT review #14: another map never zeroes this map's counters
             WhipDraws = 0; WhipStillDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0; RippleDraws = 0; RippleVerts = 0;
-            if (!GimmeSomeSlackSettings.enabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
+            if (!GimmeSomeSlackSettings.enabled || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             if (SectionLayer_RM_MessyCords.CutsceneHides) return;
-            if (SectionLayer_RM_MessyCords.FarNow) return;            // far zoom: LOD only, no motion
-            CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(3);
             float now = Time.realtimeSinceStartup;
             float baseY = AltitudeLayer.Conduits.AltitudeFor() + 0.002f;
+            if (SectionLayer_RM_MessyCords.FarNow)
+            {
+                // far zoom: LOD only, no geometry motion -- but the downed-wire bursts (the only sparks a wall end throws
+                // while downedWire is on) and the selection highlight are not motion and keep running (GPT review #6)
+                DrawEffects(now, baseY);
+                return;
+            }
+            CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(3);
             float faceY = AltitudeLayer.BuildingOnTop.AltitudeFor() + SectionLayer_RM_MessyCords.FaceLift;
             bool whip = GimmeSomeSlackSettings.whip && GimmeSomeSlackSettings.breakReadout;
             // ---- B3 whipping live tails (floor)
@@ -493,8 +528,9 @@ namespace RimMandrake.GimmeSomeSlack
                             bool atStart = side == 0;
                             int cnt = atStart ? s.WhipA : s.WhipB;
                             if (cnt <= 0) continue;
-                            V2 tip = atStart ? s.Pts[cnt - 1] : s.Pts[s.Pts.Count - cnt];   // outer end of the tail; test it before allocating
-                            if (!view.Contains(CordWorldAdapter.I(tip.Floor))) continue;
+                            // any point of the tail on screen; tested before allocating (GPT review #4: the old single
+                            // test point was the JOINT, not the outer end)
+                            if (!AnyInView(view, s.Pts, atStart ? 0 : s.Pts.Count - cnt, cnt)) continue;
                             List<V2> tail = atStart ? s.Pts.GetRange(0, cnt) : s.Pts.GetRange(s.Pts.Count - cnt, cnt);
                             if (atStart) tail.Reverse();                       // tail[0] = the joint
                             ulong seed = CordRng.Hash("whip", p.Key, s.S0, atStart);
@@ -523,7 +559,9 @@ namespace RimMandrake.GimmeSomeSlack
             LastWind = wind;
             double gt = Find.TickManager.TicksGame / 60.0;
             ulong h = 1469598103934665603UL;
-            for (int v = 0; v < nv; v++)
+            // GPT review #12: no per-strand scan at all unless the CPU sway route is on
+            bool swayCpu = SwayOn && EffectiveSwayMode(out _) == SwayMode.CPU;
+            for (int v = 0; v < nv && swayCpu; v++)
             {
             mv.Clear(); mu.Clear(); mt.Clear();
             foreach (LaidPiece p in pieces)
@@ -531,7 +569,7 @@ namespace RimMandrake.GimmeSomeSlack
                 {
                     if (nv > 1 && MatIndexOf(p) != v) continue;
                     if (!s.Lifted || !SwaysNow(map, s)) continue;
-                    if (!view.Contains(CordWorldAdapter.I(s.Pts[0].Floor))) continue;
+                    if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
                     List<V2> sw = CordMotion.Sway(s.Pts, s.SwayW, gt, CordRng.Hash("sway", p.Key), 0.12 * GimmeSomeSlackSettings.swayAmplitude, wind);
                     SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, sw, SectionLayer_RM_MessyCords.StrandWidth, faceY, s.S0);
                     foreach (V2 q in sw)
@@ -559,7 +597,7 @@ namespace RimMandrake.GimmeSomeSlack
                         {
                             si++;
                             if (!RipplesNow(map, s)) continue;
-                            if (!view.Contains(CordWorldAdapter.I(s.Pts[s.Pts.Count / 2].Floor))) continue;
+                            if (!AnyInView(view, s.Pts, 0, s.Pts.Count)) continue;
                             List<V2> rp = CordMotion.Ripple(s.Pts, gt, CordRng.Hash("ripple", p.Key, si), CordMotion.RippleAmp * GimmeSomeSlackSettings.swayAmplitude, wind);
                             SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, rp, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
                             foreach (V2 q in rp)
@@ -574,6 +612,11 @@ namespace RimMandrake.GimmeSomeSlack
                     Flush(ref rippleMeshes[v], CordMaterials.StrandG(v));
                 }
             RippleHash = rh;
+            DrawEffects(now, baseY);
+        }
+
+        private void DrawEffects(float now, float baseY)
+        {
             // ---- B4 downed-wire bursts at live wall terminals (real-time schedule; flecks only while time runs)
             if (GimmeSomeSlackSettings.downedWire && SparksAllowed) DownedWires(now);
             // ---- B5 selection highlight
@@ -677,10 +720,13 @@ namespace RimMandrake.GimmeSomeSlack
 
         public override void MapComponentUpdate()
         {
-            if (StaleOffscreen)
+            // GPT review #1: when this frame already rebuilt, the dirty event may have landed AFTER that rebuild, so the
+            // flag is kept (deferred to the next frame) rather than cleared and lost
+            if (StaleOffscreen && builtFrame != Time.frameCount && GimmeSomeSlackSettings.enabled)
             {
                 StaleOffscreen = false;
-                if (builtFrame != Time.frameCount && GimmeSomeSlackSettings.enabled) { Rebuild(); OffscreenRebuilds++; }
+                Rebuild();
+                OffscreenRebuilds++;
             }
             GimmeSomeSlackProbe.Service(map, this);
             DrawLiveGlow();

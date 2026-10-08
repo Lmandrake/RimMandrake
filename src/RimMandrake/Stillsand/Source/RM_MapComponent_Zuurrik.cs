@@ -106,13 +106,14 @@ namespace RimMandrake.Stillsand
         private List<IntVec3> BloodCellsOnSand()
         {
             List<IntVec3> cells = new List<IntVec3>();
+            HashSet<IntVec3> seen = new HashSet<IntVec3>();
             foreach (ThingDef def in BloodFilthDefs)
             {
                 List<Thing> things = map.listerThings.ThingsOfDef(def);
                 for (int i = 0; i < things.Count && cells.Count < MaxBloodCellsScanned; i++)
                 {
                     IntVec3 c = things[i].Position;
-                    if (OnSand(c, map) && !cells.Contains(c))
+                    if (OnSand(c, map) && seen.Add(c))
                     {
                         cells.Add(c);
                     }
@@ -188,11 +189,14 @@ namespace RimMandrake.Stillsand
 
         private void TryBury()
         {
-            IntVec3 centre = swarm[0].Position;
-            if (HasWorkNear(centre))
+            // Quiet means quiet around EVERY member, not just the first one.
+            for (int i = 0; i < swarm.Count; i++)
             {
-                quietPolls = 0;
-                return;
+                if (swarm[i] != null && swarm[i].Spawned && HasWorkNear(swarm[i].Position))
+                {
+                    quietPolls = 0;
+                    return;
+                }
             }
             quietPolls++;
             if (quietPolls < QuietPollsToBury)

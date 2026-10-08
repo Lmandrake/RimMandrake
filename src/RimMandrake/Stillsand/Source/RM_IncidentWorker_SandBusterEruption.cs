@@ -78,6 +78,15 @@ namespace RimMandrake.Stillsand
             Map map = (Map)parms.target;
             parms.points *= PointsFactorCurve.Evaluate(parms.points);
             int moundCount = Mathf.Max(GenMath.RoundRandom(parms.points / MoundPoints), 1);
+            // The per-map cap is a real cap: existing mounds and tunnels still digging count against it.
+            int room = MaxMoundsPerMap
+                       - map.listerThings.ThingsOfDef(RM_StillsandDefOf.RM_SandBusterMound).Count
+                       - map.listerThings.ThingsOfDef(RM_StillsandDefOf.RM_SandBusterTunnel).Count;
+            if (room <= 0)
+            {
+                return false;
+            }
+            moundCount = Mathf.Min(moundCount, room);
             Thing thing = SpawnMounds(moundCount, map, parms.infestationLocOverride);
             if (thing == null)
             {

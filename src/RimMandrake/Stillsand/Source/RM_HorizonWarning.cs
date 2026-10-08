@@ -45,14 +45,35 @@ namespace RimMandrake.Stillsand
     {
         static RM_HorizonWarningPatches()
         {
+            const string rule = "[RimMandrake.Stillsand] horizon warning: ";
+            var tryFire = AccessTools.Method(typeof(Storyteller), nameof(Storyteller.TryFire));
+            var tryExecute = AccessTools.Method(typeof(IncidentWorker), nameof(IncidentWorker.TryExecute));
+            var entryCell = AccessTools.Method(typeof(RCellFinder), nameof(RCellFinder.TryFindRandomPawnEntryCell));
+            if (tryFire == null || tryExecute == null || entryCell == null)
+            {
+                Log.Error(rule + "a patch target was NOT FOUND (TryFire " + (tryFire != null) + ", TryExecute "
+                          + (tryExecute != null) + ", TryFindRandomPawnEntryCell " + (entryCell != null)
+                          + "); horizon warnings are off this session.");
+                return;
+            }
             Harmony harmony = new Harmony("mandrake.rm.stillsand.horizon");
-            harmony.Patch(AccessTools.Method(typeof(Storyteller), nameof(Storyteller.TryFire)),
-                prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryFirePrefix)));
-            harmony.Patch(AccessTools.Method(typeof(IncidentWorker), nameof(IncidentWorker.TryExecute)),
-                prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryExecutePrefix)),
-                finalizer: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryExecuteFinalizer)));
-            harmony.Patch(AccessTools.Method(typeof(RCellFinder), nameof(RCellFinder.TryFindRandomPawnEntryCell)),
-                prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(EntryCellPrefix)));
+            try
+            {
+                // Entry forcing first, the deferring TryFire prefix last: if anything fails,
+                // incidents are never deferred without their announced bearing being honoured.
+                harmony.Patch(tryExecute,
+                    prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryExecutePrefix)),
+                    finalizer: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryExecuteFinalizer)));
+                harmony.Patch(entryCell,
+                    prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(EntryCellPrefix)));
+                harmony.Patch(tryFire,
+                    prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryFirePrefix)));
+            }
+            catch (Exception e)
+            {
+                harmony.UnpatchAll(harmony.Id);
+                Log.Error(rule + "patching FAILED, all horizon patches removed: " + e);
+            }
         }
 
         [System.ThreadStatic] private static IntVec3 forcedEntry;
@@ -69,8 +90,10 @@ namespace RimMandrake.Stillsand
                                  || typeof(IncidentWorker_ThrumboPasses).IsAssignableFrom(w));
         }
 
-        public static void TryExecutePrefix(IncidentWorker __instance, IncidentParms parms)
+        public static void TryExecutePrefix(IncidentWorker __instance, IncidentParms parms, out KeyValuePair<IntVec3, Map> __state)
         {
+            // A nested incident must not wipe the outer one's announced entry: keep it, restore it after.
+            __state = new KeyValuePair<IntVec3, Map>(forcedEntry, forcedMap);
             forcedEntry = IntVec3.Invalid;
             forcedMap = null;
             if (!RM_SkeletonSettings.horizonWarningsEnabled || !RM_SkeletonSettings.horizonPassersEnabled
@@ -84,10 +107,10 @@ namespace RimMandrake.Stillsand
             forcedMap = map;
         }
 
-        public static System.Exception TryExecuteFinalizer(System.Exception __exception)
+        public static System.Exception TryExecuteFinalizer(System.Exception __exception, KeyValuePair<IntVec3, Map> __state)
         {
-            forcedEntry = IntVec3.Invalid;
-            forcedMap = null;
+            forcedEntry = __state.Key;
+            forcedMap = __state.Value;
             return __exception;
         }
 

@@ -70,6 +70,14 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
+            // The garden is the floor's own growth: a crop the player sowed (growing zone or
+            // planter) is not an offense against it.
+            IntVec3 pos = __instance.Position;
+            if (pos.InBounds(map)
+                && (map.zoneManager.ZoneAt(pos) is Zone_Growing || pos.GetEdifice(map) is Building_PlantGrower))
+            {
+                return;
+            }
             map.GetComponent<RM_MapComponent_ChillGardenDefense>()
                 ?.RegisterOffense(RM_GardenOffenseKind.Harvest, by, __instance.Position);
         }
@@ -80,7 +88,11 @@ namespace RimMandrake.DivingInteraction
     {
         public static void Postfix(Thing __instance, DamageInfo dinfo, float totalDamageDealt)
         {
-            Map map = __instance?.Map;
+            // A pawn killed by this hit is already despawned here (it dies inside
+            // DamageWorker.Apply, before Thing.TakeDamage calls PostApplyDamage), so its
+            // Map is null; its corpse holds it, so MapHeld/PositionHeld still resolve.
+            bool deadPawn = __instance is Pawn dp && dp.Dead;
+            Map map = deadPawn ? __instance.MapHeld : __instance?.Map;
             if (map == null || !RM_ChillFireGate.IsChillSeabedMap(map))
             {
                 return;
@@ -93,12 +105,12 @@ namespace RimMandrake.DivingInteraction
             if (__instance is Pawn victim && victim.Dead && RM_ChillGardenFloorLife.IsFloorLife(victim))
             {
                 map.GetComponent<RM_MapComponent_ChillGardenDefense>()
-                    ?.RegisterOffense(RM_GardenOffenseKind.Kill, dinfo.Instigator as Pawn, victim.Position);
+                    ?.RegisterOffense(RM_GardenOffenseKind.Kill, dinfo.Instigator as Pawn, victim.PositionHeld);
                 return;
             }
 
             bool isDirectedHeat = dinfo.Def == DamageDefOf.Flame || dinfo.Def == DamageDefOf.Burn;
-            if (!isDirectedHeat)
+            if (!isDirectedHeat || totalDamageDealt <= 0f || deadPawn)
             {
                 return;
             }

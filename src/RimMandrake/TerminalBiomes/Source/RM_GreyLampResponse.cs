@@ -34,6 +34,7 @@ namespace RimMandrake.TerminalBiomes
         private Dictionary<int, int> litTicks { get { return lamps.Lit; } }
         private HashSet<int> watched { get { return lamps.Watched; } }
         private HashSet<int> walkedIn = new HashSet<int>();
+        private HashSet<int> warnedWatch = new HashSet<int>(); // lamps whose watcher warning was actually delivered
         private int nextWatchOrderTick;
 
         public RM_MapComponent_GreyLampWatch(Map map) : base(map)
@@ -67,7 +68,13 @@ namespace RimMandrake.TerminalBiomes
             }
             if (!RM_TerminalBiomesSettings.GreyLampWatcherActive && !RM_TerminalBiomesSettings.GreyLampGiantActive)
             {
-                litTicks.Clear();
+                // Reset the whole burn book: the kernel only forgets latches of lamps it finds in Lit,
+                // so clearing Lit alone would strand Watched/Scraped/Answered across a re-enable.
+                lamps.Lit.Clear();
+                lamps.Watched.Clear();
+                lamps.Scraped.Clear();
+                lamps.Answered.Clear();
+                warnedWatch.Clear();
                 return;
             }
             Advance(Interval);
@@ -117,7 +124,7 @@ namespace RimMandrake.TerminalBiomes
                     return;
                 }
             }
-            bool first = watched.Add(lamp.thingIDNumber);
+            watched.Add(lamp.thingIDNumber); // the walk-in latch; the warning has its own latch below
             if (fessk.CurJobDef == watchJob || Find.TickManager.TicksGame < nextWatchOrderTick)
             {
                 return;
@@ -129,7 +136,7 @@ namespace RimMandrake.TerminalBiomes
             nextWatchOrderTick = Find.TickManager.TicksGame + 2500;
             Job job = JobMaker.MakeJob(watchJob, lamp, rim);
             fessk.jobs.StartJob(job, JobCondition.InterruptForced);
-            if (first)
+            if (warnedWatch.Add(lamp.thingIDNumber))
             {
                 Messages.Message("RM_GreyLampWatcherMsg".Translate(lamp.LabelShort), new TargetInfo(rim, map), MessageTypeDefOf.NeutralEvent);
             }
@@ -194,7 +201,7 @@ namespace RimMandrake.TerminalBiomes
                 return false;
             }
             Pawn giant = map.mapPawns.AllPawnsSpawned
-                .FirstOrDefault(p => p.def == giantDef && p.Faction == null && !p.Downed && !p.Dead && p.CanReach(lamp, PathEndMode.Touch, Danger.Deadly));
+                .FirstOrDefault(p => p.def == giantDef && p.Faction == null && !p.Downed && !p.Dead && p.CurJobDef != breakJob && p.CanReach(lamp, PathEndMode.Touch, Danger.Deadly));
             if (giant == null)
             {
                 giant = WalkIn("RM_Reefback");
@@ -277,6 +284,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Collections.Look(ref lamps.Answered, "answered", LookMode.Value);
             Scribe_Collections.Look(ref walkedIn, "walkedIn", LookMode.Value);
             Scribe_Values.Look(ref nextWatchOrderTick, "nextWatchOrderTick", 0);
+            Scribe_Collections.Look(ref warnedWatch, "warnedWatch", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 lamps.Lit = lamps.Lit ?? new Dictionary<int, int>();
@@ -284,6 +292,7 @@ namespace RimMandrake.TerminalBiomes
                 lamps.Scraped = lamps.Scraped ?? new HashSet<int>();
                 lamps.Answered = lamps.Answered ?? new HashSet<int>();
                 walkedIn = walkedIn ?? new HashSet<int>();
+                warnedWatch = warnedWatch ?? new HashSet<int>();
             }
         }
     }
@@ -359,6 +368,7 @@ namespace RimMandrake.TerminalBiomes
         {
             this.FailOnDespawnedOrNull(TargetIndex.A);
             this.FailOn(() => !(TargetThingA.TryGetComp<CompGlower>()?.Glows ?? false));
+            this.FailOn(() => !RM_TerminalBiomesSettings.GreyLampGiantActive); // switched off mid-job: stand down
             // A walked-in giant is sent home by RM_MapComponent_GreyLampWatch's
             // next step once this job ends (never from inside a finish action).
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);

@@ -23,7 +23,7 @@ namespace RimMandrake.TerminalBiomes
             if (ticksLeft < 0) ticksLeft = period;
             ticksLeft -= rareInterval;
             if (ticksLeft > 0) return false;
-            if (moving) return false;
+            if (moving) { ticksLeft = 0; return false; }   // overdue: hold at zero; a negative value means "uninitialised" above
             ticksLeft = period;
             return true;
         }

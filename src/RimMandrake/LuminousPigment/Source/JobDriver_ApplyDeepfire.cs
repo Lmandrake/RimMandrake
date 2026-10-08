@@ -61,7 +61,14 @@ namespace RimMandrake.LuminousPigment
             apply.initAction = delegate { workDone = 0f; };
             apply.tickIntervalAction = delegate(int delta)
             {
-                if (Target == null || Target.Destroyed || DeepfireStack == null)
+                // GPT review #4/#5: a target picked up/minified (Map null),
+                // already full, or un-designated, or a pawn no longer
+                // carrying the pigment, ends the job BEFORE anything is
+                // consumed.
+                if (Target == null || Target.Destroyed || !Target.Spawned || DeepfireStack == null
+                    || pawn.carryTracker.CarriedThing == null
+                    || Target.TryGetComp<CompDeepfire>()?.CanAddCoat != true
+                    || Target.Map.designationManager.DesignationOn(Target, DeepfireDefOf.RM_ApplyDeepfireDesignation) == null)
                 {
                     EndJobWith(JobCondition.Incompletable);
                     return;

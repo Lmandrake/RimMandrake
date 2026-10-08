@@ -82,7 +82,8 @@ namespace RimMandrake.DivingInteraction
 
             if (charge < 1f)
             {
-                charge = Mathf.Min(1f, charge + ChargePerRareTick);
+                float next = charge + ChargePerRareTick;
+                charge = next >= 1f - 1e-4f ? 1f : next;   // 48 float adds of 1/48 sum to 0.9999996; snap so step 48 is full
             }
 
             if (charge >= TellThreshold && base.Spawned)
@@ -255,7 +256,7 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
-            if (map?.Biome == null || map.Biome.defName != "RM_GreySea")
+            if (!RM_SeaFloorIdentity.IsFloorOf(map, "RM_GreySea"))
             {
                 return;
             }
@@ -265,9 +266,13 @@ namespace RimMandrake.DivingInteraction
             }
 
             ThingDef jacketDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_BrineJacket");
-            List<Thing> elders = map.listerThings.ThingsOfDef(
-                DefDatabase<ThingDef>.GetNamedSilentFail("RM_BrineElder"));
-            if (jacketDef == null || elders == null || elders.Count == 0)
+            ThingDef elderDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_BrineElder");
+            if (jacketDef == null || elderDef == null)
+            {
+                return;
+            }
+            List<Thing> elders = map.listerThings.ThingsOfDef(elderDef);
+            if (elders == null || elders.Count == 0)
             {
                 return;
             }
@@ -280,6 +285,12 @@ namespace RimMandrake.DivingInteraction
                 }
                 Thing target = p.CurJob.targetA.Thing;
                 if (target == null || target.def != jacketDef)
+                {
+                    continue;
+                }
+                // Disturbance is the act of mining, not the job assignment: the miner must be
+                // at the face (a pawn still walking to the jacket has not touched it yet).
+                if (!p.Position.AdjacentTo8WayOrInside(target))
                 {
                     continue;
                 }

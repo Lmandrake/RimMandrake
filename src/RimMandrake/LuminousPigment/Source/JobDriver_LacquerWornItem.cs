@@ -69,9 +69,11 @@ namespace RimMandrake.LuminousPigment
         {
             why = null;
             if (Station == null || Station.Destroyed || DeepfireStack == null) return false;
+            if (pawn.carryTracker.CarriedThing == null) return false; // GPT review #5: never "pay" with nothing
             if (Item == null || Item.Destroyed || WornGlowUtility.WearerOf(Item) != pawn) return false;
             CompDeepfire comp = Item.TryGetComp<CompDeepfire>();
             if (comp == null || !comp.CanAddCoat) return false;
+            if (!WornGlowUtility.LacquerAllowed(Item)) return false; // GPT review #7
             if (!LacquerWornItemUtility.StationUsable(Station))
             {
                 why = "The deepfire press lost power.";
@@ -128,6 +130,7 @@ namespace RimMandrake.LuminousPigment
             failReason = null;
             CompDeepfire comp = item?.GetComp<CompDeepfire>();
             if (comp == null || !comp.CanAddCoat) { failReason = "Already at the maximum number of coats."; return null; }
+            if (!WornGlowUtility.LacquerAllowed(item)) { failReason = "Painting this kind of item is disabled in Mod Settings."; return null; }
             if (station == null) { failReason = "Needs a powered, reachable deepfire press."; return null; }
             int cost = CostFor(item);
             Thing stack = DeepfireCostUtility.FindNearbyDeepfire(pawn, cost, forced: true);

@@ -107,6 +107,12 @@ namespace RimMandrake.FlowWorks.Drilling
 				return;
 			}
 
+			if (!RimMandrakeFlowWorksSettings.FluidAllowed(canalFluid))
+			{
+				// A liquid switched off in Mod Settings never pours into a cut, so the reserve is not spent.
+				return;
+			}
+
 			byte depth = excavation.DepthAt(outlet);
 			byte fill = excavation.FillAt(outlet);
 			int room = depth - fill;
@@ -137,8 +143,12 @@ namespace RimMandrake.FlowWorks.Drilling
 			{
 				return;
 			}
-			pendingUnits -= levels * unitPerLevel;
-			excavation.TrySetDriverFill(outlet, fill + levels, canalFluid);
+			// A refused fill (fluid disabled in settings, or a foreign liquid in the outlet) keeps
+			// the extracted units pending instead of discarding them (GPT FlowWorks review #5).
+			if (excavation.TrySetDriverFill(outlet, fill + levels, canalFluid))
+			{
+				pendingUnits -= levels * unitPerLevel;
+			}
 		}
 
 		public override string GetInspectString()

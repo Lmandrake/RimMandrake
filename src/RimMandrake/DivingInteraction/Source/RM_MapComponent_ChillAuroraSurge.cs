@@ -90,6 +90,7 @@ namespace RimMandrake.DivingInteraction
         private const int StateRescanIntervalTicks = 60;
         private const int DressingIntervalTicks = 90;
         private const int ShockCheckIntervalTicks = 250; // CompTickRare's own cadence
+        private static readonly List<Pawn> tmpShockPawns = new List<Pawn>();
 
         // Expected time-to-first-hit for a pawn standing still and exposed:
         // ~250/0.45 ticks ≈ 9-10 real seconds — enough of a beat to notice
@@ -209,7 +210,9 @@ namespace RimMandrake.DivingInteraction
             {
                 surgeActive = true;
                 ticksUntilDressing = 1;
-                ticksUntilShockCheck = 1;
+                // A full interval of warning before the first shock roll: the letter is the
+                // reaction window, so no pawn is struck on the tick it arrives.
+                ticksUntilShockCheck = ShockCheckIntervalTicks;
                 Find.LetterStack.ReceiveLetter(
                     "RM_ChillAuroraSurge_StartLabel".Translate(),
                     "RM_ChillAuroraSurge_StartText".Translate(),
@@ -225,11 +228,13 @@ namespace RimMandrake.DivingInteraction
         // ---- deliverable 3: risk. ----
         private void ScanShockRisk()
         {
-            IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
-            for (int i = 0; i < pawns.Count; i++)
+            // Snapshot: a shock can kill and despawn a pawn, which mutates the live list.
+            tmpShockPawns.Clear();
+            tmpShockPawns.AddRange(map.mapPawns.AllPawnsSpawned);
+            for (int i = 0; i < tmpShockPawns.Count; i++)
             {
-                Pawn p = pawns[i];
-                if (p == null || p.Dead || p.Downed || !p.Spawned)
+                Pawn p = tmpShockPawns[i];
+                if (p == null || p.Dead || p.Downed || !p.Spawned || p.Map != map)
                 {
                     continue;
                 }
@@ -290,9 +295,19 @@ namespace RimMandrake.DivingInteraction
                 return;
             }
 
-            ThrowIlissGlow();
-            ThrowSkyharpShimmer(view);
-            ThrowAmbientArcs(view);
+            // Cosmetic draws on their own seeded stream: whether the camera is on this map must
+            // never shift the gameplay Rand sequence the shock rolls use.
+            Rand.PushState(Gen.HashCombineInt(Find.TickManager.TicksGame, map.uniqueID));
+            try
+            {
+                ThrowIlissGlow();
+                ThrowSkyharpShimmer(view);
+                ThrowAmbientArcs(view);
+            }
+            finally
+            {
+                Rand.PopState();
+            }
         }
 
         private void ThrowIlissGlow()

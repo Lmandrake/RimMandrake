@@ -228,7 +228,7 @@ namespace RimMandrake.EnvironmentalHazards
             yield return Toils_Goto.GotoThing(StructInd, PathEndMode.Touch);
 
             Toil eat = ToilMaker.MakeToil("MakeNewToils");
-            eat.tickIntervalAction = delegate
+            eat.tickIntervalAction = delegate (int delta)
             {
                 Thing target = job.GetTarget(StructInd).Thing;
                 if (target == null || target.Destroyed)
@@ -237,17 +237,30 @@ namespace RimMandrake.EnvironmentalHazards
                     return;
                 }
 
-                if (ticksUntilNextBite > 0)
+                // Satiation and the tar-beast option are checked by the job
+                // giver only; re-check here so a running job stops too.
+                RM_CompStationEater eater = pawn.TryGetComp<RM_CompStationEater>();
+                if (eater != null && (eater.Satiated
+                    || (!RM_EnvironmentalHazardsSettings.tarBeastEnabled && pawn.TryGetComp<RM_CompTarBeast>() != null)))
                 {
-                    ticksUntilNextBite--;
+                    EndJobWith(JobCondition.Succeeded);
                     return;
                 }
 
-                RM_CompStationEater eater = pawn.TryGetComp<RM_CompStationEater>();
+                ticksUntilNextBite -= delta;
+                if (ticksUntilNextBite > 0)
+                {
+                    return;
+                }
+
                 CompProperties_StationEater props = eater?.Props;
                 float damage = props?.eatDamagePerHit ?? 60f;
                 DamageDef damageDef = props?.eatDamageDef ?? DamageDefOf.Crush;
-                ticksUntilNextBite = props?.ticksPerBite ?? 180;
+                ticksUntilNextBite += props?.ticksPerBite ?? 180;
+                if (ticksUntilNextBite < 1)
+                {
+                    ticksUntilNextBite = 1;
+                }
 
                 string targetLabel = target.LabelCap;
                 IntVec3 targetCell = target.Position;

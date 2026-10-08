@@ -76,6 +76,7 @@ namespace RimMandrake.Scarlands
 
         public static bool Silenced(Map map, IntVec3 cell)
         {
+            if (!RM_WarscarSettings.chotrixEnabled) return false;   // the silence ring is a chotrix effect
             List<CompChotrix> all = CompChotrix.All;
             for (int i = 0; i < all.Count; i++)
             {
@@ -147,13 +148,24 @@ namespace RimMandrake.Scarlands
             }
             bool settling = RM_SettlingDefOf.RM_Settling != null && map.gameConditionManager.ConditionIsActive(RM_SettlingDefOf.RM_Settling);
             bool windOn = RM_WarscarSettings.choirWindEnabled && !settling;
-            Layer(ref wind, ref windSrc, windOn ? RM_GeigerChoirDef.Resolve(cfg.windMetal) : null, listener, 30f, RM_ChoirDefOf.RM_WindOnMetal);
-            Layer(ref hum, ref humSrc, RM_GeigerChoirDef.Resolve(cfg.hum), listener, 40f, RM_ChoirDefOf.RM_ProjectorHum);
-            Layer(ref boil, ref boilSrc, RM_GeigerChoirDef.Resolve(cfg.boil), listener, 28f, RM_ChoirDefOf.RM_PoolBoil);
+            Layer(ref wind, ref windSrc, windOn ? RM_GeigerChoirDef.Resolve(cfg.windMetal) : null, listener, 30f, RM_ChoirDefOf.RM_WindOnMetal, false);
+            Layer(ref hum, ref humSrc, RM_GeigerChoirDef.Resolve(cfg.hum), listener, 40f, RM_ChoirDefOf.RM_ProjectorHum, true);
+            Layer(ref boil, ref boilSrc, RM_GeigerChoirDef.Resolve(cfg.boil), listener, 28f, RM_ChoirDefOf.RM_PoolBoil, false);
+            jarPlants = plants;
+        }
+
+        // Glower plant defs resolved by the last Refresh, reused by JarRate (every 6 ticks per audible jar).
+        private List<ThingDef> jarPlants;
+
+        // A screen or ring hums only while it is live (powered and switched on; a dead ring only once woken).
+        private static bool Humming(Thing t)
+        {
+            RM_CompAerosolScreen sc = (t as ThingWithComps)?.GetComp<RM_CompAerosolScreen>();
+            return sc == null || sc.IsScreenLive;
         }
 
         // Keeps one sustainer on the nearest source of a layer within range; null defs = layer off.
-        private void Layer(ref Sustainer s, ref Thing src, List<ThingDef> defs, IntVec3 listener, float range, SoundDef sound)
+        private void Layer(ref Sustainer s, ref Thing src, List<ThingDef> defs, IntVec3 listener, float range, SoundDef sound, bool liveOnly)
         {
             Thing best = null;
             if (defs != null && sound != null)
@@ -164,6 +176,7 @@ namespace RimMandrake.Scarlands
                     List<Thing> l = map.listerThings.ThingsOfDef(defs[i]);
                     for (int k = 0; k < l.Count; k++)
                     {
+                        if (liveOnly && !Humming(l[k])) continue;
                         float d = (l[k].Position - listener).LengthHorizontalSquared;
                         if (d < bd) { bd = d; best = l[k]; }
                     }
@@ -175,7 +188,7 @@ namespace RimMandrake.Scarlands
                 s = null; src = null;
                 return;
             }
-            if (s != null && !s.Ended && src != null && src.Spawned && (best == src || (src.Position - listener).LengthHorizontalSquared <= (best.Position - listener).LengthHorizontalSquared + 16f)) return;
+            if (s != null && !s.Ended && src != null && src.Spawned && (!liveOnly || Humming(src)) && (best == src || (src.Position - listener).LengthHorizontalSquared <= (best.Position - listener).LengthHorizontalSquared + 16f)) return;
             if (s != null && !s.Ended) s.End();
             src = best;
             s = sound.TrySpawnSustainer(SoundInfo.InMap(best, MaintenanceType.PerTick));
@@ -208,15 +221,19 @@ namespace RimMandrake.Scarlands
         public float JarRate(IntVec3 cell, bool polluted)
         {
             float glow = 0f;
-            RM_GeigerChoirDef cfg = RM_GeigerChoirDef.Get();
-            if (cfg != null)
+            List<ThingDef> plants = jarPlants;
+            if (plants == null)
             {
-                List<ThingDef> plants = RM_GeigerChoirDef.Resolve(cfg.tickPlants);
-                for (int i = 0; i < plants.Count; i++)
-                {
-                    List<Thing> l = map.listerThings.ThingsOfDef(plants[i]);
-                    for (int k = 0; k < l.Count; k++) if ((l[k].Position - cell).LengthHorizontalSquared <= 16) glow += 1f;
-                }
+                RM_GeigerChoirDef cfg = RM_GeigerChoirDef.Get();
+                plants = jarPlants = cfg == null ? new List<ThingDef>() : RM_GeigerChoirDef.Resolve(cfg.tickPlants);
+            }
+            // Count glower in the 4-cell neighbourhood by cell (~49 cells), not by walking every plant on the map.
+            for (int r = 0; r < GenRadial.NumCellsInRadius(4f); r++)
+            {
+                IntVec3 c = cell + GenRadial.RadialPattern[r];
+                if (!c.InBounds(map)) continue;
+                Plant pl = c.GetPlant(map);
+                if (pl != null && plants.Contains(pl.def)) glow += 1f;
             }
             return (0.02f + glow * 0.02f) * (polluted ? 3f : 1f);
         }

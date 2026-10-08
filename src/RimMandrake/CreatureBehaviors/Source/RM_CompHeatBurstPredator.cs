@@ -115,9 +115,11 @@ namespace RimMandrake.CreatureBehaviors
                 return; // already shaded enough — sit and let the fatigue tail burn off
             }
 
-            if (pawn.jobs?.curJob != null && pawn.jobs.curJob.def == JobDefOf.Goto)
+            Job cur = pawn.jobs?.curJob;
+            if (cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid
+                && cur.targetA.Cell.InBounds(pawn.Map) && grid.ShadeAt(cur.targetA.Cell) >= Props.retreatShadeThreshold)
             {
-                return; // already retreating — don't restart the goto every interval tick
+                return; // already retreating to shade — don't restart the goto every interval tick (a Goto into sun is not a retreat)
             }
 
             bool found = CellFinder.TryFindRandomCellNear(pawn.Position, pawn.Map, (int)Props.retreatSearchRadiusCells,

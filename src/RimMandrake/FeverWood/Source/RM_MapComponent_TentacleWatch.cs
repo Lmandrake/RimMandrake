@@ -218,6 +218,10 @@ namespace RimMandrake.FeverWood
                     continue;
                 }
                 IntVec3 cell = i == 0 ? seed : RandomNearbyPoolCell(seed, pools);
+                if (!cell.IsValid || (i > 0 && cell == seed))
+                {
+                    continue; // no free pool cell: a 1x1 impassable limb spawned on another would wipe it
+                }
                 Thing thing = ThingMaker.MakeThing(def);
                 GenSpawn.Spawn(thing, cell, map);
             }
@@ -248,7 +252,12 @@ namespace RimMandrake.FeverWood
                 {
                     continue;
                 }
-                IntVec3 cell = i == 0 ? seed : RandomNearbyPoolCell(seed, pools);
+                // The seed is reserved for the Bloom below; every limb takes its own free pool cell.
+                IntVec3 cell = RandomNearbyPoolCell(seed, pools);
+                if (!cell.IsValid || cell == seed)
+                {
+                    continue;
+                }
                 Thing thing = ThingMaker.MakeThing(def);
                 GenSpawn.Spawn(thing, cell, map);
             }
@@ -268,24 +277,35 @@ namespace RimMandrake.FeverWood
                 LetterDefOf.ThreatBig, new TargetInfo(seed, map));
         }
 
+        private const float NearbyPoolRadiusSq = 8f * 8f; // INVENTED: how far from the seed extra limbs may rise
+
+        /// <summary>A random free pool cell near the seed (no building on it — the limbs are 1x1 impassable
+        /// buildings, and GenSpawn wipes whatever already stands on a cell). Falls back to the nearest free pool
+        /// cell; IntVec3.Invalid when none is free.</summary>
         private IntVec3 RandomNearbyPoolCell(IntVec3 seed, List<IntVec3> pools)
         {
-            IntVec3 best = seed;
+            List<IntVec3> near = new List<IntVec3>();
+            IntVec3 best = IntVec3.Invalid;
             float bestDistSq = float.MaxValue;
             for (int i = 0; i < pools.Count; i++)
             {
-                if (pools[i] == seed)
+                IntVec3 c = pools[i];
+                if (c == seed || c.GetEdifice(map) != null)
                 {
                     continue;
                 }
-                float distSq = (pools[i] - seed).LengthHorizontalSquared;
+                float distSq = (c - seed).LengthHorizontalSquared;
+                if (distSq <= NearbyPoolRadiusSq)
+                {
+                    near.Add(c);
+                }
                 if (distSq < bestDistSq)
                 {
                     bestDistSq = distSq;
-                    best = pools[i];
+                    best = c;
                 }
             }
-            return best;
+            return near.Count > 0 ? near.RandomElement() : best;
         }
 
         private ThingDef RollLimb()

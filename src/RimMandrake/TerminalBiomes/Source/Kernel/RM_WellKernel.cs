@@ -126,11 +126,9 @@ namespace RimMandrake.TerminalBiomes
             well.ageTicks += delta;
             WellStage before = well.stage;
             well.stage = RM_WellKernel.StageOf(well.ageTicks, well.lifespanTicks);
-            if (before != WellStage.Waning && well.stage == WellStage.Waning)
-            {
-                well.warningLetterFired = false;
-                if (!well.warningLetterFired && warn(well)) well.warningLetterFired = true;
-            }
+            if (before != WellStage.Waning && well.stage == WellStage.Waning) well.warningLetterFired = false;
+            // Retried through the whole waning window: someone who starts working near the well later still gets warned.
+            if (well.stage == WellStage.Waning && !well.warningLetterFired && warn(well)) well.warningLetterFired = true;
             if (well.stage == WellStage.Opening || well.stage == WellStage.Waning) visual(well);
             else if (before == WellStage.Opening && well.stage == WellStage.Standing) visual(well);
             if (before != WellStage.Closed && well.stage == WellStage.Closed)
@@ -151,7 +149,7 @@ namespace RimMandrake.TerminalBiomes
         // The gardener's pass: close the well nearest its end, else bring the first pending opening forward to now.
         public void GardenerAdvance(int now)
         {
-            if (Wells.Count == 0) return;
+            // No empty-ledger early-out: an all-dark map is exactly when bringing a pending opening forward matters.
             T candidate = null;
             foreach (T w in Wells)
                 if (w.stage == WellStage.Waning && (candidate == null || w.TicksRemaining < candidate.TicksRemaining)) candidate = w;

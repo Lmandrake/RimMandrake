@@ -287,7 +287,7 @@ namespace RimMandrake.TerminalBiomes
         // The gardener's pass: close the well nearest its end, else bring the next pending opening forward.
         public void NotifyGardenerPassAdvance()
         {
-            if (!IsActiveHere() || wells.Count == 0)
+            if (!IsActiveHere())
             {
                 return;
             }

@@ -84,6 +84,13 @@ namespace RimMandrake.LuminousPigment
             DeepfireLightsBridge.DeregisterHediffGlow(Pawn, Def);
         }
 
+        // GPT review #9: a corpse's hediffs never tick again -- drop the light now.
+        public override void Notify_PawnDied(DamageInfo? dinfo, Hediff culprit = null)
+        {
+            base.Notify_PawnDied(dinfo, culprit);
+            DeepfireLightsBridge.DeregisterHediffGlow(Pawn, Def);
+        }
+
         public override void CompExposeData()
         {
             base.CompExposeData();
@@ -92,6 +99,17 @@ namespace RimMandrake.LuminousPigment
 
         private void Apply()
         {
+            // GPT review #16: the vermilion's Ishko reaction is a god event, not
+            // a light -- it fires whether or not hediff glow is switched on.
+            if (Props.ishkoPenaltyOnStage3 && parent.CurStageIndex >= 2 && !firedIshkoPenalty)
+            {
+                firedIshkoPenalty = true;
+                // "Medium" magnitude (spec §5.2's own vocabulary) -- reuses
+                // the trio's Medium constant rather than adding a settings
+                // field for one specific event.
+                NinefoldDeltaBridge.ApplyDelta("Ishko", -LuminousPigmentSettings.godDeltaAdore, "deepfire.vermilion.cannotBeHidden");
+            }
+
             if (!LuminousPigmentSettings.hediffGlowEnabled)
             {
                 DeepfireLightsBridge.DeregisterHediffGlow(Pawn, Def);
@@ -121,15 +139,6 @@ namespace RimMandrake.LuminousPigment
                 else
                 {
                     DeepfireLightsBridge.DeregisterHediffGlow(Pawn, Def);
-                }
-
-                if (Props.ishkoPenaltyOnStage3 && stage >= 2 && !firedIshkoPenalty)
-                {
-                    firedIshkoPenalty = true;
-                    // "Medium" magnitude (spec §5.2's own vocabulary) -- reuses
-                    // the trio's Medium constant rather than adding a settings
-                    // field for one specific event.
-                    NinefoldDeltaBridge.ApplyDelta("Ishko", -LuminousPigmentSettings.godDeltaAdore, "deepfire.vermilion.cannotBeHidden");
                 }
             }
         }
@@ -178,7 +187,7 @@ namespace RimMandrake.LuminousPigment
         public static void RegisterHediffGlow(Pawn pawn, HediffDef def, Color color, float radius)
         {
             Resolve();
-            if (registerMethod == null || pawn?.Map == null) return;
+            if (registerMethod == null || pawn == null) return; // unspawned -> the target deregisters everywhere (GPT review #9)
             registerMethod.Invoke(null, new object[] { pawn, def, color, radius });
         }
 

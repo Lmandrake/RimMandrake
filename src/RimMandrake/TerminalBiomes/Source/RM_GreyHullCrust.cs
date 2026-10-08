@@ -343,7 +343,7 @@ namespace RimMandrake.TerminalBiomes
         [HarmonyPostfix]
         public static void Postfix(Building_Door __instance, ref bool __result)
         {
-            if (__result && RM_GreyCrust.IsSalted(__instance))
+            if (__result && RM_GreyCrust.Active && RM_GreyCrust.IsSalted(__instance))   // mechanic off: salt is kept but no longer locks
             {
                 __result = false;
             }
@@ -356,7 +356,7 @@ namespace RimMandrake.TerminalBiomes
         [HarmonyPostfix]
         public static void Postfix(Building_Door __instance, ref string __result)
         {
-            if (RM_GreyCrust.IsSalted(__instance))
+            if (RM_GreyCrust.Active && RM_GreyCrust.IsSalted(__instance))
             {
                 string line = "RM_GreyCrustDoorInspect".Translate();
                 __result = __result.NullOrEmpty() ? line : __result + "\n" + line;

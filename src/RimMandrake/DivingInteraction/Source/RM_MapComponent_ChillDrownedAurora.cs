@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -125,15 +126,16 @@ namespace RimMandrake.DivingInteraction
         private bool isChillSeabed;
         private int ticksUntilRescan = 1;
 
-        // NOT Scribed on purpose: this is a smoothed, continuously-recomputed
-        // read of the SURFACE map's live condition state, not a durable
-        // record — same "runtime-only, rebuilt cheaply" choice
-        // RM_MapComponent_ChillBoilShroud's own grade grid makes for exactly
-        // this reason (that file's own header). Worst case after a load: up
-        // to ~12.5s to re-converge from 0 to whatever the surface is
-        // actually doing — imperceptible against "the floor breathes light"
-        // being a slow effect to begin with.
+        // Scribed: RM_MapComponent_ChillAuroraSurge saves surgeActive and reads
+        // this value; reloading it as 0 ended a saved surge on the first rescan
+        // and then re-announced it as the ramp climbed back.
         private float currentIntensity;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref currentIntensity, "currentIntensity", 0f);
+        }
 
         public RM_MapComponent_ChillDrownedAurora(Map map) : base(map)
         {
@@ -231,7 +233,31 @@ namespace RimMandrake.DivingInteraction
         /// </summary>
         private Map SourceMap()
         {
-            return (map?.Parent as PocketMapParent)?.sourceMap;
+            if (map?.Parent is PocketMapParent pocket)
+            {
+                return pocket.sourceMap;
+            }
+
+            // Seabed-layer floor (the gravship path): the surface map above, when one is loaded.
+            // With no loaded surface map the floor reads 0, same as the pocket path's null.
+            if (map == null || !RM_SeabedLayerUtility.IsSeabedTile(map.Tile))
+            {
+                return null;
+            }
+            PlanetTile above = RM_SeabedLayerUtility.SurfaceTileOf(map.Tile);
+            if (!above.Valid)
+            {
+                return null;
+            }
+            List<Map> maps = Find.Maps;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                if (maps[i] != map && maps[i].Tile == above)
+                {
+                    return maps[i];
+                }
+            }
+            return null;
         }
 
         // "Is the surface tile experiencing [aurora] right now, and how

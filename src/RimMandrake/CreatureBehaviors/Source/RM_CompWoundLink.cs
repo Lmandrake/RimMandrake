@@ -38,6 +38,11 @@ namespace RimMandrake.CreatureBehaviors
                 return; // mod option: wound link disabled
             }
 
+            if (totalDamageDealt <= 0f)
+            {
+                return; // no damage actually landed — nothing fresh to share (else an earlier same-tick wound would be re-shared)
+            }
+
             Pawn victim = Victim;
             if (victim == null || !victim.Spawned || victim.Dead || victim.Map == null || victim.health == null)
             {
@@ -62,7 +67,8 @@ namespace RimMandrake.CreatureBehaviors
             }
 
             float mult = UnityEngine.Mathf.Max(0f, RM_CreatureBehaviorsSettings.woundLinkShareMultiplier);
-            float shareAmount = freshInjury.Severity * ext.shareFraction * mult;
+            // Clamp the effective fraction: a recipient never receives more than the source wound holds.
+            float shareAmount = freshInjury.Severity * UnityEngine.Mathf.Clamp01(ext.shareFraction * mult);
             if (shareAmount <= 0f)
             {
                 return;
@@ -74,9 +80,14 @@ namespace RimMandrake.CreatureBehaviors
                 return; // nobody in radius to share with — leave the victim's injury alone
             }
 
+            bool anyMirrored = false;
             foreach (Pawn recipient in kin)
             {
-                MirrorInjury(recipient, freshInjury.Part, freshInjury.def, shareAmount);
+                anyMirrored |= MirrorInjury(recipient, freshInjury.Part, freshInjury.def, shareAmount);
+            }
+            if (!anyMirrored)
+            {
+                return; // no kin had an equivalent part — the victim keeps the whole wound
             }
 
             // Reduce the original victim once, by the same fixed amount every
@@ -169,22 +180,23 @@ namespace RimMandrake.CreatureBehaviors
             return null; // different body plan (e.g. cross-species radius overlap) — skip rather than guess a part
         }
 
-        private static void MirrorInjury(Pawn recipient, BodyPartRecord sourcePart, HediffDef injuryDef, float severity)
+        private static bool MirrorInjury(Pawn recipient, BodyPartRecord sourcePart, HediffDef injuryDef, float severity)
         {
             if (recipient?.health == null || !recipient.Spawned || recipient.Dead)
             {
-                return;
+                return false;
             }
 
             BodyPartRecord targetPart = FindEquivalentPart(recipient, sourcePart);
             if (targetPart == null)
             {
-                return;
+                return false;
             }
 
             Hediff hediff = HediffMaker.MakeHediff(injuryDef, recipient, targetPart);
             hediff.Severity = severity;
             recipient.health.AddHediff(hediff); // hediff.Part already set by MakeHediff's bodyPartRecord arg
+            return true;
         }
     }
 }

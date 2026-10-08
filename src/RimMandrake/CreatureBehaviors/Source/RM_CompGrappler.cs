@@ -100,6 +100,11 @@ namespace RimMandrake.CreatureBehaviors
                 return;
             }
 
+            if (!attacker.Spawned || attacker.Map != self.Map || !attacker.Position.AdjacentTo8WayOrInside(self))
+            {
+                return; // the rescue roll is for a MELEE hit (CompProperties doc); a distant shot never qualifies
+            }
+
             List<RM_Hediff_Grappled> holds = Holds(self);
             if (holds.Count == 0)
             {

@@ -558,7 +558,7 @@ namespace RimMandrake.Stillsand
                 Emerge(map, ext, face);
             }
             Seed(map, ext, face);
-            RM_GameComponent_GaleCarried.Get()?.ReturnAllFor(map, ext);
+            RM_GameComponent_GaleCarried.Get()?.ReturnAllFor(map, ext, startTick);
         }
 
         /// <summary>The freshest erosion face: the open, standable cell that lost the most sand.
@@ -828,6 +828,10 @@ namespace RimMandrake.Stillsand
         public IntVec3 wind;
         public int returnTick;
         public bool wasPlayer;
+        // Tick it was taken (-1 on records saved before this field): a gale only gives back
+        // what an EARLIER gale took. Its own survival odds travel with it (-1 = use the book's).
+        public int takenTick = -1;
+        public float aliveChance = -1f;
 
         public void ExposeData()
         {
@@ -836,6 +840,8 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref wind, "wind");
             Scribe_Values.Look(ref returnTick, "returnTick");
             Scribe_Values.Look(ref wasPlayer, "wasPlayer");
+            Scribe_Values.Look(ref takenTick, "takenTick", -1);
+            Scribe_Values.Look(ref aliveChance, "aliveChance", -1f);
         }
     }
 
@@ -889,6 +895,8 @@ namespace RimMandrake.Stillsand
                 wind = wind,
                 returnTick = Find.TickManager.TicksGame + Mathf.RoundToInt(ext.returnDays.RandomInRange * GenDate.TicksPerDay),
                 wasPlayer = player,
+                takenTick = Find.TickManager.TicksGame,
+                aliveChance = ext.returnAliveChance,
             });
             Find.LetterStack.ReceiveLetter("Carried off: " + name,
                 "The gale took " + name + " off the crest and carried them " + bearing + ", out past the edge of the map.\n\n"
@@ -917,15 +925,30 @@ namespace RimMandrake.Stillsand
             int now = Find.TickManager.TicksGame;
             foreach (RM_GaleCarriedRecord r in RM_GaleKernel.TakeWhere(carried, c => RM_GaleKernel.IsDue(c.returnTick, now)))
             {
-                Return(r, aliveChance);
+                SafeReturn(r, r.aliveChance >= 0f ? r.aliveChance : aliveChance);
             }
         }
 
-        public void ReturnAllFor(Map map, RM_DuneGaleExtension ext)
+        /// <summary>Storm's end gives back what EARLIER gales took from this map; pawns this gale
+        /// took (taken at or after <paramref name="galeStartTick"/>) wait for the next one or returnDays.</summary>
+        public void ReturnAllFor(Map map, RM_DuneGaleExtension ext, int galeStartTick)
         {
-            foreach (RM_GaleCarriedRecord r in RM_GaleKernel.TakeWhere(carried, c => c.map == map))
+            foreach (RM_GaleCarriedRecord r in RM_GaleKernel.TakeWhere(carried, c => c.map == map && c.takenTick < galeStartTick))
             {
-                Return(r, ext.returnAliveChance);
+                SafeReturn(r, r.aliveChance >= 0f ? r.aliveChance : ext.returnAliveChance);
+            }
+        }
+
+        // One failed return must not lose the rest of the batch already taken off the book.
+        private static void SafeReturn(RM_GaleCarriedRecord r, float aliveChance)
+        {
+            try
+            {
+                Return(r, aliveChance);
+            }
+            catch (Exception e)
+            {
+                Log.Error("[Stillsand] gale return of " + r?.pawn + " failed: " + e);
             }
         }
 

@@ -81,7 +81,7 @@ namespace RimMandrake.DivingInteraction
 
     public class RM_CompGalleryHub : ThingComp
     {
-        public const int JamTicks = 15000;
+        public const int JamTicks = 60000; // one in-game day, as every message and the header promise
 
         private List<Thing> outlets = new List<Thing>();
         private Thing locker;
@@ -206,6 +206,12 @@ namespace RimMandrake.DivingInteraction
         public void Mark(RM_CompGalleryOutlet branch)
         {
             if (solved || Find.TickManager.TicksGame < jammedUntil)
+            {
+                return;
+            }
+            // Runtime authorization lives here, not only in the gizmo: master off means no
+            // solving; an unspawned hub has no map to pay out on, so it must not mark solved.
+            if (!RM_DivingSettings.masterEnabled || !parent.Spawned)
             {
                 return;
             }

@@ -39,10 +39,18 @@ namespace RimMandrake.CreatureBehaviors
                 var harmony = new Harmony("mandrake.rm.creaturebehaviors.flightjobguard");
                 harmony.Patch(target,
                     prefix: new HarmonyMethod(typeof(RM_FlightJobStartGuard), nameof(Prefix_Notify_JobStarted)) { priority = Priority.First });
-                var end = AccessTools.Method(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.EndCurrentJob));
-                if (end != null)
+                try
                 {
-                    harmony.Patch(end, prefix: new HarmonyMethod(typeof(RM_FlightJobStartGuard), nameof(Prefix_EndCurrentJob)));
+                    var end = AccessTools.Method(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.EndCurrentJob));
+                    if (end != null)
+                    {
+                        harmony.Patch(end, prefix: new HarmonyMethod(typeof(RM_FlightJobStartGuard), nameof(Prefix_EndCurrentJob)));
+                    }
+                }
+                catch (Exception e)
+                {
+                    // The flight guard above IS installed; only the diagnostic prefix failed.
+                    Log.Error("[RM CreatureBehaviors] flight job-start guard is ON; its EndCurrentJob diagnostic prefix failed: " + e);
                 }
             }
             catch (Exception e)

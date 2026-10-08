@@ -62,10 +62,24 @@ namespace RimMandrake.EnvironmentalHazards
 
         public CompProperties_CrackFall Props => (CompProperties_CrackFall)props;
 
+        // A Plant parent is Long-ticked (TreeBase/PlantBase tickerType Long),
+        // and Plant only ever runs ThingWithComps.TickLong -> CompTickLong, so
+        // a CompTickRare-only comp never fires on a tree. Both cadences route
+        // to one step with the elapsed tick count.
         public override void CompTickRare()
         {
             base.CompTickRare();
+            Step(250);
+        }
 
+        public override void CompTickLong()
+        {
+            base.CompTickLong();
+            Step(2000);
+        }
+
+        private void Step(int elapsedTicks)
+        {
             if (!RM_EnvironmentalHazardsSettings.treeFallEnabled)
             {
                 return; // mod option: RM_TreeFallUtility.FellTree itself no-ops too, but skip the roll/countdown work as well
@@ -79,7 +93,7 @@ namespace RimMandrake.EnvironmentalHazards
 
             if (warnTicksRemaining >= 0)
             {
-                warnTicksRemaining -= 250;
+                warnTicksRemaining -= elapsedTicks;
                 if (warnTicksRemaining <= 0)
                 {
                     RM_TreeFallUtility.FellTree(tree, Rot4.Random, RM_TreeFallUtility.FallCause.Cracked);
@@ -92,7 +106,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            if (Rand.MTBEventOccurs(EffectiveMtbDays(tree), 60000f, 250f))
+            if (Rand.MTBEventOccurs(EffectiveMtbDays(tree), 60000f, elapsedTicks))
             {
                 warnTicksRemaining = Props.fallDelayTicksRange.RandomInRange;
                 (Props.creakSound ?? SoundDefOf.Building_Complete).PlayOneShot(SoundInfo.InMap(new TargetInfo(tree.Position, tree.Map)));

@@ -43,9 +43,16 @@ namespace RimMandrake.LuminousPigment
             foreach (ThingWithComps t in WornAndEquipped(pawn))
             {
                 CompDeepfire comp = t.GetComp<CompDeepfire>();
-                if (comp != null && comp.CanAddCoat) list.Add(t);
+                if (comp != null && comp.CanAddCoat && LacquerAllowed(t)) list.Add(t);
             }
             return list;
+        }
+
+        // GPT review #7: the worn paths obey the same Mod Settings gates as
+        // the designator (paintingEnabled + the per-class toggle).
+        public static bool LacquerAllowed(Thing t)
+        {
+            return t != null && LuminousPigmentSettings.paintingEnabled && DeepfireTargetClassUtility.IsPaintable(t);
         }
 
         public static bool TryComputeLight(Pawn pawn, out Color color, out float radius)
@@ -60,8 +67,8 @@ namespace RimMandrake.LuminousPigment
             {
                 CompDeepfire comp = t.GetComp<CompDeepfire>();
                 if (comp == null || comp.coats <= 0) continue;
-                // Full-intensity hue of this item, weighted by its coats.
-                Color c = DeepfireColorUtility.GlowColorFor(t.DrawColor, CompDeepfire.MaxCoats);
+                // Unscaled hue of this item, weighted by its coats; WornBlend applies intensity once.
+                Color c = DeepfireColorUtility.GlowHueFor(t.DrawColor);
                 coats.Add(comp.coats); rs.Add(c.r); gs.Add(c.g); bs.Add(c.b);
             }
             if (!RM_DeepfireRules.WornBlend(coats, rs, gs, bs, LuminousPigmentSettings.coatIntensity, CompDeepfire.MaxCoats,
@@ -81,6 +88,8 @@ namespace RimMandrake.LuminousPigment
             if (pawn == null || !pawn.Spawned) return false;
             MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(pawn.Map);
             if (mc == null || !mc.TryGetWornLight(pawn, out ColorInt ownColor, out float ownRadius)) return false;
+            // GPT review #13: a black light (glowMinValue 0 on dark dye) emits nothing and is no beacon.
+            if (ownRadius <= 0f || (ownColor.r <= 0 && ownColor.g <= 0 && ownColor.b <= 0)) return false;
             return OtherLightAt(pawn.Map, pawn.Position, ownColor, ownRadius) < DeepfirePaintDefaults.DarkGroundGlowMax
                 && SkyIsDark(pawn.Map, pawn.Position);
         }

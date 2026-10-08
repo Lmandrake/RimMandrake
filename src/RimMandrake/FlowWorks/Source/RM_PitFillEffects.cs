@@ -54,6 +54,12 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
+				// An intact cover is ground (same predicate as RM_PitExposure / RM_PitPathing / the shooting
+				// patch): a pawn walking on it is not immersed in the fill beneath (GPT FlowWorks review #4).
+				if (Pits.RM_PitCoverUtility.IsCovered(map, c))
+				{
+					continue;
+				}
 				int depth = ex.DepthAt(c);
 				FluidDef fluid = ex.FluidAt(c) ?? ex.ActiveFluid;
 				bool flying = p.Flying;

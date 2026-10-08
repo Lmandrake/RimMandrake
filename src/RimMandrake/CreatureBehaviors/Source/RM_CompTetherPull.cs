@@ -143,6 +143,15 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref lastOutcome, "tetherLastOutcome", "");
         }
 
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            if (target != null)
+            {
+                Release(null, "off"); // a despawned/relocated host must not keep its target or skip the host's release callback
+            }
+        }
+
         public override void CompTick()
         {
             base.CompTick();
@@ -177,13 +186,15 @@ namespace RimMandrake.CreatureBehaviors
         {
             RM_TetherTuning tune = Tuning;
             Map map = parent.Map;
-            Pawn best = null;
-            float bestDist = float.MaxValue;
+            Pawn bestHostile = null;
+            float bestHostileDist = float.MaxValue;
+            Pawn bestRescue = null;
+            float bestRescueDist = float.MaxValue;
             foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
             {
-                if (p == null || p.Dead)
+                if (p == null || p.Dead || p.IsPsychologicallyInvisible())
                 {
-                    continue;
+                    continue; // "visible hostile": an invisible pawn is never a candidate
                 }
                 float d = p.Position.DistanceTo(parent.Position);
                 if (d > tune.range || d < 2f || !GenSight.LineOfSight(parent.Position, p.Position, map, skipFirstCell: true))
@@ -192,18 +203,27 @@ namespace RimMandrake.CreatureBehaviors
                 }
                 bool hostile = p.HostileTo(Faction.OfPlayer) && !p.Downed && parent.Faction == Faction.OfPlayer;
                 bool rescue = tune.friendlyPull && p.Downed && p.Faction == parent.Faction && p.RaceProps.Humanlike && !p.InBed();
-                if ((hostile || rescue) && d < bestDist)
+                if (hostile && d < bestHostileDist)
                 {
-                    best = p;
-                    bestDist = d;
+                    bestHostile = p;
+                    bestHostileDist = d;
+                }
+                else if (rescue && d < bestRescueDist)
+                {
+                    bestRescue = p;
+                    bestRescueDist = d;
                 }
             }
-            return best;
+            return bestHostile ?? bestRescue; // hostile first, else a rescue — a nearer downed colonist never outranks an enemy
         }
 
         /// <summary>Throw the line. Over the mass or size cap the line snaps at once.</summary>
         public bool TryRope(Pawn p)
         {
+            if (p == null)
+            {
+                return false;
+            }
             RM_TetherTuning tune = Tuning;
             target = p;
             pulls++;

@@ -428,6 +428,7 @@ namespace RimMandrake.FlowWorks
 				return "no FluidDef/LiquidDef " + defName;
 			}
 			string bad = RM_LiquidLooks.Set(look, spec);
+			RM_LiquidSurface.ForgetLook(look);
 			int n = 0;
 			foreach (RM_LiquidLooks.Member m in members)
 			{

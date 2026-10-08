@@ -312,6 +312,46 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 records = new List<RM_FoundTechRecord>();
             }
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                CanonicalizeAliasedProjects();
+            }
+        }
+
+        // project is saved as a plain string, so Scribe_Defs' alias hook never
+        // sees it: follow an RM_DefAliasDef rename here, merging into any
+        // record already held under the new name.
+        private void CanonicalizeAliasedProjects()
+        {
+            for (int i = records.Count - 1; i >= 0; i--)
+            {
+                RM_FoundTechRecord r = records[i];
+                if (r == null || r.project.NullOrEmpty())
+                {
+                    continue;
+                }
+                string to = RM_DefAliasPatches.Resolve(typeof(ResearchProjectDef), r.project);
+                if (to == null)
+                {
+                    continue;
+                }
+                RM_FoundTechRecord existing = records.Find(x => x != null && x != r && x.project == to);
+                if (existing == null)
+                {
+                    r.project = to;
+                    continue;
+                }
+                existing.points = Math.Max(existing.points, r.points);
+                existing.revealed |= r.revealed;
+                foreach (string s in r.studiers)
+                {
+                    if (!existing.studiers.Contains(s))
+                    {
+                        existing.studiers.Add(s);
+                    }
+                }
+                records.RemoveAt(i);
+            }
         }
     }
 

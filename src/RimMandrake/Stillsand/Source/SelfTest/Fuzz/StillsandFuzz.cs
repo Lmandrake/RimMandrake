@@ -231,7 +231,7 @@ namespace RimMandrake.Stillsand.Fuzz
                 if (v.appraise)
                 {
                     bool invalid = !v.targetValid;
-                    if (RM_LeviathanKernel.ShouldRetarget(invalid, now) != (invalid || now % 250 == 0)) Fail("ShouldRetarget");
+                    if (RM_LeviathanKernel.ShouldRetarget(invalid, now) != (invalid || now % 250 < 30)) Fail("ShouldRetarget");
                     if (RM_LeviathanKernel.ShouldRetarget(invalid, now)) v.targetValid = rng.Next(5) != 0;
                     if (!v.targetValid) return;
                     if (rng.Next(10) == 0) return; // the beam is warming up

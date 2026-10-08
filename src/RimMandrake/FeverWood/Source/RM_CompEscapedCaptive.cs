@@ -81,6 +81,11 @@ namespace RimMandrake.FeverWood
             {
                 return;
             }
+            if (pawn.Faction != null)
+            {
+                armed = false; // tamed or claimed before it reached water: a tamed one must not install (header, stage 2)
+                return;
+            }
 
             RUT_MapComponent_TheTenant tenant = pawn.Map.GetComponent<RUT_MapComponent_TheTenant>();
             if (tenant == null || !tenant.IsRegisteredWater(pawn.Position))

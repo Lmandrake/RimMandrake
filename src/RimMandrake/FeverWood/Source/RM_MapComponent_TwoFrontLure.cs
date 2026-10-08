@@ -84,7 +84,12 @@ namespace RimMandrake.FeverWood
 
             activeLures.RemoveAll(c => c?.parent == null || !c.parent.Spawned || !c.HasLiveBait);
 
-            TickPendingSecondWave();
+            // "never both at once": a wave that lands this check ends it, and no new first wave rolls while a
+            // second wave is still owed (one pending slot — a new encounter would overwrite the owed one).
+            if (TickPendingSecondWave() || pendingSecondWaveTick >= 0)
+            {
+                return;
+            }
 
             if (activeLures.Count == 0)
             {
@@ -101,11 +106,12 @@ namespace RimMandrake.FeverWood
             LaunchFirstWave(origin);
         }
 
-        private void TickPendingSecondWave()
+        /// <summary>True when a second wave actually spawned this check.</summary>
+        private bool TickPendingSecondWave()
         {
             if (pendingSecondWaveTick < 0 || Find.TickManager.TicksGame < pendingSecondWaveTick)
             {
-                return;
+                return false;
             }
             string factionDefName = pendingSecondWaveFactionDefName;
             IntVec3 origin = pendingSecondWaveOrigin;
@@ -119,10 +125,7 @@ namespace RimMandrake.FeverWood
                 factionDefName = WebworkFrontFactionDefName;
             }
             FactionDef def = DefDatabase<FactionDef>.GetNamedSilentFail(factionDefName);
-            if (def != null)
-            {
-                SpawnRaidWave(def, origin, isSecondWave: true);
-            }
+            return def != null && SpawnRaidWave(def, origin, isSecondWave: true);
         }
 
         private void LaunchFirstWave(RM_CompLureStake originStake)

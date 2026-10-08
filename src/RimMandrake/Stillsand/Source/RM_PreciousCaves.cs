@@ -234,7 +234,10 @@ namespace RimMandrake.Stillsand
                     }
                     continue;
                 }
-                IntVec3 cell = ctx.Pick(place, c => RM_PreciousCaveContext.FreeForItem(c, map));
+                // A multi-cell building needs its whole footprint free, not just its centre.
+                IntVec3 cell = def.size.x * def.size.z > 1
+                    ? ctx.Pick(place, c => GenAdj.OccupiedRect(c, Rot4.North, def.size).Cells.All(o => RM_PreciousCaveContext.FreeForItem(o, map)))
+                    : ctx.Pick(place, c => RM_PreciousCaveContext.FreeForItem(c, map));
                 if (!cell.IsValid)
                 {
                     return;
@@ -495,6 +498,12 @@ namespace RimMandrake.Stillsand
             {
                 shaped = ShapeYardang(map, outcrop, w, h, rock, sdx, sdz);
                 outcrop = LargestOutcrop(map, w, h);
+                if (outcrop.Count == 0)
+                {
+                    return;
+                }
+                // Trimming can leave a different outcrop the largest: name and floor it by its own rock.
+                rock = DominantRock(map, outcrop, w);
             }
 
             bool[] rockGrid = RockGrid(map, w, h);

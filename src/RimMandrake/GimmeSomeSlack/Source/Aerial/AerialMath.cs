@@ -396,7 +396,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 sPos = Math.Min(reach, sPos + (sPos < s0 ? 0.1 : 0.25));
                 double k = sPos < s0 ? 1 - sPos / s0 : 0;
-                P2 g = ground(sPos, reach);
+                P2 g = ground(sPos, want);   // GPT review #18: the curve pass 1 checked (ground(s, reach) bowed differently)
                 lay.Pts.Add(new P2(g.X + ix * k, g.Z + h * k * k));
                 if (sPos >= reach - 1e-9) break;
             }
@@ -517,7 +517,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// </summary>
         public static double TapStolenPerTick(double rateW, double rawGainPerTick, double stored, double k, bool sameNet, bool enabled)
         {
-            if (!enabled || sameNet || rateW <= 0) return 0;
+            // GPT review #21: !(x > 0) also rejects NaN; a non-finite rate or gain never reaches the power net
+            if (!enabled || sameNet || !(rateW > 0) || double.IsInfinity(rateW) || double.IsNaN(rawGainPerTick) || double.IsNaN(stored)) return 0;
             double avail = rawGainPerTick + Math.Max(0, stored);
             if (avail <= 0) return 0;
             return Math.Min(rateW * k, avail);

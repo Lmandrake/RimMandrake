@@ -53,6 +53,10 @@
     <description>A vacuum-rated suit rebuilt around a battery-fed heating web instead of a passive shell — it recycles the wearer's air same as any vacsuit, but the real work is the coils. On the Chill's seabed the ambient cold alone would kill in hours; this is the only thing standing between a working pawn and that. The gauge on its own wrist display is not a fuel light. When it reads empty, the suit is just a heavy coat, and the cold does not wait.</description>
     <generateAllowChance>0</generateAllowChance>
     <techLevel>Spacer</techLevel>
+    <!-- ApparelBase sets tickerType Never, under which RM_CompHeatedSuitBattery.CompTickRare never
+         runs (the battery neither drained nor recharged). Rare: worn apparel is ticked through the
+         wearer's holder tree (Thing.DoTick, every 250 ticks by hash), loose suits through the rare list. -->
+    <tickerType>Rare</tickerType>
     <graphicData>
       <texPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</texPath>
       <graphicClass>Graphic_Single</graphicClass>

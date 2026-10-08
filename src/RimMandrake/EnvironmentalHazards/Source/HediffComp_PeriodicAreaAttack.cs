@@ -49,7 +49,8 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            ticksUntilBurst = Props.tickIntervalTicks;
+            // Keep the overshoot so a batched delta does not stretch the cadence.
+            ticksUntilBurst = Mathf.Max(1, ticksUntilBurst + Props.tickIntervalTicks);
             Burst();
         }
 
@@ -96,6 +97,8 @@ namespace RimMandrake.EnvironmentalHazards
 
             IntVec3 origin = carrier.Position;
             List<IntVec3> affectedCells = new List<IntVec3>();
+            // A multi-cell Thing is listed in every cell it covers; hit it once per burst.
+            HashSet<Thing> hitThisBurst = new HashSet<Thing>();
 
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(origin, Props.radius, useCenter: true))
             {
@@ -109,7 +112,7 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
-                bool touched = DamageCell(cell, map, origin, carrier);
+                bool touched = DamageCell(cell, map, origin, carrier, hitThisBurst);
                 if (touched)
                 {
                     affectedCells.Add(cell);
@@ -125,7 +128,7 @@ namespace RimMandrake.EnvironmentalHazards
             return roof != null && roof.isThickRoof;
         }
 
-        private bool DamageCell(IntVec3 cell, Map map, IntVec3 origin, Pawn carrier)
+        private bool DamageCell(IntVec3 cell, Map map, IntVec3 origin, Pawn carrier, HashSet<Thing> hitThisBurst)
         {
             // Snapshot: damage destroys things and mutates the live list.
             List<Thing> things = new List<Thing>(cell.GetThingList(map));
@@ -137,7 +140,7 @@ namespace RimMandrake.EnvironmentalHazards
             for (int i = 0; i < things.Count; i++)
             {
                 Thing t = things[i];
-                if (t == null || t.Destroyed)
+                if (t == null || t.Destroyed || hitThisBurst.Contains(t))
                 {
                     continue;
                 }
@@ -165,6 +168,7 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
+                hitThisBurst.Add(t);
                 t.TakeDamage(new DamageInfo(Props.damageDef, amount, Props.armorPenetration, -1f, carrier));
                 touchedAnything = true;
 
@@ -323,10 +327,14 @@ namespace RimMandrake.EnvironmentalHazards
             EndSustainer();
         }
 
+        // Both aura comps on one hediff scribe into the same node, so each
+        // needs its own label or the second loads the first's countdown.
+        protected virtual string SaveKey => "ticksUntilBurst";
+
         public override void CompExposeData()
         {
             base.CompExposeData();
-            Scribe_Values.Look(ref ticksUntilBurst, "ticksUntilBurst", 0);
+            Scribe_Values.Look(ref ticksUntilBurst, SaveKey, 0);
         }
 
         public override string CompDebugString()

@@ -212,6 +212,21 @@ namespace RimMandrake.Stillsand
                 {
                     continue;
                 }
+                if (last >= 0 && last % w != x && last / w != z)
+                {
+                    // A diagonal step: carve the orthogonal bridge cell too, so the tunnel is
+                    // cardinally connected (pawns cannot squeeze between two rock corners).
+                    int bridge = (last / w) * w + x;
+                    if (rock[bridge])
+                    {
+                        tunnel.Add(bridge);
+                    }
+                    else
+                    {
+                        exit = bridge;
+                        return true;
+                    }
+                }
                 last = i;
                 if (rock[i])
                 {

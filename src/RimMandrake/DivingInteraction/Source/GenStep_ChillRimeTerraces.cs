@@ -76,7 +76,7 @@ namespace RimMandrake.DivingInteraction
             int fallbackNeeded = MinDistricts - seeds.Count;
             for (int i = 0; i < fallbackNeeded; i++)
             {
-                if (CellFinder.TryFindRandomCell(map, c => c.Standable(map) && c.GetTerrain(map) == baseFloor, out IntVec3 cell))
+                if (CellFinder.TryFindRandomCell(map, c => c.Standable(map) && c.GetTerrain(map) == baseFloor && !seeds.Contains(c), out IntVec3 cell))
                 {
                     seeds.Add(cell);
                 }
@@ -103,12 +103,21 @@ namespace RimMandrake.DivingInteraction
             while (frontier.Count > 0)
             {
                 (IntVec3 cell, int ring) = frontier.Dequeue();
-                if (!cell.InBounds(map) || cell.GetTerrain(map) != baseFloor)
+                if (!cell.InBounds(map))
                 {
                     continue;
                 }
-
-                map.terrainGrid.SetTerrain(cell, terrace);
+                // Grow THROUGH an earlier district's terrace (no repaint) so overlapping
+                // seeds enlarge the merged district instead of a later seed dying on contact.
+                TerrainDef here = cell.GetTerrain(map);
+                if (here == baseFloor)
+                {
+                    map.terrainGrid.SetTerrain(cell, terrace);
+                }
+                else if (here != terrace)
+                {
+                    continue;
+                }
 
                 if (ring >= MaxBlobRadius)
                 {

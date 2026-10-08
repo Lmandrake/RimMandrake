@@ -70,8 +70,10 @@ namespace RimMandrake.FeverWood
             }
 
             List<IntVec3> rooms = BuildRoomChain(map, ext, tenant, start);
-            if (rooms.Count == 0)
+            if (rooms.Count < 2)
             {
+                // Populate() fills rooms from index 1 (room 0 is the entrance), so a one-room chain would be an
+                // empty, queen-less hive. Skip it rather than paint one.
                 return;
             }
 

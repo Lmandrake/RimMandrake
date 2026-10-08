@@ -60,7 +60,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            ticksUntilScan = ext.tickIntervalTicks;
+            ticksUntilScan = System.Math.Max(1, ticksUntilScan + ext.tickIntervalTicks);
             ApplyEffects(ext);
         }
 

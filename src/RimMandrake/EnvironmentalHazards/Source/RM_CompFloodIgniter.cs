@@ -89,16 +89,17 @@ namespace RimMandrake.EnvironmentalHazards
                 {
                     defaultLabel = "RM_IgniteMoat".Translate(),
                     defaultDesc = "RM_IgniteMoatDesc".Translate(),
-                    action = BeginIgnition
+                    action = BeginIgnition,
+                    Disabled = Igniting
                 };
             }
         }
 
         public void BeginIgnition()
         {
-            if (parent.Map == null || Props.conductingTerrains.NullOrEmpty())
+            if (parent.Map == null || Props.conductingTerrains.NullOrEmpty() || Igniting)
             {
-                return;
+                return; // already burning: a second fill would only re-queue the same front
             }
 
             bool PassCheck(IntVec3 c)
@@ -144,7 +145,28 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 cellAccumulator -= 1f;
                 IntVec3 cell = pendingIgnition.Dequeue();
+                TerrainDef terrain = cell.InBounds(parent.Map) ? cell.GetTerrain(parent.Map) : null;
+                if (terrain == null || !Props.conductingTerrains.Contains(terrain))
+                {
+                    continue; // the conducting terrain was removed since the fill
+                }
                 FireUtility.TryStartFireIn(cell, parent.Map, Props.fireSize, parent);
+            }
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            List<IntVec3> cells = Scribe.mode == LoadSaveMode.Saving ? pendingIgnition.ToList() : null;
+            Scribe_Collections.Look(ref cells, "pendingIgnition", LookMode.Value);
+            Scribe_Values.Look(ref cellAccumulator, "cellAccumulator", 0f);
+            if (Scribe.mode == LoadSaveMode.LoadingVars && cells != null)
+            {
+                pendingIgnition.Clear();
+                foreach (IntVec3 c in cells)
+                {
+                    pendingIgnition.Enqueue(c);
+                }
             }
         }
 

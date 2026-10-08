@@ -60,6 +60,7 @@ namespace RimMandrake.Scarlands
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDestroyedOrNull(TargetIndex.A);
+            this.FailOn(() => !RM_WarscarSettings.warDustBlightCureEnabled);
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch)
                 .FailOnDespawnedNullOrForbidden(TargetIndex.B);
             yield return Toils_Haul.StartCarryThing(TargetIndex.B);

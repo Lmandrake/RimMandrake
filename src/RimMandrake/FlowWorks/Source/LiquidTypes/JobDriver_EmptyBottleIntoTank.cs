@@ -54,6 +54,13 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                 {
                     return;
                 }
+                // Resolve the empty container BEFORE crediting the tank: crediting first and then finding no empty
+                // def left the full container in hand with its contents already in the tank (GPT FlowWorks review #26).
+                ThingDef emptyDef = RM_LiquidBottleUtility.EmptyDefFor(ext.size);
+                if (emptyDef == null)
+                {
+                    return;
+                }
                 int units = RM_ContainerMaterials.UnitsIn(carried, ext.liquid, ext.size);
                 if (!tank.TryAddLiquid(ext.liquid, units))
                 {
@@ -61,11 +68,6 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     // between the WorkGiver's scan and now -- leave the
                     // carried container alone rather than destroy it for a
                     // pour that did not happen.
-                    return;
-                }
-                ThingDef emptyDef = RM_LiquidBottleUtility.EmptyDefFor(ext.size);
-                if (emptyDef == null)
-                {
                     return;
                 }
                 Thing empty = RM_LiquidBottleUtility.MakeContainer(emptyDef, carried);

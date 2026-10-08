@@ -36,6 +36,7 @@ namespace RimMandrake.CreatureBehaviors
         private int surfacedUntilTick = -1;
         private IntVec3 lastCell = IntVec3.Invalid;
         private Sustainer rumble;
+        private float rumbleVolumeSetting = -1f;
 
         private RM_SandSwimExtension extCached;
 
@@ -227,9 +228,9 @@ namespace RimMandrake.CreatureBehaviors
 
         private void Submerge(Pawn pawn)
         {
-            if (Submerged || pawn.health == null)
+            if (Submerged || pawn.health == null || Ext?.submergedHediff == null)
             {
-                return;
+                return; // no submergedHediff configured (ConfigErrors already reports it) — never MakeHediff(null)
             }
             pawn.health.AddHediff(HediffMaker.MakeHediff(Ext.submergedHediff, pawn)); // Invisibility comp's PostAdd hides it
         }
@@ -291,10 +292,15 @@ namespace RimMandrake.CreatureBehaviors
                 EndRumble();
                 return;
             }
+            if (rumble != null && !rumble.Ended && rumbleVolumeSetting != RM_CreatureBehaviorsSettings.sandSwimRumbleVolume)
+            {
+                EndRumble(); // volume slider moved: recreate at the new level
+            }
             if (rumble == null || rumble.Ended)
             {
                 SoundInfo info = SoundInfo.InMap(pawn, MaintenanceType.PerTick);
-                info.volumeFactor = Mathf.Clamp(pawn.BodySize / 2f, 0.25f, 3f) * RM_CreatureBehaviorsSettings.sandSwimRumbleVolume;
+                rumbleVolumeSetting = RM_CreatureBehaviorsSettings.sandSwimRumbleVolume;
+                info.volumeFactor = Mathf.Clamp(pawn.BodySize / 2f, 0.25f, 3f) * rumbleVolumeSetting;
                 rumble = Ext.rumbleSound.TrySpawnSustainer(info);
             }
             rumble?.Maintain();
@@ -326,9 +332,9 @@ namespace RimMandrake.CreatureBehaviors
         {
             Pawn pawn = parent as Pawn;
             Map map = victim?.MapHeld ?? pawn?.MapHeld;
-            if (pawn == null || victim == null || map == null || Ext == null)
+            if (pawn == null || victim == null || map == null || Ext == null || !RM_CreatureBehaviorsSettings.sandSwimEnabled)
             {
-                return;
+                return; // option off: swimmers walk, so a kill is an ordinary kill
             }
             IntVec3 at = victim.PositionHeld;
             if (!RM_SandSwimUtility.IsSwimTerrain(at, map, Ext))
