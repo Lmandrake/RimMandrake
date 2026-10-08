@@ -1,0 +1,482 @@
+[
+ {
+  "id": "regen_ls2_canon_grank_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Grank",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow canon PRECISELY, look at the parent image. Make North and South now.\" RimWorld creature sprite of the Star Wars canon grank, SOUTH view: the canon saw-toothed grank of Naboo: a medium-sized, heavy-jawed predatory scavenger, gnarled and hunched, with a mouth of sharp saw-like teeth. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Follow the canon reference image PRECISELY. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Grank/Grank",
+  "biome_neutral": true,
+  "canon": "grank",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/13/13a5350399251dbe575073caabb2c01611fe55a16da0c36116c2c3c8d341ae15.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/grank/wookieepedia_infobox.webp"
+  ],
+  "owner_note": "Follow canon PRECISELY, look at the parent image. Make North and South now."
+ },
+ {
+  "id": "regen_ls2_canon_grank_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Grank",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow canon PRECISELY, look at the parent image. Make North and South now.\" RimWorld creature sprite of the Star Wars canon grank, NORTH view: the canon saw-toothed grank of Naboo: a medium-sized, heavy-jawed predatory scavenger, gnarled and hunched, with a mouth of sharp saw-like teeth. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Follow the canon reference image PRECISELY. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Grank/Grank",
+  "biome_neutral": true,
+  "canon": "grank",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/13/13a5350399251dbe575073caabb2c01611fe55a16da0c36116c2c3c8d341ae15.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/grank/wookieepedia_infobox.webp"
+  ],
+  "owner_note": "Follow canon PRECISELY, look at the parent image. Make North and South now."
+ },
+ {
+  "id": "regen_ls2_canon_lothcat_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Lothcat",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Now just north and south. Less cartoonish please\" RimWorld creature sprite of the Star Wars canon loth-cat, SOUTH view: the canon loth-cat of Lothal: a small, lithe, temperamental feline hunter with sharp teeth and claws. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Realistic and naturalistic, NOT cartoonish. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Lothcat/Lothcat_f",
+  "biome_neutral": true,
+  "canon": "lothcat",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/1d/1d245186f819d1f87223940a7ed8fb116b1c3b4efc67d3e6018ff732d7c2d3bc.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_1.webp"
+  ],
+  "owner_note": "Now just north and south. Less cartoonish please"
+ },
+ {
+  "id": "regen_ls2_canon_lothcat_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Lothcat",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Now just north and south. Less cartoonish please\" RimWorld creature sprite of the Star Wars canon loth-cat, NORTH view: the canon loth-cat of Lothal: a small, lithe, temperamental feline hunter with sharp teeth and claws. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. Realistic and naturalistic, NOT cartoonish. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Lothcat/Lothcat_f",
+  "biome_neutral": true,
+  "canon": "lothcat",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/1d/1d245186f819d1f87223940a7ed8fb116b1c3b4efc67d3e6018ff732d7c2d3bc.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_1.webp"
+  ],
+  "owner_note": "Now just north and south. Less cartoonish please"
+ },
+ {
+  "id": "regen_ls2_canon_whisperbird_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Whisperbird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now north, south, and flying frames\" RimWorld creature sprite of the Star Wars canon whisper bird, SOUTH view: the canon whisper bird of Yavin 4: an energetic avian with radiant plumage, a long dexterous tongue, built for noiseless flight. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the south view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Whisperbird/Whisperbird",
+  "biome_neutral": true,
+  "canon": "whisperbird",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6d/6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/whisperbird/wookieepedia_alienarchive.jpg"
+  ],
+  "owner_note": "Good! Now north, south, and flying frames"
+ },
+ {
+  "id": "regen_ls2_canon_whisperbird_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Whisperbird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now north, south, and flying frames\" RimWorld creature sprite of the Star Wars canon whisper bird, NORTH view: the canon whisper bird of Yavin 4: an energetic avian with radiant plumage, a long dexterous tongue, built for noiseless flight. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the north view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Whisperbird/Whisperbird",
+  "biome_neutral": true,
+  "canon": "whisperbird",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6d/6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/whisperbird/wookieepedia_alienarchive.jpg"
+  ],
+  "owner_note": "Good! Now north, south, and flying frames"
+ },
+ {
+  "id": "regen_ls2_canon_whisperbird_flying_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Whisperbird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now north, south, and flying frames\" RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: the canon whisper bird of Yavin 4: an energetic avian with radiant plumage, a long dexterous tongue, built for noiseless flight. In flight, body level, legs tucked, wings raised high at the top of the upstroke. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the flying view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Whisperbird/Whisperbird_Flying_1",
+  "biome_neutral": true,
+  "canon": "whisperbird",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6d/6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/whisperbird/wookieepedia_alienarchive.jpg"
+  ],
+  "owner_note": "Good! Now north, south, and flying frames"
+ },
+ {
+  "id": "regen_ls2_canon_whisperbird_flying_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Whisperbird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now north, south, and flying frames\" RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: the canon whisper bird of Yavin 4: an energetic avian with radiant plumage, a long dexterous tongue, built for noiseless flight. In flight, body level, legs tucked, wings level and spread wide mid-downstroke. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the flying view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Whisperbird/Whisperbird_Flying_2",
+  "biome_neutral": true,
+  "canon": "whisperbird",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6d/6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/whisperbird/wookieepedia_alienarchive.jpg"
+  ],
+  "owner_note": "Good! Now north, south, and flying frames"
+ },
+ {
+  "id": "regen_ls2_canon_whisperbird_flying_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Whisperbird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now north, south, and flying frames\" RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: the canon whisper bird of Yavin 4: an energetic avian with radiant plumage, a long dexterous tongue, built for noiseless flight. In flight, body level, legs tucked, wings swept fully down at the bottom of the downstroke. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the flying view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Whisperbird/Whisperbird_Flying_3",
+  "biome_neutral": true,
+  "canon": "whisperbird",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6d/6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/whisperbird/wookieepedia_alienarchive.jpg"
+  ],
+  "owner_note": "Good! Now north, south, and flying frames"
+ },
+ {
+  "id": "regen_ls2_canon_whisperbird_flying_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Whisperbird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good! Now north, south, and flying frames\" RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer), the same individual as the accepted standing render: the canon whisper bird of Yavin 4: an energetic avian with radiant plumage, a long dexterous tongue, built for noiseless flight. In flight, body level, legs tucked, wings level and rising mid-upstroke. The FIRST attached image is the owner's accepted EAST (side) render of this very individual: draw the flying view of exactly that animal -- same species, anatomy, colouring, markings, scale and painted style. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Whisperbird/Whisperbird_Flying_4",
+  "biome_neutral": true,
+  "canon": "whisperbird",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6d/6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/whisperbird/wookieepedia_alienarchive.jpg"
+  ],
+  "owner_note": "Good! Now north, south, and flying frames"
+ },
+ {
+  "id": "regen_ls2_canon_convor_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Convor",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"D is close, but please make it less cute now\" RimWorld creature sprite of the Star Wars canon convor: the canon convor of Wasskah: a short, plump-bodied mammavian, an excellent flier. The attached first image is column D, the one the owner called close: keep its anatomy but make it LESS CUTE -- a wild animal, not a pet toy. Follow the canon closely. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Convor/Convor",
+  "biome_neutral": true,
+  "canon": "convor",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/29/296f437d6d9ed1daa204963512269ac8604fabeff44ef04aca7220210e712360.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/convor/wookieepedia_convoree_infobox.png"
+  ],
+  "owner_note": "D is close, but please make it less cute now"
+ },
+ {
+  "id": "regen_ls2_canon_convor_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Convor",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"D is close, but please make it less cute now\" RimWorld creature sprite of the Star Wars canon convor: the canon convor of Wasskah: a short, plump-bodied mammavian, an excellent flier. The attached first image is column D, the one the owner called close: keep its anatomy but make it LESS CUTE -- a wild animal, not a pet toy. Follow the canon closely. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Convor/Convor",
+  "biome_neutral": true,
+  "canon": "convor",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/29/296f437d6d9ed1daa204963512269ac8604fabeff44ef04aca7220210e712360.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/convor/wookieepedia_convoree_infobox.png"
+  ],
+  "owner_note": "D is close, but please make it less cute now"
+ },
+ {
+  "id": "regen_ls2_canon_kybuck_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Kybuck",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Almost there, but you missed the canon bone plate on top of its head mounted to its horns. YOU GOTTA GET THE HEAD BONE ARRANGEMENT! A SOLID BONE PLATE THING!\" RimWorld creature sprite of the Star Wars canon kybuck: the canon kybuck of Kashyyyk: a fast bipedal ungulate herd animal, tauntaun-like. The attached first image is the owner's 'almost there' render: keep it, and ADD the canon head-bone arrangement -- a single solid bone plate across the top of the head, mounted onto and joined with the horns. Follow the canon closely. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Kybuck/Kybuck",
+  "biome_neutral": true,
+  "canon": "kybuck",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/45/450aaf798bb83a1bacb83ed9b8477542201af380418017efb13832d7675e1b76.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kybuck/wookieepedia_canon_1.webp"
+  ],
+  "owner_note": "Almost there, but you missed the canon bone plate on top of its head mounted to its horns. YOU GOTTA GET THE HEAD BONE ARRANGEMENT! A SOLID BONE PLATE THING!"
+ },
+ {
+  "id": "regen_ls2_canon_kybuck_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Kybuck",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Almost there, but you missed the canon bone plate on top of its head mounted to its horns. YOU GOTTA GET THE HEAD BONE ARRANGEMENT! A SOLID BONE PLATE THING!\" RimWorld creature sprite of the Star Wars canon kybuck: the canon kybuck of Kashyyyk: a fast bipedal ungulate herd animal, tauntaun-like. The attached first image is the owner's 'almost there' render: keep it, and ADD the canon head-bone arrangement -- a single solid bone plate across the top of the head, mounted onto and joined with the horns. Follow the canon closely. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Kybuck/Kybuck",
+  "biome_neutral": true,
+  "canon": "kybuck",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/45/450aaf798bb83a1bacb83ed9b8477542201af380418017efb13832d7675e1b76.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kybuck/wookieepedia_canon_1.webp"
+  ],
+  "owner_note": "Almost there, but you missed the canon bone plate on top of its head mounted to its horns. YOU GOTTA GET THE HEAD BONE ARRANGEMENT! A SOLID BONE PLATE THING!"
+ },
+ {
+  "id": "regen_ls2_canon_urusai_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Urusai",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery\" RimWorld creature sprite of the Star Wars canon urusai: the canon urusai of Tatooine: a winged reptavian carrion scavenger riding thermals. The attached first image is the owner's pick; redraw it to match the canon imagery (second image). Follow the canon closely. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Urusai/Urusai",
+  "biome_neutral": true,
+  "canon": "urusai",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/50/504beaf157bf7607f598ba34857a0d185dac081a0b5cb7ca95cb90e4bb58b029.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/urusai/wookieepedia_canon_1.webp"
+  ],
+  "owner_note": "Redo to canon imagery"
+ },
+ {
+  "id": "regen_ls2_canon_urusai_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Urusai",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon imagery\" RimWorld creature sprite of the Star Wars canon urusai: the canon urusai of Tatooine: a winged reptavian carrion scavenger riding thermals. The attached first image is the owner's pick; redraw it to match the canon imagery (second image). Follow the canon closely. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Urusai/Urusai",
+  "biome_neutral": true,
+  "canon": "urusai",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/50/504beaf157bf7607f598ba34857a0d185dac081a0b5cb7ca95cb90e4bb58b029.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/urusai/wookieepedia_canon_1.webp"
+  ],
+  "owner_note": "Redo to canon imagery"
+ },
+ {
+  "id": "regen_ls2_x_zellik_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Zellik",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make this more alien\" RimWorld creature sprite: the zellik, a hunched, folded-umbrella-like scrubland creature that perches on boughs and turbine heads and opens out when the wind dies. The attached image is the owner's pick: keep its body plan but make it MORE ALIEN -- stranger proportions, unfamiliar anatomy, nothing Earth-like. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
+  "biome_register": "leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a9/a944771c07a4ba1e829d1096f8e92bc7ea305cbd50207660bde1fa144c951038.png"
+  ],
+  "owner_note": "Make this more alien"
+ },
+ {
+  "id": "regen_ls2_x_zellik_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Zellik",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make this more alien\" RimWorld creature sprite: the zellik, a hunched, folded-umbrella-like scrubland creature that perches on boughs and turbine heads and opens out when the wind dies. The attached image is the owner's pick: keep its body plan but make it MORE ALIEN -- stranger proportions, unfamiliar anatomy, nothing Earth-like. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
+  "biome_register": "leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a9/a944771c07a4ba1e829d1096f8e92bc7ea305cbd50207660bde1fa144c951038.png"
+  ],
+  "owner_note": "Make this more alien"
+ },
+ {
+  "id": "regen_ls2_x_scrapnestbird_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_ScrapNestBird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon very carefully.\" RimWorld creature sprite: the scrap-nest bird, a shrubland scavenger with an oil-dark gloss and an eye for anything that catches the light; it nests deep in venomvine and lines the nest with stolen wire, lens-glass, chips of hull and beads of gold. Follow this description very carefully. One bird, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird",
+  "biome_register": "leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/87/874eeac6e41ab78eab32e609106ddc104e0a968df4db13687037c922b2cbefda.png"
+  ],
+  "owner_note": "Redo to canon very carefully."
+ },
+ {
+  "id": "regen_ls2_x_scrapnestbird_v3",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_ScrapNestBird",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo to canon very carefully.\" RimWorld creature sprite: the scrap-nest bird, a shrubland scavenger with an oil-dark gloss and an eye for anything that catches the light; it nests deep in venomvine and lines the nest with stolen wire, lens-glass, chips of hull and beads of gold. Follow this description very carefully. One bird, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird",
+  "biome_register": "leaning scrub register: a windswept arid scrubland plain of knee-high silver-green fuzz under a pale overcast sky, soft diffuse light; the subject keeps its own natural colours, no strong biome grade; bake NO cast shadow",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/87/874eeac6e41ab78eab32e609106ddc104e0a968df4db13687037c922b2cbefda.png"
+  ],
+  "owner_note": "Redo to canon very carefully."
+ }
+]
