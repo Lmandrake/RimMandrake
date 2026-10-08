@@ -63,7 +63,7 @@ namespace RimMandrake.Webwork
 				FieldInfo f = ext.GetType().GetField("advanceIntervalTicks");
 				if (f != null)
 				{
-					f.SetValue(ext, (int)(((int)f.GetValue(ext)) * RM_WebworkSettings.frontCreepIntervalMultiplier));
+					f.SetValue(ext, RM_EmergentKernel.ScaledInterval((int)f.GetValue(ext), RM_WebworkSettings.frontCreepIntervalMultiplier));
 				}
 			}
 		}

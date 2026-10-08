@@ -60,12 +60,10 @@ namespace RimMandrake.Property
                 WitnessEntry e = entries[i];
                 if (!e.Suspect.Equals(suspect)) continue;
 
-                float daysElapsed = (nowTick - e.TimestampTicks) / (float)GenDate.TicksPerDay;
-                float propagated = Mathf.Clamp01(daysElapsed * propagationRatePerDay);
-                float decay = Mathf.Clamp01(1f - daysElapsed / PropertySettings.suspicionHalfLifeDays);
-                total += e.Confidence * propagated * decay;
+                float daysElapsed = RM_PropertyKernel.DaysElapsed(nowTick, e.TimestampTicks, GenDate.TicksPerDay);
+                total += RM_PropertyKernel.Contribution(e.Confidence, daysElapsed, propagationRatePerDay, PropertySettings.suspicionHalfLifeDays);
             }
-            return Mathf.Clamp01(total);
+            return RM_PropertyKernel.Clamp01(total);
         }
 
         // Drops entries whose decayed contribution has reached ~0 for every
@@ -82,8 +80,8 @@ namespace RimMandrake.Property
         {
             for (int i = entries.Count - 1; i >= 0; i--)
             {
-                float daysElapsed = (nowTick - entries[i].TimestampTicks) / (float)GenDate.TicksPerDay;
-                if (daysElapsed >= PropertySettings.suspicionHalfLifeDays)
+                float daysElapsed = RM_PropertyKernel.DaysElapsed(nowTick, entries[i].TimestampTicks, GenDate.TicksPerDay);
+                if (RM_PropertyKernel.FullyDecayed(daysElapsed, PropertySettings.suspicionHalfLifeDays))
                 {
                     entries.RemoveAt(i);
                 }
@@ -98,10 +96,8 @@ namespace RimMandrake.Property
             for (int i = 0; i < entries.Count; i++)
             {
                 WitnessEntry e = entries[i];
-                float daysElapsed = (nowTick - e.TimestampTicks) / (float)GenDate.TicksPerDay;
-                float propagated = Mathf.Clamp01(daysElapsed * propagationRatePerDay);
-                float decay = Mathf.Clamp01(1f - daysElapsed / PropertySettings.suspicionHalfLifeDays);
-                if (e.Confidence * propagated * decay >= threshold) return true;
+                float daysElapsed = RM_PropertyKernel.DaysElapsed(nowTick, e.TimestampTicks, GenDate.TicksPerDay);
+                if (RM_PropertyKernel.KnowsEnough(RM_PropertyKernel.Contribution(e.Confidence, daysElapsed, propagationRatePerDay, PropertySettings.suspicionHalfLifeDays), threshold)) return true;
             }
             return false;
         }
@@ -124,14 +120,11 @@ namespace RimMandrake.Property
         public void DampenSuspicion(ClaimantRef suspect, float fraction, int nowTick)
         {
             PruneFullyDecayedEntries(nowTick);
-            fraction = Mathf.Clamp01(fraction);
-            if (fraction <= 0f) return;
-
             for (int i = 0; i < entries.Count; i++)
             {
                 WitnessEntry e = entries[i];
                 if (!e.Suspect.Equals(suspect)) continue;
-                e.Confidence *= (1f - fraction);
+                e.Confidence = RM_PropertyKernel.Dampened(e.Confidence, fraction);
             }
         }
 

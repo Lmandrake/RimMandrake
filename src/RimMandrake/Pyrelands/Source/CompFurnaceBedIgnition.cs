@@ -56,21 +56,7 @@ namespace RimMandrake.Pyrelands
                 return;
             }
 
-            if (!beast.Awake())
-            {
-                restingTicks += delta;
-                return;
-            }
-
-            if (restingTicks <= 0)
-            {
-                return;
-            }
-
-            int slept = restingTicks;
-            restingTicks = 0;
-
-            if (slept < PyrelandsTuning.FurnaceMinRestTicks)
+            if (RM_FurnaceKernel.RestStep(ref restingTicks, beast.Awake(), delta, PyrelandsTuning.FurnaceMinRestTicks) != RM_RestOutcome.WokeRested)
             {
                 return;
             }
@@ -92,10 +78,9 @@ namespace RimMandrake.Pyrelands
 
             // PYRELANDS_ULLAI_GIANT_BUILD_1: a bigger beast lies on more ground (classic ratio 1 = 1..2 cells).
             float ratio = PyrelandsTuning.FurnaceSizeRatio(beast);
-            int cells = Rand.RangeInclusive(
-                UnityEngine.Mathf.RoundToInt(PyrelandsTuning.FurnaceBedIgnitionMinCells * ratio),
-                UnityEngine.Mathf.RoundToInt(PyrelandsTuning.FurnaceBedIgnitionMaxCells * ratio));
-            float spread = UnityEngine.Mathf.Max(1.5f, 1.5f * ratio);
+            RM_FurnaceKernel.BedCells(ratio, PyrelandsTuning.FurnaceBedIgnitionMinCells, PyrelandsTuning.FurnaceBedIgnitionMaxCells,
+                out int lo, out int hi, out float spread);
+            int cells = Rand.RangeInclusive(lo, hi);
 
             for (int i = 0; i < cells; i++)
             {

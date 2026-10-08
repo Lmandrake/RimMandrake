@@ -93,20 +93,7 @@ namespace RimMandrake.StarWars.JawaIonWeapons
         /// </summary>
         public static float BodySizeDivisor(float bodySize)
         {
-            if (bodySize <= 0f)
-            {
-                return 1f;
-            }
-            float exponent = bodySizeResistExponent;
-            if (exponent <= 0f)
-            {
-                return 1f;
-            }
-            if (exponent == 2f)
-            {
-                return bodySize * bodySize;
-            }
-            return Mathf.Pow(bodySize, exponent);
+            return RSW_IonBuildupKernel.BodySizeDivisor(bodySize, bodySizeResistExponent);
         }
 
         private static string ResistLabel()

@@ -8,62 +8,6 @@ using Verse;
 namespace RimMandrake.Pyrelands
 {
     /// <summary>Which leg of the capacitor cycle a herd is currently on.</summary>
-    public enum FurnaceHerdLeg
-    {
-        DeepDesert,
-        Pyrelands,
-        Terminator,
-    }
-
-    /// <summary>
-    /// FURNACEBEAST_WORLD_MIGRATION_1 — the world leg. Split out of
-    /// FURNACEBEAST_THERMAL_CYCLE_1: everything true of a furnace-beast herd
-    /// while no Map holds it, cycling the planet the owner described
-    /// (2026-09-14): "build up heat in the Deep Desert and intentionally
-    /// coming into the Pyrelands to help it burn and absorb yet more heat …
-    /// then they migrate all the way to the near terminator where they eat
-    /// everything in sight while they slowly bleed out all that heat … Then
-    /// they return to build up heat again."
-    ///
-    /// 🔑 A PLAIN WorldObject, NOT A MapParent. WorldObject_Inhabited (this
-    /// mod's own sibling pattern) is a MapParent because a place a player
-    /// visits needs a generated map; a herd never generates one of its own —
-    /// it only ever DELIVERS onto a map that already exists at its tile
-    /// (TryDeliverToSettledMap below). Modelled instead on
-    /// RimWorld.Planet.TravellingTransporters — a plain WorldObject that
-    /// exists purely between tiles, overriding TickInterval and setting Tile
-    /// directly.
-    ///
-    /// ⚠️ THE MOVE IS A JUMP, NOT A GRADUAL TRAVEL ANIMATION.
-    /// TravellingTransporters slerps its DrawPos between two tiles over many
-    /// ticks (TraveledPctStepPerTick) for a caravan the player is watching.
-    /// A furnace-beast herd's route spans weeks and is not something the
-    /// player tracks tick-by-tick, so this deliberately sets
-    /// <see cref="WorldObject.Tile"/> straight to the resolved destination —
-    /// "route across WorldGrid tiles chosen by biome, not by pathing cost"
-    /// (the item's own words), taken literally rather than building a second,
-    /// harder-to-verify travel-animation system nothing asked for.
-    ///
-    /// 🔑 HOLDS REAL Pawns, deep-scribed — same shape as
-    /// WorldObject_Inhabited.roster, and for the same reason: a custom holder
-    /// cannot use LookMode.Reference safely (WorldPawnGC's critical-pawn test
-    /// does not recognise it). UNLIKE Inhabited's frozen roster, this one is
-    /// NOT ShouldTickContents=false — needs are meant to stay frozen (nobody
-    /// wants a herd starving to death off-map over a 15-day desert dwell) but
-    /// charge is meant to keep moving, so this class does not implement
-    /// IThingHolderTickable at all (the default is "don't tick contents") and
-    /// instead drives ONLY the charge field directly, once per its own
-    /// TickInterval, via CompFurnaceThermalCharge.ApplyWorldTick — see that
-    /// method's header for why this is the same number, not a second one.
-    ///
-    /// ⚠️ NO "NEAR FIRE" BONUS OFF-MAP. MapComponent_BurnLine (the standing
-    /// burn the on-map job-giver seeks) only exists once a Map does. The
-    /// Pyrelands leg's extra charging pull is therefore expressed purely
-    /// through that biome's own hot ambient temperature — real, but gentler
-    /// than standing in an actual fire. Left as an honest simplification
-    /// rather than inventing a world-scale "burn intensity" concept nothing
-    /// else in this codebase tracks.
-    /// </summary>
     public class WorldObject_RM_FurnaceHerd : WorldObject, IThingHolder
     {
         /// <summary>The beasts. Real pawns, held off-map. See the class
@@ -235,33 +179,14 @@ namespace RimMandrake.Pyrelands
             ticksAtCurrentLeg += delta;
             float avg = AverageCharge();
 
-            switch (leg)
+            // The desert leg is time-driven ("basking for weeks"); the other two end on a charge threshold or the max dwell.
+            if (RM_FurnaceKernel.ShouldAdvance(leg, ticksAtCurrentLeg, avg, PyrelandsTuning.WorldHerdDeepDesertDwellTicks,
+                    PyrelandsTuning.WorldHerdMaxLegDwellTicks, PyrelandsTuning.FurnaceChargeSeekBelow, PyrelandsTuning.FurnaceChargeAvoidAbove))
             {
-                case FurnaceHerdLeg.DeepDesert:
-                    // Time-driven, not charge-driven: this leg is the START of
-                    // the charge, not its completion, so there is no
-                    // threshold to wait on. "Basking for weeks."
-                    if (ticksAtCurrentLeg >= PyrelandsTuning.WorldHerdDeepDesertDwellTicks)
-                    {
-                        AdvanceToLeg(FurnaceHerdLeg.Pyrelands, PyrelandsTuning.PyrelandsBiomeDefNames);
-                    }
-                    break;
-
-                case FurnaceHerdLeg.Pyrelands:
-                    if (avg >= PyrelandsTuning.FurnaceChargeAvoidAbove
-                        || ticksAtCurrentLeg >= PyrelandsTuning.WorldHerdMaxLegDwellTicks)
-                    {
-                        AdvanceToLeg(FurnaceHerdLeg.Terminator, PyrelandsTuning.NearTerminatorBiomeDefNames);
-                    }
-                    break;
-
-                case FurnaceHerdLeg.Terminator:
-                    if (avg <= PyrelandsTuning.FurnaceChargeSeekBelow
-                        || ticksAtCurrentLeg >= PyrelandsTuning.WorldHerdMaxLegDwellTicks)
-                    {
-                        AdvanceToLeg(FurnaceHerdLeg.DeepDesert, PyrelandsTuning.DeepDesertBiomeDefNames);
-                    }
-                    break;
+                FurnaceHerdLeg next = RM_FurnaceKernel.NextLeg(leg);
+                AdvanceToLeg(next, next == FurnaceHerdLeg.Pyrelands ? PyrelandsTuning.PyrelandsBiomeDefNames
+                    : next == FurnaceHerdLeg.Terminator ? PyrelandsTuning.NearTerminatorBiomeDefNames
+                    : PyrelandsTuning.DeepDesertBiomeDefNames);
             }
         }
 
@@ -315,19 +240,7 @@ namespace RimMandrake.Pyrelands
         /// advanced from elsewhere.</summary>
         public static FurnaceHerdLeg LegForBiome(BiomeDef biome)
         {
-            if (biome == null)
-            {
-                return FurnaceHerdLeg.DeepDesert;
-            }
-            if (MatchesAny(biome.defName, PyrelandsTuning.PyrelandsBiomeDefNames))
-            {
-                return FurnaceHerdLeg.Pyrelands;
-            }
-            if (MatchesAny(biome.defName, PyrelandsTuning.NearTerminatorBiomeDefNames))
-            {
-                return FurnaceHerdLeg.Terminator;
-            }
-            return FurnaceHerdLeg.DeepDesert;
+            return RM_FurnaceKernel.LegForBiome(biome?.defName, PyrelandsTuning.PyrelandsBiomeDefNames, PyrelandsTuning.NearTerminatorBiomeDefNames);
         }
 
         /// <summary>
@@ -351,48 +264,20 @@ namespace RimMandrake.Pyrelands
             }
 
             WorldGrid grid = Find.WorldGrid;
-            var visited = new HashSet<int>{ from.tileId };
-            var queue = new Queue<PlanetTile>();
-            queue.Enqueue(from);
-            var neighbors = new List<PlanetTile>();
-            int scanned = 0;
-
-            while (queue.Count > 0 && scanned < PyrelandsTuning.WorldHerdTileSearchCap)
-            {
-                PlanetTile current = queue.Dequeue();
-                scanned++;
-
-                BiomeDef biome = grid[current]?.PrimaryBiome;
-                if (biome != null && MatchesAny(biome.defName, biomeNames))
+            bool hit = RM_FurnaceKernel.NearestMatching(from, t => t.tileId, (cur, into) => grid.GetTileNeighbors(cur, into),
+                t =>
                 {
-                    found = current;
-                    return true;
-                }
-
-                neighbors.Clear();
-                grid.GetTileNeighbors(current, neighbors);
-                for (int i = 0; i < neighbors.Count; i++)
-                {
-                    PlanetTile n = neighbors[i];
-                    if (visited.Add(n.tileId))
-                    {
-                        queue.Enqueue(n);
-                    }
-                }
-            }
-            return false;
+                    BiomeDef biome = grid[t]?.PrimaryBiome;
+                    return biome != null && MatchesAny(biome.defName, biomeNames);
+                },
+                PyrelandsTuning.WorldHerdTileSearchCap, out PlanetTile nearest);
+            found = hit ? nearest : PlanetTile.Invalid;
+            return hit;
         }
 
         internal static bool MatchesAny(string defName, IReadOnlyList<string> names)
         {
-            for (int i = 0; i < names.Count; i++)
-            {
-                if (string.Equals(defName, names[i], System.StringComparison.Ordinal))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return RM_FurnaceKernel.MatchesAny(defName, names);
         }
 
         public override string GetInspectString()

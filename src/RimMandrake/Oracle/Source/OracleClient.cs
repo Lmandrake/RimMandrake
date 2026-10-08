@@ -45,18 +45,6 @@ namespace RimMandrake.Oracle
     public static class OracleClient
     {
         /// <summary>
-        /// Tool names denied to the child. The Oracle only ever wants text back;
-        /// an agent with a shell in the RimWorld install directory is not the
-        /// deal. Present on 2.1.228 and 2.1.266 alike. An unknown name in this
-        /// list is inert -- it is a filter, not a lookup.
-        /// </summary>
-        private static readonly string[] DeniedTools =
-        {
-            "Bash", "Edit", "Write", "Read", "Glob", "Grep",
-            "WebFetch", "WebSearch", "Task", "NotebookEdit"
-        };
-
-        /// <summary>
         /// The candidate that last started successfully. Resolution is only
         /// interesting once: the game process's PATH is whatever Steam handed
         /// it, so the first call may have to try more than one name, and every
@@ -79,66 +67,16 @@ namespace RimMandrake.Oracle
             return Task.Run(() => RunWithRetry(systemPrompt, userPrompt, timeoutSeconds, cliPathOverride));
         }
 
+        // The retry policy, the candidate order and the command line live in Kernel/OracleKernel.cs (fuzzed offline); this
+        // file is the process plumbing around them.
         private static string RunWithRetry(
             string systemPrompt, string userPrompt, int timeoutSeconds, string cliPathOverride)
         {
-            Exception lastFailure = null;
-
-            // One retry, as the spec has always specified -- but only for a
-            // non-zero exit, which can be a transient upstream error. A timeout
-            // is not retried (the window it was given is already spent) and a
-            // missing binary is not retried (it will be just as missing).
-            for (int attempt = 0; attempt < 2; attempt++)
-            {
-                try
-                {
-                    return RunOnce(systemPrompt, userPrompt, timeoutSeconds, cliPathOverride);
-                }
-                catch (TimeoutException)
-                {
-                    throw;
-                }
-                catch (FileNotFoundException)
-                {
-                    throw;
-                }
-                catch (Exception e)
-                {
-                    lastFailure = e;
-                }
-            }
-
-            throw lastFailure ?? new Exception("Oracle: claude -p failed with no exception captured");
+            return OracleKernel.RunWithRetry(() => OracleKernel.RunOnce(Invoke, systemPrompt, userPrompt, timeoutSeconds,
+                cliPathOverride, ref resolvedExecutable, Environment.GetEnvironmentVariable("USERPROFILE"), Environment.GetEnvironmentVariable("HOME")));
         }
 
-        private static string RunOnce(
-            string systemPrompt, string userPrompt, int timeoutSeconds, string cliPathOverride)
-        {
-            string arguments = BuildArguments(systemPrompt);
-            var notFound = new List<string>();
-
-            foreach (string executable in Candidates(cliPathOverride))
-            {
-                try
-                {
-                    return Invoke(executable, arguments, userPrompt, timeoutSeconds);
-                }
-                catch (Win32Exception)
-                {
-                    // Could not be started at all -- almost always "not on this
-                    // process's PATH". Try the next candidate; if none of them
-                    // start, that is a FileNotFoundException below, which is a
-                    // configuration fact and never worth a retry.
-                    notFound.Add(executable);
-                }
-            }
-
-            throw new FileNotFoundException(
-                "Oracle: could not start the Claude Code CLI. Tried: " + string.Join(", ", notFound.ToArray()) +
-                ". Set an explicit path in Mod Settings if it lives somewhere else.");
-        }
-
-        private static string Invoke(string executable, string arguments, string userPrompt, int timeoutSeconds)
+        private static string Invoke(string executable, string arguments, string userPrompt, int timeoutSeconds, Action<string> started)
         {
             var psi = new ProcessStartInfo(executable, arguments)
             {
@@ -163,7 +101,7 @@ namespace RimMandrake.Oracle
                 proc.ErrorDataReceived += (s, e) => { if (e.Data != null) stderr.AppendLine(e.Data); };
 
                 proc.Start();
-                resolvedExecutable = executable;
+                started(executable);
 
                 proc.BeginOutputReadLine();
                 proc.BeginErrorReadLine();
@@ -178,7 +116,7 @@ namespace RimMandrake.Oracle
                     stdin.Write(userPrompt ?? string.Empty);
                 }
 
-                int timeoutMs = Math.Max(1, timeoutSeconds) * 1000;
+                int timeoutMs = OracleKernel.TimeoutMs(timeoutSeconds);
                 if (!proc.WaitForExit(timeoutMs))
                 {
                     try { proc.Kill(); } catch { /* already gone between the check and the kill */ }
@@ -190,123 +128,8 @@ namespace RimMandrake.Oracle
                 // finish, without which the last lines can still be in flight.
                 proc.WaitForExit();
 
-                if (proc.ExitCode != 0)
-                {
-                    // Verified 2026-09-13: an auth failure ("Failed to
-                    // authenticate: OAuth session expired") prints to STDOUT,
-                    // not stderr -- stderr-only produced an empty, useless
-                    // diagnostic. Fall back to stdout whenever stderr is
-                    // silent so a real failure reason is never dropped.
-                    string diagnostic = stderr.ToString().Trim();
-                    if (diagnostic.Length == 0)
-                    {
-                        diagnostic = stdout.ToString().Trim();
-                    }
-                    throw new Exception(
-                        "Oracle: claude -p exited " + proc.ExitCode + " -- " + Truncate(diagnostic, 300));
-                }
-
-                string content = stdout.ToString().Trim();
-                if (string.IsNullOrEmpty(content))
-                {
-                    throw new FormatException("Oracle: claude -p exited 0 but produced no output");
-                }
-                return content;
+                return OracleKernel.Classify(proc.ExitCode, stdout.ToString(), stderr.ToString());
             }
         }
-
-        /// <summary>
-        /// An explicit setting is taken at its word -- if it is wrong, that is a
-        /// visible failure rather than a silent fall-through to some other
-        /// binary. Otherwise: PATH first, then the location the CLI's own
-        /// installer uses, which is where the owner's copy actually lives but is
-        /// not necessarily on a Steam-launched process's PATH.
-        /// </summary>
-        private static IEnumerable<string> Candidates(string cliPathOverride)
-        {
-            if (!string.IsNullOrEmpty(cliPathOverride) && cliPathOverride.Trim().Length > 0)
-            {
-                yield return cliPathOverride.Trim();
-                yield break;
-            }
-
-            string cached = resolvedExecutable;
-            if (!string.IsNullOrEmpty(cached))
-            {
-                yield return cached;
-            }
-
-            if (cached != "claude")
-            {
-                yield return "claude";
-            }
-
-            string home = Environment.GetEnvironmentVariable("USERPROFILE");
-            if (string.IsNullOrEmpty(home))
-            {
-                home = Environment.GetEnvironmentVariable("HOME");
-            }
-            if (!string.IsNullOrEmpty(home))
-            {
-                yield return Path.Combine(home, Path.Combine(".local", Path.Combine("bin", "claude.exe")));
-            }
-        }
-
-        private static string BuildArguments(string systemPrompt)
-        {
-            var sb = new StringBuilder();
-            sb.Append("-p --output-format text");
-            sb.Append(" --system-prompt ").Append(QuoteArgument(systemPrompt ?? string.Empty));
-            sb.Append(" --disallowed-tools");
-            foreach (string tool in DeniedTools)
-            {
-                sb.Append(' ').Append(tool);
-            }
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Windows CommandLineToArgvW quoting: backslashes are literal except
-        /// where they precede a quote, so a run of them before a '"' (or before
-        /// the closing quote) has to be doubled. The register blocks are ours,
-        /// but they are prose with quotation marks in them, and an unescaped one
-        /// would split the argument and hand the rest of the persona to the CLI
-        /// as stray flags.
-        /// </summary>
-        private static string QuoteArgument(string arg)
-        {
-            var sb = new StringBuilder();
-            sb.Append('"');
-            int i = 0;
-            while (i < arg.Length)
-            {
-                int backslashes = 0;
-                while (i < arg.Length && arg[i] == '\\')
-                {
-                    backslashes++;
-                    i++;
-                }
-
-                if (i == arg.Length)
-                {
-                    sb.Append('\\', backslashes * 2);
-                }
-                else if (arg[i] == '"')
-                {
-                    sb.Append('\\', backslashes * 2 + 1).Append('"');
-                    i++;
-                }
-                else
-                {
-                    sb.Append('\\', backslashes).Append(arg[i]);
-                    i++;
-                }
-            }
-            sb.Append('"');
-            return sb.ToString();
-        }
-
-        private static string Truncate(string s, int max) =>
-            string.IsNullOrEmpty(s) || s.Length <= max ? s : s.Substring(0, max) + "...";
     }
 }

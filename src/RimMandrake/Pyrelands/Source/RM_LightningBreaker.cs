@@ -28,8 +28,8 @@ namespace RimMandrake.Pyrelands
 
         public CompRefuelable Hopper => GetComp<CompRefuelable>();
 
-        public bool Armed => !tripped && RM_PyrelandsSettings.lightningBreakerEnabled
-                             && (Hopper == null || Hopper.Fuel >= RM_PyrelandsSettings.breakerTripCost);
+        public bool Armed => RM_BreakerKernel.Armed(tripped, RM_PyrelandsSettings.lightningBreakerEnabled, Hopper != null,
+            Hopper != null ? Hopper.Fuel : 0f, RM_PyrelandsSettings.breakerTripCost);
 
         public override bool TransmitsPowerNow => !tripped;
 
@@ -159,52 +159,45 @@ namespace RimMandrake.Pyrelands
                 start = start.connectParent;
             }
             var inNet = new HashSet<CompPower>(net.transmitters);
-            var visited = new HashSet<CompPower> { start };
-            var boundary = new HashSet<RM_LightningBreaker>();
-            var queue = new Queue<CompPower>();
-            queue.Enqueue(start);
-            while (queue.Count > 0)
-            {
-                CompPower cur = queue.Dequeue();
-                foreach (IntVec3 cell in cur.parent.OccupiedRect())
-                {
-                    for (int d = 0; d < 4; d++)
-                    {
-                        IntVec3 n = cell + GenAdj.CardinalDirections[d];
-                        if (!n.InBounds(map))
-                        {
-                            continue;
-                        }
-                        List<Thing> things = n.GetThingList(map);
-                        for (int i = 0; i < things.Count; i++)
-                        {
-                            CompPower pc = (things[i] as ThingWithComps)?.GetComp<CompPower>();
-                            if (pc == null || !inNet.Contains(pc) || visited.Contains(pc))
-                            {
-                                continue;
-                            }
-                            if (things[i] is RM_LightningBreaker br && br.Armed)
-                            {
-                                boundary.Add(br);
-                                continue;
-                            }
-                            visited.Add(pc);
-                            queue.Enqueue(pc);
-                        }
-                    }
-                }
-            }
+            RM_BreakerKernel.Section(start, cur => AdjacentPower(cur, map), c => inNet.Contains(c),
+                c => c.parent is RM_LightningBreaker br && br.Armed,
+                out HashSet<CompPower> visited, out HashSet<CompPower> boundary);
             if (boundary.Count == 0)
             {
                 return null;
             }
-            var report = new RM_BreakerTripReport { tripped = boundary.ToList() };
+            var report = new RM_BreakerTripReport { tripped = boundary.Select(c => (RM_LightningBreaker)c.parent).ToList() };
             foreach (CompPowerBattery b in net.batteryComps)
             {
-                bool inSection = visited.Contains(b) || (b.connectParent != null && visited.Contains(b.connectParent));
+                bool inSection = RM_BreakerKernel.InSection(visited, (CompPower)b, b.connectParent != null, b.connectParent);
                 (inSection ? report.lost : report.protectedBatteries).Add(b);
             }
-            return report.protectedBatteries.Count == 0 ? null : report;
+            return RM_BreakerKernel.WorthTripping(report.tripped.Count, report.protectedBatteries.Count) ? report : null;
+        }
+
+        /// <summary>Every power comp on a cell edge-adjacent to the building (the node's neighbours in the net).</summary>
+        private static IEnumerable<CompPower> AdjacentPower(CompPower cur, Map map)
+        {
+            foreach (IntVec3 cell in cur.parent.OccupiedRect())
+            {
+                for (int d = 0; d < 4; d++)
+                {
+                    IntVec3 n = cell + GenAdj.CardinalDirections[d];
+                    if (!n.InBounds(map))
+                    {
+                        continue;
+                    }
+                    List<Thing> things = n.GetThingList(map);
+                    for (int i = 0; i < things.Count; i++)
+                    {
+                        CompPower pc = (things[i] as ThingWithComps)?.GetComp<CompPower>();
+                        if (pc != null)
+                        {
+                            yield return pc;
+                        }
+                    }
+                }
+            }
         }
 
         private static readonly Func<Building, bool> TryStartFireNear =
@@ -223,15 +216,15 @@ namespace RimMandrake.Pyrelands
                 br.Trip();
             }
             bool fire = false;
-            if (report.lost.Any(b => b.StoredEnergy > 20f))
+            if (RM_BreakerKernel.LostCanBlast(report.lost.Select(b => b.StoredEnergy)))
             {
                 foreach (CompPowerBattery b in report.lost)
                 {
                     b.DrawPower(b.StoredEnergy);
                 }
-                float radius = Mathf.Clamp(Mathf.Sqrt(lostEnergy) * 0.05f, 1.5f, 14.9f);
+                float radius = RM_BreakerKernel.BlastRadius(lostEnergy);
                 GenExplosion.DoExplosion(at, map, radius, DamageDefOf.Flame, null);
-                if (radius > 3.5f)
+                if (RM_BreakerKernel.SecondBlast(radius))
                 {
                     GenExplosion.DoExplosion(at, map, radius * 0.3f, DamageDefOf.Bomb, null);
                 }

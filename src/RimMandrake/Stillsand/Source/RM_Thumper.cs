@@ -27,23 +27,37 @@ namespace RimMandrake.Stillsand
             var found = new List<Pawn>();
             RM_SandSwimUtility.SubmergedSwimmersNear(map, at, radius, 0f, found);
             found.Sort((x, y) => (x.Position - at).LengthHorizontalSquared.CompareTo((y.Position - at).LengthHorizontalSquared));
-            int called = 0;
-            for (int i = 0; i < found.Count && called < max; i++)
+            var cands = new List<RM_CallCand>(found.Count);
+            for (int i = 0; i < found.Count; i++)
             {
                 Pawn p = found[i];
-                if (p.Faction == Faction.OfPlayer || p.Downed || p.pather == null || p.jobs == null) continue;
                 Job cur = p.CurJob;
-                if (cur != null && (cur.def == JobDefOf.AttackMelee || cur.def == JobDefOf.PredatorHunt)) continue;
-                if ((p.Position - at).LengthHorizontalSquared <= arriveRadius * arriveRadius) continue;
-                IntVec3 dest = CellNear(map, at, p, arriveRadius);
-                if (!dest.IsValid) continue;
-                Job go = JobMaker.MakeJob(JobDefOf.Goto, dest);
+                cands.Add(new RM_CallCand
+                {
+                    id = i,
+                    distSq = (p.Position - at).LengthHorizontalSquared,
+                    player = p.Faction == Faction.OfPlayer,
+                    downed = p.Downed,
+                    cantMove = p.pather == null || p.jobs == null,
+                    busyHunting = cur != null && (cur.def == JobDefOf.AttackMelee || cur.def == JobDefOf.PredatorHunt),
+                });
+            }
+            var dests = new Dictionary<int, IntVec3>();
+            List<int> chosen = RM_SunKernel.SelectCalls(cands, max, arriveRadius, i =>
+            {
+                IntVec3 d = CellNear(map, at, found[i], arriveRadius);
+                dests[i] = d;
+                return d.IsValid;
+            });
+            for (int k = 0; k < chosen.Count; k++)
+            {
+                Pawn p = found[chosen[k]];
+                Job go = JobMaker.MakeJob(JobDefOf.Goto, dests[chosen[k]]);
                 go.locomotionUrgency = LocomotionUrgency.Walk;
                 go.expiryInterval = 1500;
                 p.jobs.StartJob(go, JobCondition.InterruptForced, null, false, true);
-                called++;
             }
-            return called;
+            return chosen.Count;
         }
 
         private static IntVec3 CellNear(Map map, IntVec3 at, Pawn p, int radius)
@@ -95,9 +109,8 @@ namespace RimMandrake.Stillsand
             if (!parent.Spawned || !parent.IsHashIntervalTick(60)) return;
             if (!RM_SandSwimRemSettings.thumperEnabled) return;
             int now = Find.TickManager.TicksGame;
-            if (now - lastBeatTick < Props.beatIntervalTicks) return;
             CompRefuelable fuel = parent.GetComp<CompRefuelable>();
-            if (fuel == null || !fuel.HasFuel) return;
+            if (!RM_SunKernel.BeatDue(true, now, lastBeatTick, Props.beatIntervalTicks, fuel != null && fuel.HasFuel)) return;
             lastBeatTick = now;
             Beat(fuel);
         }

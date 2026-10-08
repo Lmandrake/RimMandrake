@@ -67,7 +67,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 "Off: the Tribes never raid over an unplanned burn, however much arson "
               + "debt the colony racks up.");
             list.Label("Arson debt before a raid: " + arsonDebtRaidThreshold.ToString("0"));
-            arsonDebtRaidThreshold = list.Slider(arsonDebtRaidThreshold, 100f, 2000f);
+            arsonDebtRaidThreshold = list.Slider(arsonDebtRaidThreshold, 100f, RimMandrake.Pyrelands.PyrelandsTuning.ArsonDebtCap);
             list.Gap();
             list.CheckboxLabeled("Flame-harvest visits", ref flameHarvestEnabled,
                 "Off: the Tribes never send a peaceful party to walk a live burn-line.");

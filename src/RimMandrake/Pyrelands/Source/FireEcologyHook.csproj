@@ -79,6 +79,11 @@
     <Compile Include="RM_BurrowOnFireExtension.cs" />
     <Compile Include="RM_JobGiver_BurrowOnFire.cs" />
     <Compile Include="RM_JobDriver_Burrow.cs" />
+    <!-- Verse-free kernels the fuzz (SelfTest/Fuzz) drives; the mod and mandrake.rut.pyrelandsmechanics call them with the same expressions -->
+    <Compile Include="Kernel\RM_BurnKernel.cs" />
+    <Compile Include="Kernel\RM_FurnaceKernel.cs" />
+    <Compile Include="Kernel\RM_BreakerKernel.cs" />
+    <Compile Include="Kernel\RM_FireEcoKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

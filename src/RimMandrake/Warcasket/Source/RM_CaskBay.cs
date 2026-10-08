@@ -38,12 +38,12 @@ namespace RimMandrake.Warcasket
             typeof(CompDissolution).GetField("dissolveTicks", BindingFlags.Instance | BindingFlags.NonPublic);
 
         public static bool ShieldingActive =>
-            RM_WarcasketSettings.masterEnabled && RM_WarcasketSettings.caskBayShieldingEnabled;
+            RM_WarcasketKernel.ShieldingActive(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.caskBayShieldingEnabled);
 
         public override void CompTickRare()
         {
             base.CompTickRare();
-            if (!ShieldingActive || !parent.Spawned || DissolveTicksField == null)
+            if (!RM_WarcasketKernel.HoldsClock(ShieldingActive, parent.Spawned, DissolveTicksField != null))
             {
                 return;
             }
@@ -75,24 +75,21 @@ namespace RimMandrake.Warcasket
         // spawned cask bay with shielding active.
         public static bool IsShielded(Thing t)
         {
-            if (!ShieldingActive || t == null)
+            Map map = t?.MapHeld;
+            bool bayOnCell = false;
+            if (ShieldingActive && t != null && map != null && t.Spawned)
             {
-                return false;
-            }
-            Map map = t.MapHeld;
-            if (map == null || !t.Spawned)
-            {
-                return false;
-            }
-            List<Thing> things = t.Position.GetThingList(map);
-            for (int i = 0; i < things.Count; i++)
-            {
-                if (things[i] is ThingWithComps twc && twc.GetComp<RM_CompCaskShielding>() != null)
+                List<Thing> things = t.Position.GetThingList(map);
+                for (int i = 0; i < things.Count; i++)
                 {
-                    return true;
+                    if (things[i] is ThingWithComps twc && twc.GetComp<RM_CompCaskShielding>() != null)
+                    {
+                        bayOnCell = true;
+                        break;
+                    }
                 }
             }
-            return false;
+            return RM_WarcasketKernel.IsShielded(ShieldingActive, t != null, map != null, t != null && t.Spawned, bayOnCell);
         }
     }
 
@@ -106,7 +103,7 @@ namespace RimMandrake.Warcasket
         public float radius = 4f;
 
         // extraFactor on vanilla's per-CheckInterval dose at the core
-        // (1 = standing on polluted ground); falls linearly to 0 at radius.
+        // (1 = standing on polluted ground); falls linearly with distance: still 1/(radius+1) at the radius, 0 one cell past it.
         public float toxicFactor = 1f;
 
         public RM_CompProperties_CoreDose()
@@ -117,9 +114,8 @@ namespace RimMandrake.Warcasket
 
     public class RM_CompCoreDose : ThingComp
     {
-        // Dose every 4 rare ticks, scaled so the rate matches vanilla's
+        // Dose every 4 rare ticks (RM_WarcasketKernel.RaresPerDose), scaled so the rate matches vanilla's
         // per-ToxicUtility.CheckInterval figure.
-        private const int RaresPerDose = 4;
         private int rareCount;
 
         private RM_CompProperties_CoreDose Props => (RM_CompProperties_CoreDose)props;
@@ -127,12 +123,11 @@ namespace RimMandrake.Warcasket
         public override void CompTickRare()
         {
             base.CompTickRare();
-            if (++rareCount < RaresPerDose)
+            if (!RM_WarcasketKernel.DoseDue(ref rareCount))
             {
                 return;
             }
-            rareCount = 0;
-            if (!RM_WarcasketSettings.masterEnabled || !RM_WarcasketSettings.coreDoseEnabled)
+            if (!RM_WarcasketKernel.DoseActive(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.coreDoseEnabled))
             {
                 return;
             }
@@ -142,7 +137,7 @@ namespace RimMandrake.Warcasket
                 return;
             }
             IntVec3 pos = parent.PositionHeld;
-            float rateScale = (float)(GenTicks.TickRareInterval * RaresPerDose) / ToxicUtility.CheckInterval;
+            float rateScale = RM_WarcasketKernel.RateScale(GenTicks.TickRareInterval, ToxicUtility.CheckInterval);
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < pawns.Count; i++)
             {
@@ -152,18 +147,18 @@ namespace RimMandrake.Warcasket
                     continue;
                 }
                 float dist = p.Position.DistanceTo(pos);
-                if (dist > Props.radius)
+                if (!RM_WarcasketKernel.InRadius(dist, Props.radius))
                 {
                     continue;
                 }
-                float falloff = 1f - dist / (Props.radius + 1f);
-                ToxicUtility.DoPawnToxicDamage(p, Props.toxicFactor * falloff * rateScale);
+                float falloff = RM_WarcasketKernel.Falloff(dist, Props.radius);
+                ToxicUtility.DoPawnToxicDamage(p, RM_WarcasketKernel.Dose(Props.toxicFactor, falloff, rateScale));
             }
         }
 
         public override string CompInspectStringExtra()
         {
-            if (!RM_WarcasketSettings.masterEnabled || !RM_WarcasketSettings.coreDoseEnabled)
+            if (!RM_WarcasketKernel.DoseActive(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.coreDoseEnabled))
             {
                 return null;
             }

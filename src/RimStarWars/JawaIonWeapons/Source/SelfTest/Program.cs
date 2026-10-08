@@ -7,37 +7,27 @@
 // WHY THIS EXISTS: same offline-selftest discipline as
 // src/RimMandrake/Utils/selftest_validate_patch.py.
 //
-// WHAT IS REAL vs EXTRACTED, AND WHY:
+// WHAT IS REAL vs MODELLED, AND WHY:
 //   The not-a-Pawn guard clause (`req.Thing is Pawn pawn && pawn.BodySize
 //   > 0f`) is tested by calling the REAL TransformValue()/ExplanationPart()
 //   (compiled straight from StatPart_InverseBodySize.cs - see the .csproj)
-//   with a default(StatRequest), whose Thing is null. That is real
-//   coverage of the defensive branch: it needs no live Pawn, only that
-//   `null is Pawn` is false.
+//   with a default(StatRequest), whose Thing is null.
 //
-//   The bodySize -> 1/bodySize transform itself, and the squared
-//   composition this whole item is ABOUT, are EXTRACTED, not called on a
-//   real Pawn. Constructing a Verse.Pawn with a controlled BodySize offline
-//   is not viable without the game running (BodySize is computed from
-//   RaceProps/genes/body type, not a settable field, and Pawn itself
-//   constructs through a chain of static managers) - the same coupling the
-//   Pits selftest hit for PitEscapeUtility. ExtractedTransform() below is a
-//   byte-for-byte transcription of TransformValue()'s one real line
-//   (`val = 1f / pawn.BodySize;`), guarded the same way (bodySize > 0
-//   leaves val unchanged otherwise). ComposedSeverityMultiplier() then
-//   reproduces the engine's OWN multiply this StatPart composes with -
-//   quoted verbatim in StatPart_InverseBodySize.cs's class doc comment as
-//   `num *= 1f / pawn.BodySize;` (Pawn_HealthTracker.PostApplyDamage,
-//   confirmed by source read, not guessed) - so the squared relationship
-//   locked in here is (our part's own 1/BodySize) times (the engine's own
-//   separate 1/BodySize multiply), exactly as the real damage pipeline
-//   computes it.
-//   ⚠️ THIS IS THE PART THAT CAN DRIFT SILENTLY: if TransformValue() or the
-//   engine's own ByInvBodySize multiply ever changed shape, this test keeps
-//   passing against the OLD formula unless a human updates the extraction
-//   to match. It still locks in the one number that mattered enough to
-//   verify live (25x / 1024x) so a future edit that breaks it fails loudly
-//   here first, before the next bridge session would otherwise catch it.
+//   The bodySize transform itself is the REAL production kernel
+//   (Kernel/RSW_IonBuildupKernel.cs, InverseSizeValue; TransformValue calls it
+//   with the live Pawn's BodySize), called at the shipped default exponent 2.
+//   Constructing a Verse.Pawn with a controlled BodySize offline is not viable
+//   (BodySize is computed from RaceProps/genes/body type), so only the engine's
+//   OWN separate multiply stays modelled: EngineOwnInverseBodySizeMultiply()
+//   below reproduces `num *= 1f / pawn.BodySize;` (Pawn_HealthTracker.
+//   PostApplyDamage, confirmed by source read). The squared relationship
+//   locked in here is (our part's 1 / bodySize ^ (exponent - 1)) times (the
+//   engine's 1 / bodySize).
+//   The seeded fuzz of the same kernel (selftest_jawaionweapons_fuzz.py)
+//   checks that composition for every exponent and size.
+//   ⚠️ If the engine's own ByInvBodySize multiply ever changed shape, the
+//   modelled half of this test keeps passing against the old formula unless a
+//   human updates it; it still locks in the 25x / 1024x measured live.
 //
 // Run:
 //   python3 src/RimMandrake/Utils/selftest_stun_scaling.py
@@ -80,10 +70,13 @@ namespace RimMandrake.StarWars.JawaIonWeapons.SelfTest
                 throw new Exception($"{msg}: got {got}, want {want}");
         }
 
-        // ---- extracted from StatPart_InverseBodySize.cs (see header) ---------
+        // ---- the REAL transform, now a pure kernel (Kernel/RSW_IonBuildupKernel.cs) ------
+        // The old transcription here (`1f / bodySize`) was the pre-exponent formula and had drifted from the
+        // shipped StatPart (1 / bodySize ^ (exponent - 1)); it passed only because it tested itself. It now calls
+        // the production kernel at the shipped default exponent 2, so the 25x / 1024x locks bind the real code.
         private static float ExtractedTransform(float bodySize, float valIn)
         {
-            return bodySize > 0f ? 1f / bodySize : valIn;
+            return RSW_IonBuildupKernel.InverseSizeValue(true, true, bodySize, 2f, valIn);
         }
 
         // The engine's own ByInvBodySize multiply, quoted verbatim in the real
@@ -125,6 +118,7 @@ namespace RimMandrake.StarWars.JawaIonWeapons.SelfTest
                 AssertClose(ExtractedTransform(0.2f, 1f), 5f, "Rat (0.2) -> 1/0.2");
                 AssertClose(ExtractedTransform(1.0f, 1f), 1f, "Human (1.0) -> 1/1.0");
                 AssertClose(ExtractedTransform(32.0f, 1f), 0.03125f, "Behemoth (32.0) -> 1/32.0");
+                AssertClose(RSW_IonBuildupKernel.InverseSizeValue(true, true, 4f, 3f, 1f), 1f / 16f, "exponent 3 -> 1 / size^2, composing with the engine's 1/size to size^-3");
             });
             Case("ExtractedTransform_guard_leaves_val_unchanged_at_zero_bodySize", () =>
                 AssertClose(ExtractedTransform(0f, 42f), 42f,

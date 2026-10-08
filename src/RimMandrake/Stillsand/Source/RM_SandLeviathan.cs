@@ -117,7 +117,7 @@ namespace RimMandrake.Stillsand
             if (target is Map map && Ext != null)
             {
                 int drills = RM_SandLeviathanUtility.PoweredDrills(map).Count();
-                f *= Mathf.Min(1f + Ext.vibrationFactorPerDrill * drills, Ext.maxVibrationFactor);
+                f *= RM_LeviathanKernel.VibrationFactor(drills, Ext.vibrationFactorPerDrill, Ext.maxVibrationFactor);
             }
             if (target is Map m)
             {
@@ -259,7 +259,7 @@ namespace RimMandrake.Stillsand
                 }
                 bool sand = IsSand(c2, map);
                 float d = (c2 - draw).LengthHorizontalSquared;
-                if ((sand && !bestOnSand) || (sand == bestOnSand && d < best))
+                if (RM_LeviathanKernel.BetterEntry(sand, bestOnSand, d, best))
                 {
                     entry = c2;
                     best = d;
@@ -284,7 +284,8 @@ namespace RimMandrake.Stillsand
         /// soft lookup; without one every body counts as fully watered.</summary>
         public static float WaterScore(Pawn p)
         {
-            float hydration = 1f;
+            bool hasHydration = false;
+            float hydrationPercent = 1f;
             List<Need> needs = p.needs?.AllNeeds;
             if (needs != null)
             {
@@ -294,12 +295,13 @@ namespace RimMandrake.Stillsand
                     if (n.IndexOf("Thirst", System.StringComparison.OrdinalIgnoreCase) >= 0
                         || n.IndexOf("Hydration", System.StringComparison.OrdinalIgnoreCase) >= 0)
                     {
-                        hydration = Mathf.Max(0.05f, needs[i].CurLevelPercentage);
+                        hasHydration = true;
+                        hydrationPercent = needs[i].CurLevelPercentage;
                         break;
                     }
                 }
             }
-            return p.BodySize * hydration;
+            return RM_LeviathanKernel.WaterScore(p.BodySize, hasHydration, hydrationPercent);
         }
 
         public static Pawn WettestBody(Pawn hunter)
@@ -319,7 +321,7 @@ namespace RimMandrake.Stillsand
                 }
                 bool player = p.Faction == Faction.OfPlayer;
                 float s = WaterScore(p);
-                if ((player && !bestPlayer) || (player == bestPlayer && s > bestScore))
+                if (RM_LeviathanKernel.BeatsBest(player, bestPlayer, s, bestScore))
                 {
                     best = p;
                     bestScore = s;
@@ -389,8 +391,7 @@ namespace RimMandrake.Stillsand
 
     public class RM_MapComponent_SandLeviathans : MapComponent
     {
-        private const int Interval = 30;
-        private const int DiveTimeoutTicks = 1250;
+        private const int Interval = RM_LeviathanKernel.Interval;
 
         private List<RM_LeviathanVisit> visits = new List<RM_LeviathanVisit>();
 
@@ -412,34 +413,32 @@ namespace RimMandrake.Stillsand
         public override void MapComponentTick()
         {
             int now = Find.TickManager.TicksGame;
-            if (visits.Count == 0 || now % Interval != 0)
+            if (!RM_LeviathanKernel.ShouldProcess(visits.Count, now))
             {
                 return;
             }
             for (int i = visits.Count - 1; i >= 0; i--)
             {
                 RM_LeviathanVisit v = visits[i];
-                if (v.Ext == null || v.kind == null)
+                RM_VisitClass what = RM_LeviathanKernel.Classify(v.Ext == null, v.kind == null, v.pawn != null,
+                    v.pawn != null && (v.pawn.Destroyed || v.pawn.Dead || !v.pawn.Spawned || v.pawn.Map != map), now, v.arriveTick);
+                if (what == RM_VisitClass.Drop)
                 {
+                    // No def left, or killed (its corpse stays: the skeleton landmark is §3's), or already gone.
                     visits.RemoveAt(i);
                     continue;
                 }
-                if (v.pawn == null)
+                if (what == RM_VisitClass.Rumble)
                 {
-                    if (now < v.arriveTick)
-                    {
-                        Rumble(v, now);
-                    }
-                    else if (!Arrive(v))
+                    Rumble(v, now);
+                    continue;
+                }
+                if (what == RM_VisitClass.Arrive)
+                {
+                    if (!Arrive(v))
                     {
                         visits.RemoveAt(i);
                     }
-                    continue;
-                }
-                if (v.pawn.Destroyed || v.pawn.Dead || !v.pawn.Spawned || v.pawn.Map != map)
-                {
-                    // Killed (its corpse stays: the skeleton landmark is §3's), or already gone.
-                    visits.RemoveAt(i);
                     continue;
                 }
                 if (Tick(v, now))
@@ -452,15 +451,14 @@ namespace RimMandrake.Stillsand
         /// <summary>Beat 1: the rumble on the horizon, growing toward the arrival.</summary>
         private void Rumble(RM_LeviathanVisit v, int now)
         {
-            int warn = Mathf.Max(1, v.Ext.warningTicks);
-            float t = 1f - Mathf.Clamp01((v.arriveTick - now) / (float)warn);
+            float t = RM_LeviathanKernel.RumbleT(v.arriveTick, now, v.Ext.warningTicks);
             if (map == Find.CurrentMap)
             {
-                Find.CameraDriver?.shaker?.DoShake(0.02f + 0.18f * t * t); // CameraShaker clamps at 0.2 × prefs
+                Find.CameraDriver?.shaker?.DoShake(RM_LeviathanKernel.RumbleShake(t)); // CameraShaker clamps at 0.2 × prefs
             }
-            if (v.entryCell.IsValid && Rand.Chance(0.3f + 0.7f * t))
+            if (v.entryCell.IsValid && Rand.Chance(RM_LeviathanKernel.RumbleDustChance(t)))
             {
-                FleckMaker.ThrowDustPuffThick(v.entryCell.ToVector3Shifted(), map, 1f + 2f * t,
+                FleckMaker.ThrowDustPuffThick(v.entryCell.ToVector3Shifted(), map, RM_LeviathanKernel.RumbleDustSize(t),
                     new Color(0.78f, 0.69f, 0.52f, 0.8f));
             }
         }
@@ -469,10 +467,15 @@ namespace RimMandrake.Stillsand
         private bool Arrive(RM_LeviathanVisit v)
         {
             IntVec3 cell = v.entryCell;
-            if (!cell.IsValid || !cell.Standable(map))
+            bool entryUsable = cell.IsValid && cell.Standable(map);
+            if (!entryUsable)
             {
-                if (!RM_SandLeviathanUtility.TryFindEntryCell(map, RM_SandLeviathanUtility.LoudestCell(map), out cell))
+                bool found = RM_SandLeviathanUtility.TryFindEntryCell(map, RM_SandLeviathanUtility.LoudestCell(map), out cell);
+                if (RM_LeviathanKernel.ResolveArrival(false, false, found) == RM_ArriveCell.Fail)
                 {
+                    // The letter promised a muurrok; never let it vanish without a sign (RM_LeviathanKernel.EndNeedsSign).
+                    Messages.Message("The rumble under the sand dies away. Whatever was coming has turned back.",
+                        new LookTargets(new TargetInfo(v.entryCell.IsValid ? v.entryCell : map.Center, map)), MessageTypeDefOf.NeutralEvent);
                     return false;
                 }
             }
@@ -496,7 +499,7 @@ namespace RimMandrake.Stillsand
 
             RM_CompSandSwim swim = p.GetComp<RM_CompSandSwim>();
             bool submerged = swim != null && swim.Submerged;
-            if (v.wasSubmerged && !submerged && !p.Downed)
+            if (RM_LeviathanKernel.IsBreach(v.wasSubmerged, submerged, p.Downed))
             {
                 RM_SandLeviathanUtility.ThrowBreachColumn(p, ext); // beat 3
             }
@@ -512,37 +515,29 @@ namespace RimMandrake.Stillsand
             if (!v.diving)
             {
                 int kills = p.records?.GetAsInt(RecordDefOf.Kills) ?? 0;
-                if (kills > v.killsAtArrival)
+                int hardGround = v.hardGroundTicks;
+                RM_DiveReason why = RM_LeviathanKernel.DecideDive(kills, v.killsAtArrival, p.IsBurning(), now, v.arriveTick,
+                    ext.maxStayTicks, onSand, ext.hardGroundGiveUpTicks, ref hardGround);
+                v.hardGroundTicks = hardGround;
+                if (why == RM_DiveReason.Fed)
                 {
                     TakeTheBody(v);
-                    StartDive(v, now, "fed");
                 }
-                else if (p.IsBurning())
+                if (why != RM_DiveReason.None)
                 {
-                    StartDive(v, now, "fire");
-                }
-                else if (now - v.arriveTick > ext.maxStayTicks)
-                {
-                    StartDive(v, now, "bored");
-                }
-                else
-                {
-                    v.hardGroundTicks = onSand ? 0 : v.hardGroundTicks + Interval;
-                    if (v.hardGroundTicks > ext.hardGroundGiveUpTicks)
-                    {
-                        StartDive(v, now, "hard ground");
-                    }
+                    StartDive(v, now, why.ToString());
                 }
             }
 
             if (v.diving)
             {
-                if (onSand || now - v.diveStartTick > DiveTimeoutTicks)
+                RM_DiveStep step = RM_LeviathanKernel.DiveStep(onSand, now, v.diveStartTick, p.CurJob != null && p.CurJob.def == JobDefOf.Goto);
+                if (step == RM_DiveStep.Dive)
                 {
                     Dive(v);
                     return true;
                 }
-                if (p.CurJob == null || p.CurJob.def != JobDefOf.Goto)
+                if (step == RM_DiveStep.SeekSand)
                 {
                     if (CellFinder.TryFindRandomCellNear(p.Position, map, 25,
                             c => RM_SandLeviathanUtility.IsSand(c, map, p) && c.Standable(map)
@@ -571,7 +566,7 @@ namespace RimMandrake.Stillsand
         private void Hunt(RM_LeviathanVisit v, int now)
         {
             Pawn p = v.pawn;
-            if (v.target == null || v.target.Dead || !v.target.Spawned || v.target.Map != map || now % 250 == 0)
+            if (RM_LeviathanKernel.ShouldRetarget(v.target == null || v.target.Dead || !v.target.Spawned || v.target.Map != map, now))
             {
                 v.target = RM_SandLeviathanUtility.WettestBody(p);
             }
@@ -586,8 +581,8 @@ namespace RimMandrake.Stillsand
                 // strike job now would end the cast job and cancel its warmup; let it finish.
                 return;
             }
-            if (RM_StillsandEventsSettings.mirrorBeamEnabled && now - v.lastBeamTick >= v.Ext.beamCooldownTicks
-                && p.stances != null && !p.stances.FullBodyBusy)
+            if (RM_LeviathanKernel.BeamGate(RM_StillsandEventsSettings.mirrorBeamEnabled, now, v.lastBeamTick, v.Ext.beamCooldownTicks,
+                    p.stances != null, p.stances != null && p.stances.FullBodyBusy))
             {
                 if (beam != null && beam.state == VerbState.Idle && beam.Available()
                     && (v.target.Position - p.Position).LengthHorizontal >= beam.verbProps.minRange
@@ -598,7 +593,7 @@ namespace RimMandrake.Stillsand
                 }
             }
             Job cur = p.CurJob;
-            if (cur == null || cur.def != JobDefOf.AttackMelee || cur.targetA.Thing != v.target)
+            if (RM_LeviathanKernel.NeedsStrikeJob(cur != null, cur != null && cur.def == JobDefOf.AttackMelee, cur != null && cur.targetA.Thing == v.target))
             {
                 Job strike = JobMaker.MakeJob(JobDefOf.AttackMelee, v.target);
                 strike.killIncappedTarget = true;

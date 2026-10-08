@@ -110,7 +110,11 @@ namespace RimMandrake.Bribe
                 "Buy " + targetPawn.LabelShort + " a round (" + fee + " silver)",
                 delegate
                 {
-                    BribeUtility.RemoveSilverFromInventory(actor, fee);
+                    if (!BribeUtility.TryPaySilver(actor, fee))
+                    {
+                        Messages.Message("Not enough silver left to buy that round.", MessageTypeDefOf.RejectInput, false);
+                        return;
+                    }
                     // No TakingEvent, no PropertyEngine.Fire — see this
                     // class's own doc comment. Fires unconditionally,
                     // whether or not the faction's record currently holds

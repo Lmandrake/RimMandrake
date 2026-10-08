@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Armoury offline fuzz, Approach B (same shape as TheSump/Bazaar/FlowWorks). Plain net8.0, zero RimWorld/Unity
+    references: ../Kernel/*.cs are the PRODUCTION files the mod compiles, pulled in directly. A `using Verse;` landing
+    in one of them breaks this build - that is the guard rail working.
+    Run (builds on Windows via winbuild staging, then runs the exe):
+      python3 src/RimMandrake/Utils/selftest_armoury_fuzz.py [fuzz knobs]
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimStarWarsArmoury.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.StarWars.Armoury.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Kernel\RSW_ArmouryKernel.cs" />
+    <Compile Include="ArmouryFuzz.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

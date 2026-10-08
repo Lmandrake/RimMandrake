@@ -25,38 +25,35 @@ namespace RimMandrake.Property
             if (ledger == null) return evt; // no active Game (e.g. main menu) - nothing to do
 
             evt.PriorClaim = ClaimEngine.ResolveClaim(evt.Thing, evt.Tick);
-            evt.WasAuthorized = IsAuthorized(evt.Actor, evt.PriorClaim);
+            bool authorized = IsAuthorized(evt.Actor, evt.PriorClaim);
+            evt.WasAuthorized = authorized;
 
-            switch (evt.Act)
+            // Use / Sabotage write nothing: no ownership transfer - using or damaging someone's property
+            // doesn't change whose it is. Friction only.
+            switch (RM_PropertyKernel.SpineWrite((int)evt.Act, authorized, evt.PriorClaim.HasValue))
             {
-                case TakingAct.Buy:
+                case RM_PropertyKernel.WritePurchased:
                     RecordTransfer(evt.Thing, evt.Actor, ClaimBasis.Purchased, 1f, evt.Tick);
-                    evt.WasAuthorized = true; // a completed sale is legitimate by definition
                     break;
 
-                case TakingAct.Claim:
+                case RM_PropertyKernel.WriteClaimFeePaid:
                     RecordTransfer(evt.Thing, evt.Actor, ClaimBasis.ClaimFeePaid, 1f, evt.Tick);
-                    evt.WasAuthorized = true;
                     break;
 
-                case TakingAct.Take:
-                case TakingAct.Strip:
-                    if (!evt.WasAuthorized && evt.PriorClaim.HasValue)
-                    {
-                        // Origin claim preserved at ~1.0 regardless of who now
-                        // holds the Thing (spec item 5) - this IS that record.
-                        RecordTransfer(evt.Thing, evt.PriorClaim.Value.Claimant, ClaimBasis.Stolen, 1f, evt.Tick);
-                    }
-                    break;
-
-                case TakingAct.Use:
-                case TakingAct.Sabotage:
-                    // No ownership transfer - using or damaging someone's
-                    // property doesn't change whose it is. Friction only.
+                case RM_PropertyKernel.WriteStolenFromPrior:
+                    // Origin claim preserved at ~1.0 regardless of who now
+                    // holds the Thing (spec item 5) - this IS that record.
+                    RecordTransfer(evt.Thing, evt.PriorClaim.Value.Claimant, ClaimBasis.Stolen, 1f, evt.Tick);
                     break;
             }
 
-            if (!evt.WasAuthorized)
+            // a completed sale or a paid claim is legitimate by definition
+            evt.WasAuthorized = RM_PropertyKernel.AuthorizedAfter((int)evt.Act, authorized);
+
+            // MOD_OPTIONS_RETROFIT_1: perceptionEnabled is the master switch for the "getting caught" half of the fabric.
+            // Claim resolution above still runs (other mods, e.g. RaidRedesigner's Patch_CaravanRobbed, postfix Fire() and
+            // read its resolved TakingEvent) - the switch only gates whether anyone ever witnesses or reports it.
+            if (RM_PropertyKernel.RollsPerception(evt.WasAuthorized, PropertySettings.perceptionEnabled))
             {
                 RollPerceptionAndPropagate(evt);
             }
@@ -69,31 +66,18 @@ namespace RimMandrake.Property
             if (!priorClaim.HasValue) return true; // unclaimed - free to take
 
             ClaimantRef claimant = priorClaim.Value.Claimant;
-            if (claimant.Equals(actor)) return true;
 
             // Commons is implicitly usable by any member of the same faction
             // (spec item 4's "survival spine" - shared stuff, not fenced off
             // from the faction's own members).
-            if (claimant.Kind == ClaimantKind.Commons && actor.Kind == ClaimantKind.Pawn
-                && actor.Pawn?.Faction == claimant.Faction)
-            {
-                return true;
-            }
-
-            return false;
+            return RM_PropertyKernel.IsAuthorized(true, RM_PropertyKernel.ClaimantMayUse(
+                claimant.Equals(actor), (byte)claimant.Kind, (byte)actor.Kind, actor.Pawn?.Faction == claimant.Faction));
         }
 
         // --- Perception + propagation ---------------------------------------
 
         private static void RollPerceptionAndPropagate(TakingEvent evt)
         {
-            // MOD_OPTIONS_RETROFIT_1: master switch for the "getting caught"
-            // half of the fabric. Claim resolution above still runs (other
-            // mods, e.g. RaidRedesigner's Patch_CaravanRobbed, postfix Fire()
-            // and read its resolved TakingEvent) — this only gates whether
-            // anyone ever witnesses or reports it.
-            if (!PropertySettings.perceptionEnabled) return;
-
             Pawn actorPawn = evt.Actor.Kind == ClaimantKind.Pawn ? evt.Actor.Pawn : null;
             List<Pawn> witnesses = PerceptionUtility.RollWitnesses(evt.Thing, actorPawn, PropertySettings.witnessRadius);
             evt.Witnesses = witnesses;
@@ -123,7 +107,7 @@ namespace RimMandrake.Property
 
                 // Colony-side friction hook (spec item 4/10): the wronged
                 // party personally saw it happen.
-                if (ownerPawn != null && witness == ownerPawn)
+                if (RM_PropertyKernel.OwnerWitnessed(ownerPawn != null, witness == ownerPawn))
                 {
                     PropertyEvents.RaiseUnauthorizedTakingWitnessedByOwner(evt, ownerPawn);
                 }
@@ -150,7 +134,7 @@ namespace RimMandrake.Property
         // recency/strength decide it, nothing is deleted.
         public static void RecordLoot(Thing thing, ClaimantRef looter, ClaimantRef originalOwner, int tick)
         {
-            if (!originalOwner.IsUnclaimed)
+            if (RM_PropertyKernel.LootKeepsOrigin(originalOwner.IsUnclaimed))
             {
                 RecordTransfer(thing, originalOwner, ClaimBasis.BattleLootOrigin, 1f, tick);
             }

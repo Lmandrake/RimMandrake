@@ -122,19 +122,19 @@ namespace RimMandrake.StarWars.Armoury
 
         /// <summary>Ticks an AI pawn must wait before reaching for the healing gear again (shipped: 20000).</summary>
         public static int InstantHealReuseTicks =>
-            Mathf.Max(0, Mathf.RoundToInt(instantHealReuseHours * TicksPerHour));
+            RSW_CombatKernel.InstantHealReuseTicks(instantHealReuseHours);
 
         /// <summary>How recently a pawn must have been harmed to count as "in danger" (shipped: 2500).</summary>
         public static int InstantHealRecentHarmTicks =>
-            Mathf.Max(1, Mathf.RoundToInt(instantHealRecentHarmHours * TicksPerHour));
+            RSW_CombatKernel.InstantHealRecentHarmTicks(instantHealRecentHarmHours);
 
         /// <summary>Scales a squared-distance threshold, so the slider reads as a plain distance factor.</summary>
         public static float ScaleSquaredDistance(float shippedSquared) =>
-            shippedSquared * jumppackDistanceFactor * jumppackDistanceFactor;
+            RSW_CombatKernel.ScaleSquaredDistance(shippedSquared, jumppackDistanceFactor);
 
         /// <summary>Ticks between one healed injury and the next, from the tank's own shipped interval.</summary>
         public static int KoltoHealInterval(int shippedTicks) =>
-            Mathf.Max(1, Mathf.RoundToInt(shippedTicks / Mathf.Max(0.01f, koltoHealSpeed)));
+            RSW_KoltoKernel.HealInterval(shippedTicks, koltoHealSpeed);
 
         private static float settingsViewHeight = 1500f;
 

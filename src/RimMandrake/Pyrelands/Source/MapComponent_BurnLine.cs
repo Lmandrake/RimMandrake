@@ -110,7 +110,7 @@ namespace RimMandrake.Pyrelands
         /// burning. Where a harvest party walks to.</summary>
         public IntVec3 BurnCenter => burnCenter;
 
-        public bool AnyBurn => fireCount > 0 && burnCenter.IsValid;
+        public bool AnyBurn => RM_BurnKernel.AnyBurn(fireCount, burnCenter.IsValid);
 
         private void RecordHistory()
         {
@@ -118,33 +118,16 @@ namespace RimMandrake.Pyrelands
             {
                 return;
             }
-            int now = Find.TickManager.TicksGame;
-            if (burnHistTicks.Count > 0 && now - burnHistTicks[burnHistTicks.Count - 1] < BurnHistoryIntervalTicks)
-            {
-                return;
-            }
-            burnHistTicks.Add(now);
-            burnHistCells.Add(burnCenter);
-            while (burnHistTicks.Count > 0 && now - burnHistTicks[0] > BurnHistoryKeepTicks)
-            {
-                burnHistTicks.RemoveAt(0);
-                burnHistCells.RemoveAt(0);
-            }
+            RM_BurnKernel.RecordHistory(burnHistTicks, burnHistCells, Find.TickManager.TicksGame, burnCenter,
+                BurnHistoryIntervalTicks, BurnHistoryKeepTicks);
         }
 
         /// <summary>Where the burn was about <paramref name="ticksAgo"/> ago: the newest sample at least that
         /// old, else the oldest sample kept (the freshest black we know of), else Invalid.</summary>
         public IntVec3 BurnCenterAgo(int ticksAgo)
         {
-            int cutoff = Find.TickManager.TicksGame - ticksAgo;
-            for (int i = burnHistTicks.Count - 1; i >= 0; i--)
-            {
-                if (burnHistTicks[i] <= cutoff)
-                {
-                    return burnHistCells[i];
-                }
-            }
-            return burnHistCells.Count > 0 ? burnHistCells[0] : IntVec3.Invalid;
+            int at = RM_BurnKernel.HistoryIndexAgo(burnHistTicks, Find.TickManager.TicksGame, ticksAgo);
+            return at >= 0 ? burnHistCells[at] : IntVec3.Invalid;
         }
 
         /// <summary>Accumulated player-attributed burning. The fire-raid incident's
@@ -192,13 +175,17 @@ namespace RimMandrake.Pyrelands
             // Spread across maps by uniqueID so two Pyrelands maps do not measure
             // on the same tick. Map is not a Thing, so Thing.IsHashIntervalTick is
             // not available here; this is the same idea written out.
-            if ((Find.TickManager.TicksGame + map.uniqueID) % PyrelandsTuning.BurnWatchIntervalTicks != 0)
+            if (!RM_BurnKernel.MeasureDue(Find.TickManager.TicksGame, map.uniqueID, PyrelandsTuning.BurnWatchIntervalTicks))
             {
                 return;
             }
 
             if (!RM_PyrelandsSettings.pyrelandsEnabled)
             {
+                // Master switch off: nothing runs, but the fire clock must still be told it is off, or it keeps a stale
+                // deadline and fires a front the instant the switch is turned back on (PyrelandsFireFront.Tick re-arms
+                // to -1 when disabled).
+                fireFront.Tick();
                 return;
             }
 
@@ -234,8 +221,8 @@ namespace RimMandrake.Pyrelands
             }
 
             fireCount = count;
-            burnCenter = count > 0
-                ? new IntVec3(sumX / count, 0, sumZ / count)
+            burnCenter = RM_BurnKernel.Centroid(sumX, sumZ, count, out int cx, out int cz)
+                ? new IntVec3(cx, 0, cz)
                 : IntVec3.Invalid;
             RecordHistory();
         }
@@ -252,16 +239,8 @@ namespace RimMandrake.Pyrelands
                 }
             }
 
-            if (playerAttributed > 0)
-            {
-                arsonDebt = Mathf.Min(
-                    PyrelandsTuning.ArsonDebtCap,
-                    arsonDebt + playerAttributed * PyrelandsTuning.ArsonDebtPerPlayerFirePerCheck);
-            }
-            else if (arsonDebt > 0f)
-            {
-                arsonDebt = Mathf.Max(0f, arsonDebt - PyrelandsTuning.ArsonDebtDecayPerCheck);
-            }
+            arsonDebt = RM_BurnKernel.ArsonStep(arsonDebt, playerAttributed, PyrelandsTuning.ArsonDebtPerPlayerFirePerCheck,
+                PyrelandsTuning.ArsonDebtCap, PyrelandsTuning.ArsonDebtDecayPerCheck);
         }
 
         /// <summary>
@@ -273,30 +252,18 @@ namespace RimMandrake.Pyrelands
         /// </summary>
         private static bool IsPlayerAttributed(Fire fire)
         {
+            // Lightning, the storm loop, a raider's torch — not the colony's.
             Thing instigator = fire.instigator;
-            if (instigator == null)
-            {
-                // Lightning, the storm loop, a raider's torch — not the colony's.
-                return false;
-            }
-            return instigator.Faction != null && instigator.Faction.IsPlayer;
+            Faction faction = instigator?.Faction;
+            return RM_BurnKernel.PlayerAttributed(instigator != null, faction != null, faction != null && faction.IsPlayer);
         }
 
         private void KeepTheBurnAlive()
         {
             // Gated by the caller (burnLineEnabled) — no inner check here.
-            if (fireCount > 0)
-            {
-                ticksSinceAnyFire = 0;
-                return;
-            }
-
-            ticksSinceAnyFire += PyrelandsTuning.BurnWatchIntervalTicks;
-            if (ticksSinceAnyFire < PyrelandsTuning.StandingBurnQuietTicks)
-            {
-                return;
-            }
-            if (Find.TickManager.TicksGame - lastReseedAttemptTick < PyrelandsTuning.StandingBurnRetryTicks)
+            if (RM_BurnKernel.KeepAlive(fireCount, ref ticksSinceAnyFire, PyrelandsTuning.BurnWatchIntervalTicks,
+                    PyrelandsTuning.StandingBurnQuietTicks, Find.TickManager.TicksGame, lastReseedAttemptTick,
+                    PyrelandsTuning.StandingBurnRetryTicks) != RM_ReseedDecision.Reseed)
             {
                 return;
             }
@@ -338,30 +305,21 @@ namespace RimMandrake.Pyrelands
         /// the grass, away from what you built" is stated once.</summary>
         internal bool IsLawfulBurnCell(IntVec3 c)
         {
-            if (!c.InBounds(map) || c.Fogged(map) || c.Roofed(map))
-            {
-                return false;
-            }
-            if (FireUtility.ChanceToStartFireIn(c, map) <= 0f)
-            {
-                return false;
-            }
-            if (map.areaManager.Home[c])
-            {
-                return false;
-            }
-            return FarFromAnythingTheColonyBuilt(c);
+            bool inBounds = c.InBounds(map);
+            bool fogged = inBounds && c.Fogged(map);
+            bool roofed = inBounds && !fogged && c.Roofed(map);
+            float chance = inBounds && !fogged && !roofed ? FireUtility.ChanceToStartFireIn(c, map) : 0f;
+            bool home = chance > 0f && map.areaManager.Home[c];
+            bool far = chance > 0f && !home && FarFromAnythingTheColonyBuilt(c);
+            return RM_BurnKernel.LawfulBurnCell(inBounds, fogged, roofed, chance, home, far);
         }
 
         private bool FarFromAnythingTheColonyBuilt(IntVec3 c)
         {
-            float minDistSq = PyrelandsTuning.StandingBurnMinDistFromColony
-                            * PyrelandsTuning.StandingBurnMinDistFromColony;
-
             List<Building> buildings = map.listerBuildings.allBuildingsColonist;
             for (int i = 0; i < buildings.Count; i++)
             {
-                if ((buildings[i].Position - c).LengthHorizontalSquared < minDistSq)
+                if (RM_BurnKernel.TooCloseToColony((buildings[i].Position - c).LengthHorizontalSquared, PyrelandsTuning.StandingBurnMinDistFromColony))
                 {
                     return false;
                 }

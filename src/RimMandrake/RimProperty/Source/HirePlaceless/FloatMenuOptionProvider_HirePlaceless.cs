@@ -131,7 +131,11 @@ namespace RimMandrake.HirePlaceless
                 "Hire " + targetPawn.LabelShort + " (" + fee + " silver)",
                 delegate
                 {
-                    HirePlacelessUtility.RemoveSilverFromInventory(actor, fee);
+                    if (!HirePlacelessUtility.TryPaySilver(actor, fee))
+                    {
+                        Messages.Message("Not enough silver left to hire anyone.", MessageTypeDefOf.RejectInput, false);
+                        return;
+                    }
                     // PropertyEngine.Fire's existing Buy case already fully
                     // implements the result — see this class's own doc
                     // comment. No job, no schedule, no following behavior:

@@ -65,7 +65,7 @@ namespace RimMandrake.Warcasket
         {
             base.CompTickRare();
 
-            if (!RM_WarcasketSettings.masterEnabled || !RM_WarcasketSettings.compoundFailureEnabled)
+            if (!RM_WarcasketKernel.FailureActive(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.compoundFailureEnabled))
             {
                 return; // MOD_OPTIONS_RETROFIT_1: off means the suit simply never fails
             }
@@ -83,21 +83,16 @@ namespace RimMandrake.Warcasket
             }
 
             int hazards = CountActiveHazards(wearer, map);
-            if (hazards < 2)
+            if (!RM_WarcasketKernel.CanFail(hazards))
             {
                 return; // a single hazard is exactly what this suit is built to shrug off
             }
 
-            float chance = Props.baseFailureChancePerCheck
-                + Props.failureChancePerExtraHazard * (hazards - 2);
-
-            int maxHp = parent.MaxHitPoints > 0 ? parent.MaxHitPoints : 1;
-            float hpFrac = Mathf.Clamp01((float)parent.HitPoints / maxHp);
             // A badly damaged suit fails up to 1.6x more often than a pristine one.
-            chance *= Mathf.Lerp(1.6f, 1f, hpFrac);
-            chance = Mathf.Clamp01(chance);
+            float chance = RM_WarcasketKernel.FailureChance(hazards, Props.baseFailureChancePerCheck,
+                Props.failureChancePerExtraHazard, parent.HitPoints, parent.MaxHitPoints);
 
-            if (!Rand.Chance(chance))
+            if (!RM_WarcasketKernel.Chance(chance, Rand.Value))
             {
                 return;
             }
@@ -107,41 +102,29 @@ namespace RimMandrake.Warcasket
 
         private int CountActiveHazards(Pawn wearer, Map map)
         {
-            int n = 0;
-
             Room room = wearer.Position.GetRoom(map);
-            if (room != null && room.Vacuum > Props.vacuumThreshold)
-            {
-                n++;
-            }
+            bool vacuum = room != null && RM_WarcasketKernel.VacuumHazard(room.Vacuum, Props.vacuumThreshold);
 
-            float temp = wearer.AmbientTemperature;
-            if (temp <= Props.extremeColdThresholdC || temp >= Props.extremeHeatThresholdC)
-            {
-                n++;
-            }
+            bool temperature = RM_WarcasketKernel.TemperatureHazard(wearer.AmbientTemperature,
+                Props.extremeColdThresholdC, Props.extremeHeatThresholdC);
 
             bool toxicGround = wearer.Position.IsPolluted(map);
             bool toxicFallout = map.gameConditionManager != null
                 && map.gameConditionManager.ConditionIsActive(GameConditionDefOf.ToxicFallout);
-            if (toxicGround || toxicFallout)
-            {
-                n++;
-            }
 
-            return n;
+            return RM_WarcasketKernel.HazardCount(vacuum, temperature, RM_WarcasketKernel.ToxinHazard(toxicGround, toxicFallout));
         }
 
         private void TriggerFailure(Pawn wearer, int hazardCount)
         {
-            int dmg = Props.integrityDamagePerFailure + Rand.RangeInclusive(0, hazardCount * 4);
+            int extra = Rand.RangeInclusive(0, RM_WarcasketKernel.FailureDamageMax(hazardCount));
             // Never destroy the suit outright from a failure roll — a wearer
             // stranded suitless mid-compound-hazard is a worse outcome than a
             // damaged suit that still (mostly) works.
-            parent.HitPoints = Mathf.Max(1, parent.HitPoints - dmg);
+            parent.HitPoints = RM_WarcasketKernel.HitPointsAfterFailure(parent.HitPoints, Props.integrityDamagePerFailure, extra);
 
             HealthUtility.AdjustSeverity(wearer, RM_WarcasketDefOf.RM_WarcasketBreach,
-                Props.wearerHediffSeverityPerFailure * hazardCount);
+                RM_WarcasketKernel.BreachSeverity(Props.wearerHediffSeverityPerFailure, hazardCount));
 
             Messages.Message(
                 wearer.LabelShortCap + "'s warcasket fails under compound strain (" + hazardCount + " hazards at once)!",
@@ -150,7 +133,7 @@ namespace RimMandrake.Warcasket
 
         public override string CompInspectStringExtra()
         {
-            if (!RM_WarcasketSettings.masterEnabled || !RM_WarcasketSettings.compoundFailureEnabled)
+            if (!RM_WarcasketKernel.FailureActive(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.compoundFailureEnabled))
             {
                 return null;
             }
@@ -167,7 +150,7 @@ namespace RimMandrake.Warcasket
             }
 
             int hazards = CountActiveHazards(apparel.Wearer, map);
-            return hazards >= 2
+            return RM_WarcasketKernel.CanFail(hazards)
                 ? "Compound strain: " + hazards + " hazards active at once — integrity at risk."
                 : null;
         }

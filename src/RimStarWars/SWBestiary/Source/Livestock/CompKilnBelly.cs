@@ -81,8 +81,6 @@ namespace RimMandrake.StarWars.Livestock
         // hook on Pawn itself - only on the eaten Thing's own comps.
         public void RegisterDose(ThingDef eatenDef)
         {
-            if (!RSW_LivestockSettings.kilnBellyEnabled) return;
-
             // Props.doseFeedDef is the def this belly counts doses of (e.g.
             // RSW_KilnClay). Bug fixed 2026-09-12: this field was set in XML
             // and documented ("only eating THIS specific def registers a
@@ -92,53 +90,41 @@ namespace RimMandrake.StarWars.Livestock
             // attached to nothing else. A future second feed item (the doc's
             // own "or any future kiln-belly feed item") would have let a
             // pawn dose the kiln on the wrong food with no error at all.
-            if (Props.doseFeedDef != null && eatenDef != Props.doseFeedDef) return;
-
             int now = Find.TickManager.TicksGame;
 
-            // Kiln is between batches (post-fire cooldown/reheat) - this
-            // feeding doesn't start a new cycle early. "you cannot
-            // batch-produce by stockpiling clay and dumping it all in."
-            if (now < nextFireReadyTick)
+            // The kernel holds the ledger rules: off / wrong feed / between batches (post-fire cooldown: "you cannot
+            // batch-produce by stockpiling clay and dumping it all in") ignore the dose; stale partial progress is
+            // dropped before the new dose lands; the needed count fires a batch, good when spaced, cracked when rushed.
+            RSW_KilnKernel.Result result = RSW_KilnKernel.Register(doseTicks, ref nextFireReadyTick, RSW_LivestockSettings.kilnBellyEnabled,
+                RSW_KilnKernel.FeedMatches(Props.doseFeedDef != null, eatenDef == Props.doseFeedDef), now, Rules(), out bool spaced);
+            if (result == RSW_KilnKernel.Result.Fired)
             {
-                return;
+                Fire(spaced);
             }
+        }
 
-            // Prior partial progress went cold before this dose arrived -
-            // start the count over rather than splicing a stale dose onto
-            // a fresh attempt.
-            if (doseTicks.Count > 0 && now - doseTicks[doseTicks.Count - 1] > Props.doseWindowTicks)
+        private RSW_KilnKernel.Rules Rules()
+        {
+            return new RSW_KilnKernel.Rules
             {
-                doseTicks.Clear();
-            }
-
-            doseTicks.Add(now);
-
-            if (doseTicks.Count >= Props.dosesNeeded)
-            {
-                Fire(now);
-            }
+                DosesNeeded = Props.dosesNeeded,
+                WindowTicks = Props.doseWindowTicks,
+                RushedSpanTicks = Props.rushedSpanTicks,
+                FireCooldownTicks = Props.fireCooldownTicks,
+                CooldownMultiplier = RSW_LivestockSettings.kilnCooldownMultiplier
+            };
         }
 
         public override void CompTickRare()
         {
-            if (!RSW_LivestockSettings.kilnBellyEnabled) return;
-
-            // "The kiln cools if underfed for more than a day and must be
-            // reheated from scratch" - partial progress with no dose in
-            // over a day is lost silently (no product, no message; the
-            // player finds out by noticing nothing ever comes out).
-            if (doseTicks.Count > 0 && Find.TickManager.TicksGame - doseTicks[doseTicks.Count - 1] > Props.doseWindowTicks)
-            {
-                doseTicks.Clear();
-            }
+            // "The kiln cools if underfed for more than a day and must be reheated from scratch" - partial progress with
+            // no dose in over a day is lost silently (no product, no message; the player finds out by noticing nothing
+            // ever comes out).
+            RSW_KilnKernel.Cool(doseTicks, Find.TickManager.TicksGame, Props.doseWindowTicks, RSW_LivestockSettings.kilnBellyEnabled);
         }
 
-        private void Fire(int now)
+        private void Fire(bool spaced)
         {
-            int span = doseTicks[doseTicks.Count - 1] - doseTicks[0];
-            bool spaced = span >= Props.rushedSpanTicks && span <= Props.doseWindowTicks;
-
             ThingDef productDef = spaced ? Props.goodProductDef : Props.badProductDef;
             int count = spaced ? Props.goodProductCount : Props.badProductCount;
 
@@ -148,10 +134,6 @@ namespace RimMandrake.StarWars.Livestock
                 product.stackCount = count;
                 GenPlace.TryPlaceThing(product, parent.PositionHeld, parent.MapHeld, ThingPlaceMode.Near);
             }
-
-            doseTicks.Clear();
-            int cooldown = Mathf.RoundToInt(Props.fireCooldownTicks * RSW_LivestockSettings.kilnCooldownMultiplier);
-            nextFireReadyTick = now + cooldown;
         }
     }
 

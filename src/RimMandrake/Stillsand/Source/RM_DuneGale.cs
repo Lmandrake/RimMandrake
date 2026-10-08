@@ -291,14 +291,7 @@ namespace RimMandrake.Stillsand
 
         public static string BearingName(IntVec3 v)
         {
-            for (int i = 0; i < 8; i++)
-            {
-                if (Dirs8[i] == v)
-                {
-                    return DirNames8[i];
-                }
-            }
-            return "downwind";
+            return RM_GaleKernel.BearingName(v.x, v.z);
         }
 
         private static MethodInfo duneRegistryGet;
@@ -317,12 +310,7 @@ namespace RimMandrake.Stillsand
             if (sun != null && sun.IsActive)
             {
                 Vector2 d = sun.ShadowDirection;
-                float deg = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;
-                if (deg < 0f)
-                {
-                    deg += 360f;
-                }
-                return Dirs8[Mathf.RoundToInt(deg / 45f) & 7];
+                return Dirs8[RM_GaleKernel.WindIndexFromShadow(d.x, d.y)];
             }
             if (fallbackWindDir < 0)
             {
@@ -482,8 +470,8 @@ namespace RimMandrake.Stillsand
 
         private void TryCarry(Pawn p, Map map, RM_DuneGaleExtension ext, int interval)
         {
-            if (p.BodySize > ext.carryMaxBodySize || p.Position.Roofed(map) || !IsCrest(p.Position, map, ext.crestDepth)
-                || p.Dead)
+            if (!RM_GaleKernel.CarryEligible(p.BodySize, ext.carryMaxBodySize, p.Position.Roofed(map), IsCrest(p.Position, map, ext.crestDepth),
+                    p.Dead))
             {
                 return;
             }
@@ -493,36 +481,28 @@ namespace RimMandrake.Stillsand
             }
             IntVec3 wind = Downwind(map);
             int steps = ext.carryCells.RandomInRange;
-            IntVec3 at = p.Position;
-            bool offMap = false;
-            for (int s = 0; s < steps; s++)
+            // A blocked first step is no carry at all: fetched up against a wall or rock.
+            RM_CarryResult walk = RM_GaleKernel.CarryWalk(p.Position.x, p.Position.z, wind.x, wind.z, steps,
+                (x, z) => new IntVec3(x, 0, z).InBounds(map), (x, z) => new IntVec3(x, 0, z).Walkable(map),
+                (x, z) =>
+                {
+                    if (ext.dragFilth != null)
+                    {
+                        FilthMaker.TryMakeFilth(new IntVec3(x, 0, z), map, ext.dragFilth, 1);
+                    }
+                });
+            IntVec3 at = new IntVec3(walk.x, 0, walk.z);
+            if (walk.offMap)
             {
-                IntVec3 next = at + wind;
-                if (!next.InBounds(map))
-                {
-                    offMap = true;
-                    break;
-                }
-                if (!next.Walkable(map))
-                {
-                    break; // fetched up against a wall or rock
-                }
-                if (ext.dragFilth != null)
-                {
-                    FilthMaker.TryMakeFilth(at, map, ext.dragFilth, 1);
-                }
-                at = next;
-            }
-            carried++;
-            if (offMap)
-            {
+                carried++;
                 RM_GameComponent_GaleCarried.Get()?.CarryOff(p, map, wind, ext);
                 return;
             }
-            if (at == p.Position)
+            if (walk.moved == 0)
             {
                 return;
             }
+            carried++;
             if (ext.dragFilth != null)
             {
                 FilthMaker.TryMakeFilth(at, map, ext.dragFilth, 1);
@@ -645,9 +625,9 @@ namespace RimMandrake.Stillsand
         private void Emerge(Map map, RM_DuneGaleExtension ext, IntVec3 face)
         {
             List<RM_GaleEmergence> options = ext.emergences
-                .Where(o => o.weight > 0f && RM_DuneGaleSettings.EmergenceAllowed(o.key)
-                            && (!o.skeleton || RM_SkeletonPlacer.PlaceableSkeletons.Any())
-                            && (!o.caveMouth || FindRockFace(map, face, 40f, out _, out _)))
+                .Where(o => RM_GaleKernel.EmergenceOk(o.weight, RM_DuneGaleSettings.EmergenceAllowed(o.key),
+                    o.skeleton, o.skeleton && RM_SkeletonPlacer.PlaceableSkeletons.Any(),
+                    o.caveMouth, o.caveMouth && FindRockFace(map, face, 40f, out _, out _)))
                 .ToList();
             if (options.Count == 0)
             {
@@ -892,7 +872,7 @@ namespace RimMandrake.Stillsand
             string bearing = RM_GameCondition_DuneGale.BearingName(wind);
             bool player = p.Faction == Faction.OfPlayer;
             string name = p.LabelShortCap;
-            p.ExitMap(false, Rot4.FromIntVec3(new IntVec3(Math.Sign(wind.x), 0, wind.x == 0 ? Math.Sign(wind.z) : 0)));
+            p.ExitMap(false, ToRot4(RM_GaleKernel.ExitEdge(wind.x, wind.z)));
             if (!Find.WorldPawns.Contains(p))
             {
                 Log.Warning("[Stillsand] gale carried " + p + " off the map but it is not a world pawn; it cannot come back.");
@@ -917,34 +897,35 @@ namespace RimMandrake.Stillsand
                 player ? LetterDefOf.NegativeEvent : LetterDefOf.NeutralEvent, new LookTargets(new TargetInfo(map.Center, map)));
         }
 
+        private static Rot4 ToRot4(RM_Edge e)
+        {
+            switch (e)
+            {
+                case RM_Edge.East: return Rot4.East;
+                case RM_Edge.South: return Rot4.South;
+                case RM_Edge.West: return Rot4.West;
+                default: return Rot4.North;
+            }
+        }
+
         public override void GameComponentTick()
         {
-            if (carried.Count == 0 || Find.TickManager.TicksGame % 2000 != 0)
+            if (!RM_GaleKernel.ShouldScanCarried(carried.Count, Find.TickManager.TicksGame))
             {
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            for (int i = carried.Count - 1; i >= 0; i--)
+            foreach (RM_GaleCarriedRecord r in RM_GaleKernel.TakeWhere(carried, c => RM_GaleKernel.IsDue(c.returnTick, now)))
             {
-                if (carried[i].returnTick <= now)
-                {
-                    RM_GaleCarriedRecord r = carried[i];
-                    carried.RemoveAt(i);
-                    Return(r, aliveChance);
-                }
+                Return(r, aliveChance);
             }
         }
 
         public void ReturnAllFor(Map map, RM_DuneGaleExtension ext)
         {
-            for (int i = carried.Count - 1; i >= 0; i--)
+            foreach (RM_GaleCarriedRecord r in RM_GaleKernel.TakeWhere(carried, c => c.map == map))
             {
-                if (carried[i].map == map)
-                {
-                    RM_GaleCarriedRecord r = carried[i];
-                    carried.RemoveAt(i);
-                    Return(r, ext.returnAliveChance);
-                }
+                Return(r, ext.returnAliveChance);
             }
         }
 
@@ -956,7 +937,7 @@ namespace RimMandrake.Stillsand
             {
                 Find.WorldPawns.RemovePawn(p);
             }
-            if (p == null || p.Destroyed || p.Discarded || map == null)
+            if (RM_GaleKernel.Decide(p == null || p.Destroyed || p.Discarded, map == null, false, false) == RM_ReturnOutcome.LostMissing)
             {
                 Find.LetterStack.ReceiveLetter("Lost to the sand",
                     "Something the gale carried off was never given back: " + (p?.LabelShortCap ?? "a body")
@@ -965,26 +946,20 @@ namespace RimMandrake.Stillsand
                 return;
             }
             IntVec3 wind = r.wind == IntVec3.Zero ? IntVec3.South : r.wind;
-            Rot4 edge = Mathf.Abs(wind.x) >= Mathf.Abs(wind.z)
-                ? (wind.x > 0 ? Rot4.East : Rot4.West)
-                : (wind.z > 0 ? Rot4.North : Rot4.South);
+            Rot4 edge = ToRot4(RM_GaleKernel.ReturnEdge(wind.x, wind.z));
             if (!CellFinder.TryFindRandomEdgeCellWith(c => c.Standable(map) && !c.Fogged(map), map, edge, 0f, out IntVec3 cell)
                 && !CellFinder.TryFindRandomEdgeCellWith(c => c.Standable(map), map, 0f, out cell))
             {
                 cell = map.Center;
             }
             // Comes in a few cells from the edge, "somewhere downwind".
-            for (int k = 0; k < 4; k++)
-            {
-                IntVec3 next = cell - wind;
-                if (!next.InBounds(map) || !next.Standable(map))
-                {
-                    break;
-                }
-                cell = next;
-            }
+            int inX = cell.x, inZ = cell.z;
+            RM_GaleKernel.WalkIn(ref inX, ref inZ, wind.x, wind.z, (x, z) => new IntVec3(x, 0, z).InBounds(map),
+                (x, z) => new IntVec3(x, 0, z).Standable(map));
+            cell = new IntVec3(inX, 0, inZ);
             bool alive = !p.Dead && Rand.Chance(aliveChance);
-            if (p.Dead)
+            RM_ReturnOutcome outcome = RM_GaleKernel.Decide(false, false, p.Dead, alive);
+            if (outcome == RM_ReturnOutcome.LostDead)
             {
                 Find.LetterStack.ReceiveLetter("Lost to the sand",
                     p.LabelShortCap + " died out past the edge. The wind kept the body.", LetterDefOf.NeutralEvent);
@@ -992,7 +967,7 @@ namespace RimMandrake.Stillsand
             }
             GenSpawn.Spawn(p, cell, map, WipeMode.VanishOrMoveAside);
             RM_GameCondition_DuneGale.Bruise(p, Rand.RangeInclusive(2, 6));
-            if (!alive && !p.Dead)
+            if (outcome == RM_ReturnOutcome.SpawnThenKill && !p.Dead)
             {
                 p.Kill(null);
             }

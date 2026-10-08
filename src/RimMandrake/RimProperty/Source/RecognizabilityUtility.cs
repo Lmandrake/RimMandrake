@@ -15,51 +15,27 @@ namespace RimMandrake.Property
     {
         // Every Thing starts slightly identifiable — a serial number exists
         // even on a steel bar, it's just never checked.
-        private const float BaselineScore = 0.05f;
+        private const float BaselineScore = RM_PropertyKernel.Baseline;
 
-        private const float QualityWeight = 0.30f;
-        private const float MarketValueWeight = 0.25f;
-        private const float NamedWeight = 0.30f;
-        private const float MechanoidWeight = 0.25f;
-        private const float NonStackableWeight = 0.05f;
+        private const float QualityWeight = RM_PropertyKernel.QualityWeight;
+        private const float MarketValueWeight = RM_PropertyKernel.MarketValueWeight;
+        private const float NamedWeight = RM_PropertyKernel.NamedWeight;
+        private const float MechanoidWeight = RM_PropertyKernel.MechanoidWeight;
+        private const float NonStackableWeight = RM_PropertyKernel.NonStackableWeight;
 
         // Market values above this are treated as maximally distinctive —
         // there's no meaningful difference between "priceless" and "very
         // expensive" for recognizability purposes.
-        private const float MarketValueSaturation = 2000f;
+        private const float MarketValueSaturation = RM_PropertyKernel.MarketValueSaturation;
 
         public static float Score(Thing thing)
         {
             if (thing == null) return 0f;
 
-            float score = BaselineScore;
-
-            if (thing.TryGetQuality(out QualityCategory qc))
-            {
-                score += QualityWeight * ((float)qc / (float)QualityCategory.Legendary);
-            }
-
-            if (thing.MarketValue > 0f)
-            {
-                score += MarketValueWeight * Mathf.Clamp01(thing.MarketValue / MarketValueSaturation);
-            }
-
-            if (HasPersistentName(thing))
-            {
-                score += NamedWeight;
-            }
-
-            if (thing is Pawn pawn && pawn.RaceProps != null && pawn.RaceProps.IsMechanoid)
-            {
-                score += MechanoidWeight;
-            }
-
-            if (thing.def != null && thing.def.stackLimit <= 1)
-            {
-                score += NonStackableWeight;
-            }
-
-            return Mathf.Clamp01(score);
+            bool hasQuality = thing.TryGetQuality(out QualityCategory qc);
+            return RM_PropertyKernel.Recognizability(true, hasQuality, (int)qc, thing.MarketValue, HasPersistentName(thing),
+                thing is Pawn pawn && pawn.RaceProps != null && pawn.RaceProps.IsMechanoid,
+                thing.def != null, thing.def != null ? thing.def.stackLimit : 0);
         }
 
         // "Named things" (spec item 2): a Pawn who has been given (or

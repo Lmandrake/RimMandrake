@@ -1,0 +1,4 @@
+# project: RimStarWars/JawaIonWeapons/Source/VehicleTier/JawaIonVehicleTier.csproj
+# dll: 0a7704e391ae84b17d95fea1f0975e1856d93a07b813681668229746758fe7b0
+1e9be28c3603fe04974990df70b1e8a94964a3920e5412e77552b776d119f863 VehicleIonPatches.cs
+4dd37e108cec697b5c6ea12fdc1446a8448ab5b1687e6622b26f3106452c4e4c ../Kernel/RSW_IonBuildupKernel.cs

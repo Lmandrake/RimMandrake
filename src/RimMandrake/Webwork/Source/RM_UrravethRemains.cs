@@ -52,8 +52,8 @@ namespace RimMandrake.Webwork
 
     public static class RM_Urraveth
     {
-        public static readonly string[] ChapterOrder = { "pinned", "bound", "cut", "eaten" };
-        public const float HeavyDamageFraction = 0.35f;   // PROVISIONAL: "heavily damaged"
+        public static readonly string[] ChapterOrder = RM_UrravethKernel.ChapterOrder;
+        public const float HeavyDamageFraction = RM_UrravethKernel.HeavyDamageFraction;   // PROVISIONAL: "heavily damaged"
         public static readonly IntRange CrushDamage = new IntRange(15, 30); // vanilla thin-roof collapse
 
         private static List<ThingDef> pieceDefs;
@@ -89,15 +89,7 @@ namespace RimMandrake.Webwork
 
         public static bool Adjacent(CellRect a, CellRect b)
         {
-            CellRect ex = a.ExpandedBy(1);
-            foreach (IntVec3 c in b)
-            {
-                if (ex.Contains(c))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return RM_UrravethKernel.Adjacent(a.minX, a.minZ, a.maxX, a.maxZ, b.minX, b.minZ, b.maxX, b.maxZ);
         }
 
         public static SoundDef Sound(string name) => name.NullOrEmpty() ? null : DefDatabase<SoundDef>.GetNamedSilentFail(name);
@@ -151,8 +143,8 @@ namespace RimMandrake.Webwork
             get
             {
                 RM_MapComponent_UrravethReading r = Reading;
-                return Ext != null && Ext.isSkull && !wrapped && r != null && !r.complete
-                       && Spawned && RM_Urraveth.PiecesOn(Map).All(p => !p.wrapped);
+                return RM_UrravethKernel.CanOpenLastWrapping(Ext != null && Ext.isSkull, wrapped, r != null, r != null && r.complete,
+                       Spawned, Spawned && RM_Urraveth.PiecesOn(Map).All(p => !p.wrapped));
             }
         }
 
@@ -184,7 +176,7 @@ namespace RimMandrake.Webwork
             });
         }
 
-        public int ExamineTicks => Mathf.Max(60, Ext?.examineTicks ?? 3000) * (wrapped ? 1 : 2);
+        public int ExamineTicks => RM_UrravethKernel.ExamineTicks(Ext?.examineTicks ?? 3000, wrapped);
 
         /// <summary>One completed examine. Wrapped: cut the wrapping, drop thrixweave, record the chapter, send its
         /// letter. Bare skull with every piece read: open the last wrapping (complete + outline). Returns what happened.</summary>
@@ -192,16 +184,17 @@ namespace RimMandrake.Webwork
         {
             RM_UrravethPieceExtension ext = Ext;
             RM_MapComponent_UrravethReading r = Reading;
-            if (ext == null || r == null || !Spawned)
+            ExamineOutcome outcome = RM_UrravethKernel.Examine(ext != null, r != null, Spawned, wrapped, CanOpenLastWrapping);
+            if (outcome == ExamineOutcome.Nothing)
             {
                 return "nothing";
             }
-            if (wrapped)
+            if (outcome == ExamineOutcome.ReadChapter)
             {
                 wrapped = false;
                 DirtyMapMesh(Map);
-                int n = RM_WebworkSettings.urravethThrixweavePerPiece;
                 ThingDef weave = RM_Urraveth.Def("Hyperweave"); // renamed thrixweave by RM_Thrixweave_Rename.xml
+                int n = RM_UrravethKernel.WeaveDropped(RM_WebworkSettings.urravethThrixweavePerPiece, weave != null);
                 if (weave != null && n > 0)
                 {
                     Thing stack = ThingMaker.MakeThing(weave);
@@ -216,12 +209,8 @@ namespace RimMandrake.Webwork
                 }
                 return "read " + ext.chapter;
             }
-            if (CanOpenLastWrapping)
-            {
-                r.Complete(this);
-                return "complete";
-            }
-            return "nothing";
+            r.Complete(this);
+            return "complete";
         }
 
         private IntVec3 InteractionOrAdjacent()
@@ -244,7 +233,7 @@ namespace RimMandrake.Webwork
             {
                 return 0f;
             }
-            float load = 0f;
+            float occupants = 0f;
             foreach (IntVec3 c in this.OccupiedRect())
             {
                 List<Thing> things = c.GetThingList(Map);
@@ -253,32 +242,32 @@ namespace RimMandrake.Webwork
                     Thing t = things[i];
                     if (t is Pawn p && !p.Dead)
                     {
-                        load += p.BodySize;
+                        occupants += p.BodySize;
                     }
                     else if (t.def.category == ThingCategory.Item)
                     {
-                        load += t.GetStatValue(StatDefOf.Mass) * t.stackCount / Mathf.Max(1f, ext.itemMassPerLoad);
+                        occupants += RM_UrravethKernel.ItemLoad(t.GetStatValue(StatDefOf.Mass), t.stackCount, ext.itemMassPerLoad);
                     }
                 }
             }
-            load += lostSupports * ext.loadCapacity;
+            int heavy = 0;
             foreach (RM_Building_UrravethPiece s in Supporters())
             {
-                if (s.HitPoints < s.MaxHitPoints * RM_Urraveth.HeavyDamageFraction)
+                if (RM_UrravethKernel.HeavilyDamaged(s.HitPoints, s.MaxHitPoints))
                 {
-                    load += ext.loadCapacity;
+                    heavy++;
                 }
             }
-            return load;
+            return RM_UrravethKernel.Load(occupants, lostSupports, ext.loadCapacity, heavy);
         }
 
-        public bool Overloaded => Ext != null && CurrentLoad() >= Ext.loadCapacity;
+        public bool Overloaded => Ext != null && RM_UrravethKernel.Overloaded(CurrentLoad(), Ext.loadCapacity);
 
         /// <summary>Adjacent pieces of strictly lower rank (they hold this one up).</summary>
-        public IEnumerable<RM_Building_UrravethPiece> Supporters() => Neighbours().Where(n => n.Ext.supportRank < Ext.supportRank);
+        public IEnumerable<RM_Building_UrravethPiece> Supporters() => Neighbours().Where(n => RM_UrravethKernel.IsSupporter(n.Ext.supportRank, Ext.supportRank));
 
         /// <summary>Adjacent pieces of strictly higher rank (this one holds them up).</summary>
-        public IEnumerable<RM_Building_UrravethPiece> Supported() => Neighbours().Where(n => n.Ext.supportRank > Ext.supportRank);
+        public IEnumerable<RM_Building_UrravethPiece> Supported() => Neighbours().Where(n => RM_UrravethKernel.IsSupported(n.Ext.supportRank, Ext.supportRank));
 
         public IEnumerable<RM_Building_UrravethPiece> Neighbours()
         {
@@ -302,7 +291,7 @@ namespace RimMandrake.Webwork
             IntVec3 at = Position;
             foreach (Pawn p in Map.mapPawns.AllPawnsSpawned)
             {
-                if (!p.Dead && (p.Position - at).LengthHorizontal <= r + Mathf.Max(def.size.x, def.size.z) * 0.5f)
+                if (!p.Dead && RM_UrravethKernel.PawnNear(p.Position.x - at.x, p.Position.z - at.z, r, def.size.x, def.size.z))
                 {
                     return true;
                 }
@@ -310,12 +299,12 @@ namespace RimMandrake.Webwork
             return false;
         }
 
-        public int WindowTicks => Mathf.Max(250, Mathf.RoundToInt(RM_WebworkSettings.urravethWarningHours * 2500f));
+        public int WindowTicks => RM_UrravethKernel.WindowTicks(RM_WebworkSettings.urravethWarningHours);
 
         public override void TickRare()
         {
             base.TickRare();
-            StepLoad(250);
+            StepLoad(RM_UrravethKernel.RareTicks);
         }
 
         /// <summary>One load evaluation covering <paramref name="ticks"/> ticks. Public for the proof tool.</summary>
@@ -325,36 +314,32 @@ namespace RimMandrake.Webwork
             {
                 return;
             }
-            bool over = Overloaded;
-            if (!Creaking)
+            switch (RM_UrravethKernel.Step(ref creakTicksLeft, Overloaded, AnyPawnNear, ticks, WindowTicks))
             {
-                if (over)
-                {
-                    StartCreaking();
-                }
-                return;
-            }
-            if (!over)
-            {
-                creakTicksLeft = -1;
-                Messages.Message("The " + LabelNoCount + " settles. The load is off it.", this, MessageTypeDefOf.NeutralEvent);
-                return;
-            }
-            if (!AnyPawnNear())
-            {
-                return; // unwatched bones hold; nothing collapses while nobody is near
-            }
-            creakTicksLeft -= ticks;
-            FleckMaker.ThrowDustPuff(this.OccupiedRect().RandomCell, Map, 1.2f);
-            if (creakTicksLeft <= 0)
-            {
-                Collapse();
+                case CreakEvent.Started:
+                    CreakEffects();
+                    break;
+                case CreakEvent.Settled:
+                    Messages.Message("The " + LabelNoCount + " settles. The load is off it.", this, MessageTypeDefOf.NeutralEvent);
+                    break;
+                case CreakEvent.Tick:
+                    FleckMaker.ThrowDustPuff(this.OccupiedRect().RandomCell, Map, 1.2f);
+                    break;
+                case CreakEvent.Collapse:
+                    FleckMaker.ThrowDustPuff(this.OccupiedRect().RandomCell, Map, 1.2f);
+                    Collapse();
+                    break;
             }
         }
 
         public void StartCreaking()
         {
             creakTicksLeft = WindowTicks;
+            CreakEffects();
+        }
+
+        private void CreakEffects()
+        {
             RM_Urraveth.Sound(Ext.creakSound)?.PlayOneShot(new TargetInfo(Position, Map));
             FleckMaker.ThrowDustPuff(this.OccupiedRect().RandomCell, Map, 1.6f);
             Messages.Message("The " + LabelNoCount + " creaks under the load. It will give way in about "
@@ -387,7 +372,7 @@ namespace RimMandrake.Webwork
             float mult = RM_WebworkSettings.urravethCollapseDamageMultiplier;
             foreach (Thing t in crushed.Distinct())
             {
-                int dmg = GenMath.RoundRandom(RM_Urraveth.CrushDamage.RandomInRange * mult);
+                int dmg = RM_UrravethKernel.CollapseDamage(RM_Urraveth.CrushDamage.RandomInRange, mult, Rand.Value);
                 if (dmg <= 0 || t.Destroyed)
                 {
                     continue;
@@ -424,7 +409,7 @@ namespace RimMandrake.Webwork
                 foreach (RM_Building_UrravethPiece s in Supported().ToList())
                 {
                     s.lostSupports++;
-                    if (RM_WebworkSettings.urravethEnabled && !s.Creaking && s.Overloaded)
+                    if (RM_UrravethKernel.StartsCreakingOnLoss(RM_WebworkSettings.urravethEnabled, s.Creaking, s.Overloaded))
                     {
                         s.StartCreaking();
                     }
@@ -472,7 +457,7 @@ namespace RimMandrake.Webwork
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedOrNull(TargetIndex.A);
-            this.FailOn(() => !RM_WebworkSettings.urravethEnabled || (!Piece.wrapped && !Piece.CanOpenLastWrapping));
+            this.FailOn(() => !RM_UrravethKernel.ExamineAllowed(RM_WebworkSettings.urravethEnabled, Piece.wrapped, Piece.CanOpenLastWrapping));
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             Toil work = Toils_General.Wait(Piece.ExamineTicks, TargetIndex.A);
             work.WithProgressBarToilDelay(TargetIndex.A);
@@ -501,14 +486,11 @@ namespace RimMandrake.Webwork
         }
 
         /// <summary>Chapters read so far, in the order the bones tell them (pinned, bound, cut, eaten).</summary>
-        public List<string> Chapters => RM_Urraveth.ChapterOrder.Where(c => chapters.Contains(c)).ToList();
+        public List<string> Chapters => RM_UrravethKernel.Ordered(chapters);
 
         public void RecordChapter(string chapter, Thing from)
         {
-            if (!chapter.NullOrEmpty() && !chapters.Contains(chapter))
-            {
-                chapters.Add(chapter);
-            }
+            RM_UrravethKernel.RecordChapter(chapters, chapter);
         }
 
         public void Complete(RM_Building_UrravethPiece skull)
@@ -538,17 +520,13 @@ namespace RimMandrake.Webwork
             {
                 return;
             }
-            Vector2 c = new Vector2(rect.minX + rect.Width / 2f, rect.minZ + rect.Height / 2f);
-            float a = rect.Width / 2f + 1f, b = rect.Height / 2f + 1f; // PROVISIONAL: one cell outside the bones
             foreach (IntVec3 cell in rect.ExpandedBy(2))
             {
                 if (!cell.InBounds(map) || !cell.Standable(map))
                 {
                     continue;
                 }
-                float dx = (cell.x + 0.5f - c.x) / a, dz = (cell.z + 0.5f - c.y) / b;
-                float r = Mathf.Sqrt(dx * dx + dz * dz);
-                if (Mathf.Abs(r - 1f) <= 0.09f && FilthMaker.TryMakeFilth(cell, map, filth, 1))
+                if (RM_UrravethKernel.OutlineCell(cell.x, cell.z, rect.minX, rect.minZ, rect.Width, rect.Height) && FilthMaker.TryMakeFilth(cell, map, filth, 1))
                 {
                     outlineCells++;
                 }
@@ -582,7 +560,7 @@ namespace RimMandrake.Webwork
         /// <summary>The body, head east: (defName, min corner x, min corner z) inside the 15 x 9 site.</summary>
         public static readonly (string def, int x, int z)[] Layout =
         {
-            ("RM_Urraveth_LimbPile", 1, 1),     // hind legs
+            ("RM_Urraveth_LimbPile", 1, 2),     // hind legs (z 2: touches the pelvis at z 4, so losing them loads it; at z 1 a bare row separated them)
             ("RM_Urraveth_LimbPile", 9, 1),     // forelegs
             ("RM_Urraveth_Pelvis", 0, 4),
             ("RM_Urraveth_RibSection", 3, 3),
@@ -607,7 +585,7 @@ namespace RimMandrake.Webwork
         }
 
         /// <summary>The Mod Settings gate: enabled, then the per-map site chance.</summary>
-        public static bool RollSite() => RM_WebworkSettings.urravethEnabled && Rand.Chance(RM_WebworkSettings.urravethSiteChance);
+        public static bool RollSite() => RM_UrravethKernel.RollSite(RM_WebworkSettings.urravethEnabled, RM_WebworkSettings.urravethSiteChance, Rand.Value);
 
         /// <summary>Everything after the biome and chance gates. Returns pieces placed, or -1 when nothing was.</summary>
         public int PlaceSite(Map map)
@@ -656,7 +634,7 @@ namespace RimMandrake.Webwork
             {
                 IntVec3 c = CellFinder.RandomCell(map);
                 CellRect r = new CellRect(c.x, c.z, SiteWidth, SiteHeight);
-                if (r.minX < EdgeMargin || r.minZ < EdgeMargin || r.maxX >= map.Size.x - EdgeMargin || r.maxZ >= map.Size.z - EdgeMargin)
+                if (!RM_UrravethKernel.SiteInMargin(r.minX, r.minZ, r.maxX, r.maxZ, map.Size.x, map.Size.z, EdgeMargin))
                 {
                     continue;
                 }

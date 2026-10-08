@@ -38,11 +38,9 @@ namespace RimMandrake.Warcasket
         public override void Notify_WearerDied()
         {
             base.Notify_WearerDied();
-            if (!RM_WarcasketSettings.masterEnabled || !RM_WarcasketSettings.sarcophagiEnabled)
-            {
-                return;
-            }
-            if (!(parent is Apparel apparel) || !SarcophagusUtility.IsSarcophagusSuit(apparel.def))
+            Apparel apparel = parent as Apparel;
+            if (!RM_WarcasketKernel.SealsOnDeath(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.sarcophagiEnabled,
+                apparel != null && SarcophagusUtility.IsSarcophagusSuit(apparel.def)))
             {
                 return;
             }
@@ -55,7 +53,7 @@ namespace RimMandrake.Warcasket
         public static RM_JunkerSarcophagusExtension ExtensionOf(ThingDef def)
         {
             RM_JunkerSarcophagusExtension ext = def?.GetModExtension<RM_JunkerSarcophagusExtension>();
-            return (ext != null && ext.isSealedSarcophagus) ? ext : null;
+            return RM_WarcasketKernel.ExtensionApplies(ext != null, ext != null && ext.isSealedSarcophagus) ? ext : null;
         }
 
         public static bool IsSarcophagusSuit(ThingDef def)
@@ -97,16 +95,10 @@ namespace RimMandrake.Warcasket
 
         protected override FloatMenuOption GetSingleOptionFor(Thing clickedThing, FloatMenuContext context)
         {
-            if (!RM_WarcasketSettings.masterEnabled || !RM_WarcasketSettings.sarcophagiEnabled)
-            {
-                return null;
-            }
-            if (!(clickedThing is Corpse corpse))
-            {
-                return null;
-            }
-            Apparel suit = SarcophagusUtility.SealedSuitOn(corpse);
-            if (suit == null)
+            Corpse corpse = clickedThing as Corpse;
+            Apparel suit = corpse != null ? SarcophagusUtility.SealedSuitOn(corpse) : null;
+            if (!RM_WarcasketKernel.OffersCrack(RM_WarcasketSettings.masterEnabled, RM_WarcasketSettings.sarcophagiEnabled,
+                corpse != null, suit != null))
             {
                 return null;
             }
@@ -145,7 +137,8 @@ namespace RimMandrake.Warcasket
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
 
             Apparel suitAtStart = SarcophagusUtility.SealedSuitOn(Corpse);
-            int ticks = SarcophagusUtility.ExtensionOf(suitAtStart?.def)?.crackOpenTicks ?? 1200;
+            RM_JunkerSarcophagusExtension extAtStart = SarcophagusUtility.ExtensionOf(suitAtStart?.def);
+            int ticks = RM_WarcasketKernel.CrackTicks(extAtStart != null, extAtStart != null ? extAtStart.crackOpenTicks : 0);
             Toil work = Toils_General.Wait(ticks, TargetIndex.A)
                 .WithProgressBarToilDelay(TargetIndex.A)
                 .FailOnCannotTouch(TargetIndex.A, PathEndMode.ClosestTouch);
@@ -174,7 +167,7 @@ namespace RimMandrake.Warcasket
                     for (int i = 0; i < ext.salvage.Count; i++)
                     {
                         ThingDefCountClass row = ext.salvage[i];
-                        if (row?.thingDef == null || row.count <= 0)
+                        if (!RM_WarcasketKernel.SalvageRowWanted(row?.thingDef != null, row != null ? row.count : 0))
                         {
                             continue;
                         }
@@ -182,7 +175,7 @@ namespace RimMandrake.Warcasket
                         while (left > 0)
                         {
                             Thing t = ThingMaker.MakeThing(row.thingDef);
-                            t.stackCount = System.Math.Min(left, row.thingDef.stackLimit);
+                            t.stackCount = RM_WarcasketKernel.NextSalvageStack(left, row.thingDef.stackLimit);
                             left -= t.stackCount;
                             GenPlace.TryPlaceThing(t, pos, map, ThingPlaceMode.Near);
                         }

@@ -47,24 +47,22 @@ namespace RimMandrake.StarWars.JawaRules
 
         public override bool CanDrawNow(PawnRenderNode node, PawnDrawParms parms)
         {
-            if (!base.CanDrawNow(node, parms))
+            // Fail OPEN (the kernel's FallbackDraws): the whole point of this node is "never a bare
+            // Jawa head", so if the double-hood guard itself breaks, the worse failure is silently
+            // reverting to a bare head, not an occasional doubled hood texture.
+            return RSW_HoodKernel.FallbackDraws(base.CanDrawNow(node, parms), () =>
             {
-                return false;
-            }
-            try
-            {
-                return !RealHoodIsDrawing(parms);
-            }
-            catch (Exception e)
-            {
-                // Fail OPEN: the whole point of this node is "never a bare Jawa
-                // head", so if the double-hood guard itself breaks, the worse
-                // failure is silently reverting to a bare head, not an
-                // occasional doubled hood texture.
-                Log.ErrorOnce("[RimMandrake.StarWars.JawaRules] jawa-hood-fallback: "
-                    + e.Message, 0x4A57A6);
-                return true;
-            }
+                try
+                {
+                    return RealHoodIsDrawing(parms);
+                }
+                catch (Exception e)
+                {
+                    Log.ErrorOnce("[RimMandrake.StarWars.JawaRules] jawa-hood-fallback: "
+                        + e.Message, 0x4A57A6);
+                    throw;
+                }
+            });
         }
 
         // Skip this fallback only when the REAL apparel hood is both worn and actually
@@ -79,28 +77,23 @@ namespace RimMandrake.StarWars.JawaRules
         private static bool RealHoodIsDrawing(PawnDrawParms parms)
         {
             ThingDef hood = JawaHoodDef;
-            if (hood == null)
-            {
-                return false;
-            }
-            if (!PawnRenderNodeWorker_Apparel_Head.HeadgearVisible(JawaHoodRender.EffectiveParms(parms)))
-            {
-                return false;
-            }
             Pawn_ApparelTracker apparel = parms.pawn?.apparel;
-            if (apparel == null)
-            {
-                return false;
-            }
-            List<Apparel> worn = apparel.WornApparel;
-            for (int i = 0; i < worn.Count; i++)
-            {
-                if (worn[i].def == hood)
+            bool applies = JawaHoodRender.SwimForceApplies(parms);
+            return RSW_HoodKernel.RealHoodIsDrawing(hood != null,
+                flags => { PawnDrawParms p = parms; p.flags = (PawnRenderFlags)flags; return PawnRenderNodeWorker_Apparel_Head.HeadgearVisible(p); },
+                (int)parms.flags, applies, apparel != null,
+                () =>
                 {
-                    return true;
-                }
-            }
-            return false;
+                    List<Apparel> worn = apparel.WornApparel;
+                    for (int i = 0; i < worn.Count; i++)
+                    {
+                        if (worn[i].def == hood)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
         }
     }
 }

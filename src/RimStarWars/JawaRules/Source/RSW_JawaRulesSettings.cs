@@ -74,13 +74,13 @@ namespace RimMandrake.StarWars.JawaRules
         /// <summary>Called by the transpiled WorldFeatures.UpdateAlpha in place of its old 0.3 literal.</summary>
         public static float CurrentWorldLabelAlpha()
         {
-            return worldLabelAlphaBoostEnabled ? worldLabelAlpha : Patch_WorldFeatures_UpdateAlpha.VanillaAlpha;
+            return RSW_RulesKernel.Current(worldLabelAlphaBoostEnabled, worldLabelAlpha, Patch_WorldFeatures_UpdateAlpha.VanillaAlpha);
         }
 
         /// <summary>Called by the transpiled WrapAroundPlanetSurface in place of its old 0.4 literal.</summary>
         public static float CurrentWorldLabelLift()
         {
-            return worldLabelLiftEnabled ? worldLabelLift : Patch_WorldFeatureText_Lift.VanillaLift;
+            return RSW_RulesKernel.Current(worldLabelLiftEnabled, worldLabelLift, Patch_WorldFeatureText_Lift.VanillaLift);
         }
 
         private static Vector2 settingsScroll;

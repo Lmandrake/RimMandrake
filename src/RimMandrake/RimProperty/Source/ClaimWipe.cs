@@ -17,12 +17,8 @@ namespace RimMandrake.Property
         // any pawn claimant belonging to that faction (a colonist's purchase is the colony's claim).
         public static bool IsKept(ClaimantRef claimant, ClaimantRef keep)
         {
-            if (claimant.Equals(keep))
-            {
-                return true;
-            }
-            return keep.Kind == ClaimantKind.Commons && keep.Faction != null
-                && claimant.Kind == ClaimantKind.Pawn && claimant.Pawn != null && claimant.Pawn.Faction == keep.Faction;
+            return RM_PropertyKernel.IsKept(claimant.Equals(keep), keep.Kind == ClaimantKind.Commons && keep.Faction != null,
+                (byte)claimant.Kind, claimant.Pawn != null, claimant.Pawn != null && claimant.Pawn.Faction == keep.Faction);
         }
 
         // Removes every record whose claimant is not kept; the removed records are appended to `removed` when given.

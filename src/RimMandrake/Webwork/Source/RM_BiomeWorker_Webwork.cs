@@ -23,43 +23,18 @@ namespace RimMandrake.Webwork
 	// vanilla biomes anywhere it doesn't belong.
 	public class RM_BiomeWorker_Webwork : BiomeWorker
 	{
-		private static readonly FloatRange TemperatureRange = new FloatRange(30f, 60f);
-		private static readonly FloatRange RainfallRange = new FloatRange(1800f, 6000f);
-		private const float MaxElevation = 1000f;
-		private const float BaseScore = 28f;
-		private const float DegreeWeight = 1.2f;
-		private const float RainfallDivisor = 200f;
-
 		public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
 		{
 			if (!RM_WebworkSettings.generateOnWorldgen)
 			{
 				return 0f;
 			}
-			if (tile == null || tile.WaterCovered)
+			if (tile == null)
 			{
 				return -100f;
 			}
-			if (tile.temperature < TemperatureRange.min || tile.temperature > TemperatureRange.max)
-			{
-				return 0f;
-			}
-			if (tile.rainfall < RainfallRange.min)
-			{
-				return 0f;
-			}
-			if (tile.elevation > MaxElevation)
-			{
-				return 0f;
-			}
-			if (tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable)
-			{
-				return 0f;
-			}
-
-			return BaseScore
-				 + (tile.temperature - TemperatureRange.min) * DegreeWeight
-				 + (tile.rainfall - RainfallRange.min) / RainfallDivisor;
+			return RM_WebworkBiomeKernel.Score(true, false, tile.WaterCovered, tile.temperature, tile.rainfall, tile.elevation,
+				tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable);
 		}
 	}
 }

@@ -105,21 +105,17 @@ namespace RimMandrake.StarWars.Livestock
 
             TrySelfTame(pawn);
 
-            if (joinTick < 0 && pawn.Faction == Faction.OfPlayer)
-            {
-                joinTick = Find.TickManager.TicksGame;
-            }
+            joinTick = RSW_GriefKernel.JoinTick(joinTick, pawn.Faction == Faction.OfPlayer, Find.TickManager.TicksGame);
 
             if (pawn.Map != null)
             {
                 ApplyUnsettled(pawn.Map);
             }
 
-            storedGrief = Mathf.Min(storedGrief + Props.griefChargePerDay
-                * (GenTicks.TickRareInterval / (float)GenDate.TicksPerDay), Props.maxGriefCharge);
+            storedGrief = RSW_GriefKernel.GrowGrief(storedGrief, Props.griefChargePerDay, Props.maxGriefCharge);
 
-            int delay = Mathf.RoundToInt(Props.releaseDelayTicks * RSW_LivestockSettings.moornakReleaseDelayMultiplier);
-            if (joinTick >= 0 && Find.TickManager.TicksGame - joinTick >= delay)
+            int delay = RSW_GriefKernel.ReleaseDelay(Props.releaseDelayTicks, RSW_LivestockSettings.moornakReleaseDelayMultiplier);
+            if (RSW_GriefKernel.ReleaseDue(joinTick, Find.TickManager.TicksGame, delay))
             {
                 Release(pawn);
             }
@@ -130,9 +126,7 @@ namespace RimMandrake.StarWars.Livestock
         // rolled per individual instead of once map-wide.
         private void TrySelfTame(Pawn pawn)
         {
-            if (pawn.Faction != null) return;
-            if (pawn.Downed || pawn.InMentalState) return;
-            if (pawn.Position.Fogged(pawn.Map)) return;
+            if (!RSW_GriefKernel.CanSelfTame(pawn.Faction != null, pawn.Downed, pawn.InMentalState, pawn.Faction == null && pawn.Position.Fogged(pawn.Map))) return;
 
             if (Rand.MTBEventOccurs(Props.selfTameMtbDays, GenDate.TicksPerDay, GenTicks.TickRareInterval))
             {
@@ -166,7 +160,9 @@ namespace RimMandrake.StarWars.Livestock
                 }
                 else
                 {
-                    hediff.Severity = Mathf.Min(hediff.Severity + Props.unsettledSeverityStep,
+                    // A severity already above the target (the release spike) is left to decay on the hediff's own
+                    // severity-per-day; clamping it down to the target would erase the spike within one rare tick.
+                    hediff.Severity = RSW_GriefKernel.NextUnsettled(true, hediff.Severity, Props.unsettledSeverityStep,
                         Props.unsettledTargetSeverity);
                 }
             }
@@ -192,7 +188,7 @@ namespace RimMandrake.StarWars.Livestock
                         hediff = HediffMaker.MakeHediff(Props.unsettledHediffDef, colonist);
                         colonist.health.AddHediff(hediff);
                     }
-                    hediff.Severity = Props.releaseSpikeSeverity;
+                    hediff.Severity = RSW_GriefKernel.Spike(Props.releaseSpikeSeverity);
                 }
             }
 

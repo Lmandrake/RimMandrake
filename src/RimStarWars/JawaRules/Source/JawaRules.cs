@@ -120,9 +120,8 @@ namespace RimMandrake.StarWars.JawaRules
         public static bool IsJawa(Pawn pawn)
         {
             return pawn != null
-                && pawn.genes != null
-                && pawn.genes.Xenotype != null
-                && pawn.genes.Xenotype.defName == JawaXenotype;
+                && RSW_RulesKernel.IsJawa(pawn.genes != null, pawn.genes != null && pawn.genes.Xenotype != null,
+                    pawn.genes != null && pawn.genes.Xenotype != null ? pawn.genes.Xenotype.defName : null, JawaXenotype);
         }
 
         // FULL_LOAD_ALPHAGENES_NRE_1 — armed from RSW_JawaRulesMod's CONSTRUCTOR
@@ -239,9 +238,7 @@ namespace RimMandrake.StarWars.JawaRules
     {
         public static void Postfix(Pawn pawn, ref bool __result)
         {
-            if (!RSW_JawaRulesSettings.sowBanEnabled) return;
-            if (__result && JawaRulesMod.IsJawa(pawn))
-                __result = false;
+            __result = RSW_RulesKernel.SowResult(RSW_JawaRulesSettings.sowBanEnabled, __result, () => JawaRulesMod.IsJawa(pawn));
         }
     }
 
@@ -263,9 +260,7 @@ namespace RimMandrake.StarWars.JawaRules
             try
             {
                 if (pawn != null
-                    && pawn.RaceProps != null
-                    && pawn.RaceProps.Humanlike
-                    && pawn.relations == null)
+                    && RSW_RulesKernel.NeedsRelationsTracker(true, pawn.RaceProps != null, pawn.RaceProps != null && pawn.RaceProps.Humanlike, pawn.relations != null))
                 {
                     pawn.relations = new Pawn_RelationsTracker(pawn);
                 }
@@ -313,12 +308,10 @@ namespace RimMandrake.StarWars.JawaRules
 
                 // ⛔ Animals only. GenerateNecessaryName also fires for Biotech MECHS,
                 // and a mechanoid called "Warranty Void" is a different feature.
-                if (!p.RaceProps.Animal) return;
-                if (p.Faction == null || p.Faction != Faction.OfPlayer) return;
-
-                // Only replace a name nobody chose. A bonded animal already has a real
-                // name from the Full path, and a player rename must never be clobbered.
-                if (p.Name != null && !p.Name.Numerical) return;
+                // Only replace a name nobody chose (kernel: no name or a numerical placeholder). A bonded animal already has a
+                // real name from the Full path, and a player rename must never be clobbered.
+                if (!RSW_RulesKernel.NeedsPetName(true, true, p.RaceProps.Animal, p.Faction != null, p.Faction == Faction.OfPlayer,
+                        p.Name != null, p.Name != null && p.Name.Numerical)) return;
 
                 var namer = p.RaceProps.GetNameGenerator(p.gender);
                 if (namer == null) return;
@@ -377,8 +370,7 @@ namespace RimMandrake.StarWars.JawaRules
             if (!RSW_JawaRulesSettings.pawnKindRedressFixEnabled) return;
             try
             {
-                if (pawn == null || request.KindDef == null) return;
-                if (pawn.kindDef == request.KindDef) return;
+                if (!RSW_RulesKernel.ForceKind(true, pawn != null, request.KindDef != null, pawn != null && pawn.kindDef != request.KindDef)) return;
 
                 string before = pawn.kindDef?.defName;
                 pawn.kindDef = request.KindDef;
@@ -386,7 +378,7 @@ namespace RimMandrake.StarWars.JawaRules
                 if (ModsConfig.BiotechActive && pawn.genes != null && request.KindDef.useFactionXenotypes)
                 {
                     XenotypeDef wanted = PawnGenerator.GetXenotypeForGeneratedPawn(request);
-                    if (wanted != null && pawn.genes.Xenotype != wanted)
+                    if (RSW_RulesKernel.ForceXenotype(true, true, true, wanted != null, pawn.genes.Xenotype != wanted))
                     {
                         pawn.genes.SetXenotype(wanted);
                     }

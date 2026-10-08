@@ -175,34 +175,13 @@ namespace RimMandrake.Pyrelands
         /// not "cross").</summary>
         public static bool AppliesToBiome(BiomeDef biome)
         {
-            if (!crossBiomeEnabled || biome == null || biome.defName == "RM_Pyrelands")
-            {
-                return false;
-            }
-            if (crossBiomeEverywhere)
-            {
-                return true;
-            }
-            return ParseBiomeList().Contains(biome.defName);
+            return RM_FireEcoKernel.CrossBiomeApplies(crossBiomeEnabled, biome != null, biome != null && biome.defName == "RM_Pyrelands",
+                crossBiomeEverywhere, biome != null && crossBiomeEnabled && !crossBiomeEverywhere && ParseBiomeList().Contains(biome.defName));
         }
 
         private static List<string> ParseBiomeList()
         {
-            var result = new List<string>();
-            if (crossBiomeBiomeList.NullOrEmpty())
-            {
-                return result;
-            }
-            string[] parts = crossBiomeBiomeList.Split(',', ';');
-            for (int i = 0; i < parts.Length; i++)
-            {
-                string trimmed = parts[i].Trim();
-                if (trimmed.Length > 0)
-                {
-                    result.Add(trimmed);
-                }
-            }
-            return result;
+            return RM_FireEcoKernel.ParseList(crossBiomeBiomeList);
         }
 
         private static Vector2 settingsScroll;

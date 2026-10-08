@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimMandrake.Pyrelands;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -44,23 +45,14 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
 
             RimMandrake.Pyrelands.MapComponent_BurnLine watch = RimMandrake.Pyrelands.MapComponent_BurnLine.For(map);
-            if (watch == null || !watch.IsPyrelandsMap)
-            {
-                return false;
-            }
-            if (watch.ArsonDebt < PyrelandsMechanicsSettings.arsonDebtRaidThreshold)
-            {
-                return false;
-            }
+            bool pyrelands = watch != null && watch.IsPyrelandsMap;
+            Faction tribes = pyrelands ? PyrelandsFactions.TribesOrNull() : null;
 
-            Faction tribes = PyrelandsFactions.TribesOrNull();
-            if (tribes == null)
-            {
-                return false;
-            }
-
-            // Already at war, or souring them would put them there.
-            return tribes.HostileTo(Faction.OfPlayer) || tribes.HasGoodwill;
+            // Debt at the threshold (a threshold above the debt cap counts as the cap: the debt can never exceed it), a
+            // Tribes faction already at war, or one that souring would put there.
+            return RM_BurnKernel.RaidCanFire(true, true, pyrelands, pyrelands ? watch.ArsonDebt : 0f,
+                PyrelandsMechanicsSettings.arsonDebtRaidThreshold, RimMandrake.Pyrelands.PyrelandsTuning.ArsonDebtCap,
+                tribes != null, tribes != null && tribes.HostileTo(Faction.OfPlayer), tribes != null && tribes.HasGoodwill);
         }
 
         protected override bool TryExecuteWorker(IncidentParms parms)
@@ -71,25 +63,22 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             }
 
             Faction tribes = PyrelandsFactions.TribesOrNull();
-            if (tribes == null)
+            RM_RaidPlan plan = RM_BurnKernel.RaidPlan(tribes != null, tribes != null && tribes.HostileTo(Faction.OfPlayer),
+                tribes != null && tribes.HasGoodwill);
+            if (plan == RM_RaidPlan.Refuse)
             {
                 return false;
             }
 
-            if (!tribes.HostileTo(Faction.OfPlayer))
+            if (plan == RM_RaidPlan.InsultFirst)
             {
-                if (!tribes.HasGoodwill)
-                {
-                    return false;
-                }
-
                 tribes.TryAffectGoodwillWith(
                     Faction.OfPlayer,
                     RimMandrake.Pyrelands.PyrelandsTuning.FireRaidGoodwillHit,
                     canSendMessage: true,
                     canSendHostilityLetter: true);
 
-                if (!tribes.HostileTo(Faction.OfPlayer))
+                if (!RM_BurnKernel.RaidAfterInsult(tribes.HostileTo(Faction.OfPlayer)))
                 {
                     // The insult landed but did not reach war. No raid this time;
                     // the debt stands and the next unplanned burn adds to it.
@@ -101,13 +90,9 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
             parms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;
             parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn;
 
-            if (parms.points <= 0f)
-            {
-                parms.points = StorytellerUtility.DefaultThreatPointsNow(parms.target);
-            }
-            parms.points = Mathf.Max(
-                RimMandrake.Pyrelands.PyrelandsTuning.FireRaidPointsMin,
-                parms.points * RimMandrake.Pyrelands.PyrelandsTuning.FireRaidPointsFactor);
+            parms.points = RM_BurnKernel.RaidPoints(parms.points,
+                parms.points <= 0f ? StorytellerUtility.DefaultThreatPointsNow(parms.target) : 0f,
+                RimMandrake.Pyrelands.PyrelandsTuning.FireRaidPointsFactor, RimMandrake.Pyrelands.PyrelandsTuning.FireRaidPointsMin);
 
             if (!base.TryExecuteWorker(parms))
             {

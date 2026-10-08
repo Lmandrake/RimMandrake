@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""Mutation proof for the Armoury fuzz: plants each defect in the kernel (RSW_ArmouryKernel.cs), demands the fuzz FAILS, restores the file
+byte-identical. Exit 0 only if every mutation was caught.
+
+    python3 src/RimMandrake/Utils/mutate_armoury_fuzz.py [name-substring]
+"""
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from mutate_explosivegrowth_fuzz import run_mutations  # noqa: E402
+
+KERNEL = "src/RimStarWars/Armoury/Source/Kernel/RSW_ArmouryKernel.cs"
+MUTATIONS = [
+    ("ion: gate ignores the setting", "p.Gate = enabled && hasExtension && namesHediff;", "p.Gate = hasExtension && namesHediff;"),
+    ("ion: gate ignores the extension", "p.Gate = enabled && hasExtension && namesHediff;", "p.Gate = enabled && namesHediff;"),
+    ("ion: applies to every victim", "p.Applies = p.Gate && victimApplies;", "p.Applies = p.Gate;"),
+    ("ion: strength ignored", "float severity = severityFixed * strength;", "float severity = severityFixed;"),
+    ("ion: resistance inverted", "severity = resistDefaultBase > 0f ? severity * resistStatValue : severity * (1f - resistStatValue);", "severity = resistDefaultBase > 0f ? severity * (1f - resistStatValue) : severity * resistStatValue;"),
+    ("ion: resistance default test >=", "severity = resistDefaultBase > 0f ?", "severity = resistDefaultBase >= 0f ?"),
+    ("ion: size divides when not asked", "if (severity > 0f && variesBySize && bodySize > 0f)", "if (severity > 0f && bodySize > 0f)"),
+    ("ion: size zero divides", "if (severity > 0f && variesBySize && bodySize > 0f)", "if (severity > 0f && variesBySize)"),
+    ("ion: size multiplies", "severity /= bodySize;", "severity *= bodySize;"),
+    ("ion: whole body adds one per part", "p.Hediffs = wholeBody ? 1 : Math.Max(0, partCount);", "p.Hediffs = Math.Max(1, partCount);"),
+    ("ion: per-part adds one", "p.Hediffs = wholeBody ? 1 : Math.Max(0, partCount);", "p.Hediffs = 1;"),
+    ("ion: hediff at zero severity", "if (p.Severity > 0f) p.Hediffs", "if (p.Severity >= 0f) p.Hediffs"),
+    ("ion: stun without the kind", "p.Stun = stunWhenApplies;", "p.Stun = true;"),
+    ("ion: never stuns", "p.Stun = stunWhenApplies;", "p.Stun = false;"),
+    ("ion: stat read eagerly", "hasResistStat ? resistStatValue() : 0f", "resistStatValue()"),
+    ("ion: organic stun ignores setting", "return enabled && isFlesh;", "return isFlesh;"),
+    ("ion: plasma ignores setting", "return setting && defFlagWantsFire;", "return defFlagWantsFire;"),
+    ("yield: chance zero still drops", "return p > 0f && roll <= p;", "return roll <= p;"),
+    ("yield: drop gate exclusive", "return p > 0f && roll <= p;", "return p > 0f && roll < p;"),
+    ("yield: chance scale ignored", "float p = dropChance * chanceScale;", "float p = dropChance;"),
+    ("yield: pick sums only the first", "for (int i = 0; i < weights.Count; i++) sum += Math.Max(0f, weights[i]);", "for (int i = 0; i < Math.Min(1, weights.Count); i++) sum += Math.Max(0f, weights[i]);"),
+    ("yield: zero weight can win", "if (w <= 0f) continue;\n                lastPositive = i;", "lastPositive = i;"),
+    ("yield: pick roll inclusive", "if (roll < cum) return i;", "if (roll <= cum) return i;"),
+    ("yield: top roll finds nothing", "return lastPositive;\n        }", "return -1;\n        }"),
+    ("yield: negative weight counts", "float w = Math.Max(0f, weights[i]);\n                if (w <= 0f) continue;", "float w = weights[i];\n                if (w == 0f) continue;"),
+    ("yield: count may be zero", "int count = Math.Max(1, RSW_Num.RoundToInt(effectiveYield * amountScale));", "int count = RSW_Num.RoundToInt(effectiveYield * amountScale);"),
+    ("yield: amount ignored", "RSW_Num.RoundToInt(effectiveYield * amountScale)", "RSW_Num.RoundToInt(effectiveYield * 1f)"),
+    ("yield: wasteable ignores yield fraction", "count = Math.Max(1, roundRandom(count * yieldPct));", "count = Math.Max(1, roundRandom(count));"),
+    ("yield: wasteable may reach zero", "count = Math.Max(1, roundRandom(count * yieldPct));", "count = roundRandom(count * yieldPct);"),
+    ("yield: non-wasteable rounds randomly", "if (wasteable) count", "if (true) count"),
+    ("yield: miner credited when absorbed", "return enabled && !absorbed && !mineableHasOwnYield", "return enabled && !mineableHasOwnYield"),
+    ("yield: miner credited with own yield", "&& !mineableHasOwnYield &&", "&&"),
+    ("yield: miner credit ignores setting", "return enabled && !absorbed", "return !absorbed"),
+    ("gear: cooldown never ticks", "public static int Tick(int remainTicks) { return remainTicks >= 0 ? remainTicks - 1 : remainTicks; }", "public static int Tick(int remainTicks) { return remainTicks; }"),
+    ("gear: clock runs below idle", "public static int Tick(int remainTicks) { return remainTicks >= 0 ? remainTicks - 1 : remainTicks; }", "public static int Tick(int remainTicks) { return remainTicks - 1; }"),
+    ("gear: usable at zero", "public static bool CanUse(int remainTicks) { return remainTicks < 0; }", "public static bool CanUse(int remainTicks) { return remainTicks <= 0; }"),
+    ("gear: cooldown scale ignored", "Math.Max(0, RSW_Num.RoundToInt(cooldownTicks * cooldownScale))", "Math.Max(0, RSW_Num.RoundToInt(cooldownTicks * 1f))"),
+    ("gear: cooldown can go negative", "Math.Max(0, RSW_Num.RoundToInt(cooldownTicks * cooldownScale))", "RSW_Num.RoundToInt(cooldownTicks * cooldownScale)"),
+    ("gear: blocker polarity", "return (causeBits & b) > 0 ^ isWhitelist;", "return (causeBits & b) > 0;"),
+    ("gear: blocker bit order", "(byMood ? 1 : 0) | (byDamage ? 2 : 0) | (byPsycast ? 4 : 0)", "(byMood ? 1 : 0) | (byDamage ? 4 : 0) | (byPsycast ? 2 : 0)"),
+    ("gear: blocker needs all causes", "return (causeBits & b) > 0 ^ isWhitelist;", "return (causeBits & b) == causeBits ^ isWhitelist;"),
+    ("kolto: heals implants", "if (!everCurableByItem || countsAsImplant) return false;", "if (!everCurableByItem) return false;"),
+    ("kolto: heals the uncurable", "if (!everCurableByItem || countsAsImplant) return false;", "if (countsAsImplant) return false;"),
+    ("kolto: heals permanent injuries", "return isInjury && !injuryPermanent;", "return isInjury;"),
+    ("kolto: ignores blood loss", "if (chronic || isBloodLoss) return true;", "if (chronic) return true;"),
+    ("kolto: interval ignores multiplier", "return multiplier > 0f ? RSW_Num.RoundToInt(BaseTicksBetweenHealing * multiplier) : BaseTicksBetweenHealing;", "return BaseTicksBetweenHealing;"),
+    ("kolto: speed inverts", "shippedTicks / Math.Max(0.01f, speed)", "shippedTicks * Math.Max(0.01f, speed)"),
+    ("kolto: interval may be zero", "return Math.Max(1, RSW_Num.RoundToInt(shippedTicks / Math.Max(0.01f, speed)));", "return RSW_Num.RoundToInt(shippedTicks / Math.Max(0.01f, speed));"),
+    ("kolto: heals with the setting off", "return enabled && ticksGame % interval == 0 && hasPawn;", "return ticksGame % interval == 0 && hasPawn;"),
+    ("kolto: heals an empty tank", "return enabled && ticksGame % interval == 0 && hasPawn;", "return enabled && ticksGame % interval == 0;"),
+    ("kolto: heal cadence off by one", "ticksGame % interval == 0 && hasPawn", "ticksGame % interval == 1 && hasPawn"),
+    ("kolto: no ejection without fuel", "if (!hasFuel || !hasPower) return Outcome.Eject;", "if (!hasPower) return Outcome.Eject;"),
+    ("kolto: no ejection without power", "if (!hasFuel || !hasPower) return Outcome.Eject;", "if (!hasFuel) return Outcome.Eject;"),
+    ("kolto: overfills", "if (fillPct >= 1f) { fillPct = 1f; state = Full; }", "if (fillPct >= 1f) { state = Full; }"),
+    ("kolto: full needs more than 1", "if (fillPct >= 1f) { fillPct = 1f; state = Full; }", "if (fillPct > 1f) { fillPct = 1f; state = Full; }"),
+    ("kolto: fills an empty tank", "if (state == StartFilling)\n            {", "if (state != Full)\n            {"),
+    ("kolto: power comp priority", "if (hasTrader) return traderOn;\n            if (hasPowerComp) return transmitsNow;", "if (hasPowerComp) return transmitsNow;\n            if (hasTrader) return traderOn;"),
+    ("kolto: no power parts means off", "if (hasPowerComp) return transmitsNow;\n            return true;", "if (hasPowerComp) return transmitsNow;\n            return false;"),
+    ("kolto: size band exclusive", "return bodySize <= max && bodySize >= min;", "return bodySize < max && bodySize > min;"),
+    ("combat: disabled still jumps", "if (!enabled) return false;\n            if (!humanlike || colonist) return false;\n            if (!hasTarget())", "if (!humanlike || colonist) return false;\n            if (!hasTarget())"),
+    ("combat: colonists jump", "if (!humanlike || colonist) return false;\n            if (!hasTarget())", "if (!humanlike) return false;\n            if (!hasTarget())"),
+    ("combat: jumps at ranged fighters", "if (!meleeVerb()) return false;", ""),
+    ("combat: jumps when already in reach", "if (canReachNow()) return false;", ""),
+    ("combat: reach probed before melee", "if (!meleeVerb()) return false;\n            if (canReachNow()) return false;", "if (canReachNow()) return false;\n            if (!meleeVerb()) return false;"),
+    ("combat: min distance inclusive", "if (distSq() < ScaleSquaredDistance(shippedSquared, distanceFactor)) return false;", "if (distSq() <= ScaleSquaredDistance(shippedSquared, distanceFactor)) return false;"),
+    ("combat: distance factor linear", "return shippedSquared * distanceFactor * distanceFactor;", "return shippedSquared * distanceFactor;"),
+    ("combat: jump verb probed first", "if (distSq() < ScaleSquaredDistance(shippedSquared, distanceFactor)) return false;\n            return hasJumpVerb();", "if (!hasJumpVerb()) return false;\n            if (distSq() < ScaleSquaredDistance(shippedSquared, distanceFactor)) return false;\n            return true;"),
+    ("combat: flank ignores its setting", "if (!enabled || !flankSetting) return false;", "if (!enabled) return false;"),
+    ("combat: flank with no cover list", "if (coverBlockChances == null || coverBlockChances.Count == 0) return false;", "if (coverBlockChances.Count == 0) return false;"),
+    ("combat: flank threshold exclusive", "if (!(coverBlockChances[i] < CoverWorthFlanking)) return true;", "if (coverBlockChances[i] > CoverWorthFlanking) return true;"),
+    ("combat: flank needs all cover good", "for (int i = 0; i < coverBlockChances.Count; i++) if (!(coverBlockChances[i] < CoverWorthFlanking)) return true;\n            return false;", "for (int i = 0; i < coverBlockChances.Count; i++) if (coverBlockChances[i] < CoverWorthFlanking) return false;\n            return true;"),
+    ("combat: flank prefers the front", "return behindReachable ? 0 : frontReachable ? 1 : -1;", "return frontReachable ? 1 : behindReachable ? 0 : -1;"),
+    ("combat: heals over a vanilla job", "if (!enabled || vanillaGaveJob || !plumbingOk) return false;", "if (!enabled || !plumbingOk) return false;"),
+    ("combat: heals long after harm", "if (ticksGame - lastHarmTick > recentHarmTicks) return false;", ""),
+    ("combat: harm window exclusive", "if (ticksGame - lastHarmTick > recentHarmTicks) return false;", "if (ticksGame - lastHarmTick >= recentHarmTicks) return false;"),
+    ("combat: reuse window ignored", "if (ticksGame - lastDrugTick < reuseTicks) return false;", ""),
+    ("combat: reuse window inclusive", "if (ticksGame - lastDrugTick < reuseTicks) return false;", "if (ticksGame - lastDrugTick <= reuseTicks) return false;"),
+    ("combat: hours to ticks", "public const float TicksPerHour = 2500f;", "public const float TicksPerHour = 2000f;"),
+    ("combat: harm window may be zero", "public static int InstantHealRecentHarmTicks(float hours) { return HoursToTicks(hours, 1); }", "public static int InstantHealRecentHarmTicks(float hours) { return HoursToTicks(hours, 0); }"),
+    ("combat: danger forced without the drug", "return enabled && carriesInstantHealDrug ? true : original;", "return enabled ? true : original;"),
+    ("combat: defuse floor", "public const float DefuseManipulationFloor = 0.6f;", "public const float DefuseManipulationFloor = 0.5f;"),
+    ("combat: clumsy hand still defuses", "if (manipulation < DefuseManipulationFloor) d.Wick = true;\n            else { d.Spawn = true; d.Destroy = true; }", "if (manipulation < DefuseManipulationFloor) { d.Wick = true; d.Destroy = true; }\n            else { d.Spawn = true; d.Destroy = true; }"),
+    ("combat: defuse keeps the mine", "else { d.Spawn = true; d.Destroy = true; }", "else { d.Spawn = true; }"),
+    ("combat: defuse time zero allowed", "return Math.Max(1, RSW_Num.RoundToInt(baseTicks * timeScale));", "return RSW_Num.RoundToInt(baseTicks * timeScale);"),
+    ("num: rounds half away", "return (int)Math.Round(f);", "return (int)Math.Round(f, MidpointRounding.AwayFromZero);"),
+]
+
+if __name__ == "__main__":
+    only = sys.argv[1] if len(sys.argv) > 1 else None
+    sys.exit(run_mutations(KERNEL, "selftest_armoury_fuzz.py", MUTATIONS, only))

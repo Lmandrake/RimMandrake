@@ -25,40 +25,26 @@ public class DamageWorker_Ionize : DamageWorker_AddInjury
 {
     public override DamageResult Apply(DamageInfo dinfo, Thing thing)
     {
-        HediffDef hediffToAdd = null;
         ModExtension_HediffGiver modExtension = dinfo.Def.GetModExtension<ModExtension_HediffGiver>();
-        // MOD_OPTIONS_RETROFIT_1: leaving hediffToAdd null skips the hediff
-        // and the stun below; the ordinary injury still applies.
-        if (modExtension != null && RSW_ArmourySettings.ionDamageEnabled)
-        {
-            hediffToAdd = modExtension.hediffToAdd;
-        }
-
         DamageResult result = base.Apply(dinfo, thing);
-
-        if (thing is Pawn pawn && hediffToAdd != null &&
-            (pawn.RaceProps.IsMechanoid || ABF_Utils.IsArtificial(pawn)))
+        // MOD_OPTIONS_RETROFIT_1: the kernel's gate is off when the mechanic is off: no hediff and no stun;
+        // the ordinary injury still applies.
+        Pawn pawn = thing as Pawn;
+        StatDef resist = modExtension?.hediffResistanceStat;
+        RSW_IonKernel.Plan plan = RSW_IonKernel.Decide(RSW_ArmourySettings.ionDamageEnabled, modExtension != null, modExtension?.hediffToAdd != null,
+            pawn != null && (pawn.RaceProps.IsMechanoid || ABF_Utils.IsArtificial(pawn)), true,
+            modExtension != null ? modExtension.severityFixed : 0f, RSW_ArmourySettings.ionSeverity, resist != null, resist != null ? resist.defaultBaseValue : 0f,
+            () => pawn.GetStatValue(resist), modExtension != null && modExtension.severityVariesBySize, pawn != null ? pawn.BodySize : 1f,
+            modExtension == null || modExtension.hediffAppliedToWholeBody, result.parts != null ? result.parts.Count : 0);
+        if (plan.Applies)
         {
-            float severity = modExtension.severityFixed * RSW_ArmourySettings.ionSeverity;
-            if (modExtension.hediffResistanceStat != null)
+            HediffDef hediffToAdd = modExtension.hediffToAdd;
+            if (plan.Hediffs > 0)
             {
-                float statValue = pawn.GetStatValue(modExtension.hediffResistanceStat);
-                severity = modExtension.hediffResistanceStat.defaultBaseValue > 0f
-                    ? severity * statValue
-                    : severity * (1f - statValue);
-            }
-
-            if (severity > 0f)
-            {
-                if (modExtension.severityVariesBySize)
-                {
-                    severity /= pawn.BodySize;
-                }
-
                 if (modExtension.hediffAppliedToWholeBody)
                 {
                     Hediff hediff = HediffMaker.MakeHediff(hediffToAdd, pawn, null);
-                    hediff.Severity = severity;
+                    hediff.Severity = plan.Severity;
                     pawn.health.AddHediff(hediff, null, dinfo, null);
                 }
                 else
@@ -66,15 +52,16 @@ public class DamageWorker_Ionize : DamageWorker_AddInjury
                     foreach (BodyPartRecord part in result.parts)
                     {
                         Hediff hediff = HediffMaker.MakeHediff(hediffToAdd, pawn, part);
-                        hediff.Severity = severity;
+                        hediff.Severity = plan.Severity;
                         pawn.health.AddHediff(hediff, part, dinfo, null);
                     }
                 }
             }
-
-            result.stunned = true;
+            if (plan.Stun)
+            {
+                result.stunned = true;
+            }
         }
-
         return result;
     }
 }
@@ -90,40 +77,26 @@ public class DamageWorker_AllDroids : DamageWorker_AddInjury
 {
     public override DamageResult Apply(DamageInfo dinfo, Thing thing)
     {
-        HediffDef hediffToAdd = null;
         ModExtension_HediffGiver modExtension = dinfo.Def.GetModExtension<ModExtension_HediffGiver>();
-        // MOD_OPTIONS_RETROFIT_1: leaving hediffToAdd null skips the hediff
-        // and the stun below; the ordinary injury still applies.
-        if (modExtension != null && RSW_ArmourySettings.ionDamageEnabled)
-        {
-            hediffToAdd = modExtension.hediffToAdd;
-        }
-
         DamageResult result = base.Apply(dinfo, thing);
-
-        if (thing is Pawn pawn && hediffToAdd != null &&
-            (pawn.RaceProps.IsMechanoid || ABF_Utils.IsArtificial(pawn)))
+        // MOD_OPTIONS_RETROFIT_1: the kernel's gate is off when the mechanic is off: no hediff and no stun;
+        // the ordinary injury still applies.
+        Pawn pawn = thing as Pawn;
+        StatDef resist = modExtension?.hediffResistanceStat;
+        RSW_IonKernel.Plan plan = RSW_IonKernel.Decide(RSW_ArmourySettings.ionDamageEnabled, modExtension != null, modExtension?.hediffToAdd != null,
+            pawn != null && (pawn.RaceProps.IsMechanoid || ABF_Utils.IsArtificial(pawn)), false,
+            modExtension != null ? modExtension.severityFixed : 0f, RSW_ArmourySettings.ionSeverity, resist != null, resist != null ? resist.defaultBaseValue : 0f,
+            () => pawn.GetStatValue(resist), modExtension != null && modExtension.severityVariesBySize, pawn != null ? pawn.BodySize : 1f,
+            modExtension == null || modExtension.hediffAppliedToWholeBody, result.parts != null ? result.parts.Count : 0);
+        if (plan.Applies)
         {
-            float severity = modExtension.severityFixed * RSW_ArmourySettings.ionSeverity;
-            if (modExtension.hediffResistanceStat != null)
+            HediffDef hediffToAdd = modExtension.hediffToAdd;
+            if (plan.Hediffs > 0)
             {
-                float statValue = pawn.GetStatValue(modExtension.hediffResistanceStat);
-                severity = modExtension.hediffResistanceStat.defaultBaseValue > 0f
-                    ? severity * statValue
-                    : severity * (1f - statValue);
-            }
-
-            if (severity > 0f)
-            {
-                if (modExtension.severityVariesBySize)
-                {
-                    severity /= pawn.BodySize;
-                }
-
                 if (modExtension.hediffAppliedToWholeBody)
                 {
                     Hediff hediff = HediffMaker.MakeHediff(hediffToAdd, pawn, null);
-                    hediff.Severity = severity;
+                    hediff.Severity = plan.Severity;
                     pawn.health.AddHediff(hediff, null, dinfo, null);
                 }
                 else
@@ -131,13 +104,16 @@ public class DamageWorker_AllDroids : DamageWorker_AddInjury
                     foreach (BodyPartRecord part in result.parts)
                     {
                         Hediff hediff = HediffMaker.MakeHediff(hediffToAdd, pawn, part);
-                        hediff.Severity = severity;
+                        hediff.Severity = plan.Severity;
                         pawn.health.AddHediff(hediff, part, dinfo, null);
                     }
                 }
             }
+            if (plan.Stun)
+            {
+                result.stunned = true;
+            }
         }
-
         return result;
     }
 }

@@ -46,25 +46,13 @@ public static class Patch_JobGiver_AIFightEnemy
     {
         // MOD_OPTIONS_RETROFIT_1: mechanic off => null => the Postfix keeps
         // vanilla's job.
-        if (!RSW_ArmourySettings.jumppackEnabled)
-        {
-            return null;
-        }
-        if (!pawn.RaceProps.Humanlike || pawn.IsColonist)
-        {
-            return null;
-        }
         Thing enemyTarget = pawn.mindState.enemyTarget;
-        if (ReachabilityImmediate.CanReachImmediate(pawn, enemyTarget, PathEndMode.Touch))
-        {
-            return null;
-        }
-        if ((pawn.Position - enemyTarget.Position).LengthHorizontalSquared < RSW_ArmourySettings.ScaleSquaredDistance(16f))
-        {
-            return null;
-        }
-        Verb jumpVerb = JobGiver_AIMeleeJumppack.TryGetJumpVerb(pawn, enemyTarget);
-        if (jumpVerb == null)
+        Verb jumpVerb = null;
+        if (!RSW_CombatKernel.MeleeJump(RSW_ArmourySettings.jumppackEnabled, pawn.RaceProps.Humanlike, pawn.IsColonist,
+            () => true, () => true,
+            () => ReachabilityImmediate.CanReachImmediate(pawn, enemyTarget, PathEndMode.Touch),
+            () => (pawn.Position - enemyTarget.Position).LengthHorizontalSquared, RSW_CombatKernel.PatchMeleeJumpMinDistSq, RSW_ArmourySettings.jumppackDistanceFactor,
+            () => (jumpVerb = JobGiver_AIMeleeJumppack.TryGetJumpVerb(pawn, enemyTarget)) != null))
         {
             return null;
         }
@@ -75,17 +63,14 @@ public static class Patch_JobGiver_AIFightEnemy
 
     public static Job GetJunpPackRanged(Pawn pawn)
     {
-        if (!RSW_ArmourySettings.jumppackEnabled || !RSW_ArmourySettings.jumppackFlankRanged)
-        {
-            return null;
-        }
-        if (!pawn.RaceProps.Humanlike || pawn.IsColonist)
+        if (!RSW_ArmourySettings.jumppackEnabled || !RSW_ArmourySettings.jumppackFlankRanged || !pawn.RaceProps.Humanlike || pawn.IsColonist)
         {
             return null;
         }
         Thing enemyTarget = pawn.mindState.enemyTarget;
         List<CoverInfo> covers = CoverUtility.CalculateCoverGiverSet(enemyTarget, pawn.Position, pawn.Map);
-        if (covers.NullOrEmpty() || covers.All((CoverInfo t) => t.BlockChance < 0.3f))
+        List<float> blockChances = covers == null ? null : covers.Select((CoverInfo t) => t.BlockChance).ToList();
+        if (!RSW_CombatKernel.FlankWorthIt(RSW_ArmourySettings.jumppackEnabled, RSW_ArmourySettings.jumppackFlankRanged, pawn.RaceProps.Humanlike, pawn.IsColonist, blockChances))
         {
             return null;
         }

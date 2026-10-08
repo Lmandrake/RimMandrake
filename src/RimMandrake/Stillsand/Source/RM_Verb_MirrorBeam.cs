@@ -100,19 +100,13 @@ namespace RimMandrake.Stillsand
                     // STILLSAND_SUN_LANCE_1: a turret caster uses the same sun the sun tables use
                     // (pinned-sun elevation, shade, roof, gale), so strength scales with elevation.
                     float f = RM_SunPower.FactorAt(caster, rules.noSunWeathers, out string why);
-                    return f < rules.minSunGlow ? 0f : Mathf.Clamp01(f);
+                    return RM_SunKernel.BeamSunTurret(f, rules.minSunGlow);
                 }
-                if (caster.Position.Roofed(map))
-                {
-                    return 0f;
-                }
-                WeatherDef w = map.weatherManager?.curWeather;
-                if (w != null && rules.noSunWeathers != null && rules.noSunWeathers.Contains(w.defName))
-                {
-                    return 0f;
-                }
-                float glow = GenCelestial.CurCelestialSunGlow(map);
-                return glow < rules.minSunGlow ? 0f : Mathf.Clamp01(glow);
+                bool roofed = caster.Position.Roofed(map);
+                WeatherDef w = roofed ? null : map.weatherManager?.curWeather;
+                bool blotted = w != null && rules.noSunWeathers != null && rules.noSunWeathers.Contains(w.defName);
+                float glow = roofed || blotted ? 0f : GenCelestial.CurCelestialSunGlow(map);
+                return RM_SunKernel.BeamSunPawn(roofed, blotted, glow, rules.minSunGlow);
             }
         }
 
@@ -353,9 +347,7 @@ namespace RimMandrake.Stillsand
             // The race is the "weapon": an animal's natural verb has no EquipmentSource.
             ThingDef weapon = EquipmentSource?.def ?? caster.def;
             BattleLogEntry_RangedImpact log = new BattleLogEntry_RangedImpact(caster, thing, currentTarget.Thing, weapon, null, null);
-            float amount = verbProps.beamTotalDamage > 0f
-                ? verbProps.beamTotalDamage / Mathf.Max(1, pathCells.Count) * damageFactor
-                : verbProps.beamDamageDef.defaultDamage * damageFactor;
+            float amount = RM_SunKernel.BeamDamage(verbProps.beamTotalDamage, pathCells.Count, verbProps.beamDamageDef.defaultDamage, damageFactor);
             DamageInfo dinfo = new DamageInfo(verbProps.beamDamageDef, amount, verbProps.beamDamageDef.defaultArmorPenetration,
                 angle, caster, null, weapon, DamageInfo.SourceCategory.ThingOrUnknown, currentTarget.Thing);
             thing.TakeDamage(dinfo).AssociateWithLog(log);

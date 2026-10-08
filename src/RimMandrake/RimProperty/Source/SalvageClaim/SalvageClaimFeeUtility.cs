@@ -45,12 +45,9 @@ namespace RimMandrake.SalvageClaim
 
         public static int ComputeFeeSilver(Thing thing, ClaimResolution? priorClaim)
         {
-            float recognizability = Mathf.Clamp01(RecognizabilityUtility.Score(thing));
-            float claimStrength = Mathf.Clamp01(priorClaim?.EffectiveStrength ?? 0f);
-            float strengthFactor = Mathf.Lerp(UnclaimedStrengthFloor, 1f, claimStrength);
-            float riskFactor = recognizability * strengthFactor; // 0..1
-            float fee = Mathf.Lerp(MinFeeSilver, MaxFeeSilver, riskFactor) * PropertySettings.salvageClaimFeeMultiplier;
-            return Mathf.Max(1, Mathf.RoundToInt(fee));
+            return RM_PropertyKernel.SalvageFee(RecognizabilityUtility.Score(thing), priorClaim.HasValue,
+                priorClaim?.EffectiveStrength ?? 0f, PropertySettings.salvageClaimFeeMultiplier,
+                MinFeeSilver, MaxFeeSilver, UnclaimedStrengthFloor);
         }
 
         // v1 simplification, per the item spec's "keep it simple" steer: the
@@ -69,6 +66,15 @@ namespace RimMandrake.SalvageClaim
             return container.TotalStackCountOfDef(ThingDefOf.Silver);
         }
 
+        // The fee is checked when the menu is built and again when it is clicked: the pawn may have dropped silver in between,
+        // and the claim / purchase / bribe is granted only against the whole fee actually taken.
+        public static bool TryPaySilver(Pawn pawn, int amount)
+        {
+            if (!RM_PropertyKernel.CanPay(CountSilverInInventory(pawn), amount)) return false;
+            RemoveSilverFromInventory(pawn, amount);
+            return true;
+        }
+
         public static void RemoveSilverFromInventory(Pawn pawn, int amount)
         {
             ThingOwner container = pawn?.inventory?.innerContainer;
@@ -80,7 +86,7 @@ namespace RimMandrake.SalvageClaim
             foreach (Thing stack in silverStacks)
             {
                 if (remaining <= 0) break;
-                int takeCount = Mathf.Min(remaining, stack.stackCount);
+                int takeCount = RM_PropertyKernel.TakeFromStack(remaining, stack.stackCount);
                 Thing taken = container.Take(stack, takeCount);
                 taken.Destroy();
                 remaining -= takeCount;

@@ -38,6 +38,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_PropertyKernel.cs" />
     <Compile Include="ClaimantKind.cs" />
     <Compile Include="ClaimantRef.cs" />
     <Compile Include="ClaimBasis.cs" />

@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SolarMirrors offline fuzz, Approach B. Plain net8.0, zero RimWorld/Unity references: ../Kernel/*.cs are the PRODUCTION
+    files the mod compiles, pulled in directly. A `using Verse;` landing in one of them breaks this build - that is the guard rail.
+    Run: python3 src/RimMandrake/Utils/selftest_solarmirrors_fuzz.py [fuzz knobs]
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeSolarMirrors.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.SolarMirrors.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Kernel\RM_MirrorKernel.cs" />
+    <Compile Include="SolarMirrorsFuzzKit.cs" />
+    <Compile Include="SolarMirrorsFuzz.cs" />
+  </ItemGroup>
+
+</Project>

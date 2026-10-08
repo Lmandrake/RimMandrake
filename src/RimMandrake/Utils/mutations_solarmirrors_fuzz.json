@@ -1,0 +1,140 @@
+[
+ {
+  "name": "solar: efficiency drops the half",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "(1f + RM_Vec.Dot(inDir, outDir)) * 0.5f));",
+  "new": "(1f + RM_Vec.Dot(inDir, outDir))));"
+ },
+ {
+  "name": "solar: back face passes light",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "return Math.Max(0f, RM_Vec.Dot(normal, inDir)); }",
+  "new": "return Math.Abs(RM_Vec.Dot(normal, inDir)); }"
+ },
+ {
+  "name": "solar: ground hit range ignored",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (dx * dx + dz * dz > maxRange * maxRange)",
+  "new": "if (dx * dx + dz * dz > maxRange * maxRange * 4f)"
+ },
+ {
+  "name": "solar: ground hit accepts a skimming ray",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (dir.Y > -0.01f)",
+  "new": "if (dir.Y > 0.5f)"
+ },
+ {
+  "name": "solar: beam walk tests the target cell too",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "            while (n > 1)\n            {\n                if (!first && visitor.Blocked(x, z))",
+  "new": "            while (n > 0)\n            {\n                if (!first && visitor.Blocked(x, z))"
+ },
+ {
+  "name": "solar: beam walk tests the origin cell",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (!first && visitor.Blocked(x, z))",
+  "new": "if (visitor.Blocked(x, z))"
+ },
+ {
+  "name": "solar: hysteresis inverted",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "return wasLit ? light >= offAt : light >= onAt;",
+  "new": "return wasLit ? light >= onAt : light >= offAt;"
+ },
+ {
+  "name": "solar: relay direction reversed",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "relayDir[oi] = (face - new RM_Vec(mirrors[oi].faceX, FaceHeight, mirrors[oi].faceZ)).Normalized;",
+  "new": "relayDir[oi] = (new RM_Vec(mirrors[oi].faceX, FaceHeight, mirrors[oi].faceZ) - face).Normalized;"
+ },
+ {
+  "name": "solar: relay ignores the useful floor",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (!fired[mi] && relayIn[mi] > MinUseful)",
+  "new": "if (!fired[mi] && relayIn[mi] > 0f)"
+ },
+ {
+  "name": "solar: relay share not divided by footprint",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "float share = output / Math.Max(1, mirrors[oi].footprintCells);",
+  "new": "float share = output;"
+ },
+ {
+  "name": "solar: depth cap off by one",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "int depthCap = DepthCap(maxChain);",
+  "new": "int depthCap = DepthCap(maxChain) + 1;"
+ },
+ {
+  "name": "solar: depth cap unclamped high",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "public static int DepthCap(int setting) { return setting < 1 ? 1 : setting > 6 ? 6 : setting; }",
+  "new": "public static int DepthCap(int setting) { return setting < 1 ? 1 : setting > 60 ? 60 : setting; }"
+ },
+ {
+  "name": "solar: even spot centred wrong",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "lo = -(size - 1) / 2;",
+  "new": "lo = -size / 2;"
+ },
+ {
+  "name": "solar: daylight starts too early",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "public static float Daylight(float celestialGlow) { return Clamp((celestialGlow - 0.1f) / 0.5f, 0f, 1f); }",
+  "new": "public static float Daylight(float celestialGlow) { return Clamp((celestialGlow - 0.0f) / 0.5f, 0f, 1f); }"
+ },
+ {
+  "name": "solar: blinding threshold lowered",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (l < 0.5f) return 0f;",
+  "new": "if (l < 0.1f) return 0f;"
+ },
+ {
+  "name": "solar: blinding gain uncapped",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "Math.Min(1f, l) * interval / 60000f",
+  "new": "l * interval / 60000f"
+ },
+ {
+  "name": "solar: reflectivity uncapped",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "return Clamp(r * multiplier, 0f, 1f);",
+  "new": "return Clamp(r * multiplier, 0f, 9f);"
+ },
+ {
+  "name": "solar: non-tracking mirror commits",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "commit = m.tracking;",
+  "new": "commit = true;"
+ },
+ {
+  "name": "solar: stale light survives",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "                for (int k = 0; k < LitCells.Count; k++)\n                {\n                    Light[LitCells[k]] = 0f;\n                }\n                LitCells.Clear();\n                Beams.Clear();",
+  "new": "                LitCells.Clear();\n                Beams.Clear();"
+ },
+ {
+  "name": "solar: own footprint blocks its own beam",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (x >= own.minX && x <= own.maxX && z >= own.minZ && z <= own.maxZ)\n                {\n                    return false;\n                }",
+  "new": "if (false)\n                {\n                    return false;\n                }"
+ },
+ {
+  "name": "solar: edge target not rejected",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (cx < 0 || cz < 0 || cx >= w.Width || cz >= w.Height)\n                {\n                    results[mi].blocker = w.BlockerEdge;\n                    return;\n                }",
+  "new": "if (cx >= w.Width || cz >= w.Height)\n                {\n                    results[mi].blocker = w.BlockerEdge;\n                    return;\n                }"
+ },
+ {
+  "name": "solar: change hash ignores the light value",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "hash = unchecked(hash * 31 + i * 7 + Quantise(Light[i]));",
+  "new": "hash = unchecked(hash * 31 + i * 7);"
+ },
+ {
+  "name": "solar: moving sun sets east",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "float ax = -(float)Math.Sin(h);\n            float az = eq * ch;",
+  "new": "float ax = (float)Math.Sin(h);\n            float az = eq * ch;"
+ }
+]

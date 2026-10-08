@@ -62,6 +62,7 @@
     <Compile Include="RM_MapComponent_HazardousTerrainImmersion.cs" />
     <Compile Include="RM_Sarcophagus.cs" />
     <Compile Include="RM_CaskBay.cs" />
+    <Compile Include="Kernel\RM_WarcasketKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

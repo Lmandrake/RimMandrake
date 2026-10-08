@@ -10,7 +10,7 @@ namespace JumppackForMeleeAI;
 
 internal class JobGiver_AIMeleeJumppack : ThinkNode_JobGiver
 {
-    private float minTargetDistance = 25f;
+    private float minTargetDistance = RSW_CombatKernel.MeleeJumpMinDistSq;
 
     public override ThinkNode DeepCopy(bool resolve = true)
     {
@@ -21,40 +21,24 @@ internal class JobGiver_AIMeleeJumppack : ThinkNode_JobGiver
 
     protected override Job TryGiveJob(Pawn pawn)
     {
-        if (!RSW_ArmourySettings.jumppackEnabled)
-        {
-            return null;
-        }
-        if (!pawn.RaceProps.Humanlike || pawn.IsColonist)
-        {
-            return null;
-        }
         Thing enemyTarget = pawn.mindState.enemyTarget;
-        if (enemyTarget == null)
+        Verb jumpVerb = null;
+        if (!RSW_CombatKernel.MeleeJump(RSW_ArmourySettings.jumppackEnabled, pawn.RaceProps.Humanlike, pawn.IsColonist,
+            () => { if (enemyTarget == null) { DebugPoint(pawn, "[jumppack]no target"); return false; } return true; },
+            () =>
+            {
+                Verb attackVerb = pawn.TryGetAttackVerb(enemyTarget, allowManualCastWeapons: false);
+                if (attackVerb == null || !attackVerb.verbProps.IsMeleeAttack) { DebugPoint(pawn, "[jumppack]ranged"); return false; }
+                return true;
+            },
+            () =>
+            {
+                if (ReachabilityImmediate.CanReachImmediate(pawn, enemyTarget, PathEndMode.Touch)) { DebugPoint(pawn, "[jumppack]reached, not required"); return true; }
+                return false;
+            },
+            () => (pawn.Position - enemyTarget.Position).LengthHorizontalSquared, minTargetDistance, RSW_ArmourySettings.jumppackDistanceFactor,
+            () => (jumpVerb = TryGetJumpVerb(pawn, enemyTarget)) != null))
         {
-            DebugPoint(pawn, "[jumppack]no target");
-            return null;
-        }
-        Verb attackVerb = pawn.TryGetAttackVerb(enemyTarget, allowManualCastWeapons: false);
-        if (attackVerb == null || !attackVerb.verbProps.IsMeleeAttack)
-        {
-            DebugPoint(pawn, "[jumppack]ranged");
-            return null;
-        }
-        if (ReachabilityImmediate.CanReachImmediate(pawn, enemyTarget, PathEndMode.Touch))
-        {
-            DebugPoint(pawn, "[jumppack]reached, not required");
-            return null;
-        }
-        if ((pawn.Position - enemyTarget.Position).LengthHorizontalSquared < RSW_ArmourySettings.ScaleSquaredDistance(minTargetDistance))
-        {
-            DebugPoint(pawn, "[jumppack]too close (distance:" + (pawn.Position - enemyTarget.Position).LengthHorizontalSquared + ")");
-            return null;
-        }
-        Verb jumpVerb = TryGetJumpVerb(pawn, enemyTarget);
-        if (jumpVerb == null)
-        {
-            DebugPoint(pawn, "[jumppack]no jump verb");
             return null;
         }
         DebugPoint(pawn, "[jumppack]distance: " + (pawn.Position - enemyTarget.Position).LengthHorizontalSquared);

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using RimWorld;
 using Verse;
@@ -15,7 +14,7 @@ namespace RimMandrake.Oracle
     /// </summary>
     public class OracleGameComponent : GameComponent
     {
-        private readonly ConcurrentQueue<Action> pendingDeliveries = new ConcurrentQueue<Action>();
+        private readonly OracleDeliveryQueue pendingDeliveries = new OracleDeliveryQueue();
         private int godsCallsToday = 0;
         private int lastBudgetResetDay = -1;
 
@@ -32,17 +31,7 @@ namespace RimMandrake.Oracle
 
         public override void GameComponentTick()
         {
-            while (pendingDeliveries.TryDequeue(out Action action))
-            {
-                try
-                {
-                    action();
-                }
-                catch (Exception e)
-                {
-                    Log.Error("RimMandrake.Oracle: delivery action threw -- " + e);
-                }
-            }
+            pendingDeliveries.Drain(e => Log.Error("RimMandrake.Oracle: delivery action threw -- " + e));
         }
 
         /// <summary>
@@ -55,85 +44,55 @@ namespace RimMandrake.Oracle
             OracleSettings settings = OracleMod.Settings;
 
             int today = (int)(GenTicks.TicksGame / GenDate.TicksPerDay);
-            if (today != lastBudgetResetDay)
+            // No credential gate any more: the Claude Code CLI authenticates through the machine's own login, so there is
+            // nothing here to check that would not amount to guessing. A CLI that is missing, logged out or broken fails
+            // inside the call below and lands in the same fallback as every other failure.
+            if (OracleKernel.Admit(settings.enabled, today, settings.godsBudgetPerDay, ref lastBudgetResetDay, ref godsCallsToday, out string refusal)
+                != OracleKernel.Admission.Call)
             {
-                lastBudgetResetDay = today;
-                godsCallsToday = 0;
-            }
-
-            if (!settings.enabled)
-            {
-                DeliverFallback(letterLabel, fallbackText, "kill switch off");
+                Deliver(letterLabel, OracleKernel.Refused(refusal, fallbackText));
                 return;
             }
-            // No credential gate any more: the Claude Code CLI authenticates
-            // through the machine's own login, so there is nothing here to check
-            // that would not amount to guessing. A CLI that is missing, logged
-            // out or broken fails inside the call below and lands in the same
-            // fallback as every other failure.
-            if (godsCallsToday >= settings.godsBudgetPerDay)
-            {
-                DeliverFallback(letterLabel, fallbackText, "budget exhausted for today (" + godsCallsToday + "/" + settings.godsBudgetPerDay + ")");
-                return;
-            }
-            godsCallsToday++;
 
-            string system = OracleRegisterBlocks.Law + "\n\n" + OracleRegisterBlocks.Ohm;
+            string system = OracleKernel.SystemPrompt(OracleRegisterBlocks.Law, OracleRegisterBlocks.Ohm);
 
             Task.Run(async () =>
             {
+                string content = null;
+                Exception failure = null;
                 try
                 {
-                    string content = await OracleClient.RequestCompletion(
+                    content = await OracleClient.RequestCompletion(
                         system, contextSummary,
                         settings.timeoutSeconds, settings.claudeCliPath).ConfigureAwait(false);
-
-                    if (OracleValidator.TryValidateOhm(content, out string rejectReason))
-                    {
-                        pendingDeliveries.Enqueue(() => Deliver(letterLabel, content));
-                    }
-                    else
-                    {
-                        pendingDeliveries.Enqueue(() => DeliverFallback(letterLabel, fallbackText, "validator rejected: " + rejectReason));
-                    }
                 }
                 catch (Exception e)
                 {
-                    pendingDeliveries.Enqueue(() => DeliverFallback(letterLabel, fallbackText, "call failed: " + e.Message));
+                    failure = e;
                 }
+                OracleKernel.Outcome outcome = OracleKernel.Resolve(content, failure, fallbackText);
+                pendingDeliveries.Enqueue(() => Deliver(letterLabel, outcome));
             });
         }
 
-        private static void Deliver(string label, string text)
-        {
-            Find.LetterStack.ReceiveLetter(label, text, LetterDefOf.NeutralEvent);
-        }
-
         /// <summary>
-        /// Ships when the LLM path fails, per spec law #2. ORACLE_FALLBACK_UNVALIDATED_1
-        /// (2026-09-17): fallbackText is a CALLER argument and this used to hand it to
-        /// ReceiveLetter verbatim -- the one path guaranteed to run whenever validation
-        /// itself rejects a live reply was the one path never validated at all, and the
-        /// only call site today ships dev scaffolding with a "[FALLBACK]" marker. Hold
-        /// the fallback to the SAME bar as a live response; if it fails too, ship the
-        /// hardcoded safe text below rather than an exception, a blank letter, or a
-        /// silent no-op.
+        /// Ships one letter, live or fallback, per spec law #2. ORACLE_FALLBACK_UNVALIDATED_1 (2026-09-17): the fallback
+        /// is a CALLER argument and used to reach ReceiveLetter verbatim -- the one path guaranteed to run whenever
+        /// validation rejects a live reply was the one path never validated. OracleKernel holds the fallback to the SAME
+        /// bar as a live response and ships the hardcoded safe text if even that fails.
         /// </summary>
-        private const string SafeFallbackText =
-            "The old machines hum on, patient, waiting for hands that have not yet come.";
-
-        private static void DeliverFallback(string label, string fallbackText, string reason)
+        private static void Deliver(string label, OracleKernel.Outcome outcome)
         {
-            string toDeliver = fallbackText;
-            if (!OracleValidator.TryValidateOhm(fallbackText, out string fallbackRejectReason))
+            if (outcome.Kind == OracleKernel.DeliveryKind.SafeDefault)
             {
                 Log.Message("RimMandrake.Oracle: fallback text itself rejected for \"" + label +
-                    "\" -- " + fallbackRejectReason + " -- shipping the safe default instead");
-                toDeliver = SafeFallbackText;
+                    "\" -- shipping the safe default instead (" + outcome.Reason + ")");
             }
-
-            Log.Message("RimMandrake.Oracle: falling back for \"" + label + "\" -- " + reason);
-            Find.LetterStack.ReceiveLetter(label, toDeliver, LetterDefOf.NeutralEvent);
+            else if (outcome.Kind == OracleKernel.DeliveryKind.Fallback)
+            {
+                Log.Message("RimMandrake.Oracle: falling back for \"" + label + "\" -- " + outcome.Reason);
+            }
+            Find.LetterStack.ReceiveLetter(label, outcome.Text, LetterDefOf.NeutralEvent);
         }
     }
 }

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SWBestiary offline fuzz, Approach B (same shape as TheSump/Armoury). Plain net8.0, zero RimWorld/Unity references:
+    the three Kernel files (livestock, beast mechanics, ikee) are the PRODUCTION files the mod assemblies compile, pulled
+    in directly. A `using Verse;` landing in one of them breaks this build - that is the guard rail working.
+    Run (builds on Windows via winbuild staging, then runs the exe):
+      python3 src/RimMandrake/Utils/selftest_swbestiary_fuzz.py [fuzz knobs]
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimStarWarsSWBestiary.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.StarWars.SWBestiary.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Livestock\Kernel\RSW_LivestockKernel.cs" />
+    <Compile Include="..\BeastMechanics\Kernel\RSW_BeastKernel.cs" />
+    <Compile Include="..\JawaIkee\Kernel\RSW_IkeeKernel.cs" />
+    <Compile Include="BestiaryFuzz.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

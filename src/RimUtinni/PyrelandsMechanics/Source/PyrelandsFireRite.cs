@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimMandrake.Pyrelands;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -45,8 +46,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         /// </summary>
         internal static bool TrySend(Map map, IntVec3 riteOrigin)
         {
-            if (!PyrelandsMechanicsSettings.fireRiteEnabled
-                || Rand.Value >= PyrelandsMechanicsSettings.fireRiteFraction)
+            if (!RM_BurnKernel.RiteRoll(PyrelandsMechanicsSettings.fireRiteEnabled, Rand.Value, PyrelandsMechanicsSettings.fireRiteFraction))
             {
                 return false;
             }
@@ -78,9 +78,7 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
                 GenSpawn.Spawn(party[i], cell, map);
             }
 
-            int harvestTicks = Mathf.Max(
-                1,
-                Mathf.RoundToInt(PyrelandsMechanicsSettings.fireRiteHarvestHours * 2500f));
+            int harvestTicks = RM_BurnKernel.RiteHarvestTicks(PyrelandsMechanicsSettings.fireRiteHarvestHours, 2500f);
 
             LordMaker.MakeNewLord(
                 tribes,
@@ -109,12 +107,8 @@ namespace RimMandrake.Utinni.PyrelandsMechanics
         {
             List<Pawn> party = new List<Pawn>();
 
-            int min = PyrelandsMechanicsSettings.fireRiteGroupMin;
-            int max = PyrelandsMechanicsSettings.fireRiteGroupMax;
-            if (max < min)
-            {
-                max = min;
-            }
+            RM_BurnKernel.RitePartyRange(PyrelandsMechanicsSettings.fireRiteGroupMin, PyrelandsMechanicsSettings.fireRiteGroupMax,
+                out int min, out int max);
             int count = Rand.RangeInclusive(min, max);
 
             for (int i = 0; i < count; i++)
