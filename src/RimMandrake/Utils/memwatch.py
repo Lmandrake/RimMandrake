@@ -24,6 +24,11 @@ What it writes (outside git — a timer must not dirty a seat clone, see DEVIATI
   stdout                one line per event -> the systemd journal (journalctl --user -u rm-memwatch)
   Windows toast         for oom_kill / oom_group_kill increments and shmem threshold
                         crossings under claude-seats.slice only; best effort, never fatal
+  Windows host (phase 3, GPT objection #3): each sample line may carry "host" = committed
+  bytes, commit limit, available MB, total/free physical, RimWorldWin64 working set / private /
+  peak WS (null when not running), vmmemWSL working set; failure = {"unmeasured": reason}.
+  Cadence: every ~5 min, every run (1 min) while RimWorldWin64 was running at the last sample.
+  state.json["host"] holds peaks; `memwatch.py host` prints the summary. Never toasts.
 $STATE defaults to ~/.local/state/rm-memwatch (XDG_STATE_HOME honoured).
 
 Rules chosen where the design is silent (simplest thing):
@@ -242,6 +247,94 @@ def toast(title: str, body: str) -> bool:
         return False
 
 
+HOST_PS = (
+    "$ErrorActionPreference='Stop';"
+    "$os=Get-CimInstance Win32_OperatingSystem;"
+    "$c=@{};(Get-Counter '\\Memory\\Committed Bytes','\\Memory\\Commit Limit','\\Memory\\Available MBytes').CounterSamples|"
+    "ForEach-Object{$c[$_.Path.Split('\\')[-1]]=$_.CookedValue};"
+    "$rw=Get-Process RimWorldWin64 -ErrorAction SilentlyContinue|Select-Object -First 1;"
+    "$vm=Get-Process vmmem* -ErrorAction SilentlyContinue|Sort-Object WorkingSet64 -Descending|Select-Object -First 1;"
+    "[pscustomobject]@{committed=$c['committed bytes'];limit=$c['commit limit'];avail_mb=$c['available mbytes'];"
+    "total_kb=$os.TotalVisibleMemorySize;free_kb=$os.FreePhysicalMemory;"
+    "rw_ws=$(if($rw){$rw.WorkingSet64});rw_private=$(if($rw){$rw.PrivateMemorySize64});rw_peak_ws=$(if($rw){$rw.PeakWorkingSet64});"
+    "vmmem_ws=$(if($vm){$vm.WorkingSet64})}|ConvertTo-Json -Compress"
+)
+HOST_FIELDS = ("committed", "limit", "avail_mb", "total_kb", "free_kb", "rw_ws", "rw_private", "rw_peak_ws", "vmmem_ws")
+HOST_IDLE_SECS = 290   # RimWorld not running: one Windows sample per ~5 min
+HOST_BUSY_SECS = 55    # RimWorld running: every timer run (1 min), a cold load moves fast
+
+
+def run_powershell(ps: str, timeout: int = 40) -> str | None:
+    """stdout of a powershell command, CRLF stripped; None on any failure."""
+    try:
+        r = subprocess.run([POWERSHELL, "-NoProfile", "-NonInteractive", "-Command", ps],
+                           capture_output=True, timeout=timeout)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if r.returncode != 0:
+        return None
+    return r.stdout.decode("utf-8", "replace").replace("\r", "").strip()
+
+
+def host_sample(runner=run_powershell) -> dict:
+    """One Windows host reading. Failure -> {"unmeasured": reason}, never zeros."""
+    out = runner(HOST_PS)
+    if not out:
+        return {"unmeasured": "powershell failed or timed out"}
+    try:
+        d = json.loads(out.splitlines()[-1])
+        if not isinstance(d, dict) or not all(isinstance(d.get(k), (int, float)) for k in ("committed", "limit", "avail_mb")):
+            return {"unmeasured": "counters missing in powershell output"}
+    except ValueError:
+        return {"unmeasured": "powershell output not JSON"}
+    return {k: d.get(k) for k in HOST_FIELDS}
+
+
+def host_due(hstate: dict, now: float) -> bool:
+    gap = HOST_BUSY_SECS if hstate.get("rw_running") else HOST_IDLE_SECS
+    return now - hstate.get("last_epoch", 0) >= gap
+
+
+def host_update(hstate: dict, h: dict, now: float) -> dict:
+    """Fold a sample into state: last attempt time, running flag, peaks (only from real readings)."""
+    hs = dict(hstate)
+    hs["last_epoch"] = now
+    if "unmeasured" in h:
+        return hs
+    hs["rw_running"] = h.get("rw_ws") is not None
+    hs["latest"] = h
+    for key, src in (("peak_committed", "committed"), ("peak_rw_ws", "rw_peak_ws"),
+                     ("peak_rw_private", "rw_private"), ("peak_vmmem_ws", "vmmem_ws")):
+        v = h.get(src)
+        if v is not None and v > hs.get(key, 0):
+            hs[key] = v
+    if h.get("rw_ws") is not None and h["rw_ws"] > hs.get("peak_rw_ws", 0):
+        hs["peak_rw_ws"] = h["rw_ws"]
+    if h.get("limit") and h.get("committed") is not None:
+        room = h["limit"] - h["committed"]
+        if "min_headroom" not in hs or room < hs["min_headroom"]:
+            hs["min_headroom"] = room
+    return hs
+
+
+def host_summary(state: dict) -> str:
+    hs = state.get("host") or {}
+    h = hs.get("latest")
+    if not h:
+        return "no Windows host sample yet"
+    g = lambda v: "n/a (not running)" if v is None else f"{v / GB:.2f} GB"
+    room = h["limit"] - h["committed"]
+    lines = [
+        f"latest sample epoch {int(hs.get('last_epoch', 0))}  (RimWorld {'RUNNING' if hs.get('rw_running') else 'not running'})",
+        f"commit      {g(h['committed'])} of {g(h['limit'])}   headroom {room / GB:.2f} GB   (lowest seen {hs.get('min_headroom', room) / GB:.2f} GB)",
+        f"physical    total {h['total_kb'] * 1024 / GB:.2f} GB  free {h['free_kb'] * 1024 / GB:.2f} GB  available {h['avail_mb'] / 1024:.2f} GB",
+        f"RimWorld    ws {g(h.get('rw_ws'))}  private {g(h.get('rw_private'))}  peak ws {g(h.get('rw_peak_ws'))}",
+        f"vmmemWSL    ws {g(h.get('vmmem_ws'))}",
+        f"PEAKS       committed {g(hs.get('peak_committed'))}   RimWorld ws {g(hs.get('peak_rw_ws'))}   RimWorld private {g(hs.get('peak_rw_private'))}   vmmemWSL {g(hs.get('peak_vmmem_ws'))}",
+    ]
+    return "\n".join(lines)
+
+
 def seat_of(name: str) -> str:
     for part in name.split("/"):
         if part.startswith("claude-seat-"):
@@ -249,7 +342,7 @@ def seat_of(name: str) -> str:
     return name.split("/")[0]
 
 
-def check(roots, tmpfs, sdir: Path, shmem_gb: float, do_toast: bool, now: float | None = None) -> list[dict]:
+def check(roots, tmpfs, sdir: Path, shmem_gb: float, do_toast: bool, now: float | None = None, host_fn=None) -> list[dict]:
     now = time.time() if now is None else now
     ts = time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime(now))
     sdir.mkdir(parents=True, exist_ok=True)
@@ -290,8 +383,13 @@ def check(roots, tmpfs, sdir: Path, shmem_gb: float, do_toast: bool, now: float 
             if e["kind"] in ("shmem", "oom_kill", "oom_group_kill"):
                 e["top_tmpfs"] = top
     # persist
+    hstate = prev.get("host", {})
+    hsample = None
+    if host_fn is not None and host_due(hstate, now):
+        hsample = host_sample(host_fn)
+        hstate = host_update(hstate, hsample, now)
     new_state = {"ts": ts, "cgroups": {n: {"events": r["events"]} for n, (r, _) in cur.items()},
-                 "shmem_over": sorted(over_now)}
+                 "shmem_over": sorted(over_now), "host": hstate}
     tmp = state_p.with_suffix(".tmp")
     tmp.write_text(json.dumps(new_state))
     tmp.replace(state_p)
@@ -302,7 +400,10 @@ def check(roots, tmpfs, sdir: Path, shmem_gb: float, do_toast: bool, now: float 
     except OSError:
         pass
     with samples.open("a") as f:
-        f.write(json.dumps({"ts": ts, "cgroups": {n: r for n, (r, _) in cur.items()}}) + "\n")
+        rec = {"ts": ts, "cgroups": {n: r for n, (r, _) in cur.items()}}
+        if hsample is not None:
+            rec["host"] = hsample
+        f.write(json.dumps(rec) + "\n")
     if events:
         with (sdir / "events.jsonl").open("a") as f:
             for e in events:
@@ -326,16 +427,29 @@ def check(roots, tmpfs, sdir: Path, shmem_gb: float, do_toast: bool, now: float 
 
 
 def main(argv=None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
+    if argv and argv[0] == "host":
+        hp = argparse.ArgumentParser(prog="memwatch.py host")
+        hp.add_argument("--state-dir", type=Path, default=None)
+        ha = hp.parse_args(argv[1:])
+        try:
+            st = json.loads((ha.state_dir or state_dir()).joinpath("state.json").read_text())
+        except (OSError, ValueError):
+            st = {}
+        print(host_summary(st))
+        return 0
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--root", action="append", help="cgroup root to watch (repeatable); default: the two slices")
     ap.add_argument("--tmpfs", action="append", help="tmpfs mount to scan on alert (repeatable)")
     ap.add_argument("--state-dir", type=Path, default=None)
     ap.add_argument("--shmem-gb", type=float, default=2.0)
     ap.add_argument("--no-toast", action="store_true")
+    ap.add_argument("--no-host", action="store_true", help="skip the Windows host sample")
     ap.add_argument("--print", action="store_true", help="also print the current reading of every cgroup")
     a = ap.parse_args(argv)
     roots = a.root or DEFAULT_ROOTS
-    check(roots, a.tmpfs or DEFAULT_TMPFS, a.state_dir or state_dir(), a.shmem_gb, not a.no_toast)
+    check(roots, a.tmpfs or DEFAULT_TMPFS, a.state_dir or state_dir(), a.shmem_gb, not a.no_toast,
+          host_fn=None if a.no_host else run_powershell)
     if a.print:
         for name, (r, _) in watched(roots).items():
             cur = r["current"] / GB if isinstance(r["current"], int) else 0
