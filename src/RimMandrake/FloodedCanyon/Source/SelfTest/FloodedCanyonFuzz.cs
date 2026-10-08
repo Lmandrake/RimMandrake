@@ -267,6 +267,13 @@ namespace RimMandrake.FloodedCanyon.SelfTest
             Check(!ledger.Active.Any(excavated.Contains), "an excavated cell was flooded as terrain");
             for (int i = 0; i < ledger.RaisedCells.Count; i++) Check(accepts.Contains(ledger.RaisedCells[i]) && ledger.RaisedPrior[i] == fill[ledger.RaisedCells[i]], "a raised cell lost its prior fill");
             RaisedCells += ledger.RaisedCells.Count;
+            // FLOOD_LEDGER_LOAD_LOSS_1: save -> load keeps all three lists; an old save missing a label restores empty
+            var reloaded = new RM_FloodKernel.Ledger();
+            reloaded.Active.Add(-1); reloaded.RaisedCells.Add(-1); reloaded.RaisedPrior.Add(-1);
+            reloaded.Restore(new List<long>(ledger.Active), new List<long>(ledger.RaisedCells), new List<int>(ledger.RaisedPrior));
+            Check(reloaded.Active.SequenceEqual(ledger.Active) && reloaded.RaisedCells.SequenceEqual(ledger.RaisedCells) && reloaded.RaisedPrior.SequenceEqual(ledger.RaisedPrior), "a reloaded ledger lost or changed its lists");
+            reloaded.Restore(null, null, null);
+            Check(reloaded.Active.Count == 0 && reloaded.RaisedCells.Count == 0 && reloaded.RaisedPrior.Count == 0, "a null restore left stale ledger entries");
             var wetted = ledger.Wetted();
             Check(wetted.Count == ledger.Active.Count + ledger.RaisedCells.Count, "wetted is not active + raised");
             var terrain = new Dictionary<long, string>(); foreach (long k in ledger.Active) terrain[k] = r.Next(6) == 0 ? "other" : "flood";

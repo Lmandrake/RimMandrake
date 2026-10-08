@@ -242,6 +242,15 @@ namespace RimMandrake.FloodedCanyon
                 }
             }
 
+            // Load: replace the ledger with the scribed lists (null = absent in an old save = empty).
+            public void Restore(IList<long> active, IList<long> raisedCells, IList<int> raisedPrior)
+            {
+                Active.Clear(); RaisedCells.Clear(); RaisedPrior.Clear();
+                if (active != null) Active.AddRange(active);
+                if (raisedCells != null) RaisedCells.AddRange(raisedCells);
+                if (raisedPrior != null) RaisedPrior.AddRange(raisedPrior);
+            }
+
             public List<long> Wetted() { var w = new List<long>(Active); w.AddRange(RaisedCells); return w; }
 
             // The recede: flood terrain back to soil (only where it is still flood terrain), driver cells back to their prior fill.
