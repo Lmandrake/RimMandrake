@@ -174,8 +174,9 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback</texPath>
+          <texPath>Things/Pawn/Animal/RM_Bokka/RM_Bokka</texPath>
           <drawSize>1</drawSize>
+          <shadowData><volume>(0.551, 0.35, 0.189)</volume><offset>(0, 0, -0.178)</offset></shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
@@ -184,8 +185,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback</texPath>
+          <texPath>Things/Pawn/Animal/RM_Bokka/RM_Bokka</texPath>
           <drawSize>1.25</drawSize>
+          <shadowData><volume>(0.689, 0.35, 0.236)</volume><offset>(0, 0, -0.222)</offset></shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
@@ -194,12 +196,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback</texPath>
+          <texPath>Things/Pawn/Animal/RM_Bokka/RM_Bokka</texPath>
           <drawSize>1.5</drawSize>
-          <shadowData>
-            <volume>(0.25, 0.3, 0.25)</volume>
-            <offset>(0,0,0)</offset>
-          </shadowData>
+          <shadowData><volume>(0.826, 0.35, 0.283)</volume><offset>(0, 0, -0.267)</offset></shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
@@ -528,19 +527,22 @@
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
 					<drawSize>0.75</drawSize>
-				</bodyGraphicData>
+          <shadowData><volume>(0.402, 0.35, 0.158)</volume><offset>(0, 0, -0.169)</offset></shadowData>
+        </bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
 					<drawSize>1.35</drawSize>
-				</bodyGraphicData>
+          <shadowData><volume>(0.724, 0.35, 0.285)</volume><offset>(0, 0, -0.305)</offset></shadowData>
+        </bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Ommok/RM_Ommok</texPath>
 					<drawSize>1.75</drawSize>
-				</bodyGraphicData>
+          <shadowData><volume>(0.939, 0.35, 0.37)</volume><offset>(0, 0, -0.395)</offset></shadowData>
+        </bodyGraphicData>
 			</li>
 		</lifeStages>
 	</PawnKindDef>
