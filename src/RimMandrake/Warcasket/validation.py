@@ -116,6 +116,9 @@ def _wear(t, pid, def_name):
 
 def _settle(t, pid, draft=True):
     """Fed, rested, and (default) drafted so it stands exactly where it was put."""
+    # spawn_pawn dresses colonists in random apparel (parkas...): the "naked" control reading must start from bare skin
+    # (MEASURED 2026-10-08: comfy min before = -50 on one run, +16 on another, so thermal_cover's delta swung -96..-140).
+    t.bridge_call("jawa/pawn_gear", pawn=pid, action="clear", clearWhat="apparel")
     t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
     t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Rest", level=1.0)
     t.bridge_call("jawa/set_draft", pawnId=pid, drafted=bool(draft))
@@ -466,7 +469,10 @@ def terrain_immersion(t):
         for r in _pawn_rows(t, rect):
             if r.get("id") == pid:
                 return _hediff(r, IMMERSION), bool(r.get("dead"))
-        _fail("pawn %s not found in %s" % (pid, rect))
+        wide = "%d,%d,100,60" % (x - 50, z - 30)
+        hit = [r for r in _pawn_rows(t, wide) if r.get("id") == pid]
+        _fail("pawn %s not found in %s; map-wide it is %s" % (pid, rect, ("at %s dead=%s" % (hit[0].get("position") or hit[0].get("pos"),
+                                                                                            hit[0].get("dead"))) if hit else "ABSENT (despawned/destroyed)"))
 
     full = "%d,%d,50,16" % (x - 16, z - 8)
     try:
@@ -658,7 +664,14 @@ def core_and_cask_bay(t):
         with t.component("loose_core_doses_nearby"):
             t.wait_ticks(2500)          # a dose every 4 rare ticks = 1000 ticks
             if _live(t):
-                rows = dict((r.get("id"), r) for r in _pawn_rows(t, full))
+                ax0, az0 = t.anchor
+                rows = dict((r.get("id"), r) for r in _pawn_rows(t, "%d,%d,100,60" % (ax0 - 50, az0 - 30)))   # a wanderer leaves `full`
+                gone = [k for k in ("n", "w", "far", "sh") if S[k] not in rows]
+                if gone:
+                    ax, az = t.anchor
+                    wide = dict((r.get("id"), r) for r in _pawn_rows(t, "%d,%d,100,60" % (ax - 50, az - 30)))
+                    _fail("UNMEASURED: pawn(s) %s absent from the site after 2500 ticks; map-wide: %s" % (
+                        gone, ["%s:%s dead=%s" % (k, "present" if S[k] in wide else "ABSENT", (wide.get(S[k]) or {}).get("dead")) for k in gone]))
                 sev = dict((k, _hediff(rows[S[k]], "ToxicBuildup")) for k in ("n", "w", "far", "sh"))
                 S["sev"] = sev
                 _note(t, "ToxicBuildup after 2500 ticks", sev)
