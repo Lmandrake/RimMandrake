@@ -54,8 +54,8 @@ SLOTS = {"RM_Skivvik": ("spawnSkivvik", "RSW_Mynock"), "RM_Rattagh": ("spawnRatt
 GROUP_TAG = "ShipVermin"
 HARD_CAP = 12
 WRECK = "ShipChunk_Mech"
-ACT_FORCE = "Actions\\Force nest spawn attempt (click wreck)"
-ACT_STATE = "Actions\\Report nest state (click wreck)"
+ACT_FORCE = "Actions\\T: Force nest spawn attempt (click wreck)"
+ACT_STATE = "Actions\\T: Report nest state (click wreck)"
 _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
 DEFAULTS = {"alertEnabled": True, "wreckSpawningEnabled": True, "wreckSpawnRateMultiplier": 1.0,
             "spawnSkivvik": True, "spawnRattagh": True, "spawnGorrud": True, "spawnFethrik": True,
