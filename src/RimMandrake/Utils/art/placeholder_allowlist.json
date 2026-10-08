@@ -1,0 +1,679 @@
+{
+ "rule": "owner, 2026-10-07 22:33 PDT: \"make sure that at no time can geometric placeholder art ever remain a viable Variant or selection, ok?\"",
+ "frozen": "2026-10-07",
+ "about": "Geometric placeholders shipping on the day the rule was made. This list may only SHRINK (placeholder_lint.py): delete an entry when real art replaces it; never add one. 'job' names the artpipe job(s) that will replace it; status OWED means no job is queued yet.",
+ "entries": [
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_LureStake/RM_LureStake.png",
+   "sha256": "13880d366b5a6243e20a5fc9e1d4535aa4d08829918bc7082b15c1caf29dac3c",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/RM_LureStake/RM_LureStake",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_Sekkulaath/RM_Sekkulaath_Feeler.png",
+   "sha256": "90b0946106306e0bdd8426e0da87aa7ba451271fb037a336b40a7fb8a47c5b12",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/RM_Sekkulaath/RM_Sekkulaath_Feeler",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_Sekkulaath/RM_Sekkulaath_Lash.png",
+   "sha256": "ddb3c5ca75dbc088290436ec19058e61da32708d46d7cfdd2685abe771d8b839",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/RM_Sekkulaath/RM_Sekkulaath_Lash",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_Sekkulaath/RM_Sekkulaath_Porter.png",
+   "sha256": "c85844ab8fcd8539030238a04695dde6f0bcd854f9a6b07d38f7fdf28763ced4",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/RM_Sekkulaath/RM_Sekkulaath_Porter",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_Sekkulaath/RM_Sekkulaath_Sentinel.png",
+   "sha256": "9d225c0a46fd6ff56948acbeb94f9fa78ed137e46051d3bb5e632d20b9c2f25a",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/RM_Sekkulaath/RM_Sekkulaath_Sentinel",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_Sekkulaath/RM_Sekkulaath_Snare.png",
+   "sha256": "f3faf34002364a8e4da22253583d63ed9b9e99ee204fc7eea993b2ec71865f7e",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/RM_Sekkulaath/RM_Sekkulaath_Snare",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_SekkulaathTank/RM_SekkulaathTank.png",
+   "sha256": "1f48948b4a3d88a0bbf26009364da7cfc6d5fe6898c1e088b5bcf1e2c60f6e3b",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/RM_SekkulaathTank/RM_SekkulaathTank",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RUT_FeverTrunkHeartwood/RUT_FeverTrunkHeartwood.png",
+   "sha256": "841f952c1c40fd050d31ca80293d6c34ad0e7b38c927be13d17316f4af678797",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/RUT_FeverTrunkHeartwood/RUT_FeverTrunkHeartwood",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap.png",
+   "sha256": "a4510839d1b93bfd1336518367a95df753d7a397973fa78d7e166ee925dde326",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_DrommathSap/RM_DrommathSap.png",
+   "sha256": "be3ac304b1ecb1e88b16a5e5a62ab4307d9cc323b71566a6c8da29ea9468fe4c",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_DrommathSap/RM_DrommathSap",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap.png",
+   "sha256": "ef671aae1019c3dc2db88d7fd6c2625885b73a8583f4880904ae52f46374ecff",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_PottersClay/RM_PottersClay.png",
+   "sha256": "7221123457c22d7d260c691e3f3ae54d9c7d72fc2982074aa0cd77bc2d0d894b",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_PottersClay/RM_PottersClay",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant.png",
+   "sha256": "4b9ab9dccf2d6ed0374a4ce55e3f06e4129f364af53790253ea751b9c441f1cf",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_SeepOil/RM_SeepOil.png",
+   "sha256": "0804726e2f5d5679e3ee6bb2021582231e9781909935cc7b0539c3d4302b0b4f",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_SeepOil/RM_SeepOil",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals.png",
+   "sha256": "0941eda9e88bd41f51521396a5f35395c014dd53f1c872c0809068a20d898b78",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar.png",
+   "sha256": "76c4d282f4996e01fd92f7d1f61fbcf10e3e7d47ef0f61b3e8c4b145a23094ff",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer.png",
+   "sha256": "46fb72f4f64bd24229e57b34165dd2488f01bd74ed7c9528f732abad1e0baba6",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Drommath/RM_Drommath.png",
+   "sha256": "2d92cc0fc3df0d66c7ee7aa5a0411e8f1d3b6fc6103316899245a21c7d79c900",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
+   "job": [
+    "regen_fw_drommath_v2_east",
+    "regen_fw_drommath_v2_north"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow_east.png",
+   "sha256": "ab6fe7dddc74a1009565ca33f527f6ffbb5b1bae58fd09ab3ad13b6a6c173489",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+   "job": [
+    "regen_fw_chellow_flying_1_v1_east",
+    "regen_fw_chellow_flying_1_v1_north",
+    "regen_fw_chellow_flying_1_v1_south",
+    "regen_fw_chellow_flying_2_v1_east",
+    "regen_fw_chellow_flying_2_v1_north",
+    "regen_fw_chellow_flying_2_v1_south"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow_north.png",
+   "sha256": "ab6fe7dddc74a1009565ca33f527f6ffbb5b1bae58fd09ab3ad13b6a6c173489",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+   "job": [
+    "regen_fw_chellow_flying_1_v1_east",
+    "regen_fw_chellow_flying_1_v1_north",
+    "regen_fw_chellow_flying_1_v1_south",
+    "regen_fw_chellow_flying_2_v1_east",
+    "regen_fw_chellow_flying_2_v1_north",
+    "regen_fw_chellow_flying_2_v1_south"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow_south.png",
+   "sha256": "ab6fe7dddc74a1009565ca33f527f6ffbb5b1bae58fd09ab3ad13b6a6c173489",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+   "job": [
+    "regen_fw_chellow_flying_1_v1_east",
+    "regen_fw_chellow_flying_1_v1_north",
+    "regen_fw_chellow_flying_1_v1_south",
+    "regen_fw_chellow_flying_2_v1_east",
+    "regen_fw_chellow_flying_2_v1_north",
+    "regen_fw_chellow_flying_2_v1_south"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith_east.png",
+   "sha256": "7b680fb69d0dfe616c14bdbd4d59ada529c87fc76930326a6776b4d0125aba74",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+   "job": [
+    "regen_fw_murrelith_flying_1_v1_east",
+    "regen_fw_murrelith_flying_1_v1_north",
+    "regen_fw_murrelith_flying_1_v1_south",
+    "regen_fw_murrelith_flying_2_v1_east",
+    "regen_fw_murrelith_flying_2_v1_north",
+    "regen_fw_murrelith_flying_2_v1_south"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith_north.png",
+   "sha256": "7b680fb69d0dfe616c14bdbd4d59ada529c87fc76930326a6776b4d0125aba74",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+   "job": [
+    "regen_fw_murrelith_flying_1_v1_east",
+    "regen_fw_murrelith_flying_1_v1_north",
+    "regen_fw_murrelith_flying_1_v1_south",
+    "regen_fw_murrelith_flying_2_v1_east",
+    "regen_fw_murrelith_flying_2_v1_north",
+    "regen_fw_murrelith_flying_2_v1_south"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith_south.png",
+   "sha256": "7b680fb69d0dfe616c14bdbd4d59ada529c87fc76930326a6776b4d0125aba74",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+   "job": [
+    "regen_fw_murrelith_flying_1_v1_east",
+    "regen_fw_murrelith_flying_1_v1_north",
+    "regen_fw_murrelith_flying_1_v1_south",
+    "regen_fw_murrelith_flying_2_v1_east",
+    "regen_fw_murrelith_flying_2_v1_north",
+    "regen_fw_murrelith_flying_2_v1_south"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik_east.png",
+   "sha256": "e785c5a96cf8527e52d701671130ca6f7e490fa18df0b309af8ca07c26f6d687",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik",
+   "job": [
+    "feverwood_thavrik_east",
+    "feverwood_thavrik_north",
+    "feverwood_thavrik_south"
+   ],
+   "status": "rendered earlier, never installed (not ruled on as a replacement)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik_north.png",
+   "sha256": "e785c5a96cf8527e52d701671130ca6f7e490fa18df0b309af8ca07c26f6d687",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik",
+   "job": [
+    "feverwood_thavrik_east",
+    "feverwood_thavrik_north",
+    "feverwood_thavrik_south"
+   ],
+   "status": "rendered earlier, never installed (not ruled on as a replacement)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik_south.png",
+   "sha256": "e785c5a96cf8527e52d701671130ca6f7e490fa18df0b309af8ca07c26f6d687",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik",
+   "job": [
+    "feverwood_thavrik_east",
+    "feverwood_thavrik_north",
+    "feverwood_thavrik_south"
+   ],
+   "status": "rendered earlier, never installed (not ruled on as a replacement)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Ollareth/RM_Ollareth.png",
+   "sha256": "86144584ee6fdbd82f673b88acea862f90d75b351bc47771f2a23636f78e73af",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_Ollareth/RM_Ollareth",
+   "job": [
+    "feverwood_ollareth_east",
+    "feverwood_ollareth_north",
+    "feverwood_ollareth_south"
+   ],
+   "status": "rendered earlier, never installed (not ruled on as a replacement)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Sekkulaath_Juvenile/RM_Sekkulaath_Juvenile.png",
+   "sha256": "ed97049a7c09b91358e835bd6bef0a9d828450a1dab35d3d2f071f2e865d3805",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_Sekkulaath_Juvenile/RM_Sekkulaath_Juvenile",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Ammeth/RM_Ammeth_a.png",
+   "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Ammeth/RM_Ammeth_a",
+   "job": [
+    "regen_fw_ammeth_v2a",
+    "regen_fw_ammeth_v2b",
+    "regen_fw_ammeth_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Cistrel/RM_Cistrel_a.png",
+   "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
+   "job": [
+    "regen_fw_cistrel_v2a",
+    "regen_fw_cistrel_v2b",
+    "regen_fw_cistrel_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Corvath/RM_Corvath_a.png",
+   "sha256": "069a3293603b7b07335cd5b1f950d38b422cea3b48960c2831678336bcdc6c05",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Corvath/RM_Corvath_a",
+   "job": [
+    "regen_fw_corvath_v2a",
+    "regen_fw_corvath_v2b",
+    "regen_fw_corvath_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Halquin/RM_Halquin_a.png",
+   "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Halquin/RM_Halquin_a",
+   "job": [
+    "regen_fw_halquin_varb_v1",
+    "regen_fw_halquin_varc_v1"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Maulith/RM_Maulith_a.png",
+   "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Maulith/RM_Maulith_a",
+   "job": [
+    "regen_fw_maulith_varb_v1",
+    "regen_fw_maulith_varc_v1"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Nubrith/RM_Nubrith_a.png",
+   "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
+   "job": [
+    "regen_fw_nubrith_varb_v1",
+    "regen_fw_nubrith_varc_v1"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Plennith/RM_Plennith_a.png",
+   "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Plennith/RM_Plennith_a",
+   "job": [
+    "regen_fw_plennith_varb_v1",
+    "regen_fw_plennith_varc_v1"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Seepril/RM_Seepril_a.png",
+   "sha256": "069a3293603b7b07335cd5b1f950d38b422cea3b48960c2831678336bcdc6c05",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Seepril/RM_Seepril_a",
+   "job": [
+    "regen_fw_seepril_varb_v1",
+    "regen_fw_seepril_varc_v1"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Skethral/RM_Skethral_a.png",
+   "sha256": "a1dd249a73aad0e68bf64a47429456a4d0b4275ab93fc1a75776e28ac00b5a82",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Skethral/RM_Skethral_a",
+   "job": [
+    "feverwood_plant_skethral"
+   ],
+   "status": "rendered earlier, never installed (not ruled on as a replacement)"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Skimmel/RM_Skimmel_a.png",
+   "sha256": "c9135bff70ffa299824c9a58b4891e6938c2b42ef74723ccf03acf6708836fb6",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Skimmel/RM_Skimmel_a",
+   "job": [
+    "regen_fw_skimmel_v2a",
+    "regen_fw_skimmel_v2b",
+    "regen_fw_skimmel_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Sodderel/RM_Sodderel_a.png",
+   "sha256": "069a3293603b7b07335cd5b1f950d38b422cea3b48960c2831678336bcdc6c05",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Sodderel/RM_Sodderel_a",
+   "job": [
+    "regen_fw_sodderel_v2a",
+    "regen_fw_sodderel_v2b",
+    "regen_fw_sodderel_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Thulvane/RM_Thulvane_a.png",
+   "sha256": "a1dd249a73aad0e68bf64a47429456a4d0b4275ab93fc1a75776e28ac00b5a82",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
+   "job": [
+    "regen_fw_thulvane_v2a",
+    "regen_fw_thulvane_v2b",
+    "regen_fw_thulvane_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Tullick/RM_Tullick_a.png",
+   "sha256": "c9135bff70ffa299824c9a58b4891e6938c2b42ef74723ccf03acf6708836fb6",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Tullick/RM_Tullick_a",
+   "job": [
+    "regen_fw_tullick_v2a",
+    "regen_fw_tullick_v2b",
+    "regen_fw_tullick_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Varnoth/RM_Varnoth_a.png",
+   "sha256": "a1dd249a73aad0e68bf64a47429456a4d0b4275ab93fc1a75776e28ac00b5a82",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Varnoth/RM_Varnoth_a",
+   "job": [
+    "regen_fw_varnoth_v2a",
+    "regen_fw_varnoth_v2b",
+    "regen_fw_varnoth_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Verrow/RM_Verrow_a.png",
+   "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Verrow/RM_Verrow_a",
+   "job": [
+    "regen_fw_verrow_v2a",
+    "regen_fw_verrow_v2b",
+    "regen_fw_verrow_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Wanlith/RM_Wanlith_a.png",
+   "sha256": "c9135bff70ffa299824c9a58b4891e6938c2b42ef74723ccf03acf6708836fb6",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Wanlith/RM_Wanlith_a",
+   "job": [
+    "regen_fw_wanlith_v2a",
+    "regen_fw_wanlith_v2b",
+    "regen_fw_wanlith_v2c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/LuminousPigment/Textures/Things/Building/Production/RM_DeepfirePress.png",
+   "sha256": "781f19cfbba6d2ce4786a51600480031916ac572b542b4b8c566d3eba13a3f51",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/Production/RM_DeepfirePress",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/LuminousPigment/Textures/Things/Building/Production/RM_GlowTank.png",
+   "sha256": "b420c04b3b2b204e3fbfb75eae1764c15f569b8a4a5c0a7136f497aa84956da0",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/Production/RM_GlowTank",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/LuminousPigment/Textures/Things/Item/Resource/RM_Deepfire/RM_CrowncarpetDead.png",
+   "sha256": "153b48bfbf5af5ae2626c09007e2e4f0c278f1b4865c71759b9a8d90dd7fe0f5",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_Deepfire/RM_CrowncarpetDead",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/LuminousPigment/Textures/Things/Item/Resource/RM_Deepfire/RM_CrowncarpetFresh/RM_CrowncarpetFresh_a.png",
+   "sha256": "19435c09f2e38cd40fa5cd2104a826747fa8abca6deee0ecda9fad181c72da87",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_Deepfire/RM_CrowncarpetFresh",
+   "job": [
+    "rm_crowncarpetfresh_icon_b",
+    "rm_crowncarpetfresh_icon_c"
+   ],
+   "status": "rendered earlier, never installed (not ruled on as a replacement)"
+  },
+  {
+   "path": "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Sorruth/RM_Sorruth.png",
+   "sha256": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
+   "added": "2026-10-07",
+   "texPath": "Things/Pawn/Animal/RM_Sorruth/RM_Sorruth",
+   "job": [
+    "greysea_sorruth_v1_east",
+    "greysea_sorruth_v1_south"
+   ],
+   "status": "rendered earlier, never installed (not ruled on as a replacement)"
+  },
+  {
+   "path": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_StrongTarSolvent/RM_StrongTarSolvent.png",
+   "sha256": "18f94806351d7a6810f2a3e78a29f8dd51d9d97540260e2c85045ca0bf55cac6",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_StrongTarSolvent",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods.png",
+   "sha256": "0876694cf66d9596efe153caff7d8cd4cd13fae9e5f230a23115934349ffd9d0",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_ThrummelSeepwax/RM_ThrummelSeepwax.png",
+   "sha256": "2b3c1e29d208d99e0e2e876b67a707eb36e4f7093d484f4b9a90434565d824af",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_ThrummelSeepwax",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Building/Natural/RM_Webwork_NestWall/RM_Webwork_NestWall.png",
+   "sha256": "b788ffffb8db5a72b5f3d0adff605e8b2bcf29bbecf73a542dbbb1d3e5dffd98",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/Natural/RM_Webwork_NestWall/RM_Webwork_NestWall",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Building/Natural/RM_Webwork_Web.png",
+   "sha256": "b4388362271e122a89b13bbc11e79fcbd9bf8682935a56e18c692b2f8fad04b3",
+   "added": "2026-10-07",
+   "texPath": "Things/Building/Natural/RM_Webwork_Web",
+   "job": [
+    "webwork_web"
+   ],
+   "status": "rendered earlier, never installed (not ruled on as a replacement)"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater.png",
+   "sha256": "ea98606189957096a0092b0082c1b0b322e5e661ab862785e2e5172aaf7a01cc",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Item/Resource/RM_OllathrixEgg/RM_OllathrixEgg.png",
+   "sha256": "2930aa063fa003f9e7e82a180a7f9067e44f37b5f31d7b147e61fe0f91fc20c7",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_OllathrixEgg/RM_OllathrixEgg",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor.png",
+   "sha256": "5aaf348d50a4060b70c86a2a686711559de7bac55a1f5b1214d9ab03ce5371f5",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Brennoth/RM_Brennoth_a.png",
+   "sha256": "e34a12a61138f08702a603b800ade9755b25848ad0cbdc0b91989b02ef65e7ab",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
+   "job": [
+    "webwork_brennoth_real_v1a",
+    "webwork_brennoth_real_v1b",
+    "webwork_brennoth_real_v1c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Dulloth/RM_Dulloth_a.png",
+   "sha256": "8f512995cc23679dd2a83b73c538968e49afb8124c4106e7bb41c1242c9d63ce",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Dulloth/RM_Dulloth_a",
+   "job": [
+    "webwork_dulloth_redo_v2"
+   ],
+   "status": "rendered 2026-10-07, awaiting his review"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Kollavane/RM_Kollavane_a.png",
+   "sha256": "edd16ecc48183243f944e5ee252a496975955e28552c7b2bdb36b34a8fb1c08e",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Kollavane/RM_Kollavane_a",
+   "job": [
+    "webwork_kollavane_redo_v2a",
+    "webwork_kollavane_redo_v2b",
+    "webwork_kollavane_redo_v2c"
+   ],
+   "status": "rendered 2026-10-07, awaiting his review"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Ruddreth/RM_Ruddreth_a.png",
+   "sha256": "590add898a7791919c445fd564571aa137236a68563c64bcaf0ea7f340734702",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
+   "job": [
+    "webwork_ruddreth_real_v1a",
+    "webwork_ruddreth_real_v1b",
+    "webwork_ruddreth_real_v1c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Sorrivel/RM_Sorrivel_a.png",
+   "sha256": "b8b5856ddaaabd7071c518459fd6071aef4c136fbd2fad2247b0276ce16d37d1",
+   "added": "2026-10-07",
+   "texPath": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
+   "job": [
+    "webwork_sorrivel_real_v1a",
+    "webwork_sorrivel_real_v1b",
+    "webwork_sorrivel_real_v1c"
+   ],
+   "status": "queued"
+  },
+  {
+   "path": "src/RimStarWars/Bacta/Textures/Things/Item/Bacta/RSW_BactaPatch.png",
+   "sha256": "1479c6cd619919c2243ffc4ff389561d4b376de429848d84f9971a8c67c5cd4d",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Bacta/RSW_BactaPatch",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Textures/Things/Item/Resource/RUT_Greenwood.png",
+   "sha256": "de7692e92a61987ff16d3eb58d456d0a73259380a3fba4b64e0842f4e20c0bcd",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RUT_Greenwood",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  },
+  {
+   "path": "src/RimUtinni/UtinniPatches/Textures/Things/Item/Resource/RUT_Hardwood.png",
+   "sha256": "f1b5e39a1b9e347018b1dee55d8c9fd752f6c1be706278f17394a352d11bd33c",
+   "added": "2026-10-07",
+   "texPath": "Things/Item/Resource/RUT_Hardwood",
+   "job": [],
+   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
+  }
+ ]
+}

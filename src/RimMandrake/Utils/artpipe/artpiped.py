@@ -1627,6 +1627,18 @@ def run_gemini_worker(worker_script: Path, prompt: str, out_png: Path, reference
         return 124, out, err, time.monotonic() - started, True
 
 
+def placeholder_failure(png: Path) -> str:
+    """'' for real art; else why the render is a geometric placeholder (art/placeholder_detect.py). A picture the
+    detector cannot read is left to the validator below (which rejects unreadable files itself)."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "art"))
+        import placeholder_detect as _PD
+        why = _PD.placeholder_reason(png)
+    except Exception:                                   # noqa: BLE001
+        return ""
+    return f"output is a {why} — a placeholder is never a finished render" if why else ""
+
+
 def run_validator(validator_script: Path, reference, candidate: Path,
                    timeout: float = VALIDATOR_TIMEOUT_S):
     """Returns (verdict, findings). `timeout` defaults to the real
@@ -1923,6 +1935,14 @@ def _check_size_and_validate(result: dict, job: dict, reference, out_png: Path,
                        note="validate_sprite.py could not judge this at all "
                             "(exit 2, unusable input) — most likely a bad or "
                             "missing reference path on the job, not an image defect")
+        return result
+
+    # Owner rule 2026-10-07 22:33 PDT: "make sure that at no time can geometric placeholder art ever remain a viable
+    # Variant or selection". A render that came back as a flat circle/rectangle never reaches done/ (after the
+    # validator, so its own verdicts keep their meaning; before legibility, so flora is gated too).
+    ph = placeholder_failure(out_png)
+    if ph:
+        result.update(status="failed", worker_status="placeholder_output", validator="PLACEHOLDER", note=ph[:300])
         return result
 
     # Geometry/alpha passed (or had no reference). Now the legibility gate —

@@ -114,12 +114,37 @@ def geometry_metrics(src) -> dict:
             "ellipse_iou": round(ell_iou, 3), "rect_fill": round(float(n / box), 3)}
 
 
+def _quick_reject(a) -> bool:
+    """Cheap pre-pass: True when the picture certainly is NOT a geometric placeholder (too few opaque pixels, too many
+    colours or no dominant colour) — skips the silhouette fit for almost every real sprite."""
+    import numpy as np
+    m = a[..., 3] > 128
+    n = int(m.sum())
+    if n == 0:
+        return True
+    q = a[..., :3][m] >> 3
+    _, cnt = np.unique(q[:, 0] * 1024 + q[:, 1] * 32 + q[:, 2], return_counts=True)
+    return len(cnt) > GEO_MAX_COLOURS or cnt.max() / n < GEO_MIN_DOMINANT
+
+
 def placeholder_reason(src):
     """None for real art; otherwise a one-line reason naming the shape. src: path, bytes or file object.
     Unreadable input raises (callers must treat that as UNMEASURED, never as real)."""
-    g = geometry_metrics(src)
-    if g["n"] < FLAT_MIN_PIXELS:
+    import io
+    from PIL import Image
+    if isinstance(src, (bytes, bytearray)):
+        src = io.BytesIO(src)
+    im = Image.open(src).convert("RGBA")
+    import numpy as np
+    if int((np.asarray(im.getchannel("A")) > 128).sum()) < FLAT_MIN_PIXELS:   # judged at full size
         return None
+    if max(im.size) > 256:      # NEAREST keeps the exact colours; the silhouette fit is scale-free
+        im = im.resize((max(1, im.width * 256 // max(im.size)), max(1, im.height * 256 // max(im.size))), Image.NEAREST)
+    if _quick_reject(np.asarray(im).astype(int)):
+        return None
+    b = io.BytesIO()
+    im.save(b, "PNG")
+    g = geometry_metrics(b.getvalue())
     if g["ncol"] > GEO_MAX_COLOURS or g["dominant"] < GEO_MIN_DOMINANT or g["smooth"] < GEO_MIN_SMOOTH:
         return None
     if g["ellipse_iou"] >= GEO_MIN_ELLIPSE_IOU:
