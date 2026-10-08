@@ -21,7 +21,8 @@ A refused merge is NOT harmless here.
 The rule (owner, 2026-09-25): merges happen in a PRIVATE worktree and are pushed
 from there. The shared tree only ever moves forward:
 
-    git clone <origin> /home/mandrake/rm/scratch/<SEAT>/merge-<x>   # ext4; never /tmp (tmpfs = RAM)
+    python3 src/RimMandrake/Utils/scratch_clone.py clone "merge <x>" --name merge-<x> --checkout --fetch
+                                    # -> /home/mandrake/rm/scratch/<SEAT>/merge-<x>; ext4, borrows store.git
     cd /home/mandrake/rm/scratch/<SEAT>/merge-<x> && git merge origin/<branch>   # resolve, build, test
     git push origin HEAD:main
     cd /home/mandrake/rm/<seat> && git pull --rebase origin main   # ext4 clone, never D:\\

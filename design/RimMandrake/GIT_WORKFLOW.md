@@ -12,7 +12,8 @@ Rationale and measurements: `git_workflow_plan_2026-10-01.md` (plan) and the dat
 | `/home/mandrake/rm/mirror.git` | the mirror's bare fetch-only repo |
 | `D:\Luke\dev\_artpipe\` | artpipe queue/state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
 | `D:\Luke\dev\_rmbuild\`, `D:\Luke\dev\_rmscratch\codex\` | build staging and codex.exe staging (drive-local scratch) |
-| `/home/mandrake/wt/` | throwaway ext4 clones for one-off jobs (never `/tmp`: tmpfs) |
+| `/home/mandrake/rm/store.git` | the shared object store: bare, fetched from `mirror.git`, never pruned. Throwaway clones borrow from it, never from a seat clone |
+| `/home/mandrake/rm/scratch/<SEAT>/` | throwaway ext4 clones, made only with `python3 src/RimMandrake/Utils/scratch_clone.py clone "<purpose>"` (never `/tmp`: tmpfs). Trial with telemetry: `design/RimMandrake/objstore_trial_2026-10-08.md` |
 
 A session in the `D:\` mirror cannot commit: `./publish` refuses under `/mnt/`, and the
 `block_shared_tree_merge.py` hook refuses whole-tree git there.
