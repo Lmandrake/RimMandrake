@@ -1,0 +1,6029 @@
+{
+ "chains": [
+  {
+   "name": "load_clean",
+   "components": [
+    {
+     "name": "no_errors_naming_this_mod",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "205 message(s) of 301 in the buffer.",
+        "totalInBuffer": 301,
+        "messages": [
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: The Reckoning dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: The Reckoning dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Jawa Fall Line Arrivals dependency (mandrake.rm.shipvermin) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimStarWars: Imperial Graffiti dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Greentide Raid Ant dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Hostile Flora dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Kinetic Arms dependency (mandrake.rm.explosiveknockback) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Propane Lake Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Pyrelands Mechanics dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Baroque Biomes dependency (mandrake.rm.luminouspigment) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Baroque Biomes dependency (mandrake.rm.flowworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Salvation Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Utinni \u2014 Rust Cathedral Roaches dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Scarlands Ladder dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Ship Shields \u2014 Modulated Plasma Fields dependency (mandrake.rm.warscar) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Ship Vermin dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Shokk dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Shokkweave Economy dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Solar Mirrors dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Bestiary dependency (OskarPotocki.VFE.Insectoid2) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Bestiary dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: SW \u2014 Bestiary dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Titanic Creatures dependency (mandrake.rm.hugethings) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: The Unfinished Line dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: The Unfinished Line dependency (mandrake.rut.droidrepairjobs) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimMandrake: Warcasket dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Wildsteam Egg Bounty dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimUtinni: Wildsteam Egg Bounty dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=158 elapsedMs=158",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=158",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=158 elapsedMs=158",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to get a resource \"UI/Commands/TryReconnect\" from a different thread. All resources must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to get a resource \"UI/Designators/Cancel\" from a different thread. All resources must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <iconTex>UI/Designators/Deconstruct</iconTex> doesn't correspond to any field in type DesignationDef. Context: <DesignationDef><defName>RM_EvaluateRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <iconTex>UI/Designators/Deconstruct</iconTex> doesn't correspond to any field in type DesignationDef. Context: <DesignationDef><defName>RM_SalvageRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML error: <iconTex>UI/Designators/Deconstruct</iconTex> doesn't correspond to any field in type DesignationDef. Context: <DesignationDef><defName>RM_RepairRing</defName><iconTex>UI/Designators/Deconstruct</iconTex><targetType>Thing</targetType><removeIfBuildingDespawned>true</removeIfBuildingDespawned></DesignationDef>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimMandrake: Baroque Biomes] Patch operation Verse.PatchOperationFindMod(RimMandrake: Baroque Biomes) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\TheSump\\Patches\\RUT_SumpDuskLock_BiomeWiring.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimMandrake: SW \u2014 Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName=\"DA_LeviathanCrab\"]/race/wildBiomes) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\SWBestiary\\Patches\\SeasWaterline\\Waterline_Lane1.xml",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reboot",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Bolting",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Spiking",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_ShopRepair",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reassembly",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_PrimitiveFabrication",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Formatting",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No RimWorld.StatDef named EBSG_SkillLossRate found to give to RimWorld.StatModifier (null stat)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not resolve cross-reference: No Verse.ThingDef named RUT_MetalSaltBezoar found to give to RimWorld.CompProperties_Shearable RimWorld.CompProperties_Shearable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ash_Trace: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ash_Light: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Sand: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Gravel: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in Eclipse: world-targeting incident has a biome restriction list",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Soil: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_SoilRich: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in SolarFlare: world-targeting incident has a biome restriction list",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in Aurora: world-targeting incident has a biome restriction list",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ash_Trace: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ash_Light: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Sand: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Gravel: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_Soil: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Config error in RM_FE_Ground_SoilRich: burnedDef is flammable",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Cannot init Graphic of class Verse.Graphic_Linked",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/DosimeterLawn",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/VaultRoot",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Pusberry",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_Etchant",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_DielectricGel",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_Etchant",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Item/ToxicMeat/ToxicMeat_b' for def 'RM_SorruthCatch' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/JadePlant/JadePlantB' for def 'RM_HolluCatch' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_OommokSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_MuurrokSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_GuzzkaSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_VozzikSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Item/Resource/RM_SweetlineToken' for def 'RM_SweetlineToken' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/AloeVera/AloeVeraA' for def 'RM_Zeev' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/Peyote/PeyoteA' for def 'RM_Uvva' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/PincushionPlant/PincushionPlantA' for def 'RM_Karrun' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/SweetheartPlant/SweetheartPlantA' for def 'RM_Dubbol' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Lozh' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/Schlumbergera/SchlumbergeraA' for def 'RM_Saava' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/JadePlant/JadePlantA' for def 'RM_Tuun' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_LungerFry' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'Things/Item/Plant/RM_YearningFruitHarvested' for def 'RM_YearningFruitHarvested' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "MatFrom with null sourceTex.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find any textures at Animal/RockTroll/RockTroll while constructing Multi(initPath=Animal/RockTroll/RockTroll, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find any textures at Things/Pawn/Animal/Terrorworm/TerrorWorm while constructing Multi(initPath=Things/Pawn/Animal/Terrorworm/TerrorWorm, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_KraytSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_GreaterKraytSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_WarWyrmSkeleton",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path swresource/RSW_ZakkroEgg",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 69483433]\n  at Verse.Graphic_Linked.get_MatSingle () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Graphic.get_MatNorth () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Graphic.MatAt (Verse.Rot4 rot, Verse.Thing thing) [0x00020] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.BuildableDef.ResolveIcon () [0x00074] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.ThingDef.ResolveIcon () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.BuildableDef.<PostLoad>b__78_0 () [0x00021] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not execute post-long-event action. Exception: System.ArgumentNullException: Value cannot be null.\r\nParameter name: key\r\n[Ref 70DD088D]\n [0x00006] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at System.Collections.Generic.Dictionary`2[TKey,TValue].FindEntry (TKey key) [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at System.Collections.Generic.Dictionary`2[TKey,TValue].TryGetValue (TKey key, TValue& value) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at Verse.ModContentHolder`1[T].Get (System.String path) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.ContentFinder`1[T].Get (System.String itemPath, System.Boolean reportFailure) [0x00066] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.MaterialPool.MatFrom (System.String texPath, UnityEngine.Shader shader) [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.DesignationDef.<ResolveReferences>b__6_0 () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not execute post-long-event action. Exception: System.ArgumentNullException: Value cannot be null.\r\nParameter name: key\r\n[Ref 70DD088D] Duplicate stacktrace, see ref for original",
+          "repeats": 2
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_CompAerosolScreen probably needs a StaticConstructorOnStartup attribute, because it has a field domeMat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=19 elapsedMs=57138",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1115 elapsedMs=58254",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=58254",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=58256",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=58256",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=58256",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=58256",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=2 elapsedMs=58258",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=58261",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=58262",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=58263",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=58267",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=20 elapsedMs=58287",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=1148 elapsedMs=58287",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=20 elapsedMs=58287",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 91360,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Reserving with maxPawns > 1 and stackCount = All; this will not have a useful effect (suppressing future warnings)",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Lowe on unwalkable cell (126, 0, 135). Teleporting to (125, 0, 135)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetFaction on Apparel_Parka58305 which cannot have a faction.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction Iracan League of def TribeCivil has no usable PawnGroupMakers for parms groupKind=Trader, tile=91360,0, inhabitants=False, points=591, faction=Iracan League, ideo=, traderKind=Caravan_Neolithic_WarMerchant, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction Thiraora of def OutlanderCivil has no usable PawnGroupMakers for parms groupKind=Trader, tile=91360,0, inhabitants=False, points=877, faction=Thiraora, ideo=, traderKind=Caravan_Outlander_CombatSupplier, generateFightersOnly=False, dontUseSingleUseRocketLaunchers=False, raidStrategy=, forceOneDowned=False, seed=, raidAgeRestriction=",
+          "repeats": 1
+         }
+        ],
+        "ticksGame": 9436,
+        "operation": {
+         "OperationId": "op_b13a918a675b44efb77bf07807334320",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9436
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "defs",
+   "components": [
+    {
+     "name": "all_defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "15 of 15 def(s) resolved",
+        "requested": 15,
+        "foundCount": 15,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "IncidentDef/RUT_FallArrival",
+          "found": true,
+          "defName": "RUT_FallArrival",
+          "defType": "IncidentDef",
+          "label": "wreck falls",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallArrival"
+          }
+         },
+         {
+          "requested": "IncidentDef/RUT_LabRatFalls",
+          "found": true,
+          "defName": "RUT_LabRatFalls",
+          "defType": "IncidentDef",
+          "label": "specimen",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_LabRatFalls"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RUT_LabRat",
+          "found": true,
+          "defName": "RUT_LabRat",
+          "defType": "PawnKindDef",
+          "label": "lab rat",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_LabRat"
+          }
+         },
+         {
+          "requested": "IncidentDef/RUT_FallSurvivor",
+          "found": true,
+          "defName": "RUT_FallSurvivor",
+          "defType": "IncidentDef",
+          "label": "feral survivor",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallSurvivor"
+          }
+         },
+         {
+          "requested": "HediffDef/RUT_Hediff_Feral",
+          "found": true,
+          "defName": "RUT_Hediff_Feral",
+          "defType": "HediffDef",
+          "label": "feral",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_Hediff_Feral"
+          }
+         },
+         {
+          "requested": "HediffDef/RUT_Hediff_FeralScar",
+          "found": true,
+          "defName": "RUT_Hediff_FeralScar",
+          "defType": "HediffDef",
+          "label": "Fall Line scar",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_Hediff_FeralScar"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RUT_FeralSurvivor",
+          "found": true,
+          "defName": "RUT_FeralSurvivor",
+          "defType": "PawnKindDef",
+          "label": "feral survivor",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FeralSurvivor"
+          }
+         },
+         {
+          "requested": "ThinkTreeDef/RUT_FeralDroidInsert",
+          "found": true,
+          "defName": "RUT_FeralDroidInsert",
+          "defType": "ThinkTreeDef",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FeralDroidInsert"
+          }
+         },
+         {
+          "requested": "TileMutatorDef/RUT_FallLine",
+          "found": true,
+          "defName": "RUT_FallLine",
+          "defType": "TileMutatorDef",
+          "label": "the Fall Line",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallLine"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Hull",
+          "found": true,
+          "defName": "RUT_FallWreck_Hull",
+          "defType": "ThingDef",
+          "label": "wrecked hull rib",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Hull"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Cargo",
+          "found": true,
+          "defName": "RUT_FallWreck_Cargo",
+          "defType": "ThingDef",
+          "label": "wrecked cargo section",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Cargo"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Tank",
+          "found": true,
+          "defName": "RUT_FallWreck_Tank",
+          "defType": "ThingDef",
+          "label": "wrecked fuel tank",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Tank"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Hull",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Hull",
+          "defType": "ThingDef",
+          "label": "wrecked hull rib (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Hull"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Cargo",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Cargo",
+          "defType": "ThingDef",
+          "label": "wrecked cargo section (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Cargo"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Tank",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Tank",
+          "defType": "ThingDef",
+          "label": "wrecked fuel tank (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Tank"
+          }
+         }
+        ],
+        "ticksGame": 9436,
+        "operation": {
+         "OperationId": "op_4d9c44d9f97b49ecbb56c05138fa3c4e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9436
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "gate",
+   "components": [
+    {
+     "name": "off_fall_line_refused",
+     "toggle": "onlyOnFallLine",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: onlyOnFallLine ON off the Fall Line, but the gate did not refuse: no result: {'success': False, 'message': 'No public static ProofGate with 0 params.', 'details': {'available': ['System.String ProofGate(System.String)']}, 'operation': {'OperationId': 'op_9bb5a832a49c4f788d67894f1082c9d9', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 9436}}",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'onlyOnFallLine': True})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofGate with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofGate(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_9bb5a832a49c4f788d67894f1082c9d9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9436
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "anywhere_allows",
+     "toggle": "onlyOnFallLine",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "wrecks_toggle_off_refuses",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "wreck_falls_and_nests",
+   "components": [
+    {
+     "name": "wreck_lands",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 43410,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 25,
+        "perDef": {},
+        "ticksGame": 9436,
+        "message": "NOTHING MATCHED. 43410 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_68377796153742bd9bbdce7a39bcd6a2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9436
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 43410,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 25,
+        "perDef": {},
+        "ticksGame": 9436,
+        "message": "NOTHING MATCHED. 43410 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_536b5672b9964385b29f290550ced172",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9436
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 43410,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 25,
+        "perDef": {},
+        "ticksGame": 9436,
+        "message": "NOTHING MATCHED. 43410 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_23aae3c5817842aaa69bea7a13d363e0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9436
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_FallArrival fired with 50 points.",
+        "incident": "RUT_FallArrival",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 50.3193321,
+        "ticksGame": 9436,
+        "operation": {
+         "OperationId": "op_67b64b241bb64a6f85cb02b3a1426302",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 9436
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) -> 600 real tick(s) over 2 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_258a1f5b14274976a8ea8b2052769755",
+        "status": "completed",
+        "requestedTicks": 5,
+        "completedTicks": 5,
+        "remainingTicks": 0,
+        "startTicksGame": 10031,
+        "endTicksGame": 10036,
+        "advancedTicks": 5,
+        "initialFrame": 24613,
+        "lastFrame": 24617,
+        "advancedFrames": 5,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T18:54:24.1559743+00:00",
+        "completedAtUtc": "2026-10-07T18:54:24.225505+00:00",
+        "message": "Advanced 5 game tick(s) across 5 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 10036
+        },
+        "operation": {
+         "OperationId": "op_e83fbbc05f1440f799eb82b0b7551c28",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 99
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 43463,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 25,
+        "perDef": {},
+        "ticksGame": 10036,
+        "message": "NOTHING MATCHED. 43463 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_5e17012f0e1746a3b60e3ca5dfbd1534",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10036
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 43463,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 25,
+        "perDef": {},
+        "ticksGame": 10036,
+        "message": "NOTHING MATCHED. 43463 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_25621fe37adc40698dd708b8363d24b8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10036
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RUT_FallWreck_Tank61986",
+          "def": "RUT_FallWreck_Tank",
+          "label": "Wrecked fuel tank",
+          "x": 95,
+          "z": 71,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 300,
+          "maxHitPoints": 300
+         }
+        ],
+        "scanned": 43463,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 25,
+        "perDef": {
+         "RUT_FallWreck_Tank": 1
+        },
+        "ticksGame": 10036,
+        "message": "1 of 1 matching thing(s) returned, 43463 examined.",
+        "operation": {
+         "OperationId": "op_bd202975ccfd40a882a937d4f34c310b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10036
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "vermin_burst_from_wreck",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "25 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human516",
+          "name": "David",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 100,
+          "z": 111,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human519",
+          "name": "Skissor",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 121,
+          "z": 104,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_ImperialToad34096",
+          "name": "Crystal",
+          "kind": "RSW_ImperialToad",
+          "kindDef": "RSW_ImperialToad",
+          "def": "RSW_ImperialToad",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 119,
+          "z": 99,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.3
+         },
+         {
+          "id": "Human522",
+          "name": "Wim",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 108,
+          "z": 98,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Megascarab48240",
+          "name": "Megascarab",
+          "kind": "Megascarab",
+          "kindDef": "Megascarab",
+          "def": "Megascarab",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 30,
+          "z": 80,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2
+         },
+         {
+          "id": "Megaspider48241",
+          "name": "Megaspider",
+          "kind": "Megaspider",
+          "kindDef": "Megaspider",
+          "def": "Megaspider",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 34,
+          "z": 72,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.2
+         },
+         {
+          "id": "VFEI2_Megapede48242",
+          "name": "Megapede",
+          "kind": "VFEI2_Megapede",
+          "kindDef": "VFEI2_Megapede",
+          "def": "VFEI2_Megapede",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 30,
+          "z": 79,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.8
+         },
+         {
+          "id": "RM_ThozzikColony48244",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 231,
+          "z": 87,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColonyQueen48245",
+          "name": "Thozzik queen",
+          "kind": "RM_ThozzikColonyQueen",
+          "kindDef": "RM_ThozzikColonyQueen",
+          "def": "RM_ThozzikColonyQueen",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 65,
+          "z": 54,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RM_Brogg48246",
+          "name": "Brogg",
+          "kind": "RM_Brogg",
+          "kindDef": "RM_Brogg",
+          "def": "RM_Brogg",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 69,
+          "z": 25,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 2.1
+         },
+         {
+          "id": "RM_Thozzik48247",
+          "name": "Thozzik",
+          "kind": "RM_Thozzik",
+          "kindDef": "RM_Thozzik",
+          "def": "RM_Thozzik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 133,
+          "z": 20,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColony48248",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 107,
+          "z": 25,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColony48249",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 107,
+          "z": 25,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_Grellik48250",
+          "name": "Grellik",
+          "kind": "RM_Grellik",
+          "kindDef": "RM_Grellik",
+          "def": "RM_Grellik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 230,
+          "z": 100,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.5
+         },
+         {
+          "id": "RM_Grellik48251",
+          "name": "Grellik",
+          "kind": "RM_Grellik",
+          "kindDef": "RM_Grellik",
+          "def": "RM_Grellik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 245,
+          "z": 139,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.5
+         },
+         {
+          "id": "RM_Illoth48252",
+          "name": "Illoth",
+          "kind": "RM_Illoth",
+          "kindDef": "RM_Illoth",
+          "def": "RM_Illoth",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 225,
+          "z": 117,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.77
+         },
+         {
+          "id": "RM_Thozzik48253",
+          "name": "Thozzik",
+          "kind": "RM_Thozzik",
+          "kindDef": "RM_Thozzik",
+          "def": "RM_Thozzik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 99,
+          "z": 3,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "AA_AnimaColossus48254",
+          "name": "Anima colossus",
+          "kind": "AA_AnimaColossus",
+          "kindDef": "AA_AnimaColossus",
+          "def": "AA_AnimaColossus",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 243,
+          "z": 193,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 6.0
+         },
+         {
+          "id": "RM_Shambles48255",
+          "name": "The shambles",
+          "kind": "RM_Shambles",
+          "kindDef": "RM_Shambles",
+          "def": "RM_Shambles",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 142,
+          "z": 183,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.6
+         },
+         {
+          "id": "RM_ThozzikQueen48256",
+          "name": "Thozzik queen",
+          "kind": "RM_ThozzikQueen",
+          "kindDef": "RM_ThozzikQueen",
+          "def": "RM_ThozzikQueen",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 79,
+          "z": 71,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RM_Brullith48257",
+          "name": "Brullith",
+          "kind": "RM_Brullith",
+          "kindDef": "RM_Brullith",
+          "def": "RM_Brullith",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 196,
+          "z": 170,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 4.0
+         },
+         {
+          "id": "Human49248",
+          "name": "Gilma",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 65,
+          "z": 93,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human49339",
+          "name": "Feeb",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 68,
+          "z": 138,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human55156",
+          "name": "Benitez",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 134,
+          "z": 79,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human58156",
+          "name": "Lowe",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 100,
+          "z": 101,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         }
+        ],
+        "returned": 25,
+        "truncated": 0,
+        "totalOnMap": 25,
+        "ticksGame": 10036,
+        "operation": {
+         "OperationId": "op_3e5caac1b84a4f9f96e2b0ab1ce465ba",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 10036
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(2600) -> 2600 real tick(s) over 5 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_7968e31348314088980c0fdbd8a34018",
+        "status": "completed",
+        "requestedTicks": 221,
+        "completedTicks": 221,
+        "remainingTicks": 0,
+        "startTicksGame": 12415,
+        "endTicksGame": 12636,
+        "advancedTicks": 221,
+        "initialFrame": 27027,
+        "lastFrame": 27247,
+        "advancedFrames": 221,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T18:55:04.7713593+00:00",
+        "completedAtUtc": "2026-10-07T18:55:08.4411292+00:00",
+        "message": "Advanced 221 game tick(s) across 221 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 12636
+        },
+        "operation": {
+         "OperationId": "op_68f20cc8cb264c5db40aaf391c7eeac5",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 3699
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "25 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human516",
+          "name": "David",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 93,
+          "z": 116,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human519",
+          "name": "Skissor",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 226,
+          "z": 13,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_ImperialToad34096",
+          "name": "Crystal",
+          "kind": "RSW_ImperialToad",
+          "kindDef": "RSW_ImperialToad",
+          "def": "RSW_ImperialToad",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 120,
+          "z": 100,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.3
+         },
+         {
+          "id": "Human522",
+          "name": "Wim",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 221,
+          "z": 13,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Megascarab48240",
+          "name": "Megascarab",
+          "kind": "Megascarab",
+          "kindDef": "Megascarab",
+          "def": "Megascarab",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 32,
+          "z": 72,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2
+         },
+         {
+          "id": "Megaspider48241",
+          "name": "Megaspider",
+          "kind": "Megaspider",
+          "kindDef": "Megaspider",
+          "def": "Megaspider",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 39,
+          "z": 75,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.2
+         },
+         {
+          "id": "VFEI2_Megapede48242",
+          "name": "Megapede",
+          "kind": "VFEI2_Megapede",
+          "kindDef": "VFEI2_Megapede",
+          "def": "VFEI2_Megapede",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 28,
+          "z": 80,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.8
+         },
+         {
+          "id": "RM_ThozzikColony48244",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 239,
+          "z": 95,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColonyQueen48245",
+          "name": "Thozzik queen",
+          "kind": "RM_ThozzikColonyQueen",
+          "kindDef": "RM_ThozzikColonyQueen",
+          "def": "RM_ThozzikColonyQueen",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 69,
+          "z": 49,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RM_Brogg48246",
+          "name": "Brogg",
+          "kind": "RM_Brogg",
+          "kindDef": "RM_Brogg",
+          "def": "RM_Brogg",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 81,
+          "z": 22,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 2.1
+         },
+         {
+          "id": "RM_Thozzik48247",
+          "name": "Thozzik",
+          "kind": "RM_Thozzik",
+          "kindDef": "RM_Thozzik",
+          "def": "RM_Thozzik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 132,
+          "z": 20,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColony48248",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 109,
+          "z": 35,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColony48249",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 104,
+          "z": 34,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_Grellik48250",
+          "name": "Grellik",
+          "kind": "RM_Grellik",
+          "kindDef": "RM_Grellik",
+          "def": "RM_Grellik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 231,
+          "z": 100,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.5
+         },
+         {
+          "id": "RM_Grellik48251",
+          "name": "Grellik",
+          "kind": "RM_Grellik",
+          "kindDef": "RM_Grellik",
+          "def": "RM_Grellik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 244,
+          "z": 155,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.5
+         },
+         {
+          "id": "RM_Illoth48252",
+          "name": "Illoth",
+          "kind": "RM_Illoth",
+          "kindDef": "RM_Illoth",
+          "def": "RM_Illoth",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 229,
+          "z": 108,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.77
+         },
+         {
+          "id": "RM_Thozzik48253",
+          "name": "Thozzik",
+          "kind": "RM_Thozzik",
+          "kindDef": "RM_Thozzik",
+          "def": "RM_Thozzik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 97,
+          "z": 1,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "AA_AnimaColossus48254",
+          "name": "Anima colossus",
+          "kind": "AA_AnimaColossus",
+          "kindDef": "AA_AnimaColossus",
+          "def": "AA_AnimaColossus",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 192,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 6.0
+         },
+         {
+          "id": "RM_Shambles48255",
+          "name": "The shambles",
+          "kind": "RM_Shambles",
+          "kindDef": "RM_Shambles",
+          "def": "RM_Shambles",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 145,
+          "z": 189,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.6
+         },
+         {
+          "id": "Human49248",
+          "name": "Gilma",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 65,
+          "z": 93,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human49339",
+          "name": "Feeb",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 67,
+          "z": 138,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human55156",
+          "name": "Benitez",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 231,
+          "z": 38,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human58156",
+          "name": "Lowe",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 212,
+          "z": 13,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Zhakka64860",
+          "name": "Zhakka",
+          "kind": "RSW_Zhakka",
+          "kindDef": "RSW_Zhakka",
+          "def": "RSW_Zhakka",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 84,
+          "z": 70,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.35
+         },
+         {
+          "id": "RSW_Zhakka64861",
+          "name": "Zhakka",
+          "kind": "RSW_Zhakka",
+          "kindDef": "RSW_Zhakka",
+          "def": "RSW_Zhakka",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 92,
+          "z": 65,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.35
+         }
+        ],
+        "returned": 25,
+        "truncated": 0,
+        "totalOnMap": 25,
+        "ticksGame": 12636,
+        "operation": {
+         "OperationId": "op_410d9ac5923c4fd192b2a8f103dafa53",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 12636
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "specimen",
+   "components": [
+    {
+     "name": "lab_rat_toggle_off_refuses",
+     "toggle": "labRatEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'labRatEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_LabRatFalls canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_LabRatFalls",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 47.7760925,
+        "ticksGame": 12636,
+        "operation": {
+         "OperationId": "op_8ede5325fa504d308a551eea435a11b7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 12636
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'labRatEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "lab_rat_arrives_in_pod",
+     "toggle": "labRatEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_LabRatFalls fired with 48 points.",
+        "incident": "RUT_LabRatFalls",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 47.7760925,
+        "ticksGame": 12636,
+        "operation": {
+         "OperationId": "op_81aa9191c1f94520baaf3fc4fc159486",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 12636
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) -> 600 real tick(s) over 2 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_8dbe9fede1c74db58f1d9d1aa3a0d3e8",
+        "status": "completed",
+        "requestedTicks": 4,
+        "completedTicks": 4,
+        "remainingTicks": 0,
+        "startTicksGame": 13232,
+        "endTicksGame": 13236,
+        "advancedTicks": 4,
+        "initialFrame": 27877,
+        "lastFrame": 27880,
+        "advancedFrames": 4,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T18:55:19.0127558+00:00",
+        "completedAtUtc": "2026-10-07T18:55:19.0650482+00:00",
+        "message": "Advanced 4 game tick(s) across 4 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 13236
+        },
+        "operation": {
+         "OperationId": "op_737e694099ec424db991688674fa7057",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 82
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "26 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human516",
+          "name": "David",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 91,
+          "z": 109,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human519",
+          "name": "Skissor",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 230,
+          "z": 51,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_ImperialToad34096",
+          "name": "Crystal",
+          "kind": "RSW_ImperialToad",
+          "kindDef": "RSW_ImperialToad",
+          "def": "RSW_ImperialToad",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 115,
+          "z": 96,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.3
+         },
+         {
+          "id": "Human522",
+          "name": "Wim",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 231,
+          "z": 44,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Megascarab48240",
+          "name": "Megascarab",
+          "kind": "Megascarab",
+          "kindDef": "Megascarab",
+          "def": "Megascarab",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 36,
+          "z": 74,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2
+         },
+         {
+          "id": "Megaspider48241",
+          "name": "Megaspider",
+          "kind": "Megaspider",
+          "kindDef": "Megaspider",
+          "def": "Megaspider",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 33,
+          "z": 70,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.2
+         },
+         {
+          "id": "VFEI2_Megapede48242",
+          "name": "Megapede",
+          "kind": "VFEI2_Megapede",
+          "kindDef": "VFEI2_Megapede",
+          "def": "VFEI2_Megapede",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 28,
+          "z": 80,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.8
+         },
+         {
+          "id": "RM_ThozzikColony48244",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 237,
+          "z": 95,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColonyQueen48245",
+          "name": "Thozzik queen",
+          "kind": "RM_ThozzikColonyQueen",
+          "kindDef": "RM_ThozzikColonyQueen",
+          "def": "RM_ThozzikColonyQueen",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 68,
+          "z": 48,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RM_Brogg48246",
+          "name": "Brogg",
+          "kind": "RM_Brogg",
+          "kindDef": "RM_Brogg",
+          "def": "RM_Brogg",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 82,
+          "z": 26,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 2.1
+         },
+         {
+          "id": "RM_Thozzik48247",
+          "name": "Thozzik",
+          "kind": "RM_Thozzik",
+          "kindDef": "RM_Thozzik",
+          "def": "RM_Thozzik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 131,
+          "z": 21,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColony48248",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 104,
+          "z": 41,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_ThozzikColony48249",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 105,
+          "z": 38,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "RM_Grellik48250",
+          "name": "Grellik",
+          "kind": "RM_Grellik",
+          "kindDef": "RM_Grellik",
+          "def": "RM_Grellik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 232,
+          "z": 106,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.5
+         },
+         {
+          "id": "RM_Grellik48251",
+          "name": "Grellik",
+          "kind": "RM_Grellik",
+          "kindDef": "RM_Grellik",
+          "def": "RM_Grellik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 244,
+          "z": 150,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.5
+         },
+         {
+          "id": "RM_Illoth48252",
+          "name": "Illoth",
+          "kind": "RM_Illoth",
+          "kindDef": "RM_Illoth",
+          "def": "RM_Illoth",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 230,
+          "z": 104,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.77
+         },
+         {
+          "id": "RM_Thozzik48253",
+          "name": "Thozzik",
+          "kind": "RM_Thozzik",
+          "kindDef": "RM_Thozzik",
+          "def": "RM_Thozzik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 99,
+          "z": 3,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32
+         },
+         {
+          "id": "AA_AnimaColossus48254",
+          "name": "Anima colossus",
+          "kind": "AA_AnimaColossus",
+          "kindDef": "AA_AnimaColossus",
+          "def": "AA_AnimaColossus",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 247,
+          "z": 192,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 6.0
+         },
+         {
+          "id": "RM_Shambles48255",
+          "name": "The shambles",
+          "kind": "RM_Shambles",
+          "kindDef": "RM_Shambles",
+          "def": "RM_Shambles",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 149,
+          "z": 192,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.6
+         },
+         {
+          "id": "Human49248",
+          "name": "Gilma",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 65,
+          "z": 93,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human49339",
+          "name": "Feeb",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 67,
+          "z": 140,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human55156",
+          "name": "Benitez",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 227,
+          "z": 74,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "Human58156",
+          "name": "Lowe",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 231,
+          "z": 32,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Zhakka64860",
+          "name": "Zhakka",
+          "kind": "RSW_Zhakka",
+          "kindDef": "RSW_Zhakka",
+          "def": "RSW_Zhakka",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 84,
+          "z": 66,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.35
+         },
+         {
+          "id": "RSW_Zhakka64861",
+          "name": "Zhakka",
+          "kind": "RSW_Zhakka",
+          "kindDef": "RSW_Zhakka",
+          "def": "RSW_Zhakka",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 91,
+          "z": 65,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.35
+         },
+         {
+          "id": "Rat66143",
+          "name": "Lab rat",
+          "kind": "RUT_LabRat",
+          "kindDef": "RUT_LabRat",
+          "def": "Rat",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 138,
+          "z": 82,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2
+         }
+        ],
+        "returned": 26,
+        "truncated": 0,
+        "totalOnMap": 26,
+        "ticksGame": 13236,
+        "operation": {
+         "OperationId": "op_d009d0242559429eaea6f9d019623b8f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 13236
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "survivors",
+   "components": [
+    {
+     "name": "survivor_toggle_off_refuses",
+     "toggle": "survivorsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'survivorsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_FallSurvivor canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_FallSurvivor",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 47.7919235,
+        "ticksGame": 13236,
+        "operation": {
+         "OperationId": "op_fcb538fc39d44f88b78bed22afec4706",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 50
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 13236
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'survivorsEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "survivor_drifts_in_feral",
+     "toggle": "survivorsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_FallSurvivor fired with 48 points.",
+        "incident": "RUT_FallSurvivor",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 47.7919235,
+        "ticksGame": 13236,
+        "operation": {
+         "OperationId": "op_1262898b81e24712b4bff9052f059c34",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 13236
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(120) -> 120 real tick(s) over 1 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_e288f17a7ab04b1d8c68f3306ba8f02f",
+        "status": "completed",
+        "requestedTicks": 120,
+        "completedTicks": 120,
+        "remainingTicks": 0,
+        "startTicksGame": 13236,
+        "endTicksGame": 13356,
+        "advancedTicks": 120,
+        "initialFrame": 27911,
+        "lastFrame": 28030,
+        "advancedFrames": 120,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T18:55:19.5786345+00:00",
+        "completedAtUtc": "2026-10-07T18:55:21.6380976+00:00",
+        "message": "Advanced 120 game tick(s) across 120 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 13356
+        },
+        "operation": {
+         "OperationId": "op_b61dfcefb34145fca69ce18751991e8d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 2089
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "27 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human516",
+          "name": "David",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 91,
+          "z": 107,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Frail",
+             "label": "frail",
+             "severity": 0.001,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Dementia",
+             "label": "dementia",
+             "severity": 0.001,
+             "part": "Brain",
+             "partLabel": "brain"
+            },
+            {
+             "def": "Cataract",
+             "label": "cataract",
+             "severity": 0.001,
+             "part": "Eye",
+             "partLabel": "right eye"
+            },
+            {
+             "def": "Cataract",
+             "label": "cataract",
+             "severity": 0.001,
+             "part": "Eye",
+             "partLabel": "left eye"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.18,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.0999999,
+             "part": "Shoulder",
+             "partLabel": "right shoulder"
+            },
+            {
+             "def": "ToxicBuildup",
+             "label": "toxic buildup (initial)",
+             "severity": 0.108333468
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.0668424
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 0.8599999,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.0999999,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch scar (aching)",
+             "severity": 1.34,
+             "part": "Eye",
+             "partLabel": "right eye"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.26,
+             "part": "Head",
+             "partLabel": "head"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.8,
+            "Moving": 0.49,
+            "Manipulation": 0.49,
+            "Talking": 0.55,
+            "Eating": 0.8,
+            "Sight": 0.47,
+            "Hearing": 0.75,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.093875,
+           "bleedRate": 0.405599982
+          }
+         },
+         {
+          "id": "Human519",
+          "name": "Skissor",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 230,
+          "z": 59,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_ImperialToad34096",
+          "name": "Crystal",
+          "kind": "RSW_ImperialToad",
+          "kindDef": "RSW_ImperialToad",
+          "def": "RSW_ImperialToad",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 113,
+          "z": 97,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.3,
+          "health": {
+           "hediffs": [
+            {
+             "def": "MissingBodyPart",
+             "label": "Torn off",
+             "severity": 0.5,
+             "part": "Paw",
+             "partLabel": "front right paw"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 0.75,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human522",
+          "name": "Wim",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 230,
+          "z": 51,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.3854546,
+             "part": "Hand",
+             "partLabel": "left hand"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.3854546,
+             "part": "Humerus",
+             "partLabel": "left humerus"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.545454562,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "ToxicBuildup",
+             "label": "toxic buildup (initial)",
+             "severity": 0.09680004
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.95,
+            "Moving": 0.95,
+            "Manipulation": 0.93,
+            "Talking": 0.95,
+            "Eating": 0.95,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.01549091,
+           "bleedRate": 0.055854544
+          }
+         },
+         {
+          "id": "Megascarab48240",
+          "name": "Megascarab",
+          "kind": "Megascarab",
+          "kindDef": "Megascarab",
+          "def": "Megascarab",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 39,
+          "z": 77,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Megaspider48241",
+          "name": "Megaspider",
+          "kind": "Megaspider",
+          "kindDef": "Megaspider",
+          "def": "Megaspider",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 33,
+          "z": 70,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.2,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "VFEI2_Megapede48242",
+          "name": "Megapede",
+          "kind": "VFEI2_Megapede",
+          "kindDef": "VFEI2_Megapede",
+          "def": "VFEI2_Megapede",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 28,
+          "z": 80,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.8,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_ThozzikColony48244",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 236,
+          "z": 96,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.18000031,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.27600014,
+             "part": "Pronotum",
+             "partLabel": "pronotum"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "Pronotum",
+             "partLabel": "pronotum"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.30800009,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.30800009,
+             "part": "Pronotum",
+             "partLabel": "pronotum"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.30800009,
+             "part": "InsectHead",
+             "partLabel": "head"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.07206001
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.30800009,
+             "part": "InsectLeg",
+             "partLabel": "rear right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.30800009,
+             "part": "InsectLeg",
+             "partLabel": "middle right leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "InsectHead",
+             "partLabel": "head"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "RM_Stinger",
+             "partLabel": "stinger"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.27600014,
+             "part": "InsectLeg",
+             "partLabel": "rear left leg"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.73,
+            "Moving": 0.6,
+            "Manipulation": 0.69,
+            "Talking": 0.32,
+            "Eating": 0.32,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 0.44,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.498674959,
+           "bleedRate": 0.981000066
+          }
+         },
+         {
+          "id": "RM_ThozzikColonyQueen48245",
+          "name": "Thozzik queen",
+          "kind": "RM_ThozzikColonyQueen",
+          "kindDef": "RM_ThozzikColonyQueen",
+          "def": "RM_ThozzikColonyQueen",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 68,
+          "z": 48,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Brogg48246",
+          "name": "Brogg",
+          "kind": "RM_Brogg",
+          "kindDef": "RM_Brogg",
+          "def": "RM_Brogg",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 83,
+          "z": 28,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 2.1,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Thozzik48247",
+          "name": "Thozzik",
+          "kind": "RM_Thozzik",
+          "kindDef": "RM_Thozzik",
+          "def": "RM_Thozzik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 129,
+          "z": 21,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_ThozzikColony48248",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 103,
+          "z": 40,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_ThozzikColony48249",
+          "name": "Thozzik",
+          "kind": "RM_ThozzikColony",
+          "kindDef": "RM_ThozzikColony",
+          "def": "RM_ThozzikColony",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 105,
+          "z": 38,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Grellik48250",
+          "name": "Grellik",
+          "kind": "RM_Grellik",
+          "kindDef": "RM_Grellik",
+          "def": "RM_Grellik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 231,
+          "z": 105,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch scar (itchy)",
+             "severity": 6.0,
+             "part": "Eye",
+             "partLabel": "right eye"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.276,
+             "part": "Eye",
+             "partLabel": "right eye"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.276,
+             "part": "Antenna",
+             "partLabel": "right antenna"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.00515759131
+            },
+            {
+             "def": "Crush",
+             "label": "crush",
+             "severity": 0.542,
+             "part": "InsectLeg",
+             "partLabel": "rear right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.67,
+             "part": "Shell",
+             "partLabel": "shell"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 0.99,
+            "Manipulation": 0.99,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 0.76,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.103593744,
+           "bleedRate": 0.131185
+          }
+         },
+         {
+          "id": "RM_Grellik48251",
+          "name": "Grellik",
+          "kind": "RM_Grellik",
+          "kindDef": "RM_Grellik",
+          "def": "RM_Grellik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 244,
+          "z": 150,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.212,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.276,
+             "part": "Elytra",
+             "partLabel": "left elytra"
+            },
+            {
+             "def": "Crush",
+             "label": "crush",
+             "severity": 0.542,
+             "part": "InsectLeg",
+             "partLabel": "front left leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.606,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "InsectLeg",
+             "partLabel": "front left leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.212,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.0213729031
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.212,
+             "part": "Antenna",
+             "partLabel": "right antenna"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.276,
+             "part": "Antenna",
+             "partLabel": "left antenna"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.606,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Crush",
+             "label": "crush",
+             "severity": 0.606,
+             "part": "InsectLeg",
+             "partLabel": "middle left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "InsectLeg",
+             "partLabel": "front left leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "Shell",
+             "partLabel": "shell"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.96,
+            "Moving": 0.92,
+            "Manipulation": 0.92,
+            "Talking": 0.96,
+            "Eating": 0.96,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.180825,
+           "bleedRate": 0.27133
+          }
+         },
+         {
+          "id": "RM_Illoth48252",
+          "name": "Illoth",
+          "kind": "RM_Illoth",
+          "kindDef": "RM_Illoth",
+          "def": "RM_Illoth",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 227,
+          "z": 109,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.77,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "RM_RotMothWing",
+             "partLabel": "right wing"
+            },
+            {
+             "def": "ToxicBuildup",
+             "label": "toxic buildup (initial)",
+             "severity": 0.03105801
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.03015,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Thozzik48253",
+          "name": "Thozzik",
+          "kind": "RM_Thozzik",
+          "kindDef": "RM_Thozzik",
+          "def": "RM_Thozzik",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 97,
+          "z": 1,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.32,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "AA_AnimaColossus48254",
+          "name": "Anima colossus",
+          "kind": "AA_AnimaColossus",
+          "kindDef": "AA_AnimaColossus",
+          "def": "AA_AnimaColossus",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 245,
+          "z": 192,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 6.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.12400007,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 0.908000052,
+             "part": "Leg",
+             "partLabel": "middle left leg"
+            },
+            {
+             "def": "ToxicBuildup",
+             "label": "toxic buildup (initial)",
+             "severity": 0.0637166649
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "rear right leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.12400007,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.08945311
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.12400007,
+             "part": "AnimalJaw",
+             "partLabel": "jaw"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 0.476,
+             "part": "Eye",
+             "partLabel": "left second eye"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "front right leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.12400007,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Tail",
+             "partLabel": "tail"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Tail",
+             "partLabel": "tail"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 0.908000052,
+             "part": "Leg",
+             "partLabel": "front left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "front right leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Tail",
+             "partLabel": "tail"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "rear right leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "rear left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Tail",
+             "partLabel": "tail"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "middle left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "front left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Paw",
+             "partLabel": "front left paw"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "AnimalJaw",
+             "partLabel": "jaw"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch scar",
+             "severity": 1.34,
+             "part": "Eye",
+             "partLabel": "right third eye"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.12400007,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "middle right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.12400007,
+             "part": "Nose",
+             "partLabel": "nose"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Eye",
+             "partLabel": "left third eye"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "rear left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.12400007,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "front left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Paw",
+             "partLabel": "front left paw"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "Nose",
+             "partLabel": "nose"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Head",
+             "partLabel": "head"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.12400007,
+             "part": "Leg",
+             "partLabel": "rear left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Paw",
+             "partLabel": "rear left paw"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Leg",
+             "partLabel": "rear left leg"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Body",
+             "partLabel": "body"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 1.34,
+             "part": "Nose",
+             "partLabel": "nose"
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch",
+             "severity": 1.34,
+             "part": "Eye",
+             "partLabel": "left second eye"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.88,
+            "Moving": 0.82,
+            "Manipulation": 0.81,
+            "Talking": 0.88,
+            "Eating": 0.81,
+            "Sight": 0.99,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.257363051,
+           "bleedRate": 1.15368891
+          }
+         },
+         {
+          "id": "RM_Shambles48255",
+          "name": "The shambles",
+          "kind": "RM_Shambles",
+          "kindDef": "RM_Shambles",
+          "def": "RM_Shambles",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 150,
+          "z": 192,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.6,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human49248",
+          "name": "Gilma",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 65,
+          "z": 93,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human49339",
+          "name": "Feeb",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 67,
+          "z": 140,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human55156",
+          "name": "Benitez",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 227,
+          "z": 80,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.6000001,
+             "part": "Eye",
+             "partLabel": "left eye"
+            },
+            {
+             "def": "ToxicBuildup",
+             "label": "toxic buildup (initial)",
+             "severity": 0.0462666564
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.95,
+            "Moving": 0.95,
+            "Manipulation": 0.95,
+            "Talking": 0.95,
+            "Eating": 0.95,
+            "Sight": 0.97,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.007500001,
+           "bleedRate": 0.0360000059
+          }
+         },
+         {
+          "id": "Human58156",
+          "name": "Lowe",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 231,
+          "z": 40,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.465882421,
+             "part": "Kidney",
+             "partLabel": "right kidney"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.7058824,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "ToxicBuildup",
+             "label": "toxic buildup (initial)",
+             "severity": 0.04706666
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.95,
+            "Moving": 0.95,
+            "Manipulation": 0.95,
+            "Talking": 0.95,
+            "Eating": 0.95,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.01464706,
+           "bleedRate": 0.0703058839
+          }
+         },
+         {
+          "id": "RSW_Zhakka64860",
+          "name": "Zhakka",
+          "kind": "RSW_Zhakka",
+          "kindDef": "RSW_Zhakka",
+          "def": "RSW_Zhakka",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 83,
+          "z": 64,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.35,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.7058824,
+             "part": "Elytra",
+             "partLabel": "right elytra"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.7058824,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "ToxicBuildup",
+             "label": "toxic buildup (moderate)",
+             "severity": 0.4843477
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.7058824,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.7058824,
+             "part": "Elytra",
+             "partLabel": "left elytra"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.545454562,
+             "part": "InsectHead",
+             "partLabel": "head"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.545454562,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.545454562,
+             "part": "Pronotum",
+             "partLabel": "pronotum"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.544,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.444444448,
+             "part": "InsectLeg",
+             "partLabel": "rear left leg"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.444444448,
+             "part": "Elytra",
+             "partLabel": "right elytra"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.444444448,
+             "part": "InsectLeg",
+             "partLabel": "middle right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.444444448,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.4778824,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.7058824,
+             "part": "InsectLeg",
+             "partLabel": "middle right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.7058824,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.7058824,
+             "part": "InsectLeg",
+             "partLabel": "rear right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.7058824,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.7058824,
+             "part": "InsectLeg",
+             "partLabel": "middle right leg"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.545454562,
+             "part": "Stomach",
+             "partLabel": "stomach"
+            },
+            {
+             "def": "Cut",
+             "label": "cut",
+             "severity": 0.545454562,
+             "part": "InsectLeg",
+             "partLabel": "front left leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.545454562,
+             "part": "Shell",
+             "partLabel": "shell"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.85,
+            "Moving": 0.84,
+            "Manipulation": 0.84,
+            "Talking": 0.83,
+            "Eating": 0.83,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 0.98,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 0.99
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0492986254,
+           "bleedRate": 0.09774526
+          }
+         },
+         {
+          "id": "RSW_Zhakka64861",
+          "name": "Zhakka",
+          "kind": "RSW_Zhakka",
+          "kindDef": "RSW_Zhakka",
+          "def": "RSW_Zhakka",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 91,
+          "z": 64,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.35,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Rat66143",
+          "name": "Lab rat",
+          "kind": "RUT_LabRat",
+          "kindDef": "RUT_LabRat",
+          "def": "Rat",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 138,
+          "z": 82,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_GNKDroid66930",
+          "name": "Luxemburg",
+          "kind": "RSW_DW_OuterRim_GNKDroid",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "def": "RSW_DW_Race_OuterRim_GNKDroid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 221,
+          "z": 245,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0
+            },
+            {
+             "def": "RUT_Hediff_Feral",
+             "label": "feral",
+             "severity": 0.5
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 27,
+        "truncated": 0,
+        "totalOnMap": 27,
+        "ticksGame": 13356,
+        "operation": {
+         "OperationId": "op_58837a4d0ef648b1b20cf9dd37d71fd7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 13356
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000026D7FCAE350>"
+ ],
+ "refused": "",
+ "walk": null
+}

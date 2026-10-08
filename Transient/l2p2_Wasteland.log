@@ -1,0 +1,190 @@
+[wl-note] Player.log scan: {"lines": 308, "hits": [], "game-wide config/xref lines (instrument probe)": 18}
+[wl] 10:26:03 player_log_names_no_wasteland_error PASS 
+[wl] 10:26:03 resolve_probe_sees_absence PASS 
+[wl] 10:26:03 defs_resolve_BiomeDef PASS 
+[wl] 10:26:03 defs_resolve_FleckDef PASS 
+[wl] 10:26:03 defs_resolve_GenStepDef PASS 
+[wl] 10:26:03 defs_resolve_HediffDef PASS 
+[wl] 10:26:03 defs_resolve_IncidentDef PASS 
+[wl] 10:26:03 defs_resolve_JobDef PASS 
+[wl] 10:26:03 defs_resolve_LetterDef PASS 
+[wl] 10:26:03 defs_resolve_PawnKindDef PASS 
+[wl] 10:26:03 defs_resolve_QuestScriptDef PASS 
+[wl] 10:26:03 defs_resolve_SoundDef PASS 
+[wl] 10:26:04 defs_resolve_TerrainDef PASS 
+[wl] 10:26:04 defs_resolve_ThingDef PASS 
+[wl] 10:26:04 defs_resolve_ThinkTreeDef PASS 
+[wl] 10:26:04 defs_resolve_WeatherDef PASS 
+[wl] 10:26:04 defs_resolve_WorkGiverDef PASS 
+[wl] 10:26:04 settings_source_parse_floor PASS 
+[wl] 10:26:04 default_ambientDoseEnabled PASS 
+[wl] 10:26:04 default_ambientDoseMultiplier PASS 
+[wl] 10:26:04 default_ashFallPollutionEnabled PASS 
+[wl] 10:26:04 default_brineDepositsEnabled PASS 
+[wl] 10:26:04 default_caskBayPerCell PASS 
+[wl] 10:26:04 default_caskLaunchCheckEnabled PASS 
+[wl] 10:26:04 default_caskLeakSeverity PASS 
+[wl] 10:26:04 default_caskLeaksEnabled PASS 
+[wl] 10:26:04 default_caskProcessingEnabled PASS 
+[wl] 10:26:04 default_caskProcessingPerDay PASS 
+[wl] 10:26:04 default_caskReburialEnabled PASS 
+[wl] 10:26:04 default_cinderfeltGerminationEnabled PASS 
+[wl] 10:26:04 default_cinderwireEmpEnabled PASS 
+[wl] 10:26:04 default_gripperSpawnsCarrying PASS 
+[wl] 10:26:05 default_gripperTheftEnabled PASS 
+[wl] 10:26:05 default_gripperTheftMtbHours PASS 
+[wl] 10:26:05 default_middenshellEnabled PASS 
+[wl] 10:26:05 default_middenshellGrabEnabled PASS 
+[wl] 10:26:05 default_middenshellLureEnabled PASS 
+[wl] 10:26:05 default_middenshellLureRange PASS 
+[wl] 10:26:05 default_middenshellOmenHours PASS 
+[wl] 10:26:05 default_middenshellProcessionEnabled PASS 
+[wl] 10:26:05 default_middenshellStepTicks PASS 
+[wl] 10:26:05 default_middenshellTrailEnabled PASS 
+[wl] 10:26:05 default_namedStormPhasesEnabled PASS 
+[wl] 10:26:05 default_namedStormWarningFactor PASS 
+[wl] 10:26:05 default_processorGatherEnabled PASS 
+[wl] 10:26:05 default_processorUnpolluteEnabled PASS 
+[wl] 10:26:05 default_radiothermalHeatEnabled PASS 
+[wl] 10:26:05 default_stormDoseEnabled PASS 
+[wl] 10:26:05 default_stormDoseMultiplier PASS 
+[wl] 10:26:05 default_tippingEnabled PASS 
+[wl] 10:26:05 default_wastelandEnabled PASS 
+[wl] 10:26:05 roundtrip_probe_finds_fields PASS 
+[wl] 10:26:06 ambientDoseEnabled_round_trips PASS 
+[wl] 10:26:06 ambientDoseMultiplier_round_trips PASS 
+[wl] 10:26:06 ashFallPollutionEnabled_round_trips PASS 
+[wl] 10:26:07 brineDepositsEnabled_round_trips PASS 
+[wl] 10:26:07 caskBayPerCell_round_trips FAIL ExpectationFailed: mod_settings_field(set, RimMandrake.Wasteland.RM_WastelandSettings.caskBayPerCell=3.0) failed: {'success': False, 'message': "Could not coerce '3.0' to Int32: Input string was not in a correct format.", 'operation': {'OperationId': 'op_2e0ff90410aa472883562706faa3cc05', 'Status': 
+[wl] 10:26:07 caskLaunchCheckEnabled_round_trips PASS 
+[wl] 10:26:07 caskLeakSeverity_round_trips PASS 
+[wl] 10:26:08 caskLeaksEnabled_round_trips PASS 
+[wl] 10:26:08 caskProcessingEnabled_round_trips PASS 
+[wl] 10:26:08 caskProcessingPerDay_round_trips PASS 
+[wl] 10:26:09 caskReburialEnabled_round_trips PASS 
+[wl] 10:26:09 cinderfeltGerminationEnabled_round_trips PASS 
+[wl] 10:26:09 cinderwireEmpEnabled_round_trips PASS 
+[wl] 10:26:09 gripperSpawnsCarrying_round_trips PASS 
+[wl] 10:26:10 gripperTheftEnabled_round_trips PASS 
+[wl] 10:26:10 gripperTheftMtbHours_round_trips PASS 
+[wl] 10:26:10 middenshellEnabled_round_trips PASS 
+[wl] 10:26:11 middenshellGrabEnabled_round_trips PASS 
+[wl] 10:26:11 middenshellLureEnabled_round_trips PASS 
+[wl] 10:26:11 middenshellLureRange_round_trips PASS 
+[wl] 10:26:11 middenshellOmenHours_round_trips FAIL ExpectationFailed: mod_settings_field(set, RimMandrake.Wasteland.RM_WastelandSettings.middenshellOmenHours=5.0) failed: {'success': False, 'message': "Could not coerce '5.0' to Int32: Input string was not in a correct format.", 'operation': {'OperationId': 'op_c4fdd940cbdb4c55a6fe62d76b684d32', 'Sta
+[wl] 10:26:12 middenshellProcessionEnabled_round_trips PASS 
+[wl] 10:26:12 middenshellStepTicks_round_trips FAIL ExpectationFailed: mod_settings_field(set, RimMandrake.Wasteland.RM_WastelandSettings.middenshellStepTicks=401.0) failed: {'success': False, 'message': "Could not coerce '401.0' to Int32: Input string was not in a correct format.", 'operation': {'OperationId': 'op_b0d2a9aaf48e4c33a6b46da52f10f824', 
+[wl] 10:26:12 middenshellTrailEnabled_round_trips PASS 
+[wl] 10:26:12 namedStormPhasesEnabled_round_trips PASS 
+[wl] 10:26:13 namedStormWarningFactor_round_trips PASS 
+[wl] 10:26:13 processorGatherEnabled_round_trips PASS 
+[wl] 10:26:13 processorUnpolluteEnabled_round_trips PASS 
+[wl] 10:26:14 radiothermalHeatEnabled_round_trips PASS 
+[wl] 10:26:14 stormDoseEnabled_round_trips PASS 
+[wl] 10:26:14 stormDoseMultiplier_round_trips PASS 
+[wl] 10:26:15 tippingEnabled_round_trips PASS 
+[wl] 10:26:15 wastelandEnabled_round_trips PASS 
+[wl] 10:26:15 biome_probe_ready PASS 
+[wl] 10:26:15 biome_flags_and_densities PASS 
+[wl-note] wild animals rows not asserted (their donor mod is not on this tier): []
+[wl] 10:26:15 wild_animals_wired PASS 
+[wl-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[wl] 10:26:15 wild_plants_wired PASS 
+[wl] 10:26:15 probe_states_are_honest_and_no_donor_rows PASS 
+[wl] 10:26:15 biome_extension_opts_into_the_storm_layer FAIL ExpectationFailed: RM_WastelandStormBiomeExtension is not among the biome's modExtensions, so RM_MapComponent_WastelandStorms returns at once on every Wasteland map: [{'temperature': {'min': -35.0, 'max': 30.0}, 'rainfall': {'min': 0.0, 'max': 500.0}, 'elevation': {'min': 0.0, 'max': 600.0}, 'baseSc
+[wl] 10:26:15 cinderwire_storm_is_not_on_the_weather_list PASS 
+[wl-note] rain rows read: {"ToxRain": 0.0, "Rain": 0.0, "RainyThunderstorm": 0.0}
+[wl] 10:26:15 no_rain_of_any_kind PASS 
+[wl] 10:26:15 dune_field_binding_on_the_biome FAIL ExpectationFailed: RM_Wasteland carries no DuneFieldExtension, so ash never drifts. Patches/RM_Wasteland_MovingDunesBinding.xml is wrapped in PatchOperationFindMod 'Moving Dunes', which matches nothing once MovingDunes is composed into mandrake.rm.biomes: [{'temperature': {'min': -35.0, 'max': 30.0}
+[wl] 10:26:15 dune_weather_binding_on_the_ash_storm FAIL ExpectationFailed: RM_WastelandAshStorm carries no DuneWeatherExtension (same FindMod 'Moving Dunes' patch): [{'airborneToxicFactor': 1.0, 'fallCellsPerDay': 900.0, 'aftermathPlant': 'RM_Cinderfelt', 'aftermathSeedFraction': 0.35}, {'transportFactor': 6.0, 'influxFactor': 5.0, 'forceStormTransport':
+[wl] 10:26:15 dune_material_def_exists PASS 
+[wl] 10:26:15 brine_scatters_registered_on_the_biome PASS 
+[wl] 10:26:16 site_ready_flyer PASS 
+[wl] 10:26:16 grimewing_can_ever_fly PASS 
+[wl] 10:26:16 ground_creature_cannot_fly_control PASS 
+[wl] 10:26:16 site_ready_ash UNMEASURED UNMEASURED: the current map's biome is 'TemperateForest', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
+[wl] 10:26:16 ash_storm_doses_an_unroofed_pawn UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:16 ash_fall_pollutes_the_ground UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:16 ash_storm_end_germinates_cinderfelt UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:16 site_ready_ash_off UNMEASURED UNMEASURED: the current map's biome is 'TemperateForest', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
+[wl] 10:26:16 dose_off_means_no_buildup UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:16 fall_off_means_no_pollution UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:16 germination_off_means_no_cinderfelt UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 site_ready_halo UNMEASURED UNMEASURED: the current map's biome is 'TemperateForest', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
+[wl] 10:26:17 warning_message_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 dose_is_held_during_the_warning UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 unleashed_message_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 dose_begins_after_the_warning UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 site_ready_cinderwire UNMEASURED UNMEASURED: the current map's biome is 'TemperateForest', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
+[wl] 10:26:17 warning_message_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 dose_is_held_during_the_warning UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 unleashed_message_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 dose_begins_after_the_warning UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 site_ready_phases_off UNMEASURED UNMEASURED: the current map's biome is 'TemperateForest', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
+[wl] 10:26:17 no_warning_message_when_off UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:17 dose_starts_at_once_when_off UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:26:33 site_ready_smolderback PASS 
+[wl-note] ToxicBuildup in the smolderback's room after 900 ticks: 0.0
+[wl] 10:26:33 smolderback_doses_its_own_room FAIL ExpectationFailed: the colonist sharing a sealed room with a smolderback took no ToxicBuildup in 900 ticks (toxicFactor 0.35, doseRoomWhenIndoors)
+[wl] 10:26:33 dose_stays_in_its_room PASS 
+[wl-note] room temperature with / without the smolderback: [14.0986481, 2.193562]
+[wl] 10:26:34 smolderback_heats_its_own_room PASS 
+[wl] 10:26:46 dose_off_stops_dosing PASS 
+[wl] 10:27:01 heat_off_stops_heating PASS 
+[wl] 10:27:13 master_switch_off_stops_dosing PASS 
+[wl] 10:27:26 site_ready_processors PASS 
+[wl] 10:27:26 polluted_ground_is_feed_ground FAIL ExpectationFailed: a sloghog standing on polluted ground reads 'off feed ground: slow': Female sloghog, age 4 of New Arrivals | Bezoar growth: 0.15% (off feed ground: slow) | Wandering.
+[wl] 10:27:26 clean_ground_is_slow_ground PASS 
+[wl] 10:27:26 sootgrazer_is_a_soot_brick_press_on_polluted_ground FAIL ExpectationFailed: a sootgrazer on polluted ground reads 'off feed ground: slow': Male sootgrazer, age 3 of New Arrivals | Soot brick press: 0.28% (off feed ground: slow) | Wandering.
+[wl] 10:27:26 gather_places_RM_ContaminantBezoar UNMEASURED UNMEASURED: animal_resource_force could not resolve the resource def: {}
+[wl] 10:27:26 gather_places_RM_SootBrick UNMEASURED UNMEASURED: animal_resource_force could not resolve the resource def: {}
+[wl] 10:27:26 gather_off_hides_the_growth_pane PASS 
+[wl] 10:27:27 site_ready_gripper PASS 
+[wl-note] gripper's starting haul: "Male, age <color=#87F6F6FF>3 quadrums</color> | Gripping: Cloth x5"
+[wl] 10:27:27 wild_gripper_spawns_carrying_scrap PASS 
+[wl] 10:27:57 steal_swaps_scrap_for_gold FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] 10:28:27 hurt_gripper_drops_its_haul FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] 10:28:36 theft_off_gripper_spawns_empty_handed PASS 
+[wl] 10:28:36 spawns_carrying_off_gripper_spawns_empty_handed PASS 
+[wl] 10:29:06 tamed_gripper_never_steals FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] restore gripperTheftEnabled failed: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] 10:32:02 site_ready_flora PASS 
+[wl-note] WoodLog stacks: [16]
+[wl] 10:32:02 harvest_yields_WoodLog_from_RM_VaultRoot PASS 
+[wl-note] RawBerries stacks: [10]
+[wl] 10:32:02 harvest_yields_RawBerries_from_RM_Pusberry PASS 
+[wl-note] RawPotatoes stacks: [4]
+[wl] 10:32:02 harvest_yields_RawPotatoes_from_RM_Boilbulb PASS 
+[wl-note] Chemfuel stacks: [4]
+[wl] 10:32:02 harvest_yields_Chemfuel_from_RM_Wartshrub PASS 
+[wl] 10:32:03 site_ready_brine PASS 
+[wl] 10:32:03 scatter_places_RM_BrineDeposit_Tekk PASS 
+[wl] 10:32:03 scatter_places_RM_BrineDeposit_Drazz PASS 
+[wl] 10:32:03 scatter_places_RM_BrineDeposit_BrinePlate PASS 
+[wl] 10:32:03 RM_BrineDeposit_Tekk_mines_to_RM_Tekk PASS 
+[wl] 10:32:03 RM_BrineDeposit_Drazz_mines_to_RM_Drazz PASS 
+[wl] 10:32:03 RM_BrineDeposit_BrinePlate_mines_to_RM_BrinePlate PASS 
+[wl] 10:32:33 raw_brineleech_gives_brine_shock FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] 10:33:24 site_ready_casks PASS 
+[wl] 10:33:24 intact_cask_is_inert PASS 
+[wl-note] leak message still on the live list: true
+[wl] 10:33:25 breached_cask_leaks_loudly PASS 
+[wl] 10:33:25 leaking_drains_the_stored_dose PASS 
+[wl] 10:33:37 leaks_off_makes_a_breached_cask_inert PASS 
+[wl] 10:33:37 breached_cask_text_does_not_claim_a_bay_that_is_not_there FAIL ExpectationFailed: a breached cask with NO bay reads 'held by a sealed cask bay': Stored dose: 0.61 | Breached, but held by a sealed cask bay.
+[wl] 10:33:37 site_ready_bay PASS 
+[wl] 10:33:37 bay_readout_shows_capacity_integrity_and_launch_safety PASS 
+[wl] 10:33:49 bay_holds_a_breached_cask_without_leaking PASS 
+[wl] 10:34:01 shot_up_bay_leaks_loudly PASS 
+[wl] 10:34:07 unpowered_bay_says_so_and_power_clears_it PASS 
+[wl] 10:34:07 can_launch_postfix_is_installed PASS 
+[wl] 10:34:07 site_ready_middenshell UNMEASURED UNMEASURED: the current map's biome is 'TemperateForest', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
+[wl] 10:34:07 middenshell_is_twenty_cells_wide UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:34:07 wake_flattens_buildings_and_swallows_items UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:34:07 crawl_leaves_trail_filth UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:34:07 trail_off_leaves_no_new_filth UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:34:07 off_stands_still_and_on_resumes UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:34:07 ambient_aura_doses_a_pawn_beside_it UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:34:07 on_again_resumes_the_crawl UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 10:34:07 killed_body_hardens_into_a_quarry UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] map wipe failed: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound

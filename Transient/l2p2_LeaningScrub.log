@@ -1,0 +1,9 @@
+[lscrub-note] shipped defs resolved: 70
+[lscrub] 10:58:04 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 10:58:04 biome_weather_table PASS 
+[lscrub] 10:58:04 biome_density_and_flora PASS 
+[lscrub] 10:58:04 biome_lean_extension PASS 
+[lscrub] 10:58:04 rules_armed PASS 
+[lscrub] 10:58:04 thicket_smotherable PASS 
+[lscrub] 10:58:04 vissler_arm_is_rotting_meat PASS 

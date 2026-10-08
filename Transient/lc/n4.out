@@ -1,0 +1,8 @@
+retile {'tile': 115950, 'biome': 'RM_Contagion', 'temperature': 16.5259552, 'applied': 'RM_Cauldron'}
+0 2500 nettles 3 42s
+1 5000 nettles 3 84s
+2 7500 nettles 3 127s
+3 10000 nettles 3 169s
+4 12500 nettles 5 211s
+[(114, 245), (126, 123), (194, 238), (107, 162), (140, 109)]
+Counter({'Soil': 5})

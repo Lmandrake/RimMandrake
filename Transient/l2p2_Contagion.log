@@ -1,0 +1,63 @@
+[contagion-note] shipped defs resolved: 110
+[contagion] 10:46:56 defs_resolve PASS 
+[contagion-note] biome roster: {"animals": 21, "plants": 12}
+[contagion] 10:46:56 biome_table_and_roster PASS 
+[contagion] 10:46:56 biome_roster_animals UNMEASURED UNMEASURED: wildAnimals is not serialisable by get_defs (non-public field): "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"; the roster is checked statically from the XML
+[contagion] 10:46:56 organ_patch_comps PASS 
+[contagion] 10:46:57 defaults PASS 
+[contagion] 10:46:57 biomeRarityFactor_roundtrip PASS 
+[contagion] 10:46:57 burnDamageFactor_roundtrip PASS 
+[contagion] 10:46:57 burnEnabled_roundtrip PASS 
+[contagion] 10:46:58 burnFrequency_roundtrip PASS 
+[contagion] 10:46:58 burnTellsEnabled_roundtrip PASS 
+[contagion] 10:46:58 cloudRepulsorEnabled_roundtrip PASS 
+[contagion] 10:46:58 coalescenceEnabled_roundtrip PASS 
+[contagion] 10:46:59 genomeOrganGrowingEnabled_roundtrip PASS 
+[contagion] 10:46:59 grownLimbsEnabled_roundtrip PASS 
+[contagion] 10:46:59 sunbeamNativeFactor_roundtrip PASS 
+[contagion] 10:46:59 unfinishedSpawnerEnabled_roundtrip PASS 
+[contagion] 10:47:01 site_ready_baseline PASS 
+[contagion] 10:47:57 off_when_setting_off FAIL ExpectationFailed: inspect_string(RM_CloudRepulsor86063) unreadable: []
+[contagion] 10:47:57 holds_sky_clear UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:47:57 lapses_without_power UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:48:00 site_ready_spawner PASS 
+[contagion] 10:48:04 spawner_off_buds_nothing PASS 
+[contagion] 10:48:08 spawner_buds_unfinished PASS 
+[contagion] 10:48:08 unfinished_rolls_limbs_and_lifespan PASS 
+[contagion] 10:48:11 unfinished_dissolves_on_death PASS 
+[contagion-note] retiled: {"tile": 115950, "from": "TemperateForest", "to": "RM_Contagion"}
+[contagion] 10:48:13 retile_to_contagion PASS 
+[contagion] 10:48:13 site_is_contagion PASS 
+[contagion] 10:48:20 burn_site_ready PASS 
+[contagion] 10:49:15 repulsor_forces_burn PASS 
+[contagion] 10:49:26 burn_harmless_at_zero_damage FAIL ExpectationFailed: burnDamageFactor=0 still harmed: [] (native alive=False)
+[contagion] 10:49:26 burn_doses_the_exposed_visitor UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:49:26 burn_hurts_native_spares_armored UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:49:26 native_dives_for_roof UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:49:26 burn_off_means_no_harm UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:49:26 repulsor_off_lapses_burn UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:49:28 site_is_contagion PASS 
+[contagion] 10:49:39 natural_site_ready PASS 
+[contagion] 10:49:49 burn_off_never_schedules PASS 
+[contagion] 10:50:31 slow_frequency_defers_burn PASS 
+[contagion-note] natural burn condition row: [{"def": "RM_ContagionBurnCondition", "ticksLeft": 2514}]
+[contagion] 10:50:52 natural_burn_arrives_on_schedule PASS 
+[contagion] 10:50:54 site_is_contagion PASS 
+[contagion] 10:50:56 uv_site_ready PASS 
+[contagion-note] UV sunburn severity (native@6x, native@1x, person@6x): [30.0, 5.0, 5.0]
+[contagion] 10:50:56 uv_native_multiplier PASS 
+[contagion] 10:50:58 site_is_contagion PASS 
+[contagion] 10:50:59 coalescence_site_ready PASS 
+[contagion] 10:51:06 coalescence_off_absorbs_nothing PASS 
+[contagion-note] after absorbing 6: {"left": 1, "stage": 2, "mass": 6}
+[contagion] 10:51:16 coalescence_absorbs_and_grows_a_stage PASS 
+[contagion] 10:51:23 coalescence_emits_manhunters_and_grows_on_its_own FAIL ExpectationFailed: no manhunter Unfinished emitted after 7000 ticks
+[contagion] 10:51:23 burn_collapses_it_into_monstrous_samples UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:51:23 monstrous_fixture UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:51:23 monstrous_gestation_grows_one_limb UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:51:23 grown_limbs_off_grows_organs UNMEASURED upstream failed -- this chain's state is meaningless
+[contagion] 10:51:25 site_is_contagion PASS 
+[contagion] 10:51:26 genome_site_ready PASS 
+[contagion] 10:54:48 extraction_surgery_yields_sample UNMEASURED UNMEASURED: the surgery job could not start (patient not in a bed / giver unusable): {"isBillGiver": true, "usableBillGiver": true, "anyBillShouldDoNow": true, "usableAfterFueling": false, "pawnCanReserve": true, "isBurning": false, "pawnCanReserveInteractionCell": true, "reason": "UsableForBillsAft
+[contagion] 10:55:19 inject_starts_gestation FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[contagion] 10:55:19 gestation_dies_producing_one_organ_batch UNMEASURED upstream failed -- this chain's state is meaningless

@@ -1,0 +1,1237 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "control_probe_can_say_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "ThingDef/RM_MovingDunesNoSuchDef_ZZ"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_MovingDunesNoSuchDef_ZZ",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "RM_MovingDunesNoSuchDef_ZZ"
+         }
+        ],
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_26a14caf68524e29bc3764027ab6690d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_shipped_def_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: 1 of 3 defs resolved; notFound=['RM_DuneGlobalsDef/RM_Dunes_Globals', 'RM_DuneMaterialDef/RM_Dunes_Sand']",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 3 def(s) resolved; 2 not found",
+        "requested": 3,
+        "foundCount": 1,
+        "notFound": [
+         "RM_DuneGlobalsDef/RM_Dunes_Globals",
+         "RM_DuneMaterialDef/RM_Dunes_Sand"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "RM_DuneGlobalsDef/RM_Dunes_Globals",
+          "found": false,
+          "defType": "RM_DuneGlobalsDef",
+          "defName": "RM_Dunes_Globals",
+          "error": "No def TYPE named 'RM_DuneGlobalsDef'."
+         },
+         {
+          "requested": "RM_DuneMaterialDef/RM_Dunes_Sand",
+          "found": false,
+          "defType": "RM_DuneMaterialDef",
+          "defName": "RM_Dunes_Sand",
+          "error": "No def TYPE named 'RM_DuneMaterialDef'."
+         },
+         {
+          "requested": "ThingDef/RM_Dunes_BuriedCache",
+          "found": true,
+          "defName": "RM_Dunes_BuriedCache",
+          "defType": "ThingDef",
+          "label": "buried cache",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dunes_BuriedCache"
+          }
+         }
+        ],
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_931378f6758b456696230fa21bcde4b4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "settings_probe_finds_fields",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "burialEnabled_round_trips",
+     "toggle": "burialEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clearYieldEnabled_round_trips",
+     "toggle": "clearYieldEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clearYieldMultiplier_round_trips",
+     "toggle": "clearYieldMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "duneEngineEnabled_round_trips",
+     "toggle": "duneEngineEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "plantChokeEnabled_round_trips",
+     "toggle": "plantChokeEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "transportRateMultiplier_round_trips",
+     "toggle": "transportRateMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "windLockEnabled_round_trips",
+     "toggle": "windLockEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "harmony_rules",
+   "components": [
+    {
+     "name": "control_method_carries_no_patch_of_ours",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Thing",
+        "methodName": "SpawnSetup",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "SpawnSetup",
+          "declaringType": "Verse.Thing",
+          "prefixCount": 0,
+          "postfixCount": 0,
+          "transpilerCount": 1,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [],
+          "transpilers": [
+           {
+            "owner": "Kikohi.PipeSystem",
+            "priority": 400,
+            "patchMethod": "PipeSystem.PipeSystem_Thing_SpawnSetup_Patch.Transpiler",
+            "patchAssembly": "PipeSystem"
+           }
+          ],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_cbf2f21e813b40d485e4d565caaabeb1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 17
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rule_sand_holds_on_sand_attached",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "SandGrid",
+        "methodName": "CanHaveSand",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "CanHaveSand",
+          "declaringType": "Verse.SandGrid",
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "mandrake.rm.movingdunes",
+            "priority": 400,
+            "patchMethod": "RimMandrake.MovingDunes.Patch_SandGrid_CanHaveSand.Prefix",
+            "patchAssembly": "RimMandrakeMovingDunes"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_385985b6f6484e9f82c4a59ca3d3a5ea",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 16
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rule_ambient_decay_suppression_attached",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "SandGrid",
+        "methodName": "AddDepth",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "AddDepth",
+          "declaringType": "Verse.SandGrid",
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "mandrake.rm.movingdunes",
+            "priority": 400,
+            "patchMethod": "RimMandrake.MovingDunes.Patch_SandGrid_AddDepth.Prefix",
+            "patchAssembly": "RimMandrakeMovingDunes"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_06f4beeb9c61411cb476f83752228222",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 14
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rule_vanilla_sand_layer_suppression_attached",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "SectionLayer_Sand",
+        "methodName": "Regenerate",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "Regenerate",
+          "declaringType": "Verse.SectionLayer_Sand",
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "mandrake.rm.movingdunes",
+            "priority": 400,
+            "patchMethod": "RimMandrake.MovingDunes.Patch_SectionLayerSand_Regenerate.Prefix",
+            "patchAssembly": "RimMandrakeMovingDunes"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_0fb841e23377417bad0ab675543a1557",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 15
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rule_clear_sand_yield_attached",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "JobDriver_ClearSnowAndSand",
+        "methodName": "MakeNewToils",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "MakeNewToils",
+          "declaringType": "RimWorld.JobDriver_ClearSnowAndSand",
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.movingdunes",
+            "priority": 400,
+            "patchMethod": "RimMandrake.MovingDunes.Patch_ClearSand_Yield.Postfix",
+            "patchAssembly": "RimMandrakeMovingDunes"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_862969374bad4d9793dfd258e8187381",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 15
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "biome_bindings",
+   "components": [
+    {
+     "name": "Desert_carries_dune_field_extension",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: Desert has no DuneFieldExtension (the binding patch matched nothing, and a patch that matches nothing logs nothing): ['DryingBiomeExtension']",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "modExtensions"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/Desert",
+          "found": true,
+          "defName": "Desert",
+          "defType": "BiomeDef",
+          "label": "desert",
+          "modName": "Core",
+          "packageId": "ludeon.rimworld",
+          "fields": {
+           "modExtensions": [
+            "DryingBiomeExtension"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 775606,
+        "operation": {
+         "OperationId": "op_8c571ac8967e4ee2ab8d503c73c6c29e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ExtremeDesert_carries_dune_field_extension",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "dune_field_report",
+   "components": [
+    {
+     "name": "map_is_a_dune_field_and_rules_armed",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the current map's biome carries no DuneFieldExtension (needs a Desert/ExtremeDesert map or featureInOtherBiomes-style binding): [RimMandrake.MovingDunes] this map is not a dune field. Biome RM_Contagion carries no DuneFieldExtension.",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Dune field: report",
+        "node": {
+         "path": "Actions\\Dune field: report",
+         "parentPath": "Actions",
+         "label": "Dune field: report",
+         "category": "Moving Dunes",
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "hasChildren": false,
+         "expandable": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true
+         },
+         "source": {
+          "name": "Dune field: report",
+          "category": "Moving Dunes",
+          "allowedGameStates": "PlayingOnMap",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 148,
+           "level": "info",
+           "message": "[RimMandrake.MovingDunes] this map is not a dune field. Biome RM_Contagion carries no DuneFieldExtension.",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-07T18:00:05.9534161+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "operation": {
+         "OperationId": "op_3059e76ca7d341b2a83f5df5d8ef8651",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 20
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "slow_crests_hop_downwind_and_bank_in_shelter",
+   "components": [
+    {
+     "name": "transport_attempts_scale_with_the_drift_slider",
+     "toggle": "transportRateMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_440cd028205048a3bc9bbf4040c0c351",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 35
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sand_actually_moves_on_a_dune_field",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "banking_in_a_wall_lee_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "slow_upwind_influx_and_downwind_loss",
+   "components": [
+    {
+     "name": "influx_baseline_scales_with_the_drift_slider_once",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_b49b0ddc161d43309dda33dac5361d91",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "loss_term_is_not_squared_by_the_slider",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "engine_off_gate_reads_duneEngineEnabled",
+     "toggle": "duneEngineEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "edge_loss_and_influx_over_days_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "slow_loose_gear_buried_and_returns",
+   "components": [
+    {
+     "name": "burial_api_caches_the_thing_and_removes_it_from_the_map",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofBury answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofBury with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofBury with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofBury(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_411be5e122ac4b4e9d420bcf3dafed9f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "only_wild_unforbidden_loot_is_a_burial_candidate",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofBury answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofBury with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "burialEnabled_off_arm_buries_nothing",
+     "toggle": "burialEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofBury answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofBury with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "burial_by_advancing_drift_and_wind_turn_return_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofBury answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofBury with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "slow_deep_drift_kills_plants",
+   "components": [
+    {
+     "name": "choke_sample_rate_scales_with_the_drift_slider",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_d39c64b8f2fa40c3a8098b1e40b187a3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "choke_damage_kills_a_buried_plant_in_plantChokeDays",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "plant_choke_gate_reads_plantChokeEnabled",
+     "toggle": "plantChokeEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "plants_dying_over_game_days_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "slow_wind_locked_to_the_sun_on_stillsand",
+   "components": [
+    {
+     "name": "lock_applies_only_with_setting_and_a_locking_biome",
+     "toggle": "windLockEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_c3579b034ea8403aabcce7dae6d77f3b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "locked_wind_follows_the_sun_bearing",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "stillsand_map_wind_is_locked_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "slow_shovelled_drift_yields_sand",
+   "components": [
+    {
+     "name": "yield_scales_with_depth_removed_and_multiplier",
+     "toggle": "clearYieldMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_77e384cef13f483c834f016bd82c4cc1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 35
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 775606
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clearYieldEnabled_off_arm_yields_nothing",
+     "toggle": "clearYieldEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "colonist_shovel_job_pays_the_yield_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000025EC10BFED0>",
+  "<suite.Component object at 0x0000025EC1130D10>"
+ ],
+ "refused": "",
+ "walk": null
+}

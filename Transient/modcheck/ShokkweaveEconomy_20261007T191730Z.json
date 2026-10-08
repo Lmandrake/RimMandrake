@@ -1,0 +1,603 @@
+{
+ "mod": "ShokkweaveEconomy",
+ "stamp": "20261007T191730Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "silk_scatter",
+    "components": [
+     {
+      "name": "silk_scatter_places_knots",
+      "toggle": "scatterEnabled",
+      "beyond_toggle": false,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: RUT_WebworkSilkScatter on a RUT_Webwork map placed no RUT_Webwork_SilkKnot (0 -> 0)",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 30477,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 79,
+         "perDef": {},
+         "ticksGame": 30441,
+         "message": "NOTHING MATCHED. 30477 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_5ca5a466a8964ee89fac4fbc703c6c87",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/run_genstep",
+        "result": {
+         "success": true,
+         "genStepDef": "RUT_WebworkSilkScatter",
+         "genStepType": "RimMandrake.Utinni.ShokkweaveEconomy.GenStep_ScatterWebworkSilk",
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_be42331e6e994fd0b817e2d9d24933e3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 30477,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 79,
+         "perDef": {},
+         "ticksGame": 30441,
+         "message": "NOTHING MATCHED. 30477 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_167a3bcceb304532869442ccd054f045",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "nest_scatter",
+    "components": [
+     {
+      "name": "nest_scatter_places_nests",
+      "toggle": "scatterEnabled",
+      "beyond_toggle": false,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: RUT_WebworkNestScatter on a RUT_Webwork map placed no RUT_Webwork_Nest (0 -> 0)",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 30477,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 79,
+         "perDef": {},
+         "ticksGame": 30441,
+         "message": "NOTHING MATCHED. 30477 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_167ec893d66346f0859de6dd7e537624",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/run_genstep",
+        "result": {
+         "success": true,
+         "genStepDef": "RUT_WebworkNestScatter",
+         "genStepType": "RimMandrake.Utinni.ShokkweaveEconomy.GenStep_ScatterWebworkSilk",
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_e0732aef6a374fb0b009b94cd085a6e9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 30477,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 79,
+         "perDef": {},
+         "ticksGame": 30441,
+         "message": "NOTHING MATCHED. 30477 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_82e3c14829af454fb0d1976708d77945",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "shokkweave_rename",
+    "components": [
+     {
+      "name": "hyperweave_reads_shokkweave",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/Hyperweave",
+           "found": true,
+           "defName": "Hyperweave",
+           "defType": "ThingDef",
+           "label": "shokkweave",
+           "modName": "Core",
+           "packageId": "ludeon.rimworld",
+           "fields": {
+            "label": "shokkweave"
+           }
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_7dcc627127b149389795d78f38997a7b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "mod_settings",
+    "components": [
+     {
+      "name": "setting_scatterEnabled_round_trips",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "set_setting(RimMandrake.Utinni.ShokkweaveEconomy.ShokkweaveEconomySettings, {'scatterEnabled': 'false'})",
+        "result": true
+       },
+       {
+        "call": "set_setting(RimMandrake.Utinni.ShokkweaveEconomy.ShokkweaveEconomySettings, {'scatterEnabled': 'true'})",
+        "result": true
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "every_shipped_def_reads_back",
+    "components": [
+     {
+      "name": "every_shipped_def_is_loaded",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "6 of 6 def(s) resolved",
+         "requested": 6,
+         "foundCount": 6,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "GenStepDef/RUT_WebworkSilkScatter",
+           "found": true,
+           "defName": "RUT_WebworkSilkScatter",
+           "defType": "GenStepDef",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "defName": "RUT_WebworkSilkScatter"
+           }
+          },
+          {
+           "requested": "GenStepDef/RUT_WebworkNestScatter",
+           "found": true,
+           "defName": "RUT_WebworkNestScatter",
+           "defType": "GenStepDef",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "defName": "RUT_WebworkNestScatter"
+           }
+          },
+          {
+           "requested": "ThingDef/RUT_Webwork_SilkKnot",
+           "found": true,
+           "defName": "RUT_Webwork_SilkKnot",
+           "defType": "ThingDef",
+           "label": "knotted silk vein",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "defName": "RUT_Webwork_SilkKnot"
+           }
+          },
+          {
+           "requested": "ThingDef/RUT_Webwork_Nest",
+           "found": true,
+           "defName": "RUT_Webwork_Nest",
+           "defType": "ThingDef",
+           "label": "shokkweave nest",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "defName": "RUT_Webwork_Nest"
+           }
+          },
+          {
+           "requested": "TraderKindDef/RUT_Caravan_HuttCartel_EggMarket",
+           "found": true,
+           "defName": "RUT_Caravan_HuttCartel_EggMarket",
+           "defType": "TraderKindDef",
+           "label": "Hutt Cartel egg broker",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "defName": "RUT_Caravan_HuttCartel_EggMarket"
+           }
+          },
+          {
+           "requested": "TraderKindDef/RUT_Caravan_Wildsteam_Weavers",
+           "found": true,
+           "defName": "RUT_Caravan_Wildsteam_Weavers",
+           "defType": "TraderKindDef",
+           "label": "Wildsteam weave-runners",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "defName": "RUT_Caravan_Wildsteam_Weavers"
+           }
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_8d2e128ab8784aca9023da9f26f4b335",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 39
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shipped_scalar_fields_match_xml",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label"
+         ],
+         "defs": [
+          {
+           "requested": "GenStepDef/RUT_WebworkSilkScatter",
+           "found": true,
+           "defName": "RUT_WebworkSilkScatter",
+           "defType": "GenStepDef",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {}
+          },
+          {
+           "requested": "GenStepDef/RUT_WebworkNestScatter",
+           "found": true,
+           "defName": "RUT_WebworkNestScatter",
+           "defType": "GenStepDef",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {}
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_25f01ed0fb984ade829267457d56d809",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RUT_Webwork_SilkKnot",
+           "found": true,
+           "defName": "RUT_Webwork_SilkKnot",
+           "defType": "ThingDef",
+           "label": "knotted silk vein",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "label": "knotted silk vein"
+           }
+          },
+          {
+           "requested": "ThingDef/RUT_Webwork_Nest",
+           "found": true,
+           "defName": "RUT_Webwork_Nest",
+           "defType": "ThingDef",
+           "label": "shokkweave nest",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "label": "shokkweave nest"
+           }
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_0abd62a6c02649d29fbbc5db6c8f5c35",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label"
+         ],
+         "defs": [
+          {
+           "requested": "TraderKindDef/RUT_Caravan_HuttCartel_EggMarket",
+           "found": true,
+           "defName": "RUT_Caravan_HuttCartel_EggMarket",
+           "defType": "TraderKindDef",
+           "label": "Hutt Cartel egg broker",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "label": "Hutt Cartel egg broker"
+           }
+          },
+          {
+           "requested": "TraderKindDef/RUT_Caravan_Wildsteam_Weavers",
+           "found": true,
+           "defName": "RUT_Caravan_Wildsteam_Weavers",
+           "defType": "TraderKindDef",
+           "label": "Wildsteam weave-runners",
+           "modName": "RimUtinni: Shokkweave Economy",
+           "packageId": "mandrake.rut.shokkweaveeconomy",
+           "fields": {
+            "label": "Wildsteam weave-runners"
+           }
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_41f8cf9264654ed6a7d113bbb079769f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   "<suite.Component object at 0x00000198D4503380>",
+   "<suite.Component object at 0x00000198D4591590>"
+  ],
+  "refused": "",
+  "walk": null,
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

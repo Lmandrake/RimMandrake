@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\rimbridge_client.py", line 304, in connect
+    self.sock = socket.create_connection((self.host, self.port),
+                ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+                                         timeout=self.connect_timeout)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 868, in create_connection
+    raise exceptions[0]
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 853, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\fwrepro_wrap.py", line 19, in <module>
+    res = v.run_live(a)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\validation_v2.py", line 3295, in run_live
+    B = B or (MockBridge(args.fault or []) if args.mock else RealBridge())
+                                                             ~~~~~~~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\validation_v2.py", line 3276, in __init__
+    self.S.connect()
+    ~~~~~~~~~~~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\rimbridge_client.py", line 321, in connect
+    raise RimBridgeError(
+        "cannot reach the bridge at %s:%s (%s) - is RimWorld running "
+        "with RimBridgeServer enabled?" % (self.host, self.port, ex)) from ex
+rimbridge_client.RimBridgeError: cannot reach the bridge at 127.0.0.1:5174 ([WinError 10061] No connection could be made because the target machine actively refused it) - is RimWorld running with RimBridgeServer enabled?

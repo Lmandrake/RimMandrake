@@ -1,0 +1,19 @@
+tick 855510
+retile still RM_Cauldron
+bold0 1 | Young of the deep held in the world: 0 (the pools are quiet, tentacles x1.00)
+get {'success': True, 'action': 'get', 'field': 'broodRansomEnabled', 'fieldKind': 'static', 'value': 'True', 'ticksGame': 855510, 'operation': {'OperationId': 'op_271c331d72b940128363766cddfe3af8', 'Stat
+spawn cask {'success': True, 'thingId': 'Thing_RM_SekkulaathYoungCask97794', 'defName': 'RM_SekkulaathYoungCask', 'label': 'Sekkulaath young-cask', 'stackCount': 1, 'cell': {'x': 144, 'z': 103}, 'operation': {'OperationId': 'op_5a17694ccc14433790809b74480c5e70', 'Status': 'Completed', 'Success': True, 'Duratio
+cask count 1
+set cauldron off {'success': True, 'action': 'set', 'field': 'condensateGardensEnabled', 'fieldKind': 'static', 'valueBefore': 'True', 'valueAfter': 'False', 'ticksGame': 855510
+nettles at off start 5
+0 858010 nettles 5 bold 1 43s
+1 860510 nettles 5 bold 1 85s
+2 863010 nettles 5 bold 1 127s
+3 865510 nettles 5 bold 1 169s
+4 868010 nettles 5 bold 1 211s
+5 870510 nettles 5 bold 1.1 253s
+6 873010 nettles 5 bold 1.1 296s
+line Young of the deep held in the world: 1 (the pools are uneasy, tentacles x1.10)
+bold toggle off 1 null
+bold restored 1.1
+restore cauldron {'success': True, 'action': 'set', 'field': 'condensateGardensEnabled', 'fieldKind': 'static', 'valu {'success': True, 'action': 'get', 'field': 'condensateGardensEnabled', 'fieldKind': 'static', 'value': 'True', 'ticksGa

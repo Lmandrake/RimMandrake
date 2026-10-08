@@ -1,0 +1,17 @@
+L1_tier_running              PASS      15 mods running, gimmesomeslack True
+L2_startup_log_clean         PASS      no GimmeSomeSlack error in 37 warn+ startup entries (sanity: [RimBridge] line seen=True)
+S0_scene_built               PASS      {'walls': (27, 0), 'door': (1, 0), 'battery': 'Battery96760', 'conduit': (21, 0), 'lamp': (1, 0), 'stored': 600.0}
+M1_conduit_transparent       PASS      {'texPaths': {'PowerConduit': 'RimMandrake/GimmeSomeSlack/ConduitTransparent', 'WaterproofConduit': 'RimMandrake/GimmeSomeSlack/ConduitTransparent', '
+M1_cords_exist               PASS      {'conduitCells': 21, 'cordEdges': 4, 'hiddenEdges': 1, 'strands': 5, 'layerVerts': 4684, 'layerSectionsWithCords': 3, 'nodes': {'battery': 1, 'consume
+M1_node_census               PASS      need ['battery', 'consumer', 'junction', 'stub_wall'] + >=2 terminals (FAR run ends) + a live wall terminal; got {'battery': 1, 'consumer': 1, 'hidden
+M1c_end_pieces               PASS      {'decals': {'FrayDead': 2, 'FrayLive': 1, 'JunctionTape': 1, 'Plug': 2, 'StubWall': 1}}
+M2b_no_vertex_unwalkable     PASS      {'verticesInUnwalkable': 0, 'interiorVertices': 960, 'fellBack': 0, 'unroutable': 0}
+M6_overlay_lines_intact      PASS      {'hookupWiresSuppressed': 2, 'overlayWiresPrinted': 2, 'overlayConnectorVerts': 4}
+D1_determinism_fresh_build   PASS      {'success': True, 'cmd': 'fresh', 'edges': 4, 'same': 4, 'different': 0, 'missing': 0, 'offscreenRebuilds': 68}
+M5_local_invalidation        PASS      {'changed': [], 'gone': ['terminal:138,129|terminal:139,129'], 'lastPlanned': 1, 'lastReused': 3}
+M8_break_two_ends_live_dead  PASS      {'west(battery side)': {'cell': [116, 123], 'tip': [116.86, 123.5], 'wall': False, 'registryLive': True, 'netLive': True, 'net': '-1455145182'}, 'east
+M2_cords_only_within_net     PASS      {'built': {'cordsAcrossNets': 0, 'cordsAcrossNetsList': [], 'cordEndsWithoutNet': 0}, 'afterBreak': {'cordsAcrossNets': 0, 'cordsAcrossNetsList': [], 
+P1B_plot_built               PASS      {'conduit': 15, 'battery2': 'Battery96787', 'stored': 600.0}
+B1_rope_settle               PASS      {'settledStrands': 8, 'settleMaxStretch': 0.006, 'settleMaxLenDev': 0.018, 'endHeaps': 0, 'laidPoints': 4589, 'lastRebuildMs': 5.871}
+B6_tangle_lit_strips         PASS      {'tangles': 1, 'tangleMinUsed': 9, 'litStrips': 2, 'darkStrips': 0, 'stubs': 2, 'mergedStubs': 0}
+B3_whip_live_ends            PASS      {'whipDraws_on': 1, 'whipTails': 1, 'liveFloorEnds': 1, 'deadFloorEnds': 3, 'whipDraws_off': 0, 'whipDraws_on_again': 1}

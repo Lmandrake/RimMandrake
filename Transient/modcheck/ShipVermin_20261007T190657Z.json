@@ -1,0 +1,1395 @@
+{
+ "mod": "ShipVermin",
+ "stamp": "20261007T190657Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RM_ShipVerminNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_ShipVerminNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RM_ShipVerminNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_a1311ef498d44129a22c336757bb3ea3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "patch_target_species_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RSW_Mynock",
+           "found": true,
+           "defName": "RSW_Mynock",
+           "defType": "ThingDef",
+           "label": "mynock",
+           "modName": "RimMandrake: SW \u2014 Bestiary",
+           "packageId": "mandrake.rsw.swbestiary",
+           "fields": {
+            "defName": "RSW_Mynock"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RSW_Mynock",
+           "found": true,
+           "defName": "RSW_Mynock",
+           "defType": "PawnKindDef",
+           "label": "mynock",
+           "modName": "RimMandrake: SW \u2014 Bestiary",
+           "packageId": "mandrake.rsw.swbestiary",
+           "fields": {
+            "defName": "RSW_Mynock"
+           }
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_a3797d9233614f999ae9ec661c7ab13a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "alertEnabled_round_trips",
+      "toggle": "alertEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "spawnFuelmite_round_trips",
+      "toggle": "spawnFuelmite",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "spawnMynock_round_trips",
+      "toggle": "spawnMynock",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "spawnRat_round_trips",
+      "toggle": "spawnRat",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "spawnScavrat_round_trips",
+      "toggle": "spawnScavrat",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "spawnWompRat_round_trips",
+      "toggle": "spawnWompRat",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wreckSpawnRateMultiplier_round_trips",
+      "toggle": "wreckSpawnRateMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wreckSpawningEnabled_round_trips",
+      "toggle": "wreckSpawningEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "mynock_patch",
+    "components": [
+     {
+      "name": "breeder_and_pressure_extension_reached_the_mynock",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "comps",
+          "modExtensions"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RSW_Mynock",
+           "found": true,
+           "defName": "RSW_Mynock",
+           "defType": "ThingDef",
+           "label": "mynock",
+           "modName": "RimMandrake: SW \u2014 Bestiary",
+           "packageId": "mandrake.rsw.swbestiary",
+           "fields": {
+            "comps": [
+             {
+              "compClass": "CompAttachBase"
+             },
+             {
+              "baseEscapeIntervalMtbDays": 120.0,
+              "lookForTargetOnEscape": true,
+              "canBeExecuted": true,
+              "getsColdContainmentBonus": true,
+              "hasAnimation": true,
+              "compClass": "CompHoldingPlatformTarget"
+             },
+             {
+              "frequencyTicks": 120000,
+              "studyAmountToComplete": -1.0,
+              "showToggleGizmo": false,
+              "studyEnabledByDefault": true,
+              "canBeActivityDeactivated": false,
+              "knowledgeFactorOutdoors": 1.0,
+              "minMonolithLevelForStudy": 1,
+              "compClass": "CompStudiable"
+             },
+             {
+              "pawnSpawnIntervalDays": {
+               "min": 1.0,
+               "max": 2.0
+              },
+              "pawnSpawnRadius": 3,
+              "foodSearchRadius": 40.0,
+              "famineGraceTicks": 30000,
+              "compClass": "RM_CompVerminBreeder"
+             }
+            ],
+            "modExtensions": [
+             {
+              "populationSoftCap": 3,
+              "populationHardCap": 12,
+              "populationGroupTag": "ShipVermin"
+             },
+             {
+              "seekSubstructure": true,
+              "searchRadius": 40.0,
+              "seekChancePerCheck": 0.05
+             },
+             {
+              "gnawBuildingDefNames": [
+               "PowerConduit"
+              ],
+              "gnawCompTypeNames": [
+               "CompGlower"
+              ],
+              "gnawFloorTerrainDefNames": [
+               "MetalTile"
+              ],
+              "searchRadius": 30.0,
+              "biteDamage": 6.0,
+              "meannessDamageMultiplier": 2.0,
+              "nutritionPerBite": 0.04,
+              "ticksBetweenBites": 240,
+              "seekChanceAtLowPressure": 0.01,
+              "seekChanceAtHighPressure": 0.2
+             }
+            ]
+           }
+          },
+          {
+           "requested": "ThingDef/Rat",
+           "found": true,
+           "defName": "Rat",
+           "defType": "ThingDef",
+           "label": "rat",
+           "modName": "Core",
+           "packageId": "ludeon.rimworld",
+           "fields": {
+            "comps": [
+             {
+              "compClass": "CompAttachBase"
+             },
+             {
+              "baseEscapeIntervalMtbDays": 120.0,
+              "lookForTargetOnEscape": true,
+              "canBeExecuted": true,
+              "getsColdContainmentBonus": true,
+              "hasAnimation": true,
+              "compClass": "CompHoldingPlatformTarget"
+             },
+             {
+              "frequencyTicks": 120000,
+              "studyAmountToComplete": -1.0,
+              "showToggleGizmo": false,
+              "studyEnabledByDefault": true,
+              "canBeActivityDeactivated": false,
+              "knowledgeFactorOutdoors": 1.0,
+              "minMonolithLevelForStudy": 1,
+              "compClass": "CompStudiable"
+             }
+            ]
+           }
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_ad5e593d12464379812e41c39f3e09ce",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "mynock_is_vacuum_proof",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "statBases"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RSW_Mynock",
+           "found": true,
+           "defName": "RSW_Mynock",
+           "defType": "ThingDef",
+           "label": "mynock",
+           "modName": "RimMandrake: SW \u2014 Bestiary",
+           "packageId": "mandrake.rsw.swbestiary",
+           "fields": {
+            "statBases": [
+             {
+              "stat": "Mass",
+              "value": 0.03
+             },
+             {
+              "stat": "Flammability",
+              "value": 0.7
+             },
+             {
+              "stat": "LeatherAmount",
+              "value": 40.0
+             },
+             {
+              "stat": "ToxicResistance",
+              "value": 0.5
+             },
+             {
+              "stat": "MoveSpeed",
+              "value": 3.2
+             },
+             {
+              "stat": "MarketValue",
+              "value": 8.0
+             },
+             {
+              "stat": "ComfyTemperatureMin",
+              "value": -150.0
+             },
+             {
+              "stat": "ComfyTemperatureMax",
+              "value": 150.0
+             },
+             {
+              "stat": "FilthRate",
+              "value": 1.0
+             },
+             {
+              "stat": "Wildness",
+              "value": 0.9
+             },
+             {
+              "stat": "VacuumResistance",
+              "value": 1.0
+             },
+             {
+              "stat": "MaxFlightTime",
+              "value": 30.0
+             },
+             {
+              "stat": "FlightCooldown",
+              "value": 10.0
+             }
+            ]
+           }
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_651a9f6111e74651873ef7974c7fe31d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "nest_roster",
+    "components": [
+     {
+      "name": "rat_always_resolves_so_the_roster_is_not_dead",
+      "toggle": "spawnRat",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "PawnKindDef/Rat",
+           "found": true,
+           "defName": "Rat",
+           "defType": "PawnKindDef",
+           "label": "rat",
+           "modName": "Core",
+           "packageId": "ludeon.rimworld",
+           "fields": {
+            "defName": "Rat"
+           }
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_bdc783c0665a456c97af59dc153a8192",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roster_resolution_reported",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "4 of 4 def(s) resolved",
+         "requested": 4,
+         "foundCount": 4,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "PawnKindDef/Mynock",
+           "found": true,
+           "defName": "Mynock",
+           "defType": "PawnKindDef",
+           "label": "mynock",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "defName": "Mynock"
+           }
+          },
+          {
+           "requested": "PawnKindDef/Scavrat",
+           "found": true,
+           "defName": "Scavrat",
+           "defType": "PawnKindDef",
+           "label": "scavrat",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "defName": "Scavrat"
+           }
+          },
+          {
+           "requested": "PawnKindDef/WompRat",
+           "found": true,
+           "defName": "WompRat",
+           "defType": "PawnKindDef",
+           "label": "womp rat",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "defName": "WompRat"
+           }
+          },
+          {
+           "requested": "PawnKindDef/VFEI2_Fuelmite",
+           "found": true,
+           "defName": "VFEI2_Fuelmite",
+           "defType": "PawnKindDef",
+           "label": "fuelmite",
+           "modName": "Vanilla Factions Expanded - Insectoids 2",
+           "packageId": "oskarpotocki.vfe.insectoid2",
+           "fields": {
+            "defName": "VFEI2_Fuelmite"
+           }
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_a30261e7f1a64d708bd0386f53e7fc32",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "mynock_row_matches_the_ported_species",
+      "toggle": "spawnMynock",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "PawnKindDef/Mynock",
+           "found": true,
+           "defName": "Mynock",
+           "defType": "PawnKindDef",
+           "label": "mynock",
+           "modName": "Star Wars Animal Collection (Continued)",
+           "packageId": "mlie.starwarsanimalcollection",
+           "fields": {
+            "defName": "Mynock"
+           }
+          },
+          {
+           "requested": "PawnKindDef/RSW_Mynock",
+           "found": true,
+           "defName": "RSW_Mynock",
+           "defType": "PawnKindDef",
+           "label": "mynock",
+           "modName": "RimMandrake: SW \u2014 Bestiary",
+           "packageId": "mandrake.rsw.swbestiary",
+           "fields": {
+            "defName": "RSW_Mynock"
+           }
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_d53d020b71d942dab0daaea3a9439958",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "alert",
+    "components": [
+     {
+      "name": "absent_with_no_mynock_present_with_mynocks",
+      "toggle": "alertEnabled",
+      "beyond_toggle": false,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: two mynocks aboard and no RM_Alert_ShipVermin after 320 ticks",
+      "evidence": [
+       {
+        "call": "clear_area(24)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 1 thing(s) across 576 cell(s); 3 pawn(s) left alone.",
+         "cellsExamined": 576,
+         "outOfBounds": 0,
+         "destroyed": 1,
+         "pawnsSkipped": 3,
+         "perCategory": {
+          "Item": 1
+         },
+         "samples": [
+          {
+           "x": 124,
+           "z": 126,
+           "def": "Corpse_Human",
+           "category": "Item"
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_269647f8035d483eb12d1beaaf8e4ba6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/alerts_list",
+        "result": {
+         "success": true,
+         "count": 0,
+         "alerts": [],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_8e50d54ce2d447b59e9f8b6ef5a4f084",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 2/2 RSW_Mynock in faction (none).",
+         "spawnedCount": 2,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "RSW_Mynock43384",
+           "name": "Mynock",
+           "kindRequested": "RSW_Mynock",
+           "kindActual": "RSW_Mynock",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "xenotypeApplied": true
+          },
+          {
+           "ok": true,
+           "id": "RSW_Mynock43385",
+           "name": "Mynock",
+           "kindRequested": "RSW_Mynock",
+           "kindActual": "RSW_Mynock",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 127,
+           "z": 128,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 61,
+         "operation": {
+          "OperationId": "op_dea50f03d722407d8d64801112265b59",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 61
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(320) -> 320 real tick(s) over 1 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_a6ab7c6bff5549559d0f5b37f1b3e128",
+         "status": "completed",
+         "requestedTicks": 320,
+         "completedTicks": 320,
+         "remainingTicks": 0,
+         "startTicksGame": 61,
+         "endTicksGame": 381,
+         "advancedTicks": 320,
+         "initialFrame": 7287,
+         "lastFrame": 7606,
+         "advancedFrames": 320,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T19:06:51.4179827+00:00",
+         "completedAtUtc": "2026-10-07T19:06:56.8370271+00:00",
+         "message": "Advanced 320 game tick(s) across 320 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 381
+         },
+         "operation": {
+          "OperationId": "op_74d241d284a147ad9ccd03b4c5a798d0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5450
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/alerts_list",
+        "result": {
+         "success": true,
+         "count": 0,
+         "alerts": [],
+         "ticksGame": 381,
+         "operation": {
+          "OperationId": "op_c23060abe602423d8713977480b680f7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 381
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "alert_off_hides_it",
+      "toggle": "alertEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "wreck_nest",
+    "components": [
+     {
+      "name": "wreck_carries_the_nest_comp",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "comps"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/ShipChunk_Mech",
+           "found": true,
+           "defName": "ShipChunk_Mech",
+           "defType": "ThingDef",
+           "label": "mechanoid ship chunk",
+           "modName": "Odyssey",
+           "packageId": "ludeon.rimworld.odyssey",
+           "fields": {
+            "comps": [
+             {
+              "inspectString": "Deconstruct for valuable resources.",
+              "compClass": "CompInspectString"
+             },
+             {
+              "nestSpawnIntervalDays": {
+               "min": 2.0,
+               "max": 4.0
+              },
+              "nestSpawnRadius": 4,
+              "populationGroupTag": "ShipVermin",
+              "populationHardCap": 12,
+              "initialBurst": {
+               "min": 0,
+               "max": 0
+              },
+              "initialBurstDelayTicks": {
+               "min": 600,
+               "max": 2400
+              },
+              "compClass": "RM_CompVerminNest"
+             }
+            ]
+           }
+          }
+         ],
+         "ticksGame": 381,
+         "operation": {
+          "OperationId": "op_b515f9065a374d2a852564741fcdd3e8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 381
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "forced_attempt_spawns_a_wild_pawn",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: execute_debug_action 'Actions\\\\Force nest spawn attempt (click wreck)' did not succeed (label never proven live): {'success': False, 'message': \"Could not find debug action 'Actions\\\\Force nest spawn attempt (click wreck)'.\", 'devModeEnabled': True, 'state': {'programState': 'Playing', 'inEntryScene': False, 'has",
+      "evidence": [
+       {
+        "call": "clear_area(24)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 576 cell(s); 7 pawn(s) left alone.",
+         "cellsExamined": 576,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 7,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 381,
+         "operation": {
+          "OperationId": "op_46b4384cd14d4f5a8f65c07d2cea9222",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 381
+         }
+        }
+       },
+       {
+        "call": "spawn ShipChunk_Mech x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "ShipChunk_Mech": 1
+         },
+         "errors": [],
+         "ticksGame": 381,
+         "operation": {
+          "OperationId": "op_9b48de9a4b804fae913e1bdaebf790d7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 381
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_pawns",
+        "result": {
+         "success": true,
+         "message": "4 pawn(s), 26 outside the rect.",
+         "pawns": [
+          {
+           "id": "RM_Chatrak43366",
+           "name": "Chatrak",
+           "kind": "RM_Chatrak",
+           "kindDef": "RM_Chatrak",
+           "def": "RM_Chatrak",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 124,
+           "z": 130,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 3.0
+          },
+          {
+           "id": "RM_Chatrak43370",
+           "name": "Chatrak",
+           "kind": "RM_Chatrak",
+           "kindDef": "RM_Chatrak",
+           "def": "RM_Chatrak",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 119,
+           "z": 132,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 3.0
+          },
+          {
+           "id": "RSW_Mynock43384",
+           "name": "Mynock",
+           "kind": "RSW_Mynock",
+           "kindDef": "RSW_Mynock",
+           "def": "RSW_Mynock",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 123,
+           "z": 128,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.12
+          },
+          {
+           "id": "RSW_Mynock43385",
+           "name": "Mynock",
+           "kind": "RSW_Mynock",
+           "kindDef": "RSW_Mynock",
+           "def": "RSW_Mynock",
+           "hasGenes": false,
+           "uniqueXenotype": false,
+           "isPlayer": false,
+           "hostile": false,
+           "x": 127,
+           "z": 127,
+           "spawned": true,
+           "dead": false,
+           "downed": false,
+           "stunned": false,
+           "stunTicksLeft": 0,
+           "fleshType": "Normal",
+           "isMechanoid": false,
+           "isFlesh": true,
+           "intelligence": "Animal",
+           "bodySize": 0.12
+          }
+         ],
+         "returned": 4,
+         "truncated": 0,
+         "totalOnMap": 30,
+         "ticksGame": 381,
+         "operation": {
+          "OperationId": "op_5159d30a7c6f4ab1931ee93ea86122dd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 381
+         }
+        }
+       },
+       {
+        "call": "bridge_call rimworld/execute_debug_action",
+        "result": {
+         "success": false,
+         "message": "Could not find debug action 'Actions\\Force nest spawn attempt (click wreck)'.",
+         "devModeEnabled": true,
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 381
+         },
+         "operation": {
+          "OperationId": "op_0a4e6218cae54bfd84a9b21087ad0f57",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 14
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "all_species_off_spawns_nothing",
+      "toggle": "spawnRat",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: execute_debug_action 'Actions\\\\Force nest spawn attempt (click wreck)' did not succeed (label never proven live): {'success': False, 'message': \"Could not find debug action 'Actions\\\\Force nest spawn attempt (click wreck)'.\", 'devModeEnabled': True, 'state': {'programState': 'Playing', 'inEntryScene': False, 'has",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "only_rat_on_spawns_a_rat",
+      "toggle": "spawnRat",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: execute_debug_action 'Actions\\\\Force nest spawn attempt (click wreck)' did not succeed (label never proven live): {'success': False, 'message': \"Could not find debug action 'Actions\\\\Force nest spawn attempt (click wreck)'.\", 'devModeEnabled': True, 'state': {'programState': 'Playing', 'inEntryScene': False, 'has",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "hard_cap_refuses_a_spawn",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: execute_debug_action 'Actions\\\\Force nest spawn attempt (click wreck)' did not succeed (label never proven live): {'success': False, 'message': \"Could not find debug action 'Actions\\\\Force nest spawn attempt (click wreck)'.\", 'devModeEnabled': True, 'state': {'programState': 'Playing', 'inEntryScene': False, 'has",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "rate_multiplier_shortens_next_spawn",
+      "toggle": "wreckSpawnRateMultiplier",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: execute_debug_action 'Actions\\\\Force nest spawn attempt (click wreck)' did not succeed (label never proven live): {'success': False, 'message': \"Could not find debug action 'Actions\\\\Force nest spawn attempt (click wreck)'.\", 'devModeEnabled': True, 'state': {'programState': 'Playing', 'inEntryScene': False, 'has",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "not_driven",
+    "components": [
+     {
+      "name": "mynock_breeds_under_the_soft_cap",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: RM_CompVerminBreeder spawns every 1-2 days (CreatureBehaviors); proving it needs game days of ticks and the pressure curve read at 3 / 12 mynocks",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "mynock_gnaws_conduits_lights_and_floor",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: RM_CompVerminBreeder spawns every 1-2 days (CreatureBehaviors); proving it needs game days of ticks and the pressure curve read at 3 / 12 mynocks",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "mynock_seeks_the_substructure_hull",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: RM_CompVerminBreeder spawns every 1-2 days (CreatureBehaviors); proving it needs game days of ticks and the pressure curve read at 3 / 12 mynocks",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wreck_spawning_off_stops_the_timer",
+      "toggle": "wreckSpawningEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: RM_CompVerminBreeder spawns every 1-2 days (CreatureBehaviors); proving it needs game days of ticks and the pressure curve read at 3 / 12 mynocks",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "nest_countdown_survives_save_load",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: RM_CompVerminBreeder spawns every 1-2 days (CreatureBehaviors); proving it needs game days of ticks and the pressure curve read at 3 / 12 mynocks",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   "<suite.Component object at 0x000001F93EB4EA50>"
+  ],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\ShipVermin.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

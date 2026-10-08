@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\cli.py", line 363, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\cli.py", line 261, in main
+    results = runner.run(mods, debug=args.debug, dry_run=args.dry_run,
+                         situational=args.situational, policy=args.policy)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\runner.py", line 717, in run
+    ensure_playing_map()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\runner.py", line 94, in ensure_playing_map
+    raise RuntimeError("launch gate REFUSES to start a map: %s" % "; ".join(gate["problems"]))
+RuntimeError: launch gate REFUSES to start a map: 2 missing RimMandrake type(s): RimMandrake.FeverWood.RM_CompProperties_DeepYoungLines, RimMandrake.FeverWood.RM_GenStep_DisplayTank

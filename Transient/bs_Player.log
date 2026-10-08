@@ -1,0 +1,309 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.119 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.684200 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Mod RimUtinni: Aftermath Rites dependency (mandrake.rm.aftermath) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Inhabited (Ash'karr) dependency (mandrake.rm.inhabited) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Weather Suite (Ash'karr) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Droid Repair Jobs dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: The Reckoning dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: The Reckoning dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Jawa Fall Line Arrivals dependency (mandrake.rm.shipvermin) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Imperial Graffiti dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Greentide Raid Ant dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Hostile Flora dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod JawaVoice (SpeakUp reskin) dependency (JPT.speakup) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Kinetic Arms dependency (mandrake.rm.explosiveknockback) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Propane Lake Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Pyrelands Mechanics dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Baroque Biomes dependency (mandrake.rm.luminouspigment) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Baroque Biomes dependency (mandrake.rm.flowworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Salvation Rites dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Utinni — Rust Cathedral Roaches dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake Sacred Marks dependency (mandrake.rm.graffiti) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Scarlands Ladder dependency (mandrake.rut.antiquities) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Scarlands Ladder dependency (mandrake.rm.lorestages) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Ship Shields — Modulated Plasma Fields dependency (mandrake.rm.warscar) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rsw.swbestiary) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Ship Vermin dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Shokk dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Shokkweave Economy dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Solar Mirrors dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (OskarPotocki.VanillaFactionsExpanded.Core) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimStarWars: Structure Injections dependency (mandrake.rm.injections) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (OskarPotocki.VFE.Insectoid2) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (sarg.alphaanimals) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: SW — Bestiary dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Titanic Creatures dependency (mandrake.rm.hugethings) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: The Unfinished Line dependency (mandrake.rsw.droidworks) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: The Unfinished Line dependency (mandrake.rut.droidrepairjobs) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni Patches (Jawa campaign) dependency (mandrake.rm.weathersuite) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Colony Visibility dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimMandrake: Warcasket dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Wildsteam Egg Bounty dependency (mandrake.rut.patches) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimUtinni: Wildsteam Egg Bounty dependency (mandrake.rm.biomes) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001F46E2729A0.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001F4734BA1F0.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=155 elapsedMs=155
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=155
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=155 elapsedMs=155
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+Tried to use an uninitialized DefOf of type ThingDefOf. DefOfs are initialized right after all defs all loaded. Uninitialized DefOfs will return only nulls. (hint: don't use DefOfs as default field values in Defs, try to resolve them in ResolveReferences() instead)
+Exception loading def from file RM_Thurrock.xml: System.ArgumentException: Could not find type named RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttackSecondary from node <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_PeriodicAreaAttackSecondary"><radius>1.9</radius><tickIntervalTicks>60</tickIntervalTicks><damageDef>Blunt</damageDef><damageAmount>30</damageAmount><minSeverity>0.9</minSeverity><pawnMultiplier>0</pawnMultiplier><buildingMultiplier>1</buildingMultiplier><plantMultiplier>0</plantMultiplier><itemMultiplier>0</itemMultiplier><sparedNaturalRock>true</sparedNaturalRock><sparesCarrier>true</sparesCarrier><requiresAwake>true</requiresAwake></li>
+Parameter name: node
+[Ref F781E70A]
+  at Verse.DirectXmlToObjectNew.ResolveTypeForNode (System.Type defaultType, System.Xml.XmlNode node) [0x0005a] in <61e4173561894da49d210260257b5097>:0 
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndSetListField_Verse_HediffCompProperties(object,System.Reflection.FieldInfo,System.Xml.XmlNode,System.Type)
+(wrapper dynamic-method) Verse.DirectXmlToObjectNew+DummyTypeToHoldDynamicMethods.ParseAndReturnDef_Verse_Def(int,int,System.Xml.XmlNode,System.Type)
+  at Verse.DirectXmlToObjectNew.DefFromNodeNew (System.Xml.XmlNode node, Verse.LoadableXmlAsset loadingAsset) [0x000dd] in <61e4173561894da49d210260257b5097>:0 
+[RimMandrake: Baroque Biomes] Patch operation Verse.PatchOperationFindMod(RimMandrake: Baroque Biomes) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimMandrake.Biomes\Biomes\TheSump\Patches\RUT_SumpDuskLock_BiomeWiring.xml
+Could not resolve cross-reference: No Verse.PawnKindDef named RUT_EmperorVulture found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.ThingDef named Leather_Chitin found to give to Verse.RaceProperties Verse.RaceProperties
+Could not resolve cross-reference: No Verse.ThingDef named Leather_Chitin found to give to Verse.RaceProperties Verse.RaceProperties
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_SandLeaper found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.ThingDef named Leather_Chitin found to give to Verse.RaceProperties Verse.RaceProperties
+Could not resolve cross-reference: No Verse.HediffDef named RM_ThurrockShatter found to give to RimMandrake.CreatureBehaviors.CompProperties_GrantHediff RimMandrake.CreatureBehaviors.CompProperties_GrantHediff
+Could not resolve cross-reference: No Verse.PawnKindDef named RUT_SealedSleeper found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_SandPillar found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Creature_Mantrap found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Could not resolve cross-reference: No Verse.PawnKindDef named RSW_MutagenicNorphea found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+Config error in Eclipse: world-targeting incident has a biome restriction list
+Config error in SolarFlare: world-targeting incident has a biome restriction list
+Config error in Aurora: world-targeting incident has a biome restriction list
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in RM_LineCycleRoll: PrioritizeNewest is not supported with sustainers.
+Exception in ConfigErrors() of RM_FloodedCanyon: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 50CAEF97]
+  at RimWorld.BiomeDef+<ConfigErrors>d__109.MoveNext () [0x000ed] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.DefDatabase`1[T].ErrorCheckAllDefs () [0x00065] in <61e4173561894da49d210260257b5097>:0 
+Config error in RM_TractionLance: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).
+Config error in RM_TractionLance: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in RM_LongShadeWreckSpeeder: graphicData defines a shadowInfo but staticSunShadowHeight > 0
+Config error in RM_LongShadeWreckSpeeder: graphicData defines a shadowInfo but staticSunShadowHeight > 0
+Config error in Frame_RM_TractionLance: madeFromStuff but has a defined constructEffect (which will always be overridden by stuff's construct animation).
+Cannot init Graphic of class Verse.Graphic_Linked
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_Pusberry
+Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb
+Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub
+Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_DielectricGel
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant
+Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor
+Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods
+Could not load Texture2D at 'Things/Item/ToxicMeat/ToxicMeat_b' for def 'RM_SorruthCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/JadePlant/JadePlantB' for def 'RM_HolluCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_OommokSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_MuurrokSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_GuzzkaSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_VozzikSkeleton
+Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen
+Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow
+Collection cannot init: No textures found at path Things/Item/Resource/AA_EggBeetle
+Collection cannot init: No textures found at path Things/Item/Resource/AA_EggBeetle
+Collection cannot init: No textures found at path Things/Item/Resource/AA_EggBeetle
+Collection cannot init: No textures found at path Things/Item/Resource/AA_EggBeetle
+Collection cannot init: No textures found at path Things/Item/Resource/AA_Chitin
+Collection cannot init: No textures found at path swresource/Leather_Heavy
+Collection cannot init: No textures found at path swresource/Meat_Saurian
+Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad
+Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish
+Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Could not load Texture2D at 'Things/Item/Resource/RM_SweetlineToken' for def 'RM_SweetlineToken' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Could not load Texture2D at 'Things/Plant/AloeVera/AloeVeraA' for def 'RM_Zeev' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/Peyote/PeyoteA' for def 'RM_Uvva' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/PincushionPlant/PincushionPlantA' for def 'RM_Karrun' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/SweetheartPlant/SweetheartPlantA' for def 'RM_Dubbol' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Lozh' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/Schlumbergera/SchlumbergeraA' for def 'RM_Saava' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/JadePlant/JadePlantA' for def 'RM_Tuun' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_LungerFry' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a
+Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a
+Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a
+Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a
+Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a
+Could not load Texture2D at 'Things/Item/Plant/RM_YearningFruitHarvested' for def 'RM_YearningFruitHarvested' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton
+Failed to find any textures at Animal/RockTroll/RockTroll while constructing Multi(initPath=Animal/RockTroll/RockTroll, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant
+Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar
+Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream
+Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 69483433]
+  at Verse.Graphic_Linked.get_MatSingle () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Graphic.get_MatNorth () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Graphic.MatAt (Verse.Rot4 rot, Verse.Thing thing) [0x00020] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.BuildableDef.ResolveIcon () [0x00074] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.ThingDef.ResolveIcon () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.BuildableDef.<PostLoad>b__78_0 () [0x00021] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a
+Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a
+KCSG has Created 7290 symbolDefs for vanilla and DLCs
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit, KCSG_PowerConduit; invisible=True
+[Baroque Biomes] roster 30 entries (CreatureBehaviors:0, EnvironmentalHazards:0, Wreckage:0, Abyss:1, BlueDesert:1, Cauldron:1, Contagion:1, FeverWood:1, FloodedCanyon:1, GelatinousSlime:1, Greentide:1, LanternDeeps:1, LeaningScrub:1, LongShade:1, Miasma:1, NightsideIce:1, Pyrelands:1, RustCathedral:1, Stillsand:1, TerminalBiomes:5, TheForge:1, TheRot:1, TheSump:1, Warscar:1, Wasteland:1, Webwork:1, WeepingStones:1, DivingInteraction:6, MovingDunes:0, SeaShores:0); 34 BiomeDef(s) mapped
+[Baroque Biomes] worldgen gate applied (startup): all biomes on
+[RM Cauldron] dewfall variants not on disk yet (no swap for): RM_CrystalFlower, RM_BloodBouquet, RM_RedBugloss, RM_KeeningCordax, RM_GiantToxicFlower
+[RM Cauldron] assay fleck overlays not on disk yet: Things/Plant/RM_AssayFlecks/Flecks_Light, Things/Plant/RM_AssayFlecks/Flecks_Heavy
+[RimMandrake.Pyrelands] fulgurite-spawn: armed; strikes on sand-family ground may leave a fulgurite
+[RimMandrake.Pyrelands] fire-tick-ash-scorchfruit: armed; burning cells on scorchable ground may dust loose ash and rarely seed a scorch-fruit pod
+[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: armed; only RM_FE_ grasses may spawn wild on a Pyrelands map, however a foreign plant reaches the candidate list.
+[RimMandrake.Pyrelands] furnace-beast heat immunity: armed; RM_FurnaceBeast absorbs all Heat-category damage.
+[RimMandrake.Pyrelands] furnace-beast herd world-recall: armed; surviving furnace-beasts rejoin the world when their map is removed.
+[RimMandrake.MovingDunes] sand-holds-on-sand: armed; on a dune-field map, Sand and SoftSand terrain hold depth (water, space and full-fillage buildings still refuse it)
+[RimMandrake.MovingDunes] ambient-decay-suppression: armed; vanilla's -1/180 per-cell-visit sand decay is scaled by the map material's ambientDecayFactor (0 = drifts persist)
+[RimMandrake.MovingDunes] vanilla-sand-layer-suppression: armed; the vanilla sand submesh is disabled on skinned maps so the tinted layer never double-draws
+[RimMandrake.MovingDunes] clear-sand-yield: armed; shovelling drift on a dune field whose biome names a clearYield drops it in proportion to the depth removed
+[RimMandrake.MovingDunes] hide-depths: 1902 items @0.45, 479 plants @0.55, 67 filth @0.2 (of 6105 ThingDefs; defs with their own value untouched).
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.
+Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.
+Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 5)
+MVCF successfully applied 0 patches
+[RimMandrake.Pyrelands] growth-stage art: armed for 1 plant def(s)
+Unloading 97 unused Assets to reduce memory usage. Loaded Objects now: 35736.
+Total: 194.080800 ms (FindLiveObjects: 1.467200 ms CreateObjectMapping: 1.160100 ms MarkObjects: 191.103500 ms  DeleteObjects: 0.349700 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=17 elapsedMs=29627
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1043 elapsedMs=30671
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=30671
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=30672
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=30673
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=30673
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=30673
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=30674
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=30677
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=30677
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=30678
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=30681
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=21 elapsedMs=30702
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=1074 elapsedMs=30702
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=21 elapsedMs=30702
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: f01a77a114b240b3a31d9e5070fab351
+[JawaBench] ready: 383 tools, build 355334c8501c
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 15/fed00b66, toolSet e1e7fc7b, defDump ARMED, engine 1.6.4871 rev591
+[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) — no furnace-beast herd seeded.
+Unloading 3 Unused Serialized files (Serialized files now loaded: 5)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.738600 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 35930.
+Total: 178.357000 ms (FindLiveObjects: 1.244900 ms CreateObjectMapping: 1.167100 ms MarkObjects: 175.886800 ms  DeleteObjects: 0.057800 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - ray1203.SimpleCameraSetting
+  - sarg.alphabiomes
+  - mandrake.rm.flowworks
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.biomes
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 57483,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+Unloading 0 Unused Serialized files (Serialized files now loaded: 5)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 41970.
+Total: 217.951700 ms (FindLiveObjects: 1.714700 ms CreateObjectMapping: 1.611300 ms MarkObjects: 214.556500 ms  DeleteObjects: 0.068800 ms)
+

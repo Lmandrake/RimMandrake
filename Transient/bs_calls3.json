@@ -1,0 +1,7 @@
+[
+["jawa/get_defs",{"defs":"ThingDef/RM_Filth_SettledFilm","fields":"modExtensions"}],
+["jawa/type_probe",{"typeName":"RimMandrake.Greentide.RM_Plant_Greatbole"}],
+["jawa/static_call",{"type":"RimMandrake.RustCathedral.Hum.RM_MapComponent_BiomeAttitude","method":"GetStanding","args":"current"}],
+["jawa/map_info",{}],
+["jawa/spawn_pawn",{"kindDef":"RM_Oorrik","x":150,"z":125,"faction":"none","count":1}]
+]

@@ -1,0 +1,5391 @@
+[
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_GreatboleSeed",
+   "defType": "ThingDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_GreatboleSeed",
+   "defType": "ThingDef",
+   "label": "greatbole seed",
+   "description": "A single seed from a greatbole fruit. Planted beside open water it grows with startling speed into a young greatbole \u2014 and, in centuries no living thing will see out, into an ancient one again. To the Wildsteam Clan, planting one is a sacrament.",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "statBases": {
+    "Beauty": -4.0,
+    "MaxHitPoints": 20.0,
+    "MarketValue": 60.0,
+    "Mass": 0.05,
+    "Flammability": 0.4,
+    "DeteriorationRate": 0.5
+   },
+   "comps": [
+    {
+     "class": "CompProperties_Forbiddable",
+     "compClass": "CompForbiddable",
+     "fields": {
+      "allowNonPlayer": false,
+      "forbidOnMake": false
+     }
+    },
+    {
+     "class": "CompProperties_Plantable",
+     "compClass": "CompPlantable",
+     "fields": {
+      "plantDefToSpawn": "RM_Greatbole"
+     }
+    }
+   ],
+   "extra": {
+    "category": "Item",
+    "tickerType": "Never",
+    "thingClass": "ThingWithComps",
+    "madeFromStuff": false,
+    "isPlant": false,
+    "tradeability": "All",
+    "thingCategories": [
+     "ResourcesRaw"
+    ],
+    "thingCategoryCount": 1
+   },
+   "extraModelled": true,
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_54636beb96f44f28a941b0de5f193134",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 45
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_Greatbole",
+   "defType": "ThingDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_Greatbole",
+   "defType": "ThingDef",
+   "label": "greatbole",
+   "description": "A single grey-brown column so broad at the base that its fluting reads as separate trunks fused together, rising far past every other crown before opening into one horizontal raft of paddle leaves. Bark in long vertical plates that shed. Nothing grows in its shadow, so it stands in a clearing of its own making. Given centuries and left uncut, a greatbole like this one becomes something else entirely \u2014 a trunk too vast to still be called a tree.",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "statBases": {
+    "Flammability": 0.05,
+    "BeautyOutdoors": 6.0,
+    "MaxHitPoints": 1400.0,
+    "Nutrition": 3.0,
+    "Mass": 3000.0
+   },
+   "comps": [
+    {
+     "class": "CompProperties_StellockBranchDrop",
+     "compClass": "RM_CompStellockBranchDrop",
+     "fields": {
+      "branchDef": "RM_StellockBranch"
+     }
+    }
+   ],
+   "extra": {
+    "category": "Plant",
+    "tickerType": "Long",
+    "thingClass": "RM_Plant_Greatbole",
+    "madeFromStuff": false,
+    "isPlant": true,
+    "modExtensions": [
+     "RM_GreatboleSeedlingExtension",
+     "RM_FellableTreeExtension"
+    ],
+    "tradeability": "All",
+    "thingCategories": [
+     "Plants"
+    ],
+    "thingCategoryCount": 1
+   },
+   "extraModelled": true,
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_4ff19d7134ef4e62adfdfe00354bbf9d",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 38
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_GreatboleCore",
+   "defType": "ThingDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_GreatboleCore",
+   "defType": "ThingDef",
+   "label": "greatbole core",
+   "description": "The living heart of a Greatbole \u2014 the one cell of it that never goes still, and never mines out. Everything the tree does starts here.",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "statBases": {
+    "SellPriceFactor": 0.7,
+    "MaxHitPoints": 1200.0,
+    "Flammability": 0.3,
+    "Beauty": -2.0
+   },
+   "comps": [
+    {
+     "class": "CompProperties_LivingBoleMarker",
+     "compClass": "RM_CompLivingBoleMarker",
+     "fields": {
+      "regrowthThing": "RM_GreatboleHeartwood",
+      "sealantTerrain": "RM_ToxinSealedFloor",
+      "creakWarningTicks": 2500,
+      "crushIntervalTicks": 600,
+      "crushDamagePerHit": 12.0,
+      "acceleratedRegrowThreshold": 0.6,
+      "acceleratedRegrowSpeedMultiplier": 20.0,
+      "maxFootprintCells": 400
+     }
+    },
+    {
+     "class": "RM_CompProperties_GreatboleHarvestLadder",
+     "compClass": "RM_CompGreatboleHarvestLadder",
+     "fields": {
+      "fruitDef": "RM_GreatboleFruit",
+      "grubKindDef": "RM_GreatboleGrub",
+      "hardwoodDef": "RM_GreatboleHardwood",
+      "trunkSegmentDef": "RM_GreatboleTrunkSegment",
+      "deadHuskDef": "RM_GreatboleDeadHusk",
+      "pollIntervalTicks": 250,
+      "hysteresis": 0.03,
+      "shakingStaggerRadius": 15.0,
+      "shakingStaggerTicks": 180,
+      "shakingStructureDamageChance": 0.35,
+      "shakingStructureDamageAmount": 40.0,
+      "catastropheRadius": 50.0,
+      "catastropheDamageAmount": 300.0,
+      "catastropheGoodwillChange": -70,
+      "catastropheCameraShakeDurationTicks": 240,
+      "catastropheCameraShakeMagnitude": 4.0
+     }
+    }
+   ],
+   "extra": {
+    "category": "Building",
+    "tickerType": "Normal",
+    "thingClass": "Building",
+    "madeFromStuff": false,
+    "isPlant": false,
+    "tradeability": "All",
+    "thingCategoryCount": 0
+   },
+   "extraModelled": true,
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_277534c3f1004abd8ae190a17886533a",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/mod_settings_field",
+  "args": {
+   "typeName": "RimMandrake.Greentide.RM_GreentideSettings",
+   "action": "list"
+  },
+  "result": {
+   "success": true,
+   "action": "list",
+   "typeName": "RimMandrake.Greentide.RM_GreentideSettings",
+   "count": 34,
+   "fields": [
+    {
+     "name": "mireEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "buriedCacheEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "mireSeverityMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "plantDensity",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.99"
+    },
+    {
+     "name": "movementDifficulty",
+     "type": "Single",
+     "kind": "static",
+     "value": "4"
+    },
+    {
+     "name": "crossBiomeEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "crossBiomeEverywhere",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "crossBiomeBiomeList",
+     "type": "String",
+     "kind": "static"
+    },
+    {
+     "name": "crossBiomeCoverage",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "frenzyEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "frenzySeverityMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "feverMarkEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "feverMarkGrantsImmunity",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "StenchGrenadeBaseRadius",
+     "type": "Single",
+     "kind": "static",
+     "value": "3.6"
+    },
+    {
+     "name": "stenchGrenadeEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "stenchGrenadeRadiusMultiplier",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "canopySwarmEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "vurrakAmbushEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "vurrakTriggerBodySize",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.6"
+    },
+    {
+     "name": "vurrakFirstRevealPause",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "stellockLaceEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "stellockBranchChance",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.125"
+    },
+    {
+     "name": "stellockLaceHours",
+     "type": "Single",
+     "kind": "static",
+     "value": "12"
+    },
+    {
+     "name": "thurrockFellingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "thurrockFellingPace",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "thurrockProvokedWallDamage",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "roilEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "fruitfallEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "greatboleShakingThreshold",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.4"
+    },
+    {
+     "name": "greatboleHealingThreshold",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.6"
+    },
+    {
+     "name": "greatboleCatastropheThreshold",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.7"
+    },
+    {
+     "name": "greatboleCatastropheEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "greatboleSeedPlantingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "greatboleServantsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_567f6ac69bc342b290fe2ad2c84226d6",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 130
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/mod_settings_field",
+  "args": {
+   "typeName": "RimMandrake.TheForge.RM_TheForgeSettings",
+   "action": "list"
+  },
+  "result": {
+   "success": true,
+   "action": "list",
+   "typeName": "RimMandrake.TheForge.RM_TheForgeSettings",
+   "count": 45,
+   "fields": [
+    {
+     "name": "modEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "weatherPulseEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "tibannaTapRate",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "vaporColumnImmunity",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "towerScatterCount",
+     "type": "Int32",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "dieOffRingDensity",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "ventWorkSpeedBonus",
+     "type": "Single",
+     "kind": "static",
+     "value": "1.2"
+    },
+    {
+     "name": "grandCycleEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "gasWashEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "cycleFloodingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "lavaFreezeEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "meltBackDestroys",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "floatstoneBloomEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "cycleDormancyEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "cycleTelegraphLetters",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "keelworkEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "keelRingEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "spunstoneStudyEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "floatstoneDoorEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "spunstoneHullEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "forgeVoicesEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "forgeVoicesVisualCues",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "dhuvvoxClockEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhuvvoxRunSoundEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhuvvoxSwarmEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeFrontsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeObscureEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeSoakEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeHeatEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeAdaptedExempt",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "plumeStrength",
+     "type": "Single",
+     "kind": "static",
+     "value": "1"
+    },
+    {
+     "name": "skyColumnGridEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "skyAshSpiralsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "skyColumnHuntEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "jossurStoopEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "skyColumnHighlightEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhokkurWakeEffectsEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhokkurPathMemoryEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhokkurPassesToPolish",
+     "type": "Int32",
+     "kind": "static",
+     "value": "3"
+    },
+    {
+     "name": "dhokkurTrailsFade",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "False"
+    },
+    {
+     "name": "dhokkurTrailFadeDays",
+     "type": "Single",
+     "kind": "static",
+     "value": "60"
+    },
+    {
+     "name": "dhokkurWallShoveEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "dhokkurShoveMode",
+     "type": "Int32",
+     "kind": "static",
+     "value": "0"
+    },
+    {
+     "name": "dhokkurShoveDamagePct",
+     "type": "Single",
+     "kind": "static",
+     "value": "0.25"
+    },
+    {
+     "name": "DhokkurWearCooldownTicks",
+     "type": "Int32",
+     "kind": "static",
+     "value": "30000"
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_473dd369f9be419bbdd1c7911e39e319",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 114
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.TheForge.RM_MapComponent_DhokkurPaths"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.TheForge.RM_MapComponent_DhokkurPaths",
+   "resolved": true,
+   "assembly": "RimMandrake.TheForge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\TheForge\\Assemblies\\RimMandrake.TheForge.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "f15a4a84-d880-41e5-8692-a70c7d34dfa1",
+   "assemblyFileSha256": "b47e875570ed7aaef13d2b88c4dcf7efd50960ffd7794a74c600d8d314d3a961",
+   "assemblyFileMvid": "f15a4a84-d880-41e5-8692-a70c7d34dfa1",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 46,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 1
+   },
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_b0a8dc08e7d24a7fbc9912747c7bc762",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 102
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.TheForge.RM_CompDhokkurWays"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.TheForge.RM_CompDhokkurWays",
+   "resolved": true,
+   "assembly": "RimMandrake.TheForge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\TheForge\\Assemblies\\RimMandrake.TheForge.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "f15a4a84-d880-41e5-8692-a70c7d34dfa1",
+   "assemblyFileSha256": "b47e875570ed7aaef13d2b88c4dcf7efd50960ffd7794a74c600d8d314d3a961",
+   "assemblyFileMvid": "f15a4a84-d880-41e5-8692-a70c7d34dfa1",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 46,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 1
+   },
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_78499362812343a6a8e5a2463b008bd3",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 110
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.RustCathedral.Hum.RM_MapComponent_BiomeAttitude"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.RustCathedral.Hum.RM_MapComponent_BiomeAttitude",
+   "resolved": true,
+   "assembly": "RimMandrake.RustCathedral.Hum, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\RustCathedral\\Assemblies\\RimMandrake.RustCathedral.Hum.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "1341d9d5-3784-47a3-9f67-f5313177be0c",
+   "assemblyFileSha256": "0de10a8735fe216d1591ad3a38089bdbaa6a41a05f91b4dd38bdd0f0911a04bd",
+   "assemblyFileMvid": "1341d9d5-3784-47a3-9f67-f5313177be0c",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 57,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 1
+   },
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_3ffd26ce0542489ba2f118ce7e2a0cdc",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 80
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.Scarlands.RM_CompAerosolScreen"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.Scarlands.RM_CompAerosolScreen",
+   "resolved": true,
+   "assembly": "RimMandrake.Warscar, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\Warscar\\Assemblies\\RimMandrake.Warscar.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "1aa3076d-b380-4e98-a385-4492d0973887",
+   "assemblyFileSha256": "889f171e0a211b889f6584940e6d40235ad5c47605b2386931f23e31f21155fe",
+   "assemblyFileMvid": "1aa3076d-b380-4e98-a385-4492d0973887",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 141,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 1
+   },
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_7a3f89e256ce46c8aa1e5a2212e140ca",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 96
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.Scarlands.RM_PollutionSense"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.Scarlands.RM_PollutionSense",
+   "resolved": true,
+   "assembly": "RimMandrake.Warscar, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\Warscar\\Assemblies\\RimMandrake.Warscar.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "1aa3076d-b380-4e98-a385-4492d0973887",
+   "assemblyFileSha256": "889f171e0a211b889f6584940e6d40235ad5c47605b2386931f23e31f21155fe",
+   "assemblyFileMvid": "1aa3076d-b380-4e98-a385-4492d0973887",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 141,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 1
+   },
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_d04cc8cf2788448393bc9346d3b46eb1",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 83
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.Scarlands.JobDriver_ChotrixDragKill"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.Scarlands.JobDriver_ChotrixDragKill",
+   "resolved": true,
+   "assembly": "RimMandrake.Warscar, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\Warscar\\Assemblies\\RimMandrake.Warscar.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "1aa3076d-b380-4e98-a385-4492d0973887",
+   "assemblyFileSha256": "889f171e0a211b889f6584940e6d40235ad5c47605b2386931f23e31f21155fe",
+   "assemblyFileMvid": "1aa3076d-b380-4e98-a385-4492d0973887",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 141,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 1
+   },
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_bc9fa29d090f41bcbf88b50f60d76ac1",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 80
+   }
+  }
+ },
+ {
+  "tool": "jawa/type_probe",
+  "args": {
+   "typeName": "RimMandrake.Scarlands.RM_ChotrixTrackLink"
+  },
+  "result": {
+   "success": true,
+   "typeName": "RimMandrake.Scarlands.RM_ChotrixTrackLink",
+   "resolved": true,
+   "assembly": "RimMandrake.Warscar, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+   "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\Warscar\\Assemblies\\RimMandrake.Warscar.dll",
+   "assemblyLocationSource": "Assembly.Location",
+   "assemblyMvid": "1aa3076d-b380-4e98-a385-4492d0973887",
+   "assemblyFileSha256": "889f171e0a211b889f6584940e6d40235ad5c47605b2386931f23e31f21155fe",
+   "assemblyFileMvid": "1aa3076d-b380-4e98-a385-4492d0973887",
+   "mvidMatchesFile": true,
+   "inAllTypesByIdentity": true,
+   "allTypesNameMatches": 1,
+   "allTypesCount": 26770,
+   "assemblyTypesInAllTypes": 141,
+   "carryingMods": [
+    "mandrake.rm.biomes"
+   ],
+   "debugActions": [],
+   "state": {
+    "programState": "Playing",
+    "tick": 1
+   },
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_c01eb5adea884e289433d0f9d287b2fb",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 85
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_Dhokkur",
+   "defType": "ThingDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_Dhokkur",
+   "defType": "ThingDef",
+   "label": "dhokkur",
+   "description": "Half the outcrops on the skirts are stone. The other half are waiting for rain. A dormant dhokkur sits out the still heat as a hill of banked obsidian plates, ash drifted into its seams, and the survey crews learn the difference the day the sky opens: the hill stands up. It walks its own path -- the same path, worn a thousand bursts deep -- drinking the scald straight off its back while everything else on the mountain runs for a roof. It is not angry. It has never needed to be. Its hide turns the boiling rain, and the boiling rain is the worst thing this mountain knows how to say.",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "statBases": {
+    "Mass": 4000.0,
+    "Flammability": 0.0,
+    "LeatherAmount": 200.0,
+    "ToxicResistance": 0.5,
+    "MoveSpeed": 1.6,
+    "MeatAmount": 1000.0,
+    "ArmorRating_Sharp": 1.0,
+    "ArmorRating_Blunt": 0.7,
+    "ArmorRating_Heat": 2.0,
+    "ComfyTemperatureMin": 0.0,
+    "ComfyTemperatureMax": 120.0,
+    "Wildness": 0.98
+   },
+   "comps": [
+    {
+     "class": "CompProperties",
+     "compClass": "CompAttachBase",
+     "fields": {}
+    },
+    {
+     "class": "CompProperties_HoldingPlatformTarget",
+     "compClass": "CompHoldingPlatformTarget",
+     "fields": {
+      "baseEscapeIntervalMtbDays": 120.0,
+      "lookForTargetOnEscape": true,
+      "canBeExecuted": true,
+      "getsColdContainmentBonus": true,
+      "hasAnimation": true
+     }
+    },
+    {
+     "class": "CompProperties_Studiable",
+     "compClass": "CompStudiable",
+     "fields": {
+      "frequencyTicks": 120000,
+      "studyAmountToComplete": -1.0,
+      "showToggleGizmo": false,
+      "studyEnabledByDefault": true,
+      "canBeActivityDeactivated": false,
+      "knowledgeFactorOutdoors": 1.0,
+      "minMonolithLevelForStudy": 1
+     }
+    },
+    {
+     "class": "CompProperties_CanBeDormant",
+     "compClass": "CompCanBeDormant",
+     "fields": {
+      "startsDormant": true,
+      "wakeUpSignalTag": "CompCanBeDormant.WakeUp",
+      "maxDistAwakenByOther": 40.0,
+      "canWakeUpFogged": true,
+      "jobDormancy": true,
+      "awakeStateLabelKey": "AwokeDaysAgo",
+      "dormantStateLabelKey": "DormantCompInactive",
+      "showSleepingZs": true,
+      "delayedWakeUpDoesZs": true,
+      "dontShowDevGizmos": false
+     }
+    },
+    {
+     "class": "CompProperties_WakeUpDormant",
+     "compClass": "CompWakeUpDormant",
+     "fields": {
+      "wakeUpSignalTag": "CompCanBeDormant.WakeUp",
+      "wakeUpCheckRadius": -1.0,
+      "wakeUpOnThingConstructedRadius": 3.0,
+      "wakeUpOnDamage": true,
+      "onlyWakeUpSameFaction": true,
+      "onlySendSignalOnce": true,
+      "wakeUpIfAnyTargetClose": false,
+      "wakeUpWithDelay": false
+     }
+    },
+    {
+     "class": "CompProperties_ForgeCycleDormancy",
+     "compClass": "RM_CompForgeCycleDormancy",
+     "fields": {
+      "awakeDuringRain": true,
+      "awakeDuringFlashWindow": false,
+      "checkIntervalTicks": 250,
+      "minAwakeHours": 2.0,
+      "wakeMessage": "The rain is falling and a hill on the skirts has stood up: a {0} is walking.",
+      "runClock": false,
+      "slowFinalHours": 0.25,
+      "runSoundIntervalTicks": 70,
+      "runSoundSlowFactor": 4.0
+     }
+    },
+    {
+     "class": "CompProperties_DhokkurWays",
+     "compClass": "RM_CompDhokkurWays",
+     "fields": {
+      "wakeGroanSound": "Emergence_Quake",
+      "wakeWaterSound": "EmergeFromWater",
+      "wakeWaterTicks": 300,
+      "checkIntervalTicks": 30,
+      "shoveIntervalTicks": 60,
+      "sealDepressionRadius": 1.5
+     }
+    }
+   ],
+   "extra": {
+    "category": "Pawn",
+    "tickerType": "Normal",
+    "thingClass": "Pawn",
+    "madeFromStuff": false,
+    "isPlant": false,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Animal",
+    "tradeability": "All",
+    "thingCategories": [
+     "Animals"
+    ],
+    "thingCategoryCount": 1,
+    "tradeTags": [
+     "AnimalExotic"
+    ]
+   },
+   "extraModelled": true,
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_ebec37aa142540a4bed6edf0f0ea669f",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 43
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_DhokkurPolishedTrail",
+   "defType": "TerrainDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_DhokkurPolishedTrail",
+   "defType": "TerrainDef",
+   "label": "dhokkur track",
+   "description": "Ground worn to a black glassy polish by something enormous walking the same line, rain after rain. Nothing grows on it. Whatever made it will be back.",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "extraModelled": false,
+   "extraNote": "\u26a0\ufe0f `extra` is NOT modelled for TerrainDef \u2014 this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_bad7e31fba2b474a95e6afe67db88e43",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 32
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_AerosolScreen",
+   "defType": "ThingDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_AerosolScreen",
+   "defType": "ThingDef",
+   "label": "aerosol screen",
+   "description": "A projector that holds a dome of still, clean air over everything inside it. Blocks toxic fallout, toxic weather and settling film. It does nothing against bullets, heat or cold. Burns dielectric gel; without it the dome shrinks to half.",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "statBases": {
+    "SellPriceFactor": 0.7,
+    "MaxHitPoints": 250.0,
+    "Flammability": 0.3,
+    "WorkToBuild": 18000.0,
+    "Mass": 35.0,
+    "Beauty": -6.0
+   },
+   "comps": [
+    {
+     "class": "CompProperties_Forbiddable",
+     "compClass": "CompForbiddable",
+     "fields": {
+      "allowNonPlayer": false,
+      "forbidOnMake": false
+     }
+    },
+    {
+     "class": "CompProperties_Power",
+     "compClass": "CompPowerTrader",
+     "fields": {
+      "transmitsPower": false,
+      "idlePowerDraw": -1.0,
+      "shortCircuitInRain": false,
+      "showPowerNeededIfOff": true,
+      "alwaysDisplayAsUsingPower": false
+     }
+    },
+    {
+     "class": "CompProperties_Flickable",
+     "compClass": "CompFlickable",
+     "fields": {
+      "commandTexture": "UI/Commands/DesirePower",
+      "commandLabelKey": "CommandDesignateTogglePowerLabel",
+      "commandDescKey": "CommandDesignateTogglePowerDesc"
+     }
+    },
+    {
+     "class": "CompProperties_Breakdownable",
+     "compClass": "CompBreakdownable",
+     "fields": {}
+    },
+    {
+     "class": "CompProperties_Refuelable",
+     "compClass": "CompRefuelable",
+     "fields": {
+      "fuelConsumptionRate": 0.33,
+      "fuelCapacity": 10.0,
+      "initialFuelPercent": 0.0,
+      "autoRefuelPercent": 0.3,
+      "fuelConsumptionPerTickInRain": 0.0,
+      "destroyOnNoFuel": false,
+      "consumeFuelOnlyWhenUsed": false,
+      "consumeFuelOnlyWhenPowered": false,
+      "showFuelGizmo": false,
+      "initialAllowAutoRefuel": true,
+      "showAllowAutoRefuelToggle": true,
+      "allowRefuelIfNotEmpty": true,
+      "fuelIsMortarBarrel": false,
+      "targetFuelLevelConfigurable": false,
+      "initialConfigurableTargetFuelLevel": 0.0,
+      "drawOutOfFuelOverlay": true,
+      "minimumFueledThreshold": 0.0,
+      "drawFuelGaugeInMap": false,
+      "atomicFueling": false,
+      "factorByDifficulty": false,
+      "externalTicking": false,
+      "hideGizmosIfNotPlayerFaction": false,
+      "functionsInVacuum": true,
+      "canEjectFuel": false
+     }
+    },
+    {
+     "class": "RM_CompProperties_AerosolScreen",
+     "compClass": "RM_CompAerosolScreen",
+     "fields": {
+      "radius": 7.9,
+      "needsPower": true
+     }
+    }
+   ],
+   "extra": {
+    "category": "Building",
+    "tickerType": "Normal",
+    "thingClass": "Building",
+    "madeFromStuff": false,
+    "isPlant": false,
+    "tradeability": "All",
+    "thingCategories": [
+     "BuildingsMisc"
+    ],
+    "thingCategoryCount": 1
+   },
+   "extraModelled": true,
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_f14a74d949294050ae1489f692c51a7a",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_Filth_SettledFilm",
+   "defType": "ThingDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_Filth_SettledFilm",
+   "defType": "ThingDef",
+   "label": "settled film",
+   "description": "A pale grey film of fine war dust, settled out of a still sky. It keeps every footprint pressed into it until the wind comes back.",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "statBases": {
+    "Beauty": -3.0,
+    "Cleanliness": -2.0
+   },
+   "comps": [],
+   "extra": {
+    "category": "Filth",
+    "tickerType": "Never",
+    "thingClass": "Filth",
+    "madeFromStuff": false,
+    "isPlant": false,
+    "modExtensions": [
+     "RM_TrackSurfaceExtension"
+    ],
+    "tradeability": "All",
+    "thingCategoryCount": 0
+   },
+   "extraModelled": true,
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_b5189054b3894136946a85f4ecbe2af5",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_ChotrixDragKill",
+   "defType": "JobDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_ChotrixDragKill",
+   "defType": "JobDef",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "extraModelled": false,
+   "extraNote": "\u26a0\ufe0f `extra` is NOT modelled for JobDef \u2014 this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_22a6d4a8847f4f9badae6537a672e0e8",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_Chotrix",
+   "defType": "ThinkTreeDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_Chotrix",
+   "defType": "ThinkTreeDef",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "extraModelled": false,
+   "extraNote": "\u26a0\ufe0f `extra` is NOT modelled for ThinkTreeDef \u2014 this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_226b0ca148104c47bc16990d27050376",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_def",
+  "args": {
+   "defName": "RM_Chotrix",
+   "defType": "ThingDef"
+  },
+  "result": {
+   "success": true,
+   "defName": "RM_Chotrix",
+   "defType": "ThingDef",
+   "label": "chotrix",
+   "description": "A lean, low, long-limbed scavenger that ate the old line's light-bending lacquer and carries it in its hide. Standing or stalking, it cannot be seen. It shows when it strikes, and for a few seconds after. It goes for lone small animals and lone people in the dark, never a group, and runs after one bite if it is hurt. Its hide still holds lacquer.",
+   "modName": "RimMandrake: Baroque Biomes",
+   "packageId": "mandrake.rm.biomes",
+   "statBases": {
+    "Mass": 60.0,
+    "Flammability": 0.7,
+    "LeatherAmount": 40.0,
+    "ToxicResistance": 0.5,
+    "MoveSpeed": 5.2,
+    "Wildness": 1.0,
+    "ComfyTemperatureMin": -30.0,
+    "ComfyTemperatureMax": 60.0,
+    "MarketValue": 150.0
+   },
+   "comps": [
+    {
+     "class": "CompProperties",
+     "compClass": "CompAttachBase",
+     "fields": {}
+    },
+    {
+     "class": "CompProperties_HoldingPlatformTarget",
+     "compClass": "CompHoldingPlatformTarget",
+     "fields": {
+      "baseEscapeIntervalMtbDays": 120.0,
+      "lookForTargetOnEscape": true,
+      "canBeExecuted": true,
+      "getsColdContainmentBonus": true,
+      "hasAnimation": true
+     }
+    },
+    {
+     "class": "CompProperties_Studiable",
+     "compClass": "CompStudiable",
+     "fields": {
+      "frequencyTicks": 120000,
+      "studyAmountToComplete": -1.0,
+      "showToggleGizmo": false,
+      "studyEnabledByDefault": true,
+      "canBeActivityDeactivated": false,
+      "knowledgeFactorOutdoors": 1.0,
+      "minMonolithLevelForStudy": 1
+     }
+    },
+    {
+     "class": "CompProperties_Chotrix",
+     "compClass": "CompChotrix",
+     "fields": {
+      "cloakHediff": "RM_ChotrixCloak",
+      "checkIntervalTicks": 10,
+      "revealTicks": 240,
+      "fleeTicks": 900,
+      "hurtBelow": 0.9,
+      "hungerBelow": 0.7,
+      "smallPreyBodySize": 0.6,
+      "lonePawnRadius": 12.0,
+      "loneAnimalRadius": 8.0,
+      "silenceRadius": 9.0,
+      "nightStartHour": 20,
+      "nightEndHour": 6
+     }
+    }
+   ],
+   "extra": {
+    "category": "Pawn",
+    "tickerType": "Normal",
+    "thingClass": "Pawn",
+    "madeFromStuff": false,
+    "isPlant": false,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Animal",
+    "tradeability": "All",
+    "thingCategories": [
+     "Animals"
+    ],
+    "thingCategoryCount": 1
+   },
+   "extraModelled": true,
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_a3317350d4a04d7ab89fc814eb2ec7c7",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/biome_probe",
+  "args": {
+   "biomes": "RM_RustCathedral",
+   "find": "RSW_Mynock"
+  },
+  "result": {
+   "success": true,
+   "message": "1 biome(s) probed; searched for 1 name(s) \u2014 read `findResults` per biome, and note that present-at-commonality-0 is NOT absent.",
+   "biomesProbed": 1,
+   "notFound": [],
+   "searched": [
+    "RSW_Mynock"
+   ],
+   "absentFromEveryProbedBiome": [
+    "RSW_Mynock"
+   ],
+   "biomes": [
+    {
+     "defName": "RM_RustCathedral",
+     "label": "the Rust Cathedral",
+     "modName": "RimMandrake: Baroque Biomes",
+     "implemented": true,
+     "generatesNaturally": true,
+     "canBuildBase": true,
+     "canAutoChoose": true,
+     "isExtremeBiome": false,
+     "isWaterBiome": false,
+     "impassable": false,
+     "animalDensity": 0.1,
+     "plantDensity": 0.0,
+     "diseaseMtbDays": 90.0,
+     "forageability": 0.0,
+     "settlementSelectionWeight": 1.0,
+     "wildAnimalCount": 2,
+     "wildPlantCount": 0,
+     "animalsListed": 2,
+     "plantsListed": 0,
+     "animals": [
+      {
+       "defName": "RM_CathedralRoach",
+       "commonality": 0.12
+      },
+      {
+       "defName": "RM_LivingBolt",
+       "commonality": 0.06
+      }
+     ],
+     "findResults": [
+      {
+       "defName": "RSW_Mynock",
+       "present": false,
+       "state": "absent",
+       "declared": false,
+       "commonality": 0.0,
+       "declaredCommonality": 0.0
+      }
+     ]
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_af17f7fbff364974a0c27716b2010e6f",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/biome_probe",
+  "args": {
+   "biomes": "RM_Warscar",
+   "find": "RM_Bileworm,RM_JuggernautBeetle,RM_ElectricGryllotalpa,RM_ElectricTick,RM_Rimclaw"
+  },
+  "result": {
+   "success": true,
+   "message": "1 biome(s) probed; searched for 5 name(s) \u2014 read `findResults` per biome, and note that present-at-commonality-0 is NOT absent.",
+   "biomesProbed": 1,
+   "notFound": [],
+   "searched": [
+    "RM_Bileworm",
+    "RM_JuggernautBeetle",
+    "RM_ElectricGryllotalpa",
+    "RM_ElectricTick",
+    "RM_Rimclaw"
+   ],
+   "absentFromEveryProbedBiome": [],
+   "biomes": [
+    {
+     "defName": "RM_Warscar",
+     "label": "Warscar",
+     "modName": "RimMandrake: Baroque Biomes",
+     "implemented": true,
+     "generatesNaturally": true,
+     "canBuildBase": true,
+     "canAutoChoose": true,
+     "isExtremeBiome": false,
+     "isWaterBiome": false,
+     "impassable": false,
+     "animalDensity": 1.0,
+     "plantDensity": 0.15,
+     "diseaseMtbDays": 50.0,
+     "forageability": 0.25,
+     "foragedFood": "RawBerries",
+     "settlementSelectionWeight": 1.0,
+     "wildAnimalCount": 10,
+     "wildPlantCount": 2,
+     "animalsListed": 10,
+     "plantsListed": 0,
+     "animals": [
+      {
+       "defName": "RM_Tetchik",
+       "commonality": 0.5
+      },
+      {
+       "defName": "RM_ElectricTick",
+       "commonality": 0.3
+      },
+      {
+       "defName": "RM_Chatrak",
+       "commonality": 0.25
+      },
+      {
+       "defName": "RM_ElectricGryllotalpa",
+       "commonality": 0.15
+      },
+      {
+       "defName": "RM_Rimclaw",
+       "commonality": 0.1
+      },
+      {
+       "defName": "RM_Bileworm",
+       "commonality": 0.08
+      },
+      {
+       "defName": "RM_ScarRoach",
+       "commonality": 0.08
+      },
+      {
+       "defName": "RM_Pallbearer",
+       "commonality": 0.06
+      },
+      {
+       "defName": "RM_JuggernautBeetle",
+       "commonality": 0.05
+      },
+      {
+       "defName": "RM_Vozzik",
+       "commonality": 0.0005
+      }
+     ],
+     "findResults": [
+      {
+       "defName": "RM_Bileworm",
+       "present": true,
+       "state": "spawning",
+       "declared": true,
+       "where": "animal",
+       "commonality": 0.08,
+       "declaredCommonality": 0.08
+      },
+      {
+       "defName": "RM_JuggernautBeetle",
+       "present": true,
+       "state": "spawning",
+       "declared": true,
+       "where": "animal",
+       "commonality": 0.05,
+       "declaredCommonality": 0.05
+      },
+      {
+       "defName": "RM_ElectricGryllotalpa",
+       "present": true,
+       "state": "spawning",
+       "declared": true,
+       "where": "animal",
+       "commonality": 0.15,
+       "declaredCommonality": 0.15
+      },
+      {
+       "defName": "RM_ElectricTick",
+       "present": true,
+       "state": "spawning",
+       "declared": true,
+       "where": "animal",
+       "commonality": 0.3,
+       "declaredCommonality": 0.3
+      },
+      {
+       "defName": "RM_Rimclaw",
+       "present": true,
+       "state": "spawning",
+       "declared": true,
+       "where": "animal",
+       "commonality": 0.1,
+       "declaredCommonality": 0.1
+      }
+     ]
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_cb010041661e4854a95dda731d8440f6",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 33
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef/RM_RustCathedralAttitude"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef/RM_RustCathedralAttitude",
+     "found": true,
+     "defName": "RM_RustCathedralAttitude",
+     "defType": "RM_BiomeAttitudeDef",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "targetBiome": "RM_RustCathedral",
+      "bandThresholds": [
+       10.0,
+       30.0,
+       55.0,
+       80.0
+      ],
+      "bandHysteresisMargin": 6.0,
+      "goodwillCompositeWeight": 0.5,
+      "standingStart": 0,
+      "irritationDecayHalfLifeDays": 1.0,
+      "checkIntervalTicks": 250,
+      "worstBandGoodwillTickIntervalHours": 4.0,
+      "worstBandGoodwillTickAmount": -1,
+      "worstBandGoodwillCapPerDay": -5,
+      "humLayers": [
+       "RM_HumLayerDrone",
+       "RM_HumLayerTense",
+       "RM_HumLayerAlarm"
+      ],
+      "commentary": [
+       "RM_BandCommentaryEntry",
+       "RM_BandCommentaryEntry",
+       "RM_BandCommentaryEntry",
+       "RM_BandCommentaryEntry"
+      ],
+      "commentaryCooldownHours": 12.0,
+      "stageParams": [
+       "RM_StageAttitudeParams",
+       "RM_StageAttitudeParams",
+       "RM_StageAttitudeParams"
+      ],
+      "defName": "RM_RustCathedralAttitude",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 9618,
+      "index": 0,
+      "fileName": "RM_RustCathedralAttitude.xml",
+      "defNameHash": 1600795816,
+      "generated": false,
+      "debugRandomId": 10423
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_501851cdedbe4910b91e2892eeccfd46",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserBuyer"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserBuyer",
+     "found": true,
+     "defName": "RM_FactionSlot_CondenserBuyer",
+     "defType": "RM_FactionSlotDef",
+     "label": "condenser buyer",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "preferredFactions": [
+       "Empire"
+      ],
+      "fallback": "Collector",
+      "defName": "RM_FactionSlot_CondenserBuyer",
+      "label": "condenser buyer",
+      "description": "A wealthy collector who wants the old gorrask alive for its fighting pit. Non-hostile; fallback: the most advanced non-hostile faction.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 19454,
+      "index": 0,
+      "fileName": "RM_CondenserQuestSlots.xml",
+      "defNameHash": 1763176079,
+      "generated": false,
+      "debugRandomId": 18637
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_ae99b29ecadf40a6a9bbedc5805491a8",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserSettlers"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserSettlers",
+     "found": true,
+     "defName": "RM_FactionSlot_CondenserSettlers",
+     "defType": "RM_FactionSlotDef",
+     "label": "condenser settlers",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "preferredFactions": [
+       "OutlanderCivil"
+      ],
+      "fallback": "Settlers",
+      "defName": "RM_FactionSlot_CondenserSettlers",
+      "label": "condenser settlers",
+      "description": "Farmers who live by the old gorrask's water. Non-hostile; fallback: the friendliest non-hostile faction at or below industrial tech.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 3683,
+      "index": 1,
+      "fileName": "RM_CondenserQuestSlots.xml",
+      "defNameHash": 942305748,
+      "generated": false,
+      "debugRandomId": 21192
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_4684598ffd7c49279a28adf9227471c4",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 50
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserHunters"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserHunters",
+     "found": true,
+     "defName": "RM_FactionSlot_CondenserHunters",
+     "defType": "RM_FactionSlotDef",
+     "label": "condenser hunters",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "preferredFactions": [
+       "Pirate"
+      ],
+      "fallback": "Hunters",
+      "defName": "RM_FactionSlot_CondenserHunters",
+      "label": "condenser hunters",
+      "description": "Trophy hunters who want the old gorrask's shell for the boast. Hostile; fallback: a permanent-enemy faction first.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 37132,
+      "index": 2,
+      "fileName": "RM_CondenserQuestSlots.xml",
+      "defNameHash": 2028127145,
+      "generated": false,
+      "debugRandomId": 3231
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_6bddaf8b1b784dc8bdc8563d2a4f8dd9",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "QuestScriptDef/RM_CondenserCapture"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "QuestScriptDef/RM_CondenserCapture",
+     "found": true,
+     "defName": "RM_CondenserCapture",
+     "defType": "QuestScriptDef",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "rootSelectionWeight": 0.4,
+      "randomlySelectable": true,
+      "rootMinPoints": 0.0,
+      "rootMinProgressScore": 0.0,
+      "rootEarliestDay": 0,
+      "rootIncreasesPopulation": false,
+      "minRefireDays": 30.0,
+      "decreeSelectionWeight": 0.0,
+      "autoAccept": false,
+      "hideOnCleanup": false,
+      "nameMustBeUnique": false,
+      "defaultChallengeRating": 3,
+      "defaultHidden": false,
+      "isRootSpecial": false,
+      "canGiveRoyalFavor": false,
+      "questAvailableLetterTextIsDescription": false,
+      "hideInvolvedFactionsInfo": false,
+      "affectedByPopulation": false,
+      "affectedByPoints": true,
+      "defaultCharity": false,
+      "sendAvailableLetter": true,
+      "epic": false,
+      "endOnColonyMove": true,
+      "everAcceptableInSpace": true,
+      "neverPossibleInSpace": false,
+      "givenBy": [],
+      "canOccurOnAllPlanetLayers": false,
+      "defName": "RM_CondenserCapture",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 18713,
+      "index": 151,
+      "fileName": "RM_CondenserQuests.xml",
+      "defNameHash": 224600489,
+      "generated": false,
+      "debugRandomId": 55589
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_afbeddd9c8cd4bb69cd63a180e39019d",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "QuestScriptDef/RM_CondenserKeepFree"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "QuestScriptDef/RM_CondenserKeepFree",
+     "found": true,
+     "defName": "RM_CondenserKeepFree",
+     "defType": "QuestScriptDef",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "rootSelectionWeight": 0.4,
+      "randomlySelectable": true,
+      "rootMinPoints": 0.0,
+      "rootMinProgressScore": 0.0,
+      "rootEarliestDay": 0,
+      "rootIncreasesPopulation": false,
+      "minRefireDays": 30.0,
+      "decreeSelectionWeight": 0.0,
+      "autoAccept": false,
+      "hideOnCleanup": false,
+      "nameMustBeUnique": false,
+      "defaultChallengeRating": 2,
+      "defaultHidden": false,
+      "isRootSpecial": false,
+      "canGiveRoyalFavor": false,
+      "questAvailableLetterTextIsDescription": false,
+      "hideInvolvedFactionsInfo": false,
+      "affectedByPopulation": false,
+      "affectedByPoints": true,
+      "defaultCharity": false,
+      "sendAvailableLetter": true,
+      "epic": false,
+      "endOnColonyMove": true,
+      "everAcceptableInSpace": true,
+      "neverPossibleInSpace": false,
+      "givenBy": [],
+      "canOccurOnAllPlanetLayers": false,
+      "defName": "RM_CondenserKeepFree",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 9112,
+      "index": 152,
+      "fileName": "RM_CondenserQuests.xml",
+      "defNameHash": -934400364,
+      "generated": false,
+      "debugRandomId": 35129
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_4e12a41541fa4c75b6f56696dc866353",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "FactionDef/RUT_Jawa_HuttCartel"
+  },
+  "result": {
+   "success": true,
+   "message": "0 of 1 def(s) resolved; 1 not found",
+   "requested": 1,
+   "foundCount": 0,
+   "notFound": [
+    "FactionDef/RUT_Jawa_HuttCartel"
+   ],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "FactionDef/RUT_Jawa_HuttCartel",
+     "found": false,
+     "defType": "FactionDef",
+     "defName": "RUT_Jawa_HuttCartel"
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_dd14972670154898a098e476574509a2",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "PawnKindDef/RSW_Mynock"
+  },
+  "result": {
+   "success": true,
+   "message": "0 of 1 def(s) resolved; 1 not found",
+   "requested": 1,
+   "foundCount": 0,
+   "notFound": [
+    "PawnKindDef/RSW_Mynock"
+   ],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "PawnKindDef/RSW_Mynock",
+     "found": false,
+     "defType": "PawnKindDef",
+     "defName": "RSW_Mynock"
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_d82f88ae41014167b2cdf4baf291a98d",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_Oorrik"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_Oorrik",
+     "found": true,
+     "defName": "RM_Oorrik",
+     "defType": "ThingDef",
+     "label": "oorrik",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "category": "Pawn",
+      "tickerType": "Normal",
+      "stackLimit": 1,
+      "destroyable": true,
+      "rotatable": true,
+      "smallVolume": false,
+      "useHitPoints": false,
+      "receivesSignals": false,
+      "comps": [
+       "CompProperties",
+       "CompProperties_HoldingPlatformTarget",
+       "CompProperties_Studiable"
+      ],
+      "virtualDefs": [],
+      "killedLeavingsChance": 1.0,
+      "forceLeavingsAllowed": false,
+      "smeltable": false,
+      "burnableByRecipe": false,
+      "randomizeRotationOnSpawn": false,
+      "isTechHediff": false,
+      "isUnfinishedThing": false,
+      "leaveResourcesWhenKilled": false,
+      "isFrameInt": false,
+      "hasInteractionCell": false,
+      "interactionCellIconReverse": false,
+      "forceDebugSpawnable": false,
+      "intricate": false,
+      "scatterableOnMapGen": true,
+      "deepCommonality": 0.0,
+      "deepCountPerCell": 300,
+      "deepCountPerPortion": -1,
+      "generateCommonality": 1.0,
+      "generateAllowChance": 1.0,
+      "alwaysFlee": false,
+      "recipes": [
+       "ExciseCarcinoma",
+       "AdministerMechSerumHealer",
+       "RemoveBodyPart",
+       "Euthanize",
+       "Anesthetize",
+       "CureScaria",
+       "Sterilize",
+       "CureBloodRot",
+       "TerminatePregnancy",
+       "SurgicalInspection",
+       "RemovePorcupineQuill",
+       "RM_ScrubTarred",
+       "RM_AdministerStellockLace"
+      ],
+      "messageOnDeteriorateInStorage": true,
+      "deteriorateFromEnvironmentalEffects": true,
+      "canDeteriorateUnspawned": false,
+      "canLoadIntoCaravan": true,
+      "isMechClusterThreat": false,
+      "minRewardCount": 1,
+      "preventSkyfallersLandingOn": false,
+      "relicChance": 0.0,
+      "allowedArchonexusCount": 0,
+      "possessionCount": 0,
+      "notifyMapRemoved": false,
+      "canScatterOver": true,
+      "genericMarketSellable": true,
+      "drawHighlight": true,
+      "drawHighlightOnlyForHostile": false,
+      "autoTargetNearbyIdenticalThings": false,
+      "preventDroppingThingsOn": false,
+      "hiddenWhileUndiscovered": false,
+      "disableImpassableShotOverConfigError": false,
+      "showInSearch": true,
+      "bringAlongOnGravship": true,
+      "preventSpawningInResourcePod": false,
+      "pathfinderDangerous": false,
+      "noRightClickDraftAttack": false,
+      "gravshipSpawnPriority": 1,
+      "preventGravshipLandingOn": false,
+      "canInteractThroughCorners": false,
+      "drawerType": "RealtimeOnly",
+      "drawOffscreen": false,
+      "hideAtSnowOrSandDepth": 99999.0,
+      "drawDamagedOverlay": true,
+      "castEdgeShadows": false,
+      "staticSunShadowHeight": 0.0,
+      "useSameGraphicForGhost": false,
+      "useBlueprintGraphicAsGhost": false,
+      "randomStyleChance": 0.0,
+      "canEditAnyStyle": false,
+      "dontPrint": false,
+      "killedLeavingsExpandRect": 0,
+      "minifiedManualDraw": false,
+      "minifiedDrawScale": 1.0,
+      "deselectedSelectionBracketFactor": 1.0,
+      "selectable": true,
+      "containedPawnsSelectable": true,
+      "containedItemsSelectable": true,
+      "neverMultiSelect": false,
+      "isAutoAttackableMapObject": false,
+      "hasTooltip": true,
+      "inspectorTabs": [
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType"
+      ],
+      "inspectorTabsResolved": [
+       "ITab_Pawn_Health",
+       "ITab_Pawn_Needs",
+       "ITab_Pawn_Character",
+       "ITab_Pawn_Training",
+       "ITab_Pawn_Social",
+       "ITab_Pawn_Guest",
+       "ITab_Pawn_Prisoner",
+       "ITab_Pawn_Slave",
+       "ITab_Pawn_Feeding",
+       "ITab_Genes",
+       "ITab_GenesPregnancy",
+       "ITab_Entity",
+       "ITab_Pawn_FormingCaravan",
+       "ITab_Pawn_Gear",
+       "ITab_Pawn_Log",
+       "ITab_AnimalGenes"
+      ],
+      "seeThroughFog": false,
+      "drawGUIOverlay": true,
+      "drawGUIOverlayQuality": true,
+      "resourceReadoutPriority": "Uncounted",
+      "resourceReadoutAlwaysShow": false,
+      "drawPlaceWorkersWhileSelected": false,
+      "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+      "uiIconScale": 1.0,
+      "hasCustomRectForSelector": false,
+      "hideStats": false,
+      "hideInspect": false,
+      "onlyShowInspectString": false,
+      "hideMainDesc": false,
+      "alwaysHaulable": false,
+      "designateHaulable": false,
+      "thingCategories": [
+       "Animals"
+      ],
+      "mineable": false,
+      "socialPropernessMatters": false,
+      "stealable": true,
+      "soundDrop": "Standard_Drop",
+      "soundPickup": "Standard_Pickup",
+      "soundInteract": "Standard_Pickup",
+      "soundImpactDefault": "BulletImpact_Flesh",
+      "saveCompressible": false,
+      "isSaveable": true,
+      "holdsRoof": false,
+      "fillPercent": 0.0,
+      "coversFloor": false,
+      "neverOverlapFloors": false,
+      "surfaceType": "None",
+      "wipesPlants": false,
+      "blockPlants": false,
+      "blockLight": false,
+      "blockWind": false,
+      "blockWeather": false,
+      "tradeability": "All",
+      "tradeTags": [
+       "AnimalFighter"
+      ],
+      "tradeNeverStack": false,
+      "tradeNeverGenerateStacked": false,
+      "healthAffectsPrice": true,
+      "tools": [
+       "Tool",
+       "Tool"
+      ],
+      "equippedAngleOffset": 0.0,
+      "equippedDistanceOffset": 0.0,
+      "equipmentType": "None",
+      "techLevel": "Undefined",
+      "violentTechHediff": false,
+      "destroyOnDrop": false,
+      "recoilPower": 1.0,
+      "recoilRelaxation": 10.0,
+      "rotateInShelves": true,
+      "mergeVerbGizmos": true,
+      "canBeUsedUnderRoof": true,
+      "statBases": [
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier"
+      ],
+      "passability": "Standable",
+      "pathCost": 0,
+      "pathCostIgnoreRepeat": true,
+      "fertility": -1.0,
+      "costStuffCount": 0,
+      "clearBuildingArea": true,
+      "resourcesFractionWhenDeconstructed": 0.5,
+      "forcePassableByFlyingPawns": false,
+      "forceMoveItemsBeforeConstruction": false,
+      "isAltar": false,
+      "useStuffTerrainAffordance": false,
+      "minMonolithLevel": 0,
+      "constructionSkillPrerequisite": 0,
+      "artisticSkillPrerequisite": 0,
+      "minTechLevelToBuild": "Undefined",
+      "maxTechLevelToBuild": "Undefined",
+      "requireInspectedGravEngine": false,
+      "altitudeLayer": "Pawn",
+      "canGenerateDefaultDesignator": true,
+      "ideoBuilding": false,
+      "specialDisplayRadius": 0.0,
+      "uiOrder": 2999.0,
+      "uiIconForStackCount": -1,
+      "uiIconAngle": 0.0,
+      "defName": "RM_Oorrik",
+      "label": "oorrik",
+      "description": "A single oorrik is nothing \u2014 a wet-mouthed sliver of a thing barely bigger than the grains it moves through. A mound's worth of them is a different problem: dozens surfacing in the same half-second across ten metres of sand, each one too small to hit and too many to count. Nothing about any one of them is dangerous. That was never the point.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 42879,
+      "index": 2806,
+      "fileName": "RM_SandBusters.xml",
+      "defNameHash": 186281642,
+      "generated": false,
+      "debugRandomId": 56498
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_afede59a91a74023ae51c9c8ca6e2add",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "PawnKindDef/RM_Oorrik"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "PawnKindDef/RM_Oorrik",
+     "found": true,
+     "defName": "RM_Oorrik",
+     "defType": "PawnKindDef",
+     "label": "oorrik",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "race": "RM_Oorrik",
+      "defaultFactionDef": "Insect",
+      "labelPlural": "oorriks",
+      "lifeStages": [
+       "PawnKindLifeStage"
+      ],
+      "alternateGraphicChance": 0.0,
+      "useFactionXenotypes": true,
+      "preventIdeo": false,
+      "studiableAsPrisoner": false,
+      "isBoss": false,
+      "moveSpeedFactorByTerrainTag": [],
+      "fixedChildBackstories": [],
+      "fixedAdultBackstories": [],
+      "backstoryCryptosleepCommonality": 0.0,
+      "minGenerationAge": 0,
+      "maxGenerationAge": 999999,
+      "factionLeader": false,
+      "allowOldAgeInjuries": true,
+      "generateInitialNonFamilyRelations": true,
+      "destroyGearOnDrop": false,
+      "canStrip": true,
+      "defendPointRadius": -1.0,
+      "factionHostileOnKill": false,
+      "factionHostileOnDeath": false,
+      "hostileToAll": false,
+      "forceNoDeathNotification": false,
+      "skipResistant": false,
+      "controlGroupPortraitZoom": 1.0,
+      "forceDeathOnDowned": false,
+      "immuneToGameConditionEffects": false,
+      "immuneToTraps": false,
+      "collidesWithPawns": true,
+      "ignoresPainShock": false,
+      "canMeleeAttack": true,
+      "basePrisonBreakMtbDays": 60.0,
+      "useFixedRotation": false,
+      "showInDebugSpawner": true,
+      "canOpenAnyDoor": false,
+      "canOpenDoors": true,
+      "royalTitleChance": 0.0,
+      "allowRoyalRoomRequirements": true,
+      "allowRoyalApparelRequirements": true,
+      "isFighter": true,
+      "combatPower": 16.0,
+      "canArriveManhunter": false,
+      "canBeSapper": false,
+      "isGoodBreacher": false,
+      "allowInMechClusters": true,
+      "maxPerGroup": 2147483647,
+      "isGoodPsychicRitualInvoker": false,
+      "canBeScattered": true,
+      "appearsRandomlyInCombatGroups": true,
+      "aiAvoidCover": false,
+      "acceptArrestChanceFactor": 1.0,
+      "canUseAvoidGrid": false,
+      "itemQuality": "Normal",
+      "forceNormalGearQuality": false,
+      "apparelAllowHeadgearChance": 1.0,
+      "ignoreApparelAllowChance": false,
+      "apparelIgnoreSeasons": false,
+      "apparelIgnorePollution": false,
+      "ignoreFactionApparelStuffRequirements": false,
+      "ignoreIdeoApparelColors": false,
+      "techHediffsChance": 0.0,
+      "techHediffsMaxAmount": 1,
+      "biocodeWeaponChance": 0.0,
+      "humanPregnancyChance": 0.03,
+      "nakedChance": 0.0,
+      "existingDamage": [],
+      "minApparelQuality": "Awful",
+      "maxApparelQuality": "Excellent",
+      "fixedInventory": [],
+      "invNutrition": 0.0,
+      "chemicalAddictionChance": 0.0,
+      "combatEnhancingDrugsChance": 0.0,
+      "forcedAddictions": [],
+      "trader": false,
+      "requiredWorkTags": "None",
+      "disabledWorkTags": "None",
+      "extraSkillLevels": 0,
+      "minTotalSkillLevels": 0,
+      "minBestSkillLevel": 0,
+      "ecoSystemWeight": 0.0,
+      "flyingAnimationFrameCount": 0,
+      "flyingAnimationTicksPerFrame": -1,
+      "flyingAnimationDrawSize": 1.0,
+      "flyingAnimationDrawSizeIsMultiplier": false,
+      "flyingAnimationInheritColors": false,
+      "defName": "RM_Oorrik",
+      "label": "oorrik",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 42879,
+      "index": 447,
+      "fileName": "RM_SandBusters.xml",
+      "defNameHash": 186281642,
+      "generated": false,
+      "debugRandomId": 51806
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_18b81b36eaf74a0a8dc23f92bfe37ef8",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_KneelOllim"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_KneelOllim",
+     "found": true,
+     "defName": "RM_KneelOllim",
+     "defType": "ThingDef",
+     "label": "kneel ollim",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "category": "Plant",
+      "tickerType": "Long",
+      "stackLimit": 1,
+      "destroyable": true,
+      "rotatable": false,
+      "smallVolume": false,
+      "useHitPoints": true,
+      "receivesSignals": false,
+      "comps": [],
+      "virtualDefs": [],
+      "killedLeavingsChance": 1.0,
+      "forceLeavingsAllowed": false,
+      "smeltable": false,
+      "burnableByRecipe": false,
+      "randomizeRotationOnSpawn": false,
+      "isTechHediff": false,
+      "minifiedDef": "MinifiedTree",
+      "isUnfinishedThing": false,
+      "leaveResourcesWhenKilled": false,
+      "isFrameInt": false,
+      "hasInteractionCell": false,
+      "interactionCellIconReverse": false,
+      "forceDebugSpawnable": false,
+      "intricate": false,
+      "scatterableOnMapGen": true,
+      "deepCommonality": 0.0,
+      "deepCountPerCell": 300,
+      "deepCountPerPortion": -1,
+      "generateCommonality": 1.0,
+      "generateAllowChance": 1.0,
+      "alwaysFlee": false,
+      "messageOnDeteriorateInStorage": true,
+      "deteriorateFromEnvironmentalEffects": true,
+      "canDeteriorateUnspawned": false,
+      "canLoadIntoCaravan": true,
+      "isMechClusterThreat": false,
+      "minRewardCount": 1,
+      "preventSkyfallersLandingOn": false,
+      "relicChance": 0.0,
+      "allowedArchonexusCount": 0,
+      "possessionCount": 0,
+      "notifyMapRemoved": false,
+      "canScatterOver": true,
+      "genericMarketSellable": true,
+      "drawHighlight": false,
+      "drawHighlightOnlyForHostile": false,
+      "autoTargetNearbyIdenticalThings": false,
+      "preventDroppingThingsOn": false,
+      "hiddenWhileUndiscovered": false,
+      "disableImpassableShotOverConfigError": false,
+      "showInSearch": true,
+      "bringAlongOnGravship": true,
+      "preventSpawningInResourcePod": false,
+      "pathfinderDangerous": false,
+      "noRightClickDraftAttack": false,
+      "gravshipSpawnPriority": 1,
+      "preventGravshipLandingOn": false,
+      "canInteractThroughCorners": false,
+      "drawerType": "MapMeshOnly",
+      "drawOffscreen": false,
+      "hideAtSnowOrSandDepth": 0.55,
+      "drawDamagedOverlay": true,
+      "castEdgeShadows": false,
+      "staticSunShadowHeight": 0.0,
+      "useSameGraphicForGhost": false,
+      "useBlueprintGraphicAsGhost": false,
+      "randomStyleChance": 0.0,
+      "canEditAnyStyle": false,
+      "dontPrint": false,
+      "killedLeavingsExpandRect": 0,
+      "minifiedManualDraw": false,
+      "minifiedDrawScale": 1.0,
+      "deselectedSelectionBracketFactor": 1.0,
+      "selectable": true,
+      "containedPawnsSelectable": false,
+      "containedItemsSelectable": false,
+      "neverMultiSelect": true,
+      "isAutoAttackableMapObject": false,
+      "hasTooltip": false,
+      "seeThroughFog": false,
+      "drawGUIOverlay": false,
+      "drawGUIOverlayQuality": true,
+      "resourceReadoutPriority": "Uncounted",
+      "resourceReadoutAlwaysShow": false,
+      "drawPlaceWorkersWhileSelected": false,
+      "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+      "uiIconScale": 1.0,
+      "hasCustomRectForSelector": false,
+      "hideStats": false,
+      "hideInspect": false,
+      "onlyShowInspectString": false,
+      "hideMainDesc": false,
+      "alwaysHaulable": false,
+      "designateHaulable": false,
+      "thingCategories": [
+       "Plants"
+      ],
+      "mineable": false,
+      "socialPropernessMatters": false,
+      "stealable": true,
+      "soundDrop": "Standard_Drop",
+      "soundPickup": "Standard_Pickup",
+      "soundInteract": "Standard_Pickup",
+      "soundImpactDefault": "BulletImpact_Ground",
+      "saveCompressible": false,
+      "isSaveable": true,
+      "holdsRoof": false,
+      "fillPercent": 0.25,
+      "coversFloor": false,
+      "neverOverlapFloors": false,
+      "surfaceType": "None",
+      "wipesPlants": false,
+      "blockPlants": false,
+      "blockLight": false,
+      "blockWind": true,
+      "blockWeather": false,
+      "tradeability": "All",
+      "tradeNeverStack": false,
+      "tradeNeverGenerateStacked": false,
+      "healthAffectsPrice": true,
+      "equippedAngleOffset": 0.0,
+      "equippedDistanceOffset": 0.0,
+      "equipmentType": "None",
+      "techLevel": "Undefined",
+      "violentTechHediff": false,
+      "destroyOnDrop": false,
+      "recoilPower": 1.0,
+      "recoilRelaxation": 10.0,
+      "rotateInShelves": true,
+      "mergeVerbGizmos": true,
+      "canBeUsedUnderRoof": true,
+      "statBases": [
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier"
+      ],
+      "passability": "PassThroughOnly",
+      "pathCost": 42,
+      "pathCostIgnoreRepeat": false,
+      "fertility": -1.0,
+      "costStuffCount": 0,
+      "clearBuildingArea": true,
+      "resourcesFractionWhenDeconstructed": 0.5,
+      "forcePassableByFlyingPawns": false,
+      "forceMoveItemsBeforeConstruction": false,
+      "isAltar": false,
+      "useStuffTerrainAffordance": false,
+      "minMonolithLevel": 0,
+      "constructionSkillPrerequisite": 0,
+      "artisticSkillPrerequisite": 0,
+      "minTechLevelToBuild": "Undefined",
+      "maxTechLevelToBuild": "Undefined",
+      "requireInspectedGravEngine": false,
+      "altitudeLayer": "Building",
+      "canGenerateDefaultDesignator": true,
+      "ideoBuilding": false,
+      "specialDisplayRadius": 0.0,
+      "uiOrder": 2999.0,
+      "uiIconForStackCount": -1,
+      "installBlueprintDef": "Blueprint_Install_RM_KneelOllim",
+      "uiIconAngle": 0.0,
+      "defName": "RM_KneelOllim",
+      "label": "kneel ollim",
+      "description": "The ollim's other body. Where the tall form is a bone-white truncate, the kneel form is the shield: a low, swept, wind-aligned dome that grows where the buried moisture is too thin to fund a tower, which is most places the ollim grows at all. A bone-field usually carries one tower and a scatter of kneels, all one organism's slow children. It casts a hard black crescent of shade a grain animal can live in; a loomma cannot, the shadow is too small.",
+      "descriptionHyperlinks": [
+       "DefHyperlink"
+      ],
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 45080,
+      "index": 2785,
+      "fileName": "RM_Stillsand_FilloutFlora.xml",
+      "defNameHash": 1136980376,
+      "generated": false,
+      "debugRandomId": 65066
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_c3d2e397279b4a49bbe9258fc35cd48b",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_Filth_DisturbedSand"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_Filth_DisturbedSand",
+     "found": true,
+     "defName": "RM_Filth_DisturbedSand",
+     "defType": "ThingDef",
+     "label": "disturbed sand",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "category": "Filth",
+      "tickerType": "Never",
+      "stackLimit": 1,
+      "destroyable": true,
+      "rotatable": true,
+      "smallVolume": false,
+      "useHitPoints": false,
+      "receivesSignals": false,
+      "comps": [],
+      "virtualDefs": [],
+      "killedLeavingsChance": 1.0,
+      "forceLeavingsAllowed": false,
+      "smeltable": false,
+      "burnableByRecipe": false,
+      "randomizeRotationOnSpawn": false,
+      "isTechHediff": false,
+      "isUnfinishedThing": false,
+      "leaveResourcesWhenKilled": false,
+      "isFrameInt": false,
+      "hasInteractionCell": false,
+      "interactionCellIconReverse": false,
+      "forceDebugSpawnable": false,
+      "intricate": false,
+      "scatterableOnMapGen": true,
+      "deepCommonality": 0.0,
+      "deepCountPerCell": 300,
+      "deepCountPerPortion": -1,
+      "generateCommonality": 1.0,
+      "generateAllowChance": 1.0,
+      "alwaysFlee": false,
+      "messageOnDeteriorateInStorage": true,
+      "deteriorateFromEnvironmentalEffects": true,
+      "canDeteriorateUnspawned": false,
+      "canLoadIntoCaravan": true,
+      "isMechClusterThreat": false,
+      "minRewardCount": 1,
+      "preventSkyfallersLandingOn": false,
+      "relicChance": 0.0,
+      "allowedArchonexusCount": 0,
+      "possessionCount": 0,
+      "notifyMapRemoved": false,
+      "canScatterOver": true,
+      "genericMarketSellable": true,
+      "drawHighlight": false,
+      "drawHighlightOnlyForHostile": false,
+      "autoTargetNearbyIdenticalThings": false,
+      "preventDroppingThingsOn": false,
+      "hiddenWhileUndiscovered": false,
+      "disableImpassableShotOverConfigError": false,
+      "showInSearch": true,
+      "bringAlongOnGravship": true,
+      "preventSpawningInResourcePod": false,
+      "pathfinderDangerous": false,
+      "noRightClickDraftAttack": false,
+      "gravshipSpawnPriority": 1,
+      "preventGravshipLandingOn": false,
+      "canInteractThroughCorners": false,
+      "drawerType": "MapMeshOnly",
+      "drawOffscreen": false,
+      "hideAtSnowOrSandDepth": 0.2,
+      "drawDamagedOverlay": true,
+      "castEdgeShadows": false,
+      "staticSunShadowHeight": 0.0,
+      "useSameGraphicForGhost": false,
+      "useBlueprintGraphicAsGhost": false,
+      "randomStyleChance": 0.0,
+      "canEditAnyStyle": false,
+      "dontPrint": false,
+      "killedLeavingsExpandRect": 0,
+      "minifiedManualDraw": false,
+      "minifiedDrawScale": 1.0,
+      "deselectedSelectionBracketFactor": 1.0,
+      "selectable": false,
+      "containedPawnsSelectable": false,
+      "containedItemsSelectable": false,
+      "neverMultiSelect": false,
+      "isAutoAttackableMapObject": false,
+      "hasTooltip": false,
+      "seeThroughFog": false,
+      "drawGUIOverlay": false,
+      "drawGUIOverlayQuality": true,
+      "resourceReadoutPriority": "Uncounted",
+      "resourceReadoutAlwaysShow": false,
+      "drawPlaceWorkersWhileSelected": false,
+      "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+      "uiIconScale": 1.0,
+      "hasCustomRectForSelector": false,
+      "hideStats": false,
+      "hideInspect": false,
+      "onlyShowInspectString": false,
+      "hideMainDesc": false,
+      "alwaysHaulable": false,
+      "designateHaulable": false,
+      "mineable": false,
+      "socialPropernessMatters": false,
+      "stealable": true,
+      "soundDrop": "Standard_Drop",
+      "soundPickup": "Standard_Pickup",
+      "soundInteract": "Standard_Pickup",
+      "soundImpactDefault": "BulletImpact_Ground",
+      "saveCompressible": false,
+      "isSaveable": true,
+      "holdsRoof": false,
+      "fillPercent": 0.0,
+      "coversFloor": false,
+      "neverOverlapFloors": false,
+      "surfaceType": "None",
+      "wipesPlants": false,
+      "blockPlants": false,
+      "blockLight": false,
+      "blockWind": false,
+      "blockWeather": false,
+      "tradeability": "All",
+      "tradeNeverStack": false,
+      "tradeNeverGenerateStacked": false,
+      "healthAffectsPrice": true,
+      "equippedAngleOffset": 0.0,
+      "equippedDistanceOffset": 0.0,
+      "equipmentType": "None",
+      "techLevel": "Undefined",
+      "violentTechHediff": false,
+      "destroyOnDrop": false,
+      "recoilPower": 1.0,
+      "recoilRelaxation": 10.0,
+      "rotateInShelves": true,
+      "mergeVerbGizmos": true,
+      "canBeUsedUnderRoof": true,
+      "statBases": [
+       "StatModifier",
+       "StatModifier"
+      ],
+      "passability": "Standable",
+      "pathCost": 0,
+      "pathCostIgnoreRepeat": true,
+      "fertility": -1.0,
+      "costStuffCount": 0,
+      "clearBuildingArea": true,
+      "resourcesFractionWhenDeconstructed": 0.5,
+      "forcePassableByFlyingPawns": false,
+      "forceMoveItemsBeforeConstruction": false,
+      "isAltar": false,
+      "useStuffTerrainAffordance": false,
+      "minMonolithLevel": 0,
+      "constructionSkillPrerequisite": 0,
+      "artisticSkillPrerequisite": 0,
+      "minTechLevelToBuild": "Undefined",
+      "maxTechLevelToBuild": "Undefined",
+      "requireInspectedGravEngine": false,
+      "altitudeLayer": "Filth",
+      "canGenerateDefaultDesignator": true,
+      "ideoBuilding": false,
+      "specialDisplayRadius": 0.0,
+      "uiOrder": 2999.0,
+      "uiIconForStackCount": -1,
+      "uiIconAngle": 0.0,
+      "defName": "RM_Filth_DisturbedSand",
+      "label": "disturbed sand",
+      "description": "A shallow collapsed funnel ringed with slumped crust. A low furrow runs into it and stops. Something under the sand came up here and took whatever was standing on it.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 61421,
+      "index": 3406,
+      "fileName": "RM_KillSigns_Filth.xml",
+      "defNameHash": -1357968716,
+      "generated": false,
+      "debugRandomId": 55035
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_ed1701fad8ff4e24829e1dc5559bbb96",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "PawnKindDef/RM_Soorrak"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "PawnKindDef/RM_Soorrak",
+     "found": true,
+     "defName": "RM_Soorrak",
+     "defType": "PawnKindDef",
+     "label": "soorrak",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "race": "RM_Soorrak",
+      "lifeStages": [
+       "PawnKindLifeStage",
+       "PawnKindLifeStage",
+       "PawnKindLifeStage"
+      ],
+      "alternateGraphicChance": 0.0,
+      "useFactionXenotypes": true,
+      "preventIdeo": false,
+      "studiableAsPrisoner": false,
+      "isBoss": false,
+      "moveSpeedFactorByTerrainTag": [],
+      "fixedChildBackstories": [],
+      "fixedAdultBackstories": [],
+      "backstoryCryptosleepCommonality": 0.0,
+      "minGenerationAge": 0,
+      "maxGenerationAge": 999999,
+      "factionLeader": false,
+      "allowOldAgeInjuries": true,
+      "generateInitialNonFamilyRelations": true,
+      "destroyGearOnDrop": false,
+      "canStrip": true,
+      "defendPointRadius": -1.0,
+      "factionHostileOnKill": false,
+      "factionHostileOnDeath": false,
+      "hostileToAll": false,
+      "forceNoDeathNotification": false,
+      "skipResistant": false,
+      "controlGroupPortraitZoom": 1.0,
+      "forceDeathOnDowned": false,
+      "immuneToGameConditionEffects": false,
+      "immuneToTraps": false,
+      "collidesWithPawns": true,
+      "ignoresPainShock": false,
+      "canMeleeAttack": true,
+      "basePrisonBreakMtbDays": 60.0,
+      "useFixedRotation": false,
+      "showInDebugSpawner": true,
+      "canOpenAnyDoor": false,
+      "canOpenDoors": true,
+      "royalTitleChance": 0.0,
+      "allowRoyalRoomRequirements": true,
+      "allowRoyalApparelRequirements": true,
+      "isFighter": true,
+      "combatPower": 220.0,
+      "canArriveManhunter": false,
+      "canBeSapper": false,
+      "isGoodBreacher": false,
+      "allowInMechClusters": true,
+      "maxPerGroup": 2147483647,
+      "isGoodPsychicRitualInvoker": false,
+      "canBeScattered": true,
+      "appearsRandomlyInCombatGroups": true,
+      "aiAvoidCover": false,
+      "acceptArrestChanceFactor": 1.0,
+      "canUseAvoidGrid": false,
+      "itemQuality": "Normal",
+      "forceNormalGearQuality": false,
+      "apparelAllowHeadgearChance": 1.0,
+      "ignoreApparelAllowChance": false,
+      "apparelIgnoreSeasons": false,
+      "apparelIgnorePollution": false,
+      "ignoreFactionApparelStuffRequirements": false,
+      "ignoreIdeoApparelColors": false,
+      "techHediffsChance": 0.0,
+      "techHediffsMaxAmount": 1,
+      "biocodeWeaponChance": 0.0,
+      "humanPregnancyChance": 0.03,
+      "nakedChance": 0.0,
+      "existingDamage": [],
+      "minApparelQuality": "Awful",
+      "maxApparelQuality": "Excellent",
+      "fixedInventory": [],
+      "invNutrition": 0.0,
+      "chemicalAddictionChance": 0.0,
+      "combatEnhancingDrugsChance": 0.0,
+      "forcedAddictions": [],
+      "trader": false,
+      "requiredWorkTags": "None",
+      "disabledWorkTags": "None",
+      "extraSkillLevels": 0,
+      "minTotalSkillLevels": 0,
+      "minBestSkillLevel": 0,
+      "ecoSystemWeight": 0.5,
+      "flyingAnimationFrameCount": 0,
+      "flyingAnimationTicksPerFrame": -1,
+      "flyingAnimationDrawSize": 1.0,
+      "flyingAnimationDrawSizeIsMultiplier": false,
+      "flyingAnimationInheritColors": false,
+      "defName": "RM_Soorrak",
+      "label": "soorrak",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 58184,
+      "index": 450,
+      "fileName": "RM_Stillsand_Fillout.xml",
+      "defNameHash": -1388787979,
+      "generated": false,
+      "debugRandomId": 35398
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_a3fd4c0894544dd9951544b9e5bb75bc",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "GenStepDef/RSW_GenStep_WhisperSarlaccSign"
+  },
+  "result": {
+   "success": true,
+   "message": "0 of 1 def(s) resolved; 1 not found",
+   "requested": 1,
+   "foundCount": 0,
+   "notFound": [
+    "GenStepDef/RSW_GenStep_WhisperSarlaccSign"
+   ],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "GenStepDef/RSW_GenStep_WhisperSarlaccSign",
+     "found": false,
+     "defType": "GenStepDef",
+     "defName": "RSW_GenStep_WhisperSarlaccSign"
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_b0ef9ca47534422fa083710f2fbc2ce9",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_Bileworm"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_Bileworm",
+     "found": true,
+     "defName": "RM_Bileworm",
+     "defType": "ThingDef",
+     "label": "bileworm",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "category": "Pawn",
+      "tickerType": "Normal",
+      "stackLimit": 1,
+      "destroyable": true,
+      "rotatable": true,
+      "smallVolume": false,
+      "useHitPoints": false,
+      "receivesSignals": false,
+      "comps": [
+       "CompProperties",
+       "CompProperties_HoldingPlatformTarget",
+       "CompProperties_Studiable",
+       "RM_CompProperties_BilewormGas"
+      ],
+      "virtualDefs": [],
+      "killedLeavingsChance": 1.0,
+      "forceLeavingsAllowed": false,
+      "smeltable": false,
+      "burnableByRecipe": false,
+      "randomizeRotationOnSpawn": false,
+      "isTechHediff": false,
+      "isUnfinishedThing": false,
+      "leaveResourcesWhenKilled": false,
+      "isFrameInt": false,
+      "hasInteractionCell": false,
+      "interactionCellIconReverse": false,
+      "forceDebugSpawnable": false,
+      "intricate": false,
+      "scatterableOnMapGen": true,
+      "deepCommonality": 0.0,
+      "deepCountPerCell": 300,
+      "deepCountPerPortion": -1,
+      "generateCommonality": 1.0,
+      "generateAllowChance": 1.0,
+      "alwaysFlee": false,
+      "recipes": [
+       "ExciseCarcinoma",
+       "AdministerMechSerumHealer",
+       "RemoveBodyPart",
+       "Euthanize",
+       "Anesthetize",
+       "CureScaria",
+       "Sterilize",
+       "CureBloodRot",
+       "TerminatePregnancy",
+       "SurgicalInspection",
+       "RemovePorcupineQuill",
+       "RM_ScrubTarred",
+       "RM_AdministerStellockLace"
+      ],
+      "messageOnDeteriorateInStorage": true,
+      "deteriorateFromEnvironmentalEffects": true,
+      "canDeteriorateUnspawned": false,
+      "canLoadIntoCaravan": true,
+      "isMechClusterThreat": false,
+      "minRewardCount": 1,
+      "preventSkyfallersLandingOn": false,
+      "relicChance": 0.0,
+      "allowedArchonexusCount": 0,
+      "possessionCount": 0,
+      "notifyMapRemoved": false,
+      "canScatterOver": true,
+      "genericMarketSellable": true,
+      "drawHighlight": true,
+      "drawHighlightOnlyForHostile": false,
+      "autoTargetNearbyIdenticalThings": false,
+      "preventDroppingThingsOn": false,
+      "hiddenWhileUndiscovered": false,
+      "disableImpassableShotOverConfigError": false,
+      "showInSearch": true,
+      "bringAlongOnGravship": true,
+      "preventSpawningInResourcePod": false,
+      "pathfinderDangerous": false,
+      "noRightClickDraftAttack": false,
+      "gravshipSpawnPriority": 1,
+      "preventGravshipLandingOn": false,
+      "canInteractThroughCorners": false,
+      "drawerType": "RealtimeOnly",
+      "drawOffscreen": false,
+      "hideAtSnowOrSandDepth": 99999.0,
+      "drawDamagedOverlay": true,
+      "castEdgeShadows": false,
+      "staticSunShadowHeight": 0.0,
+      "useSameGraphicForGhost": false,
+      "useBlueprintGraphicAsGhost": false,
+      "randomStyleChance": 0.0,
+      "canEditAnyStyle": false,
+      "dontPrint": false,
+      "killedLeavingsExpandRect": 0,
+      "minifiedManualDraw": false,
+      "minifiedDrawScale": 1.0,
+      "deselectedSelectionBracketFactor": 1.0,
+      "selectable": true,
+      "containedPawnsSelectable": true,
+      "containedItemsSelectable": true,
+      "neverMultiSelect": false,
+      "isAutoAttackableMapObject": false,
+      "hasTooltip": true,
+      "inspectorTabs": [
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType"
+      ],
+      "inspectorTabsResolved": [
+       "ITab_Pawn_Health",
+       "ITab_Pawn_Needs",
+       "ITab_Pawn_Character",
+       "ITab_Pawn_Training",
+       "ITab_Pawn_Social",
+       "ITab_Pawn_Guest",
+       "ITab_Pawn_Prisoner",
+       "ITab_Pawn_Slave",
+       "ITab_Pawn_Feeding",
+       "ITab_Genes",
+       "ITab_GenesPregnancy",
+       "ITab_Entity",
+       "ITab_Pawn_FormingCaravan",
+       "ITab_Pawn_Gear",
+       "ITab_Pawn_Log",
+       "ITab_AnimalGenes"
+      ],
+      "seeThroughFog": false,
+      "drawGUIOverlay": true,
+      "drawGUIOverlayQuality": true,
+      "resourceReadoutPriority": "Uncounted",
+      "resourceReadoutAlwaysShow": false,
+      "drawPlaceWorkersWhileSelected": false,
+      "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+      "uiIconScale": 1.0,
+      "hasCustomRectForSelector": false,
+      "hideStats": false,
+      "hideInspect": false,
+      "onlyShowInspectString": false,
+      "hideMainDesc": false,
+      "alwaysHaulable": false,
+      "designateHaulable": false,
+      "thingCategories": [
+       "Animals"
+      ],
+      "mineable": false,
+      "socialPropernessMatters": false,
+      "stealable": true,
+      "soundDrop": "Standard_Drop",
+      "soundPickup": "Standard_Pickup",
+      "soundInteract": "Standard_Pickup",
+      "soundImpactDefault": "BulletImpact_Flesh",
+      "saveCompressible": false,
+      "isSaveable": true,
+      "holdsRoof": false,
+      "fillPercent": 0.0,
+      "coversFloor": false,
+      "neverOverlapFloors": false,
+      "surfaceType": "None",
+      "wipesPlants": false,
+      "blockPlants": false,
+      "blockLight": false,
+      "blockWind": false,
+      "blockWeather": false,
+      "tradeability": "All",
+      "tradeTags": [
+       "AnimalUncommon"
+      ],
+      "tradeNeverStack": false,
+      "tradeNeverGenerateStacked": false,
+      "healthAffectsPrice": true,
+      "tools": [
+       "Tool"
+      ],
+      "equippedAngleOffset": 0.0,
+      "equippedDistanceOffset": 0.0,
+      "equipmentType": "None",
+      "techLevel": "Undefined",
+      "violentTechHediff": false,
+      "destroyOnDrop": false,
+      "recoilPower": 1.0,
+      "recoilRelaxation": 10.0,
+      "rotateInShelves": true,
+      "mergeVerbGizmos": true,
+      "canBeUsedUnderRoof": true,
+      "statBases": [
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier"
+      ],
+      "passability": "Standable",
+      "pathCost": 0,
+      "pathCostIgnoreRepeat": true,
+      "fertility": -1.0,
+      "costStuffCount": 0,
+      "clearBuildingArea": true,
+      "resourcesFractionWhenDeconstructed": 0.5,
+      "forcePassableByFlyingPawns": false,
+      "forceMoveItemsBeforeConstruction": false,
+      "isAltar": false,
+      "useStuffTerrainAffordance": false,
+      "minMonolithLevel": 0,
+      "constructionSkillPrerequisite": 0,
+      "artisticSkillPrerequisite": 0,
+      "minTechLevelToBuild": "Undefined",
+      "maxTechLevelToBuild": "Undefined",
+      "requireInspectedGravEngine": false,
+      "altitudeLayer": "Pawn",
+      "canGenerateDefaultDesignator": true,
+      "ideoBuilding": false,
+      "specialDisplayRadius": 0.0,
+      "uiOrder": 2999.0,
+      "uiIconForStackCount": -1,
+      "uiIconAngle": 0.0,
+      "defName": "RM_Bileworm",
+      "label": "bileworm",
+      "description": "A vast, slow slug in mottled grey-green skin, ribbed along its pale underside and pitted with a row of dark breathing holes down each flank, its two eye-stalks nodding over a cluster of yellow, finger-like mouthparts. It breathes out a foul, corrosive gas wherever it goes: mostly harmless to the living, but murder on the dead. Anything it passes near rots in minutes into a black, reeking fluid, which the bileworm then happily drinks.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 48769,
+      "index": 2371,
+      "fileName": "RM_Bileworm.xml",
+      "defNameHash": 820372565,
+      "generated": false,
+      "debugRandomId": 21070
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_dc81c7fc8850401099181c74b92e58ea",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "PawnKindDef/RM_Bileworm"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "PawnKindDef/RM_Bileworm",
+     "found": true,
+     "defName": "RM_Bileworm",
+     "defType": "PawnKindDef",
+     "label": "bileworm",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "race": "RM_Bileworm",
+      "lifeStages": [
+       "PawnKindLifeStage",
+       "PawnKindLifeStage",
+       "PawnKindLifeStage"
+      ],
+      "alternateGraphicChance": 0.0,
+      "useFactionXenotypes": true,
+      "preventIdeo": false,
+      "studiableAsPrisoner": false,
+      "isBoss": false,
+      "moveSpeedFactorByTerrainTag": [],
+      "fixedChildBackstories": [],
+      "fixedAdultBackstories": [],
+      "backstoryCryptosleepCommonality": 0.0,
+      "minGenerationAge": 0,
+      "maxGenerationAge": 999999,
+      "factionLeader": false,
+      "allowOldAgeInjuries": true,
+      "generateInitialNonFamilyRelations": true,
+      "destroyGearOnDrop": false,
+      "canStrip": true,
+      "defendPointRadius": -1.0,
+      "factionHostileOnKill": false,
+      "factionHostileOnDeath": false,
+      "hostileToAll": false,
+      "forceNoDeathNotification": false,
+      "skipResistant": false,
+      "controlGroupPortraitZoom": 1.0,
+      "forceDeathOnDowned": false,
+      "immuneToGameConditionEffects": false,
+      "immuneToTraps": false,
+      "collidesWithPawns": true,
+      "ignoresPainShock": false,
+      "canMeleeAttack": true,
+      "basePrisonBreakMtbDays": 60.0,
+      "useFixedRotation": false,
+      "showInDebugSpawner": true,
+      "canOpenAnyDoor": false,
+      "canOpenDoors": true,
+      "royalTitleChance": 0.0,
+      "allowRoyalRoomRequirements": true,
+      "allowRoyalApparelRequirements": true,
+      "isFighter": true,
+      "combatPower": 220.0,
+      "canArriveManhunter": false,
+      "canBeSapper": false,
+      "isGoodBreacher": false,
+      "allowInMechClusters": true,
+      "maxPerGroup": 2147483647,
+      "isGoodPsychicRitualInvoker": false,
+      "canBeScattered": true,
+      "appearsRandomlyInCombatGroups": true,
+      "aiAvoidCover": false,
+      "acceptArrestChanceFactor": 1.0,
+      "canUseAvoidGrid": false,
+      "itemQuality": "Normal",
+      "forceNormalGearQuality": false,
+      "apparelAllowHeadgearChance": 1.0,
+      "ignoreApparelAllowChance": false,
+      "apparelIgnoreSeasons": false,
+      "apparelIgnorePollution": false,
+      "ignoreFactionApparelStuffRequirements": false,
+      "ignoreIdeoApparelColors": false,
+      "techHediffsChance": 0.0,
+      "techHediffsMaxAmount": 1,
+      "biocodeWeaponChance": 0.0,
+      "humanPregnancyChance": 0.03,
+      "nakedChance": 0.0,
+      "existingDamage": [],
+      "minApparelQuality": "Awful",
+      "maxApparelQuality": "Excellent",
+      "fixedInventory": [],
+      "invNutrition": 0.0,
+      "chemicalAddictionChance": 0.0,
+      "combatEnhancingDrugsChance": 0.0,
+      "forcedAddictions": [],
+      "trader": false,
+      "requiredWorkTags": "None",
+      "disabledWorkTags": "None",
+      "extraSkillLevels": 0,
+      "minTotalSkillLevels": 0,
+      "minBestSkillLevel": 0,
+      "ecoSystemWeight": 1.0,
+      "flyingAnimationFrameCount": 0,
+      "flyingAnimationTicksPerFrame": -1,
+      "flyingAnimationDrawSize": 1.0,
+      "flyingAnimationDrawSizeIsMultiplier": false,
+      "flyingAnimationInheritColors": false,
+      "defName": "RM_Bileworm",
+      "label": "bileworm",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 48769,
+      "index": 327,
+      "fileName": "RM_Bileworm.xml",
+      "defNameHash": 820372565,
+      "generated": false,
+      "debugRandomId": 40247
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_3451c83860e84d0f9de2efb20762d83c",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_JuggernautBeetle"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_JuggernautBeetle",
+     "found": true,
+     "defName": "RM_JuggernautBeetle",
+     "defType": "ThingDef",
+     "label": "juggernaut beetle",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "category": "Pawn",
+      "tickerType": "Normal",
+      "stackLimit": 1,
+      "destroyable": true,
+      "rotatable": true,
+      "smallVolume": false,
+      "useHitPoints": false,
+      "receivesSignals": false,
+      "comps": [
+       "CompProperties",
+       "CompProperties_HoldingPlatformTarget",
+       "CompProperties_Studiable"
+      ],
+      "virtualDefs": [],
+      "killedLeavingsChance": 1.0,
+      "forceLeavingsAllowed": false,
+      "smeltable": false,
+      "burnableByRecipe": false,
+      "randomizeRotationOnSpawn": false,
+      "isTechHediff": false,
+      "isUnfinishedThing": false,
+      "leaveResourcesWhenKilled": false,
+      "isFrameInt": false,
+      "hasInteractionCell": false,
+      "interactionCellIconReverse": false,
+      "forceDebugSpawnable": false,
+      "intricate": false,
+      "scatterableOnMapGen": true,
+      "deepCommonality": 0.0,
+      "deepCountPerCell": 300,
+      "deepCountPerPortion": -1,
+      "generateCommonality": 1.0,
+      "generateAllowChance": 1.0,
+      "alwaysFlee": false,
+      "recipes": [
+       "ExciseCarcinoma",
+       "AdministerMechSerumHealer",
+       "RemoveBodyPart",
+       "Euthanize",
+       "Anesthetize",
+       "CureScaria",
+       "Sterilize",
+       "CureBloodRot",
+       "TerminatePregnancy",
+       "SurgicalInspection",
+       "RemovePorcupineQuill",
+       "RM_ScrubTarred",
+       "RM_AdministerStellockLace"
+      ],
+      "messageOnDeteriorateInStorage": true,
+      "deteriorateFromEnvironmentalEffects": true,
+      "canDeteriorateUnspawned": false,
+      "canLoadIntoCaravan": true,
+      "isMechClusterThreat": false,
+      "minRewardCount": 1,
+      "preventSkyfallersLandingOn": false,
+      "relicChance": 0.0,
+      "allowedArchonexusCount": 0,
+      "possessionCount": 0,
+      "notifyMapRemoved": false,
+      "canScatterOver": true,
+      "genericMarketSellable": true,
+      "drawHighlight": true,
+      "drawHighlightOnlyForHostile": false,
+      "autoTargetNearbyIdenticalThings": false,
+      "preventDroppingThingsOn": false,
+      "hiddenWhileUndiscovered": false,
+      "disableImpassableShotOverConfigError": false,
+      "showInSearch": true,
+      "bringAlongOnGravship": true,
+      "preventSpawningInResourcePod": false,
+      "pathfinderDangerous": false,
+      "noRightClickDraftAttack": false,
+      "gravshipSpawnPriority": 1,
+      "preventGravshipLandingOn": false,
+      "canInteractThroughCorners": false,
+      "drawerType": "RealtimeOnly",
+      "drawOffscreen": false,
+      "hideAtSnowOrSandDepth": 99999.0,
+      "drawDamagedOverlay": true,
+      "castEdgeShadows": false,
+      "staticSunShadowHeight": 0.0,
+      "useSameGraphicForGhost": false,
+      "useBlueprintGraphicAsGhost": false,
+      "randomStyleChance": 0.0,
+      "canEditAnyStyle": false,
+      "dontPrint": false,
+      "killedLeavingsExpandRect": 0,
+      "minifiedManualDraw": false,
+      "minifiedDrawScale": 1.0,
+      "deselectedSelectionBracketFactor": 1.0,
+      "selectable": true,
+      "containedPawnsSelectable": true,
+      "containedItemsSelectable": true,
+      "neverMultiSelect": false,
+      "isAutoAttackableMapObject": false,
+      "hasTooltip": true,
+      "inspectorTabs": [
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType"
+      ],
+      "inspectorTabsResolved": [
+       "ITab_Pawn_Health",
+       "ITab_Pawn_Needs",
+       "ITab_Pawn_Character",
+       "ITab_Pawn_Training",
+       "ITab_Pawn_Social",
+       "ITab_Pawn_Guest",
+       "ITab_Pawn_Prisoner",
+       "ITab_Pawn_Slave",
+       "ITab_Pawn_Feeding",
+       "ITab_Genes",
+       "ITab_GenesPregnancy",
+       "ITab_Entity",
+       "ITab_Pawn_FormingCaravan",
+       "ITab_Pawn_Gear",
+       "ITab_Pawn_Log",
+       "ITab_AnimalGenes"
+      ],
+      "seeThroughFog": false,
+      "drawGUIOverlay": true,
+      "drawGUIOverlayQuality": true,
+      "resourceReadoutPriority": "Uncounted",
+      "resourceReadoutAlwaysShow": false,
+      "drawPlaceWorkersWhileSelected": false,
+      "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+      "uiIconScale": 1.0,
+      "hasCustomRectForSelector": false,
+      "hideStats": false,
+      "hideInspect": false,
+      "onlyShowInspectString": false,
+      "hideMainDesc": false,
+      "alwaysHaulable": false,
+      "designateHaulable": false,
+      "thingCategories": [
+       "Animals"
+      ],
+      "mineable": false,
+      "socialPropernessMatters": false,
+      "stealable": true,
+      "soundDrop": "Standard_Drop",
+      "soundPickup": "Standard_Pickup",
+      "soundInteract": "Standard_Pickup",
+      "soundImpactDefault": "BulletImpact_Flesh",
+      "saveCompressible": false,
+      "isSaveable": true,
+      "holdsRoof": false,
+      "fillPercent": 0.0,
+      "coversFloor": false,
+      "neverOverlapFloors": false,
+      "surfaceType": "None",
+      "wipesPlants": false,
+      "blockPlants": false,
+      "blockLight": false,
+      "blockWind": false,
+      "blockWeather": false,
+      "tradeability": "All",
+      "tradeNeverStack": false,
+      "tradeNeverGenerateStacked": false,
+      "healthAffectsPrice": true,
+      "tools": [
+       "Tool",
+       "Tool"
+      ],
+      "equippedAngleOffset": 0.0,
+      "equippedDistanceOffset": 0.0,
+      "equipmentType": "None",
+      "techLevel": "Undefined",
+      "violentTechHediff": false,
+      "destroyOnDrop": false,
+      "recoilPower": 1.0,
+      "recoilRelaxation": 10.0,
+      "rotateInShelves": true,
+      "mergeVerbGizmos": true,
+      "canBeUsedUnderRoof": true,
+      "statBases": [
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier"
+      ],
+      "passability": "Standable",
+      "pathCost": 0,
+      "pathCostIgnoreRepeat": true,
+      "fertility": -1.0,
+      "costStuffCount": 0,
+      "clearBuildingArea": true,
+      "resourcesFractionWhenDeconstructed": 0.5,
+      "forcePassableByFlyingPawns": false,
+      "forceMoveItemsBeforeConstruction": false,
+      "isAltar": false,
+      "useStuffTerrainAffordance": false,
+      "minMonolithLevel": 0,
+      "constructionSkillPrerequisite": 0,
+      "artisticSkillPrerequisite": 0,
+      "minTechLevelToBuild": "Undefined",
+      "maxTechLevelToBuild": "Undefined",
+      "requireInspectedGravEngine": false,
+      "altitudeLayer": "Pawn",
+      "canGenerateDefaultDesignator": true,
+      "ideoBuilding": false,
+      "specialDisplayRadius": 0.0,
+      "uiOrder": 2999.0,
+      "uiIconForStackCount": -1,
+      "uiIconAngle": 0.0,
+      "defName": "RM_JuggernautBeetle",
+      "label": "juggernaut beetle",
+      "description": "A heavy, domed beetle in dull slate-black armour, its back one great crown of overlapping plates and its head swept back into a long curved horn. Pale blue light glows in the joints of its limbs and around its jaws, and one oversized hooked forelimb is held ready in front of it. It walks slowly, because nothing it meets has ever made it hurry.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 20309,
+      "index": 2376,
+      "fileName": "RM_JuggernautBeetle.xml",
+      "defNameHash": 1318033593,
+      "generated": false,
+      "debugRandomId": 15645
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_4865fec8a6994bd784dff98ab26c137e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "PawnKindDef/RM_JuggernautBeetle"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "PawnKindDef/RM_JuggernautBeetle",
+     "found": true,
+     "defName": "RM_JuggernautBeetle",
+     "defType": "PawnKindDef",
+     "label": "juggernaut beetle",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "race": "RM_JuggernautBeetle",
+      "defaultFactionDef": "Insect",
+      "lifeStages": [
+       "PawnKindLifeStage",
+       "PawnKindLifeStage",
+       "PawnKindLifeStage"
+      ],
+      "alternateGraphicChance": 0.0,
+      "useFactionXenotypes": true,
+      "preventIdeo": false,
+      "studiableAsPrisoner": false,
+      "isBoss": false,
+      "moveSpeedFactorByTerrainTag": [],
+      "fixedChildBackstories": [],
+      "fixedAdultBackstories": [],
+      "backstoryCryptosleepCommonality": 0.0,
+      "minGenerationAge": 0,
+      "maxGenerationAge": 999999,
+      "factionLeader": false,
+      "allowOldAgeInjuries": true,
+      "generateInitialNonFamilyRelations": true,
+      "destroyGearOnDrop": false,
+      "canStrip": true,
+      "defendPointRadius": 0.0,
+      "factionHostileOnKill": false,
+      "factionHostileOnDeath": false,
+      "hostileToAll": false,
+      "forceNoDeathNotification": false,
+      "skipResistant": false,
+      "controlGroupPortraitZoom": 1.0,
+      "forceDeathOnDowned": false,
+      "immuneToGameConditionEffects": false,
+      "immuneToTraps": false,
+      "collidesWithPawns": true,
+      "ignoresPainShock": false,
+      "canMeleeAttack": true,
+      "basePrisonBreakMtbDays": 60.0,
+      "useFixedRotation": false,
+      "showInDebugSpawner": true,
+      "canOpenAnyDoor": false,
+      "canOpenDoors": true,
+      "royalTitleChance": 0.0,
+      "allowRoyalRoomRequirements": true,
+      "allowRoyalApparelRequirements": true,
+      "isFighter": true,
+      "combatPower": 300.0,
+      "canArriveManhunter": false,
+      "canBeSapper": false,
+      "isGoodBreacher": false,
+      "allowInMechClusters": true,
+      "maxPerGroup": 2147483647,
+      "isGoodPsychicRitualInvoker": false,
+      "canBeScattered": true,
+      "appearsRandomlyInCombatGroups": true,
+      "aiAvoidCover": false,
+      "acceptArrestChanceFactor": 1.0,
+      "canUseAvoidGrid": false,
+      "itemQuality": "Normal",
+      "forceNormalGearQuality": false,
+      "apparelAllowHeadgearChance": 1.0,
+      "ignoreApparelAllowChance": false,
+      "apparelIgnoreSeasons": false,
+      "apparelIgnorePollution": false,
+      "ignoreFactionApparelStuffRequirements": false,
+      "ignoreIdeoApparelColors": false,
+      "techHediffsChance": 0.0,
+      "techHediffsMaxAmount": 1,
+      "biocodeWeaponChance": 0.0,
+      "humanPregnancyChance": 0.03,
+      "nakedChance": 0.0,
+      "existingDamage": [],
+      "minApparelQuality": "Awful",
+      "maxApparelQuality": "Excellent",
+      "fixedInventory": [],
+      "invNutrition": 0.0,
+      "chemicalAddictionChance": 0.0,
+      "combatEnhancingDrugsChance": 0.0,
+      "forcedAddictions": [],
+      "trader": false,
+      "requiredWorkTags": "None",
+      "disabledWorkTags": "None",
+      "extraSkillLevels": 0,
+      "minTotalSkillLevels": 0,
+      "minBestSkillLevel": 0,
+      "ecoSystemWeight": 0.5,
+      "flyingAnimationFrameCount": 0,
+      "flyingAnimationTicksPerFrame": -1,
+      "flyingAnimationDrawSize": 1.0,
+      "flyingAnimationDrawSizeIsMultiplier": false,
+      "flyingAnimationInheritColors": false,
+      "defName": "RM_JuggernautBeetle",
+      "label": "juggernaut beetle",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 20309,
+      "index": 331,
+      "fileName": "RM_JuggernautBeetle.xml",
+      "defNameHash": 1318033593,
+      "generated": false,
+      "debugRandomId": 54584
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_8535abedafa24ab38deb049a500382b0",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_ElectricGryllotalpa"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_ElectricGryllotalpa",
+     "found": true,
+     "defName": "RM_ElectricGryllotalpa",
+     "defType": "ThingDef",
+     "label": "electric gryllotalpa",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "category": "Pawn",
+      "tickerType": "Normal",
+      "stackLimit": 1,
+      "destroyable": true,
+      "rotatable": true,
+      "smallVolume": false,
+      "useHitPoints": false,
+      "receivesSignals": false,
+      "comps": [
+       "CompProperties",
+       "CompProperties_HoldingPlatformTarget",
+       "CompProperties_Studiable"
+      ],
+      "virtualDefs": [],
+      "killedLeavingsChance": 1.0,
+      "forceLeavingsAllowed": false,
+      "smeltable": false,
+      "burnableByRecipe": false,
+      "randomizeRotationOnSpawn": false,
+      "isTechHediff": false,
+      "isUnfinishedThing": false,
+      "leaveResourcesWhenKilled": false,
+      "isFrameInt": false,
+      "hasInteractionCell": false,
+      "interactionCellIconReverse": false,
+      "forceDebugSpawnable": false,
+      "intricate": false,
+      "scatterableOnMapGen": true,
+      "deepCommonality": 0.0,
+      "deepCountPerCell": 300,
+      "deepCountPerPortion": -1,
+      "generateCommonality": 1.0,
+      "generateAllowChance": 1.0,
+      "alwaysFlee": false,
+      "recipes": [
+       "ExciseCarcinoma",
+       "AdministerMechSerumHealer",
+       "RemoveBodyPart",
+       "Euthanize",
+       "Anesthetize",
+       "CureScaria",
+       "Sterilize",
+       "CureBloodRot",
+       "TerminatePregnancy",
+       "SurgicalInspection",
+       "RemovePorcupineQuill",
+       "RM_ScrubTarred",
+       "RM_AdministerStellockLace"
+      ],
+      "messageOnDeteriorateInStorage": true,
+      "deteriorateFromEnvironmentalEffects": true,
+      "canDeteriorateUnspawned": false,
+      "canLoadIntoCaravan": true,
+      "isMechClusterThreat": false,
+      "minRewardCount": 1,
+      "preventSkyfallersLandingOn": false,
+      "relicChance": 0.0,
+      "allowedArchonexusCount": 0,
+      "possessionCount": 0,
+      "notifyMapRemoved": false,
+      "canScatterOver": true,
+      "genericMarketSellable": true,
+      "drawHighlight": true,
+      "drawHighlightOnlyForHostile": false,
+      "autoTargetNearbyIdenticalThings": false,
+      "preventDroppingThingsOn": false,
+      "hiddenWhileUndiscovered": false,
+      "disableImpassableShotOverConfigError": false,
+      "showInSearch": true,
+      "bringAlongOnGravship": true,
+      "preventSpawningInResourcePod": false,
+      "pathfinderDangerous": false,
+      "noRightClickDraftAttack": false,
+      "gravshipSpawnPriority": 1,
+      "preventGravshipLandingOn": false,
+      "canInteractThroughCorners": false,
+      "drawerType": "RealtimeOnly",
+      "drawOffscreen": false,
+      "hideAtSnowOrSandDepth": 99999.0,
+      "drawDamagedOverlay": true,
+      "castEdgeShadows": false,
+      "staticSunShadowHeight": 0.0,
+      "useSameGraphicForGhost": false,
+      "useBlueprintGraphicAsGhost": false,
+      "randomStyleChance": 0.0,
+      "canEditAnyStyle": false,
+      "dontPrint": false,
+      "killedLeavingsExpandRect": 0,
+      "minifiedManualDraw": false,
+      "minifiedDrawScale": 1.0,
+      "deselectedSelectionBracketFactor": 1.0,
+      "selectable": true,
+      "containedPawnsSelectable": true,
+      "containedItemsSelectable": true,
+      "neverMultiSelect": false,
+      "isAutoAttackableMapObject": false,
+      "hasTooltip": true,
+      "inspectorTabs": [
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType"
+      ],
+      "inspectorTabsResolved": [
+       "ITab_Pawn_Health",
+       "ITab_Pawn_Needs",
+       "ITab_Pawn_Character",
+       "ITab_Pawn_Training",
+       "ITab_Pawn_Social",
+       "ITab_Pawn_Guest",
+       "ITab_Pawn_Prisoner",
+       "ITab_Pawn_Slave",
+       "ITab_Pawn_Feeding",
+       "ITab_Genes",
+       "ITab_GenesPregnancy",
+       "ITab_Entity",
+       "ITab_Pawn_FormingCaravan",
+       "ITab_Pawn_Gear",
+       "ITab_Pawn_Log",
+       "ITab_AnimalGenes"
+      ],
+      "seeThroughFog": false,
+      "drawGUIOverlay": true,
+      "drawGUIOverlayQuality": true,
+      "resourceReadoutPriority": "Uncounted",
+      "resourceReadoutAlwaysShow": false,
+      "drawPlaceWorkersWhileSelected": false,
+      "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+      "uiIconScale": 1.0,
+      "hasCustomRectForSelector": false,
+      "hideStats": false,
+      "hideInspect": false,
+      "onlyShowInspectString": false,
+      "hideMainDesc": false,
+      "alwaysHaulable": false,
+      "designateHaulable": false,
+      "thingCategories": [
+       "Animals"
+      ],
+      "mineable": false,
+      "socialPropernessMatters": false,
+      "stealable": true,
+      "soundDrop": "Standard_Drop",
+      "soundPickup": "Standard_Pickup",
+      "soundInteract": "Standard_Pickup",
+      "soundImpactDefault": "BulletImpact_Flesh",
+      "saveCompressible": false,
+      "isSaveable": true,
+      "holdsRoof": false,
+      "fillPercent": 0.0,
+      "coversFloor": false,
+      "neverOverlapFloors": false,
+      "surfaceType": "None",
+      "wipesPlants": false,
+      "blockPlants": false,
+      "blockLight": false,
+      "blockWind": false,
+      "blockWeather": false,
+      "tradeability": "All",
+      "tradeNeverStack": false,
+      "tradeNeverGenerateStacked": false,
+      "healthAffectsPrice": true,
+      "tools": [
+       "Tool",
+       "Tool"
+      ],
+      "equippedAngleOffset": 0.0,
+      "equippedDistanceOffset": 0.0,
+      "equipmentType": "None",
+      "techLevel": "Undefined",
+      "violentTechHediff": false,
+      "destroyOnDrop": false,
+      "recoilPower": 1.0,
+      "recoilRelaxation": 10.0,
+      "rotateInShelves": true,
+      "mergeVerbGizmos": true,
+      "canBeUsedUnderRoof": true,
+      "statBases": [
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier"
+      ],
+      "passability": "Standable",
+      "pathCost": 0,
+      "pathCostIgnoreRepeat": true,
+      "fertility": -1.0,
+      "costStuffCount": 0,
+      "clearBuildingArea": true,
+      "resourcesFractionWhenDeconstructed": 0.5,
+      "forcePassableByFlyingPawns": false,
+      "forceMoveItemsBeforeConstruction": false,
+      "isAltar": false,
+      "useStuffTerrainAffordance": false,
+      "minMonolithLevel": 0,
+      "constructionSkillPrerequisite": 0,
+      "artisticSkillPrerequisite": 0,
+      "minTechLevelToBuild": "Undefined",
+      "maxTechLevelToBuild": "Undefined",
+      "requireInspectedGravEngine": false,
+      "altitudeLayer": "Pawn",
+      "canGenerateDefaultDesignator": true,
+      "ideoBuilding": false,
+      "specialDisplayRadius": 0.0,
+      "uiOrder": 2999.0,
+      "uiIconForStackCount": -1,
+      "uiIconAngle": 0.0,
+      "defName": "RM_ElectricGryllotalpa",
+      "label": "electric gryllotalpa",
+      "description": "A large bioengineered insectoid. Designed to destroy the mechanoid. The discharge organs are highly developed and capable of releasing focused arcs to attack distant enemies. Focused arcs can cause double damage to the mechanoid.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 23546,
+      "index": 2373,
+      "fileName": "RM_ElectricGryllotalpa.xml",
+      "defNameHash": 1981502348,
+      "generated": false,
+      "debugRandomId": 63262
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_1ce036ddab2b40988722a908208ba088",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "PawnKindDef/RM_ElectricGryllotalpa"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "PawnKindDef/RM_ElectricGryllotalpa",
+     "found": true,
+     "defName": "RM_ElectricGryllotalpa",
+     "defType": "PawnKindDef",
+     "label": "electric gryllotalpa",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "race": "RM_ElectricGryllotalpa",
+      "defaultFactionDef": "Insect",
+      "lifeStages": [
+       "PawnKindLifeStage",
+       "PawnKindLifeStage",
+       "PawnKindLifeStage"
+      ],
+      "alternateGraphicChance": 0.0,
+      "useFactionXenotypes": true,
+      "preventIdeo": false,
+      "studiableAsPrisoner": false,
+      "isBoss": false,
+      "moveSpeedFactorByTerrainTag": [],
+      "fixedChildBackstories": [],
+      "fixedAdultBackstories": [],
+      "backstoryCryptosleepCommonality": 0.0,
+      "minGenerationAge": 0,
+      "maxGenerationAge": 999999,
+      "factionLeader": false,
+      "allowOldAgeInjuries": true,
+      "generateInitialNonFamilyRelations": true,
+      "destroyGearOnDrop": false,
+      "canStrip": true,
+      "defendPointRadius": 0.0,
+      "factionHostileOnKill": false,
+      "factionHostileOnDeath": false,
+      "hostileToAll": false,
+      "forceNoDeathNotification": false,
+      "skipResistant": false,
+      "controlGroupPortraitZoom": 1.0,
+      "forceDeathOnDowned": false,
+      "immuneToGameConditionEffects": false,
+      "immuneToTraps": false,
+      "collidesWithPawns": true,
+      "ignoresPainShock": false,
+      "canMeleeAttack": true,
+      "basePrisonBreakMtbDays": 60.0,
+      "useFixedRotation": false,
+      "showInDebugSpawner": true,
+      "canOpenAnyDoor": false,
+      "canOpenDoors": true,
+      "royalTitleChance": 0.0,
+      "allowRoyalRoomRequirements": true,
+      "allowRoyalApparelRequirements": true,
+      "isFighter": true,
+      "combatPower": 150.0,
+      "canArriveManhunter": false,
+      "canBeSapper": false,
+      "isGoodBreacher": false,
+      "allowInMechClusters": true,
+      "maxPerGroup": 2147483647,
+      "isGoodPsychicRitualInvoker": false,
+      "canBeScattered": true,
+      "appearsRandomlyInCombatGroups": true,
+      "aiAvoidCover": false,
+      "acceptArrestChanceFactor": 1.0,
+      "canUseAvoidGrid": false,
+      "itemQuality": "Normal",
+      "forceNormalGearQuality": false,
+      "apparelAllowHeadgearChance": 1.0,
+      "ignoreApparelAllowChance": false,
+      "apparelIgnoreSeasons": false,
+      "apparelIgnorePollution": false,
+      "ignoreFactionApparelStuffRequirements": false,
+      "ignoreIdeoApparelColors": false,
+      "techHediffsChance": 0.0,
+      "techHediffsMaxAmount": 1,
+      "biocodeWeaponChance": 0.0,
+      "humanPregnancyChance": 0.03,
+      "nakedChance": 0.0,
+      "existingDamage": [],
+      "minApparelQuality": "Awful",
+      "maxApparelQuality": "Excellent",
+      "fixedInventory": [],
+      "invNutrition": 0.0,
+      "chemicalAddictionChance": 0.0,
+      "combatEnhancingDrugsChance": 0.0,
+      "forcedAddictions": [],
+      "trader": false,
+      "requiredWorkTags": "None",
+      "disabledWorkTags": "None",
+      "extraSkillLevels": 0,
+      "minTotalSkillLevels": 0,
+      "minBestSkillLevel": 0,
+      "ecoSystemWeight": 0.5,
+      "flyingAnimationFrameCount": 0,
+      "flyingAnimationTicksPerFrame": -1,
+      "flyingAnimationDrawSize": 1.0,
+      "flyingAnimationDrawSizeIsMultiplier": false,
+      "flyingAnimationInheritColors": false,
+      "defName": "RM_ElectricGryllotalpa",
+      "label": "electric gryllotalpa",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 23546,
+      "index": 329,
+      "fileName": "RM_ElectricGryllotalpa.xml",
+      "defNameHash": 1981502348,
+      "generated": false,
+      "debugRandomId": 744
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_e699716baf724f07b34725848c76ba55",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_ElectricTick"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_ElectricTick",
+     "found": true,
+     "defName": "RM_ElectricTick",
+     "defType": "ThingDef",
+     "label": "electric tick",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "category": "Pawn",
+      "tickerType": "Normal",
+      "stackLimit": 1,
+      "destroyable": true,
+      "rotatable": true,
+      "smallVolume": false,
+      "useHitPoints": false,
+      "receivesSignals": false,
+      "comps": [
+       "CompProperties",
+       "CompProperties_HoldingPlatformTarget",
+       "CompProperties_Studiable",
+       "CompProperties_MechPowerCell",
+       "CompProperties_Explosive"
+      ],
+      "virtualDefs": [],
+      "killedLeavingsChance": 1.0,
+      "forceLeavingsAllowed": false,
+      "smeltable": false,
+      "burnableByRecipe": false,
+      "randomizeRotationOnSpawn": false,
+      "isTechHediff": false,
+      "isUnfinishedThing": false,
+      "leaveResourcesWhenKilled": false,
+      "isFrameInt": false,
+      "hasInteractionCell": false,
+      "interactionCellIconReverse": false,
+      "forceDebugSpawnable": false,
+      "intricate": false,
+      "scatterableOnMapGen": true,
+      "deepCommonality": 0.0,
+      "deepCountPerCell": 300,
+      "deepCountPerPortion": -1,
+      "generateCommonality": 1.0,
+      "generateAllowChance": 1.0,
+      "alwaysFlee": false,
+      "recipes": [
+       "ExciseCarcinoma",
+       "AdministerMechSerumHealer",
+       "RemoveBodyPart",
+       "Euthanize",
+       "Anesthetize",
+       "CureScaria",
+       "Sterilize",
+       "CureBloodRot",
+       "TerminatePregnancy",
+       "SurgicalInspection",
+       "RemovePorcupineQuill",
+       "RM_ScrubTarred",
+       "RM_AdministerStellockLace"
+      ],
+      "messageOnDeteriorateInStorage": true,
+      "deteriorateFromEnvironmentalEffects": true,
+      "canDeteriorateUnspawned": false,
+      "canLoadIntoCaravan": true,
+      "isMechClusterThreat": false,
+      "minRewardCount": 1,
+      "preventSkyfallersLandingOn": false,
+      "relicChance": 0.0,
+      "allowedArchonexusCount": 0,
+      "possessionCount": 0,
+      "notifyMapRemoved": false,
+      "canScatterOver": true,
+      "genericMarketSellable": true,
+      "drawHighlight": true,
+      "drawHighlightOnlyForHostile": false,
+      "autoTargetNearbyIdenticalThings": false,
+      "preventDroppingThingsOn": false,
+      "hiddenWhileUndiscovered": false,
+      "disableImpassableShotOverConfigError": false,
+      "showInSearch": true,
+      "bringAlongOnGravship": true,
+      "preventSpawningInResourcePod": false,
+      "pathfinderDangerous": false,
+      "noRightClickDraftAttack": false,
+      "gravshipSpawnPriority": 1,
+      "preventGravshipLandingOn": false,
+      "canInteractThroughCorners": false,
+      "drawerType": "RealtimeOnly",
+      "drawOffscreen": false,
+      "hideAtSnowOrSandDepth": 99999.0,
+      "drawDamagedOverlay": true,
+      "castEdgeShadows": false,
+      "staticSunShadowHeight": 0.0,
+      "useSameGraphicForGhost": false,
+      "useBlueprintGraphicAsGhost": false,
+      "randomStyleChance": 0.0,
+      "canEditAnyStyle": false,
+      "dontPrint": false,
+      "killedLeavingsExpandRect": 0,
+      "minifiedManualDraw": false,
+      "minifiedDrawScale": 1.0,
+      "deselectedSelectionBracketFactor": 1.0,
+      "selectable": true,
+      "containedPawnsSelectable": true,
+      "containedItemsSelectable": true,
+      "neverMultiSelect": false,
+      "isAutoAttackableMapObject": false,
+      "hasTooltip": true,
+      "inspectorTabs": [
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType"
+      ],
+      "inspectorTabsResolved": [
+       "ITab_Pawn_Health",
+       "ITab_Pawn_Needs",
+       "ITab_Pawn_Character",
+       "ITab_Pawn_Training",
+       "ITab_Pawn_Social",
+       "ITab_Pawn_Guest",
+       "ITab_Pawn_Prisoner",
+       "ITab_Pawn_Slave",
+       "ITab_Pawn_Feeding",
+       "ITab_Genes",
+       "ITab_GenesPregnancy",
+       "ITab_Entity",
+       "ITab_Pawn_FormingCaravan",
+       "ITab_Pawn_Gear",
+       "ITab_Pawn_Log",
+       "ITab_AnimalGenes"
+      ],
+      "seeThroughFog": false,
+      "drawGUIOverlay": true,
+      "drawGUIOverlayQuality": true,
+      "resourceReadoutPriority": "Uncounted",
+      "resourceReadoutAlwaysShow": false,
+      "drawPlaceWorkersWhileSelected": false,
+      "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+      "uiIconScale": 1.0,
+      "hasCustomRectForSelector": false,
+      "hideStats": false,
+      "hideInspect": false,
+      "onlyShowInspectString": false,
+      "hideMainDesc": false,
+      "alwaysHaulable": false,
+      "designateHaulable": false,
+      "thingCategories": [
+       "Animals"
+      ],
+      "mineable": false,
+      "socialPropernessMatters": false,
+      "stealable": true,
+      "soundDrop": "Standard_Drop",
+      "soundPickup": "Standard_Pickup",
+      "soundInteract": "Standard_Pickup",
+      "soundImpactDefault": "BulletImpact_Flesh",
+      "saveCompressible": false,
+      "isSaveable": true,
+      "holdsRoof": false,
+      "fillPercent": 0.0,
+      "coversFloor": false,
+      "neverOverlapFloors": false,
+      "surfaceType": "None",
+      "wipesPlants": false,
+      "blockPlants": false,
+      "blockLight": false,
+      "blockWind": false,
+      "blockWeather": false,
+      "tradeability": "All",
+      "tradeNeverStack": false,
+      "tradeNeverGenerateStacked": false,
+      "healthAffectsPrice": true,
+      "tools": [
+       "Tool",
+       "Tool"
+      ],
+      "equippedAngleOffset": 0.0,
+      "equippedDistanceOffset": 0.0,
+      "equipmentType": "None",
+      "techLevel": "Undefined",
+      "violentTechHediff": false,
+      "destroyOnDrop": false,
+      "recoilPower": 1.0,
+      "recoilRelaxation": 10.0,
+      "rotateInShelves": true,
+      "mergeVerbGizmos": true,
+      "canBeUsedUnderRoof": true,
+      "statBases": [
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier"
+      ],
+      "passability": "Standable",
+      "pathCost": 0,
+      "pathCostIgnoreRepeat": true,
+      "fertility": -1.0,
+      "costStuffCount": 0,
+      "clearBuildingArea": true,
+      "resourcesFractionWhenDeconstructed": 0.5,
+      "forcePassableByFlyingPawns": false,
+      "forceMoveItemsBeforeConstruction": false,
+      "isAltar": false,
+      "useStuffTerrainAffordance": false,
+      "minMonolithLevel": 0,
+      "constructionSkillPrerequisite": 0,
+      "artisticSkillPrerequisite": 0,
+      "minTechLevelToBuild": "Undefined",
+      "maxTechLevelToBuild": "Undefined",
+      "requireInspectedGravEngine": false,
+      "altitudeLayer": "Pawn",
+      "canGenerateDefaultDesignator": true,
+      "ideoBuilding": false,
+      "specialDisplayRadius": 0.0,
+      "uiOrder": 2999.0,
+      "uiIconForStackCount": -1,
+      "uiIconAngle": 0.0,
+      "defName": "RM_ElectricTick",
+      "label": "electric tick",
+      "description": "A medium bioengineered insectoid. Designed to destroy the mechanoid. The growth rate is extremely rapid, but as a result, the lifespan is very short. The discharge organ occupies more than half of the body tissue and releases a strong electric current upon death.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 29155,
+      "index": 2375,
+      "fileName": "RM_ElectricTick.xml",
+      "defNameHash": 1364708158,
+      "generated": false,
+      "debugRandomId": 34964
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_0399df63c54243748e62491083b0a9b2",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "PawnKindDef/RM_ElectricTick"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "PawnKindDef/RM_ElectricTick",
+     "found": true,
+     "defName": "RM_ElectricTick",
+     "defType": "PawnKindDef",
+     "label": "electric tick",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "race": "RM_ElectricTick",
+      "defaultFactionDef": "Insect",
+      "lifeStages": [
+       "PawnKindLifeStage"
+      ],
+      "alternateGraphicChance": 0.0,
+      "useFactionXenotypes": true,
+      "preventIdeo": false,
+      "studiableAsPrisoner": false,
+      "isBoss": false,
+      "moveSpeedFactorByTerrainTag": [],
+      "fixedChildBackstories": [],
+      "fixedAdultBackstories": [],
+      "backstoryCryptosleepCommonality": 0.0,
+      "minGenerationAge": 0,
+      "maxGenerationAge": 999999,
+      "factionLeader": false,
+      "allowOldAgeInjuries": true,
+      "generateInitialNonFamilyRelations": true,
+      "destroyGearOnDrop": false,
+      "canStrip": true,
+      "defendPointRadius": 0.0,
+      "factionHostileOnKill": false,
+      "factionHostileOnDeath": false,
+      "hostileToAll": false,
+      "forceNoDeathNotification": true,
+      "skipResistant": false,
+      "controlGroupPortraitZoom": 1.0,
+      "forceDeathOnDowned": true,
+      "immuneToGameConditionEffects": false,
+      "immuneToTraps": false,
+      "collidesWithPawns": true,
+      "ignoresPainShock": false,
+      "canMeleeAttack": true,
+      "basePrisonBreakMtbDays": 60.0,
+      "useFixedRotation": false,
+      "showInDebugSpawner": true,
+      "canOpenAnyDoor": false,
+      "canOpenDoors": true,
+      "royalTitleChance": 0.0,
+      "allowRoyalRoomRequirements": true,
+      "allowRoyalApparelRequirements": true,
+      "isFighter": true,
+      "combatPower": 40.0,
+      "canArriveManhunter": false,
+      "canBeSapper": false,
+      "isGoodBreacher": false,
+      "allowInMechClusters": true,
+      "maxPerGroup": 2147483647,
+      "isGoodPsychicRitualInvoker": false,
+      "canBeScattered": true,
+      "appearsRandomlyInCombatGroups": true,
+      "aiAvoidCover": true,
+      "acceptArrestChanceFactor": 1.0,
+      "canUseAvoidGrid": false,
+      "itemQuality": "Normal",
+      "forceNormalGearQuality": false,
+      "apparelAllowHeadgearChance": 1.0,
+      "ignoreApparelAllowChance": false,
+      "apparelIgnoreSeasons": false,
+      "apparelIgnorePollution": false,
+      "ignoreFactionApparelStuffRequirements": false,
+      "ignoreIdeoApparelColors": false,
+      "techHediffsChance": 0.0,
+      "techHediffsMaxAmount": 1,
+      "biocodeWeaponChance": 0.0,
+      "humanPregnancyChance": 0.03,
+      "nakedChance": 0.0,
+      "existingDamage": [],
+      "minApparelQuality": "Awful",
+      "maxApparelQuality": "Excellent",
+      "fixedInventory": [],
+      "invNutrition": 0.0,
+      "chemicalAddictionChance": 0.0,
+      "combatEnhancingDrugsChance": 0.0,
+      "forcedAddictions": [],
+      "trader": false,
+      "requiredWorkTags": "None",
+      "disabledWorkTags": "None",
+      "extraSkillLevels": 0,
+      "minTotalSkillLevels": 0,
+      "minBestSkillLevel": 0,
+      "ecoSystemWeight": 0.5,
+      "flyingAnimationFrameCount": 0,
+      "flyingAnimationTicksPerFrame": -1,
+      "flyingAnimationDrawSize": 1.0,
+      "flyingAnimationDrawSizeIsMultiplier": false,
+      "flyingAnimationInheritColors": false,
+      "defName": "RM_ElectricTick",
+      "label": "electric tick",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 29155,
+      "index": 330,
+      "fileName": "RM_ElectricTick.xml",
+      "defNameHash": 1364708158,
+      "generated": false,
+      "debugRandomId": 51196
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_10146115cc3a4947af870381b58f8ca6",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 48
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "ThingDef/RM_Rimclaw"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_Rimclaw",
+     "found": true,
+     "defName": "RM_Rimclaw",
+     "defType": "ThingDef",
+     "label": "rimclaw",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "category": "Pawn",
+      "tickerType": "Normal",
+      "stackLimit": 1,
+      "destroyable": true,
+      "rotatable": true,
+      "smallVolume": false,
+      "useHitPoints": false,
+      "receivesSignals": false,
+      "comps": [
+       "CompProperties",
+       "CompProperties_HoldingPlatformTarget",
+       "CompProperties_Studiable"
+      ],
+      "virtualDefs": [],
+      "killedLeavingsChance": 1.0,
+      "forceLeavingsAllowed": false,
+      "smeltable": false,
+      "burnableByRecipe": false,
+      "randomizeRotationOnSpawn": false,
+      "isTechHediff": false,
+      "isUnfinishedThing": false,
+      "leaveResourcesWhenKilled": false,
+      "isFrameInt": false,
+      "hasInteractionCell": false,
+      "interactionCellIconReverse": false,
+      "forceDebugSpawnable": false,
+      "intricate": false,
+      "scatterableOnMapGen": true,
+      "deepCommonality": 0.0,
+      "deepCountPerCell": 300,
+      "deepCountPerPortion": -1,
+      "generateCommonality": 1.0,
+      "generateAllowChance": 1.0,
+      "alwaysFlee": false,
+      "recipes": [
+       "ExciseCarcinoma",
+       "AdministerMechSerumHealer",
+       "RemoveBodyPart",
+       "Euthanize",
+       "Anesthetize",
+       "CureScaria",
+       "Sterilize",
+       "CureBloodRot",
+       "TerminatePregnancy",
+       "SurgicalInspection",
+       "RemovePorcupineQuill",
+       "RM_ScrubTarred",
+       "RM_AdministerStellockLace"
+      ],
+      "messageOnDeteriorateInStorage": true,
+      "deteriorateFromEnvironmentalEffects": true,
+      "canDeteriorateUnspawned": false,
+      "canLoadIntoCaravan": true,
+      "isMechClusterThreat": false,
+      "minRewardCount": 1,
+      "preventSkyfallersLandingOn": false,
+      "relicChance": 0.0,
+      "allowedArchonexusCount": 0,
+      "possessionCount": 0,
+      "notifyMapRemoved": false,
+      "canScatterOver": true,
+      "genericMarketSellable": true,
+      "drawHighlight": true,
+      "drawHighlightOnlyForHostile": false,
+      "autoTargetNearbyIdenticalThings": false,
+      "preventDroppingThingsOn": false,
+      "hiddenWhileUndiscovered": false,
+      "disableImpassableShotOverConfigError": false,
+      "showInSearch": true,
+      "bringAlongOnGravship": true,
+      "preventSpawningInResourcePod": false,
+      "pathfinderDangerous": false,
+      "noRightClickDraftAttack": false,
+      "gravshipSpawnPriority": 1,
+      "preventGravshipLandingOn": false,
+      "canInteractThroughCorners": false,
+      "drawerType": "RealtimeOnly",
+      "drawOffscreen": false,
+      "hideAtSnowOrSandDepth": 99999.0,
+      "drawDamagedOverlay": true,
+      "castEdgeShadows": false,
+      "staticSunShadowHeight": 0.0,
+      "useSameGraphicForGhost": false,
+      "useBlueprintGraphicAsGhost": false,
+      "randomStyleChance": 0.0,
+      "canEditAnyStyle": false,
+      "dontPrint": false,
+      "killedLeavingsExpandRect": 0,
+      "minifiedManualDraw": false,
+      "minifiedDrawScale": 1.0,
+      "deselectedSelectionBracketFactor": 1.0,
+      "selectable": true,
+      "containedPawnsSelectable": true,
+      "containedItemsSelectable": true,
+      "neverMultiSelect": false,
+      "isAutoAttackableMapObject": false,
+      "hasTooltip": true,
+      "inspectorTabs": [
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType",
+       "RuntimeType"
+      ],
+      "inspectorTabsResolved": [
+       "ITab_Pawn_Health",
+       "ITab_Pawn_Needs",
+       "ITab_Pawn_Character",
+       "ITab_Pawn_Training",
+       "ITab_Pawn_Social",
+       "ITab_Pawn_Guest",
+       "ITab_Pawn_Prisoner",
+       "ITab_Pawn_Slave",
+       "ITab_Pawn_Feeding",
+       "ITab_Genes",
+       "ITab_GenesPregnancy",
+       "ITab_Entity",
+       "ITab_Pawn_FormingCaravan",
+       "ITab_Pawn_Gear",
+       "ITab_Pawn_Log",
+       "ITab_AnimalGenes"
+      ],
+      "seeThroughFog": false,
+      "drawGUIOverlay": true,
+      "drawGUIOverlayQuality": true,
+      "resourceReadoutPriority": "Uncounted",
+      "resourceReadoutAlwaysShow": false,
+      "drawPlaceWorkersWhileSelected": false,
+      "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+      "uiIconScale": 1.0,
+      "hasCustomRectForSelector": false,
+      "hideStats": false,
+      "hideInspect": false,
+      "onlyShowInspectString": false,
+      "hideMainDesc": false,
+      "alwaysHaulable": false,
+      "designateHaulable": false,
+      "thingCategories": [
+       "Animals"
+      ],
+      "mineable": false,
+      "socialPropernessMatters": false,
+      "stealable": true,
+      "soundDrop": "Standard_Drop",
+      "soundPickup": "Standard_Pickup",
+      "soundInteract": "Standard_Pickup",
+      "soundImpactDefault": "BulletImpact_Flesh",
+      "saveCompressible": false,
+      "isSaveable": true,
+      "holdsRoof": false,
+      "fillPercent": 0.0,
+      "coversFloor": false,
+      "neverOverlapFloors": false,
+      "surfaceType": "None",
+      "wipesPlants": false,
+      "blockPlants": false,
+      "blockLight": false,
+      "blockWind": false,
+      "blockWeather": false,
+      "tradeability": "All",
+      "tradeTags": [
+       "AnimalExotic"
+      ],
+      "tradeNeverStack": false,
+      "tradeNeverGenerateStacked": false,
+      "healthAffectsPrice": true,
+      "tools": [
+       "Tool",
+       "Tool",
+       "Tool",
+       "Tool",
+       "Tool"
+      ],
+      "equippedAngleOffset": 0.0,
+      "equippedDistanceOffset": 0.0,
+      "equipmentType": "None",
+      "techLevel": "Undefined",
+      "violentTechHediff": false,
+      "destroyOnDrop": false,
+      "recoilPower": 1.0,
+      "recoilRelaxation": 10.0,
+      "rotateInShelves": true,
+      "mergeVerbGizmos": true,
+      "canBeUsedUnderRoof": true,
+      "statBases": [
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier",
+       "StatModifier"
+      ],
+      "passability": "Standable",
+      "pathCost": 0,
+      "pathCostIgnoreRepeat": true,
+      "fertility": -1.0,
+      "costStuffCount": 0,
+      "clearBuildingArea": true,
+      "resourcesFractionWhenDeconstructed": 0.5,
+      "forcePassableByFlyingPawns": false,
+      "forceMoveItemsBeforeConstruction": false,
+      "isAltar": false,
+      "useStuffTerrainAffordance": false,
+      "minMonolithLevel": 0,
+      "constructionSkillPrerequisite": 0,
+      "artisticSkillPrerequisite": 0,
+      "minTechLevelToBuild": "Undefined",
+      "maxTechLevelToBuild": "Undefined",
+      "requireInspectedGravEngine": false,
+      "altitudeLayer": "Pawn",
+      "canGenerateDefaultDesignator": true,
+      "ideoBuilding": false,
+      "specialDisplayRadius": 0.0,
+      "uiOrder": 2999.0,
+      "uiIconForStackCount": -1,
+      "uiIconAngle": 0.0,
+      "defName": "RM_Rimclaw",
+      "label": "rimclaw",
+      "description": "A low, armoured scavenger the colour of old rust, its back a stack of jagged overlapping plates and its eyes two orange beads on short stalks. One enormous saw-toothed claw hangs from its side; it snaps the claw shut on whatever it catches and carries on. It picks across slag and scrap on sharp, dark-tipped legs, and nothing metal or meaty is safe near it.",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 15866,
+      "index": 2377,
+      "fileName": "RM_Rimclaw.xml",
+      "defNameHash": 906932863,
+      "generated": false,
+      "debugRandomId": 38014
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_316e588e9f324564856eab50a9bf0523",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ {
+  "tool": "jawa/get_defs",
+  "args": {
+   "defs": "PawnKindDef/RM_Rimclaw"
+  },
+  "result": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [],
+   "defs": [
+    {
+     "requested": "PawnKindDef/RM_Rimclaw",
+     "found": true,
+     "defName": "RM_Rimclaw",
+     "defType": "PawnKindDef",
+     "label": "rimclaw",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "race": "RM_Rimclaw",
+      "lifeStages": [
+       "PawnKindLifeStage",
+       "PawnKindLifeStage",
+       "PawnKindLifeStage"
+      ],
+      "alternateGraphicChance": 0.0,
+      "useFactionXenotypes": true,
+      "preventIdeo": false,
+      "studiableAsPrisoner": false,
+      "isBoss": false,
+      "moveSpeedFactorByTerrainTag": [],
+      "fixedChildBackstories": [],
+      "fixedAdultBackstories": [],
+      "backstoryCryptosleepCommonality": 0.0,
+      "minGenerationAge": 0,
+      "maxGenerationAge": 999999,
+      "factionLeader": false,
+      "allowOldAgeInjuries": true,
+      "generateInitialNonFamilyRelations": true,
+      "destroyGearOnDrop": false,
+      "canStrip": true,
+      "defendPointRadius": -1.0,
+      "factionHostileOnKill": false,
+      "factionHostileOnDeath": false,
+      "hostileToAll": false,
+      "forceNoDeathNotification": false,
+      "skipResistant": false,
+      "controlGroupPortraitZoom": 1.0,
+      "forceDeathOnDowned": false,
+      "immuneToGameConditionEffects": false,
+      "immuneToTraps": false,
+      "collidesWithPawns": true,
+      "ignoresPainShock": false,
+      "canMeleeAttack": true,
+      "basePrisonBreakMtbDays": 60.0,
+      "useFixedRotation": false,
+      "showInDebugSpawner": true,
+      "canOpenAnyDoor": false,
+      "canOpenDoors": true,
+      "royalTitleChance": 0.0,
+      "allowRoyalRoomRequirements": true,
+      "allowRoyalApparelRequirements": true,
+      "isFighter": true,
+      "combatPower": 650.0,
+      "canArriveManhunter": true,
+      "canBeSapper": false,
+      "isGoodBreacher": false,
+      "allowInMechClusters": true,
+      "maxPerGroup": 2147483647,
+      "isGoodPsychicRitualInvoker": false,
+      "canBeScattered": true,
+      "appearsRandomlyInCombatGroups": true,
+      "aiAvoidCover": false,
+      "acceptArrestChanceFactor": 1.0,
+      "canUseAvoidGrid": false,
+      "itemQuality": "Normal",
+      "forceNormalGearQuality": false,
+      "apparelAllowHeadgearChance": 1.0,
+      "ignoreApparelAllowChance": false,
+      "apparelIgnoreSeasons": false,
+      "apparelIgnorePollution": false,
+      "ignoreFactionApparelStuffRequirements": false,
+      "ignoreIdeoApparelColors": false,
+      "techHediffsChance": 0.0,
+      "techHediffsMaxAmount": 1,
+      "biocodeWeaponChance": 0.0,
+      "humanPregnancyChance": 0.03,
+      "nakedChance": 0.0,
+      "existingDamage": [],
+      "minApparelQuality": "Awful",
+      "maxApparelQuality": "Excellent",
+      "fixedInventory": [],
+      "invNutrition": 0.0,
+      "chemicalAddictionChance": 0.0,
+      "combatEnhancingDrugsChance": 0.0,
+      "forcedAddictions": [],
+      "trader": false,
+      "requiredWorkTags": "None",
+      "disabledWorkTags": "None",
+      "extraSkillLevels": 0,
+      "minTotalSkillLevels": 0,
+      "minBestSkillLevel": 0,
+      "ecoSystemWeight": 0.5,
+      "flyingAnimationFrameCount": 0,
+      "flyingAnimationTicksPerFrame": -1,
+      "flyingAnimationDrawSize": 1.0,
+      "flyingAnimationDrawSizeIsMultiplier": false,
+      "flyingAnimationInheritColors": false,
+      "defName": "RM_Rimclaw",
+      "label": "rimclaw",
+      "ignoreConfigErrors": false,
+      "ignoreIllegalLabelCharacterConfigError": false,
+      "shortHash": 15866,
+      "index": 332,
+      "fileName": "RM_Rimclaw.xml",
+      "defNameHash": 906932863,
+      "generated": false,
+      "debugRandomId": 36845
+     }
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_6d891e18bfe9404785e0b9dc7631ba3b",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ }
+]

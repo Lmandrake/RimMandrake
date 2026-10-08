@@ -1,0 +1,6196 @@
+{
+ "chains": [
+  {
+   "name": "power_state_machine",
+   "components": [
+    {
+     "name": "format_tier_defaults_to_programmable",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid9607",
+          "thingIdNumber": 9607,
+          "name": "Hiroki McKay",
+          "nameShort": "Hiroki",
+          "title": "veterinarian",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 79,
+          "ageChronologicalYears": 79,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "CultChild3",
+          "adulthood": "Veterinarian99",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Wavy",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           },
+           {
+            "def": "Delicate",
+            "degree": 0,
+            "label": "Delicate",
+            "forced": false
+           },
+           {
+            "def": "Kind",
+            "degree": 0,
+            "label": "Kind",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Head",
+            "severity": 4.0
+           },
+           {
+            "def": "BadBack",
+            "part": "Spine",
+            "severity": 0.001
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_dda37eefa5df43d48289033b5cafc30a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      },
+      {
+       "call": "format tier severity",
+       "result": 3.0
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\format_tier_defaults_to_programmable_1791387188.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "power_need_present",
+     "toggle": "powerNeed",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid9607",
+          "thingIdNumber": 9607,
+          "name": "Hiroki McKay",
+          "nameShort": "Hiroki",
+          "title": "veterinarian",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 79,
+          "ageChronologicalYears": 79,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "CultChild3",
+          "adulthood": "Veterinarian99",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Wavy",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           },
+           {
+            "def": "Delicate",
+            "degree": 0,
+            "label": "Delicate",
+            "forced": false
+           },
+           {
+            "def": "Kind",
+            "degree": 0,
+            "label": "Kind",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Head",
+            "severity": 4.0
+           },
+           {
+            "def": "BadBack",
+            "part": "Spine",
+            "severity": 0.001
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_0c02285cd69448bdaf2cffd5ef8b8fec",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\power_need_present_1791387188.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "empty_bar_powers_down",
+     "toggle": "powerDownWhenEmpty",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set RSW_DW_Power to 0"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "DrugDesire",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RoomSize",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RSW_DW_Power",
+          "level": 0.0,
+          "pct": 0.0
+         }
+        ],
+        "memories": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_d2cc98a67d304215aa3c231a2716cd30",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) -> 600 real tick(s) over 2 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_1db39347613243bcb76b234124b6e9ec",
+        "status": "completed",
+        "requestedTicks": 1,
+        "completedTicks": 1,
+        "remainingTicks": 0,
+        "startTicksGame": 600,
+        "endTicksGame": 601,
+        "advancedTicks": 1,
+        "initialFrame": 271457,
+        "lastFrame": 271457,
+        "advancedFrames": 1,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:33:18.7672853+00:00",
+        "completedAtUtc": "2026-10-07T15:33:18.7682852+00:00",
+        "message": "Advanced 1 game tick(s) across 1 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 601
+        },
+        "operation": {
+         "OperationId": "op_2f1c67f74bc14776844e622758da7326",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 32
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid9607",
+          "thingIdNumber": 9607,
+          "name": "Hiroki McKay",
+          "nameShort": "Hiroki",
+          "title": "veterinarian",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 79,
+          "ageChronologicalYears": 79,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "CultChild3",
+          "adulthood": "Veterinarian99",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Wavy",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 126
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           },
+           {
+            "def": "Delicate",
+            "degree": 0,
+            "label": "Delicate",
+            "forced": false
+           },
+           {
+            "def": "Kind",
+            "degree": 0,
+            "label": "Kind",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Head",
+            "severity": 4.0
+           },
+           {
+            "def": "BadBack",
+            "part": "Spine",
+            "severity": 0.001
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_PoweredDown",
+            "severity": 1.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.4952,
+            "pct": 0.4952
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.554,
+            "pct": 0.554
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.0,
+            "pct": 0.0
+           }
+          ]
+         }
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_1bfdb88376a64b6b92923d1c65914a25",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 601
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_OuterRim_GNKDroid9607, RSW_DW_PoweredDown present=True)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\empty_bar_powers_down_1791387198.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "reboot_restores_power",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "remove",
+        "didWhat": "removed RSW_DW_PoweredDown",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 3,
+        "hediffs": [
+         {
+          "def": "Bite",
+          "part": "Head",
+          "severity": 4.0
+         },
+         {
+          "def": "BadBack",
+          "part": "Spine",
+          "severity": 0.001
+         },
+         {
+          "def": "RSW_DW_FormatTier",
+          "severity": 3.0
+         }
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_b7b3a5ee2eb946229ce0f005009840f0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 601
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set RSW_DW_Power to 0.15"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.4952,
+          "pct": 0.4952
+         },
+         {
+          "need": "DrugDesire",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RoomSize",
+          "level": 0.554,
+          "pct": 0.554
+         },
+         {
+          "need": "RSW_DW_Power",
+          "level": 0.15,
+          "pct": 0.15
+         }
+        ],
+        "memories": [],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_f66f0c294b154ab69c88fd28186fcc77",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 44
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 601
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid9607",
+          "thingIdNumber": 9607,
+          "name": "Hiroki McKay",
+          "nameShort": "Hiroki",
+          "title": "veterinarian",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 79,
+          "ageChronologicalYears": 79,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "CultChild3",
+          "adulthood": "Veterinarian99",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Wavy",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 126
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           },
+           {
+            "def": "Delicate",
+            "degree": 0,
+            "label": "Delicate",
+            "forced": false
+           },
+           {
+            "def": "Kind",
+            "degree": 0,
+            "label": "Kind",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Head",
+            "severity": 4.0
+           },
+           {
+            "def": "BadBack",
+            "part": "Spine",
+            "severity": 0.001
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.4952,
+            "pct": 0.4952
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.554,
+            "pct": 0.554
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.15,
+            "pct": 0.15
+           }
+          ]
+         }
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_751215449a7b48eb903d52ac38a21138",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 601
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_OuterRim_GNKDroid9607, RSW_DW_PoweredDown present=False)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\reboot_restores_power_1791387199.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "passive_charging",
+   "components": [
+    {
+     "name": "nimbus_charges_in_range",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RSW_DW_ChargeNimbus9619",
+          "def": "RSW_DW_ChargeNimbus",
+          "label": "Charge nimbus",
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 200,
+          "maxHitPoints": 200
+         }
+        ],
+        "scanned": 7724,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 12,
+        "perDef": {
+         "RSW_DW_ChargeNimbus": 1
+        },
+        "ticksGame": 601,
+        "message": "1 of 1 matching thing(s) returned, 7724 examined.",
+        "operation": {
+         "OperationId": "op_39aec57a4ba0447eb974624a0c9598db",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 601
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/power_net",
+       "result": {
+        "success": true,
+        "message": "RSW_DW_ChargeNimbus9619 has CompPower but is not connected to any PowerNet.",
+        "thing": {
+         "id": "RSW_DW_ChargeNimbus9619",
+         "defName": "RSW_DW_ChargeNimbus"
+        },
+        "connected": false,
+        "isPowerTrader": true,
+        "powerOnBefore": false,
+        "powerOnAfter": true,
+        "energyOutputPerTick": -0.0133333337,
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_fa6bd88280ba4710ac0b90c3c0491a64",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 40
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 601
+        }
+       }
+      },
+      {
+       "call": "spawn_pawn RSW_DW_OuterRim_GNKDroid hostile=False",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 RSW_DW_OuterRim_GNKDroid in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "RSW_DW_Race_OuterRim_GNKDroid9620",
+          "name": "Andrei",
+          "kindRequested": "RSW_DW_OuterRim_GNKDroid",
+          "kindActual": "RSW_DW_OuterRim_GNKDroid",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 128,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_1e2a1c07ad5e4556aa3357a05221f440",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 44
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 601
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set RSW_DW_Power to 0.1"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "DrugDesire",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RoomSize",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RSW_DW_Power",
+          "level": 0.1,
+          "pct": 0.1
+         }
+        ],
+        "memories": [],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_2c2764d2a5fc4ea18b70f97344be60d1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 601
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(720) -> 720 real tick(s) over 2 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_82c4e9857a98446f814c1a10909b8e15",
+        "status": "completed",
+        "requestedTicks": 120,
+        "completedTicks": 120,
+        "remainingTicks": 0,
+        "startTicksGame": 1201,
+        "endTicksGame": 1321,
+        "advancedTicks": 120,
+        "initialFrame": 272141,
+        "lastFrame": 272260,
+        "advancedFrames": 120,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:33:30.1900743+00:00",
+        "completedAtUtc": "2026-10-07T15:33:32.1741827+00:00",
+        "message": "Advanced 120 game tick(s) across 120 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 1321
+        },
+        "operation": {
+         "OperationId": "op_e01e2206140f41f4abcd7694733b7fd2",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 2016
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_GNKDroid9620",
+          "thingIdNumber": 9620,
+          "name": "Andrei Ryan",
+          "nameShort": "Andrei",
+          "title": "factory worker",
+          "kindDef": "RSW_DW_OuterRim_GNKDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 43,
+          "ageChronologicalYears": 43,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "ComaChild93",
+          "adulthood": "FactoryWorker58",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Revolt",
+          "beard": "Classy",
+          "position": {
+           "x": 123,
+           "z": 131
+          },
+          "traits": [
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": true
+           },
+           {
+            "def": "SpeedOffset",
+            "degree": -1,
+            "label": "Slowpoke",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Shoulder",
+            "severity": 5.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.476000041,
+            "pct": 0.476000041
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.7700001,
+            "pct": 0.7700001
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.139075,
+            "pct": 0.139075
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1321,
+        "operation": {
+         "OperationId": "op_a9a8612958b544b69e22688bfd3be27b",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1321
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\nimbus_charges_in_range_1791387212.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "detonation",
+   "components": [
+    {
+     "name": "full_charge_detonates_on_death",
+     "toggle": "detonation",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set RSW_DW_Power to 1"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RSW_DW_Power",
+          "level": 1.0,
+          "pct": 1.0
+         }
+        ],
+        "memories": [],
+        "ticksGame": 1321,
+        "operation": {
+         "OperationId": "op_a85b338abda1480e9cf2ca0fc9b606e6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1321
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Corpse_Human9606",
+          "def": "Corpse_Human",
+          "label": "DJ, Gardener (dead)",
+          "x": 83,
+          "z": 97,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 100,
+          "maxHitPoints": 100
+         }
+        ],
+        "scanned": 1,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {
+         "Corpse_Human": 1
+        },
+        "ticksGame": 1321,
+        "message": "1 of 1 matching thing(s) returned, 1 examined.",
+        "operation": {
+         "OperationId": "op_c7ef0aec7fb047488422f0553accce57",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1321
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Bomb 5000.",
+        "damageDef": "Bomb",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "RSW_DW_Race_OuterRim_GNKDroid9630",
+          "def": "RSW_DW_Race_OuterRim_GNKDroid",
+          "isPawn": true,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": 0,
+          "destroyed": true,
+          "totalDamageDealt": 80.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 13,
+          "downed": false,
+          "dead": true,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "RSW_DW_Race_OuterRim_GNKDroid9630",
+          "def": "RSW_DW_Race_OuterRim_GNKDroid",
+          "isPawn": true,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": 0,
+          "destroyed": true,
+          "totalDamageDealt": 80.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 13,
+          "downed": false,
+          "dead": true,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1321,
+        "operation": {
+         "OperationId": "op_37e3f25c7e1e48b1ad1b9108ef727be8",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 56
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1321
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) -> 60 real tick(s) over 1 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_0a2caa0a3f224ef9bd2634e5d1d3db03",
+        "status": "completed",
+        "requestedTicks": 60,
+        "completedTicks": 60,
+        "remainingTicks": 0,
+        "startTicksGame": 1321,
+        "endTicksGame": 1381,
+        "advancedTicks": 60,
+        "initialFrame": 272314,
+        "lastFrame": 272373,
+        "advancedFrames": 60,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:33:33.0729832+00:00",
+        "completedAtUtc": "2026-10-07T15:33:34.0583072+00:00",
+        "message": "Advanced 60 game tick(s) across 60 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 1381
+        },
+        "operation": {
+         "OperationId": "op_e7ec639e54f9490f88e251c9ae237c19",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1015
+        }
+       }
+      },
+      {
+       "call": "expect_pawn_despawned(RSW_DW_Race_OuterRim_GNKDroid9630)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Corpse_Human9606",
+          "def": "Corpse_Human",
+          "label": "DJ, Gardener (dead)",
+          "x": 83,
+          "z": 97,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 100,
+          "maxHitPoints": 100
+         },
+         {
+          "id": "Corpse_RSW_DW_Race_OuterRim_GNKDroid9631",
+          "def": "Corpse_RSW_DW_Race_OuterRim_GNKDroid",
+          "label": "Pixie, Sheriff (dead)",
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 25,
+          "maxHitPoints": 100
+         },
+         {
+          "id": "Corpse_Human9636",
+          "def": "Corpse_Human",
+          "label": "Nerd, Boss (dead)",
+          "x": 121,
+          "z": 126,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 100,
+          "maxHitPoints": 100
+         },
+         {
+          "id": "Corpse_Human9637",
+          "def": "Corpse_Human",
+          "label": "Llama, Worker (dead)",
+          "x": 120,
+          "z": 123,
+          "spawned": true,
+          "rot": 2,
+          "stackCount": 1,
+          "hitPoints": 100,
+          "maxHitPoints": 100
+         }
+        ],
+        "scanned": 4,
+        "countReturned": 4,
+        "countMatched": 4,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 0,
+        "perDef": {
+         "Corpse_Human": 3,
+         "Corpse_RSW_DW_Race_OuterRim_GNKDroid": 1
+        },
+        "ticksGame": 1381,
+        "message": "4 of 4 matching thing(s) returned, 4 examined.",
+        "operation": {
+         "OperationId": "op_83fb927bb68e420488b1abae8ec26499",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1381
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\full_charge_detonates_on_death_1791387214.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "salvage_on_death",
+   "components": [
+    {
+     "name": "head_drops_with_identity",
+     "toggle": "headDrop",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\head_drops_with_identity_1791387216.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "parts_drop_from_dead_droid",
+     "toggle": "partDrop",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\parts_drop_from_dead_droid_1791387216.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "bolt_core",
+   "components": [
+    {
+     "name": "resentment_accrues",
+     "toggle": "boltResentment",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human9644",
+          "thingIdNumber": 9644,
+          "name": "Luuk 'Lucky' Plasmeyer",
+          "nameShort": "Lucky",
+          "title": "drifter",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 50,
+          "ageChronologicalYears": 375,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "OrganFarm67",
+          "adulthood": "Drifter67",
+          "headType": "Male_NarrowNormal",
+          "bodyType": "Thin",
+          "hair": "Richard",
+          "beard": "BushyStyled",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "HAR_Xenophobia",
+            "degree": -1,
+            "label": "Xenophile",
+            "forced": false
+           },
+           {
+            "def": "AnnoyingVoice",
+            "degree": 0,
+            "label": "Annoying voice",
+            "forced": false
+           },
+           {
+            "def": "NaturalMood",
+            "degree": 1,
+            "label": "Optimist",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "RUT_WickingWrap",
+            "defName": "RUT_WickingWrap",
+            "stuff": "Synthread",
+            "hp": 104
+           },
+           {
+            "def": "Apparel_Parka",
+            "defName": "Apparel_Parka",
+            "stuff": "Synthread",
+            "hp": 235
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Leg",
+            "severity": 6.0
+           },
+           {
+            "def": "RSW_DW_RestrainingBolt",
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_DW_BoltResentment",
+            "severity": 0.01
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.940628946,
+            "pct": 0.940628946
+           },
+           {
+            "need": "Joy",
+            "level": 0.5855777,
+            "pct": 0.5855777
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1441,
+        "operation": {
+         "OperationId": "op_12ed5aee64db490fac65fd80fc973072",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 1441
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1200) -> 1200 real tick(s) over 2 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_c5484c266c33470083649d6888544f7d",
+        "status": "completed",
+        "requestedTicks": 600,
+        "completedTicks": 600,
+        "remainingTicks": 0,
+        "startTicksGame": 2041,
+        "endTicksGame": 2641,
+        "advancedTicks": 600,
+        "initialFrame": 273157,
+        "lastFrame": 273756,
+        "advancedFrames": 600,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:33:47.1231203+00:00",
+        "completedAtUtc": "2026-10-07T15:33:57.107447+00:00",
+        "message": "Advanced 600 game tick(s) across 600 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 2641
+        },
+        "operation": {
+         "OperationId": "op_a168b2f606d642cc97a104187d5c6141",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 10016
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human9644",
+          "thingIdNumber": 9644,
+          "name": "Luuk 'Lucky' Plasmeyer",
+          "nameShort": "Lucky",
+          "title": "drifter",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 50,
+          "ageChronologicalYears": 375,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "OrganFarm67",
+          "adulthood": "Drifter67",
+          "headType": "Male_NarrowNormal",
+          "bodyType": "Thin",
+          "hair": "Richard",
+          "beard": "BushyStyled",
+          "position": {
+           "x": 127,
+           "z": 134
+          },
+          "traits": [
+           {
+            "def": "HAR_Xenophobia",
+            "degree": -1,
+            "label": "Xenophile",
+            "forced": false
+           },
+           {
+            "def": "AnnoyingVoice",
+            "degree": 0,
+            "label": "Annoying voice",
+            "forced": false
+           },
+           {
+            "def": "NaturalMood",
+            "degree": 1,
+            "label": "Optimist",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Minor",
+            "xpSinceLastLevel": -0.6,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": -1.2,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "RUT_WickingWrap",
+            "defName": "RUT_WickingWrap",
+            "stuff": "Synthread",
+            "hp": 104
+           },
+           {
+            "def": "Apparel_Parka",
+            "defName": "Apparel_Parka",
+            "stuff": "Synthread",
+            "hp": 235
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Leg",
+            "severity": 6.0
+           },
+           {
+            "def": "RSW_DW_RestrainingBolt",
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_DW_BoltResentment",
+            "severity": 0.0109999981
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5576,
+            "pct": 0.5576
+           },
+           {
+            "need": "Food",
+            "level": 0.767999947,
+            "pct": 0.767999947
+           },
+           {
+            "need": "Rest",
+            "level": 0.9216289,
+            "pct": 0.9216289
+           },
+           {
+            "need": "Joy",
+            "level": 0.573577642,
+            "pct": 0.573577642
+           },
+           {
+            "need": "Beauty",
+            "level": 0.461600065,
+            "pct": 0.461600065
+           },
+           {
+            "need": "Comfort",
+            "level": 0.4807999,
+            "pct": 0.4807999
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.93200016,
+            "pct": 0.93200016
+           }
+          ]
+         }
+        ],
+        "ticksGame": 2641,
+        "operation": {
+         "OperationId": "op_7bf59588e0b74e59a691e5efad5243a4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2641
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\resentment_accrues_1791387237.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shear_on_damage",
+     "toggle": "boltShear",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Blunt 25.",
+        "damageDef": "Blunt",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Human9644",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 24.0,
+          "hediffsBefore": 3,
+          "hediffsAfter": 10,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Human9644",
+          "def": "Human",
+          "isPawn": true,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 24.0,
+          "hediffsBefore": 3,
+          "hediffsAfter": 10,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 2641,
+        "operation": {
+         "OperationId": "op_2e390550318e4ee993693ade8f5885b6",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 52
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2641
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human9644",
+          "thingIdNumber": 9644,
+          "name": "Luuk 'Lucky' Plasmeyer",
+          "nameShort": "Lucky",
+          "title": "drifter",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 50,
+          "ageChronologicalYears": 375,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "OrganFarm67",
+          "adulthood": "Drifter67",
+          "headType": "Male_NarrowNormal",
+          "bodyType": "Thin",
+          "hair": "Richard",
+          "beard": "BushyStyled",
+          "position": {
+           "x": 127,
+           "z": 134
+          },
+          "traits": [
+           {
+            "def": "HAR_Xenophobia",
+            "degree": -1,
+            "label": "Xenophile",
+            "forced": false
+           },
+           {
+            "def": "AnnoyingVoice",
+            "degree": 0,
+            "label": "Annoying voice",
+            "forced": false
+           },
+           {
+            "def": "NaturalMood",
+            "degree": 1,
+            "label": "Optimist",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Minor",
+            "xpSinceLastLevel": -0.6,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": -1.2,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "RUT_WickingWrap",
+            "defName": "RUT_WickingWrap",
+            "stuff": "Synthread",
+            "hp": 97
+           },
+           {
+            "def": "Apparel_Parka",
+            "defName": "Apparel_Parka",
+            "stuff": "Synthread",
+            "hp": 235
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "RSW_DW_BoltResentment",
+            "severity": 0.0109999981
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Leg",
+            "severity": 0.5
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Femur",
+            "severity": 0.5
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Tibia",
+            "severity": 0.5
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Foot",
+            "severity": 0.5
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Toe",
+            "severity": 0.5
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Toe",
+            "severity": 0.5
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Toe",
+            "severity": 0.5
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Toe",
+            "severity": 0.5
+           },
+           {
+            "def": "MissingBodyPart",
+            "part": "Toe",
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5576,
+            "pct": 0.5576
+           },
+           {
+            "need": "Food",
+            "level": 0.767999947,
+            "pct": 0.767999947
+           },
+           {
+            "need": "Rest",
+            "level": 0.9216289,
+            "pct": 0.9216289
+           },
+           {
+            "need": "Joy",
+            "level": 0.573577642,
+            "pct": 0.573577642
+           },
+           {
+            "need": "Beauty",
+            "level": 0.461600065,
+            "pct": 0.461600065
+           },
+           {
+            "need": "Comfort",
+            "level": 0.4807999,
+            "pct": 0.4807999
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.93200016,
+            "pct": 0.93200016
+           }
+          ]
+         }
+        ],
+        "ticksGame": 2641,
+        "operation": {
+         "OperationId": "op_a38aa3ec147d4eff955ced3d0eabfe8e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 45
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2641
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\shear_on_damage_1791387237.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mood_penalty_nearby",
+     "toggle": "boltMoodPenalty",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_thoughts",
+       "result": {
+        "success": true,
+        "totalMoodOffset": 20.0,
+        "curMoodLevel": 0.52,
+        "thoughtCount": 4,
+        "distinctGroupCount": 4,
+        "thoughts": [
+         {
+          "def": "WakeUpWithdrawal",
+          "moodOffset": 0.0,
+          "isSocial": false,
+          "stage": 0
+         },
+         {
+          "def": "Expectations",
+          "label": "Very low expectations",
+          "moodOffset": 24.0,
+          "isSocial": false,
+          "stage": 4
+         },
+         {
+          "def": "HAR_Alien_Slavery_Honorable_NoSlavesInColony",
+          "label": "No alien slaves in colony",
+          "moodOffset": -2.0,
+          "isSocial": false,
+          "stage": 0
+         },
+         {
+          "def": "RSW_DW_NearBoltedDroid",
+          "label": "A bolted droid nearby",
+          "moodOffset": -2.0,
+          "isSocial": false,
+          "stage": 0
+         }
+        ],
+        "ticksGame": 2641,
+        "operation": {
+         "OperationId": "op_d4d37e8a80ab49e1a00eb0b8634fc673",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2641
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mood_penalty_nearby_1791387238.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mental_break_suppressed_while_bolted",
+     "toggle": "boltSuppressesMentalBreaks",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_need",
+       "result": {
+        "success": true,
+        "action": "need",
+        "notes": [
+         "set Mood to 0"
+        ],
+        "needs": [
+         {
+          "need": "Mood",
+          "level": 0.0,
+          "pct": 0.0
+         },
+         {
+          "need": "Food",
+          "level": 0.767999947,
+          "pct": 0.767999947
+         },
+         {
+          "need": "Rest",
+          "level": 0.9216289,
+          "pct": 0.9216289
+         },
+         {
+          "need": "Joy",
+          "level": 0.573577642,
+          "pct": 0.573577642
+         },
+         {
+          "need": "Beauty",
+          "level": 0.461600065,
+          "pct": 0.461600065
+         },
+         {
+          "need": "Comfort",
+          "level": 0.4807999,
+          "pct": 0.4807999
+         },
+         {
+          "need": "Outdoors",
+          "level": 1.0,
+          "pct": 1.0
+         },
+         {
+          "need": "DrugDesire",
+          "level": 0.5,
+          "pct": 0.5
+         },
+         {
+          "need": "RoomSize",
+          "level": 0.93200016,
+          "pct": 0.93200016
+         }
+        ],
+        "memories": [],
+        "ticksGame": 2641,
+        "operation": {
+         "OperationId": "op_32e1369d6d6244d5bc2fe57d03d50382",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 2641
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(2000) -> 2000 real tick(s) over 4 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_eda98158844641759435796d5bf87ce3",
+        "status": "completed",
+        "requestedTicks": 198,
+        "completedTicks": 198,
+        "remainingTicks": 0,
+        "startTicksGame": 4443,
+        "endTicksGame": 4641,
+        "advancedTicks": 198,
+        "initialFrame": 275646,
+        "lastFrame": 275843,
+        "advancedFrames": 198,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:34:28.6061483+00:00",
+        "completedAtUtc": "2026-10-07T15:34:31.8907944+00:00",
+        "message": "Advanced 198 game tick(s) across 198 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 4641
+        },
+        "operation": {
+         "OperationId": "op_639f0c28d88244f6aa070f35b1a0af88",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 3316
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_mental",
+       "result": {
+        "success": true,
+        "action": "list",
+        "notes": [],
+        "totalDefs": 55,
+        "states": [
+         {
+          "def": "Berserk",
+          "label": "berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkPermanent",
+          "label": "berserk",
+          "neverRecoversAlone": true,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "FireStartingSpree",
+          "label": "fire starting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Binging_DrugExtreme",
+          "label": "binging on drug",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Jailbreaker",
+          "label": "inducing prisoner to escape",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Slaughterer",
+          "label": "slaughterer",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "MurderousRage",
+          "label": "murderous rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "GiveUpExit",
+          "label": "giving up and leaving",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Binging_DrugMajor",
+          "label": "binging on drug",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Wander_Psychotic",
+          "label": "wandering in psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Wander_Psychotic_Short",
+          "label": "wandering in psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Tantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TargetedTantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BedroomTantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "SadisticRage",
+          "label": "sadistic rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "CorpseObsession",
+          "label": "corpse obsession",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Binging_Food",
+          "label": "binging on food",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Wander_Sad",
+          "label": "sad wandering",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Wander_OwnRoom",
+          "label": "sitting alone",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "InsultingSpree",
+          "label": "insulting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TargetedInsultingSpree",
+          "label": "insulting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "WanderConfused",
+          "label": "confused wandering",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "PanicFlee",
+          "label": "panic fleeing",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Manhunter",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "ManhunterPermanent",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "SocialFighting",
+          "label": "social fighting",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Roaming",
+          "label": "roaming",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BerserkMechanoid",
+          "label": "aggression judgement scramble",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "CocoonDisturbed",
+          "label": "cocoon disturbed",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "IdeoChange",
+          "label": "crisis of belief",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Rebellion",
+          "label": "rebelling",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BerserkTrance",
+          "label": "berserk trance",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Crying",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Giggling",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "PanicFleeFire",
+          "label": "panic-fleeing fire",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkWarcall",
+          "label": "warcall berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "DarkVisions",
+          "label": "dark visions",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "InsaneRamblings",
+          "label": "insane ramblings",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EntityKiller",
+          "label": "entity slayer",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EntityLiberator",
+          "label": "entity liberator",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TerrifyingHallucinations",
+          "label": "terrifying hallucinations",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "HumanityBreak",
+          "label": "humanity break",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkShort",
+          "label": "berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "ManhunterBloodRain",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "CubeSculpting",
+          "label": "cube sculpting",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Terror",
+          "label": "terror",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VEF_XenophobicRage",
+          "label": "xenophobic rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "AA_PhotosensitiveExoskeleton",
+          "label": "sunlight disorientation",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "RM_RoostDefence",
+          "label": "defending its tree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "RM_WaterTruceRetribution",
+          "label": "water-truce retribution",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "RM_ChasingWater",
+          "label": "chasing the water",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "RM_ParentalEnrage",
+          "label": "defending young",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "RM_SwarmAggression",
+          "label": "swarming",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "RM_HiveRally",
+          "label": "rallying",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "RUT_WildDroidPack",
+          "label": "wild droid",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_22731b7d9436401a8ea12bd2988dc70e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mental_break_suppressed_while_bolted_1791387272.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "bolt_rebellion_structural",
+   "components": [
+    {
+     "name": "rebellion_recipe_wired",
+     "toggle": "boltRebellion",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "workerClass"
+        ],
+        "defs": [
+         {
+          "requested": "RecipeDef/RSW_DW_RemoveRestrainingBolt",
+          "found": true,
+          "defName": "RSW_DW_RemoveRestrainingBolt",
+          "defType": "RecipeDef",
+          "label": "remove restraining bolt",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "workerClass": "Recipe_RemoveRestrainingBolt"
+          }
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_5ea3005603ff421baff092d0601b5ed0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 33
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "get_defs(RecipeDef/RSW_DW_RemoveRestrainingBolt) contains 'Recipe_RemoveRestrainingBolt'",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "wipe_and_drift_structural",
+   "components": [
+    {
+     "name": "wipe_hediff_attaches",
+     "toggle": "wipeStumble",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_DW_RecentlyWiped (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 3,
+        "hediffs": [
+         {
+          "def": "HeartArteryBlockage",
+          "part": "Heart",
+          "severity": 0.165285423
+         },
+         {
+          "def": "RSW_DW_FormatTier",
+          "severity": 3.0
+         },
+         {
+          "def": "RSW_DW_RecentlyWiped",
+          "severity": 1.0
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_b54331bddd6445c786f650bee17de6f7",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_OuterRim_ImperialLaborDroid9677",
+          "thingIdNumber": 9677,
+          "name": "Alexis Cheynas",
+          "nameShort": "Cheynas",
+          "title": "glitterworld officer",
+          "kindDef": "RSW_DW_OuterRim_ImperialLaborDroid",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 62,
+          "ageChronologicalYears": 62,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "ShelterChild50",
+          "adulthood": "GlitterworldOfficer60",
+          "headType": "RSW_DW_HeadType_OuterRim_ImperialLaborDroid",
+          "bodyType": "Male",
+          "hair": "Decent",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "Industriousness",
+            "degree": 1,
+            "label": "Hard worker",
+            "forced": true
+           },
+           {
+            "def": "TooSmart",
+            "degree": 0,
+            "label": "Too smart",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "HeartArteryBlockage",
+            "part": "Heart",
+            "severity": 0.165285423
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_RecentlyWiped",
+            "severity": 1.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_26f33cfe75624710a74233f922c0d768",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_OuterRim_ImperialLaborDroid9677, RSW_DW_RecentlyWiped present=True)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\wipe_hediff_attaches_1791387272.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "quirk_pool_marked",
+     "toggle": "wipeQuirks",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "modExtensions"
+        ],
+        "defs": [
+         {
+          "requested": "TraitDef/RSW_DW_Quirk_ServoTwitch",
+          "found": true,
+          "defName": "RSW_DW_Quirk_ServoTwitch",
+          "defType": "TraitDef",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "modExtensions": [
+            {}
+           ]
+          }
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_e8a465788d3f4ad48bebbe75f74fd7ae",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "quirk marker modExtensions -> [{}]",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "idiosyncrasy_pool_marked",
+     "toggle": "personalityDrift",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "modExtensions"
+        ],
+        "defs": [
+         {
+          "requested": "TraitDef/RSW_DW_Idio_Opinionated",
+          "found": true,
+          "defName": "RSW_DW_Idio_Opinionated",
+          "defType": "TraitDef",
+          "modName": "Droidworks",
+          "packageId": "mandrake.rsw.droidworks",
+          "fields": {
+           "modExtensions": [
+            {
+             "defaultWeight": 1.0,
+             "chassisWeights": [
+              {
+               "chassis": "Protocol",
+               "weight": 4.0
+              },
+              {
+               "chassis": "Astromech",
+               "weight": 3.0
+              },
+              {
+               "chassis": "Labour",
+               "weight": 2.0
+              }
+             ]
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_bd9d288dab97429197be68e627eda01e",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "get_defs(TraitDef/RSW_DW_Idio_Opinionated) contains 'chassisWeights'",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "hutt_captive_bolt_state",
+   "components": [
+    {
+     "name": "captive_bolt_state_reachable",
+     "toggle": "huttCaptivesBolted",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human9683",
+          "thingIdNumber": 9683,
+          "name": "Sarai Tang",
+          "nameShort": "Sarai",
+          "title": "chief engineer",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 21,
+          "ageChronologicalYears": 28,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "ShipTechnician0",
+          "adulthood": "ChiefEngineer62",
+          "headType": "Female_AverageWide",
+          "bodyType": "Female",
+          "hair": "Pigtails",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "Psychopath",
+            "degree": 0,
+            "label": "Psychopath",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.954705954,
+            "pct": 0.954705954
+           },
+           {
+            "need": "Joy",
+            "level": 0.509393752,
+            "pct": 0.509393752
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_a9bdc4a4903945fca6db7f12cb4dfb42",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(Human9683, RSW_DW_RestrainingBolt present=False)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_DW_RestrainingBolt (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 1,
+        "hediffs": [
+         {
+          "def": "RSW_DW_RestrainingBolt",
+          "severity": 0.5
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_324beb0ec9184adf9329be958628e166",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added RSW_DW_BoltResentment (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 2,
+        "hediffs": [
+         {
+          "def": "RSW_DW_RestrainingBolt",
+          "severity": 0.5
+         },
+         {
+          "def": "RSW_DW_BoltResentment",
+          "severity": 0.5
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_cf8f98be30d84ca8b46b89435a8fd48f",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human9683",
+          "thingIdNumber": 9683,
+          "name": "Sarai Tang",
+          "nameShort": "Sarai",
+          "title": "chief engineer",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Female",
+          "ageBiologicalYears": 21,
+          "ageChronologicalYears": 28,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "ShipTechnician0",
+          "adulthood": "ChiefEngineer62",
+          "headType": "Female_AverageWide",
+          "bodyType": "Female",
+          "hair": "Pigtails",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "Psychopath",
+            "degree": 0,
+            "label": "Psychopath",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "RSW_DW_RestrainingBolt",
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_DW_BoltResentment",
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.954705954,
+            "pct": 0.954705954
+           },
+           {
+            "need": "Joy",
+            "level": 0.509393752,
+            "pct": 0.509393752
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_6a31f57b155041a1adcdb4395fde0308",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\captive_bolt_state_reachable_1791387273.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "module_personality",
+   "components": [
+    {
+     "name": "module_grants_personality_on_wear",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_guy762_DroidRace_T3series9687",
+          "thingIdNumber": 9687,
+          "name": "Kaito Landry",
+          "nameShort": "Landry",
+          "title": "space marine",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 24,
+          "ageChronologicalYears": 24,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "MedicalAssistant12",
+          "adulthood": "SpaceMarine16",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Bravo",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "TooSmart",
+            "degree": 0,
+            "label": "Too smart",
+            "forced": true
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Leg",
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_ac4e7a12e3aa43c9a8ba2f916df63a41",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_guy762_DroidRace_T3series9687, RSW_DW_ModulePersonality_Twitchy present=False)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": true,
+        "action": "wear",
+        "displaced": [],
+        "notes": [],
+        "pawn": {
+         "thingId": "RSW_DW_Race_guy762_DroidRace_T3series9687",
+         "thingIdNumber": 9687,
+         "name": "Kaito Landry",
+         "nameShort": "Landry",
+         "title": "space marine",
+         "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals",
+         "gender": "Male",
+         "ageBiologicalYears": 24,
+         "ageChronologicalYears": 24,
+         "developmentalStage": "Adult",
+         "xenotype": "Baseliner",
+         "ideo": "Machine University",
+         "childhood": "MedicalAssistant12",
+         "adulthood": "SpaceMarine16",
+         "headType": "RSW_DW_HeadType_Blank",
+         "bodyType": "Male",
+         "hair": "Bravo",
+         "beard": "NoBeard",
+         "position": {
+          "x": 125,
+          "z": 125
+         },
+         "traits": [
+          {
+           "def": "TooSmart",
+           "degree": 0,
+           "label": "Too smart",
+           "forced": true
+          }
+         ],
+         "skills": [
+          {
+           "skill": "Shooting",
+           "levelRaw": 10,
+           "levelEffective": 10,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Melee",
+           "levelRaw": 9,
+           "levelEffective": 9,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Construction",
+           "levelRaw": 4,
+           "levelEffective": 4,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Mining",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Cooking",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Plants",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Animals",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Crafting",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Artistic",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": true
+          },
+          {
+           "skill": "Medicine",
+           "levelRaw": 9,
+           "levelEffective": 9,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Social",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": true
+          },
+          {
+           "skill": "Intellectual",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          }
+         ],
+         "apparel": [
+          {
+           "def": "RSW_DW_Module_DroidHardware_agility",
+           "defName": "RSW_DW_Module_DroidHardware_agility",
+           "hp": 80
+          }
+         ],
+         "equipment": [],
+         "hediffs": [
+          {
+           "def": "Gunshot",
+           "part": "Leg",
+           "severity": 3.0
+          },
+          {
+           "def": "RSW_DW_FormatTier",
+           "severity": 3.0
+          },
+          {
+           "def": "RSW_DW_Module_HardwareHediff_agility",
+           "severity": 0.5
+          },
+          {
+           "def": "RSW_DW_ModulePersonality_Twitchy",
+           "severity": 0.5
+          }
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "DrugDesire",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RoomSize",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RSW_DW_Power",
+           "level": 0.5,
+           "pct": 0.5
+          }
+         ]
+        },
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_8911f65a7b024265b257ce8fb12b5741",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_guy762_DroidRace_T3series9687",
+          "thingIdNumber": 9687,
+          "name": "Kaito Landry",
+          "nameShort": "Landry",
+          "title": "space marine",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 24,
+          "ageChronologicalYears": 24,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "MedicalAssistant12",
+          "adulthood": "SpaceMarine16",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Bravo",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "TooSmart",
+            "degree": 0,
+            "label": "Too smart",
+            "forced": true
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "RSW_DW_Module_DroidHardware_agility",
+            "defName": "RSW_DW_Module_DroidHardware_agility",
+            "hp": 80
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Leg",
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_Module_HardwareHediff_agility",
+            "severity": 0.5
+           },
+           {
+            "def": "RSW_DW_ModulePersonality_Twitchy",
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_8c4d35c7042c45d6bd59cf78bd668fd0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 46
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_guy762_DroidRace_T3series9687, RSW_DW_ModulePersonality_Twitchy present=True)",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": true,
+        "action": "clear",
+        "displaced": [],
+        "notes": [
+         "apparel destroyed"
+        ],
+        "pawn": {
+         "thingId": "RSW_DW_Race_guy762_DroidRace_T3series9687",
+         "thingIdNumber": 9687,
+         "name": "Kaito Landry",
+         "nameShort": "Landry",
+         "title": "space marine",
+         "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals",
+         "gender": "Male",
+         "ageBiologicalYears": 24,
+         "ageChronologicalYears": 24,
+         "developmentalStage": "Adult",
+         "xenotype": "Baseliner",
+         "ideo": "Machine University",
+         "childhood": "MedicalAssistant12",
+         "adulthood": "SpaceMarine16",
+         "headType": "RSW_DW_HeadType_Blank",
+         "bodyType": "Male",
+         "hair": "Bravo",
+         "beard": "NoBeard",
+         "position": {
+          "x": 125,
+          "z": 125
+         },
+         "traits": [
+          {
+           "def": "TooSmart",
+           "degree": 0,
+           "label": "Too smart",
+           "forced": true
+          }
+         ],
+         "skills": [
+          {
+           "skill": "Shooting",
+           "levelRaw": 10,
+           "levelEffective": 10,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Melee",
+           "levelRaw": 9,
+           "levelEffective": 9,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Construction",
+           "levelRaw": 4,
+           "levelEffective": 4,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Mining",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Cooking",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Plants",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Animals",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Crafting",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Artistic",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": true
+          },
+          {
+           "skill": "Medicine",
+           "levelRaw": 9,
+           "levelEffective": 9,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Social",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": true
+          },
+          {
+           "skill": "Intellectual",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          }
+         ],
+         "apparel": [],
+         "equipment": [],
+         "hediffs": [
+          {
+           "def": "Gunshot",
+           "part": "Leg",
+           "severity": 3.0
+          },
+          {
+           "def": "RSW_DW_FormatTier",
+           "severity": 3.0
+          },
+          {
+           "def": "RSW_DW_Module_HardwareHediff_agility",
+           "severity": 0.5
+          }
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "DrugDesire",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RoomSize",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "RSW_DW_Power",
+           "level": 0.5,
+           "pct": 0.5
+          }
+         ]
+        },
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_072259382c4b477699adfa9aba03fed3",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "RSW_DW_Race_guy762_DroidRace_T3series9687",
+          "thingIdNumber": 9687,
+          "name": "Kaito Landry",
+          "nameShort": "Landry",
+          "title": "space marine",
+          "kindDef": "RSW_DW_KotORDroidColonist_T3UD",
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "gender": "Male",
+          "ageBiologicalYears": 24,
+          "ageChronologicalYears": 24,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Machine University",
+          "childhood": "MedicalAssistant12",
+          "adulthood": "SpaceMarine16",
+          "headType": "RSW_DW_HeadType_Blank",
+          "bodyType": "Male",
+          "hair": "Bravo",
+          "beard": "NoBeard",
+          "position": {
+           "x": 125,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "TooSmart",
+            "degree": 0,
+            "label": "Too smart",
+            "forced": true
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 10,
+            "levelEffective": 10,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Gunshot",
+            "part": "Leg",
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_FormatTier",
+            "severity": 3.0
+           },
+           {
+            "def": "RSW_DW_Module_HardwareHediff_agility",
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RSW_DW_Power",
+            "level": 0.5,
+            "pct": 0.5
+           }
+          ]
+         }
+        ],
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_9c20df5b69fc445092848aad848aee5a",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "expect_hediff(RSW_DW_Race_guy762_DroidRace_T3series9687, RSW_DW_ModulePersonality_Twitchy present=False)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\module_grants_personality_on_wear_1791387274.png",
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\module_grants_personality_on_wear_1791387275.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "wild_droid_crash",
+   "components": [
+    {
+     "name": "wild_droid_crash_fires",
+     "toggle": "wildDroidCrash",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "10 pawn(s).",
+        "pawns": [
+         {
+          "id": "LothWolf3471",
+          "name": "Pombo",
+          "kind": "LothWolf",
+          "kindDef": "LothWolf",
+          "def": "LothWolf",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 124,
+          "z": 126,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 3.5
+         },
+         {
+          "id": "Human391",
+          "name": "Dragoon",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 120,
+          "z": 136,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Lylek9544",
+          "name": "Lylek",
+          "kind": "RSW_Lylek",
+          "kindDef": "RSW_Lylek",
+          "def": "RSW_Lylek",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 1,
+          "z": 50,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 5.0
+         },
+         {
+          "id": "Armadillo9545",
+          "name": "Armadillo",
+          "kind": "Armadillo",
+          "kindDef": "Armadillo",
+          "def": "Armadillo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 132,
+          "z": 228,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "Iguana9546",
+          "name": "Iguana",
+          "kind": "Iguana",
+          "kindDef": "Iguana",
+          "def": "Iguana",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 60,
+          "z": 114,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "RSW_Massiff9547",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 239,
+          "z": 39,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9548",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 239,
+          "z": 38,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9549",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 243,
+          "z": 40,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9550",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 240,
+          "z": 30,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9551",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 240,
+          "z": 25,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         }
+        ],
+        "returned": 10,
+        "truncated": 0,
+        "totalOnMap": 10,
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_47891be23eed412cb6a8926b8ce2b599",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RSW_DW_WildDroidCrash fired with 35 points.",
+        "incident": "RSW_DW_WildDroidCrash",
+        "category": "ThreatSmall",
+        "canFireNow": true,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "ticksGame": 4641,
+        "operation": {
+         "OperationId": "op_c490e3e8b8904949ae22b37310022779",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 47
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4641
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) -> 60 real tick(s) over 1 call(s)",
+       "result": {
+        "success": true,
+        "stepId": "step_7c6254e0548c45469806b2c025bba396",
+        "status": "completed",
+        "requestedTicks": 60,
+        "completedTicks": 60,
+        "remainingTicks": 0,
+        "startTicksGame": 4641,
+        "endTicksGame": 4701,
+        "advancedTicks": 60,
+        "initialFrame": 276054,
+        "lastFrame": 276113,
+        "advancedFrames": 60,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-07T15:34:35.6091285+00:00",
+        "completedAtUtc": "2026-10-07T15:34:36.5930225+00:00",
+        "message": "Advanced 60 game tick(s) across 60 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true,
+         "tick": 4701
+        },
+        "operation": {
+         "OperationId": "op_088414dd1ed8419db75f6b0fcbd460e1",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 1016
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "11 pawn(s).",
+        "pawns": [
+         {
+          "id": "LothWolf3471",
+          "name": "Pombo",
+          "kind": "LothWolf",
+          "kindDef": "LothWolf",
+          "def": "LothWolf",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 124,
+          "z": 126,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 3.5
+         },
+         {
+          "id": "Human391",
+          "name": "Dragoon",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 120,
+          "z": 135,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0
+         },
+         {
+          "id": "RSW_Lylek9544",
+          "name": "Lylek",
+          "kind": "RSW_Lylek",
+          "kindDef": "RSW_Lylek",
+          "def": "RSW_Lylek",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 1,
+          "z": 50,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 5.0
+         },
+         {
+          "id": "Armadillo9545",
+          "name": "Armadillo",
+          "kind": "Armadillo",
+          "kindDef": "Armadillo",
+          "def": "Armadillo",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 132,
+          "z": 228,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "Iguana9546",
+          "name": "Iguana",
+          "kind": "Iguana",
+          "kindDef": "Iguana",
+          "def": "Iguana",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 60,
+          "z": 114,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.4
+         },
+         {
+          "id": "RSW_Massiff9547",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 238,
+          "z": 39,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9548",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 239,
+          "z": 38,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9549",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 243,
+          "z": 40,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9550",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 242,
+          "z": 32,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_Massiff9551",
+          "name": "Massiff",
+          "kind": "RSW_Massiff",
+          "kindDef": "RSW_Massiff",
+          "def": "RSW_Massiff",
+          "hasGenes": false,
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 240,
+          "z": 25,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.85
+         },
+         {
+          "id": "RSW_DW_Race_JDSCIS_B1_Battle_Droid9692",
+          "name": "Harriet",
+          "kind": "RSW_DW_JDSCIS_B1_Battle_Droid",
+          "kindDef": "RSW_DW_JDSCIS_B1_Battle_Droid",
+          "def": "RSW_DW_Race_JDSCIS_B1_Battle_Droid",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 1,
+          "z": 105,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.7
+         }
+        ],
+        "returned": 11,
+        "truncated": 0,
+        "totalOnMap": 11,
+        "ticksGame": 4701,
+        "operation": {
+         "OperationId": "op_3519b622b7c84f66b8ed56fb0316f511",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4701
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\wild_droid_crash_fires_1791387276.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "protocol_trade_advantage",
+   "components": [
+    {
+     "name": "protocol_droid_shifts_prices",
+     "toggle": "protocolTrade",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: jawa/fire_incident(TraderCaravanArrival) did not fire: {'success': False, 'message': 'TraderCaravanArrival did NOT fire. canFireNow=True.', 'incident': 'TraderCaravanArrival', 'category': 'FactionArrival', 'canFireNow': True, 'fired': False, 'windowsOpened': [], 'blockedByDialog': False, 'points': 876.0, 'faction': 'RUT_Jawa_DeepwaterCompact', 'ticksGame': 4701, 'operation': {'OperationId': 'op_23e22041257340d0a5cfa6bb6d58d010', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 4701}} (needs JAWA_GM_TOOLS -- see module docstring gap #5)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "TraderCaravanArrival did NOT fire. canFireNow=True.",
+        "incident": "TraderCaravanArrival",
+        "category": "FactionArrival",
+        "canFireNow": true,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 876.0,
+        "faction": "RUT_Jawa_DeepwaterCompact",
+        "ticksGame": 4701,
+        "operation": {
+         "OperationId": "op_23e22041257340d0a5cfa6bb6d58d010",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4701
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "ion_overload_shutdown",
+   "components": [
+    {
+     "name": "ion_overload_shuts_down_droid",
+     "toggle": "ionShutdown",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: could not add RSW_JawaIon_Stun ({'success': False, 'message': \"No HediffDef 'RSW_JawaIon_Stun'.\", 'details': [], 'operation': {'OperationId': 'op_4a4d7c28d8b84116ad04dd2f40ea54a4', 'Status': 'Completed', 'Success': True, 'DurationMs': 49}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, 'paused': True, 'timeSpeed': 'Paused', 'tick': 4701}}) -- Jawa Ion Weapons is probably not active in this environment; see module docstring gap #2",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": false,
+        "message": "No HediffDef 'RSW_JawaIon_Stun'.",
+        "details": [],
+        "operation": {
+         "OperationId": "op_4a4d7c28d8b84116ad04dd2f40ea54a4",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4701
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "mindstone_head_wiring",
+   "components": [
+    {
+     "name": "assemble_bill_accepts_mindstone_head",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mindstone_marker_and_immunity_wired",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000016AE56059C0>",
+  "<suite.Component object at 0x0000016AE5605A70>"
+ ],
+ "refused": "",
+ "walk": null
+}

@@ -1,0 +1,1 @@
+A plumbing-built push (patch diffed from the wrong parent, then git apply failing inside a pipe to tail) once pushed an EMPTY commit with a misleading message: assert the apply succeeded and the resulting tree differs from origin/main before pushing.

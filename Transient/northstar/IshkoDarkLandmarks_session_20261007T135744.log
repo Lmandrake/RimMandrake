@@ -1,0 +1,2 @@
+recorded IshkoDarkLandmarks: GREEN at 412061a42261 (IshkoDarkLandmarks/northstar_driver@IshkoDarkLandmarks_20261007T205744Z.json)
+IshkoDarkLandmarks: GREEN  PASS=8 FAIL=0 UNMEASURED=0  calls=26 mean=47.431ms  -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\northstar\IshkoDarkLandmarks_20261007T205744Z.json

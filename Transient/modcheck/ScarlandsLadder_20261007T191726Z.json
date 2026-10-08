@@ -1,0 +1,416 @@
+{
+ "mod": "ScarlandsLadder",
+ "stamp": "20261007T191726Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "pilgrim_journals",
+    "components": [
+     {
+      "name": "reading_walks_the_ladder",
+      "toggle": "journalsAdvanceLadder",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofReadSequence(Verse.Map, Int32)",
+         "result": "STAGES 1,2,3,4,5,5 moved T,T,T,T,T,F | desc Crater fields and slag hills on shattered megastructure floors. Along the Ashfall Road the camps lie closer together the",
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_3e7582325e6243969fc4bff63f84bd2c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "reading_off_teaches_nothing",
+      "toggle": "journalsAdvanceLadder",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "journalsAdvanceLadder",
+         "fieldKind": "static",
+         "valueBefore": "True",
+         "valueAfter": "False",
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_654295a27b104e2bbbadd48c96d873c7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 129
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofReadSequence(Verse.Map, Int32)",
+         "result": "STAGES 0 moved F | desc Crater fields and slag hills on shattered megastructure floors; bunkers, embankments, ruined turret rings and burnt shie",
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_6a30dd2e14944b5da6582ae372c96f17",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/mod_settings_field",
+        "result": {
+         "success": true,
+         "action": "set",
+         "field": "journalsAdvanceLadder",
+         "fieldKind": "static",
+         "valueBefore": "False",
+         "valueAfter": "True",
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_5c5ee086655c4a59872eff91ffe549c7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "pilgrim_camps",
+    "components": [
+     {
+      "name": "camps_place",
+      "toggle": "campsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/static_call",
+        "result": {
+         "success": true,
+         "method": "System.String ProofCamps(Verse.Map, Int32)",
+         "result": "CAMPS 2 | journals 2 corpses 10 fires 2",
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_fe81c3e07771404ea9f80c0e0d97a7c5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 87
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "every_shipped_def_reads_back",
+    "components": [
+     {
+      "name": "every_shipped_def_is_loaded",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "3 of 3 def(s) resolved",
+         "requested": 3,
+         "foundCount": 3,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "GenStepDef/RUT_PilgrimCamps",
+           "found": true,
+           "defName": "RUT_PilgrimCamps",
+           "defType": "GenStepDef",
+           "modName": "RimUtinni: Scarlands Ladder",
+           "packageId": "mandrake.rut.scarlandsladder",
+           "fields": {
+            "defName": "RUT_PilgrimCamps"
+           }
+          },
+          {
+           "requested": "RimMandrake.LoreStages.RM_LoreStageTableDef/RUT_ScarlandsLadder",
+           "found": true,
+           "defName": "RUT_ScarlandsLadder",
+           "defType": "RM_LoreStageTableDef",
+           "modName": "RimUtinni: Scarlands Ladder",
+           "packageId": "mandrake.rut.scarlandsladder",
+           "fields": {
+            "defName": "RUT_ScarlandsLadder"
+           }
+          },
+          {
+           "requested": "ThingDef/RUT_PilgrimJournal",
+           "found": true,
+           "defName": "RUT_PilgrimJournal",
+           "defType": "ThingDef",
+           "label": "pilgrim's journal",
+           "modName": "RimUtinni: Scarlands Ladder",
+           "packageId": "mandrake.rut.scarlandsladder",
+           "fields": {
+            "defName": "RUT_PilgrimJournal"
+           }
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_98546ea3dc6845579d1cd424e828d4f3",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shipped_scalar_fields_match_xml",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "order"
+         ],
+         "defs": [
+          {
+           "requested": "GenStepDef/RUT_PilgrimCamps",
+           "found": true,
+           "defName": "RUT_PilgrimCamps",
+           "defType": "GenStepDef",
+           "modName": "RimUtinni: Scarlands Ladder",
+           "packageId": "mandrake.rut.scarlandsladder",
+           "fields": {
+            "order": 760.0
+           }
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_91ba6ec83e39490b96f0e2228a8a2686",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "ladderId",
+          "maxStage"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.LoreStages.RM_LoreStageTableDef/RUT_ScarlandsLadder",
+           "found": true,
+           "defName": "RUT_ScarlandsLadder",
+           "defType": "RM_LoreStageTableDef",
+           "modName": "RimUtinni: Scarlands Ladder",
+           "packageId": "mandrake.rut.scarlandsladder",
+           "fields": {
+            "ladderId": "Scarlands",
+            "maxStage": 5
+           }
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_2bac3d6c9beb40c0a3d6209f8e86daa4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label",
+          "stackLimit",
+          "tradeability"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RUT_PilgrimJournal",
+           "found": true,
+           "defName": "RUT_PilgrimJournal",
+           "defType": "ThingDef",
+           "label": "pilgrim's journal",
+           "modName": "RimUtinni: Scarlands Ladder",
+           "packageId": "mandrake.rut.scarlandsladder",
+           "fields": {
+            "stackLimit": 1,
+            "tradeability": "None",
+            "label": "pilgrim's journal"
+           }
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_cb26c9fa9f8c46f6a3c482a21601996b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": true,
+  "findings": [],
+  "refused": "",
+  "walk": null,
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": true
+ }
+}

@@ -1,0 +1,1516 @@
+{
+ "mod": "OasisMaker",
+ "stamp": "20261007T191720Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RM_OasisMakerNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_OasisMakerNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RM_OasisMakerNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_9cc8252d0e8c4d11bec1b5072862209c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_shipped_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_OasisMaker",
+           "found": true,
+           "defName": "RM_OasisMaker",
+           "defType": "ThingDef",
+           "label": "oasis-maker",
+           "modName": "RimMandrake: Oasis Maker",
+           "packageId": "mandrake.rm.oasismaker",
+           "fields": {
+            "defName": "RM_OasisMaker"
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_6e16b1b212d844fa8bad88d43c7fead7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "attuningDays_round_trips",
+      "toggle": "attuningDays",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "baseRingDays_round_trips",
+      "toggle": "baseRingDays",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "masterEnabled_round_trips",
+      "toggle": "masterEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "maxRadiusCap_round_trips",
+      "toggle": "maxRadiusCap",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "minRadiusCap_round_trips",
+      "toggle": "minRadiusCap",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "ringGrowthFactor_round_trips",
+      "toggle": "ringGrowthFactor",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "rockScoreExcellent_round_trips",
+      "toggle": "rockScoreExcellent",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "rockScoreFloor_round_trips",
+      "toggle": "rockScoreFloor",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "scoringRadius_round_trips",
+      "toggle": "scoringRadius",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shadeScoreExcellent_round_trips",
+      "toggle": "shadeScoreExcellent",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shadeScoreFloor_round_trips",
+      "toggle": "shadeScoreFloor",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "def_wiring",
+    "components": [
+     {
+      "name": "def_readable",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "minifiedDef",
+          "tradeTags",
+          "placeWorkers",
+          "designationCategory",
+          "costList"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_OasisMaker",
+           "found": true,
+           "defName": "RM_OasisMaker",
+           "defType": "ThingDef",
+           "label": "oasis-maker",
+           "modName": "RimMandrake: Oasis Maker",
+           "packageId": "mandrake.rm.oasismaker",
+           "fields": {
+            "minifiedDef": "MinifiedThing",
+            "tradeTags": [
+             "ExoticMisc"
+            ],
+            "placeWorkers": [
+             "RM_PlaceWorker_OasisMaker"
+            ]
+           }
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_9a0a2f12755d46ec918462f3d3d0cc23",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "minified_trade_tagged_and_placeworker_ours",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "not_buildable_trade_or_start_only",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "dormant_on_bare_sand",
+    "components": [
+     {
+      "name": "no_shade_no_rock_stays_dormant",
+      "toggle": "masterEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(25)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 2 thing(s) across 625 cell(s); 16 pawn(s) left alone.",
+         "cellsExamined": 625,
+         "outOfBounds": 0,
+         "destroyed": 2,
+         "pawnsSkipped": 16,
+         "perCategory": {
+          "Item": 1,
+          "Building": 1
+         },
+         "samples": [
+          {
+           "x": 113,
+           "z": 125,
+           "def": "RM_HalfExtractedCore",
+           "category": "Item"
+          },
+          {
+           "x": 133,
+           "z": 125,
+           "def": "RM_CaskBay",
+           "category": "Building"
+          }
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_c4875c9196a847b39c2a7be92f27d7dc",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_roof_batch",
+        "result": {
+         "success": true,
+         "message": "Roofed 0 cell(s) across 1 op(s).",
+         "opsRequested": 1,
+         "cellsChanged": 0,
+         "cellsFailedVerify": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {},
+         "errors": [],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_5089df35b8a046c9a79300fef03e80a8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_terrain_batch",
+        "result": {
+         "success": true,
+         "message": "Applied 1/1 op(s): 625 cell(s) changed, 0 already correct.",
+         "layer": "top",
+         "opsRequested": 1,
+         "opsApplied": 1,
+         "cellsRequested": 625,
+         "cellsChanged": 625,
+         "cellsAlreadyCorrect": 0,
+         "cellsOutOfBounds": 0,
+         "cellsFailedVerify": 0,
+         "refreshed": true,
+         "cellsRefreshed": 625,
+         "errors": [],
+         "samples": [
+          {
+           "x": 113,
+           "z": 113,
+           "before": "Soil",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 114,
+           "before": "Soil",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 115,
+           "before": "Soil",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 116,
+           "before": "Soil",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 117,
+           "before": "Soil",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 118,
+           "before": "Soil",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 119,
+           "before": "Soil",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 120,
+           "before": "Soil",
+           "after": "Sand",
+           "applied": true
+          }
+         ],
+         "mapSize": {
+          "x": 250,
+          "z": 250
+         },
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_a33b606f656145f89911e77c23b01348",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/weather_set",
+        "result": {
+         "success": true,
+         "before": "Clear",
+         "after": "Clear",
+         "lockInForce": true,
+         "gamePaused": true,
+         "notes": [
+          "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+         ],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_e92f63dad89e49e9a8ca2a50460ca3cb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "spawn RM_OasisMaker x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_OasisMaker": 1
+         },
+         "errors": [],
+         "ticksGame": 25241,
+         "operation": {
+          "OperationId": "op_2bb961289b0e4b9ca2e9ae67731e8119",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_OasisMaker91767",
+           "def": "RM_OasisMaker",
+           "label": "Oasis-maker",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 400,
+           "maxHitPoints": 400
+          }
+         ],
+         "scanned": 30592,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 81,
+         "perDef": {
+          "RM_OasisMaker": 1
+         },
+         "ticksGame": 25241,
+         "message": "1 of 1 matching thing(s) returned, 30592 examined.",
+         "operation": {
+          "OperationId": "op_6c7f93696d344b848be8e45ce5816efa",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25241
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(600) -> 600 real tick(s) over 2 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_1c390de77eca4a87beb728c6be512c91",
+         "status": "completed",
+         "requestedTicks": 4,
+         "completedTicks": 4,
+         "remainingTicks": 0,
+         "startTicksGame": 25837,
+         "endTicksGame": 25841,
+         "advancedTicks": 4,
+         "initialFrame": 39672,
+         "lastFrame": 39675,
+         "advancedFrames": 4,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T19:15:59.7858301+00:00",
+         "completedAtUtc": "2026-10-07T19:15:59.8394881+00:00",
+         "message": "Advanced 4 game tick(s) across 4 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 25841
+         },
+         "operation": {
+          "OperationId": "op_7191c157b6b74f05b08a63ffef81b30e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 82
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 30572 examined.",
+         "matched": 1,
+         "examined": 30572,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_OasisMaker91767",
+           "defName": "RM_OasisMaker",
+           "label": "oasis-maker",
+           "x": 125,
+           "z": 125,
+           "className": "Verse.Building",
+           "inspect": [
+            "Dormant. It is waiting for cold stone and shade."
+           ]
+          }
+         ],
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_ee163f9235ec420cb5110af9eca5777b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "site_growth",
+    "components": [
+     {
+      "name": "valid_site_attunes",
+      "toggle": "masterEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(25)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 625 cell(s); 13 pawn(s) left alone.",
+         "cellsExamined": 625,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 13,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_cec0dede3a844ee685e4d86933b363ec",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_roof_batch",
+        "result": {
+         "success": true,
+         "message": "Roofed 0 cell(s) across 1 op(s).",
+         "opsRequested": 1,
+         "cellsChanged": 0,
+         "cellsFailedVerify": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {},
+         "errors": [],
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_e6a58aead4474bda92752274c5d2d9a1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_terrain_batch",
+        "result": {
+         "success": true,
+         "message": "Applied 1/1 op(s): 0 cell(s) changed, 625 already correct.",
+         "layer": "top",
+         "opsRequested": 1,
+         "opsApplied": 1,
+         "cellsRequested": 625,
+         "cellsChanged": 0,
+         "cellsAlreadyCorrect": 625,
+         "cellsOutOfBounds": 0,
+         "cellsFailedVerify": 0,
+         "refreshed": false,
+         "cellsRefreshed": 0,
+         "errors": [],
+         "samples": [
+          {
+           "x": 113,
+           "z": 113,
+           "before": "Sand",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 114,
+           "before": "Sand",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 115,
+           "before": "Sand",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 116,
+           "before": "Sand",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 117,
+           "before": "Sand",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 118,
+           "before": "Sand",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 119,
+           "before": "Sand",
+           "after": "Sand",
+           "applied": true
+          },
+          {
+           "x": 113,
+           "z": 120,
+           "before": "Sand",
+           "after": "Sand",
+           "applied": true
+          }
+         ],
+         "mapSize": {
+          "x": 250,
+          "z": 250
+         },
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_235f2f91aba84aafb181ac8e66cc83a4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_terrain_batch",
+        "result": {
+         "success": true,
+         "message": "Applied 2/2 op(s): 34 cell(s) changed, 0 already correct.",
+         "layer": "top",
+         "opsRequested": 2,
+         "opsApplied": 2,
+         "cellsRequested": 34,
+         "cellsChanged": 34,
+         "cellsAlreadyCorrect": 0,
+         "cellsOutOfBounds": 0,
+         "cellsFailedVerify": 0,
+         "refreshed": true,
+         "cellsRefreshed": 34,
+         "errors": [],
+         "samples": [
+          {
+           "x": 117,
+           "z": 132,
+           "before": "Sand",
+           "after": "Granite_Rough",
+           "applied": true
+          },
+          {
+           "x": 118,
+           "z": 132,
+           "before": "Sand",
+           "after": "Granite_Rough",
+           "applied": true
+          },
+          {
+           "x": 119,
+           "z": 132,
+           "before": "Sand",
+           "after": "Granite_Rough",
+           "applied": true
+          },
+          {
+           "x": 120,
+           "z": 132,
+           "before": "Sand",
+           "after": "Granite_Rough",
+           "applied": true
+          },
+          {
+           "x": 121,
+           "z": 132,
+           "before": "Sand",
+           "after": "Granite_Rough",
+           "applied": true
+          },
+          {
+           "x": 122,
+           "z": 132,
+           "before": "Sand",
+           "after": "Granite_Rough",
+           "applied": true
+          },
+          {
+           "x": 123,
+           "z": 132,
+           "before": "Sand",
+           "after": "Granite_Rough",
+           "applied": true
+          },
+          {
+           "x": 124,
+           "z": 132,
+           "before": "Sand",
+           "after": "Granite_Rough",
+           "applied": true
+          }
+         ],
+         "mapSize": {
+          "x": 250,
+          "z": 250
+         },
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_55872379a78d4258b89685f7c9bc5e50",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_roof_batch",
+        "result": {
+         "success": true,
+         "message": "Roofed 361 cell(s) across 1 op(s).",
+         "opsRequested": 1,
+         "cellsChanged": 361,
+         "cellsFailedVerify": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RoofConstructed": 361
+         },
+         "errors": [],
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_b7dea632bcfe400395b11bb2f91ee9ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/weather_set",
+        "result": {
+         "success": true,
+         "before": "Clear",
+         "after": "Clear",
+         "lockInForce": true,
+         "gamePaused": true,
+         "notes": [
+          "registered a PERMANENT GameCondition_ForceWeather - this is the only durable weather control"
+         ],
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_dec6d6589ce149c380389218702a0639",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_terrain_batch",
+        "result": {
+         "success": true,
+         "message": "Read 17 cell(s) as 1 distinct terrain(s) in 1 run(s).",
+         "layer": "top",
+         "ops": "Granite_Rough:117,132,17,1",
+         "cellsRequested": 17,
+         "cellsRead": 17,
+         "cellsOutOfBounds": 0,
+         "cellsNullTerrain": 0,
+         "distinctTerrains": [
+          "Granite_Rough"
+         ],
+         "mapSize": {
+          "x": 250,
+          "z": 250
+         },
+         "mapId": 0,
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_dcb6c21e8c97478eaa483ba9929c394e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "spawn RM_OasisMaker x1 at point",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "RM_OasisMaker": 1
+         },
+         "errors": [],
+         "ticksGame": 25841,
+         "operation": {
+          "OperationId": "op_25538890c91943e0b3b553e8680138ff",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "RM_OasisMaker92829",
+           "def": "RM_OasisMaker",
+           "label": "Oasis-maker",
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 400,
+           "maxHitPoints": 400
+          }
+         ],
+         "scanned": 30572,
+         "countReturned": 1,
+         "countMatched": 1,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 80,
+         "perDef": {
+          "RM_OasisMaker": 1
+         },
+         "ticksGame": 25841,
+         "message": "1 of 1 matching thing(s) returned, 30572 examined.",
+         "operation": {
+          "OperationId": "op_bbce21caeaf24b62b7a9c9bf4db2a8be",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 25841
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(600) -> 600 real tick(s) over 2 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_4d95fc8d061b4ba894f6c3f5904b5531",
+         "status": "completed",
+         "requestedTicks": 5,
+         "completedTicks": 5,
+         "remainingTicks": 0,
+         "startTicksGame": 26436,
+         "endTicksGame": 26441,
+         "advancedTicks": 5,
+         "initialFrame": 40312,
+         "lastFrame": 40316,
+         "advancedFrames": 5,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T19:16:10.5418068+00:00",
+         "completedAtUtc": "2026-10-07T19:16:10.6138899+00:00",
+         "message": "Advanced 5 game tick(s) across 5 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 26441
+         },
+         "operation": {
+          "OperationId": "op_aae80ae1c6744b00bb1ab24c296992ce",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 99
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 30462 examined.",
+         "matched": 1,
+         "examined": 30462,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_OasisMaker92829",
+           "defName": "RM_OasisMaker",
+           "label": "oasis-maker",
+           "x": 125,
+           "z": 125,
+           "className": "Verse.Building",
+           "inspect": [
+            "Attuning. Something is waking, slowly."
+           ]
+          }
+         ],
+         "ticksGame": 26441,
+         "operation": {
+          "OperationId": "op_3160feef746f4498a2dade0356b92309",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 26441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "master_off_stops_growth",
+      "toggle": "masterEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "wait_ticks(1500) -> 1500 real tick(s) over 3 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_e888404ddb8941eba016279cccdd5444",
+         "status": "completed",
+         "requestedTicks": 306,
+         "completedTicks": 306,
+         "remainingTicks": 0,
+         "startTicksGame": 27635,
+         "endTicksGame": 27941,
+         "advancedTicks": 306,
+         "initialFrame": 41544,
+         "lastFrame": 41849,
+         "advancedFrames": 306,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T19:16:31.1823552+00:00",
+         "completedAtUtc": "2026-10-07T19:16:36.3178329+00:00",
+         "message": "Advanced 306 game tick(s) across 306 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 27941
+         },
+         "operation": {
+          "OperationId": "op_0305f1a8e7fa402d90dd409007356375",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 5163
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 30534 examined.",
+         "matched": 1,
+         "examined": 30534,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_OasisMaker92829",
+           "defName": "RM_OasisMaker",
+           "label": "oasis-maker",
+           "x": 125,
+           "z": 125,
+           "className": "Verse.Building",
+           "inspect": [
+            "Attuning. Something is waking, slowly."
+           ]
+          }
+         ],
+         "ticksGame": 27941,
+         "operation": {
+          "OperationId": "op_0ae4f772adac4aa39a072b00e0836c79",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 27941
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "fast_settings_finish_an_oasis",
+      "toggle": "attuningDays",
+      "beyond_toggle": false,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: fast settings (attuningDays 0, baseRingDays 0.001) did not finish the oasis in 2500 ticks: 'Working: ring 7 of 8.'",
+      "evidence": [
+       {
+        "call": "wait_ticks(2500) -> 2500 real tick(s) over 5 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_644d0815c4cf4bfe9aace4d89debadec",
+         "status": "completed",
+         "requestedTicks": 441,
+         "completedTicks": 441,
+         "remainingTicks": 0,
+         "startTicksGame": 30000,
+         "endTicksGame": 30441,
+         "advancedTicks": 441,
+         "initialFrame": 43933,
+         "lastFrame": 44373,
+         "advancedFrames": 441,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-07T19:17:11.9394509+00:00",
+         "completedAtUtc": "2026-10-07T19:17:19.3249762+00:00",
+         "message": "Advanced 441 game tick(s) across 441 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 30441
+         },
+         "operation": {
+          "OperationId": "op_b3c34193cdd84383b29cee6f23c7c56f",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 7415
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/inspect_string",
+        "result": {
+         "success": true,
+         "message": "1 thing(s) inspected, 30474 examined.",
+         "matched": 1,
+         "examined": 30474,
+         "threw": 0,
+         "things": [
+          {
+           "id": "RM_OasisMaker92829",
+           "defName": "RM_OasisMaker",
+           "label": "oasis-maker",
+           "x": 125,
+           "z": 125,
+           "className": "Verse.Building",
+           "inspect": [
+            "Working: ring 7 of 8."
+           ]
+          }
+         ],
+         "ticksGame": 30441,
+         "operation": {
+          "OperationId": "op_b7ed0b80ebd34c3096cfb05cee52fabe",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 53
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 30441
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "centre_holds_water_and_rock_is_never_converted",
+      "toggle": "baseRingDays",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "losing_shade_freezes_and_nothing_reverses",
+      "toggle": "masterEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "placement_gate",
+    "components": [
+     {
+      "name": "ghost_is_red_below_the_floor_with_a_reason",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: AllowsPlacing and DrawGhost run only from a held placement ghost in the UI; the machine is not buildable, so no blueprint route exists either (the tool cannot place a ghost)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "slow_timing",
+    "components": [
+     {
+      "name": "shipped_attuning_and_ring_times",
+      "toggle": "attuningDays",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: the shipped 2-day attuning and 3-day innermost ring at default settings are game days; site_growth proves the same state machine at fast settings",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   "<suite.Component object at 0x000002AB0217BB70>"
+  ],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\OasisMaker.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}

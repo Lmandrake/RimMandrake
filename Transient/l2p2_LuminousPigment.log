@@ -1,0 +1,23 @@
+[deepfire-note] mod error lines already in the buffer: 0
+[deepfire] 11:01:20 log_baseline_recorded PASS 
+[deepfire-note] defs requested/found: {"requested": 59, "found": 59, "notFound": []}
+[deepfire] 11:01:20 all_defs_resolve PASS 
+[deepfire] 11:01:20 patches_applied FAIL ExpectationFailed: DeepfireOrdersPatch did not register both designators in Orders: ['RuntimeType', 'RuntimeType', 'RuntimeType', 'RuntimeType', 'RuntimeType', 'RuntimeType']
+[deepfire] 11:01:20 mechanics_wired_to_defs UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 11:01:31 mat_alive_control FAIL ExpectationFailed: control: with chill disabled and a 1-day life the stack should still be 4 alive after 600 ticks (fresh=0 dead=0)
+[deepfire] 11:01:31 mat_dies_on_clock UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 11:01:32 mat_dies_when_chilled UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 11:01:32 locked_before_sighting PASS 
+[deepfire] 11:01:32 unlocked_after_sighting FAIL ExpectationFailed: set_plants RM_Crowncarpet failed: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Crowncarpet": 1}, "cellsSkippedByDensity": 0, "cellsOutOfBounds": 0, "growt
+[deepfire] 11:01:32 apply_reaches_defs PASS 
+[deepfire] 11:01:33 glowtank_toggle FAIL ExpectationFailed: glowTankEnabled=False did not remove the GlowTank from the build menu
+[deepfire] 11:01:33 press_unbuildable UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 11:01:33 cuisine_recipes_toggle UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 11:01:33 press_buildable_finishes_research UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire-note] glow: {"stackBefore": 0.0, "stackAfter": 0.5, "controlAfter": 0.0}
+[deepfire] 11:01:34 stack_glows PASS 
+[deepfire] 11:01:34 stack_glow_toggle PASS 
+[deepfire] 11:01:36 press_is_a_powered_bench FAIL ExpectationFailed: press draw is -0.0025 per tick; shipped pressPower=150 W is -2.5 per tick
+[deepfire] 11:01:36 powered_press_refines UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 11:01:36 unpowered_press_refuses UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 11:01:36 unseeded_tank_says_so PASS 

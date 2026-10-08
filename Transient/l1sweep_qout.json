@@ -1,0 +1,80 @@
+{
+ "B": {
+  "success": true,
+  "message": "1 of 1 def(s) resolved",
+  "requested": 1,
+  "foundCount": 1,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "stuffCategories",
+   "label"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/RM_BucketEmpty",
+    "found": true,
+    "defName": "RM_BucketEmpty",
+    "defType": "ThingDef",
+    "label": "empty bucket",
+    "modName": "RimMandrake: FlowWorks",
+    "packageId": "mandrake.rm.flowworks",
+    "fields": {
+     "stuffCategories": [
+      "Woody",
+      "Metallic",
+      "Leathery"
+     ],
+     "label": "empty bucket"
+    }
+   }
+  ],
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_95258684a55247e6b64743c3f08a5eba",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 10
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ },
+ "WA": {
+  "success": true,
+  "message": "1 of 1 def(s) resolved",
+  "requested": 1,
+  "foundCount": 1,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "wildAnimals"
+  ],
+  "defs": [
+   {
+    "requested": "BiomeDef/RM_RustCathedral",
+    "found": true,
+    "defName": "RM_RustCathedral",
+    "defType": "BiomeDef",
+    "label": "the Rust Cathedral",
+    "modName": "RimMandrake: Baroque Biomes",
+    "packageId": "mandrake.rm.biomes",
+    "fields": {
+     "wildAnimals": "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"
+    }
+   }
+  ],
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_05781eddd6644cb0b8a81bc77075ef6b",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 9
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ }
+}

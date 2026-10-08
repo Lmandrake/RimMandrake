@@ -1,0 +1,115 @@
+=== START Abyss 19:07:38
+[modcheck] Abyss: no ledger item MODCHECK_ABYSS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Abyss_20261007T190743Z.html only
+Abyss                GREEN
+=== END Abyss 19:07:45
+=== START Scarlands 19:07:45
+[modcheck] Scarlands: no ledger item MODCHECK_SCARLANDS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Scarlands_20261007T190810Z.html only
+Scarlands            RED  (state)
+=== END Scarlands 19:08:12
+=== START ShipVermin 19:08:12
+[modcheck] ShipVermin: no ledger item MODCHECK_SHIPVERMIN_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\ShipVermin_20261007T190817Z.html only
+ShipVermin           RED  (state)
+=== END ShipVermin 19:08:18
+=== START TitanicCreatures 19:08:18
+[modcheck] TitanicCreatures: no ledger item MODCHECK_TITANICCREATURES_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\TitanicCreatures_20261007T190833Z.html only
+TitanicCreatures     RED  (state)
+=== END TitanicCreatures 19:08:34
+=== START Warcasket 19:08:34
+[warcasket-note] suit stats before/after: {"suit": [{"ComfyTemperatureMin": -53.6400032, "ComfyTemperatureMax": 53.36, "VacuumResistance": 0.0, "ToxicEnvironmentResistance": 0.0, "MoveSpeed": 4.416, "WorkSpeedGlobal": 1.0}, {"ComfyTemperatureMin": -193.64, "ComfyTemperatureMax": 153.359985, "VacuumResistance": 0.85, "ToxicEnvironmentResistance": 0.9, "MoveSpeed": 2.688, "WorkSpeedGlobal": 0.75}], "junker": [{"ComfyTemperatureMin": -53.6400032, "ComfyTemperatureMax": 53.36, "VacuumResistance": 0.0, "ToxicEnvironmentResistance": 0.0, "MoveSpeed": 4.6, "WorkSpeedGlobal": 1.0}, {"ComfyTemperatureMin": -193.64, "ComfyTemperatureMax": 153.359985, "VacuumResistance": 0.85, "ToxicEnvironmentResistance": 0.9, "MoveSpeed": 2.8, "WorkSpeedGlobal": 0.75}]}
+[warcasket-note] compound exposure, shipped settings, 6000 ticks: {"alive_a": 20, "failed_a": 1, "alive_b": 19, "failed_b": 0, "sev_a": [0.121]}
+[warcasket-note] compoundFailureEnabled=False, 4000 ticks: {"alive": 20, "failed": 0}
+[warcasket-note] masterEnabled=False, 4000 ticks: {"alive": 20, "failed": 0}
+[warcasket-note] immersion severities: {"naked": 0.48, "suit": 0.04800001}
+[warcasket-note] terrainImmersionEnabled=False delta: {"before": 0.48, "after": 0.48}
+[warcasket-note] masterEnabled=False delta: {"before": 0.48, "after": 0.48}
+[warcasket-note] salvage after crack: {"RM_WarcasketJunker": 1, "ComponentIndustrial": 2, "Steel": 25, "RM_HalfExtractedCore": 1}
+[modcheck] Warcasket: no ledger item MODCHECK_WARCASKET_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Warcasket_20261007T191536Z.html only
+Warcasket            RED  (state)
+=== END Warcasket 19:15:37
+=== START GizkaStowaway 19:15:37
+[modcheck] GizkaStowaway: no ledger item MODCHECK_GIZKASTOWAWAY_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\GizkaStowaway_20261007T191543Z.html only
+GizkaStowaway        RED  (state)
+=== END GizkaStowaway 19:15:44
+=== START OasisMaker 19:15:44
+[modcheck] OasisMaker: no ledger item MODCHECK_OASISMAKER_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\OasisMaker_20261007T191720Z.html only
+OasisMaker           RED  (state)
+=== END OasisMaker 19:17:20
+=== START RiverColors 19:17:20
+[modcheck] RiverColors: no ledger item MODCHECK_RIVERCOLORS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\RiverColors_20261007T191723Z.html only
+RiverColors          GREEN
+=== END RiverColors 19:17:23
+=== START ScarlandsLadder 19:17:23
+[modcheck] ScarlandsLadder: no ledger item MODCHECK_SCARLANDSLADDER_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\ScarlandsLadder_20261007T191726Z.html only
+ScarlandsLadder      GREEN
+=== END ScarlandsLadder 19:17:27
+=== START ShokkweaveEconomy 19:17:27
+[modcheck] ShokkweaveEconomy: no ledger item MODCHECK_SHOKKWEAVEECONOMY_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\ShokkweaveEconomy_20261007T191730Z.html only
+ShokkweaveEconomy    RED  (state)
+=== END ShokkweaveEconomy 19:17:31
+=== START LeaningScrub 19:17:31
+[lscrub-note] shedding proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_a25e146098344500857c8f6598a80297', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'P"
+[lscrub] 12:29:34 shedding_acts UNMEASURED UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_a25e146098344500857c8f
+[lscrub-note] shedding proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_922ab8027dd243febbbac31a6f0c8f74', 'Status': 'Completed', 'Success': True, 'DurationMs': 48}, 'state': {'programState': 'P"
+[lscrub] 12:29:34 shedding_toggle_off UNMEASURED UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_922ab8027dd243febbbac3
+[lscrub] 12:29:35 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: ["RM_Barkwarden188356", "RM_Barkwarden188357"]
+[lscrub] 12:29:35 guardians_roost_on_spawn PASS 
+[lscrub-note] sweetline label / inspect: ["Hulol (sweetline tree)", ["Ready to harvest.", "Loose sweetline felt falls in 1.6 days.", "Bark-wardens roost here (2). Calm."]]
+[lscrub] 12:29:35 station_named_and_timed PASS 
+[lscrub] 12:29:35 station_toggle_off_plain PASS 
+[lscrub-note] sweetline wool beside the tree before / after a 5.5-day jump; tree inspect after: [0, 5, ["<tree gone>"]]
+[lscrub] 12:30:11 station_sheds_wool PASS 
+[lscrub-note] scratch proof with scratching OFF: "REFUSED: scratching is off"
+[lscrub] 12:30:11 scratch_toggle_off_refused PASS 
+[lscrub] 12:30:12 scratch_drops_coat FAIL ExpectationFailed: a tame full-coated sheep 4 cells from a calm sweetline tree was not sent: REFUSED: no sweetline tree on this map
+[lscrub] 12:30:12 visitors_toggle_off_quiet UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:30:12 visitors_come_and_leave_marks UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:30:12 felt_comfort_toggle_off_plain UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:30:12 felt_furniture_comfort UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:30:12 map_step_chance_zero_plants_none UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:30:12 map_step_plants_one_or_two UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 299}
+[lscrub] 12:30:12 log_clean PASS 
+[modcheck] LeaningScrub: no ledger item MODCHECK_LEANINGSCRUB_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\LeaningScrub_20261007T193012Z.html only
+LeaningScrub         RED  (state)
+=== END LeaningScrub 19:30:14
+=== START GelatinousSlime 19:30:14
+[modcheck] GelatinousSlime: no ledger item MODCHECK_GELATINOUSSLIME_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\GelatinousSlime_20261007T193712Z.html only
+GelatinousSlime      RED  (state)
+=== END GelatinousSlime 19:37:14
+=== START GravshipLanding 19:37:14
+[modcheck] GravshipLanding: no ledger item MODCHECK_GRAVSHIPLANDING_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\GravshipLanding_20261007T193717Z.html only
+GravshipLanding      GREEN
+=== END GravshipLanding 19:37:18
+=== START Stillsand 19:37:18
+[stillsand] 12:37:37 gale_emergence_off_quiet UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:37 devil_moves_and_expires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:37 devil_toggle_off_refuses UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 muurrok_emergence_fires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 beam_burns_target UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 beam_toggle_off_blocked UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 eruption_tunnel_then_mound UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 horizon_warns_then_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 horizon_toggle_off_vanilla UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 caves_regen_both_off UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 genstep_off_no_cave_line UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 skeleton_placement_off_none UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 12:37:38 remainder_files_obey_load_log_lessons PASS 
+[stillsand] 12:37:38 remainder_horn_cross_references PASS 
+[stillsand] 12:37:39 remainder_seep_incident_stillsand_only PASS 
+[stillsand] 12:37:40 remainder_den_quest_cross_references PASS 
+[stillsand] 12:37:40 remainder_loud_draws_wired PASS 
+[stillsand] 12:37:40 remainder_charged_thumper_is_loudest UNMEASURED UNMEASURED: LoudestCell is private to a leviathan incident in flight and no tool reads where the dragon headed; needs a thumper charged on a live Stillsand map
+[stillsand] 12:37:40 remainder_den_quest_generates UNMEASURED UNMEASURED: RUT_KraytDenQuest needs mandrake.rut.patches + SWBestiary and a map whose cave rolled RSW_PreciousCave_KraytDen with the dragon alive (a 25% branch of a weighted row); generate through dev mode Quests > Generate quest
+[stillsand] 12:37:40 remainder_horn_routs_and_logs_roll UNMEASURED UNMEASURED: the krayt horn is RSW content (mandrake.rsw.swbestiary) and its answer incident is RUT: neither is on the baroque_wave0 tier; needs a campaign-tier session, with a predator beside the user and the log's '[Stillsand] krayt horn answer roll' line read back
+[stillsand] 12:37:40 remainder_seep_incident_refuses_other_maps_roots_at_seep UNMEASURED UNMEASURED: RSW_SwimmerSeepRoot is Sarlacc (mandrake.rsw.sarlacc, Anomaly-gated), not loaded on this tier; needs a Stillsand map with the sarlacc seep row and a second non-Stillsand map to refuse
+[stillsand-note] log scan: {"stillsand errors": 0, "xref naming our defs": 0, "config errors naming our defs": 0}
+[stillsand] 12:37:40 log_clean PASS 
+[modcheck] Stillsand: no ledger item MODCHECK_STILLSAND_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Stillsand_20261007T193741Z.html only
+Stillsand            RED  (state)
+=== END Stillsand 19:37:43
+=== START Pyrinth 19:37:43
+[modcheck] Pyrinth: no ledger item MODCHECK_PYRINTH_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Pyrinth_20261007T193746Z.html only
+Pyrinth              RED  (state)
+=== END Pyrinth 19:37:47
+ALLDONE

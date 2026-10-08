@@ -1,0 +1,149 @@
+=== START PyrelandsMechanics 13:42:03
+}
+[modcheck] PyrelandsMechanics: no ledger item MODCHECK_PYRELANDSMECHANICS_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\PyrelandsMechanics_20261007T204247Z.html only
+PyrelandsMechanics   RED  (state)
+=== END PyrelandsMechanics 13:42:47
+=== START Stillsand 13:42:47
+}
+[stillsand-note] site: {"tile": 95912, "latitude": 13.0067587, "size": [250, 250]}
+[stillsand] 13:43:17 site_stillsand_map PASS 
+[stillsand] 13:43:17 site_cave_logged UNMEASURED UNMEASURED: the in-game log buffer was near its cap before the regen: a new line cannot be told from an evicted one
+[stillsand-note] giant skeletons on the fresh map / cap: [0, 2]
+[stillsand] 13:43:18 skeleton_gen_within_cap PASS 
+[stillsand-note] shipped defs resolved: 131
+[stillsand] 13:43:18 defs_resolve PASS 
+[stillsand] 13:43:18 sand_sieve_defs PASS 
+[stillsand] 13:43:18 solar_still_defs PASS 
+[stillsand] 13:43:18 sun_lance_defs PASS 
+[stillsand] 13:43:18 geophone_defs PASS 
+[stillsand] 13:43:19 sand_swim_remainder PASS 
+[stillsand] 13:43:22 cave_tier_rows PASS 
+[stillsand] 13:43:22 cave_place_defs PASS 
+[stillsand] 13:43:22 custom_defs_resolve UNMEASURED UNMEASURED: get_defs resolved none of the custom def type names (the type name form is unproven): ['RM_PreciousCaveDef/RM_PreciousCave_GuzzkaLair', 'RM_PreciousCaveDef/RM_PreciousCave_LensGrotto', 'RM_PreciousCaveDef/RM_PreciousCave_SealedCache']
+[stillsand-note] biome extensions / extra gen steps: [["RM_SunHeatExtension", "RM_PinnedSunExtension", "DuneFieldExtension", "RM_SkeletonBiomeExtension", "RM_SandRemembersWaterExtension"], ["RM_WreckField_Stillsand", "RM_GiantSkeletons", "RM_PreciousCaveCarve", "RM_PreciousCaveContents"]]
+[stillsand] 13:43:22 biome_row PASS 
+[stillsand] 13:43:22 biome_roster PASS 
+[stillsand] 13:43:22 giants_skeleton_wired PASS 
+[stillsand] 13:43:22 water_egg_patched PASS 
+[stillsand] 13:43:23 eruption_biome_gate PASS 
+[stillsand] 13:43:26 defaults PASS 
+[stillsand] 13:43:26 yardangShapingEnabled_roundtrip PASS 
+[stillsand] 13:43:26 torEnabled_roundtrip PASS 
+[stillsand] 13:43:26 boneHarpEnabled_roundtrip PASS 
+[stillsand] 13:43:27 ledgerEnabled_roundtrip PASS 
+[stillsand] 13:43:27 ledgerIncidentWeighting_roundtrip PASS 
+[stillsand] 13:43:27 sieveEnabled_roundtrip PASS 
+[stillsand] 13:43:27 solarStillEnabled_roundtrip PASS 
+[stillsand] 13:43:28 wringingStillEnabled_roundtrip PASS 
+[stillsand] 13:43:28 sunLanceEnabled_roundtrip PASS 
+[stillsand] 13:43:28 geophoneEnabled_roundtrip PASS 
+[stillsand] 13:43:28 thumperEnabled_roundtrip PASS 
+[stillsand] 13:43:29 sandFishingWakeEnabled_roundtrip PASS 
+[stillsand] 13:43:29 driftSwimEnabled_roundtrip PASS 
+[stillsand] 13:43:29 listeningHissEnabled_roundtrip PASS 
+[stillsand] 13:43:29 listeningSingingEnabled_roundtrip PASS 
+[stillsand] 13:43:30 listeningWarningEnabled_roundtrip PASS 
+[stillsand] 13:43:30 listeningRumbleEnabled_roundtrip PASS 
+[stillsand] 13:43:30 abrasionEnabled_roundtrip PASS 
+[stillsand] 13:43:30 carryEnabled_roundtrip PASS 
+[stillsand] 13:43:31 staticEnabled_roundtrip PASS 
+[stillsand] 13:43:31 seedingEnabled_roundtrip PASS 
+[stillsand] 13:43:31 hornEnabled_roundtrip PASS 
+[stillsand] 13:43:31 denQuestEnabled_roundtrip PASS 
+[stillsand-note] pinned sun: [{"present": true, "isActive": true, "sunElevationDegrees": 60.48631}, 1.0, 13.0067587]
+[stillsand] 13:43:33 sun_pinned_no_night PASS 
+[stillsand] 13:43:34 sun_open_sand_full_exposure PASS 
+[stillsand] 13:43:34 sun_roof_cover_above_55deg FAIL ExpectationFailed: roofed cell exposure 1.00, open 1.00 at elevation 60 deg (a roof must protect above 55 deg)
+[stillsand-note] kinds spawned: {"asked": 21, "lost": []}
+[stillsand] 13:43:35 fauna_spawns PASS 
+[stillsand] 13:43:35 soorrak_can_fly PASS 
+[stillsand-note] flora set: {"asked": 5, "lost": []}
+[stillsand] 13:43:40 flora_spawns PASS 
+[stillsand-note] vekka hediffs (sand / gravel): [["RM_SandSwimmer", "RM_SandSubmerged"], []]
+[stillsand] 13:43:45 vekka_submerges_on_sand UNMEASURED UNMEASURED: a vekka left the pad before it could be read
+[stillsand-note] disturbed-sand funnels / take letters: [1, ["Taken under: Rooster 1"]]
+[stillsand] 13:44:10 vekka_take_leaves_funnel PASS 
+[stillsand] 13:44:41 zuurrik_below_threshold_dormant PASS 
+[stillsand-note] zuurrik swarm after 1800 ticks: 3
+[stillsand] 13:45:12 zuurrik_wakes_on_blood PASS 
+[stillsand-note] blood cells at wake / 3000 ticks later: [9, 4]
+[stillsand] 13:46:02 zuurrik_strips_blood PASS 
+[stillsand-note] zuurrik after toggle off / after toggle back on: [0, 3]
+[stillsand] 13:47:03 zuurrik_toggle_off_no_wake PASS 
+[stillsand-note] loomma sunstruck severities (open / roofed): [[0.0300000012, 0.230000019, 0.0300000012], [0.001, 0.001, 0.001]]
+[stillsand] 13:47:32 loomma_sunstruck_open_vs_roofed PASS 
+[stillsand-note] new log errors naming Soorrak / Notify_JobStarted: [0, 0]
+[stillsand] 13:48:25 soorrak_no_exceptions PASS 
+[stillsand-note] soorrak path length / jobs seen: {"moved": {"RM_Soorrak25950": 44.75359677464588, "RM_Soorrak25951": 58.42227836376613, "RM_Soorrak25952": 47.44847355879946, "RM_Soorrak25953": 30.324663273254917, "RM_Soorrak25954": 47.95222986572233, "RM_Soorrak25955": 21.466935366264853}, "jobs": {"RM_Soorrak25950": ["GotoWander", "Wait_MaintainPosture", "Wait_Wander"], "RM_Soorrak25951": ["GotoWander", "Wait_MaintainPosture", "Wait_Wander"], "RM_Soorrak25952": ["GotoWander", "Wait_Wander"], "RM_Soorrak25953": ["GotoWander", "Wait_Wander"], "RM_Soorrak25954": ["GotoWander", "Wait_MaintainPosture"], "RM_Soorrak25955": ["GotoWander", "Wait_MaintainPosture", "Wait_Wander"]}}
+[stillsand] 13:48:26 soorrak_not_stuck PASS 
+[stillsand] 13:48:34 glass_site_ready PASS 
+[stillsand] 13:48:34 sun_table_reads_sun_in_open PASS 
+[stillsand] 13:48:34 sun_table_roofed_idle PASS 
+[stillsand-note] WorkTableWorkSpeedFactor open / roofed: {"open": 0.870238, "roofed": 0.1}
+[stillsand] 13:48:34 furnace_work_speed_tracks_sun PASS 
+[stillsand] 13:48:35 sunfurnace_toggle_off_disabled PASS 
+[stillsand] 13:48:35 lensbench_toggle_off_disabled PASS 
+[stillsand] 13:48:35 solaroven_toggle_off_disabled PASS 
+[stillsand-note] work speed x1 / x2: [0.870238, 1.740476]
+[stillsand] 13:48:36 sun_work_speed_multiplier_scales PASS 
+[stillsand] 13:48:36 glass_remainder_static PASS 
+[stillsand] 13:48:36 glass_remainder_defs_live PASS 
+[stillsand] 13:48:36 drift_clear_drops_glass_sand UNMEASURED UNMEASURED: needs a driven drift clear on a Stillsand quicktest (not driven: the live game was in use)
+[stillsand] 13:48:36 furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof UNMEASURED UNMEASURED: needs a full bill cycle in sun, in a gale and under a roof (not driven: the live game was in use)
+[stillsand] 13:48:36 oven_cooks_in_sun_not_shade UNMEASURED UNMEASURED: needs a cooked meal in sun and in shade (not driven: the live game was in use)
+[stillsand] 13:48:36 lightning_on_deepsand_leaves_fulgurite_pyrelands_off UNMEASURED UNMEASURED: needs a forced strike on RM_DeepSand with the Pyrelands master toggle off (not driven: the live game was in use)
+[stillsand] 13:48:36 recipe_toggles_hide_recipes UNMEASURED UNMEASURED: no bridge tool reads RecipeDef.AvailableNow for a bench (not driven: the live game was in use)
+[stillsand-note] after a pour on sand: eggs left / hourbloom: [0, 4]
+[stillsand] 13:49:14 pour_blooms_on_sand PASS 
+[stillsand-note] after a pour with bloomOnPour off: eggs left / hourbloom: [0, 0]
+[stillsand] 13:49:52 pour_toggle_off_no_bloom PASS 
+[stillsand-note] after a pour on gravel: eggs left / hourbloom: [0, 0]
+[stillsand] 13:50:30 pour_on_gravel_no_bloom PASS 
+[stillsand-note] after the delay: skeletons / corpses: [1, 0]
+[stillsand] 13:51:07 corpse_becomes_skeleton PASS 
+[stillsand-note] toggle off, after the delay: skeletons / corpses: [0, 1]
+[stillsand] 13:51:44 corpse_stays_when_toggle_off PASS 
+[stillsand] 13:52:12 glare_site_ready UNMEASURED UNMEASURED: a colonist left the pad or died before it could be read
+[stillsand] 13:52:12 glare_blind_gained_in_open_sun UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 13:52:12 goggles_block_glare_blind UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand-note] ComfyTemperatureMax base / with draught / removed: [49.4, 57.4, 49.4]
+[stillsand] 13:52:13 cooling_draught_widens_comfort PASS 
+[stillsand] 13:52:14 gale_incident_fires PASS 
+[stillsand] 13:52:15 gale_toggle_off_refuses PASS 
+[stillsand] 13:52:15 gale_phases_and_aftermath UNMEASURED UNMEASURED: 17 permanent WeatherController condition(s) still force weather after unlock; they shadow the gale's herald/gale weather, so the phases cannot be read
+[stillsand] 13:52:15 gale_dims_sun_exposure UNMEASURED UNMEASURED: shadegrid_read reads cell exposure, which excludes the gale's sun factor (applied per pawn in ExposureFor); no tool reads pawn exposure, so the dimming cannot be measured here
+[stillsand] 13:52:15 gale_emergence_off_quiet UNMEASURED UNMEASURED: 16 permanent WeatherController condition(s) still force weather after unlock; they shadow the gale's herald/gale weather, so the phases cannot be read
+[stillsand-note] dust devil track: [[[80, 174]], [[83, 177]], [[87, 178]], [[85, 175]], [[83, 172]], [[86, 169]], []]
+[stillsand] 13:52:46 devil_moves_and_expires PASS 
+[stillsand] 13:52:46 devil_toggle_off_refuses PASS 
+[stillsand-note] muurrok letters / pawns before-after: [["A line of glare"], 0, 0]
+[stillsand] 13:53:30 muurrok_emergence_fires FAIL ExpectationFailed: no RM_Muurrok on the map 2600 ticks after the incident fired (warning is 1500)
+[stillsand-note] muffalo with Burn after 3 beam casts: ["Muffalo26056"]
+[stillsand] 13:53:53 beam_burns_target PASS 
+[stillsand-note] mirrorBeamEnabled off: muffalo with Burn: []
+[stillsand] 13:54:08 beam_toggle_off_blocked PASS 
+[stillsand] 13:54:10 eruption_tunnel_then_mound UNMEASURED UNMEASURED: the engine refuses ThreatBig incidents before game tick 300000 and this game is at tick 206030; fire_incident cannot force it
+[stillsand-note] horizon letters / pawns at once / pawns after the delay: [["Dust on the horizon: north-east"], 0, 0]
+[stillsand-note] incident queue after the delay (TraderCaravanArrival rows): []
+[stillsand-note] vanilla control fire (toggle off): {"fired": false, "canFireNow": true, "note": "TryFire returned false - CanFireNow or TryExecute refused these parms."}
+[stillsand] 13:55:19 horizon_warns_then_arrives UNMEASURED UNMEASURED: vanilla TraderCaravanArrival also refuses on this site with the horizon off (canFireNow True, TryExecute false): the delayed fire failed for the same vanilla reason, not in the queue
+[stillsand] 13:55:19 horizon_toggle_off_vanilla UNMEASURED UNMEASURED: the neutral group could not be fired with the toggle off: {'success': False, 'dryRun': False, 'resolved': {'incident': 'TraderCaravanArrival', 'category': 'FactionArrival', 'points': -1.0, 'faction': '(worker chooses)'}, 'fired': False, 'windowsOpened': [], 
+[stillsand-note] cave log lines before/after, skeletons: both gen toggles off: {"after": 2, "skel": 0, "before": 2}
+[stillsand] 13:55:28 caves_regen_both_off PASS 
+[stillsand] 13:55:28 genstep_off_no_cave_line PASS 
+[stillsand] 13:55:28 skeleton_placement_off_none PASS 
+[stillsand] 13:55:28 remainder_files_obey_load_log_lessons PASS 
+[stillsand] 13:55:28 remainder_horn_cross_references PASS 
+[stillsand] 13:55:29 remainder_seep_incident_stillsand_only PASS 
+[stillsand] 13:55:30 remainder_den_quest_cross_references PASS 
+[stillsand] 13:55:30 remainder_loud_draws_wired PASS 
+[stillsand] 13:55:30 remainder_charged_thumper_is_loudest UNMEASURED UNMEASURED: LoudestCell is private to a leviathan incident in flight and no tool reads where the dragon headed; needs a thumper charged on a live Stillsand map
+[stillsand] 13:55:30 remainder_den_quest_generates UNMEASURED UNMEASURED: RUT_KraytDenQuest needs mandrake.rut.patches + SWBestiary and a map whose cave rolled RSW_PreciousCave_KraytDen with the dragon alive (a 25% branch of a weighted row); generate through dev mode Quests > Generate quest
+[stillsand] 13:55:30 remainder_horn_routs_and_logs_roll UNMEASURED UNMEASURED: the krayt horn is RSW content (mandrake.rsw.swbestiary) and its answer incident is RUT: neither is on the baroque_wave0 tier; needs a campaign-tier session, with a predator beside the user and the log's '[Stillsand] krayt horn answer roll' line read back
+[stillsand] 13:55:30 remainder_seep_incident_refuses_other_maps_roots_at_seep UNMEASURED UNMEASURED: RSW_SwimmerSeepRoot is Sarlacc (mandrake.rsw.sarlacc, Anomaly-gated), not loaded on this tier; needs a Stillsand map with the sarlacc seep row and a second non-Stillsand map to refuse
+[stillsand-note] log scan: {"stillsand errors": 0, "xref naming our defs": 0, "config errors naming our defs": 0}
+[stillsand] 13:55:30 log_clean PASS 
+[modcheck] Stillsand: no ledger item MODCHECK_STILLSAND_RUN_1; sheet \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Stillsand_20261007T205531Z.html only
+Stillsand            RED  (state)
+=== END Stillsand 13:55:33
+ALLDONE

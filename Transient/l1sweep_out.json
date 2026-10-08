@@ -1,0 +1,2056 @@
+{
+ "ABYSS_LIGHTFALL_BROOD_WRECK_1": [
+  {
+   "def": "BiomeDef/RM_Abyss",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RUT_Abyss",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Summing",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TileMutatorDef/RM_BroodLair",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GenStepDef/RM_BroodLair",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "LandmarkDef/RUT_Lightfall",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_SummAllRender",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Summ",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Summ",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_SummGreatBone",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_SummBone",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "HediffDef/RM_SummRuinousHunger",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "ABYSS_SHEET_DONOR_PORT_1": [
+  {
+   "def": "BiomeDef/RM_Abyss",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Skarnix",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Skarnix",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Drokattak",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Drokattak",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Cindermare",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Cindermare",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Sesserith",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Sesserith",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Olumetha",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Olumetha",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Aveluthia",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Aveluthia",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Lirrith",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Lirrith",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Moravatha",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Moravatha",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Ossumatha",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Ossumatha",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Ysvaltha",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Ysvaltha",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Nevarithia",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Nevarithia",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GlowGlobe",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GiantGlowGlobe",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_SicklyGlowMushroom",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_PaddleVine",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GiantFibreStalk",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_TreeMushroom",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GlowberryBush",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Krizzak",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Krizzak",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Summ",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Summ",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RUT_Abyss",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "BAZAAR_PRICE_ENGINE_1": [
+  {
+   "def": "ThingDef/RM_PriceAlmanac",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RM_PriceAlmanac"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_HagglerModule",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RM_HagglerModule"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_ManifestDecoder",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RM_ManifestDecoder"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_TransponderScanner",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RM_TransponderScanner"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  }
+ ],
+ "CATHEDRAL_MECHANOID_PASS_VERBS_1": [
+  {
+   "def": "HediffDef/RUT_CathedralPass",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "HediffDef/RUT_CathedralPass"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RM_RustCathedral",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RUT_RustCathedral",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "CAULDRON_ENRICHMENT_VISUALS_1": [
+  {
+   "def": "WeatherDef/RM_Dewfall",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "CONTAGION_GPT_ENRICHMENT_1": [
+  {
+   "def": "JobDef/RM_SampleDraftprint",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Draftprint",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "QuestScriptDef/RM_HelixDraftprintContract",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "DEBUG_ACTION_ENUM_CRASH_1": [],
+ "EMPIRE_ESCALATION_LADDER_1": [],
+ "FEVERWOOD_BROOD_RANSOM_1": [
+  {
+   "def": "ThingDef/RM_SekkulaathTank",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RSW_Dianoga",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BodyDef/RSW_Dianoga",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RSW_Dianoga",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Sekkulaath_Juvenile",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Sekkulaath_Juvenile",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_SekkulaathYoungCask",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RimMandrake.FeverWood.RM_DeepGiftTableDef/RM_DeepGiftLoot",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RUT_SporefallDisplayTank",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GenStepDef/RUT_SporefallDisplayTank",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RUT_FeverWoodMirrorPool",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "LetterDef/RM_DeepGiftLetter",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "FactionDef/RUT_Jawa_WildsteamClan",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "FLOWWORKS_CONTAINER_MATERIALS_1": [
+  {
+   "def": "RecipeDef/RM_Make_Bottle_Leather",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/RM_Make_Bottle_Glass",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/RM_Make_Bottle_Metal",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/RM_Make_Barrel_Wood",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/RM_Make_Barrel_Metal",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/RM_Make_Barrel_Plasteel",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/RM_Make_Bucket_Wood",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/RM_Make_Bucket_Metal",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/RM_Make_Bucket_Leather",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_BottleEmpty",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_BarrelEmpty",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "FLOWWORKS_VISUAL_PRINCIPLES_1": [],
+ "FORCE_DISTURBANCE_REFLAVOR_1": [
+  {
+   "def": "IncidentDef/GameConditionDef",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "IncidentDef/GameConditionDef"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  }
+ ],
+ "FORGE_DHOKKUR_WAYS_1": [
+  {
+   "def": "ThingDef/RM_Dhokkur",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Dhokkur",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RM_DhokkurPolishedTrail",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "FORGE_ENRICHMENT_QUICKTEST_1": [
+  {
+   "def": "ThingDef/RM_FloatstoneKeelBrace",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "HediffDef/RM_DhuvvoxRunSlowing",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ResearchProjectDef/RM_SpunstoneBonding",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "FORGE_WHITE_PLUME_FRONTS_1": [],
+ "GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1": [
+  {
+   "def": "ThingDef/RM_Gorbeleth",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Apparel_RindCoat",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "StatDef/RM_ScaldProtection",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "FactionDef/RUT_Jawa_WildsteamClan",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GreatboleSeed",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Greatbole",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GreatboleCore",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "SoundDef/hysteresis",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "SoundDef/hysteresis"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  }
+ ],
+ "GREENTIDE_BASE_PORT_BUILD_1": [
+  {
+   "def": "GenStepDef/RM_GenStep_LivingBoles",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GenStepDef/RM_GenStep_RootCauseways",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_GreatboleGrub",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GreatboleGrub",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RM_Greentide",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RUT_Greentide",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "WeatherDef/RM_RoilWeather",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "WeatherDef/RM_BreaklightClear",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GameConditionDef/RM_RoilLock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GameConditionDef/RM_GreentideWetBulbLock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GameConditionDef/RM_BreaklightCondition",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "IncidentDef/RM_Breaklight",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "IncidentDef/RM_GreatboleFruitfall",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "IncidentDef/RM_SteamDevilAppears",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "HediffDef/RM_WetBulbOverwhelm",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "HediffDef/RM_DryAirAversion",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_DryAirBlower",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GreatboleHeartwood",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GreatboleCore",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GreatboleTrunkSegment",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GreatboleDeadHusk",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_SteamDevil",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RM_RootCauseway",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Krannock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Krannock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RM_ToxinSealedFloor",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GreatboleHardwood",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RUT_Hardwood",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "FactionDef/RUT_Jawa_WildsteamClan",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "KINETIC_BLAST_WEAPONS_1": [],
+ "LASSO_CHERRYPICKER_REMOVAL_1": [
+  {
+   "def": "ThingDef/AM_LassoCloth",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/AM_LassoCloth"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "RecipeDef/Make_AM_",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "RecipeDef/Make_AM_"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  }
+ ],
+ "LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1": [
+  {
+   "def": "ThingDef/RM_VisslerArm",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Vissler",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Vissler",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "LIVE_ROUND2_FIXES_PROOF_1": [
+  {
+   "def": "PawnKindDef/RM_Muurrok",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Muurrok",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "IncidentDef/RM_MuurrokEmergence",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Soorrak",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Soorrak",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GenStepDef/RSW_GenStep_WhisperSarlaccSign",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "GenStepDef/RSW_GenStep_WhisperSarlaccSign"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  }
+ ],
+ "MOD_OPTIONS_RETROFIT_1": [
+  {
+   "def": "TerrainDef/RM_Churnmud",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RUT_Scarlands",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RUT_Webwork",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "QuestScriptDef/RUT_Reckoning_CartelOffer",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "MOVING_DUNES_BUILD_1": [
+  {
+   "def": "RimMandrake.MovingDunes.RM_DuneMaterialDef/RM_Dunes_Sand",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Dunes_BuriedCache",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "NINEFOLD_FAVOUR_ODDS_BUILD_1": [
+  {
+   "def": "PreceptDef/RUT_Ritual_NineFaults",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "PreceptDef/RUT_Ritual_NineFaults"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  }
+ ],
+ "RAKATAN_ARCHOTECH_MACHINES_1": [
+  {
+   "def": "ThingDef/RUT_Antiquity_Urn",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RUT_Antiquity_Urn"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_WM_AutomatedSmelter_Refurbished",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_WM_AncientComponent",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "RUSTCATHEDRAL_BASE_FINISH_BUILD_1": [
+  {
+   "def": "IncidentDef/RM_LineCycle",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RM_RustCathedral",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "SoundDef/RM_LineCycleRoll",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "JobDef/RM_Job_LineCycleStill",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThoughtDef/RM_FeltTheGroundTurn",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TraitDef/RM_HumReader",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_HumPrimer",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_CoolantEel",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_CoolantEel",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_CoolantEelCatch",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "NegativeFishingOutcomeDef/RM_NegativeFishingOutcome_CoolantEel",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GenStepDef/RM_CathedralStrays",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RSW_Mynock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RSW_Mynock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "RUSTCATHEDRAL_GOODWILL_FLOOR_1": [],
+ "RUSTCATHEDRAL_HULL_BOLTS_BUILD_1": [
+  {
+   "def": "PawnKindDef/RM_HullBolt",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_HullBolt",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RM_RustCathedral",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_LivingBolt",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_LivingBolt",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BodyDef/RM_BoltFrame",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThoughtDef/RM_HullBoltsSeen",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TraitDef/RM_HumReader",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_BoltShedCuriosity",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_CoolantEelCatch",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_DeadSmartsteel",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_LivePatternMetal",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "JobDef/RM_HullBoltTell",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "LetterDef/RM_HullBoltsDilemma",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "SALVAGE_WRECKAGE_EVERYWHERE_1": [
+  {
+   "def": "ThingDef/RM_NightsideExpeditionRig",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_PickedWreck",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_ScaldFloorWreckHull",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RM_SeaFloorGround",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "IncidentDef/RM_WreckFall",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_BrineJacket",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingSetMakerDef/RM_SalvageLoot_GreyShards",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_BlueIceMineable",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_WastelandWarcasketSarcophagus",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RimMandrake.Wreckage.RM_WreckListDef/RM_WreckList_CrawlerRoad",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_LongShadeWreckSpeeder",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RUT_FoundrySalvageCache",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RUT_FoundrySalvageCache"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "RimMandrake.Wreckage.RM_WreckWeatheringDef/RUT_WreckWeathering_ForgeWarm",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingSetMakerDef/RUT_SalvageLoot_Foundry",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RSW_FreshTIEPanelWreck",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RSW_FreshTIEPanelWreck"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RSW_FreshLandspeederWreck",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RSW_FreshLandspeederWreck"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "RimMandrake.Wreckage.RM_WreckWeatheringDef/RUT_WreckWeathering_FallLine",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingSetMakerDef/RUT_SalvageLoot_Imperial",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RimMandrake.Wreckage.RM_WreckListDef/RUT_WreckList_FallLine",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "IncidentDef/RUT_FallLineWreckFall",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_ContagionWreckFragment",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_FeverWoodWreckCarapace",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_StillsandWreckTread",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "IncidentDef/RUT_FallArrival",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "SCALD_WATER_AGITATION_FLECKS_1": [
+  {
+   "def": "ThingDef/RUT_ScaldWreckHull",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RUT_ScaldMargin",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RUT_ScaldWaterOceanDeep",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RUT_ScaldWaterMovingChestDeep",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RUT_ScaldWaterOceanShallow",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "TerrainDef/RUT_ScaldWaterMovingShallow",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "SCARLANDS_MECHANICS_2": [
+  {
+   "def": "PawnKindDef/RSW_Mynock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RSW_Mynock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "JobDef/RM_Gnaw",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "HediffDef/RUT_ScariaIncubation",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "DutyDef/RUT_SentinelDefend",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GameConditionDef/RUT_MiasmaWeatherLock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GameConditionDef/RUT_ScarlandsMarkLock",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RUT_Scarlands",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "HediffDef/RUT_ScarlandsMark",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThoughtDef/RUT_ScarlandsMark",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GameConditionDef/RUT_ScariaOnsetArming",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RSW_FoundryBeetle",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RSW_FoundryBeetle",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RUT_SentinelGraveWard",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GenStepDef/RUT_ScarlandsSprungDangers",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PrefabDef/RUT_SprungVaultBreach",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PrefabDef/RUT_SprungMechShell",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PrefabDef/RUT_SprungOpenedContainer",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RUT_VaultHeart",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThingDef/RUT_VaultHeart"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RM_Warscar",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GenStepDef/RUT_ScarlandsGraveWardScatter",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThoughtDef/lock",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "ThoughtDef/lock"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  },
+  {
+   "def": "HediffDef/arming",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "HediffDef/arming"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  }
+ ],
+ "STILLSAND_FIXES_LIVE_PROOF_1": [
+  {
+   "def": "ThingDef/RM_KneelOllim",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Oorrik",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Oorrik",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Filth_DisturbedSand",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_Soorrak",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "PawnKindDef/RM_Soorrak",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "GenStepDef/RSW_GenStep_WhisperSarlaccSign",
+   "success": true,
+   "found": 0,
+   "notFound": [
+    "GenStepDef/RSW_GenStep_WhisperSarlaccSign"
+   ],
+   "msg": "0 of 1 def(s) resolved; 1 not found",
+   "raw": null
+  }
+ ],
+ "UTINNI_WORLDMAP_FLIGHT_ICON_1": [],
+ "WARSCAR_AEROSOL_SCREEN_1": [
+  {
+   "def": "GameConditionDef/RM_Settling",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_ProjectorCore",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_AerosolScreen",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "ThingDef/RM_GlowerCrust",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "BiomeDef/RM_Warscar",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ],
+ "WARSCAR_SHEET_DONOR_PORT_1": [],
+ "WEEPINGSTONES_CONDENSER_QUESTS_1": [
+  {
+   "def": "FactionDef/RUT_Jawa_HuttCartel",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "QuestScriptDef/RM_CondenserCapture",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "QuestScriptDef/RM_CondenserKeepFree",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  },
+  {
+   "def": "RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserBuyer",
+   "success": true,
+   "found": 1,
+   "notFound": [],
+   "msg": "1 of 1 def(s) resolved",
+   "raw": null
+  }
+ ]
+}

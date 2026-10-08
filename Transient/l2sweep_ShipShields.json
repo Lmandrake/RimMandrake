@@ -1,0 +1,625 @@
+{
+ "chains": [
+  {
+   "name": "mod_settings",
+   "components": [
+    {
+     "name": "setting_bubbleSlowPassThroughEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'bubbleSlowPassThroughEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'bubbleSlowPassThroughEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_collapseExplosionEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'collapseExplosionEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'collapseExplosionEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_cryoEnvelopeEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'cryoEnvelopeEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'cryoEnvelopeEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_landingAdvisoryEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'landingAdvisoryEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'landingAdvisoryEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_landingHazardExposureEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'landingHazardExposureEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'landingHazardExposureEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_lavaLandingBurstEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'lavaLandingBurstEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'lavaLandingBurstEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_particulateAnimalRepulsionEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'particulateAnimalRepulsionEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'particulateAnimalRepulsionEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_particulateScreenEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'particulateScreenEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'particulateScreenEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_particulateWeatherDamageNegationEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'particulateWeatherDamageNegationEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'particulateWeatherDamageNegationEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_predictiveFailureAlertEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'predictiveFailureAlertEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'predictiveFailureAlertEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "setting_thermalVeilEnabled_round_trips",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'thermalVeilEnabled': 'false'})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.ShipShields.ShipShieldsSettings, {'thermalVeilEnabled': 'true'})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "harmony_patches_installed",
+   "components": [
+    {
+     "name": "patched_CompProjectileInterceptor_CheckIntercept",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "CompProjectileInterceptor",
+        "methodName": "CheckIntercept",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "CheckIntercept",
+          "declaringType": "RimWorld.CompProjectileInterceptor",
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "mandrake.rut.shipshields",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Utinni.ShipShields.Patch_CompProjectileInterceptor_CheckIntercept.Prefix",
+            "patchAssembly": "RimMandrake.Utinni.ShipShields"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 4701,
+        "operation": {
+         "OperationId": "op_0e5c0c66fc164fa28b9e97787f7e596d",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 20
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4701
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "patched_Scenario_PostGravshipLanded",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Scenario",
+        "methodName": "PostGravshipLanded",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "PostGravshipLanded",
+          "declaringType": "RimWorld.Scenario",
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.rut.shipshields",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Utinni.ShipShields.Patch_Scenario_PostGravshipLanded.Postfix",
+            "patchAssembly": "RimMandrake.Utinni.ShipShields"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 4701,
+        "operation": {
+         "OperationId": "op_30b8f82f5f3a401ab7ddc92ff6906e14",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 3
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4701
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  },
+  {
+   "name": "every_shipped_def_reads_back",
+   "components": [
+    {
+     "name": "every_shipped_def_is_loaded",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "5 of 5 def(s) resolved",
+        "requested": 5,
+        "foundCount": 5,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchProjectDef/RUT_ModulatedShieldFields",
+          "found": true,
+          "defName": "RUT_ModulatedShieldFields",
+          "defType": "ResearchProjectDef",
+          "label": "modulated shield fields",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "defName": "RUT_ModulatedShieldFields"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_ShieldGenerator",
+          "found": true,
+          "defName": "RUT_ShieldGenerator",
+          "defType": "ThingDef",
+          "label": "modulated shield generator",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "defName": "RUT_ShieldGenerator"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_ShieldModule_Thermal",
+          "found": true,
+          "defName": "RUT_ShieldModule_Thermal",
+          "defType": "ThingDef",
+          "label": "thermal veil module",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "defName": "RUT_ShieldModule_Thermal"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_ShieldModule_Particulate",
+          "found": true,
+          "defName": "RUT_ShieldModule_Particulate",
+          "defType": "ThingDef",
+          "label": "particulate screen module",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "defName": "RUT_ShieldModule_Particulate"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_ShieldModule_Cryo",
+          "found": true,
+          "defName": "RUT_ShieldModule_Cryo",
+          "defType": "ThingDef",
+          "label": "cryo envelope module",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "defName": "RUT_ShieldModule_Cryo"
+          }
+         }
+        ],
+        "ticksGame": 4701,
+        "operation": {
+         "OperationId": "op_ad0c3abbcf5b4c788ba91220675c33d0",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 33
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4701
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shipped_scalar_fields_match_xml",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "ResearchProjectDef/RUT_ModulatedShieldFields",
+          "found": true,
+          "defName": "RUT_ModulatedShieldFields",
+          "defType": "ResearchProjectDef",
+          "label": "modulated shield fields",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "label": "modulated shield fields"
+          }
+         }
+        ],
+        "ticksGame": 4701,
+        "operation": {
+         "OperationId": "op_77beb47513d943539e282b7495f3d519",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 48
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4701
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "4 of 4 def(s) resolved",
+        "requested": 4,
+        "foundCount": 4,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "label"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RUT_ShieldGenerator",
+          "found": true,
+          "defName": "RUT_ShieldGenerator",
+          "defType": "ThingDef",
+          "label": "modulated shield generator",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "label": "modulated shield generator"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_ShieldModule_Thermal",
+          "found": true,
+          "defName": "RUT_ShieldModule_Thermal",
+          "defType": "ThingDef",
+          "label": "thermal veil module",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "label": "thermal veil module"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_ShieldModule_Particulate",
+          "found": true,
+          "defName": "RUT_ShieldModule_Particulate",
+          "defType": "ThingDef",
+          "label": "particulate screen module",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "label": "particulate screen module"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_ShieldModule_Cryo",
+          "found": true,
+          "defName": "RUT_ShieldModule_Cryo",
+          "defType": "ThingDef",
+          "label": "cryo envelope module",
+          "modName": "RimUtinni: Ship Shields \u2014 Modulated Plasma Fields",
+          "packageId": "mandrake.rut.shipshields",
+          "fields": {
+           "label": "cryo envelope module"
+          }
+         }
+        ],
+        "ticksGame": 4701,
+        "operation": {
+         "OperationId": "op_c9f85acc539f40feb946bbdc183f54e9",
+         "Status": "Completed",
+         "Success": true,
+         "DurationMs": 49
+        },
+        "state": {
+         "programState": "Playing",
+         "hasCurrentGame": true,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "tick": 4701
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": null,
+   "modal_check": null
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": null
+}

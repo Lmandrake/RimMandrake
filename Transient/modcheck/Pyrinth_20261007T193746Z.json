@@ -1,0 +1,951 @@
+{
+ "mod": "Pyrinth",
+ "stamp": "20261007T193746Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/PyrinthNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/PyrinthNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "PyrinthNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_37925e24dd8140f3a08bd7713e58c381",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_deployed_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "13 of 13 def(s) resolved",
+         "requested": 13,
+         "foundCount": 13,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "EffecterDef/DV_PyrinthSparkingEffect",
+           "found": true,
+           "defName": "DV_PyrinthSparkingEffect",
+           "defType": "EffecterDef",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthSparkingEffect"
+           }
+          },
+          {
+           "requested": "EffecterDef/DV_PyrinthSparkingEffectSmall",
+           "found": true,
+           "defName": "DV_PyrinthSparkingEffectSmall",
+           "defType": "EffecterDef",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthSparkingEffectSmall"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Filth_Pyrinth",
+           "found": true,
+           "defName": "DV_Filth_Pyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth rubble",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Filth_Pyrinth"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_MeleeWeapon_PyrinthBlade",
+           "found": true,
+           "defName": "DV_MeleeWeapon_PyrinthBlade",
+           "defType": "ThingDef",
+           "label": "pyrinth blade",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_MeleeWeapon_PyrinthBlade"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_MineablePyrinth",
+           "found": true,
+           "defName": "DV_MineablePyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_MineablePyrinth"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthGlint",
+           "found": true,
+           "defName": "DV_Mote_PyrinthGlint",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Mote_PyrinthGlint"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthSpark",
+           "found": true,
+           "defName": "DV_Mote_PyrinthSpark",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Mote_PyrinthSpark"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthSparkSmall",
+           "found": true,
+           "defName": "DV_Mote_PyrinthSparkSmall",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Mote_PyrinthSparkSmall"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Pyrinth",
+           "found": true,
+           "defName": "DV_Pyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Pyrinth"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthBrazier",
+           "found": true,
+           "defName": "DV_PyrinthBrazier",
+           "defType": "ThingDef",
+           "label": "pyrinth pylon",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthBrazier"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthHeater",
+           "found": true,
+           "defName": "DV_PyrinthHeater",
+           "defType": "ThingDef",
+           "label": "pyrinth heater",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthHeater"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthLamp",
+           "found": true,
+           "defName": "DV_PyrinthLamp",
+           "defType": "ThingDef",
+           "label": "pyrinth torch",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthLamp"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthWallLamp",
+           "found": true,
+           "defName": "DV_PyrinthWallLamp",
+           "defType": "ThingDef",
+           "label": "wall pyrinth torch",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthWallLamp"
+           }
+          }
+         ],
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_03ddc6740aea4923acf7b0c1f0f1689b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "settings_probe_finds_fields",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "ore_and_donor_identity",
+    "components": [
+     {
+      "name": "mineable_ore_yield_matches_xml",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: mineableThing reads '(no such field)', XML says 'DV_Pyrinth'",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "mineableThing",
+          "mineableYield"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/DV_MineablePyrinth",
+           "found": true,
+           "defName": "DV_MineablePyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "mineableThing": "(no such field)",
+            "mineableYield": "(no such field)"
+           }
+          }
+         ],
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_4f6d625e1f28465f93c827cee07480d7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "this_mod_is_the_loaded_copy",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "furniture_and_weapon",
+    "components": [
+     {
+      "name": "torch_family_glows_heats_and_carries_the_ladder",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "flame_furniture_gives_meditation_focus",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "spark_effecters_resolve_to_attached_motes_that_fire",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "pyrinth_blade_tools_hit_and_the_edge_and_point_sear",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_reference_and_patch_target_resolves_inside_the_pack",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "no_finding_escapes_the_five_bars_above",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "torch_family_glow_and_heat_in_play",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped numbers, not the engine's use of them)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "pyrinth_blade_damage_in_a_fight",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped numbers, not the engine's use of them)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "medieval_overhaul_heater_cost_patch",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped numbers, not the engine's use of them)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "royalty_throne_room_patch",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped numbers, not the engine's use of them)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "lantern_deeps_scatter_gate",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: a built, powered instance, a light-level read and a room temperature read on a bland map (the XML bars above prove the shipped numbers, not the engine's use of them)",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "every_shipped_def_reads_back",
+    "components": [
+     {
+      "name": "every_shipped_def_is_loaded",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "13 of 13 def(s) resolved",
+         "requested": 13,
+         "foundCount": 13,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthSpark",
+           "found": true,
+           "defName": "DV_Mote_PyrinthSpark",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Mote_PyrinthSpark"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthSparkSmall",
+           "found": true,
+           "defName": "DV_Mote_PyrinthSparkSmall",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Mote_PyrinthSparkSmall"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthGlint",
+           "found": true,
+           "defName": "DV_Mote_PyrinthGlint",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Mote_PyrinthGlint"
+           }
+          },
+          {
+           "requested": "EffecterDef/DV_PyrinthSparkingEffect",
+           "found": true,
+           "defName": "DV_PyrinthSparkingEffect",
+           "defType": "EffecterDef",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthSparkingEffect"
+           }
+          },
+          {
+           "requested": "EffecterDef/DV_PyrinthSparkingEffectSmall",
+           "found": true,
+           "defName": "DV_PyrinthSparkingEffectSmall",
+           "defType": "EffecterDef",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthSparkingEffectSmall"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthLamp",
+           "found": true,
+           "defName": "DV_PyrinthLamp",
+           "defType": "ThingDef",
+           "label": "pyrinth torch",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthLamp"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthWallLamp",
+           "found": true,
+           "defName": "DV_PyrinthWallLamp",
+           "defType": "ThingDef",
+           "label": "wall pyrinth torch",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthWallLamp"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthBrazier",
+           "found": true,
+           "defName": "DV_PyrinthBrazier",
+           "defType": "ThingDef",
+           "label": "pyrinth pylon",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthBrazier"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthHeater",
+           "found": true,
+           "defName": "DV_PyrinthHeater",
+           "defType": "ThingDef",
+           "label": "pyrinth heater",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_PyrinthHeater"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Filth_Pyrinth",
+           "found": true,
+           "defName": "DV_Filth_Pyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth rubble",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Filth_Pyrinth"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_MineablePyrinth",
+           "found": true,
+           "defName": "DV_MineablePyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_MineablePyrinth"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Pyrinth",
+           "found": true,
+           "defName": "DV_Pyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_Pyrinth"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_MeleeWeapon_PyrinthBlade",
+           "found": true,
+           "defName": "DV_MeleeWeapon_PyrinthBlade",
+           "defType": "ThingDef",
+           "label": "pyrinth blade",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "defName": "DV_MeleeWeapon_PyrinthBlade"
+           }
+          }
+         ],
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_76c48a3f921942ac81b0b72f36f8eafb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shipped_scalar_fields_match_xml",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label"
+         ],
+         "defs": [
+          {
+           "requested": "EffecterDef/DV_PyrinthSparkingEffect",
+           "found": true,
+           "defName": "DV_PyrinthSparkingEffect",
+           "defType": "EffecterDef",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {}
+          },
+          {
+           "requested": "EffecterDef/DV_PyrinthSparkingEffectSmall",
+           "found": true,
+           "defName": "DV_PyrinthSparkingEffectSmall",
+           "defType": "EffecterDef",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {}
+          }
+         ],
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_82d32e67cfd84aa79459c705c782cdcf",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "11 of 11 def(s) resolved",
+         "requested": 11,
+         "foundCount": 11,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "label"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthSpark",
+           "found": true,
+           "defName": "DV_Mote_PyrinthSpark",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "Mote"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthSparkSmall",
+           "found": true,
+           "defName": "DV_Mote_PyrinthSparkSmall",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "Mote"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Mote_PyrinthGlint",
+           "found": true,
+           "defName": "DV_Mote_PyrinthGlint",
+           "defType": "ThingDef",
+           "label": "Mote",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "Mote"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthLamp",
+           "found": true,
+           "defName": "DV_PyrinthLamp",
+           "defType": "ThingDef",
+           "label": "pyrinth torch",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "pyrinth torch"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthWallLamp",
+           "found": true,
+           "defName": "DV_PyrinthWallLamp",
+           "defType": "ThingDef",
+           "label": "wall pyrinth torch",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "wall pyrinth torch"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthBrazier",
+           "found": true,
+           "defName": "DV_PyrinthBrazier",
+           "defType": "ThingDef",
+           "label": "pyrinth pylon",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "pyrinth pylon"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_PyrinthHeater",
+           "found": true,
+           "defName": "DV_PyrinthHeater",
+           "defType": "ThingDef",
+           "label": "pyrinth heater",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "pyrinth heater"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Filth_Pyrinth",
+           "found": true,
+           "defName": "DV_Filth_Pyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth rubble",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "pyrinth rubble"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_MineablePyrinth",
+           "found": true,
+           "defName": "DV_MineablePyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "pyrinth"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_Pyrinth",
+           "found": true,
+           "defName": "DV_Pyrinth",
+           "defType": "ThingDef",
+           "label": "pyrinth",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "pyrinth"
+           }
+          },
+          {
+           "requested": "ThingDef/DV_MeleeWeapon_PyrinthBlade",
+           "found": true,
+           "defName": "DV_MeleeWeapon_PyrinthBlade",
+           "defType": "ThingDef",
+           "label": "pyrinth blade",
+           "modName": "RimMandrake: Pyrinth",
+           "packageId": "mandrake.rm.pyrinth",
+           "fields": {
+            "label": "pyrinth blade"
+           }
+          }
+         ],
+         "ticksGame": 430356,
+         "operation": {
+          "OperationId": "op_dc3994b6db944058bbae07c7f687ecbd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 430356
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   "<suite.Component object at 0x000001A6C70A8640>"
+  ],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Pyrinth.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}
