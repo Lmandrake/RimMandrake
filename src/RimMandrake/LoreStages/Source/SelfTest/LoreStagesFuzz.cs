@@ -170,11 +170,11 @@ namespace RimMandrake.LoreStages.SelfTest
                     string[] ladders = { "LA", "LB", "LC" };
                     var tables = new List<RM_LoreStageTableDef>();
                     int nt = r.Next(1, 5);
-                    for (int i = 0; i < nt; i++) tables.Add(MakeTable(r, i, ladders));
+                    for (int i = 0; i < nt; i++) tables.Add(r.Next(25) == 0 ? null : MakeTable(r, i, ladders));
                     var stages = new Dictionary<string, int>();
                     bool enabled = true;
                     var warnings = new List<string>();
-                    var warnKinds = new HashSet<string>();
+                    var warnKinds = new HashSet<string>();      // every distinct problem the oracle has seen so far in this case
                     int lastSumStage = 0;
                     int actions = 4 + r.Next(14);
                     for (int a = 0; a < actions; a++)
@@ -207,6 +207,11 @@ namespace RimMandrake.LoreStages.SelfTest
                         Check(w.hedB.Description == w.hedB.description, "hediffB memoized Description <" + w.hedB.Description + "> but its field reads <" + w.hedB.description + ">");
                         // warnings: at most once each, over the whole case
                         Check(warnings.Distinct().Count() == warnings.Count, "a problem was warned about twice");
+                        warnKinds.UnionWith(expWarn);
+                        int wInc = warnings.Count(m => m.Contains("is missing defType/defName/field")), wMiss = warnings.Count(m => m.Contains("that rung will never show")), wFld = warnings.Count(m => m.Contains("has no public string field"));
+                        Check(wInc == warnKinds.Count(k => k.EndsWith(":incomplete-target")), "incomplete-target warnings " + wInc + ", expected " + warnKinds.Count(k => k.EndsWith(":incomplete-target")));
+                        Check(wMiss == warnKinds.Count(k => k.Contains(":missing:")), "missing-def warnings " + wMiss + ", expected " + warnKinds.Count(k => k.Contains(":missing:")));
+                        Check(wFld == warnKinds.Count(k => k.Contains(":field:")), "bad-field warnings " + wFld + ", expected " + warnKinds.Count(k => k.Contains(":field:")));
                         WarnsSeen = Math.Max(WarnsSeen, warnings.Count);
                         StagedFields += applied;
                         // two tables staging the same field with an applicable rung each is the collision the last-table-wins rule covers
@@ -241,7 +246,9 @@ namespace RimMandrake.LoreStages.SelfTest
                     Check(t.LadderId == (string.IsNullOrEmpty(t.ladderId) ? "FZ_Cfg" : t.ladderId), "LadderId fallback broke");
                     int nr = r.Next(1, 8);
                     var tg = new LoreStageTarget { defType = "BiomeDef", defName = "FZ_BiomeA", field = "description", stages = new List<LoreStageText>() };
-                    int dup = 0, neg = 0, above = 0, notext = 0, nulls = 0; var seen = new HashSet<int>();
+                    int dup = 0, neg = 0, above = 0, notext = 0, nulls = 0, nostages = 0, nulltargets = 0; var seen = new HashSet<int>();
+                    if (r.Next(4) == 0) { t.targets.Add(null); nulltargets++; }
+                    if (r.Next(5) == 0) { t.targets.Add(new LoreStageTarget { defType = "BiomeDef", defName = "FZ_BiomeB", field = "description", stages = r.Next(2) == 0 ? null : new List<LoreStageText>() }); nostages++; }
                     for (int k = 0; k < nr; k++)
                     {
                         if (r.Next(10) == 0) { tg.stages.Add(null); nulls++; continue; }
@@ -260,6 +267,8 @@ namespace RimMandrake.LoreStages.SelfTest
                     Check(Count("above maxStage") == above, "above-maxStage reports " + Count("above maxStage") + ", oracle " + above + " (maxStage " + t.maxStage + ")");
                     Check(Count("has no text") == notext, "no-text reports " + Count("has no text") + ", oracle " + notext);
                     Check(Count("null stage entry") == nulls, "null-entry reports " + Count("null stage entry") + ", oracle " + nulls);
+                    Check(Count("null entry") == nulltargets, "null-target reports " + Count("null entry") + ", oracle " + nulltargets + " :: " + string.Join(" | ", errs));
+                    Check(Count("no stages") == nostages, "no-stages reports " + Count("no stages") + ", oracle " + nostages);
                     // clamp + toggle
                     int stage = r.Next(-3, 12), max = r.Next(0, 6);
                     int c = RM_LoreStageKernel.ClampStage(stage, max);
