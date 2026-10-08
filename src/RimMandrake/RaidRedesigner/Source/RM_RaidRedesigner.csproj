@@ -42,13 +42,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RimMandrakePropertyDll)' == ''">
-    <RimMandrakePropertyDll>..\..\RimProperty\Assemblies\RimMandrakeProperty.dll</RimMandrakePropertyDll>
+    <RimMandrakePropertyDll>$(MSBuildThisFileDirectory)..\..\RimProperty\Assemblies\RimMandrakeProperty.dll</RimMandrakePropertyDll>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="RoleTag.cs" />
     <Compile Include="Encounter.cs" />
     <Compile Include="OldFriendEntry.cs" />
+    <Compile Include="Kernel\RM_RosterKernel.cs" />
     <Compile Include="RosterPruning.cs" />
     <Compile Include="WorldPawnPinning.cs" />
     <Compile Include="GameComponent_OldFriends.cs" />

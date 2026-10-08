@@ -52,31 +52,21 @@ namespace RimMandrake.RaidRedesigner
             if (!RaidRedesignerSettings.rosterTrackingEnabled) return null;
             if (pawn == null) return null;
 
-            OldFriendEntry entry = entries.Find(e => !e.Dead && e.Pawn == pawn);
-            bool isNewEntry = entry == null;
-            if (isNewEntry)
+            // The find / role-upgrade / encounter / scaled-delta / cap-after-deltas flow is RM_RosterKernel.Record (fuzzed offline).
+            RecordOutcome<OldFriendEntry> outcome = RM_RosterKernel.Record(entries, e => e.Pawn == pawn,
+                () => new OldFriendEntry(pawn, factionAtEntry, role, tick), role, tick, summary, grudgeDelta, notabilityDelta,
+                RaidRedesignerSettings.grudgeNotabilityMultiplier, RaidRedesignerSettings.maxLivingEntries);
+            OldFriendEntry entry = outcome.Entry;
+
+            // A pawn the cap just forgot (its own notability was the lowest) is not remembered, so it is not pinned either.
+            if (pin && !outcome.EvictedSelf && RaidRedesignerSettings.pinEncounteredPawns)
             {
-                entry = new OldFriendEntry(pawn, factionAtEntry, role, tick);
-                entries.Add(entry);
+                bool keptBefore = Find.WorldPawns != null && Find.WorldPawns.ForcefullyKeptPawns.Contains(pawn);
+                bool pinnedNow = WorldPawnPinning.PinForever(pawn);
+                entry.PinnedByUs = RM_RosterKernel.PinnedByUsAfter(entry.PinnedByUs, keptBefore, keptBefore || pinnedNow);
             }
-            else if (role == RoleTag.Captain)
-            {
-                entry.Role = RoleTag.Captain;
-            }
-
-            entry.AddEncounter(new Encounter(tick, role, summary));
-            float mult = RaidRedesignerSettings.grudgeNotabilityMultiplier;
-            entry.Grudge = Mathf_Clamp(entry.Grudge + (int)(grudgeDelta * mult), -100, 100);
-            entry.Notability = Mathf_Clamp(entry.Notability + (int)(notabilityDelta * mult), 0, 100);
-
-            // Enforce the cap only after this call's own deltas are applied --
-            // otherwise a brand-new entry is judged for pruning at Notability
-            // 0, before the very notabilityDelta this call is about to award
-            // it, and can be evicted (as an orphaned, no-longer-in-`entries`
-            // object) in the same call that created it.
-            if (isNewEntry) EnforceCap();
-
-            if (pin && RaidRedesignerSettings.pinEncounteredPawns) WorldPawnPinning.PinForever(pawn);
+            // The roster forgot these people (cap): release the pins this mod placed so the world-pawn pool does not grow without bound.
+            ReleasePins(outcome.Victims);
 
             return entry;
         }
@@ -86,11 +76,25 @@ namespace RimMandrake.RaidRedesigner
         // selection logic itself is pure (no Verse dependency) and lives in
         // RosterPruning so it can be offline-selftested -- this method is
         // just "ask, then remove."
-        private void EnforceCap()
+        public void EnforceCap()
         {
-            foreach (OldFriendEntry victim in RosterPruning.SelectPruneVictims(entries, RaidRedesignerSettings.maxLivingEntries))
+            List<OldFriendEntry> victims = RosterPruning.SelectPruneVictims(entries, RaidRedesignerSettings.maxLivingEntries);
+            foreach (OldFriendEntry victim in victims)
             {
                 entries.Remove(victim);
+            }
+            ReleasePins(victims);
+        }
+
+        private static void ReleasePins(List<OldFriendEntry> forgotten)
+        {
+            foreach (OldFriendEntry victim in forgotten)
+            {
+                if (RM_RosterKernel.ShouldUnpin(victim.PinnedByUs, victim.Pawn != null && victim.Pawn.Faction != null && victim.Pawn.Faction.leader == victim.Pawn))
+                {
+                    WorldPawnPinning.Unpin(victim.Pawn);
+                    victim.PinnedByUs = false;
+                }
             }
         }
 
@@ -110,18 +114,14 @@ namespace RimMandrake.RaidRedesigner
             for (int i = 0; i < entries.Count; i++)
             {
                 OldFriendEntry e = entries[i];
-                if (!e.Dead && e.Pawn != null && e.Pawn.Dead)
+                switch (RM_RosterKernel.Sweep(e.Dead, e.Pawn == null, e.Pawn != null && e.Pawn.Dead))
                 {
-                    e.MarkDead(Find.TickManager.TicksGame, "died");
+                    case RM_RosterKernel.SweepVerdict.Died: e.MarkDead(Find.TickManager.TicksGame, "died"); break;
+                    case RM_RosterKernel.SweepVerdict.Lost: e.MarkDead(Find.TickManager.TicksGame, "lost"); break;
                 }
             }
-        }
-
-        private static int Mathf_Clamp(int value, int min, int max)
-        {
-            if (value < min) return min;
-            if (value > max) return max;
-            return value;
+            // The cap is player-tunable: lowering it takes effect at the next hourly sweep, not only when someone new arrives.
+            EnforceCap();
         }
 
         public override void ExposeData()
