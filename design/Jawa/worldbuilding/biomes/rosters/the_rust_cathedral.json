@@ -225,6 +225,11 @@
       "def": "Mynock",
       "disposition": "homeless-reserve",
       "reason": "ubiquity-25 ≤2: R17 lets it visit without a roster row"
+    },
+    {
+      "def": "GR_Mecharat",
+      "disposition": "cut",
+      "reason": "Rust Cathedral sheet 2026-10-05 (owner): \"cut no longer need\" — not cast in RM_RustCathedral or RUT_RustCathedral (audit 2026-10-08)."
     }
   ],
   "fauna": [
@@ -241,12 +246,6 @@
       "commonality": 0.5,
       "def": "GR_Mechachicken",
       "law": "owner review 2026-09 (round2 move mapping): rust cathedral | CUT — cathedral mech-vermin trim (owner card 2026-09-10); name already failed recognizability"
-    },
-    {
-      "action": "import",
-      "commonality": 0.5,
-      "def": "GR_Mecharat",
-      "law": "owner review 2026-09 (round2 move mapping): rust cathedral and mechanoid dungeons"
     },
     {
       "action": "add",

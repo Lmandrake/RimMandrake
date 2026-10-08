@@ -945,6 +945,11 @@
       "def": "RSW_Stoneback",
       "disposition": "one-home-elsewhere",
       "reason": "owner 2026-09-22, correcting BENCH: \"I meant pick one arid home.\" The arid biomes he listed were the CANDIDATE set, not an assignment — a shared habitat class is NOT an in-game reason to multi-home an animal (BIOME_SPECIFIC_FAUNA_LAW_1). The bokka's single home is the Long Shade (RUT_Desert 0.5, its pre-existing wiring). It was never wired here — only admitted — so nothing changes in game; the admission is withdrawn so the roster stops implying a second home. 🔑 If this biome needs a small arid animal, the law's other half applies: fill the hole with a NEW creature, not by borrowing this one."
+    },
+    {
+      "def": "RSW_ImperialToad",
+      "disposition": "cut",
+      "reason": "Leaning Scrub sheet 2026-10-05 (owner): \"no longer needed\"; cut from RUT_AridShrubland too at f19fcfdcc (decision taken by question card)."
     }
   ],
   "fauna": [
@@ -989,13 +994,6 @@
       "commonality": 0.8,
       "def": "Scurrier",
       "law": "bs 0.2 (MEASURED); small-band legal here (no small speed ban); prep §3.2"
-    },
-    {
-      "action": "keep",
-      "band": "small-runway",
-      "commonality": 0.7,
-      "def": "RSW_ImperialToad",
-      "law": "bs 0.3 (MEASURED); prep §3.2; ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_ImperialToad to the already-ported, already-wired RSW_ name (RUT_AridShrubland)"
     },
     {
       "action": "keep",
