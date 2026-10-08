@@ -5,6 +5,7 @@ defect at a time and requires the lint to report a given ERROR text. A lint that
 
 Used as a library by selftest_<mod>_lint.py:  run(mod_name, lint_script, plants) -> exit code
 plants = [(label, relative file under the mod, old text, new text, expected substring of an ERROR line)]
+keep = folder names the default copy leaves out that this lint reads (e.g. ("Languages",) for a Keyed-string check)
 """
 import os
 import shutil

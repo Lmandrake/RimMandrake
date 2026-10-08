@@ -42,6 +42,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_OasisKernel.cs" />
     <Compile Include="RM_OasisMakerSettings.cs" />
     <Compile Include="RM_OasisPlacementScorer.cs" />
     <Compile Include="RM_OasisPoolIntegration.cs" />
