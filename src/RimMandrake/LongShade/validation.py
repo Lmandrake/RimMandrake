@@ -239,8 +239,10 @@ def midden_problems():
     if "RM_LongShadeSettings.modEnabled" not in giver or "IsBuilder(pawn.def)" not in giver:
         bad.append("vrekka giver lost its modEnabled / builder-race gate")
     heapcls = src.split("class RM_CompMiddenHeap", 1)[1].split("class RM_LongShadeMiddenDefOf", 1)[0]
-    if "layers++" not in heapcls.split("void Tend()", 1)[1].split("void Search", 1)[0]:
-        bad.append("Tend() no longer adds layers (regrowth broken)")
+    kernel = open(os.path.join(HERE, "Source", "Kernel", "RM_LongShadeKernel.cs"), encoding="utf-8").read()
+    tend_body = heapcls.split("void Tend()", 1)[1].split("void Search", 1)[0]
+    if "RM_LongShadeKernel.Tend(" not in tend_body or "layers++" not in kernel.split("public static void Tend(", 1)[1].split("public static int SearchRolls", 1)[0]:
+        bad.append("Tend() no longer adds layers (regrowth broken): the heap must call RM_LongShadeKernel.Tend, which does layers++")
     if "TicksGame" in heapcls.split("CompTick", 1)[-1] and "CompTick" in heapcls:
         bad.append("heap has a CompTick: regrowth must come only from vrekka tending (ruled)")
     return bad

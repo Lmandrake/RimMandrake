@@ -239,8 +239,11 @@ def static_checks():
     if "hd.priceOffset = RM_MiasmaSettings.mothersPriceEnabled" not in open(os.path.join(HERE, "Source", "RM_MiasmaMod.cs"), encoding="utf-8").read():
         bad.append("youngPriceOffset is not written to the hediff's priceOffset")
     led = open(os.path.join(HERE, "Source", "RM_WardenMotherSuccession.cs"), encoding="utf-8").read()
-    if "successionDone = true;" not in led[led.index("public void Betray("):]:
+    kern = open(os.path.join(HERE, "Source", "RM_MiasmaKernel.cs"), encoding="utf-8").read()   # the ledger rules live in the kernel
+    if "successionDone = true;" not in kern[kern.index("public void Betray("):].split("public void NoteReturned", 1)[0]:
         bad.append("Betray must void succession")
+    if "ledger.Betray();" not in led:
+        bad.append("the creche comp's Betray no longer calls the ledger's Betray")
     for f in ("south", "east", "north"):
         if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "Miasma", "WardenMother", "WardenMother_%s.png" % f)):
             bad.append("warden mother art missing: %s" % f)
