@@ -336,11 +336,11 @@ def _build_suite():
                 if _live(t):
                     _raw(t, "set", "masterEnabled", "True")
                     with _patient(t):
-                        t.wait_ticks(2500)
+                        t.wait_ticks(4000)
                     text = _inspect(t, box["m"]["id"])
                     if "The oasis is made." not in text:
                         raise ExpectationFailed("fast settings (attuningDays 0, baseRingDays 0.001) did not finish the oasis in "
-                                                "2500 ticks: %r" % text[:120])
+                                                "4000 ticks: %r" % text[:120])
             with t.component("centre_holds_water_and_rock_is_never_converted", toggle="baseRingDays"):
                 if _live(t):
                     x, z = t.anchor

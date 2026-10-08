@@ -1,0 +1,35 @@
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\OasisMaker_20261008T141134Z.html
+CHAIN defs_resolve None {"name": "defs_resolve", "situational": null, "modal_check": null}
+    {"name": "control_probe_can_say_absent", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "0 of 1 def(s) resolved; 1 not found", "requested": 1, "f
+    {"name": "every_shipped_def_resolves", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, 
+CHAIN settings_roundtrip None {"name": "settings_roundtrip", "situational": null, "modal_check": null}
+    {"name": "settings_probe_finds_fields", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "attuningDays_round_trips", "toggle": "attuningDays", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "baseRingDays_round_trips", "toggle": "baseRingDays", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "masterEnabled_round_trips", "toggle": "masterEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "maxRadiusCap_round_trips", "toggle": "maxRadiusCap", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "minRadiusCap_round_trips", "toggle": "minRadiusCap", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "ringGrowthFactor_round_trips", "toggle": "ringGrowthFactor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "rockScoreExcellent_round_trips", "toggle": "rockScoreExcellent", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "rockScoreFloor_round_trips", "toggle": "rockScoreFloor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "scoringRadius_round_trips", "toggle": "scoringRadius", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "shadeScoreExcellent_round_trips", "toggle": "shadeScoreExcellent", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "shadeScoreFloor_round_trips", "toggle": "shadeScoreFloor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN def_wiring None {"name": "def_wiring", "situational": null, "modal_check": null}
+    {"name": "def_readable", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound": []
+    {"name": "minified_trade_tagged_and_placeworker_ours", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "not_buildable_trade_or_start_only", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN dormant_on_bare_sand None {"name": "dormant_on_bare_sand", "situational": null, "modal_check": null}
+    {"name": "no_shade_no_rock_stays_dormant", "toggle": "masterEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(25)", "result": {"success": true, "message": "Destroyed 2 thing(s) across 625 cell(s); 14 pawn(s) l
+CHAIN site_growth None {"name": "site_growth", "situational": null, "modal_check": null}
+    {"name": "valid_site_attunes", "toggle": "masterEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(25)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 625 cell(s); 14 pawn(s) left alone.",
+    {"name": "master_off_stops_growth", "toggle": "masterEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(1500) -> 1500 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_4e6464412d374871ba
+    {"name": "fast_settings_finish_an_oasis", "toggle": "attuningDays", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(4000) -> 4000 real tick(s) over 2 call(s)", "result": {"success": true, "stepId": "step_e0bdf49f16cc4
+    {"name": "centre_holds_water_and_rock_is_never_converted", "toggle": "baseRingDays", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_terrain_batch", "result": {"success": true, "message": "Read 49 cell(s) as
+    {"name": "losing_shade_freezes_and_nothing_reverses", "toggle": "masterEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_roof_batch", "result": {"success": true, "message": "Roofed 361 cell(s) across
+CHAIN placement_gate None {"name": "placement_gate", "situational": null, "modal_check": null}
+    {"name": "ghost_is_red_below_the_floor_with_a_reason", "toggle": null, "beyond_toggle": true, "verdict": "UNMEASURED", "detail": "UNMEASURED: AllowsPlacing and DrawGhost run only from a held placement ghost in the UI; the machine is not buildable, so no bluepr
+CHAIN slow_timing None {"name": "slow_timing", "situational": null, "modal_check": null}
+    {"name": "shipped_attuning_and_ring_times", "toggle": "attuningDays", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the shipped 2-day attuning and 3-day innermost ring at default settings are game days; site_growth proves the same sta
+ALL_GREEN False FINDINGS 0
