@@ -48,43 +48,43 @@ Detector: `src/RimMandrake/Utils/art/placeholder_detect.py` `placeholder_reason(
 | animal | FeverWood | RM_Murrelith_north | regen_fw_murrelith_flying_1_v1_east, regen_fw_murrelith_flying_1_v1_north, regen_fw_murrelith_flying_1_v1_south | queued |
 | animal | FeverWood | RM_Murrelith_south | regen_fw_murrelith_flying_1_v1_east, regen_fw_murrelith_flying_1_v1_north, regen_fw_murrelith_flying_1_v1_south | queued |
 | animal | FeverWood | RM_Ollareth | feverwood_ollareth_east, feverwood_ollareth_north, feverwood_ollareth_south | rendered earlier, never installed |
-| animal | FeverWood | RM_Sekkulaath_Juvenile | — | OWED: no job queued |
+| animal | FeverWood | RM_Sekkulaath_Juvenile | phfix_RM_Sekkulaath_Juvenile_a, phfix_RM_Sekkulaath_Juvenile_b | queued 2026-10-07 priority 0 |
 | animal | FeverWood | RM_Thavrik_east | feverwood_thavrik_east, feverwood_thavrik_north, feverwood_thavrik_south | rendered earlier, never installed |
 | animal | FeverWood | RM_Thavrik_north | feverwood_thavrik_east, feverwood_thavrik_north, feverwood_thavrik_south | rendered earlier, never installed |
 | animal | FeverWood | RM_Thavrik_south | feverwood_thavrik_east, feverwood_thavrik_north, feverwood_thavrik_south | rendered earlier, never installed |
 | animal | TerminalBiomes | RM_Sorruth | greysea_sorruth_v1_east, greysea_sorruth_v1_south | rendered earlier, never installed |
-| building | FeverWood | RM_LureStake | — | OWED: no job queued |
-| building | FeverWood | RM_SekkulaathTank | — | OWED: no job queued |
-| building | FeverWood | RM_Sekkulaath_Feeler | — | OWED: no job queued |
-| building | FeverWood | RM_Sekkulaath_Lash | — | OWED: no job queued |
-| building | FeverWood | RM_Sekkulaath_Porter | — | OWED: no job queued |
-| building | FeverWood | RM_Sekkulaath_Sentinel | — | OWED: no job queued |
-| building | FeverWood | RM_Sekkulaath_Snare | — | OWED: no job queued |
-| building | FeverWood | RUT_FeverTrunkHeartwood | — | OWED: no job queued |
-| building | LuminousPigment | RM_DeepfirePress | — | OWED: no job queued |
-| building | LuminousPigment | RM_GlowTank | — | OWED: no job queued |
-| building | Webwork | RM_Webwork_NestWall | — | OWED: no job queued |
+| building | FeverWood | RM_LureStake | phfix_RM_LureStake_a, phfix_RM_LureStake_b | queued 2026-10-07 priority 0 |
+| building | FeverWood | RM_SekkulaathTank | RM_SekkulaathYoungCask (finished, in _artsrc; def RM_SekkulaathYoungCask shares this texPath) | finished art exists, never installed |
+| building | FeverWood | RM_Sekkulaath_Feeler | phfix_RM_Sekkulaath_Feeler_a, phfix_RM_Sekkulaath_Feeler_b | queued 2026-10-07 priority 0 |
+| building | FeverWood | RM_Sekkulaath_Lash | phfix_RM_Sekkulaath_Lash_a, phfix_RM_Sekkulaath_Lash_b | queued 2026-10-07 priority 0 |
+| building | FeverWood | RM_Sekkulaath_Porter | phfix_RM_Sekkulaath_Porter_a, phfix_RM_Sekkulaath_Porter_b | queued 2026-10-07 priority 0 |
+| building | FeverWood | RM_Sekkulaath_Sentinel | phfix_RM_Sekkulaath_Sentinel_a, phfix_RM_Sekkulaath_Sentinel_b | queued 2026-10-07 priority 0 |
+| building | FeverWood | RM_Sekkulaath_Snare | phfix_RM_Sekkulaath_Snare_a, phfix_RM_Sekkulaath_Snare_b | queued 2026-10-07 priority 0 |
+| building | FeverWood | RUT_FeverTrunkHeartwood | phfix_RUT_FeverTrunkHeartwood_a, phfix_RUT_FeverTrunkHeartwood_b | queued 2026-10-07 priority 0 |
+| building | LuminousPigment | RM_DeepfirePress | phfix_RM_DeepfirePress_a, phfix_RM_DeepfirePress_b | queued 2026-10-07 priority 0 |
+| building | LuminousPigment | RM_GlowTank | RM_SunSphere_v2_south (finished, in _artsrc; def RM_SunSphere uses this texPath) | finished art exists, never installed |
+| building | Webwork | RM_Webwork_NestWall | phfix_RM_Webwork_NestWall_a, phfix_RM_Webwork_NestWall_b | queued 2026-10-07 priority 0 |
 | building | Webwork | RM_Webwork_Web | webwork_web | rendered earlier, never installed |
-| item | Bacta | RSW_BactaPatch | — | OWED: no job queued |
-| item | FeverWood | RM_DrommathBurstSap | — | OWED: no job queued |
-| item | FeverWood | RM_DrommathSap | — | OWED: no job queued |
-| item | FeverWood | RM_OssagrelSap | — | OWED: no job queued |
-| item | FeverWood | RM_PottersClay | — | OWED: no job queued |
-| item | FeverWood | RM_RadioactiveSuppressant | — | OWED: no job queued |
-| item | FeverWood | RM_SeepOil | — | OWED: no job queued |
-| item | FeverWood | RM_SekkulaathSpleenChemicals | — | OWED: no job queued |
-| item | FeverWood | RM_ThornbugNectar | — | OWED: no job queued |
-| item | FeverWood | RM_VaulmLacquer | — | OWED: no job queued |
-| item | LuminousPigment | RM_CrowncarpetDead | — | OWED: no job queued |
+| item | Bacta | RSW_BactaPatch | phfix_RSW_BactaPatch_a, phfix_RSW_BactaPatch_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_DrommathBurstSap | phfix_RM_DrommathBurstSap_a, phfix_RM_DrommathBurstSap_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_DrommathSap | phfix_RM_DrommathSap_a, phfix_RM_DrommathSap_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_OssagrelSap | phfix_RM_OssagrelSap_a, phfix_RM_OssagrelSap_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_PottersClay | phfix_RM_PottersClay_a, phfix_RM_PottersClay_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_RadioactiveSuppressant | phfix_RM_RadioactiveSuppressant_a, phfix_RM_RadioactiveSuppressant_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_SeepOil | phfix_RM_SeepOil_a, phfix_RM_SeepOil_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_SekkulaathSpleenChemicals | phfix_RM_SekkulaathSpleenChemicals_a, phfix_RM_SekkulaathSpleenChemicals_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_ThornbugNectar | phfix_RM_ThornbugNectar_a, phfix_RM_ThornbugNectar_b | queued 2026-10-07 priority 0 |
+| item | FeverWood | RM_VaulmLacquer | phfix_RM_VaulmLacquer_a, phfix_RM_VaulmLacquer_b | queued 2026-10-07 priority 0 |
+| item | LuminousPigment | RM_CrowncarpetDead | phfix_RM_CrowncarpetDead_a, phfix_RM_CrowncarpetDead_b | queued 2026-10-07 priority 0 |
 | item | LuminousPigment | RM_CrowncarpetFresh_a | rm_crowncarpetfresh_icon_b, rm_crowncarpetfresh_icon_c | rendered earlier, never installed |
-| item | TheSump | RM_StrongTarSolvent | — | OWED: no job queued |
-| item | TheSump | RM_TarRuinedGoods | — | OWED: no job queued |
-| item | TheSump | RM_ThrummelSeepwax | — | OWED: no job queued |
-| item | UtinniPatches | RUT_Greenwood | — | OWED: no job queued |
-| item | UtinniPatches | RUT_Hardwood | — | OWED: no job queued |
-| item | Webwork | RM_BrimlockWater | — | OWED: no job queued |
-| item | Webwork | RM_OllathrixEgg | — | OWED: no job queued |
-| item | Webwork | RM_TavroskLiquor | — | OWED: no job queued |
+| item | TheSump | RM_StrongTarSolvent | phfix_RM_StrongTarSolvent_a, phfix_RM_StrongTarSolvent_b | queued 2026-10-07 priority 0 |
+| item | TheSump | RM_TarRuinedGoods | phfix_RM_TarRuinedGoods_a, phfix_RM_TarRuinedGoods_b | queued 2026-10-07 priority 0 |
+| item | TheSump | RM_ThrummelSeepwax | phfix_RM_ThrummelSeepwax_a, phfix_RM_ThrummelSeepwax_b | queued 2026-10-07 priority 0 |
+| item | UtinniPatches | RUT_Greenwood | phfix_RUT_Greenwood_a, phfix_RUT_Greenwood_b | queued 2026-10-07 priority 0 |
+| item | UtinniPatches | RUT_Hardwood | phfix_RUT_Hardwood_a, phfix_RUT_Hardwood_b | queued 2026-10-07 priority 0 |
+| item | Webwork | RM_BrimlockWater | phfix_RM_BrimlockWater_a, phfix_RM_BrimlockWater_b | queued 2026-10-07 priority 0 |
+| item | Webwork | RM_OllathrixEgg | phfix_RM_OllathrixEgg_a, phfix_RM_OllathrixEgg_b | queued 2026-10-07 priority 0 |
+| item | Webwork | RM_TavroskLiquor | phfix_RM_TavroskLiquor_a, phfix_RM_TavroskLiquor_b | queued 2026-10-07 priority 0 |
 
 By kind: animal 13, building 12, item 20
 
@@ -104,3 +104,9 @@ By kind: animal 13, building 12, item 20
 
 Not shipped any more (replaced on disk since the snapshot): FeverWood Claithe, Skellick, Vaulm; Miasma Karravel, Karrimeth, Karrolun — their sheet column still says IN GAME until the next rebuild, and it is now greyed out.
 History columns (Grey Sea / The Chill / The Scald / Twilight Sea script-drawn shapes of 2026-09-24/26; Webwork circles of 2026-09-25 on rows whose real art is installed) were pickable until tonight's rebuild; they are now `placeholder — not selectable`.
+
+### C. Follow-through 2026-10-07 night
+
+All 31 formerly OWED rows now have a job or finished art (none OWED). 29 textures got 2 priority-0 candidate jobs each (58 jobs, `phfix_<def>_a/_b`, builder `build_placeholder_owed_jobs.py`, rows `placeholder_owed_jobs.json`); nothing installed or deployed. RM_SekkulaathTank and RM_GlowTank reuse finished art (above). No canon-library entry exists for any of the 31 (invented FeverWood/Sump/Webwork subjects, bacta patch, timber).
+Not art, not queued (flagged by the detector, outside the allowlist's art scope): 3 UI buttons and Blank.png.
+Trap found: RUT_Hardwood.png and RUT_Greenwood.png are also the texPath of the fish items RUT_Tekk (and others in RUT_CrackedLandsFish_Items / RUT_WastelandBrine_Items), so a heartwood/greenwood painting would show on those fish until they get their own texPath.
