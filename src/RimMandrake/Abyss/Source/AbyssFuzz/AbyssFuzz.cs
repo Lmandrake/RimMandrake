@@ -925,6 +925,70 @@ namespace RimMandrake.Abyss.Fuzz
                 if (RM_CoverKernel.MaxCoveredTicks != 15 * 60000 || RM_CoverKernel.CooldownTicks != 3 * 60000) bad("cover cap / cooldown constants moved");
                 if (RM_CoverKernel.IsCovered(false, 1f) || !RM_CoverKernel.IsCovered(true, 0.6f) || RM_CoverKernel.IsCovered(true, 0.59f)) bad("IsCovered boundary");
             }
+            // --- exact-value units added by the mutation pass (every one pins a branch the random families could not reach by luck)
+            Cases++;
+            {
+                Steps += 40;
+                // PROVISIONAL tuning, pinned so a change is a deliberate edit of kernel and test together
+                if (RM_DarkKernel.PocketAmplitude != 10f || RM_DarkKernel.ClearStart != 8f || RM_DarkKernel.ClearFull != 14f || RM_DarkKernel.LampFloor != 0.3f || RM_DarkKernel.LampSlack != 0.15f) bad("a pinned Dark constant moved");
+                if (!RM_DarkKernel.DarkPresent(RM_DarkKernel.StormWeather) || !RM_DarkKernel.DarkPresent(RM_DarkKernel.DarkWeather) || RM_DarkKernel.DarkPresent(RM_DarkKernel.UnveilWeather) || RM_DarkKernel.DarkPresent(null)) bad("DarkPresent table");
+                if (RM_DarkKernel.DarknessAt(RM_DarkKernel.StormWeather, true, 5f, true, 0.5f, 0f, 0f) != 1f) bad("the Witchfire storm is not dark at 5 C");
+                if (RM_DarkKernel.PocketOffset(0f) != -10f || RM_DarkKernel.PocketOffset(0.5f) != 0f || RM_DarkKernel.PocketOffset(1f) != 10f) bad("the pocket offset is not symmetric about noise 0.5 (-10 .. +10)");
+                // the murk step is >= : find a severity/target pair exactly one step apart in float arithmetic
+                bool foundStep = false;
+                for (int k = 1; k < 2000 && !foundStep; k++)
+                {
+                    float sev = k / 1000f, tgt = sev + RM_DarkKernel.MurkStep;
+                    if (Math.Abs(sev - tgt) == RM_DarkKernel.MurkStep) { foundStep = true; var m = RM_DarkKernel.MurkStepFor(true, sev, tgt, 0.2f); if (!m.set || m.severity != tgt) bad("a severity exactly one murk step off the target was not moved"); }
+                }
+                if (!foundStep) bad("could not construct an exact murk step in float arithmetic");
+                if (RM_DarkKernel.LampFactor(false, 1f, 1f) != 1f || Math.Abs(RM_DarkKernel.LampFactor(true, 1f, 1f) - RM_DarkKernel.LampFloor) > 1e-6f) bad("LampFactor off / full dark");
+                // lamp hysteresis: inside the slack nothing moves, outside it does
+                {
+                    var l = new RM_DarkKernel.Lamp { baseline = 6f };
+                    float tgt = 6f * RM_DarkKernel.LampFactor(true, 0.5f, 1f);
+                    l.radius = tgt + 0.10f;
+                    bool ch = RM_DarkKernel.DarkLampPass(ref l, true, true, 0.5f, 1f);
+                    if (ch || Math.Abs(l.radius - (tgt + 0.10f)) > 1e-6f) bad("a lamp within the slack of its target was moved");
+                    l.radius = tgt + 0.20f;
+                    ch = RM_DarkKernel.DarkLampPass(ref l, true, true, 0.5f, 1f);
+                    if (!ch || Math.Abs(l.radius - tgt) > 1e-6f) bad("a lamp outside the slack of its target was not moved");
+                    if (!l.shrunkKnown || l.shrunkBaseline != 6f) bad("a shrunk lamp did not remember its baseline");
+                }
+                {
+                    var k1 = new RM_DarkKernel.Lamp { kPresent = true, kOriginal = 10f, radius = 4f };
+                    var k2 = k1; k2.radius = 4.005f; var k3 = k1; k3.radius = 4.02f;
+                    if (!RM_DarkKernel.KrizzakAtFloor(k1, 0.4f) || !RM_DarkKernel.KrizzakAtFloor(k2, 0.4f) || RM_DarkKernel.KrizzakAtFloor(k3, 0.4f)) bad("KrizzakAtFloor tolerance (exactly at the floor and 0.005 over count, 0.02 over does not)");
+                }
+                {
+                    bool h; float sv;
+                    RM_DarkKernel.SunStep(false, 0f, true, 0.04f, 0.06f, 1f, out h, out sv); if (!h || sv != 0.04f) bad("a first burn does not start at `burn`");
+                    RM_DarkKernel.SunStep(true, 0.0005f, false, 0.04f, 0.001f, 1f, out h, out sv); if (h) bad("a burn that cooled to under 0.001 was kept");
+                    RM_DarkKernel.SunStep(true, 0.0015f, false, 0.04f, 0.001f, 1f, out h, out sv); if (h) bad("a burn that cooled to exactly 0.0005 was kept");
+                    RM_DarkKernel.SunStep(true, 0.1f, false, 0.04f, 0.01f, 1f, out h, out sv); if (!h || Math.Abs(sv - 0.09f) > 1e-6f) bad("a burn at 0.1 did not cool to 0.09 and stay");
+                    RM_DarkKernel.SunStep(true, 0.01f, false, 0.04f, 0.005f, 1f, out h, out sv); if (!h || Math.Abs(sv - 0.005f) > 1e-6f) bad("a burn at 0.01 cooled to 0.005 should still exist");
+                }
+                {
+                    var counts = new int[1];
+                    RM_DarkKernel.ExchangeGoods(100f, new float[] { 10f }, new[] { 99 }, new[] { false }, counts); if (counts[0] != 4) bad("a non-final good should take 40% of the value: 100 / 10 x 0.4 = 4, got " + counts[0]);
+                    RM_DarkKernel.ExchangeGoods(100f, new float[] { 10f }, new[] { 99 }, new[] { true }, counts); if (counts[0] != 10) bad("the final good takes all of the value: 10, got " + counts[0]);
+                    if (RM_DarkKernel.PhantomClearance(0f, 10f) != 1f || RM_DarkKernel.PhantomClearance(10f, 10f) != 0f || Math.Abs(RM_DarkKernel.PhantomClearance(2.5f, 10f) - 0.84375f) > 1e-5f) bad("phantom clearance is not a smoothstep from 1 to 0");
+                }
+                {   // the storm: first call schedules, does not rumble at once
+                    var st = StormState.Fresh(); Func<int, int, int> lo = (a, b) => a; Func<float, bool> no = p => false;
+                    var o = RM_StormKernel.Step(ref st, 1000, true, true, 1f, lo, no);
+                    if (o.rumble || st.nextRumbleTick != 1000 + RM_StormKernel.RumbleMin) bad("the first storm tick must schedule the rumble RumbleMin ahead, not rumble at once");
+                }
+                {   // a covered, due probe spawns only when none is out
+                    Func<int, int, int> lo = (a, b) => a;
+                    var cs = CoverState.Fresh(); cs.cover = 1f; cs.nextProbeTick = 500; cs.coveredTicks = 0;
+                    var ev = RM_CoverKernel.Step(ref cs, 1000, true, true, 0, true, true, lo); if (ev == CoverEvent.SpawnProbe) bad("a probe was spawned while one is already out");
+                    cs = CoverState.Fresh(); cs.cover = 1f; cs.nextProbeTick = 500;
+                    ev = RM_CoverKernel.Step(ref cs, 1000, true, true, 0, true, false, lo); if (ev != CoverEvent.SpawnProbe) bad("a due probe was not spawned");
+                    if (!RM_CoverKernel.ProbeReports(RM_CoverKernel.ReportTicks) || RM_CoverKernel.ProbeReports(RM_CoverKernel.ReportTicks - 1)) bad("ProbeReports boundary");
+                    if (RM_CoverKernel.ProbeLeaves(1000 + RM_CoverKernel.ProbeStay, 1000) || !RM_CoverKernel.ProbeLeaves(1000 + RM_CoverKernel.ProbeStay + 1, 1000)) bad("ProbeLeaves boundary (a probe stays exactly ProbeStay ticks)");
+                }
+            }
             return fails;
         }
 

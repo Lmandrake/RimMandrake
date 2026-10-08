@@ -27,6 +27,9 @@
     <Compile Include="..\RM_MovingShadeMath.cs" />
     <Compile Include="..\RM_MovingShadeLayer.cs" />
     <Compile Include="..\RM_SandSwimKernel.cs" />
+    <Compile Include="..\RM_ShadePatchGraph.cs" />
+    <Compile Include="..\RM_WildLeaveMath.cs" />
+    <Compile Include="PatchGraphFuzz.cs" />
     <Compile Include="CreatureBehaviorsFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

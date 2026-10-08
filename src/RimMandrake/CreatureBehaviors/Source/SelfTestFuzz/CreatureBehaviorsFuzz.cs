@@ -66,7 +66,8 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
             {
                 info = default(RM_MovingCasterInfo);
                 Caster c;
-                if (!model.TryGetValue(key, out c) || !c.alive) return false;
+                if (!model.TryGetValue(key, out c)) return false;
+                if (!c.alive) { info.alive = false; return key % 2 == 0; }     // a despawned pawn: some sources say "not alive", some say nothing
                 info.alive = true; info.x = c.x; info.z = c.z;
                 info.hasProps = c.hasProps; info.height = c.height; info.radius = c.radius; info.depth = c.depth;
                 return true;
@@ -242,7 +243,7 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                 var r = new Random(seed * 104729 + 7);
                 Cases++; Steps++;
                 int w = r.Next(1, 40), h = r.Next(1, 40);
-                int cx = r.Next(-6, w + 6), cz = r.Next(-6, h + 6), rad = r.Next(0, 5);
+                int cx = r.Next(-6, w + 6), cz = r.Next(-6, h + 6), rad = r.Next(-3, 5);
                 bool dir = r.Next(4) != 0;
                 float dx = (float)(r.NextDouble() * 2 - 1) * (r.Next(6) == 0 ? 1e-3f : 1f), dz = (float)(r.NextDouble() * 2 - 1);
                 if (r.Next(10) == 0) { dx = 0; dz = 0; }
@@ -254,6 +255,17 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                 RM_MovingShadeMath.CastBody(g, w, h, cx, cz, rad, dir, dx, dz, len, 0.6f, depth);
                 int a, b, c, d;
                 bool ok = RM_MovingShadeMath.ShadowBounds(w, h, cx, cz, rad, dir, dx, dz, len, out a, out b, out c, out d);
+                if (ok && (a < 0 || b < 0 || c > w - 1 || d > h - 1 || a > c || b > d)) { fails.Add($"bounds seed {seed}: bounds [{a},{b}]-[{c},{d}] not a non-empty rectangle inside the {w}x{h} map"); continue; }
+                if (!ok && a <= c && b <= d) { fails.Add($"bounds seed {seed}: reported off the map but [{a},{b}]-[{c},{d}] is a rectangle"); continue; }
+                if (depth > 0f && !dir)                                 // the isotropic ring: every cell of the (r+1) square on the map holds the depth
+                {
+                    int er = Math.Max(0, rad) + 1; bool bad = false;
+                    for (int z = Math.Max(0, cz - er); z <= Math.Min(h - 1, cz + er) && !bad; z++)
+                        for (int x = Math.Max(0, cx - er); x <= Math.Min(w - 1, cx + er); x++)
+                            if (g[z * w + x] != depth) { fails.Add($"bounds seed {seed}: ring cell ({x},{z}) = {g[z * w + x]}, depth {depth} (r {rad})"); bad = true; break; }
+                    if (bad) continue;
+                }
+                if (RM_SunHeatMath.Clamp01(depth) > 0f && depth > 0f && ShadowTouched(g) == 0 && ok && ((!dir) || len >= 0f) && rad >= 0 && cx >= 0 && cz >= 0 && cx < w && cz < h) { fails.Add($"bounds seed {seed}: a caster on the map with depth {depth} wrote nothing"); continue; }
                 for (int i = 0; i < g.Length; i++)
                 {
                     if (g[i] == 0f) continue;
@@ -265,6 +277,33 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                     }
                     if (g[i] > 1f) { fails.Add($"bounds seed {seed}: cell value {g[i]} above 1"); break; }
                 }
+            }
+            return fails;
+        }
+
+        private static int ShadowTouched(float[] g) { int n = 0; foreach (float v in g) if (v > 0f) n++; return n; }
+
+        public static List<string> BoundsExtra(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            for (int k = 0; k < n && fails.Count < 5; k++)
+            {
+                int seed = baseSeed + k;
+                var r = new Random(seed * 15485863 + 5);
+                Cases++; Steps++;
+                const int W = 60, H = 60;
+                int cx = r.Next(20, 40), cz = r.Next(20, 40), rad = r.Next(0, 3);
+                float ang = (float)(r.NextDouble() * Math.PI * 2), dx = (float)Math.Cos(ang), dz = (float)Math.Sin(ang);
+                float len = 3f + (float)(r.NextDouble() * 8), depth = 0.2f + (float)r.NextDouble() * 0.8f;
+                var g = new float[W * H];
+                RM_MovingShadeMath.CastBody(g, W, H, cx, cz, rad, true, dx, dz, len, 0.6f, depth);
+                int outside = 0;
+                for (int i = 0; i < g.Length; i++)
+                    if (g[i] > 0f && (Math.Abs(i % W - cx) > rad || Math.Abs(i / W - cz) > rad)) outside++;
+                if (outside == 0) fails.Add($"bounds-tail seed {seed}: a directional caster (len {len:F1}, dir {dx:F2},{dz:F2}) cast no tail outside its footprint");
+                var zero = new float[W * H];
+                RM_MovingShadeMath.CastBody(zero, W, H, cx, cz, rad, r.Next(2) == 0, dx, dz, len, 0.6f, r.Next(2) == 0 ? 0f : -0.5f);
+                if (ShadowTouched(zero) != 0) fails.Add($"bounds-zero seed {seed}: zero or negative depth still wrote shade");
             }
             return fails;
         }
@@ -419,6 +458,7 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                         int m = a.arg % 5;
                         w.tk = m == 0 ? TKind.None : m == 1 ? TKind.PawnWater : m == 2 ? TKind.PawnDry : m == 3 ? TKind.Thing : TKind.PawnWater;
                         w.dist = a.arg % 3 == 0 ? 1 : a.arg % 3 == 1 ? 3 : 40;
+                        if (a.arg % 7 == 0) { w.range = 1 + a.arg % 3; w.dist = (int)(w.range * w.range); }     // exactly on the strike line
                         return null;
                     }
                 case 5: w.melee = a.arg % 3 == 0; return null;
@@ -485,8 +525,10 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
             var fam = new (string name, Func<List<string>> run)[]
             {
                 ("shade", () => Shade(N(4000), S(1))),
-                ("bounds", () => Bounds(N(60000), S(1))),
+                ("bounds", () => Bounds(N(60000), S(1)).Concat(BoundsExtra(N(4000), S(1))).ToList()),
                 ("swim", () => Swim(N(4000), S(1))),
+                ("patch", () => PatchGraphFuzz.Patch(N(3000), S(1))),
+                ("dash", () => PatchGraphFuzz.Dash(N(4000), S(1))),
             };
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             foreach (var f in fam)
@@ -501,6 +543,8 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"swim branches hit: strike-breach {CovStrike}, melee-breach {CovMelee}, left-sand-breach {CovGroundBreach}, droid-drop {CovDry}, storm-drop {CovStorm}, window-stay {CovWindowStay}, submerge {CovSubmerge}");
             Console.WriteLine($"shade grid compared {CovShadeCmp} times, {CovShadeMoved} with shade on the map");
+            Console.WriteLine($"patch graph reached: patches {PatchGraphFuzz.Patches}, rim cells {PatchGraphFuzz.Rims}, edges {PatchGraphFuzz.Edges}, cells at the cap {PatchGraphFuzz.Capped}, ring cells {PatchGraphFuzz.Rings}, flecks {PatchGraphFuzz.Flecks}");
+            if (!oneSeed.HasValue && scale >= 1 && only == null && (PatchGraphFuzz.Patches == 0 || PatchGraphFuzz.Edges == 0 || PatchGraphFuzz.Capped == 0 || PatchGraphFuzz.Flecks == 0 || PatchGraphFuzz.Rings == 0)) { Console.WriteLine("FAIL patch fuzz never reached a patch / edge / cap / fleck / ring (blind)"); ok = false; }
             Console.WriteLine($"swim coverage: {SwimEvals} ticks, {SwimSubmerges} sequences ending submerged");
             Console.WriteLine($"moving shade left standing after the setting turned off, until the next forced recompute (known gap, tolerated): {StaleOnToggle}");
             Console.WriteLine($"creaturebehaviors fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
