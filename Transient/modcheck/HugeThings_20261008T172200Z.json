@@ -1,0 +1,5181 @@
+{
+ "mod": "HugeThings",
+ "stamp": "20261008T172200Z",
+ "summary": {
+  "chains": [
+   {
+    "name": "defs_resolve",
+    "components": [
+     {
+      "name": "control_probe_can_say_absent",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "0 of 1 def(s) resolved; 1 not found",
+         "requested": 1,
+         "foundCount": 0,
+         "notFound": [
+          "ThingDef/RM_HugeNoSuchDef_ZZ"
+         ],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_HugeNoSuchDef_ZZ",
+           "found": false,
+           "defType": "ThingDef",
+           "defName": "RM_HugeNoSuchDef_ZZ"
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_13732b2fd9e54f128646446eed0754ed",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "every_shipped_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "10 of 10 def(s) resolved",
+         "requested": 10,
+         "foundCount": 10,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "JobDef/RM_HarvestTitanicCorpse",
+           "found": true,
+           "defName": "RM_HarvestTitanicCorpse",
+           "defType": "JobDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_HarvestTitanicCorpse"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_Buildings",
+           "found": true,
+           "defName": "RM_Crush_Buildings",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_Crush_Buildings"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_Chunks",
+           "found": true,
+           "defName": "RM_Crush_Chunks",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_Crush_Chunks"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_HugeTrunk",
+           "found": true,
+           "defName": "RM_Crush_HugeTrunk",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_Crush_HugeTrunk"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_Plants",
+           "found": true,
+           "defName": "RM_Crush_Plants",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_Crush_Plants"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_Walls",
+           "found": true,
+           "defName": "RM_Crush_Walls",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_Crush_Walls"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_TitanicTierDef/RM_TitanicTiers_Default",
+           "found": true,
+           "defName": "RM_TitanicTiers_Default",
+           "defType": "RM_TitanicTierDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_TitanicTiers_Default"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_HugeTrunkBlocker",
+           "found": true,
+           "defName": "RM_HugeTrunkBlocker",
+           "defType": "ThingDef",
+           "label": "trunk",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_HugeTrunkBlocker"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_TitanicCorpseSite",
+           "found": true,
+           "defName": "RM_TitanicCorpseSite",
+           "defType": "ThingDef",
+           "label": "titanic remains",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_TitanicCorpseSite"
+           }
+          },
+          {
+           "requested": "WorkGiverDef/RM_HarvestTitanicCorpse",
+           "found": true,
+           "defName": "RM_HarvestTitanicCorpse",
+           "defType": "WorkGiverDef",
+           "label": "harvest titanic remains",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_HarvestTitanicCorpse"
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_7b8fd763de8c4fa487f9d669e9001990",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "blocker_def_resolves",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "2 of 2 def(s) resolved",
+         "requested": 2,
+         "foundCount": 2,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "defName"
+         ],
+         "defs": [
+          {
+           "requested": "ThingDef/RM_HugeTrunkBlocker",
+           "found": true,
+           "defName": "RM_HugeTrunkBlocker",
+           "defType": "ThingDef",
+           "label": "trunk",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "defName": "RM_HugeTrunkBlocker"
+           }
+          },
+          {
+           "requested": "ThingDef/RM_Nogtyl",
+           "found": true,
+           "defName": "RM_Nogtyl",
+           "defType": "ThingDef",
+           "label": "brommok timber",
+           "modName": "RimMandrake: Baroque Biomes",
+           "packageId": "mandrake.rm.biomes",
+           "fields": {
+            "defName": "RM_Nogtyl"
+           }
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_22b1ef173a0643a0a27689d0c74bad51",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 43
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "settings_roundtrip",
+    "components": [
+     {
+      "name": "corpseSiteEnabled_round_trips",
+      "toggle": "corpseSiteEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "corpseSiteHarvestLeatherPerSession_round_trips",
+      "toggle": "corpseSiteHarvestLeatherPerSession",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "corpseSiteHarvestMeatPerSession_round_trips",
+      "toggle": "corpseSiteHarvestMeatPerSession",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "corpseSiteLeatherSpoilagePerDay_round_trips",
+      "toggle": "corpseSiteLeatherSpoilagePerDay",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "corpseSiteMeatSpoilagePerDay_round_trips",
+      "toggle": "corpseSiteMeatSpoilagePerDay",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "corpseSiteWorkHoursPerSession_round_trips",
+      "toggle": "corpseSiteWorkHoursPerSession",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "giantAnimalsEnabled_round_trips",
+      "toggle": "giantAnimalsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "giantPlantSmashEnabled_round_trips",
+      "toggle": "giantPlantSmashEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "giantPlantSmashMinTier_round_trips",
+      "toggle": "giantPlantSmashMinTier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "giantPlantsEnabled_round_trips",
+      "toggle": "giantPlantsEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "largePawnsFootprintEnabled_round_trips",
+      "toggle": "largePawnsFootprintEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "pawnHitboxEnabled_round_trips",
+      "toggle": "pawnHitboxEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "pawnHitboxScale_round_trips",
+      "toggle": "pawnHitboxScale",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "plantItemPushEnabled_round_trips",
+      "toggle": "plantItemPushEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "plantSelectionEnabled_round_trips",
+      "toggle": "plantSelectionEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "plantTrunkDamageEnabled_round_trips",
+      "toggle": "plantTrunkDamageEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "plantTrunkEnabled_round_trips",
+      "toggle": "plantTrunkEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "plantTrunkScale_round_trips",
+      "toggle": "plantTrunkScale",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "roofAvoidanceEnabled_round_trips",
+      "toggle": "roofAvoidanceEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tierT1MinBodySize_round_trips",
+      "toggle": "tierT1MinBodySize",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tierT2MinBodySize_round_trips",
+      "toggle": "tierT2MinBodySize",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tierT3MinBodySize_round_trips",
+      "toggle": "tierT3MinBodySize",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "tierThresholdsCustom_round_trips",
+      "toggle": "tierThresholdsCustom",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wakeCrushDamageMultiplier_round_trips",
+      "toggle": "wakeCrushDamageMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wakeEnabled_round_trips",
+      "toggle": "wakeEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wakeFilthTrailChance_round_trips",
+      "toggle": "wakeFilthTrailChance",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wakeRoofHolingEnabled_round_trips",
+      "toggle": "wakeRoofHolingEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "yieldCurveEnabled_round_trips",
+      "toggle": "yieldCurveEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "yieldCurveMinFactor_round_trips",
+      "toggle": "yieldCurveMinFactor",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "harmony",
+    "components": [
+     {
+      "name": "Thing_get_CustomRectForSelector_postfix_attached",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Thing",
+         "methodName": "get_CustomRectForSelector",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "get_CustomRectForSelector",
+           "declaringType": "Verse.Thing",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.hugethings",
+             "priority": 0,
+             "patchMethod": "RimMandrake.HugeThings.Patch_Thing_CustomRectForSelector.Postfix",
+             "patchAssembly": "RM_HugeThings"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_30d3fb99a6c0446396167ef739b0b18c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 19
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "trunk",
+    "components": [
+     {
+      "name": "full_grown_giant_gets_its_measured_footprint",
+      "toggle": "plantTrunkEnabled",
+      "beyond_toggle": false,
+      "verdict": "FAIL",
+      "detail": "ExpectationFailed: RM_Nogtyl at growth 1 has 0 blockers nearby; its measured variants allow [10, 13, 17]",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/artboard_stage",
+        "result": {
+         "success": true,
+         "phase": "subjects",
+         "hostilesKilled": 0,
+         "opsCount": 1,
+         "refused": 0,
+         "ops": [
+          {
+           "id": "g",
+           "kind": "plant",
+           "ok": true,
+           "requested": {
+            "x": 125,
+            "z": 125,
+            "w": 1,
+            "h": 1
+           },
+           "def": "RM_Nogtyl",
+           "thingId": "RM_Nogtyl40583",
+           "actual": {
+            "x": 125,
+            "z": 125
+           },
+           "drawRect": {
+            "x": 125.0,
+            "z": 125.0,
+            "w": 1.0,
+            "h": 1.0,
+            "source": "Graphic.drawSize"
+           },
+           "readBack": {
+            "growth": 1.0
+           }
+          }
+         ],
+         "paused": true,
+         "ticksGame": 1,
+         "operation": {
+          "OperationId": "op_f8d75e80a4c54f95a5b0042de9c0a52c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(120) -> 120 real tick(s) over 2 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_ed7099474bcf4cf0a9239ad6e54b3252",
+         "status": "completed",
+         "requestedTicks": 24,
+         "completedTicks": 24,
+         "remainingTicks": 0,
+         "startTicksGame": 97,
+         "endTicksGame": 121,
+         "advancedTicks": 24,
+         "initialFrame": 3850,
+         "lastFrame": 3873,
+         "advancedFrames": 24,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T17:20:19.7974746+00:00",
+         "completedAtUtc": "2026-10-08T17:20:22.1604267+00:00",
+         "message": "Advanced 24 game tick(s) across 24 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 121
+         },
+         "operation": {
+          "OperationId": "op_68f9b5eb34d6445b8fbfebde39133d1d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2377
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 36648,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 22,
+         "perDef": {},
+         "ticksGame": 121,
+         "message": "NOTHING MATCHED. 36648 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_94c954e074ac4e5da37236aed45cca61",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 52
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 36648,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 22,
+         "perDef": {},
+         "ticksGame": 121,
+         "message": "NOTHING MATCHED. 36648 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_1bf6e35f67e84c0d905d2dc2606078d8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 32
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "toggle_off_clears_the_trunk",
+      "toggle": "plantTrunkEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "cutting_the_plant_removes_the_trunk",
+      "toggle": "plantTrunkEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "young_giant_blocks_nothing",
+      "toggle": "plantTrunkEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "upstream failed -- this chain's state is meaningless",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "tier_ladder",
+    "components": [
+     {
+      "name": "thresholds_match_xml_and_ascend",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "1 of 1 def(s) resolved",
+         "requested": 1,
+         "foundCount": 1,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "t1MinBodySize",
+          "t2MinBodySize",
+          "t3MinBodySize"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_TitanicTierDef/RM_TitanicTiers_Default",
+           "found": true,
+           "defName": "RM_TitanicTiers_Default",
+           "defType": "RM_TitanicTierDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "t1MinBodySize": 4.0,
+            "t2MinBodySize": 8.0,
+            "t3MinBodySize": 20.0
+           }
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_44ace00f7e2d45308d33e9c70f0f6f79",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "crush_rules",
+    "components": [
+     {
+      "name": "rules_read_back_as_the_xml_says",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/get_defs",
+        "result": {
+         "success": true,
+         "message": "5 of 5 def(s) resolved",
+         "requested": 5,
+         "foundCount": 5,
+         "notFound": [],
+         "malformed": [],
+         "fieldsAsked": [
+          "crushable",
+          "minTier"
+         ],
+         "defs": [
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_Buildings",
+           "found": true,
+           "defName": "RM_Crush_Buildings",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "crushable": true,
+            "minTier": "T2"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_Chunks",
+           "found": true,
+           "defName": "RM_Crush_Chunks",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "crushable": false,
+            "minTier": "T1"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_HugeTrunk",
+           "found": true,
+           "defName": "RM_Crush_HugeTrunk",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "crushable": false,
+            "minTier": "T1"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_Plants",
+           "found": true,
+           "defName": "RM_Crush_Plants",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "crushable": true,
+            "minTier": "T1"
+           }
+          },
+          {
+           "requested": "RimMandrake.TitanicCreatures.RM_CrushRuleDef/RM_Crush_Walls",
+           "found": true,
+           "defName": "RM_Crush_Walls",
+           "defType": "RM_CrushRuleDef",
+           "modName": "RimMandrake: Huge Things",
+           "packageId": "mandrake.rm.hugethings",
+           "fields": {
+            "crushable": true,
+            "minTier": "T2"
+           }
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_2e892b81b52f4b348c8611c05e8b98ac",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 45
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "harmony_titans",
+    "components": [
+     {
+      "name": "Thing_set_Position_postfix_attached",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Thing",
+         "methodName": "set_Position",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "set_Position",
+           "declaringType": "Verse.Thing",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.titaniccreatures",
+             "priority": 400,
+             "patchMethod": "RimMandrake.TitanicCreatures.Patch_Thing_Position_Wake.Postfix",
+             "patchAssembly": "RM_HugeThings"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_4babf48e7b914c6eaddbf18247df8cf0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Pawn_PathFollower_CostToMoveIntoCell_postfix_attached",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Pawn_PathFollower",
+         "methodName": "CostToMoveIntoCell",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "CostToMoveIntoCell",
+           "declaringType": "Verse.AI.Pawn_PathFollower",
+           "prefixCount": 0,
+           "postfixCount": 2,
+           "transpilerCount": 1,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.AnimalBehaviours.VanillaExpandedFramework_Pawn_PathFollower_CostToMoveIntoCell_Patch.DisablePathCostForFloatingCreatures",
+             "patchAssembly": "VEF"
+            },
+            {
+             "owner": "mandrake.rm.titaniccreatures",
+             "priority": 400,
+             "patchMethod": "RimMandrake.TitanicCreatures.Patch_ThickRoofAvoidance.Postfix",
+             "patchAssembly": "RM_HugeThings"
+            }
+           ],
+           "transpilers": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Hediffs.PhasingPatches.CostToMoveIntoCell_Transpile",
+             "patchAssembly": "VEF"
+            }
+           ],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_e8e284d703f44240acafbc6536c7830a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 15
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Corpse_SpawnSetup_postfix_attached",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Corpse",
+         "methodName": "SpawnSetup",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "SpawnSetup",
+           "declaringType": "Verse.Corpse",
+           "prefixCount": 0,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [],
+           "postfixes": [
+            {
+             "owner": "mandrake.rm.titaniccreatures",
+             "priority": 400,
+             "patchMethod": "RimMandrake.TitanicCreatures.Patch_Corpse_SpawnSetup_TitanicSite.Postfix",
+             "patchAssembly": "RM_HugeThings"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_9782c93859c34d88b9e212eb9cee79a7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 14
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "Pawn_ButcherProducts_postfix_attached",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "bridge_call jawa/harmony_patches",
+        "result": {
+         "success": true,
+         "typeName": "Pawn",
+         "methodName": "ButcherProducts",
+         "methodCount": 1,
+         "methods": [
+          {
+           "method": "ButcherProducts",
+           "declaringType": "Verse.Pawn",
+           "prefixCount": 1,
+           "postfixCount": 1,
+           "transpilerCount": 0,
+           "finalizerCount": 0,
+           "prefixes": [
+            {
+             "owner": "mandrake.rm.titaniccreatures",
+             "priority": 400,
+             "patchMethod": "RimMandrake.TitanicCreatures.Patch_ButcherYieldCurve.Prefix",
+             "patchAssembly": "RM_HugeThings"
+            }
+           ],
+           "postfixes": [
+            {
+             "owner": "OskarPotocki.VEF",
+             "priority": 400,
+             "patchMethod": "VEF.Genes.VanillaExpandedFramework_Pawn_ButcherProducts_Patch.Postfix",
+             "patchAssembly": "VEF"
+            }
+           ],
+           "transpilers": [],
+           "finalizers": []
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_6ac2d5f41ed141f7b3b89791c3df2d56",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 16
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "wake",
+    "components": [
+     {
+      "name": "t1_beast_trails_rubble_and_tramples_plants",
+      "toggle": "wakeEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(60)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 1443 thing(s) across 3600 cell(s); 6 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 1443,
+         "pawnsSkipped": 6,
+         "perCategory": {
+          "Filth": 137,
+          "Item": 66,
+          "Plant": 889,
+          "Building": 351
+         },
+         "samples": [
+          {
+           "x": 95,
+           "z": 96,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 95,
+           "z": 97,
+           "def": "ChunkGranite",
+           "category": "Item"
+          },
+          {
+           "x": 95,
+           "z": 97,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 95,
+           "z": 98,
+           "def": "ChunkGranite",
+           "category": "Item"
+          },
+          {
+           "x": 95,
+           "z": 98,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 95,
+           "z": 100,
+           "def": "AB_Bryolux",
+           "category": "Plant"
+          },
+          {
+           "x": 95,
+           "z": 100,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 95,
+           "z": 104,
+           "def": "AB_Bryolux",
+           "category": "Plant"
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_59725d5d8b6f481cadd2c082966c2d22",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 1155
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 3600 cell(s); 6 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 6,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_caa7f94734ac43bba074d409fde3ec07",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 36
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Elephant in faction (none).",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Elephant45380",
+           "name": "Elephant",
+           "kindRequested": "Elephant",
+           "kindActual": "Elephant",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_5ce5a300dc9046d0b3ccdd24ecfa5032",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 40
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_2437d4106eca4f238f012b9aa3e5e6b2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 29
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_72ad0ded91a142b69455e2a3c9871083",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 13
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_a4596f4fad9547d7a3631cd972d5c539",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_249cf7e9fd8b4323a6ba35d4bae2a518",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_0191613cb0644d54b7883718aad2ef78",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_0cbfafbf7f4443369607b3fba105b164",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Plant_Grass45381",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 128,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45382",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 130,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45383",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 132,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45384",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 134,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45385",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 136,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45386",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 138,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          }
+         ],
+         "scanned": 35006,
+         "countReturned": 6,
+         "countMatched": 6,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 23,
+         "perDef": {
+          "Plant_Grass": 6
+         },
+         "ticksGame": 121,
+         "message": "6 of 6 matching thing(s) returned, 35006 examined.",
+         "operation": {
+          "OperationId": "op_30b48be78e6e4a94bfd626a298f03884",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_b344fa29cfad4cc69d7543bdb7d7fe26",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 42
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_95cb49de95dd443fa4fae858dff37a9e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_9a6cb94bdb4d4719abe4240bff74a980",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_673bc31c0bbd429dba2b423874da605e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_ff409589a9b34d259f3007827c35c0d2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_1be35d6e8c9b4ab2bd920ac2d78a9a10",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Rat in faction (none).",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Rat45387",
+           "name": "Rat",
+           "kindRequested": "Rat",
+           "kindActual": "Rat",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 125,
+           "z": 147,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_88a03153230e41b88f958c60cd0c89ee",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_955f92ee747647f9b66d32f66d4ce4ef",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_9d053d2d23c24f508b10763e6f0bca84",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_6a9a656fbf9745269e1de27a11a71a38",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_f9216c754c0645398e4d9c9701057c51",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_9c00a151a8484549b53910faf36eac72",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_92aa341588ed469f939119801c0ca4e6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Plant_Grass45388",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 128,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45389",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 130,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45390",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 132,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45391",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 134,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45392",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 136,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45393",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 138,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          }
+         ],
+         "scanned": 35013,
+         "countReturned": 6,
+         "countMatched": 6,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 24,
+         "perDef": {
+          "Plant_Grass": 6
+         },
+         "ticksGame": 121,
+         "message": "6 of 6 matching thing(s) returned, 35013 examined.",
+         "operation": {
+          "OperationId": "op_3af1124e0fed4e528638f3529cc2f533",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_b496753fc3174b57a5516730df287a27",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_75781a9a207e4aa88b26982c95721e69",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_1f755f2139e941abb23a08039c710544",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_1cd22dad97a847e0be8d3c22df39916a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_2b6506698f184b739dbbe8e6fd00283a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_8ac01ffa73ab4f9dad2f1b0576274e6d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 3600 cell(s); 8 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 8,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 121,
+         "operation": {
+          "OperationId": "op_0260608cc20a46eb823f459ae34fd221",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 35013,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 24,
+         "perDef": {},
+         "ticksGame": 121,
+         "message": "NOTHING MATCHED. 35013 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_4548ab2d902c447494a9250bc3ace2f1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 35013,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 24,
+         "perDef": {},
+         "ticksGame": 121,
+         "message": "NOTHING MATCHED. 35013 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_b0b692344ac44b95b5167de09ddb91b7",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_stats",
+        "result": {
+         "success": false,
+         "message": "No named stat resolved. Nothing was measured.",
+         "details": {
+          "refused": [
+           {
+            "stat": "BodySize",
+            "reason": "NoSuchStatDef",
+            "suggestions": [
+             "VEF_BodySize_Offset",
+             "VEF_BodySize_Multiplier",
+             "VEF_CosmeticBodySize_Offset",
+             "VEF_CosmeticBodySize_Multiplier"
+            ]
+           }
+          ]
+         },
+         "operation": {
+          "OperationId": "op_8ff5724452234b58bc3c8a4de0bc6f5a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "requestedJobDef": "Goto",
+         "afterJobDef": "Goto",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_2b650b28ae0c458d91eb9da19f2571e6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 77
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "requestedJobDef": "Goto",
+         "afterJobDef": "Goto",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_df9ce689bf4c4f809e44c6241eb44673",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 80
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 121
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(500) -> 500 real tick(s) over 3 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_031483e8038a4168acdbd1cdb5cbdaa4",
+         "status": "completed",
+         "requestedTicks": 264,
+         "completedTicks": 264,
+         "remainingTicks": 0,
+         "startTicksGame": 357,
+         "endTicksGame": 621,
+         "advancedTicks": 264,
+         "initialFrame": 4251,
+         "lastFrame": 4514,
+         "advancedFrames": 264,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T17:20:45.5838511+00:00",
+         "completedAtUtc": "2026-10-08T17:20:52.2067423+00:00",
+         "message": "Advanced 264 game tick(s) across 264 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 621
+         },
+         "operation": {
+          "OperationId": "op_6c68a733d16f412a83f56fda124a543d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 6638
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Filth_RubbleRock45586",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 128,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock45712",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 131,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock45769",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 135,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock45796",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 137,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock45797",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 138,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock45892",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 140,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          }
+         ],
+         "scanned": 35857,
+         "countReturned": 6,
+         "countMatched": 6,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 24,
+         "perDef": {
+          "Filth_RubbleRock": 6
+         },
+         "ticksGame": 621,
+         "message": "6 of 6 matching thing(s) returned, 35857 examined.",
+         "operation": {
+          "OperationId": "op_062a56ee1e4543f7ba78aaba85c97bc5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 46
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 35857,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 24,
+         "perDef": {},
+         "ticksGame": 621,
+         "message": "NOTHING MATCHED. 35857 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_8fc37edfa1694eb194030f3430f3b239",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 35857,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 24,
+         "perDef": {},
+         "ticksGame": 621,
+         "message": "NOTHING MATCHED. 35857 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_4ba898665211442aa65f445e6680da80",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Plant_Grass45388",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 128,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45389",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 130,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45390",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 132,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45391",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 134,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45392",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 136,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass45393",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 138,
+           "z": 147,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          }
+         ],
+         "scanned": 35857,
+         "countReturned": 6,
+         "countMatched": 6,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 24,
+         "perDef": {
+          "Plant_Grass": 6
+         },
+         "ticksGame": 621,
+         "message": "6 of 6 matching thing(s) returned, 35857 examined.",
+         "operation": {
+          "OperationId": "op_ee0e9c00d98e424e9325f22f67d53b00",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "wake_off_leaves_no_trail",
+      "toggle": "wakeEnabled",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(60)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 64 thing(s) across 3600 cell(s); 8 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 64,
+         "pawnsSkipped": 8,
+         "perCategory": {
+          "Building": 38,
+          "Filth": 18,
+          "Plant": 7,
+          "Gas": 1
+         },
+         "samples": [
+          {
+           "x": 110,
+           "z": 116,
+           "def": "SteamGeyser",
+           "category": "Building"
+          },
+          {
+           "x": 110,
+           "z": 117,
+           "def": "SteamGeyser",
+           "category": "Building"
+          },
+          {
+           "x": 111,
+           "z": 116,
+           "def": "SteamGeyser",
+           "category": "Building"
+          },
+          {
+           "x": 111,
+           "z": 117,
+           "def": "SteamGeyser",
+           "category": "Building"
+          },
+          {
+           "x": 128,
+           "z": 125,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 128,
+           "z": 147,
+           "def": "Plant_Grass",
+           "category": "Plant"
+          },
+          {
+           "x": 129,
+           "z": 101,
+           "def": "Filth_RubbleRock",
+           "category": "Filth"
+          },
+          {
+           "x": 130,
+           "z": 147,
+           "def": "Plant_Grass",
+           "category": "Plant"
+          }
+         ],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_4e010407fdec4fa28f24ae8f7fe3bf28",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 69
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 3600 cell(s); 8 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 8,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_519bd67fcd0e42c2a4b0fb7eb35e25fa",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 28
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Elephant in faction (none).",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Elephant47278",
+           "name": "Elephant",
+           "kindRequested": "Elephant",
+           "kindActual": "Elephant",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_41b2f235f20647bfacccf2f4aada7e7d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_7f7358413d70419995006d911ad04111",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_d41ef04018d4424c807952ec3f4de2ab",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_ce92c326e1394ca79b11bdd406816066",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_800a771971d647f4a4e751df119c13b2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_85f6c6919d8144339c8bc21363a9d83c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_d8cb7a1c151f4798b5b8254fce0ccda6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Plant_Grass47279",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 128,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47280",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 130,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47281",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 132,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47282",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 134,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47283",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 136,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47284",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 138,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          }
+         ],
+         "scanned": 35804,
+         "countReturned": 6,
+         "countMatched": 6,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 25,
+         "perDef": {
+          "Plant_Grass": 6
+         },
+         "ticksGame": 621,
+         "message": "6 of 6 matching thing(s) returned, 35804 examined.",
+         "operation": {
+          "OperationId": "op_55dac112d6f542ef9f9fa13770fbb304",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_87b1c629e0de4216972d210659ca6933",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_8380b37b7dfd4a5a9b9f9f889560d15d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_f0e93aba1ac54b5aa1d463bff91de5fd",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_121387b6490c4cdea32310c44e7c7b29",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_9db6d9529240410db711feed40b62e1c",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_ea44bea952574c1db9bf59e12080eb2b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 3600 cell(s); 9 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 9,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 621,
+         "operation": {
+          "OperationId": "op_0c331d30014348789522d6f2a8a86a49",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 35804,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 25,
+         "perDef": {},
+         "ticksGame": 621,
+         "message": "NOTHING MATCHED. 35804 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_e98060053cf44ba882925090c9037ec6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_stats",
+        "result": {
+         "success": false,
+         "message": "No named stat resolved. Nothing was measured.",
+         "details": {
+          "refused": [
+           {
+            "stat": "BodySize",
+            "reason": "NoSuchStatDef",
+            "suggestions": [
+             "VEF_BodySize_Offset",
+             "VEF_BodySize_Multiplier",
+             "VEF_CosmeticBodySize_Offset",
+             "VEF_CosmeticBodySize_Multiplier"
+            ]
+           }
+          ]
+         },
+         "operation": {
+          "OperationId": "op_a2337bfb843f4b4eacc9e2af809da9f9",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "requestedJobDef": "Goto",
+         "afterJobDef": "Goto",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_9bf03964745e4bffa1e3b83a481ddcd0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 82
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 621
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(500) -> 500 real tick(s) over 4 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_0d3b76e98ab44a4ca25e520f4fe9a3ab",
+         "status": "completed",
+         "requestedTicks": 123,
+         "completedTicks": 123,
+         "remainingTicks": 0,
+         "startTicksGame": 998,
+         "endTicksGame": 1121,
+         "advancedTicks": 123,
+         "initialFrame": 4984,
+         "lastFrame": 5106,
+         "advancedFrames": 123,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T17:21:23.9169481+00:00",
+         "completedAtUtc": "2026-10-08T17:21:26.5178092+00:00",
+         "message": "Advanced 123 game tick(s) across 123 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 1121
+         },
+         "operation": {
+          "OperationId": "op_9cf10e255e6d486a9c009f45a858500a",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 2625
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 35904,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 25,
+         "perDef": {},
+         "ticksGame": 1121,
+         "message": "NOTHING MATCHED. 35904 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_c9a8ea2bce4247d5907d09c72962fdc0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Plant_Grass47279",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 128,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47280",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 130,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47281",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 132,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47282",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 134,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47283",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 136,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass47284",
+           "def": "Plant_Grass",
+           "label": "Grass (5.9%)",
+           "x": 138,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 5,
+           "maxHitPoints": 85
+          }
+         ],
+         "scanned": 35904,
+         "countReturned": 6,
+         "countMatched": 6,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 25,
+         "perDef": {
+          "Plant_Grass": 6
+         },
+         "ticksGame": 1121,
+         "message": "6 of 6 matching thing(s) returned, 35904 examined.",
+         "operation": {
+          "OperationId": "op_16fd6661a5534b93ab1e2ec7a6f80662",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "crush_damage_multiplier_scales_the_blow",
+      "toggle": "wakeCrushDamageMultiplier",
+      "beyond_toggle": false,
+      "verdict": "PASS",
+      "detail": "",
+      "evidence": [
+       {
+        "call": "clear_area(60)",
+        "result": {
+         "success": true,
+         "message": "Destroyed 44 thing(s) across 3600 cell(s); 9 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 44,
+         "pawnsSkipped": 9,
+         "perCategory": {
+          "Building": 38,
+          "Plant": 6
+         },
+         "samples": [
+          {
+           "x": 110,
+           "z": 116,
+           "def": "SteamGeyser",
+           "category": "Building"
+          },
+          {
+           "x": 110,
+           "z": 117,
+           "def": "SteamGeyser",
+           "category": "Building"
+          },
+          {
+           "x": 111,
+           "z": 116,
+           "def": "SteamGeyser",
+           "category": "Building"
+          },
+          {
+           "x": 111,
+           "z": 117,
+           "def": "SteamGeyser",
+           "category": "Building"
+          },
+          {
+           "x": 128,
+           "z": 125,
+           "def": "Plant_Grass",
+           "category": "Plant"
+          },
+          {
+           "x": 130,
+           "z": 125,
+           "def": "Plant_Grass",
+           "category": "Plant"
+          },
+          {
+           "x": 132,
+           "z": 125,
+           "def": "Plant_Grass",
+           "category": "Plant"
+          },
+          {
+           "x": 133,
+           "z": 95,
+           "def": "RM_HugeTrunkBlocker",
+           "category": "Building"
+          }
+         ],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_cde38d97acf84861834b8d61e1458c88",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 61
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 3600 cell(s); 9 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 9,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_5eb34c15d86b4749bc7c53ea4e94d05d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 37
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_pawn",
+        "result": {
+         "success": true,
+         "message": "Spawned 1/1 Elephant in faction (none).",
+         "spawnedCount": 1,
+         "failedCount": 0,
+         "substitutedCount": 0,
+         "pawns": [
+          {
+           "ok": true,
+           "id": "Elephant48750",
+           "name": "Elephant",
+           "kindRequested": "Elephant",
+           "kindActual": "Elephant",
+           "kindSubstituted": false,
+           "hostile": false,
+           "x": 125,
+           "z": 125,
+           "spawned": true,
+           "xenotypeApplied": true
+          }
+         ],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_641eefbd17724297b7dafc3ad1a204e2",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 50
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_3ddf41981fee4af09c0169cbd52429b0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 47
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_0396f562d62c450a83c443db769fccad",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_d6f63071b6bf4377b9e92060ae01a6e0",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_966b7c1ef0ec46abaec5402273bf93e5",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_fbb1e78aea2645e1916b62fe5018b472",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/spawn_batch",
+        "result": {
+         "success": true,
+         "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+         "opsRequested": 1,
+         "spawned": 1,
+         "failed": 0,
+         "thingsRequested": 1,
+         "thingsPlaced": 1,
+         "thingsShort": 0,
+         "stacksOverLimit": 0,
+         "cellsOutOfBounds": 0,
+         "perDef": {
+          "Plant_Grass": 1
+         },
+         "errors": [],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_2ad01683eb41460793175bf469a25313",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Plant_Grass48751",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 128,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48752",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 130,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48753",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 132,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48754",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 134,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48755",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 136,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48756",
+           "def": "Plant_Grass",
+           "label": "Grass",
+           "x": 138,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 85,
+           "maxHitPoints": 85
+          }
+         ],
+         "scanned": 35871,
+         "countReturned": 6,
+         "countMatched": 6,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 26,
+         "perDef": {
+          "Plant_Grass": 6
+         },
+         "ticksGame": 1121,
+         "message": "6 of 6 matching thing(s) returned, 35871 examined.",
+         "operation": {
+          "OperationId": "op_49128efa5f5944c4adbbd03c1896f7ca",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_b9d337a1234b4927984ebcd17c7aa293",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 56
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_98e74b739d0d4fe6999c668f8e5fe082",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 38
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_ef05ad04ca2e43faac1f361dde5825bb",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_1ebf3c4337544eb39e4a73bb888db3d4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_2eddf87f3eb54ce2b2fc26cc8712846b",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/set_thing_props",
+        "result": {
+         "success": true,
+         "thing": "Grass (5.9%)",
+         "changed": [
+          "hitPoints"
+         ],
+         "skipped": [],
+         "hitPointsAfter": 5,
+         "maxHitPoints": 85,
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_c09ed2d902554401933ca9bf19dd304d",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/destroy_batch",
+        "result": {
+         "success": true,
+         "message": "Destroyed 0 thing(s) across 3600 cell(s); 10 pawn(s) left alone.",
+         "cellsExamined": 3600,
+         "outOfBounds": 0,
+         "destroyed": 0,
+         "pawnsSkipped": 10,
+         "perCategory": {},
+         "samples": [],
+         "ticksGame": 1121,
+         "operation": {
+          "OperationId": "op_cbd4e0debd194cba80e062d271ebf437",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [],
+         "scanned": 35871,
+         "countReturned": 0,
+         "countMatched": 0,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 26,
+         "perDef": {},
+         "ticksGame": 1121,
+         "message": "NOTHING MATCHED. 35871 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+         "operation": {
+          "OperationId": "op_520d268325be4b8795470763318c21e8",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/pawn_stats",
+        "result": {
+         "success": false,
+         "message": "No named stat resolved. Nothing was measured.",
+         "details": {
+          "refused": [
+           {
+            "stat": "BodySize",
+            "reason": "NoSuchStatDef",
+            "suggestions": [
+             "VEF_BodySize_Offset",
+             "VEF_BodySize_Multiplier",
+             "VEF_CosmeticBodySize_Offset",
+             "VEF_CosmeticBodySize_Multiplier"
+            ]
+           }
+          ]
+         },
+         "operation": {
+          "OperationId": "op_9f481bd6ba6f4585a04569a1a2b844c1",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 49
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/ordered_job",
+        "result": {
+         "success": true,
+         "accepted": true,
+         "interruptibleBefore": true,
+         "requestedJobDef": "Goto",
+         "afterJobDef": "Goto",
+         "nowRunningRequested": true,
+         "ticksElapsed": 0,
+         "pausedDuringWait": true,
+         "queueLength": 0,
+         "operation": {
+          "OperationId": "op_3a14857640eb421bb264160d14ef49e4",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 81
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1121
+         }
+        }
+       },
+       {
+        "call": "wait_ticks(500) -> 500 real tick(s) over 4 call(s)",
+        "result": {
+         "success": true,
+         "stepId": "step_7417a64c39c04bdcb2112ab5e1a16d2c",
+         "status": "completed",
+         "requestedTicks": 82,
+         "completedTicks": 82,
+         "remainingTicks": 0,
+         "startTicksGame": 1539,
+         "endTicksGame": 1621,
+         "advancedTicks": 82,
+         "initialFrame": 5617,
+         "lastFrame": 5698,
+         "advancedFrames": 82,
+         "initialTimeSpeed": "Paused",
+         "startedAtUtc": "2026-10-08T17:21:58.1702835+00:00",
+         "completedAtUtc": "2026-10-08T17:21:59.5220871+00:00",
+         "message": "Advanced 82 game tick(s) across 82 Unity update frame(s).",
+         "state": {
+          "programState": "Playing",
+          "inEntryScene": false,
+          "hasCurrentGame": true,
+          "currentMapId": "Map_0",
+          "longEventPending": false,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "playable": true,
+          "visualReady": true,
+          "automationReady": true,
+          "tick": 1621
+         },
+         "operation": {
+          "OperationId": "op_649f83cfc96a4f15a00746842cc8949e",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 1382
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Filth_RubbleRock48814",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 126,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock48842",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 127,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock49008",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 135,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock49009",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 136,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock49081",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 140,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock49147",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 139,
+           "z": 124,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock49217",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 137,
+           "z": 124,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          },
+          {
+           "id": "Filth_RubbleRock50089",
+           "def": "Filth_RubbleRock",
+           "label": "Rock rubble x1",
+           "x": 136,
+           "z": 124,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": -1,
+           "maxHitPoints": -1
+          }
+         ],
+         "scanned": 35448,
+         "countReturned": 8,
+         "countMatched": 8,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 26,
+         "perDef": {
+          "Filth_RubbleRock": 8
+         },
+         "ticksGame": 1621,
+         "message": "8 of 8 matching thing(s) returned, 35448 examined.",
+         "operation": {
+          "OperationId": "op_2cf7a05df8044dffb087d382853edfd6",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1621
+         }
+        }
+       },
+       {
+        "call": "bridge_call jawa/list_things",
+        "result": {
+         "success": true,
+         "things": [
+          {
+           "id": "Plant_Grass48751",
+           "def": "Plant_Grass",
+           "label": "Grass (3.5%)",
+           "x": 128,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 3,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48752",
+           "def": "Plant_Grass",
+           "label": "Grass (3.5%)",
+           "x": 130,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 3,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48753",
+           "def": "Plant_Grass",
+           "label": "Grass (3.5%)",
+           "x": 132,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 3,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48754",
+           "def": "Plant_Grass",
+           "label": "Grass (3.5%)",
+           "x": 134,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 3,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48755",
+           "def": "Plant_Grass",
+           "label": "Grass (3.5%)",
+           "x": 136,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 3,
+           "maxHitPoints": 85
+          },
+          {
+           "id": "Plant_Grass48756",
+           "def": "Plant_Grass",
+           "label": "Grass (3.5%)",
+           "x": 138,
+           "z": 125,
+           "spawned": true,
+           "rot": 0,
+           "stackCount": 1,
+           "hitPoints": 3,
+           "maxHitPoints": 85
+          }
+         ],
+         "scanned": 35448,
+         "countReturned": 6,
+         "countMatched": 6,
+         "isCompleteList": true,
+         "truncated": 0,
+         "pawnsSkipped": 26,
+         "perDef": {
+          "Plant_Grass": 6
+         },
+         "ticksGame": 1621,
+         "message": "6 of 6 matching thing(s) returned, 35448 examined.",
+         "operation": {
+          "OperationId": "op_716ca4ba0ca7429d933f1c6e0fab6852",
+          "Status": "Completed",
+          "Success": true,
+          "DurationMs": 48
+         },
+         "state": {
+          "programState": "Playing",
+          "hasCurrentGame": true,
+          "paused": true,
+          "timeSpeed": "Paused",
+          "tick": 1621
+         }
+        }
+       }
+      ],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   },
+   {
+    "name": "not_driven",
+    "components": [
+     {
+      "name": "click_anywhere_on_picture_selects_plant",
+      "toggle": "plantSelectionEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "huge_pawn_hitbox_covers_drawn_body",
+      "toggle": "pawnHitboxEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "trunk_relinks_after_save_load",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "shot_into_trunk_damages_the_plant_once",
+      "toggle": "plantTrunkDamageEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "growth_pushes_items_never_wipes_them",
+      "toggle": "plantItemPushEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "growth_never_traps_a_pawn",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "zone_cells_survive_blockers",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "mapgen_giants_get_trunks",
+      "toggle": null,
+      "beyond_toggle": true,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "t2_holes_thin_roofs_and_crushes_walls",
+      "toggle": "wakeRoofHolingEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "t3_titan_smashes_a_giant_plant",
+      "toggle": "giantPlantSmashEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "smaller_titan_goes_around_a_giant",
+      "toggle": "giantPlantSmashMinTier",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "t3_corpse_becomes_a_harvest_site",
+      "toggle": "corpseSiteEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "butcher_yield_curve_reduces_t1_t2_yield",
+      "toggle": "yieldCurveEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "thick_roof_slows_a_titan",
+      "toggle": "roofAvoidanceEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "custom_tiers_move_the_ladder",
+      "toggle": "tierThresholdsCustom",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "large_pawns_footprint_bridge",
+      "toggle": "largePawnsFootprintEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "giant_plants_master_off_is_vanilla",
+      "toggle": "giantPlantsEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     },
+     {
+      "name": "giant_animals_master_off_is_vanilla",
+      "toggle": "giantAnimalsEnabled",
+      "beyond_toggle": false,
+      "verdict": "UNMEASURED",
+      "detail": "UNMEASURED: no bridge tool reads Thing.CustomRectForSelector or simulates a map click",
+      "evidence": [],
+      "screenshots": [],
+      "sequences": [],
+      "checkpoints": [],
+      "shows": [],
+      "surprises": null
+     }
+    ],
+    "situational": null,
+    "modal_check": null
+   }
+  ],
+  "all_green": false,
+  "findings": [
+   "<suite.Component object at 0x000001A96C54FE30>"
+  ],
+  "refused": "",
+  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\HugeThings.md",
+  "visual": [],
+  "visual_all_green": true,
+  "state_all_green": false
+ }
+}
