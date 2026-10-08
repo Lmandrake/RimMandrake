@@ -15,10 +15,12 @@
     <li>
       <packageId>mandrake.rm.environmentalhazards</packageId>
       <displayName>RimMandrake: Environmental Hazards</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

@@ -10,6 +10,7 @@
     <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>sarg.alphabiomes</packageId>

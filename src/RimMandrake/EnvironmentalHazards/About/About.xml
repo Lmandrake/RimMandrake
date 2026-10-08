@@ -78,10 +78,12 @@ explicit rather than adding a new one.</description>
     <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>mandrake.rm.flowworks</packageId>
       <displayName>RimMandrake: FlowWorks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

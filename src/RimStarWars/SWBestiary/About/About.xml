@@ -41,6 +41,7 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer`, `RSW_Groundrunn
            off and graze), so Harmony is now a hard dependency of this mod. -->
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
     <li>
       <packageId>Ludeon.RimWorld.Odyssey</packageId>
@@ -49,6 +50,7 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer`, `RSW_Groundrunn
     <li>
       <packageId>sarg.alphaanimals</packageId>
       <displayName>Alpha Animals</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1541721856</steamWorkshopUrl>
     </li>
     <li>
       <packageId>mlie.starwarsanimalcollection</packageId>
@@ -71,6 +73,7 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer`, `RSW_Groundrunn
            warns about, now via the fold instead of a missing declaration. -->
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Biomes</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <!-- 🔴 ADDED 2026-09-20. Was declared NOWHERE, yet owns the ONLY copy of
@@ -80,6 +83,7 @@ AA_JOE_DESERT_PORT_BATCH_1 (2026-09-20) — `RSW_GreatDevourer`, `RSW_Groundrunn
            screenshot and by locating the PNGs in exactly one workshop folder. -->
       <packageId>OskarPotocki.VFE.Insectoid2</packageId>
       <displayName>Vanilla Factions Expanded - Insectoids 2</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3309003431</steamWorkshopUrl>
     </li>
   </modDependencies>
   <loadAfter>

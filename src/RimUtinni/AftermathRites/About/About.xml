@@ -15,6 +15,7 @@
     <li>
       <packageId>mandrake.rm.aftermath</packageId>
       <displayName>RimMandrake: Aftermath</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

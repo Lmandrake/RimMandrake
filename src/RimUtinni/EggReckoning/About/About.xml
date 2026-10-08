@@ -93,10 +93,12 @@ Depends on mandrake.rm.webwork (RM_OllathrixEgg, RM_Ollathrix) and mandrake.rut.
     <li>
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Baroque Biomes</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>mandrake.rut.patches</packageId>
       <displayName>RimUtinni: Patches</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
 

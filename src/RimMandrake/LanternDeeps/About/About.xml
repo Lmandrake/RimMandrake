@@ -22,7 +22,7 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
     <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
-      <steamWorkshopUrl />
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
 

@@ -53,6 +53,7 @@ Art: the four free species render with tinted vanilla placeholder textures
     <li>
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Biomes</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <!-- mandrake.rm.creaturebehaviors (this mod's RM_Alert_VerminPopulationBase provider) was

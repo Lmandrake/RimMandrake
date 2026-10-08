@@ -14,6 +14,7 @@
     <li>
       <packageId>mandrake.rm.graffiti</packageId>
       <displayName>RimMandrake: Graffiti Framework</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <description>Sacred devotional wall-marks, one per Salvation god, built on

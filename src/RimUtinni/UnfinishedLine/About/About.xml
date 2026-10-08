@@ -21,10 +21,12 @@ Mod Settings ("The Unfinished Line"): chain on/off, the goodwill and day gates, 
     <li>
       <packageId>mandrake.rut.droidrepairjobs</packageId>
       <displayName>RimUtinni: Droid Repair Jobs</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>mandrake.rsw.droidworks</packageId>
       <displayName>Droidworks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

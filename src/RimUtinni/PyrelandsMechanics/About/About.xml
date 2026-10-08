@@ -21,10 +21,12 @@ PYRELANDS_RM_MOD_BUILD_1 §6 (2026-09-25) absorbed the franchise-free two-thirds
     <li>
       <packageId>mandrake.rut.patches</packageId>
       <displayName>RimUtinni Patches (Jawa campaign)</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Baroque Biomes</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

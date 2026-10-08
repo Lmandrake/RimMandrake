@@ -17,6 +17,7 @@ Absorbed RimUtinni: Vault Dungeons (mandrake.rut.injections).</description>
     <li>
       <packageId>mandrake.rm.injections</packageId>
       <displayName>RimMandrake: Structure Injections</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
@@ -25,6 +26,7 @@ Absorbed RimUtinni: Vault Dungeons (mandrake.rut.injections).</description>
     <li>
       <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
       <displayName>Vanilla Expanded Framework (KCSG)</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2023507013</steamWorkshopUrl>
     </li>
   </modDependencies>
 

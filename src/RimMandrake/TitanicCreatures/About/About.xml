@@ -42,6 +42,7 @@ infrastructure/state/items/TITANIC_CREATURES_MOD_1.md in the source repo.</descr
     <li>
       <packageId>mandrake.rm.hugethings</packageId>
       <displayName>RimMandrake: Huge Things</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

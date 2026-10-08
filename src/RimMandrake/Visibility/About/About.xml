@@ -20,6 +20,7 @@ Ta'Baa's launch reset (a real Harmony postfix on GravshipUtility.GenerateGravshi
     <li>
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
   </modDependencies>
 </ModMetaData>

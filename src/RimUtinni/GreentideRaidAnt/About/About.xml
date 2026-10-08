@@ -10,7 +10,7 @@
     <li>
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Baroque Biomes</displayName>
-      <steamWorkshopUrl />
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

@@ -18,10 +18,12 @@
     <li>
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
     <li>
       <packageId>mandrake.rm.creaturebehaviors</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

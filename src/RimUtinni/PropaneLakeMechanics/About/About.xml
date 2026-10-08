@@ -29,6 +29,7 @@ Not built here (explicitly out of scope for this pass, left for the item's own "
     <li>
       <packageId>mandrake.rut.patches</packageId>
       <displayName>RimUtinni Patches (Jawa campaign)</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

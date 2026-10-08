@@ -13,6 +13,7 @@ The customer layer on top of the Droidworks platform. Requires Droidworks — th
     <li>
       <packageId>mandrake.rsw.droidworks</packageId>
       <displayName>Droidworks</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

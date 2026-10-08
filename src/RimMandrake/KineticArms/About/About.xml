@@ -16,6 +16,7 @@
     <li>
       <packageId>mandrake.rm.explosiveknockback</packageId>
       <displayName>RimMandrake: Explosive Knockback</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>
