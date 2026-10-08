@@ -30,13 +30,15 @@ namespace RimMandrake.RustChrome
         // MOD_OPTIONS_RETROFIT_1: vanilla's own values, captured before we ever
         // overwrite them, so the "theme enabled" toggle can put the game back to
         // stock colours exactly rather than guessing at Widgets' compiled defaults.
-        private static Color vanillaWindowFill;
-        private static Color vanillaWindowBorder;
-        private static Color vanillaSectionFill;
-        private static Color vanillaSectionBorder;
-        private static Color vanillaOptionUnselectedFill;
-        private static Color vanillaOptionSelectedFill;
+        private static Color? vanillaWindowFill;
+        private static Color? vanillaWindowBorder;
+        private static Color? vanillaSectionFill;
+        private static Color? vanillaSectionBorder;
+        private static Color? vanillaOptionUnselectedFill;
+        private static Color? vanillaOptionSelectedFill;
         private static Texture2D vanillaInspectTabTex;
+        // One themed tab texture for the life of the process: every Apply(true) used to allocate a new one (a live settings toggle leaked a texture each time).
+        private static Texture2D themedInspectTabTex;
         private static bool captured;
 
         static RustChromeColors()
@@ -76,16 +78,16 @@ namespace RimMandrake.RustChrome
                 SetColorField(typeof(Widgets), "OptionUnselectedBGFillColor", OptionUnselectedFill);
                 SetColorField(typeof(Widgets), "OptionSelectedBGFillColor", OptionSelectedFill);
                 SetTexField(typeof(InspectPaneUtility), "InspectTabButtonFillTex",
-                    SolidColorMaterials.NewSolidColorTexture(WindowFill));
+                    themedInspectTabTex ?? (themedInspectTabTex = SolidColorMaterials.NewSolidColorTexture(WindowFill)));
             }
             else
             {
-                SetColorField(typeof(Widgets), "WindowBGFillColor", vanillaWindowFill);
-                SetColorField(typeof(Widgets), "WindowBGBorderColor", vanillaWindowBorder);
-                SetColorField(typeof(Widgets), "MenuSectionBGFillColor", vanillaSectionFill);
-                SetColorField(typeof(Widgets), "MenuSectionBGBorderColor", vanillaSectionBorder);
-                SetColorField(typeof(Widgets), "OptionUnselectedBGFillColor", vanillaOptionUnselectedFill);
-                SetColorField(typeof(Widgets), "OptionSelectedBGFillColor", vanillaOptionSelectedFill);
+                RestoreColorField("WindowBGFillColor", vanillaWindowFill);
+                RestoreColorField("WindowBGBorderColor", vanillaWindowBorder);
+                RestoreColorField("MenuSectionBGFillColor", vanillaSectionFill);
+                RestoreColorField("MenuSectionBGBorderColor", vanillaSectionBorder);
+                RestoreColorField("OptionUnselectedBGFillColor", vanillaOptionUnselectedFill);
+                RestoreColorField("OptionSelectedBGFillColor", vanillaOptionSelectedFill);
                 if (vanillaInspectTabTex != null)
                 {
                     SetTexField(typeof(InspectPaneUtility), "InspectTabButtonFillTex", vanillaInspectTabTex);
@@ -95,8 +97,20 @@ namespace RimMandrake.RustChrome
             Log.Message("[RimMandrake.RustChrome] colour fields " + (enabled ? "set to theme." : "restored to vanilla."));
         }
 
-        private static string Rgb(Color c)
+        // A vanilla field that could not be read (renamed by a game update) was never captured; restoring it would paint Color.white over the
+        // game's own colour, so it is left alone instead.
+        private static void RestoreColorField(string fieldName, Color? vanilla)
         {
+            if (vanilla.HasValue)
+            {
+                SetColorField(typeof(Widgets), fieldName, vanilla.Value);
+            }
+        }
+
+        private static string Rgb(Color? maybe)
+        {
+            if (!maybe.HasValue) return "-";
+            Color c = maybe.Value;
             return Mathf.RoundToInt(c.r * 255f) + "," + Mathf.RoundToInt(c.g * 255f) + "," + Mathf.RoundToInt(c.b * 255f);
         }
 
@@ -142,13 +156,13 @@ namespace RimMandrake.RustChrome
             }
         }
 
-        private static Color GetColorField(Type type, string fieldName)
+        private static Color? GetColorField(Type type, string fieldName)
         {
             FieldInfo field = type.GetField(fieldName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
             if (field == null)
             {
                 Log.Error("[RimMandrake.RustChrome] field not found: " + type.FullName + "." + fieldName);
-                return Color.white;
+                return null;
             }
             return (Color)field.GetValue(null);
         }

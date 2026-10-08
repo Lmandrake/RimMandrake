@@ -188,7 +188,7 @@ def theme_static_findings(src=None, mod_src=None):
             bad.append("Apply(true) no longer sets %s to %s" % (field, const))
         if 'GetColorField(typeof(Widgets), "%s")' % field not in body.split("static RustChromeColors")[1].split("Apply(enabled)")[0] + body.split("private static void CaptureVanilla")[1].split("captured = true")[0]:
             bad.append("%s is never captured before being overwritten" % field)
-        if not re.search(r'SetColorField\(typeof\(Widgets\), "%s", vanilla\w+\)' % field, off):
+        if not re.search(r'RestoreColorField\("%s", vanilla\w+\)' % field, off):
             bad.append("Apply(false) no longer restores %s to the captured vanilla value" % field)
     if 'SetTexField(typeof(InspectPaneUtility), "InspectTabButtonFillTex", vanillaInspectTabTex)' not in off:
         bad.append("Apply(false) no longer restores InspectTabButtonFillTex")

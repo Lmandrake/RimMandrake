@@ -51,8 +51,8 @@ def main():
     src = open(os.path.join(HERE, "Source", "RustChromeColors.cs"), encoding="utf-8").read()
     modsrc = open(os.path.join(HERE, "Source", "RustChromeMod.cs"), encoding="utf-8").read()
     for tag, old, new in (
-            ("restore of one field dropped", 'SetColorField(typeof(Widgets), "MenuSectionBGFillColor", vanillaSectionFill);', ""),
-            ("restore wrong value", 'SetColorField(typeof(Widgets), "WindowBGFillColor", vanillaWindowFill);', 'SetColorField(typeof(Widgets), "WindowBGFillColor", WindowFill);'),
+            ("restore of one field dropped", 'RestoreColorField("MenuSectionBGFillColor", vanillaSectionFill);', ""),
+            ("restore wrong value", 'RestoreColorField("WindowBGFillColor", vanillaWindowFill);', 'SetColorField(typeof(Widgets), "WindowBGFillColor", WindowFill);'),
             ("tab texture restore dropped", 'SetTexField(typeof(InspectPaneUtility), "InspectTabButtonFillTex", vanillaInspectTabTex);', ""),
             ("theme field not applied", 'SetColorField(typeof(Widgets), "OptionSelectedBGFillColor", OptionSelectedFill);', ""),
             ("vanilla never captured", 'vanillaSectionBorder = GetColorField(typeof(Widgets), "MenuSectionBGBorderColor");', "")):
