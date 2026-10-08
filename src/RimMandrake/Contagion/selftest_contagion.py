@@ -249,11 +249,21 @@ class Fake(object):
             if self.ticks - c["last_growth"] >= 6000 and "no_passive" not in b:
                 c["last_growth"] = self.ticks
                 c["mass"] += 1
+            # Building_RM_Coalescence.Absorb, per 250-tick pass: one inside the ring (footprint expanded by 1)
+            # is eaten; one further out is ordered a step closer and eaten on a LATER pass. "slow_walkers"
+            # (impaired Unfinished, live 2026-10-08) take three passes per step: the harness must still PASS.
             for p in list(self.pawns.values()):
                 if p["kind"] == "RM_TheUnfinished" and not p["vanished"] and not p["mental"] \
-                        and "no_absorb" not in b and abs(p["x"] - c["x"]) <= 18:
-                    p["vanished"] = True
-                    c["mass"] += 1
+                        and "no_absorb" not in b and abs(p["x"] - c["x"]) <= 18 and abs(p["z"] - c["z"]) <= 18:
+                    if abs(p["x"] - c["x"]) <= 2 and abs(p["z"] - c["z"]) <= 2:
+                        p["vanished"] = True
+                        c["mass"] += 1
+                    elif "slow_walkers" in b and p.setdefault("walk", 0) < 2:
+                        p["walk"] += 1
+                    else:
+                        p["walk"] = 0
+                        p["x"] += (c["x"] > p["x"]) - (c["x"] < p["x"])
+                        p["z"] += (c["z"] > p["z"]) - (c["z"] < p["z"])
             st = self.stage(c)
             if self.ticks - c["last_emit"] >= (5000, 3000, 1800)[st] and "no_passive" not in b:
                 c["last_emit"] = self.ticks
@@ -439,7 +449,10 @@ class Fake(object):
     def t_set_draft(self, **k):
         return {"success": True}
 
-    def t_order_pawn(self, pawnId=None, x=None, z=None, **k):
+    def t_order_pawn(self, pawnId=None, x=None, z=None, waitTicks=0, **k):
+        # The real tool runs the clock for waitTicks while the pawn walks (live 2026-10-08: a visitor walked
+        # 200 ticks under the Burn and was dosed before the toggle it was meant to test went off).
+        self.advance(int(waitTicks or 0))
         self.pawns[pawnId]["x"], self.pawns[pawnId]["z"] = x, z
         return {"success": True}
 
@@ -591,6 +604,7 @@ BREAKS = {
     "uv_person_multiplied": ["uv.uv_native_multiplier"],
     "coal_ignores_toggle": ["coalescence.coalescence_off_absorbs_nothing"],
     "no_absorb": ["coalescence.coalescence_absorbs_and_grows_a_stage"],
+    "slow_walkers": [],                       # stragglers miss a pass: the harness polls, nothing goes red
     "no_passive": ["coalescence.coalescence_emits_manhunters_and_grows_on_its_own"],
     "no_collapse": ["coalescence.burn_collapses_it_into_monstrous_samples"],
     "wrong_samples": ["coalescence.burn_collapses_it_into_monstrous_samples"],
