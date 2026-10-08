@@ -1,0 +1,15 @@
+C1 (82, 118) C2 (84, 104)
+## T6_watching_after => 650
+## T6_c1 => (88, 108)
+## T6_added => 1
+## T6_hidden_after_ticks => 40
+## T6_hunt_left => 0
+## T5_hidden_after => 650
+## T5_c1 => (95, 110)
+## T5_sign => [('RM_WatcherSign_SandDimple95108', 100, 110)]
+## T5_marked => 2
+## T5_s0 => ['RM_WatcherWatch', True, 1, 'RM_WatcherFlush', (87, 104)]
+## T5_s3 => ['RM_WatcherWatch', True, 1, 'RM_WatcherFlush', (97, 107)]
+## T5_s4 => ['Flee', False, 0, 'Wait_Combat', (99, 109)]
+## T5_hunt_designations_on_piinnok => 1
+DONE
