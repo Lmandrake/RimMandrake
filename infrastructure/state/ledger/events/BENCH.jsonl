@@ -1269,3 +1269,6 @@
 {"seat":"BENCH","event":"file","id":"HUGE_THINGS_FOOTPRINT_1","title":"Huge Things: solid trunks for huge plants + hitboxes for huge pawns (mandrake.rm.hugethings); Rot giants and TitanicCreatures opt in","kind":"task","target":"v1","needs":"bridge","spec":"design/RimMandrake/giant_footprint_design_2026-10-07.md","for":"FOUNDRY","ts":"2026-10-07T14:49:06Z","tsn":1791384546510273059}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-07T14:57:20Z","tsn":1791385040284660507}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"deploy Twilight Sea + Pyrelands, full-list restart, Huge Things Rot save","override":"took the bridge: FOUNDRY went quiet for 344 min","ts":"2026-10-07T21:05:59Z","tsn":1791407159960640303}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-08T02:16:00Z","tsn":1791425760678314152}
+{"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-08T02:16:08Z","tsn":1791425768448117758}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"Huge Things Rot walk with owner after crash relaunch","ts":"2026-10-08T02:18:44Z","tsn":1791425924032674334}
