@@ -1,9 +1,9 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-06T19:52:12-0700",
+ "built": "2026-10-07T20:20:13-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_Bleedleaf": {
    "columns": {
@@ -660,20 +660,38 @@
     },
     "B": {
      "single": "0de2d53cf0edb6f7890d110137b4736cdafe457297ce97b05580af63fdf92081"
+    },
+    "C": {
+     "single": "59dca961fc3191dfc6b9000baae67c24f8efa682a01326aa18476f8b80dce2a6"
+    },
+    "D": {
+     "single": "2bd852d3d8d2a7cc30aeb67a63007c17a3f8c93cd78f8da3804dfdd144dd1b96"
+    },
+    "E": {
+     "single": "cc12e580afba357364341407215f0df5562b76afb639a30b21b5e2b75e7fd8f5"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/RustPuff",
-    "B": "RotSporeKit/Things/Plant/RustPuff"
+    "B": "RotSporeKit/Things/Plant/RustPuff",
+    "C": "RotSporeKit/Things/Plant/RustPuff",
+    "D": "RotSporeKit/Things/Plant/RustPuff",
+    "E": "RotSporeKit/Things/Plant/RustPuff"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_rustpuff_v2"
+    "B": "render rot_rustpuff_v2",
+    "C": "render contagion_RustPuff_var1",
+    "D": "render contagion_RustPuff_var2",
+    "E": "render contagion_RustPuff_var3"
    },
    "res": "RotSporeKit/Things/Plant/RustPuff",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "rustpuff"
   },
@@ -771,12 +789,13 @@
     "A": "Things/Pawn/Animal/RM_Shambles/RM_Shambles"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheRot"
+    "A": "IN GAME \u2014 Contagion"
    },
    "res": "Things/Pawn/Animal/RM_Shambles/RM_Shambles",
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "shambles"
   },
   "RM_Skinflap": {

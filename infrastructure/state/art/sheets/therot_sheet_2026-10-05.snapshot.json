@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheRot",
- "built": "2026-10-06T21:07:02-0700",
+ "built": "2026-10-07T20:09:27-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_Agaripawn": {
    "columns": {
@@ -645,6 +645,26 @@
    ],
    "subject_key": "dewshrooms"
   },
+  "RM_Durrok": {
+   "columns": {
+    "A": {
+     "east": "cf024497dad1b72f3dd711fd0f198e48a298fe0c17c2fe5dc4b649b95c23e372",
+     "north": "30701f14ee3cf3cc4dab1baf04925f4073ea028e45cc2066646bfa900506c05a",
+     "south": "00da96559e313294c38004a2733c93f78ce8accfb92d5b68ff35eea5e1514f40"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Durrok/RM_Durrok"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary"
+   },
+   "res": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "durrok"
+  },
   "RM_EuphoricCrown": {
    "columns": {
     "A": {
@@ -890,6 +910,26 @@
    ],
    "subject_key": "mortalmorelplant"
   },
+  "RM_Mullgoth": {
+   "columns": {
+    "A": {
+     "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
+     "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
+     "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary"
+   },
+   "res": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "mullgoth"
+  },
   "RM_Nuitae": {
    "columns": {
     "A": {
@@ -1027,6 +1067,26 @@
     "B"
    ],
    "subject_key": "sagecrust"
+  },
+  "RM_Shambles": {
+   "columns": {
+    "A": {
+     "east": "5b88ed6046bf16b892979f96bf28f30e962f5a81b5eefa0deacc88a5ebb55695",
+     "north": "9766cbacb85d1b6cc82812fdb8716a77578e138af7cb9bd7746c31eb85607835",
+     "south": "213c6d2777ae9a9826dacfacaddd896cf14ab115ec8ee5bb71485df280761a35"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Shambles/RM_Shambles"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TheRot"
+   },
+   "res": "Things/Pawn/Animal/RM_Shambles/RM_Shambles",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "shambles"
   },
   "RM_Shinecap": {
    "columns": {
@@ -1277,76 +1337,6 @@
    ],
    "subject_key": "wrinklecap"
   },
-  "RSW_Durrok": {
-   "columns": {
-    "A": {
-     "east": "baf60eb96ddbb26ce8ecf541ee10ffe3fcfe14ea3f276c24bd2102024cc48ce1",
-     "north": "5e5cc21329aaf8f4e7eec9a37c828b3c4aa7bffbc86f133f4c69acc92e2e5a1b",
-     "south": "9331c2e8e592ee8141d2d78b35d94ff9a90f1516ae388f98f972e7cb98d6d496"
-    },
-    "B": {
-     "east": "cf024497dad1b72f3dd711fd0f198e48a298fe0c17c2fe5dc4b649b95c23e372",
-     "north": "30701f14ee3cf3cc4dab1baf04925f4073ea028e45cc2066646bfa900506c05a",
-     "south": "00da96559e313294c38004a2733c93f78ce8accfb92d5b68ff35eea5e1514f40"
-    },
-    "C": {
-     "south": "9331c2e8e592ee8141d2d78b35d94ff9a90f1516ae388f98f972e7cb98d6d496"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn",
-    "B": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn",
-    "C": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render rot_wildpawn_v2",
-    "C": "donor original \u2014 1541721856"
-   },
-   "res": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "subject_key": "durrok"
-  },
-  "RSW_Mullgoth": {
-   "columns": {
-    "A": {
-     "east": "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac",
-     "north": "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
-     "south": "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6"
-    },
-    "B": {
-     "east": "77efac86d35edcbf90eb71f4eb929b426367b7e98e6b912f0a0a89268d6ddbb4",
-     "north": "0a9255469f40284fdee664b64d3bca3d9e38e10f24b0c7ea2961c1800fd627ad",
-     "south": "858e5aefcd48e559a80bccb155a53fe1be03c7d8f86b4fbc44340254f358dd9c"
-    },
-    "C": {
-     "east": "810032c86cf70324085ff51cc2a40d3b7577ad27dde681d1842f74406f056d49",
-     "north": "f38d8ae5dc9995e0f6a6c8bf49131b60372288fa9bd57e1c54d721365d49df8f",
-     "south": "db618cec3690bcaa734f15402d3d9daad9895a26105119ee593b70369841aae8"
-    }
-   },
-   "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-    "B": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-    "C": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod"
-   },
-   "labels": {
-    "A": "IN GAME \u2014 WildpodArtOverride",
-    "B": "history WildpodArtOverride 2026-09-13",
-    "C": "history WildpodArtOverride 2026-09-20"
-   },
-   "res": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
-   "reserved": [
-    "A",
-    "B",
-    "C"
-   ],
-   "subject_key": "mullgoth"
-  },
   "RSW_ShiroTrap": {
    "columns": {
     "A": {
@@ -1421,5 +1411,5 @@
   }
  },
  "sheetId": "therot_sheet_2026-10-05",
- "snapshotId": "25ff90f314e71303"
+ "snapshotId": "58029c059aa9aaf1"
 }

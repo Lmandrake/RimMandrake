@@ -1,2 +1,13 @@
-REFUSED serve_gated: theforge_sheet_2026-10-05.html: no gate stamp — this HTML never passed scaled_review_gate.
-Build it with art_sheet.py --biome <RM_X> (gated), or stamp a sheet that passes with `scaled_review_gate.py check theforge_sheet_2026-10-05.html --stamp`.
+
+  sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\theforge_sheet_2026-10-05.html
+  decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\theforge_sheet_2026-10-05.decisions.json
+             24 rows · 24 decided · NEVER reviewed (pre-fill only)
+  serving    http://localhost:46855/?t=U_RVJpjIZXTxKfVzzVT4Ig
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  "GET /?t=U_RVJpjIZXTxKfVzzVT4Ig HTTP/1.1" 200 -
+  "GET /?t=U_RVJpjIZXTxKfVzzVT4Ig HTTP/1.1" 200 -
+  "GET /?t=U_RVJpjIZXTxKfVzzVT4Ig HTTP/1.1" 200 -
+  "GET /?t=U_RVJpjIZXTxKfVzzVT4Ig HTTP/1.1" 200 -

@@ -1,2 +1,44 @@
-REFUSED serve_gated: desert_sheet_2026-10-04.html: no gate stamp — this HTML never passed scaled_review_gate.
-Build it with art_sheet.py --biome <RM_X> (gated), or stamp a sheet that passes with `scaled_review_gate.py check desert_sheet_2026-10-04.html --stamp`.
+
+  sheet      \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\desert_sheet_2026-10-04.html
+  decisions  \\wsl.localhost\Ubuntu\home\mandrake\rm\bench\Transient\biome_ffar\desert_sheet_2026-10-04.decisions.json
+             89 rows · 89 decided · reviewed
+  serving    http://localhost:40813/?t=pAzYN01j1Rn4TI63gP9JAA
+             (WSL: bound 0.0.0.0 because the WSL2 loopback relay is unreliable;
+              the ?t= token is what gates writes. Windows browser uses localhost.)
+  stop       Ctrl-C
+
+  "GET /?t=pAzYN01j1Rn4TI63gP9JAA HTTP/1.1" 200 -
+  "GET /?t=pAzYN01j1Rn4TI63gP9JAA HTTP/1.1" 200 -
+  "GET /?t=pAzYN01j1Rn4TI63gP9JAA HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 46584)
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/http/server.py", line 496, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/http/server.py", line 484, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/home/mandrake/.claude/skills/review-sheets/assets/serve_sheet.py", line 552, in do_GET
+    return self._send(200, inject_sidecar(html, cfg), "text/html; charset=utf-8", cookie)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/mandrake/.claude/skills/review-sheets/assets/serve_sheet.py", line 496, in _send
+    self.wfile.write(body)
+    ~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.14/socketserver.py", line 845, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [Errno 104] Connection reset by peer
+----------------------------------------
+  "GET /?t=pAzYN01j1Rn4TI63gP9JAA HTTP/1.1" 200 -
+  "GET /?t=pAzYN01j1Rn4TI63gP9JAA HTTP/1.1" 200 -
+  "GET /?t=pAzYN01j1Rn4TI63gP9JAA HTTP/1.1" 200 -

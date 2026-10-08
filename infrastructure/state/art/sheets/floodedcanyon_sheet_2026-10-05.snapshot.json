@@ -1,9 +1,9 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-05T18:44:53-0700",
+ "built": "2026-10-07T20:07:27-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 50 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_Murkling": {
    "columns": {
@@ -13,9 +13,9 @@
      "south": "d7fd05f1d4332745962b8a99dc3a2ff309d02f35caf9a227d04aae00c83fee0c"
     },
     "B": {
-     "east": "68c7dde016ef99d7d1651819c12142bd88ad0494ee6449f93d68a512b562fa87",
-     "north": "586bc7fab6d2d789c15efea92b3bb8ed280be19e8b6c0fa35ee1676b6a78d789",
-     "south": "b0b04bf49d8ef03573b89b587a250284f3ecc9bf8e5dcac6c04576f16e1f5a7e"
+     "east": "b3e69d8f7573c3ee116cf64b381cef345a9263d0604a0bb5ac6107900aa5ee25",
+     "north": "fb24aabaac879e327c24a6ca926dbd7862dc4564aa769cb590b623fac0277b88",
+     "south": "789bd3da12cc679f5c1af427b22cbba94260c3bb07cf788264ab6786cd2b0eb3"
     }
    },
    "graphic_of": {
@@ -24,7 +24,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_Murkling_v1"
+    "B": "render sheet_redo_AA_Murkling_v2"
    },
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
    "reserved": [
@@ -40,20 +40,26 @@
     },
     "B": {
      "single": "0a4a0528b19b365cb7a0b501b52ddea4f0e53a06887959bdc0164c46f91ee60a"
+    },
+    "C": {
+     "single": "d92285d8adf2c75ae3f305b9e080e09645e079db354af088ca42c8ef44b9b26c"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_CrackedThornwood",
-    "B": "Things/Plant/RM_CrackedThornwood"
+    "B": "Things/Plant/RM_CrackedThornwood",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_CrackedThornwood_v1"
+    "B": "render gapall_RM_CrackedThornwood_v1",
+    "C": "render gapfin_RM_TwistingThornwood_v1"
    },
    "res": "Things/Plant/RM_CrackedThornwood",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "crackedthornwood"
   },
@@ -148,14 +154,14 @@
   "RM_Ommok": {
    "columns": {
     "A": {
-     "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
-     "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
-     "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
-    },
-    "B": {
      "east": "5a886bd59aca4df841bfacf82640eb2e0910ffe47684bbae79ee2f4ea4403481",
      "north": "dc65e88c249af4a1363557f5430021b4b292c327a3a9eac1eeaaf12a8f75b619",
      "south": "0bd92c393b1fa0d50ce1c1e6c01a099d74ecfab37f5bbd3336ed8858e0a04257"
+    },
+    "B": {
+     "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+     "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+     "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
     }
    },
    "graphic_of": {
@@ -164,7 +170,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 LongShade",
-    "B": "render RM_Ommok"
+    "B": "history LongShade 2026-09-29"
    },
    "res": "Things/Pawn/Animal/RM_Ommok/RM_Ommok",
    "reserved": [
@@ -241,17 +247,23 @@
    "columns": {
     "A": {
      "single": "f32acf4e16a1afe2054ec6677d4382465dd4dd8dffe9ac8a141df4e33aafd4d5"
+    },
+    "B": {
+     "single": "3e8a8759be42c6463f60b1332afe7de584caef33aee4f427c64040d2917601bb"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_TwistingThorngrass"
+    "A": "Things/Plant/RM_TwistingThorngrass",
+    "B": "Things/Plant/RM_TwistingThorngrass"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "B": "render gapfin_RM_TwistingThorngrass_v1"
    },
    "res": "Things/Plant/RM_TwistingThorngrass",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "twistingthorngrass"
   },
@@ -325,7 +337,7 @@
     "A": "Things/Plant/RM_Veqma"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_Veqma) \u2014 RimMandrake: Baroque Biomes"
    },
    "res": "Things/Plant/RM_Veqma",
    "reserved": [
@@ -362,20 +374,37 @@
      "east": "f06b4b74efad7d965e74b673c5dc70e23e77b44ddd9fe091a2dc53d85fb5601d",
      "north": "8ec5fd10caf8f5902276c15e267e078835d0283619d44d6b87993564343b0790",
      "south": "7bf4d8fbe05e6458d98f3b7bc644cd6c4e3aa2103db463e0aeefa50222bd5b4c"
+    },
+    "C": {
+     "1_east": "ee17d0f65a39265c235507311a4d037cd1c4b79fc6c3553a1c7fb013d22da0de",
+     "1_north": "fbc831bb620b7a45a897697a891e8d527480eff75c78c1ee99ca22d3be0e4a9e",
+     "1_south": "a6c8756d7659797c36ac5e813bd0482b5fb4de72d20266a8fd8bcb5b0694bdaf",
+     "2_east": "ef2511606050d5a4d407bf2c74d2e545b6d60e2151161e2aefcc503a6ac038d8",
+     "2_north": "4bbb99d061280d796e1535741cf68245e61895f9acbaf024cd62b651a368deef",
+     "2_south": "3ace4361960d7bb9350210686ca711db100f37782fafcbfd51392aa2332b1e52",
+     "3_east": "d533f9b3988c110a1ad6c3c4f48f8f76f3db092ceedf8d89ec9c093d45586b4f",
+     "3_north": "20a48d785e4c3dbe5b9b0ab064f832407ccc44cca5a789f81f6ffc6b8b5b2997",
+     "3_south": "90238ea43c838a644b144761c85457a7c31b6da47d2bb11aa70fc0a878c261a8",
+     "4_east": "ee17d0f65a39265c235507311a4d037cd1c4b79fc6c3553a1c7fb013d22da0de",
+     "4_north": "fbc831bb620b7a45a897697a891e8d527480eff75c78c1ee99ca22d3be0e4a9e",
+     "4_south": "a6c8756d7659797c36ac5e813bd0482b5fb4de72d20266a8fd8bcb5b0694bdaf"
     }
    },
    "graphic_of": {
     "A": "swanimals/CanCell/CanCell",
-    "B": "swanimals/CanCell/CanCell"
+    "B": "swanimals/CanCell/CanCell",
+    "C": "_flip:swanimals/CanCell/CanCell_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render canon_cancell_v1"
+    "B": "render canon_cancell_v1",
+    "C": "IN GAME \u2014 CanCell_Flying_"
    },
    "res": "swanimals/CanCell/CanCell",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "cancell"
   },
@@ -387,23 +416,65 @@
      "south": "93c3d7d58fab40a0826afd87ee12e210b010dfcc0340059b929f530f2e918b95"
     },
     "B": {
+     "east": "296f437d6d9ed1daa204963512269ac8604fabeff44ef04aca7220210e712360",
+     "north": "980b49b06f96675a3e0992038b1c3c863276a9d111697b00010cd63306eeedfd",
+     "south": "c02dd654f26961c188eb153df2753557c3141121091abdb191d3db8e5587ab2c"
+    },
+    "C": {
      "east": "52fb2d350a99cd931e32d3bc748561c6c13db31b10f998f9b81c4c20d6d5ca31",
      "north": "fa71044cbca1efb3f746a11d0713f4860818e6f079f019562dde3d6e61c39352",
      "south": "fa7ef3949ca880b50a9f80890bd1599fee7826a016a20d92f737900c9468b3b8"
+    },
+    "D": {
+     "1_east": "81aa3a96abf52a6b789671f7c81258b92830823b7e6d385866e6cfc7c9e20043",
+     "1_north": "92d2782e702eff8b88cca80717f125d540e1202bc216428bc26fb37ad75d4d2a",
+     "1_south": "74148c2ae3e091d64f606292973f2f0fd9910bebea25455bef2d0b9aa309c320",
+     "2_east": "2011533a7186226142c8b7646f9fd1c54b39f02d7a0948fee713c177e5ab4a0c",
+     "2_north": "10b4b9ef4ad7f7afb05149181f27718035f9ce10031f464d0f9431d3ed1d2188",
+     "2_south": "96bb487a3542cfc9cf79dc1eb1a3e5619d16fef59632fb79b68ad1923dd8ffd5",
+     "3_east": "5bab61a5b11ddb994e31d9ad9dda2a262cc1d9143233d94ec9c4e9e628e8e61d",
+     "3_north": "6340f28fc215ebd9e28a483cbc305799bfd97e1f38a4f6f109f07521c8651625",
+     "3_south": "1df7eb5714c5fec155ce51f1570984596cc0bf2517d97c5793b6a37a6eb9d735",
+     "4_east": "55efc2da767a9da89402316f3d315a7c3a0a2f83c67ec24b4ddff7f08860b0a0",
+     "4_north": "eaa9143a524f973c8c3dce80ab5094b7d42ce8a20cad459c5b265a11975a7ed3",
+     "4_south": "7d1cc1d5284369c2928a5b9ac966683e5fe3a3f7103e3d53da1effb631226358"
+    },
+    "E": {
+     "1_east": "d67594dc3f78ef20ef7118421c67ea10746278cf541b6457b1b7370c1607e2cc",
+     "1_north": "e0aa83483c18ee6835a3770cafc49a9ddf8940f7c3bbd0cebeac398071207919",
+     "1_south": "7a0a10afbdbfd9eedeb8d6436a06970ced3ceaaa726a3cec43feb1a09679f4c3",
+     "2_east": "f9823ce6f53f8cd10057be22ad20fcf23eae6c7d966546726e7efc4a2a42cced",
+     "2_north": "804c3bc6bea09afdc62a852cf6182c8686f23e195ef50244b9664d881011b488",
+     "2_south": "cf8fcfa5ad487cdfc97a0c2284ffb3c530896f26b513f5fab1bb9b081c5e42e6",
+     "3_east": "34ccacb5b68c2a5c0a0f9f1aff3d76cf4d7b258d87416b173c01dec55bec0dec",
+     "3_north": "b95ed0b1fb389460f227ac33ffdc3bd8ffe8c71d695fc41f28329a3e3c7f4a35",
+     "3_south": "c9199f78c620cf702dc2aff13da28278ac0990ea9c4e1989eed658c780844172",
+     "4_east": "4458dc8bcef509555c53722d444141ea54edee1d44b125ed95453b5df6f413fd",
+     "4_north": "360ca5fb897f01bf78417491f298b232e150794946e649576c7c68aa2b51f524",
+     "4_south": "a8dd1f199a5b1a7b2e6c0d63cde5aa3f10c61e21f2b6906316dc82a8beb890e8"
     }
    },
    "graphic_of": {
     "A": "swanimals/Convor/Convor",
-    "B": "swanimals/Convor/Convor_f"
+    "B": "swanimals/Convor/Convor",
+    "C": "swanimals/Convor/Convor_f",
+    "D": "_flip:swanimals/Convor/Convor_Flying_",
+    "E": "_flip:swanimals/Convor/Convor_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 SWBestiary"
+    "B": "render leaningscrub_convor_v1",
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "IN GAME \u2014 Convor_f_Flying_",
+    "E": "IN GAME \u2014 Convor_Flying_"
    },
    "res": "swanimals/Convor/Convor",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "convor"
   },
@@ -641,5 +712,5 @@
   }
  },
  "sheetId": "floodedcanyon_sheet_2026-10-05",
- "snapshotId": "767410bf7addbf93"
+ "snapshotId": "db724682ad62c3e6"
 }

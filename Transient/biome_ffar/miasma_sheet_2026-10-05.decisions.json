@@ -2,7 +2,7 @@
  "sheetId": "miasma_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/miasma_sheet_2026-10-05.snapshot.json",
- "snapshotId": "851a1e7c69c9a22c",
+ "snapshotId": "73b8e05dfc9948aa",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Miasma",
  "reviewStatus": {
@@ -83,9 +83,9 @@
    "prefill": "A"
   },
   "RM_Ommok": {
-   "decision": "A",
+   "decision": "B",
    "note": "",
-   "prefill": "A"
+   "prefill": "B"
   },
   "RM_ReefbackJuv": {
    "decision": "A",

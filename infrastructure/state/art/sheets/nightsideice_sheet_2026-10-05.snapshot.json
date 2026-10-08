@@ -1,17 +1,12 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-06T20:15:17-0700",
+ "built": "2026-10-07T20:20:03-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_ShockGoat": {
    "columns": {
-    "A": {
-     "east": "cd807a61921c644fab0ebad283c747d908c40af8f76cbfc3d094d5575ba71cb6",
-     "north": "bcaadce40442f96c0115b460a60a005da1246fa98735a96e3b65b248ceb6dd78",
-     "south": "c3393ed5a233b5f45de458a4927376a76d4e760c424768b1f130371c7b587497"
-    },
     "B": {
      "east": "e0b5ce5699b15ead5420377f45d493d9b3453b9d396bf30c890c769f827a87e0",
      "north": "dbdf4abf638e547780df0da7225486568e75a991f6b0e85f39447e964c695ce5",
@@ -24,16 +19,14 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
-    "B": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
-    "D": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat"
+    "B": "_byname",
+    "D": "Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_ShockGoat_v1",
-    "D": "render nightsideice_shockgoat_v1"
+    "D": "IN GAME \u2014 NightsideIce"
    },
-   "res": "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat",
+   "res": "Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce",
    "reserved": [
     "A",
     "B",
@@ -109,11 +102,6 @@
   },
   "Tauntaun": {
    "columns": {
-    "A": {
-     "east": "45ecc26a11888c3fe7e44d713eebda6ceb7a7ec03db7d572c182b2db301b1e54",
-     "north": "ca69a2b894ca6da3fadd49f252d09b65a2b53b31ef55a3f657759838d4b3948e",
-     "south": "ec61e64684f85023ba6f6b1b1b7e25718a7a8d321e383d5c695141fd2512e0d9"
-    },
     "B": {
      "east": "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
      "north": "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
@@ -131,18 +119,16 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Tauntaun/Tauntaun",
-    "B": "swanimals/Tauntaun/Tauntaun",
-    "C": "swanimals/Tauntaun/Tauntaun_j",
-    "D": "swanimals/Tauntaun/Tauntaun"
+    "B": "_byname",
+    "C": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+    "D": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
    },
    "labels": {
-    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Tauntaun_v1",
     "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "D": "render nightsideice_tauntaun_v1"
+    "D": "IN GAME \u2014 SWBestiary"
    },
-   "res": "swanimals/Tauntaun/Tauntaun",
+   "res": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
    "reserved": [
     "A",
     "B",
@@ -153,5 +139,5 @@
   }
  },
  "sheetId": "nightsideice_sheet_2026-10-05",
- "snapshotId": "0314f878a681ce45"
+ "snapshotId": "3e5fd0387ed782fc"
 }

@@ -1,17 +1,12 @@
 {
  "biome": "RM_TwilightSea",
- "built": "2026-10-06T20:16:59-0700",
+ "built": "2026-10-07T20:23:49-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_Aerofleet": {
    "columns": {
-    "A": {
-     "east": "9dc34259f7b1180e99a0afbd93e610b8998ef26f753dd7ad6d4eacca7f55ccec",
-     "north": "3c5f4bf93143b60ec28904cac52d1c62ce570d58fd8ee9ed64d54df36d43ed73",
-     "south": "4fcd2aee3f27f696e7f19658b262f2e8e6876c17f917e1a8d013cfe22ee1ab38"
-    },
     "B": {
      "east": "38ce595b807676cab54949e4572239c4da8a90e58497227402b682d40ad5bd7f",
      "north": "6d5726f85c98bb09c171bcb1eaf9b3b424b89ba151c21a1b61f80b3152811894",
@@ -19,14 +14,12 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
-    "B": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet"
+    "B": "Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_Aerofleet_v1"
+    "B": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Pawn/Animal/AA_Aerofleet/AA_Aerofleet",
+   "res": "Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea",
    "reserved": [
     "A",
     "B"
@@ -55,8 +48,8 @@
     "C": "Things/Pawn/Animal/RM_Aluun/RM_Aluun"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_aluun_v1",
+    "A": "history TerminalBiomes 2026-10-03",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "C": "render twilightsea_aluun_v2"
    },
    "res": "Things/Pawn/Animal/RM_Aluun/RM_Aluun",
@@ -69,9 +62,6 @@
   },
   "RM_AluunCatch": {
    "columns": {
-    "A": {
-     "single": "2e2146683e3b48ce7e74088c9c4acb5420cfcc5372a65b361b94935846f4f539"
-    },
     "B": {
      "single": "a0adc3fa4a181430419fa6e0a0d6e3aed9547e040a0bd040371cf53b032ca63d"
     },
@@ -84,28 +74,73 @@
      "east": "8bee7d9d34749900b7d6830a927e2e2fa300133945824c0b90362813b9263e7c",
      "north": "341334f0c670ccc872562b2027c4a5084aa4ee583ba2e574e86d3aaa4ad44667",
      "south": "5f2802b2959d32bbb452478cb51e6bc6d1f3acc854cb2879d869f8924e8a1f69"
+    },
+    "E": {
+     "single": "bcd9d78558e398a9b3fb6b72a3418a7b40c4f86e6ffc437188b58e15afd93f62"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/AloeVera/AloeVeraC",
-    "B": "_byname",
+    "B": "Things/Item/RM_TwilightSea/RM_AluunCatch",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/RM_TwilightSea/RM_AluunCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_AluunCatch_v1",
     "C": "render twilightsea_aluun_v1",
-    "D": "render twilightsea_aluun_v2"
+    "D": "render twilightsea_aluun_v2",
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Plant/AloeVera/AloeVeraC",
+   "res": "Things/Item/RM_TwilightSea/RM_AluunCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "aluuncatch"
+  },
+  "RM_DancingSkresh": {
+   "columns": {
+    "A": {
+     "east": "f6ddd730d240fa4eb5ebd5ff18ee29568e7f9c8cfde895803754a3e76dead96d",
+     "north": "013de853f0e07f694674ab3c55a85ce78c8935af18e58719bf9f978b14d75357",
+     "south": "c3d1f93fe1e94e8d67093467dc5d40bd28ae0ca1efcf3dfea749e788f57843d8"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_DancingSkresh/RM_DancingSkresh"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes"
+   },
+   "res": "Things/Pawn/Animal/RM_DancingSkresh/RM_DancingSkresh",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "dancingskresh"
+  },
+  "RM_GrippingTerror": {
+   "columns": {
+    "A": {
+     "east": "c42637fdca560c7c65a5263c352b57cae44cc9c05deb20e89a83511f9af78be9",
+     "north": "9eb74f8836dfdccbaab0842e436475982cc85210e33f7cd82a869192810232de",
+     "south": "7317a2b3cfbb2c6d050e49a78c073485e861ae32cf07622876a2c88a00a27a00",
+     "west": "4007dc4c1cf2a18b985b65ce6ec78764cbd78671e1514d771a0d394744941f34"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 TerminalBiomes"
+   },
+   "res": "Things/Pawn/Animal/SeaBeasts/GrippingTerror/GrippingTerror",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "grippingterror"
   },
   "RM_Hollu": {
    "columns": {
@@ -119,34 +154,29 @@
      "north": "013de853f0e07f694674ab3c55a85ce78c8935af18e58719bf9f978b14d75357",
      "south": "c3d1f93fe1e94e8d67093467dc5d40bd28ae0ca1efcf3dfea749e788f57843d8"
     },
-    "C": {
-     "single": "5bdbedfd4adcfae2040ddb80803e0d1b16b479c115927179e9d47ed5710fea3e"
-    },
-    "D": {
-     "east": "38823bb69505fa9ddfd8e27ea4fb1c5d580723d81cc442a21729129354cea015",
-     "north": "6c9626f9fbc6dc4d4bb510223060a494cc61c4198c4548bfe8d1f6f4b06d593e",
-     "single": "5bdbedfd4adcfae2040ddb80803e0d1b16b479c115927179e9d47ed5710fea3e",
-     "south": "aa3ee7b59ba2a46649d550d9de6270e2db113674dde93e147158050fcb540027"
+    "E": {
+     "east": "daee5fdf09f2a30e991182aa57820809e333a13194b9663ce807f1980762148f",
+     "north": "67eb266a15d740927796c088181e951cb081b2684fbdcf9f72263842408f2c08",
+     "south": "cc35fe627cff773128ce069c8b5ed06d454e66b8f48e7b6dd76af39e526323df"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Hollu/RM_Hollu",
     "B": "Things/Pawn/Animal/RM_Hollu/RM_Hollu",
-    "C": "Things/Pawn/Animal/RM_Hollu/RM_Hollu",
-    "D": "Things/Pawn/Animal/RM_Hollu/RM_Hollu"
+    "E": "Things/Pawn/Animal/RM_Hollu/RM_Hollu"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
     "B": "render twilightsea_hollu_v2",
-    "C": "history TerminalBiomes 2026-10-03",
-    "D": "history TerminalBiomes 2026-10-03"
+    "E": "render twilightsea_hollu_redo_v3"
    },
    "res": "Things/Pawn/Animal/RM_Hollu/RM_Hollu",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "hollu"
   },
@@ -154,9 +184,6 @@
    "columns": {
     "A": {
      "single": "64f835039777c20aac43139b3e7f737aea6f7e12f25fb0be990aad2df3ab2319"
-    },
-    "B": {
-     "single": "2dfa2bc60692842ed2bb54dbede9d1c63e52ca25956b216836287fce1139296a"
     },
     "C": {
      "east": "38823bb69505fa9ddfd8e27ea4fb1c5d580723d81cc442a21729129354cea015",
@@ -167,47 +194,54 @@
      "east": "f6ddd730d240fa4eb5ebd5ff18ee29568e7f9c8cfde895803754a3e76dead96d",
      "north": "013de853f0e07f694674ab3c55a85ce78c8935af18e58719bf9f978b14d75357",
      "south": "c3d1f93fe1e94e8d67093467dc5d40bd28ae0ca1efcf3dfea749e788f57843d8"
+    },
+    "E": {
+     "east": "daee5fdf09f2a30e991182aa57820809e333a13194b9663ce807f1980762148f",
+     "north": "67eb266a15d740927796c088181e951cb081b2684fbdcf9f72263842408f2c08",
+     "south": "cc35fe627cff773128ce069c8b5ed06d454e66b8f48e7b6dd76af39e526323df"
+    },
+    "F": {
+     "east": "7e2f9be59fef173cb24d629557f70b2e03277eb038dd5d4c5160f1a2056447f2"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/JadePlant/JadePlantB",
-    "B": "_byname",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_HolluCatch_v1",
     "C": "render twilightsea_hollu_v1",
-    "D": "render twilightsea_hollu_v2"
+    "D": "render twilightsea_hollu_v2",
+    "E": "render twilightsea_hollu_redo_v3",
+    "F": "render twilightsea_hollucatch_redo_v1"
    },
    "res": "Things/Plant/JadePlant/JadePlantB",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "hollucatch"
   },
   "RM_HoolimbrePlant": {
    "columns": {
-    "A": {
-     "single": "8f10ec5eca34892dcfc51a8d5b127b36a92613d0952fc27e6479968757c63b5e"
-    },
     "B": {
      "south": "aa3ce1e993993d3acf74a34b01c0e3787e2eba9e9ee68aa2848dbc8d29b52965"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/SnakePlant/SnakePlantA",
-    "B": "_byname"
+    "B": "Things/Plant/RM_TwilightSea/RM_HoolimbrePlant"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render RM_HoolimbrePlant"
    },
-   "res": "Things/Plant/SnakePlant/SnakePlantA",
+   "res": "Things/Plant/RM_TwilightSea/RM_HoolimbrePlant",
    "reserved": [
     "A",
     "B"
@@ -243,8 +277,8 @@
     "D": "Things/Pawn/Animal/RM_Kellu/RM_Kellu"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_kellu_v2",
+    "A": "render twilightsea_kellu_v1",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "C": "history TerminalBiomes 2026-10-03",
     "D": "history TerminalBiomes 2026-10-03"
    },
@@ -259,9 +293,6 @@
   },
   "RM_KelluCatch": {
    "columns": {
-    "A": {
-     "single": "bc23d69257a8e760c709a7105ffd04fc598477a8ef33a265878598691134a572"
-    },
     "B": {
      "single": "e7c64935ed8ed70f5d33aafdaabc5a6b65c2e04e3a30362cbf7f5b90827b17c4"
     },
@@ -274,26 +305,30 @@
      "east": "bcff1440862d5828493db1199f5bb104d6496ecf896201560e3aaa2f0ceb07d8",
      "north": "962ea7c5c82d2508a1424d36dee1da41726ed2a84f0ecef3edd6787bb1823145",
      "south": "a197a455b534a5915c77b3be58db1905a321bdfa59d66c55662b68b38f2a3a7a"
+    },
+    "E": {
+     "single": "bcff1440862d5828493db1199f5bb104d6496ecf896201560e3aaa2f0ceb07d8"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/SnakePlant/SnakePlantB",
-    "B": "_byname",
+    "B": "Things/Item/RM_TwilightSea/RM_KelluCatch",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/RM_TwilightSea/RM_KelluCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_KelluCatch_v1",
     "C": "render twilightsea_kellu_v1",
-    "D": "render twilightsea_kellu_v2"
+    "D": "render twilightsea_kellu_v2",
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Plant/SnakePlant/SnakePlantB",
+   "res": "Things/Item/RM_TwilightSea/RM_KelluCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "kellucatch"
   },
@@ -347,8 +382,8 @@
     "D": "Things/Pawn/Animal/RM_Liiru/RM_Liiru"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_liiru_v2",
+    "A": "render twilightsea_liiru_v1",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "C": "history TerminalBiomes 2026-10-03",
     "D": "history TerminalBiomes 2026-10-03"
    },
@@ -363,9 +398,6 @@
   },
   "RM_LiiruCatch": {
    "columns": {
-    "A": {
-     "single": "6a202fe554c4dc915ca3ad5276387d1493fc7bb592fc11dbce767d9135dfbf18"
-    },
     "B": {
      "single": "54ef4916ec3cb481ad40c1220ef43933406e7d1d05e3ef4cb1dc08b5bb21f5b2"
     },
@@ -378,26 +410,30 @@
      "east": "874c0f82f6f33b4fdf7b99f2ff4e80bcc8f85fa94a5f32d70bf6b93220384837",
      "north": "b9f8c226a8bd4ace8091d1204224e56bc031ca411b0ca98fab414ae608f71ff5",
      "south": "ff4e703409a126409dfbbfa60d05daac6db6e598926155e1492c91252d26dad9"
+    },
+    "E": {
+     "single": "874c0f82f6f33b4fdf7b99f2ff4e80bcc8f85fa94a5f32d70bf6b93220384837"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Schlumbergera/SchlumbergeraD",
-    "B": "_byname",
+    "B": "Things/Item/RM_TwilightSea/RM_LiiruCatch",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/RM_TwilightSea/RM_LiiruCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_LiiruCatch_v1",
     "C": "render twilightsea_liiru_v1",
-    "D": "render twilightsea_liiru_v2"
+    "D": "render twilightsea_liiru_v2",
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Plant/Schlumbergera/SchlumbergeraD",
+   "res": "Things/Item/RM_TwilightSea/RM_LiiruCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "liirucatch"
   },
@@ -451,59 +487,47 @@
      "north": "e9546fb2d655fcc8fbf9d0460a66e441392772c48b1042522a413d4aed029e6d",
      "single": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
      "south": "077c92d255c5b7cdb110e59a9eca7e567c8844b43f2ee08d3d4c4b61a0c5886d"
+    },
+    "D": {
+     "east": "c92efefcfb63be2cd2644bcb18c4c1cab669d54df57846c973fff4b6ad8bcaae",
+     "north": "d7fb2fa999542fbac62c11142f3aca90ab9a2ebb3be04fd6bb423ac7777322a3",
+     "south": "c7f6499aa29d5678ec601b82df69d9e7a799d582065bf4df3db01c6f36bb4dc2"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa",
     "B": "Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa",
-    "C": "Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa"
+    "C": "Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa",
+    "D": "Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa"
    },
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes",
     "B": "history TerminalBiomes 2026-09-24",
-    "C": "history TerminalBiomes 2026-10-03"
+    "C": "history TerminalBiomes 2026-10-03",
+    "D": "render twilightsea_lunoowa_redo_v1"
    },
    "res": "Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "lunoowa"
   },
   "RM_Murrol": {
    "columns": {
-    "A": {
-     "east": "e3003ab20638c8d281b2198db6a749c5a3a40da03972badfad759386a33d58fc",
-     "north": "cc458c0d2bb8e1fe27ce0118ffa9551c3ee0b7eee8b4cd578b397f0b47490bf2",
-     "south": "55bae416cb7777a8751b0481123ca08fd92d6abc05f7d0624b0ab1a01731a67c"
-    },
     "B": {
      "east": "7045f048960d685dc792873f849e1ce5173578f6436338be478944c22866d15a",
      "north": "ca636efbb46bfc3d17415b66de45b5c7fa943a8d4e11fe3e1d1d2809e3fdc918",
      "south": "1af6dc950eba223d77fd8abc3f015cd22cf27545f7a2cd9f10cc15bfadf64530"
-    },
-    "C": {
-     "single": "a625dd504fb2b631be883c220ce392ad77a3d5a488757a0848fdef706c213a19"
-    },
-    "D": {
-     "east": "e3003ab20638c8d281b2198db6a749c5a3a40da03972badfad759386a33d58fc",
-     "north": "cc458c0d2bb8e1fe27ce0118ffa9551c3ee0b7eee8b4cd578b397f0b47490bf2",
-     "single": "a625dd504fb2b631be883c220ce392ad77a3d5a488757a0848fdef706c213a19",
-     "south": "55bae416cb7777a8751b0481123ca08fd92d6abc05f7d0624b0ab1a01731a67c"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Murrol/RM_Murrol",
-    "B": "Things/Pawn/Animal/RM_Murrol/RM_Murrol",
-    "C": "Things/Pawn/Animal/RM_Murrol/RM_Murrol",
-    "D": "Things/Pawn/Animal/RM_Murrol/RM_Murrol"
+    "B": "Things/Pawn/Animal/RM_Murrol/RM_Murrol"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_murrol_v2",
-    "C": "history TerminalBiomes 2026-10-03",
-    "D": "history TerminalBiomes 2026-10-03"
+    "B": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Murrol/RM_Murrol",
    "reserved": [
@@ -516,9 +540,6 @@
   },
   "RM_MurrolCatch": {
    "columns": {
-    "A": {
-     "single": "84b29691ed07d8ea67d0b3c1b77a63cad5629dc592e2dfd4358aaac8e3ebe88c"
-    },
     "B": {
      "single": "8629fc873f8febd283d4af58f83fe4ff102bb8434743f485bb946db5eb652092"
     },
@@ -531,26 +552,30 @@
      "east": "7045f048960d685dc792873f849e1ce5173578f6436338be478944c22866d15a",
      "north": "ca636efbb46bfc3d17415b66de45b5c7fa943a8d4e11fe3e1d1d2809e3fdc918",
      "south": "1af6dc950eba223d77fd8abc3f015cd22cf27545f7a2cd9f10cc15bfadf64530"
+    },
+    "E": {
+     "single": "7045f048960d685dc792873f849e1ce5173578f6436338be478944c22866d15a"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Schlumbergera/SchlumbergeraB",
-    "B": "_byname",
+    "B": "Things/Item/RM_TwilightSea/RM_MurrolCatch",
     "C": "_byname",
-    "D": "_byname"
+    "D": "Things/Item/RM_TwilightSea/RM_MurrolCatch",
+    "E": "Things/Item/RM_TwilightSea/RM_MurrolCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_MurrolCatch_v1",
     "C": "render twilightsea_murrol_v1",
-    "D": "render twilightsea_murrol_v2"
+    "D": "render twilightsea_murrol_v2",
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Plant/Schlumbergera/SchlumbergeraB",
+   "res": "Things/Item/RM_TwilightSea/RM_MurrolCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "murrolcatch"
   },
@@ -583,8 +608,8 @@
     "D": "Things/Pawn/Animal/RM_Niim/RM_Niim"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_niim_v2",
+    "A": "render twilightsea_niim_v1",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "C": "history TerminalBiomes 2026-10-03",
     "D": "history TerminalBiomes 2026-10-03"
    },
@@ -602,9 +627,6 @@
     "A": {
      "single": "0f35431ae70ca1f3c22e67b7ae387f8b17f6aa514358bbde646b9b42e793e480"
     },
-    "B": {
-     "single": "d8ecb02b1690799e7d946227972d0ec24fd9e94171b5d87e7824a7037f587719"
-    },
     "C": {
      "east": "2351a5717e70a581925b919fde57afd893d01c5cbade28c7ed305a2eb26c4707",
      "north": "7c1410aff2c9e08b89e8b6389588a857255f98aad18a05c9f9200c19fc6a5f03",
@@ -614,26 +636,30 @@
      "east": "972955e43566e41e47a9277df4fb0f32db36a2b1d0a0b1e70c7e20a819dcdb6c",
      "north": "8ead22f316cffa370211f66d06f55d97abd7ae2dd026ef0b39863c2b8cdb4ea2",
      "south": "b29a3677231477a92b87f83a464269c57d586b6664ff98dc3325d630afe84604"
+    },
+    "E": {
+     "single": "972955e43566e41e47a9277df4fb0f32db36a2b1d0a0b1e70c7e20a819dcdb6c"
     }
    },
    "graphic_of": {
-    "A": "swplants/Bloddle/BloddleA",
-    "B": "swplants/Bloddle/BloddleA",
+    "A": "Things/Item/RM_TwilightSea/RM_NiimCatch",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/RM_TwilightSea/RM_NiimCatch"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "donor original \u2014 mlie.starwarsanimalcollection",
     "C": "render twilightsea_niim_v1",
-    "D": "render twilightsea_niim_v2"
+    "D": "render twilightsea_niim_v2",
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "swplants/Bloddle/BloddleA",
+   "res": "Things/Item/RM_TwilightSea/RM_NiimCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "niimcatch"
   },
@@ -674,33 +700,29 @@
   },
   "RM_NoolimCatch": {
    "columns": {
-    "A": {
-     "single": "8cde0233ae2e946775c4a44de323e2336c470b63e5e543875bc5e23915b5f8e6"
-    },
-    "B": {
-     "single": "954fbe4a974a41ded512cbf81f3c1ea8069040cd4208c6f6ee77fc72e52ca69f"
-    },
     "C": {
      "east": "89a8a05d2d750cf6b0b977bc9d1b542aa7604a3b0163fa58463ac1769a01bc44",
      "north": "6f892917b55189462a64c9472e9b4ad1f1432a4595f0c3d19649aef0c9847f4c",
      "south": "ea96403d457aef906a2422c9e15d493910722c3938b15d4a648f548a4a54cf86"
+    },
+    "D": {
+     "single": "89a8a05d2d750cf6b0b977bc9d1b542aa7604a3b0163fa58463ac1769a01bc44"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/ToxicMeat/ToxicMeat_c",
-    "B": "_byname",
-    "C": "_byname"
+    "C": "Things/Item/RM_TwilightSea/RM_NoolimCatch",
+    "D": "Things/Item/RM_TwilightSea/RM_NoolimCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_NoolimCatch_v1",
-    "C": "render twilightsea_noolim_v1"
+    "C": "render twilightsea_noolim_v1",
+    "D": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Item/ToxicMeat/ToxicMeat_c",
+   "res": "Things/Item/RM_TwilightSea/RM_NoolimCatch",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "noolimcatch"
   },
@@ -711,20 +733,26 @@
     },
     "B": {
      "south": "610a8fe01edf8271e908c597e3da8b2c762c800f9aa9742d40483a3cd6ba8aaf"
+    },
+    "C": {
+     "south": "73002ab0d5511deb5a87df52fb311fba13e80cc621a5188cf12290a63452216d"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/Echeveria/EcheveriaA",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render RM_NoothelmPlant"
+    "B": "render RM_NoothelmPlant",
+    "C": "render twilightsea_noothelm_redo_v1"
    },
    "res": "Things/Plant/Echeveria/EcheveriaA",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "noothelmplant"
   },
@@ -757,8 +785,8 @@
     "D": "Things/Pawn/Animal/RM_Nuudal/RM_Nuudal"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_nuudal_v2",
+    "A": "render twilightsea_nuudal_v1",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "C": "history TerminalBiomes 2026-10-03",
     "D": "history TerminalBiomes 2026-10-03"
    },
@@ -773,9 +801,6 @@
   },
   "RM_NuudalCatch": {
    "columns": {
-    "A": {
-     "single": "d551f5fc42e6930d86c7650a08c84e02fbe7befda2eca8cfe98d2d179aea3d6a"
-    },
     "B": {
      "single": "b819842072776ab306d67af224e63c8a5677ff39bf6b95315ee5d4d0536f4d44"
     },
@@ -791,18 +816,16 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/SweetheartPlant/SweetheartPlantB",
-    "B": "_byname",
+    "B": "Things/Item/RM_TwilightSea/RM_NuudalCatch",
     "C": "_byname",
     "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render phreg_RM_NuudalCatch_v1",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "C": "render twilightsea_nuudal_v1",
     "D": "render twilightsea_nuudal_v2"
    },
-   "res": "Things/Plant/SweetheartPlant/SweetheartPlantB",
+   "res": "Things/Item/RM_TwilightSea/RM_NuudalCatch",
    "reserved": [
     "A",
     "B",
@@ -840,8 +863,8 @@
     "D": "Things/Pawn/Animal/RM_Oobo/RM_Oobo"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_oobo_v2",
+    "A": "render twilightsea_oobo_v1",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "C": "history TerminalBiomes 2026-10-03",
     "D": "history TerminalBiomes 2026-10-03"
    },
@@ -856,9 +879,6 @@
   },
   "RM_OoboCatch": {
    "columns": {
-    "A": {
-     "single": "2fa6a2cca57b4f30b7ac74813bca88632f2628a7855f3a60770faaf8285c1b3c"
-    },
     "B": {
      "single": "7013b750af7cc31e941d4775eb5a3a22848f58753a30cc715bf7063561156587"
     },
@@ -871,26 +891,30 @@
      "east": "62241176e399bd2874c291b126a67280c86bff60b99bbee470ed7426d3956aa6",
      "north": "ebe8388eff7d88afdc77ff5fdb3986309c82862640d8776753cb31dd979fb984",
      "south": "d3ba3470286a689df559bd03b3fdb5f5145d0b3e1424fac4eeb185fb93c88bc7"
+    },
+    "E": {
+     "single": "62241176e399bd2874c291b126a67280c86bff60b99bbee470ed7426d3956aa6"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Echeveria/EcheveriaB",
-    "B": "_byname",
+    "B": "Things/Item/RM_TwilightSea/RM_OoboCatch",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/RM_TwilightSea/RM_OoboCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_OoboCatch_v1",
     "C": "render twilightsea_oobo_v1",
-    "D": "render twilightsea_oobo_v2"
+    "D": "render twilightsea_oobo_v2",
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Plant/Echeveria/EcheveriaB",
+   "res": "Things/Item/RM_TwilightSea/RM_OoboCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "oobocatch"
   },
@@ -923,8 +947,8 @@
     "D": "Things/Pawn/Animal/RM_Pallu/RM_Pallu"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_pallu_v2",
+    "A": "render twilightsea_pallu_v1",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "C": "history TerminalBiomes 2026-10-03",
     "D": "history TerminalBiomes 2026-10-03"
    },
@@ -939,9 +963,6 @@
   },
   "RM_PalluCatch": {
    "columns": {
-    "A": {
-     "single": "c8780a3c1715e106659c46385158e6fc55c49b7c0f75c3b7eb87fbf4794a2eb6"
-    },
     "B": {
      "single": "0373dfe005f0387305543de4060f7871172554a045a243dc7c157daaf94c7706"
     },
@@ -954,26 +975,30 @@
      "east": "ceac945f4c05b9778b6809970c1d8bb22b6f343490e45564ae2ad26d01c7a513",
      "north": "78580c4b1ab26e89e87142e4093f6513923c0f989c2d3d974167c95bc8d436f9",
      "south": "e5219f820151822f9144d844a918b6d6effe125144934e1adae83483858fdbd1"
+    },
+    "E": {
+     "single": "ceac945f4c05b9778b6809970c1d8bb22b6f343490e45564ae2ad26d01c7a513"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/AloeVera/AloeVeraB",
-    "B": "_byname",
+    "B": "Things/Item/RM_TwilightSea/RM_PalluCatch",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/RM_TwilightSea/RM_PalluCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_PalluCatch_v1",
     "C": "render twilightsea_pallu_v1",
-    "D": "render twilightsea_pallu_v2"
+    "D": "render twilightsea_pallu_v2",
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Plant/AloeVera/AloeVeraB",
+   "res": "Things/Item/RM_TwilightSea/RM_PalluCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "pallucatch"
   },
@@ -999,6 +1024,7 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "saltbladetwilight"
   },
   "RM_Tikkarr": {
@@ -1013,9 +1039,6 @@
      "north": "77f20be1759cc0f9b029a55b044e1594b026d7f52a8b8e685e6ffebb62b8c772",
      "south": "b3edf662fbf17c610afb3ba4df8c7bf82beb4aace8239a7650ca16a5d00402ad"
     },
-    "C": {
-     "single": "420df41324d7b7afed7bbe55de141dfcc70725346223b2bbecdcd0617f42770f"
-    },
     "D": {
      "east": "f8d8ded8cce151adc6544eb9bf2761fc48ab00f786738f4d41238a3ac76dd26e",
      "north": "5547d51276b88c1cc1f14f7051ebe94febf2ac2617245629441d047aa93b4b75",
@@ -1026,13 +1049,11 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr",
     "B": "Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr",
-    "C": "Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr",
     "D": "Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "render twilightsea_tikkarr_v2",
-    "C": "history TerminalBiomes 2026-10-03",
+    "A": "render twilightsea_tikkarr_v1",
+    "B": "IN GAME \u2014 TerminalBiomes",
     "D": "history TerminalBiomes 2026-10-04"
    },
    "res": "Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr",
@@ -1046,9 +1067,6 @@
   },
   "RM_TikkarrCatch": {
    "columns": {
-    "A": {
-     "single": "ca34537bc671029f456ab0370df12fb06d20d305529509f2516e4a2a5ed5a22e"
-    },
     "B": {
      "single": "30edf6aa138289c92aad28e0f47d3d34da626eebd9059f24c5abb53d5379ac5d"
     },
@@ -1061,26 +1079,30 @@
      "east": "7a2d5d8033c5faa99e0ca0548fb964692a8d9899a0a57ba3323c55a031583c0b",
      "north": "77f20be1759cc0f9b029a55b044e1594b026d7f52a8b8e685e6ffebb62b8c772",
      "south": "b3edf662fbf17c610afb3ba4df8c7bf82beb4aace8239a7650ca16a5d00402ad"
+    },
+    "E": {
+     "single": "7a2d5d8033c5faa99e0ca0548fb964692a8d9899a0a57ba3323c55a031583c0b"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/PincushionPlant/PincushionPlantB",
-    "B": "_byname",
+    "B": "Things/Item/RM_TwilightSea/RM_TikkarrCatch",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/RM_TwilightSea/RM_TikkarrCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_TikkarrCatch_v1",
     "C": "render twilightsea_tikkarr_v1",
-    "D": "render twilightsea_tikkarr_v2"
+    "D": "render twilightsea_tikkarr_v2",
+    "E": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Plant/PincushionPlant/PincushionPlantB",
+   "res": "Things/Item/RM_TwilightSea/RM_TikkarrCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "tikkarrcatch"
   },
@@ -1121,9 +1143,6 @@
   },
   "RM_WeloonCatch": {
    "columns": {
-    "A": {
-     "single": "53420fde655086f13df26dc695548ff9ba8bd04f565dbe516bbbc1cc8fdcbfee"
-    },
     "B": {
      "single": "c203329fee5e8f496e5f007946e7cf5d38423f0da00360e5d9a677dabfef759c"
     },
@@ -1131,23 +1150,27 @@
      "east": "98ea8d29fd8653055ed03b4961ce3044b8f3df3c1c628d67e4b67edc7f094828",
      "north": "81844d0aeec38e4ee4b9609d5d8b2115cd91789233ded8f1618533acbca04e24",
      "south": "b544f0d3ec425aeb8842600af415e5d1a6340dc63bdd3d2e97ac6fef4fee3cb6"
+    },
+    "D": {
+     "single": "98ea8d29fd8653055ed03b4961ce3044b8f3df3c1c628d67e4b67edc7f094828"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Echeveria/EcheveriaD",
-    "B": "_byname",
-    "C": "_byname"
+    "B": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
+    "C": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
+    "D": "Things/Item/RM_TwilightSea/RM_WeloonCatch"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_WeloonCatch_v1",
-    "C": "render twilightsea_weloon_v1"
+    "C": "render twilightsea_weloon_v1",
+    "D": "IN GAME \u2014 TerminalBiomes"
    },
-   "res": "Things/Plant/Echeveria/EcheveriaD",
+   "res": "Things/Item/RM_TwilightSea/RM_WeloonCatch",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "welooncatch"
   },
@@ -1158,17 +1181,25 @@
      "north": "16bf54ac8baa12239db06f4d50d1df80c471a8e8cd8d4771dc0473ea399bb7f5",
      "south": "f4d721d5a0ab356c6eba8cd8c85d6cf8ad8a2c11107ade307aa371caae791beb",
      "west": "7e140da59624b22295e72cb36da42c47e27d936e7146803b05eac8a5c22850de"
+    },
+    "B": {
+     "east": "de4e31756f6002e7bd7d28d8a7b1ab3a55c19aa74a4b654b5c64734cc1917588",
+     "north": "574b6f62bdc51e368bbe5f5c68990b7eb2aaa03df2f6ae519bd515fe63017fa9",
+     "south": "62620106e9bee7b317c84556a98f5d64fca0ba3302da50ad2e90473017ae69e4"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/SeaBeasts/Faa/Faa"
+    "A": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render twilightsea_faa_canon_redo_v1"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "faa"
   },
@@ -1200,21 +1231,67 @@
      "north": "82aff98e9423139c9cc104f44882e3cf813fd8f90a5b04a53fdb549196b488ee",
      "south": "b0e8510ca41fc131890dad2893eae68556781c78fe5236a4423f9da61ad864a7",
      "west": "cea8f41561c5f80390860ce42a68d7e628ab81f95b4da4d498a248303775b3c3"
+    },
+    "B": {
+     "east": "15a21b8321e6aeda44886570397d1b2e2618c763cdbe04fbf1b373cadb40c122",
+     "north": "ad5a492d522696b33ad6b835927950caef492bcfca27a034c918cdd9eaebaab2",
+     "south": "b88730a579e337665d5b637f11f92d707872f1d3c5c2513c89b1d98f7bdaf2f7"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/SeaBeasts/Mee/Mee"
+    "A": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
+    "B": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render twilightsea_mee_canon_redo_v1 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "mee"
+  },
+  "RSW_SandoAquaMonster": {
+   "columns": {
+    "A": {
+     "east": "0f492d4f0603953ea64a8f7130bcf9fdd26cd83ceb342d9fc06e9bd449b7efec",
+     "north": "e38a8d815a79d86cceb56b4521b615104e4959ee6997f9c1223466ad1ba13503",
+     "south": "c82bbf707bfac8ad96de6ae55c053bec3ea18ec638044499522ccf9d3b7738d8",
+     "west": "395a0d6f6bfd0e51acf881ab85293cca5b5e842bb60e64586dc1093ef21e9149"
+    },
+    "B": {
+     "east": "0f492d4f0603953ea64a8f7130bcf9fdd26cd83ceb342d9fc06e9bd449b7efec",
+     "north": "e38a8d815a79d86cceb56b4521b615104e4959ee6997f9c1223466ad1ba13503",
+     "south": "c82bbf707bfac8ad96de6ae55c053bec3ea18ec638044499522ccf9d3b7738d8"
+    },
+    "C": {
+     "east": "39a2b33c3746271e1e1d70d1223a16d4789745bb2f7492e532d194e2b85699b8",
+     "north": "6c0d7a9305245ff64de72771f22aca82e09540cf07901fdd178f98f58c5572b7",
+     "south": "b64315e675535d5302fae141290d83033849914d6cc7099e3875b322e7f44d1e",
+     "west": "30da36bc36699593963d3913844677f9c353d3c31ffff64ba56e09971eca9690"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster",
+    "B": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster",
+    "C": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render scald3_sandoaquamonster",
+    "C": "history SeaBeasts 2026-09-02"
+   },
+   "res": "Things/Pawn/Animal/SeaBeasts/SandoAquaMonster/SandoAquaMonster",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "subject_key": "sandoaquamonster"
   }
  },
  "sheetId": "twilightsea_sheet_2026-10-05",
- "snapshotId": "7895159b61713c86"
+ "snapshotId": "1d6770954fb50d59"
 }

@@ -68,7 +68,7 @@
     "pick": "redo"
    },
    "at": "2026-10-07T14:09:52.045Z",
-   "decision": "",
+   "decision": "redo",
    "note": "See related notes above.",
    "prefill": "A",
    "prefillDecision": "A",
@@ -582,6 +582,24 @@
     "A"
    ],
    "variantsDefault": true
+  },
+  "RM_DancingSkresh": {
+   "decision": "A",
+   "note": "No. The existing (B) render should be made into its own new creature: The Dancing Skresh, new description. But this Hollu is supposed to be a section of almost stained glass-like waveglass, the beautifully colored transparent organism that covers much of the topside ocean. It is a curved-in piece of this sheet in its final life stage.",
+   "decidedAt": "2026-10-07T13:54:23.985Z",
+   "at": "2026-10-07T13:57:34.547Z",
+   "carriedFrom": "RM_Hollu",
+   "carriedAt": "2026-10-07",
+   "carriedBy": "BENCH helper: renamed/moved row (owner note: \"The existing (B) render should be made into its own new creature: The Dancing Skresh\")"
+  },
+  "RM_GrippingTerror": {
+   "decision": "A",
+   "note": "Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier. ",
+   "decidedAt": "2026-10-06T03:51:49.515Z",
+   "at": "2026-10-06T03:52:23.384Z",
+   "carriedFrom": "RSW_ElderSando on thescald_sheet_2026-10-05",
+   "carriedAt": "2026-10-07",
+   "carriedBy": "BENCH helper: renamed/moved row (owner note: \"Rename this to the Gripping Terror and move it to the Twilight Sea\")"
   }
  },
  "posture": "pick-one",

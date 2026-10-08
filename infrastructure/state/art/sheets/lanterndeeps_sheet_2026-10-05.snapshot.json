@@ -1,9 +1,9 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-06T20:06:23-0700",
+ "built": "2026-10-07T20:20:12-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_Blinker": {
    "columns": {
@@ -73,12 +73,13 @@
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle"
    },
    "labels": {
-    "A": "history LanternDeeps 2026-10-03"
+    "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "bovinebeetle"
   },
   "RM_BrellikBulb": {
@@ -150,6 +151,7 @@
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "chiller"
   },
   "RM_Cleaver": {
@@ -312,12 +314,13 @@
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/GlowSlug/GlowSlug"
    },
    "labels": {
-    "A": "history LanternDeeps 2026-10-03"
+    "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/GlowSlug/GlowSlug",
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "glowslug"
   },
   "RM_Knocker": {
@@ -447,24 +450,19 @@
      "north": "decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759",
      "south": "0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba"
     },
-    "D": {
-     "east": "3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249",
+    "F": {
+     "east": "a25b084f09948c7ffd8eb957e49566fdfaac18ef9214c4777cda763ebd932e7d",
      "north": "2bc110c105922848c01b5f12138342cb5121349bfae29538fe0eb1a2af95ac53",
      "south": "76a5e1619812f504d0fb6c1ce28e99cddd47c68e6424756c1c6dded28339aa9d"
-    },
-    "E": {
-     "east": "a25b084f09948c7ffd8eb957e49566fdfaac18ef9214c4777cda763ebd932e7d"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
-    "D": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
-    "E": "_byname"
+    "F": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub"
    },
    "labels": {
     "A": "history LanternDeeps 2026-10-03",
-    "D": "IN GAME \u2014 LanternDeeps",
-    "E": "render deeps_mossbeetlelarvae_eyes_v2"
+    "F": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
    "reserved": [
@@ -472,7 +470,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "mossbeetlelarvae"
   },
@@ -534,6 +533,7 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "osskbramble"
   },
   "RM_Pooler": {
@@ -636,12 +636,13 @@
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw"
    },
    "labels": {
-    "A": "render deeps_shatterjaw_v2"
+    "A": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/ShatterjawBeetle/ShatterJaw",
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "shatterjawbeetle"
   },
   "RM_Shoal": {
@@ -878,6 +879,11 @@
      "north": "ef79ce387f646f8e642c8713825fc6d5c4345e21f7b2b2ef4532d140bfd7ad41",
      "south": "c208a19c2f5a336c98fbd1efb64a40740843601ffedf45753d4bd9e492ed23f5"
     },
+    "B": {
+     "east": "1d04505102b068678c0e43031756cb07911b7d42d81fdc34db5bf8472c088959",
+     "north": "09392e00a033bba7d40b2ca39ac8a8fabe8f091e82b1369cb577fa9caa9d0e22",
+     "south": "11e8e0974cb408eaf5296ef59fa5e341dd59763f639f37c65185bcad51814464"
+    },
     "C": {
      "east": "222073ce96a005711533593c89a3e6ee964f10c7ea0d0d03027dc688927f4550",
      "north": "d71c6df7312e75854d4215401fd5e8a472bb3a706b7e826b52d6c2eb14aa3f6a",
@@ -886,10 +892,12 @@
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
     "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth"
    },
    "labels": {
-    "A": "history SWBestiary 2026-09-20",
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11",
     "C": "render deeps_bloodropmoth_eyes_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
@@ -898,6 +906,7 @@
     "B",
     "C"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "bloodropmoth"
   },
   "RSW_BovineBeetle": {
@@ -906,13 +915,27 @@
      "east": "16593bb512cea7429af4ef20ed13c2ac728a0fe7a365b7727fd48188c6a1d6ec",
      "north": "9bb9643e71a9e40081224338d603b892829ad2e684ebf643daa241199e6ae15b",
      "south": "b7bea51a71c5ad57ac96324dcfa28234a004bd7999216b77d090032b0865feb2"
+    },
+    "B": {
+     "east": "fbe676e6024b6833149193bd125b5d7897eac6d3416d631466125f3076c105d3",
+     "north": "b77e6174df38cddd52dde5aca011cd133d7cdced0b5aec81feab3c968daa6911",
+     "south": "23788644daa70c792c26a727c771ed21e9b9f89b8620912a4b1c9e152e0fe95d"
+    },
+    "C": {
+     "east": "1b275937ab695dd9b797ebf61a333ffc38bcf58a28b5538c3a10913cd8e24788",
+     "north": "34b1670bfa3471284227bf8cec1cd7b5daa12c3463850cc93b14f87cc14bff41",
+     "south": "63ff6ce01132266d4a11fe4d100f0bf00693f166abc3d846a9458aaa9a4465e7"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11",
+    "C": "history SWBestiary 2026-09-18"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/BovineBeetle/BovineBeetle",
    "reserved": [
@@ -920,6 +943,7 @@
     "B",
     "C"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "bovinebeetle"
   },
   "RSW_FacetMothLarvae": {
@@ -928,6 +952,11 @@
      "east": "c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab",
      "north": "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666",
      "south": "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112"
+    },
+    "B": {
+     "east": "bb8842a43d16e4002dc07dacdb21ed2bf618ab80407508e9725b7fb89cc65c97",
+     "north": "ced346acae7b745698ca8c2b8618a8484121437082c4090be3124f25c00c6ce4",
+     "south": "807e4d0ff73b821060cd14b0248f4928f1d842526b81df8052323fa1d700c525"
     },
     "D": {
      "east": "3aff39b50076cfc20a0b9e8dc1411e9f6550727621bd96155f7f0f04f4d5a402",
@@ -941,11 +970,13 @@
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
     "D": "_byname",
     "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11",
     "D": "render deeps_facetmothlarvae_eyes_v1",
     "E": "render deeps_facetmothlarvae_eyes_v2"
    },
@@ -957,6 +988,7 @@
     "D",
     "E"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "facetmothlarvae"
   },
   "RSW_Gembug": {
@@ -993,6 +1025,7 @@
     "B",
     "C"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "gembug"
   },
   "RSW_GlowSlug": {
@@ -1021,6 +1054,7 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "glowslug"
   },
   "RSW_Megapleura": {
@@ -1063,6 +1097,7 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "megapleura"
   },
   "RSW_MossBeetleLarvae": {
@@ -1071,6 +1106,11 @@
      "east": "3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249",
      "north": "decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759",
      "south": "0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba"
+    },
+    "B": {
+     "east": "cd18739cd2687d42acdda7805116f05e71b2bddfa8acd4130b812d2022c8e7d4",
+     "north": "33d160e8b74c4470e1b6cda1d63f519c5b06bb0ac0b3b714e856a2bc69273642",
+     "south": "41796dfb29783bf4b7feb8b5fdaac9f4658e0a721b5236f6dc3f1055458d0548"
     },
     "D": {
      "east": "2e6016b8bce6ef348f6d47bf140e08cac289b2958b8ca44a7620355dbb5af5c6",
@@ -1083,11 +1123,13 @@
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
     "D": "_byname",
     "E": "_byname"
    },
    "labels": {
-    "A": "history SWBestiary 2026-09-20",
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-11",
     "D": "render deeps_mossbeetlelarvae_eyes_v1 \u2014 failed canon check",
     "E": "render deeps_mossbeetlelarvae_eyes_v2"
    },
@@ -1099,6 +1141,7 @@
     "D",
     "E"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "mossbeetlelarvae"
   },
   "RSW_ShatterjawBeetle": {
@@ -1127,9 +1170,10 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "shatterjawbeetle"
   }
  },
  "sheetId": "lanterndeeps_sheet_2026-10-05",
- "snapshotId": "7d4536c1ae8f4894"
+ "snapshotId": "14ec14bbac7c5084"
 }

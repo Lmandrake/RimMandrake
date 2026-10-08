@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-06T20:16:39-0700",
+ "built": "2026-10-07T20:22:22-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_Bladderboil": {
    "columns": {
@@ -72,9 +72,6 @@
   },
   "RM_Crowncarpet": {
    "columns": {
-    "A": {
-     "single": "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
-    },
     "H": {
      "single": "e78c1ebf58d5d062751ff2a903f62c248ef1b42f336f0f07ef449088e5454757"
     },
@@ -86,18 +83,16 @@
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Ambrosia",
-    "H": "_byname",
-    "I": "_byname",
-    "J": "_byname"
+    "H": "Things/Plant/RM_Crowncarpet",
+    "I": "Things/Plant/RM_Crowncarpet",
+    "J": "Things/Plant/RM_Crowncarpet"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
     "H": "render scald3_crowncarpet_a",
     "I": "render scald3_crowncarpet_b",
     "J": "render scald3_crowncarpet_c"
    },
-   "res": "Things/Plant/Ambrosia",
+   "res": "Things/Plant/RM_Crowncarpet",
    "reserved": [
     "A",
     "B",
@@ -130,8 +125,8 @@
     "C": "Things/Pawn/Animal/RM_Doss/RM_Doss"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "C": "render scald3_doss"
+    "A": "render scaldfloor_doss",
+    "C": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Doss/RM_Doss",
    "reserved": [
@@ -324,6 +319,7 @@
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "eldersando"
   },
   "RM_Karrash": {
@@ -416,24 +412,17 @@
     },
     "C": {
      "single": "3c8fc76df7e6640cd52f5ddcdcb0ff77bdddbae9def41d8ec171a992c13f898a"
-    },
-    "D": {
-     "east": "adab4d5e55d5d3bd20c5420d70e8b513f63a09ea3be300bbda0d6b0204fb9c4f",
-     "north": "bca68a05caf4217b0be6cdf19e957ff4071ea8054dfffd584e020d0f0f66745e",
-     "south": "5f8fd77142dd4364452824c0f51b3499a82ab55197d9daed59e2d7d60b278630"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_MuddalCatch",
     "B": "Things/Item/Resource/RM_MuddalCatch",
-    "C": "Things/Item/Resource/RM_MuddalCatch",
-    "D": "_byname"
+    "C": "Things/Item/Resource/RM_MuddalCatch"
    },
    "labels": {
     "A": "our deployed art (render scald2_muddalcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_muddalcatch_b",
-    "C": "render scald2_muddalcatch_c",
-    "D": "render scaldfloor_muddal"
+    "C": "render scald2_muddalcatch_c"
    },
    "res": "Things/Item/Resource/RM_MuddalCatch",
    "reserved": [
@@ -505,17 +494,25 @@
      "east": "adab4d5e55d5d3bd20c5420d70e8b513f63a09ea3be300bbda0d6b0204fb9c4f",
      "north": "bca68a05caf4217b0be6cdf19e957ff4071ea8054dfffd584e020d0f0f66745e",
      "south": "5f8fd77142dd4364452824c0f51b3499a82ab55197d9daed59e2d7d60b278630"
+    },
+    "B": {
+     "east": "a7a0f1b807385d5388d6e48f4e8057b0be4aabd3ce1c507eebc7b20709514e82",
+     "north": "ee95242bd69cf8bb7fcd10ed5d028634d16c584523d394acace23db80a934b71",
+     "south": "0f9db331d61fd64ef857f498427ca3892793bbeffe0d2cdcdc2dc6b9de548cb6"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker"
+    "A": "Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker",
+    "B": "Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "history TerminalBiomes 2026-10-03",
+    "B": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "scaldwalker"
   },
@@ -604,18 +601,32 @@
      "east": "2c5fef11ee6d90ca097366ec2901c1a1130eb6f2cb6eea798f656d5d2bf35d18",
      "north": "ade8fdbe9cec1e787b8b27ec5103d357a9e5fa888fb57989e110fd1a0984f9cc",
      "south": "3da97e9f9d68b64940de8cf3a3e9cb5e44d9df6e23be0a0c6514d5c9f8c422b4"
+    },
+    "C": {
+     "east": "f36a956233bd2721f408f28e7086e8b15e600ea43ee6118b947a9d3d5fbd52fd",
+     "north": "1ca1f36e13f2a29c2c8a4333eb69cd5c0aa1e997cc03ed245de2564bfc77aaf7",
+     "south": "0804febcebf0cd1036b5294038c5993932d0f426598af4ea9e9fc7b9bca1ae09"
+    },
+    "D": {
+     "east": "3c646706b24d25794076168128fe741796de95757a90ed93af28f0c8fffc186f"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Thuum/RM_Thuum"
+    "A": "Things/Pawn/Animal/RM_Thuum/RM_Thuum",
+    "C": "Things/Pawn/Animal/RM_Thuum/RM_Thuum",
+    "D": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "render scaldfloor_thuum",
+    "C": "IN GAME \u2014 TerminalBiomes",
+    "D": "render scald3_shimmereel"
    },
    "res": "Things/Pawn/Animal/RM_Thuum/RM_Thuum",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "thuum"
   },
@@ -630,30 +641,37 @@
     "C": {
      "single": "b76dcff49c5cde7d9864c042da36e3f9409a1a61f7899649846d4fcda0a05cbb"
     },
-    "D": {
-     "east": "2c5fef11ee6d90ca097366ec2901c1a1130eb6f2cb6eea798f656d5d2bf35d18",
-     "north": "ade8fdbe9cec1e787b8b27ec5103d357a9e5fa888fb57989e110fd1a0984f9cc",
-     "south": "3da97e9f9d68b64940de8cf3a3e9cb5e44d9df6e23be0a0c6514d5c9f8c422b4"
+    "E": {
+     "east": "f36a956233bd2721f408f28e7086e8b15e600ea43ee6118b947a9d3d5fbd52fd",
+     "north": "1ca1f36e13f2a29c2c8a4333eb69cd5c0aa1e997cc03ed245de2564bfc77aaf7",
+     "south": "0804febcebf0cd1036b5294038c5993932d0f426598af4ea9e9fc7b9bca1ae09"
+    },
+    "F": {
+     "east": "3c646706b24d25794076168128fe741796de95757a90ed93af28f0c8fffc186f"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_ThuumCatch",
     "B": "Things/Item/Resource/RM_ThuumCatch",
     "C": "Things/Item/Resource/RM_ThuumCatch",
-    "D": "_byname"
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
     "A": "our deployed art (render scald2_thuumcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_thuumcatch_b",
     "C": "render scald2_thuumcatch_c",
-    "D": "render scaldfloor_thuum"
+    "E": "render scald4_shimmereel",
+    "F": "render scald3_shimmereel"
    },
    "res": "Things/Item/Resource/RM_ThuumCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "thuumcatch"
   },
@@ -676,6 +694,7 @@
    "reserved": [
     "A"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "eldersando"
   },
   "RSW_SandoAquaMonster": {
@@ -705,9 +724,10 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "sandoaquamonster"
   }
  },
  "sheetId": "thescald_sheet_2026-10-05",
- "snapshotId": "75354d6513bb7e54"
+ "snapshotId": "8ce081bda294db3c"
 }

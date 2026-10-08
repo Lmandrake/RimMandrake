@@ -1,9 +1,9 @@
 {
  "biome": "RM_Abyss",
- "built": "2026-10-06T19:31:52-0700",
+ "built": "2026-10-07T20:20:12-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_CrepuscularBeetle": {
    "columns": {
@@ -11,6 +11,11 @@
      "east": "df0ccdae53d03160cba71d3a1f0c974bcf2449b0b8e720070356e6936047ac32",
      "north": "ff46d845dc24c983b8d6f3d25dc39a68f2602ea10faca8ce80e2004fbd915006",
      "south": "ec262bc8b2df782f6381958dc14795fbc8122e8e515c47ec48b3920ffb83ae55"
+    },
+    "B": {
+     "east": "2d6672a8356ded4adda531eeae2c2013282c8e3edaf1715b9d811f4401067f9e",
+     "north": "041d2a45a05b68b5ac0ee78a1b603c25632d302f8a158b54a49249a90cf72a66",
+     "south": "7f68064aaeb849ec00b11c3c959087205cb7f04e45bff85bbaeb3ac74ad448e3"
     },
     "C": {
      "east": "3b32d5f26558a0eb054f6032140306228da21387233b32b65d7a13ca7675a65a",
@@ -25,11 +30,13 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle",
+    "B": "_byname",
     "C": "_byname",
     "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_brekkugar",
     "C": "render abyss_tarrgun_v1",
     "D": "render abyss_moravatha_v3"
    },
@@ -40,6 +47,7 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "crepuscularbeetle"
   },
   "AA_DarkVandal": {
@@ -48,6 +56,11 @@
      "east": "0fc871afa9cf00a7621bc2932d66be6a11269e803e317143fc958fd7675a9010",
      "north": "408f6351e8d6db5fe577ea5bdd856821a68fbde76efa313db2f6d1cc45362a00",
      "south": "d622bd7c5096b07854f28a1ff8d12c581c6a838dbb292316b0a9ba1afd2501ec"
+    },
+    "B": {
+     "east": "2d295fdf25b6e3f67ba7a3b46abf8614e0fcb376825a7e512bd4da17cca87cd7",
+     "north": "497a96e66f1837324c050d6497b0a44c880c34c484a6e36021cac81cd79e8ce3",
+     "south": "319bbac758f8dcb1d1024ef28cdb893aa0ef7c85abe7c4c1583a01386d45d434"
     },
     "D": {
      "east": "999593228fb1299dc2360f59332ecb310bed66a6ccd06cc0f0ddaafc99bab433",
@@ -62,11 +75,13 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar",
+    "B": "_byname",
     "D": "_byname",
     "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_gruzz",
     "D": "render abyss_gukkath_v1",
     "E": "render abyss_ossumatha_v3 \u2014 failed canon check"
    },
@@ -78,6 +93,7 @@
     "D",
     "E"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "darkvandal"
   },
   "AA_Darkbeast": {
@@ -87,6 +103,11 @@
      "north": "6644cbbca8f687820de3615ca7ff97357cc72ee9e6d2a2c3a73f001ce1f6e9ab",
      "south": "17b07f618aa69bc49b9decf364d74e33c61b888a6ce7466b9cde5aecabea76c2"
     },
+    "B": {
+     "east": "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
+     "north": "6cf3b0f64f553478175857c41c8dd6f88d3c36f0547b231d13a141faa6f3f1e2",
+     "south": "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5"
+    },
     "C": {
      "east": "1bf696adebcf2f33ccf7314506b3d62d9eb905d8db963a8bca0bcfaa2cddc19b",
      "north": "b96a2d9b1b357e0da7db8e49a8742cb258820f0396f3d904db193fa0b318f136",
@@ -95,10 +116,12 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast",
+    "B": "_byname",
     "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_ulkhorr",
     "C": "render abyss_ugrothar_v1"
    },
    "res": "Things/Pawn/Animal/AA_Darkbeast/AA_Darkbeast",
@@ -107,6 +130,7 @@
     "B",
     "C"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "darkbeast"
   },
   "AA_DuskProwler": {
@@ -115,6 +139,11 @@
      "east": "7f46e9e80eb05ec1c1c44b0ee357b9f2de8237e9965139ce6323e2c1b2a51469",
      "north": "0bae711ba531c02496322d66b06b587fb442eb4d3c9542155e9072561a596674",
      "south": "c7cc8c89f59a22f7ea9ae515953e26ac6f6079a641041c41337d7992a2b996c3"
+    },
+    "B": {
+     "east": "6c73f799e9fab30e35779bb925c202fb90572aa3ed421b4b8854609e66b3f8b1",
+     "north": "402fa518893e7d11a4c2f5a7d3e8fc1fb77e67052e53c54d11fb0b42c36c6834",
+     "south": "d436ab4d58be22d84c54cea1957e53675709b5adb213bf8f58253c2ee1d0fc70"
     },
     "C": {
      "east": "87295b02b80da6917aab4b9b18d312d3d2ffea087429977267550544ea806dff",
@@ -129,11 +158,13 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler",
+    "B": "_byname",
     "C": "_byname",
     "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_shekkur",
     "C": "render abyss_rakketh_v1",
     "D": "render abyss_ysvaltha_v3"
    },
@@ -144,6 +175,7 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "duskprowler"
   },
   "AA_DuskRat": {
@@ -203,6 +235,10 @@
      "north": "57a098473d73479a1631bd5c19637093c5b06311ed2444aec8443217f27539cd",
      "south": "d7fd05f1d4332745962b8a99dc3a2ff309d02f35caf9a227d04aae00c83fee0c"
     },
+    "B": {
+     "north": "b2b57bb55ba1c2d3db97a3068f40a9f367afd757e95be12652f3b60b97a4725d",
+     "south": "eb74804fdc77625e3f0b12f1b62d302ffc88c0b4fab2b90704c8dcce9ceb060a"
+    },
     "D": {
      "east": "3bdeb176e5688cbcb24dbdeffb90b0f5c379fc8b2739e1bc0fca9df4021e01e5",
      "north": "30e6a0a52db2fef67466185bfa08db238fd5c8d7fc554457c0b1634f85bf44b0",
@@ -216,11 +252,13 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
+    "B": "_byname",
     "D": "_byname",
     "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
+    "B": "render crags_kessik",
     "D": "render abyss_kittrik_v1",
     "G": "render abyss_lirrith_v3"
    },
@@ -234,6 +272,7 @@
     "F",
     "G"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "murkling"
   },
   "AA_NightAve": {
@@ -287,6 +326,11 @@
      "north": "8ef33639e2fb5c34862c4cd2e6629703f4a6f8d567bb5483a8e2fff39ce76759",
      "south": "697b455c5e162c6e8f29a4f529d3ed615bc41bc3bf719de5bc2a1e9a0a104e88"
     },
+    "E": {
+     "east": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+     "north": "fdd90268d2fedd7a62bcf09a3cc330cdcdb172a5a78048417305f3d76403f089",
+     "south": "c5a5c3fc0e8faa33ace04362eea3787126504436f6361145601b90eb3f348e59"
+    },
     "F": {
      "east": "bbdba019ca5f62e762eaf4642509b5550c910b59f7f36fb75dcf849e142b71b2",
      "north": "190f129f7ee18adcfd872e91af35009b5c644c29af9fae95d87f35a97d5c8b3e",
@@ -301,6 +345,7 @@
     "B": "Things/Pawn/Animal/AA_NightMule/AA_NightMule_baby",
     "C": "Things/Pawn/Animal/AA_NightMule/AA_NightMule_female",
     "D": "_byname",
+    "E": "_byname",
     "F": "_byname",
     "G": "_byname"
    },
@@ -309,6 +354,7 @@
     "B": "IN GAME \u2014 Alpha Animals",
     "C": "IN GAME \u2014 Alpha Animals",
     "D": "render abyss_gaddrum_v1",
+    "E": "render crags_hulggarok",
     "F": "render abyss_aveluthia_v3",
     "G": "render crags_hulggarok"
    },
@@ -322,6 +368,7 @@
     "F",
     "G"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "nightmule"
   },
   "AA_NightRam": {
@@ -336,6 +383,11 @@
      "north": "c232382992e9e7bbabba8b6ee38a1a06ac55b6ecd0d12d241b152f88d2df0a94",
      "south": "4fd87209f7f40168b8d52ef8b79c8dc1bb3d2560a4af53de15323caed64b809a"
     },
+    "C": {
+     "east": "86e01fc989af3c3a88eab789ba730441effbbcfb49cac18e20a3f32b453c811f",
+     "north": "23ddc95e6bb277bd86fa97a760604cca0bacde7f22f36e38925925a0d9888953",
+     "south": "add388e498126c854541374dc4fa715dffcc1676cff81f982dc74b93d1b7df37"
+    },
     "D": {
      "east": "b773273fb4c8c427b32aed6e4769c6777d42a96b97dd70d905a8718a83322bfb",
      "north": "59212cd8f78b675cc9b2408e31ef16db240d09545be3e911a22dd4c5204f067d",
@@ -345,11 +397,13 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_NightRam/AA_NightRam",
     "B": "_byname",
+    "C": "_byname",
     "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render abyss_dugrath_v1",
+    "C": "render crags_dhukk",
     "D": "render abyss_olumetha_v3 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/AA_NightRam/AA_NightRam",
@@ -359,6 +413,7 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "nightram"
   },
   "AA_Nightling": {
@@ -412,6 +467,7 @@
     "E",
     "F"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "nightling"
   },
   "AA_ShadowCharger": {
@@ -425,6 +481,11 @@
      "east": "8060d814c60bd84bf466ffe663e9b0a6c41cbd7bbee7d795154b3a03d902741f",
      "north": "b78671e72d0ae8579816434254bf1ffb5fa9f39d797d07867b34efa10feef73a",
      "south": "ac677955e9ac75121025f3ce5ffac1b94e2b2ae70e93446461434dc370d2dfba"
+    },
+    "C": {
+     "east": "3aa982234ca012ffd3d6cd50c4104a782f49c40e5929a490d41d0f6e4bbb8f5c",
+     "north": "744065013b5a341f76c3ba6ef6ccc45b26b15cef2945833aaed962ba31373e68",
+     "south": "622de3a31f607dc608f4fb449275f09c2a045c590c2ecf2ff4d519d6e1e3ec51"
     },
     "D": {
      "east": "a377a7d1bc757675cef246cf00de788eb6cd7a4b638e02693fb1e1edd1e5f50f",
@@ -445,6 +506,7 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
     "B": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
+    "C": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
     "D": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby",
     "E": "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female",
     "G": "_byname"
@@ -452,6 +514,7 @@
    "labels": {
     "A": "IN GAME \u2014 ShadowChargerArtOverride",
     "B": "history ShadowChargerArtOverride 2026-09-13",
+    "C": "donor original \u2014 Alpha Animals",
     "D": "IN GAME \u2014 Alpha Animals",
     "E": "IN GAME \u2014 Alpha Animals",
     "G": "render abyss_kraddun_v1"
@@ -466,6 +529,7 @@
     "F",
     "G"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "shadowcharger"
   },
   "AA_Thunderox": {
@@ -526,6 +590,7 @@
     "E",
     "F"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "thunderox"
   },
   "AB_GiantGamma": {
@@ -568,6 +633,7 @@
     "D",
     "E"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "giantgamma"
   },
   "AB_GiantSeptimum": {
@@ -592,6 +658,7 @@
     "A",
     "B"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "giantseptimum"
   },
   "AB_GiantStikehr": {
@@ -628,6 +695,7 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "giantstikehr"
   },
   "AB_GlowingGrass": {
@@ -670,7 +738,7 @@
    "labels": {
     "A": "IN GAME \u2014 Alpha Biomes",
     "B": "render abyss_glowinggrass_a_v1",
-    "C": "render abyss_glowinggrass_b_v1 \u2014 failed canon check",
+    "C": "render abyss_glowinggrass_b_v1",
     "D": "render abyss_glowinggrass_c_v1",
     "E": "render abyss_glowinggrass_a_tint_v1",
     "F": "render abyss_glowinggrass_b_tint_v1",
@@ -688,6 +756,7 @@
     "G",
     "H"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "glowinggrass"
   },
   "AB_ToxicGamma": {
@@ -695,16 +764,21 @@
     "A": {
      "single": "a7d9159f4e2020838855fbd40e920c0cdf572514377c76b4420110de8d07404d"
     },
+    "B": {
+     "single": "c67027dd42f93671c58d792f1df5d344aec880fac63a3d22808459b58dbb291b"
+    },
     "C": {
      "single": "d14c1da69d5c406668e4dbf4fd6e86fa3e6176b4dd9e5c1570e11ccd4b5223ae"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_ToxicGamma",
+    "B": "Things/Plants/AB_ToxicGamma",
     "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
+    "B": "donor original \u2014 Alpha Biomes",
     "C": "render abyss_blightbulgra_v1"
    },
    "res": "Things/Plants/AB_ToxicGamma",
@@ -713,6 +787,7 @@
     "B",
     "C"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "toxicgamma"
   },
   "AB_WildRadagast": {
@@ -755,6 +830,7 @@
     "D",
     "E"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "wildradagast"
   },
   "AG_Gamma": {
@@ -791,6 +867,7 @@
     "C",
     "D"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "ag_gamma"
   },
   "AG_Septimum": {
@@ -816,7 +893,36 @@
     "B",
     "C"
    ],
+   "rowGone": "not in this biome's census any more \u2014 kept so the owner's ruled letters resolve",
    "subject_key": "ag_septimum"
+  },
+  "RM_Aveluthia": {
+   "columns": {
+    "A": {
+     "east": "bbdba019ca5f62e762eaf4642509b5550c910b59f7f36fb75dcf849e142b71b2",
+     "north": "190f129f7ee18adcfd872e91af35009b5c644c29af9fae95d87f35a97d5c8b3e",
+     "south": "c0cb54e25dc9907324af2f03be3b601a32eb50f0025356d6163af175fefec830"
+    },
+    "B": {
+     "east": "5f63145391a7eccfa367895468a5fde6677179e1ce82df3a64ce91340c718440",
+     "north": "a81b603c18942cf67cd8ba041baf5a250e81358816089b5637add8f85f43153a",
+     "south": "c0d38392355848ba6abce146c6bb683cd497e6c130c8a7694fb5c8851584505f"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_aveluthia_v2"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Aveluthia/RM_Aveluthia",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "aveluthia"
   },
   "RM_Cindermare": {
    "columns": {
@@ -952,6 +1058,156 @@
    ],
    "subject_key": "gharrek"
   },
+  "RM_GiantFibreStalk": {
+   "columns": {
+    "A": {
+     "single": "b32b0f4919cfd40a7a3556970466a0ad550ab9ff366f82f1667cbd4a077ff599"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_GiantFibreStalk"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_GiantFibreStalk",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "giantfibrestalk"
+  },
+  "RM_GiantGlowGlobe": {
+   "columns": {
+    "A": {
+     "single": "2fc94015c2d5b3fb7c2c835c04997f33e6a8b9af57f93f6412479ee7db5126a8"
+    },
+    "B": {
+     "single": "94645884de94c2ff8344a8540b96953b4d1257de15e17d5c5b5694af387d2172"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_GiantGlowGlobe",
+    "B": "RM_Abyss/Things/Plant/RM_GiantGlowGlobe"
+   },
+   "labels": {
+    "A": "render abyss_giantglowglobe_b_v2",
+    "B": "render abyss_giantglowglobe_c_v2"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_GiantGlowGlobe",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "giantglowglobe"
+  },
+  "RM_GlowGlobe": {
+   "columns": {
+    "A": {
+     "single": "265101ff1cdc3d72d0438dd9bee1d512c7e0973029a27591159c0498b0b99a5a"
+    },
+    "B": {
+     "single": "4c9054b1537363c6843db1a2651619e40bbf3a999c7577a6bf789f895052ca99"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_GlowGlobe",
+    "B": "RM_Abyss/Things/Plant/RM_GlowGlobe"
+   },
+   "labels": {
+    "A": "render abyss_glowglobe_b_v2",
+    "B": "render abyss_glowglobe_c_v2"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_GlowGlobe",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "glowglobe"
+  },
+  "RM_GlowberryBush": {
+   "columns": {
+    "A": {
+     "single": "59347c9dd89b250f23a8e8b18954ae679bf56a529d790a6d4df3b8d7636d2df1"
+    },
+    "B": {
+     "single": "7774c58aa2ff8319c5398c0348e545de01f0a7ebd95771a05687b72f348dc222"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_GlowberryBush",
+    "B": "RM_Abyss/Things/Plant/RM_GlowberryBush"
+   },
+   "labels": {
+    "A": "render abyss_glowberrybush_b_v2",
+    "B": "render abyss_glowberrybush_c_v2"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_GlowberryBush",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "glowberrybush"
+  },
+  "RM_GlowingGrass": {
+   "columns": {
+    "A": {
+     "single": "140c3c520f86463e574d2f51d91a08ad76cc8daa4f56a88dc94bf81a6728fa14"
+    },
+    "B": {
+     "single": "ea753fd27b571e35192bdebb610e91546ffec6a96e85d6346f36496f786b5a83"
+    },
+    "C": {
+     "single": "87fb2aa25e295d20699733066651f29a95f1bb183afa0a101cd7fb7ec1099333"
+    },
+    "D": {
+     "single": "cef31a628f7910d2967b2279a93ee28dcb5b42965a4ff092ccc19ffab31448cf"
+    },
+    "E": {
+     "single": "946606a4c20f4e7308ac314e3ccac8ff5448f4686b779513a75f86dd7cef5e79"
+    },
+    "F": {
+     "single": "12cf0e47faafb608a022e21b3a25673b32dacbb4411bf4152d04e73ec58c9973"
+    },
+    "G": {
+     "single": "fc4a2b5a332b3c3d5c09628c9556160a65bac7a69e2e0eb77ca231bfb89f1a17"
+    },
+    "H": {
+     "single": "f25c52a6f4f1cd701d1b8f439208254b348248f6ab3201140636ecf33f034cb3"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+    "B": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+    "C": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+    "D": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+    "E": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+    "F": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+    "G": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+    "H": "_byname"
+   },
+   "labels": {
+    "A": "render abyss_glowinggrass_a_tint_v1",
+    "B": "render abyss_glowinggrass_b_tint_v1",
+    "C": "render abyss_glowinggrass_c_tint_v1",
+    "D": "render abyss_glowinggrass_b_tint_v2",
+    "E": "render abyss_glowinggrass_a_v1",
+    "F": "render abyss_glowinggrass_b_v1 \u2014 failed canon check",
+    "G": "render abyss_glowinggrass_c_v1",
+    "H": "render sheet_redo_Plant_Grass_v1"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_GlowingGrass",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "subject_key": "glowinggrass"
+  },
   "RM_Krizzak": {
    "columns": {
     "A": {
@@ -1001,7 +1257,7 @@
      "5_north": "265debbe7a7ee6186324765b5ceb52a2740d58b2524e4f7a07dbf6a7f72cff98",
      "5_south": "2945156e32b1124d0c137e0ef04008ed82b6c2269a364e16c367f087bbf34ca0"
     },
-    "S": {
+    "V": {
      "1_east": "7a3f6baca8c358fca6b0c7db6d76bdf937ca852f70147dfc19307a8c66141345",
      "1_north": "3d8a4b2da1d78b048d020a60980a722846c4a36e18bf1b24d91a9be93d9d9b6a",
      "1_south": "dc6cfbd21bf92576cc37e4a60a3e3383e5dde7e9c05642dec2b10a85b66b6c7e",
@@ -1027,7 +1283,7 @@
     "E": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
     "F": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
     "G": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_",
-    "S": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_"
+    "V": "_flip:RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 Abyss",
@@ -1037,7 +1293,7 @@
     "E": "render RM_Krizzak_Flying_4",
     "F": "render RM_Krizzak_Flying_5",
     "G": "IN GAME \u2014 RM_Krizzak_Flying_",
-    "S": "flight frames RM_Krizzak_Flying"
+    "V": "flight frames RM_Krizzak_Flying"
    },
    "res": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
    "reserved": [
@@ -1059,9 +1315,242 @@
     "P",
     "Q",
     "R",
-    "S"
+    "S",
+    "T",
+    "U",
+    "V"
    ],
    "subject_key": "krizzak"
+  },
+  "RM_Lirrith": {
+   "columns": {
+    "A": {
+     "east": "718b1133a14bd2f04638c1d61661f5f4e72c212532ba211c57e95078c1234a16",
+     "north": "8e9057d935ab2db956b6e4f504c7a784f65d5eeb9f8b7bcb18916727fcdb71e6",
+     "south": "528a38a6d7efa0f4ef40366bfa1ed17e77ca0fb91d645267b4232eed495882bf"
+    },
+    "B": {
+     "east": "bb550fb660c454364d7ee6bbdacd5d9d46d37a7d108041cc3c5ede4671336f7d",
+     "north": "20aa58fd01dd69367bf90c2d65afadb68d275bfde11ad216677d7eae25339764",
+     "south": "978f122e412065c02696abb34cf4bd6f18a7f5e894643a51152072866f505153"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_lirrith_v2"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Lirrith/RM_Lirrith",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "lirrith"
+  },
+  "RM_Moravatha": {
+   "columns": {
+    "A": {
+     "east": "1dfb21ab642d6ce777b140670b98dcaa208c2a96ecfc9dcd01eecf5fb74c6f8c",
+     "north": "82ca26533c3acec96ebcb2aa7f0413e32c2553a1f3184d5cbef1acc65293dd2d",
+     "south": "d27738dd988ecd693dad4daebee9cf375420b327265699d21eec477cfd6e5ea0"
+    },
+    "B": {
+     "east": "d36475d8f41b8f239e17d22ab9ad84b7173ec67218c303d190166dfeb5f5637a",
+     "north": "598a8176b4c5a4e5408484257d83b35bb6a16e9214d2744c42b1a099895c7153",
+     "south": "9b576c8d69a9e727b6c629793eda4dd2d32d0f3813ebcbd7d5e0d044c55d81ff"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_moravatha_v2"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Moravatha/RM_Moravatha",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "moravatha"
+  },
+  "RM_Nevarithia": {
+   "columns": {
+    "A": {
+     "east": "1bf696adebcf2f33ccf7314506b3d62d9eb905d8db963a8bca0bcfaa2cddc19b",
+     "north": "b96a2d9b1b357e0da7db8e49a8742cb258820f0396f3d904db193fa0b318f136",
+     "south": "e69c51bd35d4174518bef23f82db8a8154dc461082885517d791b5c1af6c2bc9"
+    },
+    "B": {
+     "east": "635378c945298af536f5930970780be06dae0c2984a6d361dede05630c1fd5c9",
+     "north": "05c26fab8d73cd886f90bcc3153b0d317ba6194d8e241f2060cc7cfe4e66693e",
+     "south": "7fb84c483a1105c78b000ddae3063f0e8bc52e6f4a8afb8fe80f68d31970bf47"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_nevarithia_v2"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Nevarithia/RM_Nevarithia",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "nevarithia"
+  },
+  "RM_Olumetha": {
+   "columns": {
+    "A": {
+     "east": "b773273fb4c8c427b32aed6e4769c6777d42a96b97dd70d905a8718a83322bfb",
+     "north": "59212cd8f78b675cc9b2408e31ef16db240d09545be3e911a22dd4c5204f067d"
+    },
+    "B": {
+     "south": "aa0198122c51ad509ffaab71a722e6b62bd2609955202a4844ad366377970057"
+    },
+    "C": {
+     "east": "713f6175500d71a0e98cd7222c197c2f9aecf8fa95fedd8cf3e175cfd8227a8e",
+     "north": "1a57686f534426309e2fafff55c61497f9bb877d2724db72361d223f9aec2ff2",
+     "south": "5b75d35b3b97bfbe240addb8cf454cd4a298042adeb1c3e90c7f394d48cd3f6d"
+    },
+    "D": {
+     "east": "b773273fb4c8c427b32aed6e4769c6777d42a96b97dd70d905a8718a83322bfb",
+     "north": "59212cd8f78b675cc9b2408e31ef16db240d09545be3e911a22dd4c5204f067d",
+     "south": "c8a6e48ddcffac6c5770ea91c4ebf21b23183395706455d091f38a060be2ab80"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha",
+    "C": "RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha",
+    "D": "RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_olumetha_v4 \u2014 failed canon check",
+    "C": "render abyss_olumetha_v2",
+    "D": "render abyss_olumetha_v3 \u2014 failed canon check"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Olumetha/RM_Olumetha",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "subject_key": "olumetha"
+  },
+  "RM_Ossumatha": {
+   "columns": {
+    "A": {
+     "east": "4b0d197f8388a68795103f61485b235a57bd6426b290940c81fabf40d1516ac8"
+    },
+    "B": {
+     "north": "11e85992d8634815bb5d498ee2b23f306ebb35cd2cb759eb76a5b433bc4fdbcd",
+     "south": "512ab0956b7ec264ccca3987baf46a2c70e7f29af4a48b8879619623039d121e"
+    },
+    "C": {
+     "east": "b09b555106fcd7c3af376377e1c69ccc1e89d9c1bfaf7c46dae18b2566c054fb",
+     "north": "6ecf615473680ebb9803ac39629083e2aefc911c09246c64682f5df5fab72266",
+     "south": "d2715b25dc70e2563c135b0029cc904f8018f79c6518ac651bc2d71961e39fba"
+    },
+    "D": {
+     "east": "4b0d197f8388a68795103f61485b235a57bd6426b290940c81fabf40d1516ac8",
+     "north": "186616c4be0928ccf5daa7ef36671c6acd691bde2e14c7582ea86a8fef5ac563",
+     "south": "e22b09cb7b35acc9f5206f70ad5a87f070a911e3a9bbb01ce628524890498a71"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha",
+    "C": "RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha",
+    "D": "RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_ossumatha_v4 \u2014 failed canon check",
+    "C": "render abyss_ossumatha_v2",
+    "D": "render abyss_ossumatha_v3 \u2014 failed canon check"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "subject_key": "ossumatha"
+  },
+  "RM_PaddleVine": {
+   "columns": {
+    "A": {
+     "single": "d04e02d5f6e1b0baf5b4f0c5f60106aaeaa1c9a8c444db802e5645269811bfac"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_PaddleVine"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_PaddleVine",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "paddlevine"
+  },
+  "RM_Sesserith": {
+   "columns": {
+    "A": {
+     "east": "16cafa5ceae7354187f5d331be6d3402177b9ffcd4297878ea755ea652d2e202",
+     "north": "5e587c3be4e2b0e92a44540a6cfe2e02248a6231342106f94f66aefe52babf7a",
+     "south": "bdb434d1b63ce0a5d52929f58b58b93f15d5ffa6ca466cb30c83877f24ed19d8"
+    },
+    "B": {
+     "east": "54b5afd16ee26ab31ead4ddb4b40e2975f9cb6010fb1d46670a2c015ca7679ec",
+     "north": "01b25e0103f7c8b21a1e2d1f4c61a8647f63aa3c67d79643ef65ae03623c09b3",
+     "south": "2007647137593e44e0727a06d43668f13077101b7b885ac01d54ff1477027153"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_sesserith_v2"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Sesserith/RM_Sesserith",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "sesserith"
+  },
+  "RM_SicklyGlowMushroom": {
+   "columns": {
+    "A": {
+     "single": "d14c1da69d5c406668e4dbf4fd6e86fa3e6176b4dd9e5c1570e11ccd4b5223ae"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_SicklyGlowMushroom"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_SicklyGlowMushroom",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "sicklyglowmushroom"
   },
   "RM_Skarnix": {
    "columns": {
@@ -1127,6 +1616,24 @@
    ],
    "subject_key": "summ"
   },
+  "RM_TreeMushroom": {
+   "columns": {
+    "A": {
+     "single": "67655acfc6ff3798ea27703f7124dc814d49620c0f45ffd67507bef8d5b2af84"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Plant/RM_TreeMushroom"
+   },
+   "labels": {
+    "A": "render abyss_treemushroom_c_v2"
+   },
+   "res": "RM_Abyss/Things/Plant/RM_TreeMushroom",
+   "reserved": [
+    "A"
+   ],
+   "subject_key": "treemushroom"
+  },
   "RM_Vosska": {
    "columns": {
     "A": {
@@ -1185,8 +1692,36 @@
     "C"
    ],
    "subject_key": "wickwood"
+  },
+  "RM_Ysvaltha": {
+   "columns": {
+    "A": {
+     "east": "0052887ea95ee55cb4cef13041d3a01db8eee58bf246f9fa05081218ecfbd374",
+     "north": "afd0efd5d02fc1da3fdfac7630e8454820d83c135ac66b5fe03fa71659f3209a",
+     "south": "d8c3a3223098e8717d0f4f5066025c3da9276cc3b89b7d8787a970080a16ba3f"
+    },
+    "B": {
+     "east": "655faaddd8b389ee21a9894aa07da34470dec30152e79f07127ccb31ba981c4e",
+     "north": "c43c3b7e56eecf66c7292558d5d4bbce4aad2bfe8307641b0c79aa1e4d579fde",
+     "south": "120765ee0c497f1d389703a380c93e0f5b318f465a67e71183cbaf57d428c5cf"
+    }
+   },
+   "graphic_of": {
+    "A": "RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha",
+    "B": "RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Abyss",
+    "B": "render abyss_ysvaltha_v2"
+   },
+   "res": "RM_Abyss/Things/Pawn/Animal/RM_Ysvaltha/RM_Ysvaltha",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "subject_key": "ysvaltha"
   }
  },
  "sheetId": "abyss_sheet_2026-10-04",
- "snapshotId": "b8a28483a3c65329"
+ "snapshotId": "619f6538393ef2f9"
 }

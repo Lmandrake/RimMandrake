@@ -1,396 +1,391 @@
 {
-  "biome": "RM_Stillsand",
-  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
-  "decidedCount": 34,
-  "decisions": {
-    "RM_Aurrok": {
-      "at": "2026-10-06T05:34:20.693Z",
-      "decidedAt": "2026-10-06T05:34:08.102Z",
-      "decision": "A",
-      "note": "Need to make this less dinosaur-like. More alien. Love the huge fins along its back.",
-      "prefill": "A",
-      "purge": [
-        "ed9b579d555577fb5c0e421888c20282e29ba7809f52d253ea242ee0c55ee26f",
-        "8338e43008c3547baff4aeb1ec5dace671c5d0068aad11887a9ab6cfcfa579ea",
-        "45ab167eb5ca151aeb203108bbfa488139927082549bca8a622337ef4d459d9e"
-      ],
-      "purgeTouched": true
-    },
-    "RM_Drazzik": {
-      "at": "2026-10-05T05:23:56.033Z",
-      "decision": "A",
-      "note": "see above",
-      "prefill": "A"
-    },
-    "RM_DuneCrawler": {
-      "at": "2026-10-05T05:36:40.069Z",
-      "decision": "A",
-      "note": "Make this 1/3 size",
-      "prefill": "A"
-    },
-    "RM_Duumma": {
-      "at": "2026-10-06T05:34:30.159Z",
-      "decidedAt": "2026-10-06T05:34:30.158Z",
-      "decision": "redo",
-      "note": "I think it likely needs a corpse-body when killed, just having a swimming form isn't enough. What does it look like when it's attacked for example? ",
-      "prefill": "A"
-    },
-    "RM_Gaanok": {
-      "at": "2026-10-05T04:56:25.828Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "7d8a03db1fbf0a5b7f5e9c744c5657be30a2f5f9e01e09c9d6d06b519099dc40",
-        "69f9d4e4593eab31cc968fd7f4482c3b259021fabd5b2aacf60fb5a35eff86b7",
-        "051ecf84cc3aae9444f51cb9b2b4a5dc49200235ec72843438189cf1dddf883b"
-      ],
-      "purgeTouched": true
-    },
-    "RM_Glasscrust": {
-      "at": "2026-10-06T05:36:17.782Z",
-      "decision": "A",
-      "note": "create many variants",
-      "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F"
-      ],
-      "variantsAt": "2026-10-06T05:36:17.782Z"
-    },
-    "RM_Ikee": {
-      "at": "2026-10-05T05:23:08.568Z",
-      "decidedAt": "2026-10-05T05:23:05.879Z",
-      "decision": "hold",
-      "note": "duplicate, remove",
-      "prefill": "A"
-    },
-    "RM_KneelOllim": {
-      "at": "2026-10-06T05:36:26.440Z",
-      "decision": "A",
-      "note": "create many variants",
-      "prefill": "A",
-      "purge": [
-        "5042a113130dad76f7656e90f910285c4f67c0d66d4ecc7953919f1694131531",
-        "a266d3ff823d8ce7c13b690532df1ffbd5c96e16aea32b33a9cfc358960870df",
-        "5c855498e32cba323c4efbeea6d46d042fcfda1c644b59f5b3bccf4be8063b09",
-        "b9403600f0716e62745e0675366243fe3d04c82983f0435bdc14aa285cf50a37",
-        "927f08c9e0b7d4802ca7bf077cc47d6a9876ba3bdaa5b918b90d0f1a4230da4b",
-        "8b8bf8d353731b01f93bfd6af5b57b77c939cb4b009ff0bf074ca29db8ea85bb"
-      ],
-      "purgeTouched": true,
-      "variants": [
-        "A"
-      ],
-      "variantsAt": "2026-10-06T05:36:19.352Z"
-    },
-    "RM_LightPipeNub": {
-      "at": "2026-10-06T05:36:31.067Z",
-      "decidedAt": "2026-10-05T05:35:30.205Z",
-      "decision": "redo",
-      "note": "",
-      "prefill": "hold",
-      "variants": [
-        "A",
-        "B"
-      ],
-      "variantsAt": "2026-10-06T05:36:31.067Z"
-    },
-    "RM_Liikka": {
-      "at": "2026-10-05T05:04:54.843Z",
-      "decision": "A",
-      "note": "Rename to Likka Likka",
-      "prefill": "A"
-    },
-    "RM_Loomma": {
-      "at": "2026-10-05T05:05:18.245Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "5afa241a3cd4f9e69471b9efecbcd499b3519df03bc01deaecaa4de352101f61",
-        "6d19c8e43905d8be9b163b3fedd858d1786c372d8eefe1dc4d7e86ab51beb65a",
-        "33ac2bfe8bbcebac05950d0d8ef53cbc6867eafce8f17fb31919f80bd6bf58e2"
-      ],
-      "purgeTouched": true
-    },
-    "RM_Ollim": {
-      "at": "2026-10-06T05:36:34.751Z",
-      "decision": "hold",
-      "note": "",
-      "prefill": "hold",
-      "variants": [
-        "A",
-        "B"
-      ],
-      "variantsAt": "2026-10-06T05:36:34.751Z"
-    },
-    "RM_Oommok": {
-      "at": "2026-10-06T05:35:35.831Z",
-      "decidedAt": "2026-10-06T05:35:35.831Z",
-      "decision": "C",
-      "note": "Increase size by x2. Make mirror plating on top more organic-looking, imperfectly shaped, and a little dirty. Lose the elephant ears. ",
-      "prefill": "A"
-    },
-    "RM_Qorrax": {
-      "at": "2026-10-05T05:08:43.912Z",
-      "decidedAt": "2026-10-05T05:08:31.111Z",
-      "decision": "A",
-      "note": "The swimming image doesn't much look like the picture on the left. ",
-      "picks": {
-        "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming": "B"
-      },
-      "prefill": "A"
-    },
-    "RM_ShadeMite": {
-      "at": "2026-10-06T05:34:36.308Z",
-      "decidedAt": "2026-10-06T05:34:36.308Z",
-      "decision": "B",
-      "note": "Tint it towards grey please",
-      "prefill": "A"
-    },
-    "RM_Siidda": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Soorrak": {
-      "at": "2026-10-06T05:35:50.768Z",
-      "decidedAt": "2026-10-06T05:35:50.768Z",
-      "decision": "D",
-      "note": "I like this image, but it needs regeneration to the right size. Flyer. ",
-      "prefill": "A",
-      "purge": [
-        "c551c19da6700663914acb7bb6f0531afd13172ad5cdcbea04bcd74fa017b30c",
-        "276a39da510922f19afe5fae1803679e62804cc4ca6d1ce953ea30696c29e905",
-        "3cea4aa7a4831843189e0edd0182398dea2aca7b7067ac7716bb8294e5c3e94a"
-      ],
-      "purgeTouched": true
-    },
-    "RM_UltrissPad": {
-      "at": "2026-10-06T05:36:39.063Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsAt": "2026-10-06T05:36:39.063Z"
-    },
-    "RM_Veessa": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Vekka": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Vozzik": {
-      "at": "2026-10-05T05:28:45.675Z",
-      "decision": "A",
-      "note": "This should go into the Warscar.",
-      "prefill": "A"
-    },
-    "RSW_Drazzik": {
-      "at": "2026-10-05T05:23:51.401Z",
-      "decision": "A",
-      "note": "Needs a beneath-sand-waiting image (swimming). Belongs at the RimMandrake level.",
-      "prefill": "A"
-    },
-    "RSW_Gizka": {
-      "at": "2026-10-05T04:57:03.760Z",
-      "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534",
-        "40b5b075d878e3000463f254b4509629118588f2b4a31959f06dc25bb310e8be",
-        "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
-        "46fe3bd2b883ac569ce46e1bfa7a83e3948999af127dfa42b44bb63b1dbae105",
-        "a432eaec5293632f578e54298c98067594dba0b9680e89e0a1921e279f460460",
-        "78c3907eb1cace3d13c7181277cb8cf56feaa9292be2601e888f3927831a3dfc",
-        "fa4c97c4f58c5ec4c0b3325ccf88d9151df5e9e7d4c573a10b0057e368437eb0",
-        "b05f312fce364b981c167d3fe833406f9654aea4f1d637eda5e7a65114c9b778",
-        "5dba07a2b0daaf4331f9eb30931b7dc63c49505cc13fc9e62fe71c32ebb24189",
-        "7d70758b7abf668cc9a39f0c6ab319ac6ce21313fe1370353013c937de643c6f",
-        "58b01363cd22b88d8befe4b1beb4dfe932f065ffc185ea062468f0eddf9afc8c",
-        "29f0bbc70c691744af2c1deaf550f1971fc9be76b31c5921a935239cb9bb614e",
-        "a92076166a128cc07521e1ae06a3fa326b5d1aaf78f227b39acb48ea25476ede",
-        "ba3bb18d2faec449e9744910e69d98e006b7dc7b3fadefcfc1fd95c0dd8baf66",
-        "bdac6caa2c180b95a045c2ead87f632ebe75d65b6c41a2c3bcdd9ab7046e249a",
-        "5a1254e1e38a975a514d2c4807bd70c9a8303eb16ef4b1820fcacdde13c7fa3c"
-      ],
-      "purgeTouched": true
-    },
-    "RSW_GraniteSlug": {
-      "at": "2026-10-06T05:34:42.269Z",
-      "decidedAt": "2026-10-06T05:34:42.269Z",
-      "decision": "C",
-      "note": "follow canon closely",
-      "prefill": "A",
-      "purge": [
-        "48fe027109f2e8bd57313d5e1800f289811cc57034d4cc3d9f697b9ff7c7b534",
-        "b50c86924cf449e1a045165f9b711529c1770b37fe08db1b8e94b5c7f3b921ff",
-        "df186199498355bf529a48aea670becfed807bee6ae563785cd990ed0f8e58c3"
-      ],
-      "purgeTouched": true
-    },
-    "RSW_GreaterKraytDragon": {
-      "at": "2026-10-06T05:34:52.912Z",
-      "decidedAt": "2026-10-06T05:34:52.912Z",
-      "decision": "E",
-      "note": "Follow the canon imagery closely. Enormously long next and distant head, then a large number of legs far below (7-8 pair). Broad head with a shelf-like ramming bone top. ",
-      "prefill": "A",
-      "purge": [
-        "5f8a4e6ab0e79fd363e28609f2937796c22938711566b0deb24c59e87da8c6b3",
-        "5f22eea3820b94b92908481ddc82e220f9b9635e7e73f7156b81247c5128c8d3",
-        "971257281ef89ad736ddfc885fe231a5efff3638c49da74d747dfa53a8be77a2",
-        "162477ddb4152e6fbd677c80ec69a60abdcd4134bba6280f1f406971aa14200c",
-        "ab0561c0c4f92b088271783daeb4e3a07f8a0ec75e80c05f79102e5d76ef164d"
-      ],
-      "purgeTouched": true
-    },
-    "RSW_Ikee": {
-      "at": "2026-10-05T05:22:55.318Z",
-      "decision": "A",
-      "note": "This should be 1/3 the size and darker red flesh around the eye. Jawa think this is a cute pet. ",
-      "prefill": "A",
-      "purge": [
-        "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4",
-        "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
-        "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9"
-      ],
-      "purgeTouched": true
-    },
-    "RSW_KraytDragon": {
-      "at": "2026-10-06T05:35:18.118Z",
-      "decidedAt": "2026-10-06T05:35:18.118Z",
-      "decision": "redo",
-      "note": "This is the four-legged subspecies, follow the canon image closely. ",
-      "picks": {
-        "_byname": "E",
-        "swanimals/KraytDragon/KraytDragon_j": "B",
-        "swanimals/KraytDragon/KraytDragon_m": "C"
-      },
-      "prefill": "A",
-      "purge": [
-        "4fe2b504c8f8569c78354ac6477f0762d314e39637e95afd279df4f23fb986f4",
-        "cc3b28105a4cad876bfee53070a415833173dfaf1f784b8a4ef7a5788a91d5bd",
-        "2b3ea07abb6fce9386d6c9d3200b7545179f6e0ad1ea1f38efbcd01c84481988"
-      ],
-      "purgeTouched": true
-    },
-    "RSW_Kreetle": {
-      "at": "2026-10-06T05:35:27.565Z",
-      "decidedAt": "2026-10-06T05:35:27.565Z",
-      "decision": "I",
-      "note": "Follor canon art closely. ",
-      "picks": {
-        "swanimals/Kreetle/Kreetle_j": "F"
-      },
-      "prefill": "A",
-      "purge": [
-        "17cfa52e4d5af17e915ad111daad4a7284ba2e535218114039caa9ba8ad9908e",
-        "32f31778fac291590b1b04f8e1dd2b1e88c6b8f0275221fa2f505e7f38b58865",
-        "84a47f2f6f0db216489e45e403f678093b583197e2c0f5212cbdec2ce66bf214",
-        "cb138e25582720a3b862c84ff7cc7819a7f4d6c7a80fa4420b9dceade4641774",
-        "ea3297c44fad8e13acc106067e1896e9d3e0e6f6c29d4e8488dddb82835b4f43",
-        "72840821544035a205c7026848fedcf8d1fc7afee1764230af5196511f4a8970",
-        "9fdba3024594a222f7746226f2239159c1b91cf3b4fd69bdad7587eb3a830e57"
-      ],
-      "purgeTouched": true
-    },
-    "RSW_LightPipeNub": {
-      "at": "2026-10-05T05:35:40.922Z",
-      "decidedAt": "2026-10-05T05:35:28.166Z",
-      "decision": "redo",
-      "note": "belongs in RimMandrake level",
-      "prefill": "hold"
-    },
-    "RSW_Ollim": {
-      "at": "2026-10-05T05:36:11.828Z",
-      "decidedAt": "2026-10-05T05:35:52.552Z",
-      "decision": "redo",
-      "note": "belongs in RimMandrake level",
-      "prefill": "hold"
-    },
-    "RSW_Plant_Bloddle": {
-      "at": "2026-10-06T05:36:12.440Z",
-      "decision": "A",
-      "note": "Create many variants",
-      "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G"
-      ],
-      "variantsAt": "2026-10-06T05:36:12.440Z"
-    },
-    "RSW_Scurrier": {
-      "at": "2026-10-06T05:35:45.779Z",
-      "decidedAt": "2026-10-06T05:35:45.779Z",
-      "decision": "redo",
-      "note": "follow canon art closely",
-      "picks": {
-        "_byname": "E",
-        "swanimals/Scurrier/Scurrier_m": "B"
-      },
-      "prefill": "A",
-      "purge": [
-        "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6",
-        "921f7f67eed0281f6f87bf9ef9406e8ed688ac51fc86ae82c44eecc37d77dd3d",
-        "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea"
-      ],
-      "purgeTouched": true
-    },
-    "RSW_Vozzik": {
-      "at": "2026-10-05T05:28:11.988Z",
-      "decidedAt": "2026-10-05T05:24:10.227Z",
-      "decision": "redo",
-      "note": "Please regenerate to make it obviously entirely synthetic. This should be moved to the Rust Cathedral Biome. There should be brightly glowing blue light coming from within through its metallic shell. There should be four eye stalks looking in several diretions, also glowing dull blue. ",
-      "prefill": "A",
-      "purge": [
-        "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
-        "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
-        "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc"
-      ],
-      "purgeTouched": true
-    },
-    "RSW_WarWyrm": {
-      "at": "2026-10-06T05:35:59.260Z",
-      "decidedAt": "2026-10-06T05:35:59.260Z",
-      "decision": "C",
-      "note": "Note the four eyes and extremely serpentine body and unique coloration. Follow the canon art closely. 50% bigger. ",
-      "prefill": "A",
-      "purge": [
-        "5b95d1ceda5b9fce3f55e542f2d3e1409ca4ae85ffa48c0e43bf4c7639ae0f70",
-        "edb081b14409007555df46d2da17e5fb4d07cdb9bd09efb378afc41e7d20a359",
-        "562ceee378083a7330bb872c479cb28b24c34b56edbc446c53664c886eb72523"
-      ],
-      "purgeTouched": true
-    }
+ "biome": "RM_Stillsand",
+ "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+ "decidedCount": 34,
+ "decisions": {
+  "RM_Aurrok": {
+   "at": "2026-10-06T05:34:20.693Z",
+   "decidedAt": "2026-10-06T05:34:08.102Z",
+   "decision": "A",
+   "note": "Need to make this less dinosaur-like. More alien. Love the huge fins along its back.",
+   "prefill": "A",
+   "purge": [
+    "ed9b579d555577fb5c0e421888c20282e29ba7809f52d253ea242ee0c55ee26f",
+    "8338e43008c3547baff4aeb1ec5dace671c5d0068aad11887a9ab6cfcfa579ea",
+    "45ab167eb5ca151aeb203108bbfa488139927082549bca8a622337ef4d459d9e"
+   ],
+   "purgeTouched": true
   },
-  "posture": "pick-one",
-  "reviewStatus": {
-    "at": "2026-10-05T22:36:39-0700",
-    "by": "owner (Lukas)",
-    "state": "ruled",
-    "evidence": "second sitting: sidecar savedBy review-sheet-sidecar, writeCount 163, savedAt 2026-10-05T22:36:39-0700; 18 rows carry an owner 'at' stamp 2026-10-06T05:34-05:36Z; owner typed \"Finished Stillsand.\" (BENCH relay)"
+  "RM_Drazzik": {
+   "at": "2026-10-05T05:23:56.033Z",
+   "decision": "A",
+   "note": "see above",
+   "prefill": "A"
   },
-  "savedAt": "2026-10-05T22:36:39-0700",
-  "savedBy": "review-sheet-sidecar",
-  "sheetId": "deep_desert_sheet_2026-10-04",
-  "snapshot": "infrastructure/state/art/sheets/deep_desert_sheet_2026-10-04.snapshot.json",
-  "snapshotId": "78a5fec1d0539d51",
-  "writeCount": 163
+  "RM_DuneCrawler": {
+   "at": "2026-10-05T05:36:40.069Z",
+   "decision": "A",
+   "note": "Make this 1/3 size",
+   "prefill": "A"
+  },
+  "RM_Duumma": {
+   "at": "2026-10-06T05:34:30.159Z",
+   "decidedAt": "2026-10-06T05:34:30.158Z",
+   "decision": "redo",
+   "note": "I think it likely needs a corpse-body when killed, just having a swimming form isn't enough. What does it look like when it's attacked for example? ",
+   "prefill": "A"
+  },
+  "RM_Gaanok": {
+   "at": "2026-10-05T04:56:25.828Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "7d8a03db1fbf0a5b7f5e9c744c5657be30a2f5f9e01e09c9d6d06b519099dc40",
+    "69f9d4e4593eab31cc968fd7f4482c3b259021fabd5b2aacf60fb5a35eff86b7",
+    "051ecf84cc3aae9444f51cb9b2b4a5dc49200235ec72843438189cf1dddf883b"
+   ],
+   "purgeTouched": true
+  },
+  "RM_Glasscrust": {
+   "at": "2026-10-06T05:36:17.782Z",
+   "decision": "A",
+   "note": "create many variants",
+   "prefill": "A",
+   "variants": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "variantsAt": "2026-10-06T05:36:17.782Z"
+  },
+  "RM_Ikee": {
+   "at": "2026-10-05T05:23:08.568Z",
+   "decidedAt": "2026-10-05T05:23:05.879Z",
+   "decision": "hold",
+   "note": "duplicate, remove",
+   "prefill": "A"
+  },
+  "RM_KneelOllim": {
+   "at": "2026-10-06T05:36:26.440Z",
+   "decision": "A",
+   "note": "create many variants",
+   "prefill": "A",
+   "purge": [
+    "5042a113130dad76f7656e90f910285c4f67c0d66d4ecc7953919f1694131531",
+    "a266d3ff823d8ce7c13b690532df1ffbd5c96e16aea32b33a9cfc358960870df",
+    "5c855498e32cba323c4efbeea6d46d042fcfda1c644b59f5b3bccf4be8063b09",
+    "b9403600f0716e62745e0675366243fe3d04c82983f0435bdc14aa285cf50a37",
+    "927f08c9e0b7d4802ca7bf077cc47d6a9876ba3bdaa5b918b90d0f1a4230da4b",
+    "8b8bf8d353731b01f93bfd6af5b57b77c939cb4b009ff0bf074ca29db8ea85bb"
+   ],
+   "purgeTouched": true,
+   "variants": [
+    "A"
+   ],
+   "variantsAt": "2026-10-06T05:36:19.352Z"
+  },
+  "RM_LightPipeNub": {
+   "at": "2026-10-06T05:36:31.067Z",
+   "decidedAt": "2026-10-05T05:35:30.205Z",
+   "decision": "redo",
+   "note": "",
+   "prefill": "hold",
+   "variants": [
+    "A",
+    "B"
+   ],
+   "variantsAt": "2026-10-06T05:36:31.067Z"
+  },
+  "RM_Liikka": {
+   "at": "2026-10-05T05:04:54.843Z",
+   "decision": "A",
+   "note": "Rename to Likka Likka",
+   "prefill": "A"
+  },
+  "RM_Loomma": {
+   "at": "2026-10-05T05:05:18.245Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "5afa241a3cd4f9e69471b9efecbcd499b3519df03bc01deaecaa4de352101f61",
+    "6d19c8e43905d8be9b163b3fedd858d1786c372d8eefe1dc4d7e86ab51beb65a",
+    "33ac2bfe8bbcebac05950d0d8ef53cbc6867eafce8f17fb31919f80bd6bf58e2"
+   ],
+   "purgeTouched": true
+  },
+  "RM_Ollim": {
+   "at": "2026-10-05T05:36:11.828Z",
+   "decidedAt": "2026-10-05T05:35:52.552Z",
+   "decision": "redo",
+   "note": "belongs in RimMandrake level",
+   "carriedFrom": "RSW_Ollim",
+   "carriedAt": "2026-10-07",
+   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
+  },
+  "RM_Oommok": {
+   "at": "2026-10-06T05:35:35.831Z",
+   "decidedAt": "2026-10-06T05:35:35.831Z",
+   "decision": "C",
+   "note": "Increase size by x2. Make mirror plating on top more organic-looking, imperfectly shaped, and a little dirty. Lose the elephant ears. ",
+   "prefill": "A"
+  },
+  "RM_Qorrax": {
+   "at": "2026-10-05T05:08:43.912Z",
+   "decidedAt": "2026-10-05T05:08:31.111Z",
+   "decision": "A",
+   "note": "The swimming image doesn't much look like the picture on the left. ",
+   "picks": {
+    "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming": "B"
+   },
+   "prefill": "A"
+  },
+  "RM_ShadeMite": {
+   "at": "2026-10-06T05:34:36.308Z",
+   "decidedAt": "2026-10-06T05:34:36.308Z",
+   "decision": "B",
+   "note": "Tint it towards grey please",
+   "prefill": "A"
+  },
+  "RM_Siidda": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Soorrak": {
+   "at": "2026-10-06T05:35:50.768Z",
+   "decidedAt": "2026-10-06T05:35:50.768Z",
+   "decision": "D",
+   "note": "I like this image, but it needs regeneration to the right size. Flyer. ",
+   "prefill": "A",
+   "purge": [
+    "c551c19da6700663914acb7bb6f0531afd13172ad5cdcbea04bcd74fa017b30c",
+    "276a39da510922f19afe5fae1803679e62804cc4ca6d1ce953ea30696c29e905",
+    "3cea4aa7a4831843189e0edd0182398dea2aca7b7067ac7716bb8294e5c3e94a"
+   ],
+   "purgeTouched": true
+  },
+  "RM_UltrissPad": {
+   "at": "2026-10-06T05:36:39.063Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "variants": [
+    "A"
+   ],
+   "variantsAt": "2026-10-06T05:36:39.063Z"
+  },
+  "RM_Veessa": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Vekka": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RM_Vozzik": {
+   "at": "2026-10-05T05:28:45.675Z",
+   "decision": "A",
+   "note": "This should go into the Warscar.",
+   "prefill": "A"
+  },
+  "RSW_Drazzik": {
+   "at": "2026-10-05T05:23:51.401Z",
+   "decision": "A",
+   "note": "Needs a beneath-sand-waiting image (swimming). Belongs at the RimMandrake level.",
+   "prefill": "A"
+  },
+  "RSW_Gizka": {
+   "at": "2026-10-05T04:57:03.760Z",
+   "decision": "A",
+   "note": "",
+   "prefill": "A",
+   "purge": [
+    "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534",
+    "40b5b075d878e3000463f254b4509629118588f2b4a31959f06dc25bb310e8be",
+    "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b",
+    "46fe3bd2b883ac569ce46e1bfa7a83e3948999af127dfa42b44bb63b1dbae105",
+    "a432eaec5293632f578e54298c98067594dba0b9680e89e0a1921e279f460460",
+    "78c3907eb1cace3d13c7181277cb8cf56feaa9292be2601e888f3927831a3dfc",
+    "fa4c97c4f58c5ec4c0b3325ccf88d9151df5e9e7d4c573a10b0057e368437eb0",
+    "b05f312fce364b981c167d3fe833406f9654aea4f1d637eda5e7a65114c9b778",
+    "5dba07a2b0daaf4331f9eb30931b7dc63c49505cc13fc9e62fe71c32ebb24189",
+    "7d70758b7abf668cc9a39f0c6ab319ac6ce21313fe1370353013c937de643c6f",
+    "58b01363cd22b88d8befe4b1beb4dfe932f065ffc185ea062468f0eddf9afc8c",
+    "29f0bbc70c691744af2c1deaf550f1971fc9be76b31c5921a935239cb9bb614e",
+    "a92076166a128cc07521e1ae06a3fa326b5d1aaf78f227b39acb48ea25476ede",
+    "ba3bb18d2faec449e9744910e69d98e006b7dc7b3fadefcfc1fd95c0dd8baf66",
+    "bdac6caa2c180b95a045c2ead87f632ebe75d65b6c41a2c3bcdd9ab7046e249a",
+    "5a1254e1e38a975a514d2c4807bd70c9a8303eb16ef4b1820fcacdde13c7fa3c"
+   ],
+   "purgeTouched": true
+  },
+  "RSW_GraniteSlug": {
+   "at": "2026-10-06T05:34:42.269Z",
+   "decidedAt": "2026-10-06T05:34:42.269Z",
+   "decision": "C",
+   "note": "follow canon closely",
+   "prefill": "A",
+   "purge": [
+    "48fe027109f2e8bd57313d5e1800f289811cc57034d4cc3d9f697b9ff7c7b534",
+    "b50c86924cf449e1a045165f9b711529c1770b37fe08db1b8e94b5c7f3b921ff",
+    "df186199498355bf529a48aea670becfed807bee6ae563785cd990ed0f8e58c3"
+   ],
+   "purgeTouched": true
+  },
+  "RSW_GreaterKraytDragon": {
+   "at": "2026-10-06T05:34:52.912Z",
+   "decidedAt": "2026-10-06T05:34:52.912Z",
+   "decision": "E",
+   "note": "Follow the canon imagery closely. Enormously long next and distant head, then a large number of legs far below (7-8 pair). Broad head with a shelf-like ramming bone top. ",
+   "prefill": "A",
+   "purge": [
+    "5f8a4e6ab0e79fd363e28609f2937796c22938711566b0deb24c59e87da8c6b3",
+    "5f22eea3820b94b92908481ddc82e220f9b9635e7e73f7156b81247c5128c8d3",
+    "971257281ef89ad736ddfc885fe231a5efff3638c49da74d747dfa53a8be77a2",
+    "162477ddb4152e6fbd677c80ec69a60abdcd4134bba6280f1f406971aa14200c",
+    "ab0561c0c4f92b088271783daeb4e3a07f8a0ec75e80c05f79102e5d76ef164d"
+   ],
+   "purgeTouched": true
+  },
+  "RSW_Ikee": {
+   "at": "2026-10-05T05:23:08.568Z",
+   "decidedAt": "2026-10-05T05:23:05.879Z",
+   "decision": "hold",
+   "note": "duplicate, remove",
+   "carriedFrom": "RM_Ikee",
+   "carriedAt": "2026-10-07",
+   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
+  },
+  "RSW_KraytDragon": {
+   "at": "2026-10-06T05:35:18.118Z",
+   "decidedAt": "2026-10-06T05:35:18.118Z",
+   "decision": "redo",
+   "note": "This is the four-legged subspecies, follow the canon image closely. ",
+   "picks": {
+    "_byname": "E",
+    "swanimals/KraytDragon/KraytDragon_j": "B",
+    "swanimals/KraytDragon/KraytDragon_m": "C"
+   },
+   "prefill": "A",
+   "purge": [
+    "4fe2b504c8f8569c78354ac6477f0762d314e39637e95afd279df4f23fb986f4",
+    "cc3b28105a4cad876bfee53070a415833173dfaf1f784b8a4ef7a5788a91d5bd",
+    "2b3ea07abb6fce9386d6c9d3200b7545179f6e0ad1ea1f38efbcd01c84481988"
+   ],
+   "purgeTouched": true
+  },
+  "RSW_Kreetle": {
+   "at": "2026-10-06T05:35:27.565Z",
+   "decidedAt": "2026-10-06T05:35:27.565Z",
+   "decision": "I",
+   "note": "Follor canon art closely. ",
+   "picks": {
+    "swanimals/Kreetle/Kreetle_j": "F"
+   },
+   "prefill": "A",
+   "purge": [
+    "17cfa52e4d5af17e915ad111daad4a7284ba2e535218114039caa9ba8ad9908e",
+    "32f31778fac291590b1b04f8e1dd2b1e88c6b8f0275221fa2f505e7f38b58865",
+    "84a47f2f6f0db216489e45e403f678093b583197e2c0f5212cbdec2ce66bf214",
+    "cb138e25582720a3b862c84ff7cc7819a7f4d6c7a80fa4420b9dceade4641774",
+    "ea3297c44fad8e13acc106067e1896e9d3e0e6f6c29d4e8488dddb82835b4f43",
+    "72840821544035a205c7026848fedcf8d1fc7afee1764230af5196511f4a8970",
+    "9fdba3024594a222f7746226f2239159c1b91cf3b4fd69bdad7587eb3a830e57"
+   ],
+   "purgeTouched": true
+  },
+  "RSW_LightPipeNub": {
+   "at": "2026-10-05T05:35:40.922Z",
+   "decidedAt": "2026-10-05T05:35:28.166Z",
+   "decision": "redo",
+   "note": "belongs in RimMandrake level",
+   "prefill": "hold"
+  },
+  "RSW_Ollim": {
+   "at": "2026-10-05T05:36:11.828Z",
+   "decidedAt": "2026-10-05T05:35:52.552Z",
+   "decision": "redo",
+   "note": "belongs in RimMandrake level",
+   "prefill": "hold"
+  },
+  "RSW_Plant_Bloddle": {
+   "at": "2026-10-06T05:36:12.440Z",
+   "decision": "A",
+   "note": "Create many variants",
+   "prefill": "A",
+   "variants": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "variantsAt": "2026-10-06T05:36:12.440Z"
+  },
+  "RSW_Scurrier": {
+   "at": "2026-10-06T05:35:45.779Z",
+   "decidedAt": "2026-10-06T05:35:45.779Z",
+   "decision": "redo",
+   "note": "follow canon art closely",
+   "picks": {
+    "_byname": "E",
+    "swanimals/Scurrier/Scurrier_m": "B"
+   },
+   "prefill": "A",
+   "purge": [
+    "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6",
+    "921f7f67eed0281f6f87bf9ef9406e8ed688ac51fc86ae82c44eecc37d77dd3d",
+    "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea"
+   ],
+   "purgeTouched": true
+  },
+  "RSW_Vozzik": {
+   "at": "2026-10-05T05:28:11.988Z",
+   "decidedAt": "2026-10-05T05:24:10.227Z",
+   "decision": "redo",
+   "note": "Please regenerate to make it obviously entirely synthetic. This should be moved to the Rust Cathedral Biome. There should be brightly glowing blue light coming from within through its metallic shell. There should be four eye stalks looking in several diretions, also glowing dull blue. ",
+   "prefill": "A",
+   "purge": [
+    "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+    "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+    "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc"
+   ],
+   "purgeTouched": true
+  },
+  "RSW_WarWyrm": {
+   "at": "2026-10-06T05:35:59.260Z",
+   "decidedAt": "2026-10-06T05:35:59.260Z",
+   "decision": "C",
+   "note": "Note the four eyes and extremely serpentine body and unique coloration. Follow the canon art closely. 50% bigger. ",
+   "prefill": "A",
+   "purge": [
+    "5b95d1ceda5b9fce3f55e542f2d3e1409ca4ae85ffa48c0e43bf4c7639ae0f70",
+    "edb081b14409007555df46d2da17e5fb4d07cdb9bd09efb378afc41e7d20a359",
+    "562ceee378083a7330bb872c479cb28b24c34b56edbc446c53664c886eb72523"
+   ],
+   "purgeTouched": true
+  }
+ },
+ "posture": "pick-one",
+ "reviewStatus": {
+  "at": "2026-10-05T22:36:39-0700",
+  "by": "owner (Lukas)",
+  "state": "ruled",
+  "evidence": "second sitting: sidecar savedBy review-sheet-sidecar, writeCount 163, savedAt 2026-10-05T22:36:39-0700; 18 rows carry an owner 'at' stamp 2026-10-06T05:34-05:36Z; owner typed \"Finished Stillsand.\" (BENCH relay)"
+ },
+ "savedAt": "2026-10-05T22:36:39-0700",
+ "savedBy": "review-sheet-sidecar",
+ "sheetId": "deep_desert_sheet_2026-10-04",
+ "snapshot": "infrastructure/state/art/sheets/deep_desert_sheet_2026-10-04.snapshot.json",
+ "snapshotId": "78a5fec1d0539d51",
+ "writeCount": 163
 }

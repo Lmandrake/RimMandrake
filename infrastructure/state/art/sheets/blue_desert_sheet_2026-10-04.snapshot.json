@@ -1,17 +1,12 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-06T19:32:47-0700",
+ "built": "2026-10-07T20:20:12-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "e89d7621a",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
+ "census_git_head": "8b1860f2e",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_Thunderbeast": {
    "columns": {
-    "B": {
-     "east": "ead6ba6a8e111e442ae9c076c42b853adff72be02b8e1686c13eb07265aa83a2",
-     "north": "851362b552407cac05db5cedc0a8f936d2148db0d637ad7621af74040f4964f3",
-     "south": "bace543529b12aa37082cbef81e5061c70f4df069300323c69bee2ed9c8c7d7e"
-    },
     "E": {
      "east": "8fc8cdd1fd2f8ca7abaa36614980b8dff1ad58a6c29516e5f5a9faca9317b04a",
      "north": "740377f579a95a9e48d55c62685103e239b9dd7e7c3f201d3ca6dc79355a7222",
@@ -19,14 +14,12 @@
     }
    },
    "graphic_of": {
-    "B": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
-    "E": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast"
+    "E": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert"
    },
    "labels": {
-    "B": "IN GAME \u2014 Alpha Animals",
-    "E": "render bluedesert_Thunderbeast_v2 \u2014 failed canon check"
+    "E": "IN GAME \u2014 BlueDesert"
    },
-   "res": "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast",
+   "res": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert",
    "reserved": [
     "A",
     "B",
@@ -572,11 +565,6 @@
      "north": "5b05061b339e91b7cad670e1b165585c6bbaeb6f1032aef668ab24f6f1dcd45c",
      "south": "517cb7d4b164789b07bff2ea4a7c295e533ff48b68a72b904f409cc6dfc03802"
     },
-    "C": {
-     "east": "cd24a5ce520a4695da85bf15023f4d8105a66b54977fe9c388258a647666c1ac",
-     "north": "b8c53700fa5cce53c94548c7bab72bc799334a6d783f9a078b490335541ae7a6",
-     "south": "39b0c64d52dac7d974485db77bab17eb114d45a0917c863d7db90ddfdee597a5"
-    },
     "G": {
      "east": "df9220c00d1e8b5a5c897ec9bc5379b53341f7ace8940582f15f68eb75650a81",
      "north": "4328879aaf0f92e7279612a7c88aa56c33c2f37f4acb545aaff5a0c8190ea712",
@@ -584,16 +572,14 @@
     }
    },
    "graphic_of": {
-    "B": "swanimals/Vapaad/Vapaad",
-    "C": "swanimals/Vapaad/Vapaad",
-    "G": "swanimals/Vapaad/Vapaad"
+    "B": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
+    "G": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad"
    },
    "labels": {
     "B": "render bluedesert_Vapaad_v2",
-    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "G": "render vapaad_canon_v2"
+    "G": "IN GAME \u2014 UtinniPatches"
    },
-   "res": "swanimals/Vapaad/Vapaad",
+   "res": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
    "reserved": [
     "A",
     "B",
@@ -607,5 +593,5 @@
   }
  },
  "sheetId": "blue_desert_sheet_2026-10-04",
- "snapshotId": "b570e81a50e03a02"
+ "snapshotId": "7072cef36acd0ff2"
 }
