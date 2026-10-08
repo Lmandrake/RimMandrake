@@ -145,6 +145,11 @@
             "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_worktrees.py\"",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_tmpfs_clone.py\"",
+            "timeout": 10
           }
         ]
       },
