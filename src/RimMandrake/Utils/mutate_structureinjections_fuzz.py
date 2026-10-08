@@ -50,7 +50,7 @@ PLAN_MUTATIONS = [
     ("blank lines parsed as directives", "if (line.Length == 0 || line[0] == '#') return;", "if (line[0] == '#') return;"),
     ("comments parsed as directives", "if (line.Length == 0 || line[0] == '#') return;", "if (line.Length == 0) return;"),
     ("trailing whitespace kept", "var line = raw.TrimEnd();", "var line = raw;"),
-    ("first footprint wins", "plan.HasFootprint = true;", "plan.HasFootprint = plan.HasFootprint || true; if (plan.FootprintW != 0) return;"),
+    ("first footprint wins", "plan.FootprintX = int.Parse(f[1]);", "if (plan.HasFootprint) return; plan.FootprintX = int.Parse(f[1]);"),
     ("thing stuff dash kept", 'Stuff = f[5] == "-" ? null : f[5],\n                        });\n                        break;\n                    case "RUN":', 'Stuff = f[5],\n                        });\n                        break;\n                    case "RUN":'),
     ("thing x and z swapped", "X = int.Parse(f[2]),\n                            Z = int.Parse(f[3]),\n                            Rot", "X = int.Parse(f[3]),\n                            Z = int.Parse(f[2]),\n                            Rot"),
     ("run dir and def swapped", "Dir = f[3],\n                            DefName = f[4],", "Dir = f[4],\n                            DefName = f[3],"),
