@@ -181,11 +181,14 @@ namespace RimMandrake.KineticArms
             return fit[fit.Count - 1];
         }
 
-        /// <summary>The roll2 that lands in the middle of weapon <paramref name="index"/>'s band (or -1 if it cannot be
-        /// picked) - lets a proof scene ask for each weapon by name with fixed rolls.</summary>
+        /// <summary>The roll2 that lands in the middle of weapon <paramref name="index"/>'s band, or -1 if it cannot be
+        /// picked (disabled, outside the table, or zero weight while others have weight) - lets a proof scene ask for each
+        /// weapon by name with fixed rolls. With no weight anywhere PickRuins picks uniformly, so the band is the weapon's
+        /// slot among the enabled ones.</summary>
         public static float RuinsRollFor(IList<bool> enabled, IList<float> weights, int index)
         {
             float total = 0f, before = 0f;
+            int rank = 0, fitCount = 0, myRank = -1;
             bool found = false;
             for (int i = 0; i < enabled.Count; i++)
             {
@@ -197,10 +200,21 @@ namespace RimMandrake.KineticArms
                 {
                     found = true;
                     before = total;
+                    myRank = rank;
                 }
                 total += Weight(weights, i);
+                rank++;
+                fitCount++;
             }
-            if (!found || total <= 0f)
+            if (!found)
+            {
+                return -1f;
+            }
+            if (total <= 0f)
+            {
+                return (myRank + 0.5f) / fitCount;
+            }
+            if (Weight(weights, index) <= 0f)
             {
                 return -1f;
             }
