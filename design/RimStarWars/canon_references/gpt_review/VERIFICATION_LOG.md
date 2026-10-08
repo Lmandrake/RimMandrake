@@ -653,3 +653,108 @@ Format per row: entry | claim | verdict | source
 - Krykna borrowed knobby-white-spider art: the Dagobah/Legends spider is ancestry only (VERIFIED, Behind the scenes; entry corrected).
 - Kinrath, krykna, wyyyschokk, Mandalorian ice spiders distinct: VERIFIED (wiki says Wyyyschokk was the earlier idea replaced by netcasters; knobby white ice spider is a separate page).
 - Provenance separation of renders, concept art, toys, repeated game assets: sound practice, not a factual claim (UNVERIFIABLE).
+
+## Batch 04
+| entry | claim | VERDICT | source |
+|---|---|---|---|
+| gelagrub | Revenge of the Sith film still is canon evidence despite sitting on /Legends page | VERIFIED (canon page cites Film III for legs and clone mounts; ROTS image already labelled) | https://starwars.fandom.com/wiki/Gelagrub |
+| gelagrub | Metamorphosis/mirrored shell/lichen sunscreen/Gossam husbandry/rider bonding are Legends only | VERIFIED (only in Gelagrub/Legends; entry already labels) | https://starwars.fandom.com/wiki/Gelagrub/Legends |
+| gelagrub | ~4 m long, from Visual Encyclopedia | VERIFIED (canon infobox length 4 meters, SWTVE; Legends also 4 meters) | https://starwars.fandom.com/wiki/Gelagrub |
+| gelagrub | Felucian forest animal used by clones as mounts, seen in ROTS | VERIFIED | https://starwars.fandom.com/wiki/Gelagrub |
+| gelagrub | "Largest bug" is a superlative, avoid for size | VERIFIED (canon text says "largest species of bug", Monsters Ooze and Slime) | https://starwars.fandom.com/wiki/Gelagrub |
+| gelagrub | Eye count ambiguous / "panels" risks rigid armour | UNVERIFIABLE (text gives only "two vertically aligned eyes", no image reading) | https://starwars.fandom.com/wiki/Gelagrub/Legends |
+| gelagrub | Databank filename does not make biology text canon | UNVERIFIABLE | - |
+| gizka | Canon name mention does not canonize KOTOR model/Lehon/breeding | VERIFIED (canon page is a stub: "existed in the galaxy", Aftermath: Empire's End) | https://starwars.fandom.com/wiki/Gizka |
+| gizka | KOTOR is Legends | VERIFIED (Gizka page: first appeared in Legends in KOTOR 2003) | https://starwars.fandom.com/wiki/Gizka |
+| gizka | Prefers grains and leaves yet eats components | VERIFIED (Legends: "preferred grains and leaves, could eat nearly anything") | https://starwars.fandom.com/wiki/Gizka/Legends |
+| gizka | Poison one resolution; Manaan buyer (Nubassa) another | VERIFIED | https://starwars.fandom.com/wiki/Gizka/Legends |
+| gizka | Star Trek homage needs creator statement | REFUTED (wiki BTS states quest is "a play on" Tribbles episode; creator statement itself UNVERIFIABLE) | https://starwars.fandom.com/wiki/Gizka/Legends |
+| gizka | Current canon has no visual design, dims, homeworld | VERIFIED (stub, no infobox data) | https://starwars.fandom.com/wiki/Gizka |
+| gizka | "vestigial" forelimbs and "never upright hopper" over-assertive; tail/crest/palette unconfirmable | UNVERIFIABLE (no Wookieepedia text on anatomy; owner ruling governs, model-based) | https://starwars.fandom.com/wiki/Gizka/Legends |
+| gizka | Gizka hop/bound | UNVERIFIABLE (not in wiki text) | - |
+| gorg | "species with several looks" contradicts "umbrella term for several species" | VERIFIED (canon: "general term used for several species of amphibians"); prose fixed | https://starwars.fandom.com/wiki/Gorg |
+| gorg | Four-eyed Field Guide illustration is Legends; variants should not all be equal canon | VERIFIED (four-eyed/three-eyed only in Gorg/Legends) | https://starwars.fandom.com/wiki/Gorg/Legends |
+| gorg | Major omission: Castilon gorgs in Resistance | VERIFIED (canon subspecies, "The Recruit") | https://starwars.fandom.com/wiki/Castilon_gorg |
+| gorg | Castilon gorgs: tiny, prominent eyes, small sharp teeth (Databank) | UNVERIFIABLE (not in wikitext; wiki gives carnivorous, blue eyes/gray-orange-blue skin, Bitey 0.2 m) | https://starwars.fandom.com/wiki/Castilon_gorg |
+| gorg | Bitey: pet of Flix/Orka, bites fingers | VERIFIED | https://starwars.fandom.com/wiki/Bitey |
+| gorg | Bitey chews ship wiring | UNVERIFIABLE (not in wikitext) | https://starwars.fandom.com/wiki/Bitey |
+| gorg | TPM and ROTJ show gorgs eaten, incl. live | VERIFIED (Jabba swallows one live at Boonta Eve and in palace; TPM vendor) | https://starwars.fandom.com/wiki/Gorg |
+| gorg | Legends husbandry: eggs, tadpoles, adults eat young | PARTLY VERIFIED (edible eggs, gorg pods and gormongers on Legends page; adults-eat-young not checked) | https://starwars.fandom.com/wiki/Gorg/Legends |
+| gorg | "Two legs only" conflicts with "feet front and back" | UNVERIFIABLE (owner-supplied statement; wiki has no limb count) | - |
+| gorg | Dutch wiki upload / concept painting is not canon provenance | UNVERIFIABLE (entry already labels it as nl-wiki illustration) | - |
+| gorg | Universal long tongue/webbing/smooth skin unsupported | PARTLY VERIFIED (Legends page: "gorgs had long tongues"; no wiki text on webbing or skin) | https://starwars.fandom.com/wiki/Gorg/Legends |
+| gornt | Checklist presents Legends animal design without qualification | VERIFIED (both animal images from Gornt/Legends; canon image is meat only); brief now labels it | https://starwars.fandom.com/wiki/Gornt/Legends |
+| gornt | Meat at Maz's castle is not a Takodana homeworld | VERIFIED (canon: meat available at castle; Legends origin Hethar) | https://starwars.fandom.com/wiki/Gornt |
+| gornt | "Naturally herbivore" vs "omnivorous" reads contradictory | VERIFIED (Legends page says both) | https://starwars.fandom.com/wiki/Gornt/Legends |
+| gornt | Legends: Hethar origin, ~1 m, live-born litters, short life | VERIFIED (1 m or more, litters 2-4, 6-year average lifespan) | https://starwars.fandom.com/wiki/Gornt/Legends |
+| gornt | Wild groups 10-30, Imperial rations, declining quality via genetic variation | VERIFIED | https://starwars.fandom.com/wiki/Gornt/Legends |
+| gornt | Source trail: TFA Visual Dictionary; Black Spire Outpost Cookbook; Creatures of the Galaxy | VERIFIED | https://starwars.fandom.com/wiki/Gornt |
+| gornt | Pointed rear peak/no tail, grey-green colour are illustration-dependent; prepared meat colour != raw | UNVERIFIABLE (image-only; no wiki text) | - |
+| graniteslug | Checklist turns a Legends colour illustration into unqualified canon design | VERIFIED (canon page has no image; Granite_Slugs.jpg captioned "as depicted in Star Wars Legends") | https://starwars.fandom.com/wiki/Granite_slug |
+| graniteslug | Two mouths supported by current canon; tail placement separate claim | VERIFIED (canon infobox "Two mouths", Encyclopedia Coruscant; no placement given) | https://starwars.fandom.com/wiki/Granite_slug |
+| graniteslug | Ringed opening cannot be identified as mouth; orange/teal/fronds not established | VERIFIED as unsupported by text (no caption identifies it); brief reworded | https://starwars.fandom.com/wiki/Granite_slug/Legends |
+| graniteslug | Role: mineral consumption, acid etching on Coruscant | VERIFIED | https://starwars.fandom.com/wiki/Granite_slug |
+| graniteslug | Hawk-bat predation established in Legends | VERIFIED | https://starwars.fandom.com/wiki/Granite_slug/Legends |
+| graniteslug | Source is 2021 modern Encyclopedia Coruscant, not 1998 | VERIFIED (cite is EncyclopediaCite 2021-02-09) | https://starwars.fandom.com/wiki/Granite_slug |
+| graniteslug | Rise of the Separatists: Senate extermination committee | VERIFIED | https://starwars.fandom.com/wiki/Granite_slug |
+| graniteslug | Size, speed, dimorphism, reproduction unknown | VERIFIED (infobox blank; "small") | https://starwars.fandom.com/wiki/Granite_slug |
+| grank | "The Starfighter Trap" is not a LucasArts game but a Star Wars Gamer 1 story | VERIFIED (Appearances: GamerCite 1 "The Starfighter Trap"); entry fixed | https://starwars.fandom.com/wiki/Saw-toothed_grank |
+| grank | "Legends canon" should be "Legends continuity" | VERIFIED (page tagged Legends); fixed | https://starwars.fandom.com/wiki/Saw-toothed_grank |
+| grank | Name is "saw-toothed grank"; legit Legends animal | VERIFIED | https://starwars.fandom.com/wiki/Saw-toothed_grank |
+| grank | Donor icon gives no independent biological confirmation | VERIFIED as sound caution (wiki text gives no colour or anatomy beyond teeth/hair/jaws); wording fixed | https://starwars.fandom.com/wiki/Saw-toothed_grank |
+| grank | Mottling does not prove scales; reptomammal does not specify surfaces | VERIFIED (wiki only has Reptomammals category, no surface text) | https://starwars.fandom.com/wiki/Saw-toothed_grank |
+| grank | Naboo swamp origin, shiro predation, narglatch cubs/adults, escaped Coruscant populations | VERIFIED (already in entry) | https://starwars.fandom.com/wiki/Saw-toothed_grank |
+| grank | Pets are dangerous exotics, not easily domesticated | UNVERIFIABLE (page says sold as pets or zoo animals; category Domesticated creatures) | https://starwars.fandom.com/wiki/Saw-toothed_grank |
+| grank | Nose-spike count, eye colour, always-exposed teeth need image inspection | UNVERIFIABLE (image-only) | - |
+| grank | Sources: Gungan Frontier first appearance; Rescue in the Core | VERIFIED | https://starwars.fandom.com/wiki/Saw-toothed_grank |
+| grazer | Entry correctly Alderaanian Legends grazer; name ambiguous with other grazers | VERIFIED (disambiguation lists Alderaan, Ammuud, Troiken, Yavin 8) | https://starwars.fandom.com/wiki/Grazer |
+| grazer | Wild is not feral; "feral" unsupported | VERIFIED (page says "wild grazers"; no escape ancestry) | https://starwars.fandom.com/wiki/Grazer_(Alderaan) |
+| grazer | Legends: docile slow herbivores bred for meat, offworld survivors, related to nerfs | VERIFIED | https://starwars.fandom.com/wiki/Grazer_(Alderaan) |
+| grazer | "agricultural purposes" does not establish draft/milk/riding | VERIFIED (text only says meat and agricultural purposes) | https://starwars.fandom.com/wiki/Grazer_(Alderaan) |
+| grazer | Wild form "drastically smaller" not implied | VERIFIED (text says "significantly leaner", fatter domestic) ; image-dependent | https://starwars.fandom.com/wiki/Grazer_(Alderaan) |
+| grazer | Grassland herd behaviour; domestic greater bulk | PARTLY VERIFIED (category Grassland and plains creatures; no herd text) | https://starwars.fandom.com/wiki/Grazer_(Alderaan) |
+| grazer | Current canon status/size/dimorphism unknown | VERIFIED (page Legends-only, infobox blank) | https://starwars.fandom.com/wiki/Grazer_(Alderaan) |
+| greaterkraytdragon | Entry merges ten-legged greater with sixteen-legged leviathan | VERIFIED (greater: ten legs; leviathan infobox: sixteen legs) | https://starwars.fandom.com/wiki/Greater_krayt_dragon ; https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| greaterkraytdragon | Sixteen legs = eight pairs, Mandalorian target | VERIFIED | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| greaterkraytdragon | Din does not ride inside a bantha carcass; live bantha swallowed with him | VERIFIED (Chapter 9 summary: holds a bantha steed's reins as dragon swallows both); entry fixed | https://starwars.fandom.com/wiki/Chapter_9:_The_Marshal |
+| greaterkraytdragon | "Venom" overextends for ordinary greater dragons | REFUTED in part (Krayt dragon venom page: greenish-yellow acidic fluid formed within krayt dragons generally, pre-digests food, projected when threatened); but spit is documented on the leviathan | https://starwars.fandom.com/wiki/Krayt_dragon_venom |
+| greaterkraytdragon | Bony head armour; "No armour plates" erases it | VERIFIED (leviathan: "large head protected by bony armor") | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| greaterkraytdragon | Ten-leg source is Jedi Temple Challenge Ep.1 | VERIFIED (JTC|1 cited; listed under non-canon appearances) | https://starwars.fandom.com/wiki/Greater_krayt_dragon |
+| greaterkraytdragon | Leviathan ~184 m long, 28.68 m high | VERIFIED as wiki figures (infobox; MandoVG and Comprehensive Guide) | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| greaterkraytdragon | Mando Visual Guide cited for lifecycle | VERIFIED (leviathan is part of greater lifecycle, very few grow) | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| greaterkraytdragon | Tuskens' feeding practice supports appeasement not domestication | VERIFIED (Chapter 9: Tuskens feed dragon to make it sleep longer) | https://starwars.fandom.com/wiki/Chapter_9:_The_Marshal |
+| greaterkraytdragon | Gizzard pearl, meat, ambush, swallowing | VERIFIED | https://starwars.fandom.com/wiki/Leviathan_krayt_dragon |
+| greaterkraytdragon | Full-body image provenance as Mandalorian VFX; curled tail; no green tones; yellow-white spit rigid | UNVERIFIABLE (image-only); venom itself is greenish yellow per wiki | https://starwars.fandom.com/wiki/Krayt_dragon_venom |
+| gutkurr | Clone Wars frames remain canon evidence on a Legends page | VERIFIED (same Gutkurr_TCW.png is canon-page infobox) | https://starwars.fandom.com/wiki/Gutkurr |
+| gutkurr | Day/night hemisphere and twilight-band ecology are Legends (Galaxy at War), not canon biome rule | VERIFIED (only on Gutkurr/Legends; canon says equatorial forests) | https://starwars.fandom.com/wiki/Gutkurr/Legends |
+| gutkurr | Blaster resistance is not immunity | VERIFIED (canon: "resistant to blaster bolts"; Legends: "withstand several blaster shots") | https://starwars.fandom.com/wiki/Gutkurr |
+| gutkurr | ~2 m is Legends material; needs separate canon citation | VERIFIED (height only in Legends infobox; canon says only "considerably taller than an average humanoid"); brief fixed | https://starwars.fandom.com/wiki/Gutkurr/Legends |
+| gutkurr | Fast, armoured, mostly bipedal; short thin arms, long powerful legs, hooked claws, red eyes | VERIFIED (canon text and infobox) | https://starwars.fandom.com/wiki/Gutkurr |
+| gutkurr | Innocents of Ryloth: Separatists release hungry gutkurrs; they feed on can-cell | VERIFIED (canon History; can-cell diet) | https://starwars.fandom.com/wiki/Gutkurr |
+| gutkurr | A War on Two Fronts supplies Onderon appearance | VERIFIED | https://starwars.fandom.com/wiki/Gutkurr |
+| gutkurr | Lords of the Sith: ranking second to lyleks and habitat | VERIFIED | https://starwars.fandom.com/wiki/Gutkurr |
+| gutkurr | "Chicks" does not prove egg-laying | VERIFIED (chicks only in Legends text, no reproduction detail) | https://starwars.fandom.com/wiki/Gutkurr/Legends |
+| gutkurr | Drops onto forelimbs; tail segmentation/hook; colour patches need model verification | UNVERIFIABLE (image-only; no wiki text) | - |
+| hawkbat | Legends Field Guide design cannot be presented as the more authoritative current-canon design | VERIFIED (canon page is a stub: "type of bat which had a beak with sharp contours"; all wing/tail detail is Legends) | https://starwars.fandom.com/wiki/Hawk-bat |
+| hawkbat | Two Field Guide pictures plus donor are not three independent sources | VERIFIED (both Field Guide; donor derived); text fixed | https://starwars.fandom.com/wiki/Hawk-bat/Legends |
+| hawkbat | Loth-bats are separate from hawk-bats | VERIFIED (separate pages; entry already separates) | https://starwars.fandom.com/wiki/Hawk-bat |
+| hawkbat | Legends: leathery membrane wings, hooked toothed beak, ~1.5 m wingspan | VERIFIED (wingspan averaged 1.5 m; hooked beak with tiny teeth; membrane studded with spiky growths) | https://starwars.fandom.com/wiki/Hawk-bat/Legends |
+| hawkbat | Juveniles green, molt to adult purple/grey | VERIFIED ("scaly green skin"; mature purplish-gray; eats shed skin) | https://starwars.fandom.com/wiki/Hawk-bat/Legends |
+| hawkbat | Hunts silica parasites incl. granite slugs; flock retaliation; warm roosts | VERIFIED (protected by law; flocks retaliate; heated vents and power cables) | https://starwars.fandom.com/wiki/Hawk-bat/Legends |
+| hawkbat | Canon refs: Battle to the End, Servants of the Empire: Rebel in the Ranks, Dooku: Jedi Lost | VERIFIED | https://starwars.fandom.com/wiki/Hawk-bat |
+| hawkbat | Stuffed specimen photo cannot prove wingless/larval body; "canon redesign" premature | UNVERIFIABLE (wiki gives no caption identifying the Hyperspace Lounge prop beyond infobox image) | https://starwars.fandom.com/wiki/Hawk-bat |
+| hawkbat | Owner's "#3 is canon" cannot recategorize a Legends illustration | UNVERIFIABLE as policy; wiki labels the Field Guide art Legends. Owner ruling untouched | https://starwars.fandom.com/wiki/Hawk-bat/Legends |
+| hawkbat | Forehead horn and exact colour mapping illustration-specific; wing hooks, membrane spines | PARTLY VERIFIED (membrane spiky growths in Legends text; no horn/hooks text) | https://starwars.fandom.com/wiki/Hawk-bat/Legends |
+| hawkbat | Legends measurements from Essential Guide to Alien Species | VERIFIED (infobox height 1 m, ruby eyes cite it) | https://starwars.fandom.com/wiki/Hawk-bat/Legends |
+
+## Cross-entry problems
+| issue | verdict |
+|---|---|
+| No two of these ten entries are the same animal; none is a plant | VERIFIED (distinct wiki pages; Grank is a redirect target name only) |
+| Gorg/chuba overlap; longtail/frilled gorg defs should be variants of the umbrella | VERIFIED as to wiki (gorg is "a general term for several species"; chuba = gorg); def merging is a design call, not wiki fact |
+| Grank / saw-toothed grank same target; domestic/wild grazer one target; "feral" unsourced | VERIFIED (grank is a redirect; grazer page has both forms; "feral" absent) |
+| Greater and leviathan krayt anatomy conflated | VERIFIED; entry now separates them |
+| Hawk-bat vs loth-bat remain separate | VERIFIED |
+| A canon name mention does not import Legends anatomy (gizka, gornt, granite slug, hawk-bat) | VERIFIED (each canon page is a stub or lacks the Legends detail) |
+| Wiki continuity tabs do not determine continuity of film/Clone Wars frames | VERIFIED (gelagrub and gutkurr canon pages cite the same film/TCW frames; Gutkurr_TCW.png sits on both pages) |
+| Old Databank prose is not automatically canon | UNVERIFIABLE from wikitext |

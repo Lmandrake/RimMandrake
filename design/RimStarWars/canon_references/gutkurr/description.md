@@ -14,9 +14,11 @@ Gutkurrs were a species of vicious predatory insect carnivores native to the pla
 **Biology and appearance** Gutkurrs were a species of large carnivorous insects native to the planet Ryloth. They were considerably taller than an average humanoid and had sharp, curved claws and sharp teeth to snare their prey. Gutkurrs had short, thin arms but long and powerful legs that made them fairly fast. Their diet could include Twi'leks and can-cells. Gutkurrs had red eyes and spiky carapaces that were resistant to blaster bolts. They were said to be the second-most dangerous predator on Ryloth, the first being lyleks. They made a noise that sounded between a roar and a hiss.
 
 Gutkurrs inhabited Ryloth's equatorial forests alongside lyleks. They were also found on the planet Onderon.
+
+Canon infobox: class insect (*Visual Encyclopedia*), skin brown, eyes red (*Innocents of Ryloth*); pack hunters that could quickly surround careless individuals (*Visual Encyclopedia*). Canon gives no height; the "considerably taller than an average humanoid" line is the only canon size. Carapaces were blaster-RESISTANT, not immune: in "Innocents of Ryloth" TX-20's starved gutkurrs are released against Kenobi's clones and Obi-Wan traps them in an alley. Canon has no day/night-hemisphere habitat rule — https://starwars.fandom.com/wiki/Gutkurr
 ### Legends — https://starwars.fandom.com/wiki/Gutkurr/Legends
 
-Gutkurrs were fierce creatures native to Ryloth.
+Gutkurrs were fierce creatures native to Ryloth. (Legends only: the approx. 2 m height, orange-and-red skin, the twilight-band habitat between Ryloth's day and night sides from *Galaxy at War*, and gutkurr chicks. Legends also says they were exported as pets and trainable.)
 
 **Biology** Gutkurrs had both reptilian and insectoid characteristics. Their two-legged gait was very similar to that of a reptilian species, whereas their hard-shelled, spined carapace and sharp-mandible heads appeared very insect-like. They were approximately two meters high, and their tough hide and carapace were able to withstand several blaster shots. Although their shell and internal insulation allowed them to survive for short periods on the frigid nigth side of Ryloth, the gutkurr tipically made its home in the twiligth area, preferring to stay out of the intense hear of the day side of the planet.
 
@@ -30,7 +32,7 @@ All four images are Clone Wars CGI (two on the CANON page, two on the Legends pa
 - **Carapace**: a smooth, scute-plated, tortoise-like or beetle-like dome over the back and shoulders, rust-orange to tan-brown with weathered pale patches/stains, edges flaring out like a skirt; rows of cream-coloured thorn spikes in lines down the back and the sides of the shell, with a spiny ridge toward the rear/neck.
 - **Underparts/limbs**: lighter yellow-orange belly and thighs; darker maroon-brown forearms and lower legs; legs jointed insect-like with segmented plated lower limbs ending in single large curved black-brown talon hooks. A segmented, ridged, tapering tail with a tip hook in the infobox render.
 - **Head**: a wide, flat armoured head with a blunt mask-plate brow, deep-set RED eyes, two long curved front fangs/mandible hooks flanking the nose, a wide jaw lined with rows of small pale teeth, a dark red mouth interior.
-- **Size**: clearly larger than a clone trooper in the frames; the prose gives about 2 m high.
+- **Size**: clearly larger than a clone trooper in the frames; the Legends infobox gives approx. 2 m high (canon prose says only "considerably taller than an average humanoid").
 - **Disagreement**: the prose says arms are short and thin (images: yes, thin hooked forelimbs). The prose says "long hind legs, fast" (images: yes). Nothing contradicts. Young gutkurrs (chicks) are not shown anywhere; in frame 3 (small ones on prey) the small individuals in the background look like juveniles or smaller adults at a distance and cannot be confirmed.
 
 ## Must show

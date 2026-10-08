@@ -7,6 +7,8 @@
 
 The grazer was a docile, four-legged, slow-moving herbivore native to Alderaan. Bred for nutritious meat and agricultural purposes, grazers were easy to manage and grew to tremendous sizes. Many were moved offworld long ago and so survived Alderaan's destruction in 0 BBY. Grazers were related to the nerf. **Wild grazers were significantly leaner than the fatter, better-fed domestic grazer.** The infobox caption reads "Domestic grazer (left) and wild grazer (right)". The article gives no height, mass or colour figures.
 
+Disambiguation: "grazer" also names unrelated animals (Grazer (Ammuud), Grazer (Troiken), Grazer (Yavin 8)) — https://starwars.fandom.com/wiki/Grazer ; this entry is the Alderaan animal only. The article says "wild", never "feral": no escaped-domestic ancestry is sourced.
+
 Sources cited: The Illustrated Star Wars Universe, Star Wars Encyclopedia, The Wildlife of Star Wars: A Field Guide, The Complete Star Wars Encyclopedia, The Essential Atlas.
 
 ## Visual brief

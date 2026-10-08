@@ -260,3 +260,33 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 ### kybuck
 - Do NOT adopt GPT's "delete horse/yak quadruped option, biped in both continuities": the Legends page gives no limb count (only "similar to tauntauns"). Instead mark Legends stance unresolved; ask owner/image check. Source: https://starwars.fandom.com/wiki/Kybuck/Legends
 - Must show: horn line is fine; add "two hoofed legs" is already canon-only per the page (https://starwars.fandom.com/wiki/Kybuck).
+
+## Batch 04
+# Proposals batch 04
+### gelagrub
+- Must show: add "Length about 4 m (canon infobox)" scale note; keep eye line as "match the reference eye arrangement" and describe back as soft translucent blue, not rigid plates. Reason: canon infobox gives 4 m, only Legends text gives the stacked eyes. Source: https://starwars.fandom.com/wiki/Gelagrub
+### gizka
+- Must show: prefix checklist "KOTOR / Legends model design (owner-approved reference)". Reason: all anatomy comes from game model, wiki gives none; current canon is a stub. Source: https://starwars.fandom.com/wiki/Gizka
+- Owner-ruled bars (bipedal, "vestigial") untouched; GPT's suggestion to drop "vestigial" is a wording question for the owner only.
+### gorg
+- Must show: add optional bullet "Castilon gorg (canon, Resistance): gray (or blue/orange) skin, blue/turquoise eyes, carnivorous, about 0.2 m (Bitey)". Reason: canon subspecies omitted from the entry. Source: https://starwars.fandom.com/wiki/Castilon_gorg
+- Must show: "Two legs only" is owner-supplied, GPT disputes (limb count vs "feet front and back"); wiki has no limb count. Owner decision, flagged only.
+### gornt
+- Must show: prefix living-animal bullets "Legends reconstruction (Gornt/Legends art)". Reason: canon has only meat; anatomy is Legends only. Source: https://starwars.fandom.com/wiki/Gornt
+### graniteslug
+- Must show: relabel the colour/fronds/starburst-tail bullets "Legends illustration option"; make "small slug leaving acid trails/etched masonry" the primary bar; require second mouth only where positioned by the chosen image. Reason: canon says only "two mouths", no placement or colour. Source: https://starwars.fandom.com/wiki/Granite_slug
+### grank
+- Must show: reword "visible even with the jaw closed" to "prominent interlocking teeth matching the reference"; label palette as illustration target (wiki gives no colour). Reason: wiki states only "sharp teeth and powerful jaws". Source: https://starwars.fandom.com/wiki/Saw-toothed_grank
+### grazer
+- Must show: replace "(the whole point of 'feral')" with "(wild grazer, Legends)"; title checklist "Alderaanian wild grazer — Legends". Reason: wiki says "wild", not "feral". Source: https://starwars.fandom.com/wiki/Grazer_(Alderaan)
+### greaterkraytdragon
+- Must show: "Ten legs across five pairs" conflicts with the owner ruling (7-8 pairs) and the wiki's leviathan form (sixteen legs, eight pairs). Propose: "Leviathan form (Mandalorian): sixteen legs / eight pairs"; ten legs only for a non-leviathan greater dragon. Source: https://starwars.fandom.com/wiki/Leviathan_krayt_dragon
+- Must show: add "large head protected by bony armor; spiny tail" (leviathan distinctions). Source: same.
+- Must show: spit colour — wiki says "greenish yellow acidic fluid", entry says "bright yellow-white" and "no green". Propose "yellow to greenish-yellow". Source: https://starwars.fandom.com/wiki/Krayt_dragon_venom
+- Must show: "tail that curls" is image-derived, not in wiki; make optional.
+### gutkurr
+- Must show: "Larger than a human (about 2 m tall)" -> "Considerably taller than an average humanoid (canon); approx. 2 m is Legends". Source: https://starwars.fandom.com/wiki/Gutkurr
+- Must show: tail bar and "also drops onto forelimbs" (Visual brief) are image-only; make tail optional. Source: no wiki text.
+### hawkbat
+- Must show: prefix "Legends Field Guide adult"; add "tiny-toothed hooked beak, spiky membrane growths" (Legends text); the owner-ruled hooks note stays. Reason: canon page has only "beak with sharp contours". Source: https://starwars.fandom.com/wiki/Hawk-bat/Legends
+- Must show: forehead horn is image-only (no wiki text); make optional.
