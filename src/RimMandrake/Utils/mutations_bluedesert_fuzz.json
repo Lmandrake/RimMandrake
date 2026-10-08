@@ -1,0 +1,158 @@
+[
+ {
+  "name": "cold: the rack absorbs more heat than the ice holds",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (absorbed > available)",
+  "new": "if (false)"
+ },
+ {
+  "name": "cold: cold per block can reach zero",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "return Math.Max(1f, coldPerBlock * capacityFactor);",
+  "new": "return Math.Max(0f, coldPerBlock * capacityFactor);"
+ },
+ {
+  "name": "cold: clarity boundary at 50% off by one",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (fuelPercent > 0.5f) return 0;",
+  "new": "if (fuelPercent >= 0.5f) return 0;"
+ },
+ {
+  "name": "cold: every drip doubled",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "drips++;",
+  "new": "drips += 2;"
+ },
+ {
+  "name": "cold: a warming step consumes ice",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (tempChange >= 0f || Math.Abs(tempChange) < 1e-6f) return false;",
+  "new": "if (Math.Abs(tempChange) < 1e-6f) return false;"
+ },
+ {
+  "name": "cold: ice used is half the heat absorbed",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "blocks = absorbed / coldPerBlock;",
+  "new": "blocks = absorbed / (coldPerBlock * 2f);"
+ },
+ {
+  "name": "thaw: a roll takes one block too many",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (blocksSinceRoll < Math.Max(1, blocksPerRoll)) return false;",
+  "new": "if (blocksSinceRoll <= Math.Max(1, blocksPerRoll)) return false;"
+ },
+ {
+  "name": "thaw: negative weights count",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "total += Math.Max(0f, weights[i]);",
+  "new": "total += weights[i];"
+ },
+ {
+  "name": "thaw: stack ignores the limit",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "Math.Min(Math.Max(1, stackLimit), rolled)",
+  "new": "rolled"
+ },
+ {
+  "name": "vhaulk: an EMP hit no longer sets it off",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "detonationsOn && (empTriggered || !heatGateOn || heatKill)",
+  "new": "detonationsOn && (!heatGateOn || heatKill)"
+ },
+ {
+  "name": "vhaulk: the heat gate is inverted",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "|| !heatGateOn ||",
+  "new": "|| heatGateOn ||"
+ },
+ {
+  "name": "vhaulk: the EMP trap hits the dead",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "trapOn && !dead && !destroyed && isEmp",
+  "new": "trapOn && !destroyed && isEmp"
+ },
+ {
+  "name": "charge: needs three warm ticks",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "return warmInARow >= 2 ? 2 : 1;",
+  "new": "return warmInARow >= 3 ? 2 : 1;"
+ },
+ {
+  "name": "charge: a disabled charge keeps its warmth",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (!enabled) { warmInARow = 0; return 0; }",
+  "new": "if (!enabled) { return 0; }"
+ },
+ {
+  "name": "road: a replaced walk-off job is not restarted",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (departing && !jobExitsMap) return 1;",
+  "new": "if (departing && !jobExitsMap) return 0;"
+ },
+ {
+  "name": "road: laid over existing temporary terrain",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "return inBounds && !hasTempTerrain &&",
+  "new": "return inBounds &&"
+ },
+ {
+  "name": "ablation: exposed on the silhouette time",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (stage == 1 && now >= exposureTick)",
+  "new": "if (stage == 1 && now >= silhouetteTick)"
+ },
+ {
+  "name": "choir: the silence hold is halved",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (intruder) r.SilencedUntil = now + holdTicks;",
+  "new": "if (intruder) r.SilencedUntil = now + holdTicks / 2;"
+ },
+ {
+  "name": "choir: intruder radius squared twice",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "dx * dx + dz * dz <= silenceRadius * silenceRadius) { intruder",
+  "new": "dx * dx + dz * dz <= silenceRadius) { intruder"
+ },
+ {
+  "name": "virr: the last virr in range wins, not the nearest",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "if (d <= bestDist) { bestDist = d; best = i; }",
+  "new": "if (d <= bestDist) { best = i; }"
+ },
+ {
+  "name": "virr: pitch unclamped",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_BlueKernel.cs",
+  "old": "float t = growth < 0f ? 0f : (growth > 1f ? 1f : growth);",
+  "new": "float t = growth;"
+ },
+ {
+  "name": "murrek: spacing boundary inclusive",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_MurrekKernel.cs",
+  "old": "if (dx * dx + dz * dz < sq) return false;",
+  "new": "if (dx * dx + dz * dz <= sq) return false;"
+ },
+ {
+  "name": "murrek: spawn allowance ignores murrek already there",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_MurrekKernel.cs",
+  "old": "Math.Min(newRolled, maxOnMap - nMurrek)",
+  "new": "Math.Min(newRolled, maxOnMap)"
+ },
+ {
+  "name": "murrek: spawns into a full ecosystem",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_MurrekKernel.cs",
+  "old": "if (toSpawn <= 0 || ecosystemFull) return plan;",
+  "new": "if (toSpawn <= 0) return plan;"
+ },
+ {
+  "name": "murrek: only the single nearest cell is tried",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_MurrekKernel.cs",
+  "old": ".Take(12)",
+  "new": ".Take(1)"
+ },
+ {
+  "name": "murrek: a tired buried murrek stays down",
+  "file": "src/RimMandrake/BlueDesert/Source/Kernel/RM_MurrekKernel.cs",
+  "old": "if (urgentlyHungry || veryTired) return 2;",
+  "new": "if (urgentlyHungry) return 2;"
+ }
+]

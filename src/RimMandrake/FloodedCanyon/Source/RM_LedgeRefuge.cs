@@ -131,23 +131,18 @@ namespace RimMandrake.FloodedCanyon
             {
                 return near;
             }
-            IntVec3 best = near;
-            float bestD = float.MaxValue;
+            List<IntVec3> anchors = new List<IntVec3>();
             List<ThingDef> defs = AnchorDefs;
             for (int i = 0; i < defs.Count; i++)
             {
                 List<Thing> things = map.listerThings.ThingsOfDef(defs[i]);
                 for (int j = 0; j < things.Count; j++)
                 {
-                    float d = (things[j].Position - near).LengthHorizontalSquared;
-                    if (d < bestD)
-                    {
-                        bestD = d;
-                        best = things[j].Position;
-                    }
+                    anchors.Add(things[j].Position);
                 }
             }
-            return best;
+            int best = RM_RefugeKernel.NearestAnchor(true, anchors.Count, anchors.ConvertAll(a => a.x).ToArray(), anchors.ConvertAll(a => a.z).ToArray(), near.x, near.z);
+            return best >= 0 ? anchors[best] : near;
         }
 
         public int AnchorCount()
@@ -183,33 +178,37 @@ namespace RimMandrake.FloodedCanyon
                     continue;
                 }
                 lastSeekers++;
-                if (refugeCells.Contains(p.Position))
+                bool onLedge = refugeCells.Contains(p.Position);
+                Job cur = p.CurJob;
+                bool enRoute = !onLedge && cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid && refugeCells.Contains(cur.targetA.Cell);
+                IntVec3 dest = IntVec3.Invalid;
+                if (!onLedge && !enRoute)
+                {
+                    dest = NearestReachable(p);
+                }
+                RM_RefugeKernel.Action action = RM_RefugeKernel.Decide(onLedge, p.CurJobDef == JobDefOf.Wait, enRoute, dest.IsValid);
+                if (onLedge)
                 {
                     lastOnLedge++;
-                    if (p.CurJobDef != JobDefOf.Wait)
-                    {
-                        Job hold = JobMaker.MakeJob(JobDefOf.Wait, p.Position);
-                        hold.expiryInterval = HoldWaitTicks;
-                        p.jobs.StartJob(hold, JobCondition.InterruptForced);
-                        heldTotal++;
-                    }
-                    continue;
                 }
-                Job cur = p.CurJob;
-                if (cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid && refugeCells.Contains(cur.targetA.Cell))
+                if (action == RM_RefugeKernel.Action.Hold)
                 {
-                    continue;
+                    Job hold = JobMaker.MakeJob(JobDefOf.Wait, p.Position);
+                    hold.expiryInterval = HoldWaitTicks;
+                    p.jobs.StartJob(hold, JobCondition.InterruptForced);
+                    heldTotal++;
                 }
-                IntVec3 dest = NearestReachable(p);
-                if (!dest.IsValid)
+                else if (action == RM_RefugeKernel.Action.NoReach)
                 {
                     lastNoReach++;
-                    continue;
                 }
-                Job go = JobMaker.MakeJob(JobDefOf.Goto, dest);
-                go.locomotionUrgency = LocomotionUrgency.Sprint;
-                p.jobs.StartJob(go, JobCondition.InterruptForced);
-                sentTotal++;
+                else if (action == RM_RefugeKernel.Action.Go)
+                {
+                    Job go = JobMaker.MakeJob(JobDefOf.Goto, dest);
+                    go.locomotionUrgency = LocomotionUrgency.Sprint;
+                    p.jobs.StartJob(go, JobCondition.InterruptForced);
+                    sentTotal++;
+                }
             }
         }
 
@@ -218,19 +217,14 @@ namespace RimMandrake.FloodedCanyon
         // hostiles, the downed, the drafted or a pawn in a mental state.
         public static bool IsSeeker(Pawn p)
         {
-            if (p == null || p.Dead || p.Downed || p.Faction == null || p.jobs == null)
+            if (p == null)
             {
                 return false;
             }
-            if (p.InMentalState || p.Drafted || p.IsPrisoner)
-            {
-                return false;
-            }
-            if (p.Faction.IsPlayer)
-            {
-                return p.RaceProps.Animal && IsTrained(p);
-            }
-            return p.RaceProps.Humanlike && !p.Faction.HostileTo(Faction.OfPlayer);
+            bool player = p.Faction != null && p.Faction.IsPlayer;
+            return RM_RefugeKernel.IsSeeker(false, p.Dead, p.Downed, p.Faction == null, p.jobs == null, p.InMentalState, p.Drafted, p.IsPrisoner,
+                player, p.RaceProps.Animal, player && p.RaceProps.Animal && IsTrained(p), p.RaceProps.Humanlike,
+                p.Faction != null && p.Faction.HostileTo(Faction.OfPlayer));
         }
 
         private static bool IsTrained(Pawn p)
@@ -253,31 +247,9 @@ namespace RimMandrake.FloodedCanyon
         // Nearest reachable refuge cell, preferring one no pawn stands on.
         private IntVec3 NearestReachable(Pawn p)
         {
-            List<IntVec3> sorted = new List<IntVec3>(refugeList);
-            IntVec3 from = p.Position;
-            sorted.Sort((a, b) => (a - from).LengthHorizontalSquared.CompareTo((b - from).LengthHorizontalSquared));
-            IntVec3 fallback = IntVec3.Invalid;
-            int probes = 0;
-            for (int i = 0; i < sorted.Count && probes < MaxReachProbes; i++)
-            {
-                IntVec3 c = sorted[i];
-                bool empty = c.GetFirstPawn(map) == null;
-                if (!empty && fallback.IsValid)
-                {
-                    continue;
-                }
-                probes++;
-                if (!p.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
-                {
-                    continue;
-                }
-                if (empty)
-                {
-                    return c;
-                }
-                fallback = c;
-            }
-            return fallback;
+            int best = RM_RefugeKernel.NearestReachable(refugeList.Count, refugeList.ConvertAll(c => c.x).ToArray(), refugeList.ConvertAll(c => c.z).ToArray(),
+                p.Position.x, p.Position.z, i => refugeList[i].GetFirstPawn(map) == null, i => p.CanReach(refugeList[i], PathEndMode.OnCell, Danger.Deadly));
+            return best >= 0 ? refugeList[best] : IntVec3.Invalid;
         }
 
         // ---------------------------------------------------------- debug

@@ -86,7 +86,8 @@ GATES = (   # (setting, file, method) -- the setting must be read INSIDE the met
 )
 USES = (    # (shipped function the proof reads, file, method that must call it) -- else the proof proves a dead copy
     ("TransportAttempts(", "MapComponent_DuneField.cs", "RunTransportBatch"),
-    ("InfluxDebtDelta(", "MapComponent_DuneField.cs", "RunInflux"),
+    ("InfluxDebtDelta(", "Kernel/RM_DuneKernel.cs", "RunInflux"),      # the kernel is the shipped path; the MapComponent wrapper the proof reads delegates to it
+    ("RM_DuneKernel.InfluxDebtDelta(", "MapComponent_DuneField.cs", "InfluxDebtDelta"),
     ("ChokeSamples(", "MapComponent_DuneField.cs", "RunPlantChoke"),
     ("ChokeDamage(", "MapComponent_DuneField.cs", "RunPlantChoke"),
     ("WindLockApplies(", "MapComponent_DuneField.cs", "ApplyWindLock"),
@@ -100,6 +101,10 @@ def load_sources():
     for fn in os.listdir(d):
         if fn.endswith(".cs"):
             out[fn] = open(os.path.join(d, fn), encoding="utf-8").read()
+    kd = os.path.join(d, "Kernel")
+    for fn in os.listdir(kd):
+        if fn.endswith(".cs"):
+            out["Kernel/" + fn] = open(os.path.join(kd, fn), encoding="utf-8").read()
     return out
 
 

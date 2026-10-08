@@ -15,26 +15,20 @@ namespace RimMandrake.Greentide
     {
         protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
         {
-            if (!RM_GreentideSettings.frenzyEnabled)
+            int dose = RM_RulesKernel.FrenzyDose(RM_GreentideSettings.frenzyEnabled, RM_GreentideSettings.feverMarkGrantsImmunity,
+                pawn.health?.hediffSet != null && pawn.health.hediffSet.HasHediff(RM_DefOf.RM_FeverMark), severity,
+                RM_GreentideSettings.frenzySeverityMultiplier, out float applied);
+            if (dose == 0)
             {
                 return;
             }
-            // GREENTIDE_FEVER_SPECIALISTS_1, U2's gate, deliberate-dose side:
-            // a fever-marked pawn is resistant, so a dose spent on one is
-            // wasted rather than silently re-applying a disease they no
-            // longer catch. Same immunity flag as the ambient incident route.
-            if (RM_GreentideSettings.feverMarkGrantsImmunity
-                && pawn.health?.hediffSet != null
-                && pawn.health.hediffSet.HasHediff(RM_DefOf.RM_FeverMark))
+            if (dose == 1)
             {
                 Messages.Message("RM_Greentide_FrenzyDoseWasted".Translate(pawn.Named("PAWN")), pawn, MessageTypeDefOf.NeutralEvent);
                 return;
             }
             float configuredSeverity = severity;
-            if (severity > 0f)
-            {
-                severity *= RM_GreentideSettings.frenzySeverityMultiplier;
-            }
+            severity = applied;
             base.DoIngestionOutcomeSpecial(pawn, ingested, ingestedCount);
             severity = configuredSeverity;
         }

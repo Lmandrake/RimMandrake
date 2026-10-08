@@ -122,43 +122,18 @@ namespace RimMandrake.MovingDunes
         /// </summary>
         public static bool IsBurialCandidate(Thing t, Map map, float minMarketValue)
         {
-            if (t == null || t.Destroyed || !t.Spawned)
+            if (t == null || t.Destroyed || !t.Spawned || t is Thing_BuriedCache)
             {
                 return false;
             }
-            if (t is Thing_BuriedCache)
+            bool item = t.def != null && t.def.category == ThingCategory.Item && t.def.EverHaulable;
+            if (!item)
             {
                 return false;
             }
-            if (t.def == null || t.def.category != ThingCategory.Item || !t.def.EverHaulable)
-            {
-                return false;
-            }
-            if (t.def.destroyOnDrop)
-            {
-                return false;
-            }
-            if (map.areaManager.Home[t.Position])
-            {
-                return false;
-            }
-            if (t.IsInAnyStorage())
-            {
-                return false;
-            }
-            if (t.IsForbidden(Faction.OfPlayer))
-            {
-                return false;
-            }
-            if (map.reservationManager.IsReservedByAnyoneOf(t, Faction.OfPlayer))
-            {
-                return false;
-            }
-            if (minMarketValue > 0f && t.MarketValue * t.stackCount < minMarketValue)
-            {
-                return false;
-            }
-            return true;
+            return RM_CacheKernel.IsBurialCandidate(true, false, false, true, true, t.def.destroyOnDrop, map.areaManager.Home[t.Position],
+                t.IsInAnyStorage(), t.IsForbidden(Faction.OfPlayer), map.reservationManager.IsReservedByAnyoneOf(t, Faction.OfPlayer),
+                minMarketValue, t.MarketValue, t.stackCount);
         }
     }
 }

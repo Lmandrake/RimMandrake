@@ -61,9 +61,7 @@ namespace RimMandrake.FloodedCanyon
 
     public class RM_CompPanSleeper : ThingComp
     {
-        private bool initialSealDone;
-        private bool sealedAsleep;
-        private int dryAccumTicks;
+        private readonly PanState state = new PanState();
 
         public CompProperties_PanSleeper Props => (CompProperties_PanSleeper)props;
 
@@ -87,57 +85,32 @@ namespace RimMandrake.FloodedCanyon
             {
                 return;
             }
-            // The initial seal is issued from the first check, never from
-            // PostSpawnSetup: starting a job while the pawn is still mid-spawn
-            // is not something to rely on.
-            if (!initialSealDone)
-            {
-                initialSealDone = true;
-                if (d.Props.startsDormant && d.wokeUpTick == int.MinValue && CanSeal(pawn))
-                {
-                    Seal(d);
-                    return;
-                }
-            }
-
-            bool water = WaterNear();
-
-            if (sealedAsleep)
-            {
-                if (d.wokeUpTick != int.MinValue)
-                {
-                    // Woken by something else (the stock wake-on-damage).
-                    sealedAsleep = false;
-                    dryAccumTicks = 0;
-                    return;
-                }
-                if (water && RM_FloodedCanyonSettings.muttavaqWaterWakeEnabled)
-                {
-                    Wake(d);
-                    return;
-                }
-                // Should be asleep but the sleep job was replaced — re-seal.
-                if (d.Awake && CanSeal(pawn))
-                {
-                    d.ToSleep();
-                }
-                return;
-            }
-
-            if (!RM_FloodedCanyonSettings.muttavaqDigInEnabled || !d.Awake)
-            {
-                return;
-            }
             RM_MapComponent_CanyonFlood flood = parent.Map.GetComponent<RM_MapComponent_CanyonFlood>();
-            if (water || (flood != null && flood.IsFlooding))
+            RM_PanKernel.Do act = RM_PanKernel.Check(state, false, false, d.Props.startsDormant, d.wokeUpTick != int.MinValue, d.Awake, CanSeal(pawn), WaterNear(),
+                RM_FloodedCanyonSettings.muttavaqWaterWakeEnabled, RM_FloodedCanyonSettings.muttavaqDigInEnabled, flood != null && flood.IsFlooding,
+                Props.checkIntervalTicks, Props.dryHoursToDigIn);
+            switch (act)
             {
-                dryAccumTicks = 0;
-                return;
-            }
-            dryAccumTicks += Props.checkIntervalTicks;
-            if (dryAccumTicks >= Props.dryHoursToDigIn * 2500f && CanSeal(pawn))
-            {
-                Seal(d);
+                case RM_PanKernel.Do.Seal:
+                    if (d.Awake)
+                    {
+                        d.ToSleep();
+                    }
+                    break;
+                case RM_PanKernel.Do.Wake:
+                    d.WakeUp();
+                    DropOnWake();
+                    if (parent.Spawned && !parent.Position.Fogged(parent.Map))
+                    {
+                        Messages.Message(
+                            "The water has reached a " + parent.LabelNoCount + "'s pan - it is standing up.",
+                            new TargetInfo(parent.Position, parent.Map),
+                            MessageTypeDefOf.NeutralEvent);
+                    }
+                    break;
+                case RM_PanKernel.Do.ToSleep:
+                    d.ToSleep();
+                    break;
             }
         }
 
@@ -163,33 +136,6 @@ namespace RimMandrake.FloodedCanyon
                 }
             }
             return false;
-        }
-
-        private void Seal(CompCanBeDormant d)
-        {
-            // ToSleep() returns early unless Awake. Clearing a stale wake
-            // stamp first is what ToSleep itself does (wokeUpTick = MinValue).
-            if (d.Awake)
-            {
-                d.ToSleep();
-            }
-            sealedAsleep = true;
-            dryAccumTicks = 0;
-        }
-
-        private void Wake(CompCanBeDormant d)
-        {
-            sealedAsleep = false;
-            dryAccumTicks = 0;
-            d.WakeUp();
-            DropOnWake();
-            if (parent.Spawned && !parent.Position.Fogged(parent.Map))
-            {
-                Messages.Message(
-                    "The water has reached a " + parent.LabelNoCount + "'s pan — it is standing up.",
-                    new TargetInfo(parent.Position, parent.Map),
-                    MessageTypeDefOf.NeutralEvent);
-            }
         }
 
         private void DropOnWake()
@@ -222,16 +168,19 @@ namespace RimMandrake.FloodedCanyon
                 return null;
             }
             CompCanBeDormant d = Dormant;
-            return "pan sleeper: sealed=" + sealedAsleep + " awake=" + (d?.Awake.ToString() ?? "no dormancy comp")
-                + " dryTicks=" + dryAccumTicks;
+            return "pan sleeper: sealed=" + state.SealedAsleep + " awake=" + (d?.Awake.ToString() ?? "no dormancy comp")
+                + " dryTicks=" + state.DryAccumTicks;
         }
 
         public override void PostExposeData()
         {
             base.PostExposeData();
+            bool initialSealDone = state.InitialSealDone, sealedAsleep = state.SealedAsleep;
+            int dryAccumTicks = state.DryAccumTicks;
             Scribe_Values.Look(ref initialSealDone, "initialSealDone", false);
             Scribe_Values.Look(ref sealedAsleep, "sealedAsleep", false);
             Scribe_Values.Look(ref dryAccumTicks, "dryAccumTicks", 0);
+            state.InitialSealDone = initialSealDone; state.SealedAsleep = sealedAsleep; state.DryAccumTicks = dryAccumTicks;
         }
     }
 }

@@ -47,7 +47,8 @@ namespace RimMandrake.Greentide
             {
                 return candidates;
             }
-            return candidates.Where((Pawn p) => p.health?.hediffSet == null || !p.health.hediffSet.HasHediff(RM_DefOf.RM_FeverMark));
+            return candidates.Where((Pawn p) => p.health?.hediffSet == null
+                || RM_RulesKernel.FrenzyCandidate(true, p.health.hediffSet.HasHediff(RM_DefOf.RM_FeverMark)));
         }
     }
 }

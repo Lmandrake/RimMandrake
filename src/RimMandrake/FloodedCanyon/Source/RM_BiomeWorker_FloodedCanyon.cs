@@ -39,47 +39,19 @@ namespace RimMandrake.FloodedCanyon
 
         public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
         {
-            if (tile == null || tile.WaterCovered)
+            if (tile == null)
             {
                 return -100f;
             }
 
             float rarity = RM_FloodedCanyonSettings.biomeRarityFactor;
-            if (rarity <= 0.001f)
-            {
-                return -100f;
-            }
-
             RM_FloodedCanyonBiomeRanges r = biome.GetModExtension<RM_FloodedCanyonBiomeRanges>() ?? FallbackRanges;
-
-            if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
-            {
-                return 0f;
-            }
-            if (tile.rainfall < r.rainfall.min || tile.rainfall >= r.rainfall.max)
-            {
-                return 0f;
-            }
-            if (tile.elevation < r.elevation.min || tile.elevation > r.elevation.max)
-            {
-                return 0f;
-            }
             // Canyon country: real relief, not flat desert floor.
-            if (tile.hilliness != Hilliness.LargeHills && tile.hilliness != Hilliness.Mountainous)
-            {
-                return 0f;
-            }
-
-            float gate = r.spawnChance * rarity;
-            if (gate < 1f && !Rand.ChanceSeeded(gate, planetTile.tileId ^ GateSeedSalt))
-            {
-                return 0f;
-            }
-
-            float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
-            return r.baseScore
-                 + (tile.temperature - r.temperature.min) * r.degreeWeight
-                 + (tile.rainfall - r.rainfall.min) / divisor;
+            return RM_CanyonRulesKernel.BiomeScore(tile.WaterCovered, rarity, tile.temperature, tile.rainfall, tile.elevation,
+                tile.hilliness == Hilliness.LargeHills || tile.hilliness == Hilliness.Mountainous,
+                r.temperature.min, r.temperature.max, r.rainfall.min, r.rainfall.max, r.elevation.min, r.elevation.max, r.spawnChance,
+                () => Rand.ChanceSeeded(r.spawnChance * rarity, planetTile.tileId ^ GateSeedSalt),
+                r.baseScore, r.degreeWeight, r.rainfallDivisor);
         }
     }
 }

@@ -1,0 +1,158 @@
+[
+ {
+  "name": "lean: zero displacement aligned",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_LeanKernel.cs",
+  "old": "if (sq < 0.01f) return 0f;",
+  "new": "if (sq < 0.01f) return 1f;"
+ },
+ {
+  "name": "lean: heading 0 treated as unset",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_LeanKernel.cs",
+  "old": "return current < 0f ? roll0to360 : current;",
+  "new": "return current <= 0f ? roll0to360 : current;"
+ },
+ {
+  "name": "lean: fire window opens to 90 degrees",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_LeanKernel.cs",
+  "old": "public const float FireAlignment = 0.3f;",
+  "new": "public const float FireAlignment = -0.2f;"
+ },
+ {
+  "name": "lean: scent threshold off",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_LeanKernel.cs",
+  "old": "if (Alignment(dx[i], dz[i], dirX, dirZ) < ScentAlignment) continue;",
+  "new": "if (Alignment(dx[i], dz[i], dirX, dirZ) < 0.3f) continue;"
+ },
+ {
+  "name": "smother: a second smother restarts the clock",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_SmotherKernel.cs",
+  "old": "return startTick >= 0 ? startTick : now;",
+  "new": "return now;"
+ },
+ {
+  "name": "smother: young stands yield more than the floor",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_SmotherKernel.cs",
+  "old": "Math.Max(0.3f, growth)",
+  "new": "Math.Max(0.1f, growth)"
+ },
+ {
+  "name": "smother: matures with the feature off",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_SmotherKernel.cs",
+  "old": "tick % CheckInterval == 0 && featureOn;",
+  "new": "tick % CheckInterval == 0;"
+ },
+ {
+  "name": "smother: huge claim wraps",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_SmotherKernel.cs",
+  "old": "return t > int.MaxValue / 2 ? int.MaxValue / 2 : (int)t;",
+  "new": "return (int)t;"
+ },
+ {
+  "name": "smother: stack limit zero not guarded",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_SmotherKernel.cs",
+  "old": "if (stackLimit < 1) stackLimit = 1;\n            while (count > 0)",
+  "new": "while (count > 0)"
+ },
+ {
+  "name": "blaze: undersized cluster counts",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_BlazeKernel.cs",
+  "old": "if (c > bestN)",
+  "new": "if (c >= bestN)"
+ },
+ {
+  "name": "blaze: message radius halved",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_BlazeKernel.cs",
+  "old": "ClusterRadius * 2f",
+  "new": "ClusterRadius"
+ },
+ {
+  "name": "guardian: stage never falls",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs",
+  "old": "newStage = Math.Min(stage, StageOf(newMeter));",
+  "new": "newStage = stage;"
+ },
+ {
+  "name": "guardian: roost without wardens is disturbed",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs",
+  "old": "if (amount <= 0f || !spawned || !on || liveWardens == 0) return false;",
+  "new": "if (amount <= 0f || !spawned || !on) return false;"
+ },
+ {
+  "name": "guardian: two roosts yield to each other",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs",
+  "old": "&& otherId < myId;",
+  "new": "&& otherId != myId;"
+ },
+ {
+  "name": "guardian: forgiveness runs while raging",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_GuardianKernel.cs",
+  "old": "if (anyRaging || meter <= 0f) return;",
+  "new": "if (meter <= 0f) return;"
+ },
+ {
+  "name": "forms: thorns hurt at exactly the minimum growth",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "return growth >= minGrowth && !spared && due;",
+  "new": "return growth > minGrowth && !spared && due;"
+ },
+ {
+  "name": "forms: scratch due one tick late",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "return !hasClock || now >= next;",
+  "new": "return !hasClock || now > next;"
+ },
+ {
+  "name": "forms: second push shortens rearing",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "return Math.Max(rearedUntil, now + ticks);",
+  "new": "return now + ticks;"
+ },
+ {
+  "name": "forms: lash recovery floor lost",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "Math.Max(60, (int)Math.Round(recoveryTicks * recoveryFactor))",
+  "new": "Math.Max(1, (int)Math.Round(recoveryTicks * recoveryFactor))"
+ },
+ {
+  "name": "forms: hoard takes corpses with dead gear off",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "if (isCorpse[i] && !keepDeadGear) continue;",
+  "new": "if (false) continue;"
+ },
+ {
+  "name": "walk: smothered stand still marches",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "if (anySmothered) continue;",
+  "new": "if (false && anySmothered) continue;"
+ },
+ {
+  "name": "walk: cap off by one",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "if (total < cap &&",
+  "new": "if (total <= cap &&"
+ },
+ {
+  "name": "walk: lone cell dies back",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "stand.Count > 1 &&",
+  "new": "stand.Count > 0 &&"
+ },
+ {
+  "name": "walk: young cells send runners",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_FormsKernel.cs",
+  "old": "growth[idx] < 0.5f",
+  "new": "growth[idx] < 0.4f"
+ },
+ {
+  "name": "coat: felt store uncapped",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_CoatKernel.cs",
+  "old": "return Math.Min(cap, store + Math.Max(0f, coatUnitsFelted) * feltPerUnit);",
+  "new": "return store + Math.Max(0f, coatUnitsFelted) * feltPerUnit;"
+ },
+ {
+  "name": "coat: bloom cooldown doubled",
+  "file": "src/RimMandrake/LeaningScrub/Source/Kernel/RM_CoatKernel.cs",
+  "old": "public const int CooldownTicks = 1250;",
+  "new": "public const int CooldownTicks = 2500;"
+ }
+]

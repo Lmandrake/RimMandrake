@@ -17,11 +17,9 @@ namespace RimMandrake.Greentide
 	/// </summary>
 	public class RM_MapComponent_MudSwallow : MapComponent
 	{
-		private const int CheckIntervalTicks = 250;
-
 		// Not saved — a reload just restarts the dwell clock for anything
 		// still sitting there; only actual burials (below) are persistent.
-		private readonly Dictionary<Thing, int> firstSeenTick = new Dictionary<Thing, int>();
+		private readonly RM_SwallowKernel.Dwell dwell = new RM_SwallowKernel.Dwell();
 
 		private List<RM_BuriedCache> buried = new List<RM_BuriedCache>();
 
@@ -47,7 +45,7 @@ namespace RimMandrake.Greentide
 			{
 				return; // MOD_OPTIONS_RETROFIT_1: master toggle, all-off degrades to a no-op
 			}
-			if (Find.TickManager.TicksGame % CheckIntervalTicks != 0)
+			if (Find.TickManager.TicksGame % RM_SwallowKernel.CheckIntervalTicks != 0)
 			{
 				return;
 			}
@@ -58,63 +56,31 @@ namespace RimMandrake.Greentide
 		{
 			// ThingsInGroup returns the engine's LIVE internal list. Bury()
 			// below calls Thing.Destroy(), which synchronously removes the
-			// thing from that same list — mutating it mid-iteration would
-			// shift the next element into the slot we just consumed, so it
-			// gets skipped this pass and its firstSeenTick entry is wrongly
-			// purged below as "moved off hazardous ground" (full dwell-timer
-			// reset, no exception, no log). Snapshot to a copy before Bury()
+			// thing from that same list - snapshot to a copy before Bury()
 			// can touch the live list.
 			List<Thing> haulables = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.HaulableEver));
-			var stillPresent = new HashSet<Thing>();
-			var toBury = new List<Thing>();
+			var byId = new Dictionary<int, Thing>();
+			var ids = new List<int>();
+			var onMire = new List<bool>();
+			var ticks = new List<int>();
 			for (int i = 0; i < haulables.Count; i++)
 			{
 				Thing thing = haulables[i];
-				// Not ParentHolder != null: a spawned thing's holder is the map's
-				// own spawnedThings ThingOwner (Thing.ParentHolder =>
-				// holdingOwner?.Owner, Map.spawnedThings owned by the map), so
-				// that guard skipped every item and nothing was ever swallowed.
+				// Not ParentHolder != null: a spawned thing's holder is the map's own spawnedThings ThingOwner.
 				if (thing == null || !thing.Spawned)
 				{
 					continue;
 				}
-				TerrainDef terrain = thing.Position.GetTerrain(map);
-				RM_MireExtension ext = terrain?.GetModExtension<RM_MireExtension>();
-				if (ext == null)
-				{
-					continue;
-				}
-				stillPresent.Add(thing);
-				if (!firstSeenTick.TryGetValue(thing, out int firstTick))
-				{
-					firstSeenTick[thing] = Find.TickManager.TicksGame;
-					continue;
-				}
-				if (Find.TickManager.TicksGame - firstTick >= ext.swallowTicks)
-				{
-					toBury.Add(thing);
-					firstSeenTick.Remove(thing);
-				}
+				RM_MireExtension ext = thing.Position.GetTerrain(map)?.GetModExtension<RM_MireExtension>();
+				byId[thing.thingIDNumber] = thing;
+				ids.Add(thing.thingIDNumber);
+				onMire.Add(ext != null);
+				ticks.Add(ext != null ? ext.swallowTicks : 0);
 			}
+			List<int> toBury = dwell.Scan(Find.TickManager.TicksGame, ids.Count, ids.ToArray(), onMire.ToArray(), ticks.ToArray());
 			for (int i = 0; i < toBury.Count; i++)
 			{
-				Bury(toBury[i]);
-			}
-			// Drop tracking for anything that moved off hazardous ground or despawned.
-			if (firstSeenTick.Count > 0)
-			{
-				var stale = new List<Thing>();
-				foreach (KeyValuePair<Thing, int> kv in firstSeenTick)
-				{
-					if (!stillPresent.Contains(kv.Key))
-					{
-						stale.Add(kv.Key);
-					}
-				}
-				for (int i = 0; i < stale.Count; i++)
-				{
-					firstSeenTick.Remove(stale[i]);
-				}
+				Bury(byId[toBury[i]]);
 			}
 		}
 
@@ -126,16 +92,7 @@ namespace RimMandrake.Greentide
 			ThingDef def = thing.def;
 			thing.Destroy(DestroyMode.Vanish);
 
-			RM_BuriedCache existing = buried.Find(c => c.cell == cell && c.thingDef == def && c.stuffDef == stuff);
-			if (existing != null)
-			{
-				existing.stackCount += stackCount;
-				existing.buriedTick = Find.TickManager.TicksGame;
-			}
-			else
-			{
-				buried.Add(new RM_BuriedCache(cell, def, stuff, stackCount, Find.TickManager.TicksGame));
-			}
+			RM_SwallowKernel.Bury(buried, cell.x, cell.z, def, stuff, stackCount, Find.TickManager.TicksGame, () => new RM_BuriedCache());
 
 			if (map.designationManager.DesignationAt(cell, RM_DefOf.RM_DesignationDigOutBuried) == null)
 			{
@@ -145,51 +102,33 @@ namespace RimMandrake.Greentide
 
 		public bool HasBuriedAt(IntVec3 cell)
 		{
-			return buried.Exists(c => c.cell == cell);
+			return RM_SwallowKernel.HasBuriedAt(buried, cell.x, cell.z);
 		}
 
-		/// <summary>Total ticks the oldest cache at this cell has been buried — RM_JobDriver_DigOutBuried scales work by this.</summary>
+		/// <summary>Total ticks the oldest cache at this cell has been buried - RM_JobDriver_DigOutBuried scales work by this.</summary>
 		public int BuriedDurationAt(IntVec3 cell)
 		{
-			int longest = 0;
-			for (int i = 0; i < buried.Count; i++)
-			{
-				if (buried[i].cell == cell)
-				{
-					int age = Find.TickManager.TicksGame - buried[i].buriedTick;
-					if (age > longest)
-					{
-						longest = age;
-					}
-				}
-			}
-			return longest;
+			return RM_SwallowKernel.BuriedDurationAt(buried, cell.x, cell.z, Find.TickManager.TicksGame);
 		}
 
-		/// <summary>Spawns every cache buried at this cell back onto the map and clears the designation. Nothing is lost.</summary>
+		/// <summary>Spawns every cache buried at this cell back onto the map, in stacks within the def's limit. Whatever cannot be
+		/// placed stays buried and keeps the dig designation, so nothing is lost and nothing is orphaned.</summary>
 		public void DigOut(IntVec3 cell)
 		{
-			for (int i = buried.Count - 1; i >= 0; i--)
+			int left = RM_SwallowKernel.DigOut(buried, cell.x, cell.z, d => ((ThingDef)d).stackLimit, (cache, n) =>
 			{
-				RM_BuriedCache cache = buried[i];
-				if (cache.cell != cell)
-				{
-					continue;
-				}
 				Thing thing = ThingMaker.MakeThing(cache.thingDef, cache.stuffDef);
-				thing.stackCount = cache.stackCount;
-				// GenPlace.TryPlaceThing's bool return must be checked: on a fully
-				// blocked map it silently drops the Thing (see JawaBenchIncidentTools.cs
-				// for the same trap). Only clear the buried record once it actually lands.
-				if (GenPlace.TryPlaceThing(thing, cell, map, ThingPlaceMode.Near))
-				{
-					buried.RemoveAt(i);
-				}
-			}
-			Designation designation = map.designationManager.DesignationAt(cell, RM_DefOf.RM_DesignationDigOutBuried);
-			if (designation != null)
+				thing.stackCount = n;
+				// GenPlace.TryPlaceThing's bool return must be checked: on a fully blocked map it silently drops the Thing.
+				return GenPlace.TryPlaceThing(thing, cell, map, ThingPlaceMode.Near);
+			});
+			if (left == 0)
 			{
-				map.designationManager.RemoveDesignation(designation);
+				Designation designation = map.designationManager.DesignationAt(cell, RM_DefOf.RM_DesignationDigOutBuried);
+				if (designation != null)
+				{
+					map.designationManager.RemoveDesignation(designation);
+				}
 			}
 		}
 	}

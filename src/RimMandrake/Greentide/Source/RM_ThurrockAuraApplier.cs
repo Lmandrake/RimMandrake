@@ -40,7 +40,6 @@ namespace RimMandrake.Greentide
             {
                 return;
             }
-            float pace = Mathf.Max(0.05f, RM_GreentideSettings.thurrockFellingPace);
             for (int i = 0; i < def.comps.Count; i++)
             {
                 if (!(def.comps[i] is HediffCompProperties_PeriodicAreaAttack p))
@@ -62,14 +61,14 @@ namespace RimMandrake.Greentide
                 bool provoked = p.minSeverity > 0f;
                 if (provoked)
                 {
-                    p.buildingMultiplier = RM_GreentideSettings.thurrockProvokedWallDamage ? s.buildingMultiplier : 0f;
+                    p.buildingMultiplier = RM_RulesKernel.Gated(RM_GreentideSettings.thurrockProvokedWallDamage, s.buildingMultiplier);
                 }
                 else
                 {
                     bool fell = RM_GreentideSettings.thurrockFellingEnabled;
-                    p.plantMultiplier = fell ? s.plantMultiplier : 0f;
-                    p.fellsTreesBelowHealthFraction = fell ? s.fellsTreesBelowHealthFraction : 0f;
-                    p.tickIntervalTicks = Mathf.Max(1, Mathf.RoundToInt(s.tickIntervalTicks / pace));
+                    p.plantMultiplier = RM_RulesKernel.Gated(fell, s.plantMultiplier);
+                    p.fellsTreesBelowHealthFraction = RM_RulesKernel.Gated(fell, s.fellsTreesBelowHealthFraction);
+                    p.tickIntervalTicks = RM_RulesKernel.ThurrockInterval(s.tickIntervalTicks, RM_GreentideSettings.thurrockFellingPace);
                 }
             }
         }

@@ -65,29 +65,10 @@ namespace RimMandrake.FloodedCanyon
 
         // Herald is appended LAST so a save written before it (bytes 0-2)
         // still reads back as the same phase.
-        private enum Phase : byte { Dry, Warned, Flooding, Herald }
 
-        private Phase phase = Phase.Dry;
+        // The cycle's clocks and counters live in the Verse-free kernel's state.
+        private readonly FloodState st = new FloodState();
 
-        // -1 == not yet scheduled (set on first FinalizeInit/tick).
-        private int nextFloodTick = -1;
-        private int floodEndTick = -1;
-
-        // Peakstorm Light coupling (MaybeFollowPeakstorm).
-        private int lastRecedeTick = -1;
-        private bool peakstormPulledThisCycle;
-
-        // Next chime stage to ring while Warned (RingChime staging).
-        private int chimeStage;
-
-        // CRACKEDLANDS_GPT_ENRICHMENT_1 §2 — five beats before water. Beats
-        // 1-3 (slot wind, ticking pans, tarruq hush) ring in the Herald
-        // window before the chimes; heraldBeat is the next one due.
-        private int heraldBeat;
-
-        // Where this cycle's water will arrive, chosen when the warning
-        // starts so the chimes can toll from the far canyon toward it and the
-        // roar can sit on it. Invalid = choose at StartFlood (debug path).
         private IntVec3 pendingSeed = IntVec3.Invalid;
         private IntVec3 roarCell = IntVec3.Invalid;
         private Sustainer roar;
@@ -95,15 +76,13 @@ namespace RimMandrake.FloodedCanyon
         // Cells this cycle's flood is currently standing on, to convert
         // back to soil at recede time (only if still ours — see header).
         // NON-EXCAVATED cells only: an excavated one is never written here.
-        private List<IntVec3> activeFloodCells = new List<IntVec3>();
+        private readonly RM_FloodKernel.Ledger ledger = new RM_FloodKernel.Ledger();
 
         // The excavated half of this cycle's footprint, and what each of
         // those cells held before the flood raised it. Two parallel lists
         // rather than a dictionary purely because Scribe_Collections writes
         // a List<T> of values with no working-list dance; they are always
         // the same length and are cleared together.
-        private List<IntVec3> raisedFillCells = new List<IntVec3>();
-        private List<int> raisedFillPrior = new List<int>();
 
         public RM_MapComponent_CanyonFlood(Map map) : base(map)
         {
@@ -111,13 +90,13 @@ namespace RimMandrake.FloodedCanyon
 
         // Read by RM_CompPanSleeper: a muttavaq never digs in while the
         // wall is standing.
-        public bool IsFlooding => phase == Phase.Flooding;
+        public bool IsFlooding => st.Phase == FloodPhase.Flooding;
 
         // Read by RM_TarruqHushPatch: from beat 3 until the water recedes,
         // the tarruq do not call.
         public bool TarruqSilenced =>
             Active && RM_FloodedCanyonSettings.fiveBeatsEnabled
-            && ((phase == Phase.Herald && heraldBeat > 3) || phase == Phase.Warned || phase == Phase.Flooding);
+            && ((st.Phase == FloodPhase.Herald && st.HeraldBeat > 3) || st.Phase == FloodPhase.Warned || st.Phase == FloodPhase.Flooding);
 
         private bool Active =>
             RM_FloodedCanyonSettings.floodCycleEnabled
@@ -129,14 +108,14 @@ namespace RimMandrake.FloodedCanyon
         // plays out in real time without waiting on floodPeriodDays.
         public void DebugArmFloodSoon()
         {
-            phase = Phase.Dry;
-            nextFloodTick = Find.TickManager.TicksGame + 1;
+            st.Phase = FloodPhase.Dry;
+            st.NextFloodTick = Find.TickManager.TicksGame + 1;
         }
 
         // Test surface: skip straight past the chime to the wall itself.
         public void DebugStartFloodNow()
         {
-            phase = Phase.Flooding;
+            st.Phase = FloodPhase.Flooding;
             StartFlood(Find.TickManager.TicksGame);
         }
 
@@ -145,9 +124,9 @@ namespace RimMandrake.FloodedCanyon
         // seams) can be read without waiting out floodDurationHours.
         public void DebugRecedeSoon()
         {
-            if (phase == Phase.Flooding)
+            if (st.Phase == FloodPhase.Flooding)
             {
-                floodEndTick = Find.TickManager.TicksGame;
+                st.FloodEndTick = Find.TickManager.TicksGame;
             }
         }
 
@@ -158,18 +137,28 @@ namespace RimMandrake.FloodedCanyon
                 + "raisedFillCells={5} active={6} flowWorksEngine={7} explosiveGrowth={8} "
                 + "chimeStage={9} lastRecedeTick={10} peakstormConsidered={11} weather={12} "
                 + "heraldBeat={13} pendingSeed={14} roar={15} tarruqSilenced={16} refugeFlooded={17}",
-                phase, nextFloodTick, floodEndTick, Find.TickManager.TicksGame,
-                activeFloodCells.Count, raisedFillCells.Count, Active,
+                st.Phase, st.NextFloodTick, st.FloodEndTick, Find.TickManager.TicksGame,
+                ledger.Active.Count, ledger.RaisedCells.Count, Active,
                 Excavation != null ? "present" : "ABSENT",
                 RM_ExplosiveGrowthBridge.Available ? "present" : "ABSENT (flood soaks nothing)",
-                chimeStage, lastRecedeTick, peakstormPulledThisCycle,
+                st.ChimeStage, st.LastRecedeTick, st.PeakstormPulled,
                 map.weatherManager.curWeather?.defName ?? "null",
-                heraldBeat, pendingSeed, roar != null && !roar.Ended ? "on" : "off", TarruqSilenced,
+                st.HeraldBeat, pendingSeed, roar != null && !roar.Ended ? "on" : "off", TarruqSilenced,
                 RefugeFloodedCount());
         }
 
         // Ledges of Mercy verify: footprint cells that are refuge cells. Must
         // read 0 — Eligible excludes them.
+        private static IntVec3 Cell(long key)
+        {
+            return new IntVec3(RM_FloodKernel.KeyX(key), 0, RM_FloodKernel.KeyZ(key));
+        }
+
+        private static long KeyOf(IntVec3 c)
+        {
+            return RM_FloodKernel.Key(c.x, c.z);
+        }
+
         private int RefugeFloodedCount()
         {
             RM_MapComponent_LedgeRefuge r = Refuge;
@@ -178,13 +167,13 @@ namespace RimMandrake.FloodedCanyon
                 return -1;
             }
             int n = 0;
-            for (int i = 0; i < activeFloodCells.Count; i++)
+            for (int i = 0; i < ledger.Active.Count; i++)
             {
-                if (r.IsRefugeCell(activeFloodCells[i])) n++;
+                if (r.IsRefugeCell(Cell(ledger.Active[i]))) n++;
             }
-            for (int i = 0; i < raisedFillCells.Count; i++)
+            for (int i = 0; i < ledger.RaisedCells.Count; i++)
             {
-                if (r.IsRefugeCell(raisedFillCells[i])) n++;
+                if (r.IsRefugeCell(Cell(ledger.RaisedCells[i]))) n++;
             }
             return n;
         }
@@ -192,7 +181,7 @@ namespace RimMandrake.FloodedCanyon
         public override void FinalizeInit()
         {
             base.FinalizeInit();
-            if (nextFloodTick < 0)
+            if (st.NextFloodTick < 0)
             {
                 ScheduleNextFlood();
             }
@@ -200,108 +189,55 @@ namespace RimMandrake.FloodedCanyon
 
         public override void MapComponentTick()
         {
-            if (!Active)
-            {
-                return;
-            }
-
             int now = Find.TickManager.TicksGame;
+            FloodCfg cfg = new FloodCfg
+            {
+                Active = Active,
+                FiveBeats = RM_FloodedCanyonSettings.fiveBeatsEnabled,
+                ChimeStaging = RM_FloodedCanyonSettings.chimeStagingEnabled,
+                PeakstormBias = RM_FloodedCanyonSettings.peakstormBiasEnabled,
+                ChimeLeadHours = RM_FloodedCanyonSettings.chimeLeadTimeHours,
+                HeraldLeadHours = RM_FloodedCanyonSettings.heraldLeadHours,
+                FloodPeriodDays = RM_FloodedCanyonSettings.floodPeriodDays,
+            };
+            FloodStep step = RM_FloodKernel.Tick(st, cfg, now, pendingSeed.IsValid,
+                st.Phase == FloodPhase.Dry && map.weatherManager.curWeather == RM_FloodedCanyonDefOf.RM_PeakstormLight,
+                Rand.Value, (lo, hi) => Rand.RangeInclusive(lo, hi), (lo, hi) => Rand.RangeInclusive(lo, hi));
 
-            // Ledges of Mercy: while the warning stands and the water is up,
-            // visitors and trained animals keep making for the ledges.
-            if (phase != Phase.Dry && now % RM_MapComponent_LedgeRefuge.SweepIntervalTicks == 0)
+            if (step.SweepRefuge)
             {
                 Refuge?.Sweep();
             }
-
-            switch (phase)
+            if (step.ChooseSeed)
             {
-                case Phase.Dry:
-                    if (nextFloodTick < 0)
-                    {
-                        ScheduleNextFlood();
-                        return;
-                    }
-                    if (now % 2500 == 0)
-                    {
-                        MaybeFollowPeakstorm(now);
-                    }
-                    if (RM_FloodedCanyonSettings.fiveBeatsEnabled
-                        && now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours) - HoursToTicks(RM_FloodedCanyonSettings.heraldLeadHours))
-                    {
-                        ChooseSeed();
-                        heraldBeat = 1;
-                        phase = Phase.Herald;
-                        Refuge?.Sweep();
-                        break;
-                    }
-                    if (now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours))
-                    {
-                        EnterWarned();
-                    }
-                    break;
-
-                case Phase.Herald:
-                    // Beats 1-3 at the start, two thirds and one third of the
-                    // way through the herald window (TUNED: evenly spaced, so
-                    // each beat has room to be heard before the next). A loop,
-                    // so a compressed window (debug arm, a late peakstorm
-                    // pull) still plays every beat, in order, before the chime.
-                    while (heraldBeat <= 3)
-                    {
-                        int heraldTicks = HoursToTicks(RM_FloodedCanyonSettings.heraldLeadHours);
-                        int chimeAt = nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours);
-                        float frac = 1f - (heraldBeat - 1) / 3f;
-                        if (now < chimeAt - (int)(heraldTicks * frac))
-                        {
-                            break;
-                        }
-                        PlayHeraldBeat(heraldBeat);
-                        heraldBeat++;
-                    }
-                    if (now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours))
-                    {
-                        EnterWarned();
-                    }
-                    break;
-
-                case Phase.Warned:
-                    // CRACKEDLANDS_MECHANICS_BUILD_1 §5: the chimes are staged
-                    // by distance-to-flood — later rings as the water nears.
-                    if (RM_FloodedCanyonSettings.chimeStagingEnabled && chimeStage < ChimeStageFractions.Length
-                        && now >= nextFloodTick - (int)(HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours) * ChimeStageFractions[chimeStage]))
-                    {
-                        RingChime(chimeStage);
-                        chimeStage++;
-                    }
-                    if (now >= nextFloodTick)
-                    {
-                        StartFlood(now);
-                        phase = Phase.Flooding;
-                    }
-                    break;
-
-                case Phase.Flooding:
-                    MaintainRoar();
-                    if (now >= floodEndTick)
-                    {
-                        RecedeFlood();
-                        lastRecedeTick = now;
-                        phase = Phase.Dry;
-                        ScheduleNextFlood();
-                    }
-                    break;
+                ChooseSeed();
+            }
+            for (int i = 0; i < step.HeraldBeats.Count; i++)
+            {
+                PlayHeraldBeat(step.HeraldBeats[i]);
+            }
+            if (step.RingChime >= 0)
+            {
+                RingChime(step.RingChime);
+            }
+            if (step.StartFlood)
+            {
+                StartFlood(now);
+            }
+            if (step.Recede)
+            {
+                RecedeFlood();
             }
         }
 
         private static int HoursToTicks(float hours)
         {
-            return UnityEngine.Mathf.Max(250, UnityEngine.Mathf.RoundToInt(hours * 2500f));
+            return RM_FloodKernel.HoursToTicks(hours);
         }
 
         private static int DaysToTicks(float days)
         {
-            return UnityEngine.Mathf.Max(2500, UnityEngine.Mathf.RoundToInt(days * 60000f));
+            return RM_FloodKernel.DaysToTicks(days);
         }
 
         // CRACKEDLANDS_MECHANICS_BUILD_1 §5: "the flood clock biases its chime
@@ -311,61 +247,12 @@ namespace RimMandrake.FloodedCanyon
         // pulls a flood that is still more than a day away forward to
         // 0.5–1.5 days out. The chime still rings chimeLeadTimeHours before
         // it — the storm on the peaks never removes the warning.
-        private void MaybeFollowPeakstorm(int now)
-        {
-            if (!RM_FloodedCanyonSettings.peakstormBiasEnabled || peakstormPulledThisCycle)
-            {
-                return;
-            }
-            if (map.weatherManager.curWeather != RM_FloodedCanyonDefOf.RM_PeakstormLight)
-            {
-                return;
-            }
-            int periodTicks = DaysToTicks(RM_FloodedCanyonSettings.floodPeriodDays);
-            if (lastRecedeTick >= 0 && now - lastRecedeTick < periodTicks / 2)
-            {
-                return;
-            }
-            if (nextFloodTick - now <= 60000)
-            {
-                return;
-            }
-            // CRACKEDLANDS_GPT_ENRICHMENT_1 §3: the storm "raises flood odds
-            // without being a perfect timer". One roll per cycle, win or lose
-            // (peakstormPulledThisCycle now means "this cycle's storm has been
-            // considered"), so a storm that stands for hours cannot re-roll
-            // its way to certainty. TUNED: 0.6 — more often than not, never
-            // reliably. The window widens to 0.5-2 days for the same reason.
-            peakstormPulledThisCycle = true;
-            if (!Rand.Chance(PeakstormPullChance))
-            {
-                return;
-            }
-            int pulled = now + Rand.RangeInclusive(30000, 120000);
-            int minTicks = HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours)
-                + (RM_FloodedCanyonSettings.fiveBeatsEnabled ? HoursToTicks(RM_FloodedCanyonSettings.heraldLeadHours) : 0)
-                + 2500;
-            pulled = System.Math.Max(pulled, now + minTicks);
-            if (pulled < nextFloodTick)
-            {
-                nextFloodTick = pulled;
-            }
-        }
-
-        private const float PeakstormPullChance = 0.6f;
-
         private void ScheduleNextFlood()
         {
-            peakstormPulledThisCycle = false;
-            int periodTicks = DaysToTicks(RM_FloodedCanyonSettings.floodPeriodDays);
-            int jitter = Rand.RangeInclusive(-periodTicks / 3, periodTicks / 3);
-            nextFloodTick = Find.TickManager.TicksGame + System.Math.Max(2500, periodTicks + jitter);
+            RM_FloodKernel.ScheduleNext(st, new FloodCfg { FloodPeriodDays = RM_FloodedCanyonSettings.floodPeriodDays }, Find.TickManager.TicksGame,
+                (lo, hi) => Rand.RangeInclusive(lo, hi));
         }
 
-        // Fraction of the chime lead time still left when each stage rings:
-        // stage 0 at the full lead (the first chime, unchanged), then as the
-        // water comes down the lines — half the lead, then the last moments.
-        private static readonly float[] ChimeStageFractions = { 1f, 0.5f, 0.15f };
 
         private static readonly string[] ChimeStageMessages =
         {
@@ -373,18 +260,6 @@ namespace RimMandrake.FloodedCanyon
             "The chimes are ringing lower down the lines — the flood is closer.",
             "The nearest chimes are ringing — the water is almost here. Get off the canyon floor.",
         };
-
-        private void EnterWarned()
-        {
-            if (!pendingSeed.IsValid)
-            {
-                ChooseSeed();
-            }
-            RingChime(0);
-            chimeStage = 1;
-            phase = Phase.Warned;
-            Refuge?.Sweep();
-        }
 
         private void ChooseSeed()
         {
@@ -440,7 +315,6 @@ namespace RimMandrake.FloodedCanyon
         // carries chime-line anchor things (RM_ChimeAnchorExtension,
         // CRACKEDLANDS_LEDGES_OF_MERCY_1) the chime tolls from the anchor
         // nearest that position; with none, from the position itself.
-        private static readonly float[] ChimeLinePositions = { 0f, 0.5f, 0.85f };
 
         private IntVec3 ChimeCell(int stage)
         {
@@ -448,29 +322,9 @@ namespace RimMandrake.FloodedCanyon
             {
                 return map.Center;
             }
-            IntVec3 far = FarCornerFrom(pendingSeed);
-            float f = ChimeLinePositions[UnityEngine.Mathf.Clamp(stage, 0, ChimeLinePositions.Length - 1)];
-            IntVec3 c = new IntVec3(
-                UnityEngine.Mathf.RoundToInt(UnityEngine.Mathf.Lerp(far.x, pendingSeed.x, f)), 0,
-                UnityEngine.Mathf.RoundToInt(UnityEngine.Mathf.Lerp(far.z, pendingSeed.z, f)));
-            c = c.ClampInsideMap(map);
+            RM_FloodKernel.ChimePoint(stage, pendingSeed.x, pendingSeed.z, map.Size.x - 1, map.Size.z - 1, out int x, out int z);
+            IntVec3 c = new IntVec3(x, 0, z).ClampInsideMap(map);
             return Refuge != null ? Refuge.NearestAnchorTo(c) : c;
-        }
-
-        private IntVec3 FarCornerFrom(IntVec3 seed)
-        {
-            int maxX = map.Size.x - 1;
-            int maxZ = map.Size.z - 1;
-            IntVec3[] corners = { new IntVec3(0, 0, 0), new IntVec3(maxX, 0, 0), new IntVec3(0, 0, maxZ), new IntVec3(maxX, 0, maxZ) };
-            IntVec3 best = corners[0];
-            for (int i = 1; i < corners.Length; i++)
-            {
-                if ((corners[i] - seed).LengthHorizontalSquared > (best - seed).LengthHorizontalSquared)
-                {
-                    best = corners[i];
-                }
-            }
-            return best;
         }
 
         private static SoundDef ChimeSound(int stage)
@@ -525,53 +379,25 @@ namespace RimMandrake.FloodedCanyon
 
         private void StartFlood(int now)
         {
-            int target = UnityEngine.Mathf.Clamp(map.Area / 20, 40, 400);
+            int target = RM_FloodKernel.TargetCells(map.Area);
             Refuge?.RefreshCells();
             List<IntVec3> cells = ComputeFloodCells(target, pendingSeed);
             roarCell = cells.Count > 0 ? cells[0] : IntVec3.Invalid;
             pendingSeed = IntVec3.Invalid;
-            heraldBeat = 0;
 
-            int durationTicks = HoursToTicks(RM_FloodedCanyonSettings.floodDurationHours);
-            floodEndTick = now + durationTicks;
-            // crack_flood — "the canonical soak" (explosive_plant_growth_design.md
-            // §1). The flood no longer keeps a soak map of its own: it hands
-            // every cell it wets to mandrake.rm.explosivegrowth, which owns the
-            // SOAKED state, the growth multiplier and everything after. Soaked
-            // for the flood's duration plus the decay days.
-            int soakTicks = (floodEndTick - now) + DaysToTicks(RM_FloodedCanyonSettings.soakDecayDays);
+            RM_FloodKernel.Begin(st, now, RM_FloodedCanyonSettings.floodDurationHours, RM_FloodedCanyonSettings.soakDecayDays,
+                out int durationTicks, out int soakTicks);
 
             TerrainDef floodTerrain = TerrainDefOf.WaterMovingShallow;
             RM_MapComponent_Excavation excavation = Excavation;
 
-            activeFloodCells.Clear();
-            raisedFillCells.Clear();
-            raisedFillPrior.Clear();
-            for (int i = 0; i < cells.Count; i++)
+            ledger.Begin(cells.ConvertAll(KeyOf),
+                k => excavation != null && excavation.IsExcavated(Cell(k)),
+                k => excavation.FillAt(Cell(k)),
+                k => excavation.TryFloodDriverCell(Cell(k)));
+            for (int i = 0; i < ledger.Active.Count; i++)
             {
-                IntVec3 c = cells[i];
-                // CANYON_FLOOD_ERASES_CANALS_1. An excavated cell belongs to
-                // FlowWorks: the flood raises its FILL and never its terrain,
-                // so a channel, a pit or a SUPERDEEP hole is filled by the
-                // water rather than erased by it. Prior F is recorded here,
-                // not in the engine, because only this driver knows what its
-                // own recede means.
-                if (excavation != null && excavation.IsExcavated(c))
-                {
-                    int prior = excavation.FillAt(c);
-                    if (excavation.TryFloodDriverCell(c))
-                    {
-                        raisedFillCells.Add(c);
-                        raisedFillPrior.Add(prior);
-                    }
-                    // Continue EITHER WAY. The engine owning the cell is the
-                    // invariant, not the raise succeeding: falling through to
-                    // SetTerrain here would put the flood's terrain back on an
-                    // excavated cell, which is the whole defect.
-                    continue;
-                }
-                map.terrainGrid.SetTerrain(c, floodTerrain);
-                activeFloodCells.Add(c);
+                map.terrainGrid.SetTerrain(Cell(ledger.Active[i]), floodTerrain);
             }
 
             if (RM_FloodedCanyonSettings.growthCouplingEnabled)
@@ -588,125 +414,40 @@ namespace RimMandrake.FloodedCanyon
             map.gameConditionManager.RegisterCondition(cond);
         }
 
-        // Two recede policies, one per cell class — ruling 8's "per-driver
-        // recede policy" made concrete:
-        //
-        //   convert-to      the non-excavated wall. "Death, then soil":
-        //                   convert it back to real fertile ground now that
-        //                   it has stood its duration. A cell only converts
-        //                   if it still holds the exact flood terrain this
-        //                   mod placed — anything a player built, dug, or
-        //                   otherwise changed mid-flood is left alone. That
-        //                   check is also what covers a cell excavated
-        //                   mid-flood: its terrain is no longer ours, so it
-        //                   is skipped.
-        //   restore-fill    the excavated half. Hand F back to what the cell
-        //                   held before the water arrived, through the engine
-        //                   that owns it. No terrain of ours ever touched it,
-        //                   so there is nothing to launder.
         private void RecedeFlood()
         {
             TerrainDef floodTerrain = TerrainDefOf.WaterMovingShallow;
             TerrainDef soilTerrain = TerrainDefOf.SoilRich;
 
-            // CRACKEDLANDS_MECHANICS_BUILD_1 §3: the flood re-cuts the ledger.
-            // The whole wetted footprint (both halves) is the wall line the
-            // water scoured; a few natural-rock cells touching it become
-            // fresh fossil seams. Taken before the lists are cleared below.
-            List<IntVec3> wetted = new List<IntVec3>(activeFloodCells);
-            wetted.AddRange(raisedFillCells);
+            List<IntVec3> wetted = ledger.Wetted().ConvertAll(Cell);
             if (RM_FloodedCanyonSettings.floodRecutSeamsEnabled)
             {
                 RM_FossilStrata.RecutAlong(map, wetted, RM_FloodedCanyonSettings.floodRecutSeamCount);
             }
 
-            for (int i = 0; i < activeFloodCells.Count; i++)
-            {
-                IntVec3 c = activeFloodCells[i];
-                if (!c.InBounds(map))
-                {
-                    continue;
-                }
-                if (map.terrainGrid.TerrainAt(c) == floodTerrain)
-                {
-                    map.terrainGrid.SetTerrain(c, soilTerrain);
-                }
-            }
-            activeFloodCells.Clear();
-
             RM_MapComponent_Excavation excavation = Excavation;
-            if (excavation != null)
-            {
-                int n = System.Math.Min(raisedFillCells.Count, raisedFillPrior.Count);
-                for (int i = 0; i < n; i++)
-                {
-                    IntVec3 c = raisedFillCells[i];
-                    if (!c.InBounds(map))
-                    {
-                        continue;
-                    }
-                    // Returns false if the cell stopped being excavated while
-                    // the flood stood (a fill-in), which is the correct
-                    // outcome: there is no F left to lower and the engine has
-                    // already decided what that cell is.
-                    excavation.TrySetDriverFill(c, raisedFillPrior[i]);
-                }
-            }
-            raisedFillCells.Clear();
-            raisedFillPrior.Clear();
+            ledger.Recede(k => Cell(k).InBounds(map),
+                k => map.terrainGrid.TerrainAt(Cell(k)) == floodTerrain,
+                k => map.terrainGrid.SetTerrain(Cell(k), soilTerrain),
+                (k, prior) => excavation?.TrySetDriverFill(Cell(k), prior));
 
             roar?.End();
             roar = null;
             roarCell = IntVec3.Invalid;
 
-            // CRACKEDLANDS_GPT_ENRICHMENT_1 §5/§6: the irqit carpet, the
-            // migrant sky and the floodline salvage. After the soil
-            // conversion, so they land on the ground the recede left.
             map.GetComponent<RM_MapComponent_RecedeAftermath>()?.OnRecede(wetted);
         }
 
         private List<IntVec3> ComputeFloodCells(int target, IntVec3 preferredSeed)
         {
-            List<IntVec3> result = new List<IntVec3>();
-
-            // The seed chosen when the warning began, if the ground there is
-            // still floodable; otherwise a fresh one, as before.
             IntVec3 seed = preferredSeed;
             if ((!seed.IsValid || !Eligible(seed))
                 && !CellFinderLoose.TryGetRandomCellWith(Eligible, map, 2000, out seed))
             {
-                return result;
+                return new List<IntVec3>();
             }
-
-            HashSet<IntVec3> visited = new HashSet<IntVec3> { seed };
-            Queue<IntVec3> frontier = new Queue<IntVec3>();
-            frontier.Enqueue(seed);
-
-            while (frontier.Count > 0 && result.Count < target)
-            {
-                IntVec3 c = frontier.Dequeue();
-                if (!Eligible(c))
-                {
-                    continue;
-                }
-                result.Add(c);
-
-                for (int i = 0; i < GenAdj.CardinalDirections.Length; i++)
-                {
-                    IntVec3 n = c + GenAdj.CardinalDirections[i];
-                    if (n.InBounds(map) && !visited.Contains(n))
-                    {
-                        visited.Add(n);
-                        // Ragged edge rather than a perfect diamond.
-                        if (Rand.Value < 0.88f)
-                        {
-                            frontier.Enqueue(n);
-                        }
-                    }
-                }
-            }
-
-            return result;
+            return RM_FloodKernel.FloodCells(target, seed.x, seed.z, true, (x, z) => new IntVec3(x, 0, z).InBounds(map),
+                (x, z) => Eligible(new IntVec3(x, 0, z)), () => Rand.Value).ConvertAll(Cell);
         }
 
         private bool Eligible(IntVec3 c)
@@ -761,23 +502,39 @@ namespace RimMandrake.FloodedCanyon
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Values.Look(ref phase, "phase", Phase.Dry);
+            FloodPhase phase = st.Phase;
+            int nextFloodTick = st.NextFloodTick, floodEndTick = st.FloodEndTick, lastRecedeTick = st.LastRecedeTick, chimeStage = st.ChimeStage, heraldBeat = st.HeraldBeat;
+            bool peakstormPulledThisCycle = st.PeakstormPulled;
+            Scribe_Values.Look(ref phase, "phase", FloodPhase.Dry);
             Scribe_Values.Look(ref nextFloodTick, "nextFloodTick", -1);
             Scribe_Values.Look(ref floodEndTick, "floodEndTick", -1);
             Scribe_Values.Look(ref lastRecedeTick, "lastRecedeTick", -1);
             Scribe_Values.Look(ref chimeStage, "chimeStage", 0);
             Scribe_Values.Look(ref peakstormPulledThisCycle, "peakstormPulledThisCycle", false);
             Scribe_Values.Look(ref heraldBeat, "heraldBeat", 0);
+            st.Phase = phase; st.NextFloodTick = nextFloodTick; st.FloodEndTick = floodEndTick; st.LastRecedeTick = lastRecedeTick;
+            st.ChimeStage = chimeStage; st.HeraldBeat = heraldBeat; st.PeakstormPulled = peakstormPulledThisCycle;
             Scribe_Values.Look(ref pendingSeed, "pendingSeed", IntVec3.Invalid);
             Scribe_Values.Look(ref roarCell, "roarCell", IntVec3.Invalid);
+            List<IntVec3> activeFloodCells = null, raisedFillCells = null;
+            List<int> raisedFillPrior = null;
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                activeFloodCells = ledger.Active.ConvertAll(Cell);
+                raisedFillCells = ledger.RaisedCells.ConvertAll(Cell);
+                raisedFillPrior = new List<int>(ledger.RaisedPrior);
+            }
             Scribe_Collections.Look(ref activeFloodCells, "activeFloodCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillCells, "raisedFillCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillPrior, "raisedFillPrior", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                if (activeFloodCells == null) activeFloodCells = new List<IntVec3>();
-                if (raisedFillCells == null) raisedFillCells = new List<IntVec3>();
-                if (raisedFillPrior == null) raisedFillPrior = new List<int>();
+                ledger.Active.Clear();
+                ledger.RaisedCells.Clear();
+                ledger.RaisedPrior.Clear();
+                if (activeFloodCells != null) ledger.Active.AddRange(activeFloodCells.ConvertAll(KeyOf));
+                if (raisedFillCells != null) ledger.RaisedCells.AddRange(raisedFillCells.ConvertAll(KeyOf));
+                if (raisedFillPrior != null) ledger.RaisedPrior.AddRange(raisedFillPrior);
             }
         }
     }

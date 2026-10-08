@@ -255,7 +255,7 @@ namespace RimMandrake.LeaningScrub
         /// <summary>SWEETLINE_SCRATCHING_TREE_BUILD_1: an animal finished rubbing its coat off here.</summary>
         public void Notify_Scratched(Pawn animal, float coatUnitsFelted)
         {
-            feltStore = Mathf.Min(Props.feltCap, feltStore + Mathf.Max(0f, coatUnitsFelted) * Props.feltPerCoatUnit);
+            feltStore = RM_CoatKernel.AddFelt(feltStore, coatUnitsFelted, Props.feltPerCoatUnit, Props.feltCap);
             int now = Find.TickManager.TicksGame;
             // One line a day at most, so a herd does not flood the 12 entries.
             if (now - lastScratchHistoryTick >= GenDate.TicksPerDay)
@@ -269,8 +269,8 @@ namespace RimMandrake.LeaningScrub
         // than in PlantCollected so a failed harvest roll does not throw the store away.
         public override IEnumerable<ThingDefCountClass> GetAdditionalHarvestYield()
         {
-            int pay = Mathf.FloorToInt(feltStore);
-            if (!Enabled || pay <= 0 || Props.woolThing == null)
+            int pay = RM_CoatKernel.Payout(feltStore, Enabled, Props.woolThing != null);
+            if (pay <= 0)
             {
                 return System.Linq.Enumerable.Empty<ThingDefCountClass>();
             }

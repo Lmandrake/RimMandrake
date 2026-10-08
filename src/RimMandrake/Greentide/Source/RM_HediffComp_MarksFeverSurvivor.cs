@@ -40,10 +40,7 @@ namespace RimMandrake.Greentide
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);
-            if (!reachedGateStage && parent.CurStageIndex >= Props.collapseStageIndex)
-            {
-                reachedGateStage = true;
-            }
+            reachedGateStage = RM_RulesKernel.GateReached(reachedGateStage, parent.CurStageIndex, Props.collapseStageIndex);
         }
 
         public override void CompExposeData()
@@ -55,20 +52,10 @@ namespace RimMandrake.Greentide
         public override void CompPostPostRemoved()
         {
             base.CompPostPostRemoved();
-            if (!RM_GreentideSettings.feverMarkEnabled)
-            {
-                return;
-            }
-            if (Props.markHediff == null || !reachedGateStage)
-            {
-                return;
-            }
             Pawn pawn = base.Pawn;
-            if (pawn == null || pawn.Dead || pawn.health?.hediffSet == null)
-            {
-                return;
-            }
-            if (pawn.health.hediffSet.HasHediff(Props.markHediff))
+            if (!RM_RulesKernel.EarnsMark(RM_GreentideSettings.feverMarkEnabled, Props.markHediff != null, reachedGateStage,
+                    pawn == null || pawn.Dead || pawn.health?.hediffSet == null,
+                    pawn != null && Props.markHediff != null && pawn.health?.hediffSet != null && pawn.health.hediffSet.HasHediff(Props.markHediff)))
             {
                 return; // already marked from a previous bout - never stacks, never re-applies
             }

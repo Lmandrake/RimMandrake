@@ -70,7 +70,7 @@ namespace RimMandrake.MovingDunes
         /// despawned into the container) or already loose in another holder.</summary>
         public bool Accept(Thing thing)
         {
-            if (thing == null || thing.Destroyed || thing == this)
+            if (!RM_CacheKernel.Accepts(thing == null, thing != null && thing.Destroyed, thing == this))
             {
                 return false;
             }
@@ -97,10 +97,7 @@ namespace RimMandrake.MovingDunes
                 return;
             }
             other.innerContainer.TryTransferAllToContainer(innerContainer);
-            if (other.buriedAtTick >= 0 && (buriedAtTick < 0 || other.buriedAtTick < buriedAtTick))
-            {
-                buriedAtTick = other.buriedAtTick;
-            }
+            buriedAtTick = RM_CacheKernel.AbsorbTick(buriedAtTick, other.buriedAtTick);
             other.Destroy();
         }
 
@@ -115,8 +112,7 @@ namespace RimMandrake.MovingDunes
             // A cache on a map that is no longer a dune field (the mod's biome binding
             // was removed, or the thing was carried to an ordinary map) must not become
             // a permanent one-way hole: it reveals on the vanilla reveal depth instead.
-            float revealAt = material != null ? material.revealDepth : 0.25f;
-            if (Position.GetSandDepth(Map) <= revealAt)
+            if (RM_CacheKernel.ShouldReveal(Position.GetSandDepth(Map), material != null, material != null ? material.revealDepth : 0f))
             {
                 Reveal();
             }

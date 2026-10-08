@@ -85,23 +85,14 @@ namespace RimMandrake.BlueDesert
             RM_BlueDesertSettings.masterEnabled && RM_BlueDesertSettings.coldSinkEnabled;
 
         private float ColdPerBlock =>
-            Mathf.Max(1f, Props.coldPerBlock * RM_BlueDesertSettings.coldSinkCapacityFactor);
+            RM_BlueKernel.ColdPerBlock(Props.coldPerBlock, RM_BlueDesertSettings.coldSinkCapacityFactor);
 
         /// <summary>0 = deep blue (store full) .. 2 = white (spent).</summary>
         public int ClarityStage
         {
             get
             {
-                if (refuelable == null)
-                {
-                    return 2;
-                }
-                float f = refuelable.FuelPercentOfMax;
-                if (f > 0.5f)
-                {
-                    return 0;
-                }
-                return f > 0.1f ? 1 : 2;
+                return RM_BlueKernel.ClarityStage(refuelable != null, refuelable != null ? refuelable.FuelPercentOfMax : 0f);
             }
         }
 
@@ -145,20 +136,12 @@ namespace RimMandrake.BlueDesert
             float target = tempControl != null ? tempControl.TargetTemperature : -5f;
             float energyLimit = Props.energyPerSecond * 4.1666665f;
             float tempChange = GenTemperature.ControlTemperatureTempChange(cell, map, energyLimit, target);
-            if (Mathf.Approximately(tempChange, 0f))
+            // Never absorb more heat than the ice left in the rack holds.
+            if (!RM_BlueKernel.Absorb(tempChange, room.CellCount, refuelable.Fuel, ColdPerBlock, out tempChange, out float blocks))
             {
                 return;
             }
-            // Never absorb more heat than the ice left in the rack holds.
-            float absorbed = -tempChange * room.CellCount;
-            float available = refuelable.Fuel * ColdPerBlock;
-            if (absorbed > available)
-            {
-                tempChange *= available / absorbed;
-                absorbed = available;
-            }
             room.Temperature += tempChange;
-            float blocks = absorbed / ColdPerBlock;
             refuelable.ConsumeFuel(blocks);
             workingNow = true;
             meltedBlocks += blocks;
@@ -176,11 +159,11 @@ namespace RimMandrake.BlueDesert
             {
                 return;
             }
-            while (meltedBlocks >= Props.blocksPerCan)
+            int drips = RM_BlueKernel.Drip(ref meltedBlocks, Props.blocksPerCan);
+            for (int i = 0; i < drips; i++)
             {
-                meltedBlocks -= Props.blocksPerCan;
                 Thing can = ThingMaker.MakeThing(Props.meltwaterDef);
-                can.stackCount = Mathf.Max(1, Props.cansPerMelt);
+                can.stackCount = RM_BlueKernel.CansPerDrip(Props.cansPerMelt);
                 GenPlace.TryPlaceThing(can, parent.Position, map, ThingPlaceMode.Near);
                 Props.dripSound?.PlayOneShot(new TargetInfo(parent.Position, map));
             }

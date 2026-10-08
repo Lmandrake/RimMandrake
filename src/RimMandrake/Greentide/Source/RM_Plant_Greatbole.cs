@@ -30,8 +30,6 @@ namespace RimMandrake.Greentide
 
 	public class RM_Plant_Greatbole : Plant
 	{
-		private const int WaterRecheckTicks = 2500;
-
 		private int lastWaterCheckTick = -999999;
 		private bool cachedHasWater;
 
@@ -48,7 +46,7 @@ namespace RimMandrake.Greentide
 					return false;
 				}
 				int now = Find.TickManager.TicksGame;
-				if (now - lastWaterCheckTick >= WaterRecheckTicks || now < lastWaterCheckTick)
+				if (RM_RulesKernel.WaterRecheckDue(now, lastWaterCheckTick))
 				{
 					lastWaterCheckTick = now;
 					cachedHasWater = ComputeHasWater();
@@ -80,11 +78,7 @@ namespace RimMandrake.Greentide
 				{
 					return baseRate;
 				}
-				if (!HasOpenWaterNearby)
-				{
-					return 0f;
-				}
-				return baseRate * Ext.sownGrowthMultiplier;
+				return RM_RulesKernel.SeedlingGrowthRate(baseRate, true, HasOpenWaterNearby, Ext.sownGrowthMultiplier);
 			}
 		}
 

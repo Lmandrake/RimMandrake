@@ -41,7 +41,6 @@ namespace RimMandrake.FloodedCanyon
         private const float UniqueSeamsPer10k = 0.12f;
 
         // Deep stratum lives at least this many cells inside the rock face.
-        private const int DeepMinDepth = 3;
 
         public static bool IsNaturalWallRock(IntVec3 c, Map map)
         {
@@ -86,51 +85,15 @@ namespace RimMandrake.FloodedCanyon
 
             // Depth-into-rock by BFS from every face, capped at DeepMinDepth+2
             // (nothing deeper matters to the rule).
-            Dictionary<IntVec3, int> depth = new Dictionary<IntVec3, int>();
-            Queue<IntVec3> frontier = new Queue<IntVec3>();
-            List<IntVec3> faces = new List<IntVec3>();
-            foreach (IntVec3 c in map.AllCells)
-            {
-                if (IsFace(c, map))
-                {
-                    faces.Add(c);
-                    depth[c] = 1;
-                    frontier.Enqueue(c);
-                }
-            }
+            RM_CanyonRulesKernel.Faces found = RM_CanyonRulesKernel.FindFaces(map.Size.x, map.Size.z,
+                (x, z) => IsNaturalWallRock(new IntVec3(x, 0, z), map), (x, z) => new IntVec3(x, 0, z).GetEdifice(map) == null);
+            List<IntVec3> faces = found.FaceCells.ConvertAll(k => new IntVec3(RM_FloodKernel.KeyX(k), 0, RM_FloodKernel.KeyZ(k)));
             if (faces.Count == 0)
             {
                 return;
             }
-            List<IntVec3> deep = new List<IntVec3>();
-            while (frontier.Count > 0)
-            {
-                IntVec3 c = frontier.Dequeue();
-                int d = depth[c];
-                if (d >= DeepMinDepth + 2)
-                {
-                    continue;
-                }
-                for (int i = 0; i < 4; i++)
-                {
-                    IntVec3 n = c + GenAdj.CardinalDirections[i];
-                    if (depth.ContainsKey(n) || !IsNaturalWallRock(n, map))
-                    {
-                        continue;
-                    }
-                    depth[n] = d + 1;
-                    if (d + 1 >= DeepMinDepth)
-                    {
-                        deep.Add(n);
-                    }
-                    frontier.Enqueue(n);
-                }
-            }
+            List<IntVec3> deep = found.Deep.ConvertAll(k => new IntVec3(RM_FloodKernel.KeyX(k), 0, RM_FloodKernel.KeyZ(k)));
 
-            // "Biased low": weight a face by how low it sits. Rock only
-            // exists above ~0.7 elevation, so the wall foot reads ~0.7 and a
-            // mountain crown ~1.0+. No elevation grid (a map made outside
-            // normal generation) -> flat weights.
             System.Func<IntVec3, float> lowWeight = c =>
             {
                 if (elevation == null)
@@ -207,23 +170,17 @@ namespace RimMandrake.FloodedCanyon
             {
                 return 0;
             }
-            HashSet<IntVec3> candidates = new HashSet<IntVec3>();
+            List<long> keys = new List<long>();
             foreach (IntVec3 w in wetted)
             {
-                for (int i = 0; i < 8; i++)
-                {
-                    IntVec3 n = w + GenAdj.AdjacentCells[i];
-                    if (IsNaturalWallRock(n, map))
-                    {
-                        candidates.Add(n);
-                    }
-                }
+                keys.Add(RM_FloodKernel.Key(w.x, w.z));
             }
-            if (candidates.Count == 0)
+            List<long> found = RM_CanyonRulesKernel.RecutCandidates(keys, (x, z) => IsNaturalWallRock(new IntVec3(x, 0, z), map));
+            if (found.Count == 0)
             {
                 return 0;
             }
-            List<IntVec3> list = new List<IntVec3>(candidates);
+            List<IntVec3> list = found.ConvertAll(k => new IntVec3(RM_FloodKernel.KeyX(k), 0, RM_FloodKernel.KeyZ(k)));
             list.Shuffle();
             int cut = 0;
             for (int i = 0; i < list.Count && cut < count; i++)
@@ -231,8 +188,9 @@ namespace RimMandrake.FloodedCanyon
                 // A fresh face: mostly impressions, sometimes articulated, and
                 // the one place outside the deep rock a deep-stratum seam shows.
                 float r = Rand.Value;
-                ThingDef seam = r < 0.06f ? RM_FloodedCanyonDefOf.RM_FossilSeam_Unique
-                    : r < 0.26f ? RM_FloodedCanyonDefOf.RM_FossilSeam_Skeleton
+                int pick = RM_CanyonRulesKernel.PickSeam(r);
+                ThingDef seam = pick == 0 ? RM_FloodedCanyonDefOf.RM_FossilSeam_Unique
+                    : pick == 1 ? RM_FloodedCanyonDefOf.RM_FossilSeam_Skeleton
                     : RM_FloodedCanyonDefOf.RM_FossilSeam_Impression;
                 if (Replace(map, list[i], seam))
                 {

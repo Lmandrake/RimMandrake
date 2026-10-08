@@ -40,9 +40,9 @@ namespace RimMandrake.LeaningScrub
     {
         public const int StampInterval = 60;
         public const int ConvergeInterval = 600;
-        public const int MinOpenFires = 5;          // PROVISIONAL
-        public const float ClusterRadius = 6f;      // PROVISIONAL
-        public const float StampRadius = 2.9f;      // PROVISIONAL
+        public const int MinOpenFires = RM_BlazeKernel.MinOpenFires;          // PROVISIONAL
+        public const float ClusterRadius = RM_BlazeKernel.ClusterRadius;      // PROVISIONAL
+        public const float StampRadius = RM_BlazeKernel.StampRadius;          // PROVISIONAL
         public const float StompDamage = 12f;       // PROVISIONAL
         public const int GotoExpiryTicks = 2500;
 
@@ -109,22 +109,14 @@ namespace RimMandrake.LeaningScrub
         public IntVec3 FindBlaze()
         {
             List<Thing> open = OpenFires();
-            IntVec3 best = IntVec3.Invalid;
-            int bestN = MinOpenFires - 1;
+            int[] xs = new int[open.Count], zs = new int[open.Count];
             for (int i = 0; i < open.Count; i++)
             {
-                int n = 0;
-                for (int j = 0; j < open.Count; j++)
-                {
-                    if (open[i].Position.InHorDistOf(open[j].Position, ClusterRadius)) n++;
-                }
-                if (n > bestN)
-                {
-                    bestN = n;
-                    best = open[i].Position;
-                }
+                xs[i] = open[i].Position.x;
+                zs[i] = open[i].Position.z;
             }
-            return best;
+            int best = RM_BlazeKernel.FindBlaze(open.Count, xs, zs, MinOpenFires, ClusterRadius);
+            return best < 0 ? IntVec3.Invalid : open[best].Position;
         }
 
         /// <summary>Send every available stamper at the biggest blaze. Returns how many were sent.</summary>
@@ -146,11 +138,18 @@ namespace RimMandrake.LeaningScrub
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
-                if (!Available(p) || p.Position.InHorDistOf(blaze, StampRadius))
+                if (!Available(p))
                 {
                     continue;
                 }
-                if (p.CurJobDef == JobDefOf.Goto && p.CurJob.targetA.Cell.InHorDistOf(blaze, ClusterRadius))
+                bool onGoto = p.CurJobDef == JobDefOf.Goto;
+                IntVec3 gotoCell = onGoto ? p.CurJob.targetA.Cell : IntVec3.Zero;
+                int action = RM_BlazeKernel.ConvergeAction(p.Position.x, p.Position.z, blaze.x, blaze.z, onGoto, gotoCell.x, gotoCell.z);
+                if (action == 0)
+                {
+                    continue;
+                }
+                if (action == 1)
                 {
                     sent++;
                     continue; // already on its way
@@ -168,7 +167,7 @@ namespace RimMandrake.LeaningScrub
                 sent++;
                 if (first == null) first = p;
             }
-            bool newBlaze = !lastBlaze.IsValid || !lastBlaze.InHorDistOf(blaze, ClusterRadius * 2f);
+            bool newBlaze = RM_BlazeKernel.NewBlaze(lastBlaze.IsValid, lastBlaze.x, lastBlaze.z, blaze.x, blaze.z);
             lastBlaze = blaze;
             if (sendMessage && newBlaze && first != null)
             {
@@ -202,7 +201,7 @@ namespace RimMandrake.LeaningScrub
                 for (int j = 0; j < open.Count; j++)
                 {
                     Thing fire = open[j];
-                    if (fire.Destroyed || !s.Position.InHorDistOf(fire.Position, StampRadius))
+                    if (fire.Destroyed || !RM_BlazeKernel.Stamps(s.Position.x, s.Position.z, fire.Position.x, fire.Position.z))
                     {
                         continue;
                     }

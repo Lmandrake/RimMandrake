@@ -84,9 +84,7 @@ namespace RimMandrake.Greentide
 	{
 		// Scribed hysteresis flags — see the class header for why this comp
 		// polls rather than subscribes to anything.
-		private bool shakingArmed; // true once fraction >= threshold; the NEXT crossing fires
-		private bool healingAnnounced;
-		private bool catastropheDone;
+		private readonly RM_LadderKernel.State ladder = new RM_LadderKernel.State();
 
 		public RM_CompProperties_GreatboleHarvestLadder Props => (RM_CompProperties_GreatboleHarvestLadder)props;
 
@@ -94,7 +92,7 @@ namespace RimMandrake.Greentide
 		{
 			base.CompTick();
 
-			if (catastropheDone || !parent.Spawned)
+			if (ladder.CatastropheDone || !parent.Spawned)
 			{
 				return;
 			}
@@ -112,30 +110,18 @@ namespace RimMandrake.Greentide
 			}
 
 			float fraction = regrowth.GetRemovedFraction(marker.BoleId);
-			float h = Props.hysteresis;
-
-			if (!shakingArmed && fraction >= RM_GreentideSettings.greatboleShakingThreshold)
+			RM_LadderKernel.Events events = RM_LadderKernel.Poll(ladder, fraction, RM_GreentideSettings.greatboleShakingThreshold,
+				RM_GreentideSettings.greatboleHealingThreshold, RM_GreentideSettings.greatboleCatastropheThreshold,
+				RM_GreentideSettings.greatboleCatastropheEnabled, Props.hysteresis);
+			if ((events & RM_LadderKernel.Events.Shaking) != 0)
 			{
-				shakingArmed = true;
 				GreatShaking(map);
 			}
-			else if (shakingArmed && fraction < RM_GreentideSettings.greatboleShakingThreshold - h)
+			if ((events & RM_LadderKernel.Events.Healing) != 0)
 			{
-				shakingArmed = false;
-			}
-
-			if (!healingAnnounced && fraction >= RM_GreentideSettings.greatboleHealingThreshold)
-			{
-				healingAnnounced = true;
 				AnnounceViolentHealing();
 			}
-			else if (healingAnnounced && fraction < RM_GreentideSettings.greatboleHealingThreshold - h)
-			{
-				healingAnnounced = false;
-			}
-
-			if (RM_GreentideSettings.greatboleCatastropheEnabled
-			    && fraction >= RM_GreentideSettings.greatboleCatastropheThreshold)
+			if ((events & RM_LadderKernel.Events.Catastrophe) != 0)
 			{
 				Catastrophe(map, marker, regrowth);
 			}
@@ -181,8 +167,6 @@ namespace RimMandrake.Greentide
 		// offended faction, if one is set, takes the sacrilege as a taboo (§8).
 		private void Catastrophe(Map map, RM_CompLivingBoleMarker marker, RM_MapComponent_LivingRegrowth regrowth)
 		{
-			catastropheDone = true;
-
 			IntVec3 center = regrowth.GetBoleCenter(marker.BoleId);
 			IReadOnlyCollection<IntVec3> footprint = regrowth.GetFootprintCells(marker.BoleId);
 
@@ -355,9 +339,11 @@ namespace RimMandrake.Greentide
 		{
 			base.PostExposeData();
 			// Keys keep their campaign-era names so a save from before the move keeps its state.
-			Scribe_Values.Look(ref shakingArmed, "rutShakingArmed", false);
-			Scribe_Values.Look(ref healingAnnounced, "rutHealingAnnounced", false);
-			Scribe_Values.Look(ref catastropheDone, "rutCatastropheDone", false);
+			bool armed = ladder.ShakingArmed, healed = ladder.HealingAnnounced, done = ladder.CatastropheDone;
+			Scribe_Values.Look(ref armed, "rutShakingArmed", false);
+			Scribe_Values.Look(ref healed, "rutHealingAnnounced", false);
+			Scribe_Values.Look(ref done, "rutCatastropheDone", false);
+			ladder.ShakingArmed = armed; ladder.HealingAnnounced = healed; ladder.CatastropheDone = done;
 		}
 	}
 }

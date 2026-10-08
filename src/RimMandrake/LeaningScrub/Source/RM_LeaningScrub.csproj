@@ -73,6 +73,12 @@
     <Compile Include="RM_SweetlineFelt.cs" />
     <Compile Include="RM_FireStamp.cs" />
     <Compile Include="RM_VenomvineForms.cs" />
+    <Compile Include="Kernel\RM_LeanKernel.cs" />
+    <Compile Include="Kernel\RM_SmotherKernel.cs" />
+    <Compile Include="Kernel\RM_BlazeKernel.cs" />
+    <Compile Include="Kernel\RM_GuardianKernel.cs" />
+    <Compile Include="Kernel\RM_FormsKernel.cs" />
+    <Compile Include="Kernel\RM_CoatKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>
