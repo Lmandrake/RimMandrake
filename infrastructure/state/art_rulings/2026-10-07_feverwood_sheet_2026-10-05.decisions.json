@@ -1,0 +1,518 @@
+{
+  "biome": "RM_FeverWood",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 44,
+  "decisions": {
+    "Plant_HydenockTree_Wild": {
+      "at": "2026-10-08T04:24:50.999Z",
+      "decision": "A",
+      "note": "add more realistic variants, we will remove the less realistic ones later",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "Plant_JoganTree_Wild": {
+      "at": "2026-10-08T04:25:01.748Z",
+      "decidedAt": "2026-10-08T04:24:57.680Z",
+      "decision": "B",
+      "note": "add variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Ammeth": {
+      "at": "2026-10-08T04:23:19.867Z",
+      "decidedAt": "2026-10-08T04:22:52.463Z",
+      "decision": "redo",
+      "note": "too cartoonish, but good concept.  Regenerate twice as big from the description and make it very realistic, add variants",
+      "prefill": "A",
+      "purge": [
+        "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:23:18.595Z"
+    },
+    "RM_Brathek": {
+      "at": "2026-10-08T04:14:17.998Z",
+      "decidedAt": "2026-10-08T04:13:42.431Z",
+      "decision": "redo",
+      "note": "Redo description and image. It was supposed to be a wood-boring larva that rasps into trees, somehow it ended up with a drill head (not cool). I like the little gripper peg legs though. ",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Chellow": {
+      "at": "2026-10-08T04:15:42.986Z",
+      "decidedAt": "2026-10-08T04:15:42.986Z",
+      "decision": "B",
+      "note": "Add the East facing, and do not use a beak. More like a lipless whistling flap of skin for a mouth.",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:15:41.170Z"
+    },
+    "RM_Cistrel": {
+      "at": "2026-10-08T04:23:33.463Z",
+      "decidedAt": "2026-10-08T04:23:25.274Z",
+      "decision": "redo",
+      "note": "More realistic but good concept, add variants",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:23:21.776Z"
+    },
+    "RM_Claithe": {
+      "at": "2026-10-08T04:23:58.403Z",
+      "decidedAt": "2026-10-08T04:23:50.858Z",
+      "decision": "B",
+      "note": "add variants realistically",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Corvath": {
+      "at": "2026-10-08T04:24:10.850Z",
+      "decidedAt": "2026-10-08T04:24:04.391Z",
+      "decision": "redo",
+      "note": "Redo more realistically and add variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:24:01.481Z"
+    },
+    "RM_Drommath": {
+      "at": "2026-10-08T04:16:20.333Z",
+      "decidedAt": "2026-10-08T04:16:05.334Z",
+      "decision": "redo",
+      "note": "You cna't have actual wood showing. I like the B south facing, though, generalize that to North and East. ",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_GiantLeaf": {
+      "at": "2026-10-08T04:24:21.206Z",
+      "decision": "A",
+      "note": "add variants realistically",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Gorrameth": {
+      "at": "2026-10-08T04:18:12.027Z",
+      "decidedAt": "2026-10-08T04:18:08.895Z",
+      "decision": "hold",
+      "note": "cut no longer needed",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Grolth": {
+      "at": "2026-10-08T04:19:01.635Z",
+      "decidedAt": "2026-10-08T04:18:24.616Z",
+      "decision": "A",
+      "note": "Redo description based on image",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Halquin": {
+      "at": "2026-10-08T04:24:33.899Z",
+      "decidedAt": "2026-10-08T04:24:24.365Z",
+      "decision": "A",
+      "note": "add variants realistically",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:24:33.899Z"
+    },
+    "RM_Lommerel": {
+      "at": "2026-10-08T04:19:17.485Z",
+      "decidedAt": "2026-10-08T04:19:14.639Z",
+      "decision": "hold",
+      "note": "no longer needed",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Maulith": {
+      "at": "2026-10-08T04:25:12.516Z",
+      "decidedAt": "2026-10-08T04:25:06.931Z",
+      "decision": "A",
+      "note": "add more realistic variants",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:25:07.933Z"
+    },
+    "RM_Murrelith": {
+      "at": "2026-10-08T04:20:31.026Z",
+      "decidedAt": "2026-10-08T04:20:10.260Z",
+      "decision": "redo",
+      "note": "Very close. Please regenerate but make those streamers beautifully translucent rainbow colors, regally.",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Nemmel": {
+      "at": "2026-10-08T04:20:41.962Z",
+      "decidedAt": "2026-10-08T04:20:39.227Z",
+      "decision": "hold",
+      "note": "no longer needed",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Nubrith": {
+      "at": "2026-10-08T04:25:18.455Z",
+      "decision": "A",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:25:16.969Z"
+    },
+    "RM_Ollareth": {
+      "at": "2026-10-08T04:21:03.375Z",
+      "decidedAt": "2026-10-08T04:21:01.867Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:21:03.375Z"
+    },
+    "RM_Ossagrel": {
+      "at": "2026-10-08T04:25:22.837Z",
+      "decision": "A",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Plennith": {
+      "at": "2026-10-08T04:25:26.659Z",
+      "decision": "A",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:25:25.310Z"
+    },
+    "RM_Seepril": {
+      "at": "2026-10-08T04:25:35.361Z",
+      "decision": "A",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:25:29.079Z"
+    },
+    "RM_Silloch": {
+      "at": "2026-10-08T04:21:13.639Z",
+      "decision": "A",
+      "note": "regenerate description",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Skellick": {
+      "at": "2026-10-08T04:21:45.193Z",
+      "decidedAt": "2026-10-08T04:21:24.688Z",
+      "decision": "B",
+      "note": "This creature is a thief.",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:21:45.193Z"
+    },
+    "RM_Skethral": {
+      "at": "2026-10-08T04:25:49.620Z",
+      "decidedAt": "2026-10-08T04:25:46.462Z",
+      "decision": "hold",
+      "note": "cut no longer needed",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:25:37.469Z"
+    },
+    "RM_Skimmel": {
+      "at": "2026-10-08T04:25:59.507Z",
+      "decidedAt": "2026-10-08T04:25:59.507Z",
+      "decision": "redo",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [],
+      "variantsAt": "2026-10-08T04:25:54.299Z"
+    },
+    "RM_Sodderel": {
+      "at": "2026-10-08T04:26:10.034Z",
+      "decidedAt": "2026-10-08T04:26:09.463Z",
+      "decision": "redo",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:26:05.839Z"
+    },
+    "RM_Thavrik": {
+      "at": "2026-10-08T04:21:59.305Z",
+      "decidedAt": "2026-10-08T04:21:56.322Z",
+      "decision": "hold",
+      "note": "no longer needed",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Thornbug": {
+      "at": "2026-10-08T04:22:25.362Z",
+      "decidedAt": "2026-10-08T04:22:07.444Z",
+      "decision": "redo",
+      "note": "Good concept, but make it three cells wide",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Thulvane": {
+      "at": "2026-10-08T04:26:23.824Z",
+      "decidedAt": "2026-10-08T04:26:23.824Z",
+      "decision": "redo",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:26:12.085Z"
+    },
+    "RM_Tullick": {
+      "at": "2026-10-08T04:26:22.555Z",
+      "decidedAt": "2026-10-08T04:26:22.555Z",
+      "decision": "redo",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:26:18.402Z"
+    },
+    "RM_Varnoth": {
+      "at": "2026-10-08T04:26:32.304Z",
+      "decidedAt": "2026-10-08T04:26:31.553Z",
+      "decision": "redo",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Vaulm": {
+      "at": "2026-10-08T04:22:46.148Z",
+      "decidedAt": "2026-10-08T04:22:35.231Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-08T04:22:46.148Z"
+    },
+    "RM_Verrow": {
+      "at": "2026-10-08T04:26:35.240Z",
+      "decidedAt": "2026-10-08T04:26:34.478Z",
+      "decision": "redo",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Wanlith": {
+      "at": "2026-10-08T04:26:38.631Z",
+      "decidedAt": "2026-10-08T04:26:37.657Z",
+      "decision": "redo",
+      "note": "add more realistic variants",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Convor": {
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_flip:swanimals/Convor/Convor_Flying_": "D",
+        "swanimals/Convor/Convor_f": "C"
+      },
+      "prefill": "A"
+    },
+    "RSW_Fambaa": {
+      "at": "2026-10-08T04:17:31.328Z",
+      "decidedAt": "2026-10-08T04:17:15.974Z",
+      "decision": "redo",
+      "note": "Pay close attention to the canon imagery, yellow with green spots, long forward neck. ",
+      "picks": {
+        "swanimals/Fambaa/Fambaa_Swimming": "D",
+        "swanimals/Fambaa/Fambaa_j": "E",
+        "swanimals/Fambaa/Fambaa_j_Swimming": "F"
+      },
+      "prefill": "A",
+      "purge": [
+        "c3ecfa24e621d698b0e1e50536e47afb6abcbf65a8e532181410b3b7e38e2a64",
+        "aeab59b09f628d6f4c6dd826d440fd368f8b2f1656909dce706afc4608428526",
+        "65bdae211f776694ec2de06b89ef8c8934add73f4f2c217fc91ff63cb56068b7",
+        "c7080ff1dae25dab5ab0fbbd4cc44a40fbffe8cfe6600b521732717e11c40ce2",
+        "5d0edfeb870f0171851002821e5083236219cb4ff746f10f575d6c8cab11f38f",
+        "8aeaa19be489fb9df4034f95ff5d77857c903f46c6a8235e7f106660b6e75cb1"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "D",
+        "E",
+        "F"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Gelagrub": {
+      "at": "2026-10-08T04:17:49.473Z",
+      "decidedAt": "2026-10-08T04:17:44.418Z",
+      "decision": "redo",
+      "note": "follow canon precisely",
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_LongtailGorg": {
+      "decision": "H",
+      "note": "",
+      "picks": {
+        "swanimals/LongtailGorg/LongtailGorg_Swimming": "I",
+        "swanimals/LongtailGorg/LongtailGorg_j": "J",
+        "swanimals/LongtailGorg/LongtailGorg_j_Swimming": "K"
+      },
+      "prefill": "H"
+    },
+    "RSW_Nuna": {
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "swanimals/Nuna/Nuna_m": "C"
+      },
+      "prefill": "A"
+    },
+    "RSW_Plant_Chakroot_Wild": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RSW_Urusai": {
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_flip:swanimals/Urusai/Urusai_Flying_": "C"
+      },
+      "prefill": "A"
+    },
+    "RSW_Whisperbird": {
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_flip:swanimals/Whisperbird/Whisperbird_Flying_": "E"
+      },
+      "prefill": "A"
+    },
+    "VFEI2_Megathrips": {
+      "at": "2026-10-08T04:19:37.267Z",
+      "decidedAt": "2026-10-08T04:19:22.065Z",
+      "decision": "B",
+      "note": "Redo name and description.",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-07T21:26:39-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "feverwood_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/feverwood_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "f87d0cb03f453230",
+  "writeCount": 128
+}
