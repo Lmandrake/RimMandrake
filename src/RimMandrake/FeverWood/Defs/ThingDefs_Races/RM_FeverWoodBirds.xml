@@ -13,7 +13,7 @@
   | # | defName      | role                                          |
   | 1 | RM_Chellow   | tameable — a private chorus near the base     |
   | 2 | RM_Murrelith | plumage worth money (CompShearable)           |
-  | 3 | RM_Thavrik   | nests worth raiding (CompProperties_EggLayer) |
+  | 3 | (RM_Thavrik deleted from the game 2026-10-08, owner by card) |
   | 4 | RM_Skellick  | thief — see RimProperty's own wild-theft patch|
 
   🔑 The chorus/silence mechanism this item exists for is NOT a per-bird
@@ -244,69 +244,6 @@
           <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.7</drawSize>
-        </bodyGraphicData>
-      </li>
-    </lifeStages>
-  </PawnKindDef>
-
-  <!-- ============================================================ -->
-  <!-- 3. RM_Thavrik — nests worth raiding                            -->
-  <!-- ============================================================ -->
-
-  <ThingDef ParentName="RM_FeverWoodBirdBase">
-    <defName>RM_Thavrik</defName>
-    <label>thavrik</label>
-    <description>Heavy-bodied and short-winged, covered in coarse hair rather than feathers everywhere but the flight surfaces — a furred thing that flies. It nests high in the crown, eggs and nest material guarded by the adults: a reason to climb, if you can get past them.</description>
-    <statBases>
-      <MarketValue>90</MarketValue>
-      <Wildness>0.55</Wildness>
-      <MaxFlightTime>6</MaxFlightTime>
-      <FlightCooldown>8</FlightCooldown>
-    </statBases>
-    <race>
-      <baseBodySize>0.4</baseBodySize>
-      <baseHealthScale>0.5</baseHealthScale>
-      <trainability>None</trainability>
-      <lifeExpectancy>8</lifeExpectancy>
-    </race>
-    <comps>
-      <li Class="CompProperties_EggLayer">
-        <eggUnfertilizedDef>RM_ThavrikEggUnfertilized</eggUnfertilizedDef>
-        <eggFertilizedDef>RM_ThavrikEggFertilized</eggFertilizedDef>
-        <eggFertilizationCountMax>1</eggFertilizationCountMax>
-        <eggLayIntervalDays>2</eggLayIntervalDays>
-        <eggCountRange>2</eggCountRange>
-      </li>
-    </comps>
-  </ThingDef>
-
-  <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RM_Thavrik</defName>
-    <label>thavrik</label>
-    <race>RM_Thavrik</race>
-    <combatPower>18</combatPower>
-    <canArriveManhunter>false</canArriveManhunter>
-    <wildGroupSize>2~4</wildGroupSize>
-    <lifeStages>
-      <li>
-        <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.4</drawSize>
-        </bodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.55</drawSize>
-        </bodyGraphicData>
-      </li>
-      <li>
-        <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik</texPath>
-          <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>0.75</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>

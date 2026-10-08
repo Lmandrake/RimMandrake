@@ -241,42 +241,6 @@
    "status": "queued"
   },
   {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik_east.png",
-   "sha256": "e785c5a96cf8527e52d701671130ca6f7e490fa18df0b309af8ca07c26f6d687",
-   "added": "2026-10-07",
-   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik",
-   "job": [
-    "feverwood_thavrik_east",
-    "feverwood_thavrik_north",
-    "feverwood_thavrik_south"
-   ],
-   "status": "rendered earlier, never installed (not ruled on as a replacement)"
-  },
-  {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik_north.png",
-   "sha256": "e785c5a96cf8527e52d701671130ca6f7e490fa18df0b309af8ca07c26f6d687",
-   "added": "2026-10-07",
-   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik",
-   "job": [
-    "feverwood_thavrik_east",
-    "feverwood_thavrik_north",
-    "feverwood_thavrik_south"
-   ],
-   "status": "rendered earlier, never installed (not ruled on as a replacement)"
-  },
-  {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik_south.png",
-   "sha256": "e785c5a96cf8527e52d701671130ca6f7e490fa18df0b309af8ca07c26f6d687",
-   "added": "2026-10-07",
-   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik",
-   "job": [
-    "feverwood_thavrik_east",
-    "feverwood_thavrik_north",
-    "feverwood_thavrik_south"
-   ],
-   "status": "rendered earlier, never installed (not ruled on as a replacement)"
-  },
-  {
    "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Ollareth/RM_Ollareth.png",
    "sha256": "86144584ee6fdbd82f673b88acea862f90d75b351bc47771f2a23636f78e73af",
    "added": "2026-10-07",
@@ -386,16 +350,6 @@
     "regen_fw_seepril_varc_v1"
    ],
    "status": "queued"
-  },
-  {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Skethral/RM_Skethral_a.png",
-   "sha256": "a1dd249a73aad0e68bf64a47429456a4d0b4275ab93fc1a75776e28ac00b5a82",
-   "added": "2026-10-07",
-   "texPath": "Things/Plant/RM_Skethral/RM_Skethral_a",
-   "job": [
-    "feverwood_plant_skethral"
-   ],
-   "status": "rendered earlier, never installed (not ruled on as a replacement)"
   },
   {
    "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Skimmel/RM_Skimmel_a.png",
@@ -513,17 +467,6 @@
    "job": [
     "rm_crowncarpetfresh_icon_b",
     "rm_crowncarpetfresh_icon_c"
-   ],
-   "status": "rendered earlier, never installed (not ruled on as a replacement)"
-  },
-  {
-   "path": "src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Sorruth/RM_Sorruth.png",
-   "sha256": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
-   "added": "2026-10-07",
-   "texPath": "Things/Pawn/Animal/RM_Sorruth/RM_Sorruth",
-   "job": [
-    "greysea_sorruth_v1_east",
-    "greysea_sorruth_v1_south"
    ],
    "status": "rendered earlier, never installed (not ruled on as a replacement)"
   },

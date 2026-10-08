@@ -336,8 +336,8 @@
     },
     {
       "def": "RSW_CrystalFairyMole",
-      "disposition": "cut",
-      "reason": "Warscar sheet 2026-10-05 (owner): \"cut no longer needed\" — not cast in RM_Warscar or RUT_Scarlands since 653e02afb."
+      "disposition": "cut:deleted-from-game",
+      "reason": "Warscar sheet 2026-10-05 (owner): \"cut no longer needed\" — not cast in RM_Warscar or RUT_Scarlands since 653e02afb. Deleted from the game 2026-10-08 (decision taken by question card): def, pawnkind and every reference removed."
     }
   ],
   "fauna": [

@@ -115,8 +115,8 @@ _BY_DIR = dict((d, _defs_in(d)) for d in _SUBDIRS)
 _FLOORS = {("BiomeDefs", "BiomeDef"): 1, ("DesignationDefs", "DesignationDef"): 2,
            ("FactionDefs", "FactionDef"): 1, ("HediffDefs", "HediffDef"): 4, ("IncidentDefs", "IncidentDef"): 1,
            ("JobDefs", "JobDef"): 3, ("MapGeneration", "GenStepDef"): 3, ("TerrainDefs", "TerrainDef"): 4,
-           ("ThingDefs_Buildings", "ThingDef"): 10, ("ThingDefs_Items", "ThingDef"): 12,
-           ("ThingDefs_Items", "RecipeDef"): 1, ("ThingDefs_Plants", "ThingDef"): 23,
+           ("ThingDefs_Buildings", "ThingDef"): 10, ("ThingDefs_Items", "ThingDef"): 11,
+           ("ThingDefs_Items", "RecipeDef"): 1, ("ThingDefs_Plants", "ThingDef"): 22,
            ("ThingDefs_Races", "ThingDef"): 11, ("ThingDefs_Races", "PawnKindDef"): 11,
            ("WorkGiverDefs", "WorkGiverDef"): 3}
 GROUPS = []

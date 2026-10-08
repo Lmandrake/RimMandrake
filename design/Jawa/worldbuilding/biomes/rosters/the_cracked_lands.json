@@ -128,8 +128,8 @@
     },
     {
       "def": "BMT_BovineBeetle",
-      "disposition": "homeless-reserve",
-      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.45 / spd 3.1 (MEASURED)"
+      "disposition": "cut:deleted-from-game",
+      "reason": "fails §10 sorts — neither Sealed, Spender nor Patient; 'you see nothing all day, and are watched the whole time' bars standing visible generalists; bs 2.45 / spd 3.1 (MEASURED) | The species (RSW_BovineBeetle, the grabber) was deleted from the game 2026-10-08 (decision taken by question card)."
     },
     {
       "def": "Hrumph",
