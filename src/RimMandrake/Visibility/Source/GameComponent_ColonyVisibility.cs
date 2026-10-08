@@ -77,11 +77,7 @@ namespace RimMandrake.Visibility
 
         public static VisibilityBand BandFor(float v)
         {
-            if (v < 20f) return VisibilityBand.Hidden;
-            if (v < 40f) return VisibilityBand.Discreet;
-            if (v < 60f) return VisibilityBand.Noticed;
-            if (v < 80f) return VisibilityBand.Marked;
-            return VisibilityBand.Exposed;
+            return (VisibilityBand)RM_VisibilityKernel.BandFor(v);
         }
 
         /// <summary>
@@ -94,7 +90,7 @@ namespace RimMandrake.Visibility
         public void Adjust(float delta, string reason)
         {
             VisibilityBand before = Band;
-            shipVisibility = Mathf.Clamp(shipVisibility + delta, 0f, 100f);
+            shipVisibility = RM_VisibilityKernel.Adjust(shipVisibility, delta);
             if (Prefs.DevMode && Band != before)
             {
                 Log.Message($"[ColonyVisibility] {before} -> {Band} ({shipVisibility:F1}): {reason}");
@@ -111,7 +107,7 @@ namespace RimMandrake.Visibility
         public void ResetOnLaunch()
         {
             float before = shipVisibility;
-            shipVisibility = Mathf.Clamp(shipVisibility * RM_VisibilitySettings.launchResetMultiplier, 5f, 15f);
+            shipVisibility = RM_VisibilityKernel.ResetOnLaunch(shipVisibility, RM_VisibilitySettings.launchResetMultiplier);
             if (Prefs.DevMode)
             {
                 Log.Message($"[ColonyVisibility] launch reset: {before:F1} -> {shipVisibility:F1}");
@@ -128,29 +124,9 @@ namespace RimMandrake.Visibility
         public const float DeltaMedium = 8f;
         public const float DeltaLarge = 20f;
 
-        /// <summary>
-        /// Annex A's ruled threat-point multiplier curve
-        /// (design/Jawa/worldbuilding/colony_visibility_stat.md §3 Annex A,
-        /// 2026-08-30 BENCH merge, closed by the 2026-08-31 owner ruling):
-        /// "first-guess curve 0→0.55 · 25→0.80 · 50→1.00 · 75→1.25 ·
-        /// 100→1.60". Lives HERE, not in ColonyVisibilityRaidPatch.cs (where
-        /// the hostile-scoped Prefix that consumes it lives), because that
-        /// file pulls in HarmonyLib/RimWorld.Planet types the SelfTest
-        /// project does not reference - this file has no such dependency, so
-        /// moving the curve here (SimpleCurve/CurvePoint are plain Verse
-        /// types) makes it selftestable without a running game. Still
-        /// explicitly NOT TUNED - §5's tuning protocol (throwaway-save rig,
-        /// measure at Visibility ∈ {0,25,50,75,100} × 3 wealth bands) has
-        /// not been run.
-        /// </summary>
-        private static readonly SimpleCurve VisibilityToThreatCurve = new SimpleCurve
-        {
-            new CurvePoint(0f, 0.55f),
-            new CurvePoint(25f, 0.80f),
-            new CurvePoint(50f, 1.00f),
-            new CurvePoint(75f, 1.25f),
-            new CurvePoint(100f, 1.60f),
-        };
+        // Annex A's ruled threat-point multiplier curve (design/Jawa/worldbuilding/colony_visibility_stat.md §3 Annex A, closed by the
+        // 2026-08-31 owner ruling): 0 -> 0.55, 25 -> 0.80, 50 -> 1.00, 75 -> 1.25, 100 -> 1.60. Still NOT TUNED (§5's tuning protocol
+        // has not been run). The curve itself lives in RM_VisibilityKernel (CurveX/CurveY): one copy, fuzzed offline.
 
         /// <summary>
         /// Evaluates the ruled Visibility -> raid threat-point multiplier
@@ -161,7 +137,7 @@ namespace RimMandrake.Visibility
         /// </summary>
         public static float ThreatFactor(float visibility)
         {
-            return VisibilityToThreatCurve.Evaluate(visibility);
+            return RM_VisibilityKernel.ThreatFactor(visibility);
         }
 
         /// <summary>
@@ -173,7 +149,7 @@ namespace RimMandrake.Visibility
         /// </summary>
         public static float SeasonsAway(int ticksAway)
         {
-            return Mathf.Max(0f, ticksAway) / (float)GenDate.TicksPerSeason;
+            return RM_VisibilityKernel.SeasonsAway(ticksAway);
         }
 
         /// <summary>
@@ -187,7 +163,7 @@ namespace RimMandrake.Visibility
         /// </summary>
         public static float DecayedTileVisibility(float visibilityAtDeparture, int ticksAway)
         {
-            return visibilityAtDeparture * Mathf.Pow(0.5f, SeasonsAway(ticksAway));
+            return RM_VisibilityKernel.DecayedTileVisibility(visibilityAtDeparture, ticksAway);
         }
 
         /// <summary>
@@ -234,7 +210,7 @@ namespace RimMandrake.Visibility
 
             if (decayed > shipVisibility)
             {
-                float delta = decayed - shipVisibility;
+                float delta = RM_VisibilityKernel.RestoreDelta(shipVisibility, decayed);
                 Adjust(delta, $"tile-memory restore at tile {tile}: {memory.visibilityAtDeparture:F1} decayed "
                     + $"{seasonsAway:F2} seasons -> {decayed:F1}");
             }
