@@ -21,7 +21,8 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
     facings            optional — comma/semicolon-separated (CSV) or a list
                        (JSON); empty means one job named bare "<id>"
     style_notes        optional — free text, folded into the prompt
-    priority           optional int, default 100 — LOWER claims sooner.
+    priority           optional int, default 50 (bulk/backfill) — LOWER claims sooner.
+                       0-9 is reserved for redraws the owner ruled on (art.py enact files 0).
                        A blank CSV cell reads as '' (not a missing key) and
                        is treated the same as absent, not as int('').
     background         optional, default "transparent"
@@ -344,12 +345,12 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
         reference = str(ref_path.resolve())
 
     # csv.DictReader gives '' (not a missing key) for a blank cell, and
-    # int('') raises — `row.get('priority') or 100` treats a blank cell the
+    # int('') raises — `row.get('priority') or 50` treats a blank cell the
     # same as an absent one instead of crashing the whole file. Test for
-    # blank explicitly: `or 100` also swallowed a deliberate priority 0
-    # (falsy), filing the 2026-10-07 Miasma "priority 0" wave at 100.
+    # blank explicitly: `or 50` also swallowed a deliberate priority 0
+    # (falsy), filing the 2026-10-07 Miasma "priority 0" wave at the default.
     _p = row.get("priority")
-    priority = 100 if _p is None or str(_p).strip() == "" else int(_p)
+    priority = 50 if _p is None or str(_p).strip() == "" else int(_p)
 
     # ARTPIPE_FACING_COHERENCE_1 §2: a multi-facing row with an "east" facing
     # gets east as the fresh-generated MASTER; north/south (if also

@@ -85,3 +85,10 @@ The repeated discovery happens in step 2 and in cuts. Every enactment re-derives
 **Re-prioritisation: proposed, not applied.** 228 of the 243 pending jobs are at priority 0. 174 of them carry `owner_note`, so most of the 0s are genuinely ruled work, and the ordering above now handles them. These are the jobs still wrongly placed:
 - **`regen_ls3_iriaz_*` (6 jobs) is a ruled redraw with no `owner_note`**, so it now sorts behind every noted job at 0. The enactment that files a redraw should copy the ruling onto `owner_note`, or file the redraw at a lower number than the bulk work.
 - **Bulk work with no note sits at 0**: 31 `regen_gt_hawkbat_flying_*` derive children, 9 `webwork_*`, 3 `wsart_*`, 5 `wsfix_*`. Proposal: `fill_queue.py` callers file backfill at 50, keep 0–9 for owner rulings, and leave the default at 100. Re-filing the existing 48 jobs is a judgment for BENCH. It has not been done.
+
+## Follow-up 2
+
+- `fill_queue.py` default priority is now 50 (was 100); 0-9 stays for owner-ruled redraws (`art/enact.py` already files 0).
+- Pending re-prioritise: before {0: 202 (149 with owner note), 70: 2, 75: 1, 100: 12}; only the 3 `wsart_*` weather-stone jobs (no note, no ruled sheet) went 0 -> 50. After: {0: 199 + 5 re-filed below, 50: 3, 70: 2, 75: 1, 100: 12}. The `regen_gt_*`, `ls3_*`, `webwork_*`, `wsfix_*` note-less jobs are derived facings or rows of sheets the owner ruled `redo`, so they stay at 0.
+- Re-filed at priority 0 with the owner note intact: `ls3_pufferpig_v1_east/north/south` (failure was a codex worker flake, "tool channel unavailable"; north/south derive from east) and `ls3_nysyllin_a_v1`, `ls3_nysyllin_b_v1` (failed the canon gate on "Grown in dense rows as a crop", which does not apply to a WILD single plant; added `canon_na` for that line with a reason). Failed manifests parked in `_requeued_manifests/`.
+- Sketto: the 14 pending jobs already cover north+south (grounded north/south plus flying 1-4 each east/north/south, all priority 0); nothing to add.
