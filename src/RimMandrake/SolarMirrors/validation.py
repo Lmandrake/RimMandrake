@@ -321,6 +321,89 @@ def _build_checks(bad, things):
             bad.append("%s missing" % f)
 
 
+# Vanilla textures the placeholder texPaths point at, each found in the decompiled 1.6 Core defs (RimSage, 2026-10-08):
+# Buildings_Power.xml SolarCollector, Buildings_Production.xml ElectricSmelter, Buildings_Structure.xml Wall/Column and
+# the WallSmooth menu icon, Buildings_Joy.xml HorseshoesPin, UI/Designators/Claim (vanilla designator icon).
+VANILLA_TEX = {"Things/Building/Power/SolarCollector", "Things/Building/Production/ElectricSmelter", "Things/Building/Linked/Wall",
+               "Things/Building/Furniture/Column", "Things/Building/Joy/HorseshoesPin", "Things/Building/Linked/WallSmooth_MenuIcon"}
+VANILLA_PARENTS = {"BuildingBase", "BenchBase", "Wall"}    # vanilla Name= defs the mod inherits from (Wall: Name="Wall", RimSage)
+COMPOSE = os.path.normpath(os.path.join(HERE, "..", "Biomes.compose.json"))
+
+
+def _tex_roots():
+    """Texture roots that load whenever this mod loads: its own, and every mod folded into its mandrake.rm.biomes dependency."""
+    import json
+    roots = [os.path.join(HERE, "Textures")]
+    try:
+        for e in json.load(open(COMPOSE, encoding="utf-8")).get("entries", []):
+            roots.append(os.path.normpath(os.path.join(HERE, "..", e.get("source", ""), "Textures")))
+    except (OSError, ValueError):
+        pass
+    return roots
+
+
+def _texture_checks(bad, things):
+    """Every texPath must resolve, to our art or a recorded placeholder; a missing one renders magenta in game."""
+    roots = _tex_roots()
+    if not any(os.path.isfile(os.path.join(r, "Things", "Building", "Security", "RM_SunLance_Base.png")) for r in roots):
+        bad.append("sanity: the texture-root scan cannot see Stillsand's RM_SunLance_Base.png (the scan is broken)")
+    for dn, e in things.items():
+        for tag in ("graphicData/texPath", "uiIconPath"):
+            v = e.findtext(tag)
+            if not v:
+                continue
+            cls = e.findtext("graphicData/graphicClass") or ""
+            if v in VANILLA_TEX:
+                continue
+            suffixes = ["_north", "_east", "_south"] if tag.startswith("graphic") and cls == "Graphic_Multi" else [""]
+            found = all(any(os.path.isfile(os.path.join(r, *(v + sfx + ".png").split("/"))) for r in roots) for sfx in suffixes)
+            if not found:
+                bad.append("%s %s = %s resolves to no texture in this mod, its dependency's mods, or the recorded vanilla set"
+                           % (dn, tag, v))
+
+
+def _guard_checks(bad):
+    """Guards for the defects the 2026-10-08 offline validation found (Transient/solarmirrors_validation_20261008.md).
+    Each is a source fact a later edit could silently undo; the kernel side is covered by the fuzz and its mutations."""
+    field = open(os.path.join(SRC, "RM_MirrorField.cs"), encoding="utf-8").read()
+    light = open(os.path.join(SRC, "RM_MapComponent_MirrorLight.cs"), encoding="utf-8").read()
+    if re.search(r"\b(mirrors|stones)\.RemoveAll\(", field):
+        bad.append("D1: the field's mirror/stone lists are compacted; configuration codes are positional (mirror i = digit i)")
+    if not re.search(r'Scribe_Collections\.Look\(ref stoneCells, "rmFieldStoneCells"', field) or "s.Position == stoneCells[k]" not in field:
+        bad.append("D2: the vault no longer checks each stone stands where mapgen laid it (claim + reinstall bypasses the puzzle)")
+    if "RM_MirrorFieldKernel.Generate(" not in field:
+        bad.append("G1: mapgen no longer lays the field through RM_MirrorFieldKernel.Generate (the fuzzed generator)")
+    if "RM_MirrorFieldKernel.LevelOf(" not in field:
+        bad.append("D3: the mapgen evaluator does not report held vs lit (RM_MirrorFieldKernel.LevelOf)")
+    for clamp in ("FieldMirrors(", "FieldMinReAims(", "FieldDetents("):
+        if "RM_MirrorFieldKernel." + clamp not in field:
+            bad.append("mapgen does not use the kernel clamp %s (the fuzz sweeps those, not a local Mathf.Clamp)" % clamp)
+    if not re.search(r"public override void MapGenerated\(\)[\s\S]{0,400}?\bReverify\(\);", field):
+        bad.append("D4: no re-check of the laid field after the whole map is generated")
+    if "light.TrySun(out Vector3 sun, out float _, true)" not in field:
+        bad.append("D5: laying the field depends on the weather (TrySun without ignoreWeather)")
+    sim = light[light.find("public float[] SimulateLight"):]
+    if "TrySun(out Vector3 sun, out float _, true)" not in sim[:1500]:
+        bad.append("D5: SimulateLight reads the weather (the solver would solve a different light than mapgen lays)")
+    if "seal = null;" not in field:
+        bad.append("the opened vault keeps a reference to its destroyed seal")
+    for path in (os.path.join(HERE, "Patches", f) for f in os.listdir(os.path.join(HERE, "Patches"))):
+        root = ET.parse(path).getroot()
+        for op in root.iter("Operation"):
+            if op.get("MayRequire"):
+                bad.append("%s: MayRequire on a top-level <Operation> is inert in 1.6 (guard with a Conditional)" % os.path.basename(path))
+    names = set()
+    for p in _def_files():
+        for e in ET.parse(p).getroot():
+            if e.get("Name"):
+                names.add(e.get("Name"))
+    for p in _def_files():
+        for e in ET.parse(p).getroot():
+            pn = e.get("ParentName")
+            if pn and pn not in names and pn not in VANILLA_PARENTS:
+                bad.append("%s: ParentName %s resolves to nothing in this mod or the recorded vanilla parents" % (os.path.basename(p), pn))
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -412,6 +495,8 @@ def static_checks():
 
     _hook_checks(bad)
     _build_checks(bad, things)
+    _texture_checks(bad, things)
+    _guard_checks(bad)
     if "<defName>RM_GlareBlind</defName>" not in open(GLARE_HEDIFF_XML, encoding="utf-8").read():
         bad.append("RM_GlareBlind hediff gone: the blinding defence would silently do nothing")
 

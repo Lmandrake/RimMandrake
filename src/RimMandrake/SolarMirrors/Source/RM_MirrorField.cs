@@ -70,16 +70,17 @@ namespace RimMandrake.SolarMirrors
                 return false;
             }
             RecomputeShade(map);
-            if (!light.TrySun(out Vector3 sun, out float _))
+            // The sun's direction only: the initial weather and the clock must not decide whether a field exists (D5).
+            if (!light.TrySun(out Vector3 sun, out float _, true))
             {
                 Note(field, "no sun to reflect on this map");
                 return false;
             }
             Vector2 down = new Vector2(-sun.x, -sun.z);
             down = down.sqrMagnitude < 1e-4f ? new Vector2(0f, -1f) : down.normalized;
-            int n = Mathf.Clamp(RM_SolarMirrorsSettings.puzzleMirrors, 4, 6);
-            int d = Mathf.Max(2, ext.detents);
-            int want = Mathf.Clamp(RM_SolarMirrorsSettings.puzzleMinReAims, 2, 4);
+            int n = RM_MirrorFieldKernel.FieldMirrors(RM_SolarMirrorsSettings.puzzleMirrors);
+            int d = RM_MirrorFieldKernel.FieldDetents(ext.detents);
+            int want = RM_MirrorFieldKernel.FieldMinReAims(RM_SolarMirrorsSettings.puzzleMinReAims);
             int stonesN = ext.stones.RandomInRange;
             string lastWhy = "no site";
             for (int site = 0; site < step.siteAttempts; site++)
@@ -334,6 +335,28 @@ namespace RimMandrake.SolarMirrors
             return list;
         }
 
+        /// <summary>The level (RM_MirrorFieldKernel.Dark/Held/Lit) the stones reach under the simulated light right now.</summary>
+        internal static int StonesLevel(Map map, RM_MapComponent_MirrorLight light, IList<Thing> stones, out int depth)
+        {
+            float[] lt = light.SimulateLight(out depth);
+            float[] at = new float[stones.Count];
+            float litAt = 0.5f, unlitBelow = 0.35f;
+            for (int k = 0; k < stones.Count; k++)
+            {
+                Thing s = stones[k];
+                RM_CompLightReceiver r = s?.TryGetComp<RM_CompLightReceiver>();
+                if (r == null || lt == null || !s.Spawned)
+                {
+                    return RM_MirrorFieldKernel.Dark;
+                }
+                at[k] = lt[map.cellIndices.CellToIndex(s.Position)];
+                // every field stone shares one def; take the strictest pair if they ever differ
+                litAt = k == 0 ? r.Props.litAt : Mathf.Max(litAt, r.Props.litAt);
+                unlitBelow = k == 0 ? r.Props.unlitBelow : Mathf.Max(unlitBelow, r.Props.unlitBelow);
+            }
+            return RM_MirrorFieldKernel.LevelOf(at, stones.Count, litAt, unlitBelow);
+        }
+
         private static bool TryLayout(RM_GenStep_AncientMirrorField step, Map map, RM_MapComponent_MirrorLight light, Plan p, int n, int d,
             int want, out RM_FieldReport report, out List<List<IntVec3>> detents, out int start, out string why)
         {
@@ -352,91 +375,84 @@ namespace RimMandrake.SolarMirrors
                 }
                 comps.Add(c);
             }
-            List<RM_CompLightReceiver> stones = new List<RM_CompLightReceiver>();
+            List<Thing> stones = new List<Thing>();
             foreach (IntVec3 s in p.stones)
             {
-                RM_CompLightReceiver r = s.GetEdifice(map)?.TryGetComp<RM_CompLightReceiver>();
-                if (r == null)
+                Thing t = s.GetEdifice(map);
+                if (t?.TryGetComp<RM_CompLightReceiver>() == null)
                 {
                     why = "a sun-stone did not spawn";
                     return false;
                 }
-                stones.Add(r);
+                stones.Add(t);
             }
-            for (int attempt = 0; attempt < step.layoutAttempts; attempt++)
+            // Target ids for the kernel: stones first (id k = stone k), then every other cell as it first appears.
+            List<IntVec3> cells = new List<IntVec3>(p.stones);
+            Dictionary<IntVec3, int> ids = new Dictionary<IntVec3, int>();
+            for (int k = 0; k < cells.Count; k++)
             {
-                List<List<IntVec3>> det = new List<List<IntVec3>>();
-                // A hidden intended solution first: stone k is the target of mirror (k + shift) mod n, so every stone
-                // has a mirror meant for it; the solver then decides whether the geometry really allows it.
-                int shift = Rand.Range(0, n);
-                for (int i = 0; i < n; i++)
+                ids[cells[k]] = k;
+            }
+            int Id(IntVec3 c)
+            {
+                if (!ids.TryGetValue(c, out int id))
                 {
-                    List<IntVec3> cand = Candidates(map, p, p.mirrors[i]);
-                    List<IntVec3> mine = new List<IntVec3>();
-                    int stoneFor = ((i - shift) % n + n) % n;
-                    if (stoneFor < p.stones.Count)
-                    {
-                        mine.Add(p.stones[stoneFor]);
-                    }
-                    cand.Shuffle();
-                    foreach (IntVec3 c in cand)
-                    {
-                        if (mine.Count >= d)
-                        {
-                            break;
-                        }
-                        if (!mine.Contains(c))
-                        {
-                            mine.Add(c);
-                        }
-                    }
-                    if (mine.Count < d)
-                    {
-                        why = "too few detent targets";
-                        goto nextAttempt;
-                    }
-                    mine.Shuffle();
-                    det.Add(mine);
+                    id = cells.Count;
+                    cells.Add(c);
+                    ids[c] = id;
                 }
-                for (int i = 0; i < n; i++)
+                return id;
+            }
+            List<IntVec3> Cells(List<int> l)
+            {
+                List<IntVec3> o = new List<IntVec3>(l.Count);
+                foreach (int id in l)
                 {
-                    comps[i].SetAncient(det[i], 0, true);
+                    o.Add(cells[id]);
                 }
-                RM_FieldReport r = RM_MirrorFieldKernel.Solve(n, d, new int[n], (int[] cfg, out int depth) =>
+                return o;
+            }
+            RM_FieldLayout layout = RM_MirrorFieldKernel.Generate(n, d, p.stones.Count, want, RM_SolarMirrorsSettings.maxChain, step.layoutAttempts,
+                k => Rand.Range(0, k),
+                i =>
+                {
+                    List<int> l = new List<int>();
+                    foreach (IntVec3 c in Candidates(map, p, p.mirrors[i]))
+                    {
+                        l.Add(Id(c));
+                    }
+                    return l;
+                },
+                k => k,
+                det =>
+                {
+                    for (int i = 0; i < n; i++)
+                    {
+                        comps[i].SetAncient(Cells(det[i]), 0, true);
+                    }
+                },
+                (int[] cfg, out int depth) =>
                 {
                     for (int i = 0; i < n; i++)
                     {
                         comps[i].SetDetentDirect(cfg[i]);
                     }
-                    float[] lt = light.SimulateLight(out depth);
-                    for (int k = 0; k < stones.Count; k++)
-                    {
-                        int idx = map.cellIndices.CellToIndex(stones[k].parent.Position);
-                        if (lt == null || lt[idx] < stones[k].Props.litAt)
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
+                    return StonesLevel(map, light, stones, out depth);
                 });
-                int s0 = RM_MirrorFieldKernel.PickStart(r, want, Rand.Int);
-                if (s0 < 0)
-                {
-                    why = r == null ? "space too large" : r.solutionCount == 0 ? "no configuration lights every stone" : "every start is too close to a solution";
-                    continue;
-                }
-                RM_MirrorFieldKernel.Rebase(r, s0);
-                if (!RM_MirrorFieldKernel.Acceptable(r, want, RM_SolarMirrorsSettings.maxChain, out why))
-                {
-                    continue;
-                }
-                report = r;
-                detents = det;
-                start = s0;
-                return true;
-            nextAttempt:;
+            if (!layout.Ok)
+            {
+                why = layout.why;
+                return false;
             }
-            return false;
+            report = layout.report;
+            detents = new List<List<IntVec3>>();
+            foreach (List<int> l in layout.detents)
+            {
+                detents.Add(Cells(l));
+            }
+            start = layout.start;
+            why = null;
+            return true;
         }
 
         private static void Commit(RM_GenStep_AncientMirrorField step, Map map, RM_MapComponent_MirrorField field, Plan p,
@@ -503,6 +519,7 @@ namespace RimMandrake.SolarMirrors
     {
         private List<Thing> mirrors = new List<Thing>();
         private List<Thing> stones = new List<Thing>();
+        private List<IntVec3> stoneCells = new List<IntVec3>();   // where mapgen laid each stone: a moved stone counts dark (D2)
         private Thing seal;
         private bool hasField;
         private bool latched;
@@ -549,6 +566,8 @@ namespace RimMandrake.SolarMirrors
               + ", start " + startCode + " needs " + minReAims + " re-aims, latched " + latched
             : failure == null ? "no field on this map" : "no field: " + failure;
 
+        /// <summary>Every field stone lit (hysteresis state, design §3.4) and standing on the cell mapgen laid it on: a stone
+        /// claimed, uninstalled and set down under some other mirror counts dark (validation D2).</summary>
         public bool CurrentlySolved
         {
             get
@@ -557,16 +576,26 @@ namespace RimMandrake.SolarMirrors
                 {
                     return false;
                 }
-                foreach (Thing s in stones)
+                for (int k = 0; k < stones.Count; k++)
                 {
-                    RM_CompLightReceiver r = s?.TryGetComp<RM_CompLightReceiver>();
-                    if (r == null || !s.Spawned || !r.Lit)
+                    if (!StoneCounts(k))
                     {
                         return false;
                     }
                 }
                 return true;
             }
+        }
+
+        private bool StoneCounts(int k)
+        {
+            Thing s = stones[k];
+            RM_CompLightReceiver r = s?.TryGetComp<RM_CompLightReceiver>();
+            if (r == null || !s.Spawned || !r.Lit || s.Map != map)
+            {
+                return false;
+            }
+            return k >= stoneCells.Count || s.Position == stoneCells[k];
         }
 
         public void SetFailed(string why)
@@ -578,6 +607,11 @@ namespace RimMandrake.SolarMirrors
         {
             mirrors = fieldMirrors;
             stones = fieldStones;
+            stoneCells = new List<IntVec3>();
+            foreach (Thing s in fieldStones)
+            {
+                stoneCells.Add(s != null ? s.Position : IntVec3.Invalid);
+            }
             seal = vaultSeal;
             hasField = true;
             latched = false;
@@ -595,6 +629,73 @@ namespace RimMandrake.SolarMirrors
             if (hasField && mirrors.Contains(m.parent))
             {
                 reAimsDone++;
+            }
+        }
+
+        /// <summary>Validation D4: the field was solved at GenStep 955; later steps (sun graves, the detent pins, plant
+        /// wipes) can move shade or blockers. After the whole map exists, solve the laid field again with the same light,
+        /// keep the start, and say so in the log if it lost every solution or its start came within reach.</summary>
+        public override void MapGenerated()
+        {
+            base.MapGenerated();
+            if (!hasField)
+            {
+                return;
+            }
+            try
+            {
+                Reverify();
+            }
+            catch (System.Exception e)
+            {
+                Log.Warning("[RM SolarMirrors] ancient field re-check after mapgen threw: " + e);
+            }
+        }
+
+        private void Reverify()
+        {
+            RM_MapComponent_MirrorLight light = RM_MapComponent_MirrorLight.For(map);
+            int n = mirrors.Count;
+            List<RM_CompMirror> comps = new List<RM_CompMirror>();
+            foreach (Thing t in mirrors)
+            {
+                RM_CompMirror c = t?.TryGetComp<RM_CompMirror>();
+                if (c == null || !t.Spawned || c.Detents.Count != detents)
+                {
+                    return;
+                }
+                comps.Add(c);
+            }
+            if (light == null || n == 0)
+            {
+                return;
+            }
+            int[] startCfg = new int[n];
+            RM_MirrorFieldKernel.Decode(startCode, n, detents, startCfg);
+            RM_FieldReport r = RM_MirrorFieldKernel.Solve(n, detents, startCfg, (int[] cfg, out int depth) =>
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    comps[i].SetDetentDirect(cfg[i]);
+                }
+                return RM_MirrorFieldBuilder.StonesLevel(map, light, stones, out depth);
+            });
+            for (int i = 0; i < n; i++)
+            {
+                comps[i].SetDetentDirect(startCfg[i]);
+            }
+            if (r == null)
+            {
+                return;
+            }
+            int wanted = minReAims;
+            solutions = new List<int>(r.solutions);
+            minReAims = r.minReAims;
+            if (r.solutionCount == 0 || r.startSolved || r.minReAims < wanted)
+            {
+                Log.Warning("[RM SolarMirrors] the ancient mirror field changed after it was solved at mapgen: solutions "
+                            + r.solutionCount + ", start needs " + r.minReAims + " re-aims (was " + wanted + ")"
+                            + (r.solutionCount == 0 ? "; it can no longer be solved, the seal can still be broken" : ""));
             }
         }
 
@@ -620,6 +721,7 @@ namespace RimMandrake.SolarMirrors
                 FleckMaker.ThrowDustPuffThick(seal.DrawPos, map, 2f, new Color(1f, 0.9f, 0.6f));
                 seal.Destroy(DestroyMode.Vanish);
             }
+            seal = null;
             Find.LetterStack.ReceiveLetter("RM_SolarMirrors_VaultOpen_Label".Translate(), "RM_SolarMirrors_VaultOpen_Text".Translate(),
                 LetterDefOf.PositiveEvent, at.IsValid ? new LookTargets(at, map) : LookTargets.Invalid);
         }
@@ -637,22 +739,21 @@ namespace RimMandrake.SolarMirrors
             }
             int lit = 0;
             Thing firstDark = null;
-            foreach (Thing s in stones)
+            for (int k = 0; k < stones.Count; k++)
             {
-                RM_CompLightReceiver r = s?.TryGetComp<RM_CompLightReceiver>();
-                if (r != null && r.Lit)
+                if (StoneCounts(k))
                 {
                     lit++;
                 }
-                else if (firstDark == null)
+                else if (firstDark == null && stones[k] != null)
                 {
-                    firstDark = s;
+                    firstDark = stones[k];
                 }
             }
             StringBuilder sb = new StringBuilder();
             sb.Append("RM_SolarMirrors_Hint_Lit".Translate(lit, stones.Count));
             int level = RM_MirrorFieldKernel.HintLevel(reAimsDone, minReAims);
-            if (level >= 1 && firstDark != null)
+            if (level >= 1 && firstDark != null && firstDark.Spawned)
             {
                 bool anyAims = false;
                 foreach (Thing m in mirrors)
@@ -680,7 +781,7 @@ namespace RimMandrake.SolarMirrors
                     }
                     cur[i] = c.DetentIndex;
                 }
-                if (ok && RM_MirrorFieldKernel.NextMove(solutions, cur, mirrors.Count, detents, out int mi, out int di))
+                if (ok && RM_MirrorFieldKernel.NextMove(solutions, cur, mirrors.Count, detents, out int mi, out int di) && mirrors[mi].Spawned)
                 {
                     sb.AppendLine();
                     sb.Append("RM_SolarMirrors_Hint_Next".Translate(mirrors[mi].Position.ToString(), di + 1));
@@ -703,14 +804,16 @@ namespace RimMandrake.SolarMirrors
             Scribe_Collections.Look(ref solutions, "rmFieldSolutions", LookMode.Value);
             Scribe_Collections.Look(ref mirrors, "rmFieldMirrors", LookMode.Reference);
             Scribe_Collections.Look(ref stones, "rmFieldStones", LookMode.Reference);
+            Scribe_Collections.Look(ref stoneCells, "rmFieldStoneCells", LookMode.Value);
             Scribe_References.Look(ref seal, "rmFieldSeal");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
+                // Never compact these lists: a configuration code is positional (mirror i = digit i), so a destroyed
+                // mirror or stone stays as a null slot (validation D1).
                 solutions ??= new List<int>();
                 mirrors ??= new List<Thing>();
                 stones ??= new List<Thing>();
-                mirrors.RemoveAll(t => t == null);
-                stones.RemoveAll(t => t == null);
+                stoneCells ??= new List<IntVec3>();
             }
         }
 

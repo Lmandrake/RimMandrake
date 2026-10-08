@@ -60,6 +60,14 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        private static List<string> ProbeDistinct(List<string> items)
+        {
+            var seen = new HashSet<string>();
+            var o = new List<string>();
+            foreach (string s in items) if (seen.Add(s)) o.Add(s);
+            return o;
+        }
+
         private static string ProbeCell(object v)
         {
             if (v is IntVec3 c) return c.IsValid ? c.x + "," + c.z : null;
@@ -254,7 +262,8 @@ namespace JawaBench.BridgeTools
                     mirrorLight = lightSummary,
                     field = fieldSummary,
                     badTokens,
-                    missingMembers = missing,
+                    // one entry per missing member, not one per mirror/receiver that lacked it
+                    missingMembers = ProbeDistinct(missing),
                     ticksGame = TicksGameSafe()
                 };
             });

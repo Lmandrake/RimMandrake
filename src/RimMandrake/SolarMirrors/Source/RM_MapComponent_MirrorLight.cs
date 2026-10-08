@@ -239,8 +239,14 @@ namespace RimMandrake.SolarMirrors
 
         /// <summary>The unit vector toward the light source and a 0..1 daylight factor. Pinned sun
         /// (Long Shade), else the shade grid's fixed sun, else a simple moving sun. False at night,
-        /// in a sunless sky, or below the horizon.</summary>
+        /// in a sunless sky, or below the horizon. ignoreWeather (mapgen): the weather's sun factor is left out, so the
+        /// initial weather never decides whether a field can be laid or solved (validation D5).</summary>
         public bool TrySun(out Vector3 sun, out float daylight)
+        {
+            return TrySun(out sun, out daylight, false);
+        }
+
+        public bool TrySun(out Vector3 sun, out float daylight, bool ignoreWeather)
         {
             sun = Vector3.up;
             daylight = 0f;
@@ -277,7 +283,10 @@ namespace RimMandrake.SolarMirrors
                     }
                 }
             }
-            daylight *= RM_WeatherSenseExtension.SunFactor(map);
+            if (!ignoreWeather)
+            {
+                daylight *= RM_WeatherSenseExtension.SunFactor(map);
+            }
             return daylight > 0f && sun.y > 0f;
         }
 
@@ -538,7 +547,7 @@ namespace RimMandrake.SolarMirrors
             {
                 indexOf[mirrorList[k]] = k;
             }
-            bool sunUp = TrySun(out Vector3 sun, out float _);
+            bool sunUp = TrySun(out Vector3 sun, out float _, true);
             for (int k = 0; k < count; k++)
             {
                 RM_CompMirror m = mirrorList[k];

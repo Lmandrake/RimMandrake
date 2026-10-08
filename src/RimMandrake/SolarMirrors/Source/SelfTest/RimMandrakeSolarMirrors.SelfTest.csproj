@@ -24,6 +24,7 @@
     <Compile Include="..\Kernel\RM_MirrorFieldKernel.cs" />
     <Compile Include="SolarMirrorsFuzzKit.cs" />
     <Compile Include="SolarMirrorsFuzz.cs" />
+    <Compile Include="SolarMirrorsFieldFuzz.cs" />
   </ItemGroup>
 
 </Project>
