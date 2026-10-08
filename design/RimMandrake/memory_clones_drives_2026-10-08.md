@@ -433,3 +433,37 @@ move harness isolation ahead of shared-store work."* Its cheapest single change:
 Net effect: the recommended plan stayed in Plan B's family but became smaller and reordered — harness
 isolation and the built-in tool cap moved ahead of the object store; tmpfs shrink and seat re-budgeting
 were deferred; every "eliminates" claim was weakened to "removes the documented path".
+
+---
+
+## 9. Owner's concern on what landed, and the standing fallback (2026-10-08)
+
+The owner was uneasy that parts of the fix are home-made rather than standard ("original solutions for
+something as banal as this"). He ruled to run with what landed for a while, with the concerns recorded so
+the standard route can be picked up at once if anything goes wrong. (Decision taken by question card.)
+
+**Standard pieces, low concern:** seat scopes with `MemoryMax`; `Delegate=yes`, systemd's documented
+delegation mechanism; ext4 temp with `systemd-tmpfiles` aging; Claude Code's own `CLAUDE_CODE_TOOL_MEMORY_LIMIT`
+and `CLAUDE_CODE_TMPDIR` (documented since 2.1.233); the terminal reset escapes.
+
+**Home-made pieces, watch these:**
+1. `.claude/hooks/block_tmpfs_clone.py` pattern-matches shell text to guess a copy's destination. It is
+   bypassable and guards a symptom. It fails open on anything it cannot resolve.
+2. `claude_bounded.sh` runs Claude inside a `seat` sub-cgroup of a delegated scope. The reason is that
+   2.1.286 creates its tool cgroup as a SIBLING of its own cgroup (measured: `launcher.md`), and the sub-cgroup
+   makes that sibling land inside the seat. A Claude update that moves the tool cgroup can silently undo the
+   cap. **Check after every Claude Code upgrade:** `claude --debug` prints a `tool cgroup:` line naming a path
+   under `claude-seat-<SEAT>-*.scope`.
+3. `run_selftests.py` admission control in `rm-harness.slice` (helper report: `harness.md`).
+
+**Symptoms that should send us to the fallback:** a seat that will not start, or one that starts with the red
+"tool cap" warning; no `tool cgroup:` line in `claude --debug`; a hook refusing legitimate work; a
+`/tmp`-shaped OOM again (`shmem` large in a seat's `memory.stat`); tests flaking only under the runner.
+
+**The fallback is the standard route.** `/tmp` is a RAM disk only because Ubuntu 26.04 ships `tmp.mount`
+enabled. Run `sudo systemctl mask tmp.mount` and then `wsl --shutdown`. This needs the owner's sudo, and the
+WSL restart closes every window, so it is done at a stopping point. `/tmp` then sits on ext4 as on older
+Ubuntu. After that, delete `block_tmpfs_clone.py` and its settings entry, and drop the `TMPDIR`/`CLAUDE_CODE_TMPDIR`
+lines from `claude_bounded.sh`. Keep the scope caps and the tool cap; they are the standard safety net.
+The test runner's fallback is a fixed worker count inside `rm-harness.slice`, with no admission logic.
+Item: `SEAT_MEMORY_STANDARD_FALLBACK_1`.
