@@ -117,7 +117,7 @@ namespace RimMandrake.NightsideIce
                 return;
             }
             goal = path[path.Count - 1];
-            IntVec3 leg = path[System.Math.Min(Props.legCells, path.Count) - 1];
+            IntVec3 leg = path[RM_NightsideIceKernel.LegIndex(Props.legCells, path.Count)];
             state = "seeking";
             if (cur != null && cur.def == JobDefOf.Goto && cur.targetA.Cell == leg)
             {
@@ -132,85 +132,50 @@ namespace RimMandrake.NightsideIce
 
         private static bool Touches(IntVec3 c, Thing t)
         {
-            return t.OccupiedRect().ExpandedBy(1).Contains(c) && !t.OccupiedRect().Contains(c);
+            CellRect r = t.OccupiedRect();
+            return RM_NightsideIceKernel.Touches(c.x, c.z, r.minX, r.minZ, r.maxX, r.maxZ);
+        }
+
+        /// <summary>The map as the kernel's path search reads it: bounds, standable cells, and the kit's swim terrain (ice).</summary>
+        private sealed class MapIceGrid : IIceGrid
+        {
+            private readonly Map map;
+            private readonly RM_SandSwimExtension swim;
+
+            public MapIceGrid(Map map, RM_SandSwimExtension swim)
+            {
+                this.map = map;
+                this.swim = swim;
+            }
+
+            public bool InBounds(int x, int z) => new IntVec3(x, 0, z).InBounds(map);
+
+            public bool Standable(int x, int z) => new IntVec3(x, 0, z).Standable(map);
+
+            public bool IsIce(int x, int z) => RM_SandSwimUtility.IsSwimTerrain(new IntVec3(x, 0, z), map, swim);
         }
 
         /// <summary>
         /// Breadth-first over standable ice from the shivven (or, when it is off the ice, over any
         /// standable cell until it reaches ice). Returns the cell path to the reached cell nearest the
-        /// source, preferring one touching it; empty when it already stands on that cell.
+        /// source, preferring one touching it; empty when it already stands on that cell. The search
+        /// itself is RM_NightsideIceKernel.IcePath (offline-fuzzed); this only adapts the map.
         /// </summary>
         private List<IntVec3> IcePathToward(Pawn pawn, Thing src)
         {
             Map map = pawn.Map;
             IntVec3 start = pawn.Position;
-            bool startOnIce = RM_SandSwimUtility.IsSwimTerrain(start, map, Swim);
-            var parent = new Dictionary<IntVec3, IntVec3>();
-            var queue = new Queue<IntVec3>();
-            parent[start] = start;
-            queue.Enqueue(start);
-            IntVec3 best = start;
-            float bestScore = Score(start, src, startOnIce);
-            int budget = Props.searchCellBudget;
-            while (queue.Count > 0 && budget-- > 0)
+            var grid = new MapIceGrid(map, Swim);
+            bool startOnIce = grid.IsIce(start.x, start.z);
+            CellRect r = src.OccupiedRect();
+            List<KeyValuePair<int, int>> cells = RM_NightsideIceKernel.IcePath(grid, start.x, start.z, startOnIce, src.Position.x, src.Position.z,
+                r.minX, r.minZ, r.maxX, r.maxZ, Props.searchCellBudget);
+            var path = new List<IntVec3>(cells.Count);
+            for (int i = 0; i < cells.Count; i++)
             {
-                IntVec3 c = queue.Dequeue();
-                bool cIce = RM_SandSwimUtility.IsSwimTerrain(c, map, Swim);
-                if (!startOnIce && cIce)
-                {
-                    best = c; // off the ice: the first ice reached is the way home
-                    break;
-                }
-                for (int i = 0; i < 8; i++)
-                {
-                    IntVec3 n = c + GenAdj.AdjacentCells[i];
-                    if (parent.ContainsKey(n) || !n.InBounds(map) || !n.Standable(map))
-                    {
-                        continue;
-                    }
-                    if (startOnIce && !RM_SandSwimUtility.IsSwimTerrain(n, map, Swim))
-                    {
-                        continue;
-                    }
-                    if (i >= 4 && !DiagonalOk(c, n, map, startOnIce))
-                    {
-                        continue;
-                    }
-                    parent[n] = c;
-                    queue.Enqueue(n);
-                    float s = Score(n, src, startOnIce);
-                    if (s < bestScore)
-                    {
-                        bestScore = s;
-                        best = n;
-                    }
-                }
+                path.Add(new IntVec3(cells[i].Key, 0, cells[i].Value));
             }
-            var path = new List<IntVec3>();
-            for (IntVec3 c = best; c != start; c = parent[c])
-            {
-                path.Add(c);
-            }
-            path.Reverse();
             return path;
-        }
-
-        // A diagonal step must not cut a corner off the ice (or through a wall).
-        private bool DiagonalOk(IntVec3 from, IntVec3 to, Map map, bool iceOnly)
-        {
-            IntVec3 a = new IntVec3(to.x, 0, from.z);
-            IntVec3 b = new IntVec3(from.x, 0, to.z);
-            return a.Standable(map) && b.Standable(map)
-                && (!iceOnly || (RM_SandSwimUtility.IsSwimTerrain(a, map, Swim) && RM_SandSwimUtility.IsSwimTerrain(b, map, Swim)));
-        }
-
-        private static float Score(IntVec3 c, Thing src, bool onIce)
-        {
-            if (!onIce)
-            {
-                return 0f;
-            }
-            return Touches(c, src) ? -1f : (c - src.Position).LengthHorizontalSquared;
         }
 
         public override string CompInspectStringExtra()
