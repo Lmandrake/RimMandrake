@@ -1,0 +1,181 @@
+[gt] 21:50:01 shipped_defs_resolve PASS 
+[gt] 21:50:01 control_absent_def_reads_absent PASS 
+[gt] 21:50:01 mireEnabled_round_trips PASS 
+[gt] 21:50:02 buriedCacheEnabled_round_trips PASS 
+[gt] 21:50:02 mireSeverityMultiplier_round_trips PASS 
+[gt] 21:50:02 plantDensity_round_trips PASS 
+[gt] 21:50:03 movementDifficulty_round_trips PASS 
+[gt] 21:50:03 crossBiomeEnabled_round_trips PASS 
+[gt] 21:50:03 crossBiomeEverywhere_round_trips PASS 
+[gt] 21:50:03 crossBiomeBiomeList_round_trips PASS 
+[gt] 21:50:04 crossBiomeCoverage_round_trips PASS 
+[gt] 21:50:04 frenzyEnabled_round_trips PASS 
+[gt] 21:50:04 frenzySeverityMultiplier_round_trips PASS 
+[gt] 21:50:05 feverMarkEnabled_round_trips PASS 
+[gt] 21:50:05 feverMarkGrantsImmunity_round_trips PASS 
+[gt] 21:50:05 stenchGrenadeEnabled_round_trips PASS 
+[gt] 21:50:06 stenchGrenadeRadiusMultiplier_round_trips PASS 
+[gt] 21:50:06 canopySwarmEnabled_round_trips PASS 
+[gt] 21:50:06 vurrakAmbushEnabled_round_trips PASS 
+[gt] 21:50:06 vurrakTriggerBodySize_round_trips PASS 
+[gt] 21:50:07 vurrakFirstRevealPause_round_trips PASS 
+[gt] 21:50:07 stellockLaceEnabled_round_trips PASS 
+[gt] 21:50:07 stellockBranchChance_round_trips PASS 
+[gt] 21:50:08 stellockLaceHours_round_trips PASS 
+[gt] 21:50:08 thurrockFellingEnabled_round_trips PASS 
+[gt] 21:50:08 thurrockFellingPace_round_trips PASS 
+[gt] 21:50:08 thurrockProvokedWallDamage_round_trips PASS 
+[gt] 21:50:08 roilEnabled_round_trips PASS 
+[gt] 21:50:08 fruitfallEnabled_round_trips PASS 
+[gt] 21:50:08 greatboleShakingThreshold_round_trips PASS 
+[gt] 21:50:08 greatboleHealingThreshold_round_trips PASS 
+[gt] 21:50:08 greatboleCatastropheThreshold_round_trips PASS 
+[gt] 21:50:09 greatboleCatastropheEnabled_round_trips PASS 
+[gt] 21:50:09 greatboleSeedPlantingEnabled_round_trips PASS 
+[gt] 21:50:09 greatboleServantsEnabled_round_trips PASS 
+[gt] 21:50:10 site_ready_mire PASS 
+[gt] 21:50:10 mire_applies_on_churnmud PASS 
+[gt] 21:50:10 mire_skips_concrete_and_sealed_floor PASS 
+[gt] 21:50:11 mire_master_switch_off PASS 
+[gt] 21:50:11 site_ready_escalation PASS 
+[gt] 21:50:12 stuck_pawn_stays_stuck_alone PASS 
+[gt] 21:50:14 free_mired_job_pulls_the_pawn_out PASS 
+[gt] 21:50:14 site_ready_swallow PASS 
+[gt] 21:50:16 swallow_buries_on_churnmud_only PASS 
+[gt] 21:50:18 buried_cache_switch_off_keeps_items PASS 
+[gt] 21:50:20 dig_out_job_restores_the_buried_item PASS 
+[gt] 21:50:20 site_ready_dose PASS 
+[gt] 21:50:23 dose_gives_frenzy PASS 
+[gt] 21:50:25 frenzy_master_switch_off_gives_none PASS 
+[gt] 21:50:28 fever_mark_gates_the_dose PASS 
+[gt] 21:50:28 fever_mark_earned_by_surviving_the_coma UNMEASURED UNMEASURED: the mark is earned only when a tended Frenzy that reached the collapse stage ends: days of game time and a tending pawn; needs a seeded hediff at the collapse stage and a tend (a state-seeding tool is owed)
+[gt] 21:50:28 ambient_frenzy_incident UNMEASURED UNMEASURED: RM_IncidentWorker_FrenzyDisease: a dry-run fire_incident reports success=False with canFireNow=False, so it is no instrument; firing it for real needs a map the incident is eligible on
+[gt] 21:50:28 biome_carries_the_settings_density PASS 
+[gt] vurrak colonist: DISGUISED=True -> STRUCK Human52350
+[gt] 21:50:28 vurrak_bites_a_person PASS 
+[gt] vurrak hare: DISGUISED=True -> REVEALED Hare52356
+[gt] 21:50:28 vurrak_hare_only_reveals PASS 
+[gt] 21:50:28 vurrak_toggle_off_refused PASS 
+[gt] 21:50:28 churnmud_seeded_once_on_a_fresh_non_greentide_map UNMEASURED UNMEASURED: WORLDGEN-AFFECTING: RM_MapComponent_CrossBiomeChurnmud runs once on a freshly generated map; needs a new map generated with crossBiomeEnabled on, which the harness cannot do on a held map
+[gt] 21:50:28 stench_smoke_radius_follows_multiplier UNMEASURED UNMEASURED: needs a thrown grenade and an explosion-radius read; no bridge reader for the smoke cloud
+[gt] 21:50:28 krannock_spawn_gate UNMEASURED UNMEASURED: canopySwarmEnabled is a deliberate no-op until the Krannock is rostered at the biome's own review sitting (About.xml)
+[gt] 21:50:28 harvest_ladder_fires_each_rung_once_and_catastrophe_is_final PASS 
+[gt] 21:50:28 spine_defs_shipped_and_wired_onto_rm_greentide PASS 
+[gt] 21:50:28 roil_lock_absent_on_a_new_map_with_roil_off UNMEASURED UNMEASURED: WORLDGEN-AFFECTING: biomeMapConditions apply in BiomeConditionMapComponent.MapGenerated, so the toggle needs a freshly generated Greentide map; the harness cannot do that on a held map
+[gt] 21:50:28 fruitfall_spawns_grubs_near_a_live_bole UNMEASURED UNMEASURED: needs a generated Greentide map with a registered greatbole and a forced RM_GreatboleFruitfall
+[gt] 21:50:29 all_settings_at_shipped_defaults PASS 
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Greentide_20261008T045029Z.html
+CHAIN defs_resolve None {"name": "defs_resolve", "situational": null, "modal_check": null}
+    {"name": "shipped_defs_resolve", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "25 of 25 def(s) resolved", "requested": 25, "foundCount": 25, "n
+    {"name": "control_absent_def_reads_absent", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "0 of 1 def(s) resolved; 1 not found", "requested": 1,
+CHAIN flip_mireEnabled None {"name": "flip_mireEnabled", "situational": null, "modal_check": null}
+    {"name": "mireEnabled_round_trips", "toggle": "mireEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_buriedCacheEnabled None {"name": "flip_buriedCacheEnabled", "situational": null, "modal_check": null}
+    {"name": "buriedCacheEnabled_round_trips", "toggle": "buriedCacheEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_mireSeverityMultiplier None {"name": "flip_mireSeverityMultiplier", "situational": null, "modal_check": null}
+    {"name": "mireSeverityMultiplier_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_plantDensity None {"name": "flip_plantDensity", "situational": null, "modal_check": null}
+    {"name": "plantDensity_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_movementDifficulty None {"name": "flip_movementDifficulty", "situational": null, "modal_check": null}
+    {"name": "movementDifficulty_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_crossBiomeEnabled None {"name": "flip_crossBiomeEnabled", "situational": null, "modal_check": null}
+    {"name": "crossBiomeEnabled_round_trips", "toggle": "crossBiomeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_crossBiomeEverywhere None {"name": "flip_crossBiomeEverywhere", "situational": null, "modal_check": null}
+    {"name": "crossBiomeEverywhere_round_trips", "toggle": "crossBiomeEverywhere", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_crossBiomeBiomeList None {"name": "flip_crossBiomeBiomeList", "situational": null, "modal_check": null}
+    {"name": "crossBiomeBiomeList_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_crossBiomeCoverage None {"name": "flip_crossBiomeCoverage", "situational": null, "modal_check": null}
+    {"name": "crossBiomeCoverage_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_frenzyEnabled None {"name": "flip_frenzyEnabled", "situational": null, "modal_check": null}
+    {"name": "frenzyEnabled_round_trips", "toggle": "frenzyEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_frenzySeverityMultiplier None {"name": "flip_frenzySeverityMultiplier", "situational": null, "modal_check": null}
+    {"name": "frenzySeverityMultiplier_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_feverMarkEnabled None {"name": "flip_feverMarkEnabled", "situational": null, "modal_check": null}
+    {"name": "feverMarkEnabled_round_trips", "toggle": "feverMarkEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_feverMarkGrantsImmunity None {"name": "flip_feverMarkGrantsImmunity", "situational": null, "modal_check": null}
+    {"name": "feverMarkGrantsImmunity_round_trips", "toggle": "feverMarkGrantsImmunity", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_stenchGrenadeEnabled None {"name": "flip_stenchGrenadeEnabled", "situational": null, "modal_check": null}
+    {"name": "stenchGrenadeEnabled_round_trips", "toggle": "stenchGrenadeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_stenchGrenadeRadiusMultiplier None {"name": "flip_stenchGrenadeRadiusMultiplier", "situational": null, "modal_check": null}
+    {"name": "stenchGrenadeRadiusMultiplier_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_canopySwarmEnabled None {"name": "flip_canopySwarmEnabled", "situational": null, "modal_check": null}
+    {"name": "canopySwarmEnabled_round_trips", "toggle": "canopySwarmEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_vurrakAmbushEnabled None {"name": "flip_vurrakAmbushEnabled", "situational": null, "modal_check": null}
+    {"name": "vurrakAmbushEnabled_round_trips", "toggle": "vurrakAmbushEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_vurrakTriggerBodySize None {"name": "flip_vurrakTriggerBodySize", "situational": null, "modal_check": null}
+    {"name": "vurrakTriggerBodySize_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_vurrakFirstRevealPause None {"name": "flip_vurrakFirstRevealPause", "situational": null, "modal_check": null}
+    {"name": "vurrakFirstRevealPause_round_trips", "toggle": "vurrakFirstRevealPause", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_stellockLaceEnabled None {"name": "flip_stellockLaceEnabled", "situational": null, "modal_check": null}
+    {"name": "stellockLaceEnabled_round_trips", "toggle": "stellockLaceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_stellockBranchChance None {"name": "flip_stellockBranchChance", "situational": null, "modal_check": null}
+    {"name": "stellockBranchChance_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_stellockLaceHours None {"name": "flip_stellockLaceHours", "situational": null, "modal_check": null}
+    {"name": "stellockLaceHours_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_thurrockFellingEnabled None {"name": "flip_thurrockFellingEnabled", "situational": null, "modal_check": null}
+    {"name": "thurrockFellingEnabled_round_trips", "toggle": "thurrockFellingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_thurrockFellingPace None {"name": "flip_thurrockFellingPace", "situational": null, "modal_check": null}
+    {"name": "thurrockFellingPace_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_thurrockProvokedWallDamage None {"name": "flip_thurrockProvokedWallDamage", "situational": null, "modal_check": null}
+    {"name": "thurrockProvokedWallDamage_round_trips", "toggle": "thurrockProvokedWallDamage", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_roilEnabled None {"name": "flip_roilEnabled", "situational": null, "modal_check": null}
+    {"name": "roilEnabled_round_trips", "toggle": "roilEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_fruitfallEnabled None {"name": "flip_fruitfallEnabled", "situational": null, "modal_check": null}
+    {"name": "fruitfallEnabled_round_trips", "toggle": "fruitfallEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_greatboleShakingThreshold None {"name": "flip_greatboleShakingThreshold", "situational": null, "modal_check": null}
+    {"name": "greatboleShakingThreshold_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_greatboleHealingThreshold None {"name": "flip_greatboleHealingThreshold", "situational": null, "modal_check": null}
+    {"name": "greatboleHealingThreshold_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_greatboleCatastropheThreshold None {"name": "flip_greatboleCatastropheThreshold", "situational": null, "modal_check": null}
+    {"name": "greatboleCatastropheThreshold_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_greatboleCatastropheEnabled None {"name": "flip_greatboleCatastropheEnabled", "situational": null, "modal_check": null}
+    {"name": "greatboleCatastropheEnabled_round_trips", "toggle": "greatboleCatastropheEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_greatboleSeedPlantingEnabled None {"name": "flip_greatboleSeedPlantingEnabled", "situational": null, "modal_check": null}
+    {"name": "greatboleSeedPlantingEnabled_round_trips", "toggle": "greatboleSeedPlantingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_greatboleServantsEnabled None {"name": "flip_greatboleServantsEnabled", "situational": null, "modal_check": null}
+    {"name": "greatboleServantsEnabled_round_trips", "toggle": "greatboleServantsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN mire None {"name": "mire", "situational": null, "modal_check": null}
+    {"name": "site_ready_mire", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 62 thing(s) across 576 cell(s); 1 pawn(s) left alone.", "cellsExamined
+    {"name": "mire_applies_on_churnmud", "toggle": "mireEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "8 pawn(s).", "pawns": [{"id": "RM_Vekka52277", "
+    {"name": "mire_skips_concrete_and_sealed_floor", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "8 pawn(s).", "pawns": [{"id": "RM_Vekka52277",
+    {"name": "mire_master_switch_off", "toggle": "mireEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction PlayerColony.", "s
+CHAIN mire_escalation None {"name": "mire_escalation", "situational": null, "modal_check": null}
+    {"name": "site_ready_escalation", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 576 cell(s); 4 pawn(s) left alone.", "cellsExa
+    {"name": "stuck_pawn_stays_stuck_alone", "toggle": "mireEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(240) -> 240 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_3316b2a8f63f48b7b
+    {"name": "free_mired_job_pulls_the_pawn_out", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/ordered_job", "result": {"success": true, "accepted": true, "interruptibleBefore": true, "beforeJobDef
+CHAIN swallow None {"name": "swallow", "situational": null, "modal_check": null}
+    {"name": "site_ready_swallow", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 576 cell(s); 6 pawn(s) left alone.", "cellsExamin
+    {"name": "swallow_buries_on_churnmud_only", "toggle": "buriedCacheEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "_wait(3200) Ultrafast", "result": 4052}, {"call": "bridge_call jawa/list_things", "result": {"success": 
+    {"name": "buried_cache_switch_off_keeps_items", "toggle": "buriedCacheEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_batch", "result": {"success": true, "message": "Placed 5 thing(s) of 5 reques
+    {"name": "dig_out_job_restores_the_buried_item", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction PlayerColony."
+CHAIN frenzy_dose None {"name": "frenzy_dose", "situational": null, "modal_check": null}
+    {"name": "site_ready_dose", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 6 thing(s) across 576 cell(s); 6 pawn(s) left alone.", "cellsExamined"
+    {"name": "dose_gives_frenzy", "toggle": "frenzyEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction PlayerColony.", "spaw
+    {"name": "frenzy_master_switch_off_gives_none", "toggle": "frenzyEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction Pla
+    {"name": "fever_mark_gates_the_dose", "toggle": "feverMarkGrantsImmunity", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction Pla
+    {"name": "fever_mark_earned_by_surviving_the_coma", "toggle": "feverMarkEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the mark is earned only when a tended Frenzy that reached the collapse stage ends: days of game time and a
+    {"name": "ambient_frenzy_incident", "toggle": "frenzyEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: RM_IncidentWorker_FrenzyDisease: a dry-run fire_incident reports success=False with canFireNow=False, so it is no instrument;
+CHAIN density_applier None {"name": "density_applier", "situational": null, "modal_check": null}
+    {"name": "biome_carries_the_settings_density", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCou
+CHAIN vurrak None {"name": "vurrak", "situational": null, "modal_check": null}
+    {"name": "vurrak_bites_a_person", "toggle": "vurrakAmbushEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Vurrak in faction (none).", 
+    {"name": "vurrak_hare_only_reveals", "toggle": "vurrakAmbushEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Vurrak in faction (none).
+    {"name": "vurrak_toggle_off_refused", "toggle": "vurrakAmbushEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Vurrak in faction (none)
+CHAIN cross_biome_churnmud None {"name": "cross_biome_churnmud", "situational": null, "modal_check": null}
+    {"name": "churnmud_seeded_once_on_a_fresh_non_greentide_map", "toggle": "crossBiomeEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: WORLDGEN-AFFECTING: RM_MapComponent_CrossBiomeChurnmud runs once on a freshly generated map; ne
+CHAIN stench_grenade None {"name": "stench_grenade", "situational": null, "modal_check": null}
+    {"name": "stench_smoke_radius_follows_multiplier", "toggle": "stenchGrenadeEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: needs a thrown grenade and an explosion-radius read; no bridge reader for the smoke cloud", "evidence":
+CHAIN canopy_swarm None {"name": "canopy_swarm", "situational": null, "modal_check": null}
+    {"name": "krannock_spawn_gate", "toggle": "canopySwarmEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: canopySwarmEnabled is a deliberate no-op until the Krannock is rostered at the biome's own review sitting (About.xml)", "evi
+CHAIN greatbole_ladder_static None {"name": "greatbole_ladder_static", "situational": null, "modal_check": null}
+    {"name": "harvest_ladder_fires_each_rung_once_and_catastrophe_is_final", "toggle": "greatboleCatastropheEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surp
+CHAIN spine_static None {"name": "spine_static", "situational": null, "modal_check": null}
+    {"name": "spine_defs_shipped_and_wired_onto_rm_greentide", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN roil None {"name": "roil", "situational": null, "modal_check": null}
+    {"name": "roil_lock_absent_on_a_new_map_with_roil_off", "toggle": "roilEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: WORLDGEN-AFFECTING: biomeMapConditions apply in BiomeConditionMapComponent.MapGenerated, so the toggle need
+CHAIN greatbole_fruitfall None {"name": "greatbole_fruitfall", "situational": null, "modal_check": null}
+    {"name": "fruitfall_spawns_grubs_near_a_live_bole", "toggle": "fruitfallEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: needs a generated Greentide map with a registered greatbole and a forced RM_GreatboleFruitfall", "evidence
+CHAIN settings_restored None {"name": "settings_restored", "situational": null, "modal_check": null}
+    {"name": "all_settings_at_shipped_defaults", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+ALL_GREEN False FINDINGS 0

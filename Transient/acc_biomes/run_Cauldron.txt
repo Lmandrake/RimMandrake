@@ -1,0 +1,173 @@
+[cauldron]-note shipped defs resolved: 44
+[cauldron] 21:53:01 defs_resolve PASS 
+[cauldron] 21:53:01 acid_wiring_shape PASS 
+[cauldron] 21:53:01 flora_expansion_shape PASS 
+[cauldron] 21:53:01 fexxil_venom_shape PASS 
+[cauldron] 21:53:03 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 21:53:03 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 21:53:03 biome_roster PASS 
+[cauldron] 21:53:03 biome_worker_and_terrain PASS 
+[cauldron] 21:53:03 nettle_habitat_wired PASS 
+[cauldron] 21:53:03 vent_habitat_wired PASS 
+[cauldron] 21:53:03 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 21:53:03 weathers_selectable PASS 
+[cauldron] 21:53:04 defaults PASS 
+[cauldron] 21:53:04 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 21:53:04 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 21:53:04 ventsEnabled_roundtrip PASS 
+[cauldron] 21:53:04 ventFalterMessage_roundtrip PASS 
+[cauldron] 21:53:04 ventGardensEnabled_roundtrip PASS 
+[cauldron] 21:53:04 vexxithDoorEnabled_roundtrip PASS 
+[cauldron] 21:53:04 dewfallBeadsEnabled_roundtrip PASS 
+[cauldron] 21:53:04 dewfallSaturationEnabled_roundtrip PASS 
+[cauldron] 21:53:04 assayFlecksEnabled_roundtrip PASS 
+[cauldron] 21:53:04 vexxissPrintsEnabled_roundtrip PASS 
+[cauldron] 21:53:04 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive"], "RM_Vexxiss": ["CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour"]}
+[cauldron] 21:53:04 suush_and_vexxiss_comps PASS 
+[cauldron] 21:53:04 zisska_yields_and_toxic_meat PASS 
+[cauldron] 21:53:04 acid_site_ready PASS 
+[cauldron]-note AcidBurn 20: hp before/after: {"swall": [300, 280], "vdoor": [320, 320], "vwall": [480, 480]}
+[cauldron] 21:53:04 vexxith_acid_proof PASS 
+[cauldron]-note AcidBurn 20 with the toggle OFF: vexxith wall hp before/after: [480, 460]
+[cauldron] 21:53:05 vexxith_acid_toggle_off PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 21:53:05 fauna_spawns PASS 
+[cauldron] 21:53:05 suush_can_fly PASS 
+[cauldron] 21:53:07 suush_ignores_melee PASS 
+[cauldron]-note shot suush row / melee control still there: [null, false]
+[cauldron] 21:53:10 suush_detonates_when_shot UNMEASURED UNMEASURED: the control suush vanished too (blast reach or something else)
+[cauldron]-note flora set: {"asked": 17, "lost": []}
+[cauldron] 21:53:10 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 21:53:10 assay_grades PASS 
+[cauldron] 21:53:10 assay_toggle_off PASS 
+[cauldron] 21:53:11 assay_factor_scales PASS 
+[cauldron] 21:53:11 yield_site_ready PASS 
+[cauldron]-note martyr harvest 1 (factor 1.0): wood / steel: [14, 6]
+[cauldron] 21:53:36 harvest_pays_metal PASS 
+[cauldron] 21:53:51 yield_factor_scales FAIL ExpectationFailed: ordered_job(Harvest) failed: {'success': False, 'accepted': True, 'interruptibleBefore': True, 'beforeJobDef': 'GoForWalk', 'requestedJobDef': 'Harvest', 'afterJobDef': 'GoForWalk', 'nowRunningRequested': False, 'ticksElapsed': 0, 'pausedDuringWait': True, 'queueLength': 1, 'note'
+[cauldron] 21:53:51 yield_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note map-biome native / non-native herbivore picked: [null, "Deer"]
+[cauldron]-note weather transition factor after the wait: 1.0
+[cauldron] 21:54:12 bloom_site_ready PASS 
+[cauldron]-note outdoor colonist hediff: {"def": "RM_VentMetalLoad", "label": "metal load (trace)", "severity": 0.012}
+[cauldron] 21:54:12 bloom_loads_exposed PASS 
+[cauldron] 21:54:12 bloom_no_double_tax PASS 
+[cauldron] 21:54:12 bloom_spares_roofed PASS 
+[cauldron] 21:54:12 bloom_spares_natives UNMEASURED UNMEASURED: this map's biome offers no native/non-native herbivore pair to compare
+[cauldron] 21:54:12 bloom_toggle_off PASS 
+[cauldron]-note severity at factor 2.0 vs 1.0 (ratio): [0.024, 0.012, 2.0]
+[cauldron] 21:54:13 bloom_factor_scales PASS 
+[cauldron] 21:54:13 water_site_ready PASS 
+[cauldron]-note pond A terrain after 300 ticks of a vexxiss wading: {"WaterShallow": 55, "ToxicWaterShallow": 9}
+[cauldron] 21:54:15 water_poison_on PASS 
+[cauldron] 21:54:15 water_letter_arrives PASS 
+[cauldron] 21:54:17 water_letter_cooldown PASS 
+[cauldron] 21:54:18 water_letter_toggle_off PASS 
+[cauldron] 21:54:20 water_poison_toggle_off UNMEASURED UNMEASURED: vexxiss C left its pond ((143, 170)), so it never waded
+[cauldron]-note vexxiss job BeatFire seen / fire polls with a fire standing: [true, 5]
+[cauldron] 21:54:22 fire_warden_beats_fire PASS 
+[cauldron]-note OFF arm: BeatFire seen / fire polls: [false, 18]
+[cauldron] 21:54:27 fire_warden_toggle_off PASS 
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 21:54:27 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 21:54:27 vent_weather_multiplier PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron]-note vent output / state once the bloom has arrived: [2.5, "breathing"]
+[cauldron] 21:54:47 vent_falter_precedes_bloom PASS 
+[cauldron]-note metal load next to the vent / 21 cells away: [0.0117333336, 0.008143173]
+[cauldron]-note OFF arm: near / far: [0.012, 0.012]
+[cauldron] 21:55:05 vent_exposure_is_local PASS 
+[cauldron]-note wild vexxiss took RM_VexxissDrinkVent: true
+[cauldron]-note OFF arm: took the drink job: false
+[cauldron] 21:55:15 vexxiss_drinks_vent PASS 
+[cauldron]-note vent silenced by a drinking vexxiss: [true, 0.0, "silenced"]
+[cauldron]-note recovery output first / 3000 ticks later: [0.01, 0.06]
+[cauldron] 21:56:10 vent_silences_and_recovers PASS 
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 538}
+[cauldron] 21:56:11 log_clean PASS 
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Cauldron_20261008T045611Z.html
+CHAIN load None {"name": "load", "situational": null, "modal_check": null}
+    {"name": "defs_resolve", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "44 of 44 def(s) resolved", "requested": 44, "foundCount": 44, "notFound
+    {"name": "acid_wiring_shape", "toggle": "vexxithAcidImmunityEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "flora_expansion_shape", "toggle": "floraExpansionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "fexxil_venom_shape", "toggle": "fexxilVenomEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "types_resolve", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/type_probe", "result": {"success": true, "typeName": "RimMandrake.Cauldron.RM_CauldronSettings", "resolved": true, "assem
+    {"name": "biome_weather_table", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFo
+    {"name": "biome_roster", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/biome_probe", "result": {"success": true, "message": "1 biome(s) probed; searched for 21 name(s) \u2014 read `findResults`
+    {"name": "biome_worker_and_terrain", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "
+    {"name": "nettle_habitat_wired", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_def", "result": {"success": true, "defName": "RM_RavenNettle", "defType": "ThingDef", "label": "raven nettle",
+    {"name": "vent_habitat_wired", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_def", "result": {"success": true, "defName": "RM_BloodBouquet", "defType": "ThingDef", "label": "blood bouquet",
+CHAIN weather None {"name": "weather", "situational": null, "modal_check": null}
+    {"name": "weather_defs_laws", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "4 of 4 def(s) resolved", "requested": 4, "foundCount": 4, "notFoun
+    {"name": "weathers_selectable", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_BoilingRain", "after": "RM_ScatterDusk", "lockInForce": tru
+CHAIN settings None {"name": "settings", "situational": null, "modal_check": null}
+    {"name": "defaults", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "assayFlecksEnabled", "fieldKind": "static", "value
+    {"name": "vexxissAttacksIgniter_roundtrip", "toggle": "vexxissAttacksIgniter", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "vexxissA
+    {"name": "condensateGardensEnabled_roundtrip", "toggle": "condensateGardensEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "co
+    {"name": "ventsEnabled_roundtrip", "toggle": "ventsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "ventsEnabled", "fieldKind"
+    {"name": "ventFalterMessage_roundtrip", "toggle": "ventFalterMessage", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "ventFalterMessag
+    {"name": "ventGardensEnabled_roundtrip", "toggle": "ventGardensEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "ventGardensEna
+    {"name": "vexxithDoorEnabled_roundtrip", "toggle": "vexxithDoorEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "vexxithDoorEna
+    {"name": "dewfallBeadsEnabled_roundtrip", "toggle": "dewfallBeadsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "dewfallBeads
+    {"name": "dewfallSaturationEnabled_roundtrip", "toggle": "dewfallSaturationEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "de
+    {"name": "assayFlecksEnabled_roundtrip", "toggle": "assayFlecksEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "assayFlecksEna
+    {"name": "vexxissPrintsEnabled_roundtrip", "toggle": "vexxissPrintsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "vexxissPri
+    {"name": "biomeRarityFactor_roundtrip", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "biomeRarityFactor", "fieldKind"
+CHAIN items None {"name": "items", "situational": null, "modal_check": null}
+    {"name": "suush_and_vexxiss_comps", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_def", "result": {"success": true, "defName": "RM_Suush", "defType": "ThingDef", "label": "suush", "descript
+    {"name": "zisska_yields_and_toxic_meat", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 
+CHAIN acid None {"name": "acid", "situational": null, "modal_check": null}
+    {"name": "acid_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/build_batch", "result": {"success": true, "placed": 1, "survived": 1, "lostToLaterOps": 0, "failedCount": 0, "failed": 
+    {"name": "vexxith_acid_proof", "toggle": "vexxithAcidImmunityEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/damage", "result": {"success": true, "message": "Damaged 1 thing(s) with AcidBurn 20.", "dam
+    {"name": "vexxith_acid_toggle_off", "toggle": "vexxithAcidImmunityEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "vexxithAcid
+CHAIN fauna None {"name": "fauna", "situational": null, "modal_check": null}
+    {"name": "fauna_spawns", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Suush in faction (none).", "spawnedCount": 1, "failedC
+    {"name": "suush_can_fly", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "4 pawn(s), 22 outside the rect.", "pawns": [{"id": "RM_Suush55319", 
+CHAIN suush None {"name": "suush", "situational": null, "modal_check": null}
+    {"name": "suush_ignores_melee", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Suush in faction PlayerColony.", "spawnedCount"
+    {"name": "suush_detonates_when_shot", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the control suush vanished too (blast reach or something else)", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"succ
+CHAIN flora None {"name": "flora", "situational": null, "modal_check": null}
+    {"name": "flora_spawns", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_plants", "result": {"success": true, "message": "Planted 1, cleared 0.", "planted": 1, "cleared": 0, "rejected": 0, "r
+    {"name": "assay_grades", "toggle": "assayGradeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_plants", "result": {"success": true, "message": "Planted 1, cleared 0.", "planted": 1, "cleared": 0, "r
+    {"name": "assay_toggle_off", "toggle": "assayGradeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "assayGradeEnabled", "fieldK
+    {"name": "assay_factor_scales", "toggle": "metalYieldFactor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "metalYieldFactor", "field
+CHAIN yield None {"name": "yield", "situational": null, "modal_check": null}
+    {"name": "yield_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_plants", "result": {"success": true, "message": "Planted 1, cleared 0.", "planted": 1, "cleared": 0, "rejected": 0
+    {"name": "harvest_pays_metal", "toggle": "metalYieldEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [], "scanned": 5608, "countReturned": 0, "countMa
+    {"name": "yield_factor_scales", "toggle": "metalYieldFactor", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: ordered_job(Harvest) failed: {'success': False, 'accepted': True, 'interruptibleBefore': True, 'beforeJobDef': 'GoForWalk', '
+    {"name": "yield_toggle_off", "toggle": "metalYieldEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "
+CHAIN bloom None {"name": "bloom", "situational": null, "modal_check": null}
+    {"name": "bloom_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_ScatterDusk", "after": "RM_VentBloom", "lockInForce": true, "g
+    {"name": "bloom_loads_exposed", "toggle": "ventBloomExposureEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "25 pawn(s).", "pawns": [{"id": "RM_Vekka
+    {"name": "bloom_no_double_tax", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "25 pawn(s).", "pawns": [{"id": "RM_Vekka52277", "name": "Vekka
+    {"name": "bloom_spares_roofed", "toggle": "ventBloomExposureEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "25 pawn(s).", "pawns": [{"id": "RM_Vekka
+    {"name": "bloom_spares_natives", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: this map's biome offers no native/non-native herbivore pair to compare", "evidence": [{"call": "UNMEASURED", "result": "this map's biome of
+    {"name": "bloom_toggle_off", "toggle": "ventBloomExposureEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_health", "result": {"success": true, "action": "remove", "didWhat": "removed RM_VentMetalLo
+    {"name": "bloom_factor_scales", "toggle": "ventBloomExposureFactor", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "ventBloomExposureF
+CHAIN water None {"name": "water", "situational": null, "modal_check": null}
+    {"name": "water_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction PlayerColony.", "spawnedCount": 1
+    {"name": "water_poison_on", "toggle": "vexxissPoisonsWater", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_terrain_batch", "result": {"success": true, "message": "Applied 1/1 op(s): 0 cell(s) changed, 64 a
+    {"name": "water_letter_arrives", "toggle": "vexxissWaterLetter", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_terrain_batch", "result": {"success": true, "message": "Read 64 cell(s) as 2 distinct terrain(
+    {"name": "water_letter_cooldown", "toggle": "vexxissWaterLetter", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "24 pawn(s).", "pawns": [{"id": "RM_Vekka5227
+    {"name": "water_letter_toggle_off", "toggle": "vexxissWaterLetter", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/letter_list", "result": {"success": true, "count": 79, "letters": [{"label": {"RawText": "Death
+    {"name": "water_poison_toggle_off", "toggle": "vexxissPoisonsWater", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: vexxiss C left its pond ((143, 170)), so it never waded", "evidence": [{"call": "bridge_call jawa/mod_settings_field", 
+CHAIN fire None {"name": "fire", "situational": null, "modal_check": null}
+    {"name": "fire_warden_beats_fire", "toggle": "vexxissFireWardenEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Vexxiss in faction (no
+    {"name": "fire_warden_toggle_off", "toggle": "vexxissFireWardenEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_fire", "result": {"success": true, "action": "extinguish", "cellsTried": 256, "firesSt
+CHAIN vents None {"name": "vents", "situational": null, "modal_check": null}
+    {"name": "vents_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_ScatterDusk", "after": "RM_ScatterDusk", "lockInForce": true, 
+    {"name": "vent_weather_multiplier", "toggle": "ventWeatherEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 5013 examined.",
+    {"name": "vent_falter_precedes_bloom", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_VapourBank", "after": "RM_VentBloom", "lockInForce":
+    {"name": "vent_exposure_is_local", "toggle": "ventLocalExposureEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_VentBloom", "after": "RM_VentBloom
+    {"name": "vexxiss_drinks_vent", "toggle": "vexxissDrinksVentsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_VentBloom", "after": "RM_ScatterDusk
+    {"name": "vent_silences_and_recovers", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "ventSilenceDays", "fieldKind": "
+CHAIN log None {"name": "log", "situational": null, "modal_check": null}
+    {"name": "log_clean", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/drain_log", "result": {"success": true, "message": "1 message(s) of 538 in the buffer.", "totalInBuffer": 538, "messages": [{
+ALL_GREEN False FINDINGS 1

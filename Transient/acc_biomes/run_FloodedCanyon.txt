@@ -1,0 +1,158 @@
+[fc] 21:45:24 shipped_defs_resolve PASS 
+[fc] 21:45:24 control_absent_def_reads_absent PASS 
+[fc] 21:45:24 flora_expansion_shape PASS 
+[fc] 21:45:24 biomeRarityFactor_round_trips PASS 
+[fc] 21:45:25 featureInOtherBiomes_round_trips PASS 
+[fc] 21:45:25 floodCycleEnabled_round_trips PASS 
+[fc] 21:45:25 floodPeriodDays_round_trips PASS 
+[fc] 21:45:26 chimeLeadTimeHours_round_trips PASS 
+[fc] 21:45:26 floodDurationHours_round_trips PASS 
+[fc] 21:45:26 floodDamageEnabled_round_trips PASS 
+[fc] 21:45:27 growthCouplingEnabled_round_trips PASS 
+[fc] 21:45:27 soakDecayDays_round_trips PASS 
+[fc] 21:45:27 fossilSeamsEnabled_round_trips PASS 
+[fc] 21:45:27 fossilSeamsInOtherBiomes_round_trips PASS 
+[fc] 21:45:28 fossilSeamDensity_round_trips PASS 
+[fc] 21:45:28 floodRecutSeamsEnabled_round_trips PASS 
+[fc] 21:45:28 floodRecutSeamCount_round_trips PASS 
+[fc] 21:45:29 muttavaqWaterWakeEnabled_round_trips PASS 
+[fc] 21:45:29 muttavaqDigInEnabled_round_trips PASS 
+[fc] 21:45:29 peakstormBiasEnabled_round_trips PASS 
+[fc] 21:45:29 chimeStagingEnabled_round_trips PASS 
+[fc] 21:45:29 fiveBeatsEnabled_round_trips PASS 
+[fc] 21:45:30 heraldLeadHours_round_trips PASS 
+[fc] 21:45:30 recedeFeastEnabled_round_trips PASS 
+[fc] 21:45:30 recedeMigrantsEnabled_round_trips PASS 
+[fc] 21:45:30 irqitCohortMax_round_trips PASS 
+[fc] 21:45:30 floodlineSalvageEnabled_round_trips PASS 
+[fc] 21:45:30 salvageDecayDays_round_trips PASS 
+[fc] 21:45:30 floraExpansionEnabled_round_trips PASS 
+[fc] 21:45:30 zennaqLightningPullEnabled_round_trips PASS 
+[fc] 21:45:30 ledgeRefugeEnabled_round_trips PASS 
+[fc] 21:45:30 chimeAnchorsEnabled_round_trips PASS 
+[fc] 21:45:31 cycle_inert_on_plain_map PASS 
+[fc] 21:45:31 arm_reaches_standing_flood PASS 
+[fc] 21:45:32 recede_clears_footprint_and_reschedules PASS 
+[fc] 21:45:32 master_off_refuses_flood PASS 
+[fc] 21:45:32 herald_then_chime_then_wall PASS 
+[fc] 21:45:33 five_beats_off_skips_herald PASS 
+[fc] 21:45:33 flood_soaks_cells_via_explosive_growth UNMEASURED UNMEASURED: Explosive Growth is not loaded on this tier (report says ABSENT): the soak is a no-op by design, which the flood_cycle chain covers; run on a list carrying it
+[fc] 21:45:34 salvage_scattered_only_when_enabled PASS 
+[fc] 21:45:36 irqit_cohort_only_when_enabled PASS 
+[fc] 21:45:37 recede_recuts_seams_only_when_enabled UNMEASURED UNMEASURED: no new seam after a recede (7 -> 7): the footprint touched no natural, non-resource rock face on this site, or a real fault; the control above proves the off arm only
+[fc] 21:45:37 trained_animal_runs_for_ledge UNMEASURED UNMEASURED: SITE: the test animal spawned ON the debug ledge (anchor is at the map centre); nothing to run for
+[fc] 21:45:38 refuge_off_sends_nobody UNMEASURED UNMEASURED: SITE: the test animal spawned ON the debug ledge (anchor is at the map centre); nothing to run for
+[fc] 21:45:38 zennaq_hit_rate_beats_control UNMEASURED UNMEASURED: needs a [Tool] that calls RM_ZennaqLightning.Redirect on a spawned zennaq and a control plant (the strike chooser is a public static; no bridge tool wraps it yet). Offline the shape is checked by flora_expansion_shape
+[fc] 21:45:38 pawn_in_footprint_takes_light_blunt UNMEASURED UNMEASURED: the footprint is a map-wide BFS from a random seed (not placeable), so a pawn cannot be put under the wall on demand; needs a debug seed or a bridge tool placing the seed
+[fc] 21:45:38 dug_channel_filled_not_erased UNMEASURED UNMEASURED: needs a FlowWorks-dug channel inside the footprint and an F-level read through a FlowWorks tool; no combined tier or seed control exists yet (CANYON_FLOOD_ERASES_CANALS_1 is the engine side)
+[fc] 21:45:38 peakstorm_light_pulls_next_flood UNMEASURED UNMEASURED: a single 0.6 chance roll per cycle (PeakstormPullChance): statistical, needs a seeded RNG or a read of the roll
+[fc] 21:45:38 muttavaq_wakes_on_water_and_seals_dry UNMEASURED UNMEASURED: needs a pan-sleeping muttavaq spawned on a flooded cell and the dry-down watched; no seed control to put water on its pan
+[fc] 21:45:38 neutral_visitor_runs_for_ledge UNMEASURED UNMEASURED: t.spawn_pawn only spawns player or hostile pawns; needs a neutral-faction visitor spawn (a visitor incident fired through the bridge, or a spawn_pawn faction=neutral) before the humanlike half is provable
+[fc] 21:45:38 chime_tolls_from_nearest_anchor UNMEASURED UNMEASURED: no ThingDef carries RM_ChimeAnchorExtension yet (the chime-line's physical form waits on the ledge-form ruling), and the chime position is not in the flood report
+[fc] 21:45:38 flier_group_arrives_on_recede UNMEASURED UNMEASURED: needs a biome roster with a flight-capable animal (map.Biome.AllWildAnimals); a plain biome has none: run on an RM_FloodedCanyon map
+[fc] 21:45:38 all_settings_at_shipped_defaults PASS 
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\FloodedCanyon_20261008T044538Z.html
+CHAIN defs_resolve None {"name": "defs_resolve", "situational": null, "modal_check": null}
+    {"name": "shipped_defs_resolve", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFo
+    {"name": "control_absent_def_reads_absent", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "0 of 1 def(s) resolved; 1 not found", "requested": 1,
+CHAIN flora_expansion None {"name": "flora_expansion", "situational": null, "modal_check": null}
+    {"name": "flora_expansion_shape", "toggle": "floraExpansionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_biomeRarityFactor None {"name": "flip_biomeRarityFactor", "situational": null, "modal_check": null}
+    {"name": "biomeRarityFactor_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_featureInOtherBiomes None {"name": "flip_featureInOtherBiomes", "situational": null, "modal_check": null}
+    {"name": "featureInOtherBiomes_round_trips", "toggle": "featureInOtherBiomes", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_floodCycleEnabled None {"name": "flip_floodCycleEnabled", "situational": null, "modal_check": null}
+    {"name": "floodCycleEnabled_round_trips", "toggle": "floodCycleEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_floodPeriodDays None {"name": "flip_floodPeriodDays", "situational": null, "modal_check": null}
+    {"name": "floodPeriodDays_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_chimeLeadTimeHours None {"name": "flip_chimeLeadTimeHours", "situational": null, "modal_check": null}
+    {"name": "chimeLeadTimeHours_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_floodDurationHours None {"name": "flip_floodDurationHours", "situational": null, "modal_check": null}
+    {"name": "floodDurationHours_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_floodDamageEnabled None {"name": "flip_floodDamageEnabled", "situational": null, "modal_check": null}
+    {"name": "floodDamageEnabled_round_trips", "toggle": "floodDamageEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_growthCouplingEnabled None {"name": "flip_growthCouplingEnabled", "situational": null, "modal_check": null}
+    {"name": "growthCouplingEnabled_round_trips", "toggle": "growthCouplingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_soakDecayDays None {"name": "flip_soakDecayDays", "situational": null, "modal_check": null}
+    {"name": "soakDecayDays_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_fossilSeamsEnabled None {"name": "flip_fossilSeamsEnabled", "situational": null, "modal_check": null}
+    {"name": "fossilSeamsEnabled_round_trips", "toggle": "fossilSeamsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_fossilSeamsInOtherBiomes None {"name": "flip_fossilSeamsInOtherBiomes", "situational": null, "modal_check": null}
+    {"name": "fossilSeamsInOtherBiomes_round_trips", "toggle": "fossilSeamsInOtherBiomes", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_fossilSeamDensity None {"name": "flip_fossilSeamDensity", "situational": null, "modal_check": null}
+    {"name": "fossilSeamDensity_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_floodRecutSeamsEnabled None {"name": "flip_floodRecutSeamsEnabled", "situational": null, "modal_check": null}
+    {"name": "floodRecutSeamsEnabled_round_trips", "toggle": "floodRecutSeamsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_floodRecutSeamCount None {"name": "flip_floodRecutSeamCount", "situational": null, "modal_check": null}
+    {"name": "floodRecutSeamCount_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_muttavaqWaterWakeEnabled None {"name": "flip_muttavaqWaterWakeEnabled", "situational": null, "modal_check": null}
+    {"name": "muttavaqWaterWakeEnabled_round_trips", "toggle": "muttavaqWaterWakeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_muttavaqDigInEnabled None {"name": "flip_muttavaqDigInEnabled", "situational": null, "modal_check": null}
+    {"name": "muttavaqDigInEnabled_round_trips", "toggle": "muttavaqDigInEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_peakstormBiasEnabled None {"name": "flip_peakstormBiasEnabled", "situational": null, "modal_check": null}
+    {"name": "peakstormBiasEnabled_round_trips", "toggle": "peakstormBiasEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_chimeStagingEnabled None {"name": "flip_chimeStagingEnabled", "situational": null, "modal_check": null}
+    {"name": "chimeStagingEnabled_round_trips", "toggle": "chimeStagingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_fiveBeatsEnabled None {"name": "flip_fiveBeatsEnabled", "situational": null, "modal_check": null}
+    {"name": "fiveBeatsEnabled_round_trips", "toggle": "fiveBeatsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_heraldLeadHours None {"name": "flip_heraldLeadHours", "situational": null, "modal_check": null}
+    {"name": "heraldLeadHours_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_recedeFeastEnabled None {"name": "flip_recedeFeastEnabled", "situational": null, "modal_check": null}
+    {"name": "recedeFeastEnabled_round_trips", "toggle": "recedeFeastEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_recedeMigrantsEnabled None {"name": "flip_recedeMigrantsEnabled", "situational": null, "modal_check": null}
+    {"name": "recedeMigrantsEnabled_round_trips", "toggle": "recedeMigrantsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_irqitCohortMax None {"name": "flip_irqitCohortMax", "situational": null, "modal_check": null}
+    {"name": "irqitCohortMax_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_floodlineSalvageEnabled None {"name": "flip_floodlineSalvageEnabled", "situational": null, "modal_check": null}
+    {"name": "floodlineSalvageEnabled_round_trips", "toggle": "floodlineSalvageEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_salvageDecayDays None {"name": "flip_salvageDecayDays", "situational": null, "modal_check": null}
+    {"name": "salvageDecayDays_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_floraExpansionEnabled None {"name": "flip_floraExpansionEnabled", "situational": null, "modal_check": null}
+    {"name": "floraExpansionEnabled_round_trips", "toggle": "floraExpansionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_zennaqLightningPullEnabled None {"name": "flip_zennaqLightningPullEnabled", "situational": null, "modal_check": null}
+    {"name": "zennaqLightningPullEnabled_round_trips", "toggle": "zennaqLightningPullEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_ledgeRefugeEnabled None {"name": "flip_ledgeRefugeEnabled", "situational": null, "modal_check": null}
+    {"name": "ledgeRefugeEnabled_round_trips", "toggle": "ledgeRefugeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN flip_chimeAnchorsEnabled None {"name": "flip_chimeAnchorsEnabled", "situational": null, "modal_check": null}
+    {"name": "chimeAnchorsEnabled_round_trips", "toggle": "chimeAnchorsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN feature_gate_off None {"name": "feature_gate_off", "situational": null, "modal_check": null}
+    {"name": "cycle_inert_on_plain_map", "toggle": "featureInOtherBiomes", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 226 thing(s) across 576 cell(s); 2 pawn(s)
+CHAIN flood_cycle None {"name": "flood_cycle", "situational": null, "modal_check": null}
+    {"name": "arm_reaches_standing_flood", "toggle": "floodCycleEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 576 cell(s); 2 pawn(s) le
+    {"name": "recede_clears_footprint_and_reschedules", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\Report flood state (cur
+CHAIN master_switch_off None {"name": "master_switch_off", "situational": null, "modal_check": null}
+    {"name": "master_off_refuses_flood", "toggle": "floodCycleEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 576 cell(s); 3 pawn(s) left
+CHAIN warning_sequence_five_beats None {"name": "warning_sequence_five_beats", "situational": null, "modal_check": null}
+    {"name": "herald_then_chime_then_wall", "toggle": "fiveBeatsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 576 cell(s); 3 pawn(s) le
+    {"name": "five_beats_off_skips_herald", "toggle": "fiveBeatsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 576 cell(s); 3 pawn(s) le
+CHAIN soak_coupling None {"name": "soak_coupling", "situational": null, "modal_check": null}
+    {"name": "flood_soaks_cells_via_explosive_growth", "toggle": "growthCouplingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: Explosive Growth is not loaded on this tier (report says ABSENT): the soak is a no-op by design, which
+CHAIN recede_salvage None {"name": "recede_salvage", "situational": null, "modal_check": null}
+    {"name": "salvage_scattered_only_when_enabled", "toggle": "floodlineSalvageEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 576 cell(s
+CHAIN recede_feast None {"name": "recede_feast", "situational": null, "modal_check": null}
+    {"name": "irqit_cohort_only_when_enabled", "toggle": "recedeFeastEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 0 thing(s) across 576 cell(s); 2 pawn(
+CHAIN recede_seams None {"name": "recede_seams", "situational": null, "modal_check": null}
+    {"name": "recede_recuts_seams_only_when_enabled", "toggle": "floodRecutSeamsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: no new seam after a recede (7 -> 7): the footprint touched no natural, non-resource rock face on this 
+CHAIN ledge_refuge None {"name": "ledge_refuge", "situational": null, "modal_check": null}
+    {"name": "trained_animal_runs_for_ledge", "toggle": "ledgeRefugeEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: SITE: the test animal spawned ON the debug ledge (anchor is at the map centre); nothing to run for", "evidence": [
+    {"name": "refuge_off_sends_nobody", "toggle": "ledgeRefugeEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: SITE: the test animal spawned ON the debug ledge (anchor is at the map centre); nothing to run for", "evidence": [{"call
+CHAIN zennaq_draws_lightning None {"name": "zennaq_draws_lightning", "situational": null, "modal_check": null}
+    {"name": "zennaq_hit_rate_beats_control", "toggle": "zennaqLightningPullEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: needs a [Tool] that calls RM_ZennaqLightning.Redirect on a spawned zennaq and a control plant (the strike 
+CHAIN flood_damage_light_and_nonfatal None {"name": "flood_damage_light_and_nonfatal", "situational": null, "modal_check": null}
+    {"name": "pawn_in_footprint_takes_light_blunt", "toggle": "floodDamageEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the footprint is a map-wide BFS from a random seed (not placeable), so a pawn cannot be put under the wall o
+CHAIN excavated_cells_survive None {"name": "excavated_cells_survive", "situational": null, "modal_check": null}
+    {"name": "dug_channel_filled_not_erased", "toggle": null, "beyond_toggle": true, "verdict": "UNMEASURED", "detail": "UNMEASURED: needs a FlowWorks-dug channel inside the footprint and an F-level read through a FlowWorks tool; no combined tier or seed control e
+CHAIN peakstorm_pulls_flood_forward None {"name": "peakstorm_pulls_flood_forward", "situational": null, "modal_check": null}
+    {"name": "peakstorm_light_pulls_next_flood", "toggle": "peakstormBiasEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: a single 0.6 chance roll per cycle (PeakstormPullChance): statistical, needs a seeded RNG or a read of the ro
+CHAIN muttavaq_wakes_and_digs_in None {"name": "muttavaq_wakes_and_digs_in", "situational": null, "modal_check": null}
+    {"name": "muttavaq_wakes_on_water_and_seals_dry", "toggle": "muttavaqWaterWakeEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: needs a pan-sleeping muttavaq spawned on a flooded cell and the dry-down watched; no seed control to
+CHAIN ledge_refuge_neutral_visitor None {"name": "ledge_refuge_neutral_visitor", "situational": null, "modal_check": null}
+    {"name": "neutral_visitor_runs_for_ledge", "toggle": "ledgeRefugeEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: t.spawn_pawn only spawns player or hostile pawns; needs a neutral-faction visitor spawn (a visitor incident fired
+CHAIN chime_anchors_used None {"name": "chime_anchors_used", "situational": null, "modal_check": null}
+    {"name": "chime_tolls_from_nearest_anchor", "toggle": "chimeAnchorsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: no ThingDef carries RM_ChimeAnchorExtension yet (the chime-line's physical form waits on the ledge-form ruling)
+CHAIN recede_migrants None {"name": "recede_migrants", "situational": null, "modal_check": null}
+    {"name": "flier_group_arrives_on_recede", "toggle": "recedeMigrantsEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: needs a biome roster with a flight-capable animal (map.Biome.AllWildAnimals); a plain biome has none: run on an
+CHAIN settings_restored None {"name": "settings_restored", "situational": null, "modal_check": null}
+    {"name": "all_settings_at_shipped_defaults", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+ALL_GREEN False FINDINGS 0
