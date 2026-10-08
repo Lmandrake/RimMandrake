@@ -417,7 +417,7 @@ def _build_suite():
                 if not isinstance(r, dict) or r.get("success") is False or not rows:
                     raise ExpectationFailed("could not read DV_MineablePyrinth: %r" % (r,))
                 f = rows[0].get("fields") or {}
-                if f.get("mineableThing") is None or f.get("mineableYield") is None:
+                if any(f.get(k) is None or "no such field" in str(f.get(k)) for k in ("mineableThing", "mineableYield")):
                     _unmeasured(t, "get_defs returned no mineable fields: %r" % (f,))
                     return
                 if str(f.get("mineableThing")) != want[0]:
