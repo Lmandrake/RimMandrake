@@ -1846,7 +1846,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         # a row the owner decided whose pictures changed since the snapshot he ruled on (a redo landed, a pick was
         # installed under new bytes, or the row was renamed and its decision carried over under `carriedFrom`)
         _od = ((old or {}).get("decisions") or {}).get(key) or {}
-        _when = _od.get("decidedAt") or _od.get("carriedRuledAt")
+        _when = _od.get("decidedAt") or _od.get("carriedRuledAt") or _od.get("at")
         if _when:
             # a set is new when none of its pictures was in the ledger before his ruling (first-recorded time; the
             # snapshot id cannot tell, because a rebuild that only ADDS columns keeps the ruled snapshot's id)
@@ -1854,7 +1854,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             _new = [c["letter"] for g in gitems for c in g["cols"]
                     if c["faces"] and all(_first_seen(idx, s_) > _t0 for s_ in c["faces"].values() if s_)]
             if _new:
-                flags.append(f"NEW ART since your {_when[:10]} ruling: column(s) {', '.join(sorted(set(_new)))}")
+                flags.append(f"NEW — awaiting your ruling: NEW ART since your {_when[:10]} ruling: column(s) {', '.join(sorted(set(_new)))}")
         if _od.get("carriedFrom"):
             _ai = _od.get("agentInference") or {}
             flags.append(f"your ruling carried over from {_od['carriedFrom']} (renamed row)"
