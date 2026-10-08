@@ -1,0 +1,105 @@
+**I would hold release for risks 1–6.** The geometry kernel is necessary, but the largest failures come from making each footprint cell a real building.
+
+I reviewed the inlined source. Engine links below point to decompiled code; I have not run the shipping assembly or your mod stack. The alpha-measurement tool and textures were not included, so their ground-contact classification remains unverified.
+
+1. **Critical — Growth can trap pawns and make the plant impossible to remove.**  
+   **Mechanism:** `CellTakesTrunk` protects the pawn’s current cell, but does not protect its exits. Vanilla path recovery handles an *unwalkable occupied cell*; a pawn enclosed on a walkable cell receives no such rescue. Cutting jobs still target the plant’s ordinary root-cell footprint using `PathEndMode.Touch`. The canopy selection rect does not enlarge work reach. [Pawn path recovery](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse.AI/Pawn_PathFollower.cs), [plant-cut work giver](https://github.com/Chillu1/RimWorldDecompiled/blob/master/RimWorld/WorkGiver_PlantsCut.cs).  
+   **Consequence:** A refresh can close a corridor, isolate a downed pawn, obstruct rescue, or surround the root so nobody can cut the obstruction. Non-targetable blockers without hit points also offer raiders no ordinary destructible obstacle to attack.  
+   **Mitigation:** Validate the **complete proposed footprint transaction** against the surrounding map. Preserve access to the root and escape routes for affected pawns. Explicitly choose a policy for colony/edge disconnection and implement an owner-aware way to remove obstructing plants.
+
+2. **Critical — “Items are moved aside” can mean “items are destroyed.”**  
+   **Mechanism:** `GenSpawn.CheckMoveItemsAside` despawns items, attempts nearby placement, and calls `Destroy()` if placement fails. `VanishOrMoveAside` is not a lossless operation. Your guard permits these items. [GenSpawn](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/GenSpawn.cs).  
+   **Consequence:** Growth can delete valuable items in crowded or enclosed spaces. Successive blocker spawns can also move an item repeatedly because placement excludes only the current blocker cell, not the entire pending mask.  
+   **Mitigation:** Plan relocations against the final footprint before spawning anything. If every item cannot be preserved, defer the affected additions. Treat reservations and hauling jobs as part of relocation validation.
+
+3. **Critical — Blockers permanently edit growing zones and stockpiles. Definite current behavior.**  
+   **Mechanism:** `Thing.SpawnSetup` notifies `ZoneManager` for things that cannot overlap zones; the manager removes occupied cells and invokes `CheckContiguous`. `ThingDef.CanOverlapZones` rejects impassable non-plant things even if the XML flag is changed to true. [Zone removal](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/ZoneManager.cs), [zone-overlap predicate](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/ThingDef.cs).  
+   **Consequence:** Growing, shrinking, loading, or toggling footprints can carve holes and split zones. Removing blockers does not restore those cells. “All-off = vanilla” cannot undo this damage.  
+   **Mitigation:** Add a narrowly scoped exception for this blocker in the effective overlap predicate, while independently preventing inappropriate storage/building use. Avoid automatic restoration that overwrites subsequent player zone edits.
+
+4. **High — Invisible, indestructible combat cover. Definite current bug.**  
+   **Mechanism:** `CoverGrid` registers these buildings; partial cover’s base block chance comes from `fillPercent`, so this is substantial cover. `Projectile.CanHit` allows non-target world things without consulting `building.isTargetable`; `DamageWorker.Apply` skips ordinary health damage when `useHitPoints=false`. Nothing forwards damage to `owner`. [Cover calculation](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/CoverUtility.cs), [projectile interception](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/Projectile.cs), [damage handling](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/DamageWorker.cs).  
+   **Consequence:** Bullets can disappear into invisible trunk cells while the plant remains unharmed. The XML comment promising plant damage is false.  
+   **Mitigation:** Decide whether footprint cells provide combat cover. For movement-only blocking, remove their fill/cover contribution. If they represent shootable trunk, implement owner damage and deduplicate explosion forwarding so one explosion cannot damage the owner once per blocker.
+
+5. **High — Live-owner ghost blockers survive reconciliation. Definite source defects.**  
+   **Mechanism:** `Relink` scans only the current `MaxRect`, once. `TickRare` checks owner validity, not whether the blocker belongs to the current footprint or even has an active footprint comp. `GenSpawn` invokes numerous callbacks before returning. [Spawn callbacks](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/Thing.cs).  
+   **Concrete failures:** An old larger footprint falls outside the new scan after a def update; a same-map owner move leaves undiscovered cells; or spawning throws after registering the building but before `blockers.Add(b)`. Subsequent refreshes reject the untracked building, and disabling blocking cannot remove it.  
+   **Mitigation:** Build a map-wide owner index from all blocker things after load. Reconcile missing, duplicate, misplaced, foreign-map, and unclaimed blockers. Record successfully spawned buildings even on exceptional paths. Cleanup must validate the active comp and its claims.
+
+6. **High — Growth can disable building interaction cells without touching the building.**  
+   **Mechanism:** Your guard checks occupants of the candidate cell. Vanilla construction additionally checks interaction cells belonging to nearby buildings and blueprints through `NotBlockingAnyInteractionCells`; direct spawning bypasses those placement checks. [Construction placement](https://github.com/Chillu1/RimWorldDecompiled/blob/master/RimWorld/GenConstruct.cs).  
+   **Consequence:** A trunk can block a workstation’s operating position, access to a door, or the approach needed to rescue/use something you deliberately protected from destruction.  
+   **Mitigation:** Include interaction-cell and approach reservations in footprint acceptance. Check existing buildings, blueprints, and frames—not just their occupied cells.
+
+7. **High — The general draw-size contract contradicts the measurement frame and relink bounds.**  
+   **Mechanism:** Vanilla bottom anchoring uses `visual / 2`, while the printed side is `drawSize.x * visual`. Your `Quad` reproduces that distinction, but `ContactCells` describes a measurement frame whose bottom is the root’s south edge, and `MaxRect` starts only one cell south. [Plant drawing](https://github.com/Chillu1/RimWorldDecompiled/blob/master/RimWorld/Plant.cs).  
+   **Counterexample:** `drawSize.x=2`, `visual=10` gives a 20-cell quad whose bottom is **five cells south** of the root. Desired blockers can fall outside `MaxRect`; full-growth root-relative masks need not reproduce themselves.  
+   **Mitigation:** Encode the actual measurement origin/transform. Derive relink bounds from that transform. Either support arbitrary draw sizes or explicitly reject unsupported defs. Current tests hardcode `draw_x=1` in the important sweeps.
+
+8. **High — Cell-by-cell ownership makes overlapping footprints unstable.**  
+   **Mechanism:** The edifice grid permits one edifice per cell; `CellTakesTrunk` rejects another plant’s blocker. Refresh order comes from `HashSet` iteration, and each blocker has exactly one owner. [Edifice registration](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/Building.cs).  
+   **Consequence:** Overlap belongs to whichever plant wins first. Cutting that plant opens cells still required by its neighbour until another refresh, potentially 2,000 ticks later. Protected occupants produce additional holes with similarly delayed closure.  
+   **Mitigation:** Use map-level cell claims with multiple contributing owners and one physical blocker. Removing an owner should immediately leave the union of remaining claims. Make conflict resolution deterministic.
+
+9. **High — Entity count and synchronized refreshes can cause severe hitches.**  
+   **Mechanism:** Every changed cell performs building/thing registration, path-cost updates, reachability invalidation, region dirtying, and other notifications. Walkability changes dirty surrounding regions. [Region invalidation](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/RegionDirtyer.cs).  
+   **Consequence:** Five hundred full-grown elders imply **59,000 blocker buildings at scale 1**. Every map refreshes all plants on the same modulo tick; settings also flush every map synchronously. `HasOwnBlocker` introduces quadratic scanning within each footprint.  
+   **Mitigation:** Cache geometry, use cell-indexed membership, stagger refreshes, and process only changed signatures. Benchmark initial generation/load and mass toggles separately from steady state. Never split a safety-critical footprint transaction across ticks without defining intermediate behavior.
+
+10. **Medium–high — Alpha-derived cell masks do not preserve ground topology automatically.**  
+    **Mechanism:** A base band can contain shadows, dangling cap lobes, or disconnected decorative pixels. Runtime then resamples an already quantized cell mask by **cell-centre membership**. Thin contacts can disappear; narrow gaps can close; increasing growth need not produce nested blocked sets.  
+    **Consequence:** Visually continuous roots can leak, while resampling creates pockets or moving barriers. A larger settings multiplier intentionally extends blocking beyond the art, so “where the picture touches ground” is no longer literally true.  
+    **Mitigation:** Keep the owner’s mask approach, but validate contact classification with previews and retain sufficiently fine source geometry. Specify centre-sampling versus area coverage explicitly. Check topology after projection, scaling, clipping, and occupancy exclusions. Do not infer safety from increasing blocker counts.
+
+11. **Medium–high — Drawing replay is valid only for a restricted rendering contract.**  
+    **Mechanism:** Vanilla `Plant.Print` has a separate multi-mesh branch and snow overlays. Map-mesh rendering can also suppress a plant for fog, snow/sand depth, or frozen water. Your API accepts every plant def without checking these cases. [Rendering eligibility](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/SectionLayer_Things.cs).  
+    **Consequence:** `maxMeshCount>1`, custom `Plant.Print`, graphic wrappers, texture replacements, or shader displacement can invalidate bounds and masks. Filename-only matching can silently accept unrelated replacement art. An unknown graphic’s **union fallback** can block ground absent from the displayed variant.  
+    **Mitigation:** Validate the supported renderer at opt-in. Match full asset identity plus measurement version. Measure immature/leafless/polluted variants explicitly or define a reviewed fallback. Test the actual printed material and UVs, including snow and wind bounds.
+
+12. **Medium — Large rectangles interfere with click cycling; duplicate candidates are an additional trap.**  
+    **Mechanism:** `ThingsUnderMouse` places close pawns first, then sorts cell/custom-rect candidates by altitude, followed by wider pawn candidates. It also checks duplication against the first list, not `cellThings`, so a plant at its root can enter through both paths. [Mouse enumeration](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/GenUI.cs).  
+    **Consequence:** A canopy does not universally outrank pawns, but can outrank underlying items/buildings depending on altitude. Transparent rectangle corners also count. Duplicate candidates can repeat a selection during cycling; equal-altitude plants have weak ordering.  
+    **Mitigation:** Deduplicate candidates and establish deterministic overlap priority. Preserve access to underlying things through cycling. Test centre clicks and fringe clicks separately.
+
+13. **Medium — Selection, drag selection, designators, and menus are different contracts.**  
+    **Mechanism:** Drag selection uses `MultiSelectableThingsInScreenRectDistinct` followed by category priorities. Double-click chooses a hovered exemplar before screen-wide matching. Float menus separately collect `ClickedThings` through `ThingsUnderMouse`, while keeping the actual clicked cell. Cell designators use their own cell operations. [Selector](https://github.com/Chillu1/RimWorldDecompiled/blob/master/RimWorld/Selector.cs), [float-menu context](https://github.com/Chillu1/RimWorldDecompiled/blob/master/RimWorld/FloatMenuContext.cs), [designator operations](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/Designator.cs).  
+    **Consequence:** Canopy selection does not establish canopy-based cut/harvest/forbid dragging or build placement. Menus can offer a plant interaction while movement still targets the clicked canopy cell. “Select similar” can choose an unintended overlapping species. Exact drag-box intersection behavior needs a shipping-build test.  
+    **Mitigation:** Specify each interaction independently. Resolve thing actions to the owner and its reachable work location; retain cell semantics for building. Test forbid/unforbid eligibility rather than assuming plants have vanilla forbidding support.
+
+14. **Medium — Footprints lag graphic and growth changes.**  
+    **Mechanism:** The comp refreshes periodically, but non-destructive harvesting changes growth without despawning. Graphic changes likewise need not register the comp again.  
+    **Consequence:** Selection can immediately follow new growth while collision retains the old shape for 2,000 ticks. A harvested plant can leave an oversized invisible barrier; rapid growth leaves temporary leaks.  
+    **Mitigation:** Dirty the owner on relevant growth/graphic transitions, including harvesting and settings changes. Keep desired geometry distinct from realized blockers. Ordinary death, cutting, despawn, and minification through the normal despawn path are already covered by `PostDeSpawn`; test those paths rather than adding redundant destruction hooks.
+
+15. **Medium — Gravship clearing can regenerate blockers belonging to surviving off-ship plants.**  
+    **Mechanism:** Gravship placement clears things cell-by-cell and spawns terrain, non-pawns, and pawns in stages. Blockers and their remote owner are independent things. [Gravship clearing and placement](https://github.com/Chillu1/RimWorldDecompiled/blob/master/RimWorld/GravshipPlacementUtility.cs).  
+    **Consequence:** Landing can destroy only the intersecting blockers, leaving their plant outside the landing footprint. Refresh then tries to reclaim cells; occupied building cells stay open, while empty access cells can become blocked again. Transporting owner and blockers independently also stresses cleanup order.  
+    **Mitigation:** Define owner-level landing behavior: remove intersecting plants, or permanently suppress the affected claims according to an explicit policy. Defer reconciliation through transport/placement. Keep sea-floor and other map layers scoped by `Map`; `IntVec3.y` is not a substitute for layer ownership.
+
+16. **Medium — Cache invalidation and exception handling are incomplete. Definite source bugs.**  
+    **Mechanism:** Selection caching omits position, draw-size/range changes, measurement data revisions, and exact scale. `Stamp()` quantizes the scale despite using its unquantized value in geometry. The plant postfix overwrites an existing rect instead of unioning it. `Roll()` has no `finally` around the global `Rand` state. [Rand state stack](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/Rand.cs).  
+    **Consequence:** Same-map moves can retain stale selection; distinct slider values share a cache key; other plant-selection patches can be narrowed. A throwing graphic getter can leave global RNG state altered, including from a selection query.  
+    **Mitigation:** Cache an immutable geometry signature, union existing plant rectangles, and always restore RNG in `finally`. Validate finite, bounded settings and extension values on load. `ConfigErrors` currently misses duplicate/null variants, invalid UV bounds, and oversized/non-finite parameters.
+
+17. **Lower severity, but important — These blockers do not create sealed rooms or support roofs.**  
+    **Mechanism:** At fill 0.75 they are partial fill, producing `ImpassableFreeAirExchange` regions; those districts merge into rooms with adjacent normal districts. Sight can pass over partial-fill edifices independently of `blockLight`. Roof support checks `holdsRoof`. [Region type](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/RegionTypeUtility.cs), [room merging](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/RegionAndRoomUpdater.cs), [sight rules](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/GenGrid.cs), [roof support](https://github.com/Chillu1/RimWorldDecompiled/blob/master/Verse/RoofCollapseCellsFinder.cs).  
+    **Consequence:** A movement-enclosed pocket can exchange air with its surroundings. Canopy art supplies neither roof nor shelter. Changing fill to 1 to “fix solidity” would introduce different room, sight, and combat behavior. Collapse can independently destroy blockers while their owner survives.  
+    **Mitigation:** Pin these intended behaviors in integration tests. Do not use full fill as a pathing fix. Also check terrain changes: retained blockers currently receive no renewed terrain-eligibility check.
+
+For fuzzing, **test the compiled C# kernel against an independent oracle**. The current Python mirror and expression-string checks can share the same mistake, and the mirror does not round every intermediate operation exactly as C# float arithmetic does. Add these assertions:
+
+- **Renderer agreement:** Captured vertices, material variant, and UV orientation agree with the kernel for actual seeded `Plant.Print` calls. Exercise both anchoring branches and supported graphic states.
+- **General transforms:** Include draw-size multipliers other than 1, negative coordinates, map edges, and growth/settings values immediately around every cell-boundary crossing.
+- **Bounds correctness:** The selection rect contains root, all intended visible bounds, and required footprint cells. Its picture component is minimally covering under the chosen boundary convention.
+- **Mask correctness:** Output cells are unique, exclude the root, and satisfy the independent inverse-transform predicate. Translation and reflection work at the continuous-geometry level; double mirroring restores the original.
+- **Valid domain:** Reject NaN, infinity, inverted UV bounds, invalid measurement sizes, and unsupported renderers. Bound iteration count and allocation size.
+- **Topology:** Check projected masks for inaccessible pockets and unsafe disconnections using the engine’s movement rules. Do this again after map clipping and occupancy exclusions.
+- **Transactional safety:** A refresh preserves protected things and every item, introduces no pawn entrapment, and leaves reachable owner work access. Failed planning makes no partial destructive edits.
+- **Reconciliation:** Refresh is idempotent. Save/load, owner removal, settings-off, and exception recovery leave exactly the expected union of claims, with no duplicates or ghosts.
+- **Overlap order:** Permuting registration, load, and refresh order produces the same realized collision result. Removing one owner preserves all other owners’ claims.
+- **Cache correctness:** Cached and uncached results agree after changing each signature field independently. Selection queries preserve RNG state even when injected graphic operations throw.
+- **Engine integration:** Assert zone preservation, interaction-cell access, intended cover/LOS/room/roof behavior, and distinct mouse candidates. Include harvest, fire death, minify/replant, quest spawning, gravship landing, and pawns spawned into footprint areas.
+- **Performance:** Measure worst refresh duration, spawned-entity count, region rebuilds, allocations, and save/load cost at the intended maximum density.
+
+Mutation tests should kill removal of the root exemption, wrong flip axis, altered anchoring, boundary off-by-ones, missing cache fields, incomplete cleanup, overlap-owner loss, ignored spawn failures, and non-restored RNG state. **Increasing blocker count with growth is not a sufficient invariant, and strict nesting is not generally valid for arbitrary scaled masks.**
