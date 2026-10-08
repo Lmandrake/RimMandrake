@@ -24,6 +24,7 @@ The female blarth gave birth to three to four pups once or twice a year. Mother 
 
 ## Visual brief
 All three images are LEGENDS continuity (Blarth/Legends page); no canon-page image exists. They agree closely.
+Neither the canon nor the Legends text gives a colour, spiral pores, tusks or horn nubs: all of those below come from the Legends images alone. Canon recognition rests on *Star Wars: Absolutely Everything You Need to Know* (2015, https://starwars.fandom.com/wiki/Blarth); the species first appeared in *The Art of Star Wars Episode I* (Legends) and not in the film itself.
 - **Body**: a stout, rotund, low-slung amphibian-like quadruped, roughly seal/hippo-pup in bulk, with a barrel torso and short stubby legs. Front legs short with small clawed/toed feet; hind end tapers into a long, thick tail.
 - **Colour**: pale powder blue-grey hide, lighter cream-white on belly and throat, soft warm peach-orange highlights; smooth, wrinkled, rubbery skin with no fur or scales.
 - **Markings**: scattered small circular whorl/spiral dimples (concentric ring pores) over the back and flanks.

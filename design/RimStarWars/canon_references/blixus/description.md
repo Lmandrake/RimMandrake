@@ -8,6 +8,8 @@
 
 Blixus were rare, half-shelled semi-aquatic creatures native to Sljee.
 
+Infobox (Databank, per Wookieepedia): height 6.48 m, length 13.33 m, skin colour red and teal (teal from *The Clone Wars* "Kidnapped"), eye colour yellow, habitat lagoons, carnivore; found on Scarif and other watery worlds, where they dragged careless individuals into lagoons to eat them. In "Kidnapped" Darts D'Nar kept one aboard the *Tecora* and loosed it on Anakin and Ahsoka, wrapping and coiling with its tentacles.
+
 **Biology and appearance** They possessed five tentacles and six sharp legs. They shared a common ancestor with the rathtar, vixus, and sarlacc, all possessing a large maw, tentacles, and a voracious appetite. Each was native to different worlds, and the different species had adapted separately to become great hunters in their specific environments.
 ### Legends — https://starwars.fandom.com/wiki/Blixus/Legends
 
@@ -20,7 +22,7 @@ Two images, and they disagree sharply on colour and body plan, so read both befo
 - **Canon (`wookieepedia_canon_1.webp`, Clone Wars 3D render, side view):** a compact, low, crab/trilobite-like body. The top is a smooth teal-blue overlapping armour carapace (flared plates like a horseshoe-crab or isopod shell, pale veining on the head plate) that sweeps back past the body. Beneath it the flesh is soft pinkish-tan, with a wide, lip-lined slit of a mouth low on the front of the underbelly. Two small amber/orange eyes sit under the carapace brim. Six rigid, blade-like blue-grey chitin legs (jointed with rusty-orange joints) point down and slightly forward like picks; two small pincer claws sit near the mouth. Five very long, thick, flesh-pink tentacles (finely ringed like an earthworm) trail and loop from the front/upper body, each longer than the whole body; the distal third is grey and studded with small thorn spikes, ending in a flat pink paddle-pad with a ring of dark suckers.
 - **Legends (`wookieepedia_legends_1.webp`, comic panel):** the same animal reads as a squid-like thing in red-orange with yellow-gold armour plates and yellow scaly sucker-skin, a large yellow eye with a black slit pupil, and a yellow beak/crest. LEGENDS continuity, and the colours (red-orange and yellow, not teal and pink) do not match canon. Do not blend the palettes.
 - Text agrees with both on the count: five tentacles, six legs, half-shell.
-- Size: the tentacles dwarf the body; no scale reference in the images (comic shows it filling a corridor beside droid-suited figures, indicating human-plus size).
+- Size: canon dimensions are 6.48 m high and 13.33 m long (Databank, https://starwars.fandom.com/wiki/Blixus); the images give no scale reference, and the "compact" low body reading above describes only the central body, not the whole animal. Canon lists yellow eyes and red as well as teal skin; the "amber" eyes above are an image reading.
 
 ## Must show
 - [ ] Low armoured half-shell carapace over the back (teal-blue, overlapping flared plates), soft pink underbelly exposed below it

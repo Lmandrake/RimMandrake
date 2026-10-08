@@ -13,13 +13,20 @@ meters tall, ~4,000 kg, with **extensive shaggy fur, brown or black in
 color**. **Both sexes carry a pair of spiraling horns** that grow a new knob
 each year (age is inferable from horn curl). Wide mouths, bright inquisitive
 eyes, a large tail that drags on the ground, and wide flat four-digit feet.
-Females produce blue milk. Diet: omnivorous, peaceful, herd-living; capable of
+Females produce blue milk. Infobox also gives length 6.39 m, lifespan 80
+standard years, subspecies dune bantha and dwarf bantha, and notes the "white
+banthas" of Nelvaan merely share the name
+(https://starwars.fandom.com/wiki/Bantha). **Legends only**: bulls were larger
+than cows, and most females achieved just a single spiral of horn while males
+could reach two (https://starwars.fandom.com/wiki/Bantha/Legends) - the canon
+page says only that both sexes have horns. Diet: omnivorous, peaceful, herd-living; capable of
 eating meat (Boba Fett fed his bantha cooked scurrier remains) despite usually
 grazing desert vegetation. Canon role: the iconic Tatooine pack/riding animal,
 overwhelmingly associated with Tusken Raiders but also used by moisture
 farmers and settlers for bantha steak, butter, clothing, and furniture from
 domesticated herds. Appears on-screen from *A New Hope* onward (Tusken Raiders
-riding banthas above the Jundland Wastes) through *The Mandalorian*/*The Book
+riding banthas above the Jundland Wastes; Tuskens also feed banthas to krayt
+dragons in *The Mandalorian* "Chapter 9: The Marshal") through *The Mandalorian*/*The Book
 of Boba Fett*.
 
 ## Visual brief
