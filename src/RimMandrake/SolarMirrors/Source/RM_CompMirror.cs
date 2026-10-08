@@ -44,6 +44,8 @@ namespace RimMandrake.SolarMirrors
         private bool repairRequested;
         private List<IntVec3> detents = new List<IntVec3>();
         private int detentIndex = -1;
+        // Saved (validation pass 2): aimed with no light to aim by (a re-aim job at night); the next sunlit pass sets the normal.
+        private bool aimDeferred;
 
         // Last light pass, for the inspect pane and rendering. Not saved.
         public float lastSource;
@@ -193,10 +195,36 @@ namespace RimMandrake.SolarMirrors
             return (GroundPoint(cell) - FacePoint).normalized;
         }
 
+        public bool AimDeferred => aimDeferred && target.IsValid;
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            // Validation pass 2: a reinstalled mirror keeps its saved aim; an aim now out of reach is dropped, since a
+            // held target is never range-checked again (the targeter is the only range check).
+            if (!respawningAfterLoad && !Props.ancient && (target.IsValid && !AimInReach(target) || pendingTarget.IsValid && !AimInReach(pendingTarget)))
+            {
+                target = IntVec3.Invalid;
+                pendingTarget = IntVec3.Invalid;
+                normal = Vector3.zero;
+                aimDeferred = false;
+            }
             RM_MapComponent_MirrorLight.For(parent.Map)?.Register(this);
+        }
+
+        public bool AimInReach(IntVec3 cell)
+        {
+            return cell.InBounds(parent.Map) && HorizontalDistTo(cell) <= Props.maxRange;
+        }
+
+        /// <summary>The light pass found the sun for a mirror aimed in the dark: commit the normal now.</summary>
+        public void ResolveDeferredAim(Vector3 sun)
+        {
+            aimDeferred = false;
+            if (target.IsValid)
+            {
+                normal = RM_MirrorMath.Normal(sun, DirTo(target));
+            }
         }
 
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
@@ -237,6 +265,7 @@ namespace RimMandrake.SolarMirrors
             target = IntVec3.Invalid;
             normal = Vector3.zero;
             pendingTarget = IntVec3.Invalid;
+            aimDeferred = false;
             RM_MapComponent_MirrorLight.For(parent.Map)?.RequestPass();
         }
 
@@ -258,27 +287,24 @@ namespace RimMandrake.SolarMirrors
             }
             RM_MapComponent_MirrorLight comp = RM_MapComponent_MirrorLight.For(parent.Map);
             // The light it gets now: the sun for a collector, or the upstream mirror's beam for a
-            // relay (recorded by the last pass even when an un-aimed relay could not fire).
-            Vector3 inDir = lastInDir != Vector3.zero ? lastInDir
-                : comp != null && comp.TrySun(out Vector3 s, out _) ? s : Vector3.up;
-            normal = RM_MirrorMath.Normal(inDir, DirTo(cell));
-            comp?.RequestPass();
-        }
-
-        /// <summary>The normal to use for light arriving from inDir. A tracking mirror re-aims (and
-        /// commits it, so a later power cut freezes it there: design §5 E13). Otherwise the saved one.</summary>
-        public Vector3 NormalFor(Vector3 inDir)
-        {
-            if (HoldsTarget && target.IsValid)
+            // relay (recorded by the last pass even when an un-aimed relay could not fire). With
+            // neither (night), the aim waits for the next sunlit pass rather than inventing a sun
+            // straight overhead (validation pass 2).
+            aimDeferred = false;
+            if (lastInDir != Vector3.zero)
             {
-                Vector3 n = RM_MirrorMath.Normal(inDir, DirTo(target));
-                if (TrackingNow)
-                {
-                    normal = n;
-                }
-                return n;
+                normal = RM_MirrorMath.Normal(lastInDir, DirTo(cell));
             }
-            return normal;
+            else if (comp != null && comp.TrySun(out Vector3 s, out _))
+            {
+                normal = RM_MirrorMath.Normal(s, DirTo(cell));
+            }
+            else
+            {
+                normal = Vector3.zero;
+                aimDeferred = true;
+            }
+            comp?.RequestPass();
         }
 
         public override void PostExposeData()
@@ -291,6 +317,7 @@ namespace RimMandrake.SolarMirrors
             Scribe_Values.Look(ref seized, "rmMirrorSeized", false);
             Scribe_Values.Look(ref repairRequested, "rmMirrorRepairRequested", false);
             Scribe_Values.Look(ref detentIndex, "rmMirrorDetent", -1);
+            Scribe_Values.Look(ref aimDeferred, "rmMirrorAimDeferred", false);
             Scribe_Collections.Look(ref detents, "rmMirrorDetents", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && detents == null)
             {

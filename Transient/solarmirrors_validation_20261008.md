@@ -89,10 +89,42 @@ needs standable cells); the design's "every mirror's interaction cell reachable 
   a hand-edited setting below 0 refused every field; `Generate` now clamps it the way the pass does.
 - Opened vault drops its destroyed seal reference.
 - `winbuild.py SolarMirrors`: 0 warnings, 0 errors; JawaBench companion `build.py --gm` builds (plan only, not deployed).
+- Published `3306b9a1a` (pass 1). The clone's worktree holds other agents' unstaged edits, so `pull --rebase` refused; the
+  commit was replayed onto origin/main through a private index (worktree and their files untouched) and pushed as a
+  fast-forward. The local branch still carries the pre-graft `e92ee8259`; a later `pull --rebase` drops it as identical.
+
+## Reruns on the final kernel
+
+- Fuzz: 14,300 cases, 0 failures (math 4000, pass 4000, sequence 1500, field 1200, generate 600, chain 3000), ~15 s.
+- Mutations: **56/56 caught** (one run of #47 reported BUILD BROKEN, a staging flake; rerun alone: caught).
+- `selftest_solarmirrors.py`: lint 0 ERROR 0 WARN, static PASS.
+- `run_selftests.py`: 333/336. Not this mod: `artpipe/selftest_artpipe_state.py` (art ledger image read),
+  `rimflow/selftest_items_glob_live.py` (ledger row), `modcheck/selftest.py` (240 s timeout). Both SolarMirrors selftests
+  and walklint pass.
 
 ## Pass 2 — looking for a new kind of problem
 
-(pending)
+An independent read-only reviewer (Opus, briefed with D1-D7 as excluded) checked engine APIs in RimSage and found four
+NEW kinds, all confirmed against the code here and fixed:
+
+- **P2-1 MOD/light provenance.** The latch credited any mirror light: one 10-wood signal mirror per stone opened the vault
+  with zero re-aims, skipping the solver and the hints. Fix: `CurrentlySolved` also needs `FieldConfigurationSolves()` (the
+  heliostats' detents encode to a stored strict solution). Sun-stones still answer any light for display (§3.2). So the
+  colony now needs >= minStrict >= minReAims >= setting jobs. INTERPRETATION: design §3.4 never says colony mirrors may
+  count; flag for the owner if he wants them to.
+- **P2-2 MOD/night aim.** `CommitAim` with no incoming light fell back to a sun straight overhead, so a static mirror
+  re-aimed at night threw wide all next day. Fix: `aimDeferred` (saved); the next sunlit pass sets the normal.
+- **P2-3 MOD/range.** A held target is never range-checked after the targeter; a minified mirror reinstalled elsewhere kept
+  throwing at its old cell at any distance. Fix: `PostSpawnSetup` (not on load, not ancient) drops an aim out of reach.
+- **P2-4 MOD/mapgen cost.** Worst case 40 sites x 30 attempts x 729 light passes (~875k) with no cap. Fix:
+  `maxEvaluations` (GenStep, 60,000, PROVISIONAL) shared by all sites, enforced inside `Generate` before a solve; fuzz
+  oracle (random budgets, 52 budget stops) and mutation #56.
+- Also: dead `RM_CompMirror.NormalFor` (state-mutating, no caller) removed. Reviewer note checked: "stone k is no mirror's
+  detent" can only fail on accepted layouts but did catch mutation #50 (seed 82), so it is not blind. Unverified nit: the
+  unclaimable brass pins may refuse blueprints on their 12-18 cells.
+
+Offline instruments for P2-1..3 are static guards (Verse code, not kernel); each seen RED on a planted edit. Mutations
+57/57 caught (#56 new).
 
 ## Only a live run can prove
 

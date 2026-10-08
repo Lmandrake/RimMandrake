@@ -147,7 +147,8 @@ namespace RimMandrake.SolarMirrors.SelfTest
             return allLit ? 2 : allHeld ? 1 : 0;
         }
 
-        private sealed class GenRun { public RM_FieldLayout layout; public FieldSite site; public int setN, setWant, setDet, setChain, attempts, n, d, want; }
+        private sealed class GenRun { public RM_FieldLayout layout; public FieldSite site; public int setN, setWant, setDet, setChain, attempts, n, d, want, budget; }
+        public static long GenBudgetStops;
 
         private static GenRun RunGenerate(int seed)
         {
@@ -161,6 +162,7 @@ namespace RimMandrake.SolarMirrors.SelfTest
             int stones = r.Next(8) == 0 ? r.Next(0, 7) : r.Next(2, 5);
             var site = GenSite(r, n, stones, setChain);
             int attempts = r.Next(1, 9);
+            int budget = r.Next(4) == 0 ? r.Next(0, 3000) : int.MaxValue;
             var rng = new Random(seed * 31 + 7);
             var pass = new RM_MirrorKernel.Pass();
             var res = new RM_MirrorResult[site.sc.specs.Length];
@@ -175,8 +177,8 @@ namespace RimMandrake.SolarMirrors.SelfTest
                     var sl = new float[stones];
                     for (int k = 0; k < stones; k++) sl[k] = pass.Light[site.stoneCell[k]];
                     return RM_MirrorFieldKernel.LevelOf(sl, stones, StoneLitAt, StoneUnlitBelow);
-                });
-            return new GenRun { layout = lay, site = site, setN = setN, setWant = setWant, setDet = setDet, setChain = setChain, attempts = attempts, n = nm, d = d, want = want };
+                }, budget);
+            return new GenRun { layout = lay, site = site, setN = setN, setWant = setWant, setDet = setDet, setChain = setChain, attempts = attempts, n = nm, d = d, want = want, budget = budget };
         }
 
         private static string GenerateCase(int seed)
@@ -194,6 +196,8 @@ namespace RimMandrake.SolarMirrors.SelfTest
             Check(lay != null, "Generate returned null");
             Check(lay.attempts >= 0 && lay.attempts <= g.attempts, $"Generate ran {lay.attempts} attempts, allowed {g.attempts}");
             Check(lay.evaluations <= (long)g.attempts * Math.Max(0, total), $"Generate evaluated {lay.evaluations} configurations, bound {g.attempts} x {total}");
+            Check(lay.evaluations <= g.budget, $"Generate evaluated {lay.evaluations} configurations past its budget {g.budget}");
+            if (lay.why == "evaluation budget spent") GenBudgetStops++;
             if (total < 0) { GenTooBig++; Check(!lay.Ok && lay.evaluations == 0, "an oversized space was evaluated or accepted"); return null; }
             if (!lay.Ok) { GenRefused++; Check(lay.why != null, "a refused layout carries no reason"); return null; }
             Check(lay.why == null && lay.report != null && lay.start >= 0 && lay.start < total, "an accepted layout lacks its report or start");

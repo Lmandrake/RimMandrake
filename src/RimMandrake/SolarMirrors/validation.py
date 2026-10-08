@@ -385,6 +385,15 @@ def _guard_checks(bad):
     sim = light[light.find("public float[] SimulateLight"):]
     if "TrySun(out Vector3 sun, out float _, true)" not in sim[:1500]:
         bad.append("D5: SimulateLight reads the weather (the solver would solve a different light than mapgen lays)")
+    if "return FieldConfigurationSolves();" not in field or "solutions.Contains(RM_MirrorFieldKernel.Encode(cur" not in field:
+        bad.append("pass 2: the vault latches on any mirror light; the field's own configuration must be a stored solution")
+    if "}, budget);" not in field or "maxEvaluations" not in field:
+        bad.append("pass 2: mapgen's layout search has no evaluation budget (40 sites x 30 attempts x 729 light passes worst case)")
+    comp = open(os.path.join(SRC, "RM_CompMirror.cs"), encoding="utf-8").read()
+    if "aimDeferred = true;" not in comp or "ResolveDeferredAim(sun)" not in light:
+        bad.append("pass 2: a mirror aimed at night commits a normal for an invented overhead sun")
+    if "AimInReach(target)" not in comp:
+        bad.append("pass 2: a reinstalled mirror keeps an aim beyond its range (a held target is never range-checked again)")
     if "seal = null;" not in field:
         bad.append("the opened vault keeps a reference to its destroyed seal")
     for path in (os.path.join(HERE, "Patches", f) for f in os.listdir(os.path.join(HERE, "Patches"))):

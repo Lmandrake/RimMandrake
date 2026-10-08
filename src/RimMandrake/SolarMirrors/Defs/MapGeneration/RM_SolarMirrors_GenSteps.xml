@@ -29,6 +29,7 @@
       <ringRadius>9~15</ringRadius>          <!-- PROVISIONAL -->
       <siteAttempts>40</siteAttempts>
       <layoutAttempts>30</layoutAttempts>
+      <maxEvaluations>60000</maxEvaluations>  <!-- PROVISIONAL: simulated light passes per map, all sites -->
       <loot>                                  <!-- PROVISIONAL -->
         <Silver>250~500</Silver>
         <Gold>20~50</Gold>
