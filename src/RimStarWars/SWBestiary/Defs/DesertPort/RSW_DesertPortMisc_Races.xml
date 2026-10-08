@@ -123,22 +123,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/Terrorworm/TerrorWorm</texPath>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Vurra/RM_Vurra</texPath>
 					<drawSize>2.0</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/Terrorworm/TerrorWorm</texPath>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Vurra/RM_Vurra</texPath>
 					<drawSize>2.0</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/Terrorworm/TerrorWorm</texPath>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Vurra/RM_Vurra</texPath>
 					<drawSize>2.0</drawSize>
 				</bodyGraphicData>
 			</li>
@@ -228,22 +228,22 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Cactipine/AA_Cactipine</texPath>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
 					<drawSize>0.8</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Cactipine/AA_Cactipine</texPath>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
 					<drawSize>1.0</drawSize>
 				</bodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land -->
-					<texPath>Things/Pawn/Animal/AA_Cactipine/AA_Cactipine</texPath>
+					<!-- owner's pick on the Leaning Scrub sheet (2026-10-08), installed via the art ledger -->
+					<texPath>Things/Pawn/Animal/RM_Chikka/RM_Chikka</texPath>
 					<drawSize>1.2</drawSize>
 				</bodyGraphicData>
 			</li>
