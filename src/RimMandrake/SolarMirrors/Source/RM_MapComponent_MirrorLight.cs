@@ -467,7 +467,9 @@ namespace RimMandrake.SolarMirrors
             for (int k = 0; k < count; k++)
             {
                 RM_CompMirror m = mirrorList[k];
-                if (sunUp && m.AimDeferred)
+                // An aim made in the dark: a collector standing in sun takes the sun now; a shaded relay waits for the
+                // beam that actually reaches it (resolved after the pass, below; validation pass 3).
+                if (sunUp && m.AimDeferred && m.parent.Spawned && CollectorSource(m) > MinUseful)
                 {
                     m.ResolveDeferredAim(sun);
                 }
@@ -489,6 +491,11 @@ namespace RimMandrake.SolarMirrors
                 m.lastSpotCenter = r.hasSpot ? new IntVec3(r.spotX, 0, r.spotZ) : IntVec3.Invalid;
                 m.lastSource = r.source;
                 m.lastInDir = RM_MirrorMath.From(r.inDir);
+                if (m.AimDeferred && r.ranFire && !r.inDir.IsZero)
+                {
+                    m.ResolveDeferredAim(m.lastInDir);
+                    passRequested = true;
+                }
                 if (r.commitNormal)
                 {
                     m.CommitNormal(RM_MirrorMath.From(r.normal));
