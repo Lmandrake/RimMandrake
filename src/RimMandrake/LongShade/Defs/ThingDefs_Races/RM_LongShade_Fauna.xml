@@ -1056,12 +1056,6 @@
 			<li>
 				<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
 			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer2</texPath>
-			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer3</texPath>
-			</li>
 		</alternateGraphics>
 		<lifeStages>
 			<li>
@@ -1070,7 +1064,7 @@
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
 					<drawSize>1.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
@@ -1084,7 +1078,7 @@
 					</shadowData>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
 					<drawSize>2.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
@@ -1098,7 +1092,7 @@
 					</shadowData>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_Dessicated_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
 					<drawSize>3.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
@@ -1246,21 +1240,6 @@
 			<li>
 				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_GroundrunnerW</texPath>
-			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner2</texPath>
-			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner3</texPath>
-			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner4</texPath>
-			</li>
-			<li>
-				<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner5</texPath>
-			</li>
 		</alternateGraphics>
 		<wildGroupSize>
 			<min>2</min>
@@ -1273,7 +1252,7 @@
 					<drawSize>1.0</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 					<drawSize>1.0</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
@@ -1283,7 +1262,7 @@
 					<drawSize>1.8</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 					<drawSize>1.8</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
@@ -1293,7 +1272,7 @@
 					<drawSize>2.5</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Dessicated_Groundrunner</texPath>
+					<texPath>Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner</texPath>
 					<drawSize>2.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>

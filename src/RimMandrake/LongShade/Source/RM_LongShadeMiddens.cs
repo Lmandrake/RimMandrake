@@ -107,36 +107,26 @@ namespace RimMandrake.LongShade
         public CompProperties_RM_MiddenHeap Props => (CompProperties_RM_MiddenHeap)props;
 
         public bool CanTendNow =>
-            layers < Props.maxLayers
-            && Find.TickManager.TicksGame - lastTendTick >= Props.tendCooldownTicks;
+            RM_LongShadeKernel.CanTendNow(layers, Props.maxLayers, Find.TickManager.TicksGame, lastTendTick, Props.tendCooldownTicks);
 
         public void Tend()
         {
             lastTendTick = Find.TickManager.TicksGame;
-            progress += Props.tendGain;
-            while (progress >= 1f && layers < Props.maxLayers)
-            {
-                progress -= 1f;
-                layers++;
-            }
-            if (layers >= Props.maxLayers) progress = 0f;
+            RM_LongShadeKernel.Tend(ref layers, ref progress, Props.tendGain, Props.maxLayers);
         }
 
         public void Search(Pawn searcher)
         {
             Map map = parent.Map;
             IntVec3 at = parent.Position;
-            int rolls = layers * Props.rollsPerLayer;
+            int rolls = RM_LongShadeKernel.SearchRolls(layers, Props.rollsPerLayer);
             for (int i = 0; i < rolls; i++)
             {
                 if (!Props.yields.TryRandomElementByWeight(y => y.weight, out RM_MiddenYield y) || y.thing == null) continue;
-                int n = y.count.RandomInRange;
-                while (n > 0)
+                foreach (int stack in RM_LongShadeKernel.StackSplit(y.count.RandomInRange, y.thing.stackLimit))
                 {
                     Thing t = ThingMaker.MakeThing(y.thing);
-                    int stack = Mathf.Min(n, y.thing.stackLimit);
                     t.stackCount = stack;
-                    n -= stack;
                     GenPlace.TryPlaceThing(t, at, map, ThingPlaceMode.Near);
                 }
             }
@@ -158,7 +148,7 @@ namespace RimMandrake.LongShade
             StringBuilder sb = new StringBuilder();
             sb.Append("Layers: ").Append(layers).Append(" / ").Append(Props.maxLayers);
             int since = Find.TickManager.TicksGame - lastTendTick;
-            if (lastTendTick < 0 || since > GenDate.TicksPerDay * 10)
+            if (RM_LongShadeKernel.Untended(lastTendTick, Find.TickManager.TicksGame, GenDate.TicksPerDay))
             {
                 sb.Append("\nUntended: nothing is adding to it.");
             }
@@ -211,24 +201,23 @@ namespace RimMandrake.LongShade
         {
             if (!Eligible(pawn, out CompProperties_RM_MiddenHeap props)) return null;
             ThingDef heapDef = RM_LongShadeMiddenDefOf.RM_LongShadeMidden;
-
-            bool anyInRange = false;
-            Thing best = null;
-            float bestDist = float.MaxValue;
             List<Thing> heaps = pawn.Map.listerThings.ThingsOfDef(heapDef);
+            var spawned = new List<Thing>(heaps.Count);
+            var dist = new List<float>(heaps.Count);
+            var tendable = new List<bool>(heaps.Count);
             for (int i = 0; i < heaps.Count; i++)
             {
                 Thing h = heaps[i];
                 if (!h.Spawned) continue;
                 float d = h.Position.DistanceTo(pawn.Position);
-                if (d > props.heapSearchRadius) continue;
-                anyInRange = true;
-                RM_CompMiddenHeap c = h.TryGetComp<RM_CompMiddenHeap>();
-                if (c == null || !c.CanTendNow || d >= bestDist) continue;
-                if (!pawn.CanReach(h, PathEndMode.Touch, Danger.Some)) continue;
-                best = h;
-                bestDist = d;
+                spawned.Add(h);
+                dist.Add(d);
+                // reachability is only asked of a heap that is in range and tendable (it is the costly test)
+                RM_CompMiddenHeap c = d > props.heapSearchRadius ? null : h.TryGetComp<RM_CompMiddenHeap>();
+                tendable.Add(c != null && c.CanTendNow && pawn.CanReach(h, PathEndMode.Touch, Danger.Some));
             }
+            int pick = RM_LongShadeKernel.NearestTendable(dist, tendable, props.heapSearchRadius, out bool anyInRange);
+            Thing best = pick >= 0 ? spawned[pick] : null;
 
             if (!anyInRange)
             {
@@ -259,7 +248,7 @@ namespace RimMandrake.LongShade
         {
             Map map = pawn.Map;
             List<Thing> existing = map.listerThings.ThingsOfDef(heapDef);
-            if (existing.Count >= props.maxHeapsPerMap) return;
+            if (!RM_LongShadeKernel.ShouldBuildHeap(false, existing.Count, props.maxHeapsPerMap)) return;
             RimMandrake.CreatureBehaviors.RM_MapComponent_ShadeGrid grid;
             try { grid = RimMandrake.CreatureBehaviors.RM_MapComponent_ShadeGrid.For(map); }
             catch (Exception e)
@@ -278,7 +267,7 @@ namespace RimMandrake.LongShade
                 if (grid.ShadeAt(c) < props.minBuildShade) return false;
                 for (int i = 0; i < existing.Count; i++)
                 {
-                    if (existing[i].Position.DistanceTo(c) < props.minHeapSpacing) return false;
+                    if (!RM_LongShadeKernel.SpacingOk(existing[i].Position.DistanceTo(c), props.minHeapSpacing)) return false;
                 }
                 return pawn.CanReach(c, PathEndMode.OnCell, Danger.Some);
             }
@@ -288,7 +277,7 @@ namespace RimMandrake.LongShade
             RM_CompMiddenHeap comp = heap.TryGetComp<RM_CompMiddenHeap>();
             if (comp != null)
             {
-                comp.layers = Mathf.Clamp(props.startLayers, 0, props.maxLayers);
+                comp.layers = RM_LongShadeKernel.ClampStartLayers(props.startLayers, props.maxLayers);
                 comp.lastTendTick = Find.TickManager.TicksGame;
             }
         }

@@ -47,6 +47,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_LongShadeKernel.cs" />
     <Compile Include="RM_LongShadeMod.cs" />
     <!-- LONGSHADE_RULED_CONTENT_1 Q6 — the dewfringe's shade-boundary spawn
          gate. Needs Harmony (WildPlantSpawner.CalculatePlantsWhichCanGrowAt
