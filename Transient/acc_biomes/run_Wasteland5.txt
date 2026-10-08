@@ -1,0 +1,37 @@
+[wl] 14:20:22 site_ready_gripper PASS 
+[wl-note] gripper's starting haul: "Male, age 4 | Gripping: Component"
+[wl] 14:20:22 wild_gripper_spawns_carrying_scrap PASS 
+[wl] 14:21:50 steal_swaps_scrap_for_gold PASS 
+[wl] 14:21:51 hurt_gripper_drops_its_haul PASS 
+[wl] 14:21:51 theft_off_gripper_spawns_empty_handed PASS 
+[wl] 14:21:51 spawns_carrying_off_gripper_spawns_empty_handed PASS 
+[wl-note] tamed gripper's job after the order: {"success": false, "accepted": true, "afterJobDef": "GotoWander", "nowRunningRequested": false}
+[wl-note] Gold still beside the tamed gripper: [5]
+[wl] 14:23:19 tamed_gripper_never_steals PASS 
+[wl] 14:23:20 site_ready_flora PASS 
+[wl-note] WoodLog stacks: [25]
+[wl] 14:23:57 harvest_yields_WoodLog_from_RM_VaultRoot PASS 
+[wl-note] RawBerries stacks: [11]
+[wl] 14:24:24 harvest_yields_RawBerries_from_RM_Pusberry PASS 
+[wl-note] RawPotatoes stacks: [5]
+[wl] 14:24:48 harvest_yields_RawPotatoes_from_RM_Boilbulb PASS 
+[wl-note] Chemfuel stacks: [4]
+[wl] 14:25:10 harvest_yields_Chemfuel_from_RM_Wartshrub PASS 
+chains: ['gripper', 'flora_harvest']
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Wasteland_20261008T212510Z.html
+CHAIN gripper None {"name": "gripper", "situational": null, "modal_check": null}
+    {"name": "site_ready_gripper", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 542 thing(s) across 841 cell(s).", "cellsExamined"
+    {"name": "wild_gripper_spawns_carrying_scrap", "toggle": "gripperSpawnsCarrying", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 37
+    {"name": "steal_swaps_scrap_for_gold", "toggle": "gripperTheftEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "Gold71453", "def": "Gold", "la
+    {"name": "hurt_gripper_drops_its_haul", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/damage", "result": {"success": true, "message": "Damaged 1 thing(s) with Blunt 1.", "damageDef": "Blunt", "
+    {"name": "theft_off_gripper_spawns_empty_handed", "toggle": "gripperTheftEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'gripperTheftEnabled': False})", "result
+    {"name": "spawns_carrying_off_gripper_spawns_empty_handed", "toggle": "gripperSpawnsCarrying", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'gripperSpawnsCarrying': Fal
+    {"name": "tamed_gripper_never_steals", "toggle": "gripperTheftEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_bulk", "result": {"success": true, "dryRun": false, "filter": "factionlessAnimals",
+CHAIN flora_harvest None {"name": "flora_harvest", "situational": null, "modal_check": null}
+    {"name": "site_ready_flora", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s).", "cellsExamined": 84
+    {"name": "harvest_yields_WoodLog_from_RM_VaultRoot", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/ordered_job", "result": {"success": true, "accepted": true, "interruptibleBefore": true, "requ
+    {"name": "harvest_yields_RawBerries_from_RM_Pusberry", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/ordered_job", "result": {"success": true, "accepted": true, "interruptibleBefore": true, "be
+    {"name": "harvest_yields_RawPotatoes_from_RM_Boilbulb", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/ordered_job", "result": {"success": true, "accepted": true, "interruptibleBefore": true, "b
+    {"name": "harvest_yields_Chemfuel_from_RM_Wartshrub", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/ordered_job", "result": {"success": true, "accepted": true, "interruptibleBefore": true, "bef
+ALL_GREEN True FINDINGS 0

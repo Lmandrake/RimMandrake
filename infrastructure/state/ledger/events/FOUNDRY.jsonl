@@ -4032,3 +4032,7 @@
 {"seat":"FOUNDRY","event":"verify","id":"SCALD_FOLD_INTO_HEAT_1","result":"pass","config":"live_20261008-16","evidence":"Transient/belt_live_checks4_20261008.md","sha":"ff172269a6eb","level":"L2","criterion":"A4","ts":"2026-10-08T21:19:25Z","tsn":1791494365901346511}
 {"seat":"FOUNDRY","event":"verify","id":"SCALD_FOLD_INTO_HEAT_1","result":"pass","config":"live_20261008-16","evidence":"Transient/belt_live_checks4_20261008.md","sha":"ff172269a6eb","level":"L2","criterion":"A5","ts":"2026-10-08T21:19:26Z","tsn":1791494366667348783}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-08T21:19:30Z","tsn":1791494370624688167}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY: rerun Wasteland A3/A4 gripper+flora chains","ts":"2026-10-08T21:19:50Z","tsn":1791494390823063501}
+{"seat":"FOUNDRY","event":"verify","id":"WASTELAND_LIVE_FIXTURE_FIXES_1","result":"pass","config":"live_20261008","evidence":"Transient/modcheck/Wasteland_20261008T212510Z.json","sha":"cd6497bf0a05","level":"L2","criterion":"A3","ts":"2026-10-08T21:25:21Z","tsn":1791494721254539737}
+{"seat":"FOUNDRY","event":"verify","id":"WASTELAND_LIVE_FIXTURE_FIXES_1","result":"pass","config":"live_20261008","evidence":"Transient/modcheck/Wasteland_20261008T212510Z.json","sha":"cd6497bf0a05","level":"L2","criterion":"A4","ts":"2026-10-08T21:25:21Z","tsn":1791494722003690528}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-08T21:25:23Z","tsn":1791494723062488248}
