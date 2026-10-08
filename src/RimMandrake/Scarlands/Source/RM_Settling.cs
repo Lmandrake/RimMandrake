@@ -219,7 +219,7 @@ namespace RimMandrake.Scarlands
             if (buried == null) buried = new List<IntVec3>();
         }
 
-        private bool OnWarscar { get { return map.Biome != null && map.Biome.defName == "RM_Warscar"; } }
+        private bool OnWarscar { get { return RM_WarscarSettings.Governs(map.Biome); } }   // the Warscar, or an opted-in cross-biome map
 
         private float Bearing()
         {

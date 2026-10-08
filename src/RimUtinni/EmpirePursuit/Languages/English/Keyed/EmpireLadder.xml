@@ -19,6 +19,7 @@
   <RUT_Ladder_Cordon>Cordon (ion siege) rung</RUT_Ladder_Cordon>
   <RUT_Ladder_CordonDesc>Ion volleys stall the grav engine for a few hours. They never destroy it or close the way out.</RUT_Ladder_CordonDesc>
   <RUT_Ladder_IonLockout>Engine stalled per ion volley: {0} hours</RUT_Ladder_IonLockout>
+  <RUT_Ladder_IonVolleyInterval>Hours between ion volleys while the cordon holds: {0}</RUT_Ladder_IonVolleyInterval>
   <RUT_Ladder_Bombardment>Orbital bombardment rung (destroys buildings)</RUT_Ladder_Bombardment>
   <RUT_Ladder_BombardmentDesc>Affects the map: a day's warning, then a bombardment of the marked area around the ship.</RUT_Ladder_BombardmentDesc>
   <RUT_Ladder_Endless>Endless waves after the top rung</RUT_Ladder_Endless>

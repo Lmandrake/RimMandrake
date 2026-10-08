@@ -42,16 +42,17 @@ namespace RimMandrake.Scarlands
         public override void MapComponentTick()
         {
             if (!RM_WarscarSettings.enableWreckLichenSeeder) return;
-            if (map.Biome == null || map.Biome.defName != "RM_Warscar") return;
+            float coverage = RM_WarscarSettings.Coverage(map.Biome);   // 1 on the Warscar, the slider on an opted-in map, 0 elsewhere
+            if (coverage <= 0f) return;
             int t = Find.TickManager.TicksGame;
             if (!seeded && t >= FirstPassTick)
             {
                 seeded = true;
-                Seed(SeedChance);
+                Seed(SeedChance * coverage);
             }
             else if (seeded && t % TopUpInterval == 0)
             {
-                Seed(TopUpChance);
+                Seed(TopUpChance * coverage);
             }
         }
 
