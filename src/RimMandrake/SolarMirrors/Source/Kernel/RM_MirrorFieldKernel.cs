@@ -245,8 +245,10 @@ namespace RimMandrake.SolarMirrors
         /// picks a start at least `want` jobs from every HELD configuration, and keeps it only if Acceptable. Bounded:
         /// at most `attempts` attempts and attempts x d^n evaluations. rand(k) returns 0..k-1.</summary>
         public static RM_FieldLayout Generate(int n, int d, int stones, int want, int depthCap, int attempts, Func<int, int> rand,
-            Func<int, List<int>> candidates, Func<int, int> stoneTarget, Action<List<List<int>>> apply, EvaluateLevel eval)
+            Func<int, List<int>> candidates, Func<int, int> stoneTarget, Action<List<List<int>>> apply, EvaluateLevel eval,
+            int maxEvaluations = int.MaxValue)
         {
+            int perSolve = Configurations(n, d);
             RM_FieldLayout result = new RM_FieldLayout { why = "no layout" };
             if (n < 1 || d < 1)
             {
@@ -255,6 +257,12 @@ namespace RimMandrake.SolarMirrors
             }
             for (int attempt = 0; attempt < attempts; attempt++)
             {
+                // a whole solve per attempt: stop before one that would pass the caller's budget (mapgen cost, pass 2)
+                if (perSolve > 0 && (long)result.evaluations + perSolve > maxEvaluations)
+                {
+                    result.why = "evaluation budget spent";
+                    break;
+                }
                 result.attempts++;
                 List<List<int>> det = new List<List<int>>();
                 int shift = rand(n);

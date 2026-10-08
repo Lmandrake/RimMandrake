@@ -38,6 +38,7 @@ namespace RimMandrake.SolarMirrors
         public IntRange ringRadius = new IntRange(9, 15);   // PROVISIONAL: mirrors' distance from the stones
         public int siteAttempts = 40;
         public int layoutAttempts = 30;
+        public int maxEvaluations = 60000;                   // PROVISIONAL: simulated light passes per map, all sites together
 
         public override int SeedPart => 381104227;
 
@@ -83,7 +84,8 @@ namespace RimMandrake.SolarMirrors
             int want = RM_MirrorFieldKernel.FieldMinReAims(RM_SolarMirrorsSettings.puzzleMinReAims);
             int stonesN = ext.stones.RandomInRange;
             string lastWhy = "no site";
-            for (int site = 0; site < step.siteAttempts; site++)
+            int budget = step.maxEvaluations;      // whole-step cap on simulated light passes (validation pass 2)
+            for (int site = 0; site < step.siteAttempts && budget > 0; site++)
             {
                 if (!TryPlan(step, map, down, n, stonesN, out Plan plan))
                 {
@@ -91,7 +93,7 @@ namespace RimMandrake.SolarMirrors
                 }
                 SpawnSite(step, map, plan);
                 RecomputeShade(map);
-                if (TryLayout(step, map, light, plan, n, d, want, out RM_FieldReport report, out List<List<IntVec3>> detents, out int start, out lastWhy))
+                if (TryLayout(step, map, light, plan, n, d, want, ref budget, out RM_FieldReport report, out List<List<IntVec3>> detents, out int start, out lastWhy))
                 {
                     Commit(step, map, field, plan, report, detents, start, d);
                     return true;
@@ -358,7 +360,7 @@ namespace RimMandrake.SolarMirrors
         }
 
         private static bool TryLayout(RM_GenStep_AncientMirrorField step, Map map, RM_MapComponent_MirrorLight light, Plan p, int n, int d,
-            int want, out RM_FieldReport report, out List<List<IntVec3>> detents, out int start, out string why)
+            int want, ref int budget, out RM_FieldReport report, out List<List<IntVec3>> detents, out int start, out string why)
         {
             report = null;
             detents = null;
@@ -438,7 +440,8 @@ namespace RimMandrake.SolarMirrors
                         comps[i].SetDetentDirect(cfg[i]);
                     }
                     return StonesLevel(map, light, stones, out depth);
-                });
+                }, budget);
+            budget -= layout.evaluations;
             if (!layout.Ok)
             {
                 why = layout.why;
@@ -583,8 +586,30 @@ namespace RimMandrake.SolarMirrors
                         return false;
                     }
                 }
-                return true;
+                return FieldConfigurationSolves();
             }
+        }
+
+        /// <summary>Validation pass 2: the light must be the FIELD's. A colony's own mirror aimed at each stone lights it
+        /// (sun-stones answer any mirror light, design §3.2), but the vault opens only while the ancient heliostats stand
+        /// on a configuration the solver found lighting every stone.</summary>
+        private bool FieldConfigurationSolves()
+        {
+            if (mirrors.Count == 0 || detents < 1)
+            {
+                return false;
+            }
+            int[] cur = new int[mirrors.Count];
+            for (int i = 0; i < mirrors.Count; i++)
+            {
+                RM_CompMirror c = mirrors[i]?.TryGetComp<RM_CompMirror>();
+                if (c == null || !mirrors[i].Spawned || c.DetentIndex < 0 || c.DetentIndex >= detents)
+                {
+                    return false;
+                }
+                cur[i] = c.DetentIndex;
+            }
+            return solutions.Contains(RM_MirrorFieldKernel.Encode(cur, mirrors.Count, detents));
         }
 
         private bool StoneCounts(int k)

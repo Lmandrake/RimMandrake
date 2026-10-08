@@ -334,5 +334,11 @@
   "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
   "old": "for (int depth = 0; depth < depthCap && queue.Count > 0; depth++)",
   "new": "for (int depth = 0; depth < Math.Min(depthCap, 2) && queue.Count > 0; depth++)"
+ },
+ {
+  "name": "field: generator ignores its evaluation budget (mapgen cost, pass 2)",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (perSolve > 0 && (long)result.evaluations + perSolve > maxEvaluations)",
+  "new": "if (false)"
  }
 ]

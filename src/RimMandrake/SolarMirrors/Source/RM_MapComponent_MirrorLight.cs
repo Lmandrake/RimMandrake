@@ -467,6 +467,10 @@ namespace RimMandrake.SolarMirrors
             for (int k = 0; k < count; k++)
             {
                 RM_CompMirror m = mirrorList[k];
+                if (sunUp && m.AimDeferred)
+                {
+                    m.ResolveDeferredAim(sun);
+                }
                 bool eligible = anyEffect && sunUp && m.parent.Spawned && (m.HasAim || m.HoldsTarget && m.Target.IsValid);
                 specs[k] = SpecFor(m, eligible ? CollectorSource(m) : 0f);
             }

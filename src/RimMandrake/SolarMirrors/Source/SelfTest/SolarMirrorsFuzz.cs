@@ -856,11 +856,11 @@ namespace RimMandrake.SolarMirrors.SelfTest
                 ("chain", () => Family("chain", N(3000), S(1), ChainCase)),
             };
             return Finish("solarmirrors", sw, scale, oneSeed, only, fam,
-                () => $"relays {Relays}, deep chains {DeepChains}, blocked {Blocked}, sky misses {SkyMisses}, edge misses {EdgeMisses}, commits {Commits}, big spots {BigSpots}, cycles {Cycles}, targeted {Targeted}, untargeted {Untargeted}, night {NightPasses}, idempotent {Idempotent}, glazed {Glazed}, fields {Fields} (solvable {FieldSolvable}, accepted {FieldAccepted}, too big {FieldTooBig}, hint walks {HintWalks}), generate {GenCases} (accepted {GenAccepted}, refused {GenRefused}, held-only configurations {GenHeldOnly}, cap<0 accepted {GenLowCap}, out-of-range settings {GenOutOfRange}, too big {GenTooBig}, early-latch walks {GenWalks}, deterministic {GenDeterministic}), chain depth>=2 shots {ChainDeep}",
+                () => $"relays {Relays}, deep chains {DeepChains}, blocked {Blocked}, sky misses {SkyMisses}, edge misses {EdgeMisses}, commits {Commits}, big spots {BigSpots}, cycles {Cycles}, targeted {Targeted}, untargeted {Untargeted}, night {NightPasses}, idempotent {Idempotent}, glazed {Glazed}, fields {Fields} (solvable {FieldSolvable}, accepted {FieldAccepted}, too big {FieldTooBig}, hint walks {HintWalks}), generate {GenCases} (accepted {GenAccepted}, refused {GenRefused}, held-only configurations {GenHeldOnly}, cap<0 accepted {GenLowCap}, out-of-range settings {GenOutOfRange}, too big {GenTooBig}, early-latch walks {GenWalks}, budget stops {GenBudgetStops}, deterministic {GenDeterministic}), chain depth>=2 shots {ChainDeep}",
                 () => Relays > 0 && DeepChains > 0 && Blocked > 0 && SkyMisses > 0 && EdgeMisses > 0 && Commits > 0 && BigSpots > 0 && Cycles > 0 && Targeted > 0 && Untargeted > 0 && NightPasses > 0 && Idempotent > 0
                       && (only != null || Glazed > 0 && FieldSolvable > 0 && FieldAccepted > 0 && FieldTooBig > 0 && HintWalks > 0
                           && GenAccepted > 0 && GenRefused > 0 && GenHeldOnly > 0 && GenLowCap > 0 && GenOutOfRange > 0 && GenTooBig > 0
-                          && GenWalks > 0 && GenDeterministic > 0 && ChainDeep > 0));
+                          && GenWalks > 0 && GenDeterministic > 0 && ChainDeep > 0 && GenBudgetStops > 0));
         }
     }
 }
