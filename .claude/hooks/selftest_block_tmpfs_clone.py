@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Selftest for block_tmpfs_clone.py (invokes the hook script with PreToolUse JSON on stdin)."""
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -8,6 +9,7 @@ from pathlib import Path
 HOOK = Path(__file__).with_name("block_tmpfs_clone.py")
 URL = "git@github.com:Lmandrake/RimMandrake.git"
 CWD = "/home/mandrake/rm/bench"
+ENV = dict(os.environ, TMPDIR="/tmp")  # the $TMPDIR cases assume tmpfs; seat TMPDIR is ext4 since 8807aaa41
 
 CASES = [  # (command, cwd, want_refused)
     ("git clone . /tmp/x", CWD, True),
@@ -32,7 +34,7 @@ CASES = [  # (command, cwd, want_refused)
 
 fails = 0
 for cmd, cwd, want in CASES:
-    p = subprocess.run([sys.executable, str(HOOK)], capture_output=True, text=True,
+    p = subprocess.run([sys.executable, str(HOOK)], capture_output=True, text=True, env=ENV,
                        input=json.dumps({"tool_name": "Bash", "cwd": cwd, "tool_input": {"command": cmd}}))
     refused = p.returncode == 2 and "RAM disk" in p.stderr
     ok = refused == want and p.returncode in (0, 2)
