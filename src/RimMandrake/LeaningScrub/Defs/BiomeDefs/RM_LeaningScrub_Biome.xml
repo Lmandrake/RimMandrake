@@ -183,6 +183,7 @@
       <RM_Crustweevil>0.6</RM_Crustweevil>
       <RM_Rollbug>0.4</RM_Rollbug>
       <RM_Tikkit>0.5</RM_Tikkit>
+      <RM_TunnelSnake>0.5</RM_TunnelSnake>  <!-- the yanker, ported from RSW_TunnelSnake (owner note on the Leaning Scrub sheet 2026-10-06: RimMandrake tier); same 0.5 the patch layer gave it -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

@@ -10,9 +10,9 @@ Source: `Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json` (own
 - [x] decisions read (rest of sheet)
 - [x] install / purge
 - [x] regen queued
-- [ ] names / descriptions / tiers / cuts
-- [ ] validate + selftests
-- [ ] commits
+- [x] names / descriptions / tiers / cuts
+- [x] validate + selftests
+- [x] commits
 
 ## Venomvine
 Decisions md5 9986b4a3… (writeCount 521, savedAt 2026-10-07T22:50:10-0700); copy: infrastructure/state/art_rulings/2026-10-08_leaningscrub_sheet_2026-10-05.decisions.json.
@@ -62,3 +62,12 @@ Owner rows: 22 from 2026-10-06 (enacted 10-05/06 per leaningscrub_close_progress
 ### Names / descriptions / tiers / cuts
 - RM_Durrok description rewritten to the picked image (RSW_Durrok has no separate def; same picture). RM_Chikka description reworded to match his pick C (round spiky ball).
 - RM_Zellik description unchanged (fits B). Skorra: in no biome roster, nothing to cut.
+- Tier move (10-06 note "RimMandrake tier"): RSW_TunnelSnake (not canon: no Wookieepedia page, NO_SOURCE) -> RM_TunnelSnake in LeaningScrub, art byte-copied via ledger,
+  cast inline at 0.5, removed from WildAnimals_LeaningScrub.xml; RSW_TunnelSnake kept only for the frozen RUT_AridShrubland. Design docs updated (helper file leaningscrub_helper_tunnelsnake.md).
+- Variants: Bantha F/G/H already live as BanthaV_G/H/I (5ab6473ee). Iriaz H/I and Scurrier E: questions.
+
+### Validation
+- WildAnimals_LeaningScrub.xml validate_patch 0 errors (static); every edited XML parses.
+- selftests 334/337: modcheck selftest timeout (known), bridgetools tool_metadata (known), art_checks: Anooba_f was a pinned known-bad height fixture; his pick L replaced that art
+  (now 1.247 < 1.35) -> moved to HEIGHT_MUST_PASS with the measurement, Zeer precedent. MandrakePatches timeout re-run alone: pass.
+- Sheet rebuilt via refresh_sheets.py --force --only leaningscrub (gated). Venomvine rows still show the pillar as "in game" because the sheet reads the DEPLOYED Mods folder (no deploy tonight).

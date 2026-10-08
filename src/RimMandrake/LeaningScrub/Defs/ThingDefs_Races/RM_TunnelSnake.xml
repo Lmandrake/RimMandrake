@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RM_TunnelSnake: the yanker, the Leaning Scrub's corridor predator. Ported to the RimMandrake tier from
+     RSW_TunnelSnake (owner note on the Leaning Scrub art sheet, 2026-10-06: "RimMandrake tier"; the name is invented,
+     Wookieepedia has no tunnel snake). Stats, tools and race fields are the original's; the Star Wars-tier
+     dependencies are swapped for vanilla: the Snake body (was RSW_Klorslug), the Teeth/Mouth/HeadAttackTool groups
+     (were the RSW_SW* appendage groups), vanilla AnimalBaby/Juvenile/Adult stages, the Megascarab voice (was the
+     RSW_Pawn_Klorslug set), Megaspider meat and no leather (was RSW_Insectile_Meat / RSW_Leather_Insectile).
+     Size-ladder numbers from TUNNELSNAKE_VIOLATES_SIZE_LADDER_1 are kept (MEDIUM band, bodySize 1.2).
+     Art is a ledger copy of the in-game RSW_TunnelSnake art (owner pick A). RSW_TunnelSnake stays in SWBestiary only
+     because the frozen RUT_AridShrubland and the RSW_ScrapNestBird/Excretor/VentStalker comments name it. -->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_TunnelSnake</defName>
+    <label>yanker</label>
+    <description>A long, low predator built for a corridor - it lies dormant coiled in the one gap a venomvine thicket or a runway tunnel offers, and wakes only when something worth eating gets close enough to touch. It preys on the scrap-nest birds and their eggs, and on anything else that fits the same crossing it does. Waking it on purpose is a good way to end a treasure hunt early.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>450</MarketValue>
+      <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.25</ArmorRating_Sharp>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.85</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>venomous fangs</label>
+        <capacities>
+          <li>ToxicBite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>8</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>circular teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_CanBeDormant" />
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+      </li>
+    </comps>
+    <receivesSignals>true</receivesSignals>
+    <race>
+      <body>Snake</body>
+      <baseHungerRate>0.45</baseHungerRate>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>1.8</baseHealthScale>
+      <herdAnimal>false</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>2.4</maxPreyBodySize>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.40</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.90</manhunterOnDamageChance>
+      <lifeExpectancy>18</lifeExpectancy>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_TunnelSnake</defName>
+    <label>yanker</label>
+    <race>RM_TunnelSnake</race>
+    <combatPower>190</combatPower>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_TunnelSnake/RM_TunnelSnake</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.7</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.6, 0.33)</volume>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
