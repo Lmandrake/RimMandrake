@@ -13,21 +13,24 @@ frames, Eopie/Togruta variants, Catch==Creature pairs were judged intentional an
   Installed it into both defs through `art.py install ... --reason script:` (ledger). It is 512x512 while sibling south/north are 256x256 (needs a scale-down to match; not done, ledger-only).
 - NOT queued for repaint: both Kudda rows carry the owner's note on desert_sheet_2026-10-04 "Just cut this creature. It's dumb." (hold). Cut/keep is his call; the real east is only there so nothing wears the pillar meanwhile.
 
-## Other likely wrong-subject textures (listed, NOT fixed) — 12 groups
-Distinct creatures/things sharing identical bytes:
-1. RM_Ossik_north (LongShade) + RSW_Ossik_north == `RUT_AncientShieldedTurret.png` (a building) — Ossik north-facing is a turret picture. (a25f92f19950)
-2. RSW_ElderSando == RM_GrippingTerror, all four facings, plus SWBestiary and TerminalBiomes copies (c42637fdca56, 4007dc4c1cf2, 9eb74f8836df, 7317a2b3cfbb). Two different sea beasts, one picture.
-3. RM_Aurrok == RM_Vaalok (Stillsand), S/E/N (d165910a7108, 3511b5ed892e, 5f1ddc63c80b). Two defs, one picture.
-4. RM_Mullgoth (SWBestiary) == TheRot Wildpod == AA_Wildpod override (bc89bf873cf8, 014b59c7f23a, c0dedfeb2852). Mullgoth wears Wildpod art.
-5. RM_Durrok (SWBestiary) == TheRot `RotSpecies/Wildpawn` S/E/N (00da96559e31, 30701f14ee3c, cf024497dad1).
-6. RM_Pallbearer (Scarlands) == RUT_MortuaryCrawler (UtinniPatches) S/E/N (4b41b1e8500c, d46d41cb2754, 4f49c7f68e63); MortuaryCrawler has no def, so possibly a stale leftover/override.
-7. RM_Ulkhoss (TerminalBiomes) == RUT_Vapaad (UtinniPatches) S/E/N (0caf52893b2f, 4328879aaf0f, df9220c00d1e); Vapaad is only a sound def stem, so probably a stale leftover.
-8. Gloomcast_Dessicated (LongShade) == Horax_Dessicated (SWBestiary) (b18e3629bb96); and the four juvenile Dessicated of FrilledGorg/Igitz/LongtailGorg/Worrt (5318d852f3e1) — shared placeholder.
-9. RM_Bones (Miasma item) == SummBone (Abyss item) (fc67f9e8f4ea).
-10. RM_MuurrokSkeleton (Stillsand building) == SummGreatBone (Abyss building) (b6e9cc89d641).
-11. RM_FlameStatuary (EnvironmentalHazards) == RM_FlameStatue_Placeholder (FlameStatues) (80371766af7d) — placeholder by name.
-12. Plants: RM_Ghemmel_a == UtinniPatches HydenockTreeA (f14d780a43ee); RM_Veluthar_a == AB_JungleTreeA (5345c1f53544); RSW_Plant_BloddleB == BloddleA (0f35431ae70c); RM_GiantLeaf_a == GiantLeafA (816cf4e9de3d, probably a deliberate port).
-Also odd: CrystalCrabFemale_east == CrystalCrabMale_west (cross-facing swap, 49ad11a8b443).
+## Kudda cut (2026-10-08 pass)
+Already enacted before this pass: `7663b4e5c` (2026-10-04, "Cut the kudda (RM_ and RSW_)") deleted RM_Kudda and RSW_Kudda from RM_LongShade.xml, RUT_Desert.xml, RUT_ExtremeDesert.xml and both race files; the Stillsand patch row was cut in the same sitting (WildAnimals_Stillsand.xml carries only the explanatory comment). Rosters desert.json:716 and dune_sea_deep_desert.json:571 record the cut with his words. The sheet's decisions.json still reads `hold` (a record, not a roster). No Kudda job is queued (pending/ has none; done/ holds RM_Kudda_{east,north,south} renders). Left as is: the orphan textures `RM_Kudda/` (LongShade) and `RSW_Kudda/` (SWBestiary), tonight's east install, no def points at them.
+
+## Decisions for the 12 groups (owner of the image / borrower / action)
+1. Ossik north == RUT_AncientShieldedTurret: the turret owns it (artpipe `RUT_AncientShieldedTurret`, sha a25f92f19950, `502b24794` 2026-09-23 wired it into both Ossik folders by mistake). Borrower RM_Ossik/RSW_Ossik: **no def exists** (cut, sheet ruling "no longer needed"), so the textures are orphans. No install, no job. (Own render RM_Ossik_north exists in artpipe, 9ecd37095c8f, if Ossik ever returns.)
+2. RSW_ElderSando == RM_GrippingTerror: **not wrong-subject.** GrippingTerror is the owner-ruled rename of RM_ElderSando (Scald sheet 2026-10-05: "draws its own copy of the elder-sando picture he kept"); the picture shows the long webbed-hand arms its description names. ElderSando (canon, SWBestiary) owns the original. No action.
+3. RM_Aurrok == RM_Vaalok: Aurrok owns it (artpipe RM_Aurrok_{south,east,north}, `ba5bfe05f`). Vaalok borrowed. Vaalok's own finished renders exist: north e018cc1c7fa8, east fbb4552bd156 (512x512 = sibling canvas, art-gate PASS); south FAILED in artpipe. Install of north/east **REFUSED by the ledger** (the Aurrok bytes under Vaalok count as owner-kept: "may not displace it; needs his ruling"). **NEEDS-OWNER**; ready once he rules: `art.py install src/RimMandrake/Stillsand Things/Pawn/Animal/RM_Vaalok/RM_Vaalok_{north,east}.png <sha> --owner-said "..."` (store copies via `Transient/biome_art_refresh_2026-10-07/wrong_subject_install.py`, which runs install_file). South QUEUED p0: `wsfix_RM_Vaalok_south_v2_south` (derive_from RM_Vaalok_east).
+4. RM_Mullgoth == Wildpod == AA_Wildpod: **not wrong-subject.** The Rot v2 renders (`06966e55d`) were briefed as mullgoth/durrok bodies (the mullgoth prompt: "the same body twice the mass"); Mullgoth wears the sagging hairy-dome/black-slime picture its description names. Deliberate donor-name pair. No action.
+5. RM_Durrok == Wildpawn: same, the pale haystack-with-lichen picture is the durrok description. No action.
+6. RM_Pallbearer == RUT_MortuaryCrawler: **same subject** (the def comment: "PALLBEARER (was RUT_MortuaryCrawler)", renamed `ee8fbc21f`; art is artpipe rutmortuarycrawler_v1). RUT_MortuaryCrawler retired (0 in save); its folder in UtinniPatches is a leftover duplicate, not touched. No action.
+7. RM_Ulkhoss == RUT_Vapaad: RUT_Vapaad owns it (artpipe vapaad_canon_v2 / Blue Desert G). RM_Ulkhoss was DROPPED by the owner (`d2f36f0b6` "Drop the ulkhoss") and has no def: orphan textures. No action.
+8. Gloomcast_Dessicated == Horax_Dessicated: Horax (donor-layer skeleton drawing) owns it; Gloomcast borrowed. QUEUED p0 `wsfix_Gloomcast_Dessicated`. The four juvenile Dessicated (FrilledGorg/Igitz/LongtailGorg/Worrt `_j_`) share one tiny skeleton: generic juvenile corpse art, each is a donor-layer stand-in; left (no per-species brief, barely visible), noted.
+9. RM_Bones == RM_SummBone: RM_Bones owns the generic bone pile (Miasma, `6dd7fb403`); SummBone (honeycombed light brood bone) borrowed. QUEUED p0 `wsfix_RM_SummBone`.
+10. RM_MuurrokSkeleton == RM_SummGreatBone: the muurrok skeleton owns it (`2655f315f`); SummGreatBone (one room-long bone) borrowed in `6f4ca7660`. QUEUED p0 `wsfix_RM_SummGreatBone` (1024x512 like the file).
+11. RM_FlameStatuary == RM_FlameStatue_Placeholder: both are the same 2004-byte flat shape (the detector does not flag it; not in placeholder_allowlist.json). FlameStatuary (`53687b094`, 2026-09-24) is the original; the FlameStatues copy is a placeholder by name whose own renders failed in artpipe. QUEUED p0 `wsfix_RM_FlameStatuary` (the Placeholder file belongs to the FlameStatues mod's own failed jobs, not touched).
+12. Plants: Ghemmel_a (Hydenock donor tree), Veluthar_a (AB_JungleTree donor), GiantLeaf_a (BMT donor port) are donor art that the owner KEPT as A on the Greentide/FeverWood sheets 2026-10-08 ("Add much more realistic variants"); the B/C variant renders are already pending at p0 (regen_gt_ghemmel/veluthar, regen_fw_giantleaf). BloddleB == BloddleA: same subject (donor Bloddle drawing duplicated as a variant; C-G are artpipe renders). CrystalCrab Female_east == Male_west: same subject, donor facing quirk. No action.
+
+Jobs: `build_wrong_subject_jobs.py` -> `wrong_subject_jobs.json` (5 jobs filed, 0 refused). Nothing installed this pass.
 
 ## Not wrong-subject (venomvine)
 RM_{Hoard,Quench,Rearing,Shedding,Sworn,Walking}Venomvine_a == RM_VenomvineThicket_a (29ae79060e16): documented interim placeholder from the venomvine rescue, renders queued.

@@ -1,0 +1,80 @@
+[
+ {
+  "id": "wsfix_RM_Vaalok_south_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vaalok",
+  "target_texpath": "Things/Pawn/Animal/RM_Vaalok/RM_Vaalok",
+  "prompt": "RimWorld creature sprite, the same individual as the accepted east render: a slow, deep-chested giant that carries its water inside itself, a cistern-bodied beast of pale grey-lilac wrinkled hide with a rust-orange cracked-clay hump, trunk-like drooping muzzle, thick pillar legs. FRONT view, facing the viewer (south), whole body, centred. NOT a spined sail-backed animal.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "south"
+  ],
+  "priority": 0,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "derive_from": "RM_Vaalok_east"
+ },
+ {
+  "id": "wsfix_Gloomcast_Dessicated",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Gloomcast",
+  "target_texpath": "swanimals/Gloomcast/Gloomcast_Dessicated",
+  "prompt": "RimWorld dessicated-corpse sprite, side view: the bleached, sand-scoured dried remains of a colossal slow desert grazer: a long low barrel of ribcage, broad flat plated skull, thick pillar leg bones, hide dried to parchment over the bones, half-drifted with fine sand. Description of the living animal: a colossal, slow-moving grazer that crosses the open dayside in a single committed march, a filter-feeder that strains the sand.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "long shade register: a baked sand desert under a low furnace sun, hard long shadows, bleached ochre and bone-white"
+ },
+ {
+  "id": "wsfix_RM_SummBone",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_SummBone",
+  "target_texpath": "RM_Abyss/Things/Item/SummBone",
+  "prompt": "RimWorld item sprite, summ brood bone: bone from the summ brood's dead: a single huge, honeycombed, surprisingly light bone fragment, porous cellular structure visible at the broken end like pale coral or pumice, ivory-grey with faint blue-green deep-sea tint. Not a pile of ordinary bones.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "facings": [],
+  "priority": 0,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: lightless deep sea floor, cold blue-black water, pale bioluminescent accents"
+ },
+ {
+  "id": "wsfix_RM_SummGreatBone",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_SummGreatBone",
+  "target_texpath": "RM_Abyss/Things/Building/SummGreatBone",
+  "prompt": "RimWorld building sprite seen from above at a slight angle: a single enormous bone from a brood-mother long dead, as long as a room: one long gently curved honeycombed bone, pale ivory-grey, knobbed articulated ends, porous cell structure at the ends, lying on its side. A single bone only, not a skeleton, no ribs, no skull.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow.",
+  "canvas_w": 1024,
+  "canvas_h": 512,
+  "facings": [],
+  "priority": 0,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_register": "abyss register: lightless deep sea floor, cold blue-black water, pale bioluminescent accents"
+ },
+ {
+  "id": "wsfix_RM_FlameStatuary",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FlameStatuary",
+  "target_texpath": "Things/Building/Art/RM_FlameStatuary/RM_FlameStatuary",
+  "prompt": "RimWorld building sprite, flame statuary: a grand sculpture built to carry fire in its own shape: a 2x2 carved stone plinth statue with flame issuing from carved vents worked into the stone, tongues of live fire dancing along the form, soot-darkened dark stone, orange-gold fire. Seen top-down at a slight angle.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ }
+]
