@@ -38,11 +38,8 @@ namespace RimMandrake.Graffiti
 
         public static void Prefix(IEnumerable<Pawn> pawns, Faction faction)
         {
-            if (!RM_GraffitiSettings.paintingEnabled || !RM_GraffitiSettings.raidExitTaggingEnabled)
-            {
-                return;
-            }
-            if (faction == null || faction == Faction.OfPlayer || !faction.HostileTo(Faction.OfPlayer))
+            if (!RM_GraffitiKernel.RaidExitTags(RM_GraffitiSettings.paintingEnabled, RM_GraffitiSettings.raidExitTaggingEnabled, faction != null,
+                faction != null && faction == Faction.OfPlayer, faction != null && faction.HostileTo(Faction.OfPlayer)))
             {
                 return;
             }

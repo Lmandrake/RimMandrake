@@ -60,7 +60,7 @@ namespace RimMandrake.Graffiti
             {
                 pawn.rotationTracker.FaceCell(job.GetTarget(MarkCellInd).Cell);
                 JoyUtility.JoyTickCheckEnd(pawn, delta, JoyTickFullJoyAction.None);
-                if (pawn.IsHashIntervalTick(RM_GraffitiSettings.paintIntervalTicks, delta))
+                if (pawn.IsHashIntervalTick(RM_GraffitiKernel.PaintInterval(RM_GraffitiSettings.paintIntervalTicks), delta))
                 {
                     IntVec3 cell = job.GetTarget(MarkCellInd).Cell;
                     if (cell.IsValid && Map != null)

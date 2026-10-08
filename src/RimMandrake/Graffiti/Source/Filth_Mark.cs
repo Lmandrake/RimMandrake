@@ -77,7 +77,7 @@ namespace RimMandrake.Graffiti
             {
                 foreach (Thing t in cell.GetThingList(map).ToArray())
                 {
-                    if (t is Filth_Mark rival && rival.def != markDef)
+                    if (t is Filth_Mark rival && RM_GraffitiKernel.IsRival(true, rival.def == markDef))
                     {
                         rival.Destroy();
                     }
