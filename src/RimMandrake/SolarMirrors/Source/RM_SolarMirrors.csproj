@@ -31,12 +31,15 @@
   <ItemGroup>
     <Compile Include="RM_SolarMirrorsMod.cs" />
     <Compile Include="Kernel\RM_MirrorKernel.cs" />
+    <Compile Include="Kernel\RM_MirrorFieldKernel.cs" />
     <Compile Include="RM_MirrorMath.cs" />
     <Compile Include="RM_CompMirror.cs" />
     <Compile Include="RM_CompLightReceiver.cs" />
     <Compile Include="RM_MapComponent_MirrorLight.cs" />
     <Compile Include="RM_MirrorPatches.cs" />
     <Compile Include="RM_ReAimMirror.cs" />
+    <Compile Include="RM_MirrorWork.cs" />
+    <Compile Include="RM_MirrorField.cs" />
   </ItemGroup>
 
   <ItemGroup>

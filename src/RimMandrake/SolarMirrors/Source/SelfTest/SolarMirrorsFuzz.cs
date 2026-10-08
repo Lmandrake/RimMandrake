@@ -13,28 +13,31 @@ namespace RimMandrake.SolarMirrors.SelfTest
 {
     internal static partial class SolarMirrorsFuzz
     {
-        public static long Relays, DeepChains, Blocked, SkyMisses, EdgeMisses, Commits, BigSpots, Cycles, Untargeted, Targeted, NightPasses, Idempotent;
+        public static long Relays, DeepChains, Blocked, SkyMisses, EdgeMisses, Commits, BigSpots, Cycles, Untargeted, Targeted, NightPasses, Idempotent, Glazed,
+            Fields, FieldSolvable, FieldAccepted, FieldTooBig, HintWalks;
 
         // ═════════ the test world ═════════
         private sealed class World : IRM_BeamWorld
         {
             public int W, H;
-            public bool[] roof, wall, door;
+            public bool[] roof, wall, door, aperture;
             public int[] owner;                       // mirror index standing on the cell, or -1
             public int Width { get { return W; } }
             public int Height { get { return H; } }
             public string BlockerEdge { get { return "edge"; } }
             public string BlockerSky { get { return "sky"; } }
+            public string BlockerRoof { get { return "roof"; } }
             public World(int w, int h)
             {
                 W = w; H = h;
-                roof = new bool[w * h]; wall = new bool[w * h]; door = new bool[w * h]; owner = new int[w * h];
+                roof = new bool[w * h]; wall = new bool[w * h]; door = new bool[w * h]; aperture = new bool[w * h]; owner = new int[w * h];
                 for (int i = 0; i < owner.Length; i++) owner[i] = -1;
             }
+            public bool Roofed(int x, int z) { return roof[z * W + x]; }
+            public bool IsAperture(int x, int z) { return aperture[z * W + x]; }
             public string CellBlocks(int x, int z, int mirrorIndex)
             {
                 int i = z * W + x;
-                if (roof[i]) return "roof";
                 if (owner[i] >= 0) return null;       // mirrors never block
                 if (door[i]) return "door";
                 if (wall[i]) return "wall";
@@ -223,6 +226,154 @@ namespace RimMandrake.SolarMirrors.SelfTest
                     Check(RM_MirrorKernel.LineClear(x0, z0, x1, z1, ref blk), "a beam with no cells between its ends was blocked");
                 }
             }
+            // dust, concentration, room heat, dazzle, heliograph reach (SOLAR_MIRRORS_BUILD_1)
+            {
+                float d0 = (float)(r.NextDouble() * 1.4 - 0.2), perDay = (float)(r.NextDouble() * 5), loss = (float)(r.NextDouble() * 1.2 - 0.1);
+                int t = r.Next(-100, 200000);
+                float d1 = RM_MirrorKernel.DustAfter(d0, true, perDay, t), dCalm = RM_MirrorKernel.DustAfter(d0, false, perDay, t);
+                double c0 = Math.Min(1, Math.Max(0, d0));
+                Check(d1 >= 0f && d1 <= 1f && dCalm >= 0f && dCalm <= 1f, "dust outside [0,1]");
+                Check(Near(dCalm, c0, 1e-6), "dust changed with no storm");
+                Check(d1 >= c0 - 1e-6, "a storm cleaned a mirror");
+                if (t > 0) Check(Near(d1, Math.Min(1.0, c0 + perDay * (double)t / 60000.0), 1e-5), "dust != clamp(dust + perDay * days)");
+                else Check(Near(d1, c0, 1e-6), "dust grew over no time");
+                float f = RM_MirrorKernel.DustFactor(d0, loss);
+                Check(f >= 0f && f <= 1f, "dust factor outside [0,1]");
+                Check(Near(f, 1 - c0 * Math.Min(1, Math.Max(0, loss)), 1e-6), "dust factor != 1 - dust x maxLoss");
+                Check(RM_MirrorKernel.DustFactor(0f, loss) == 1f, "a clean mirror lost light");
+                Check(RM_MirrorKernel.DustFactor(1f, 0.6f) <= RM_MirrorKernel.DustFactor(0.5f, 0.6f), "more dust passed more light");
+
+                float l = (float)(r.NextDouble() * 6), per = (float)(r.NextDouble() * 40), max = (float)(r.NextDouble() * 80), cap = (float)(r.NextDouble() * 6);
+                float plain = (float)Math.Min(per, max);                       // what plain sun (exposure 1) gave
+                float applied = r.Next(3) == 0 ? (float)(r.NextDouble() * 90) : plain;
+                float ex = RM_MirrorKernel.ConcentrationExtraC(l, per, max, applied, cap);
+                Check(ex >= 0f, "negative concentration heat");
+                if (l <= 1f) Check(ex == 0f, "concentration heat from light at or below plain sun");
+                Check(applied + ex <= Math.Max(max, applied) + 1e-3, "concentration pushed felt heat past the biome's cap");
+                if (applied == plain && max > 0f && per > 0f)
+                    Check(Near(applied + ex, Math.Max(applied, Math.Min(max, Math.Min(l, Math.Max(1f, cap)) * per)), 1e-3), "concentration total != min(cap light, light) x per-unit, capped");
+                float ex2 = RM_MirrorKernel.ConcentrationExtraC(l + 0.5f, per, max, applied, cap);
+                Check(ex2 >= ex - 1e-5f, "more light gave less concentration heat");
+                Check(RM_MirrorKernel.ConcentrationExtraC(Math.Max(1f, cap) + 3f, per, max, applied, cap) == RM_MirrorKernel.ConcentrationExtraC(Math.Max(1f, cap) + 1f, per, max, applied, cap),
+                    "light above the cap kept adding heat");
+
+                int iv = r.Next(-10, 2000); float rate = (float)(r.NextDouble() * 12 - 1);
+                float h = RM_MirrorKernel.RoomHeat(l, rate, iv);
+                if (l <= 0f || rate <= 0f || iv <= 0) Check(h == 0f, "room heat with no light, rate or time");
+                else Check(Near(h, l * rate * iv / 60.0, 1e-3 * Math.Max(1, h)), "room heat != light x rate x seconds");
+
+                float pen = (float)(r.NextDouble() * 1.4 - 0.2);
+                float dz = RM_MirrorKernel.DazzleFactor(l, pen);
+                Check(dz >= 0f && dz <= 1f, "dazzle factor outside [0,1]");
+                if (l < 0.5f) Check(dz == 1f, "dazzled below the 0.5 light threshold");
+                else Check(Near(dz, Math.Max(0, 1 - Math.Min(1, Math.Max(0, pen)) * Math.Min(1.0, l)), 1e-6), "dazzle != 1 - penalty x min(1, light)");
+                Check(RM_MirrorKernel.DazzleFactor(3f, pen) == RM_MirrorKernel.DazzleFactor(1f, pen), "dazzle kept growing past full light");
+
+                float rg = (float)(r.NextDouble() * 50 - 5), day = (float)(r.NextDouble() * 1.6 - 0.3);
+                float reach = RM_MirrorKernel.HeliographRange(rg, day);
+                Check(reach >= 0f && reach <= Math.Max(0, rg) + 1e-5, "heliograph reach outside [0, range]");
+                Check(RM_MirrorKernel.HeliographRange(rg, 0f) == 0f, "a heliograph reached anything with no daylight");
+                Check(Near(RM_MirrorKernel.HeliographRange(rg, 1f), Math.Max(0, rg), 1e-6), "full daylight is not the full range");
+            }
+            return null;
+        }
+
+        // ═════════ the ancient field's solver (RM_MirrorFieldKernel) ═════════
+        private static int Ham(int a, int b, int n, int d)
+        {
+            int[] x = new int[n], y = new int[n];
+            for (int i = 0; i < n; i++) { x[i] = a % d; a /= d; y[i] = b % d; b /= d; }
+            int h = 0; for (int i = 0; i < n; i++) if (x[i] != y[i]) h++;
+            return h;
+        }
+
+        private static string FieldCase(int seed)
+        {
+            var r = new Random(seed);
+            int n = r.Next(1, 8), d = r.Next(1, 5);
+            long totalL = 1; for (int i = 0; i < n; i++) totalL *= d;
+            int total = RM_MirrorFieldKernel.Configurations(n, d);
+            if (totalL > RM_MirrorFieldKernel.MaxConfigurations) { Check(total == -1, "an oversized space was not refused"); FieldTooBig++; return null; }
+            Check(total == totalL, $"configurations {total} != d^n {totalL}");
+            double[] ps = { 0.0, 0.002, 0.05, 0.3, 0.9 };
+            double p = ps[r.Next(ps.Length)];
+            var truth = new bool[total]; var depth = new int[total];
+            for (int c = 0; c < total; c++) { truth[c] = r.NextDouble() < p; depth[c] = r.Next(0, 6); }
+            var start = new int[n]; for (int i = 0; i < n; i++) start[i] = r.Next(d);
+            int startCode = 0, mul = 1; for (int i = 0; i < n; i++) { startCode += start[i] * mul; mul *= d; }
+            Check(RM_MirrorFieldKernel.Encode(start, n, d) == startCode, "Encode is not base d, mirror 0 lowest");
+            var back = new int[n]; RM_MirrorFieldKernel.Decode(startCode, n, d, back);
+            for (int i = 0; i < n; i++) Check(back[i] == start[i], "Decode(Encode(x)) != x");
+            int calls = 0;
+            var rep = RM_MirrorFieldKernel.Solve(n, d, start, (int[] cfg, out int dep) =>
+            {
+                calls++;
+                int code = 0, m2 = 1; for (int i = 0; i < n; i++) { code += cfg[i] * m2; m2 *= d; }
+                dep = depth[code];
+                return truth[code];
+            });
+            Check(calls == total, $"the solver evaluated {calls} of {total} configurations");
+            int count = 0, best = -1, bestDist = -1;
+            for (int c = 0; c < total; c++)
+                if (truth[c]) { count++; int h = Ham(startCode, c, n, d); if (bestDist < 0 || h < bestDist) { bestDist = h; best = c; } }
+            Check(rep.solutionCount == count && rep.solutions.Count == count, $"solutions {rep.solutionCount}, reference {count}");
+            Check(rep.minReAims == bestDist, $"minReAims {rep.minReAims}, reference {bestDist}");
+            Check(rep.startSolved == (count > 0 && truth[startCode]), "startSolved wrong");
+            if (count > 0)
+            {
+                Check(Ham(startCode, rep.bestSolution, n, d) == bestDist && truth[rep.bestSolution], "bestSolution is not a nearest solution");
+                Check(rep.bestDepth == depth[rep.bestSolution], "bestDepth is not the nearest solution's depth");
+                FieldSolvable++;
+            }
+            int want = r.Next(0, 6), cap = r.Next(0, 6);
+            string why;
+            bool ok = RM_MirrorFieldKernel.Acceptable(rep, want, cap, out why);
+            bool refOk = count > 0 && !truth[startCode] && bestDist >= want && rep.bestDepth <= cap;
+            Check(ok == refOk, $"Acceptable {ok} ({why}), reference {refOk}");
+            Check(ok == (why == null), "Acceptable's reason disagrees with its verdict");
+            if (ok) FieldAccepted++;
+            // PickStart: every chosen start is at least `want` from every solution; -1 only when no such start exists
+            int ps0 = RM_MirrorFieldKernel.PickStart(rep, want, r.Next());
+            bool anyFar = false, exhaustive = total <= 729;   // the reference below is O(total^2): keep it to the design's 6x3
+            for (int c = 0; c < total && count > 0 && exhaustive; c++)
+            {
+                int md = int.MaxValue; for (int k = 0; k < total; k++) if (truth[k]) md = Math.Min(md, Ham(c, k, n, d));
+                if (md >= Math.Max(1, want)) { anyFar = true; break; }
+            }
+            if (ps0 < 0) Check(!anyFar, "PickStart found nothing while a far enough start exists");
+            else
+            {
+                Check(anyFar || !exhaustive, "PickStart returned a start although none is far enough");
+                for (int k = 0; k < total; k++) if (truth[k]) Check(Ham(ps0, k, n, d) >= Math.Max(1, want), "PickStart's start is too near a solution");
+                RM_MirrorFieldKernel.Rebase(rep, ps0);
+                Check(rep.startCode == ps0 && !rep.startSolved && rep.minReAims >= Math.Max(1, want), "Rebase did not move the start");
+            }
+            // the hint walk: from any configuration, NextMove reaches a solution in exactly its distance, one mirror per step
+            if (count > 0)
+            {
+                var cur = new int[n]; RM_MirrorFieldKernel.Decode(r.Next(total), n, d, cur);
+                int code = RM_MirrorFieldKernel.Encode(cur, n, d), dist;
+                RM_MirrorFieldKernel.Nearest(rep.solutions, code, n, d, out dist);
+                int steps = 0;
+                while (RM_MirrorFieldKernel.NextMove(rep.solutions, cur, n, d, out int mi, out int di))
+                {
+                    Check(mi >= 0 && mi < n && di >= 0 && di < d && cur[mi] != di, "a hint named a move that changes nothing");
+                    int before; RM_MirrorFieldKernel.Nearest(rep.solutions, RM_MirrorFieldKernel.Encode(cur, n, d), n, d, out before);
+                    cur[mi] = di; steps++;
+                    int after; RM_MirrorFieldKernel.Nearest(rep.solutions, RM_MirrorFieldKernel.Encode(cur, n, d), n, d, out after);
+                    Check(after == before - 1, "a hint did not bring the field one turn closer");
+                    Check(steps <= n, "the hint walk did not end");
+                }
+                Check(steps == dist && truth[RM_MirrorFieldKernel.Encode(cur, n, d)], $"the hint walk took {steps} turns for a distance of {dist}");
+                HintWalks++;
+            }
+            else Check(!RM_MirrorFieldKernel.NextMove(rep.solutions, start, n, d, out _, out _), "a hint with no solution");
+            // escalating hint levels
+            int mr = r.Next(-1, 6), done = r.Next(0, 20);
+            int lv = RM_MirrorFieldKernel.HintLevel(done, mr), stepL = Math.Max(1, mr);
+            Check(lv == (done >= 2 * stepL ? 2 : done >= stepL ? 1 : 0), "hint level is not 0 / 1 after minReAims / 2 after twice that");
+            Check(RM_MirrorFieldKernel.HintLevel(done + 1, mr) >= lv, "hint level went down with more turns");
+            Fields++;
             return null;
         }
 
@@ -264,12 +415,14 @@ namespace RimMandrake.SolarMirrors.SelfTest
             int w = r.Next(8, 26), h = r.Next(8, 26);
             var sc = new Scenario { world = new World(w, h) };
             World wd = sc.world;
-            double roofP = r.Next(3) == 0 ? 0.08 : 0.0, wallP = r.NextDouble() * 0.12, doorP = r.NextDouble() * 0.05;
+            double roofP = r.Next(3) == 0 ? 0.08 : r.Next(4) == 0 ? 0.4 : 0.0, wallP = r.NextDouble() * 0.12, doorP = r.NextDouble() * 0.05;
+            double apP = r.Next(3) == 0 ? 0.06 : 0.0;
             for (int i = 0; i < w * h; i++)
             {
                 wd.roof[i] = r.NextDouble() < roofP;
                 double u = r.NextDouble();
                 wd.wall[i] = u < wallP; wd.door[i] = !wd.wall[i] && u < wallP + doorP;
+                if (r.NextDouble() < apP) { wd.aperture[i] = true; wd.wall[i] = false; wd.door[i] = false; }
             }
             int count = crowded ? r.Next(2, 9) : r.Next(0, 6);
             var list = new List<RM_MirrorSpec>();
@@ -283,7 +436,7 @@ namespace RimMandrake.SolarMirrors.SelfTest
                 int idx = list.Count;
                 for (int dx = 0; dx < size; dx++) for (int dz = 0; dz < size; dz++)
                     {
-                        int ci = (z + dz) * w + x + dx; wd.owner[ci] = idx; wd.wall[ci] = false; wd.door[ci] = false;
+                        int ci = (z + dz) * w + x + dx; wd.owner[ci] = idx; wd.wall[ci] = false; wd.door[ci] = false; wd.aperture[ci] = false;
                     }
                 var m = new RM_MirrorSpec
                 {
@@ -336,16 +489,37 @@ namespace RimMandrake.SolarMirrors.SelfTest
         private static bool InOwn(RM_MirrorSpec m, int x, int z) { return x >= m.minX && x <= m.maxX && z >= m.minZ && z <= m.maxZ; }
 
         // First blocker on the way to / at the cell, from the visited cells (independent of the kernel's visitor plumbing).
+        // Design §2.2 + §5 E2: an aperture never blocks and, once passed, roofs stop blocking (the beam is inside).
         private static string RefBlocker(World w, RM_MirrorSpec m, int idx, int x, int z)
         {
             if (x < 0 || z < 0 || x >= w.W || z >= w.H) return w.BlockerEdge;
-            foreach (var c in PathCells(w, m, x, z))
+            var cells = PathCells(w, m, x, z);
+            cells.Add(new Pt { x = x, z = z });
+            bool passedGlass = false;
+            foreach (var c in cells)
             {
                 if (InOwn(m, c.x, c.z)) continue;
-                string why = w.CellBlocks(c.x, c.z, idx);
-                if (why != null) return why;
+                int i = c.z * w.W + c.x;
+                if (w.aperture[i]) { passedGlass = true; continue; }
+                if (w.roof[i] && !passedGlass) return "roof";
+                if (w.owner[i] >= 0) continue;
+                if (w.door[i]) return "door";
+                if (w.wall[i]) return "wall";
             }
-            return InOwn(m, x, z) ? null : w.CellBlocks(x, z, idx);
+            return null;
+        }
+
+        // Did some firing mirror's beam pass glass on its way to (x,z)? (light under a roof is legal only then)
+        private static bool ReachedThroughGlass(Scenario sc, RM_MirrorResult[] got, int x, int z)
+        {
+            World w = sc.world;
+            if (w.aperture[z * w.W + x]) return true;
+            for (int k = 0; k < sc.specs.Length; k++)
+            {
+                if (!got[k].fired) continue;
+                foreach (var c in PathCells(w, sc.specs[k], x, z)) if (!InOwn(sc.specs[k], c.x, c.z) && w.aperture[c.z * w.W + c.x]) return true;
+            }
+            return false;
         }
 
         private sealed class RefShot { public int m; public RM_Vec dir; public float input; public bool relayed; public int depth; }
@@ -469,7 +643,7 @@ namespace RimMandrake.SolarMirrors.SelfTest
                 if (i < 0 || i >= pass.Light.Length) return "a lit cell index is off the grid";
                 if (!seen.Add(i)) return "a cell is listed lit twice";
                 if (!(pass.Light[i] > 0f)) return "a listed lit cell has no light";
-                if (w.roof[i] && !OwnFootprintOfFirer(sc, got, i % w.W, i / w.W)) return $"light under a roof at {i % w.W},{i / w.W}";
+                if (w.roof[i] && !OwnFootprintOfFirer(sc, got, i % w.W, i / w.W) && !ReachedThroughGlass(sc, got, i % w.W, i / w.W)) return $"light under a roof at {i % w.W},{i / w.W} with no glass on any beam's way";
                 if (w.wall[i] && w.owner[i] < 0) return $"light inside a wall at {i % w.W},{i / w.W}";
                 if (w.door[i] && w.owner[i] < 0) return $"light on a closed door at {i % w.W},{i / w.W}";
             }
@@ -540,6 +714,12 @@ namespace RimMandrake.SolarMirrors.SelfTest
                     if (A.holdsTarget && A.targetValid && B.holdsTarget && B.targetValid && InOwn(B, A.targetX, A.targetZ) && InOwn(A, B.targetX, B.targetZ) && got[a].ranFire && got[b].ranFire) Cycles++;
                 }
             if (!sc.sunUp) NightPasses++;
+            for (int k = 0; k < sc.specs.Length; k++)
+                if (got[k].fired && got[k].hasSpot)
+                {
+                    int x = got[k].spotX, z = got[k].spotZ, W = sc.world.W;
+                    if (x >= 0 && z >= 0 && x < W && z < sc.world.H && sc.world.roof[z * W + x] && !InOwn(sc.specs[k], x, z)) Glazed++;
+                }
         }
 
         private static string PassCase(int seed)
@@ -608,7 +788,7 @@ namespace RimMandrake.SolarMirrors.SelfTest
                             int x = a.a % wd.W, z = a.b % wd.H;
                             if (wd.owner[z * wd.W + x] >= 0) break;
                             int idx = keep.Count;
-                            wd.owner[z * wd.W + x] = idx; wd.wall[z * wd.W + x] = false; wd.door[z * wd.W + x] = false;
+                            wd.owner[z * wd.W + x] = idx; wd.wall[z * wd.W + x] = false; wd.door[z * wd.W + x] = false; wd.aperture[z * wd.W + x] = false;
                             keep.Add(new RM_MirrorSpec { posX = x, posZ = z, minX = x, minZ = z, maxX = x, maxZ = z, footprintCells = 1, faceX = x + 0.5f, faceZ = z + 0.5f, reflectivity = 0.8f, spotSize = 1, maxRange = 30f, spawned = true, holdsTarget = true, targetValid = true, targetX = (a.a * 7) % wd.W, targetZ = (a.b * 3) % wd.H, tracking = a.a % 2 == 0, source = 0.9f, savedNormal = Unit(r, true), hasAim = true });
                             break;
                         }
@@ -632,7 +812,7 @@ namespace RimMandrake.SolarMirrors.SelfTest
                         {
                             int x = a.a % wd.W, z = a.b % wd.H, i = z * wd.W + x;
                             if (wd.owner[i] >= 0) break;
-                            switch ((a.a + a.b) % 4) { case 0: wd.wall[i] = !wd.wall[i]; break; case 1: wd.roof[i] = !wd.roof[i]; break; case 2: wd.door[i] = !wd.door[i]; break; default: wd.wall[i] = wd.door[i] = wd.roof[i] = false; break; }
+                            switch ((a.a + a.b) % 5) { case 0: wd.wall[i] = !wd.wall[i]; wd.aperture[i] = false; break; case 1: wd.roof[i] = !wd.roof[i]; break; case 2: wd.door[i] = !wd.door[i]; wd.aperture[i] = false; break; case 3: wd.aperture[i] = !wd.aperture[i]; if (wd.aperture[i]) { wd.wall[i] = wd.door[i] = false; } break; default: wd.wall[i] = wd.door[i] = wd.roof[i] = wd.aperture[i] = false; break; }
                             break;
                         }
                     case 4: sc.sun = Unit(new Random(a.a * 31 + a.b), true); if (sc.sun.Y < 0.1f) sc.sun.Y = 0.6f; sc.sun = sc.sun.Normalized; sc.daylight = 0.2f + (a.b % 80) / 100f; break;
@@ -671,10 +851,12 @@ namespace RimMandrake.SolarMirrors.SelfTest
                 ("math", () => Family("math", N(4000), S(1), MathCase)),
                 ("pass", () => Family("pass", N(4000), S(1), PassCase)),
                 ("sequence", () => Family("sequence", N(1500), S(1), s => Drive(s, rr => GenActs(rr, 8, 60, new[] { 8, 5, 12, 14, 8, 30, 4, 3 }, SqNames), RunSeq))),
+                ("field", () => Family("field", N(1200), S(1), FieldCase)),
             };
             return Finish("solarmirrors", sw, scale, oneSeed, only, fam,
-                () => $"relays {Relays}, deep chains {DeepChains}, blocked {Blocked}, sky misses {SkyMisses}, edge misses {EdgeMisses}, commits {Commits}, big spots {BigSpots}, cycles {Cycles}, targeted {Targeted}, untargeted {Untargeted}, night {NightPasses}, idempotent {Idempotent}",
-                () => Relays > 0 && DeepChains > 0 && Blocked > 0 && SkyMisses > 0 && EdgeMisses > 0 && Commits > 0 && BigSpots > 0 && Cycles > 0 && Targeted > 0 && Untargeted > 0 && NightPasses > 0 && Idempotent > 0);
+                () => $"relays {Relays}, deep chains {DeepChains}, blocked {Blocked}, sky misses {SkyMisses}, edge misses {EdgeMisses}, commits {Commits}, big spots {BigSpots}, cycles {Cycles}, targeted {Targeted}, untargeted {Untargeted}, night {NightPasses}, idempotent {Idempotent}, glazed {Glazed}, fields {Fields} (solvable {FieldSolvable}, accepted {FieldAccepted}, too big {FieldTooBig}, hint walks {HintWalks})",
+                () => Relays > 0 && DeepChains > 0 && Blocked > 0 && SkyMisses > 0 && EdgeMisses > 0 && Commits > 0 && BigSpots > 0 && Cycles > 0 && Targeted > 0 && Untargeted > 0 && NightPasses > 0 && Idempotent > 0
+                      && (only != null || Glazed > 0 && FieldSolvable > 0 && FieldAccepted > 0 && FieldTooBig > 0 && HintWalks > 0));
         }
     }
 }

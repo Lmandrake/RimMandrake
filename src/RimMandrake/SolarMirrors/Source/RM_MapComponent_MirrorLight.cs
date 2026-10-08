@@ -81,6 +81,13 @@ namespace RimMandrake.SolarMirrors
         public IReadOnlyList<int> LitCells => litCells;
         public int MirrorCount => mirrors.Count;
         public bool AnyLight => litCells.Count > 0;
+        /// <summary>Every registered mirror, in pass order (read by jawa/shade_probe and the work givers).</summary>
+        public IReadOnlyList<RM_CompMirror> Mirrors => mirrorList;
+        private readonly List<RM_CompLightReceiver> receiverList = new List<RM_CompLightReceiver>();
+        public IReadOnlyList<RM_CompLightReceiver> Receivers => receiverList;
+        /// <summary>Light passes run since the map loaded (diagnostic, not saved).</summary>
+        public int PassCount { get; private set; }
+        public int LastChangeHash => lastHash;
 
         /// <summary>Raw irradiance at a cell index (0 where unlit). Unclamped.</summary>
         public float LightAtIndex(int i)
@@ -117,12 +124,18 @@ namespace RimMandrake.SolarMirrors
 
         public void Register(RM_CompLightReceiver r)
         {
-            receivers.Add(r);
+            if (receivers.Add(r))
+            {
+                receiverList.Add(r);
+            }
         }
 
         public void Unregister(RM_CompLightReceiver r)
         {
-            receivers.Remove(r);
+            if (receivers.Remove(r))
+            {
+                receiverList.Remove(r);
+            }
         }
 
         public void RequestPass()
@@ -192,11 +205,17 @@ namespace RimMandrake.SolarMirrors
             if (passRequested || now % interval == 0)
             {
                 passRequested = false;
+                if (now % interval == 0)
+                {
+                    TickDust(interval);
+                    TickHeliostatPower();
+                }
                 Pass();
                 TickReceivers();
                 if (now % interval == 0)
                 {
                     TickBlinding(interval);
+                    TickRoomHeat(interval);
                 }
             }
             if (gridRebuildPending && now - lastGridRebuildTick >= MinTicksBetweenGridRebuilds)
@@ -298,6 +317,18 @@ namespace RimMandrake.SolarMirrors
         int IRM_BeamWorld.Height => map.Size.z;
         string IRM_BeamWorld.BlockerEdge => BlockerEdge;
         string IRM_BeamWorld.BlockerSky => BlockerSky;
+        string IRM_BeamWorld.BlockerRoof => blockerRoof ??= "RM_SolarMirrors_Blocker_Roof".Translate();
+
+        bool IRM_BeamWorld.Roofed(int x, int z)
+        {
+            return map.roofGrid.Roofed(new IntVec3(x, 0, z));
+        }
+
+        bool IRM_BeamWorld.IsAperture(int x, int z)
+        {
+            Building e = new IntVec3(x, 0, z).GetEdifice(map);
+            return e != null && e.def.HasModExtension<RM_MirrorApertureExtension>();
+        }
 
         string IRM_BeamWorld.CellBlocks(int x, int z, int mirrorIndex)
         {
@@ -347,15 +378,11 @@ namespace RimMandrake.SolarMirrors
         internal static string BlockerEdge => blockerEdge ??= "RM_SolarMirrors_Blocker_Edge".Translate();
         internal static string BlockerSky => blockerSky ??= "RM_SolarMirrors_Blocker_Sky".Translate();
 
-        /// <summary>Design §2.2 v1 blocker rule: any roof; a closed door; a wall-like or impassable
-        /// edifice (natural rock included). Mirrors and receivers never block (they are the
-        /// apertures and the targets). Pawns and open doors never block.</summary>
+        /// <summary>Design §2.2 v1 blocker rule, roofs aside (the kernel asks Roofed/IsAperture itself, so a
+        /// glazed aperture lets a beam under a roof, §5 E2): a closed door; a wall-like or impassable edifice
+        /// (natural rock included). Mirrors, receivers and apertures never block. Pawns and open doors never block.</summary>
         private string CellBlocks(IntVec3 c, Thing self)
         {
-            if (map.roofGrid.Roofed(c))
-            {
-                return blockerRoof ??= "RM_SolarMirrors_Blocker_Roof".Translate();
-            }
             Building e = c.GetEdifice(map);
             if (e == null || e == self)
             {
@@ -365,7 +392,8 @@ namespace RimMandrake.SolarMirrors
             {
                 return door.Open ? null : (blockerDoor ??= "RM_SolarMirrors_Blocker_Door".Translate());
             }
-            if (e.TryGetComp<RM_CompMirror>() != null || e.TryGetComp<RM_CompLightReceiver>() != null)
+            if (e.TryGetComp<RM_CompMirror>() != null || e.TryGetComp<RM_CompLightReceiver>() != null
+                || e.def.HasModExtension<RM_MirrorApertureExtension>())
             {
                 return null;
             }
@@ -374,6 +402,12 @@ namespace RimMandrake.SolarMirrors
                 return e.LabelShortCap;
             }
             return null;
+        }
+
+        /// <summary>The mirror-free sun fraction at a mirror's footprint right now (0..1).</summary>
+        public float SourceAt(RM_CompMirror m)
+        {
+            return CollectorSource(m);
         }
 
         /// <summary>Mirror-free sun at the mirror's own footprint (design §2.2 collectors): the mean
@@ -404,6 +438,7 @@ namespace RimMandrake.SolarMirrors
 
         public void Pass()
         {
+            PassCount++;
             int count = mirrorList.Count;
             if (specs.Length < count)
             {
@@ -478,6 +513,110 @@ namespace RimMandrake.SolarMirrors
                 IntVec3 c = map.cellIndices.IndexToCell(cells[k]);
                 map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.GroundGlow);
                 map.events.Notify_GlowChanged(c);
+            }
+        }
+
+        // ── simulation for the field solver (mapgen) ────────────────────
+
+        private readonly RM_MirrorKernel.Pass simPass = new RM_MirrorKernel.Pass();
+        private RM_MirrorResult[] simResults = new RM_MirrorResult[0];
+
+        /// <summary>The light every registered mirror would throw in its current state, under the sun with full
+        /// daylight (weather ignored), WITHOUT touching the live layer, the comps or the shade grid. The ancient
+        /// field's solver calls it once per configuration (design §3.4). maxDepth = the deepest relay that fired.</summary>
+        public float[] SimulateLight(out int maxDepth)
+        {
+            maxDepth = 0;
+            int count = mirrorList.Count;
+            if (simResults.Length < count)
+            {
+                simResults = new RM_MirrorResult[count];
+            }
+            RM_MirrorSpec[] sims = new RM_MirrorSpec[count];
+            indexOf.Clear();
+            for (int k = 0; k < count; k++)
+            {
+                indexOf[mirrorList[k]] = k;
+            }
+            bool sunUp = TrySun(out Vector3 sun, out float _);
+            for (int k = 0; k < count; k++)
+            {
+                RM_CompMirror m = mirrorList[k];
+                bool eligible = sunUp && m.parent.Spawned && (m.HasAim || m.HoldsTarget && m.Target.IsValid);
+                sims[k] = SpecFor(m, eligible ? CollectorSource(m) : 0f);
+            }
+            simPass.Run(this, sims, count, simResults, true, sunUp, RM_MirrorMath.To(sun), 1f, RM_SolarMirrorsSettings.maxChain);
+            for (int k = 0; k < count; k++)
+            {
+                if (simResults[k].fired && simResults[k].depth > maxDepth)
+                {
+                    maxDepth = simResults[k].depth;
+                }
+            }
+            return simPass.Light;
+        }
+
+        // ── dust (design §3.2), heliostat power, room heat (§2.6, §5 E1/E2) ──
+
+        private void TickDust(int interval)
+        {
+            if (!RM_SolarMirrorsSettings.dustEnabled)
+            {
+                return;
+            }
+            bool storm = RM_MirrorDustWeathersDef.IsDusty(map.weatherManager?.curWeather);
+            if (!storm)
+            {
+                return;
+            }
+            for (int k = 0; k < mirrorList.Count; k++)
+            {
+                RM_CompMirror m = mirrorList[k];
+                if (m.parent.Spawned && !m.parent.Position.Roofed(map))
+                {
+                    m.AddDust(RM_MirrorKernel.DustAfter(m.Dust, true, RM_SolarMirrorsSettings.dustPerDay, interval) - m.Dust);
+                }
+            }
+        }
+
+        /// <summary>The settings dial for heliostat draw (design §3.5) applied to every powered tracker that is on.</summary>
+        private void TickHeliostatPower()
+        {
+            for (int k = 0; k < mirrorList.Count; k++)
+            {
+                RM_CompMirror m = mirrorList[k];
+                if (!m.Props.tracks)
+                {
+                    continue;
+                }
+                CompPowerTrader p = m.parent.GetComp<CompPowerTrader>();
+                if (p != null && p.PowerOn)
+                {
+                    p.PowerOutput = -RM_SolarMirrorsSettings.heliostatPower;
+                }
+            }
+        }
+
+        /// <summary>Mirror light falling inside an enclosed room warms it (a beam through a glazed aperture, or a lit
+        /// solar furnace indoors). Vanilla heat: GenTemperature.PushHeat, which does nothing outdoors.</summary>
+        private void TickRoomHeat(int interval)
+        {
+            if (!RM_SolarMirrorsSettings.roomHeat || litCells.Count == 0)
+            {
+                return;
+            }
+            for (int k = 0; k < litCells.Count; k++)
+            {
+                IntVec3 c = map.cellIndices.IndexToCell(litCells[k]);
+                if (!map.roofGrid.Roofed(c) || c.UsesOutdoorTemperature(map))
+                {
+                    continue;
+                }
+                float e = RM_MirrorKernel.RoomHeat(light[litCells[k]], RM_SolarMirrorsSettings.roomHeatPerLight, interval);
+                if (e > 0f)
+                {
+                    GenTemperature.PushHeat(c, map, e);
+                }
             }
         }
 

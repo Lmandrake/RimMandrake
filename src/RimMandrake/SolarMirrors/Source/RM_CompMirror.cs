@@ -22,6 +22,9 @@ namespace RimMandrake.SolarMirrors
         public bool tracks;                             // a heliostat: holds its target while powered
         public bool instantAim;                         // aimed by gizmo, no job (needs power when tracks)
         public int reAimTicks = 600;                    // the re-aim job's work, before the settings dial
+        public bool ancient;                            // design §3.4: turns only between its detents; seized until repaired
+        public int repairTicks = 1500;                  // freeing an ancient mirror's bearings (plus one component)
+        public int cleanTicks = 300;                    // the cleaning job (design §3.2 dust)
 
         public RM_CompProperties_Mirror()
         {
@@ -35,6 +38,12 @@ namespace RimMandrake.SolarMirrors
         private Vector3 normal = Vector3.zero;
         private IntVec3 target = IntVec3.Invalid;
         private IntVec3 pendingTarget = IntVec3.Invalid;
+        // Saved (SOLAR_MIRRORS_BUILD_1): dust (§3.2) and the ancient-field state (§3.4).
+        private float dust;
+        private bool seized;
+        private bool repairRequested;
+        private List<IntVec3> detents = new List<IntVec3>();
+        private int detentIndex = -1;
 
         // Last light pass, for the inspect pane and rendering. Not saved.
         public float lastSource;
@@ -52,6 +61,68 @@ namespace RimMandrake.SolarMirrors
         public bool HasPending => pendingTarget.IsValid;
         public bool HasAim => target.IsValid && normal != Vector3.zero;
         public Vector3 CommittedNormal => normal;
+
+        public float Dust => dust;
+        public bool IsAncient => Props.ancient;
+        public bool Seized => seized;
+        public bool RepairRequested => seized && repairRequested;
+        public IReadOnlyList<IntVec3> Detents => detents;
+        public int DetentIndex => detentIndex;
+        public bool NeedsCleaning => RM_SolarMirrorsSettings.dustEnabled && dust >= RM_MirrorDustWeathersDef.CleanAt;
+
+        /// <summary>Who may order this mirror about: its owner, or anyone for an unowned ancient mirror.</summary>
+        public bool Orderable => parent.Faction == Faction.OfPlayer || Props.ancient && parent.Faction == null;
+
+        public void AddDust(float delta)
+        {
+            dust = Mathf.Clamp01(dust + delta);
+        }
+
+        public void Clean()
+        {
+            dust = 0f;
+            RM_MapComponent_MirrorLight.For(parent.Map)?.RequestPass();
+        }
+
+        /// <summary>Mapgen: make this an ancient field mirror, seized, on detent `start`.</summary>
+        public void SetAncient(List<IntVec3> detentCells, int start, bool isSeized)
+        {
+            detents = new List<IntVec3>(detentCells);
+            seized = isSeized;
+            repairRequested = false;
+            detentIndex = -1;
+            if (start >= 0 && start < detents.Count)
+            {
+                CommitAim(detents[start]);
+            }
+        }
+
+        /// <summary>Mapgen's solver: put the mirror on a detent without any side effect beyond its own state.</summary>
+        public void SetDetentDirect(int k)
+        {
+            if (k < 0 || k >= detents.Count)
+            {
+                return;
+            }
+            target = detents[k];
+            detentIndex = k;
+            pendingTarget = IntVec3.Invalid;
+        }
+
+        public void FinishRepair()
+        {
+            seized = false;
+            repairRequested = false;
+        }
+
+        public void OrderDetent(int k)
+        {
+            if (seized || k < 0 || k >= detents.Count)
+            {
+                return;
+            }
+            pendingTarget = detents[k];
+        }
 
         /// <summary>A tracking heliostat re-aimed during the light pass: keep that normal (design §5 E13).</summary>
         public void CommitNormal(Vector3 n)
@@ -77,7 +148,7 @@ namespace RimMandrake.SolarMirrors
 
         /// <summary>The spot stays on the target: a tracking heliostat, or any mirror when the
         /// "static mirrors sweep" setting is off.</summary>
-        public bool HoldsTarget => TrackingNow || !RM_SolarMirrorsSettings.staticSweep;
+        public bool HoldsTarget => Props.ancient || TrackingNow || !RM_SolarMirrorsSettings.staticSweep;
 
         public float Reflectivity
         {
@@ -97,7 +168,8 @@ namespace RimMandrake.SolarMirrors
                         }
                     }
                 }
-                return RM_MirrorKernel.Reflectivity(Props.reflectivity, found, row, RM_SolarMirrorsSettings.reflectivityMultiplier);
+                float r = RM_MirrorKernel.Reflectivity(Props.reflectivity, found, row, RM_SolarMirrorsSettings.reflectivityMultiplier);
+                return RM_SolarMirrorsSettings.dustEnabled ? r * RM_MirrorKernel.DustFactor(dust, RM_MirrorDustWeathersDef.MaxLoss) : r;
             }
         }
 
@@ -175,6 +247,15 @@ namespace RimMandrake.SolarMirrors
         {
             target = cell;
             pendingTarget = IntVec3.Invalid;
+            if (Props.ancient)
+            {
+                int was = detentIndex;
+                detentIndex = detents.IndexOf(cell);
+                if (was >= 0 && was != detentIndex && parent.Spawned)
+                {
+                    RM_MapComponent_MirrorField.For(parent.Map)?.Notify_ReAimed(this);
+                }
+            }
             RM_MapComponent_MirrorLight comp = RM_MapComponent_MirrorLight.For(parent.Map);
             // The light it gets now: the sun for a collector, or the upstream mirror's beam for a
             // relay (recorded by the last pass even when an un-aimed relay could not fire).
@@ -206,6 +287,15 @@ namespace RimMandrake.SolarMirrors
             Scribe_Values.Look(ref normal, "rmMirrorNormal", Vector3.zero);
             Scribe_Values.Look(ref target, "rmMirrorTarget", IntVec3.Invalid);
             Scribe_Values.Look(ref pendingTarget, "rmMirrorPendingTarget", IntVec3.Invalid);
+            Scribe_Values.Look(ref dust, "rmMirrorDust", 0f);
+            Scribe_Values.Look(ref seized, "rmMirrorSeized", false);
+            Scribe_Values.Look(ref repairRequested, "rmMirrorRepairRequested", false);
+            Scribe_Values.Look(ref detentIndex, "rmMirrorDetent", -1);
+            Scribe_Collections.Look(ref detents, "rmMirrorDetents", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && detents == null)
+            {
+                detents = new List<IntVec3>();
+            }
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -214,8 +304,16 @@ namespace RimMandrake.SolarMirrors
             {
                 yield return g;
             }
-            if (parent.Faction != Faction.OfPlayer)
+            if (!Orderable)
             {
+                yield break;
+            }
+            if (Props.ancient)
+            {
+                foreach (Gizmo g in AncientGizmos())
+                {
+                    yield return g;
+                }
                 yield break;
             }
             yield return new Command_Action
@@ -234,6 +332,65 @@ namespace RimMandrake.SolarMirrors
                     icon = TexCommand.ClearPrioritizedWork,
                     action = ClearAim
                 };
+            }
+        }
+
+        private IEnumerable<Gizmo> AncientGizmos()
+        {
+            if (seized)
+            {
+                yield return new Command_Toggle
+                {
+                    defaultLabel = "RM_SolarMirrors_Repair".Translate(),
+                    defaultDesc = "RM_SolarMirrors_Repair_Desc".Translate(),
+                    icon = RM_MirrorTex.Repair,
+                    isActive = () => repairRequested,
+                    toggleAction = () => repairRequested = !repairRequested
+                };
+                yield break;
+            }
+            for (int k = 0; k < detents.Count; k++)
+            {
+                int d = k;
+                Command_Action c = new Command_Action
+                {
+                    defaultLabel = "RM_SolarMirrors_Detent".Translate(d + 1),
+                    defaultDesc = "RM_SolarMirrors_Detent_Desc".Translate(d + 1, detents[d].ToString()),
+                    icon = TexCommand.Attack,
+                    action = () => OrderDetent(d)
+                };
+                if (d == detentIndex && !pendingTarget.IsValid)
+                {
+                    c.Disable("RM_SolarMirrors_Detent_Current".Translate());
+                }
+                else if (pendingTarget.IsValid && pendingTarget == detents[d])
+                {
+                    c.Disable("RM_SolarMirrors_Detent_Pending".Translate());
+                }
+                yield return c;
+            }
+        }
+
+        /// <summary>Design §3.4 "readable": selecting an ancient mirror ghosts every detent's spot at once.</summary>
+        public override void PostDrawExtraSelectionOverlays()
+        {
+            base.PostDrawExtraSelectionOverlays();
+            if (!Props.ancient || !parent.Spawned)
+            {
+                return;
+            }
+            RM_MapComponent_MirrorLight comp = RM_MapComponent_MirrorLight.For(parent.Map);
+            if (comp == null)
+            {
+                return;
+            }
+            for (int k = 0; k < detents.Count; k++)
+            {
+                previewCells.Clear();
+                comp.SpotCells(this, detents[k], previewCells);
+                Color col = k == detentIndex ? Color.yellow : pendingTarget.IsValid && pendingTarget == detents[k] ? Color.cyan : Color.white;
+                GenDraw.DrawFieldEdges(previewCells, col);
+                GenDraw.DrawLineBetween(parent.TrueCenter(), GroundPoint(detents[k]), k == detentIndex ? SimpleColor.Yellow : SimpleColor.White);
             }
         }
 
@@ -301,6 +458,22 @@ namespace RimMandrake.SolarMirrors
         public override string CompInspectStringExtra()
         {
             StringBuilder sb = new StringBuilder();
+            if (Props.ancient)
+            {
+                sb.Append((seized ? "RM_SolarMirrors_Inspect_Seized" : "RM_SolarMirrors_Inspect_Freed").Translate());
+                sb.AppendLine();
+                if (detentIndex >= 0)
+                {
+                    sb.Append("RM_SolarMirrors_Inspect_Detent".Translate(detentIndex + 1, detents.Count));
+                    sb.AppendLine();
+                }
+            }
+            if (RM_SolarMirrorsSettings.dustEnabled && dust > 0.01f)
+            {
+                sb.Append("RM_SolarMirrors_Inspect_Dust".Translate(dust.ToStringPercent(),
+                    (1f - RM_MirrorKernel.DustFactor(dust, RM_MirrorDustWeathersDef.MaxLoss)).ToStringPercent()));
+                sb.AppendLine();
+            }
             if (pendingTarget.IsValid)
             {
                 sb.Append("RM_SolarMirrors_Inspect_Pending".Translate(pendingTarget.ToString()));

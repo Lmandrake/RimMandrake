@@ -19,12 +19,13 @@ namespace RimMandrake.SolarMirrors
             {
                 yield break;
             }
-            foreach (Building b in pawn.Map.listerBuildings.allBuildingsColonist)
+            // The comp's own list, not allBuildingsColonist: an unowned ancient field mirror is orderable too (design §3.4).
+            IReadOnlyList<RM_CompMirror> list = comp.Mirrors;
+            for (int k = 0; k < list.Count; k++)
             {
-                RM_CompMirror m = b.TryGetComp<RM_CompMirror>();
-                if (m != null && m.HasPending)
+                if (list[k].HasPending && list[k].Orderable)
                 {
-                    yield return b;
+                    yield return list[k].parent;
                 }
             }
         }
@@ -38,7 +39,7 @@ namespace RimMandrake.SolarMirrors
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             RM_CompMirror m = t.TryGetComp<RM_CompMirror>();
-            if (m == null || !m.HasPending || t.IsForbidden(pawn) || t.IsBurning())
+            if (m == null || !m.HasPending || !m.Orderable || m.Seized || t.IsForbidden(pawn) || t.IsBurning())
             {
                 return false;
             }

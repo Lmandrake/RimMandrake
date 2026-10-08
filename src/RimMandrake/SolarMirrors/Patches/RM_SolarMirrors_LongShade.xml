@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SolarMirrors_LongShade.xml    SOLAR_MIRRORS_MOD_DESIGN_1 §3.1/§3.4, built under SOLAR_MIRRORS_BUILD_1
+
+  The Long Shade asks for an ancient mirror field: its BiomeDef gets RM_MirrorFieldExtension and the field's
+  GenStep in extraGenSteps. Done here rather than in RM_LongShade.xml so the biome file stays free of this mod;
+  the Conditional makes it a silent no-op when the Long Shade is not loaded (a bare Add would log an error).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_LongShade"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/BiomeDef[defName="RM_LongShade"]/modExtensions</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/BiomeDef[defName="RM_LongShade"]/modExtensions</xpath>
+            <value>
+              <li Class="RimMandrake.SolarMirrors.RM_MirrorFieldExtension">
+                <stones>2~4</stones>   <!-- PROVISIONAL -->
+                <detents>3</detents>
+                <chance>1</chance>     <!-- PROVISIONAL: every Long Shade map -->
+              </li>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/BiomeDef[defName="RM_LongShade"]</xpath>
+            <value>
+              <modExtensions>
+                <li Class="RimMandrake.SolarMirrors.RM_MirrorFieldExtension">
+                  <stones>2~4</stones>
+                  <detents>3</detents>
+                  <chance>1</chance>
+                </li>
+              </modExtensions>
+            </value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/BiomeDef[defName="RM_LongShade"]/extraGenSteps</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/BiomeDef[defName="RM_LongShade"]/extraGenSteps</xpath>
+            <value>
+              <li>RM_GenStep_AncientMirrorField</li>
+            </value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/BiomeDef[defName="RM_LongShade"]</xpath>
+            <value>
+              <extraGenSteps>
+                <li>RM_GenStep_AncientMirrorField</li>
+              </extraGenSteps>
+            </value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

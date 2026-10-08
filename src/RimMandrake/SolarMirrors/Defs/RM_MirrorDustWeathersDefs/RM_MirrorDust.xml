@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_MirrorDust.xml    SOLAR_MIRRORS_MOD_DESIGN_1 §3.2 dust on mirrors, built under SOLAR_MIRRORS_BUILD_1
+
+  The weathers that dirty an unroofed mirror, by defName: a weather from a mod that is not loaded is simply
+  skipped (no error). Sandstorm is Odyssey's; the rest are this campaign's sand, grit and ash weathers. A dusty
+  mirror loses up to maxLoss of its reflectivity; at cleanAt a Cleaning job is offered. Dust gained per day of storm
+  is a Mod Settings slider. Every number is PROVISIONAL.
+-->
+<Defs>
+
+  <RimMandrake.SolarMirrors.RM_MirrorDustWeathersDef>
+    <defName>RM_MirrorDust</defName>
+    <label>mirror dust</label>
+    <maxLoss>0.6</maxLoss>
+    <cleanAt>0.25</cleanAt>
+    <weathers>
+      <li>Sandstorm</li>
+      <li>RM_DuneGale</li>
+      <li>RM_DuneGaleHerald</li>
+      <li>RM_DustDevil</li>
+      <li>RM_IceSandDrift</li>
+      <li>RM_ScrubWind</li>
+      <li>RM_FE_Weather_AshFall</li>
+      <li>RM_FE_Weather_Cinderfall</li>
+      <li>RM_WastelandAshStorm</li>
+      <li>RSW_SW_DrySandstorm</li>
+    </weathers>
+  </RimMandrake.SolarMirrors.RM_MirrorDustWeathersDef>
+
+</Defs>

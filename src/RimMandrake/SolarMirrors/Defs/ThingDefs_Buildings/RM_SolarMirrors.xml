@@ -3,9 +3,11 @@
   RM_SolarMirrors.xml                 RimMandrake: Solar Mirrors — SOLAR_MIRRORS_MOD_DESIGN_1 §3.2, §5 E1
 
   Every cost, range, reflectivity, work and threshold below is PROVISIONAL (first guesses; tune live).
-  Art: PLACEHOLDER textures only (vanilla SolarCollector / ElectricSmelter, Stillsand's RM_SunLance_Base).
-  No artpipe job exists for any of these (artpipe_state.py find mirror/heliostat/sunstone/heliograph,
-  2026-10-06); the jobs owed are listed in Transient/solar_mirrors_20261006.md.
+  Art: PLACEHOLDER textures only (vanilla SolarCollector / ElectricSmelter / Wall / Column / HorseshoesPin, Stillsand's
+  RM_SunLance_Base). artpipe_state.py found no art for any of these defs (2026-10-08); twelve jobs are queued
+  (solarmirrors_*_v1, rimflow item SOLAR_MIRRORS_BUILD_1) for Things/Building/RM_SolarMirrors/<defName> (+ _Lit for the
+  sun-stone). When they install, repoint each texPath here. The vault wall (a linked atlas) has no job: the pipeline
+  cannot make atlases.
 
   A mirror must never cast its own shade: fillPercent below the shade grid's 0.8 caster threshold and
   staticSunShadowHeight 0.
@@ -34,7 +36,7 @@
   <ThingDef ParentName="RM_MirrorBase">
     <defName>RM_SignalMirror</defName>
     <label>signal mirror</label>
-    <description>A hand-sized mirror on a post. It throws a small patch of sunlight onto the cell it is aimed at. A colonist has to walk over and turn it to aim it. It reflects best back toward the side the sun is on, and does nothing in shadow, at night or under a roof.</description>
+    <description>A hand-sized mirror on a post. It throws a small patch of sunlight onto the cell it is aimed at. A colonist has to walk over and turn it to aim it. It reflects best back toward the side the sun is on, and does nothing in shadow, at night or under a roof. By day a colonist can also use it as a heliograph, flashing a friendly settlement within reach to open talks with it.</description>
     <graphicData>
       <texPath>Things/Building/Security/RM_SunLance_Base</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -58,6 +60,11 @@
         <spotSize>1</spotSize>
         <maxRange>30</maxRange>
         <reAimTicks>300</reAimTicks>
+      </li>
+      <!-- §5 E3 (SOLAR_MIRRORS_BUILD_1): flash a friendly settlement by day. flashTicks PROVISIONAL. -->
+      <li Class="RimMandrake.SolarMirrors.RM_CompProperties_Heliograph">
+        <flashTicks>300</flashTicks>
+        <minSource>0.5</minSource>
       </li>
     </comps>
   </ThingDef>
@@ -235,6 +242,182 @@
     <placeWorkers>
       <li>PlaceWorker_PreventInteractionSpotOverlap</li>
     </placeWorkers>
+  </ThingDef>
+
+  <!-- ═══ SOLAR_MIRRORS_BUILD_1 ═══ All numbers PROVISIONAL; art is placeholder (vanilla textures) until the queued
+       artpipe jobs (solarmirrors_*_v1, item SOLAR_MIRRORS_BUILD_1) are installed at Things/Building/RM_SolarMirrors/<defName>. -->
+
+  <!-- §3.4: the ancient field's mirror. Seized until freed (one component + Construction); then it turns, by job,
+       only between its three detents, and always throws at the detent's pin. Not buildable, not claimable. -->
+  <ThingDef ParentName="RM_MirrorBase">
+    <defName>RM_AncientHeliostat</defName>
+    <label>ancient heliostat</label>
+    <description>A sand-scoured heliostat from a vanished people, its brass pitted and its bearings seized. Freed, it still turns, but only between the old brass pins set in the ground around it, and it throws its light exactly on whichever pin it faces. Selecting it shows where each pin would send its light.</description>
+    <graphicData>
+      <texPath>Things/Building/Power/SolarCollector</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(170,140,95)</color>
+    </graphicData>
+    <size>(3,3)</size>
+    <designationCategory Inherit="False" IsNull="True" />
+    <minifiedDef Inherit="False" IsNull="True" />
+    <thingCategories Inherit="False" IsNull="True" />
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Mass>80</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>3</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+    </building>
+    <comps>
+      <li Class="RimMandrake.SolarMirrors.RM_CompProperties_Mirror">
+        <reflectivity>0.75</reflectivity>
+        <spotSize>3</spotSize>
+        <maxRange>40</maxRange>
+        <ancient>true</ancient>
+        <reAimTicks>900</reAimTicks>
+        <repairTicks>1500</repairTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- §3.4 "detents are visible ground objects": an old brass target pin. Not an edifice, never blocks. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_MirrorDetent</defName>
+    <label>brass target pin</label>
+    <description>An old brass pin set into the ground. An ancient heliostat nearby can be turned to throw its light exactly here.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Joy/HorseshoesPin</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.4,0.4)</drawSize>
+      <color>(190,150,70)</color>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <fillPercent>0</fillPercent>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <castEdgeShadows>false</castEdgeShadows>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <rotatable>false</rotatable>
+    <clearBuildingArea>false</clearBuildingArea>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+    </building>
+  </ThingDef>
+
+  <!-- §3.4 the sealed vault: its walls and its seal. The seal opens (is gone, latched) when every sun-stone is lit. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SunVaultWall</defName>
+    <label>sun vault wall</label>
+    <description>Ancient masonry carved with sun-wheels, built to keep a vault shut until light is brought to its stones.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/Linked/Wall</texPath>
+      <graphicClass>Graphic_Appearances</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+        <li>Rock</li>
+      </linkFlags>
+    </graphicData>
+    <uiIconPath>Things/Building/Linked/WallSmooth_MenuIcon</uiIconPath>
+    <stuffCategories>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>5</costStuffCount>
+    <statBases>
+      <MaxHitPoints>3000</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <blockWind>true</blockWind>
+    <castEdgeShadows>true</castEdgeShadows>
+    <fillPercent>1</fillPercent>
+    <coversFloor>true</coversFloor>
+    <holdsRoof>true</holdsRoof>
+    <blockLight>true</blockLight>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <rotatable>false</rotatable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <building>
+      <isWall>true</isWall>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SunVaultSeal</defName>
+    <label>sun vault seal</label>
+    <description>A stone slab carved with a sun, sealing an ancient vault. It gives way when every sun-stone before it is lit by mirror light. Its inspect pane tells how many are lit, and, the longer the colony works at the mirrors, more about what is missing.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Furniture/Column</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <color>(200,170,110)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <holdsRoof>true</holdsRoof>
+    <blockLight>true</blockLight>
+    <blockWind>true</blockWind>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MaxHitPoints>6000</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <building>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+    </building>
+    <comps>
+      <li>
+        <compClass>RimMandrake.SolarMirrors.RM_CompSunVaultSeal</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- §5 E2 mirror greenhouse: a glazed wall a beam passes through, and past which a roof no longer stops it, so
+       mirror light reaches (glow) and warms (room heat) a roofed room. PROVISIONAL: a glazed wall, not a glass roof. -->
+  <ThingDef ParentName="Wall">
+    <defName>RM_GlazedAperture</defName>
+    <label>glazed aperture</label>
+    <description>A wall of thick glass panes in a metal frame. It keeps the weather out like any wall, but mirror light passes straight through it and on into the room behind, under the roof: aim a mirror through it to light and warm a greenhouse.</description>
+    <graphicData>
+      <color>(200,225,235)</color>
+    </graphicData>
+    <stuffCategories Inherit="False">
+      <li>Metallic</li>
+    </stuffCategories>
+    <costStuffCount>10</costStuffCount>
+    <costList>
+      <Silver>5</Silver>
+    </costList>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Beauty>1</Beauty>
+    </statBases>
+    <researchPrerequisites>
+      <li>Smithing</li>
+    </researchPrerequisites>
+    <modExtensions>
+      <li Class="RimMandrake.SolarMirrors.RM_MirrorApertureExtension" />
+    </modExtensions>
   </ThingDef>
 
 </Defs>
