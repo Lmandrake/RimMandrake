@@ -1,0 +1,11 @@
+# Every minute — see rm-memwatch.service.
+[Unit]
+Description=RimMandrake seat memory watchdog, every minute
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1min
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target
