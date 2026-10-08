@@ -15,6 +15,8 @@ by $ARTPIPE_MOCK_CONTROL: a JSON object `{job_id: "behavior"}` (or
 `{job_id: {"behavior": "...", ...overrides}}`). An id not listed there, or no
 control file at all, behaves as "ok".
 
+Any entry may also carry "sleep_s" (see main()) to make the run last that long.
+
 Behaviors:
     ok            generate a candidate PNG that is a small pixel-level
                   mutation of the --image reference (same canvas/alpha
@@ -235,6 +237,18 @@ def main(argv=None) -> int:
     job_id = out.stem
     ctrl = control_for(job_id)
     behavior = ctrl.get("behavior", "ok")
+    # Any behavior may carry {"sleep_s": X}: hold the "codex run" open that
+    # long, and, when $ARTPIPE_MOCK_TIMELINE names a file, append this run's
+    # start/end wall times to it — how the selftest proves N workers really
+    # overlap rather than inferring it from totals.
+    sleep_s = float(ctrl.get("sleep_s", 0) or 0)
+    if sleep_s > 0:
+        t0 = time.time()
+        time.sleep(sleep_s)
+        timeline = os.environ.get("ARTPIPE_MOCK_TIMELINE")
+        if timeline:
+            with open(timeline, "a") as fh:
+                fh.write(json.dumps({"job": job_id, "start": t0, "end": time.time()}) + "\n")
     home = Path(args.codex_home).resolve() if args.codex_home else None
     images = [Path(i) for i in (getattr(args, "image", None) or [])]
     reference = images[0] if images else None

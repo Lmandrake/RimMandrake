@@ -3806,6 +3806,140 @@ def test_stale_refresh_guard_serializes_two_due_for_refresh_homes():
            timeline["b_enter"] >= timeline["a_exit"], timeline)
 
 
+def test_stale_refresh_guard_clean_probe_releases_concurrency():
+    """ART_PIPELINE_LATENCY fix (2026-10-08): ONE clean guarded run that does
+    not rotate the lineage proves codex is not refresh-due for it, so later
+    jobs on that same lineage run concurrently instead of serializing forever
+    (all 32 homes sat at one 45 h-old last_refresh and 5 workers ran as 1).
+    An auth-failed run proves nothing; a token near expiry always locks."""
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        stale_at = datetime.now(timezone.utc) - timedelta(hours=45)
+        for i in range(3):
+            write_auth_json(root / f"w{i}", stale_at, "rt-shared")
+        ctx = _minimal_ctx(root)
+
+        with ctx.stale_refresh_guard(root / "w0") as guard:
+            guard.auth_failed = True
+        ok("probe: an auth-failed run is never recorded as a clean probe",
+           not ctx._lineage_probe_ok)
+        with ctx.stale_refresh_guard(root / "w0") as guard:
+            ok("probe: the first stale job after that still takes the lock", guard.held is True)
+        ok("probe: a clean non-rotating run records the lineage as probed",
+           len(ctx._lineage_probe_ok) == 1, ctx._lineage_probe_ok)
+
+        timeline, held = {}, {}
+        barrier = threading.Barrier(3)
+
+        def run(home_name):
+            with ctx.stale_refresh_guard(root / home_name) as g:
+                held[home_name] = g.held
+                timeline[f"{home_name}_enter"] = time.monotonic()
+                try:
+                    barrier.wait(timeout=2)  # all three must be inside at once
+                except threading.BrokenBarrierError:
+                    pass
+                timeline[f"{home_name}_exit"] = time.monotonic()
+
+        threads = [threading.Thread(target=run, args=(f"w{i}",)) for i in range(3)]
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join(timeout=5)
+        ok("probe: after a clean probe, no stale-lineage job holds the lock", not any(held.values()), held)
+        ok("probe: three stale-lineage jobs were inside the guard at the same time",
+           not barrier.broken and max(timeline[f"w{i}_enter"] for i in range(3))
+           < min(timeline[f"w{i}_exit"] for i in range(3)), timeline)
+
+        ctx._lineage_probe_ok[stale_at] = time.time() - artpiped.STALE_PROBE_VALID_S - 1
+        with ctx.stale_refresh_guard(root / "w1") as guard:
+            ok("probe: an EXPIRED probe makes the next stale job take the lock again", guard.held is True)
+
+        near = root / "near"
+        near.mkdir()
+        exp = int(time.time() + 600)
+        (near / "auth.json").write_text(json.dumps({
+            "last_refresh": stale_at.isoformat(),
+            "tokens": {"access_token": _fake_access_token(exp, "plus"), "refresh_token": "rt-shared"}}))
+        ctx._lineage_probe_ok[stale_at] = time.time()
+        with ctx.stale_refresh_guard(near) as guard:
+            ok("probe: a token about to expire always takes the lock, probe or not", guard.held is True)
+
+
+def test_n_workers_run_concurrently_with_stale_logins():
+    """End to end through the real daemon and mock worker: every leased home
+    carries a 45 h-old shared last_refresh (the 2026-10-08 production state).
+    Before the fix every job held the global lock and runs never overlapped;
+    now one probe job runs alone and the rest overlap across the workers."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        stale_at = datetime.now(timezone.utc) - timedelta(hours=45)
+        for i in range(3):
+            write_auth_json(q.codex_homes / f"w{i}", stale_at, "rt-shared")
+        control = {}
+        for i in range(7):
+            make_job(q.pending, f"conc{i}", q.reference, priority=0)
+            control[f"conc{i}"] = {"behavior": "ok", "sleep_s": 1.5}
+        timeline_path = q.root / "timeline.jsonl"
+        os.environ["ARTPIPE_MOCK_TIMELINE"] = str(timeline_path)
+        try:
+            proc = q.run(control, "--once", "--workers", "3", timeout=120)
+        finally:
+            os.environ.pop("ARTPIPE_MOCK_TIMELINE", None)
+        ok("concurrency: daemon exits 0", proc.returncode == 0, proc.stderr[-2000:])
+        runs = [json.loads(l) for l in timeline_path.read_text().splitlines()] if timeline_path.is_file() else []
+        ok("concurrency: all 7 mock codex runs happened", len(runs) == 7, runs)
+        events = sorted([(r["start"], 1) for r in runs] + [(r["end"], -1) for r in runs])
+        cur = peak = 0
+        for _, d in events:
+            cur += d
+            peak = max(peak, cur)
+        ok("concurrency: stale-login homes still ran >=2 codex jobs at once (peak overlap)",
+           peak >= 2, f"peak={peak} runs={runs}")
+        ok("concurrency: all 3 workers were busy together at some point", peak == 3, f"peak={peak}")
+        done_ids = {p.stem for p in q.done.glob("*.json") if not p.name.endswith(".manifest.json")}
+        ok("concurrency: every job landed in done/", len(done_ids) == 7, sorted(done_ids))
+
+
+def test_queue_order_is_priority_then_ruled_then_age():
+    """B2 of the 2026-10-08 latency report: the old (priority, filename) key
+    put a ruled redraw 174th behind alphabetically-earlier bulk jobs. Order
+    is now priority (0 first), then owner_note-carrying (ruled) jobs, then
+    oldest `created`, then file mtime for a job with no `created`."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+
+        def put(job_id, priority, created=None, owner_note=None, mtime=None):
+            job = job_dict(job_id, q.reference, priority)
+            if created is not None:
+                job["created"] = created
+            if owner_note is not None:
+                job["owner_note"] = owner_note
+            dest = q.pending / f"{job_id}.json"
+            common.atomic_write_json(dest, job)
+            if mtime is not None:
+                os.utime(dest, (mtime, mtime))
+
+        put("aaa_bulk_new", 0, created="2026-10-08T10:00:00Z")
+        put("bbb_bulk_old", 0, created="2026-10-01T10:00:00Z")
+        put("zzz_ruled_new", 0, created="2026-10-08T12:00:00Z", owner_note="make it less cute")
+        put("yyy_ruled_old", 0, created="2026-10-05T12:00:00Z", owner_note="redraw H")
+        put("ccc_bulk_nocreated", 0, mtime=datetime(2026, 10, 3, tzinfo=timezone.utc).timestamp())
+        put("aaa_prio5_ruled", 5, created="2026-09-01T00:00:00Z", owner_note="ASAP")
+        put("ddd_blank_note", 0, created="2026-10-02T00:00:00Z", owner_note="  ")
+
+        order = []
+        while True:
+            claimed = artpiped.claim_next(q.pending, q.active)
+            if claimed is None:
+                break
+            order.append(claimed.stem)
+        want = ["yyy_ruled_old", "zzz_ruled_new", "bbb_bulk_old", "ddd_blank_note",
+                "ccc_bulk_nocreated", "aaa_bulk_new", "aaa_prio5_ruled"]
+        ok("order: priority, then ruled (owner_note), then oldest created/mtime — never alphabetical",
+           order == want, f"got {order}")
+
+
 def main() -> int:
     # Gate off by default for every in-process test — synthetic fixtures are
     # not art. The legibility test opts back in around its own calls.
@@ -3928,6 +4062,9 @@ def main() -> int:
         test_stale_refresh_guard_fresh_home_never_takes_the_lock,
         test_stale_refresh_guard_propagates_refresh_to_sibling_stale_homes,
         test_stale_refresh_guard_serializes_two_due_for_refresh_homes,
+        test_stale_refresh_guard_clean_probe_releases_concurrency,
+        test_n_workers_run_concurrently_with_stale_logins,
+        test_queue_order_is_priority_then_ruled_then_age,
     ):
         print(f"--- {fn.__name__} ---")
         try:

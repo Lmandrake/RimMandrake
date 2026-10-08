@@ -897,11 +897,41 @@ def _looks_rate_limited(text: str, prompt: str | None = None) -> bool:
 # queue mechanics
 # --------------------------------------------------------------------------
 
-def _priority_of(path: Path) -> int:
+def _queue_key(path: Path) -> tuple:
+    """Claim order for pending jobs: (priority, ruled-first, age, name).
+
+    Priority stays the primary key and LOWER claims sooner (0 is top). Within
+    a priority, a job carrying `owner_note` — the owner's verbatim ruling from
+    a review sheet, which fill_queue copies onto the job — goes ahead of bulk
+    backfill that carries none. Then OLDEST `created` first (file mtime when a
+    job has no parseable `created`), and the filename only as a last tiebreak.
+    Before 2026-10-08 the key was (priority, filename), so with most of the
+    queue at 0 a ruled redraw sat behind every alphabetically-earlier bulk job
+    (Transient/art_pipeline_latency_2026-10-08.md, B2)."""
     try:
-        return int(json.loads(path.read_text()).get("priority", 100))
-    except (OSError, ValueError, TypeError):
-        return 100
+        job = json.loads(path.read_text())
+        if not isinstance(job, dict):
+            raise ValueError("not an object")
+    except (OSError, ValueError):
+        return (100, 1, float("inf"), path.name)
+    try:
+        priority = int(job.get("priority", 100))
+    except (ValueError, TypeError):
+        priority = 100
+    ruled = 0 if isinstance(job.get("owner_note"), str) and job["owner_note"].strip() else 1
+    created_s = None
+    raw = job.get("created")
+    if isinstance(raw, str):
+        try:
+            created_s = datetime.fromisoformat(raw.replace("Z", "+00:00")).timestamp()
+        except ValueError:
+            created_s = None
+    if created_s is None:
+        try:
+            created_s = path.stat().st_mtime
+        except OSError:
+            created_s = float("inf")
+    return (priority, ruled, created_s, path.name)
 
 
 def _channel_of(path: Path) -> str:
@@ -1014,7 +1044,7 @@ def claim_next(pending_dir: Path, active_dir: Path, channel_blocked=None,
     every existing caller that never heard of `derive_from` is unaffected.
     """
     try:
-        candidates = sorted(pending_dir.glob("*.json"), key=lambda p: (_priority_of(p), p.name))
+        candidates = sorted(pending_dir.glob("*.json"), key=_queue_key)
     except OSError:
         return None
     derive_check = done_dir is not None and failed_dir is not None and artsrc_dir is not None
@@ -1371,6 +1401,17 @@ class RunCtx:
         # last_refresh has aged past the stale threshold; see
         # stale_refresh_guard below.
         self._stale_refresh_lock = threading.Lock()
+        # ART_PIPELINE_LATENCY fix (2026-10-08): the lock above used to be
+        # taken by EVERY job once a home passed 12 h, and codex only rotates
+        # when it actually needs to — so a lineage sitting at 45 h with a
+        # token valid for 8 more days serialized 5 workers into 1 forever.
+        # A guarded job that runs clean WITHOUT rotating proves codex does not
+        # want a refresh for this lineage right now; record that probe here,
+        # keyed by the lineage's last_refresh value, and let later jobs on the
+        # same lineage run concurrently for STALE_PROBE_VALID_S. The lock still
+        # covers the one job per window that might refresh, and any home whose
+        # access token is near expiry (a refresh codex WILL attempt).
+        self._lineage_probe_ok: dict = {}  # last_refresh -> probe time (epoch s)
 
     def stale_refresh_guard(self, codex_home: Path) -> "_StaleRefreshGuard":
         """Use as `with ctx.stale_refresh_guard(codex_home): ...` around the
@@ -1412,16 +1453,44 @@ class RunCtx:
             return None
 
 
-def _codex_home_is_refresh_due(codex_home: Path) -> tuple[bool, "datetime | None"]:
+# Codex's own wording for a refresh-token failure (ARTPIPE_WORKER_AUTH_STALENESS_1).
+_AUTH_FAILURE_RE = re.compile(r"refresh token|could not be refreshed|sign in again|"
+                              r"Failed to refresh token", re.IGNORECASE)
+
+# How long one clean, non-rotating guarded run vouches for its lineage. Short
+# on purpose: codex's own refresh decision is monotone in last_refresh age, so
+# a probe an hour old bounds how long a newly-crossed threshold can go unseen
+# to one hour, at a cost of one serialized job per lineage per hour.
+STALE_PROBE_VALID_S = 3600.0
+# A token this close to `exp` is one codex WILL refresh (on its 401), so the
+# probe never excuses it — that run always takes the lock.
+EXPIRY_MARGIN_S = STALE_PROBE_VALID_S + 600.0
+
+
+def _codex_home_is_refresh_due(codex_home: Path, probe_ok: dict | None = None
+                               ) -> tuple[bool, "datetime | None"]:
     """(is it old enough that codex might attempt a refresh, its current
     last_refresh) — a home with no readable auth.json yet (never leased a
     job, or seeded but not yet used) is never "due", it simply has nothing
-    to be stale about yet."""
+    to be stale about yet. `probe_ok` (RunCtx._lineage_probe_ok) excuses a
+    stale home whose exact last_refresh was probed clean within
+    STALE_PROBE_VALID_S, unless its access token expires within
+    EXPIRY_MARGIN_S."""
     info = codex_image.read_auth_freshness(codex_home)
     if info is None or info["last_refresh"] is None:
         return False, None
+    now = time.time()
+    exp = info.get("exp")
+    if isinstance(exp, (int, float)) and exp - now < EXPIRY_MARGIN_S:
+        return True, info["last_refresh"]
     age_s = (datetime.now(timezone.utc) - info["last_refresh"]).total_seconds()
-    return age_s > codex_image.STALE_REFRESH_THRESHOLD_S, info["last_refresh"]
+    if age_s <= codex_image.STALE_REFRESH_THRESHOLD_S:
+        return False, info["last_refresh"]
+    if probe_ok is not None:
+        probed_at = probe_ok.get(info["last_refresh"])
+        if probed_at is not None and now - probed_at < STALE_PROBE_VALID_S:
+            return False, info["last_refresh"]
+    return True, info["last_refresh"]
 
 
 class _StaleRefreshGuard:
@@ -1434,13 +1503,26 @@ class _StaleRefreshGuard:
         self.codex_home = codex_home
         self.held = False
         self.before_last_refresh: "datetime | None" = None
+        # The caller sets this when its codex run's output names an auth /
+        # refresh-token failure; such a run proves nothing about the lineage
+        # and must not be recorded as a clean probe.
+        self.auth_failed = False
 
     def __enter__(self) -> "_StaleRefreshGuard":
-        due, last_refresh = _codex_home_is_refresh_due(self.codex_home)
+        probe_ok = self.ctx._lineage_probe_ok
+        due, last_refresh = _codex_home_is_refresh_due(self.codex_home, probe_ok)
         self.before_last_refresh = last_refresh
         if due:
             self.ctx._stale_refresh_lock.acquire()
-            self.held = True
+            # Re-check under the lock: the job we just waited behind may have
+            # rotated the lineage (and resynced us) or probed it clean, in
+            # which case this job has nothing to serialize and runs in parallel.
+            due, last_refresh = _codex_home_is_refresh_due(self.codex_home, probe_ok)
+            self.before_last_refresh = last_refresh
+            if due:
+                self.held = True
+            else:
+                self.ctx._stale_refresh_lock.release()
         return self
 
     def __exit__(self, exc_type, exc, tb) -> bool:
@@ -1453,6 +1535,11 @@ class _StaleRefreshGuard:
                     # stale-guarded job (waiting on this same lock) can try
                     # its own, now-doomed refresh against the old one.
                     common.resync_stale_worker_homes(self.ctx.codex_home_root)
+                elif (exc_type is None and not self.auth_failed
+                      and self.before_last_refresh is not None):
+                    # Codex ran on this lineage and chose not to rotate: it is
+                    # not refresh-due right now. Vouch for it for a short window.
+                    self.ctx._lineage_probe_ok[self.before_last_refresh] = time.time()
             finally:
                 self.ctx._stale_refresh_lock.release()
         return False  # never swallow an exception from the guarded block
@@ -2152,7 +2239,7 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
         # ARTPIPE_WORKER_AUTH_STALENESS_1: serialize against any other slot
         # whose home is ALSO due for a refresh right now — cheap (one
         # auth.json read, no lock) when this home is fresh.
-        with ctx.stale_refresh_guard(codex_home):
+        with ctx.stale_refresh_guard(codex_home) as refresh_guard:
             while True:
                 attempts += 1
                 # A stale PNG/manifest at these exact paths, left by a PREVIOUS
@@ -2189,6 +2276,8 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
                     except (OSError, ValueError):
                         pass
                 combined_with_note = combined + " " + attempt_note
+                if _AUTH_FAILURE_RE.search(combined_with_note):
+                    refresh_guard.auth_failed = True  # never a clean probe
                 failed = (code != 0) or timed_out
                 rate_limited_now = failed and _looks_rate_limited(combined_with_note, prompt)
                 if not failed or rate_limited_now or attempts >= MAX_CODEX_ATTEMPTS:
@@ -2844,7 +2933,7 @@ def run_dry_run(args: argparse.Namespace) -> int:
     can move a file, and --dry-run promises it never does."""
     try:
         candidates = sorted(args.pending_dir.glob("*.json"),
-                            key=lambda p: (_priority_of(p), p.name))
+                            key=_queue_key)
     except OSError:
         candidates = []
 
