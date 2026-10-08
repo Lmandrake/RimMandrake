@@ -972,3 +972,119 @@ Format per row: entry | claim | verdict | source
 | cross | Runyip has distinct designs sharing a name; keep Yavin 4 and Tran Mariel separately sourced | VERIFIED (canon page notes a Tran Mariel runyip subspecies; Legends page says two different species share the name) | https://starwars.fandom.com/wiki/Runyip |
 | cross | Shiro and shiro-trap are one animal with a plant-bearing state; tooke-trap is the plant | VERIFIED (Shiro/Legends: symbiosis of shiro and tooke-trap plants) | https://starwars.fandom.com/wiki/Shiro/Legends |
 | cross | A canon-page image, unsuffixed wiki URL, filename or API extraction is insufficient continuity evidence | VERIFIED as method (e.g. Qormot's unsuffixed URL is a Legends article; Scurrier infobox image file is from The Mandalorian) | n/a |
+
+## Batch 03
+| entry | claim | VERDICT | source |
+|---|---|---|---|
+| dactillion | Dactillion has four legs plus two wings (not pterosaur limb count) | UNVERIFIABLE | Dactillion + /Legends pages say only "claws", "prominent limbs"; no limb count |
+| dactillion | 24 m is wingspan in older (Legends) material, canon infobox says length; source conflict | VERIFIED | https://starwars.fandom.com/wiki/Dactillion/Legends (height 6 m, wingspan 24 m, TCWCG) vs canon infobox length 24 m |
+| dactillion | Databank prose doesn't state blue/purple, light eyes, bicorn | UNVERIFIABLE | wiki cites Databank for these in infobox; Databank text not checkable |
+| dactillion | Red/orange eyes irreconcilable with "light-coloured"; gold tips/toothless need confirmation | UNVERIFIABLE (visual) ; Legends eyes are blue/gray | Dactillion/Legends infobox |
+| dactillion | Obi-Wan's main Utapau mount is Boga (varactyl) | UNVERIFIABLE on page (not on Dactillion pages); entry's "Obi-Wan/Ki-Adi-Mundi" mount claim is itself wrong: page says Ki-Adi-Mundi only | Dactillion Behind the scenes |
+| dactillion | Red robes / Episode IX leather / security tactics need sources | Episode IX "as leather" VERIFIED; security grabbing w/ claws VERIFIED (Alien Archive); robes UNVERIFIABLE | Dactillion Appearances/History |
+| dactillion | Add Revenge of the Sith as film appearance; Shantipole; Rebels Wings of the Master | VERIFIED | Dactillion Appearances ("{{Film|III}} 1st") |
+| dactillion | Carnivory and meat-taming via book citations | VERIFIED | Dactillion Biology (Alien Archive, Bust Collection) |
+| dactillion | Entry claim "Obi-Wan and Anakin ride dactillions" (own text) | REFUTED/unsupported by page (deleted) | Dactillion wikitext |
+| dalgo | Dalgo is a quadruped, not biped raptor stance | VERIFIED (Legends page "four-legged animals"; canon page silent) | https://starwars.fandom.com/wiki/Dalgo/Legends |
+| dalgo | Official height is 3 m at the shoulder (Databank) | UNVERIFIABLE (wiki: 2.5-3 m, Encyclopedia) | https://starwars.fandom.com/wiki/Dalgo |
+| dalgo | Anatomy paragraph is substantially in official Databank | UNVERIFIABLE (Databank listed in wiki Sources only) | Dalgo Sources |
+| dalgo | "SoT" = Stay on Target, not Secrets of Tatooine | VERIFIED | Dalgo/Legends infobox image Dalgo_SoT.png, ref Stay on Target (sourcebook); entry text corrected |
+| dalgo | Carnivorous diet, Zardossa Stix, high body temp cannot be confirmed | REFUTED (all three on canon page: carnivorous, Zardossa Stix, "High body temperature" distinction) | https://starwars.fandom.com/wiki/Dalgo |
+| dalgo | Purple eyes / cream underside need stronger support | Purple eyes REFUTED as unsupported (infobox cites A War on Two Fronts); cream underside UNVERIFIABLE (image only) | Dalgo infobox |
+| dalgo | Onderon, Tipping Points shows dalgo cavalry | VERIFIED (appearance listed) | Dalgo Appearances |
+| dalgo | Crest heat-radiating | UNVERIFIABLE on wiki (Clone Wars wiki only; infobox says high body temperature) | Dalgo |
+| dewback | Dewbacks are bulky, not elongated; "long heavy tail" contradicts sourced "short tails" | VERIFIED that wiki says "short tails" (ANH); bulkiness UNVERIFIABLE (text says thick hides) | https://starwars.fandom.com/wiki/Dewback |
+| dewback | 9 m figure entangled with conversion errors; Databank gives 2 m height | VERIFIED | Dewback Behind the scenes + infobox |
+| dewback | Back hair associated with original film creature | VERIFIED | Dewback Biology ("backs partially covered with fur") + Behind the scenes image caption |
+| dewback | White donor texture doesn't establish canon white | UNVERIFIABLE (no text on colour variants besides green) | - |
+| dewback | Kenobi's dewback in Twin Suns | VERIFIED | Dewback Dewbacks in the galaxy |
+| dewback | Slow dependable travel with bursts; cold lethargy; egg-laying; add Gunslinger | VERIFIED (50-85 eggs/year stated on the page) | Dewback Biology, Appearances |
+| dewback | No sexual colour difference established | UNVERIFIABLE (none on page) | - |
+| dianoga | Death Star specimen is Omi, named in "The Baptist" | VERIFIED | https://starwars.fandom.com/wiki/Omi |
+| dianoga | "Trash squid" not a confirmed subspecies defined by Death Star residence | VERIFIED (infobox: subspecies Trash squid, article: "part of the Dianoga family"; no Death Star link) | https://starwars.fandom.com/wiki/Dianoga |
+| dianoga | Shadows of the Empire giant dianoga is Legends, not canon | VERIFIED (page tagged Legends) | https://starwars.fandom.com/wiki/Giant_dianoga |
+| dianoga | One game-boss specimen doesn't prove only one exists / separate species | VERIFIED as logic (page: "may or may not be considered canon"; "only one recorded") | Giant dianoga |
+| dianoga | Eyestalk weakness is a Legends game mechanic; Battle Scars: blasterfire drives one off | VERIFIED | Giant dianoga; Dianoga History |
+| dianoga | The Old Republic can't establish canon egg lifecycle | VERIFIED (egg crate appears only in Dianoga/Legends) | https://starwars.fandom.com/wiki/Dianoga/Legends |
+| dianoga | Dianoga pie / Meltdown Cafe / Houk are Legends (Dark Empire II) | VERIFIED | https://starwars.fandom.com/wiki/Dianoga_pie |
+| dianoga | Dianoga cream and donuts trace to Dining at Dex's, Legends | VERIFIED | https://starwars.fandom.com/wiki/Dianoga_cream |
+| dianoga | Dianoga omelette is LEGO Star Wars in 100 Scenes, non-canon | VERIFIED | https://starwars.fandom.com/wiki/Dianoga_omelette |
+| dianoga | Dianogan tea reintroduced to canon (Rise of the Separatists) with purple teeth only; spleen/black teeth/narcotic Legends | VERIFIED | https://starwars.fandom.com/wiki/Dianogan_tea and /Legends |
+| dianoga | Dianoga cheese not established as canon | VERIFIED (Legends page; connection to species unknown) | https://starwars.fandom.com/wiki/Dianoga_cheese |
+| dianoga | "Nomad Droids" is Season 4 Episode 6, not Season 3 | REFUTED (wiki: sixth episode of third season, aired 2011-10-14). Entry's S3E6 stays | https://starwars.fandom.com/wiki/Dianoga%27s_Kiss |
+| dianoga | Dianoga's Kiss is a plant, separate flora record | VERIFIED | Dianoga's Kiss page (Plant, Balnab, VE 2017) |
+| dianoga | Seven tentacles, suckers, one eyestalk, toothed mouth | VERIFIED | Dianoga Biology |
+| dianoga | Sentient; Omi Force-sensitive, not universal | VERIFIED ("some dianoga were sensitive to the Force") | Dianoga intro; Omi |
+| dianoga | Colour change, regeneration, humming language from The Baptist | VERIFIED | Dianoga Biology/Society |
+| dianoga | Databank labels measurement "height" | VERIFIED for Omi (infobox: height 10.0 m Databank); Dianoga infobox lists length 7-10 m | Omi / Dianoga |
+| dianoga | Battlefront and Bad Batch "Battle Scars" as references | VERIFIED | Dianoga Appearances |
+| dianoga | Dark-red eyes / tentacles always hanging down should not be compulsory | UNVERIFIABLE (image). Omi eye is green w/ red sclera per wiki | Omi |
+| dragonsnake | Dragonsnake-SWGA.jpg belongs to Star Wars: Galactic Atlas, not Visual Encyclopedia/Adventure Journal | VERIFIED | https://starwars.fandom.com/wiki/File:Dragonsnake-SWGA.jpg (source field Galactic Atlas; artist Tim McDonagh) |
+| dragonsnake | No limbs visible does not prove no limbs; skull-like face not jawless | UNVERIFIABLE (image interpretation; wiki: "large serpentlike beasts with sharp fangs") | Dragonsnake Biology |
+| dragonsnake | Bright spots not established bioluminescent | UNVERIFIABLE (not in text) | - |
+| dragonsnake | Mandalorian and Grogu creature venomous, ILM says earlier Clone Wars creature another dragonsnake species | Venom VERIFIED (wiki: "injected him with venom"; distinction "Venomous fangs"); ILM statement UNVERIFIABLE | Dragonsnake Biology/History |
+| dragonsnake | 7 m / 200 kg are baseline not universal maxima | VERIFIED as sourcing (Bestiary Vol. 1); film size not stated on page | Dragonsnake infobox |
+| dragonsnake | Dxun unsupported | VERIFIED (no Dxun on canon or Legends page; deleted) | Dragonsnake, /Legends |
+| dragonsnake | Dagobah and Nal Hutta settings; ambush predation | VERIFIED | Dragonsnake Biology/Behavior |
+| dragonsnake | Captivity under Twins' chamber not domestication | VERIFIED (page: considered untameable; Twins owned one) | Dragonsnake Behavior/History |
+| dragonsnake | Bright-Eyes female, mottled blue-grey, yellow eyes | VERIFIED | https://starwars.fandom.com/wiki/Bright-Eyes |
+| dragonsnake | ESB Artoo swallowed and expelled | VERIFIED | Dragonsnake History |
+| dragonsnake | Water an environmental treatment not part of animal | UNVERIFIABLE (design opinion) | - |
+| eopie | Eopies are four-legged; leg removal conflicts with canon | VERIFIED as canon fact (page: "quadrupedal"; hooves adapted to climbing). The leg-removal instruction is an owner ruling (not touched) | https://starwars.fandom.com/wiki/Eopie |
+| eopie | "One large dark eye" is profile view; require paired lateral eyes | UNVERIFIABLE (wiki says nothing about eye count; mammal) | Eopie |
+| eopie | Elongated structure is trunk-like mouth, not separate nasal trunk | VERIFIED ("trunked mouth ... adhesive spit") | Eopie Biology |
+| eopie | "Never brown" exceeds evidence | VERIFIED (canon gives no skin colour; Legends skin brown/pale/white) | Eopie, /Legends |
+| eopie | Entry contradicts itself on donor colour | UNVERIFIABLE (editorial; entry says colour roughly right) | - |
+| eopie | Pack equipment is not anatomy | VERIFIED (entry itself says so) | - |
+| eopie | 1.75 m height; endurance; meat scraps in Obi-Wan Kenobi Part I | VERIFIED (2 m per 2024 Encyclopedia as well) | Eopie infobox, Biology |
+| eopie | Galaxy of Creatures Eopie covers maternal care and sandstorm adaptations | VERIFIED | Eopie Biology/Behavior (GoC cite) |
+| eopie | Horned eopie on At Achrann in Skeleton Crew Ep 4 | VERIFIED | Eopie infobox subspecies; Appearances |
+| eopie | 90-year lifespan etc. need passages | VERIFIED as sourced (Absolutely Everything You Need to Know) | Eopie infobox |
+| eopie | Akkani name from Obi-Wan 1, not the show | VERIFIED | https://starwars.fandom.com/wiki/Akkani |
+| faa | Faa / faa fish / big-mouth faa are aliases of one species | VERIFIED | https://starwars.fandom.com/wiki/Faa |
+| faa | Manaan, faynaa, twelve offspring are Legends; indiscriminate attacks | VERIFIED (Legends page; canon page says "preyed upon indiscriminately" by colo claw/opee) | https://starwars.fandom.com/wiki/Faa/Legends |
+| faa | "Wide flat head" vs deep silhouette need not conflict | UNVERIFIABLE (judgement) | - |
+| faa | Ringed eyes, brow spikes, fin counts unconfirmed | UNVERIFIABLE (image only; text: pectoral fins on head) | Faa |
+| faa | Koboh and aquarium at Pyloon's Saloon; Skoova Stev | VERIFIED | Faa History |
+| faa | Overharvesting on Koboh for glands | VERIFIED | Faa History |
+| faa | Niche predator fish prey for opee sea killer | VERIFIED | Faa intro |
+| faa | No canon size / juvenile / reproduction; RSW_FaaJuv implementation choice | VERIFIED (no size on canon page; Legends: medium size, up to twelve offspring) | Faa, /Legends |
+| faa | Jedi Survivor model orange-to-tan with blue | VERIFIED | Faa infobox |
+| falumpaset | Battle of Naboo role is pulling battle wagons; shield-generator carriers are fambaas | PARTLY VERIFIED: wagon pulling VERIFIED (artist's journal quote); shield generators REFUTED as fambaa-only (article: falumpasets "along with ... fambaas" transported shield generators, citing Databank Gungan Grand Army) | https://starwars.fandom.com/wiki/Falumpaset |
+| falumpaset | Canon herbivory separate from Legends omnivory; Onderon striped breed Legends | VERIFIED | Falumpaset, /Legends |
+| falumpaset | Camel analogy loose | UNVERIFIABLE (art interpretation) | - |
+| falumpaset | Spots, tuft, stockings, pendulous lip need inspection | UNVERIFIABLE (images only) | - |
+| falumpaset | Cheese name does not imply milk mechanic | VERIFIED (article: shares its name; ingredient in mashed chokeroot) | Falumpaset |
+| falumpaset | Official 3 m height | VERIFIED (infobox, AEYNTK) | Falumpaset |
+| falumpaset | Strength, draft work on Naboo and Onderon; family groups, swimming, habitats | VERIFIED | Falumpaset |
+| falumpaset | Boss Nass ceremonial mount | UNVERIFIABLE (not on page) | - |
+| fambaa | Wildlife of Star Wars: A Field Guide is Legends | VERIFIED (cited by Fambaa/Legends only; Fambaa-woswfg.jpg shown there) | https://starwars.fandom.com/wiki/Fambaa/Legends |
+| fambaa | Single curved tusk may be profile misreading | UNVERIFIABLE (no text on tusks either page) | - |
+| fambaa | Orange eyes in painting don't establish yellow/orange split | VERIFIED (canon and Legends infobox: Yellow, TPM) | Fambaa infobox |
+| fambaa | "Cartilage tail" is internal composition not visible | VERIFIED that page says "tail made out of cartilage" (Eaten by Ewoks book); visibility argument is opinion | Fambaa |
+| fambaa | Generator animals travel in single file; side-by-side not operational | UNVERIFIABLE (page: "fambaas with shield generators were deployed with kaadu and falumpasets"); entry's "pairs ... two halves" claim also unsupported by text and deleted | Fambaa History |
+| fambaa | 4.3 m height, carrying strength, Gungan use, Naboo and Onderon | VERIFIED | Fambaa infobox |
+| fambaa | Juvenile gills / adult thickened skin from Galactic Explorer's Guide | VERIFIED (quote on page) | Fambaa quote |
+| fambaa | Tipping Points distinguishes heavy firepower role | VERIFIED (Onderon rebels used fambaas to hold heavy artillery) | Fambaa History |
+| fambaa | Naboo-to-Onderon is an in-universe hypothesis | VERIFIED ("Biologists surmised ... little fossil evidence") | Fambaa |
+| fambaa | Nexus of Power for diet/colour | VERIFIED (infobox cites) | Fambaa |
+| fanback | Entry is Legends-only yet later says "canon role"/"canon depiction" | VERIFIED (page carries {{Top|leg}}; entry text corrected) | https://starwars.fandom.com/wiki/Fanback |
+| fanback | Sepia illustration doesn't prove the text's green is wrong | VERIFIED as logic (infobox says Green, EIA11); owner already ruled olive green | Fanback infobox |
+| fanback | Nest image can't establish desert/dune habitat | VERIFIED (page gives no habitat; claim deleted) | Fanback |
+| fanback | Two images on page != one depiction; Gungan Frontier another source | VERIFIED (appearances: EIA 9, EIA 11, Gungan Frontier) | Fanback Appearances |
+| fanback | Ohma-D'un transplantation and destruction are Legends | VERIFIED | Fanback |
+| fanback | Dimetrodon resemblance is analogy | VERIFIED (Behind the scenes: "resembles") | Fanback |
+| fanback | Legends traits: sail, sensitive snout, carnivore, egg-laying, cold-blooded | VERIFIED (cold-blooded amphibian, dorsal spine, categories oviparous) | Fanback |
+| fanback | Egg-eaters are prey | VERIFIED ("had no problems eating the egg-eaters") | Fanback |
+| fanback | No current-canon page exists | VERIFIED (Fanback/Legends title does not exist; Fanback page is Legends) | Fanback |
+
+## Cross-entry problems
+| issue | verdict |
+|---|---|
+| No two entries are the same species; faa/faa fish/big-mouth faa aliases of one | VERIFIED (Faa intro) |
+| All ten are animals; Dianoga's Kiss is a separate plant mentioned inside the dianoga entry, belongs in flora record | VERIFIED (page: Plant, Balnab, Nomad Droids S3E6) |
+| Profile views become false anatomy ("one eye", "single tusk", "no limbs") | UNVERIFIABLE as wiki fact; plausible, eopie/fambaa/dragonsnake flagged in proposals |
+| Official publication/standalone page treated as canon (dianoga expansion worst) | VERIFIED (pie, omelette, cream, cheese, giant dianoga, egg crate all Legends or non-canon; corrected) |
+| Size fields: dactillion wingspan vs length, dewback 9 m conversions | VERIFIED (both documented on wiki pages; corrected in entries) |
+| Recoloured crops / mirrors not independent corroboration; fambaa CG pair duplicate | VERIFIED for fambaa (entry already notes) |
+| Separate canon requirements from owner preferences and RimWorld simplifications (eopie legs removal) | UNVERIFIABLE (policy); eopie leg removal is an owner ruling, untouched |

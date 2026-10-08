@@ -10,6 +10,8 @@
 ### Canon — https://starwars.fandom.com/wiki/Falumpaset
 
 The falumpaset was a herbivorous species of mammal found on the planets Naboo and Onderon. In the wild, the species lived in swamps, forests, and plains in family groups. They were domesticated by the Gungans and, along with other large and hardy animals such as fambaas, were used to transport heavy loads such as the shield generators used in the Battle of Naboo. Both the Gungans and the Naboo used falumpasets to pull carts. Falumpasets were great swimmers and their disproportionately long legs made them very maneuverable. Falumpasets shared their name with falumpaset cheese, an ingredient in the Batuuan dish mashed chokeroot.
+
+Also (same article): height **3 meters** (*Absolutely Everything You Need to Know*); skin brown-tan to gray, hair dark brown, eyes amber (*The Phantom Menace*); an artist's journal quoted in the article says "pulling huge battle wagons" at the Battle of Naboo, brown with leathery skin, herd animals roaming plains, forests and swamps. Note the article credits both falumpasets and fambaas (not fambaas alone) with hauling shield generators.
 ### Legends — https://starwars.fandom.com/wiki/Falumpaset/Legends
 
 The falumpaset (plural: falumpaset or falumpasets) was a large mammal native to the planet Naboo.

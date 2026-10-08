@@ -6,20 +6,23 @@ custom `Dragonsnake` BodyDef built on vanilla Core per
 
 ## Sourced text (Wookieepedia)
 Large, predatory reptiles that dwell in the murky waters of swamp-covered
-planets, including Dagobah and Nal Hutta (also documented on Dxun-adjacent
-swamp settings in some secondary sources, though Wookieepedia's own citations
-tie the species specifically to Dagobah and Nal Hutta, not Dxun). Serpentlike
+planets, including Dagobah and Nal Hutta (Wookieepedia's citations tie the species
+to those two; no Dxun source). Serpentlike
 bodies with sharp fangs, capable of excreting a lethal toxin; voracious but
 unable to digest metal (per *The Empire Strikes Back*, R2-D2 was spat back
-out). Length ~7 meters, mass up to 200 kg. Hunts by hiding under muddy water
+out). Length 7 meters, mass up to 200 kg (*Star Wars Bestiary Vol. 1* — a reference-book baseline; the
+film animal below is far longer). Considered untameable (*Visual Encyclopedia*), yet the Hutt Twins keep one. Hunts by hiding under muddy water
 and among gnarltree roots, ambushing prey then dragging it back under. First
 identified as "Dragonsnake" in the Clone Wars episode guide for "Hunt for
 Ziro" (Obi-Wan Kenobi fights one on Nal Hutta). Reappeared on Dagobah in *The
 Empire Strikes Back* (the R2-D2 encounter) and, much more recently, in *The
 Mandalorian and Grogu* — a dragonsnake owned by the Hutt Twins on Nal Hutta
 fights Din Djarin, injuring him with venom before being fed the Twins
-themselves. Individual "Bright-Eyes" on Dagobah displayed a degree of
-sentience (*From a Certain Point of View: Return of the Jedi*).
+themselves. Individual "Bright-Eyes" on Dagobah (female, mottled blue-gray skin, yellow eyes) displayed a degree of
+sentience (*From a Certain Point of View: Return of the Jedi*, "The Light That Falls";
+https://starwars.fandom.com/wiki/Bright-Eyes), so tan/green/olive is not the whole palette.
+**Legends** (https://starwars.fandom.com/wiki/Dragonsnake/Legends): length 2-6 m, brown/green/grey skin,
+red/black/scarlet/dark-brown eyes, semi-sentient, omnivorous.
 
 ## Visual brief
 **The three canon sources disagree sharply on body plan, and none of them
@@ -30,8 +33,7 @@ match our current donor/vendored sprite closely.**
   jawless-looking skull with prominent fangs, and rows of glowing
   yellow-green bioluminescent spots down the body. Olive/dark-khaki color.
   Reads as an eel/worm-like ambush predator, not a "snake with legs."
-- `wookieepedia_visualencyclopedia.jpg` (Star Wars Adventure Journal-style
-  illustration, labeled "DRAGONSNAKE" on a map): a lean, green, spotted
+- `wookieepedia_visualencyclopedia.jpg` (*Star Wars: Galactic Atlas* illustration, labeled "DRAGONSNAKE" on a map): a lean, green, spotted
   quadruped with small clawed forelimbs and hindlimbs, a long tapering tail,
   and an elongated toothy crocodilian head with a pronounced brow ridge —
   this is the source closest in body plan to a "dragon" and closest to our
@@ -74,7 +76,7 @@ none known
 - https://starwars.fandom.com/wiki/Dragonsnake (Wookieepedia, wikitext pulled
   2026-09-13 via `action=parse&prop=wikitext`)
 - https://static.wikia.nocookie.net/starwars/images/6/67/Dragonsnake-HFZ.jpg (Hunt for Ziro screencap)
-- https://static.wikia.nocookie.net/starwars/images/c/cc/Dragonsnake-SWGA.jpg (infobox illustration, labeled Star Wars Adventure Journal-derived map art)
+- https://static.wikia.nocookie.net/starwars/images/c/cc/Dragonsnake-SWGA.jpg (infobox illustration, from *Star Wars: Galactic Atlas*, per the file's source field)
 - https://static.wikia.nocookie.net/starwars/images/5/52/DinDjarinDragonsnakeFaceoff-TMaG.png (The Mandalorian and Grogu)
 - `src/RimStarWars/SWBestiary/Textures/swanimals/Dragonsnake/Dragonsnake_Swimming_south.png` (our own donor/current sprite)
 

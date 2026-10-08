@@ -9,16 +9,21 @@ troopers"). Rugged reptilian lizards, they withstood the heat of Tatooine's
 binary suns and the dust that fouled high-tech vehicles. Wookieepedia gives:
 thick hides of **scaly green skin**, **long, rounded heads and short tails**,
 with their **backs partially covered with fur**. Four clawed feet, capable of
-brief bursts of speed when prodded but otherwise plodding. Height ~2 meters,
-length ~9 meters (a genuinely large animal — bigger than a real-world rhino).
+brief bursts of speed when prodded but otherwise plodding. Height 2 meters (Databank); the infobox also lists length 9 meters
+(*Star Wars Encyclopedia: The Comprehensive Guide*), but the article's Behind the scenes notes the
+reference books mis-convert these units (*Ultimate Star Wars* turned a 6 ft height into 9 m; the
+Encyclopedia lists 9 m length but "six feet"), so treat the 9 m figure as unreliable.
+Females lay fifty to eighty-five eggs each standard year; lethargic at night and in cold climates;
+"plodding but reliable" mounts with brief bursts of speed. Two breeds: pearled and witla.
 Named for licking morning dew off their backs with a flicking tongue. Diet:
 tubers, grass, womp rats, sage, desert vegetation (omnivore). Canon role:
 Tatooine's default riding/pack beast — moisture farmers, merchants, Mos Eisley
 locals, and above all Imperial sandtroopers on patrol ride dewbacks; Obi-Wan
 Kenobi owned one while in hiding on Tatooine (*Rebels*, "Twin Suns"). Podrace
 crews used them to haul podracer parts to the starting grid in *The Phantom
-Menace*. Appears on-screen in *A New Hope* as the sandtrooper patrol mount
-outside the Jawa sandcrawler.
+Menace*. Appears on-screen in *A New Hope* (first appearance; animatronic, with some back fur in
+the original version, replaced by a CGI version in the 1997 Special Edition), *The Phantom Menace*,
+*Rebels* "Twin Suns", and *The Mandalorian* "Chapter 5: The Gunslinger".
 
 ## Visual brief
 The candidate images agree with each other and are unambiguous: dewbacks are

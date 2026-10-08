@@ -11,24 +11,27 @@ pulled via the MediaWiki API to bypass a Cloudflare wall on the rendered page):
 - **Origin/habitat**: Native to Utapau (sinkholes and plains); also present on
   Shantipole. Lives in the massive sinkholes, using its wings to catch thermal
   updrafts to fly up toward the surface, and its claws to scale the sinkhole walls.
-- **Size**: Length 24 meters (per *Scarif and Other Planets in the Outer Rim*) —
-  huge, far larger than a horse-scale mount.
+- **Size**: Canon infobox gives **length 24 meters** (per *Scarif and Other Planets in the Outer Rim*).
+  The Legends article (`https://starwars.fandom.com/wiki/Dactillion/Legends`, *The Clone Wars
+  Campaign Guide*) instead gives **height 6 meters and wingspan 24 meters** — so the canon "length"
+  and the Legends "wingspan" share one number and the meaning is unresolved; do not build a 24 m
+  torso from the canon infobox alone.
 - **Coloration**: Skin color given as **"Blue and purple"** (Star Wars Databank,
   cited directly in the infobox). Eye color "light-colored."
 - **Distinguishing feature**: A **bicorn (two-pronged) beak** — the beak tip
   splits into two hooked/curved prongs, used in both defense and combat, plus
   claws for gripping.
+- **Legends (separate continuity)**: eyes blue or gray, skin blue / blue-green / gray, "two horny bumps on beak"; non-sentient; tamed with fresh meat; raided varactyl nests (https://starwars.fandom.com/wiki/Dactillion/Legends).
 - **Diet/behavior**: Carnivorous; the native sentient Utai were historically
   part of the dactillion's diet before taming them by feeding them meat.
 - **Canon role**: Used as fast long-distance transport by Utapauns, and as
   battle mounts by the Utapaun Security Forces (grabbing enemies with claws,
-  striking with the horn/beak prongs). First conceived as a Jedi mount for
-  Obi-Wan/Ki-Adi-Mundi on Utapau during *Revenge of the Sith* development;
+  striking with the horn/beak prongs). First conceived as a Jedi mount (to be ridden by Ki-Adi-Mundi) on Utapau during *Revenge of the Sith* development
+  (appears in the film; first appearance per the Appearances list);
   built as a full creature model for a *Clone Wars* Season 6 arc ("A Death on
   Utapau," "In Search of the Crystal," "Crystal Crisis," "The Big Bang") that
   was cancelled before airing but released as canon story reels in 2014 (*The
-  Clone Wars Legacy*) — Obi-Wan and Anakin ride dactillions off Pau City into
-  the plains. Also appears in *Star Wars Rebels* ("Wings of the Master"),
+  Clone Wars Legacy*). Also appears in *Star Wars Rebels* ("Wings of the Master"),
   where wild dactillions on Shantipole fly alongside Hera's experimental
   B-wing prototype, and reportedly as leather goods in Episode IX.
 
