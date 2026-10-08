@@ -108,10 +108,10 @@ learning the mountain's breathing.
 - **The scald**: during bursts only, the condition damages unroofed pawns on
   interval — exactly the ruled `RM_GameCondition_EnvironmentalWeather` damage
   shape, reparameterized — using **`RUT_Scald`** (the greentide kit M3's
-  DamageDef with its `RM_ScaldArmor` armor category; cross-kit reuse — if the
-  greentide build slips, the def is XML and ships here first). Scald severity
-  gated by the wet-kit armor stat, so fireweed-fiber gear (§7) is literally
-  the admission ticket. **INVENTED**: burst damage ~4 scald per 60-tick
+  DamageDef, vanilla `Heat` armor category since `SCALD_FOLD_INTO_HEAT_1`;
+  cross-kit reuse — if the greentide build slips, the def is XML and ships
+  here first). Scald severity is gated by heat armor (`ArmorRating_Heat`),
+  so heat-rated gear is the admission ticket. **INVENTED**: burst damage ~4 scald per 60-tick
   interval unroofed, unarmored — brutal to stand in, survivable to sprint
   through (card 2 rules the ceiling).
 - **Flash-interval growth**: `RUT_Plant_FlashFlora : Plant` overriding

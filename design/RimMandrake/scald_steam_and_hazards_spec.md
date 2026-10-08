@@ -20,10 +20,10 @@ Answers, verified against source:
 - **Yes, it is the boiling water.** Every pawn standing on a `RUT_ScaldWater*` cell takes vanilla
   `Burn` injuries from `HediffGiver_Terrain` (§4) — that is the shulla's "Burn needs tending".
   Nothing is on fire; the injury is simply labelled *burn*.
-- **The water's danger is wired; the protections are not.** The six boil terrains carry
-  `burnDamage`/`burnIntervalTicks`; the `RUT_Scald` DamageDef, `RM_ScaldArmor` category and
-  `RM_ArmorRating_Scald` stat exist but **no apparel in the repo carries that stat**, no research
-  unlocks any, and the terrain burn does not even use that damage type (§4).
+- **One kind of heat protects against all of it.** The six boil terrains carry
+  `burnDamage`/`burnIntervalTicks` (vanilla `Burn`); the `RUT_Scald` DamageDef uses vanilla's `Heat`
+  armor category, and the steam clock reads `ArmorRating_Heat` (`SCALD_FOLD_INTO_HEAT_1`, decision
+  taken by question card 2026-10-08). Heat armor is the one Scald protection stat.
 - **No native is immune.** `RM_Noohm`/`RM_Shulla` inherit vanilla's `OrganicStandard` giver set
   and burn like a colonist (§6).
 - **The steam weather does nothing to a pawn** beyond `accuracyMultiplier 0.9`. It is presentation
@@ -61,7 +61,7 @@ stays exactly as shipped.
 | `RUT_ScaldSteam` WeatherDef — sky colours, `Ambient_Wind_Fog`, accuracy 0.9 | `TerminalBiomes/Defs/WeatherDefs/RUT_ScaldSteam.xml` | shipped |
 | `RUT_WeatherOverlay_ScaldSteam` — dual panner on vanilla's fog material | `EnvironmentalHazards/Source/RUT_WeatherOverlay_ScaldSteam.cs` | shipped, borrowed art |
 | `RUT_ScaldSteamLock` — `RM_GameCondition_WeatherPulse`: steam forced, still day (Clear) MTB 96 h for 12–24 h; gate `Scald.S1` | `TerminalBiomes/Defs/GameConditionDefs/RUT_ScaldSteamLock.xml` | shipped |
-| `RUT_Scald` DamageDef (`Burn` hediff, armorCategory `RM_ScaldArmor`) + `RM_ArmorRating_Scald` stat | `TerminalBiomes/Defs/DamageDefs/`, `EnvironmentalHazards/Defs/` | shipped, **zero apparel carriers** |
+| `RUT_Scald` DamageDef (`Burn` hediff, armorCategory vanilla `Heat`) | `TerminalBiomes/Defs/DamageDefs/` | shipped |
 | `RUT_SteamDevil` wandering vortex dealing `RUT_Scald` | `TerminalBiomes/Defs/ThingDefs_Misc/RUT_SteamDevil.xml` | shipped |
 | `RM_HediffComp_EnvironmentalExposure` — weather-gated severity clock with `protectionStat`, `minDriveFactor` floor, `immunityHediff`, `immuneThingDefs` | `EnvironmentalHazards/Source/RM_HediffComp_EnvironmentalExposure.cs` | shipped; consumers Miasma, Rot Sheen |
 | `GameCondition_EnvironmentalWeather.carrierHediff` — grants a hediff to every eligible pawn so the comp above can run | `.../GameCondition_EnvironmentalWeather.cs` | shipped |
@@ -177,7 +177,7 @@ accept that, MEASURED — no `forcedWeather`, so it never fights the pulse lock)
   <onlyDuringWeather>RUT_ScaldSteam</onlyDuringWeather>   <!-- still day and roofs: clock stops -->
   <severityPerDayExposed>0.6</severityPerDayExposed>      <!-- INVENTED: ~1.7 days unprotected to the top stage -->
   <severityPerDayUnexposed>-0.35</severityPerDayUnexposed><!-- roofed/still: heals off in ~3 days -->
-  <protectionStat>RM_ScaldProtection</protectionStat>     <!-- summed over worn apparel, 0..1 -->
+  <protectionStat>ArmorRating_Heat</protectionStat>       <!-- summed over worn apparel, clamped 0..1 -->
   <minDriveFactor>0.08</minDriveFactor>                   <!-- Ban 3: gear never zeroes the clock -->
   <immuneThingDefs><li>RM_Noohm</li><li>RM_Shulla</li></immuneThingDefs>  <!-- §6 -->
 </li>
@@ -190,9 +190,9 @@ Stages (INVENTED; labels are player-facing): **0.15 damp** — no effect, a warn
 dies in under two days; one who sleeps roofed and works outside in shifts limps along at stage 2;
 one in a boil-suit (§5) can work a full day at the vents and come in clean.
 
-`RM_ScaldProtection` — new StatDef cribbing `RM_WetBulbProtection` exactly (`ArmorRatingBase`,
-`maxValue 1`, quality part). It is the *steam* stat; `RM_ArmorRating_Scald` stays the *damage*
-stat for `RUT_Scald` hits (steam devils, §4 option b). Two stats, two jobs, both on the same garments.
+The clock's protection stat is vanilla `ArmorRating_Heat` (one kind of heat; a steam burn is an
+injury, so heat *armor*, not insulation). The same stat blocks `RUT_Scald` hits from steam devils
+(§4 option b) and the wading burn. One stat, every Scald heat source.
 
 **Visibility.** `accuracyMultiplier` 0.9 → **0.75** and `maxRangeCap` **24** (both native fields,
 MEASURED) — steam thick enough to matter in a fight, still far from Fog's 0.5. **Move** stays 1.0
@@ -213,8 +213,7 @@ inherited by every animal and humanlike), if the cell's terrain has `burnDamage 
   this states it honestly), and **`burnDamage 4` on the deep terrains** — ruled 2026-09-25 (§9
   ruling 9): depth bites harder. Odyssey's `LavaShallow` is 3 per 120 for scale.
 - The damage is plain `Burn` → `armorCategory Heat` → **`ArmorRating_Heat` on worn apparel already
-  reduces it.** So a vanilla devilstrand duster *is* a wading aid today; the `RUT_Scald`/
-  `RM_ScaldArmor` "heat armor does nothing" premise applies only to the steam devil.
+  reduces it.** So a vanilla devilstrand duster *is* a wading aid today.
 - `avoidWander` keeps idle pawns out; `extraNonDraftedPerceivedPathCost` (inherited from
   `WaterShallowBase`) makes the pathfinder prefer land. Neither stops a *swim* path
   (`KnownDangerAt` is edifice-only — `SCALD_MECHANICS_1` spike finding 4).
@@ -222,8 +221,8 @@ inherited by every animal and humanlike), if the cell's terrain has `burnDamage 
 **Design — terrain burn is the water's mechanic, and it stays plain `Burn`/Heat.** Ruled
 2026-09-25 (§9 ruling 2). It is vanilla, per-cell, immediate, already tuned, and already the
 owner's "burns to touch"; heat armor is the wading protection, which is a real cost (devilstrand,
-hyperweave, the boil-suit's own `ArmorRating_Heat`, the Royal Rind's). No retype to `RUT_Scald`:
-`RM_ArmorRating_Scald` is the steam devil's stat only. Zero code for the water.
+hyperweave, the boil-suit's own `ArmorRating_Heat`, the Royal Rind's). No retype to `RUT_Scald`.
+Zero code for the water.
 
 **The steam clock and the water clock are separate and additive**: wading in the steam takes burn
 hits *and* runs the exposure clock. A pawn hauling salvage out of the shallows on a steam day is
@@ -246,20 +245,21 @@ moderate tier, then delux set (all the way to space)"*) — `exposure_gear_matri
 §4a places each rung in its cell and adds the liquid column (air bladder, rebreather) this ladder
 never had. The numbers below stand; the matrix cites them rather than restating them. The dive
 clock on the Scald floor is the matrix's `RM_DiveProtection`, a separate stat from
-`RM_ScaldProtection` (the steam clock) — the sealed items carry both.
+`ArmorRating_Heat` (the steam clock) — the sealed items carry both.
 
-Every row has a price; none reaches immunity (Ban 3). Protection numbers are INVENTED and sum
-across worn apparel; the comp clamps to 1 and floors the clock at 8%.
+Every row has a price; none reaches immunity (Ban 3). Protection is `ArmorRating_Heat`; numbers
+are INVENTED and sum across worn apparel; the comp clamps to 1 and floors the clock at 8%. Since
+the fold, each garment carries the larger of its two pre-fold scald figures as heat armor.
 
 | Protection | What it does | Cost | Where it comes from |
 |---|---|---|---|
 | **A roof** | stops the steam clock entirely (`onlyUnroofed` is the comp's own gate); exposure heals indoors | building it, staying under it | free, vanilla |
 | **The still day** | clock stops map-wide for 12–24 h | waiting; ~4 days between | shipped lock |
 | **`RUT_ScaldMargin` cove** | the one water with no burn | must be sited as an isolated cove (bridge authoring, owed) | shipped def |
-| **`RM_Apparel_ScaldWrap`** (Neolithic) — hooded oil-waxed cloak, Shell layer, Torso/Neck/Head | `RM_ScaldProtection 0.45` (≈2× slower clock), `ArmorRating_Heat 0.30` | 30 cloth + 12 `RM_ScaldWalkerChitin` (the dive-hunt drop finally has a use); `Insulation_Heat −10` (it is hot inside), `MoveSpeed −0.15` | tailoring bench, no research |
-| **Royal Rind gear** (§5a, **Neolithic** — ruled) — `RM_Apparel_RindCoat` (proposed name), Shell, Torso/Neck/Shoulders/Arms | `RM_ScaldProtection 0.60`, `ArmorRating_Heat 0.45`, plus **extreme heat and cold insulation** from the material (numbers INVENTED; steam protection sits between wrap and boil-suit) | the greatbole's fruit — a nasty grub fight or Fruitfall patience (`greatbole_harvest_spec.md` §2d, §3b); no research | tailoring bench, once the rind material exists |
-| **`RM_Apparel_BoilSuit`** (Industrial) — sealed hood-and-suit, Middle+Shell, full body | `RM_ScaldProtection 0.85` (≈7× slower), `ArmorRating_Heat 0.55`, `RM_ArmorRating_Scald 0.60` (steam devils) | research **`RM_ScaldWorking`** (Industrial — **ruled**, §9 ruling 3; 1200 pts, prereq `ComplexClothing` INVENTED); 60 cloth + 20 chitin + 30 steel + 2 components; `MoveSpeed −0.35`, `Insulation_Heat −20`, Beauty −3, cannot wear with other Shell | machining table |
-| **Odyssey vacsuit + helmet** — **ruled in** (§9 ruling 4) | patch `RM_ScaldProtection 0.35 + 0.30` and `RM_ArmorRating_Scald 0.4` onto `Apparel_Vacsuit`/`Apparel_VacsuitHelmet` (MayRequire Odyssey) — a sealed suit is a sealed suit; any later "advanced vacsuit-type" (a donor's sealed suit, a Spacer hardsuit) gets the same patch shape | already `MoveSpeed −1.25`; Spacer tech, `OrbitalTech` research | patch in TerminalBiomes |
+| **`RM_Apparel_ScaldWrap`** (Neolithic) — hooded oil-waxed cloak, Shell layer, Torso/Neck/Head | `ArmorRating_Heat 0.45` + its stuff's heat armor (≈2× slower clock) | 30 cloth + 12 `RM_ScaldWalkerChitin` (the dive-hunt drop finally has a use); `Insulation_Heat −10` (it is hot inside), `MoveSpeed −0.15` | tailoring bench, no research |
+| **Royal Rind gear** (§5a, **Neolithic** — ruled) — `RM_Apparel_RindCoat` (proposed name), Shell, Torso/Neck/Shoulders/Arms | `ArmorRating_Heat 0.60`, plus **extreme heat and cold insulation** from the material (numbers INVENTED; steam protection sits between wrap and boil-suit) | the greatbole's fruit — a nasty grub fight or Fruitfall patience (`greatbole_harvest_spec.md` §2d, §3b); no research | tailoring bench, once the rind material exists |
+| **`RM_Apparel_BoilSuit`** (Industrial) — sealed hood-and-suit, Middle+Shell, full body | `ArmorRating_Heat 0.85` (≈7× slower clock; also blunts steam devils) | research **`RM_ScaldWorking`** (Industrial — **ruled**, §9 ruling 3; 1200 pts, prereq `ComplexClothing` INVENTED); 60 cloth + 20 chitin + 30 steel + 2 components; `MoveSpeed −0.35`, `Insulation_Heat −20`, Beauty −3, cannot wear with other Shell | machining table |
+| **Odyssey vacsuit + helmet** — **ruled in** (§9 ruling 4) | no patch: vanilla already gives each piece `ArmorRating_Heat 0.66`, so the pair sums past 1 and sits on the 8% floor — better than the boil-suit alone, the price of one kind of heat; any later sealed suit protects by its own heat armor | already `MoveSpeed −1.25`; Spacer tech, `OrbitalTech` research | vanilla |
 | **Tending** | burns are ordinary injuries; `RUT_ScaldExposure` is not tendable, only waited out indoors | medicine, bed time | vanilla |
 
 ### 5a. The Royal Rind — the biological rung (ruled in; no def exists)
@@ -280,8 +280,8 @@ by the Greentide build (`greatbole_harvest_spec.md` §9 items 4–5), not by thi
 - **`RM_RoyalRind`** — a stuff-capable material item (`Leathery` stuff category so vanilla leather
   apparel recipes accept it), rendered from `RM_GreatboleFruit` at the butcher table alongside the
   steaks and seeds. Lives in the Greentide mod (`RM_` tier — the greatbole is franchise-free).
-  Carries, as **stuff stat offsets/factors**, the biome-protection stats: `RM_ScaldProtection`
-  (this spec), `RM_WetBulbProtection` (`EnvironmentalHazards/Defs/StatDefs/`, exists) and a
+  Carries, as **stuff stat offsets/factors**, the biome-protection stats: heat armor
+  (`StuffPower_Armor_Heat`, which is the Scald's protection), `RM_WetBulbProtection` (`EnvironmentalHazards/Defs/StatDefs/`, exists) and a
   Miasma stat that does **not exist yet** — `RUT_MiasmaExposure.xml` sets no `protectionStat`
   (MEASURED 2026-09-25), so the Miasma gets one in the same shape when rind lands. ⇒ *any* garment made of rind protects,
   scaled by its coverage — one material, three biomes, exactly §3b's promise, and no bespoke
@@ -290,7 +290,7 @@ by the Greentide build (`greatbole_harvest_spec.md` §9 items 4–5), not by thi
   levels"* — so the stuff also carries large `Insulation_Heat` and `Insulation_Cold` offsets
   (magnitudes INVENTED at build time; "extreme" means a rind-clad pawn is comfortable at the
   Scald's ambient and on the nightside alike). Temperature is insulation, not the steam clock:
-  the clock is still `RM_ScaldProtection` under the clamp and the 8% floor (Ban 3).
+  the clock is still `ArmorRating_Heat` under the clamp and the 8% floor (Ban 3).
 - **`RM_Apparel_RindCoat`** — the one bespoke garment worth shipping: a full-coverage shell made
   only of rind, so a player who has fought the grubs once has a whole answer. **Neolithic**
   (ruled): tailoring bench, no research — the fight for the fruit is the whole gate. Table row above.
@@ -432,7 +432,7 @@ lands with the hediff in step 4).
 3. **Steam-devil species gate** (C#, ~10 lines): `immuneThingDefs`/`immunePawnKinds` on
    `RM_WanderingVortexExtension`, the `HazardTargeting.Affects` skip in `RM_WanderingVortex.DamageCell`,
    natives listed on `RUT_SteamDevil`. Proof: a shulla under a devil for its whole lifetime takes 0 damage.
-4. **Exposure clock** (XML only, three defs): `RM_ScaldProtection` stat, `RUT_ScaldExposure`
+4. **Exposure clock** (XML only): `RUT_ScaldExposure`
    hediff (with `immuneThingDefs` = the natives), `RUT_ScaldSteamCarrier` condition wired onto
    `RM_TheScald.biomeMapConditions` by the same add-if-missing patch shape as the lock; the 3-line
    gate early-return in `GameCondition_EnvironmentalWeather`. Proof: colonist unroofed 1 day →

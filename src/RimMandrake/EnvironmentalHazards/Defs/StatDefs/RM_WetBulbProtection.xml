@@ -8,16 +8,14 @@
   stat; ArmorUtility is the only vanilla reader of that category and reads
   per-apparel, not per-pawn, so the condition does the summing itself).
 
-  ParentName="ArmorRatingBase" cribs the same abstract vanilla base
-  RM_ArmorRating_Scald.xml already uses in this same mod (category Apparel,
+  ParentName="ArmorRatingBase" cribs vanilla's abstract armor base (category Apparel,
   defaultBaseValue 0, minValue 0, hideAtValue 0, toStringStyle PercentOne
   all inherited unedited) - maxValue overridden to 1 here since this stat
   is read as a 0..1 protection fraction (unlike an armor rating, which can
   exceed 1 via quality/stuff bonuses), not because 2 (armor's own default)
   is wrong, just irrelevant to this stat's own math.
 
-  No StatPart_Stuff entry, same reasoning RM_ArmorRating_Scald.xml gives:
-  no vendored Stuff in this repo grants wet-bulb protection, so apparel
+  No StatPart_Stuff entry: no vendored Stuff in this repo grants wet-bulb protection, so apparel
   grants it via a flat <statBases> entry on the garment itself (the gear
   item defs own the concrete numbers, not this file).
 -->

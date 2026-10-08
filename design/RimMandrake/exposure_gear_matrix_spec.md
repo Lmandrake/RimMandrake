@@ -26,7 +26,7 @@ now the **heat column** of this matrix, unchanged in its numbers.
 | `Apparel_GasMask` (Biotech) | RimSage | `ToxicEnvironmentResistance 0.8`, Industrial, 20 steel + 20 chemfuel — the **shape** of a cheap head-worn filter; not a no-air answer (it filters, it does not supply) |
 | `Apparel_Parka`, `Apparel_Tuque` (Core) | RimSage | stuffed cold gear: the cheap cold cell needs **no new def**, only a local material |
 | `HediffCompProperties_EnvironmentalExposure.protectionStat` | Core; used by `RM_SheenProtection` (TheRot), `RM_WetBulbProtection` (EnvironmentalHazards) | the apparel-stat slowdown for any exposure clock — the liquid hook is one more StatDef on this shape |
-| `RM_Apparel_ScaldWrap`, `RM_Apparel_BoilSuit`, `RM_Apparel_RindCoat`, `RM_ScaldProtection` | `scald_steam_and_hazards_spec.md` §5/§5a — specced, unbuilt | the heat column, with numbers already ruled |
+| `RM_Apparel_ScaldWrap`, `RM_Apparel_BoilSuit`, `RM_Apparel_RindCoat` | `scald_steam_and_hazards_spec.md` §5/§5a — shipped; Scald protection is vanilla `ArmorRating_Heat` (`SCALD_FOLD_INTO_HEAT_1`) | the heat column, with numbers already ruled |
 | Royal Rind (`RM_RoyalRind` stuff) | `greatbole_harvest_spec.md` §3b — ruled, unbuilt | *"immune to heat and cold to extreme levels"* (owner) ⇒ the one material that fills **both** temperature cells at the moderate tier; its vacuum use is ruled Odyssey-gated |
 | KotOR flight suits (`guy762_FlightArmor`: `ArmorRating_Heat 0.65`, `Insulation_Cold 20`; `guy762_RebelPilot_suitbox`: `Insulation_Cold 100`) | `src/RimStarWars/Armoury/.../Absorbed_KotorCore_Apparel_SWGenericFlightSuits.xml` | Star Wars **skins** for moderate cells, patch layer only (§4b) |
 | No breath stat, no drowning, no pressure in 1.6 | `sea_dive_maps_spec.md` §4 (MEASURED) | "no air" in liquid is expressed as an exposure clock, never a lung |
@@ -39,7 +39,7 @@ beyond a chitin helmet (TheRot) and a pendant (TrophyCraft).
 | axis | the threat | the two ends | engine hook (§3) |
 |---|---|---|---|
 | **A — no air** | you cannot breathe here | **liquid** (the four sea floors: the `RM_DeepExposure` clock) · **vacuum** (space, Odyssey) | liquid: `RM_DiveProtection` (new); vacuum: `VacuumResistance` |
-| **B — temperature** | the air (or water) itself hurts | **extreme heat** (Scald 55 °C ambient, contact burn, steam) · **extreme cold** (Propane −79 °C, the nightside) | `Insulation_Heat`, `ArmorRating_Heat`, `RM_ScaldProtection` · `Insulation_Cold` |
+| **B — temperature** | the air (or water) itself hurts | **extreme heat** (Scald 55 °C ambient, contact burn, steam) · **extreme cold** (Propane −79 °C, the nightside) | `Insulation_Heat`, `ArmorRating_Heat` · `Insulation_Cold` |
 
 A cell is (tier × axis-end). An item may fill several cells — a sealed suit is sealed against
 liquid *and* vacuum, and its shell insulates — which is why the deluxe set is one set, not four.
@@ -54,9 +54,9 @@ is Spacer and reaches space. Numbers are INVENTED except where marked MEASURED/r
 
 | tier | A — liquid | A — vacuum | B — heat | B — cold |
 |---|---|---|---|---|
-| **cheap** (Neolithic, tailoring bench, local materials) | **`RM_Apparel_AirBladder`** (new): a chitin-framed bladder worn on the back (Shell, Torso); `RM_DiveProtection 0.35` (clock ≈1.5× slower); 8 `RM_ScaldWalkerChitin` + 2 `RM_ShullaBladder` (new butcher product of the shulla) | **none, by design** — there is no cheap vacuum answer; "space suits are well known" means vacuum *starts* at deluxe | **`RM_Apparel_ScaldWrap`** (ruled numbers: `ArmorRating_Heat 0.30`, `RM_ScaldProtection 0.45`) | **`Apparel_Parka` / `Apparel_Tuque` in a local cold leather** (vanilla defs; the local material carries `StuffPower_Insulation_Cold` ≈ 2× plain leather, the megasloth-wool shape) |
-| **moderate** (Industrial research, or the rind fight) | **`RM_Apparel_Rebreather`** (new, Overhead, `FullHead`, Industrial via `RM_ScaldWorking`): `RM_DiveProtection 0.45`; **`RM_Apparel_BoilSuit`** body adds `RM_DiveProtection 0.30` — worn together 0.75 (≈4× slower) | **partial** — boil-suit + rebreather are sealed, so with Odyssey a patch gives them `VacuumResistance 0.25 + 0.30` (a sealed suit is a sealed suit, §9 ruling 4 of the Scald spec); enough for a minute on a hull, never a walk | **`RM_Apparel_BoilSuit`** (ruled: `ArmorRating_Heat 0.55`, `RM_ScaldProtection 0.85`) · **`RM_Apparel_RindCoat`** (ruled: 0.45 / 0.60 + extreme insulation) | **`RM_Apparel_RindCoat`** (ruled: extreme cold insulation — the same coat, both ends of axis B) |
-| **deluxe** ("all the way to space") | **the sealed set**: Odyssey `Apparel_Vacsuit` + `Apparel_VacsuitHelmet`, patched with `RM_DiveProtection 0.40 + 0.55` (sum 0.95 → clamped, floor 8%) | **the same set** — MEASURED `VacuumResistance 0.32 + 0.69` | **the same set** — MEASURED `ArmorRating_Heat 0.66`; patch `Insulation_Heat +40` (the vanilla 15 is a spacer's, not a diver's) and `RM_ScaldProtection 0.35 + 0.30` (ruled, Scald spec §5) | **the same set** — MEASURED `Insulation_Cold 90` |
+| **cheap** (Neolithic, tailoring bench, local materials) | **`RM_Apparel_AirBladder`** (new): a chitin-framed bladder worn on the back (Shell, Torso); `RM_DiveProtection 0.35` (clock ≈1.5× slower); 8 `RM_ScaldWalkerChitin` + 2 `RM_ShullaBladder` (new butcher product of the shulla) | **none, by design** — there is no cheap vacuum answer; "space suits are well known" means vacuum *starts* at deluxe | **`RM_Apparel_ScaldWrap`** (`ArmorRating_Heat 0.45`, folded from the ruled 0.30 / scald 0.45) | **`Apparel_Parka` / `Apparel_Tuque` in a local cold leather** (vanilla defs; the local material carries `StuffPower_Insulation_Cold` ≈ 2× plain leather, the megasloth-wool shape) |
+| **moderate** (Industrial research, or the rind fight) | **`RM_Apparel_Rebreather`** (new, Overhead, `FullHead`, Industrial via `RM_ScaldWorking`): `RM_DiveProtection 0.45`; **`RM_Apparel_BoilSuit`** body adds `RM_DiveProtection 0.30` — worn together 0.75 (≈4× slower) | **partial** — boil-suit + rebreather are sealed, so with Odyssey a patch gives them `VacuumResistance 0.25 + 0.30` (a sealed suit is a sealed suit, §9 ruling 4 of the Scald spec); enough for a minute on a hull, never a walk | **`RM_Apparel_BoilSuit`** (`ArmorRating_Heat 0.85`, folded from the ruled 0.55 / scald 0.85) · **`RM_Apparel_RindCoat`** (`ArmorRating_Heat 0.60`, folded from the ruled 0.45 / scald 0.60, + extreme insulation) | **`RM_Apparel_RindCoat`** (ruled: extreme cold insulation — the same coat, both ends of axis B) |
+| **deluxe** ("all the way to space") | **the sealed set**: Odyssey `Apparel_Vacsuit` + `Apparel_VacsuitHelmet`, patched with `RM_DiveProtection 0.40 + 0.55` (sum 0.95 → clamped, floor 8%) | **the same set** — MEASURED `VacuumResistance 0.32 + 0.69` | **the same set** — MEASURED `ArmorRating_Heat 0.66`; patch `Insulation_Heat +40` (the vanilla 15 is a spacer's, not a diver's) — that heat armor is also the Scald steam clock's protection, so no Scald patch | **the same set** — MEASURED `Insulation_Cold 90` |
 
 Reading across a row: cheap gear answers **one** cell each and is local; moderate gear answers
 **two** (a sealed body helps both the clock and the burn; rind helps both temperatures); deluxe
@@ -76,7 +76,6 @@ you. Surfacing or standing under any sub-roof cell (an air-bell) heals it.
 | `VacuumResistance` | Odyssey StatDef (MEASURED) | patch, `MayRequire="Ludeon.RimWorld.Odyssey"` | never referenced from a def that must load without Odyssey; every offset is a `PatchOperationAdd` under `MayRequire` |
 | `Insulation_Heat` / `Insulation_Cold` | Core | — | ambient temperature; vanilla heatstroke/hypothermia already scale with it |
 | `ArmorRating_Heat` | Core | — | contact burn (`Burn` has `armorCategory Heat` — Scald spec §4) and the feen's stings |
-| `RM_ScaldProtection` | StatDef, Scald spec §5 | `RM_` (TerminalBiomes) | the steam clock; Scald-only flavour on the heat column |
 | local hazard clocks (`RM_WetBulbProtection`, `RM_SheenProtection`, Miasma owed) | exist / owed | their biomes | ride as offsets on that biome's local garment; not matrix cells |
 
 Rule: **no item zeroes any clock.** Every `protectionStat` sum clamps at 1 and the clock floors
@@ -120,7 +119,7 @@ The Scald spec's numbers stand; this table only says which cell each rung occupi
 Nothing above is IP. The `RSW_`/`RUT_` layer may **reskin**, never replace: the KotOR flight
 suits already in the Armoury are natural skins for the moderate cells (`guy762_FlightArmor` reads
 as a heat-armoured flight suit; `guy762_RebelPilot_suitbox` as a cold one) and a Utinni patch may
-add `RM_DiveProtection`/`RM_ScaldProtection` offsets to them so a Star Wars colony's pilots can
+add `RM_DiveProtection` offsets to them so a Star Wars colony's pilots can
 dive. The free `RM_` matrix must be complete without them (Q11a).
 
 ## 5. Build order — each step shippable, XML-first
@@ -128,9 +127,9 @@ dive. The free `RM_` matrix must be complete without them (Q11a).
 1. **`RM_DiveProtection` StatDef + `RM_Apparel_AirBladder` + `RM_ShullaBladder`** (DivingInteraction,
    with `sea_dive_maps_spec.md` §6 step 3). Proof: quicktest, diver with the bladder on a Scald
    floor — `RM_DeepExposure` severity after 1 h is ≈65% of a naked diver's.
-2. **The vacsuit patch** (TerminalBiomes, `MayRequire` Odyssey): `RM_DiveProtection`,
-   `RM_ScaldProtection`, `Insulation_Heat` offsets onto `Apparel_Vacsuit`/`Apparel_VacsuitHelmet`
-   (extends the Scald spec's ruled patch — one file). Proof: `validate_patch.py --live --defs`
+2. **The vacsuit patch** (TerminalBiomes, guarded on the target's existence): `RM_DiveProtection`
+   and `Insulation_Heat` offsets onto `Apparel_Vacsuit`/`Apparel_VacsuitHelmet` (Scald steam needs
+   no offset: vanilla `ArmorRating_Heat 0.66` already answers it). Proof: `validate_patch.py --live --defs`
    clean; a vacsuited diver's clock reads the 8% floor.
 3. **`RM_Apparel_Rebreather`** + the boil-suit's `RM_DiveProtection 0.30` (with the Scald spec's
    gear step 5, same research). Proof: boil-suit + rebreather = 0.75 in the pawn's stat readout.

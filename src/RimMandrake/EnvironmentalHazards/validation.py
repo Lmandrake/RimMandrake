@@ -145,7 +145,7 @@ MECHANICS = (
     ("tar_coating", "tarCoatingEnabled", "RM_Comp_TarCoatingSource.cs", ()),
     ("accelerated_rot", "acceleratedRotEnabled", "RM_MapComponent_AcceleratedRot.cs", ()),
     ("sheen_scald", "sheenExposureEnabled", "RUT_HediffComp_SheenExposure.cs",
-     ("StatDef/RM_ScaldProtection", "StatDef/RM_ArmorRating_Scald", "DamageArmorCategoryDef/RM_ScaldArmor")),
+     ()),
     ("venomvine_scratch", "contactVenomEnabled", "MapComponent_ContactVenom.cs",
      ("DamageDef/RM_VenomvineScratch", "ThingDef/RM_Venomvine", "ThingDef/RM_VenomvineThicket", "HediffDef/RM_VenomvineVenom")),
     ("living_boles_genstep", "livingBolesEnabled", "RM_GenStep_LivingBoles.cs", ()),

@@ -18,7 +18,7 @@
     RM_Apparel_ScaldWrap   Neolithic, tailoring bench, no research  <- HERE
     Royal Rind gear        Neolithic — NOT BUILT, see below
     RM_Apparel_BoilSuit    Industrial, RM_ScaldWorking research     <- HERE
-    Odyssey vacsuit        patched, ../Patches/VacsuitScaldProtection.xml
+    Odyssey vacsuit        vanilla ArmorRating_Heat 0.66 + helmet 0.66, no patch
 
   🔴 RM_Apparel_RindCoat IS DELIBERATELY ABSENT, and this is a real
   dependency, not an oversight. It is made of `RM_RoyalRind`, a stuff
@@ -30,22 +30,18 @@
   pass, per that spec's §5a. Adding a coat now with no material to make it
   from would ship a recipe nobody can run.
 
-  ⚠️ EVERY PROTECTION NUMBER HERE IS INVENTED and taken verbatim from the
-  spec's §5 table. They SUM across worn apparel and the comp clamps the sum
-  to 1, then floors the clock at 8% (`minDriveFactor`) — so Ban 3 of the
-  frozen sheet ("no boiling-immune traversal for free") holds structurally:
-  wrap + vacsuit helmet = 0.75 -> clock at 25%; boil-suit alone 0.85 ->
-  15%; boil-suit + helmet clamps at 1.0 -> the 8% floor. Nothing a pawn can
-  wear reaches immunity, by construction rather than by tuning.
-
-  🔑 THREE DIFFERENT STATS, on purpose, all three legitimately on the same
-  garment — do not collapse them:
-    RM_ScaldProtection   slows the standing-steam exposure clock
-    RM_ArmorRating_Scald reduces RUT_Scald damage (the steam devil only)
-    ArmorRating_Heat     reduces the terrain's own wading burn, which is
-                         plain vanilla Burn/Heat (owner ruling 2026-09-25:
-                         wading burns stay ordinary Heat). This is why a
-                         devilstrand duster is already a wading aid today.
+  ⚠️ EVERY PROTECTION NUMBER HERE IS INVENTED and taken from the spec's
+  §5 table. Protection is ONE stat, vanilla ArmorRating_Heat
+  (SCALD_FOLD_INTO_HEAT_1, decision taken by question card 2026-10-08: one
+  kind of heat). It blocks RUT_Scald hits and the wading burn as armor,
+  and RUT_ScaldExposure's clock sums it over worn apparel, clamps the sum
+  to 1 and floors the clock at 8% (`minDriveFactor`). So Ban 3 of the
+  frozen sheet ("no boiling-immune traversal for free") holds
+  structurally: boil-suit alone 0.85 -> clock at 15%; anything that sums
+  past 1 (boil-suit + helmet, the full vacsuit set) sits on the 8% floor.
+  Nothing a pawn can wear reaches immunity, by construction. Each garment's
+  heat armor is the larger of its two pre-fold scald figures, so its clock
+  strength is unchanged.
 
   MayRequire on the wrap's chitin cost is load-bearing:
   RM_ScaldWalkerChitin lives in mandrake.rm.divinginteraction, which this
@@ -85,8 +81,7 @@
       <StuffEffectMultiplierInsulation_Cold>0.25</StuffEffectMultiplierInsulation_Cold>
       <EquipDelay>2.5</EquipDelay>
       <Insulation_Heat>-10</Insulation_Heat>
-      <ArmorRating_Heat>0.30</ArmorRating_Heat>
-      <RM_ScaldProtection>0.45</RM_ScaldProtection>
+      <ArmorRating_Heat>0.45</ArmorRating_Heat>
     </statBases>
     <equippedStatOffsets>
       <MoveSpeed>-0.15</MoveSpeed>
@@ -155,11 +150,9 @@
       <Beauty>-3</Beauty>
       <Insulation_Heat>-20</Insulation_Heat>
       <Insulation_Cold>18</Insulation_Cold>
-      <ArmorRating_Heat>0.55</ArmorRating_Heat>
+      <ArmorRating_Heat>0.85</ArmorRating_Heat>
       <ArmorRating_Blunt>0.10</ArmorRating_Blunt>
       <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
-      <RM_ScaldProtection>0.85</RM_ScaldProtection>
-      <RM_ArmorRating_Scald>0.60</RM_ArmorRating_Scald>
     </statBases>
     <equippedStatOffsets>
       <MoveSpeed>-0.35</MoveSpeed>
