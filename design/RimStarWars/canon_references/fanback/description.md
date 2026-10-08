@@ -12,7 +12,7 @@ Beyond the Sea*, cited via the "Complete Star Wars Encyclopedia".
 - **Body plan**: a cold-blooded amphibian with a large dorsal spine (sail) and a
   sensitive snout.
 - **Diet/behavior**: carnivore; preyed on "egg-eaters" (a separate Naboo species).
-- **Canon role**: minor background fauna. Shortly after 32 BBY the Gungans
+- **Legends role** (no canon attestation): minor background fauna. Shortly after 32 BBY the Gungans
   transported fanbacks (and other animals) to the moon Ohma-D'un to try to
   establish an ecosystem there; most of that flora/fauna was later destroyed by
   Separatists during the Battle of Ohma-D'un.
@@ -42,9 +42,8 @@ book illustration — muted, painterly, sepia-toned page background.
 - `wookieepedia_egg.jpg` — no animal visible; shows only a sand/mud nest
   mound with dry grass tufts and one large cream-white egg with fine dark
   speckling, half-buried in a shallow brown depression. Useful only for
-  confirming egg-laying (oviparous) behavior and a desert/dune nesting
-  habitat consistent with Naboo's swamp-adjacent drylands, not for body
-  color.
+  confirming egg-laying (oviparous) behavior; the wiki text gives no habitat, so no biome
+  can be read from it, and it says nothing of body color.
 
 **Text vs. image disagreement**: the species infobox metadata field says
 `skincolor=Green`, but the actual illustration does not read as green — it
@@ -55,7 +54,7 @@ images outrank text), and note the "Green" field as likely an
 approximation/rounding by whoever filled in the old infobox rather than an
 accurate description of the single piece of art that exists. No second
 independent image exists to cross-check this against, which is itself worth
-flagging: this creature has effectively **one** surviving canon depiction.
+flagging: this creature has effectively **one** surviving Legends depiction on the wiki page (the Gungan Frontier game is another visual source).
 
 **Net read for art**: sail-backed, Dimetrodon-silhouette reptilian
 amphibian; tan/khaki-olive base coat with darker brown mottled spots; sail

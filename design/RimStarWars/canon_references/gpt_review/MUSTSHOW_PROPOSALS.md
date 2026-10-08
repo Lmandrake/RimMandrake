@@ -367,3 +367,45 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 ### shiro
 - Must show line 1 (green skin as colour anchor): the green skin is sourced only to Disney Infinity 3.0 and the page has a Noncanon banner; relabel the checklist "game adaptation (Disney Infinity 3.0 colour) over Legends shell anatomy". Source: https://starwars.fandom.com/wiki/Shiro
 - Must show lines 2-4 (ridged spiny shell, retractable extremities) are Legends-only (Field Guide); label them so. Source: https://starwars.fandom.com/wiki/Shiro/Legends
+
+## Batch 03
+# Proposals batch 03
+
+### dactillion
+- Must show "Pterosaur-shaped body": reword to "reptilian flyer with elongated neck, beaked head with paired projections, membranous wings, tail" (drop the Earth-pterosaur analogy; limb count not stated by any page). Reason: wiki gives no limb count.
+- Must show "Red/orange eyes": reword to "light-coloured eyes (Legends: blue or gray)"; red/orange is not supported by text. Source: https://starwars.fandom.com/wiki/Dactillion and /Legends
+- "toothless"/gold beak tips: image-only claims, no text support; mark as image-observed, optional.
+
+### dalgo
+- Must show "(raptor/theropod stance)": delete that parenthetical; wording should be "tall, long-legged four-legged reptilian runner". Reason: Legends page says "four-legged animals"; no source says theropod stance. Source: https://starwars.fandom.com/wiki/Dalgo/Legends
+- Add "three forward nostrils" (canon infobox distinction, https://starwars.fandom.com/wiki/Dalgo) to Must show.
+
+### dewback
+- Must show "Long heavy tail": replace with "short tail" ; reason: wiki states "long, rounded heads and short tails" (A New Hope). Source: https://starwars.fandom.com/wiki/Dewback
+- Must show "elongated low-slung body": hedge to "bulky reptilian body"; thick hides per Databank, no source says elongated/low-slung. Image-derived claim; owner ruled infobox art.
+
+### dianoga
+- Must show "Single dark reddish eyestalk": add "(Omi: green eye with red sclera)"; reason: Omi page. Source: https://starwars.fandom.com/wiki/Omi
+- Must show "Several long, thin, tapering tentacles": tighten to "seven suckered tentacles" (canon infobox, Join the Resistance, The Baptist); source https://starwars.fandom.com/wiki/Dianoga
+
+### dragonsnake
+- Must show "Shown as an aquatic ambush predator, partially submerged": keep; GPT suggests water as pose not component, but wiki confirms "hid under the muddy water" so no change needed. No proposal beyond: add Bright-Eyes variant palette (mottled blue-gray, yellow eyes) as an allowed variation. Source: https://starwars.fandom.com/wiki/Bright-Eyes
+
+### eopie
+- Must show "never brown": delete "never brown"; canon gives no colour, Legends lists brown/pale/white. Source: https://starwars.fandom.com/wiki/Eopie/Legends
+- Must show "One large dark eye": reword to "large dark eye(s), one visible in profile"; wiki has no eye count (GPT: paired) - UNVERIFIED either way.
+- Add a separate variant note for the horned eopie (At Achrann). Source: https://starwars.fandom.com/wiki/Eopie
+
+### faascalefish
+- Must show "Very large concentric-ringed eye" and brow/chin spikes: image-only; mark optional (no text support; canon text only says "protruding features", orange/tan blue mottle). Source: https://starwars.fandom.com/wiki/Faa
+
+### falumpaset
+- Add Must show size anchor "3 m tall (about a fambaa's 4.3 m smaller)": height 3 m per https://starwars.fandom.com/wiki/Falumpaset (4.3 m fambaa comparison is GPT's, checked below).
+
+### fambaa
+- Must show "A single curved tusk jutting from the lower jaw": mark optional/unsourced; no wiki text on tusks. Source: https://starwars.fandom.com/wiki/Fambaa
+- Must show "Long, tapering cartilage tail": reword to "long tapering tail" (cartilage is internal, though the page says it).
+
+### fanback
+- Must show: prefix whole checklist "Legends adaptation" (page is Legends). Source: https://starwars.fandom.com/wiki/Fanback
+- Must show "Tan/khaki-olive base coat with darker brown mottled spots": the owner ruled olive green (see ruling); infobox text says Green. Owner-ruled; flag for review only. Black sail edge/mottling: image-only, no text support.

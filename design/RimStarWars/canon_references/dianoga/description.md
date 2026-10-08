@@ -3,8 +3,8 @@
 **defName**: `RSW_Dianoga` (vendored in this repo's own `src/RimStarWars/SWBestiary` mod)
 
 ## Sourced text (Wookieepedia)
-Dianoga ("trash squid" is the related/subspecies name used for Death Star
-tank-dwelling specimens specifically) are large, sentient, omnivorous
+Dianoga (the infobox lists "trash squid" as a subspecies; the article says only that the trash squid
+was part of the Dianoga family, citing Marvel's *Star Wars* comics) are large, sentient, omnivorous
 cephalopods native to the swampy planet Vodran in the Si'Klaata Cluster
 (Hutt Space). Body plan: **seven suckered tentacles**, an eyestalk, a mouth
 of sharp teeth, and several hearts. Length 7-10 meters. Skin color is
@@ -18,9 +18,11 @@ air but will dry out). Society: a primitive tribal culture with its own
 complex humming language that carries through water and scares off prey;
 they venerate water and believe in reincarnation.
 
-Canon role: the most famous dianoga is the unnamed one living in the Death
+Canon role: the most famous dianoga is **Omi**, the Force-sensitive female living in the Death
 Star's trash compactor in *A New Hope* ("There's something alive in here" —
-Luke Skywalker). Other named/attested appearances: a dianoga in the flooded
+Luke Skywalker), named and given a story in "The Baptist" (*From a Certain Point of View*);
+Databank lists her at 10 m, with purple colour-changing skin and a green eye with red sclera
+(https://starwars.fandom.com/wiki/Omi). Other named/attested appearances: a dianoga in the flooded
 wreck of a derelict *Venator*-class Star Destroyer on Bracca (*The Bad
 Batch*), a dianoga family in the Bracca Badlands during the High Republic
 Era, and dianoga living in the SoroSuub refinery's water tanks on Sullust
@@ -99,21 +101,20 @@ across 13 dianoga-related pages. URLs at the end of this section.
 - **Legends adds:** up to 10 m but **most specimens only 5–6 m**; the seven tentacles
   **surround a fanged maw containing a sharp serrated probe**; a tentacle is
   **membraned** (one wrapped around Luke Skywalker's head).
-- 🔑 **The giant dianoga is a SEPARATE canon subject, not a size variant of this
-  entry.** *"Many times larger than an average dianoga and easily dwarfing a Human,"*
+- 🔑 **The giant dianoga is a LEGENDS subject** (`https://starwars.fandom.com/wiki/Giant_dianoga`, flagged
+  Legends; the canon Dianoga article only mentions "a giant dianoga" in *Journey to the Bracca Badlands*
+  with no description), not a size variant of this entry. *"Many times larger than an average dianoga and easily dwarfing a Human,"*
   with **barbed** tentacles rather than suckered, **red** skin and **red** eye, and a
   **giant red eyestalk about equal in length to its tentacles**. Its maw is *"a gaping
   maw lined with sharp teeth, **not unlike that of a sarlacc**"* — canon draws the
   sarlacc comparison itself, which `the_fever_wood.md` §4 independently arrived at.
-  ⚠️ **Only ONE specimen was recorded in galactic history** (Coruscant sewers, c. 4 ABY),
+  ⚠️ **Only ONE specimen was recorded in Legends history** (Coruscant sewers, c. 4 ABY),
   appearing solely in the *Shadows of the Empire* video game — whose article flags that
-  the game contradicted its source material, so that individual is of doubtful Legends
-  canonicity while *"that doesn't necessarily discount the canonical status of the
-  species itself."* ⇒ Treat the giant form as **sourced but vanishingly rare**, which is
-  precisely why an unusually large one reads as shocking even to people who know the
-  species.
-- 🔴 **Canon weak point: the eyestalk.** The giant dianoga was beaten *"by firing at its
-  prominent eyestalk."* This is the only canon-attested way anyone has defeated one.
+  the game contradicted its source material, so that individual is of doubtful standing even within
+  Legends. ⇒ Treat the giant form as **sourced (Legends) but vanishingly rare**.
+- **Eyestalk (Legends game mechanic):** the Legends giant dianoga was beaten *"by firing at its
+  prominent eyestalk"* (*Shadows of the Empire* game). In canon, a dianoga on Bracca is simply driven off
+  by blasterfire (*The Bad Batch* "Battle Scars", https://starwars.fandom.com/wiki/Dianoga).
 - **Omi**, the named Death Star specimen: purple skin *"that could change color to match
   her surroundings"*, **a green eye with red sclera**, and a single eyestalk protruding
   from the **centre** of her body.
@@ -121,8 +122,9 @@ across 13 dianoga-related pages. URLs at the end of this section.
 ### Colour — purple
 
 Mature skin is **deep purple**, actively changeable to **black, gray, or even
-transparent** for camouflage. Dianogan tea **stains lips purple and teeth black**, and
-one drinker's teeth went *"a garish purple."*
+transparent** for camouflage. Dianogan tea (Legends) **stains lips purple and teeth black**; in canon one drinker's teeth went *"a garish purple."*
+
+(Canon: only "stained teeth purple" — *Rise of the Separatists*; the black teeth and purple lips are Legends — https://starwars.fandom.com/wiki/Dianogan_tea/Legends.)
 
 ⇒ **Purple is the colour association for this creature and its body parts**, confirmed by
 the owner 2026-09-23.
@@ -133,24 +135,24 @@ the owner 2026-09-23.
   a deep, complex humming language. **Because its reverberations carried so completely in
   the water, that language scared away all nearby prey.**"* They **venerate water**.
 - Hermaphroditic; **reproduction involved partners exchanging eggs with one another**, and
-  the **life cycle begins with an egg** (a crate labelled "Dianoga eggs" is attested in
-  *The Old Republic*).
+  the Legends article adds that the **life cycle begins with an egg** (a crate labelled "Dianoga eggs" in
+  *The Old Republic*; canon says only that partners exchange eggs).
 - **Entirely water-dependent** — survives only brief stretches in open air before drying
   out. Combined with the **excellent hearing** already in this entry's original sourced
   text, the canon creature is a listener that cannot leave its water.
 
 ### Canon products — a real trade line, all sourced
 
-Dianoga are **edible by humans** and support a named product family. ⭐ The owner's
+Dianoga are **edible by humans** and support a named product family, **mostly Legends or non-canon** (continuity per row). ⭐ The owner's
 2026-09-14 ruling below already assigned this material to the **Star Wars Cuisine mod**.
 
 | product | canon detail |
 |---|---|
-| **Dianoga pie** | *"the most popular of the dishes made of dianoga meat"* — a **savory pie with a beige crust** and a seasoned filling. The **Houk** species are especially fond of it. House special at the **Meltdown Café** on Nar Shaddaa, served with **krayt milk**. An Imperial officers' field guide notes chefs *"could use dianogas to make a tasty pie, although troops were unlikely to come back for second servings."* |
-| **Dianoga omelette** | Served at a canteen aboard the **first Death Star**; edible by humans. |
-| **Dianogan tea** | Steeped from **chemicals found in the dianoga's spleen**, normally **served hot**. A **delicacy among Muuns**. **Temporarily stains lips purple and teeth black**, with a **mild narcotic effect**. Wookieepedia categorises it under **Drugs and medicine**. Favoured by Admiral Pors Tonith. |
-| **Dianoga cream**, **Dianoga cream-filled donut** | Each attested as its own canon subject. |
-| **Dianoga cheese** | Named by the owner; ⚠️ **UNCONFIRMED** — no page was pulled for it this pass. Do not cite as sourced until one is. |
+| **Dianoga pie** (Legends, *Dark Empire II* 2) | *"the most popular of the dishes made of dianoga meat"* — a **savory pie with a beige crust** and a seasoned filling. The **Houk** species are especially fond of it. House special at the **Meltdown Café** on Nar Shaddaa, served with **krayt milk**. An Imperial officers' field guide notes chefs *"could use dianogas to make a tasty pie, although troops were unlikely to come back for second servings."* |
+| **Dianoga omelette** (NON-canon — *LEGO Star Wars in 100 Scenes*) | Served at a canteen aboard the **first Death Star**; edible by humans. |
+| **Dianogan tea** (canon: *Rise of the Separatists*, only the purple tooth-stain and Pors Tonith; the rest is Legends) | Steeped from **chemicals found in the dianoga's spleen**, normally **served hot**. A **delicacy among Muuns**. **Temporarily stains lips purple and teeth black**, with a **mild narcotic effect**. Wookieepedia categorises it under **Drugs and medicine**. Favoured by Admiral Pors Tonith. |
+| **Dianoga cream**, **Dianoga cream-filled donut** (Legends, "Dining at Dex's") | Each has its own wiki page, both Legends. |
+| **Dianoga cheese** (Legends) | Exists as a Legends page; its page says the connection with the dianoga species is unknown, so no milk or dairy mechanic is sourced (https://starwars.fandom.com/wiki/Dianoga_cheese). |
 
 ### A canon flora neighbour
 

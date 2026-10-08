@@ -8,6 +8,8 @@
 Faa, also known as faa fish or big-mouth faa, were a species of scalefish native to the planet Naboo. They lived alongside six other scalefish species in the waters around the city Otoh Gunga in Lake Paonga, and could also be found in the Naboo Abyss where they were preyed upon indiscriminately by the large colo claw fish and opee sea killers that dwelt there.
 
 **Biology and appearance** Unlike other scalefish species, which were mostly harmless, the faa was a vicious carnivore They had a wide, flat head with a narrow midsection that ended in a large paddle-like tail. Small pectoral fins were located on the side of the head. Their skin was a graduated orange color with blue stripes.
+
+**Koboh (Star Wars Jedi: Survivor, game)** By 9 BBY only a few faa were left on Koboh because they were harvested for their succulent glands; the fisherman Skoova Stev caught a big-mouth faa and kept it in a fish tank at Pyloon's Saloon. Skin per the game model: orange and tan with blue mottle (infobox). Faa first appeared in *The Phantom Menace*; confirmed canon by *Absolutely Everything You Need to Know*.
 ### Legends — https://starwars.fandom.com/wiki/Faa/Legends
 
 The faa, or faynaa, as they were known to the Gungan species, were fast-moving, non-sentient predatory scalefish native to the oceans and swamps of the Mid Rim planet Naboo and Manaan. They were considered dangerous and would attack virtually anything with little provocation.

@@ -12,8 +12,12 @@ and their hooves were adapted to climbing rocky cliffs. The trunked mouth
 secretes an adhesive spit the eopie layers over its own eyes (and a parent
 lays over a young eopie's head) as sandstorm protection. Though herbivorous,
 eopies can eat meat with no ill effects (as with banthas) — Obi-Wan Kenobi's
-eopie Akkani happily ate meat scraps during his exile on Tatooine. Lifespan
-~90 standard years. Canon role: Tatooine's default pack/transport animal for
+eopie Akkani (named in the comic *Obi-Wan* 1, not in the show) happily ate meat scraps during his exile on Tatooine
+(*Obi-Wan Kenobi*, "Part I"). Lifespan
+~90 standard years. Eopies are protective of their young (young travel in a parent's shadow to keep cool; *Galaxy of Creatures*, "Eopie").
+A **horned eopie** subspecies lives on At Achrann (*Skeleton Crew*, "Can't Say I Remember No At Attin") —
+a separate variant, not the Tatooine design. **Legends** (https://starwars.fandom.com/wiki/Eopie/Legends):
+cameloid, skin brown, pale or white. Canon role: Tatooine's default pack/transport animal for
 moisture farmers and locals — seen ridden and laden with cargo baskets/saddle
 gear in *The Phantom Menace* (hauling podracer parts), *Obi-Wan Kenobi*, and
 multiple *Clone Wars* episodes; also found on Saleucami, Zardossa Stix, and
@@ -24,7 +28,7 @@ Gungans of Naboo instead).
 ## Visual brief
 The candidate images agree closely with each other and diverge sharply from
 the donor sprite's color. Eopies read as **pale — cream, dusty tan, or a
-pinkish-grey** skin tone, never brown. The body plan is unmistakably
+pinkish-grey** skin tone in the candidate images (the canon article gives no skin colour; Legends lists brown, pale and white). The body plan is unmistakably
 camel-like: a long, low-slung barrel body on four thin legs, each ending in
 small clawed/hoofed toes, topped by a genuinely elongated **trunk-like
 snout** (more tapir/small-elephant trunk than a simple long muzzle) with one

@@ -8,9 +8,13 @@ found on the desert moon Zardossa Stix). Unlike their smaller herbivorous
 cousins, dalgos are carnivorous predators — but are still domesticated for
 the same roles: Onderon rebels used dalgos as beasts of burden and battle
 mounts during the Onderonian Civil War (*The Clone Wars* Season 5, beginning
-with "A War on Two Fronts"). Height 2.5-3 meters. Wookieepedia infobox gives:
+with "A War on Two Fronts"). Height 2.5-3 meters (*Star Wars Encyclopedia*). Wookieepedia infobox gives:
 **orange** skin, **purple** eyes, a dorsal crest, unusually high body
 temperature, and three nostrils.
+
+The Legends article (`https://starwars.fandom.com/wiki/Dalgo/Legends`, citing *Stay on Target*)
+classes the dalgo as "Equine", calls it "four-legged animals", with the same orange skin, purple eyes
+and 2.5-3 m height; the canon infobox says "Reptilian" and lists Tipping Points among its appearances.
 
 The companion Clone Wars wiki fills in the body plan the Wookieepedia entry
 only stubs: dalgos are sure-footed reptilian quadrupeds built for
@@ -22,8 +26,7 @@ lower tusks, and a forked tongue used to scent-track danger in the thick
 jungle air.
 
 ## Visual brief
-Both candidate images (Star Wars Encyclopedia art and a "Secrets of Tatooine"
-piece — note: shown mounted with tack despite the Onderon-jungle origin,
+Both candidate images (Star Wars Encyclopedia art and a *Stay on Target* (Legends sourcebook) piece — note: shown mounted with tack despite the Onderon-jungle origin,
 consistent with its use as a domesticated battle mount) agree closely and
 match the text: a tall, long-legged reptilian runner with a raptor/theropod
 build, not a low-slung lizard. The head has a pronounced sail-like dorsal
@@ -64,7 +67,7 @@ none known
 - https://static.wikia.nocookie.net/starwars/images/8/83/Dalgo-SWE.png
   (*Star Wars Encyclopedia* reference art)
 - https://static.wikia.nocookie.net/starwars/images/0/02/Dalgo_SoT.png
-  ("Secrets of Tatooine" promotional/game art, saddled dalgo rearing)
+  (*Stay on Target* sourcebook art, Legends — file `Dalgo_SoT.png`; saddled dalgo rearing)
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary
@@ -73,7 +76,7 @@ none known
 - `wookieepedia_encyclopedia_art.png` — *Star Wars Encyclopedia* art, saddled
   dalgo rearing on hind legs, shows head crest, snout, teeth, tusks, and
   orange/cream coloring clearly
-- `wookieepedia_sot_art.png` — "Secrets of Tatooine" art, standing saddled
+- `wookieepedia_sot_art.png` — *Stay on Target* (Legends sourcebook) art, standing saddled
   dalgo on rocky ground, shows the full long-legged runner silhouette and
   blade-like tail tip
 

@@ -21,9 +21,8 @@ page URL was not tried after the API route worked cleanly) 2026-09-13.
   falumpaset, though fossil evidence is thin).
 - **Canon role**: Gungans use fambaas as beasts of burden and draft beasts
   for artillery, breeding herds in secret swamp pastures. Most famously,
-  pairs of fambaas carried the two halves of a portable deflector shield
-  generator (saddle + leather girth to hold the device, bridle for
-  steering) into the **Battle of Naboo** on the Great Grass Plains,
+  Gungans used fambaas to carry deflector shield generators (a saddle and leather girth
+  holding the device, a bridle for steering), and fambaas with shield generators were deployed into the **Battle of Naboo** on the Great Grass Plains,
   deployed alongside kaadu and falumpasets to support the Gungan Grand
   Army — this is their first and most iconic appearance, in *Star Wars:
   The Phantom Menace* (1999). Also used by Onderon rebels during the Clone
@@ -42,7 +41,7 @@ undersell/misread to flag. All four candidate images converge on the same
 palette family the text names (brown/green):
 
 - `wookieepedia_fieldguide.jpg` (*Wildlife of Star Wars: A Field Guide*
-  painted illustration) shows the clearest "wild, unburdened" baseline: two
+  painted illustration — a LEGENDS source: the Legends article cites it, the canon article does not) shows the clearest "wild, unburdened" baseline: two
   fambaas browsing a tree, **yellow-green to khaki scaled hide** with
   darker olive mottling, a pale cream/white underside and inner legs, a
   long tapering cartilage tail, a single curved tusk jutting from the lower
