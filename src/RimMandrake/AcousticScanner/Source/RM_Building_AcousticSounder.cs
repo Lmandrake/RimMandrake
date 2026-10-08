@@ -33,32 +33,36 @@ namespace RimMandrake.AcousticScanner
             Scribe_Values.Look(ref lastPulseTick, "lastPulseTick", -999999);
         }
 
-        private int CooldownTicks => Mathf.RoundToInt(S.cooldownHours * GenDate.TicksPerHour);
-        private int TicksUntilReady => lastPulseTick + CooldownTicks - Find.TickManager.TicksGame;
+        private int CooldownTicks => RM_AcousticKernel.CooldownTicks(S.cooldownHours);
+        private int TicksUntilReady => RM_AcousticKernel.TicksUntilReady(lastPulseTick, CooldownTicks, Find.TickManager.TicksGame);
 
         public AcceptanceReport CanPulse()
         {
-            if (!S.enabled) return "RM_Acoustic_Disabled".Translate();
-            if (!Spawned) return false;
             CompPowerTrader power = GetComp<CompPowerTrader>();
-            if (power != null && !power.PowerOn) return "RM_Acoustic_NoPower".Translate();
-            if (S.requireLandedShip && !OnLandedShip())
-                return "RM_Acoustic_NotOnShip".Translate();
-            int left = TicksUntilReady;
-            if (left > 0) return "RM_Acoustic_Cooldown".Translate(left.ToStringTicksToPeriod());
-            return true;
+            int left = Spawned ? TicksUntilReady : 0;
+            switch (RM_AcousticKernel.Gate(S.enabled, Spawned, power != null, power != null && power.PowerOn,
+                S.requireLandedShip, Spawned && S.requireLandedShip && OnLandedShip(), left))
+            {
+                case RM_PulseGate.Disabled: return "RM_Acoustic_Disabled".Translate();
+                case RM_PulseGate.NotSpawned: return false;
+                case RM_PulseGate.NoPower: return "RM_Acoustic_NoPower".Translate();
+                case RM_PulseGate.NotOnShip: return "RM_Acoustic_NotOnShip".Translate();
+                case RM_PulseGate.Cooldown: return "RM_Acoustic_Cooldown".Translate(left.ToStringTicksToPeriod());
+                default: return true;
+            }
         }
 
         private bool OnLandedShip()
         {
             ThingDef engine = DefDatabase<ThingDef>.GetNamedSilentFail("GravEngine");
-            if (engine == null || Map.listerThings.ThingsOfDef(engine).Count == 0) return false;
+            int engines = engine == null ? 0 : Map.listerThings.ThingsOfDef(engine).Count;
+            var covered = new List<bool>();
             foreach (IntVec3 c in this.OccupiedRect())
             {
                 TerrainDef f = Map.terrainGrid.FoundationAt(c);
-                if (f == null || !f.IsSubstructure) return false;
+                covered.Add(f != null && f.IsSubstructure);
             }
-            return true;
+            return RM_AcousticKernel.OnLandedShip(engines, covered);
         }
 
         public override IEnumerable<Gizmo> GetGizmos()
@@ -125,10 +129,17 @@ namespace RimMandrake.AcousticScanner
             List<RM_AcousticBand> bands = RM_AcousticBanding.Build(map, hits, weights,
                 S.BandSizeClamped, Gen.HashCombineInt(thingIDNumber, lastPulseTick));
             map.GetComponent<RM_MapComponent_AcousticReading>()?.SetReading(bands, colors, labels,
-                Mathf.RoundToInt(S.overlayHours * GenDate.TicksPerHour));
+                RM_AcousticKernel.OverlayTicks(S.overlayHours));
 
             Find.LetterStack.ReceiveLetter("RM_Acoustic_LetterLabel".Translate(),
                 BuildReport(payload, hits, bands, map), LetterDefOf.NeutralEvent, new LookTargets(this));
+        }
+
+        private static RM_AcousticTier BestTier(List<RM_AcousticBand> bands, int targetIndex)
+        {
+            var k = new List<RM_KBand>(bands.Count);
+            foreach (RM_AcousticBand b in bands) k.Add(new RM_KBand { targetIndex = b.targetIndex, tier = b.tier });
+            return RM_AcousticKernel.BestTier(k, targetIndex);
         }
 
         private string BuildReport(RM_AcousticPayloadExtension payload, List<List<IntVec3>> hits,
@@ -144,9 +155,7 @@ namespace RimMandrake.AcousticScanner
                 {
                     if (hits[i].Count == 0) continue;
                     any = true;
-                    RM_AcousticTier best = RM_AcousticTier.Faint;
-                    foreach (RM_AcousticBand b in bands)
-                        if (b.targetIndex == i && b.tier > best) best = b.tier;
+                    RM_AcousticTier best = BestTier(bands, i);
                     RM_AcousticTarget t = payload.targets[i];
                     sb.Append("  - ").Append(t.label.CapitalizeFirst()).Append(": ")
                       .Append(("RM_Acoustic_Tier" + best).Translate().ToString());

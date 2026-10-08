@@ -7,8 +7,8 @@ namespace RimMandrake.AcousticScanner
     // defaults = shipped behaviour, every toggle wired to something real).
     public class RM_AcousticScannerSettings : ModSettings
     {
-        public const int MinBandSize = 7;   // hard floor: a reading is ALWAYS banded, never exact
-        public const int MaxBandSize = 25;
+        public const int MinBandSize = RM_AcousticKernel.MinBandSize;   // hard floor: a reading is ALWAYS banded, never exact
+        public const int MaxBandSize = RM_AcousticKernel.MaxBandSize;
 
         public bool enabled = true;
         public bool requireLandedShip = true;
@@ -18,7 +18,7 @@ namespace RimMandrake.AcousticScanner
         public float rangeCells = 60f;
         public bool pulseEffects = true;
 
-        public int BandSizeClamped => Mathf.Clamp(bandSize, MinBandSize, MaxBandSize);
+        public int BandSizeClamped => RM_AcousticKernel.ClampBandSetting(bandSize);
 
         public override void ExposeData()
         {
