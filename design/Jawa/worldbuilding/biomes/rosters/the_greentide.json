@@ -115,6 +115,11 @@
       "def": "ShiroTrap",
       "disposition": "move:AB_MycoticJungle",
       "reason": "owner review 2026-09 (round2 move mapping): The Rot"
+    },
+    {
+      "def": "RM_Sytheclaw",
+      "disposition": "cut",
+      "reason": "Greentide sheet 2026-10-08 (owner): \"This should not be in this biome\" — removed from RM_Greentide_Biome.xml wildAnimals; scoped to the Greentide only, it stays in the Pyrelands (and the frozen RUT_ twins are untouched)"
     }
   ],
   "fauna": [
@@ -179,14 +184,16 @@
       "band": "floor-vermin",
       "commonality": 0.4,
       "def": "VFEI2_Swarmling",
-      "law": "§4 filth-and-sprouts carpet is the strategy working; comm trimmed 1.0→0.4 (design choice)"
+      "law": "§4 filth-and-sprouts carpet is the strategy working; comm trimmed 1.0→0.4 (design choice); Greentide sheet 2026-10-08 (owner): renamed saluksis (Greentide_Rename.xml), description rewritten, more-alien art regen queued",
+      "label": "saluksis"
     },
     {
       "action": "keep",
       "band": "floor-predator",
       "commonality": 0.4,
       "def": "RSW_Diggerpede",
-      "law": "§4 no pursuit ban here; root-tangle predator; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_Diggerpede to the already-ported, already-wired RSW_ name (RUT_Greentide at 0.4)"
+      "law": "§4 no pursuit ban here; root-tangle predator; MIASMA_FEVERWOOD_GREENTIDE_BMT_1: renamed from BMT_Diggerpede to the already-ported, already-wired RSW_ name (RUT_Greentide at 0.4); Greentide sheet 2026-10-08 (owner): \"Rename the Gristle, make it realistic\" — renamed gristle, description rewritten in RSW_BiomesTeamPort_Races.xml, art regen queued",
+      "label": "gristle"
     },
     {
       "action": "adjust-keep",
@@ -433,7 +440,7 @@
       "from_sheet": "the_greentide §4",
       "kind": "creature",
       "mechanic_load": "none blocking (falls into water as flavor)",
-      "name": "canopy Swinger"
+      "name": "canopy Swinger — built as RM_CanopySwinger, label ookala (owner, Greentide sheet 2026-10-08)"
     }
   ],
   "notes": "Admission test (§4): grows or eats at Greentide speed, carries no truce, no Earth names. animalDensity 3.5 is doctrine — a BUSY roster is correct here; there is no pursuit ban and no sparseness law. Sorts staffed: Gnawers/Shatterers/Brakes/Lungers/Swingers/Fliers.",

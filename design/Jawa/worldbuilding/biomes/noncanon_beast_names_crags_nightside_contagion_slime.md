@@ -168,7 +168,7 @@ syllable for variety (rule 7).
 | `AA_OcularJelly` | ocular jelly | **the eyes** — drifts at canopy height watching the cloud; sinks seconds before a Burn (the player's tell) | ~~ozhilla~~ **zhool** | voohl | Gel-bodied, so the slime law takes it (rule 8): a single round drifting sound, *zh-* the hush, long *-ool* the slow hang in the rain. The tell the player learns to read is one soft note. |
 | `AA_InfectedAerofleet` | infected aerofleet | **the sower** — spore-loaded hydrogen float that rides the updraft and pops in sunlight | **blistered bulloo** | red bulloo | The base **aerofleet** (Forge, Grey Sea, Twilight Sea, Slime) becomes **bulloo** — a bounce of a word for a thing that bounces off everything — and the infected variant takes the canon variant shape (*jungle worrt*): plain modifier on the coined stem. Sibling rule: `AA_ColossalAerofleet` → **greater bulloo**. |
 | `AA_RedSpore` | red spore | **the leaker** — gallium-based, unstable, walks into the light and cooks; the rare survivor seeds a bloom | **vezzok** | skovva | The pop: *vezz-* a fizz building, *-ok* the burst. Not carbon-based, so it gets the valley's one hard *k* — it does not belong to the wet register and should not. |
-| `AA_BloodShrimp` | blood shrimp | **the drinker** — vampiric and fast; why visitors die at the red pools | **zhirrik** | sivvra | Small and fast in the shallows: *zh-* under the water, *-irr-* the dart, *-ik* the bite. "Shrimp" is the Earth animal, "blood" the English kenning. |
+| `AA_BloodShrimp` | blood shrimp | **the drinker** — vampiric and fast; why visitors die at the red pools | **zrrik** | sivvra | Owner renamed it zrrik (Greentide sheet 2026-10-08). Small and fast in the shallows: *-rr-* the dart, *-ik* the bite. "Shrimp" is the Earth animal, "blood" the English kenning. |
 | `AA_Helixien` | helixien | **the undertaker** — giant corrosive slug, bs 4 / spd 0.6 (also Slime, Poison Forest, Miasma, Scarlands — one name) | **bileworm** | ghessum | The slowest word in the set: *vull-* the wet bulk, *-oth* the corrosive exhale. Named here because the Contagion is where its job is written. |
 | `AA_Drainer` · `AA_DrainerLarva` | drainer · drainer larva | **the thieves** — cat-sized bright electrovore butterfly that taps the ocular trees; short larval stage | **fezzira** · **fezzira larva** | nixxa | A flicker with a static sting: *fezz-* the wingbeat and the crackle, *-ira* bright. The larva keeps the plain stage word (as *megaspider* / *megascarab* do), not a second stem. |
 | `AA_RoughPlatedMonitor` | rough-plated monitor | **the basker** — acid-immune, UV-armoured; comes OUT in the Burn; eggs that explode | **brossak** | ghorrix | Plate on plate: *br-* and *-ss-* the scrape of armour, *-ak* the snap. The predator of the window gets the hardest name in the valley after the leaker. |
@@ -182,7 +182,7 @@ syllable for variety (rule 7).
 owner ruling 2026-08-15 (⚠️ see flag 2 below: its DesertPort port `RSW_Stareling` carries a
 second ruled name, *oxxa*).
 
-Read aloud: ghaaz, zhool, bulloo, vezzok, zhirrik, bileworm, fezzira, brossak, skezzar,
+Read aloud: ghaaz, zhool, bulloo, vezzok, zrrik, bileworm, fezzira, brossak, skezzar,
 ghuvv, gollivra, pellorax, pibbo — 3 × one syllable, 7 × two, 3 × three.
 
 ---
@@ -482,7 +482,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `AA_Barbslinger` | barbslinger | the_pyrelands | Alpha Animals | NONCANON | regen:6 done:10 |  |
 | `AA_BedBug` | bedbug | poison_forest | Alpha Animals | NONCANON | donor art |  |
 | `AA_Behemoth` | Behemoth | abyss | Alpha Animals | NONCANON | donor art | DRAFTED HERE: ghorrumak |
-| `AA_BloodShrimp` | blood shrimp | the_contagion | Alpha Animals | NONCANON | donor art | DRAFTED HERE: zhirrik |
+| `AA_BloodShrimp` | blood shrimp | the_contagion | Alpha Animals | NONCANON | donor art | zrrik (owner, Greentide sheet 2026-10-08) |
 | `AA_BoulderMit` | bouldermit | dune_sea_deep_desert, nightside_ice | Alpha Animals | NONCANON | donor art | port-named: RSW_Korrum korrum |
 | `AA_Bumbledrone` | bumbledrone | the_sump | Alpha Animals | NONCANON | donor art |  |
 | `AA_BumbledroneHierophant` | bumbledrone hierophant | the_sump | Alpha Animals | NONCANON | donor art |  |
@@ -583,7 +583,7 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `RSW_Creature_Mantrap` | mantrap | the_cracked_lands | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
 | `RSW_CrestedDragon` | crested dragon | the_miasma | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
 | `RSW_CrystalFairyMole` | crystal fairy mole | the_scarlands | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
-| `RSW_Diggerpede` | diggerpede | the_greentide | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
+| `RSW_Diggerpede` | diggerpede | the_greentide | RimMandrake: SW — Bestiary | NONCANON | donor art | gristle (owner, Greentide sheet 2026-10-08) |
 | `RSW_FoundryBeetle` | foundry beetle | the_scarlands | RimMandrake: SW — Bestiary | NONCANON | donor art |  |
 | `RSW_Gembug` | gembug | the_lantern_deeps | RimMandrake: SW — Bestiary | NONCANON |  done:3 |  |
 | `RSW_ImperialToad` | imperial toad | arid_shrubland | RimMandrake: SW — Bestiary | NONCANON | donor art |  |

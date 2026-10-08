@@ -7,7 +7,7 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Dhollock</defName>
-    <label>dhollock</label>
+    <label>dhollollo</label>
     <description>A long, flat river ambusher, back mottled slate-blue and the eye-ridges ochre, mouth running nearly the width of its head. It sits inside deep water where nothing shows but the stillness, and the first anyone knows of it is the lunge. It takes what wades or drinks; it does not chase far, and the whole bank goes quiet when one is hunting.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
@@ -140,7 +140,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Dhollock</defName>
-    <label>dhollock</label>
+    <label>dhollollo</label>
     <race>RM_Dhollock</race>
     <combatPower>120</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>

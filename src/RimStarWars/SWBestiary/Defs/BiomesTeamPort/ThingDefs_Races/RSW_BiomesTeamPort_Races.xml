@@ -3383,8 +3383,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_Diggerpede</defName>
-    <label>diggerpede</label>
-    <description>The predatory diggerpede is found below the desert surface, burrowing in the sand and soil faster than most can run. It hunts anything it can lay its mandibles on when it hungers.\n\nDespite being similar to other arthropods, it gives live birth rather than lay eggs.</description>
+    <label>gristle</label>
+    <description>A long, flat-plated burrower the length of a man, every segment carrying a pair of short digging legs and the head armoured in a heavy, shovel-edged shield. A gristle travels under the soil faster than most things can run above it, and hunts by feel: it rises under whatever it hears walking, seizes it in hooked mandibles and drags it down. Its body is mostly tough, rubbery muscle over a chitin frame, which is how it got its name. Unlike most many-legged things it bears its young alive.</description>
     <statBases>
       <MoveSpeed>5.2</MoveSpeed>
       <MarketValue>350</MarketValue>
@@ -3483,14 +3483,14 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_Diggerpede</defName>
-    <label>diggerpede</label>
+    <label>gristle</label>
     <race>RSW_Diggerpede</race>
     <combatPower>300</combatPower>
     <ecoSystemWeight>1</ecoSystemWeight>
     <lifeStages>
       <li>
-        <label>Diggerpede spawn</label>
-        <labelPlural>Diggerpede spawn</labelPlural>
+        <label>gristle spawn</label>
+        <labelPlural>gristle spawn</labelPlural>
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede</texPath>
           <drawSize>0.55</drawSize>
