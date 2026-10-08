@@ -3864,3 +3864,8 @@
 {"seat":"FOUNDRY","event":"needs","id":"HUGETHINGS_TITANIC_CCTOR_THROWS_1","to":"deploy","ts":"2026-10-08T14:16:04Z","tsn":1791468964472431710}
 {"seat":"FOUNDRY","event":"close","id":"HELD_CLONE_WORK_TRIAGE_1","sha":"d8b371cae","ts":"2026-10-08T14:34:31Z","tsn":1791470071855981242}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-08T14:34:41Z","tsn":1791470081884112827}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY full belt: acceptance sitting resume","ts":"2026-10-08T14:55:12Z","tsn":1791471312573915150}
+{"seat":"FOUNDRY","event":"lease","id":"WATCHER_CREATURES_MOD_1","action":"take","token":"FOUNDRY.pid13243.8e0d3c3f","expires":"2026-10-08T15:40:13Z","ts":"2026-10-08T14:55:13Z","tsn":1791471313572303820}
+{"seat":"FOUNDRY","event":"lease","id":"HUGETHINGS_TITANIC_CCTOR_THROWS_1","action":"take","token":"FOUNDRY.pid13247.c0d026af","expires":"2026-10-08T15:40:33Z","ts":"2026-10-08T14:55:33Z","tsn":1791471333429345415}
+{"seat":"FOUNDRY","event":"claim","id":"HUGETHINGS_TITANIC_CCTOR_THROWS_1","ts":"2026-10-08T14:55:33Z","tsn":1791471333627624108}
+{"seat":"FOUNDRY","event":"start","id":"HUGETHINGS_TITANIC_CCTOR_THROWS_1","ts":"2026-10-08T14:55:33Z","tsn":1791471333824454912}
