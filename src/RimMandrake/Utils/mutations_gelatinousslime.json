@@ -1,0 +1,206 @@
+[
+ {
+  "name": "a dose can LOWER severity (the pre-fix cap)",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "return Math.Max(severity, raised);",
+  "new": "return raised;"
+ },
+ {
+  "name": "fast clock stops the drying-biome leach",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "if (dryingBiome) return -Math.Abs(decayPerDay);",
+  "new": "if (dryingBiome && !fastClock) return -Math.Abs(decayPerDay);"
+ },
+ {
+  "name": "stage 1 keeps wiping off up to 0.3",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "public const float SelfRevertCeiling = 0.2f;",
+  "new": "public const float SelfRevertCeiling = 0.3f;"
+ },
+ {
+  "name": "no dissolution at severity 1.0",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "dissolve = severity >= MaxSeverity;",
+  "new": "dissolve = severity > MaxSeverity;"
+ },
+ {
+  "name": "hostile states end only from 0.6",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "HalfAbsorbedAt = 0.5f",
+  "new": "HalfAbsorbedAt = 0.6f"
+ },
+ {
+  "name": "the announce latch never advances",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "highestAnnounced = stage;\n            announceStage = stage;",
+  "new": "announceStage = stage;"
+ },
+ {
+  "name": "a non-player pawn announces",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "if (!announceable) return;\n",
+  "new": "\n"
+ },
+ {
+  "name": "stage 4 starts at 0.95",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "ReturningAt = 0.9f;",
+  "new": "ReturningAt = 0.95f;"
+ },
+ {
+  "name": "antidote still works at 1.0",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "return hasHediff && severity < MaxSeverity;",
+  "new": "return hasHediff && severity <= MaxSeverity;"
+ },
+ {
+  "name": "non-flesh is not resistant",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "if (!isFlesh) return true;\n",
+  "new": ""
+ },
+ {
+  "name": "drench lowers a worse case to 0.55",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "return severity < DrenchSeverity ? DrenchSeverity : severity;",
+  "new": "return DrenchSeverity;"
+ },
+ {
+  "name": "release penalty passes 1.0",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "return Math.Min(1f, severity + 0.15f);",
+  "new": "return severity + 0.15f;"
+ },
+ {
+  "name": "a Reek rider marks three times",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "float inc = reekRider ? 2f : 1f;",
+  "new": "float inc = reekRider ? 3f : 1f;"
+ },
+ {
+  "name": "harmless hediffs count as poison by name",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "if (!isBad) return false;\n",
+  "new": ""
+ },
+ {
+  "name": "the injected clock ignores the days setting",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "return grows ? GrowthPerDayFastClock * clock : -SelfRevertPerDay;",
+  "new": "return grows ? GrowthPerDayFastClock : -SelfRevertPerDay;"
+ },
+ {
+  "name": "dissolution yield cap 150",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs",
+  "old": "(n > 120 ? 120 : n)",
+  "new": "(n > 150 ? 150 : n)"
+ },
+ {
+  "name": "no hysteresis on the way down",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "mass < up[stage - 1] - hysteresis",
+  "new": "mass < up[stage - 1]"
+ },
+ {
+  "name": "growth is reversible regardless of the setting",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "if (delta < 0f && !reversible) return false;\n",
+  "new": ""
+ },
+ {
+  "name": "settings ceiling ignored",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "return Math.Min(declaredThresholds, fromSettings);",
+  "new": "return Math.Max(declaredThresholds, fromSettings);"
+ },
+ {
+  "name": "a letter for stage 0",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "target > highestAnnounced && target > 0 && spawned",
+  "new": "target > highestAnnounced && target >= 0 && spawned"
+ },
+ {
+  "name": "capacity can be 0",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "return Math.Max(1, (int)Math.Floor(bodySize / bodySizePerHeldThing));",
+  "new": "return Math.Max(0, (int)Math.Floor(bodySize / bodySizePerHeldThing));"
+ },
+ {
+  "name": "prey exactly half size is refused",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "if (preyBody > selfBody * preyFraction) return false;",
+  "new": "if (preyBody >= selfBody * preyFraction) return false;"
+ },
+ {
+  "name": "digestion can take under a second",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "return Math.Max(60, (int)Math.Ceiling(seconds * 60f));",
+  "new": "return Math.Max(0, (int)Math.Ceiling(seconds * 60f));"
+ },
+ {
+  "name": "dry loss starts at once",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "if (ticksOffSlime >= 60000) loss",
+  "new": "if (ticksOffSlime > 0) loss"
+ },
+ {
+  "name": "burst-out chance cap 20%",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "0f, 0.10f);",
+  "new": "0f, 0.20f);"
+ },
+ {
+  "name": "a stage-0 titan sheds",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "if (stage < 1) return false;\n",
+  "new": ""
+ },
+ {
+  "name": "starting mass can pick a zero-weight entry (pre-fix)",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+  "old": "                if (weights[i] <= 0f) continue;\n                last = i;",
+  "new": "                last = i;"
+ },
+ {
+  "name": "rainfall upper bound inclusive",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeWorld.cs",
+  "old": "rainfall >= rMax",
+  "new": "rainfall > rMax"
+ },
+ {
+  "name": "farm conversion can try zero cells",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeWorld.cs",
+  "old": "return attempts < 1 ? 1 : attempts;",
+  "new": "return attempts;"
+ },
+ {
+  "name": "chunk expires one tick late",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeWorld.cs",
+  "old": "return now - born >= shelf;",
+  "new": "return now - born > shelf;"
+ },
+ {
+  "name": "archive vat takes from forbidden stacks",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeWorld.cs",
+  "old": "                if (forbidden[i]) continue;\n",
+  "new": ""
+ },
+ {
+  "name": "burst converts water",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeWorld.cs",
+  "old": "natural && !water && !alreadySlime",
+  "new": "natural && !alreadySlime"
+ },
+ {
+  "name": "shelf days floor removed",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeWorld.cs",
+  "old": "Math.Max(0.1f, shelfDays)",
+  "new": "shelfDays"
+ },
+ {
+  "name": "dead colonists are filed",
+  "file": "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeWorld.cs",
+  "old": "return exists && !dead && humanlike",
+  "new": "return exists && humanlike"
+ }
+]

@@ -35,7 +35,7 @@ namespace RimMandrake.LuminousPigment
         // exceed it": MaxCoats (3) is the architecture ceiling (CoatRadius/
         // CoatIntensity are sized for it); LuminousPigmentSettings.maxCoats
         // is a runtime cap that can only ever lower it, never raise it.
-        public bool CanAddCoat => coats < Mathf.Min(MaxCoats, LuminousPigmentSettings.maxCoats);
+        public bool CanAddCoat => RM_DeepfireRules.CanAddCoat(coats, MaxCoats, LuminousPigmentSettings.maxCoats);
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -102,7 +102,7 @@ namespace RimMandrake.LuminousPigment
         {
             if (!CanAddCoat) return;
 
-            bool firstCoat = coats == 0 && !bonusApplied;
+            bool firstCoat = RM_DeepfireRules.IsFirstCoat(coats, bonusApplied);
 
             // DEEPFIRE_FIRSTCOAT_BONUS_1, spec §3.5: "Stacks split before the
             // bump (AllowStackWith needs equal quality)." The quality bump

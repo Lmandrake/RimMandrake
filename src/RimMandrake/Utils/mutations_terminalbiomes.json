@@ -1,0 +1,224 @@
+[
+ {
+  "name": "a pending re-opening with no site is forgotten (the pre-fix behaviour)",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "if (!findSite(out int x, out int z)) continue;\n                OpenNew(x, z);\n                Pending.RemoveAt(i);",
+  "new": "if (findSite(out int x, out int z)) OpenNew(x, z);\n                Pending.RemoveAt(i);"
+ },
+ {
+  "name": "opening lasts one tick too long",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "if (ageTicks < OpeningTicks) return WellStage.Opening;",
+  "new": "if (ageTicks <= OpeningTicks) return WellStage.Opening;"
+ },
+ {
+  "name": "waning starts one tick late",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "if (remaining <= WaningTicks) return WellStage.Waning;",
+  "new": "if (remaining < WaningTicks) return WellStage.Waning;"
+ },
+ {
+  "name": "a closed well schedules no replacement",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "                Pending.Add(now + randBelow(RM_WellKernel.TicksPerDay));\n",
+  "new": ""
+ },
+ {
+  "name": "the closing warning repeats every tick",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "if (before != WellStage.Waning && well.stage == WellStage.Waning)",
+  "new": "if (well.stage == WellStage.Waning)"
+ },
+ {
+  "name": "the gardener closes the well furthest from its end",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "candidate == null || w.TicksRemaining < candidate.TicksRemaining",
+  "new": "candidate == null || w.TicksRemaining > candidate.TicksRemaining"
+ },
+ {
+  "name": "seven wells on a large map",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "Math.Min(6, Math.Max(3, 3 + mapSizeX / 125))",
+  "new": "Math.Min(7, Math.Max(3, 3 + mapSizeX / 125))"
+ },
+ {
+  "name": "the normal cadence doubles lifespans",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "(cadenceSetting == 2 ? 2 : 1)",
+  "new": "(cadenceSetting >= 1 ? 2 : 1)"
+ },
+ {
+  "name": "starting wells can start already waning",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "w.ageTicks = randBelow(w.lifespanTicks - RM_WellKernel.WaningTicks);",
+  "new": "w.ageTicks = randBelow(w.lifespanTicks);"
+ },
+ {
+  "name": "the opening ramp takes a whole day",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "float f = (float)ageTicks / OpeningTicks;",
+  "new": "float f = (float)ageTicks / TicksPerDay;"
+ },
+ {
+  "name": "waning step clamps at 2",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "return s < 0 ? 0 : (s > 3 ? 3 : s);",
+  "new": "return s < 0 ? 0 : (s > 2 ? 2 : s);"
+ },
+ {
+  "name": "lid-dark ages by up to half a day",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_WellKernel.cs",
+  "old": "randBelow(RM_WellKernel.TicksPerDay / 4)",
+  "new": "randBelow(RM_WellKernel.TicksPerDay / 2)"
+ },
+ {
+  "name": "the sphere never reaches mature",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_SunSphereKernel.cs",
+  "old": "if (cultureTicks >= CultureTicksToMature)",
+  "new": "if (cultureTicks > CultureTicksToMature)"
+ },
+ {
+  "name": "feeding does not reset hunger",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_SunSphereKernel.cs",
+  "old": "                starvedTicks = 0;\n                cultureTicks += delta;",
+  "new": "                cultureTicks += delta;"
+ },
+ {
+  "name": "grace boundary is exclusive",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_SunSphereKernel.cs",
+  "old": "if (graceTicks > 0 && starvedTicks >= graceTicks)",
+  "new": "if (graceTicks > 0 && starvedTicks > graceTicks)"
+ },
+ {
+  "name": "the seed is never consumed",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_SunSphereKernel.cs",
+  "old": "                starvedTicks = 0;\n                return true;",
+  "new": "                starvedTicks = 0;\n                return false;"
+ },
+ {
+  "name": "a float harness does not cap the centre lane",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_ChannelKernel.cs",
+  "old": "bool centre = lane == 2 && !harnessCapped;",
+  "new": "bool centre = lane == 2;"
+ },
+ {
+  "name": "a surge does not promote the margin",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_ChannelKernel.cs",
+  "old": "if (surge && lane == 1 && !harnessCapped) centre = true;\n",
+  "new": ""
+ },
+ {
+  "name": "items drift as fast as pawns",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_ChannelKernel.cs",
+  "old": "if (!isPawn) cadence *= 2;\n",
+  "new": ""
+ },
+ {
+  "name": "a surge makes any banded cell a current",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_ChannelKernel.cs",
+  "old": "return Surge && Band[i] > 0 && Flow[i] != 0;",
+  "new": "return Surge && Band[i] > 0;"
+ },
+ {
+  "name": "a step can enter an unstandable cell",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_ChannelKernel.cs",
+  "old": "if (!f.InBounds(nx, nz) || !standable(nx, nz)) return ChannelStep.Stop;",
+  "new": "if (!f.InBounds(nx, nz)) return ChannelStep.Stop;"
+ },
+ {
+  "name": "the grab throws three cells",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_ChannelKernel.cs",
+  "old": "tx = x + 2 * dx; tz = z + 2 * dz;",
+  "new": "tx = x + 3 * dx; tz = z + 2 * dz;"
+ },
+ {
+  "name": "the bank band is not clamped",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_ChannelKernel.cs",
+  "old": "Band[i] = (byte)(band < 0 ? 0 : (band > 2 ? 2 : band));",
+  "new": "Band[i] = (byte)band;"
+ },
+ {
+  "name": "a wrong-size saved flow grid is kept",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_ChannelKernel.cs",
+  "old": "Flow = flow != null && flow.Length == n ? flow : new byte[n];",
+  "new": "Flow = flow ?? new byte[n];"
+ },
+ {
+  "name": "a big step salts only one door",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_CrustKernel.cs",
+  "old": "while (crustDays >= nextDoorAt)",
+  "new": "if (crustDays >= nextDoorAt)"
+ },
+ {
+  "name": "crust starts at 20% chance",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_CrustKernel.cs",
+  "old": "return 0.1f + 0.9f * ramp;",
+  "new": "return 0.2f + 0.8f * ramp;"
+ },
+ {
+  "name": "the door threshold rewinds below its first day",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_CrustKernel.cs",
+  "old": "nextDoorAt = Math.Max(FirstDoorDays, nextDoorAt - ChipRewindDays);",
+  "new": "nextDoorAt = nextDoorAt - ChipRewindDays;"
+ },
+ {
+  "name": "rime without a rime def",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_CrustKernel.cs",
+  "old": "rime = crustDays >= RimeDays && rimeDefExists && chance(0.5f);",
+  "new": "rime = crustDays >= RimeDays && chance(0.5f);"
+ },
+ {
+  "name": "crust cap can be zero",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_CrustKernel.cs",
+  "old": "return Math.Max(1, hullCells / 3);",
+  "new": "return hullCells / 3;"
+ },
+ {
+  "name": "the watcher comes at 60% of the clock",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_LampWatchKernel.cs",
+  "old": "if (f >= 0.5f && watcherOn) watch(id);",
+  "new": "if (f >= 0.6f && watcherOn) watch(id);"
+ },
+ {
+  "name": "the scrape sign repeats every pass",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_LampWatchKernel.cs",
+  "old": "f >= 0.75f && watcherOn && Scraped.Add(id)",
+  "new": "f >= 0.75f && watcherOn && (Scraped.Add(id) || true)"
+ },
+ {
+  "name": "a failed answer is never retried",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_LampWatchKernel.cs",
+  "old": "if (f >= 1f && giantOn && !Answered.Contains(id) && answer(id)) Answered.Add(id);",
+  "new": "if (f >= 1f && giantOn && !Answered.Contains(id)) { answer(id); Answered.Add(id); }"
+ },
+ {
+  "name": "a dark lamp keeps its latches",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_LampWatchKernel.cs",
+  "old": "foreach (int id in gone) { Lit.Remove(id); Watched.Remove(id); Scraped.Remove(id); Answered.Remove(id); }",
+  "new": "foreach (int id in gone) { Lit.Remove(id); }"
+ },
+ {
+  "name": "the scar lands one hair too early",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_TerminalMiscKernel.cs",
+  "old": "severity <= 0.05f; }",
+  "new": "severity < 0.05f; }"
+ },
+ {
+  "name": "a wax carrier drops sheets while walking",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_TerminalMiscKernel.cs",
+  "old": "            if (moving) return false;\n            ticksLeft = period;",
+  "new": "            ticksLeft = period;"
+ },
+ {
+  "name": "the veil timers do not re-arm",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_TerminalMiscKernel.cs",
+  "old": "if (now >= nextShed) { nextShed = now + interval; shed = true; }",
+  "new": "if (now >= nextShed) { nextShed = now; shed = true; }"
+ },
+ {
+  "name": "sunk severity falls when unrescued",
+  "file": "src/RimMandrake/TerminalBiomes/Source/Kernel/RM_TerminalMiscKernel.cs",
+  "old": "return (rescued ? perDayRescued : perDayUnrescued) / ticksPerDay * interval;",
+  "new": "return (rescued ? perDayUnrescued : perDayRescued) / ticksPerDay * interval;"
+ }
+]

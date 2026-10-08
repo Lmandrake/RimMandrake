@@ -212,9 +212,7 @@ namespace RimMandrake.GelatinousSlime
         {
             get
             {
-                int declared = Props.stageThresholds.Count; // last index
-                int fromSettings = Mathf.Clamp(SlimeSettings.titanoslimeMaxStage, 1, declared + 1) - 1;
-                return Mathf.Min(declared, fromSettings);
+                return RM_TitanKernel.MaxStageIndex(Props.stageThresholds.Count, SlimeSettings.titanoslimeMaxStage);
             }
         }
 
@@ -222,17 +220,7 @@ namespace RimMandrake.GelatinousSlime
         /// current one so the hysteresis band has something to hold onto.</summary>
         private int StageFor(float mass, int current)
         {
-            List<float> up = Props.stageThresholds;
-            int stage = Mathf.Clamp(current, 0, up.Count);
-            while (stage < MaxStageIndex && mass >= up[stage])
-            {
-                stage++;
-            }
-            while (stage > 0 && mass < up[stage - 1] - Props.stageHysteresis)
-            {
-                stage--;
-            }
-            return Mathf.Min(stage, MaxStageIndex);
+            return RM_TitanKernel.StageFor(mass, current, Props.stageThresholds, Props.stageHysteresis, MaxStageIndex);
         }
 
         /// <summary>The one place the life stage is written. Everything that
@@ -259,9 +247,8 @@ namespace RimMandrake.GelatinousSlime
                 self.ageTracker.LockCurrentLifeStageIndex(target);
             }
 
-            if (announce && target > highestStageAnnounced && target > 0 && self.Spawned)
+            if (RM_TitanKernel.Announce(target, ref highestStageAnnounced, self.Spawned, announce))
             {
-                highestStageAnnounced = target;
                 string label = self.ageTracker.CurLifeStage != null
                     ? self.ageTracker.CurLifeStage.label
                     : "titanoslime";
@@ -280,24 +267,15 @@ namespace RimMandrake.GelatinousSlime
                                      self, MessageTypeDefOf.ThreatSmall, false);
                 }
             }
-            if (target < highestStageAnnounced)
-            {
-                highestStageAnnounced = target;
-            }
         }
 
         /// <summary>Called by every growth source. Respects the growth toggle.</summary>
         private void AddMass(float delta)
         {
-            if (!SlimeSettings.titanoslimeGrows)
+            if (!RM_TitanKernel.TryAddMass(ref absorbedMass, delta, SlimeSettings.titanoslimeGrows, SlimeSettings.titanoslimeReversible, Props.massCap))
             {
                 return;
             }
-            if (delta < 0f && !SlimeSettings.titanoslimeReversible)
-            {
-                return;
-            }
-            absorbedMass = Mathf.Clamp(absorbedMass + delta, 0f, Props.massCap);
             ApplyStage(delta > 0f);
         }
 
@@ -332,31 +310,7 @@ namespace RimMandrake.GelatinousSlime
 
         private float RollStartingMass()
         {
-            List<float> w = Props.spawnMassWeights;
-            List<float> v = Props.spawnMassValues;
-            if (w == null || v == null || w.Count == 0 || w.Count != v.Count)
-            {
-                return 0f;
-            }
-            float total = 0f;
-            for (int i = 0; i < w.Count; i++)
-            {
-                total += w[i];
-            }
-            if (total <= 0f)
-            {
-                return 0f;
-            }
-            float roll = Rand.Value * total;
-            for (int i = 0; i < w.Count; i++)
-            {
-                roll -= w[i];
-                if (roll <= 0f)
-                {
-                    return v[i];
-                }
-            }
-            return v[v.Count - 1];
+            return RM_TitanKernel.RollMass(Props.spawnMassWeights, Props.spawnMassValues, Rand.Value);
         }
 
         public override void PostExposeData()
@@ -404,48 +358,18 @@ namespace RimMandrake.GelatinousSlime
                 {
                     return 1;
                 }
-                return Mathf.Max(1, Mathf.FloorToInt(self.BodySize / Props.bodySizePerHeldThing));
+                return RM_TitanKernel.Capacity(self.BodySize, Props.bodySizePerHeldThing);
             }
         }
 
         public bool CanEngulf(Pawn p)
         {
-            if (!SlimeSettings.titanoslimeEngulfs)
-            {
-                return false;
-            }
             Pawn self = Pawn;
-            if (self == null || p == null || p == self || !self.Spawned || self.Dead || self.Downed)
-            {
-                return false;
-            }
-            if (!p.Spawned || p.Dead)
-            {
-                return false;
-            }
-            // Mechanoids are slammed, never swallowed — nothing to read.
-            if (p.RaceProps == null || !p.RaceProps.IsFlesh)
-            {
-                return false;
-            }
-            if (p.BodySize > self.BodySize * Props.preyBodySizeFraction)
-            {
-                return false;
-            }
-            if (innerContainer.Count >= Capacity)
-            {
-                return false;
-            }
-            if (p.ParentHolder is RM_CompEngulfer)
-            {
-                return false;
-            }
-            // A colossus may absorb a young one; equals cannot eat each other.
-            if (p.def == self.def && p.BodySize >= self.BodySize)
-            {
-                return false;
-            }
-            return true;
+            if (self == null || p == null) return false;
+            return RM_TitanKernel.CanEngulf(SlimeSettings.titanoslimeEngulfs, self.Spawned, self.Dead, self.Downed, p.Spawned, p.Dead,
+                p.RaceProps != null && p.RaceProps.IsFlesh,   // mechanoids are slammed, never swallowed
+                p == self, p.BodySize, self.BodySize, Props.preyBodySizeFraction, innerContainer.Count, Capacity,
+                p.ParentHolder is RM_CompEngulfer, p.def == self.def);
         }
 
         public void Engulf(Pawn p)
@@ -467,7 +391,7 @@ namespace RimMandrake.GelatinousSlime
             }
 
             bool wasDrafted = p.drafter != null && p.drafter.Drafted;
-            int digest = Mathf.CeilToInt(Props.bodySizeDigestTimeCurve.Evaluate(p.BodySize) * 60f);
+            int digest = RM_TitanKernel.DigestTicks(Props.bodySizeDigestTimeCurve.Evaluate(p.BodySize));
 
             p.DeSpawn();
             if (!innerContainer.TryAdd(p))
@@ -482,7 +406,7 @@ namespace RimMandrake.GelatinousSlime
 
             heldIds.Add(p.thingIDNumber);
             heldTicks.Add(0);
-            heldDigestTicks.Add(Mathf.Max(60, digest));
+            heldDigestTicks.Add(digest);
             heldWasDrafted.Add(wasDrafted);
 
             if (self.needs != null && self.needs.food != null)
@@ -599,26 +523,9 @@ namespace RimMandrake.GelatinousSlime
                 return;
             }
 
-            if (OnSlime(self))
-            {
-                ticksOffSlime = 0;
-            }
-            else
-            {
-                ticksOffSlime += DecayInterval;
-            }
-
-            float perInterval = (float)DecayInterval / 60000f;
-            float loss = 0f;
-            if (self.needs != null && self.needs.food != null
-                && self.needs.food.CurCategory == HungerCategory.Starving)
-            {
-                loss += Props.massLostPerDayStarving * perInterval;
-            }
-            if (ticksOffSlime >= 60000)
-            {
-                loss += Props.massLostPerDayDry * perInterval;
-            }
+            float loss = RM_TitanKernel.DecayLoss(ref ticksOffSlime, OnSlime(self), DecayInterval,
+                self.needs != null && self.needs.food != null && self.needs.food.CurCategory == HungerCategory.Starving,
+                Props.massLostPerDayStarving, Props.massLostPerDayDry);
             if (loss > 0f)
             {
                 AddMass(-loss);
@@ -680,8 +587,7 @@ namespace RimMandrake.GelatinousSlime
                     // Came back from a save without its clock; give it one.
                     heldIds.Add(held.thingIDNumber);
                     heldTicks.Add(0);
-                    heldDigestTicks.Add(Mathf.Max(60,
-                        Mathf.CeilToInt(Props.bodySizeDigestTimeCurve.Evaluate(held.BodySize) * 60f)));
+                    heldDigestTicks.Add(RM_TitanKernel.DigestTicks(Props.bodySizeDigestTimeCurve.Evaluate(held.BodySize)));
                     heldWasDrafted.Add(false);
                     idx = heldIds.Count - 1;
                 }
@@ -723,20 +629,9 @@ namespace RimMandrake.GelatinousSlime
 
         private void Struggle(Pawn self, Pawn held)
         {
-            float amount;
-            if (held.RaceProps != null && held.RaceProps.Humanlike)
-            {
-                int melee = 0;
-                if (held.skills != null)
-                {
-                    melee = held.skills.GetSkill(SkillDefOf.Melee).Level;
-                }
-                amount = 2f + melee / 4f;
-            }
-            else
-            {
-                amount = 2f * held.BodySize;
-            }
+            bool humanlike = held.RaceProps != null && held.RaceProps.Humanlike;
+            int melee = humanlike && held.skills != null ? held.skills.GetSkill(SkillDefOf.Melee).Level : 0;
+            float amount = RM_TitanKernel.StruggleDamage(humanlike, melee, held.BodySize);
             BodyPartRecord core = self.RaceProps != null && self.RaceProps.body != null
                 ? self.RaceProps.body.corePart
                 : null;
@@ -745,9 +640,7 @@ namespace RimMandrake.GelatinousSlime
 
         private bool TryBurstOut(Pawn self, Pawn held, int idx)
         {
-            float chance = Mathf.Clamp((held.BodySize / Mathf.Max(0.01f, self.BodySize) - 0.15f) * 0.25f,
-                                       0f, 0.10f);
-            if (!Rand.Chance(chance))
+            if (!Rand.Chance(RM_TitanKernel.BurstChance(held.BodySize, self.BodySize)))
             {
                 return false;
             }
@@ -835,7 +728,7 @@ namespace RimMandrake.GelatinousSlime
                 Hediff h = freed.health.hediffSet.GetFirstHediffOfDef(SlimeDefs.Slimification);
                 if (h != null)
                 {
-                    h.Severity = Mathf.Min(1f, h.Severity + 0.15f);
+                    h.Severity = RM_SlimeLadder.ReleasePenalty(h.Severity);
                 }
             }
 
@@ -969,17 +862,8 @@ namespace RimMandrake.GelatinousSlime
             }
 
             float maxHp = self.health != null ? self.health.summaryHealth.SummaryHealthPercent : 1f;
-            float hpPool = self.RaceProps != null ? self.RaceProps.baseHealthScale * 40f : 40f;
-            damageSinceShed += totalDamageDealt;
-            float perShed = Mathf.Max(1f, hpPool * Props.shedDamageFraction);
-            if (damageSinceShed < perShed)
-            {
-                return;
-            }
-            damageSinceShed = 0f;
-
-            // Don't spawn clutter on the drop: the fight is nearly won.
-            if (innerContainer.Count > 0 && maxHp < 0.25f)
+            if (!RM_TitanKernel.ShedStep(ref damageSinceShed, totalDamageDealt, self.RaceProps != null ? self.RaceProps.baseHealthScale : 1f,
+                    Props.shedDamageFraction, innerContainer.Count, maxHp, self.ageTracker.CurLifeStageIndex, true))
             {
                 return;
             }

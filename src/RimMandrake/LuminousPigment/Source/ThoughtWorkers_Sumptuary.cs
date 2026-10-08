@@ -20,10 +20,8 @@ namespace RimMandrake.LuminousPigment
             if (titled != RequireTitled) return ThoughtState.Inactive;
             if (!RequireTitled && !SumptuaryUtility.RanklessColonyThoughtAllowed()) return ThoughtState.Inactive;
 
-            int score = SumptuaryUtility.DisplayScoreFor(p);
-            if (score <= 0) return ThoughtState.Inactive;
-            int stage = score >= 5 ? 2 : (score >= 3 ? 1 : 0);
-            return ThoughtState.ActiveAtStage(stage);
+            int stage = RM_DeepfireRules.ScoreStage(SumptuaryUtility.DisplayScoreFor(p));
+            return stage < 0 ? ThoughtState.Inactive : ThoughtState.ActiveAtStage(stage);
         }
     }
 
@@ -67,9 +65,8 @@ namespace RimMandrake.LuminousPigment
             if (!LuminousPigmentSettings.statusEnabled) return ThoughtState.Inactive;
             if (!SumptuaryUtility.IsTitled(p)) return ThoughtState.Inactive;
             int score = BestOwnRoomScore(p);
-            if (score >= DeepfireStatusDefaults.BedroomScoreHigh) return ThoughtState.ActiveAtStage(1);
-            if (score >= DeepfireStatusDefaults.BedroomScoreLow) return ThoughtState.ActiveAtStage(0);
-            return ThoughtState.Inactive;
+            int stage = RM_DeepfireRules.BedroomStage(true, true, score, DeepfireStatusDefaults.BedroomScoreLow, DeepfireStatusDefaults.BedroomScoreHigh);
+            return stage < 0 ? ThoughtState.Inactive : ThoughtState.ActiveAtStage(stage);
         }
 
         public static int BestOwnRoomScore(Pawn p)

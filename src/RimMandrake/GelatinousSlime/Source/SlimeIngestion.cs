@@ -24,9 +24,6 @@ namespace RimMandrake.GelatinousSlime
     // ════════════════════════════════════════════════════════════════════
     public class IngestionOutcomeDoer_SlimeDose : IngestionOutcomeDoer
     {
-        // [INVENTED] Severity added per ingestion. Roughly: eating enough raw
-        // slime to cure yourself puts you a day or so up the ladder.
-        private const float SeverityPerDose = 0.06f;
 
         protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
         {
@@ -51,7 +48,7 @@ namespace RimMandrake.GelatinousSlime
                 }
                 if (slim != null)
                 {
-                    slim.Severity = Mathf.Min(0.99f, slim.Severity + SeverityPerDose * Mathf.Max(1, ingestedCount));
+                    slim.Severity = RM_SlimeLadder.DoseSeverity(slim.Severity, ingestedCount);
                 }
             }
             catch (Exception e)
@@ -88,29 +85,11 @@ namespace RimMandrake.GelatinousSlime
 
         private static bool IsPoisonLike(Hediff h)
         {
-            if (h is Hediff_Injury || h is Hediff_MissingPart || h is Hediff_Addiction)
-            {
-                return false;
-            }
             HediffDef def = h.def;
-            if (!def.isBad)
-            {
-                return false;
-            }
             // The vanilla toxic family, by def and by the chemical/toxin
             // markers rather than a name list.
-            if (def == HediffDefOf.ToxicBuildup || def == HediffDefOf.FoodPoisoning)
-            {
-                return true;
-            }
-            if (def.defName.IndexOf("Toxic", StringComparison.OrdinalIgnoreCase) >= 0
-                || def.defName.IndexOf("Poison", StringComparison.OrdinalIgnoreCase) >= 0
-                || def.defName.IndexOf("Venom", StringComparison.OrdinalIgnoreCase) >= 0
-                || def.defName.IndexOf("Radiation", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                return true;
-            }
-            return false;
+            return RM_SlimeLadder.IsPoisonLike(h is Hediff_Injury || h is Hediff_MissingPart || h is Hediff_Addiction, def.isBad,
+                def == HediffDefOf.ToxicBuildup || def == HediffDefOf.FoodPoisoning, def.defName);
         }
     }
 
@@ -144,7 +123,7 @@ namespace RimMandrake.GelatinousSlime
                 if (SlimeDefs.Slimification != null)
                 {
                     Hediff slim = patient.health.hediffSet.GetFirstHediffOfDef(SlimeDefs.Slimification);
-                    if (slim != null && slim.Severity < 1f)
+                    if (RM_SlimeLadder.AntidoteCures(slim != null, slim != null ? slim.Severity : 0f))
                     {
                         patient.health.RemoveHediff(slim);
                         cured = true;

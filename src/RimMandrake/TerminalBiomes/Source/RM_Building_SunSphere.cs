@@ -12,14 +12,6 @@ namespace RimMandrake.TerminalBiomes
     // CompRefuelable gates growth; a second CompRefuelable is the ongoing
     // feed) — same two-comp shape, no plant grower here since the sphere
     // itself is the organism, not a bed for one.
-    public enum RM_SunSphereStage
-    {
-        Husk, // starved past grace; dark; needs reseeding
-        Seeded, // has a seed, not yet culturing
-        Culturing,
-        Mature,
-    }
-
     public class RM_Building_SunSphere : Building
     {
         private CompRefuelable seedComp; // one wild seed (RM_PalluCatch or RM_LampBladder) — consumed once
@@ -30,8 +22,6 @@ namespace RimMandrake.TerminalBiomes
         private int cultureTicks;
         private int starvedTicks;
 
-        private const int CultureTicksToMature = 6 * 60000; // a week-ish culture, "you watch your light grow, over days"
-        private const float MatureRadius = 6f; // "sun-strength, radius ~6" (§3.1)
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -97,45 +87,10 @@ namespace RimMandrake.TerminalBiomes
                 return;
             }
 
-            if (stage == RM_SunSphereStage.Husk)
-            {
-                if (seedComp.HasFuel)
-                {
-                    stage = RM_SunSphereStage.Seeded;
-                    cultureTicks = 0;
-                    starvedTicks = 0;
-                    seedComp.ConsumeFuel(seedComp.Fuel); // the wild seed is consumed once, on planting
-                }
-                RecomputeVisual();
-                return;
-            }
-
-            bool fed = foodComp.HasFuel;
             int graceTicks = Mathf.RoundToInt(RM_TerminalBiomesSettings.twilightSunSphereGraceDays * 60000f);
-            if (fed)
+            if (RM_SunSphereKernel.Step(ref stage, ref cultureTicks, ref starvedTicks, seedComp.HasFuel, foodComp.HasFuel, graceTicks, delta))
             {
-                starvedTicks = 0;
-                cultureTicks += delta;
-                if (stage == RM_SunSphereStage.Seeded && cultureTicks > 0)
-                {
-                    stage = RM_SunSphereStage.Culturing;
-                }
-                if (cultureTicks >= CultureTicksToMature)
-                {
-                    cultureTicks = CultureTicksToMature;
-                    stage = RM_SunSphereStage.Mature;
-                }
-            }
-            else
-            {
-                starvedTicks += delta;
-                if (graceTicks > 0 && starvedTicks >= graceTicks)
-                {
-                    // Dims to a seedable husk — NEVER explodes (RULED).
-                    stage = RM_SunSphereStage.Husk;
-                    cultureTicks = 0;
-                    starvedTicks = 0;
-                }
+                seedComp.ConsumeFuel(seedComp.Fuel); // the wild seed is consumed once, on planting
             }
             RecomputeVisual();
         }
@@ -146,24 +101,8 @@ namespace RimMandrake.TerminalBiomes
             {
                 return;
             }
-            float factor;
-            switch (stage)
-            {
-                case RM_SunSphereStage.Husk:
-                    factor = 0f;
-                    break;
-                case RM_SunSphereStage.Seeded:
-                    factor = 0.1f; // "seeded dark"
-                    break;
-                case RM_SunSphereStage.Culturing:
-                    factor = Mathf.Lerp(0.15f, 0.7f, Mathf.Clamp01((float)cultureTicks / CultureTicksToMature)); // "culturing dim"
-                    break;
-                case RM_SunSphereStage.Mature:
-                default:
-                    factor = 1f; // "mature sun"
-                    break;
-            }
-            float newRadius = Mathf.Max(0.05f, MatureRadius * factor);
+            float factor = RM_SunSphereKernel.Factor(stage, cultureTicks);
+            float newRadius = RM_SunSphereKernel.Radius(factor);
             if (!Mathf.Approximately(newRadius, glowerComp.GlowRadius))
             {
                 glowerComp.GlowRadius = newRadius;

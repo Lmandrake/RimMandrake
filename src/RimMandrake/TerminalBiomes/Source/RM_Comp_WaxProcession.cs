@@ -33,12 +33,8 @@ namespace RimMandrake.TerminalBiomes
             if (pawn == null || !pawn.Spawned || pawn.Dead || pawn.MapHeld == null) return;
             if (!RM_TerminalBiomesSettings.ChillWaxProcessionActive) return;
             sheets.RemoveAll(s => s == null || s.Destroyed || !s.Spawned);
-            if (ticksLeft < 0) ticksLeft = Props.ticksBetweenSheets;
-            ticksLeft -= GenTicks.TickRareInterval;
-            if (ticksLeft > 0) return;
-            if (pawn.pather != null && pawn.pather.Moving) return;   // wait for a pause
+            if (!RM_TerminalMiscKernel.WaxStep(ref ticksLeft, Props.ticksBetweenSheets, GenTicks.TickRareInterval, pawn.pather != null && pawn.pather.Moving)) return;   // at zero it waits for a pause
             ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(Props.sheetDefName);
-            ticksLeft = Props.ticksBetweenSheets;
             if (def == null) return;
             Thing sheet = ThingMaker.MakeThing(def);
             if (GenPlace.TryPlaceThing(sheet, pawn.Position, pawn.Map, ThingPlaceMode.Near))

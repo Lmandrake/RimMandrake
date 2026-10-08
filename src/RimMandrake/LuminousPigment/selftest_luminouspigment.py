@@ -503,6 +503,11 @@ def main():
     undeclared = sorted(b for b in bools if b not in V.toggles and b != "familyEnabled")
     check("every bool setting in LuminousPigmentSettings is a declared toggle", not undeclared, str(undeclared))
 
+    # --- 5 defs/patches vs C# (Approach B lint; the kernel fuzz is selftest_luminouspigment_fuzz.py, not run here: it needs dotnet.exe)
+    import subprocess
+    lint = subprocess.run([sys.executable, os.path.join(UTILS, "lint_luminouspigment_defs.py"), "--quiet"], capture_output=True, text=True)
+    check("def lint (lint_luminouspigment_defs.py): 0 ERROR", lint.returncode == 0 and " 0 ERROR" in lint.stdout, (lint.stdout + lint.stderr)[-600:])
+
     print("\n%s" % ("ALL OK" if not FAILS else "FAILED: %s" % FAILS))
     return 1 if FAILS else 0
 

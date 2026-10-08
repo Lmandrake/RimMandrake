@@ -47,6 +47,8 @@ def main(argv):
             open(path, "wb").write(raw)
             if sha(path) != before:
                 print(f"[{i}] RESTORE FAILED for {m['file']}"); bad += 1
+            time.sleep(2)            # a same-length restore inside the staging quick-check window would leave the next run on the mutated copy
+            os.utime(path)
     print("mutations:", "ALL CAUGHT" if bad == 0 else f"{bad} PROBLEM(S)")
     return 1 if bad else 0
 

@@ -183,16 +183,7 @@ namespace RimMandrake.GelatinousSlime
                 return;
             }
 
-            float wanted = map.Area / CellsPerAttempt * SlimeSettings.fieldConversionRate;
-            int attempts = (int)wanted;
-            if (Rand.Chance(wanted - attempts))
-            {
-                attempts++;
-            }
-            if (attempts < 1)
-            {
-                attempts = 1;
-            }
+            int attempts = RM_SlimeWorld.ConversionAttempts(map.Area, SlimeSettings.fieldConversionRate, CellsPerAttempt, Rand.Value);
 
             try
             {

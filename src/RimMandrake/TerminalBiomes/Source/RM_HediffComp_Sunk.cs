@@ -53,10 +53,9 @@ namespace RimMandrake.TerminalBiomes
             }
 
             bool rescued = IsIndoors();
-            float perDay = rescued ? Props.severityPerDayRescued : Props.severityPerDayUnrescued;
-            severityAdjustment += perDay / GenDate.TicksPerDay * EvalIntervalTicks;
+            severityAdjustment += RM_TerminalMiscKernel.SunkStep(rescued, Props.severityPerDayUnrescued, Props.severityPerDayRescued, GenDate.TicksPerDay, EvalIntervalTicks);
 
-            if (rescued && ScarOnRescue && !scarApplied && parent.Severity <= 0.05f)
+            if (RM_TerminalMiscKernel.ScarDue(rescued, ScarOnRescue, scarApplied, parent.Severity))
             {
                 ApplyScar();
                 scarApplied = true;

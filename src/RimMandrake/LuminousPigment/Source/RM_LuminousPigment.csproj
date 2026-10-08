@@ -108,6 +108,10 @@
     <Compile Include="DeepfireGodDeltas.cs" />
     <Compile Include="DeepfireLightsOutCompat.cs" />
     <Compile Include="DeepfireGodDeltaDebugActions.cs" />
+    <!-- Verse-free kernels (also compiled by SelfTest/RimMandrakeLuminousPigment.SelfTest.csproj). -->
+    <Compile Include="Kernel\RM_DeepfireLightBook.cs" />
+    <Compile Include="Kernel\RM_DeepfireRules.cs" />
+    <Compile Include="Kernel\RM_DeepfireCuisine.cs" />
   </ItemGroup>
 
   <ItemGroup>

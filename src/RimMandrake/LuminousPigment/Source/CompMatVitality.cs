@@ -36,16 +36,8 @@ namespace RimMandrake.LuminousPigment
         {
             if (dead) return null;
             float lifeDays = LuminousPigmentSettings.matLifeDays;
-            float daysLeft = lifeDays - (float)ticksAlive / GenDate.TicksPerDay;
-            if (daysLeft < 0f) daysLeft = 0f;
-            int hoursLeft = Mathf_RoundToInt(daysLeft * 24f);
+            int hoursLeft = RM_DeepfireRules.HoursLeft(ticksAlive, lifeDays, GenDate.TicksPerDay);
             return "alive: " + hoursLeft.ToString() + "h left";
-        }
-
-        // Avoids a UnityEngine.Mathf reference just for one rounding call.
-        private static int Mathf_RoundToInt(float f)
-        {
-            return (int)(f + 0.5f);
         }
 
         public override void CompTickRare()
@@ -53,20 +45,10 @@ namespace RimMandrake.LuminousPigment
             base.CompTickRare();
             if (dead) return;
 
-            ticksAlive += GenTicks.TickRareInterval;
-
-            float ambientTemp = parent.AmbientTemperature;
-            if (ambientTemp < LuminousPigmentSettings.matChillKillTemp)
-            {
-                MaybeWarnChill();
-                BecomeDead();
-                return;
-            }
-
-            if ((float)ticksAlive >= LuminousPigmentSettings.matLifeDays * GenDate.TicksPerDay)
-            {
-                BecomeDead();
-            }
+            MatFate fate = RM_DeepfireRules.MatTick(ref ticksAlive, parent.AmbientTemperature, LuminousPigmentSettings.matChillKillTemp,
+                LuminousPigmentSettings.matLifeDays, GenTicks.TickRareInterval, GenDate.TicksPerDay);
+            if (fate == MatFate.DiedChill) MaybeWarnChill();
+            if (fate != MatFate.Alive) BecomeDead();
         }
 
         private void MaybeWarnChill()

@@ -63,26 +63,10 @@ namespace RimMandrake.TerminalBiomes
             }
 
             int now = Find.TickManager.TicksGame;
-            if (nextShedTick < 0)
-            {
-                // First tick after map creation/load: stagger both timers
-                // so every Twilight floor map doesn't roll on the exact
-                // same absolute tick.
-                nextShedTick = now + TickInterval + Rand.Range(0, TickInterval);
-                nextDeckTick = now + TickInterval + Rand.Range(0, TickInterval);
-                return;
-            }
-
-            if (now >= nextShedTick)
-            {
-                nextShedTick = now + TickInterval;
-                TrySpawnLightShed();
-            }
-            if (now >= nextDeckTick)
-            {
-                nextDeckTick = now + TickInterval;
-                TrySpawnDeckPane();
-            }
+            // First tick after map creation/load staggers both timers so every Twilight floor map doesn't roll on the same tick.
+            RM_TerminalMiscKernel.VeilStep(ref nextShedTick, ref nextDeckTick, now, TickInterval, n => Rand.Range(0, n), out bool shed, out bool deck);
+            if (shed) TrySpawnLightShed();
+            if (deck) TrySpawnDeckPane();
         }
 
         // ── (a) the ordinary shed cadence ───────────────────────────────
