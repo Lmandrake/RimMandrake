@@ -13,6 +13,21 @@
   <RM_Watchers_Setting_Geophone_Tip>A piinnok hides when something large swims under the sand nearby, so a whole field going dark warns you. Needs the sand swimmers of RimMandrake: Baroque Biomes. Off: they ignore what moves underground.</RM_Watchers_Setting_Geophone_Tip>
   <RM_Watchers_Setting_FlushHunt>Flushing marks for hunting</RM_Watchers_Setting_FlushHunt>
   <RM_Watchers_Setting_FlushHunt_Tip>When your hunter flushes a hiding watcher, it is marked for hunting while it bolts. Off: it just runs, and you mark it yourself if you are quick.</RM_Watchers_Setting_FlushHunt_Tip>
+  <RM_Watchers_Setting_CuesHeader>Other things they hide from (each creature reacts only to its own):</RM_Watchers_Setting_CuesHeader>
+  <RM_Watchers_Setting_CueGas>Gas</RM_Watchers_Setting_CueGas>
+  <RM_Watchers_Setting_CueGas_Tip>Watchers that hide from gas (such as toxic gas from vents) go under while it hangs over them. Off: they ignore gas.</RM_Watchers_Setting_CueGas_Tip>
+  <RM_Watchers_Setting_CueHeat>Heat</RM_Watchers_Setting_CueHeat>
+  <RM_Watchers_Setting_CueHeat_Tip>Watchers that hide from warmth go under while the ground where they sit is warmer than they can bear. Off: they ignore temperature.</RM_Watchers_Setting_CueHeat_Tip>
+  <RM_Watchers_Setting_CueFire>Fire</RM_Watchers_Setting_CueFire>
+  <RM_Watchers_Setting_CueFire_Tip>Watchers that hide from fire go under while a fire burns nearby, and come back up once it is out. Off: they ignore fire.</RM_Watchers_Setting_CueFire_Tip>
+  <RM_Watchers_Setting_CueSteam>Steam</RM_Watchers_Setting_CueSteam>
+  <RM_Watchers_Setting_CueSteam_Tip>Watchers that hide from steam go under while a steam devil or vent is close. Off: they ignore steam.</RM_Watchers_Setting_CueSteam_Tip>
+  <RM_Watchers_Setting_CueShade>Sun</RM_Watchers_Setting_CueShade>
+  <RM_Watchers_Setting_CueShade_Tip>Shade-dwelling watchers come up only in shade (under a roof, in a cast shadow, or at night) and stay under in full sun. Off: they come up in the sun too.</RM_Watchers_Setting_CueShade_Tip>
+  <RM_Watchers_Setting_CueBuried>Buried hunters</RM_Watchers_Setting_CueBuried>
+  <RM_Watchers_Setting_CueBuried_Tip>Watchers that sense things buried under the ground (such as a murrek in the drift) go under while one lies nearby, so a whole patch going quiet warns you. Off: they ignore what is buried.</RM_Watchers_Setting_CueBuried_Tip>
+  <RM_Watchers_Setting_CueLight>Light</RM_Watchers_Setting_CueLight>
+  <RM_Watchers_Setting_CueLight_Tip>Watchers that hide from light go under while their spot is lit (a lamp, a torch, a carried light). Off: they ignore light.</RM_Watchers_Setting_CueLight_Tip>
   <RM_Watchers_Setting_FlinchRadius>Flinch distance: {0} of each creature's own</RM_Watchers_Setting_FlinchRadius>
   <RM_Watchers_Setting_EmergeDelay>Time spent hiding: {0} of each creature's own</RM_Watchers_Setting_EmergeDelay>
   <RM_Watchers_Setting_MaxActive>Most watchers watching at once per map: {0}</RM_Watchers_Setting_MaxActive>

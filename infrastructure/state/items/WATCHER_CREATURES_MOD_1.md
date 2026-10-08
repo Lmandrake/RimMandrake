@@ -38,6 +38,17 @@ Mod Settings toggle per feature; every DLC is assumed present.
   2. **Bind each watcher's movement to ONE medium** (the Stillsand/deep-desert members to its fine
      sand), so a single baked peek pose is enough and no per-terrain look is needed.
 
+## owner rulings (card, 2026-10-08, typed)
+
+- **Scope:** *"All biomes. It's a new fixture."* Every shipping biome gets a member; the Rust
+  Cathedral's is a machine, under its own ban question (pitch Q7).
+- **Media:** *"Ground and water for now. And we can bake in their little holes and things as part
+  of their art."* No Thing-medium.
+- **Cues:** *"Full set."* Built 2026-10-08: seven optional per-member cues (gas, heat, fire, steam,
+  shade, buried, light) on `RM_WatcherExtension.cues`, one Mod Settings toggle each.
+- **Q9 answer** (terrain-dependent look): recorded with the RimSage symbols read in
+  `design/RimMandrake/watcher_creatures_pitch.md` §2.
+
 ## criteria
 
 - The Q9 terrain-look check is answered and recorded, and every member names its one medium.

@@ -10,10 +10,11 @@ namespace RimMandrake.Watchers
     ///   Watching: stands still, so the engine draws the stationary sprite (the peek pose;
     ///             Pawn.DrawNonHumanlikeStationaryGraphic, the hermit-crab rule) and turns to face
     ///             the nearest pawn that is not its own kind.
-    ///   Flinch:   a non-own-kind pawn within the flinch radius, the geophone, or a Hunt order on
+    ///   Flinch:   a non-own-kind pawn within the flinch radius, the geophone, any optional cue the
+    ///             member carries (RM_WatcherCues: gas, heat, fire, steam, shade, buried, light), or a Hunt order on
     ///             it (hunting is flush-only, Q4) -> puff, hidden hediff on, sign on the cell.
     ///   Hidden:   comes back up after the hide delay once nothing is inside the flinch radius
-    ///             and the geophone is quiet; or at once if hungry (then the job ends so it can feed).
+    ///             and the geophone and every cue are quiet; or at once if hungry (then the job ends so it can feed).
     /// The job also ends when it is off its medium, after maxWatchTicks of watching, or when the
     /// settings switch it off. The toil's finish action removes the hediff and the sign on EVERY
     /// exit (end, interrupt, damage, capture, death), so the hidden state never outlives the job
@@ -93,11 +94,12 @@ namespace RimMandrake.Watchers
             bool onMedium = RM_WatcherUtility.OnMedium(pawn, ext);
             // Short-circuit order kept: the scans only run once the watch is known to continue.
             Pawn nearest = null;
-            bool inFlinch = false, geo = false, hunted = false, hungry = false;
+            bool inFlinch = false, geo = false, cue = false, hunted = false, hungry = false;
             if (RM_WatchersSettings.watchersEnabled && onMedium)
             {
                 nearest = RM_WatcherUtility.NearestOther(pawn, ext, out inFlinch);
                 geo = RM_WatcherUtility.GeophoneFires(pawn, ext);
+                cue = RM_WatcherCueUtility.CuesNow(pawn, ext) != CueKind.None;
                 hunted = !hidden && map.designationManager.DesignationOn(pawn, DesignationDefOf.Hunt) != null;
                 hungry = pawn.needs?.food != null && pawn.needs.food.CurLevelPercentage < ext.emergeWhenFoodBelow;
             }
@@ -105,7 +107,7 @@ namespace RimMandrake.Watchers
             {
                 watchersEnabled = RM_WatchersSettings.watchersEnabled, onMedium = onMedium, hidden = hidden,
                 hideAndFlinch = RM_WatchersSettings.hideAndFlinch, turnToFace = RM_WatchersSettings.turnToFace,
-                hasNearest = nearest != null, inFlinch = inFlinch, geophone = geo, hunted = hunted,
+                hasNearest = nearest != null, inFlinch = inFlinch, geophone = geo, cue = cue, hunted = hunted,
                 signMissing = hidden && (sign == null || sign.Destroyed), hungry = hungry,
                 now = now, hiddenUntil = hiddenUntilTick, watchStart = watchStartTick, maxWatchTicks = ext.maxWatchTicks,
             });

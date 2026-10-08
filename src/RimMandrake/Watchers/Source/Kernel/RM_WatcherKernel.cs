@@ -27,6 +27,9 @@ namespace RimMandrake.Watchers
     public struct StepIn
     {
         public bool watchersEnabled, onMedium, hidden, hideAndFlinch, turnToFace, hasNearest, inFlinch, geophone, hunted, signMissing, hungry;
+        /// <summary>Any of the member's optional non-body cues holds (RM_WatcherKernel.Cues != None): it sends it under and keeps it
+        /// under, exactly like the geophone.</summary>
+        public bool cue;
         public int now, hiddenUntil, watchStart, maxWatchTicks;
     }
 
@@ -43,7 +46,7 @@ namespace RimMandrake.Watchers
             StepFlags f = StepFlags.None;
             if (!s.hidden)
             {
-                if (s.hideAndFlinch && (s.inFlinch || s.geophone || s.hunted))
+                if (s.hideAndFlinch && (s.inFlinch || s.geophone || s.cue || s.hunted))
                 {
                     f |= StepFlags.Hide;
                     if (s.hunted) f |= StepFlags.DropHunt;
@@ -54,7 +57,7 @@ namespace RimMandrake.Watchers
                 return f;
             }
             if (s.signMissing) f |= StepFlags.RestoreSign;
-            if (!s.hideAndFlinch || s.hungry || (s.now >= s.hiddenUntil && !s.inFlinch && !s.geophone))
+            if (!s.hideAndFlinch || s.hungry || (s.now >= s.hiddenUntil && !s.inFlinch && !s.geophone && !s.cue))
             {
                 f |= StepFlags.Emerge | StepFlags.ResetWatchClock;
                 if (s.hungry) f |= StepFlags.EndSucceeded;
@@ -154,5 +157,85 @@ namespace RimMandrake.Watchers
             if (geophoneMinBodySize < 0f) e.Add("geophoneMinBodySize must not be negative (0 turns the geophone off)");
             return e;
         }
+
+        // ------------------------------------------------------------------ optional non-body cues (owner ruling 2026-10-08: "Full set")
+        // Each cue is per member (absent in XML = that member ignores it) and each kind has its own Mod Settings toggle. While a cue holds,
+        // the watcher goes under and stays under (StepIn.cue). A reading the driver did not take (cue off) is never consulted.
+
+        /// <summary>The ordinary emergence rule for shade: a shade-lover (shadeMin) is out only where shade &gt;= shadeMin. Roofed = full shade;
+        /// otherwise the brighter of the sun-heat grid's cast/roof shade (when that grid is active) and the sky itself (night = shade).</summary>
+        public static float ShadeReading(bool roofed, bool gridActive, float gridShade, float skyGlow)
+        {
+            if (roofed) return 1f;
+            float sky = 1f - Clamp01(skyGlow);
+            return gridActive ? Math.Max(Clamp01(gridShade), sky) : sky;
+        }
+
+        /// <summary>Which cues hold this step. Distances are squared; float.MaxValue means "none on the map".</summary>
+        public static CueKind Cues(CueIn c)
+        {
+            CueKind k = CueKind.None;
+            if (c.gasOn && c.gasPercent >= c.gasMin) k |= CueKind.Gas;
+            if (c.heatOn && c.tempC >= c.heatAboveC) k |= CueKind.Heat;
+            if (c.fireOn && c.fireDistSq <= c.fireRadius * c.fireRadius) k |= CueKind.Fire;
+            if (c.steamOn && c.steamDistSq <= c.steamRadius * c.steamRadius) k |= CueKind.Steam;
+            if (c.shadeOn && c.shade < c.shadeMin) k |= CueKind.Shade;
+            if (c.buriedOn && c.buriedDistSq <= c.buriedRadius * c.buriedRadius) k |= CueKind.Buried;
+            if (c.lightOn && c.glow >= c.lightAbove) k |= CueKind.Light;
+            return k;
+        }
+
+        /// <summary>Config errors of the optional cues block (empty = sound). has* = that cue's node is present in the member's XML.</summary>
+        public static List<string> CueConfigErrors(bool hasGas, int gasTypeCount, float gasMin, bool hasHeat, float heatAboveC, bool hasFire,
+            float fireRadius, bool hasSteam, int steamThingCount, float steamRadius, bool hasShade, float shadeMin, bool hasBuried,
+            int buriedHediffCount, float buriedRadius, bool hasLight, float lightAbove)
+        {
+            var e = new List<string>();
+            if (hasGas && gasTypeCount == 0) e.Add("cues.gas has no gasTypes (it could never fire)");
+            if (hasGas && !(gasMin > 0f && gasMin <= 1f)) e.Add("cues.gas.minPercent must be in (0, 1] (0 would fire in clean air)");
+            if (hasHeat && !(heatAboveC > -273f && heatAboveC < 1000f)) e.Add("cues.heat.aboveC must be a real temperature");
+            if (hasFire && !(fireRadius > 0f)) e.Add("cues.fire.radius must be positive");
+            if (hasSteam && steamThingCount == 0) e.Add("cues.steam has no things (it could never fire)");
+            if (hasSteam && !(steamRadius > 0f)) e.Add("cues.steam.radius must be positive");
+            if (hasShade && !(shadeMin > 0f && shadeMin <= 1f)) e.Add("cues.shade.minShade must be in (0, 1] (0 would never send it under)");
+            if (hasBuried && buriedHediffCount == 0) e.Add("cues.buried has no hediffs (it could never fire)");
+            if (hasBuried && !(buriedRadius > 0f)) e.Add("cues.buried.radius must be positive");
+            if (hasLight && !(lightAbove > 0f && lightAbove <= 1f)) e.Add("cues.light.minGlow must be in (0, 1] (0 would fire in total darkness)");
+            return e;
+        }
+
+        /// <summary>The water/medium audit run once at startup per member. Errors: a medium it can never stand on. Warnings: an avoid-wander
+        /// medium (vanilla's shallow water and our deep sand) without race waterSeeker, which vanilla wander refuses outright; and an IsWater
+        /// medium with a swimmingGraphicData, which outranks the stationary peek pose in every state (PawnRenderNodeWorker_AnimalBody).</summary>
+        public static void MediumAudit(bool anyImpassable, bool anyAvoidWander, bool anyWater, bool waterSeeker, bool hasSwimmingGraphic,
+            List<string> errors, List<string> warnings)
+        {
+            if (anyImpassable) errors.Add("a medium terrain is impassable: the watcher can never stand on it, so it can never watch or hide");
+            if (anyAvoidWander && !waterSeeker) warnings.Add("a medium terrain is avoidWander (water) and the race is not waterSeeker: vanilla wander will refuse it");
+            if (anyWater && hasSwimmingGraphic) warnings.Add("a medium terrain is IsWater and a life stage has swimmingGraphicData: the swimming sprite outranks the peek pose there");
+        }
+
+        private static float Clamp01(float v) { return v < 0f ? 0f : v > 1f ? 1f : v; }
+    }
+
+    [Flags]
+    public enum CueKind
+    {
+        None = 0,
+        Gas = 1,
+        Heat = 2,
+        Fire = 4,
+        Steam = 8,
+        Shade = 16,
+        Buried = 32,
+        Light = 64,
+    }
+
+    /// <summary>One step's cue readings. xOn = the member carries cue x AND its Mod Settings toggle is on.</summary>
+    public struct CueIn
+    {
+        public bool gasOn, heatOn, fireOn, steamOn, shadeOn, buriedOn, lightOn;
+        public float gasPercent, gasMin, tempC, heatAboveC, fireDistSq, fireRadius, steamDistSq, steamRadius, shade, shadeMin,
+            buriedDistSq, buriedRadius, glow, lightAbove;
     }
 }
