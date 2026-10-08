@@ -14,6 +14,7 @@ the species reportedly uses to communicate (rubbing bristles against stones
 or each other to make pack-specific sound patterns). Eye color is given
 inconsistently by two production sources: **blue** (per the *TLJ* trailer)
 and **red** (per *TLJ* behind-the-scenes footage) — Wookieepedia lists both.
+The wiki says the bristles served as protection against predators, and that the jingling warned other vulptices of danger; facial bristles (whiskers) helped them judge whether they could fit into a tight space. Excellent low-light vision and keen senses; most active at dawn and dusk; may have been sensitive to magnetic fields (Dr. Mesoli's field notes). Strong jaws, clever, cooperative hunters (https://starwars.fandom.com/wiki/Vulptex).
 Size: ~51 cm tall, ~1.2 m long, ~9.1 kg — a small animal, roughly
 coyote/fox-sized rather than wolf-sized. Habitat: highland caves, canyons,
 and salt flats on Crait; diet of tubers and small burrowing mammals dug from
@@ -23,7 +24,7 @@ during the Battle of Crait in *The Last Jedi* — a skulk hides in the
 Resistance's abandoned rebel base, and one vulptex leads the escaping
 Resistance survivors to a hidden exit, which Rey then widens with the Force.
 **Behind the scenes**: per creature effects supervisor Neal Scanlan, the
-in-universe explanation is that "they've fed off this planet for so long
+in-universe theory is that "they've fed off this planet for so long
 that their fur has become crystalline... they've taken on the very surface
 of the planet they live on" — i.e. the crystal coat is an adaptation to
 Crait's crystalline salt-and-mineral surface, not incidental decoration.

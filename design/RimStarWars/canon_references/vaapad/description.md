@@ -13,8 +13,13 @@ eye colour yellow, distinction "multiple tentacles", habitat/diet/size all unsou
 Categories: invertebrates, predatory creatures. Height, mass and lifespan are unsourced
 and deliberately absent.
 
-Mace Windu's lightsaber style Form VII (Juyo / Vaapad) was named after it; that is the
-only other thing the article says. First appearance: Star Wars: Force Commander.
+Mace Windu's lightsaber style Form VII (Juyo / Vaapad) was named after it; the vaapad is
+"not to be confused with Juyo". Windu developed the style with Sora Bulq; he and Depa Billaba
+were its only masters. First appearance: Star Wars: Force Commander.
+Canon (https://starwars.fandom.com/wiki/Vaapad): a short stub only, an invertebrate creature
+native to the Core Worlds planet Sarapin, after which Windu named Form VII (source: Lightsabers
+and Jedi Equipment, 2020). Canon gives no colour, eye, tentacle or size information; all of the
+above physical text is Legends.
 
 ## Visual brief
 Two images, and they agree: `wookieepedia_vaapad.jpg` (Force Commander sprite sheet, 350x250,

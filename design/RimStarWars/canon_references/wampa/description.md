@@ -13,7 +13,8 @@ dragging the catch back to a cave to hang upside-down until consumed — which
 is exactly what happens to Luke Skywalker at the start of *The Empire Strikes
 Back*. Described as demonstrating advanced intelligence and caring about their
 clans (semi-sentient, not a mindless beast). Diet: carnivore. Habitat: snow
-plains/ice caves of Hoth. A visually similar "cousin species," the Mogu,
+plains/ice caves of Hoth. Wampas have predators of their own (for example fire-breathing dragon slugs, Tales from the Rancor Pit), hunted tauntaun, rayboo and willing to hunt humans, Sullustans or Mon Calamari, and live in clans (the establishment of Echo Base displaced one; Forces of Destiny, "Beasts of Echo Base", shows wampas entering the base). Young wampas (younglings) appear in Tales from the Rancor Pit. https://starwars.fandom.com/wiki/Wampa
+A visually similar "cousin species," the Mogu,
 exists on the warmer world of Koboh but is a distinct species.
 
 ## Visual brief
@@ -21,7 +22,7 @@ The candidate images broadly agree on white shaggy fur, black facial
 features, and a heavyset ape/bear-like posture with prominent claws — but
 they diverge on stance and menace level. The ESB-era infobox still (practical
 suit, bound and hoisted by rope, arms raised) and the unused behind-the-scenes
-still (screaming close-up, fangs bared, blood-streaked claws and muzzle) both
+still (the wiki captions it "an early, unused wampa costume design", so it is design evidence, not final on-screen anatomy; the released ESB footage takes priority) (screaming close-up, fangs bared, blood-streaked claws and muzzle) both
 show a **bipedal, ape/yeti-like posture** with long shaggy white fur, dark
 bald-looking facial skin around the eyes/muzzle, small dark eyes, and visible
 sharp claws and fangs — genuinely frightening, not cute. The official comic

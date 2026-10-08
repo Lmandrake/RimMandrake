@@ -8,7 +8,9 @@
 
 Urusai were four-winged reptavians native to the desert planet Tatooine. They ate sarlaccs that were in the spore stage of their life cycle, but shared a symbiotic relationship with adult sarlaccs, picking their teeth and tentacles clean while nesting amid the much larger creatures' toothy maws.
 
-**Biology and appearance** Urusai were a type of reptavian native to the desert planet Tatooine in the Arkanis sector of the Outer Rim Territories. They were blue and yellow in color and possessed four wings with talons along the outer edge and a white underside. Their fan-shaped tail similarly had spikes along its edge and a white underside, while their jowly, beaked faces had red eyes. Urusai lay large purple eggs.
+**Biology and appearance** Urusai were a type of reptavian native to the desert planet Tatooine in the Arkanis sector of the Outer Rim Territories. They were blue and yellow in color and possessed four wings with talons along the outer edge and a white underside. Their fan-shaped tail similarly had spikes along its edge and a white underside, while their jowly, beaked faces had red eyes. Urusai lay large purple eggs (source *Chikyu no Arukikata Star Wars*, 2026, the first canonical depiction; Bestiary Vol. 1 is the other canon source).
+They nest in the adult sarlacc's maw, building plant-matter nests among its teeth, and feed on carrion caught there, including eopie corpses. Canon dimensions, lifespan and sexual dimorphism are not stated.
+The canon page's pictured urusai is Terryl Whitlatch's art reused from *The Wildlife of Star Wars* (a Legends book): the anatomy shown in the images below is Legends-originated art, not independent canon confirmation. The *Disney Infinity 3.0* urusai (blue and tan, two wings, two legs) is a non-canon game render. https://starwars.fandom.com/wiki/Urusai
 ### Legends — https://starwars.fandom.com/wiki/Urusai/Legends
 
 Native to Tatooine, the urusai was a yellow-and-blue reptavian that feasted upon carrion (often to the point of being too engorged to take flight).
