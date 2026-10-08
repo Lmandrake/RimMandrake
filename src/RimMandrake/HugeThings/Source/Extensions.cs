@@ -56,6 +56,10 @@ namespace RimMandrake.HugeThings
         /// <summary>Set at startup by HugeThingsApi.ValidateRenderer: false = selection only, no ground footprint.</summary>
         [Unsaved] public bool blockingSupported = true;
 
+        /// <summary>Set at startup by HugeThingsApi.ValidateRenderer (owner ruling 2026-10-07 21:08): every measured picture
+        /// touches the ground only in the plant's own cell, so the plant def itself was made Impassable.</summary>
+        [Unsaved] public bool rootImpassable;
+
         [Unsaved] private HugePlantVariant union;
         [Unsaved] private HugeMask unionMask;
 

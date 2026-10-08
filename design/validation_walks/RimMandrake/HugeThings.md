@@ -21,7 +21,7 @@ Sources: `About/About.xml`, `Defs/ThingDefs/RM_HugeTrunkBlocker.xml`, `Source/*.
 - After save/load a trunk re-links to its plant (no duplicates, no orphans). → not_driven.trunk_relinks_after_save_load (UNMEASURED)
 - Giants generated with a new map get their trunks once generation finishes. → not_driven.mapgen_giants_get_trunks (UNMEASURED)
 - A shot or blast into a trunk cell damages the plant, once per projectile / beam / blast. → not_driven.shot_into_trunk_damages_the_plant_once (UNMEASURED live; offline kernel fuzz `damage` + static patch checks)
-- A growing footprint never traps a pawn, buries an item, or cuts a giant's root off from cutting access. → not_driven.growth_never_traps_a_pawn (UNMEASURED live; offline kernel fuzz `planner`)
+- A growing footprint never traps a pawn, never destroys an item (items are pushed outside every footprint or the cell waits), never cuts a giant's root off from cutting access. → not_driven.growth_never_traps_a_pawn (UNMEASURED live; offline kernel fuzz `planner`)
 - Blockers never carve or split zones. → not_driven.zone_cells_survive_blockers (UNMEASURED live; static patch check)
 
 ## the walk
@@ -42,6 +42,6 @@ RULED OUT: "give the plant def a size > 1" — a Plant registers in ThingGrid by
 RULED OUT: "patch GenAdj.OccupiedRect(Thing) for the plant" — region listers register a thing over its OccupiedRect, so a rect that grows between register and deregister strands region entries.
 RULED OUT: "centre the trunk on the plant's cell" — Plant.Print lifts a single-mesh plant so its sprite's base sits on the root cell's bottom edge; the stem stands NORTH of the root, and a centred odd trunk would wall the root in so no pawn could reach it to cut or harvest.
 RULED OUT: "spawn blockers from CompTickLong" — the comp only NOTICES a changed footprint there (Plant.TickLong loops comps; Plant never overrides Tick); MapComponent_HugeFootprints owns all spawning, staggered, with a map-wide claim ledger so overlapping giants share cells.
-RULED OUT: "WipeMode.VanishOrMoveAside is safe for items" — GenSpawn.CheckMoveItemsAside destroys an item it cannot place (GPT review #2). The planner refuses any cell holding an item or pawn instead; nothing is ever moved.
+RULED OUT: "WipeMode.VanishOrMoveAside is safe for items" — GenSpawn.CheckMoveItemsAside destroys an item it cannot place (GPT review #2). Items are pushed by our own ItemMover only when every one fits outside all footprints (owner ruling 21:08), else the cell stays open; a blocker never spawns over an item or a pawn.
 RULED OUT: "plan each pass in the bounding box of the cells still open" — a shrinking window judges reachability against a nearer border, so a second pass closed cells the first had refused (kernel fuzz, 134/3000). The window is fixed per plant (its full-growth, max-setting footprint + 4), and the pass runs to a fixpoint.
 RULED OUT: "growth -> blocked cells is nested" — a ring of roots scaled up moves outward; measured 13326/21000 random masks where half growth is not a subset of full. Not an invariant.

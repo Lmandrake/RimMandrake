@@ -242,6 +242,98 @@ namespace RimMandrake.HugeThings
         }
     }
 
+    /// <summary>
+    /// Owner ruling 2026-10-07 21:08 (decision taken by question card): a footprint cell held only by items closes after its
+    /// items are pushed, gently, to the nearest free valid cell that is in NO footprint (claimed by any plant); pawns are
+    /// never moved. Every item of a cell must fit or none moves (the cell then stays open). Capacity is shared across the
+    /// whole pass so two cells never overfill one destination. Search is a 4-connected BFS over cells with capacity >= 0
+    /// (passable ground), preferred cells first at each distance, then key order: deterministic.
+    /// </summary>
+    public static class ItemMover
+    {
+        public const int MaxRadius = 12;
+
+        /// <summary>
+        /// For each source cell (in key order) with itemCounts[cell] items, a destination per item, or no entry when they
+        /// do not all fit. capacity(k): how many more items cell k takes (-1 = not a valid cell at all). excluded(k): in some
+        /// footprint. preferred(src, k): e.g. the same stockpile as the source.
+        /// </summary>
+        public static Dictionary<long, List<long>> Assign(IDictionary<long, int> itemCounts, Func<long, int> capacity,
+                                                          Func<long, bool> excluded, Func<long, long, bool> preferred)
+        {
+            Dictionary<long, List<long>> outMoves = new Dictionary<long, List<long>>();
+            Dictionary<long, int> used = new Dictionary<long, int>();
+            List<long> srcs = new List<long>(itemCounts.Keys);
+            srcs.Sort();
+            foreach (long src in srcs)
+            {
+                int need = itemCounts[src];
+                if (need <= 0) continue;
+                List<long> dests = new List<long>();
+                Dictionary<long, int> take = new Dictionary<long, int>();
+                foreach (long k in Ring(src, capacity, preferred))
+                {
+                    if (k == src || excluded(k)) continue;
+                    int cap = capacity(k) - (used.TryGetValue(k, out int u) ? u : 0) - (take.TryGetValue(k, out int t) ? t : 0);
+                    while (cap > 0 && dests.Count < need)
+                    {
+                        dests.Add(k);
+                        take[k] = (take.TryGetValue(k, out int t2) ? t2 : 0) + 1;
+                        cap--;
+                    }
+                    if (dests.Count == need) break;
+                }
+                if (dests.Count < need) continue;
+                foreach (KeyValuePair<long, int> kv in take) used[kv.Key] = (used.TryGetValue(kv.Key, out int u2) ? u2 : 0) + kv.Value;
+                outMoves[src] = dests;
+            }
+            return outMoves;
+        }
+
+        /// <summary>Cells reachable from src over capacity >= 0 ground, nearest first (BFS layers), preferred first within a
+        /// layer, then by key.</summary>
+        private static IEnumerable<long> Ring(long src, Func<long, int> capacity, Func<long, long, bool> preferred)
+        {
+            HashSet<long> seen = new HashSet<long> { src };
+            List<long> layer = new List<long> { src };
+            for (int d = 0; d < MaxRadius && layer.Count > 0; d++)
+            {
+                List<long> next = new List<long>();
+                foreach (long k in layer)
+                {
+                    int x = RM_HugeFootprintKernel.KeyX(k), z = RM_HugeFootprintKernel.KeyZ(k);
+                    long[] ns = { RM_HugeFootprintKernel.Key(x + 1, z), RM_HugeFootprintKernel.Key(x - 1, z),
+                                  RM_HugeFootprintKernel.Key(x, z + 1), RM_HugeFootprintKernel.Key(x, z - 1) };
+                    foreach (long n in ns)
+                    {
+                        if (seen.Add(n) && capacity(n) >= 0) next.Add(n);
+                    }
+                }
+                next.Sort((a, b) =>
+                {
+                    bool pa = preferred != null && preferred(src, a), pb = preferred != null && preferred(src, b);
+                    if (pa != pb) return pa ? -1 : 1;
+                    return a.CompareTo(b);
+                });
+                foreach (long k in next) yield return k;
+                layer = next;
+            }
+        }
+    }
+
+    public static class RootRule
+    {
+        /// <summary>Owner ruling 2026-10-07 21:08: a huge plant whose every measured picture touches the ground only in its
+        /// own cell makes that cell impassable (the plant itself), so it is still solid somewhere. Generic, never per species.
+        /// </summary>
+        public static bool RootImpassable(bool blockingEnabled, bool blockingSupported, IList<int> contactCountsPerVariant)
+        {
+            if (!blockingEnabled || !blockingSupported || contactCountsPerVariant == null || contactCountsPerVariant.Count == 0) return false;
+            for (int i = 0; i < contactCountsPerVariant.Count; i++) if (contactCountsPerVariant[i] != 0) return false;
+            return true;
+        }
+    }
+
     /// <summary>Everything a plant's footprint depends on. Two equal signatures give equal footprints and selection rects.</summary>
     public struct FootprintSignature : IEquatable<FootprintSignature>
     {
