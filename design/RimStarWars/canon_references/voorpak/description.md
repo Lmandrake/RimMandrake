@@ -8,9 +8,11 @@
 
 Voorpaks were a non-sentient species that inhabited the galaxy. They came from Naboo and were often kept as pets. They were small enough to be lifted by a humanoid, had six legs, and excreted purple urine.
 
+Wild voorpaks lived in stony outcrops on hillsides and raised litters of up to five pups, called voorlings (Ultimate Star Wars; Jedi Survivor). Buggles first appeared in Star Wars Resistance, "Secrets and Holograms" (2018), and his design was based on Terryl Whitlatch's Phantom Menace concept art (https://starwars.fandom.com/wiki/Buggles). The original Legends voorpak was eight-legged (see the Legends text); canon voorpaks and Buggles have six legs.
+
 Torra Doza, a human resident of the Colossus platform on the planet Castilon, owned a voorpak named Buggles. Qi'ra, a human woman associated with the crime syndicate Crimson Dawn, sometimes wore a shirt lined with voorpak fur.
 
-**Biology and appearance** Voorpaks had soft, white fur and a light weight. They also had a pleasant smell and sharp teeth. They were small enough to be easily held by a humanoid. They had six legs, and also excreted purple urine.
+**Biology and appearance** Voorpaks (60 cm tall per the infobox) had soft, white fur and a light weight. They also had a pleasant smell and sharp teeth. They were small enough to be easily held by a humanoid. They had six legs, and also excreted purple urine.
 ### Legends — https://starwars.fandom.com/wiki/Voorpak/Legends
 
 Voorpaks were a non-sentient but still quite smart species of puffy-looking creatures that were native to the Mid Rim world of Naboo.
@@ -24,12 +26,12 @@ A Quermian diplomat of the New Republic had a pet voorpak.
 During Roan Novachez's second year at the Jedi academy on Coruscant, the students were given the opportunity to care for a pet voorpak named Voorpee, on loan from the Naboo Zoo. The voorpak returned in the next school year. This particular voorpak enjoyed eating insects.
 
 ## Visual brief
-Four images: one canon (Buggles, a pet voorpak from Star Wars: Visions-style/Secrets and Holograms art) and three Legends. All show a **fluffy ball on thin legs**; none shows a normal quadruped.
+Four images: one canon (Buggles, a pet voorpak from Star Wars Resistance, "Secrets and Holograms") and three Legends. All show a **fluffy ball on thin legs**; none shows a normal quadruped.
 - **Silhouette:** a **round, puffball body, about the size of a head**, with a face on the front and a **set of thin, long, stick-like legs** poking out underneath. The Legends art shows the legs as **spindly, jointed, spider-like or bird-like, with small clawed feet** (`legends_2` and `legends_3`: six to eight visible stick legs; the text says six). `canon_1` shows the same ball standing on tall ostrich-like legs with big splayed three-toed claws, so it is larger than a pet that can be "lifted"; treat the legs as long and thin in all versions.
 - **Head:** the face sits on the front of the ball, no neck. Large round **eyes with a coloured mask-like ring or patch around them** (pink-purple/magenta rings in `legends_2` and `legends_3`; a dusky red-brown ring in `canon_1`; yellow patches in `legends_1`), irises blue, lavender or green. A small **pointed pink-brown nose**, a wide smile, and **small needle teeth** in the open mouth (visible in `legends_1`, `legends_2`).
 - **Ears or horns:** **two small tufts or pointed ear-like stalks on top of the head**: pale thin stalks ending in small white bud-like tips (`canon_1`), a pair of rounded ear-tufts (`legends_2`, `legends_3`), or longer horn-like pale blue-green tufts (`legends_1`).
 - **Fur:** very soft, dense, puffy fur covering the whole ball. **Colour disagreement:** canon (`canon_1`) is **cream-white with a pale tan back and white face**; `legends_1` is a **bright orange-red shaggy fur**, almost like a fox or Furby; `legends_2` and `legends_3` are **golden-tan to amber on the back with a white fluffy chest, throat and cheek ruff**. The text says "soft white fur" in canon. The white face and chest plus a warm golden-buff back is the common core.
-- **Size:** small enough to be held in one hand (`legends_1` shows it in a palm, the body about the size of a fist). `canon_1` is shown larger, relative to its legs, than the Legends art.
+- **Size:** canon gives the species as 60 cm tall (infobox) and Buggles as 0.7 m (Ultimate Star Wars); "small enough to be lifted by a humanoid" does not mean palm-sized. `legends_1` shows one in a palm; that is Legends art, not a canon size. `canon_1` is shown larger, relative to its legs, than the Legends art. https://starwars.fandom.com/wiki/Voorpak
 
 ## Must show
 - [ ] Round, fluffy puffball body with no visible neck, soft white fur in canon (golden-buff back, white face and chest in Legends)

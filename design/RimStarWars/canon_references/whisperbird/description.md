@@ -10,13 +10,17 @@ of them is an actual describable animal — this is the key finding for this
 creature:
 
 - **`Whisperbird`** (current canon, one word, sourced to the *Thrawn
-  Ascendancy* trilogy): NOT a describable animal at all. It is a game piece
-  in the Chiss strategy board game *Tactica*, and the namesake of a Chiss
-  light cruiser (Ar'alani's *Whisperbird*) and a figure of speech (Thrawn
-  sacrificing his own "nightdragon" position to protect the officers who
-  served under him, his "whisperbirds"). The article gives **zero physical
-  description** — no size, color, body plan, or habitat. Wookieepedia files
-  it under "Creatures of unspecified biology."
+  Ascendancy* trilogy): a "creature known to the Chiss Ascendancy" with
+  unspecified biology; it has no usable physical description. It is
+  represented as a piece in the Chiss strategy board game *Tactica*, and is
+  the namesake of a Chiss light cruiser (Ar'alani's *Whisperbird*) and a
+  figure of speech: in *Lesser Evil* Thrawn explains that Ba'kif sacrificed
+  his "nightdragon" (Thrawn) to the Syndicure to keep his "whisperbirds",
+  those who served under the senior captain. The article gives **zero
+  physical description** — no size, color, body plan, or habitat. Wookieepedia
+  files it under "Creatures of unspecified biology." The wiki notes only that
+  it shares a name with the Yavin 4 whisper bird; their identity is not
+  established. https://starwars.fandom.com/wiki/Whisperbird
 - **`Whisper bird`** (current canon, two words, sourced to *Ultimate Star
   Wars*, *Star Wars: Alien Archive*, *Star Wars Bestiary Vol. 1*, and
   others): a real, describable species — a **golden-colored** bird native
@@ -26,12 +30,14 @@ creature:
   hunting. Roosts in massassi trees in flocks; preyed on by packs of
   stintaril rodents while roosting. A cartographer's shuttle was nicknamed
   *Whisper Bird* for its long bronze wings and perched landing stance.
-  First named in a 1995 Legends novel; confirmed canon by *Ultimate Star
-  Wars* (2015).
+  Also found on Coruscant and Null; travels silently in flocks (*Before the
+  Awakening*). First named in the 1995 Legends novel *Young Jedi Knights: Heirs
+  of the Force*; confirmed canon by *Ultimate Star Wars* (2015). First canon
+  appearance: *Star Wars Battlefront II*. https://starwars.fandom.com/wiki/Whisper_bird
 
 Given a third-party **animal collection** mod would be adding an actual
 creature (not a lore-only board-game-piece reference with no body plan),
-**`Whisper bird` is treated as the intended source creature** for this
+**`Whisper bird` is treated as the intended source creature** (an editorial inference, not proof of the donor's intent) for this
 folder, and this file researches and illustrates that species. The
 one-word/two-word naming collision is flagged here so a future pass does not
 mistake the lore-only Chiss reference for a design target.
@@ -53,8 +59,8 @@ flight, wings fully spread:
   sharp curved claws per foot, visible and prominent in the flight pose.
   Long, thin feathered tail trailing behind.
 - **Silhouette**: broad swept wings, lean raptor-proportioned body — reads
-  as a scavenger/hunting bird of prey silhouette, consistent with the text's
-  note that it hunts (fish) despite the delicate "whisper" name.
+  as a bird of prey silhouette; the wiki text says it hunts and eats fish and weeds
+  and does not describe it as a scavenger, despite the vulture-like head.
 
 **Net read**: golden-tan plumage with dark wing banding, bald blue-gray
 vulture-style head and legs, red beak tip — a raptor/vulture-shaped bird,

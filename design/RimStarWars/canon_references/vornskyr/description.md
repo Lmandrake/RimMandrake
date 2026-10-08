@@ -10,12 +10,12 @@ canonical spelling on both current canon and Legends is **`Vornskr`** (no
 second "y"). `Vornskyr` itself does not resolve — a plain `Vornskr` lookup
 is the correct target creature and is what this file researches.
 
-Wookieepedia's `Vornskr` page is tagged Legends-only (`{{Top|leg}}`) — there
-is currently no distinct current-canon article, though vornskrs are the
-Force-tracking predator native to **Myrkr**, the Force-nullifying planet the
-task brief names, and that Myrkr/Force-hunting relationship is treated as
-canon lore across all eras (it underpins Myrkr's in-universe role in both
-Legends and current-canon Thrawn material).
+Wookieepedia's `Vornskr` page is tagged Legends-only (`{{Top|leg}}`); there is no
+current-canon vornskr creature article (the disambiguation page lists only a canon weapon
+modification, the "Vornskr" Guidance Package). Everything below is **Legends**: vornskrs are the
+Force-sensing predator native to **Myrkr** (https://starwars.fandom.com/wiki/Vornskr,
+https://starwars.fandom.com/wiki/Myrkr). Myrkr is not itself "Force-nullifying"; it is the
+ysalamiri that project Force-suppressing bubbles.
 
 - **Species**: canine beast, non-sentient, native to the forest planet
   Myrkr. Height ~0.8 meters.
@@ -35,6 +35,9 @@ Legends and current-canon Thrawn material).
   (Form VII) was originally called "the Way of the Vornskr." Vornskrs were
   bred and trained as hunting/guard animals by figures including Tyber Zann
   and Talon Karrde.
+  The Yuuzhan Vong used vornskrs as the biological template for the engineered voxyn (voxyn
+  are a separate creature). Vornskrs were also used as guards in the Dark Force Temple on
+  Dromund Kaas. Normally sedate by day; hunger could drive daytime hunts.
 
 ## Visual brief
 Three candidate images, and they diverge more than they agree — this is

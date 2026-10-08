@@ -409,3 +409,51 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 ### fanback
 - Must show: prefix whole checklist "Legends adaptation" (page is Legends). Source: https://starwars.fandom.com/wiki/Fanback
 - Must show "Tan/khaki-olive base coat with darker brown mottled spots": the owner ruled olive green (see ruling); infobox text says Green. Owner-ruled; flag for review only. Black sail edge/mottling: image-only, no text support.
+
+## Batch 11
+# Proposals batch 11
+
+### tibidee
+- Soften Must show bullet "drawn in flight, never as a walking animal" to "use a flight pose for this asset": page has no text barring ground movement; the restriction is an art choice. Source https://starwars.fandom.com/wiki/Tibidee
+- Consider reclassifying "Gasbag-plump torso with short blue-grey claws" as image-only (gasbags are internal per the page; torso inflation rests on the Homeworlds card art alone). Source https://starwars.fandom.com/wiki/Tibidee
+
+### urusai
+- Must show bullets on concentric blue eye-spot rings, dotted blue belly and wing-size hierarchy (two larger rear / two smaller front): mark as Legends-art-derived, not canon text. The canon page gives only four wings with talons, white undersides, spiked fan tail, jowly beaked red-eyed face, blue and yellow. Source https://starwars.fandom.com/wiki/Urusai and /Urusai/Legends
+- Engine limits is "not yet assessed"; no verified fact changes it.
+
+### uvak
+- Label the whole entry Legends (Sourced text heading and image captions were corrected in the prose). The must-show list is unchanged in content but should carry "Legends" provenance.
+- Must show "Dark grey or charcoal ... with red-orange to pink wing membrane": the wiki gives purple and orange only; treat charcoal/red as a chosen palette from images 1/3. Source https://starwars.fandom.com/wiki/Uvak
+- Must show "Round eye on the side of the head": text says eyes at the front of the head; reconcile against panels. Source https://starwars.fandom.com/wiki/Uvak
+
+### vaapad
+- Must show "Many thin whip-like tentacles (at least seven)": acceptable (Legends: most at least seven, max examined 23). The visual-brief phrase "visibly more than seven" is owner-ruled extrapolation, not sourced. Source https://starwars.fandom.com/wiki/Vaapad/Legends
+- Optional: tag the tripod/blue orb/red eye-cluster bullets "owner-directed extrapolation from sprites" per the ruling. Source as above.
+
+### varactyl
+- Must show bullet 1 contains "horse-sized": replace with "giant (canon 15 m long, 4 m at shoulder)". Reason: false vs the Databank figures on the canon page. Source https://starwars.fandom.com/wiki/Varactyl
+- Must show "Huge five-toed clawed climbing feet": five toes and hairlike adhesion are Legends-only; for canon use "broad gripping feet". Source https://starwars.fandom.com/wiki/Varactyl/Legends
+- Must show "paler yellow-green throat and belly" and "tuft at tail tip": image-derived only (canon text says green skin, blue-green feathered ridges along back). Source https://starwars.fandom.com/wiki/Varactyl
+
+### voorpak
+- Must show last bullet "Hand-sized pet creature": replace with "small pet scale, about 60 cm tall (Buggles 0.7 m); never palm-sized". Reason: canon infobox heights. Source https://starwars.fandom.com/wiki/Voorpak and /Buggles
+- Must show "Thin, long, stick-like jointed legs (six per the text)": keep six for canon; eight-legged is the Legends original only. Source https://starwars.fandom.com/wiki/Voorpak/Legends
+- Must show tufts/stalks, mask-like eye rings, needle-tooth smile: image-derived, not in text; mark reference-dependent. Source https://starwars.fandom.com/wiki/Buggles
+
+### vornskyr
+- Must show bullet 1 "canine/reptile-hybrid": change to "canine predator". Reason: text says "canine beast"; reptile hybrid comes from reading one hairless-looking illustration. Source https://starwars.fandom.com/wiki/Vornskr
+- Add "Legends" provenance to the Must show header: there is no canon vornskr creature article. Source https://starwars.fandom.com/wiki/Vornskr_(disambiguation)
+
+### vulptex
+- Must show "Long, thin legs and an upright, deer-like stance": text says only "fox-like"; reword to "slender, agile fox-like proportions". Source https://starwars.fandom.com/wiki/Vulptex
+- Must show "Coat colour is grey-blue-white": infobox says White; blue-grey is image/lighting. Source as above.
+- Must show "Tail is a dense brush of spike-like points" and "ears very large": image-only; keep as ruled infobox-image details.
+
+### wampa
+- Must show "Dark, bald-looking bare skin confined to around the eyes/muzzle only": text gives only white fur and black eyes; the bare-skin pattern is read from the ESB suit still and the unused costume. Mark reference-dependent. Source https://starwars.fandom.com/wiki/Wampa
+- Must show "Visible ... fangs / Small cranial horns": both supported (razor-sharp fangs and claws; small cranial horns). No change.
+- Add note under "bipedal": ruling says "capable of standing upright"; crouched/reaching poses allowed. (Owner ruling text unchanged.)
+
+### whisperbird
+- Must show "Bald, blue-gray, vulture-like head ... reddish tip", "four sharp curved claws", "dark chest/belly patch", "barred underwing": only golden colour is in the text; all other details are from the single Alien Archive plate. Mark as image-derived; golden plumage and an avian flying/perching body are the text-backed core. Source https://starwars.fandom.com/wiki/Whisper_bird
+- Must show last bullet "bird-of-prey/vulture silhouette": keep, but note the text does not describe scavenging.

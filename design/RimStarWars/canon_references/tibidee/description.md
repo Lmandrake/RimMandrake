@@ -9,6 +9,10 @@ giant flat wings plus internal gasbags**; **green eyes**, **long tails**; keen v
 call that resembles communication frequencies and attracts them to starships (a pest, remotely
 related to neebrays and mynocks). Length 16.17 m (Rebels: Head to Head) or 53 ft 2 in
 (Encyclopedia); mass 750 kg; habitat cold, rugged terrain. Lifespan and diet unsourced.
+Normally gentle but attack anything they feel is threatening (Databank, stormtroopers in
+Rebels); known to form mated pairs. In "Rise of the Old Masters" the *Phantom*'s jamming
+frequency was mistaken for a mating call: they collided with it and Hera lured them onto the
+Imperial forces (https://starwars.fandom.com/wiki/Tibidee; Canon, Rebels, first appearance).
 Page: https://starwars.fandom.com/wiki/Tibidee, fully read.
 
 ## Visual brief
