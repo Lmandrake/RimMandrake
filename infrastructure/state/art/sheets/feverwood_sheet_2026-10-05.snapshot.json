@@ -1,9 +1,9 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-10-07T20:06:59-0700",
+ "built": "2026-10-07T23:08:20-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
  "rows": {
   "Plant_HydenockTree_Wild": {
    "columns": {
@@ -159,11 +159,11 @@
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Claithe/RM_Claithe_a",
-    "B": "_byname"
+    "B": "Things/Plant/RM_Claithe/RM_Claithe_a"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_claithe"
+    "A": "history FeverWood 2026-09-25",
+    "B": "IN GAME \u2014 FeverWood"
    },
    "res": "Things/Plant/RM_Claithe/RM_Claithe_a",
    "reserved": [
@@ -429,20 +429,29 @@
      "east": "76046436c3c5bd87a903366e900706747a60981e4c011d83cbe325a69f1430d8",
      "north": "f351c737b9c5c856477ddbd3aae81f0c8889939b38417cd715fce6b18efbb01c",
      "south": "4ef01bf7998db113f517b377d3646f1a328e9e6539986c48908626c5a2a8dd09"
+    },
+    "C": {
+     "east": "76046436c3c5bd87a903366e900706747a60981e4c011d83cbe325a69f1430d8",
+     "north": "f351c737b9c5c856477ddbd3aae81f0c8889939b38417cd715fce6b18efbb01c",
+     "single": "86144584ee6fdbd82f673b88acea862f90d75b351bc47771f2a23636f78e73af",
+     "south": "4ef01bf7998db113f517b377d3646f1a328e9e6539986c48908626c5a2a8dd09"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Ollareth/RM_Ollareth",
-    "B": "Things/Pawn/Animal/RM_Ollareth/RM_Ollareth"
+    "B": "Things/Pawn/Animal/RM_Ollareth/RM_Ollareth",
+    "C": "Things/Pawn/Animal/RM_Ollareth/RM_Ollareth"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_ollareth"
+    "A": "history FeverWood 2026-09-26",
+    "B": "render feverwood_ollareth",
+    "C": "IN GAME \u2014 FeverWood"
    },
    "res": "Things/Pawn/Animal/RM_Ollareth/RM_Ollareth",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "ollareth"
   },
@@ -550,8 +559,8 @@
     "B": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_skellick"
+    "A": "history FeverWood 2026-09-26",
+    "B": "IN GAME \u2014 FeverWood"
    },
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick",
    "reserved": [
@@ -761,20 +770,29 @@
      "east": "3b81cbfba50aace074c75faefd39d1bb0263e44d3adf20d41c794bd50678822c",
      "north": "c0cddc3482f52e168e3197b628fe4aad4468977fe91444248968172ed89b2d1a",
      "south": "a296180a26485192f140324836d3e20d5f8be9ef225ec6047c019cf6eb24ab66"
+    },
+    "C": {
+     "east": "3b81cbfba50aace074c75faefd39d1bb0263e44d3adf20d41c794bd50678822c",
+     "north": "c0cddc3482f52e168e3197b628fe4aad4468977fe91444248968172ed89b2d1a",
+     "single": "02b841475de79a4d36f819fc303a8aa13f8427122709c3e413db47e495346aa2",
+     "south": "a296180a26485192f140324836d3e20d5f8be9ef225ec6047c019cf6eb24ab66"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Vaulm/RM_Vaulm",
-    "B": "Things/Pawn/Animal/RM_Vaulm/RM_Vaulm"
+    "B": "Things/Pawn/Animal/RM_Vaulm/RM_Vaulm",
+    "C": "Things/Pawn/Animal/RM_Vaulm/RM_Vaulm"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_vaulm"
+    "A": "history FeverWood 2026-09-26",
+    "B": "render feverwood_vaulm",
+    "C": "IN GAME \u2014 FeverWood"
    },
    "res": "Things/Pawn/Animal/RM_Vaulm/RM_Vaulm",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "vaulm"
   },
@@ -908,11 +926,6 @@
      "north": "65bdae211f776694ec2de06b89ef8c8934add73f4f2c217fc91ff63cb56068b7",
      "south": "c3ecfa24e621d698b0e1e50536e47afb6abcbf65a8e532181410b3b7e38e2a64"
     },
-    "C": {
-     "east": "5d0edfeb870f0171851002821e5083236219cb4ff746f10f575d6c8cab11f38f",
-     "north": "8aeaa19be489fb9df4034f95ff5d77857c903f46c6a8235e7f106660b6e75cb1",
-     "south": "c7080ff1dae25dab5ab0fbbd4cc44a40fbffe8cfe6600b521732717e11c40ce2"
-    },
     "D": {
      "east": "90a5e2f4b3627102bf473421e0365ae5f17a5edf2f8b142e662f720bedbdadcb",
      "north": "145431db3db7e1a85e20d94092a1dc9fdde000a2edd59331d6eb4bc9fac2a9c3",
@@ -932,7 +945,6 @@
    "graphic_of": {
     "A": "swanimals/Fambaa/Fambaa",
     "B": "swanimals/Fambaa/Fambaa",
-    "C": "swanimals/Fambaa/Fambaa",
     "D": "swanimals/Fambaa/Fambaa_Swimming",
     "E": "swanimals/Fambaa/Fambaa_j",
     "F": "swanimals/Fambaa/Fambaa_j_Swimming"
@@ -940,7 +952,6 @@
    "labels": {
     "A": "IN GAME \u2014 FambaaArtOverride",
     "B": "history FambaaArtOverride 2026-09-11",
-    "C": "donor original \u2014 mlie.starwarsanimalcollection",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary"
@@ -1048,8 +1059,8 @@
     "K": "swanimals/LongtailGorg/LongtailGorg_j_Swimming"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render longshade_rsw_longtailgorg_swim_v1 \u2014 failed canon check",
+    "A": "render longshade_rsw_longtailgorg_v3",
+    "B": "IN GAME \u2014 SWBestiary",
     "C": "render longshade_rsw_longtailgorg_v1",
     "D": "render longshade_rsw_longtailgorg_v2",
     "E": "render longshade_rsw_longtailgorg_v4 \u2014 failed canon check",
@@ -1177,8 +1188,8 @@
     "C": "_flip:swanimals/Urusai/Urusai_Flying_"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render leaningscrub_urusai_v1",
+    "A": "history SWBestiary 2026-09-18",
+    "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 Urusai_Flying_"
    },
    "res": "swanimals/Urusai/Urusai",
@@ -1222,6 +1233,11 @@
      "4_east": "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
      "4_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
      "4_south": "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9"
+    },
+    "F": {
+     "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
+     "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
+     "south": "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800"
     }
    },
    "graphic_of": {
@@ -1229,14 +1245,16 @@
     "B": "swanimals/Whisperbird/Whisperbird",
     "C": "swanimals/Whisperbird/Whisperbird",
     "D": "swanimals/Whisperbird/Whisperbird",
-    "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_"
+    "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
+    "F": "swanimals/Whisperbird/Whisperbird"
    },
    "labels": {
-    "A": "IN GAME \u2014 WhisperbirdArtOverride",
+    "A": "history WhisperbirdArtOverride 2026-09-20",
     "B": "render leaningscrub_whisperbird_v1 \u2014 failed canon check",
     "C": "render canon_whisperbird_v1",
     "D": "history WhisperbirdArtOverride 2026-09-13",
-    "E": "IN GAME \u2014 Whisperbird_Flying_"
+    "E": "IN GAME \u2014 Whisperbird_Flying_",
+    "F": "IN GAME \u2014 WhisperbirdArtOverride"
    },
    "res": "swanimals/Whisperbird/Whisperbird",
    "reserved": [
@@ -1244,7 +1262,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "whisperbird"
   },
@@ -1267,7 +1286,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Vanilla Factions Expanded - Insectoids 2",
-    "B": "render gapall_VFEI2_Megathrips_v1"
+    "B": "shipped, not loaded \u2014 MegathripsArtOverride"
    },
    "res": "Things/Pawn/Animal/Megathrips/Megathrips",
    "reserved": [
@@ -1278,5 +1297,5 @@
   }
  },
  "sheetId": "feverwood_sheet_2026-10-05",
- "snapshotId": "f87d0cb03f453230"
+ "snapshotId": "e49828b10e7af1f8"
 }

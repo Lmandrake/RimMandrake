@@ -1,0 +1,618 @@
+{
+ "served": 28,
+ "pictures_checked": 3914,
+ "unreadable": 359,
+ "sheets": {
+  "[^": "UNMEASURED: no snapshot",
+  "abyss_sheet_2026-10-04": [],
+  "blue_desert_sheet_2026-10-04": [],
+  "cauldron_sheet_2026-10-04": [],
+  "contagion_sheet_2026-10-04": [],
+  "deep_desert_sheet_2026-10-04": [],
+  "desert_sheet_2026-10-04": [],
+  "feverwood_sheet_2026-10-05": [
+   {
+    "row": "RM_Ammeth",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Chellow",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Cistrel",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Claithe",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Corvath",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Drommath",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Halquin",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Maulith",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Murrelith",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Nubrith",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Ollareth",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Plennith",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Seepril",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Skellick",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Skethral",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Skimmel",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Sodderel",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Thavrik",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Thulvane",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Tullick",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Varnoth",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Vaulm",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Verrow",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Wanlith",
+    "column": "A",
+    "label": "IN GAME \u2014 FeverWood",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   }
+  ],
+  "floodedcanyon_sheet_2026-10-05": [],
+  "gelatinousslime_sheet_2026-10-05": [],
+  "greentide_sheet_2026-10-05": [],
+  "greysea_sheet_2026-10-05": [
+   {
+    "row": "RM_Corrik",
+    "column": "A",
+    "label": "history TerminalBiomes 2026-09-26",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Essarn",
+    "column": "A",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Fessk",
+    "column": "A",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Otheska",
+    "column": "A",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Sorruth",
+    "column": "A",
+    "label": "IN GAME \u2014 TerminalBiomes",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   }
+  ],
+  "lanterndeeps_sheet_2026-10-05": [],
+  "leaningscrub_sheet_2026-10-05": [],
+  "miasma_sheet_2026-10-05": [
+   {
+    "row": "RM_Karravel",
+    "column": "A",
+    "label": "IN GAME \u2014 Miasma",
+    "faces": [
+     "south"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Karrimeth",
+    "column": "A",
+    "label": "IN GAME \u2014 Miasma",
+    "faces": [
+     "south"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   },
+   {
+    "row": "RM_Karrolun",
+    "column": "A",
+    "label": "IN GAME \u2014 Miasma",
+    "faces": [
+     "south"
+    ],
+    "reason": "geometric placeholder: flat rectangle, 1 colours, dominant 100%, ellipse-IoU 0.926, rect-fill 1.0"
+   }
+  ],
+  "nightsideice_sheet_2026-10-05": [],
+  "pyrelands_sheet_2026-10-05": [],
+  "rustcathedral_sheet_2026-10-05": [],
+  "thechill_sheet_2026-10-05": [
+   {
+    "row": "RM_Heemin",
+    "column": "A",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Oovanam",
+    "column": "A",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_OovanamCatch",
+    "column": "A",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   }
+  ],
+  "theforge_sheet_2026-10-05": [],
+  "therot_sheet_2026-10-05": [],
+  "thescald_sheet_2026-10-05": [
+   {
+    "row": "RM_Noohm",
+    "column": "B",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Shulla",
+    "column": "B",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   }
+  ],
+  "thesump_sheet_2026-10-05": [],
+  "twilightsea_sheet_2026-10-05": [
+   {
+    "row": "RM_Loohn",
+    "column": "B",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Lunoowa",
+    "column": "B",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Noolim",
+    "column": "B",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   },
+   {
+    "row": "RM_Weloon",
+    "column": "B",
+    "label": "history TerminalBiomes 2026-09-24",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 1 colours, dominant 100%, ellipse-IoU 0.999, rect-fill 0.785"
+   }
+  ],
+  "warscar_sheet_2026-10-05": [],
+  "wasteland_sheet_2026-10-05": [],
+  "webwork_sheet_2026-10-05": [
+   {
+    "row": "RM_Brennoth",
+    "column": "A",
+    "label": "IN GAME \u2014 Webwork",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Brimlock",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Cravvet",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 79%, ellipse-IoU 0.974, rect-fill 0.753"
+   },
+   {
+    "row": "RM_Dulloth",
+    "column": "A",
+    "label": "IN GAME \u2014 Webwork",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Fellome",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Grennick",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Kessaroth",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Kollavane",
+    "column": "A",
+    "label": "IN GAME \u2014 Webwork",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Norrveth",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Pellareth",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Quarrok",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 83%, ellipse-IoU 0.983, rect-fill 0.766"
+   },
+   {
+    "row": "RM_Ruddreth",
+    "column": "A",
+    "label": "IN GAME \u2014 Webwork",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Sellith",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Sivvern",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 82%, ellipse-IoU 0.986, rect-fill 0.77"
+   },
+   {
+    "row": "RM_Skennet",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 81%, ellipse-IoU 0.988, rect-fill 0.75"
+   },
+   {
+    "row": "RM_Sorrivel",
+    "column": "A",
+    "label": "IN GAME \u2014 Webwork",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Tavrosk",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Threllick",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Varrisk",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   },
+   {
+    "row": "RM_Vennick",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "east",
+     "north",
+     "south"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 70%, ellipse-IoU 0.965, rect-fill 0.744"
+   },
+   {
+    "row": "RM_Vessark",
+    "column": "A",
+    "label": "history Webwork 2026-09-25",
+    "faces": [
+     "single"
+    ],
+    "reason": "geometric placeholder: flat circle/ellipse, 2 colours, dominant 86%, ellipse-IoU 1.0, rect-fill 0.784"
+   }
+  ],
+  "weepingstones_sheet_2026-10-05": []
+ }
+}
