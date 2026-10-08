@@ -101,7 +101,7 @@ namespace RimMandrake.RimDefDump
         /// <summary>A capture holding this file is frozen and never counts against retention.</summary>
         private const string KeepMarker = ".keep";
 
-        private const int KeepNewest = 3;
+        private const int KeepNewest = RM_DumpKernel.KeepNewest;
 
         /// <summary>
         /// Stamped ONCE per run and used for the capture id, the manifest and
@@ -288,18 +288,14 @@ namespace RimMandrake.RimDefDump
         {
             try
             {
-                var ids = new List<string>();
+                var dirs = new List<KeyValuePair<string, bool>>();
                 foreach (string dir in Directory.GetDirectories(capturesRoot))
                 {
                     string name = Path.GetFileName(dir);
-                    if (!IsCaptureId(name)) continue;               // .writing, or junk
-                    if (File.Exists(Path.Combine(dir, KeepMarker))) continue;   // frozen
-                    ids.Add(name);
+                    dirs.Add(new KeyValuePair<string, bool>(name, File.Exists(Path.Combine(dir, KeepMarker))));   // frozen captures carry the keep marker
                 }
-                // The id is fixed-width ISO-8601, so ordinal sort IS chronological.
-                ids.Sort(StringComparer.Ordinal);
-                int drop = ids.Count - KeepNewest;
-                for (int i = 0; i < drop; i++)
+                List<string> ids = RM_DumpKernel.PruneVictims(dirs, KeepNewest);
+                for (int i = 0; i < ids.Count; i++)
                 {
                     string victim = Path.Combine(capturesRoot, ids[i]);
                     try
@@ -328,16 +324,7 @@ namespace RimMandrake.RimDefDump
         /// </summary>
         private static bool IsCaptureId(string name)
         {
-            if (name == null || name.Length != 20) return false;
-            for (int i = 0; i < 20; i++)
-            {
-                char c = name[i];
-                if (i == 4 || i == 7 || i == 13 || i == 16) { if (c != '-') return false; }
-                else if (i == 10) { if (c != 'T') return false; }
-                else if (i == 19) { if (c != 'Z') return false; }
-                else if (c < '0' || c > '9') return false;
-            }
-            return true;
+            return RM_DumpKernel.IsCaptureId(name);
         }
 
         private static long TimeIt(Action a)
@@ -1048,11 +1035,9 @@ namespace RimMandrake.RimDefDump
         private static string ReserveStem(HashSet<string> assigned, string stem,
                                           DefTypeEntry e, List<string> collisions)
         {
-            if (assigned.Add(stem)) return stem;
-
-            string asm = SafeFileName(e.type.Assembly.GetName().Name);
-            string candidate = stem + "__" + asm;
-            for (int i = 2; !assigned.Add(candidate); i++) candidate = stem + "__" + asm + "_" + i;
+            bool clashed;
+            string candidate = RM_DumpKernel.ReserveStem(assigned, stem, e.type.Assembly.GetName().Name, out clashed);
+            if (!clashed) return candidate;
 
             collisions.Add(stem + ": file stem already claimed — " + e.type.FullName
                            + " -> " + candidate + ".json");
@@ -1086,13 +1071,7 @@ namespace RimMandrake.RimDefDump
         /// </summary>
         private static string SafeFileName(string s)
         {
-            var sb = new StringBuilder(s.Length);
-            for (int i = 0; i < s.Length; i++)
-            {
-                char c = s[i];
-                sb.Append(char.IsLetterOrDigit(c) || c == '.' || c == '_' || c == '-' ? c : '_');
-            }
-            return sb.ToString();
+            return RM_DumpKernel.SafeFileName(s);
         }
 
         /// <summary>
