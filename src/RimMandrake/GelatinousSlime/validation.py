@@ -1049,6 +1049,10 @@ def seeker_proofs(t):
     with _comp(t, "seeker_loads_without_the_dialog"):
         if t._guard():
             v = _kv(_seeker(t, "ProofLoad"))
+            if v.get("primed") == "True" and not v.get("rider"):
+                # LIVE 2026-10-08 (acc_biomes-15): RM_Gene_B25_TheReek / A16_PheromoneCharm live in the Utinni patch
+                # layer (RUT_SlimeGenes_BList.xml), absent from the 15-mod tier: SetLoad had nothing to prime.
+                _unmeasured(t, "RM_Gene_B25_TheReek is not loaded (Utinni patch layer): %r" % v)
             if v.get("primed") != "True" or not v.get("target") or v.get("rider") != "RM_Gene_B25_TheReek":
                 _fail("SetLoad did not prime the seeker with target + rider: %r" % v)
     with _comp(t, "extract_job_swaps_to_a_loaded_seeker"):
@@ -1063,6 +1067,10 @@ def seeker_proofs(t):
     with _comp(t, "injection_marks_starts_fast_clock_and_antidote_wins_the_race", toggle="slimificationEnabled"):
         if t._guard():
             text = _seeker(t, "ProofInject")
+            _rows, _nf = _defs(t, ["GeneDef/RM_Gene_B25_TheReek", "GeneDef/RM_Gene_A16_PheromoneCharm"])
+            if _nf:
+                _unmeasured(t, "%s not loaded (Utinni patch layer, absent from the 15-mod tier): the rider and charm "
+                               "arms cannot be told apart" % _nf)
             a = _kv(text[text.find("A["):text.find("] B[")])
             b = _kv(text[text.find("B["):])
             for k in ("target", "rider", "coma", "fastClock"):

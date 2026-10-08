@@ -189,18 +189,22 @@ namespace RimMandrake.Scarlands
 
         // Visual only (spec 5): the dome is drawn with the force-field bubble material, never the
         // interceptor class, so projectiles pass.
-        private static Material domeMat;
+        // A static Material field on a comp class without [StaticConstructorOnStartup] draws the engine's
+        // load warning (AEROSOL_SCREEN_STATICCTOR_WARN_1); the material lives in a holder that has it.
+        [StaticConstructorOnStartup]
+        private static class DomeMaterial
+        {
+            public static readonly Material Mat = MaterialPool.MatFrom("Other/ForceField", ShaderDatabase.MoteGlow, new Color(0.95f, 0.75f, 0.35f, 0.18f));
+        }
 
         public override void PostDraw()
         {
             base.PostDraw();
             if (!Props.drawDome || !RM_WarscarSettings.aerosolScreenEnabled || !IsScreenLive) return;
-            if (domeMat == null)
-                domeMat = MaterialPool.MatFrom("Other/ForceField", ShaderDatabase.MoteGlow, new Color(0.95f, 0.75f, 0.35f, 0.18f));
             float d = Radius * 2f;
             Vector3 pos = parent.DrawPos;
             pos.y = AltitudeLayer.MoteOverhead.AltitudeFor();
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(d, 1f, d)), domeMat, 0);
+            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(d, 1f, d)), DomeMaterial.Mat, 0);
         }
 
         public override void PostDrawExtraSelectionOverlays()

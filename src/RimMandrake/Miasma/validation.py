@@ -412,6 +412,10 @@ def _build_suite():
             if t.session is None:
                 return
             text = proof(t, "ProofReturn")
+            if text.startswith("ERROR no warden mother and no water cell"):
+                # A site fact (this map has no water for the proof's mother), not a mod failure: UNMEASURED.
+                _unmeasured(t, text)
+                return
             for want in ("taken=1", "youngWild=True", "stillStranded=False", "tolerated=True", "betrayed=False"):
                 if want not in text:
                     raise ExpectationFailed("return proof missing %s: %s" % (want, text[:240]))
@@ -420,6 +424,10 @@ def _build_suite():
             if t.session is None:
                 return
             text = proof(t, "ProofSell")
+            if text.startswith("ERROR no warden mother and no water cell"):
+                # A site fact (this map has no water for the proof's mother), not a mod failure: UNMEASURED.
+                _unmeasured(t, text)
+                return
             after = text[text.find("after["):]
             for want in ("betrayed=True", "tolerated=False"):
                 if want not in after:

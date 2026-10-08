@@ -96,6 +96,11 @@ def main():
     lint = subprocess.run([sys.executable, os.path.join(ROOT, "src", "RimMandrake", "Utils", "lint_gelatinousslime_defs.py"), "--quiet"], capture_output=True, text=True)
     if lint.returncode != 0 or " 0 ERROR" not in lint.stdout:
         bad.append("def lint (lint_gelatinousslime_defs.py) has errors: " + (lint.stdout + lint.stderr)[-400:])
+    # Regression (GELATINOUSSLIME_SEEKER_MARK_FAILS_1): with the Utinni gene layer absent SlimeDefs.TheReek is null and
+    # a rider-less seeker (RiderGene null) compared equal to it, doubling the mark. The call must null-guard.
+    gs = open(os.path.join(ROOT, "src", "RimMandrake", "GelatinousSlime", "Source", "GeneSeeker.cs"), encoding="utf-8").read()
+    if "comp.RiderGene == SlimeDefs.TheReek" in gs.replace("SlimeDefs.TheReek != null && comp.RiderGene == SlimeDefs.TheReek", ""):
+        bad.append("GeneSeeker.cs compares comp.RiderGene to SlimeDefs.TheReek without a null guard")
     print("selftest_slime_suite: %d components clean, %d faults, %d problem(s)" % (n, len(CASES), len(bad)))
     for b in bad:
         print("  FAIL " + b)

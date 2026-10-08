@@ -637,7 +637,7 @@ class WLGame(MockGame):
                 has = any(q["kindDef"] == "RM_Smolderback" and self.room_of(q["x"], q["z"]) is rm for q in living)
                 if has and (self.on("radiothermalHeatEnabled") or "heat_ignores_toggle" in self.brk) and rm["temp"] < 26 \
                         and "no_heat" not in self.brk:
-                    rm["temp"] = min(26.0, rm["temp"] + 1.2)
+                    rm["temp"] = min(26.0, rm["temp"] + 0.5)
             for q in living:
                 if q.get("onfeed") is not None:
                     q["onfeed"] = ((q["x"], q["z"]) in self.poll) or "always_feed" in self.brk

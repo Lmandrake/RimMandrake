@@ -1278,9 +1278,13 @@ def bloom_chain(t):
             if _live(t):
                 with _setting(t, "runwayBloomEnabled", False):
                     saw, arms = trial("OFF")
-                if any(saw.values()) or arms:
-                    _fail("runwayBloomEnabled OFF but the bloom still fired: Flee %s, arms %d"
-                          % (saw, arms))
+                # Flee alone is NOT bloom-specific: vanilla wild animals flee an approaching colonist with no
+                # bloom at all (LIVE 2026-10-08 acc_biomes: all four species fled with the toggle OFF while
+                # RM_MapComponent_RunwayBloom.MapComponentTick returns at its first line). The bloom's own
+                # signature is the vissler arm shed, which only RunPending produces.
+                if arms:
+                    _fail("runwayBloomEnabled OFF but the bloom still fired: %d vissler arms shed (Flee %s)"
+                          % (arms, saw))
         with _comp(t, "bloom_answers_a_walker", toggle="runwayBloomEnabled"):
             if _live(t):
                 saw, arms = trial("ON")

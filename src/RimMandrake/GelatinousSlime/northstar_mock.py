@@ -164,7 +164,7 @@ class SlimeSim(object):
 
     def genes(self):
         tg, rg = self.archive()
-        return set(tg + rg)
+        return set(tg + rg) | {"RM_Gene_B25_TheReek", "RM_Gene_A16_PheromoneCharm"}
 
     def t_jawa_map_info(self, p):
         return {"success": True, "sizeX": 250, "sizeZ": 250, "mapBiome": self.biome}

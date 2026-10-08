@@ -1135,10 +1135,13 @@ def sandswim_chain(t):
     _prep(t, "sandswim")
     rect = _rect(t)
     x, z = t.anchor
-    sand, grav = (x - 10, z - 6), (x - 10, z + 6)
+    # LIVE 2026-10-08 (acc_biomes): the old 10x6 gravel patch let the gravel vekka wander onto the surrounding sand
+    # inside the 300-tick wait and submerge there (IsSwimTerrain reads only Sand/SoftSand/RM_DeepSand, so the mod
+    # was right). The patch is now the whole north half of the pad and the vekka starts in its middle.
+    sand, grav = (x - 10, z - 6), (x, z + 6)
     with _comp(t, "vekka_submerges_on_sand"):
         if _live(t):
-            t.bridge_call("jawa/set_terrain_batch", ops="Gravel:%d,%d,10,6" % (grav[0] - 3, grav[1] - 3),
+            t.bridge_call("jawa/set_terrain_batch", ops="Gravel:%d,%d,24,12" % (x - 12, z),
                           layer="top")
             on_sand = _spawn(t, "RM_Vekka", sand[0], sand[1])
             on_grav = _spawn(t, "RM_Vekka", grav[0], grav[1])
@@ -1279,10 +1282,20 @@ def loomma_chain(t):
             _settle_shade(t)
             opn = [_spawn(t, "RM_Loomma", x - 9 + i, z) for i in range(3)]
             shd = [_spawn(t, "RM_Loomma", roof[0] + 3 + i, roof[1] + 4) for i in range(3)]
-            t.wait_ticks(600)
+            # LIVE 2026-10-08 (acc_biomes): roofed loommas read 0.268 against 0.23 in the open. The clock is
+            # right (ShadeAt takes the roof layer); a loomma FORAGES THE SHADE RIM and wanders off the roof
+            # patch, so a pawn only counts as roofed/open if it stood on its side at BOTH samples.
+            def _on_roof(p, rws):
+                c = _xz(rws.get(p))
+                return c is not None and roof[0] <= c[0] < roof[0] + roof[2] and roof[1] <= c[1] < roof[1] + roof[3]
+            t.wait_ticks(300)
+            mid = _rows(t, rect=_rs(rect), health=True)
+            t.wait_ticks(300)
             rows = _rows(t, rect=_rs(rect), health=True)
-            so = [_sev(rows.get(p), "RM_LoommaSunstruck") for p in opn if p in rows]
-            ss = [_sev(rows.get(p), "RM_LoommaSunstruck") for p in shd if p in rows]
+            opn = [p for p in opn if p in rows and not _on_roof(p, mid) and not _on_roof(p, rows)]
+            shd = [p for p in shd if p in rows and _on_roof(p, mid) and _on_roof(p, rows)]
+            so = [_sev(rows.get(p), "RM_LoommaSunstruck") for p in opn]
+            ss = [_sev(rows.get(p), "RM_LoommaSunstruck") for p in shd]
             _note(t, "loomma sunstruck severities (open / roofed)", [so, ss])
             if not so or not ss:
                 _unmeasured(t, "loommas left the pad before they could be read")
