@@ -279,6 +279,10 @@ namespace RimMandrake.NightsideIce.SelfTest
             {
                 Check(!RM_NightsideIceKernel.InEdgeBand(8f) && RM_NightsideIceKernel.InEdgeBand(9f) && RM_NightsideIceKernel.InEdgeBand(144f) && !RM_NightsideIceKernel.InEdgeBand(145f), "edge band is 9..144 squared, inclusive (3 to 12 cells)");
                 Check(!RM_NightsideIceKernel.InEdgeBand(float.MaxValue), "no buildings at all (nearest = MaxValue) is not an edge");
+                // the source footprint is 5..6 x 5..6; the ring around it touches, its inside and anything further does not
+                Check(RM_NightsideIceKernel.Touches(4, 5, 5, 5, 6, 6) && RM_NightsideIceKernel.Touches(7, 7, 5, 5, 6, 6) && RM_NightsideIceKernel.Touches(5, 4, 5, 5, 6, 6) && RM_NightsideIceKernel.Touches(6, 7, 5, 5, 6, 6), "the one-cell ring (corners included) touches the source");
+                Check(!RM_NightsideIceKernel.Touches(5, 5, 5, 5, 6, 6) && !RM_NightsideIceKernel.Touches(6, 6, 5, 5, 6, 6) && !RM_NightsideIceKernel.Touches(3, 5, 5, 5, 6, 6) && !RM_NightsideIceKernel.Touches(8, 8, 5, 5, 6, 6) && !RM_NightsideIceKernel.Touches(5, 3, 5, 5, 6, 6), "inside the footprint or two cells off does not touch");
+                Check(RM_NightsideIceKernel.Score(4, 5, 5, 5, 5, 5, 6, 6, true) == -1f && RM_NightsideIceKernel.Score(2, 5, 5, 5, 5, 5, 6, 6, true) == 9f && RM_NightsideIceKernel.Score(4, 5, 5, 5, 5, 5, 6, 6, false) == 0f, "score: -1 touching, squared distance otherwise, 0 off the ice");
                 for (int legCells = -3; legCells <= 20; legCells++)
                     for (int count = 1; count <= 30; count++)
                     {
@@ -313,8 +317,10 @@ namespace RimMandrake.NightsideIce.SelfTest
         {
             public int w, h; public bool[,] stand, ice;
             public bool InBounds(int x, int z) { return x >= 0 && z >= 0 && x < w && z < h; }
-            public bool Standable(int x, int z) { return InBounds(x, z) && stand[x, z]; }
-            public bool IsIce(int x, int z) { return InBounds(x, z) && ice[x, z]; }
+            // Outside the map everything reads as standable ice: the engine's IntVec3.Standable on an out-of-bounds cell is not a safe "no", so the
+            // kernel's own InBounds test is the only thing keeping a path inside the map.
+            public bool Standable(int x, int z) { return !InBounds(x, z) || stand[x, z]; }
+            public bool IsIce(int x, int z) { return !InBounds(x, z) || ice[x, z]; }
         }
 
         private static Grid MakeGrid(Random r, int mode)
@@ -376,6 +382,39 @@ namespace RimMandrake.NightsideIce.SelfTest
                     Validate(g, st, startOnIce, path);
                     Validate(g, st, startOnIce, full);
                     if (path.Count == 0) EmptyPaths++;
+
+                    // --- an independent search mirroring the documented algorithm (queue of cells, budget = cells taken off the queue,
+                    //     best updated when a cell is queued, strict improvement only, compass order N E S W SE NE NW SW): exact path equality
+                    {
+                        int[] ox = { 0, 1, 0, -1, 1, 1, -1, -1 }, oz = { 1, 0, -1, 0, -1, 1, 1, -1 };
+                        var par = new Dictionary<(int, int), (int, int)> { [st] = st };
+                        var q = new Queue<(int, int)>(); q.Enqueue(st);
+                        var best = st; float bestSc = Sc(st.Item1, st.Item2, srcX, srcZ, rect, startOnIce); int left = budget;
+                        while (q.Count > 0 && left-- > 0)
+                        {
+                            var c = q.Dequeue();
+                            if (!startOnIce && g.InBounds(c.Item1, c.Item2) && g.ice[c.Item1, c.Item2]) { best = c; break; }
+                            for (int i = 0; i < 8; i++)
+                            {
+                                var nb = (c.Item1 + ox[i], c.Item2 + oz[i]);
+                                if (par.ContainsKey(nb) || !g.InBounds(nb.Item1, nb.Item2) || !g.stand[nb.Item1, nb.Item2]) continue;
+                                if (startOnIce && !g.ice[nb.Item1, nb.Item2]) continue;
+                                if (i >= 4)
+                                {
+                                    bool sa = g.Standable(nb.Item1, c.Item2), sb = g.Standable(c.Item1, nb.Item2);
+                                    if (!(sa && sb)) continue;
+                                    if (startOnIce && !(g.IsIce(nb.Item1, c.Item2) && g.IsIce(c.Item1, nb.Item2))) continue;
+                                }
+                                par[nb] = c; q.Enqueue(nb);
+                                float sc = Sc(nb.Item1, nb.Item2, srcX, srcZ, rect, startOnIce);
+                                if (sc < bestSc) { bestSc = sc; best = nb; }
+                            }
+                        }
+                        var want = new List<(int, int)>();
+                        for (var c = best; c != st; c = par[c]) want.Add(c);
+                        want.Reverse();
+                        Check(want.SequenceEqual(path.Select(kv => (kv.Key, kv.Value))), "with budget " + budget + " the path has " + path.Count + " cells, the mirrored search " + want.Count + " (or different cells)");
+                    }
 
                     // --- independent search: shortest distances over the same move rules (written separately: layered frontier, not a queue)
                     var dist = new Dictionary<(int, int), int> { [st] = 0 };
