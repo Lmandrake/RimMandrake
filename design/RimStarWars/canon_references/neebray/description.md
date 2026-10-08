@@ -18,8 +18,7 @@ Neebray were flying, limbless creatures which varied greatly in size and habitat
 
 ## Visual brief
 Viewed 2026-10-04. Images 1, 2 and 3 are canon (a baby neebray CGI render; an adult manta illustration
-in a nebula; Yoda holding a baby on Rugosa); image 4 is LEGENDS (the Revenge of the Sith film
-shot of giant neebray flying over Kaliida Nebula). Two life stages look quite different.
+in a nebula; Yoda holding a baby on Rugosa); image 4 is from the LEGENDS page (giant neebray in the Kaliida Nebula; the scene is from The Clone Wars episode "Shadow of Malevolence", per the wiki's own citation, not Revenge of the Sith; https://starwars.fandom.com/wiki/Neebray/Legends). Two life stages look quite different.
 - **Baby (images 1, 3) -- the ground-world form**: a small, tadpole-like body with a big blunt head
   and no limbs at all, smooth chubby body tapering to a small tail; TWO big translucent butterfly/
   fish-like WINGS on the sides (pale blue-green to blue, finely speckled/shimmering, dark rusty-red
@@ -33,11 +32,9 @@ shot of giant neebray flying over Kaliida Nebula). Two life stages look quite di
   tendrils trailing below the jaw/body and a pair of smaller tail fins. Colour in canon art: white-
   pink to pale grey body with translucent pink-tan wings against red nebula; the film still shows
   them red-brown silhouettes with glowing red throats.
-- **LOUD DISAGREEMENT**: prose says "six large eyes" -- images show 3-4 big eyes on a baby and a handful
-  of small orange eyes on the adult; prose says "flat limbless bodies" -- the baby is a chubby
-  tadpole-body, not flat. Trust the images: adults flat and manta-like, babies rounded.
+- **Prose vs image**: current canon prose says six large eyes; only 3-4 are visible on the baby in perspective views, which does not disprove six total. The prose "flat limbless bodies" describes adults; the baby is a chubby tadpole-body (the page itself says babies have proportionally much bigger bodies). Adults flat and manta-like, babies rounded.
 - **Adult extras**: a long tendril from the underside of the jaw (prose, matches the thin tendrils).
-- **Size cues**: baby = bird-sized (on a palm); adult = gigantic, dwarfs starships in space.
+- **Size cues**: baby = bird-sized (on a palm); adult = gigantic, dwarfs starships in space; largest recorded wingspan 1,674 m (Star Wars: Alien Archive, an extreme, not a typical adult). Babies also appear in space in Rebels "Double Agent Droid" (pink and purple form), so baby is not planet-only (https://starwars.fandom.com/wiki/Neebray). Appearances: "Ambush" (Rugosa babies, red and light-blue), "Rookies" (Rishi Moon), "Shadow of Malevolence" (giant adults, gray and beige).
 - **For RimWorld**: a Tatooine/ground creature is the BABY form (bird-sized, pink-red and translucent-winged).
 
 ## Must show

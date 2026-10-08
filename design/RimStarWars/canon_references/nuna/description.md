@@ -12,8 +12,7 @@ omnivore (mostly plants, occasionally fish). They could not fly, were known
 for their stupidity, but were adaptable and easy to care for — combined with
 fast egg production, this made them a popular, easy livestock animal capable
 of feeding a family of four per bird. When angered or threatened they could
-inflate their bodies to a larger size. A 2020s comic (*Doctor Aphra* #33)
-establishes they were capable of growing blue and red feathers. Canon role
+inflate their bodies to a larger size. The canon article states nunas were capable of growing blue and red feathers, citing *Doctor Aphra* (2016) #33 (released June 19, 2019; https://starwars.fandom.com/wiki/Doctor_Aphra_(2016)_33). Wookieepedia lists them under Flightless birds (https://starwars.fandom.com/wiki/Nuna). Canon role
 is overwhelmingly culinary and background-livestock: roast nuna, deep-fried
 nuna leg, Nuna Turkey Jerky (a real Galaxy's Edge/Batuu snack item at Ronto
 Roasters), and nuna used as the ball in the sport "nuna-ball." They appear
@@ -26,7 +25,7 @@ The three candidate images (all official render/promotional art of the
 animal itself, not food shots) are internally consistent with each other but
 **disagree sharply with the "bird" / "swamp turkey" framing in the text**.
 None of the three shows anything resembling feathers, a beak, wings, or a
-turkey-like silhouette. What they actually show is a squat, hunched,
+turkey-like silhouette (canon text nonetheless says nunas could grow blue and red feathers, so absence of feathers in these renders is not a species-wide prohibition). What they actually show is a squat, hunched,
 **toad- or turtle-like amphibian/reptile**: a heavy domed/ridged shell-like
 back rising into a peak, a wide froglike head with a broad flat mouth and
 bulging pink or amber eyes, floppy skin flaps hanging at the sides of the

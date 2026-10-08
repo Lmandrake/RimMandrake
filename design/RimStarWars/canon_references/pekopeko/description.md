@@ -16,13 +16,16 @@ Two separate Wookieepedia entries exist and they read differently:
   nuts and peel fruit; mate for life, two chicks per litter. First seen (a
   pair flying over the Gungan Sacred Place) in *The Phantom Menace* (32 BBY).
   A painting of Queen Padmé Amidala holding a peko-peko hangs in the Theed
-  Royal Palace per *Battlefront II*.
+  Royal Palace per *Battlefront II*. The canon page's behind-the-scenes notes
+  (citing the old Databank) say concept artist Terryl Whitlatch developed the
+  coloring from a real peacock and hyacinth macaw, the beak was designed to
+  crack coconut-sized nuts, and the wing claws resemble the hoatzin's
+  (https://starwars.fandom.com/wiki/Peko-peko).
 - **Legacy/Legends** (`Peko-peko/Legends`): large, strong "reptavians" native
   to the Gungan swamps of Naboo (a second breed on Nal Hutta), length ~3
-  meters. Coloring: **blue and yellow skin, indigo-sapphire feathers** —
-  concept artist Terryl Whitlatch developed it from a real-world peacock and
-  a hyacinth macaw. Clawed wings (hoatzin-style) for climbing in the
-  tree canopy, a powerful beak that can crush coconut-sized nuts, fairly
+  meters (the 3 m figure is Legends only). Coloring: **blue and yellow skin, indigo-sapphire feathers**.
+  Clawed wings for climbing in the
+  tree canopy, a powerful beak that can crush even the hardest nuts, fairly
   toxic skin/feathers (causes stomach pain, vomiting, occasional death in
   predators, though not universally). Preyed on by tusk cats; ate kaadu eggs.
   Used as a mount in *Star Wars Galaxies* — a mutated "Toxic peko-peko"
@@ -48,9 +51,8 @@ actually confirms it:
   only: long S-curved neck, elongated toothy-looking beak/skull, folded
   wings, long tail) — confirms silhouette and beak shape but carries **no
   color information at all**; do not read "gray" as canon.
-- `wookieepedia_infobox.jpg` — a small flat cartoon icon in tan/khaki/gold
-  with a bony reptilian-looking head; this reads as a generic wiki
-  species-icon illustration rather than accurate canon color and visibly
+- `wookieepedia_infobox.jpg` — the Legends page's infobox image (`Peko-peko.jpg`; its original publication is not stated on the wiki), a small flat cartoon in tan/khaki/gold
+  with a bony reptilian-looking head; it is not a canon colour source and visibly
   UNDERSELLS the blue plumage the text describes — exactly the failure mode
   this library exists to catch. Keep it only as a cautionary example, not a
   reference to render from.
