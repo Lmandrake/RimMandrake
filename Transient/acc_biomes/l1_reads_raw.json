@@ -1,0 +1,1474 @@
+{
+ "tools_api": "<class 'list'>",
+ "jawa_tools_n": 375,
+ "graffiti_tools": {
+  "thing_graphic": true,
+  "spawn_variant": true,
+  "running_mods": true,
+  "glow_at": true,
+  "site_state": true
+ },
+ "chotrix_print": {
+  "success": true,
+  "found": 1,
+  "requested": 1,
+  "notFound": [],
+  "msg": "1 of 1 def(s) resolved",
+  "raw": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [
+    "modExtensions"
+   ],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_Filth_SettledFilm",
+     "found": true,
+     "defName": "RM_Filth_SettledFilm",
+     "defType": "ThingDef",
+     "label": "settled film",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "modExtensions": [
+       {
+        "humanTexPath": "Things/Tracks/RM_TrackPrint_Human",
+        "animalTexPath": "Things/Tracks/RM_TrackPrint_Animal",
+        "largeTexPath": "Things/Tracks/RM_TrackPrint_Large",
+        "dragTexPath": "Things/Tracks/RM_TrackDrag",
+        "raceOverrides": [
+         {
+          "race": "RM_Chotrix",
+          "texPath": "Things/Tracks/RM_ChotrixPrint"
+         }
+        ],
+        "biomes": [
+         "RM_Warscar"
+        ],
+        "printSize": 0.6,
+        "minBodySize": 0.0
+       }
+      ]
+     }
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_1d304b7781c842a9aebdb361dc008fa3",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 7
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ "chotrix_job": {
+  "success": true,
+  "found": 1,
+  "requested": 1,
+  "notFound": [],
+  "msg": "1 of 1 def(s) resolved",
+  "raw": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [
+    "driverClass"
+   ],
+   "defs": [
+    {
+     "requested": "JobDef/RM_ChotrixDragKill",
+     "found": true,
+     "defName": "RM_ChotrixDragKill",
+     "defType": "JobDef",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "driverClass": "(no such field)"
+     }
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_893acfbae0dd405aa82e56d51cfe0fd9",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 4
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ "chotrix_tt": {
+  "success": true,
+  "found": 0,
+  "requested": 1,
+  "notFound": [
+   "ThinkTreeDef/RM_ThinkTree_Chotrix"
+  ],
+  "msg": "0 of 1 def(s) resolved; 1 not found",
+  "raw": {
+   "success": true,
+   "message": "0 of 1 def(s) resolved; 1 not found",
+   "requested": 1,
+   "foundCount": 0,
+   "notFound": [
+    "ThinkTreeDef/RM_ThinkTree_Chotrix"
+   ],
+   "malformed": [],
+   "fieldsAsked": [
+    "thinkRoot"
+   ],
+   "defs": [
+    {
+     "requested": "ThinkTreeDef/RM_ThinkTree_Chotrix",
+     "found": false,
+     "defType": "ThinkTreeDef",
+     "defName": "RM_ThinkTree_Chotrix"
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_9a1144943f4c40ee9502f6c52f231bcf",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 4
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ "aero": {
+  "success": true,
+  "found": 2,
+  "requested": 2,
+  "notFound": [],
+  "msg": "2 of 2 def(s) resolved",
+  "raw": {
+   "success": true,
+   "message": "2 of 2 def(s) resolved",
+   "requested": 2,
+   "foundCount": 2,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [
+    "comps"
+   ],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_AerosolScreen",
+     "found": true,
+     "defName": "RM_AerosolScreen",
+     "defType": "ThingDef",
+     "label": "aerosol screen",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "comps": [
+       {
+        "allowNonPlayer": false,
+        "forbidOnMake": false,
+        "compClass": "CompForbiddable"
+       },
+       {
+        "transmitsPower": false,
+        "idlePowerDraw": -1.0,
+        "shortCircuitInRain": false,
+        "showPowerNeededIfOff": true,
+        "alwaysDisplayAsUsingPower": false,
+        "compClass": "CompPowerTrader"
+       },
+       {
+        "commandTexture": "UI/Commands/DesirePower",
+        "commandLabelKey": "CommandDesignateTogglePowerLabel",
+        "commandDescKey": "CommandDesignateTogglePowerDesc",
+        "compClass": "CompFlickable"
+       },
+       {
+        "compClass": "CompBreakdownable"
+       },
+       {
+        "fuelConsumptionRate": 0.33,
+        "fuelCapacity": 10.0,
+        "initialFuelPercent": 0.0,
+        "autoRefuelPercent": 0.3,
+        "fuelConsumptionPerTickInRain": 0.0,
+        "fuelFilter": {
+         "hiddenSpecialFilters": [],
+         "allowedHitPointsConfigurable": true,
+         "allowedQualitiesConfigurable": true
+        },
+        "destroyOnNoFuel": false,
+        "consumeFuelOnlyWhenUsed": false,
+        "consumeFuelOnlyWhenPowered": false,
+        "showFuelGizmo": false,
+        "initialAllowAutoRefuel": true,
+        "showAllowAutoRefuelToggle": true,
+        "allowRefuelIfNotEmpty": true,
+        "fuelIsMortarBarrel": false,
+        "targetFuelLevelConfigurable": false,
+        "initialConfigurableTargetFuelLevel": 0.0,
+        "drawOutOfFuelOverlay": true,
+        "minimumFueledThreshold": 0.0,
+        "drawFuelGaugeInMap": false,
+        "atomicFueling": false,
+        "factorByDifficulty": false,
+        "externalTicking": false,
+        "hideGizmosIfNotPlayerFaction": false,
+        "functionsInVacuum": true,
+        "canEjectFuel": false,
+        "compClass": "CompRefuelable"
+       },
+       {
+        "radius": 7.9,
+        "needsPower": true,
+        "drawDome": true,
+        "calibrated": false,
+        "compClass": "RM_CompAerosolScreen"
+       }
+      ]
+     }
+    },
+    {
+     "requested": "ThingDef/RM_ProjectorCore",
+     "found": true,
+     "defName": "RM_ProjectorCore",
+     "defType": "ThingDef",
+     "label": "projector core",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "comps": [
+       {
+        "allowNonPlayer": false,
+        "forbidOnMake": false,
+        "compClass": "CompForbiddable"
+       }
+      ]
+     }
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_a9e6413320924ac1a80c82eeece99ebc",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 6
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ "aero_biome": {
+  "success": true,
+  "found": 1,
+  "requested": 1,
+  "notFound": [],
+  "msg": "1 of 1 def(s) resolved",
+  "raw": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [
+    "modExtensions"
+   ],
+   "defs": [
+    {
+     "requested": "BiomeDef/RM_Wasteland",
+     "found": true,
+     "defName": "RM_Wasteland",
+     "defType": "BiomeDef",
+     "label": "the Wastes",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "modExtensions": [
+       {
+        "temperature": {
+         "min": -35.0,
+         "max": 30.0
+        },
+        "rainfall": {
+         "min": 0.0,
+         "max": 500.0
+        },
+        "elevation": {
+         "min": 0.0,
+         "max": 600.0
+        },
+        "baseScore": 28.0,
+        "degreeWeight": 1.0,
+        "rainfallDivisor": 150.0
+       },
+       {},
+       {
+        "material": "RM_Dunes_WastelandAsh",
+        "lockBearingToSubstellar": false,
+        "substellarLatitude": 0.0,
+        "substellarLongitude": 0.0,
+        "windBlowsTowardSubstellar": false,
+        "clearYieldPerDepth": 6.0
+       },
+       {}
+      ]
+     }
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_e7cbb57c586342c6a50879effea98def",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 5
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ "wreckfields": {
+  "success": true,
+  "found": 16,
+  "requested": 16,
+  "notFound": [],
+  "msg": "16 of 16 def(s) resolved",
+  "raw": {
+   "success": true,
+   "message": "16 of 16 def(s) resolved",
+   "requested": 16,
+   "foundCount": 16,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [
+    "defName"
+   ],
+   "defs": [
+    {
+     "requested": "GenStepDef/RM_WreckField_Abyss",
+     "found": true,
+     "defName": "RM_WreckField_Abyss",
+     "defType": "GenStepDef",
+     "label": "Abyss",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_Abyss"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_BlueDesert",
+     "found": true,
+     "defName": "RM_WreckField_BlueDesert",
+     "defType": "GenStepDef",
+     "label": "Blue Desert",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_BlueDesert"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_Contagion",
+     "found": true,
+     "defName": "RM_WreckField_Contagion",
+     "defType": "GenStepDef",
+     "label": "Contagion",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_Contagion"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_FeverWood",
+     "found": true,
+     "defName": "RM_WreckField_FeverWood",
+     "defType": "GenStepDef",
+     "label": "Fever Wood",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_FeverWood"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_FloodedCanyon",
+     "found": true,
+     "defName": "RM_WreckField_FloodedCanyon",
+     "defType": "GenStepDef",
+     "label": "Flooded Canyon",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_FloodedCanyon"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_GreyFloor",
+     "found": true,
+     "defName": "RM_WreckField_GreyFloor",
+     "defType": "GenStepDef",
+     "label": "Grey Sea floor",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_GreyFloor"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_LanternDeeps",
+     "found": true,
+     "defName": "RM_WreckField_LanternDeeps",
+     "defType": "GenStepDef",
+     "label": "Lantern Deeps",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_LanternDeeps"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_Miasma",
+     "found": true,
+     "defName": "RM_WreckField_Miasma",
+     "defType": "GenStepDef",
+     "label": "Miasma",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_Miasma"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_NightsideIce",
+     "found": true,
+     "defName": "RM_WreckField_NightsideIce",
+     "defType": "GenStepDef",
+     "label": "Nightside Ice",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_NightsideIce"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_Scald",
+     "found": true,
+     "defName": "RM_WreckField_Scald",
+     "defType": "GenStepDef",
+     "label": "Scald",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_Scald"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_ScaldFloor",
+     "found": true,
+     "defName": "RM_WreckField_ScaldFloor",
+     "defType": "GenStepDef",
+     "label": "Scald floor",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_ScaldFloor"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_Stillsand",
+     "found": true,
+     "defName": "RM_WreckField_Stillsand",
+     "defType": "GenStepDef",
+     "label": "Stillsand",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_Stillsand"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_TheRot",
+     "found": true,
+     "defName": "RM_WreckField_TheRot",
+     "defType": "GenStepDef",
+     "label": "The Rot",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_TheRot"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_TwilightFloor",
+     "found": true,
+     "defName": "RM_WreckField_TwilightFloor",
+     "defType": "GenStepDef",
+     "label": "Twilight Sea floor",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_TwilightFloor"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_Warscar",
+     "found": true,
+     "defName": "RM_WreckField_Warscar",
+     "defType": "GenStepDef",
+     "label": "Warscar",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_Warscar"
+     }
+    },
+    {
+     "requested": "GenStepDef/RM_WreckField_Wasteland",
+     "found": true,
+     "defName": "RM_WreckField_Wasteland",
+     "defType": "GenStepDef",
+     "label": "Wasteland",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckField_Wasteland"
+     }
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_9a8ad90ec9fe454282e0ab9d19685603",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 5
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ "jacket": {
+  "success": true,
+  "found": 1,
+  "requested": 1,
+  "notFound": [],
+  "msg": "1 of 1 def(s) resolved",
+  "raw": {
+   "success": true,
+   "message": "1 of 1 def(s) resolved",
+   "requested": 1,
+   "foundCount": 1,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [
+    "defName"
+   ],
+   "defs": [
+    {
+     "requested": "ThingDef/RM_BrineJacket",
+     "found": true,
+     "defName": "RM_BrineJacket",
+     "defType": "ThingDef",
+     "label": "brine jacket",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_BrineJacket"
+     }
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_96d2f44989af4bbc92159879a147408f",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 5
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ "wrecklists": {
+  "success": true,
+  "found": 2,
+  "requested": 2,
+  "notFound": [],
+  "msg": "2 of 2 def(s) resolved",
+  "raw": {
+   "success": true,
+   "message": "2 of 2 def(s) resolved",
+   "requested": 2,
+   "foundCount": 2,
+   "notFound": [],
+   "malformed": [],
+   "fieldsAsked": [
+    "defName"
+   ],
+   "defs": [
+    {
+     "requested": "RimMandrake.Wreckage.RM_WreckListDef/RM_WreckList_CrawlerRoad",
+     "found": true,
+     "defName": "RM_WreckList_CrawlerRoad",
+     "defType": "RM_WreckListDef",
+     "label": "crawler road casualties",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckList_CrawlerRoad"
+     }
+    },
+    {
+     "requested": "RimMandrake.Wreckage.RM_WreckListDef/RM_WreckList_Fresh",
+     "found": true,
+     "defName": "RM_WreckList_Fresh",
+     "defType": "RM_WreckListDef",
+     "label": "fresh wreckage",
+     "modName": "RimMandrake: Baroque Biomes",
+     "packageId": "mandrake.rm.biomes",
+     "fields": {
+      "defName": "RM_WreckList_Fresh"
+     }
+    }
+   ],
+   "ticksGame": -1,
+   "operation": {
+    "OperationId": "op_160af38a16a8488691d82a30b46d97e0",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 7
+   },
+   "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+   }
+  }
+ },
+ "harmony1": {
+  "success": true,
+  "typeName": "ToxicUtility",
+  "methodName": "DoAirbornePawnToxicDamage",
+  "methodCount": 1,
+  "methods": [
+   {
+    "method": "DoAirbornePawnToxicDamage",
+    "declaringType": "Verse.ToxicUtility",
+    "prefixCount": 1,
+    "postfixCount": 0,
+    "transpilerCount": 0,
+    "finalizerCount": 0,
+    "prefixes": [
+     {
+      "owner": "mandrake.rm.warscar.chotrix",
+      "priority": 400,
+      "patchMethod": "RimMandrake.Scarlands.RM_AerosolScreenPatches_AirborneToxic.Prefix",
+      "patchAssembly": "RimMandrake.Warscar"
+     }
+    ],
+    "postfixes": [],
+    "transpilers": [],
+    "finalizers": []
+   }
+  ],
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_5e14106baffb4eb793a9c75bd79dc430",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 6
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ },
+ "harmony2": {
+  "success": true,
+  "typeName": "GameCondition_ToxicFallout",
+  "methodName": "DoCellSteadyEffects",
+  "methodCount": 1,
+  "methods": [
+   {
+    "method": "DoCellSteadyEffects",
+    "declaringType": "RimWorld.GameCondition_ToxicFallout",
+    "prefixCount": 1,
+    "postfixCount": 0,
+    "transpilerCount": 0,
+    "finalizerCount": 0,
+    "prefixes": [
+     {
+      "owner": "mandrake.rm.warscar.chotrix",
+      "priority": 400,
+      "patchMethod": "RimMandrake.Scarlands.RM_AerosolScreenPatches_FalloutCell.Prefix",
+      "patchAssembly": "RimMandrake.Warscar"
+     }
+    ],
+    "postfixes": [],
+    "transpilers": [],
+    "finalizers": []
+   }
+  ],
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_e01a134769ae4ba0a601318786123140",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 3
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ },
+ "log_err": {
+  "success": true,
+  "message": "142 message(s) of 173 in the buffer.",
+  "totalInBuffer": 173,
+  "messages": [
+   {
+    "type": "Warning",
+    "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=228 elapsedMs=229",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=229",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=229 elapsedMs=229",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Tried to get a resource \"UI/Commands/TryReconnect\" from a different thread. All resources must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Tried to get a resource \"UI/Designators/Cancel\" from a different thread. All resources must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "[RimMandrake: Baroque Biomes] Patch operation Verse.PatchOperationFindMod(RimMandrake: Baroque Biomes) failed\nfile: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\RimMandrake.Biomes\\Biomes\\TheSump\\Patches\\RUT_SumpDuskLock_BiomeWiring.xml",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not resolve cross-reference: No Verse.ThingDef named Leather_Chitin found to give to Verse.RaceProperties Verse.RaceProperties",
+    "repeats": 3
+   },
+   {
+    "type": "Error",
+    "text": "Config error in Eclipse: world-targeting incident has a biome restriction list",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in SolarFlare: world-targeting incident has a biome restriction list",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in Aurora: world-targeting incident has a biome restriction list",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ash_Trace: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ash_Light: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ground_Sand: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ground_Gravel: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ground_Soil: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ground_SoilRich: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ash_Trace: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ash_Light: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ground_Sand: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ground_Gravel: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ground_Soil: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Config error in RM_FE_Ground_SoilRich: burnedDef is flammable",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Cannot init Graphic of class Verse.Graphic_Linked",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/DosimeterLawn",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/VaultRoot",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Pusberry",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/RM_Etchant",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/RM_DielectricGel",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/RM_Etchant",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Item/ToxicMeat/ToxicMeat_b' for def 'RM_SorruthCatch' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/JadePlant/JadePlantB' for def 'RM_HolluCatch' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_OommokSkeleton",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_MuurrokSkeleton",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_GuzzkaSkeleton",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_VozzikSkeleton",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/AA_EggBeetle",
+    "repeats": 4
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/AA_Chitin",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path swresource/Leather_Heavy",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path swresource/Meat_Saurian",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Failed to find any textures at swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole while constructing Multi(initPath=swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Item/Resource/RM_SweetlineToken' for def 'RM_SweetlineToken' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/AloeVera/AloeVeraA' for def 'RM_Zeev' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/Peyote/PeyoteA' for def 'RM_Uvva' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/PincushionPlant/PincushionPlantA' for def 'RM_Karrun' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/SweetheartPlant/SweetheartPlantA' for def 'RM_Dubbol' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/SnakePlant/SnakePlantA' for def 'RM_Lozh' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/Schlumbergera/SchlumbergeraA' for def 'RM_Saava' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/JadePlant/JadePlantA' for def 'RM_Tuun' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Plant/Echeveria/EcheveriaA' for def 'RM_LungerFry' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not load Texture2D at 'Things/Item/Plant/RM_YearningFruitHarvested' for def 'RM_YearningFruitHarvested' in any active mod or in base resources.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "MatFrom with null sourceTex.",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Failed to find any textures at Animal/RockTroll/RockTroll while constructing Multi(initPath=Animal/RockTroll/RockTroll, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 69483433]\n  at Verse.Graphic_Linked.get_MatSingle () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Graphic.get_MatNorth () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Graphic.MatAt (Verse.Rot4 rot, Verse.Thing thing) [0x00020] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.BuildableDef.ResolveIcon () [0x00074] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.ThingDef.ResolveIcon () [0x00000] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.BuildableDef.<PostLoad>b__78_0 () [0x00021] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 ",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+    "repeats": 1
+   },
+   {
+    "type": "Error",
+    "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Type RM_CompAerosolScreen probably needs a StaticConstructorOnStartup attribute, because it has a field domeMat of type Material. All assets must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=22 elapsedMs=40065",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1343 elapsedMs=41409",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=41410",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=41412",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=41412",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=41412",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=41412",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=2 elapsedMs=41414",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=5 elapsedMs=41419",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=41420",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=41420",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=41424",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=44 elapsedMs=41469",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=1403 elapsedMs=41469",
+    "repeats": 1
+   },
+   {
+    "type": "Warning",
+    "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=44 elapsedMs=41469",
+    "repeats": 1
+   }
+  ],
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_8593376e2f294e5d81c8e98f4f6589d4",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 8
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ }
+}

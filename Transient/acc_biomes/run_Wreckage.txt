@@ -1,0 +1,13 @@
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Wreckage_20261008T050106Z.html
+CHAIN load None {"name": "load", "situational": null, "modal_check": null}
+    {"name": "no_errors_naming_this_mod", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/drain_log", "result": {"success": true, "message": "267 message(s) of 554 in the buffer.", "totalInBuffer": 55
+CHAIN defs None {"name": "defs", "situational": null, "modal_check": null}
+    {"name": "loot_tables_resolve", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "9 of 9 def(s) resolved", "requested": 9, "foundCount": 9, "notFou
+    {"name": "scald_wrecks_resolve", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "3 of 3 def(s) resolved", "requested": 3, "foundCount": 3, "notFo
+    {"name": "scald_field_resolves", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFo
+CHAIN mapgen None {"name": "mapgen", "situational": null, "modal_check": null}
+    {"name": "scald_field_on_shallows_only", "toggle": null, "beyond_toggle": true, "verdict": "FAIL", "detail": "ExpectationFailed: UNMEASURED: needs a FRESH Scald map; list_things RUT_ScaldWreck* then every occupied cell's terrain must carry RUT_ScaldShallow", "
+    {"name": "wreck_fields_off_new_map_empty", "toggle": "wreckFields", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows
+    {"name": "density_scales_count", "toggle": "wreckDensity", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "s
+ALL_GREEN False FINDINGS 1
