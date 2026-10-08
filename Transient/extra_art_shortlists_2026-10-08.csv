@@ -1,0 +1,61 @@
+list,rank,race,label,score,jobs,reason
+gender,1,RSW_Kybuck,kybuck,16.96,6,CANON dimorphism; herds of 3~6; pack beast (female pack set too); 1 rosters
+gender,2,RM_Aveluthia,aveluthia,16.54,6,herds of 3~9; pack beast (female pack set too); 2 rosters
+gender,3,RSW_Falumpaset,falumpaset,16.29,6,herds of 3~8; pack beast (female pack set too); 3 rosters
+gender,4,RSW_Gelagrub,gelagrub,16.04,6,herds of 3~9; pack beast (female pack set too); 2 rosters
+gender,5,RSW_Eopie,eopie,15.37,6,herds of 2~5; pack beast (female pack set too); 4 rosters
+gender,6,RSW_Iriaz,iriaz,14.95,3,herds of 6~12; easily tamed/penned; 4 rosters
+gender,7,RSW_Shaak,shaaks,14.74,6,herds of 4~8; pack beast (female pack set too); 2 rosters
+gender,8,RSW_TeeMuss,tee muss,14.56,6,herds of 2~6; pack beast (female pack set too); 2 rosters
+gender,9,RM_Gennok,gennok,14.39,6,herds of 4~8; pack beast (female pack set too); 1 rosters
+gender,10,RSW_Jakobeast,jakobeast,14.34,3,herds of 3~9; easily tamed/penned; 2 rosters
+gender,11,RSW_LavaFlea,lava flea,14.31,6,herds of 2~6; pack beast (female pack set too); 1 rosters
+gender,12,RSW_Jamel,Jamel,14.21,6,herds of 2~6; pack beast (female pack set too); 3 rosters
+gender,13,RSW_Blurrg,blurrg,13.86,6,herds of 2~6; pack beast (female pack set too); no roster (event/trade only)
+gender,14,RM_Chorn,chorn,13.85,6,herds of 3~7; pack beast (female pack set too); 1 rosters
+gender,15,RSW_FeralGrazer,feral grazer,13.84,3,herds of 3~9; easily tamed/penned; 2 rosters
+gender,16,RSW_Runyip,runyip,13.81,9,herds of 2~6; pack beast (female pack set too); 3 rosters; swim set +3
+gender,17,RSW_Dalgo,dalgo,13.72,6,herds of 3~6; pack beast (female pack set too); 2 rosters
+gender,18,RSW_Sacapillar,sacapillar,13.7,18,herds of 1~3; pack beast (female pack set too); 2 rosters; FLYER: female flip-book +12
+gender,19,RSW_Zeer,zeer,13.59,3,herds of 2~4; easily tamed/penned; 3 rosters
+gender,20,RSW_Jerba,jerba,13.31,6,herds of 2~6; pack beast (female pack set too); no roster (event/trade only)
+gender,21,RSW_Hrumph,hrumph,13.19,3,herds of 4~8; easily tamed/penned; 2 rosters
+gender,22,RSW_Jimvu,jimvu,12.94,3,herds of 4~8; easily tamed/penned; 2 rosters
+gender,23,RSW_FeralNerf,feral nerf,12.93,3,herds of 3~9; easily tamed/penned; 1 rosters
+gender,24,RM_Moravatha,moravatha,12.7,6,herds of 1~3; pack beast (female pack set too); 2 rosters
+gender,25,RM_Olumetha,olumetha,12.57,3,groups of 3~9; easily tamed/penned; 2 rosters
+gender,26,RM_Sulleth,sulleth,12.55,3,herds of 3~7; easily tamed/penned; 1 rosters
+gender,27,RSW_Excretor,excretor,12.46,3,herds of 2~6; easily tamed/penned; 2 rosters
+gender,28,RM_Julmox,julmox,12.39,3,herds of 4~9; easily tamed/penned; 1 rosters
+gender,29,RSW_Skalder,skalders,12.26,9,herds of 3~7; pack beast (female pack set too); 4 rosters; swim set +3
+gender,30,RSW_Corinathoth,corinathoth,12.26,3,herds of 3~6; easily tamed/penned; 1 rosters
+juvenile,1,RSW_Mott,mott,12.62,6,CANON young look different; easily tamed/penned; young for 18 days; swim set +3
+juvenile,2,RSW_Uvak,uvak,12.43,3,"CANON young look different; pack beast, bred for work; young for 36 days; flyer (frames stay adult)"
+juvenile,3,RSW_Woolamander,woolamander,12.0,3,CANON young look different; easily tamed/penned; young for 18 days
+juvenile,4,RSW_Falumpaset,falumpaset,11.98,3,"pack beast, bred for work; young for 36 days"
+juvenile,5,RSW_Sacapillar,sacapillar,11.26,3,"pack beast, bred for work; young for 60 days; flyer (frames stay adult)"
+juvenile,6,RSW_Jerba,jerba,11.26,3,"pack beast, bred for work; young for 60 days"
+juvenile,7,RM_Aveluthia,aveluthia,11.16,3,"pack beast, bred for work; young for 42 days"
+juvenile,8,RSW_TelluroxRace,tellurox,11.09,3,"pack beast, bred for work; young for 24 days"
+juvenile,9,RSW_Dalgo,dalgo,10.98,3,"pack beast, bred for work; young for 18 days"
+juvenile,10,RSW_Clodhopper,clodhopper,10.88,3,CANON young look different; easily tamed/penned; young for 6 days
+juvenile,11,RSW_Zeer,zeer,10.73,3,easily tamed/penned; young for 36 days
+juvenile,12,RM_Vaalok,vaalok,10.63,3,"pack beast, bred for work; young for 36 days"
+juvenile,13,RM_Gennok,gennok,10.53,3,"pack beast, bred for work; young for 27 days"
+juvenile,14,RM_Chorn,chorn,10.52,3,"pack beast, bred for work; young for 30 days"
+juvenile,15,RM_Moravatha,moravatha,10.49,3,"pack beast, bred for work; young for 20 days"
+juvenile,16,RSW_Blurrg,blurrg,10.3,3,"pack beast, bred for work; young for 33 days"
+juvenile,17,RM_Aurrok,aurrok,10.21,3,"pack beast, bred for work; young for 20 days"
+juvenile,18,RSW_Corinathoth,corinathoth,10.17,3,easily tamed/penned; young for 30 days
+juvenile,19,RSW_TeeMuss,tee muss,10.04,3,"pack beast, bred for work; young for 24 days"
+juvenile,20,RSW_Kybuck,kybuck,10.02,3,"pack beast, bred for work; young for 12 days"
+juvenile,21,RSW_Gelagrub,gelagrub,9.95,3,"pack beast, bred for work; young for 15 days"
+juvenile,22,RSW_Jamel,Jamel,9.95,3,"pack beast, bred for work; young for 18 days"
+juvenile,23,RSW_Shaak,shaaks,9.92,3,"pack beast, bred for work; young for 12 days"
+juvenile,24,RSW_ShrublandGiant,thunderstep,9.91,3,easily tamed/penned; young for 60 days
+juvenile,25,RSW_Ronto,ronto,9.86,3,"pack beast, bred for work; young for 60 days"
+juvenile,26,RM_Tirbak,tirbak,9.86,3,"pack beast, bred for work; young for 24 days"
+juvenile,27,RSW_Dianoga,dianoga,9.63,6,CANON young look different; young for 36 days; swim set +3
+juvenile,28,RM_Vellak,vellak,9.52,3,"pack beast, bred for work; young for 21 days"
+juvenile,29,RM_Chatrak,chatrak,9.49,3,easily tamed/penned; young for 48 days
+juvenile,30,RSW_Beldon,beldon,9.41,3,easily tamed/penned; young for 48 days; flyer (frames stay adult)
