@@ -2,7 +2,7 @@
 
     python3 src/RimMandrake/HugeThings/selftest_hugethings_footprint.py      -> "N/N PASS", exit 0
 
-Mirrors Source/FootprintMath.cs function for function, in float32 like the C#, and pins:
+Mirrors Source/Kernel/RM_FootprintKernel.cs function for function (the C# fuzz selftest_hugethings_fuzz.py now runs the production kernel itself; this mirror remains for the species table), in float32 like the C#, and pins:
   * the rounding (half UP, never banker's), the growth scale, the trunk and click rects;
   * that a young plant blocks nothing and the trunk grows with the drawn size;
   * that the plant's own cell is on the trunk's SOUTH edge, so it stays reachable for cutting;
@@ -226,10 +226,10 @@ def every_rot_giant_is_covered():
 
 @test
 def csharp_still_matches_this_mirror():
-    src = open(os.path.join(HERE, "Source", "FootprintMath.cs"), encoding="utf-8").read()
-    for needle in ("(int)Math.Floor(v + 0.5f)", "root.x - (w - 1) / 2, root.z, w, d", "c.x - (w - 1) / 2, c.z - (h - 1) / 2",
-                   "growth < ext.minGrowthToBlock", "w * d < 2", "w * h < 2", "Math.Max(1, RoundHalfUp(full * scale))"):
-        assert needle in src, "FootprintMath.cs lost `%s` -- update the mirror" % needle
+    src = open(os.path.join(HERE, "Source", "Kernel", "RM_FootprintKernel.cs"), encoding="utf-8").read()
+    for needle in ("(int)Math.Floor(v + 0.5f)", "rootX - (w - 1) / 2, rootZ, w, d", "cx - (w - 1) / 2, cz - (h - 1) / 2",
+                   "growth < minGrowthToBlock", "w * d < 2", "w * h < 2", "Math.Max(1, RoundHalfUp(full * scale))"):
+        assert needle in src, "RM_FootprintKernel.cs lost `%s` -- update the mirror" % needle
     ext = open(os.path.join(HERE, "Source", "Extensions.cs"), encoding="utf-8").read()
     assert "minGrowthToBlock = 0.25f" in ext and "hitboxFraction = 0.6f" in ext
 
