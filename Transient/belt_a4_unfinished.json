@@ -1,0 +1,615 @@
+[
+{
+"id": "RM_TheUnfinished150515",
+"downed": false,
+"cons": 0.34,
+"limbs": [
+[
+"RM_UnfinishedFang",
+"left ear"
+],
+[
+"RM_UnfinishedClaw",
+"jaw"
+],
+[
+"RM_UnfinishedVestigialWing",
+"front left paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150516",
+"downed": false,
+"cons": 0.87,
+"limbs": [
+[
+"RM_UnfinishedFang",
+"tail"
+],
+[
+"RM_UnfinishedStump",
+"right ear"
+],
+[
+"RM_UnfinishedClaw",
+"jaw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150517",
+"downed": false,
+"cons": 0.82,
+"limbs": [
+[
+"RM_UnfinishedFang",
+"right ear"
+],
+[
+"RM_UnfinishedClaw",
+"jaw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150647",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedSpike",
+"rear right paw"
+],
+[
+"RM_UnfinishedVestigialWing",
+"left eye"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150648",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedFang",
+"jaw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150649",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedSpike",
+"jaw"
+],
+[
+"RM_UnfinishedUselessJaw",
+"left ear"
+],
+[
+"RM_UnfinishedFang",
+"right eye"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150663",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedFang",
+"rear right paw"
+],
+[
+"RM_UnfinishedVestigialWing",
+"left ear"
+],
+[
+"RM_UnfinishedUselessJaw",
+"front right paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150664",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedUselessJaw",
+"front left paw"
+],
+[
+"RM_UnfinishedStump",
+"right ear"
+],
+[
+"RM_UnfinishedFang",
+"rear right paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150665",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedClaw",
+"rear left paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150669",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedVestigialWing",
+"right ear"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150678",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedClaw",
+"jaw"
+],
+[
+"RM_UnfinishedVestigialWing",
+"rear left paw"
+],
+[
+"RM_UnfinishedStump",
+"right ear"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150743",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedStump",
+"rear right paw"
+],
+[
+"RM_UnfinishedFang",
+"right eye"
+],
+[
+"RM_UnfinishedUselessJaw",
+"rear left paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150744",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedFang",
+"left eye"
+],
+[
+"RM_UnfinishedUselessJaw",
+"right eye"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150745",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedFang",
+"tail"
+],
+[
+"RM_UnfinishedSpike",
+"front right paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150746",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedVestigialWing",
+"rear right paw"
+],
+[
+"RM_UnfinishedMonstrous",
+null
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150747",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedVestigialWing",
+"right eye"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150748",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedVestigialWing",
+"right eye"
+],
+[
+"RM_UnfinishedStump",
+"left ear"
+],
+[
+"RM_UnfinishedClaw",
+"front right paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150749",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedUselessJaw",
+"right ear"
+],
+[
+"RM_UnfinishedVestigialWing",
+"front right paw"
+],
+[
+"RM_UnfinishedStump",
+"rear left paw"
+],
+[
+"RM_UnfinishedMonstrous",
+null
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150750",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedClaw",
+"left eye"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150751",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedStump",
+"right ear"
+],
+[
+"RM_UnfinishedClaw",
+"left ear"
+],
+[
+"RM_UnfinishedVestigialWing",
+"nose"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150752",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedFang",
+"front right paw"
+],
+[
+"RM_UnfinishedStump",
+"front left paw"
+],
+[
+"RM_UnfinishedClaw",
+"rear left paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150753",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedSpike",
+"nose"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150754",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedSpike",
+"front right paw"
+],
+[
+"RM_UnfinishedUselessJaw",
+"jaw"
+],
+[
+"RM_UnfinishedFang",
+"front left paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150755",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedUselessJaw",
+"jaw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150756",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedVestigialWing",
+"right ear"
+],
+[
+"RM_UnfinishedSpike",
+"tail"
+],
+[
+"RM_UnfinishedClaw",
+"left ear"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150757",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedVestigialWing",
+"front left paw"
+],
+[
+"RM_UnfinishedUselessJaw",
+"nose"
+],
+[
+"RM_UnfinishedClaw",
+"right eye"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150758",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedVestigialWing",
+"front right paw"
+],
+[
+"RM_UnfinishedSpike",
+"right ear"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150759",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedUselessJaw",
+"left ear"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150760",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedUselessJaw",
+"right ear"
+],
+[
+"RM_UnfinishedSpike",
+"nose"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150761",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedVestigialWing",
+"rear left paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+},
+{
+"id": "RM_TheUnfinished150762",
+"downed": false,
+"cons": 1.0,
+"limbs": [
+[
+"RM_UnfinishedClaw",
+"right ear"
+],
+[
+"RM_UnfinishedStump",
+"front left paw"
+],
+[
+"RM_UnfinishedUnraveling",
+null
+]
+]
+}
+]
