@@ -109,13 +109,19 @@ namespace RimMandrake.FloodedCanyon
         // CRACKEDLANDS_LEDGES_OF_MERCY_1 — refuge ledges: while the warning
         // stands and the water is up, neutral visitors and the player's
         // trained animals make for the nearest refuge ledge and are held
-        // there. Inert until the map carries ledges (their physical form is
-        // an open owner question). Off = nobody seeks a ledge; the flood still
+        // there. Inert on a map with no ledges (mercyLedgesEnabled cuts them
+        // at map generation). Off = nobody seeks a ledge; the flood still
         // never takes a ledge cell.
         public static bool ledgeRefugeEnabled = true;
         // Chime-line anchors: the staged chimes toll from the anchor nearest
         // each staged position. Off (or no anchors on the map) = positions.
         public static bool chimeAnchorsEnabled = true;
+        // Ledges cut into the cliff faces at map generation (with their
+        // carving and chime-line anchors). Off = no ledges on new maps.
+        public static bool mercyLedgesEnabled = true;
+        // Reading a ledge carving gives a one-shot mood memory, once per
+        // person per carving. Off = carvings are inspect text only.
+        public static bool carvingMemoryEnabled = true;
 
         public override void ExposeData()
         {
@@ -149,6 +155,8 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref zennaqLightningPullEnabled, "zennaqLightningPullEnabled", true, true);
             Scribe_Values.Look(ref ledgeRefugeEnabled, "ledgeRefugeEnabled", true, true);
             Scribe_Values.Look(ref chimeAnchorsEnabled, "chimeAnchorsEnabled", true, true);
+            Scribe_Values.Look(ref mercyLedgesEnabled, "mercyLedgesEnabled", true, true);
+            Scribe_Values.Look(ref carvingMemoryEnabled, "carvingMemoryEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -276,6 +284,14 @@ namespace RimMandrake.FloodedCanyon
                 "Where the canyon has chime-line anchors, each staged chime tolls from the anchor nearest "
                 + "its point on the line toward the water. Off, or with no anchors, the chime tolls "
                 + "from the point itself.");
+            list.CheckboxLabeled("Ledges cut into the cliff faces (worldgen)", ref mercyLedgesEnabled,
+                "Newly generated canyon maps get a few refuge ledges carved into high rock faces, each "
+                + "with a carving and a chime-line anchor, plus more anchors along the walls. Also on other "
+                + "biomes when the flood runs there. Affects maps generated afterwards, never an existing one. "
+                + "PROVISIONAL numbers: about 3 ledges on a 250x250 map (2 to 6), at least 30 cells apart.");
+            list.CheckboxLabeled("Reading a ledge carving lifts the mood", ref carvingMemoryEnabled,
+                "A person who comes within a couple of cells of a ledge carving and can see it reads it once "
+                + "and gains a small mood memory. PROVISIONAL numbers: +4 mood for 2 days.");
 
             viewHeight = list.CurHeight + 24f;
             list.End();

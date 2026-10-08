@@ -38,6 +38,13 @@ namespace RimMandrake.FloodedCanyon
         public static PawnKindDef RM_Irqit;
         public static HediffDef RM_IrqitFloodBorn;
 
+        // CRACKEDLANDS_LEDGES_OF_MERCY_1 — ledges cut into the cliff face
+        // (Defs/ThingDefs_Buildings/RM_MercyLedges.xml, placed by RM_MercyLedges).
+        public static ThingDef RM_MercyLedge;
+        public static ThingDef RM_MercyCarving;
+        public static ThingDef RM_ChimeLineAnchor;
+        public static ThoughtDef RM_ReadMercyCarving;
+
         static RM_FloodedCanyonDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_FloodedCanyonDefOf));

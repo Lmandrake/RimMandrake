@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_MercyLedges.xml                 CRACKEDLANDS_LEDGES_OF_MERCY_1
+
+  Form, decision taken by question card 2026-10-08: the ledge is CUT INTO
+  THE CLIFF FACE. Placed at map generation by RM_GenStep_MercyLedges
+  (Source/RM_MercyLedges.cs): a pocket carved into a high natural-rock face,
+  floored with the rock's smoothed stone, one RM_MercyLedge per carved cell,
+  one RM_MercyCarving and one RM_ChimeLineAnchor cut into its walls, plus as
+  many anchors again on other high faces.
+
+  RM_RefugeLedgeExtension / RM_ChimeAnchorExtension are the markers
+  RM_LedgeRefuge.cs already reads: ledge cells are refuge (visitors and
+  trained animals run for them at the warning, the flood never takes them);
+  anchors are where the staged chimes toll from.
+
+  TEXT: every label, description and inscription below is a PLACEHOLDER.
+  The lore lines are the owner's to write; drafts went to him for review
+  (see the item, CRACKEDLANDS_LEDGES_OF_MERCY_1).
+
+  ART: PLACEHOLDER vanilla textures (artpipe searched 2026-10-08 for
+  ledge/carving/chime/inscription/offering/mercy - nothing for this subject;
+  art for it is not yet approved, so none is queued).
+
+  claimable=false: an unowned building the player cannot claim cannot be
+  deconstructed by the player (Building.DeconstructibleBy).
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_MercyLedge</defName>
+    <label>refuge ledge</label>
+    <description>PLACEHOLDER. A shelf cut back into the canyon wall, high above the floor, its stone worn smooth by generations of feet. When the chimes ring, those who know the canyon climb here.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <rotatable>false</rotatable>
+    <useHitPoints>false</useHitPoints>
+    <selectable>true</selectable>
+    <drawerType>MapMeshOnly</drawerType>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <clearBuildingArea>false</clearBuildingArea>
+    <graphicData>
+      <!-- PLACEHOLDER art -->
+      <texPath>Things/Building/Misc/PartySpot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(150, 138, 120)</color>
+    </graphicData>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <ai_chillDestination>false</ai_chillDestination>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FloodedCanyon.RM_RefugeLedgeExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef>
+    <defName>RM_MercyCarving</defName>
+    <label>ledge carving</label>
+    <description>PLACEHOLDER. Worn figures cut into the back of a refuge ledge, and below them a line of old inscription. Small offerings lie in the hollows at their feet.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <blockLight>true</blockLight>
+    <blockWind>true</blockWind>
+    <holdsRoof>true</holdsRoof>
+    <coversFloor>true</coversFloor>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <neverMultiSelect>true</neverMultiSelect>
+    <tickerType>Rare</tickerType>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+      <!-- PROVISIONAL (numbers ruling 2026-10-03) -->
+      <Beauty>10</Beauty>
+    </statBases>
+    <graphicData>
+      <!-- PLACEHOLDER art -->
+      <texPath>Things/Building/Art/SculptureSmall</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(170, 155, 135)</color>
+    </graphicData>
+    <building>
+      <claimable>false</claimable>
+      <canBuildNonEdificesUnder>false</canBuildNonEdificesUnder>
+      <ai_chillDestination>false</ai_chillDestination>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="RimMandrake.FloodedCanyon.CompProperties_RM_MercyCarving">
+        <thought>RM_ReadMercyCarving</thought>
+        <!-- PROVISIONAL: a reader within 2.9 cells with line of sight. -->
+        <readRadius>2.9</readRadius>
+        <!-- PLACEHOLDER lines: the owner writes the inscriptions. -->
+        <inscriptions>
+          <li>[placeholder inscription 1, awaiting the owner's line]</li>
+          <li>[placeholder inscription 2, awaiting the owner's line]</li>
+          <li>[placeholder inscription 3, awaiting the owner's line]</li>
+        </inscriptions>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef>
+    <defName>RM_ChimeLineAnchor</defName>
+    <label>chime-line anchor</label>
+    <description>PLACEHOLDER. An old iron spike driven into the canyon wall. A line strung with chimes runs from it across the canyon below, and it rings when the water is coming.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <blockLight>true</blockLight>
+    <blockWind>true</blockWind>
+    <holdsRoof>true</holdsRoof>
+    <coversFloor>true</coversFloor>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+    </statBases>
+    <graphicData>
+      <!-- PLACEHOLDER art -->
+      <texPath>Things/Building/Misc/TorchLamp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(110, 105, 100)</color>
+    </graphicData>
+    <building>
+      <claimable>false</claimable>
+      <canBuildNonEdificesUnder>false</canBuildNonEdificesUnder>
+      <ai_chillDestination>false</ai_chillDestination>
+      <artificialForMeditationPurposes>false</artificialForMeditationPurposes>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.FloodedCanyon.RM_ChimeAnchorExtension" />
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

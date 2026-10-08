@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_MercyCarving.xml                CRACKEDLANDS_LEDGES_OF_MERCY_1
+
+  The one-shot memory for reading a ledge carving (CompRM_MercyCarving,
+  Source/RM_MercyLedges.cs): once per person per carving; a second carving
+  refreshes it (stackLimit 1). No precept - the item rules out campaign
+  precepts.
+
+  NUMBERS ARE PROVISIONAL (numbers ruling 2026-10-03, decision taken by
+  question card; tuned live later): +4 mood for 2 days.
+  TEXT IS PLACEHOLDER: the owner writes the lore lines.
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RM_ReadMercyCarving</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <!-- PROVISIONAL -->
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>read a ledge carving</label>
+        <description>PLACEHOLDER. I read the old carving on the ledge.</description>
+        <!-- PROVISIONAL -->
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
