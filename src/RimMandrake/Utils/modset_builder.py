@@ -604,7 +604,8 @@ TIERS["acc_harness"] = {
            "WreckedMachines def read-back and config errors, Droidworks protocol droid, FallLineArrivals gate, "
            "UnfinishedLine volunteer) plus GimmeSomeSlack for JawaBench get_defs.",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.luminouspigment", "mandrake.rm.wreckedmachines",
-             "mandrake.rsw.droidworks", "mandrake.rut.falllinearrivals", "mandrake.rut.unfinishedline", "mandrake.rut.patches", "mandrake.rm.hugethings"],
+             "mandrake.rsw.droidworks", "mandrake.rut.falllinearrivals", "mandrake.rut.unfinishedline", "mandrake.rut.patches", "mandrake.rm.hugethings",
+             "mandrake.rm.biomes", "mandrake.rm.shipvermin"],  # FallLineArrivals vermin_burst needs ShipVermin, which depends on biomes
     "dlc": True,
 }
 
@@ -613,6 +614,13 @@ TIERS["acc_biomes"] = {
     "why": "FOUNDRY acceptance 2026-10-07: the composed biomes mod (Greentide, Stillsand, LeaningScrub, CreatureBehaviors "
            "and the rest fold into it) plus GimmeSomeSlack, which JawaBench get_defs needs.",
     "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rm.gimmesomeslack"],
+    "dlc": True,
+}
+
+TIERS["live_20261008"] = {
+    "why": "FOUNDRY live checks 2026-10-08: HugeThings titanic cctor fix, Contagion/Wasteland suites and Ledges of Mercy "
+           "(FloodedCanyon) on the composed biomes mod.",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rm.hugethings"],
     "dlc": True,
 }
 

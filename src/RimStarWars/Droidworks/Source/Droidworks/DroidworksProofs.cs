@@ -23,8 +23,13 @@ namespace RimMandrake.StarWars.Droidworks
             string id = (args ?? "").Trim();
             Pawn p = map.mapPawns.AllPawnsSpawned.FirstOrDefault(x => x.ThingID == id);
             if (p == null) return "FAIL: no spawned pawn " + id;
-            if (p.trader == null) return "FAIL: pawn has no trader tracker (not humanlike?): " + id;
             if (p.Faction == null || p.Faction == Faction.OfPlayer) return "FAIL: pawn must be non-player faction: " + id;
+            if (!p.RaceProps.Humanlike || p.Dead) return "FAIL: pawn is not a living humanlike: " + id;
+            // The engine only keeps a Pawn_TraderTracker while mindState.wantsToTradeWithColony is set
+            // (PawnComponentsUtility.AddAndRemoveDynamicComponents nulls it otherwise), so a freshly spawned
+            // villager has none. Mark the pawn as wanting to trade and create the tracker.
+            if (p.mindState != null) p.mindState.wantsToTradeWithColony = true;
+            if (p.trader == null) p.trader = new Pawn_TraderTracker(p);
             TraderKindDef kind = DefDatabase<TraderKindDef>.GetNamedSilentFail("Caravan_Outlander_BulkGoods")
                 ?? DefDatabase<TraderKindDef>.AllDefsListForReading.FirstOrDefault(k => k.tradeCurrency == TradeCurrency.Silver);
             if (kind == null) return "FAIL: no silver TraderKindDef";

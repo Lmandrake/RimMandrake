@@ -200,6 +200,19 @@ def _walk(t, dz, hediff=None):
     before = _diag(t)
     t.walk_over(pid, [(x + WALK, z + dz)], wait_ticks=900)
     after = _diag(t)
+    if _live(t) and after and before:
+        # Attribute the print counters to THIS walker. LIVE 2026-10-08: the global counters were inflated by other pawns
+        # (control arm "gravel took 25 prints"; lastPrintInvisible False because someone else printed last), so replace
+        # them with the walker's own tally from RM_TrackGridDiag.PrintsBy. A failed read keeps the global numbers.
+        r = t.bridge_call("jawa/static_call", type=DIAG, method="PrintsBy", args=pid)
+        parts = str((r or {}).get("result")).split("|")
+        if (r or {}).get("success") and len(parts) == 3:
+            try:
+                after["printsWritten"] = _int(before, "printsWritten") + int(parts[0])
+                after["invisiblePrintsWritten"] = _int(before, "invisiblePrintsWritten") + int(parts[1])
+                after["lastPrintInvisible"] = parts[2]
+            except ValueError:
+                pass
     if _live(t):
         t.session.call("jawa/set_draft", pawnId=pid, drafted=True)         # hold it where it stopped
     moved = 0
