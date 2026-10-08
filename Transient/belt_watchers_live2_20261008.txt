@@ -1,0 +1,25 @@
+  goto did not arrive Human49128 (88, 108) wanted (84, 112) {"success": true, "accepted": true, "interruptibleBefore": true, "beforeJobDef": "Wait_Combat", "requestedJobDef": "Goto", "afterJobDef": "Goto", "nowRunningRequested": true, "ticksElapsed": 0, "pause
+  !! move failed: C1 out
+  goto did not arrive Human54585 (94, 99) wanted (84, 104) {"success": true, "accepted": true, "interruptibleBefore": true, "beforeJobDef": "Wait_Combat", "requestedJobDef": "Goto", "afterJobDef": "Goto", "nowRunningRequested": true, "ticksElapsed": 0, "pause
+  !! move failed: C2 out
+## T1_job_colonist_at_12 => {'def': 'RM_WatcherWatch'}
+## T1_hidden => False
+## T2_hidden_after_ticks_near5 => 0
+## T2_signs => [(100, 110)]
+## T2_pawn_spawned_while_hidden => True
+## T2_emerged_after_ticks_leaving => 3200
+## T2_signs_after => 0
+## T2_job_after => {'def': 'RM_WatcherWatch'}
+## T3_jobs_on_soil => ['RM_FilterFeedTerrain']
+## T3_hidden_on_soil => False
+## T3_signs_on_soil => 0
+## T3_after => [100, 109, 'RM_WatcherWatch']
+## T6_pre_job => {'def': 'RM_FilterFeedTerrain', 'targetA': {'x': 100, 'z': 108}}
+## T6_added => 1
+## T6_hidden_after => False
+## T6_hunt_left => 1
+## T5_hidden => False
+## T5_sign => []
+## T4_geophone_True => {'pre_job': 'RM_WatcherWatch', 'swimmer_hediffs': ['RM_SandSwimmer', 'RM_SandSubmerged'], 'hidden_after_ticks': 30, 'signs': 1}
+## T4_geophone_False => {'pre_job': 'RM_WatcherWatch', 'swimmer_hediffs': ['RM_SandSwimmer', 'RM_SandSubmerged'], 'hidden_after_ticks': None, 'signs': 0}
+DONE

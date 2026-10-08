@@ -624,6 +624,13 @@ TIERS["live_20261008"] = {
     "dlc": True,
 }
 
+TIERS["watchers_live"] = {
+    "why": "FOUNDRY live checks 2026-10-08: the Watchers kit (WATCHER_CREATURES_MOD_1) with its one shipped member, the piinnok, "
+           "from the composed biomes mod.",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rm.watchers"],
+    "dlc": True,
+}
+
 TIERS["acc_green_min"] = {
     "why": "FOUNDRY acceptance 2026-10-07 GREEN-MIN batch: one cold load for Abyss, Scarlands, ShipVermin, HugeThings (Titanic Creatures merged in), "
            "Warcasket, GizkaStowaway, OasisMaker, RiverColors, ScarlandsLadder, ShokkweaveEconomy, LeaningScrub, "
