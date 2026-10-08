@@ -42,7 +42,7 @@ namespace RimMandrake.LuminousPigment
             if (map.designationManager.DesignationAt(c, DesignationDefOf.RemoveFloor) != null) return false;
             if (!pawn.CanReserveAndReach(c, PathEndMode, Danger.Some, 1, -1, ReservationLayerDefOf.Floor)) return false;
 
-            if (DeepfireCostUtility.FindNearbyDeepfire(pawn, LuminousPigmentSettings.costFloorCell, forced) == null)
+            if (DeepfireCostUtility.FindNearbyDeepfire(pawn, System.Math.Max(1, LuminousPigmentSettings.costFloorCell), forced) == null)
             {
                 JobFailReason.Is("No deepfire available.");
                 return false;
@@ -52,10 +52,10 @@ namespace RimMandrake.LuminousPigment
 
         public override Job JobOnCell(Pawn pawn, IntVec3 cell, bool forced = false)
         {
-            Thing stack = DeepfireCostUtility.FindNearbyDeepfire(pawn, LuminousPigmentSettings.costFloorCell, forced);
+            Thing stack = DeepfireCostUtility.FindNearbyDeepfire(pawn, System.Math.Max(1, LuminousPigmentSettings.costFloorCell), forced);
             if (stack == null) return null;
             Job job = JobMaker.MakeJob(DeepfireDefOf.RM_ApplyDeepfireFloor, cell, stack);
-            job.count = LuminousPigmentSettings.costFloorCell;
+            job.count = System.Math.Max(1, LuminousPigmentSettings.costFloorCell);
             return job;
         }
     }

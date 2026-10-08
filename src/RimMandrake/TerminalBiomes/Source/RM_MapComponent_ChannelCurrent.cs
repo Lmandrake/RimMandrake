@@ -172,6 +172,7 @@ namespace RimMandrake.TerminalBiomes
         public void SetFlow(IntVec3 c, RM_FlowDir dir, RM_ChannelLane laneClass)
         {
             Field.SetFlow(c.x, c.z, (int)dir, (int)laneClass);
+            anyChannelCellCached = null;
         }
 
 
@@ -239,7 +240,7 @@ namespace RimMandrake.TerminalBiomes
         // moment the spec describes rather than a quiet drift-in.
         private void GrabPawnsOnWidenedBand()
         {
-            if (field == null)
+            if (field == null || !RM_TerminalBiomesSettings.ChannelCurrentActive)
             {
                 return;
             }
@@ -252,6 +253,10 @@ namespace RimMandrake.TerminalBiomes
                     continue;
                 }
                 IntVec3 pos = p.Position;
+                if (IsArrestedCell(pos))
+                {
+                    continue; // a weir holds its cell against the grab too
+                }
                 // "two cells toward the bed", or one if two is blocked
                 if (RM_ChannelKernel.GrabTarget(field, pos.x, pos.z, (x, z) => new IntVec3(x, 0, z).Standable(map), out int tx, out int tz))
                 {
@@ -275,6 +280,10 @@ namespace RimMandrake.TerminalBiomes
             if (!RM_TerminalBiomesSettings.ChannelCurrentActive)
             {
                 return; // MOD_OPTIONS_RETROFIT_1: all-off degrades to a no-op, §1.6
+            }
+            if (sinkCells.Count == 0 && !AnyChannelCellExists())
+            {
+                return; // a map with no authored channel: no grids, no scans (cached; SetFlow invalidates)
             }
 
             EnsureGrids();
@@ -320,9 +329,9 @@ namespace RimMandrake.TerminalBiomes
                     continue;
                 }
                 IntVec3 pos = t.Position;
-                if (!HasCurrent(pos) || IsArrestedCell(pos))
+                if (!HasCurrent(pos) || IsArrestedCell(pos) || IsSinkCell(pos))
                 {
-                    continue;
+                    continue; // the sink is terminal: what arrived there stays there
                 }
                 stillPresent.Add(t);
                 if (!book.Contains(t))
@@ -358,9 +367,9 @@ namespace RimMandrake.TerminalBiomes
             for (int i = 0; i < keys.Count; i++)
             {
                 Thing t = keys[i];
-                if (t == null || t.Destroyed || !t.Spawned)
+                if (t == null || t.Destroyed || !t.Spawned || t.Map != map)
                 {
-                    book.Remove(t);
+                    book.Remove(t);   // gone, or transferred to another map since it registered here
                     continue;
                 }
                 if (!book.TryGetDue(t, out int due) || now < due)
@@ -375,6 +384,11 @@ namespace RimMandrake.TerminalBiomes
         private void StepOne(Thing t)
         {
             IntVec3 pos = t.Position;
+            if (IsExempt(t) || IsArrestedCell(pos) || IsSinkCell(pos))
+            {
+                book.Remove(t); // walked onto a ford/weir or into the basin since the last scan
+                return;
+            }
             ChannelStep step = RM_ChannelKernel.Step(Field, pos.x, pos.z, (x, z) => new IntVec3(x, 0, z).Standable(map),
                 (x, z) => IsSinkCell(new IntVec3(x, 0, z)), out int nx, out int nz);
             if (step == ChannelStep.Stop)
@@ -551,12 +565,12 @@ namespace RimMandrake.TerminalBiomes
             IntVec3 centre = sinkCells[Rand.Range(0, sinkCells.Count)];
             foreach (IntVec3 c in GenRadial.RadialCellsAround(centre, SinkArrivalSearchRadius, useCenter: true))
             {
-                if (c.InBounds(map) && c.Standable(map) && !c.GetThingList(map).Exists(x => x is Pawn))
+                if (c.InBounds(map) && IsSinkCell(c) && c.Standable(map) && !c.GetThingList(map).Exists(x => x is Pawn))
                 {
                     return c;
                 }
             }
-            return centre;
+            return centre.Standable(map) ? centre : IntVec3.Invalid;
         }
 
         // ════════════════════════════════════════════════════════════════

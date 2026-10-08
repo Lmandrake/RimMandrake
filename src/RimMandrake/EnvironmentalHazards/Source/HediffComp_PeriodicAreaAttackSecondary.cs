@@ -16,5 +16,6 @@ namespace RimMandrake.EnvironmentalHazards
 
     public class HediffComp_PeriodicAreaAttackSecondary : HediffComp_PeriodicAreaAttack
     {
+        protected override string SaveKey => "ticksUntilBurstSecondary";
     }
 }

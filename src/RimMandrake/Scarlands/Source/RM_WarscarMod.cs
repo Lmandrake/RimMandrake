@@ -237,7 +237,11 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
+            if (settlingEndWind < settlingCalmThreshold + SettlingWindGap) settlingEndWind = settlingCalmThreshold + SettlingWindGap;
         }
+
+        // The Settling's hysteresis: a constant wind between the two thresholds would otherwise start and end it repeatedly.
+        public const float SettlingWindGap = 0.05f;
 
         private static Vector2 scroll;
         private static float viewHeight = 2400f;
@@ -339,6 +343,11 @@ namespace RimMandrake.Scarlands
             settlingCalmHours = list.Slider(settlingCalmHours, 0.5f, 24f);
             list.Label("Strong wind that ends it: above " + settlingEndWind.ToString("0.00"));
             settlingEndWind = list.Slider(settlingEndWind, 0.4f, 1.5f);
+            if (settlingEndWind < settlingCalmThreshold + SettlingWindGap)
+            {
+                settlingEndWind = settlingCalmThreshold + SettlingWindGap;   // one wind can never both start and end it
+                list.Label("(kept above the calm threshold: the ending wind must be stronger than calm)");
+            }
             list.Label("Hours of strong wind before it ends: " + settlingEndHours.ToString("0.0"));
             settlingEndHours = list.Slider(settlingEndHours, 0.25f, 12f);
             list.Label("Toxic strength: x" + settlingToxicStrength.ToString("0.00") + (settlingToxicStrength <= 0f ? " (harmless)" : ""));
@@ -423,7 +432,7 @@ namespace RimMandrake.Scarlands
             }
             list.CheckboxLabeled("Glower shielding", ref glowerShieldingEnabled,
                 "Glower shield panels give pawns in their room toxic environment resistance and halve room toxic damage; "
-              + "glower plates add resistance to the wearer. Off: both do nothing.");
+              + "glower plates add resistance to the wearer. Off: panels do nothing; plates are ordinary apparel and keep their resistance.");
             list.Label("Projector rings per map: up to " + hummingRingsPerMap + " (new maps; the first is always humming)");
             hummingRingsPerMap = Mathf.RoundToInt(list.Slider(hummingRingsPerMap, 0f, 3f));
             list.CheckboxLabeled("The ship wakes the line", ref shipWakesLine,
@@ -484,6 +493,20 @@ namespace RimMandrake.Scarlands
             if (biomeRarityFactor < 1.6f) return "default (" + biomeRarityFactor.ToString("0.0") + "x)";
             if (biomeRarityFactor < 4f) return "uncommon (" + biomeRarityFactor.ToString("0.0") + "x)";
             return "common (" + biomeRarityFactor.ToString("0.0") + "x)";
+        }
+    }
+
+    // Static Thing registries (CompChotrix.All, CompTotchak.All, CompInscribedPanel.All) are pruned only on PostDeSpawn,
+    // and a discarded game's Things never despawn. Thing.Map is Find.Maps[index], so a stale entry would alias onto the
+    // new game's map at the same index. The engine constructs every GameComponent for each new or loaded Game, before
+    // any map's Things spawn, so clearing here gives each game a clean registry.
+    public class RM_GameComponent_WarscarRegistryReset : GameComponent
+    {
+        public RM_GameComponent_WarscarRegistryReset(Game game)
+        {
+            CompChotrix.All.Clear();
+            CompTotchak.All.Clear();
+            CompInscribedPanel.All.Clear();
         }
     }
 

@@ -67,7 +67,7 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
-            if (map?.Biome == null || map.Biome.defName != "RM_GreySea")
+            if (!RM_SeaFloorIdentity.IsFloorOf(map, "RM_GreySea"))
             {
                 return;
             }

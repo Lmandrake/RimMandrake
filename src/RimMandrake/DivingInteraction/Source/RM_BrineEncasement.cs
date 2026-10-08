@@ -167,6 +167,13 @@ namespace RimMandrake.DivingInteraction
             IntVec3 pos = base.Position;
             bool ejectAlive = mode == DestroyMode.KillFinalize || mode == DestroyMode.Deconstruct;
 
+            // Eject while still spawned (the Building_Casket order), so the holder is never
+            // destroyed with a live pawn still inside it.
+            if (ejectAlive && map != null && innerContainer != null && innerContainer.Count > 0)
+            {
+                innerContainer.TryDropAll(pos, map, ThingPlaceMode.Near);
+            }
+
             base.Destroy(mode);
 
             if (innerContainer == null || innerContainer.Count == 0)
@@ -175,7 +182,13 @@ namespace RimMandrake.DivingInteraction
             }
             if (ejectAlive && map != null)
             {
+                // Retry now that the jacket's own cell is free; never silently destroy a pawn here.
                 innerContainer.TryDropAll(pos, map, ThingPlaceMode.Near);
+                if (innerContainer.Count > 0)
+                {
+                    Log.Error("[DivingInteraction] Brine jacket at " + pos + " could not eject "
+                        + innerContainer.Count + " thing(s) on destruction.");
+                }
                 return;
             }
             innerContainer.ClearAndDestroyContents();

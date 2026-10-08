@@ -29,5 +29,23 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref intendedFamily, "intendedFamily");
             Scribe_Values.Look(ref cookSkill, "cookSkill", 0);
         }
+
+        // Meals stack (MealFineBase): never merge differently-steered dishes,
+        // and carry the steering onto a split-off piece (GPT review #1).
+        public override bool AllowStackWith(Thing other)
+        {
+            CompSkillSteeredOutcome o = other.TryGetComp<CompSkillSteeredOutcome>();
+            if (o == null) return base.AllowStackWith(other);
+            return (intendedFamily ?? "") == (o.intendedFamily ?? "") && cookSkill == o.cookSkill && base.AllowStackWith(other);
+        }
+
+        public override void PostSplitOff(Thing piece)
+        {
+            base.PostSplitOff(piece);
+            CompSkillSteeredOutcome o = piece.TryGetComp<CompSkillSteeredOutcome>();
+            if (o == null || o == this) return;
+            o.intendedFamily = intendedFamily;
+            o.cookSkill = cookSkill;
+        }
     }
 }

@@ -227,7 +227,7 @@ namespace RimMandrake.Stillsand
             Vector3 toPos = InterpolatedPosition - caster.Position.ToVector3Shifted();
             float len = toPos.MagnitudeHorizontal();
             Vector3 dir = toPos.Yto0().normalized;
-            IntVec3 block = GenSight.LastPointOnLineOfSight(caster.Position, cell, c => c.CanBeSeenOverFast(caster.Map), skipFirstCell: true);
+            IntVec3 block = GenSight.LastPointOnLineOfSight(caster.Position, cell, c => c.InBounds(caster.Map) && c.CanBeSeenOverFast(caster.Map), skipFirstCell: true);
             if (block.IsValid)
             {
                 len -= (cell - block).LengthHorizontal;

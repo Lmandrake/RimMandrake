@@ -208,7 +208,8 @@ namespace RimMandrake.FlowWorks
 					k--;
 					IntVec3 c = map.cellIndices.IndexToCell(i);
 					FluidDef fluid = BurnableFluidAt(map, ex, c);
-					if (fluid == null || burning.ContainsKey(i))
+					// Foam laid after the cell was queued cancels the queued light (GPT FlowWorks review #14).
+					if (fluid == null || burning.ContainsKey(i) || IsSmothered(map, c))
 					{
 						continue;
 					}
@@ -449,6 +450,16 @@ namespace RimMandrake.FlowWorks
 				{
 					Extinguish(map, c, i, false);
 				}
+				if (pendingSet.Contains(i))
+				{
+					// a foam blast also cancels a light still travelling toward this cell (GPT FlowWorks review #14)
+					int k = pendCell.IndexOf(i);
+					if (k >= 0)
+					{
+						pendCell.RemoveAt(k); pendDue.RemoveAt(k); pendHops.RemoveAt(k);
+					}
+					pendingSet.Remove(i);
+				}
 				return;
 			}
 			if (!RimMandrakeFlowWorksSettings.canalFireEnabled || !RimMandrakeFlowWorksSettings.explosionIgnitesLiquidEnabled
@@ -544,7 +555,8 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			RM_MapComponent_Excavation ex = RM_SuperdeepTrap.EngineOf(map);
-			if (ex == null || (ex.LiquidFire.BurningCount == 0 && explosion.damType == DamageDefOf.Extinguish))
+			if (ex == null || (ex.LiquidFire.BurningCount == 0 && ex.LiquidFire.PendingCount == 0
+				&& explosion.damType == DamageDefOf.Extinguish))
 			{
 				return;
 			}

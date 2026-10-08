@@ -182,7 +182,8 @@ namespace RimMandrake.FlowWorks
 				for (int i = 0; i < component.Count; i++)
 				{
 					int c = component[i];
-					if (!IsExcavated(c) || !world.IsSink(c))
+					// A shut sluice seals its cell: liquid neither enters nor leaves, the sink band included.
+					if (!IsExcavated(c) || !world.IsSink(c) || IsSealed(c))
 					{
 						continue;
 					}
@@ -459,17 +460,19 @@ namespace RimMandrake.FlowWorks
 			while (head < fillQueue.Count)
 			{
 				int c = fillQueue[head++];
+				// Truncated only when a further eligible cell exists beyond the cap: a body of exactly maxCells
+				// cells, fully explored, is complete (GPT FlowWorks review #28).
+				if (found.Count >= maxCells)
+				{
+					truncated = true;
+					break;
+				}
 				found.Add(c);
 				int cx = c % width;
 				int cz = c / width;
 				if (cx == 0 || cx == width - 1 || cz == 0 || cz == height - 1)
 				{
 					touchesEdge = true;
-				}
-				if (found.Count >= maxCells)
-				{
-					truncated = true;
-					break;
 				}
 				for (int i = 0; i < 8; i++)
 				{

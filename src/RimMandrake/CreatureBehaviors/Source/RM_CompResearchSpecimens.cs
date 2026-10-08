@@ -111,15 +111,18 @@ namespace RimMandrake.CreatureBehaviors
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
             base.PostDestroy(mode, previousMap);
+            lastSpecimensSpawned = 0; // proof fields describe THIS call, never a stale earlier one
+            lastTouchesRegistered = 0;
             if (mode != DestroyMode.Deconstruct || previousMap == null || Props.specimen == null)
             {
                 return;
             }
             IntVec3 at = parent.Position;
             Thing t = ThingMaker.MakeThing(Props.specimen);
-            t.stackCount = System.Math.Max(1, Props.count);
-            GenPlace.TryPlaceThing(t, at, previousMap, ThingPlaceMode.Near);
-            lastSpecimensSpawned = t.stackCount;
+            int count = System.Math.Max(1, Props.count);
+            t.stackCount = count;
+            bool placed = GenPlace.TryPlaceThing(t, at, previousMap, ThingPlaceMode.Near);
+            lastSpecimensSpawned = placed ? count : 0; // count what was placed, not the (possibly merged-away) temp stack
             lastTouchesRegistered = 0;
             if (!Props.tripSenseWeb)
             {

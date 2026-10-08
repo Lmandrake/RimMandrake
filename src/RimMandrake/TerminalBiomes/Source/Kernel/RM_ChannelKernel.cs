@@ -35,6 +35,7 @@ namespace RimMandrake.TerminalBiomes
             if (!InBounds(x, z)) return;
             Flow[Idx(x, z)] = (byte)dir;
             Lane[Idx(x, z)] = (byte)lane;
+            if (lane != 0) Band[Idx(x, z)] = 0;   // a channel cell is never also bank
         }
 
         // A bank cell points toward the channel unless it is itself a channel cell; band clamps to 0..2.
@@ -42,7 +43,8 @@ namespace RimMandrake.TerminalBiomes
         {
             if (!InBounds(x, z)) return;
             int i = Idx(x, z);
-            if (Lane[i] == 0) Flow[i] = (byte)towardChannel;
+            if (Lane[i] != 0) return;   // overlapping authoring: the channel wins, the cell stays unbanded
+            Flow[i] = (byte)towardChannel;
             Band[i] = (byte)(band < 0 ? 0 : (band > 2 ? 2 : band));
         }
 
@@ -122,7 +124,7 @@ namespace RimMandrake.TerminalBiomes
             if (f.BankBandAt(x, z) <= 0) return false;
             if (!Offset(f.FlowAt(x, z), out int dx, out int dz)) return false;
             tx = x + 2 * dx; tz = z + 2 * dz;
-            if (!f.InBounds(tx, tz) || !standable(tx, tz)) { tx = x + dx; tz = z + dz; }
+            if (!f.InBounds(tx, tz) || !standable(tx, tz) || !standable(x + dx, z + dz)) { tx = x + dx; tz = z + dz; }   // never through a blocked middle cell
             return f.InBounds(tx, tz) && standable(tx, tz);
         }
     }

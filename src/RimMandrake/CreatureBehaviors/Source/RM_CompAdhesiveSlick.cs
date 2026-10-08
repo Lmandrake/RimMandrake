@@ -64,6 +64,20 @@ namespace RimMandrake.CreatureBehaviors
         private List<Pawn> FindPawnsInRange()
         {
             List<Pawn> result = new List<Pawn>();
+            if (Props.radiusCells <= 0f)
+            {
+                // Single-cell surface: read only this cell's occupants from the thing grid,
+                // not every spawned pawn on the map (W surfaces x P pawns per scan).
+                List<Thing> here = parent.Position.GetThingList(parent.Map);
+                for (int i = 0; i < here.Count; i++)
+                {
+                    if (here[i] is Pawn occupant && !occupant.Dead && occupant.health != null)
+                    {
+                        result.Add(occupant);
+                    }
+                }
+                return result;
+            }
             IReadOnlyList<Pawn> pawns = parent.Map.mapPawns.AllPawnsSpawned;
             float radiusSq = Props.radiusCells * Props.radiusCells;
 

@@ -93,7 +93,10 @@ namespace RimMandrake.LuminousPigment
         public static bool IsTitled(Pawn pawn)
         {
             if (pawn?.royalty != null && pawn.royalty.AllTitlesInEffectForReading.Count > 0) return true;
-            if (pawn?.Ideo != null && pawn.Ideo.GetRole(pawn) != null) return true;
+            // GPT review #26: only the leader / moral-guide roles rank; a
+            // production specialist is not titled.
+            Precept_Role role = pawn?.Ideo?.GetRole(pawn);
+            if (role != null && (role.def.leaderRole || role.def == PreceptDefOf.IdeoRole_Moralist)) return true;
             return false;
         }
 

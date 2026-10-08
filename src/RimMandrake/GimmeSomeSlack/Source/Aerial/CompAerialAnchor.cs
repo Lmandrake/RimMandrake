@@ -248,6 +248,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             // GPT source read 2026-10-06 A5: either end destroyed while the targeter was open
             if (a == null || !a.Spawned || b == null || !b.Spawned) return LinkVerdict.Gone;
+            // GPT review 2026-10-08 #16: a span never joins two maps (LivePartners would ignore it, leaving a dead slot)
+            if (a.Map != b.Map) return LinkVerdict.Gone;
             AnchorInfo bi = Of(b) is CompAerialAnchor bb ? bb.Info() : new AnchorInfo { Id = b.thingIDNumber, X = b.Position.x, Z = b.Position.z, Faction = FactionKey(b), IsAnchor = false };
             return AerialMath.CanLink(a.Info(), bi, AerialSettings.Range);
         }

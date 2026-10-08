@@ -276,9 +276,12 @@ namespace RimMandrake.EnvironmentalHazards
                 }
                 else
                 {
-                    target = GenCelestial.IsDaytime(GenCelestial.CurCelestialSunGlow(map))
-                        ? ext.dayTempOffset
-                        : ext.nightTempOffset;
+                    // Lerp by daylight as the extension documents, reading the
+                    // unpatched astronomical glow: CurCelestialSunGlow carries
+                    // this mod's biome-darkness postfix, which must not move
+                    // the thermal day/night schedule.
+                    float daylight = Mathf.Clamp01(GenCelestial.CelestialSunGlow(map, Find.TickManager.TicksAbs));
+                    target = Mathf.Lerp(ext.nightTempOffset, ext.dayTempOffset, daylight);
                 }
             }
             else

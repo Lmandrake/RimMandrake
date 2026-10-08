@@ -40,8 +40,9 @@ namespace RimMandrake.Stillsand
     {
         public const float ChangeThreshold = 0.08f;
 
-        private static readonly AccessTools.FieldRef<SandGrid, Map> MapRef =
-            AccessTools.FieldRefAccess<SandGrid, Map>("map");
+        // Resolved inside the guarded static constructor, so a renamed field logs our own
+        // diagnostic instead of failing type initialisation.
+        private static AccessTools.FieldRef<SandGrid, Map> MapRef;
 
         /// <summary>Session counter for the bridge (jawa/mod_settings_field list / static read). Never saved.</summary>
         public static int Erased;
@@ -51,6 +52,7 @@ namespace RimMandrake.Stillsand
             const string rule = "[RimMandrake.Stillsand] dune track eraser: ";
             try
             {
+                MapRef = AccessTools.FieldRefAccess<SandGrid, Map>("map");
                 var target = AccessTools.Method(typeof(SandGrid), "SetDepth");
                 if (target == null)
                 {
@@ -76,7 +78,7 @@ namespace RimMandrake.Stillsand
         {
             if (!RM_DuneTrackEraserSettings.duneErasesTracks) return;
             if (Mathf.Abs(__instance.GetDepth(c) - __state) < ChangeThreshold) return;
-            Map map = MapRef(__instance);
+            Map map = MapRef != null ? MapRef(__instance) : null;
             if (map == null || map.Biome == null || map.Biome.defName != "RM_Stillsand") return;
             RM_MapComponent_TrackGrid grid = RM_MapComponent_TrackGrid.For(map);
             if (grid != null && grid.ClearCell(c)) Erased++;

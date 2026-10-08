@@ -111,7 +111,23 @@ namespace RimMandrake.DivingInteraction
         /// all messaging/confirmation UI.</summary>
         public static OfferResult Offer(RM_Building_BrineElder elder, Thing offered)
         {
-            Map map = elder.Map;
+            // Destructive call: validate here, not only in the dialog's list (a stale
+            // confirmation can outlive the item, its map, or the setting).
+            Map map = elder?.Map;
+            if (map == null || !elder.Spawned || offered == null || offered.Destroyed || !offered.Spawned
+                || offered.Map != map || Current.Game == null
+                || !RM_DivingSettings.masterEnabled || !RM_DivingSettings.greyElderTradeEnabled)
+            {
+                return new OfferResult(false, false, 0, null);
+            }
+
+            // Find the payout cell BEFORE anything is committed: no dry cell, no trade.
+            IntVec3 deliveryCell = FindDeliveryCell(elder, out Thing jacketToDissolve);
+            if (!deliveryCell.IsValid)
+            {
+                return new OfferResult(false, false, 0, null);
+            }
+
             int tile = TileForMap(map);
             RM_GameComponent_BrineElders comp = Current.Game.GetComponent<RM_GameComponent_BrineElders>();
             string key = NoveltyKey(offered);
@@ -124,7 +140,6 @@ namespace RimMandrake.DivingInteraction
             int silver = decision.Silver;
             ThingDef uniqueTreasure = decision.Treasure == null ? null : DefDatabase<ThingDef>.GetNamedSilentFail(decision.Treasure);
 
-            IntVec3 deliveryCell = FindDeliveryCell(elder, out Thing jacketToDissolve);
             offered.Destroy(DestroyMode.Vanish);
 
             if (jacketToDissolve != null)
@@ -172,7 +187,7 @@ namespace RimMandrake.DivingInteraction
                     .Where(t => t.def == jacketDef)
                     .OrderBy(t => t.Position.DistanceToSquared(elder.Position))
                     .FirstOrDefault();
-                if (nearest != null)
+                if (nearest != null && !nearest.Position.GetTerrain(map).IsWater)
                 {
                     jacketToDissolve = nearest;
                     return nearest.Position;
@@ -203,7 +218,8 @@ namespace RimMandrake.DivingInteraction
             {
                 return wide;
             }
-            return elder.Position;
+            // Never elder.Position: that is deep brine (see above). No dry cell means no trade.
+            return IntVec3.Invalid;
         }
     }
 }

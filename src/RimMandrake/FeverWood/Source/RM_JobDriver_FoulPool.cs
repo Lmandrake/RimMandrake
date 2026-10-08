@@ -21,7 +21,8 @@ namespace RimMandrake.FeverWood
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            return pawn.Reserve(Suppressant, job, 1, job.count, null, errorOnFailed);
+            return pawn.Reserve(Suppressant, job, 1, job.count, null, errorOnFailed)
+                && pawn.Reserve(PoolCell, job, 1, -1, null, errorOnFailed); // one worker per designated cell
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
@@ -50,6 +51,13 @@ namespace RimMandrake.FeverWood
                 // Switched off while the pawn was hauling: spend nothing, put the charges back (the work giver and
                 // designator already refuse; this closes the window of a job started before the toggle flipped).
                 if (!RM_PoolKernel.FoulingAllowed(RM_FeverWoodSettings.tentacleUraniumSuppressionEnabled))
+                {
+                    pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Thing _);
+                    return;
+                }
+
+                // Designation cancelled (or already fulfilled) while hauling: spend nothing.
+                if (pawn.Map.designationManager.DesignationAt(PoolCell, RM_SuppressionDefOf.RM_Designation_FoulPool) == null)
                 {
                     pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Thing _);
                     return;

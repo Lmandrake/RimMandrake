@@ -31,7 +31,12 @@ namespace RimMandrake.FeverWood
 
         public RM_CompProperties_LureStake Props => (RM_CompProperties_LureStake)props;
 
-        public bool HasLiveBait => stakedPawn != null && stakedPawn.Spawned && !stakedPawn.Dead;
+        private const float BaitMaxDistance = 5f; // INVENTED: TryStake drops the bait Near the stake, not on it
+
+        /// <summary>Bait is live only while it is alive, spawned on the stake's own map and still at the stake.</summary>
+        public bool HasLiveBait => stakedPawn != null && stakedPawn.Spawned && !stakedPawn.Dead
+            && parent.Spawned && stakedPawn.Map == parent.Map
+            && stakedPawn.Position.InHorDistOf(parent.Position, BaitMaxDistance);
 
         public Pawn StakedPawn => stakedPawn;
 
@@ -120,12 +125,14 @@ namespace RimMandrake.FeverWood
                 return;
             }
             bool nowLive = HasLiveBait;
-            if (wasLiveLastTick && !nowLive)
+            if (stakedPawn != null && !nowLive)
             {
-                // The bait died (or despawned) without going through
-                // ReleaseBait — tell the map component so it stops treating
-                // this stake as active bait.
-                parent.Map.GetComponent<RM_MapComponent_TwoFrontLure>()?.Notify_LureCleared(this);
+                // The bait died, or left the stake (carried off, rescued, moved)
+                // without going through ReleaseBait: detach it, strip the
+                // restraint so it is not left permanently immobile elsewhere,
+                // and tell the map component it is no longer active bait.
+                ReleaseBait();
+                return;
             }
             wasLiveLastTick = nowLive;
         }

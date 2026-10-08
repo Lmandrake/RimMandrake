@@ -116,6 +116,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             base.ExposeData();
             Scribe_Defs.Look(ref storedLiquid, "storedLiquid");
             Scribe_Values.Look(ref storedUnits, "storedUnits", 0);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && storedLiquid == null && storedUnits > 0)
+            {
+                // The saved liquid's def no longer exists (mod removed): the units cannot keep an identity, and
+                // left in place the next liquid poured in would adopt them (GPT FlowWorks review #27). Disclose
+                // and clear rather than convert silently.
+                Log.Warning("[RimMandrake.FlowWorks] " + this + " held " + storedUnits
+                    + " units of a liquid whose def is gone; cleared.");
+                storedUnits = 0;
+            }
         }
     }
 }

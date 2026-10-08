@@ -127,6 +127,10 @@ namespace RimMandrake.DivingInteraction
         public static int SilverFor(bool novel, float marketValue, int stackCount)
         {
             float value = marketValue * stackCount;
+            if (float.IsNaN(value) || value < 0f)
+            {
+                value = 0f;   // invalid data earns the floor, never the cap (NaN used to fall into MaxSilver)
+            }
             float scaled = value * (novel ? NovelValueMultiplier : StaleValueMultiplier);
             int rounded = !(scaled < MaxSilver) ? MaxSilver : (int)Math.Round(scaled);   // also catches NaN
             return Math.Max(novel ? NovelValueFloor : StaleValueFloor, rounded);

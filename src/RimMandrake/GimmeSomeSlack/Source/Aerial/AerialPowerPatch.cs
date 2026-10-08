@@ -27,15 +27,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     [HarmonyPatch(typeof(PowerNetManager), nameof(PowerNetManager.UpdatePowerNetsAndConnections_First))]
     internal static class Patch_PowerNetManager_UpdateFirst_Scope
     {
-        private static void Prefix() => AerialPowerScope.depth++;
-        private static Exception Finalizer(Exception __exception) { AerialPowerScope.depth--; return __exception; }
+        // GPT review 2026-10-08 #25: Harmony runs finalizers even when an EARLIER prefix threw and ours never ran, so the
+        // decrement is keyed on __state (true only when our prefix entered the scope)
+        private static void Prefix(out bool __state) { AerialPowerScope.depth++; __state = true; }
+        private static Exception Finalizer(Exception __exception, bool __state) { if (__state) AerialPowerScope.depth--; return __exception; }
     }
 
     [HarmonyPatch(typeof(PowerNetMaker), nameof(PowerNetMaker.NewPowerNetStartingFrom))]
     internal static class Patch_PowerNetMaker_NewNet_Scope
     {
-        private static void Prefix() => AerialPowerScope.depth++;
-        private static Exception Finalizer(Exception __exception) { AerialPowerScope.depth--; return __exception; }
+        private static void Prefix(out bool __state) { AerialPowerScope.depth++; __state = true; }
+        private static Exception Finalizer(Exception __exception, bool __state) { if (__state) AerialPowerScope.depth--; return __exception; }
     }
 
     [HarmonyPatch(typeof(GenAdj), nameof(GenAdj.CellsAdjacentCardinal), new[] { typeof(Thing) })]

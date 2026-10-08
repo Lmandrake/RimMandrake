@@ -39,6 +39,7 @@ namespace RimMandrake.CreatureBehaviors
     public class RM_CompDefensiveDischarge : ThingComp
     {
         private int lastDischargeTick = -999999;
+        private static bool discharging;
 
         public RM_CompProperties_DefensiveDischarge Props => (RM_CompProperties_DefensiveDischarge)props;
 
@@ -83,9 +84,23 @@ namespace RimMandrake.CreatureBehaviors
 
             DamageDef damageDef = Props.dischargeDamageDef ?? DamageDefOf.EMP;
             DamageInfo shock = new DamageInfo(damageDef, amount, 0f, -1f, self);
-            attacker.TakeDamage(shock);
-
+            // Record the cooldown and hold a re-entry guard BEFORE the shock lands:
+            // two adjacent carriers otherwise retaliate into each other recursively,
+            // each still reading as ready (also covers a zero cooldown).
             lastDischargeTick = now;
+            if (discharging)
+            {
+                return;
+            }
+            discharging = true;
+            try
+            {
+                attacker.TakeDamage(shock);
+            }
+            finally
+            {
+                discharging = false;
+            }
         }
 
         public override void PostExposeData()

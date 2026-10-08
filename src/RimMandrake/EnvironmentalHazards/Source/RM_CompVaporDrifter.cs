@@ -109,7 +109,7 @@ namespace RimMandrake.EnvironmentalHazards
             return nearest.IsValid ? nearest : pawn.Position;
         }
 
-        private static bool DestInColumnOrForageRange(Pawn pawn, IntVec3 root, IntVec3 dest)
+        private static bool DestInColumnOrForageRange(Pawn pawn, IntVec3 dest, IntVec3 root) // engine order: RCellFinder.RandomWanderDestFor passes (pawn, candidate, root)
         {
             RM_MapComponent_VaporColumns columns = pawn.Map?.GetComponent<RM_MapComponent_VaporColumns>();
             if (columns == null)

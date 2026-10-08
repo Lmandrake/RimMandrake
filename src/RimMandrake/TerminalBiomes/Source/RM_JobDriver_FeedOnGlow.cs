@@ -42,6 +42,7 @@ namespace RimMandrake.TerminalBiomes
             }
 
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            this.FailOn(() => !RM_TerminalBiomesSettings.SuulkActive); // switched off mid-job: stop eating
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
 
             Toil feed = ToilMaker.MakeToil("MakeNewToils");

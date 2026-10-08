@@ -56,7 +56,8 @@ namespace RimMandrake.CreatureBehaviors
             {
                 return;
             }
-            ticksUntilCycle = Mathf.Max(1, Props.tickIntervalTicks);
+            // Carry the overshoot forward so a non-divisible interval keeps its configured cadence.
+            ticksUntilCycle = Mathf.Max(1, ticksUntilCycle + Mathf.Max(1, Props.tickIntervalTicks));
 
             if (!HasEnoughKinNearby(pawn))
             {
@@ -122,12 +123,22 @@ namespace RimMandrake.CreatureBehaviors
             // unreachable this session) — same call RM_CompWoundLink uses to
             // reduce the shared victim's own injury, so both mechanisms heal
             // through the identical, verified API.
+            // healAmount is ONE per-carrier budget for this cycle, spent across
+            // eligible injuries and consumed only by what is actually healed —
+            // never the full amount on every wound.
+            float budget = healAmount;
             List<Hediff> hediffs = pawn.health.hediffSet.hediffs;
-            for (int i = hediffs.Count - 1; i >= 0; i--)
+            for (int i = hediffs.Count - 1; i >= 0 && budget > 0f; i--)
             {
+                if (i >= hediffs.Count)
+                {
+                    continue; // a heal removed more than one entry
+                }
                 if (hediffs[i] is Hediff_Injury injury && !injury.IsPermanent() && injury.Severity > 0f)
                 {
-                    injury.Heal(healAmount);
+                    float spend = Mathf.Min(budget, injury.Severity);
+                    injury.Heal(spend);
+                    budget -= spend;
                 }
             }
         }

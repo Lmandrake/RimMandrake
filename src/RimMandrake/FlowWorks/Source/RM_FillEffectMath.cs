@@ -61,9 +61,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Bubbles one sampled cell throws this tick: it stands for <paramref name="cellsRepresented"/> cells in
 		/// view, each throwing <paramref name="perCellPerSecond"/> x <paramref name="density"/> a second (60 ticks).
 		/// The fractional part is rolled with <paramref name="roll"/> (0..1).</summary>
-		public static int BubblesThisTick(float perCellPerSecond, float density, int cellsRepresented, float roll)
+		public static int BubblesThisTick(float perCellPerSecond, float density, float cellsRepresented, float roll)
 		{
-			if (!(perCellPerSecond > 0f) || !(density > 0f) || cellsRepresented <= 0)
+			if (!(perCellPerSecond > 0f) || !(density > 0f) || !(cellsRepresented > 0f))
 			{
 				return 0;
 			}

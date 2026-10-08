@@ -135,12 +135,23 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
             portionProgress += amount;
-            if (portionProgress < Props.workPerPortion)
+            if (Props.workPerPortion <= 0f)
             {
+                portionProgress = 0f;
+                RollPortion(optionalWorker); // degenerate config: one roll per input, as before
                 return;
             }
-            portionProgress -= Props.workPerPortion;
-            RollPortion(optionalWorker);
+            // Every completed portion rolls, so yield does not depend on how
+            // the same work is split across calls. Bounded per call.
+            for (int rolls = 0; rolls < 64 && portionProgress >= Props.workPerPortion; rolls++)
+            {
+                if (parent.Destroyed || parent.Map == null)
+                {
+                    return;
+                }
+                portionProgress -= Props.workPerPortion;
+                RollPortion(optionalWorker);
+            }
         }
 
         /// <summary>S6b entry point: a derrick past its pump-volume threshold
@@ -180,8 +191,11 @@ namespace RimMandrake.EnvironmentalHazards
                 }
             }
 
+            // Compare the stratum just worked (0-indexed, per the property's
+            // own doc), not the post-increment count.
+            int workedStratum = stratumDepth;
             stratumDepth++;
-            if (stratumDepth >= Props.beastWakeStratumThreshold)
+            if (workedStratum >= Props.beastWakeStratumThreshold)
             {
                 BeastWakeRequested?.Invoke(parent.Map, parent.Position, stratumDepth);
             }
@@ -191,13 +205,20 @@ namespace RimMandrake.EnvironmentalHazards
         {
             if (row.isTrap)
             {
-                return row.weight * (float)Math.Pow(Props.trapWeightMultiplierPerStratum, stratumDepth);
+                // Capped so a very deep shaft cannot overflow to an infinite
+                // weight; at 1e6x the trap already dominates every table row.
+                double factor = Math.Min(Math.Pow(Props.trapWeightMultiplierPerStratum, stratumDepth), 1e6);
+                return row.weight * (float)factor;
             }
             return row.weight;
         }
 
         private void ArmTrap()
         {
+            if (TrapArmed)
+            {
+                return; // a second trap roll must not push back the fuse already burning
+            }
             trapFuseTicksRemaining = Props.trapFuseTicks;
             // Telegraph per the sheet ("the click"): CompInspectStringExtra
             // surfaces the countdown below. A click SoundDef and a pause-

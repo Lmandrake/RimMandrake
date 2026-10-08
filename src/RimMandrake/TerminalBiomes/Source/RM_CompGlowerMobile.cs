@@ -55,12 +55,13 @@ namespace RimMandrake.TerminalBiomes
         // mover this comp targets is a Pawn (TickerType.Normal), so a
         // CompTickRare override never fired and the stranded-light fix never
         // ran (TERMINALBIOMES_REVIEW_FIXES_1 #2). CompTick plus a hash gate at
-        // ~250 ticks matches RM_Comp_WarblingGlow: a walking creature moves at
-        // most one cell every several ticks, and a stale registration for a
-        // quarter of a second is invisible.
+        // 60 ticks (one second): a walking creature crosses one to three cells
+        // in that time, so its light trails by at most a few cells. (It was 250
+        // ticks, ~4 s, under a comment claiming a quarter-second.) The check
+        // itself is a position compare; re-registering happens only on a move.
         public override void CompTick()
         {
-            if (!parent.IsHashIntervalTick(250))
+            if (!parent.IsHashIntervalTick(60))
             {
                 return;
             }

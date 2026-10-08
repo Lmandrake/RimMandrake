@@ -55,18 +55,19 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     return;
                 }
 
-                Map map = pawn.MapHeld;
-                if (map == null)
-                {
-                    return;
-                }
-
                 Thing residue = RM_LiquidBottleUtility.MakeContainer(residueDef, ingested);
                 residue.stackCount = Math.Max(1, ingestedCount);
 
-                if (pawn.Spawned && pawn.inventory != null
-                    && pawn.inventory.innerContainer.TryAdd(residue))
+                // Inventory first, on or off a map: a caravan pawn has no MapHeld, and the advertised caravan route
+                // used to lose the container there (GPT FlowWorks review #25). The map is only the fallback.
+                if (pawn.inventory != null && pawn.inventory.innerContainer.TryAdd(residue))
                 {
+                    return;
+                }
+                Map map = pawn.MapHeld;
+                if (map == null)
+                {
+                    residue.Destroy();
                     return;
                 }
                 GenPlace.TryPlaceThing(residue, pawn.PositionHeld, map, ThingPlaceMode.Near);

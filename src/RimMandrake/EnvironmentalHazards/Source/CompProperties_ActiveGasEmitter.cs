@@ -85,9 +85,9 @@ namespace RimMandrake.EnvironmentalHazards
                              + GenRadial.MaxRadialPatternRadius + ").";
             }
 
-            if (parentDef != null && parentDef.tickerType == TickerType.Never)
+            if (parentDef != null && parentDef.tickerType != TickerType.Normal)
             {
-                yield return "CompProperties_ActiveGasEmitter needs tickerType Normal on its parent ThingDef; tickerType Never means CompTick is never called.";
+                yield return "CompProperties_ActiveGasEmitter needs tickerType Normal on its parent ThingDef; the comp only overrides CompTick, which Never/Rare/Long parents never call.";
             }
 
             if (requiresPower && parentDef != null && !HasPowerTrader(parentDef))

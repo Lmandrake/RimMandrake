@@ -75,7 +75,10 @@ namespace RimMandrake.LuminousPigment
             CompDeepfire comp = t.TryGetComp<CompDeepfire>();
             if (comp == null) return false;
             if (!comp.CanAddCoat) return "Already fully coated.";
-            if (t.Faction != Faction.OfPlayer) return false;
+            // GPT review #8: loose items (apparel/weapons on the ground)
+            // carry no faction; only buildings must be the player's.
+            if (t.def.category == ThingCategory.Building ? t.Faction != Faction.OfPlayer
+                : (t.Faction != null && t.Faction != Faction.OfPlayer)) return false;
             if (!DeepfireTargetClassUtility.IsPaintable(t)) return false;
             if (!LuminousPigmentSettings.ishkoIdolPaintable && DeepfireGodDeltas.StatueGodOf(t) == DeepfireGodDeltas.Ishko)
             {
@@ -142,7 +145,10 @@ namespace RimMandrake.LuminousPigment
             CompDeepfire comp = t.TryGetComp<CompDeepfire>();
             if (comp == null) return false;
             if (comp.coats <= 0) return false;
-            if (t.Faction != Faction.OfPlayer) return false;
+            // GPT review #8: loose items (apparel/weapons on the ground)
+            // carry no faction; only buildings must be the player's.
+            if (t.def.category == ThingCategory.Building ? t.Faction != Faction.OfPlayer
+                : (t.Faction != null && t.Faction != Faction.OfPlayer)) return false;
             return true;
         }
 

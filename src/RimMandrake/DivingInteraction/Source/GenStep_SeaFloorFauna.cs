@@ -54,13 +54,14 @@ namespace RimMandrake.DivingInteraction
                     continue;
                 }
 
-                int countForKind = Mathf.RoundToInt(totalToSpawn * commonality);
-                if (countForKind <= 0)
+                // Stochastic rounding: floor(expected) plus a roll on the fraction, so a rare
+                // species (0.01-0.04 commonality apex creature) keeps its chance and the count
+                // has no jump at the old RoundToInt 0.5 boundary.
+                float expected = totalToSpawn * commonality;
+                int countForKind = Mathf.FloorToInt(expected);
+                if (Rand.Chance(expected - countForKind))
                 {
-                    // A rare species (e.g. a 0.01-0.04 commonality apex
-                    // creature) still deserves a CHANCE to appear rather
-                    // than being rounded to zero every single dive.
-                    countForKind = Rand.Chance(commonality) ? 1 : 0;
+                    countForKind++;
                 }
 
                 for (int i = 0; i < countForKind; i++)

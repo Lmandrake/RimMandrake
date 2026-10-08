@@ -160,6 +160,7 @@ namespace RimMandrake.Scarlands
             float y = AltitudeLayer.FloorEmplacement.AltitudeFor();
             for (int i = 0; i < cells.Count; i++)
             {
+                if (!PoolPhase.IsPoolTerrain(cells[i].GetTerrain(Map))) continue;   // liquor replaced since spawn: no tint
                 Vector3 p = cells[i].ToVector3Shifted();
                 p.y = y;
                 Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(p, Quaternion.identity, Vector3.one), tint, 0);
@@ -214,7 +215,7 @@ namespace RimMandrake.Scarlands
         public override void MapComponentTick()
         {
             int now = Find.TickManager.TicksGame;
-            if (now % 250 != 0 || pools.Count == 0) return;
+            if (now % 250 != 0 || pools.Count == 0 || !RM_WarscarSettings.poolsEnabled) return;
             HashSet<int> seen = new HashSet<int>();
             List<Corpse> dissolve = null;
             for (int i = 0; i < pools.Count; i++)
@@ -222,6 +223,7 @@ namespace RimMandrake.Scarlands
                 List<IntVec3> cells = pools[i].Cells;
                 for (int k = 0; k < cells.Count; k++)
                 {
+                    if (!PoolPhase.IsPoolTerrain(cells[k].GetTerrain(map))) continue;   // liquor replaced since spawn
                     List<Thing> things = map.thingGrid.ThingsListAtFast(cells[k]);
                     for (int t = 0; t < things.Count; t++)
                     {
@@ -457,6 +459,7 @@ namespace RimMandrake.Scarlands
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            this.FailOn(() => !Tap.drawWanted);   // order cancelled mid-job
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
             yield return Toils_General.Wait(240).FailOnDestroyedNullOrForbidden(TargetIndex.A).WithProgressBarToilDelay(TargetIndex.A);
             Toil fin = new Toil();
@@ -464,7 +467,8 @@ namespace RimMandrake.Scarlands
             {
                 Building_ReactionTap tap = Tap;
                 Thing_ReactionPool pool = tap.Pool;
-                if (pool == null || !RM_WarscarSettings.poolsEnabled) return;
+                // Re-run the selection checks at completion: the phase may have turned to a skipped bloom during the walk.
+                if (pool == null || !tap.drawWanted || !tap.CanDrawNow()) return;
                 int phase = pool.Phase();
                 ThingDef def = PoolPhase.ReagentDef(phase);
                 if (def == null) return;

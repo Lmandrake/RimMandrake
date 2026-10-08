@@ -211,17 +211,24 @@ namespace RimMandrake.GimmeSomeSlack
         {
             CordWorld w = CordWorldAdapter.Snapshot(map);
             var b = new CordBuilder();
-            List<LaidPiece> fresh = b.Build(w, GimmeSomeSlackSettings.BuildOptions(), c => CordWorldAdapter.IsLive(map, c));
+            // GPT review 2026-10-08 #24: the same inputs production builds with (its per-cell PileAt), and stale extras counted
+            BuildOptions opt = GimmeSomeSlackSettings.BuildOptions();
+            Dictionary<Cell, Aerial.CellStyle> styled = Aerial.ConduitStylePicker.CellStyles(map);
+            opt.PileAt = c => styled.TryGetValue(c, out Aerial.CellStyle cs) ? (cs.Look == "Modern" ? PileArt.Strips : PileArt.Junctions) : (PileArt?)null;
+            List<LaidPiece> fresh = b.Build(w, opt, c => CordWorldAdapter.IsLive(map, c));
             var cur = comp.Pieces.Where(p => p.EndA != null).ToDictionary(p => p.Key, p => p.GeometryHash());
             int same = 0, diff = 0, missing = 0;
+            var freshKeys = new HashSet<string>();
             foreach (LaidPiece p in fresh.Where(p => p.EndA != null))
             {
+                freshKeys.Add(p.Key);
                 if (!cur.TryGetValue(p.Key, out ulong h)) missing++;
                 else if (h == p.GeometryHash()) same++;
                 else diff++;
             }
+            int extra = cur.Keys.Count(k => !freshKeys.Contains(k));
             return "{\"success\":true,\"cmd\":\"fresh\",\"edges\":" + fresh.Count(p => p.EndA != null) + ",\"same\":" + same +
-                   ",\"different\":" + diff + ",\"missing\":" + missing + ",\"offscreenRebuilds\":" + comp.OffscreenRebuilds + "}";
+                   ",\"different\":" + diff + ",\"missing\":" + missing + ",\"extra\":" + extra + ",\"offscreenRebuilds\":" + comp.OffscreenRebuilds + "}";
         }
 
         /// <summary>Polish pass 2026-10-02: the art-fit audit on the LIVE laid pieces (the same

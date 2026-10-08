@@ -5,6 +5,7 @@ using RimWorld.Planet;
 using RimWorld.QuestGen;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.AI.Group;
 
 namespace RimMandrake.FeverWood
@@ -161,7 +162,7 @@ namespace RimMandrake.FeverWood
                     continue;
                 }
                 float d = p.Position.DistanceTo(victim.Position);
-                if (p.IsColonist && !p.Downed && d <= 2f)
+                if (p.IsColonist && !p.Downed && d <= 2f && p.CanReach(victim, PathEndMode.Touch, Danger.Deadly))
                 {
                     colonistNear = true;
                 }
@@ -292,8 +293,11 @@ namespace RimMandrake.FeverWood
             {
                 return 0;
             }
-            IntVec3 centre = map.Center;
-            CellFinder.TryFindRandomCellNear(map.Center, map, 12, c => c.Standable(map) && !c.Fogged(map), out centre);
+            // The out parameter is overwritten (Invalid) on failure, so the fallback must be applied after the call.
+            if (!CellFinder.TryFindRandomCellNear(map.Center, map, 12, c => c.Standable(map) && !c.Fogged(map), out IntVec3 centre))
+            {
+                centre = map.Center;
+            }
             int n = 0;
             foreach (Pawn p in Living)
             {

@@ -32,10 +32,12 @@ namespace RimMandrake.CreatureBehaviors
 
 		public override float SeverityChangePerDay()
 		{
-			if (!RM_CreatureBehaviorsSettings.shadeGridEnabled || !RM_CreatureBehaviorsSettings.heatDrivenBurstEnabled)
+			if (!RM_CreatureBehaviorsSettings.heatDrivenBurstEnabled)
 			{
 				return 0f; // mod option: frozen in place, neither climbing nor decaying
 			}
+			// Shade grid off is NOT a freeze: ShadeAt reports 0 (full sun) via Ready(),
+			// so the hediff keeps decaying at the in-sun rate, per the settings tooltip.
 			Pawn pawn = base.Pawn;
 			if (!pawn.SpawnedOrAnyParentSpawned || pawn.MapHeld == null)
 			{

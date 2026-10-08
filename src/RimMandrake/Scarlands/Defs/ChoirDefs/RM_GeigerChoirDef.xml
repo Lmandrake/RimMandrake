@@ -11,7 +11,7 @@
       <li>AncientFortifiedWall</li><li>AncientAutocannonTurret</li><li>AncientUraniumSlugTurret</li><li>AncientSecurityTurret</li>
       <li>AncientCraneArm</li><li>AncientCraneArmSmall</li><li>AncientCraneBase</li><li>AncientCraneColumn</li>
     </windMetal>
-    <hum><li>RM_WarscarProjector</li><li>RM_AerosolScreen</li></hum>
+    <hum><li>RM_WarscarProjector_Live</li><li>RM_WarscarProjector_Dead</li><li>RM_WarscarProjector_Salvaged</li><li>RM_AerosolScreen</li></hum>
     <boil><li>RM_ReactionPool</li></boil>
   </RimMandrake.Scarlands.RM_GeigerChoirDef>
 </Defs>

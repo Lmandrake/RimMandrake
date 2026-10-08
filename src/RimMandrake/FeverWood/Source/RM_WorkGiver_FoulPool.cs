@@ -34,6 +34,10 @@ namespace RimMandrake.FeverWood
             {
                 return false;
             }
+            if (!pawn.CanReserve(c, 1, -1, null, forced))
+            {
+                return false;
+            }
             return FindSuppressant(pawn) != null;
         }
 
@@ -57,7 +61,7 @@ namespace RimMandrake.FeverWood
                 PathEndMode.ClosestTouch, TraverseParms.For(pawn),
                 validator: delegate (Thing t)
                 {
-                    return t.stackCount >= 1 && pawn.CanReserve(t, 1, -1, null);
+                    return t.stackCount >= 1 && !t.IsForbidden(pawn) && pawn.CanReserve(t, 1, -1, null);
                 });
         }
     }

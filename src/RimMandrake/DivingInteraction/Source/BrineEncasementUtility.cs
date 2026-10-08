@@ -19,7 +19,7 @@ namespace RimMandrake.DivingInteraction
     {
         public static bool TryEncase(Pawn p, Map map)
         {
-            if (p == null || map == null || !p.Spawned)
+            if (p == null || map == null || !p.Spawned || p.Map != map)
             {
                 return false;
             }
@@ -43,10 +43,12 @@ namespace RimMandrake.DivingInteraction
             {
                 return false;
             }
+            // Make (and type-check) the jacket before destroying anything.
+            if (!(ThingMaker.MakeThing(jacketDef) is RM_Building_BrineEncasement jacket))
+            {
+                return false;
+            }
             edifice?.Destroy();
-
-            RM_Building_BrineEncasement jacket =
-                (RM_Building_BrineEncasement)ThingMaker.MakeThing(jacketDef);
 
             if (!jacket.TryEncase(p))
             {

@@ -97,13 +97,14 @@ namespace RimMandrake.FeverWood
             base.Notify_PawnLost(p, condition);
             // Pawn.ExitMap calls this BEFORE it hands the carried pawn to the faction's kidnap tracker, so the
             // victim is still in the carrier's hands here.
+            List<IntVec3> path = RM_LordToil_KurrethTheft.PathOf(p);
+            RM_LordToil_KurrethTheft.ForgetPath(p); // the carrier is gone from this lord either way: drop its trail
             if (condition != PawnLostCondition.ExitedMap || p.carryTracker?.CarriedThing is not Pawn victim
                 || victim.Faction != Faction.OfPlayer || p.Map == null)
             {
                 return;
             }
-            p.Map.GetComponent<RM_MapComponent_KurrethTheft>()?.Notify_Stolen(victim, p, p.Position,
-                RM_LordToil_KurrethTheft.PathOf(p));
+            p.Map.GetComponent<RM_MapComponent_KurrethTheft>()?.Notify_Stolen(victim, p, p.Position, path);
         }
 
         public override void ExposeData() { }
@@ -123,6 +124,14 @@ namespace RimMandrake.FeverWood
         public static List<IntVec3> PathOf(Pawn p)
         {
             return p != null && paths.TryGetValue(p.thingIDNumber, out List<IntVec3> l) ? l : null;
+        }
+
+        public static void ForgetPath(Pawn p)
+        {
+            if (p != null)
+            {
+                paths.Remove(p.thingIDNumber);
+            }
         }
 
         private static bool IsThieving(Pawn p)

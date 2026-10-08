@@ -51,6 +51,18 @@ namespace RimMandrake.DivingInteraction
 
         private bool IsSpent => ticksSinceLastSquirt < CooldownTicks;
 
+        // A pawn is a Normal-ticker thing: ThingWithComps only calls CompTickRare from
+        // TickRare (RimSage, ThingWithComps.cs), which a pawn never receives. Drive the
+        // rare cadence from CompTick so this comp actually runs.
+        public override void CompTick()
+        {
+            base.CompTick();
+            if (parent.IsHashIntervalTick(250))
+            {
+                CompTickRare();
+            }
+        }
+
         public override void CompTickRare()
         {
             base.CompTickRare();

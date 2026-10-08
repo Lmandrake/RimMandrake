@@ -41,17 +41,27 @@ namespace RimMandrake.FeverWood
         {
             base.PostSpawnSetup(respawningAfterLoad);
 
+            // Role timers are scribed: only a fresh spawn starts them, a load keeps the saved countdown.
             if (Props.role == RM_TentacleRole.Porter)
             {
-                ticksUntilAction = Props.porterDepositDelayTicks.RandomInRange;
+                if (!respawningAfterLoad)
+                {
+                    ticksUntilAction = Props.porterDepositDelayTicks.RandomInRange;
+                }
             }
             else if (Props.role == RM_TentacleRole.Lash)
             {
-                ticksUntilAction = Props.lashIntervalTicks;
+                if (!respawningAfterLoad)
+                {
+                    ticksUntilAction = Props.lashIntervalTicks;
+                }
             }
             else if (Props.role == RM_TentacleRole.Snare)
             {
-                ticksUntilAction = Props.snareIntervalTicks;
+                if (!respawningAfterLoad)
+                {
+                    ticksUntilAction = Props.snareIntervalTicks;
+                }
             }
             else if (Props.role == RM_TentacleRole.Sentinel)
             {

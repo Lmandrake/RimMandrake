@@ -96,7 +96,7 @@ namespace RimMandrake.DivingInteraction
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            if (phase == 2 && now % 15 == 0)
+            if (phase == 2 && now % 15 == 0 && now < phaseEnd)   // an expired phase never discharges
             {
                 Discharge(now);
             }
@@ -222,9 +222,10 @@ namespace RimMandrake.DivingInteraction
             {
                 return;
             }
-            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            // Snapshot: a burn can kill and despawn a pawn, which mutates the live list.
+            foreach (Pawn p in new List<Pawn>(map.mapPawns.AllPawnsSpawned))
             {
-                if (p.Dead || p.def.defName == "RM_Noohm" || (p.Position - vent.Position).LengthHorizontal > DischargeRadius)
+                if (p.Dead || !p.Spawned || p.Map != map || p.def.defName == "RM_Noohm" || (p.Position - vent.Position).LengthHorizontal > DischargeRadius)
                 {
                     continue;
                 }

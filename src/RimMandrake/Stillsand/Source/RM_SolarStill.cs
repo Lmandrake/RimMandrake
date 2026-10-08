@@ -149,9 +149,12 @@ namespace RimMandrake.Stillsand
             {
                 Thing w = ThingMaker.MakeThing(water);
                 w.stackCount = litres;
-                GenPlace.TryPlaceThing(w, parent.InteractionCell.IsValid ? parent.InteractionCell : at, map, ThingPlaceMode.Near);
+                // Only water that actually came out of the still is a draw on the land.
+                if (GenPlace.TryPlaceThing(w, parent.InteractionCell.IsValid ? parent.InteractionCell : at, map, ThingPlaceMode.Near))
+                {
+                    RM_WaterLedger.Notify_Drawn(map, litres, dead ? "wrung from the dead" : "still");
+                }
             }
-            RM_WaterLedger.Notify_Drawn(map, litres, dead ? "wrung from the dead" : "still");
         }
 
         /// <summary>Dubs Bad Hygiene's bottle when live, else the mod's own water item.</summary>

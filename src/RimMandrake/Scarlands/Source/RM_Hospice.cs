@@ -104,7 +104,11 @@ namespace RimMandrake.Scarlands
             Thing cradle = null;
             List<Thing> cradles = map.listerThings.ThingsOfDef(RM_HospiceDefOf.RM_HospiceCradle);
             for (int i = 0; i < cradles.Count; i++)
-                if (cradle == null || cradles[i].Position.DistanceTo(p.Position) < cradle.Position.DistanceTo(p.Position)) cradle = cradles[i];
+            {
+                if (cradle != null && cradles[i].Position.DistanceTo(p.Position) >= cradle.Position.DistanceTo(p.Position)) continue;
+                if (!p.CanReach(cradles[i].InteractionCell, PathEndMode.OnCell, Danger.Deadly)) continue;   // never walk at a sealed-off cradle forever
+                cradle = cradles[i];
+            }
             IntVec3 goal = cradle != null ? cradle.InteractionCell : p.Position;
             if (cradle == null || p.Position.DistanceTo(goal) <= 2.5f) { Kneel(p, goal, map); return; }
             if (p.CurJob == null || p.CurJob.def != JobDefOf.Goto)
@@ -123,9 +127,10 @@ namespace RimMandrake.Scarlands
             CompDeserterHistory c = chassis.TryGetComp<CompDeserterHistory>();
             if (c != null) { c.CopyFrom(h); c.Roll(); }
             string unit = c != null ? c.unitName : "the machine";
-            p.Destroy();
             Thing min = MinifyUtility.MakeMinified(chassis);
-            GenPlace.TryPlaceThing(min, at, map, ThingPlaceMode.Near);
+            // Place the chassis first; the walker is consumed only once its replacement exists.
+            if (!GenPlace.TryPlaceThing(min, at, map, ThingPlaceMode.Near)) { min.Destroy(); return; }
+            p.Destroy();
             Find.LetterStack.ReceiveLetter("A deserter knelt", unit + " reached the cradle, stopped, and knelt. Haul it in to begin the repair.",
                 LetterDefOf.NeutralEvent, min);
         }
@@ -256,7 +261,7 @@ namespace RimMandrake.Scarlands
             switch (stage)
             {
                 case 1:
-                    oddities = RM_OldTongue.HospiceUnlocked;
+                    oddities = RM_OldTongue.HospiceUnlocked && history != null;   // a history def removed since saving loads null
                     Find.LetterStack.ReceiveLetter(unitName + ": diagnosis",
                         oddities ? history.oddityText + "\n\n" + history.damageText
                                  : "The chassis is open on the cradle. The protocols for reading it are not yours yet; what was done to it will show when it wakes.",
@@ -358,7 +363,7 @@ namespace RimMandrake.Scarlands
                 else if (stage == 3 && EtchantDef == null) sb.AppendLine("No etchant exists yet: this stage is slower and riskier.");
             }
             if (oddities && history != null) sb.AppendLine(history.oddityText);
-            for (int i = 0; history != null && i < revealed && i < history.memories.Count; i++) sb.AppendLine(MemoryLine(i));
+            for (int i = 0; history != null && history.memories != null && i < revealed && i < history.memories.Count; i++) sb.AppendLine(MemoryLine(i));
             return sb.ToString().TrimEndNewlines();
         }
     }

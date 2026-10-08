@@ -117,6 +117,25 @@ namespace RimMandrake.FlowWorks
 		private static Dictionary<TerrainDef, RM_LiquidSurfaceLook> lookOf;
 		private static readonly Dictionary<RM_LiquidSurfaceLook, Material[]> mats = new Dictionary<RM_LiquidSurfaceLook, Material[]>();
 
+		/// <summary>Drop one look's cached overlay materials (owned instances, destroyed) and the terrain-to-look table,
+		/// so a live Tune redraws with the new values and a look created since the table was built is seen
+		/// (GPT FlowWorks review #23).</summary>
+		public static void ForgetLook(RM_LiquidSurfaceLook look)
+		{
+			if (look != null && mats.TryGetValue(look, out Material[] m))
+			{
+				for (int i = 0; i < m.Length; i++)
+				{
+					if (m[i] != null)
+					{
+						UnityEngine.Object.Destroy(m[i]);
+					}
+				}
+				mats.Remove(look);
+			}
+			lookOf = null;
+		}
+
 		private readonly Dictionary<RM_LiquidSurfaceLook, Mesh> meshes = new Dictionary<RM_LiquidSurfaceLook, Mesh>();
 		private readonly Dictionary<RM_LiquidSurfaceLook, List<Vector3>> vbuf = new Dictionary<RM_LiquidSurfaceLook, List<Vector3>>();
 		private CellRect lastView;
@@ -509,9 +528,27 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			int represented = Mathf.Max(1, area / BubbleSamples);
+			// Each sample stands for exactly area/samples cells, so a small view is neither inflated (1 cell read
+			// as 16) nor a mid-size one truncated (31 cells read as 16) (GPT FlowWorks review #32).
+			int samples = Mathf.Min(BubbleSamples, area);
+			float represented = (float)area / samples;
+			// Cosmetic only: an isolated, tick-seeded RNG scope, so how much of the map is in view never shifts the
+			// gameplay Rand stream that discovery and fire draw from (GPT FlowWorks review #9).
+			Rand.PushState(Gen.HashCombineInt(Find.TickManager.TicksGame, map.uniqueID));
+			try
+			{
+				BubbleSamplesIn(view, samples, represented);
+			}
+			finally
+			{
+				Rand.PopState();
+			}
+		}
+
+		private void BubbleSamplesIn(CellRect view, int samples, float represented)
+		{
 			TerrainGrid tg = map.terrainGrid;
-			for (int i = 0; i < BubbleSamples; i++)
+			for (int i = 0; i < samples; i++)
 			{
 				IntVec3 c = view.RandomCell;
 				RM_LiquidSurfaceLook look = LookFor(tg.TerrainAt(c));

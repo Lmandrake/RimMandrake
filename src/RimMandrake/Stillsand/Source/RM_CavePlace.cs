@@ -74,7 +74,9 @@ namespace RimMandrake.Stillsand
 
         private static void TryFreeze(RM_MapComponent_PreciousCave comp, Thing t)
         {
-            if (!(t is ThingWithComps twc) || comp.frozenThings.Contains(t))
+            // A storage building straddling the cave edge holds slot cells outside it: only what
+            // actually sits on a roofed cave cell is taken over.
+            if (!(t is ThingWithComps twc) || comp.frozenThings.Contains(t) || !InCave(comp, t))
             {
                 return;
             }
@@ -167,6 +169,10 @@ namespace RimMandrake.Stillsand
 
         public static bool IsNaturalRock(IntVec3 c, Map map)
         {
+            if (map == null || !c.InBounds(map))
+            {
+                return false;
+            }
             Building b = c.GetEdifice(map);
             return b != null && b.def.building != null && b.def.building.isNaturalRock;
         }

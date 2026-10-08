@@ -159,7 +159,6 @@ namespace RimMandrake.TerminalBiomes.SelfTest
                                 int wc = book.Wells.Count, pc = book.Pending.Count; int opened0 = opened;
                                 int dueAfter = book.Pending.Count == 0 ? 0 : 1 + book.Pending.Skip(1).Count(t => t <= now);   // pending[0] is pulled to now; any other already-due entry opens with it
                                 book.GardenerAdvance(now);
-                                if (wc == 0) { Check(book.Wells.Count == 0, "gardener changed an empty ledger"); break; }
                                 if (waning.Count > 0)
                                 {
                                     Check(book.Wells.Count == wc - 1 && !book.Wells.Any(w => w.id == waning[0].id), "the gardener did not close the well nearest its end");
@@ -392,7 +391,7 @@ namespace RimMandrake.TerminalBiomes.SelfTest
                                     {
                                         int d = f.Flow[o.z * W + o.x];
                                         int x2 = o.x + 2 * Dx[d], z2 = o.z + 2 * Dz[d], x1 = o.x + Dx[d], z1 = o.z + Dz[d];
-                                        if (standable(x2, z2)) { wantOk = true; wx = x2; wz = z2; }
+                                        if (standable(x2, z2) && standable(x1, z1)) { wantOk = true; wx = x2; wz = z2; }
                                         else if (standable(x1, z1)) { wantOk = true; wx = x1; wz = z1; }
                                     }
                                     Check(ok == wantOk && (!ok || (tx == wx && tz == wz)), $"GrabTarget {ok} ({tx},{tz}) want {wantOk} ({wx},{wz})");
@@ -455,7 +454,7 @@ namespace RimMandrake.TerminalBiomes.SelfTest
             f.Adopt(new byte[3], new byte[20], null);
             Check(f.Flow.Length == 20 && f.Lane.Length == 20 && f.Band.Length == 20, "Adopt did not replace a wrong-size grid with an empty one");
             f.SetBankBand(1, 1, 3, 9); Check(f.BankBandAt(1, 1) == 2 && f.FlowAt(1, 1) == 3, "SetBankBand clamp / direction");
-            f.SetFlow(2, 2, 5, 2); f.SetBankBand(2, 2, 7, 1); Check(f.FlowAt(2, 2) == 5, "SetBankBand overwrote a channel cell's flow");
+            f.SetFlow(2, 2, 5, 2); f.SetBankBand(2, 2, 7, 1); Check(f.FlowAt(2, 2) == 5 && f.BankBandAt(2, 2) == 0, "SetBankBand overwrote/banded a channel cell");
             f.SetBankBand(0, 0, 2, 1); Check(!f.HasCurrent(0, 0), "a calm bank has current"); f.Surge = true; Check(f.HasCurrent(0, 0) && f.LaneAt(0, 0) == 1, "a surge did not widen the bank into margin");
             f.SetBankBand(3, 0, 0, 1); Check(!f.HasCurrent(3, 0), "a bank cell with no direction has current in a surge");
             return null;

@@ -206,7 +206,8 @@ namespace RimMandrake.Stillsand
             foreach (Building b in map.listerBuildings.allBuildingsColonist)
             {
                 RM_CompThumper c = b.TryGetComp<RM_CompThumper>();
-                if (c != null && c.Charged)
+                // A thumper switched off in Mod Settings does not beat, so it must not draw either.
+                if (c != null && c.Charged && RM_SandSwimRemSettings.thumperEnabled)
                 {
                     return b;
                 }
@@ -367,6 +368,9 @@ namespace RimMandrake.Stillsand
         public bool diving;
         public int diveStartTick = -1;
         public bool wasSubmerged;
+        // Set once the pawn is spawned: an arrived visit whose pawn reference is lost on load is
+        // over, never a second arrival.
+        public bool arrived;
         public int lastBeamTick = -999999;
         public Pawn target;
 
@@ -384,6 +388,7 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref diving, "diving");
             Scribe_Values.Look(ref diveStartTick, "diveStartTick", -1);
             Scribe_Values.Look(ref wasSubmerged, "wasSubmerged");
+            Scribe_Values.Look(ref arrived, "arrived");
             Scribe_Values.Look(ref lastBeamTick, "lastBeamTick", -999999);
             Scribe_References.Look(ref target, "target");
         }
@@ -420,8 +425,8 @@ namespace RimMandrake.Stillsand
             for (int i = visits.Count - 1; i >= 0; i--)
             {
                 RM_LeviathanVisit v = visits[i];
-                RM_VisitClass what = RM_LeviathanKernel.Classify(v.Ext == null, v.kind == null, v.pawn != null,
-                    v.pawn != null && (v.pawn.Destroyed || v.pawn.Dead || !v.pawn.Spawned || v.pawn.Map != map), now, v.arriveTick);
+                RM_VisitClass what = RM_LeviathanKernel.Classify(v.Ext == null, v.kind == null, v.pawn != null || v.arrived,
+                    v.pawn == null || (v.pawn.Destroyed || v.pawn.Dead || !v.pawn.Spawned || v.pawn.Map != map), now, v.arriveTick);
                 if (what == RM_VisitClass.Drop)
                 {
                     // No def left, or killed (its corpse stays: the skeleton landmark is §3's), or already gone.
@@ -482,6 +487,7 @@ namespace RimMandrake.Stillsand
             Pawn p = PawnGenerator.GeneratePawn(v.kind);
             GenSpawn.Spawn(p, cell, map);
             v.pawn = p;
+            v.arrived = true;
             v.killsAtArrival = p.records?.GetAsInt(RecordDefOf.Kills) ?? 0;
             v.arriveTick = Find.TickManager.TicksGame;
             if (v.Ext.surfaceFighter)
@@ -614,16 +620,10 @@ namespace RimMandrake.Stillsand
             {
                 corpse = v.target.Corpse;
             }
-            if (corpse == null)
+            if (corpse == null && p.mindState != null && p.mindState.lastAttackedTarget.Thing is Pawn last && last.Dead)
             {
-                foreach (Thing t in GenRadial.RadialDistinctThingsAround(p.Position, map, 6.9f, true))
-                {
-                    if (t is Corpse c && c.InnerPawn != null && c.Age < 600)
-                    {
-                        corpse = c;
-                        break;
-                    }
-                }
+                // Its own last victim, not just any fresh corpse nearby (that could be someone else's kill).
+                corpse = last.Corpse;
             }
             if (corpse == null || !corpse.Spawned || !RM_SandLeviathanUtility.IsSand(corpse.Position, map, p))
             {
@@ -691,9 +691,10 @@ namespace RimMandrake.Stillsand
         {
             base.ExposeData();
             Scribe_Collections.Look(ref visits, "rmSandLeviathanVisits", LookMode.Deep);
-            if (Scribe.mode == LoadSaveMode.PostLoadInit && visits == null)
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                visits = new List<RM_LeviathanVisit>();
+                visits = visits ?? new List<RM_LeviathanVisit>();
+                visits.RemoveAll(v => v == null);
             }
         }
     }

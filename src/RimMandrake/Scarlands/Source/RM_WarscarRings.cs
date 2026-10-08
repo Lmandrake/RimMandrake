@@ -71,8 +71,8 @@ namespace RimMandrake.Scarlands
 
         public override void CompTickRare()
         {
+            if (RingProps.dead) wakeCached = ComputeWake();   // before the base calibration pass reads IsScreenLive
             base.CompTickRare();
-            if (RingProps.dead) wakeCached = ComputeWake();
         }
 
         private bool ComputeWake()
@@ -137,8 +137,11 @@ namespace RimMandrake.Scarlands
             Map map = parent.Map;
             IntVec3 pos = parent.Position;
             RingCondition c = Condition;
+            bool strip = RM_RingKernel.Salvage(c) == SalvageResult.Strip;
+            ThingDef salvaged = strip ? null : DefDatabase<ThingDef>.GetNamedSilentFail("RM_WarscarProjector_Salvaged");
+            if (!strip && salvaged == null) return;   // resolve the replacement before consuming the ring
             parent.Destroy(DestroyMode.Vanish);
-            if (RM_RingKernel.Salvage(c) == SalvageResult.Strip)
+            if (strip)
             {
                 Drop(ThingDefOf.Steel, Rand.RangeInclusive(30, 60), pos, map);
                 Drop(ThingDefOf.ComponentIndustrial, Rand.RangeInclusive(1, 3), pos, map);
@@ -149,8 +152,6 @@ namespace RimMandrake.Scarlands
                 }
                 return;
             }
-            ThingDef salvaged = DefDatabase<ThingDef>.GetNamedSilentFail("RM_WarscarProjector_Salvaged");
-            if (salvaged == null) return;
             Thing ring = ThingMaker.MakeThing(salvaged);
             RM_CompWarscarRing rc = ring.TryGetComp<RM_CompWarscarRing>();
             if (rc != null) rc.SetCondition(RM_RingKernel.SalvagedCondition(c), true);
@@ -217,7 +218,10 @@ namespace RimMandrake.Scarlands
             List<IntVec3> placed = new List<IntVec3>();
             for (int n = 0; n < count; n++)
             {
-                ThingDef def = (n == 0 || Rand.Chance(RM_RingKernel.LiveSpawnChance)) ? live : dead;
+                // Keyed on rings actually placed, not the attempt index: if the first slot finds no room, the first
+                // ring that does land is still the guaranteed live, working one.
+                int index = placed.Count;
+                ThingDef def = (index == 0 || Rand.Chance(RM_RingKernel.LiveSpawnChance)) ? live : dead;
                 for (int attempt = 0; attempt < 200; attempt++)
                 {
                     float a = Rand.Range(0f, 360f) * Mathf.Deg2Rad;
@@ -234,7 +238,7 @@ namespace RimMandrake.Scarlands
                             if (!cell.Standable(map) || cell.GetEdifice(map) != null || cell.GetFirstItem(map) != null) { ok = false; break; }
                     if (!ok) continue;
                     Thing ring = GenSpawn.Spawn(ThingMaker.MakeThing(def), c, map);
-                    if (RM_RingKernel.FirstLiveForcedWorking(n, def == live)) ring.TryGetComp<RM_CompWarscarRing>()?.SetCondition(RingCondition.Working, false);
+                    if (RM_RingKernel.FirstLiveForcedWorking(index, def == live)) ring.TryGetComp<RM_CompWarscarRing>()?.SetCondition(RingCondition.Working, false);
                     placed.Add(c);
                     break;
                 }

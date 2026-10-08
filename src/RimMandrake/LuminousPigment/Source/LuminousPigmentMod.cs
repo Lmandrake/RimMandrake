@@ -299,21 +299,21 @@ namespace RimMandrake.LuminousPigment
 
             list.Label("Deepfire cost per target");
             list.Label("Wall cell: " + costWallCell.ToString());
-            costWallCell = Mathf.RoundToInt(list.Slider(costWallCell, 0f, 20f));
+            costWallCell = Mathf.RoundToInt(list.Slider(costWallCell, 1f, 20f));
             list.Label("Floor cell: " + costFloorCell.ToString());
-            costFloorCell = Mathf.RoundToInt(list.Slider(costFloorCell, 0f, 20f));
+            costFloorCell = Mathf.RoundToInt(list.Slider(costFloorCell, 1f, 20f));
             list.Label("Furniture, 1x1: " + costFurnitureBase.ToString());
-            costFurnitureBase = Mathf.RoundToInt(list.Slider(costFurnitureBase, 0f, 20f));
+            costFurnitureBase = Mathf.RoundToInt(list.Slider(costFurnitureBase, 1f, 20f));
             list.Label("Furniture, per extra cell: " + costFurniturePerExtraCell.ToString());
             costFurniturePerExtraCell = Mathf.RoundToInt(list.Slider(costFurniturePerExtraCell, 0f, 20f));
             list.Label("Furniture cap: " + costFurnitureCap.ToString());
-            costFurnitureCap = Mathf.RoundToInt(list.Slider(costFurnitureCap, 0f, 20f));
+            costFurnitureCap = Mathf.RoundToInt(list.Slider(costFurnitureCap, 1f, 20f));
             list.Label("Art item: " + costArt.ToString());
-            costArt = Mathf.RoundToInt(list.Slider(costArt, 0f, 20f));
+            costArt = Mathf.RoundToInt(list.Slider(costArt, 1f, 20f));
             list.Label("Apparel: " + costApparel.ToString());
-            costApparel = Mathf.RoundToInt(list.Slider(costApparel, 0f, 20f));
+            costApparel = Mathf.RoundToInt(list.Slider(costApparel, 1f, 20f));
             list.Label("Weapon: " + costWeapon.ToString());
-            costWeapon = Mathf.RoundToInt(list.Slider(costWeapon, 0f, 20f));
+            costWeapon = Mathf.RoundToInt(list.Slider(costWeapon, 1f, 20f));
             list.GapLine();
 
             list.Label("Light clustering: " + clusterBlock.ToString() + " cell(s) per group");

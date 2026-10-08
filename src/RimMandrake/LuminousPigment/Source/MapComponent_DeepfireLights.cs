@@ -66,6 +66,8 @@ namespace RimMandrake.LuminousPigment
         {
             public Thing Proxy;
             public IntVec3 Cell;
+            public ColorInt LastColor;
+            public float LastRadius = -1f;
         }
 
         private readonly Dictionary<object, LightEntry> entries = new Dictionary<object, LightEntry>();
@@ -133,11 +135,21 @@ namespace RimMandrake.LuminousPigment
             }
         }
 
+        // GPT review #9: an unspawned/dead pawn (left the map, caravan,
+        // corpse) loses its light everywhere, and a pawn now on a different
+        // map drops the stale entry on every other map before re-registering.
         public static void RegisterHediffGlow(Pawn pawn, HediffDef def, Color color, float radius)
         {
-            if (pawn?.Map == null || !pawn.Spawned) return;
-            MapComponent_DeepfireLights mc = Get(pawn.Map);
-            mc?.SetLight(new PawnHediffKey(pawn, def), pawn.Position, color, radius);
+            if (pawn == null) return;
+            PawnHediffKey key = new PawnHediffKey(pawn, def);
+            Map here = pawn.Spawned && !pawn.Dead ? pawn.Map : null;
+            List<Map> maps = Find.Maps;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                if (maps[i] != here) Get(maps[i])?.RemoveLight(key);
+            }
+            if (here == null) return;
+            Get(here)?.SetLight(key, pawn.Position, color, radius);
         }
 
         public static void DeregisterHediffGlow(Pawn pawn, HediffDef def)
@@ -161,24 +173,35 @@ namespace RimMandrake.LuminousPigment
                 return;
             }
 
+            bool fresh = false;
             if (!entries.TryGetValue(key, out LightEntry e) || e.Proxy == null || e.Proxy.Destroyed)
             {
                 e = new LightEntry { Proxy = SpawnProxy(cell), Cell = cell };
                 entries[key] = e;
+                fresh = true;
             }
             else if (e.Cell != cell)
             {
                 e.Proxy.Destroy(DestroyMode.Vanish);
                 e.Proxy = SpawnProxy(cell);
                 e.Cell = cell;
+                fresh = true;
             }
+
+            // GPT review #30: an unchanged light on an unchanged proxy is not
+            // re-registered (hediffs call this every 250 ticks while idle).
+            ColorInt ci = new ColorInt(color);
+            if (!fresh && e.LastRadius == radius && e.LastColor.r == ci.r && e.LastColor.g == ci.g
+                && e.LastColor.b == ci.b && e.LastColor.a == ci.a) return;
 
             CompGlower glower = e.Proxy.TryGetComp<CompGlower>();
             if (glower != null)
             {
-                glower.GlowColor = new ColorInt(color);
+                glower.GlowColor = ci;
                 glower.GlowRadius = radius;
                 glower.ForceRegister(map);
+                e.LastColor = ci;
+                e.LastRadius = radius;
             }
         }
 

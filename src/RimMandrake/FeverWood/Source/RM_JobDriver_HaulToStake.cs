@@ -69,6 +69,11 @@ namespace RimMandrake.FeverWood
                 {
                     pawn.carryTracker.TryDropCarriedThing(Stake.Position, ThingPlaceMode.Near, out Thing _);
                 }
+                // Only stake a victim that actually landed beside this stake (a failed drop leaves it carried).
+                if (!Victim.Spawned || Victim.Map != Stake.Map || !Victim.Position.InHorDistOf(Stake.Position, 5f))
+                {
+                    return;
+                }
                 if (comp != null && !comp.HasLiveBait)
                 {
                     comp.TryStake(Victim);

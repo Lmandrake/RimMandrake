@@ -85,12 +85,19 @@ namespace RimMandrake.LuminousPigment
         {
             int i = Mathf.Clamp(coats, 0, CompDeepfire.MaxCoats);
             float intensity = LuminousPigmentSettings.coatIntensity[i];
+            Color lit = GlowHueFor(drawColor);
+            return new Color(lit.r * intensity, lit.g * intensity, lit.b * intensity, 1f);
+        }
 
+        // The value-floored hue with NO coat intensity applied -- the worn
+        // blend applies its own intensity once (GPT review #11: feeding it
+        // GlowColorFor(.., MaxCoats) multiplied intensity twice).
+        public static Color GlowHueFor(Color drawColor)
+        {
             Color.RGBToHSV(drawColor, out float h, out float s, out float v);
             v = Mathf.Max(v, LuminousPigmentSettings.glowMinValue);
             Color lit = Color.HSVToRGB(h, s, v);
-
-            return new Color(lit.r * intensity, lit.g * intensity, lit.b * intensity, 1f);
+            return new Color(lit.r, lit.g, lit.b, 1f);
         }
     }
 
@@ -124,9 +131,10 @@ namespace RimMandrake.LuminousPigment
         {
             PaintClass pc = RM_DeepfireRules.ClassOf(t.TryGetComp<CompArt>() != null, t.def.IsApparel, t.def.IsWeapon,
                 t.def.building != null && t.def.building.isWall);
-            return RM_DeepfireRules.Cost(pc, t.def.size.x, t.def.size.z, LuminousPigmentSettings.costArt, LuminousPigmentSettings.costApparel,
+            // Never 0: a zero-cost job would still demand a stack and carry/consume nothing (GPT review #6).
+            return System.Math.Max(1, RM_DeepfireRules.Cost(pc, t.def.size.x, t.def.size.z, LuminousPigmentSettings.costArt, LuminousPigmentSettings.costApparel,
                 LuminousPigmentSettings.costWeapon, LuminousPigmentSettings.costWallCell, LuminousPigmentSettings.costFurnitureBase,
-                LuminousPigmentSettings.costFurniturePerExtraCell, LuminousPigmentSettings.costFurnitureCap);
+                LuminousPigmentSettings.costFurniturePerExtraCell, LuminousPigmentSettings.costFurnitureCap));
         }
 
         // Single-stack fetch (MVP for step 5's proof) -- the stack must hold

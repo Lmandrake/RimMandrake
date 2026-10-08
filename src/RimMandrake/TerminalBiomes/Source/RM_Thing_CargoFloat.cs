@@ -37,8 +37,9 @@ namespace RimMandrake.TerminalBiomes
 
         public void GetChildHolders(List<IThingHolder> outChildren)
         {
-            // Leaf holder: the container never holds another IThingHolder
-            // (only plain haulables), so there is nothing to recurse into.
+            // Loading accepts any haulable, including minified things and other
+            // floats, which are holders themselves: hand them to the traversal.
+            ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
         }
 
         protected override void Tick()
@@ -81,6 +82,10 @@ namespace RimMandrake.TerminalBiomes
         private void Unload()
         {
             GetDirectlyHeldThings().TryDropAll(Position, Map, ThingPlaceMode.Near);
+            if (GetDirectlyHeldThings().Count > 0)
+            {
+                return; // no room for everything yet: stay loaded and retry on the next check
+            }
             loaded = false;
             Messages.Message("RM_CargoFloatArrived".Translate(LabelShortCap), new TargetInfo(Position, Map), MessageTypeDefOf.PositiveEvent);
         }
@@ -114,8 +119,12 @@ namespace RimMandrake.TerminalBiomes
                 Thing t = here[i];
                 if (t != this && t.Spawned && t.def.EverHaulable && !(t is Pawn))
                 {
+                    IntVec3 from = t.Position;
                     t.DeSpawn(DestroyMode.Vanish);
-                    GetDirectlyHeldThings().TryAdd(t);
+                    if (!GetDirectlyHeldThings().TryAdd(t))
+                    {
+                        GenPlace.TryPlaceThing(t, from, Map, ThingPlaceMode.Near); // never orphan an unspawned thing
+                    }
                 }
             }
             loaded = GetDirectlyHeldThings().Count > 0;

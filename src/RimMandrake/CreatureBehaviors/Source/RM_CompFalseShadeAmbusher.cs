@@ -159,6 +159,10 @@ namespace RimMandrake.CreatureBehaviors
                 {
                     continue;
                 }
+                if (!GenSight.LineOfSight(pawn.Position, c.Position, pawn.Map))
+                {
+                    continue; // no scripted strike through a wall
+                }
                 best = c;
                 bestSq = d;
             }

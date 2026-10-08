@@ -32,6 +32,28 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref dead, "rmMatDead", false);
         }
 
+        // Stack ops keep the clock (GPT review #3): a split piece inherits
+        // its age; a merge takes the count-weighted age (CompRottable's own
+        // PreAbsorbStack policy).
+        public override void PostSplitOff(Thing piece)
+        {
+            base.PostSplitOff(piece);
+            CompMatVitality o = piece.TryGetComp<CompMatVitality>();
+            if (o == null || o == this) return;
+            o.ticksAlive = ticksAlive;
+            o.dead = dead;
+        }
+
+        public override void PreAbsorbStack(Thing otherStack, int count)
+        {
+            base.PreAbsorbStack(otherStack, count);
+            CompMatVitality o = otherStack.TryGetComp<CompMatVitality>();
+            if (o == null) return;
+            int total = parent.stackCount + count;
+            if (total <= 0) return;
+            ticksAlive = (int)(((long)ticksAlive * parent.stackCount + (long)o.ticksAlive * count) / total);
+        }
+
         public override string CompInspectStringExtra()
         {
             if (dead) return null;
@@ -84,8 +106,19 @@ namespace RimMandrake.LuminousPigment
             ThingOwner owner = parent.holdingOwner;
             if (owner != null)
             {
+                // GPT review #24: the detached original is destroyed, and a
+                // failed re-add drops the dead stack at the holder's root
+                // position instead of losing it.
                 owner.Remove(parent);
-                owner.TryAdd(deadThing);
+                if (!owner.TryAdd(deadThing))
+                {
+                    Map rootMap = ThingOwnerUtility.GetRootMap(owner.Owner);
+                    if (rootMap != null)
+                    {
+                        GenPlace.TryPlaceThing(deadThing, ThingOwnerUtility.GetRootPosition(owner.Owner), rootMap, ThingPlaceMode.Near);
+                    }
+                }
+                if (!parent.Destroyed) parent.Destroy(DestroyMode.Vanish);
                 return;
             }
 

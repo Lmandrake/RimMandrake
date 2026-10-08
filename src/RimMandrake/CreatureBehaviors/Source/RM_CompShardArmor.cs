@@ -54,7 +54,7 @@ namespace RimMandrake.CreatureBehaviors
             {
                 return;
             }
-            ticksUntilCycle = Mathf.Max(1, Props.cycleTicks);
+            ticksUntilCycle = Mathf.Max(1, ticksUntilCycle + Mathf.Max(1, Props.cycleTicks)); // carry overshoot
 
             if (Props.requireUnroofed && self.Position.Roofed(self.Map))
             {

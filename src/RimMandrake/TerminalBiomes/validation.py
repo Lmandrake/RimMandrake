@@ -125,7 +125,7 @@ def catch_checks():
     rare = ET.parse(RARE_FILE).getroot().findall("ThingSetMakerDef")
     if [r.findtext("defName") for r in rare] != ["RM_RareChillCatches"]:
         bad.append("free-tier rare table defName wrong")
-    for li in rare[0].iter("li"):
+    for li in (rare[0].iter("li") if rare else []):
         if (li.text or "").strip().startswith("RUT_") or li.get("MayRequire"):
             bad.append("rare table option %r is campaign-tier/guarded" % li.text)
     for fn in os.listdir(os.path.join(HERE, "Defs", "ThingSetMakerDefs")):
@@ -343,9 +343,13 @@ def settings_checks():
     for cs in listed:
         if not os.path.isfile(os.path.join(HERE, "Source", cs)):
             bad.append("csproj lists missing file " + cs)
-    for f in os.listdir(os.path.join(HERE, "Source")):
-        if f.endswith(".cs") and f not in listed:
-            bad.append("%s is not in the csproj (EnableDefaultCompileItems false: compiles into nothing)" % f)
+    src = os.path.join(HERE, "Source")
+    for dp, dns, fns in os.walk(src):
+        dns[:] = [d for d in dns if d not in ("SelfTest", "obj", "bin")]   # SelfTest is its own project
+        for fn in fns:
+            f = os.path.relpath(os.path.join(dp, fn), src).replace(os.sep, "/")
+            if f.endswith(".cs") and f not in listed:
+                bad.append("%s is not in the csproj (EnableDefaultCompileItems false: compiles into nothing)" % f)
     defs = shipped_defs()
     if len(defs) < 100:
         bad.append("sanity probe: only %d shipped defs parsed (expected 150+)" % len(defs))
@@ -781,7 +785,7 @@ else:
 
 if __name__ == "__main__":
     problems = (static_checks() + roster_checks() + catch_checks() + saal_name_checks() + ekkel_lore_checks()
-                + wax_checks() + settings_checks())
+                + wax_checks() + settings_checks() + sea_catch_alive_checks())
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)

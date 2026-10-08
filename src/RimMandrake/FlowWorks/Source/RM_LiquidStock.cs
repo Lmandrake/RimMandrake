@@ -383,9 +383,10 @@ namespace RimMandrake.FlowWorks
 			}
 			int supported = RM_StockMath.SupportedCells(body.stock, perCell);
 			int guard = 0;
+			IntVec3 centroid = Centroid(body);   // body.cells is fixed for the whole loop: compute once
 			while (body.ActiveCellCount > supported && body.ActiveCellCount > 0 && guard++ < 64)
 			{
-				IntVec3 pick = PickRecedeCell(map, body, owner);
+				IntVec3 pick = PickRecedeCell(map, body, owner, centroid);
 				if (!pick.IsValid)
 				{
 					return;
@@ -407,9 +408,8 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		private IntVec3 PickRecedeCell(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner)
+		private IntVec3 PickRecedeCell(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner, IntVec3 centroid)
 		{
-			IntVec3 centroid = Centroid(body);
 			IntVec3 best = IntVec3.Invalid;
 			int bestNeighbours = int.MaxValue;
 			int bestDist = -1;
@@ -461,6 +461,13 @@ namespace RimMandrake.FlowWorks
 			{
 				IntVec3 c = body.receded[body.receded.Count - 1];
 				body.receded.RemoveAt(body.receded.Count - 1);
+				// A receded cell dug since it dried belongs to the excavation now: refilling the lake must not write
+				// water terrain over a cut whose D is nonzero (GPT FlowWorks review #3). The original-terrain record
+				// stays with the excavation, so filling the cut in later restores the lake's own terrain.
+				if (owner.IsExcavated(c))
+				{
+					continue;
+				}
 				owner.RestoreOriginalTerrain(c);
 			}
 		}

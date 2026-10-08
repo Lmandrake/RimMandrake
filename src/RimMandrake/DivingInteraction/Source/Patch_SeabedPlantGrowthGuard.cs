@@ -30,7 +30,7 @@ namespace RimMandrake.DivingInteraction
             if (!logged)
             {
                 logged = true;
-                Log.Warning("[RimMandrake.DivingInteraction] Plant growth-rate calculator threw on a sea-floor map and was guarded: " + __exception.GetType().Name + ": " + __exception.Message);
+                Log.Warning("[RimMandrake.DivingInteraction] Plant growth-rate calculator threw on a sea-floor map and was guarded: " + __exception);
             }
 
             return null;

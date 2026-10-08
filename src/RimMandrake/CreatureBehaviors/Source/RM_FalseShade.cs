@@ -95,9 +95,9 @@ namespace RimMandrake.CreatureBehaviors
             for (int i = 0; i < lures.Count; i++)
             {
                 Pawn p = lures[i];
-                if (!p.Spawned || p.Map != map)
+                if (!p.Spawned || p.Map != map || p.Dead || p.Downed || (p.pather != null && p.pather.Moving))
                 {
-                    continue;
+                    continue; // re-check the cheap eligibility: the cached list can be up to one refresh stale
                 }
                 RM_FalseShadeExtension ext = p.def.GetModExtension<RM_FalseShadeExtension>();
                 if (ext == null)

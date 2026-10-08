@@ -57,6 +57,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             base.PostExposeData();
             Scribe_Values.Look(ref stolenTotalWd, "rmTapStolenTotal");
+            Scribe_Values.Look(ref sinceEventWd, "rmTapSinceEvent");   // GPT review #22: unreported energy survives a save
         }
 
         /// <summary>The foreign net the clamp is biting: a cardinally adjacent transmitter whose faction is not ours.</summary>
@@ -148,13 +149,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             return e.tick == Find.TickManager.TicksGame ? e.wd : 0f;
         }
 
-        /// <summary>Energy owed by this net for the current (or the previous) tick: the thing tick and the net tick
-        /// run in either order inside one game tick, so one tick of grace keeps the debit continuous.</summary>
+        /// <summary>Energy owed by this net: the debit the taps wrote at the current TicksGame. Engine order (decompiled
+        /// 1.6 TickManager.DoSingleTick): MapPreTick -> PowerNetsTick runs BEFORE ticksGameInt++ and the thing ticks, so a
+        /// debit written by a tap at tick T is settled by the net tick that reads TicksGame == T. The old one-tick grace
+        /// (e.tick >= now - 1) paid the last debit a second time when a tap stopped (GPT review 2026-10-08 #19).</summary>
         public static float Owed(PowerNet net)
         {
             if (bypass > 0 || debits.Count == 0 || !debits.TryGetValue(net, out Entry e)) return 0f;
             int now = Find.TickManager.TicksGame;
-            return e.tick >= now - 1 ? e.wd : 0f;
+            return e.tick == now ? e.wd : 0f;
         }
 
         private static void Prune(int now)

@@ -127,6 +127,12 @@ namespace RimMandrake.DivingInteraction
 
         private void ReportResult(RM_ElderTradeUtility.OfferResult result)
         {
+            if (!result.Accepted)
+            {
+                Messages.Message("RM_ElderOfferRefused".Translate(), new TargetInfo(elder.Position, elder.Map),
+                    MessageTypeDefOf.RejectInput, historical: false);
+                return;
+            }
             if (result.UniqueTreasureGranted != null)
             {
                 Messages.Message(
