@@ -9,6 +9,10 @@
 The term "krayt dragon" referred to a number of large, carnivorous reptilian species that hailed from Tatooine, a desert planet in the galaxy's Outer Rim Territories. Krayt dragons, despite their fierceness, were hunted for the precious pearls found in their bodies.
 
 **Biology and appearance** "Krayt dragons" was an umbrella term for a number of giant carnivorous reptiles, including the smaller and more common canyon krayt, and the larger greater krayt. The venom-spitting, sixteen-limbed leviathan krayt dragon is a rare greater krayt dragon variant that has grown to prodigious proportions. Tatooine myths also claimed that at least one krayt dragon, known simply as Krayt, had large wings. Due to their large size and ferocity, they were the apex predators of Tatooine. Their bodies produced krayt venom, which helped the dragons as an acid in pre-digestion of their food. If a krayt dragon felt threatened it could project the venom from its mouth, dissolving any organic tissue that the venom came into contact with.
+
+**Canyon krayt dragon** (canon, https://starwars.fandom.com/wiki/Canyon_krayt_dragon): the smaller and more common form, lives in rock caves and canyons, brown skin, yellow eyes, head covered in a multitude of horns (so horns are canon on this form).
+
+**Leviathan krayt dragon** (canon, https://starwars.fandom.com/wiki/Leviathan_krayt_dragon): rare greater-krayt form with sixteen limbs each ending in five clawed digits, a spiny tail, a large head protected by bony armour, and corrosive ichor spat from the mouth. Infobox figures: height 28.68 m, length 184 m (*Star Wars Encyclopedia: The Comprehensive Guide*), width 45.6 m (*Mandalorian Visual Guide*). Submerges in dunes and emerges to take prey, hibernates longer when well fed, and can allegedly sense the vibrations of a nearby starship; first seen in *The Mandalorian* "Chapter 9: The Marshal", where one had taken over an abandoned sarlacc pit.
 ### Legends — https://starwars.fandom.com/wiki/Krayt_dragon/Legends
 
 The krayt dragon was a large carnivorous reptile native to Tatooine. At least two different species were known to exist, the canyon krayt dragon and the greater krayt dragon.
@@ -34,7 +38,7 @@ Four images (two canon, two Legends) that show three clearly different looks, so
 - **`legends_1` (colour painting, Legends):** a **green-olive** four-legged reptile, crocodile-meets-dragon: **two upturned horns on the brow and a crest of smaller spiked frills behind the head**, a row of pale spines along the back, long curving thin-tipped tail, five-toed pale-clawed feet, jaws open and drooling, thick folded neck. Four legs only.
 - **`legends_2` (3D model, Legends):** a blue-grey, scaly four-legged reptile with **two long upswept horns**, a yellow-brown head and back spikes, long snout, a pale belly, and a rat-like thin tail. Four legs.
 - **The images disagree:** canon art (`canon_1`, `canon_2`) = tan sand-coloured, hornless apart from the side barb, many legs, huge toothy maw. Legends art = green or blue-grey, four legs, with long brow horns. Trust the canon pair for the shipping design; keep Legends horns and green colour out unless the owner rules otherwise.
-- **Size:** none shown directly (Legends text: about 45 m long; no scale object in any image).
+- **Size:** the two images give no scale object. Canon text for the leviathan form gives 184 m length and 28.68 m height (see Sourced text); the Legends figure of about 45 m is a different-continuity creature and must not be applied to the leviathan.
 
 ## Must show
 - [ ] Long serpentine lizard body with a very long muscular neck and a long tail that curls up with a spiked ridge (canon render)

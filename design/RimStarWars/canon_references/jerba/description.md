@@ -3,21 +3,22 @@
 **defName**: `RSW_Jerba` (vendored in this repo's own `src/RimStarWars/SWBestiary` mod — note: this creature reuses the Bantha texture folder, `Textures/swanimals/Bantha/`, since in-game it ships as a smaller/younger reskin of the bantha art rather than unique art)
 
 ## Sourced text (Wookieepedia)
-A jerba was a shaggy, smooth-haired quadruped found in desert environments,
-most notably on Tatooine. Strong, sturdy build with a horned head; considered
-by some (Han Solo) to be "uglier than the back end of a shaved bantha."
-Haircolor brown, eyecolor orange, with ridged horns per *Star Wars
+A jerba was a shaggy quadruped found in desert environments, most notably on
+Tatooine (current canon, non-sentient mammal; https://starwars.fandom.com/wiki/Jerba).
+The same page also quotes Han Solo calling it a "smooth-haired animal" and
+"uglier than the back end of a shaved bantha" (*Aftermath: Empire's End*), so
+both hair descriptions have canon support. Strong, sturdy build with a horned
+head. Haircolor brown, eyecolor orange, with ridged horns per *Star Wars
 Battlefront*. Their strong build made them good beasts of burden, and they
 were also kept for milk and meat, with a subculture of jerba breeders across
-the galaxy. Jerba leather was tanned for boots, jewelry, and rugs (Leia wore
-jerba-leather boots as part of her dancing-girl costume in Jabba's Palace).
-Tethers for jerbas and banthas stood outside Tosche Station in Anchorhead, and
-wary jerbas gathered near the building — this is the creature's on-screen
-debut in *A New Hope* (1977), visible tethered near the Millennium Falcon /
-Docking Bay 94 area. Jabba the Hutt kept a jerba trophy head mounted in his
-palace alongside other hunting trophies. Much more prominent in modern media
-as the smaller mount ridden by younger Tusken Raiders in *The Book of Boba
-Fett* — smaller and more agile than a full bantha, suited to a young rider.
+the galaxy; some were ridden. Jerba leather was tanned for boots, jewelry, and
+rugs (Leia wore jerba-leather boots as part of her dancing-girl costume in
+Jabba's Palace). Tethers for jerbas and banthas stood outside Tosche Station
+in Anchorhead, and wary jerbas gathered near the building; the creature first
+appeared in *A New Hope* (1977). Jabba the Hutt kept a jerba trophy head
+mounted in his palace alongside other hunting trophies (*Return of the Jedi*).
+The Wookieepedia page lists no *Book of Boba Fett* appearance and does not
+describe jerbas as a younger or smaller relative of the bantha.
 
 ## Visual brief
 The two highest-fidelity sources — the genuine 1977 *A New Hope* movie still

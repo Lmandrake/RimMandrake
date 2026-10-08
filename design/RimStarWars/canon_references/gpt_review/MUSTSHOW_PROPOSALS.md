@@ -220,3 +220,43 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 ### zeer
 - Must show: add height reference 15 ft (about 4.57 m) height and 9 ft length; horns "swiveling" per source, so head shape of horns is unresolved against the "swept back, fixed" reading. Source https://starwars.fandom.com/wiki/Zeer
 - Engine limits currently reads "none known"; propose "not assessed".
+
+## Batch 06
+# Proposals batch 06
+
+### jerba
+- Delete Must show bullet "Reads as smaller and more agile than a bantha" and any "undershot jaw with visible teeth" as species-wide text: Wookieepedia text supports neither agility nor size relation to bantha (only "ridged horns", "shaggy"/"smooth-haired"). Keep jaw/teeth only as Alien Archive image-specific (owner ruled that image).
+- Source: https://starwars.fandom.com/wiki/Jerba
+
+### kinrath
+- Must show Legends bullet: replace "long, upward-curving segmented neck ending in a small mantis-like head" with "four legs plus a distinct leg-like venomous appendage projecting from the face". Reason: Legends page text. Source: https://starwars.fandom.com/wiki/Kinrath/Legends
+- Add netcaster bullet: each leg ends in claws ringed by petal-shaped flaps; four legs (three pairs of eyes). Source: https://starwars.fandom.com/wiki/Kinrath
+- Engine limits: none; but note "four legs" Must-show line is accurate for both lineages per page text.
+
+### klorslug
+- Must show: change "Orange-red body (canon art)" to "pink through reddish/orange, matched to the chosen reference" ; canon text says Pink (Ewoks book), orange-red is one comic panel. Source: https://starwars.fandom.com/wiki/K%27lor%27slug
+- Add scale bullet: about 1.98 m tall (Databank via infobox). Source: same.
+
+### kowakianmonkeylizard
+- Must show last bullet: make colour explicitly per-individual, adding that tan/brown (Legends) and olive-brown (Resistance) individuals are equally valid; canon render's blue/yellow/orange is one individual. Source: https://starwars.fandom.com/wiki/Kowakian_monkey-lizard
+
+### kraytdragon
+- Must show: retitle target "leviathan krayt dragon form" and change the bullet "no big brow horns (those are Legends only)" to "leviathan: armoured smooth head; canyon krayt (canon) is horned and brown with yellow eyes". Source: https://starwars.fandom.com/wiki/Canyon_krayt_dragon
+- Must show limbs bullet: delete "four-legged only for the Legends type"; Legends greater krayts have ten legs. Source: https://starwars.fandom.com/wiki/Krayt_dragon/Legends
+- Add scale bullet: leviathan 184 m long, 28.68 m tall. Source: https://starwars.fandom.com/wiki/Leviathan_krayt_dragon
+
+### kreetle
+- Must show: add "five leg pairs per text (game model Republic Commando shows three)" as a note under the legs bullet; the legs bullet currently says only "many". Source: https://starwars.fandom.com/wiki/Kreetle
+
+### krykna
+- Must show: add "SIX legs (canon), beaked mouth with a pair of fanged pedipalps" ; current bullet on face says "tiny mouth with two short fangs" and legs bullet gives no count. Source: https://starwars.fandom.com/wiki/Krykna
+- Must show: delete "whole animal clearly larger than a human" is OK but add height about 2 m (6 ft 7 in) per infobox; skin gray, eyes black. Source: same.
+- Engine limits: none; the old unresolved 8-vs-6 leg discrepancy no longer applies.
+
+### kwi
+- Must show: change "yellow-pale slit-pupil eye and pale spade teeth" and "tiger-like stripes" to image-specific optional notes; text says bloodred eyes, black spade teeth, long black tongue, lavender-iridescent skull scales. Source: https://starwars.fandom.com/wiki/Kwi
+- Add scale bullet: about 3 m tall, 4 m long. Source: same.
+
+### kybuck
+- Do NOT adopt GPT's "delete horse/yak quadruped option, biped in both continuities": the Legends page gives no limb count (only "similar to tauntauns"). Instead mark Legends stance unresolved; ask owner/image check. Source: https://starwars.fandom.com/wiki/Kybuck/Legends
+- Must show: horn line is fine; add "two hoofed legs" is already canon-only per the page (https://starwars.fandom.com/wiki/Kybuck).
