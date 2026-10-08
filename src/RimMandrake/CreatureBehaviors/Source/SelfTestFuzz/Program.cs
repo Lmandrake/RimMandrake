@@ -1,6 +1,6 @@
 // CreatureBehaviors offline fuzz entry. Knobs (forwarded by selftest_creaturebehaviors_fuzz.py): --fuzz-scale F
 // (multiplies every case count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME
-// (shade|bounds|swim).
+// (shade|bounds|swim|patch|dash).
 using System;
 
 namespace RimMandrake.CreatureBehaviors.FuzzSelfTest

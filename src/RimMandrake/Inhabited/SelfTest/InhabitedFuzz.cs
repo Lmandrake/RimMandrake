@@ -744,6 +744,37 @@ namespace RimMandrake.Inhabited.SelfTest
             var w = InhabitedCustody.BuildWanted(kinds, new List<int> { 1, 5, 1, 4 }, 3);
             if (!w.SequenceEqual(new[] { "leader", "trader", "guard" })) Fail("trim from the back kept " + string.Join(",", w));
             if (InhabitedCustody.GenerateCount(2, 5) != 0) Fail("negative generation count");
+            // added by the mutation pass: exact tables for branches the random families reach only by luck
+            foreach (InhabitedFate f in new[] { InhabitedFate.Resident, InhabitedFate.FleeIfThreatened, InhabitedFate.FleeOnArrival, InhabitedFate.Transient })
+                foreach (bool thr in new[] { false, true })
+                {
+                    Steps++;
+                    if (InhabitedFateKernel.ShouldApply(f, thr) != (thr && f != InhabitedFate.Resident)) Fail($"ShouldApply({f},{thr})");
+                }
+            for (int m = 0; m < 64; m++)
+            {
+                Steps++;
+                bool a = (m & 1) != 0, i = (m & 2) != 0, c = (m & 4) != 0, p = (m & 8) != 0, l = (m & 16) != 0, z = (m & 32) != 0;
+                if (InhabitedFateKernel.IsPlaceGoods(a, i, c, p, l, z) != (a && i && !c && !p && (l || z))) Fail($"IsPlaceGoods({a},{i},{c},{p},{l},{z})");
+            }
+            {
+                var bk = new DisplacementBook();
+                bk.Record(1, DisplacedReason.Fled, "alpha"); bk.Record(1, DisplacedReason.Enslaved, "beta");
+                if (bk.ReasonFor(1) != DisplacedReason.Enslaved || bk.OriginFor(1) != "beta") Fail("a second Record for the same person kept the old reason / origin");
+                if (bk.OrderKey(1) != 1) Fail("a re-recorded person did not move to the back of the queue (order key " + bk.OrderKey(1) + ")");
+                bk.Forget(1);
+                if (bk.reasons.Count != 0 || bk.origins.Count != 0 || bk.displacedAt.Count != 0) Fail("Forget left metadata behind");
+                var nb = new DisplacementBook(); bool removeCalled = false;
+                bool handed = InhabitedCustody.HandOver<string>(nb, null, 0, q => { removeCalled = true; return true; }, q => true, q => true, null);
+                if (handed || removeCalled) Fail("a null person was handed over / removed from the pool");
+                var skipped = new List<string>();
+                int moved = InhabitedCustody.MoveRosterToPool<string>(new[] { "keep", "skipme", "keep2" }, q => q == "skipme", q => true, q => { skipped.Add(q); return true; }, q => true, null);
+                if (moved != 2 || skipped.Contains("skipme")) Fail("the roster move ignored its skip predicate");
+                int refused = 0;
+                int mv = InhabitedCustody.DrawInto<int>(new DisplacementBook(), new List<int> { 1, 2, 3, 4 }, 2, q => q, q => true, q => true, q => { if (q == 1) { refused++; return false; } return true; }, null, null);
+                if (mv != 2 || refused != 1) Fail("a refused candidate counted as drawn or stopped the draw (moved " + mv + ")");
+                if (InhabitedCustody.UpcomingCharacter(-2, 5) != -1 || InhabitedCustody.UpcomingCharacter(5, 5) != -1 || InhabitedCustody.UpcomingCharacter(4, 5) != 4 || InhabitedCustody.UpcomingCharacter(0, 0) != -1) Fail("UpcomingCharacter bounds");
+            }
             return fails;
         }
 

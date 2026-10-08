@@ -1,0 +1,148 @@
+#!/usr/bin/env python3
+"""Mutation proof for the Abyss fuzz: plants each defect in the production kernels (RM_AbyssKernel.cs, RM_AbyssStateKernel.cs), runs the fuzz
+wrapper, demands a FAIL, restores the file byte-identical (engine: mutate_explosivegrowth_fuzz.run_mutations). The brood wake meter
+(RM_BroodWakeLogic.cs) has its own selftest with a planted-break probe and is not mutated here.
+
+    python3 src/RimMandrake/Utils/mutate_abyss_fuzz.py [name-substring]
+"""
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from mutate_explosivegrowth_fuzz import run_mutations  # noqa: E402
+
+# Dropped as equivalent (cannot change an observable result): InverseLerp / SmoothStep01 clamp the same input twice (DarknessForTemperature and
+# PhantomClearance feed them only already-clamped values); Math.Floor on a float widens to double exactly as the (double) cast does; a phantom
+# at distance == radius is 1 - SmoothStep(1) = 0 either way; a Witchfire flash delay (<= 300 ticks) is always shorter than the rumble interval
+# (>= 3000), so "rumble while a flash is pending" is unreachable.
+KERNEL = [
+    ("clear band start", "public const float ClearStart = 8f;", "public const float ClearStart = 9f;"),
+    ("clear band end", "public const float ClearFull = 14f;", "public const float ClearFull = 15f;"),
+    ("pocket amplitude", "public const float PocketAmplitude = 10f;", "public const float PocketAmplitude = 12f;"),
+    ("smoothstep linear", "return -2f * t * t * t + 3f * t * t;", "return t;"),
+    ("darkness not inverted", "return 1f - SmoothStep01(InverseLerp(ClearStart, ClearFull, t));", "return SmoothStep01(InverseLerp(ClearStart, ClearFull, t));"),
+    ("storm is not dark", "return weather == DarkWeather || weather == StormWeather;", "return weather == DarkWeather;"),
+    ("unveiling is dark", "return weather == DarkWeather || weather == StormWeather; }", "return weather == DarkWeather || weather == StormWeather || weather == UnveilWeather; }"),
+    ("unveiling grain not doubled", "if (weather == UnveilWeather) return 2f;", "if (weather == UnveilWeather) return 1f;"),
+    ("storm grain zero", "return (weather == DarkWeather || weather == StormWeather) ? 1f : 0f;", "return (weather == DarkWeather) ? 1f : 0f;"),
+    ("pocket offset one-sided", "return (noise01 - 0.5f) * 2f * PocketAmplitude;", "return noise01 * PocketAmplitude;"),
+    ("roofed cells get the pocket", "if (!roofed) t += PocketOffset(noise01);", "t += PocketOffset(noise01);"),
+    ("out of bounds is dark", "if (!DarkPresent(weather) || !inBounds) return 0f;", "if (!DarkPresent(weather)) return 0f;"),
+    ("lane clear ignored", "return DarknessForTemperature(t) * (1f - laneClear) * (1f - phantomClear);", "return DarknessForTemperature(t) * (1f - phantomClear);"),
+    ("phantom clear ignored", "return DarknessForTemperature(t) * (1f - laneClear) * (1f - phantomClear);", "return DarknessForTemperature(t) * (1f - laneClear);"),
+    ("murk target ignores the switch", "return active ? darkness * strength : 0f;", "return darkness * strength;"),
+    ("murk floor removed", "if (target < MurkOffBelow)", "if (target < 0f)"),
+    ("murk never removed", "if (has) { r.has = false; r.removed = true; }", ""),
+    ("murk step threshold", "if (Math.Abs(r.severity - target) >= MurkStep)", "if (Math.Abs(r.severity - target) > MurkStep)"),
+    ("murk added at the wrong severity", "r.severity = severityOnAdd; }", "r.severity = target; }"),
+    ("murk adds only (never moves)", "if (Math.Abs(r.severity - target) >= MurkStep) { r.severity = target; r.set = true; }", ""),
+    ("lamp floor lost", "return on ? 1f - (1f - LampFloor) * Clamp01(darkness * strength) : 1f;", "return on ? 1f - Clamp01(darkness * strength) : 1f;"),
+    ("lamp factor ignores the switch", "return on ? 1f - (1f - LampFloor)", "return true ? 1f - (1f - LampFloor)"),
+    ("dark fights the krizzak", "if (glows && !l.kPresent)", "if (glows)"),
+    ("lamp slack removed", "if (Math.Abs(l.radius - target) >= LampSlack)", "if (Math.Abs(l.radius - target) > 0f)"),
+    ("shrunk baseline not remembered", "if (f < 0.999f) { l.shrunkKnown = true; l.shrunkBaseline = l.baseline; }", "if (f < 0.999f) { }"),
+    ("shrunk entry lingers", "else if (target >= l.baseline - 0.01f) l.shrunkKnown = false;", ""),
+    ("lamp never restored", "if (l.shrunkKnown && !on && l.radius < l.shrunkBaseline - 0.01f && !l.kPresent)", "if (false)"),
+    ("lamp restored in the dark", "if (l.shrunkKnown && !on && l.radius < l.shrunkBaseline - 0.01f && !l.kPresent)", "if (l.shrunkKnown && l.radius < l.shrunkBaseline - 0.01f && !l.kPresent)"),
+    ("lamp restored over a krizzak", "if (l.shrunkKnown && !on && l.radius < l.shrunkBaseline - 0.01f && !l.kPresent)", "if (l.shrunkKnown && !on && l.radius < l.shrunkBaseline - 0.01f)"),
+    ("krizzak floor ignored", "float next = Math.Max(l.kOriginal * minFraction, l.radius - l.kOriginal * fraction);", "float next = l.radius - l.kOriginal * fraction;"),
+    ("krizzak original not remembered", "if (!l.kPresent) { l.kPresent = true; l.kOriginal = l.radius; }", "if (!l.kPresent) { l.kPresent = true; }"),
+    ("krizzak fed time not stamped", "l.kLastFed = now;", ""),
+    ("krizzak recovers at once", "if (now - l.kLastFed < KrizzakRecoverAfterTicks) return;", ""),
+    ("krizzak recovers over the original", "float next = Math.Min(l.kOriginal, l.radius + l.kOriginal * 0.1f);", "float next = l.radius + l.kOriginal * 0.1f;"),
+    ("krizzak entry never ends", "if (next >= l.kOriginal - 0.01f) l.kPresent = false;", ""),
+    ("krizzak at floor off by tolerance", "return l.kPresent && l.radius <= l.kOriginal * minFraction + 0.01f;", "return l.kPresent && l.radius < l.kOriginal * minFraction;"),
+    ("etch tries rounded down", "return (int)Math.Ceiling(EtchCellsPerPass * strength * grainMultiplier);", "return (int)Math.Floor(EtchCellsPerPass * strength * grainMultiplier);"),
+    ("etch cells per pass", "public const int EtchCellsPerPass = 24;", "public const int EtchCellsPerPass = 25;"),
+    ("sun step does not start at burn", "if (!has) { nowHas = true; newSeverity = burn; }", "if (!has) { nowHas = true; newSeverity = 0f; }"),
+    ("sun severity uncapped", "else newSeverity = Math.Min(maxSeverity, severity + burn);", "else newSeverity = severity + burn;"),
+    ("sun cooling never ends", "if (newSeverity <= 0.001f) nowHas = false;", ""),
+    ("sun cooling ends late", "if (newSeverity <= 0.001f) nowHas = false;", "if (newSeverity <= -0.5f) nowHas = false;"),
+    ("lane throat width", "if (d <= 2) return 1;", "if (d <= 2) return 2;"),
+    ("lane middle width", "if (d <= 9) return 2;", "if (d <= 9) return 1;"),
+    ("lane fade start", "public const int LaneFadeFrom = 10;", "public const int LaneFadeFrom = 11;"),
+    ("lane length", "public const int LaneLength = 14;", "public const int LaneLength = 15;"),
+    ("lane fade does not fall", "return d <= LaneFadeFrom ? 1f : 1f - (d - LaneFadeFrom) / (float)(LaneLength - LaneFadeFrom + 1);", "return 1f;"),
+    ("lane not stopped by walls", "if (blocked(cx, cz)) break;", "if (blocked(cx, cz)) continue;"),
+    ("lane origin not marked", "mark(ox, oz, 1f);", ""),
+    ("lane skips the outer columns", "for (int lateral = -2; lateral <= 2; lateral++)", "for (int lateral = -1; lateral <= 1; lateral++)"),
+    ("clear grid keeps the smaller value", "if (v > clear[idx]) clear[idx] = v;", "clear[idx] = v;"),
+    ("clear grid touches twice", "if (clear[idx] <= 0f) touched.Add(idx);", "touched.Add(idx);"),
+    ("clear grid reset forgets", "for (int i = 0; i < touched.Count; i++) clear[touched[i]] = 0f;", ""),
+    ("circle radius", "public const float CircleRadius = 2.9f;", "public const float CircleRadius = 3.1f;"),
+    ("circle needs two cairns", "public const int CircleNeed = 3;", "public const int CircleNeed = 2;"),
+    ("circle cells ignore the map edge", "if (x < 0 || z < 0 || x >= width || z >= height) continue;", ""),
+    ("radial offsets square", "if (dx * dx + dz * dz <= radius * radius) list.Add(new[] { dx, dz });", "list.Add(new[] { dx, dz });"),
+    ("exchange value floor", "return Math.Max(5f, marketValue * stackCount) * (0.8f + 0.5f * roll01);", "return (marketValue * stackCount) * (0.8f + 0.5f * roll01);"),
+    ("exchange roll band", "(0.8f + 0.5f * roll01)", "(0.8f + 0.7f * roll01)"),
+    ("exchange goods pay full not 40%", "float quota = value * (isFull[i] ? 1f : 0.4f) / baseValue[i];", "float quota = value / baseValue[i];"),
+    ("exchange goods ignore the stack limit", "int n = (int)Math.Min(stackLimit[i], Math.Floor((double)quota));", "int n = (int)Math.Floor((double)quota);"),
+    ("exchange goods spend nothing", "value -= n * baseValue[i];", ""),
+    ("phantom clearance not smooth", "return d < radius ? 1f - SmoothStep01(d / radius) : 0f;", "return d < radius ? 1f - d / radius : 0f;"),
+    ("biome score water not refused", "if (tileNull || waterCovered) return -100f;", "if (tileNull) return -100f;"),
+    ("biome rarity gate", "if (rarity <= 0.001f) return -100f;", ""),
+    ("biome rain upper edge inclusive", "if (rainfall < r.rainMin || rainfall >= r.rainMax) return 0f;", "if (rainfall < r.rainMin || rainfall > r.rainMax) return 0f;"),
+    ("biome hilly gate", "if (!hillyEnough) return 0f;", ""),
+    ("biome chance gate", "if (gate < 1f && !seededChance(gate)) return 0f;", ""),
+    ("biome divisor guard", "float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;", "float divisor = r.rainfallDivisor;"),
+    ("biome degree weight sign", "(r.tempMax - temperature) * r.degreeWeight", "(temperature - r.tempMax) * r.degreeWeight"),
+]
+
+STATE = [
+    ("gust force shortens", "s.endTick = Math.Max(s.endTick, now + Math.Max(MinGustTicks, ticks));", "s.endTick = now + Math.Max(MinGustTicks, ticks);"),
+    ("gust force minimum", "now + Math.Max(MinGustTicks, ticks)", "now + ticks"),
+    ("gust force double counts", "if (!IsGust(s, now))\n            {\n                s.startTick = now;\n                s.count++;\n            }", "{\n                s.startTick = now;\n                s.count++;\n            }"),
+    ("gust average not updated", "s.average += (speed - s.average) * 0.01f;", ""),
+    ("gust baseline floor", "float baseline = Math.Max(0.05f, s.average);", "float baseline = s.average;"),
+    ("gust ends at the max", "if (now - s.startTick >= MaxGustTicks || (minDone && speed <= baseline * EndRatio))", "if (minDone && speed <= baseline * EndRatio)"),
+    ("gust ends before its minimum", "(minDone && speed <= baseline * EndRatio)", "(speed <= baseline * EndRatio)"),
+    ("gust cooldown ignored", "else if (now - s.endTick >= CooldownTicks && speed >= baseline * StartRatio)", "else if (speed >= baseline * StartRatio)"),
+    ("gust starts too easily", "speed >= baseline * StartRatio)", "speed >= baseline * EndRatio)"),
+    ("gust count not advanced", "s.endTick = now + MaxGustTicks;   // trimmed by the end test above\n                s.count++;", "s.endTick = now + MaxGustTicks;"),
+    ("gharrek fed every step", "if (gustCount != lastFedGust)", "if (true)"),
+    ("gharrek never fed", "lastFedGust = gustCount;\n                    fed = nutritionPerGust;", "lastFedGust = gustCount;"),
+    ("gharrek feeders off still sleeps", "if (!feedersEnabled) { dormant = false; open = true; return 0f; }", "if (!feedersEnabled) { dormant = true; open = false; return 0f; }"),
+    ("gharrek open outside a gust", "open = gust;", "open = true;"),
+    ("gharrek awake outside a gust", "else dormant = true;", "else dormant = false;"),
+    ("storm schedule kept outside the storm", "if (!storm || !enabled) { s = StormState.Fresh(); return o; }", "if (!storm || !enabled) { return o; }"),
+    ("storm ignores the option", "if (!storm || !enabled)", "if (!storm)"),
+    ("storm rumble never scheduled", "if (s.nextRumbleTick < 0) s.nextRumbleTick = now + rangeInclusive(RumbleMin, RumbleMax);", ""),
+    ("storm flash fires early", "if (s.pendingFlashTick >= 0 && now >= s.pendingFlashTick)", "if (s.pendingFlashTick >= 0)"),
+    ("storm summ without the roll", "if (s.pendingSumm) o.summ = true;", "o.summ = true;"),
+    ("storm summ chance ignores strength", "s.pendingSumm = chance(RM_DarkKernel.Clamp01(SummChance * darkStrength));", "s.pendingSumm = chance(SummChance);"),
+    ("storm next rumble not rescheduled", "s.nextRumbleTick = now + rangeInclusive(RumbleMin, RumbleMax);\n            }\n            return o;", "}\n            return o;"),
+    ("sound impact on the first read", "if (s.lastGustCount < 0) s.lastGustCount = gustCount;", ""),
+    ("sound impact never", "o.impact = true;\n                    s.pendingRustleTick", "s.pendingRustleTick"),
+    ("sound rustle early", "if (s.pendingRustleTick >= 0 && now >= s.pendingRustleTick)", "if (s.pendingRustleTick >= 0)"),
+    ("sound rustle repeats", "s.pendingRustleTick = -1;\n                o.rustle = true;", "o.rustle = true;"),
+    ("sound grain every tick", "if (now % 60 == 0) o.grain", "o.grain"),
+    ("sound grain ignores the strength", "if (grainMultiplier <= 0f || etchStrength <= 0.001f)", "if (grainMultiplier <= 0f)"),
+    ("sound grain not scaled", "(int)Math.Round(rangeInclusive(GrainTickMin, GrainTickMax) / grainMultiplier)", "rangeInclusive(GrainTickMin, GrainTickMax)"),
+    ("sound grain fires on schedule", "if (now < s.nextGrainTick) return false;", ""),
+    ("sound no gust controller still reads", "if (gustCount != -2)", "if (true)"),
+    ("cover collapse keeps the cooldown out", "if (cooldown) s.cooldownUntil = now + CooldownTicks;", ""),
+    ("cover gain too fast", "public const float DaysToFullCover = 6f;", "public const float DaysToFullCover = 5f;"),
+    ("cover threshold", "public const float CoveredThreshold = 0.6f;", "public const float CoveredThreshold = 0.7f;"),
+    ("cover loss not doubled", "s.cover = Math.Max(0f, s.cover - Rate * 2f);", "s.cover = Math.Max(0f, s.cover - Rate);"),
+    ("cover free lamps", "public const int FreeLamps = 4;", "public const int FreeLamps = 5;"),
+    ("cover cooldown ignored", "if (s.cooldownUntil > now) return CoverEvent.None;", ""),
+    ("cover unapplied still grows", "if (!applies || !hasEngine)", "if (!applies)"),
+    ("cover covered ticks never lapse", "if (s.coveredTicks >= MaxCoveredTicks)", "if (false)"),
+    ("cover lapse without cooldown", "Collapse(ref s, true, now);\n                    return CoverEvent.Lapsed;", "Collapse(ref s, false, now);\n                    return CoverEvent.Lapsed;"),
+    ("cover probes ignore the setting", "if (probesEnabled)\n                {", "if (true)\n                {"),
+    ("cover probe while one is out", "if (now >= s.nextProbeTick && !probeAlive)", "if (now >= s.nextProbeTick)"),
+    ("cover probe not rescheduled", "s.nextProbeTick = now + rangeExclusive(ProbeMin, ProbeMax);\n                        return CoverEvent.SpawnProbe;", "return CoverEvent.SpawnProbe;"),
+    ("cover uncovered keeps the count", "s.coveredTicks = 0;\n                s.nextProbeTick = -1;\n            }\n            return CoverEvent.None;", "s.nextProbeTick = -1;\n            }\n            return CoverEvent.None;"),
+    ("probe seen does not drain", "return seen ? seenTicks + ScanInterval : Math.Max(0, seenTicks - ScanInterval);", "return seen ? seenTicks + ScanInterval : seenTicks;"),
+    ("probe seen drains below zero", "Math.Max(0, seenTicks - ScanInterval)", "seenTicks - ScanInterval"),
+    ("probe report strict", "return seenTicks >= ReportTicks;", "return seenTicks > ReportTicks;"),
+    ("probe leaves at once", "return now - spawnTick > ProbeStay;", "return now - spawnTick >= 0;"),
+    ("probe leaves late", "return now - spawnTick > ProbeStay;", "return now - spawnTick > ProbeStay * 2;"),
+    ("covered ignores the switch", "return enabled && cover >= CoveredThreshold;", "return cover >= CoveredThreshold;"),
+]
+
+if __name__ == "__main__":
+    only = sys.argv[1] if len(sys.argv) > 1 else None
+    rc = run_mutations("src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs", "selftest_abyss_fuzz.py", KERNEL, only)
+    rc2 = run_mutations("src/RimMandrake/Abyss/Source/RM_AbyssStateKernel.cs", "selftest_abyss_fuzz.py", STATE, only)
+    sys.exit(rc or rc2)
