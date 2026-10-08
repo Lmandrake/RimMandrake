@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -75,9 +76,10 @@ namespace RimMandrake.LuminousPigment
                 val -= livePenalty;
                 return;
             }
-            float final = curve.Evaluate(val);
-            float target = Mathf.Max(parentStat.minValue, final - livePenalty);
-            val = InverseEvaluate(curve, target, val);
+            var xs = new List<float>(curve.PointsCount);
+            var ys = new List<float>(curve.PointsCount);
+            foreach (CurvePoint pt in curve.Points) { xs.Add(pt.x); ys.Add(pt.y); }
+            val = RM_DeepfireRules.DodgeAdjust(curve.Evaluate, xs, ys, parentStat.minValue, livePenalty, val);
         }
 
         public override string ExplanationPart(StatRequest req)
@@ -90,24 +92,5 @@ namespace RimMandrake.LuminousPigment
         private static bool Applies(StatRequest req) =>
             LuminousPigmentSettings.combatPenaltiesEnabled
             && req.Thing is Pawn pawn && DeepfireDarkness.IsGlowingInDark(pawn);
-
-        // Smallest x whose curve value reaches `y`, never above the current
-        // value (the offset only ever lowers dodge).
-        internal static float InverseEvaluate(SimpleCurve curve, float y, float current)
-        {
-            var pts = curve.Points;
-            if (y <= pts[0].y) return Mathf.Min(current, pts[0].x);
-            for (int i = 1; i < pts.Count; i++)
-            {
-                CurvePoint a = pts[i - 1], b = pts[i];
-                if (y <= b.y)
-                {
-                    if (Mathf.Approximately(b.y, a.y)) return Mathf.Min(current, a.x);
-                    float x = a.x + (y - a.y) / (b.y - a.y) * (b.x - a.x);
-                    return Mathf.Min(current, x);
-                }
-            }
-            return current;
-        }
     }
 }

@@ -21,7 +21,7 @@ from lint_scarlands_defs import (SRC, OUR_PREFIX, CLASS_ELEMS, STRICT_ROOTS, str
                                  scan_csharp, chain, issubclass_name)
 
 
-def run(mod_name, argv):
+def run(mod_name, argv, known_missing_art=()):
     mod = os.path.join(SRC, mod_name)
     if "--mod-dir" in argv:
         mod = argv[argv.index("--mod-dir") + 1]
@@ -67,7 +67,7 @@ def run(mod_name, argv):
             for d in root:
                 dn = d.findtext("defName")
                 if dn:
-                    k = (d.tag, dn)
+                    k = (d.tag.split(".")[-1], dn)   # a namespaced def tag (RimMandrake.X.RM_Def) is the type RM_Def
                     if k in defnames:
                         E("defname-unique", f"{d.tag} {dn} in {rel} and {defnames[k]}")
                     defnames[k] = rel
@@ -103,12 +103,22 @@ def run(mod_name, argv):
             tx = (el.text or "").strip()
             if tx in our:
                 referenced.add(tx)
+            if el.tag == "li" and re.fullmatch(r"RimMandrake\.[A-Za-z0-9_.]+", tx):   # a class named as list text (placeWorkers, comps ...)
+                resolve(tx, f"{rel} <li>")
             if el.tag in ("texPath",) and tx:
                 tp = os.path.join(mod, "Textures", *tx.split("/"))
                 folder = os.path.dirname(tp)
                 if os.path.isdir(folder) and any(part.startswith(OUR_PREFIX) for part in tx.split("/")):
                     stem = os.path.basename(tp)
                     if not (glob.glob(tp + ".png") or glob.glob(os.path.join(folder, stem + "_*.png")) or os.path.isdir(tp)):
+                        # art a sibling RimMandrake mod ships (a borrowed render) resolves in the game; art listed by the wrapper as
+                        # known-missing is a WARN (filed placeholder), anything else is an ERROR
+                        rel_tex = os.path.join("Textures", *tx.split("/"))
+                        if glob.glob(os.path.join(SRC, "*", rel_tex + ".png")) or glob.glob(os.path.join(SRC, "*", rel_tex + "_*.png")) or glob.glob(os.path.join(SRC, "*", rel_tex)):
+                            continue
+                        if tx in known_missing_art:
+                            W("texpath-missing-known", f"{rel}: texPath {tx} has no png (known placeholder)")
+                            continue
                         E("texpath-resolves", f"{rel}: texPath {tx} has no png in {os.path.relpath(folder, mod)}")
 
     # JobDef/WorkGiverDef sanity: every JobDef has a driverClass that resolved (an empty one is an error)
@@ -165,7 +175,14 @@ def run(mod_name, argv):
         for fm in re.finditer(r"public static (\w+) (\w+);", m.group(2)):
             typ, nm = fm.groups()
             if nm.startswith(OUR_PREFIX) and (typ, nm) not in defnames:
-                E("defof-resolves", f"[DefOf] {m.group(1)}.{nm} ({typ}) has no such def in this mod's Defs")
+                if other_defs is None:
+                    other_defs = set()
+                    for xp in glob.glob(os.path.join(SRC, "*", "Defs", "**", "*.xml"), recursive=True):
+                        other_defs |= set(re.findall(r"<defName>([^<]+)</defName>", open(xp, encoding="utf-8-sig", errors="replace").read()))
+                if nm in other_defs:   # a declared cross-mod dependency, not a typo: worth knowing, not an error
+                    W("defof-resolves", f"[DefOf] {m.group(1)}.{nm} ({typ}) is defined by another RimMandrake mod (a hard dependency of this one)")
+                else:
+                    E("defof-resolves", f"[DefOf] {m.group(1)}.{nm} ({typ}) has no such def in this mod's Defs or any other RimMandrake mod's")
 
     # settings: the ModSettings subclass, wherever it lives in Source
     sfile, sname, sbody, st = None, None, "", ""
@@ -177,7 +194,7 @@ def run(mod_name, argv):
     if sname is None:
         print("LINT UNMEASURED: no ModSettings subclass found")
         return 2
-    decl = {n: (t, v.strip()) for t, n, v in re.findall(r"public static ([\w<>]+)\s+(\w+)\s*=\s*([^;]+);", sbody)}
+    decl = {n: (t, v.strip()) for t, n, v in re.findall(r"public static ([\w<>\[\]]+)\s+(\w+)\s*=(?!>)\s*([^;]+);", sbody)}
     scribed = re.findall(r'Scribe_Values\.Look\(ref\s+(\w+),\s*"(\w+)",\s*([^,)]*)[,)]', sbody)
     if not decl or not scribed:
         print("LINT UNMEASURED: no settings fields or Scribe calls parsed")
@@ -198,16 +215,22 @@ def run(mod_name, argv):
         seen_keys[key] = fld
         if norm(dflt) != norm(decl[fld][1]):
             E("settings-scribed", f"field {fld} initialises to {decl[fld][1]} but Scribes default {dflt.strip()} (a reset-to-default would change behaviour)")
+    # array settings are saved through a list: Scribe_Collections.Look(ref list, "<field>", ...) counts as that field's Scribe
+    for key in re.findall(r'Scribe_Collections\.Look\(ref\s+\w+,\s*"(\w+)"', sbody):
+        if key in decl and decl[key][0].endswith("[]"):
+            seen_fields[key] = key
     for fld in decl:
         if fld not in seen_fields:
             E("settings-scribed", f"settings field {fld} is declared but never Scribed (setting is lost on restart)")
     outside = "\n".join(t for r, t in all_text.items() if r != sfile)
     # the settings window may live in the Mod class (any file with DoSettingsWindowContents / DoWindowContents)
-    ui = "\n".join(re.sub(r"(public static [\w<>]+\s+\w+\s*=[^;]*;|Scribe_Values\.Look\([^;]*;)", "", t)
+    ui = "\n".join(re.sub(r"(public static [\w<>\[\]]+\s+\w+\s*=(?!>)[^;]*;|Scribe_Values\.Look\([^;]*;)", "", t)
                     for t in all_text.values() if re.search(r"DoSettingsWindowContents|DoWindowContents", t))
+    # a field read inside an expression-bodied property of the settings class (`public static bool XActive => A && xEnabled;`) is read
+    props = " ".join(re.findall(r"public static [\w<>\[\]]+\s+\w+\s*=>\s*([^;]+);", sbody))
     for fld in decl:
         pat = r"\b" + fld + r"\b"
-        if not re.search(pat, outside) and not re.search(sname + r"\." + fld + r"\b", st):
+        if not re.search(pat, outside) and not re.search(sname + r"\." + fld + r"\b", st) and not re.search(pat, props):
             W("settings-scribed", f"settings field {fld} is never read by any code (dead toggle)")
         if not re.search(pat, ui):
             W("settings-scribed", f"settings field {fld} has no control in the settings window")

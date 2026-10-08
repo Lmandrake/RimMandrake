@@ -14,7 +14,7 @@ namespace RimMandrake.GelatinousSlime
     {
         public const float BurstRadius = 3.9f;
         // Stage 2 "half absorbed": holds in ordinary country, only dry ground and the antidote undo it.
-        public const float DrenchSeverity = 0.55f;
+        public const float DrenchSeverity = RM_SlimeLadder.DrenchSeverity;
         public const int SlimeGroundTicks = 60000;
         public const int ShelfSweepTicks = 250;
         public const float TicksPerDay = 60000f;
@@ -26,7 +26,7 @@ namespace RimMandrake.GelatinousSlime
 
         public static int ShelfTicks
         {
-            get { return Mathf.RoundToInt(Mathf.Max(0.1f, SlimeSettings.chunkShelfDays) * TicksPerDay); }
+            get { return RM_SlimeWorld.ShelfTicks(SlimeSettings.chunkShelfDays, TicksPerDay); }
         }
 
         public static void Burst(Map map, IntVec3 centre)
@@ -67,7 +67,7 @@ namespace RimMandrake.GelatinousSlime
             Hediff h = p.health.hediffSet.GetFirstHediffOfDef(SlimeDefs.Slimification);
             if (h == null) h = p.health.AddHediff(SlimeDefs.Slimification);
             if (h == null) return false;
-            if (h.Severity < DrenchSeverity) h.Severity = DrenchSeverity;
+            h.Severity = RM_SlimeLadder.Drench(h.Severity);
             return true;
         }
     }
@@ -149,8 +149,7 @@ namespace RimMandrake.GelatinousSlime
             {
                 CompChunkShelf comp = all[i].TryGetComp<CompChunkShelf>();
                 if (comp == null) continue;
-                if (comp.born < 0) { comp.born = now; continue; }
-                if (now - comp.born >= shelf) expired.Add(all[i]);
+                if (RM_SlimeWorld.ShelfSweep(ref comp.born, now, shelf)) expired.Add(all[i]);
             }
             for (int i = 0; i < expired.Count; i++)
             {
@@ -178,8 +177,8 @@ namespace RimMandrake.GelatinousSlime
             if (mud == null) return;
             TerrainDef cur = map.terrainGrid.TerrainAt(c);
             // Only open natural ground: not built floor, not water, not already slime.
-            if (cur == null || !cur.natural || cur.IsWater || cur.HasTag(SlimeDefs.SlimeTerrainTag)) return;
-            if (map.terrainGrid.FoundationAt(c) != null && map.terrainGrid.FoundationAt(c) != cur) return;
+            if (!RM_SlimeWorld.CanConvertGround(cur != null, cur != null && cur.natural, cur != null && cur.IsWater, cur != null && cur.HasTag(SlimeDefs.SlimeTerrainTag),
+                    map.terrainGrid.FoundationAt(c) != null && map.terrainGrid.FoundationAt(c) != cur)) return;
             map.terrainGrid.SetTerrain(c, mud);
             cells.Add(c);
             originals.Add(cur);

@@ -106,10 +106,13 @@ namespace RimMandrake.LuminousPigment
     {
         public static bool IsPaintable(Thing t)
         {
-            if (t.def.IsApparel) return LuminousPigmentSettings.apparelPaintable;
-            if (t.def.IsWeapon) return LuminousPigmentSettings.weaponsPaintable;
-            if (t.def.building != null && t.def.building.isWall) return LuminousPigmentSettings.wallsPaintable;
-            return LuminousPigmentSettings.furniturePaintable;
+            switch (RM_DeepfireRules.PaintableClassOf(t.def.IsApparel, t.def.IsWeapon, t.def.building != null && t.def.building.isWall))
+            {
+                case PaintClass.Apparel: return LuminousPigmentSettings.apparelPaintable;
+                case PaintClass.Weapon: return LuminousPigmentSettings.weaponsPaintable;
+                case PaintClass.Wall: return LuminousPigmentSettings.wallsPaintable;
+                default: return LuminousPigmentSettings.furniturePaintable;
+            }
         }
     }
 
@@ -119,17 +122,11 @@ namespace RimMandrake.LuminousPigment
     {
         public static int CostFor(Thing t)
         {
-            if (t.TryGetComp<CompArt>() != null) return LuminousPigmentSettings.costArt;
-            if (t.def.IsApparel) return LuminousPigmentSettings.costApparel;
-            if (t.def.IsWeapon) return LuminousPigmentSettings.costWeapon;
-            if (t.def.building != null && t.def.building.isWall) return LuminousPigmentSettings.costWallCell;
-
-            // furniture/building: 1x1 = base, larger = base + perExtraCell/extra cell, capped.
-            int cells = System.Math.Max(1, t.def.size.x * t.def.size.z);
-            if (cells <= 1) return LuminousPigmentSettings.costFurnitureBase;
-            int cost = LuminousPigmentSettings.costFurnitureBase
-                + (cells - 1) * LuminousPigmentSettings.costFurniturePerExtraCell;
-            return System.Math.Min(LuminousPigmentSettings.costFurnitureCap, cost);
+            PaintClass pc = RM_DeepfireRules.ClassOf(t.TryGetComp<CompArt>() != null, t.def.IsApparel, t.def.IsWeapon,
+                t.def.building != null && t.def.building.isWall);
+            return RM_DeepfireRules.Cost(pc, t.def.size.x, t.def.size.z, LuminousPigmentSettings.costArt, LuminousPigmentSettings.costApparel,
+                LuminousPigmentSettings.costWeapon, LuminousPigmentSettings.costWallCell, LuminousPigmentSettings.costFurnitureBase,
+                LuminousPigmentSettings.costFurniturePerExtraCell, LuminousPigmentSettings.costFurnitureCap);
         }
 
         // Single-stack fetch (MVP for step 5's proof) -- the stack must hold

@@ -52,25 +52,21 @@ namespace RimMandrake.LuminousPigment
         {
             color = Color.black;
             radius = 0f;
-            int maxCoats = 0;
-            float r = 0f, g = 0f, b = 0f, weight = 0f;
+            var coats = new List<int>();
+            var rs = new List<float>();
+            var gs = new List<float>();
+            var bs = new List<float>();
             foreach (ThingWithComps t in WornAndEquipped(pawn))
             {
                 CompDeepfire comp = t.GetComp<CompDeepfire>();
                 if (comp == null || comp.coats <= 0) continue;
                 // Full-intensity hue of this item, weighted by its coats.
                 Color c = DeepfireColorUtility.GlowColorFor(t.DrawColor, CompDeepfire.MaxCoats);
-                r += c.r * comp.coats;
-                g += c.g * comp.coats;
-                b += c.b * comp.coats;
-                weight += comp.coats;
-                if (comp.coats > maxCoats) maxCoats = comp.coats;
+                coats.Add(comp.coats); rs.Add(c.r); gs.Add(c.g); bs.Add(c.b);
             }
-            if (maxCoats <= 0) return false;
-
-            int i = Mathf.Clamp(maxCoats, 0, CompDeepfire.MaxCoats);
-            float intensity = LuminousPigmentSettings.coatIntensity[i];
-            color = new Color(r / weight * intensity, g / weight * intensity, b / weight * intensity, 1f);
+            if (!RM_DeepfireRules.WornBlend(coats, rs, gs, bs, LuminousPigmentSettings.coatIntensity, CompDeepfire.MaxCoats,
+                    out float r, out float g, out float b, out int maxCoats)) return false;
+            color = new Color(r, g, b, 1f);
             radius = DeepfireColorUtility.RadiusForCoats(maxCoats);
             return true;
         }
@@ -107,13 +103,8 @@ namespace RimMandrake.LuminousPigment
         public static float OtherLightAt(Map map, IntVec3 c, ColorInt own, float ownRadius)
         {
             Color32 acc = map.glowGrid.VisualGlowAt(c);
-            if (acc.a == 1) return 1f; // overlit by something (ours is never overlit: overlightRadius 0)
-            float falloff = Mathf.Lerp(1f - 1f / Mathf.Max(ownRadius, 1f), 1f, DeepfirePaintDefaults.GlowFalloffLerp);
-            float r = Mathf.Max(0f, acc.r - own.r * falloff);
-            float g = Mathf.Max(0f, acc.g - own.g * falloff);
-            float b = Mathf.Max(0f, acc.b - own.b * falloff);
-            float v = Mathf.Max(r, Mathf.Max(g, b)) / 255f * DeepfirePaintDefaults.GroundGlowFactor;
-            return Mathf.Min(DeepfirePaintDefaults.MaxNonOverlitGroundGlow, v);
+            return RM_DeepfireRules.OtherLightAt(acc.a == 1, acc.r, acc.g, acc.b, own.r, own.g, own.b, ownRadius,
+                DeepfirePaintDefaults.GlowFalloffLerp, DeepfirePaintDefaults.GroundGlowFactor, DeepfirePaintDefaults.MaxNonOverlitGroundGlow);
         }
     }
 }

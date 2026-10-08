@@ -225,8 +225,8 @@ namespace RimMandrake.GelatinousSlime
         // Humanlike people the colony holds. Visitors and raiders are not filed (bounded archive).
         public static bool Files(Pawn p)
         {
-            return p != null && !p.Dead && p.RaceProps.Humanlike && p.Name != null
-                && (p.IsColonist || p.IsPrisonerOfColony || p.IsSlaveOfColony);
+            return RM_SlimeWorld.ArchiveFiles(p != null, p != null && p.Dead, p != null && p.RaceProps.Humanlike, p != null && p.Name != null,
+                p != null && (p.IsColonist || p.IsPrisonerOfColony || p.IsSlaveOfColony));
         }
 
         // Called from the exposure tick and from an engulf. No-op with the toggle off.
@@ -265,21 +265,29 @@ namespace RimMandrake.GelatinousSlime
             return true;
         }
 
-        public static void Pay(Map map)
+        // Plans every cost first and destroys nothing unless ALL of it can be paid, so a count that disagrees with the
+        // unforbidden stacks (CanPay reads the resource counter) never takes half a payment and refuses the rest.
+        public static bool Pay(Map map)
         {
+            var plans = new List<KeyValuePair<List<Thing>, int[]>>();
             foreach (ThingDefCountClass c in Cost)
             {
-                int left = c.count;
                 List<Thing> things = new List<Thing>(map.listerThings.ThingsOfDef(c.thingDef));
-                for (int i = 0; i < things.Count && left > 0; i++)
+                var stacks = new List<int>(things.Count);
+                var forbidden = new List<bool>(things.Count);
+                foreach (Thing t in things) { stacks.Add(t.stackCount); forbidden.Add(t.IsForbidden(Faction.OfPlayer)); }
+                int[] takes = RM_SlimeWorld.PayPlan(stacks, forbidden, c.count, out int shortfall);
+                if (shortfall > 0) return false;
+                plans.Add(new KeyValuePair<List<Thing>, int[]>(things, takes));
+            }
+            foreach (KeyValuePair<List<Thing>, int[]> plan in plans)
+            {
+                for (int i = 0; i < plan.Key.Count; i++)
                 {
-                    Thing t = things[i];
-                    if (t.IsForbidden(Faction.OfPlayer)) continue;
-                    int take = Mathf.Min(left, t.stackCount);
-                    t.SplitOff(take).Destroy(DestroyMode.Vanish);
-                    left -= take;
+                    if (plan.Value[i] > 0) plan.Key[i].SplitOff(plan.Value[i]).Destroy(DestroyMode.Vanish);
                 }
             }
+            return true;
         }
 
         // Grow the person back from the snapshot. Returns the new pawn or null.
@@ -462,7 +470,11 @@ namespace RimMandrake.GelatinousSlime
                 Messages.Message("Not enough raw slime and components on the map.", this, MessageTypeDefOf.RejectInput, false);
                 return;
             }
-            SlimeArchiveUtility.Pay(Map);
+            if (!SlimeArchiveUtility.Pay(Map))
+            {
+                Messages.Message("Not enough unforbidden raw slime and components on the map.", this, MessageTypeDefOf.RejectInput, false);
+                return;
+            }
             growingKey = s.key;
             ticksLeft = GrowTicks;
         }

@@ -71,50 +71,19 @@ namespace RimMandrake.GelatinousSlime
 
         public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
         {
-            if (tile == null || tile.WaterCovered)
-            {
-                return -100f;
-            }
-
-            // Rarity slider at zero means the player has turned the biome off.
-            float rarity = SlimeSettings.rarityFactor;
-            if (rarity <= 0.001f)
+            if (tile == null)
             {
                 return -100f;
             }
 
             SlimeBiomeRanges r = biome.GetModExtension<SlimeBiomeRanges>() ?? FallbackRanges;
 
-            if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
-            {
-                return 0f;
-            }
-            // Half-open on rainfall, matching vanilla's own workers exactly so
-            // the band edges butt up against theirs with no overlap.
-            if (tile.rainfall < r.rainfall.min || tile.rainfall >= r.rainfall.max)
-            {
-                return 0f;
-            }
-            if (tile.elevation < r.elevation.min || tile.elevation > r.elevation.max)
-            {
-                return 0f;
-            }
-            // The body lies in lowland wet country, not on a mountainside.
-            if (tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable)
-            {
-                return 0f;
-            }
-
-            float gate = r.spawnChance * rarity;
-            if (gate < 1f && !Rand.ChanceSeeded(gate, planetTile.tileId ^ GateSeedSalt))
-            {
-                return 0f;
-            }
-
-            float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
-            return r.baseScore
-                 + (tile.temperature - r.temperature.min) * r.degreeWeight
-                 + (tile.rainfall - r.rainfall.min) / divisor;
+            // Rarity slider at zero turns the biome off; rainfall is half-open to butt up against vanilla's workers; the body
+            // lies in lowland wet country, not on a mountainside (RM_SlimeWorld.BiomeScore).
+            return RM_SlimeWorld.BiomeScore(tile.WaterCovered, SlimeSettings.rarityFactor, tile.temperature, r.temperature.min, r.temperature.max,
+                tile.rainfall, r.rainfall.min, r.rainfall.max, tile.elevation, r.elevation.min, r.elevation.max,
+                tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable, r.spawnChance,
+                gate => Rand.ChanceSeeded(gate, planetTile.tileId ^ GateSeedSalt), r.baseScore, r.degreeWeight, r.rainfallDivisor);
         }
     }
 

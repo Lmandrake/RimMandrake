@@ -30,10 +30,9 @@ namespace RimMandrake.TerminalBiomes
     {
         public const int Interval = 250;
 
-        private Dictionary<int, int> litTicks = new Dictionary<int, int>();
-        private HashSet<int> watched = new HashSet<int>();
-        private HashSet<int> scraped = new HashSet<int>();
-        private HashSet<int> answered = new HashSet<int>();
+        private readonly LampWatchBook lamps = new LampWatchBook();
+        private Dictionary<int, int> litTicks { get { return lamps.Lit; } }
+        private HashSet<int> watched { get { return lamps.Watched; } }
         private HashSet<int> walkedIn = new HashSet<int>();
         private int nextWatchOrderTick;
 
@@ -41,7 +40,7 @@ namespace RimMandrake.TerminalBiomes
         {
         }
 
-        public static int ThresholdTicks => Mathf.RoundToInt(RM_TerminalBiomesSettings.greyLampGiantBurnHours * 2500f);
+        public static int ThresholdTicks => LampWatchBook.ThresholdTicks(RM_TerminalBiomesSettings.greyLampGiantBurnHours);
 
         public static bool IsWorklightClass(Thing t, out CompGlower glower)
         {
@@ -52,7 +51,7 @@ namespace RimMandrake.TerminalBiomes
                 && glower.GlowRadius >= RM_TerminalBiomesSettings.greyLampGiantMinRadius;
         }
 
-        public int LitTicksOf(Thing t) => t != null && litTicks.TryGetValue(t.thingIDNumber, out int v) ? v : 0;
+        public int LitTicksOf(Thing t) => t != null ? lamps.LitTicksOf(t.thingIDNumber) : 0;
 
         public bool WalkedIn(Pawn p) => p != null && walkedIn.Contains(p.thingIDNumber);
 
@@ -74,49 +73,26 @@ namespace RimMandrake.TerminalBiomes
             Advance(Interval);
         }
 
-        // One step of every lamp's clock; public for the proof.
         public void Advance(int ticks)
         {
-            HashSet<int> seen = new HashSet<int>();
+            var buildings = new Dictionary<int, Building>();
+            var glowers = new Dictionary<int, CompGlower>();
+            var litNow = new List<int>();
             foreach (Building b in map.listerBuildings.allBuildingsColonist.ToList())
             {
                 if (!IsWorklightClass(b, out CompGlower glower) || !glower.Glows)
                 {
                     continue;
                 }
-                int id = b.thingIDNumber;
-                seen.Add(id);
-                litTicks.TryGetValue(id, out int lit);
-                lit += ticks;
-                litTicks[id] = lit;
-                float f = lit / (float)Mathf.Max(1, ThresholdTicks);
-                if (f >= 0.5f && RM_TerminalBiomesSettings.GreyLampWatcherActive)
-                {
-                    TryWatch(b, glower);
-                }
-                if (f >= 0.75f && RM_TerminalBiomesSettings.GreyLampWatcherActive && scraped.Add(id))
-                {
-                    LayScrapeSign(b, glower);
-                }
-                if (f >= 1f && RM_TerminalBiomesSettings.GreyLampGiantActive && !answered.Contains(id))
-                {
-                    if (TryAnswer(b))
-                    {
-                        answered.Add(id);
-                    }
-                }
+                buildings[b.thingIDNumber] = b;
+                glowers[b.thingIDNumber] = glower;
+                litNow.Add(b.thingIDNumber);
             }
+            lamps.Advance(litNow, ticks, ThresholdTicks, RM_TerminalBiomesSettings.GreyLampWatcherActive, RM_TerminalBiomesSettings.GreyLampGiantActive,
+                id => TryWatch(buildings[id], glowers[id]), id => LayScrapeSign(buildings[id], glowers[id]), id => TryAnswer(buildings[id]));
             SendHomeIdleGiants();
-            // Dowsing always resets: a lamp that is dark (or gone) loses its
-            // whole clock and every tell it had earned.
-            foreach (int id in litTicks.Keys.Where(k => !seen.Contains(k)).ToList())
-            {
-                litTicks.Remove(id);
-                watched.Remove(id);
-                scraped.Remove(id);
-                answered.Remove(id);
-            }
         }
+
 
         // ── Layer 2: the watcher at the rim ─────────────────────────────────
         private void TryWatch(Building lamp, CompGlower glower)
@@ -295,18 +271,18 @@ namespace RimMandrake.TerminalBiomes
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Collections.Look(ref litTicks, "litTicks", LookMode.Value, LookMode.Value);
-            Scribe_Collections.Look(ref watched, "watched", LookMode.Value);
-            Scribe_Collections.Look(ref scraped, "scraped", LookMode.Value);
-            Scribe_Collections.Look(ref answered, "answered", LookMode.Value);
+            Scribe_Collections.Look(ref lamps.Lit, "litTicks", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref lamps.Watched, "watched", LookMode.Value);
+            Scribe_Collections.Look(ref lamps.Scraped, "scraped", LookMode.Value);
+            Scribe_Collections.Look(ref lamps.Answered, "answered", LookMode.Value);
             Scribe_Collections.Look(ref walkedIn, "walkedIn", LookMode.Value);
             Scribe_Values.Look(ref nextWatchOrderTick, "nextWatchOrderTick", 0);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                litTicks = litTicks ?? new Dictionary<int, int>();
-                watched = watched ?? new HashSet<int>();
-                scraped = scraped ?? new HashSet<int>();
-                answered = answered ?? new HashSet<int>();
+                lamps.Lit = lamps.Lit ?? new Dictionary<int, int>();
+                lamps.Watched = lamps.Watched ?? new HashSet<int>();
+                lamps.Scraped = lamps.Scraped ?? new HashSet<int>();
+                lamps.Answered = lamps.Answered ?? new HashSet<int>();
                 walkedIn = walkedIn ?? new HashSet<int>();
             }
         }

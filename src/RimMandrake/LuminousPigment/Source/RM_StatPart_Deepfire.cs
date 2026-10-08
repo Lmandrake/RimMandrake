@@ -69,9 +69,8 @@ namespace RimMandrake.LuminousPigment
 
         private float BonusFor(Thing thing, float baseBeauty)
         {
-            int area = thing != null ? System.Math.Max(1, thing.def.size.x * thing.def.size.z) : 1;
-            float sizeFactor = Mathf.Min(area, LuminousPigmentSettings.beautySizeCap);
-            return LuminousPigmentSettings.beautyFlat * sizeFactor + LuminousPigmentSettings.beautyPct * baseBeauty;
+            return RM_DeepfireRules.BeautyBonus(LuminousPigmentSettings.beautyFlat, LuminousPigmentSettings.beautyPct, LuminousPigmentSettings.beautySizeCap,
+                thing != null ? thing.def.size.x : 1, thing != null ? thing.def.size.z : 1, baseBeauty);
         }
 
         private static bool Applies(StatRequest req)

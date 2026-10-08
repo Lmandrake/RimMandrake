@@ -30,41 +30,29 @@ namespace RimMandrake.TerminalBiomes
     // surface sunlight and would leave kelp/mat-roof growing in the black.
     public class RM_MapComponent_WellLedger : MapComponent
     {
-        private const int TickInterval = 250; // rare-tick cadence; nothing here needs finer.
-        private const int TicksPerDay = 60000;
-        private const int OpeningTicks = TicksPerDay / 2; // ~half a day
-        private const int WaningTicks = (int)(TicksPerDay * 1.5f); // the last ~1.5 days
-        private const float WaningStepFraction = 0.2f; // radius steps down ~20% per half-day
-        private const int WaningStepTicks = TicksPerDay / 2;
-
         private static readonly ColorInt GoldGlow = new ColorInt(255, 210, 120, 0);
         private static readonly ColorInt CoolDeadGlow = new ColorInt(120, 140, 150, 0);
 
-        public enum WellStage
+        // The lifecycle (stages, aging, the delayed re-opening, the gardener advance, lid-dark aging) is the Verse-free kernel
+        // Kernel/RM_WellKernel.cs; this component supplies the engine half through the book's delegates.
+        // IExposable rather than a struct: Scribe_Collections needs a reference type to round-trip a List<WellRecord> cleanly.
+        public class WellRecord : WellRec, IExposable
         {
-            Opening,
-            Standing,
-            Waning,
-            Closed,
-        }
-
-        // IExposable rather than a struct: Scribe_Collections needs a
-        // reference type to round-trip a List<WellRecord> cleanly.
-        public class WellRecord : IExposable
-        {
-            public int id;
-            public IntVec3 position;
-            public WellStage stage = WellStage.Opening;
-            public int ageTicks;
-            public int lifespanTicks;
-            public bool warningLetterFired;
             public int noiseSeed;
             public Thing skylightThing; // the RM_Skylight thing, Scribe_References'd
+
+            public IntVec3 position
+            {
+                get { return new IntVec3(x, 0, z); }
+                set { x = value.x; z = value.z; }
+            }
 
             public void ExposeData()
             {
                 Scribe_Values.Look(ref id, "id");
-                Scribe_Values.Look(ref position, "position");
+                IntVec3 pos = position;
+                Scribe_Values.Look(ref pos, "position");
+                position = pos;
                 Scribe_Values.Look(ref stage, "stage", WellStage.Standing);
                 Scribe_Values.Look(ref ageTicks, "ageTicks");
                 Scribe_Values.Look(ref lifespanTicks, "lifespanTicks");
@@ -72,21 +60,38 @@ namespace RimMandrake.TerminalBiomes
                 Scribe_Values.Look(ref noiseSeed, "noiseSeed");
                 Scribe_References.Look(ref skylightThing, "skylightThing");
             }
-
-            public int TicksRemaining => System.Math.Max(0, lifespanTicks - ageTicks);
         }
 
         private List<WellRecord> wells = new List<WellRecord>();
         private int nextWellId = 1;
         private bool initialized;
 
-        // A day scheduled to open a fresh well after one closes (§1.1: "a
-        // well closing schedules a well opening elsewhere within ~a day").
+        // Absolute game ticks at which a closed well's replacement is due to open.
         private List<int> pendingOpenTicks = new List<int>();
+
+        private WellBook<WellRecord> book;
 
         public RM_MapComponent_WellLedger(Map map) : base(map)
         {
         }
+
+        private WellBook<WellRecord> Book
+        {
+            get
+            {
+                if (book == null)
+                {
+                    book = new WellBook<WellRecord>(FindSite, Opened, ApplyVisualState, MaybeFireWarningLetter, Closed,
+                        n => Rand.Range(0, n), () => RM_TerminalBiomesSettings.twilightDriftCadence);
+                }
+                book.Wells = wells;
+                book.Pending = pendingOpenTicks;
+                book.NextId = nextWellId;
+                return book;
+            }
+        }
+
+        private void EndOp() { nextWellId = book.NextId; }
 
         public static RM_MapComponent_WellLedger GetFor(Map map)
         {
@@ -117,80 +122,51 @@ namespace RimMandrake.TerminalBiomes
             {
                 return;
             }
-            if (!map.IsHashIntervalTick(TickInterval))
+            if (!map.IsHashIntervalTick(RM_WellKernel.TickInterval))
             {
                 return;
             }
 
             if (!initialized)
             {
-                InitializeWells();
+                Book.Initialize(map.Size.x);
+                EndOp();
                 initialized = true;
                 return;
             }
 
-            ProcessPendingOpens();
-
             if (RM_TerminalBiomesSettings.twilightDriftCadence == 0)
             {
-                return; // Frozen — sandbox, wells never age.
+                // Frozen -- sandbox, wells never age (but a closed well's replacement still opens when due).
+                Book.ProcessPending(Find.TickManager.TicksGame);
+                EndOp();
+                return;
             }
 
-            // Iterate a snapshot: AdvanceWell can remove/replace records.
-            List<WellRecord> snapshot = new List<WellRecord>(wells);
-            foreach (WellRecord well in snapshot)
+            Book.Tick(Find.TickManager.TicksGame);
+            EndOp();
+        }
+
+        private bool FindSite(out int x, out int z)
+        {
+            IntVec3 cell = FindWellSiteCell();
+            x = cell.x; z = cell.z;
+            return cell.IsValid;
+        }
+
+        private void Opened(WellRecord well)
+        {
+            well.noiseSeed = Rand.Range(0, 1000000);
+            well.skylightThing = SpawnSkylight(well.position);
+        }
+
+        private void Closed(WellRecord well)
+        {
+            if (well.skylightThing != null && well.skylightThing.Spawned)
             {
-                AgeAndCheck(well, TickInterval);
+                well.skylightThing.Destroy(DestroyMode.Vanish);
             }
-        }
-
-        // ── Sizing & init ───────────────────────────────────────────────
-
-        private int TargetWellCount()
-        {
-            // Heuristic (no ruling gives an exact formula): bigger maps
-            // support more standing wells at once. 3-6, per spec §1.1.
-            int bySize = 3 + map.Size.x / 125;
-            return Mathf.Clamp(bySize, 3, 6);
-        }
-
-        private void InitializeWells()
-        {
-            int target = TargetWellCount();
-            for (int i = 0; i < target; i++)
-            {
-                IntVec3 cell = FindWellSiteCell();
-                if (!cell.IsValid)
-                {
-                    continue;
-                }
-                WellRecord well = OpenNewWell(cell);
-                // Stagger initial wells across their lifespan so they don't
-                // all wane in lockstep on a fresh map.
-                well.ageTicks = Rand.Range(0, well.lifespanTicks - WaningTicks);
-                RecomputeStage(well);
-                ApplyVisualState(well);
-            }
-        }
-
-        private WellRecord OpenNewWell(IntVec3 cell)
-        {
-            // twilightDriftCadence: 0 = frozen (aging itself is gated off in
-            // MapComponentTick, not here), 1 = week (shipped, the base
-            // 5-9 day roll), 2 = slow — roughly double the week.
-            int cadenceMultiplier = RM_TerminalBiomesSettings.twilightDriftCadence == 2 ? 2 : 1;
-            WellRecord well = new WellRecord
-            {
-                id = nextWellId++,
-                position = cell,
-                stage = WellStage.Opening,
-                ageTicks = 0,
-                lifespanTicks = Rand.RangeInclusive(5, 9) * TicksPerDay * cadenceMultiplier,
-                noiseSeed = Rand.Range(0, 1000000),
-            };
-            well.skylightThing = SpawnSkylight(cell);
-            wells.Add(well);
-            return well;
+            well.skylightThing = null;
         }
 
         private Thing SpawnSkylight(IntVec3 cell)
@@ -204,8 +180,6 @@ namespace RimMandrake.TerminalBiomes
             GenSpawn.Spawn(thing, cell, map);
             return thing;
         }
-
-        // ── Siting ──────────────────────────────────────────────────────
 
         private IntVec3 FindWellSiteCell()
         {
@@ -249,99 +223,6 @@ namespace RimMandrake.TerminalBiomes
             return true;
         }
 
-        // ── Aging & stage transitions ───────────────────────────────────
-
-        private void AgeAndCheck(WellRecord well, int deltaTicks)
-        {
-            if (well.stage == WellStage.Closed)
-            {
-                return;
-            }
-            well.ageTicks += deltaTicks;
-            WellStage before = well.stage;
-            RecomputeStage(well);
-
-            if (before != WellStage.Waning && well.stage == WellStage.Waning)
-            {
-                well.warningLetterFired = false;
-                MaybeFireWarningLetter(well);
-            }
-            // Opening ramps the radius UP (factor = ageTicks/OpeningTicks)
-            // and Waning steps it DOWN — both need a continuous update, not
-            // just Waning, or an opening well sits at whatever its very
-            // first (or last-authored) radius happened to be for days.
-            if (well.stage == WellStage.Opening || well.stage == WellStage.Waning)
-            {
-                ApplyVisualState(well);
-            }
-            else if (before == WellStage.Opening && well.stage == WellStage.Standing)
-            {
-                ApplyVisualState(well); // snap the ramp to exactly full (factor 1) on entry, once.
-            }
-            if (before != WellStage.Closed && well.stage == WellStage.Closed)
-            {
-                CloseWell(well);
-                wells.Remove(well); // dead history — nothing keys off a closed WellRecord past this point.
-            }
-        }
-
-        private void RecomputeStage(WellRecord well)
-        {
-            int remaining = well.lifespanTicks - well.ageTicks;
-            if (well.ageTicks < OpeningTicks)
-            {
-                well.stage = WellStage.Opening;
-            }
-            else if (remaining <= 0)
-            {
-                well.stage = WellStage.Closed;
-            }
-            else if (remaining <= WaningTicks)
-            {
-                well.stage = WellStage.Waning;
-            }
-            else
-            {
-                well.stage = WellStage.Standing;
-            }
-        }
-
-        private void CloseWell(WellRecord well)
-        {
-            if (well.skylightThing != null && well.skylightThing.Spawned)
-            {
-                well.skylightThing.Destroy(DestroyMode.Vanish);
-            }
-            well.skylightThing = null;
-
-            // Schedule a replacement opening elsewhere "within ~a day".
-            pendingOpenTicks.Add(Find.TickManager.TicksGame + Rand.Range(0, TicksPerDay));
-        }
-
-        private void ProcessPendingOpens()
-        {
-            if (pendingOpenTicks.Count == 0)
-            {
-                return;
-            }
-            int now = Find.TickManager.TicksGame;
-            for (int i = pendingOpenTicks.Count - 1; i >= 0; i--)
-            {
-                if (now < pendingOpenTicks[i])
-                {
-                    continue;
-                }
-                IntVec3 cell = FindWellSiteCell();
-                if (cell.IsValid)
-                {
-                    OpenNewWell(cell);
-                }
-                pendingOpenTicks.RemoveAt(i);
-            }
-        }
-
-        // ── Visuals: the one place §1.4's engine trap is honoured ───────
-
         private void ApplyVisualState(WellRecord well)
         {
             if (well.skylightThing == null || !well.skylightThing.Spawned)
@@ -354,29 +235,11 @@ namespace RimMandrake.TerminalBiomes
                 return;
             }
 
-            float factor;
-            ColorInt color;
-            switch (well.stage)
-            {
-                case WellStage.Opening:
-                    factor = Mathf.Clamp01((float)well.ageTicks / OpeningTicks);
-                    color = GoldGlow;
-                    break;
-                case WellStage.Waning:
-                    int ticksIntoWaning = WaningTicks - (well.lifespanTicks - well.ageTicks);
-                    int stepIndex = Mathf.Clamp(ticksIntoWaning / WaningStepTicks, 0, 3);
-                    factor = Mathf.Max(0.2f, 1f - WaningStepFraction * stepIndex);
-                    color = ColorIntLerp(GoldGlow, CoolDeadGlow, stepIndex / 3f);
-                    break;
-                case WellStage.Standing:
-                default:
-                    factor = 1f;
-                    color = GoldGlow;
-                    break;
-            }
-
-            float baseRadius = 6f; // §3.1's sun-sphere uses ~6 as its ceiling; a full well matches it.
-            float newRadius = Mathf.Max(0.5f, baseRadius * factor);
+            float factor = RM_WellKernel.GlowFactor(well.stage, well.ageTicks, well.lifespanTicks);
+            ColorInt color = well.stage == WellStage.Waning
+                ? ColorIntLerp(GoldGlow, CoolDeadGlow, RM_WellKernel.ColourT(well.stage, well.ageTicks, well.lifespanTicks))
+                : GoldGlow;
+            float newRadius = RM_WellKernel.Radius(factor);
             glower.GlowColor = color;
             if (!Mathf.Approximately(newRadius, glower.GlowRadius))
             {
@@ -392,24 +255,19 @@ namespace RimMandrake.TerminalBiomes
             return new ColorInt(Color.Lerp(ca, cb, Mathf.Clamp01(t)));
         }
 
-        // ── Warning letters (spec §1.2.2: positional, ownership-gated) ──
-
-        private void MaybeFireWarningLetter(WellRecord well)
+        // "No spam for wells the player never touched": true when the warning letter went out.
+        private bool MaybeFireWarningLetter(WellRecord well)
         {
-            if (well.warningLetterFired)
-            {
-                return;
-            }
             if (!AnyPlayerOwnedThingNear(well.position, 6))
             {
-                return; // "No spam for wells the player never touched."
+                return false;
             }
-            well.warningLetterFired = true;
             Find.LetterStack.ReceiveLetter(
                 "RM_TwilightWellClosingLabel".Translate(),
                 "RM_TwilightWellClosingText".Translate(),
                 LetterDefOf.NeutralEvent,
                 new TargetInfo(well.position, map));
+            return true;
         }
 
         private bool AnyPlayerOwnedThingNear(IntVec3 pos, int radius)
@@ -426,54 +284,26 @@ namespace RimMandrake.TerminalBiomes
             return false;
         }
 
-        // ── Gardener/lid-dark hooks (called by RM_GardenerOverhead / the
-        // lid-dark WeatherDef once those ship — content/danger pass scope,
-        // §5/§7. Safe to call today: they simply have no caller yet.) ────
-
-        // "on a fraction of passes the sequence's beat 2-4 window ADVANCES
-        // one well: a waning well closes now, or a scheduled opening
-        // happens now" (§1.3).
+        // The gardener's pass: close the well nearest its end, else bring the next pending opening forward.
         public void NotifyGardenerPassAdvance()
         {
             if (!IsActiveHere() || wells.Count == 0)
             {
                 return;
             }
-            WellRecord candidate = null;
-            foreach (WellRecord w in wells)
-            {
-                if (w.stage == WellStage.Waning && (candidate == null || w.TicksRemaining < candidate.TicksRemaining))
-                {
-                    candidate = w;
-                }
-            }
-            if (candidate != null)
-            {
-                candidate.ageTicks = candidate.lifespanTicks; // force closed now
-                AgeAndCheck(candidate, 0);
-                return;
-            }
-            // No waning well to close early — land a scheduled opening now instead.
-            if (pendingOpenTicks.Count > 0)
-            {
-                pendingOpenTicks[0] = Find.TickManager.TicksGame;
-                ProcessPendingOpens();
-            }
+            Book.GardenerAdvance(Find.TickManager.TicksGame);
+            EndOp();
         }
 
-        // "the ledger runs one forced drift check: the lid healed
-        // differently than it was" (§1.3, §5 grade 3).
+        // Lid-dark's forced dawn check: a little extra, uneven aging.
         public void NotifyLidDarkEnded()
         {
             if (!IsActiveHere())
             {
                 return;
             }
-            List<WellRecord> snapshot = new List<WellRecord>(wells);
-            foreach (WellRecord w in snapshot)
-            {
-                AgeAndCheck(w, Rand.Range(0, TicksPerDay / 4)); // "healed differently" — a little extra, uneven aging.
-            }
+            Book.LidDarkEnded(Find.TickManager.TicksGame);
+            EndOp();
         }
 
         // A lid-dark day drives every open well's glower toward ~0 for its

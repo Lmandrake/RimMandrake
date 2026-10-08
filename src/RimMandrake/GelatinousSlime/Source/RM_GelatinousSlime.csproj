@@ -62,6 +62,10 @@
     <Compile Include="SealBreach.cs" />
     <Compile Include="ChunkBomb.cs" />
     <Compile Include="ArchiveResurrection.cs" />
+    <!-- Verse-free kernels (also compiled by SelfTest/RimMandrakeGelatinousSlime.SelfTest.csproj). -->
+    <Compile Include="Kernel\RM_SlimeLadder.cs" />
+    <Compile Include="Kernel\RM_TitanKernel.cs" />
+    <Compile Include="Kernel\RM_SlimeWorld.cs" />
   </ItemGroup>
 
   <ItemGroup>

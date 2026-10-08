@@ -92,8 +92,7 @@ namespace RimMandrake.LuminousPigment
             MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(room.Map);
             if (mc == null || mc.CoatedFloorCellCount == 0) return 0f;
             int coated = mc.CountCoatedFloorCells(room.Cells);
-            float bonus = LuminousPigmentSettings.floorRoomBonusPer10 * (coated / 10);
-            return Mathf.Min(bonus, LuminousPigmentSettings.floorRoomBonusCap);
+            return RM_DeepfireRules.FloorRoomBonus(LuminousPigmentSettings.floorRoomBonusPer10, LuminousPigmentSettings.floorRoomBonusCap, coated);
         }
     }
 }

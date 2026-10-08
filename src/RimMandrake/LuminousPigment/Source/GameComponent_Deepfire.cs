@@ -32,7 +32,8 @@ namespace RimMandrake.LuminousPigment
         {
             GameComponent_Deepfire gc = Instance;
             if (gc == null || f == null) return false;
-            return !gc.impressedQuadrum.TryGetValue(f.loadID, out int q) || q != CurrentQuadrumIndex;
+            bool known = gc.impressedQuadrum.TryGetValue(f.loadID, out int q);
+            return RM_DeepfireRules.CanImpress(known, q, CurrentQuadrumIndex);
         }
 
         public static void MarkImpressed(Faction f)

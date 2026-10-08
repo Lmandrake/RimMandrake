@@ -24,61 +24,63 @@ namespace RimMandrake.LuminousPigment
     // proxy count is not disturbed by a painted wall around the room.
     public partial class MapComponent_DeepfireLights
     {
-        private const byte KindFloor = 0;
-        private const byte KindBuilding = 1;
+        private const byte KindFloor = DeepfireLightBook<Thing, Color>.KindFloor;
+        private const byte KindBuilding = DeepfireLightBook<Thing, Color>.KindBuilding;
 
-        private readonly struct ClusterKey : System.IEquatable<ClusterKey>
+        // The light bookkeeping (floor grid, 3x3 blocks, anchors, own-vs-cluster routing) is the Verse-free kernel
+        // Kernel/RM_DeepfireLightBook.cs; this component supplies the engine half through the delegates below.
+        private DeepfireLightBook<Thing, Color> bookField;
+
+        private DeepfireLightBook<Thing, Color> Book
         {
-            public readonly int Block;
-            public readonly byte Kind;
-            public readonly int Coats;
-            public readonly int Color;
-
-            public ClusterKey(int block, byte kind, int coats, int color)
+            get
             {
-                Block = block;
-                Kind = kind;
-                Coats = coats;
-                Color = color;
-            }
-
-            public bool Equals(ClusterKey o) => Block == o.Block && Kind == o.Kind && Coats == o.Coats && Color == o.Color;
-            public override bool Equals(object obj) => obj is ClusterKey k && Equals(k);
-            public override int GetHashCode()
-            {
-                unchecked
+                if (bookField == null)
                 {
-                    int h = Block;
-                    h = h * 397 ^ Kind;
-                    h = h * 397 ^ Coats;
-                    h = h * 397 ^ Color;
-                    return h;
+                    bookField = new DeepfireLightBook<Thing, Color>(map.Size.x, map.Size.z,
+                        () => LuminousPigmentSettings.clusterBlock,
+                        coats => DeepfireColorUtility.RadiusForCoats(coats), DeepfirePaintDefaults.ClusterRadiusBonus,
+                        FloorGlowAt, ThingViewOf,
+                        (key, x, z, color, radius) => SetLight(key, new IntVec3(x, 0, z), color, radius),
+                        key => RemoveLight(key),
+                        (t, x, z, color, radius) => SetLight(t, new IntVec3(x, 0, z), color, radius),
+                        t => RemoveLight(t));
                 }
+                return bookField;
             }
         }
 
-        private class ClusterGroup
+        private DeepfireGlow<Color> FloorGlowAt(int x, int z, int coats)
         {
-            public Color GlowColor;
-            public readonly List<IntVec3> Cells = new List<IntVec3>();
+            Color glow = DeepfireColorUtility.GlowColorFor(FloorBaseColor(new IntVec3(x, 0, z)), coats);
+            return new DeepfireGlow<Color> { Packed = PackColor(glow), Color = glow };
         }
 
-        private byte[] floorCoats;
-        private int coatedFloorCells;
+        private DeepfireThingView<Color> ThingViewOf(Thing t)
+        {
+            var v = new DeepfireThingView<Color>();
+            if (t == null || !t.Spawned || t.Map != map) return v;
+            CompDeepfire comp = t.TryGetComp<CompDeepfire>();
+            if (comp == null || comp.coats <= 0) return v;
+            Color glow = DeepfireColorUtility.GlowColorFor(t.DrawColor, comp.coats);
+            v.Live = true; v.Coats = comp.coats; v.X = t.Position.x; v.Z = t.Position.z;
+            v.Glow = new DeepfireGlow<Color> { Packed = PackColor(glow), Color = glow };
+            return v;
+        }
 
-        // 1x1 buildings that joined a cluster, and the cell they joined at.
-        private readonly Dictionary<Thing, IntVec3> clusteredThings = new Dictionary<Thing, IntVec3>();
-        private readonly Dictionary<int, List<Thing>> blockThings = new Dictionary<int, List<Thing>>();
-        private readonly Dictionary<int, List<ClusterKey>> blockKeys = new Dictionary<int, List<ClusterKey>>();
+        private static int PackColor(Color glow)
+        {
+            Color32 c32 = glow;
+            return (c32.r << 24) | (c32.g << 16) | (c32.b << 8) | c32.a;
+        }
 
         // ---- public floor API (designator, job, dev actions, Harmony hooks) ----
 
-        public int CoatedFloorCellCount => coatedFloorCells;
+        public int CoatedFloorCellCount => bookField == null ? 0 : bookField.CoatedFloorCells;
 
         public int FloorCoatsAt(IntVec3 c)
         {
-            if (floorCoats == null || !c.InBounds(map)) return 0;
-            return floorCoats[map.cellIndices.CellToIndex(c)];
+            return bookField == null ? 0 : bookField.FloorCoatsAt(c.x, c.z);
         }
 
         // Spec §3.3: "any floor cell with a floor terrain (TerrainDef.layerable
@@ -90,19 +92,17 @@ namespace RimMandrake.LuminousPigment
             return top != null && top.layerable;
         }
 
+        // Spec §7 maxCoats ("the slider cannot exceed" the architecture ceiling) caps floors as it caps things.
+        public static int FloorCoatCap => RM_DeepfireRules.CoatCap(CompDeepfire.MaxCoats, LuminousPigmentSettings.maxCoats);
+
         public bool CanAddFloorCoat(IntVec3 c)
         {
-            return IsCoatableFloor(map, c) && FloorCoatsAt(c) < CompDeepfire.MaxCoats;
+            return Book.CanAddFloorCoat(IsCoatableFloor(map, c), c.x, c.z, FloorCoatCap);
         }
 
         public bool AddFloorCoat(IntVec3 c)
         {
-            if (!CanAddFloorCoat(c)) return false;
-            EnsureGrid();
-            int i = map.cellIndices.CellToIndex(c);
-            bool firstCoat = floorCoats[i] == 0;
-            if (firstCoat) coatedFloorCells++;
-            floorCoats[i]++;
+            if (!Book.AddFloorCoat(IsCoatableFloor(map, c), c.x, c.z, FloorCoatCap, out bool firstCoat)) return false;
             AfterFloorChanged(c);
             // DEEPFIRE_GOD_BRIDGE_DELTAS_1, spec §5.2 "first coat on any
             // building/floor/item".
@@ -113,11 +113,7 @@ namespace RimMandrake.LuminousPigment
         // Spec §3.3 remove ("no refund") and §3.6 floor removed/replaced.
         public bool ClearFloorCoats(IntVec3 c)
         {
-            if (floorCoats == null || !c.InBounds(map)) return false;
-            int i = map.cellIndices.CellToIndex(c);
-            if (floorCoats[i] == 0) return false;
-            floorCoats[i] = 0;
-            coatedFloorCells--;
+            if (bookField == null || !bookField.ClearFloorCoats(c.x, c.z)) return false;
             AfterFloorChanged(c);
             return true;
         }
@@ -127,7 +123,7 @@ namespace RimMandrake.LuminousPigment
         public void Notify_FloorColorChanged(IntVec3 c)
         {
             if (FloorCoatsAt(c) <= 0) return;
-            RebuildBlockOf(c);
+            Book.NotifyFloorColorChanged(c.x, c.z);
         }
 
         // Glow colour source for a floor cell (spec §3.1: "Floors read
@@ -146,13 +142,13 @@ namespace RimMandrake.LuminousPigment
 
         public int CountCoatedFloorCells(IEnumerable<IntVec3> cells)
         {
-            if (floorCoats == null || coatedFloorCells == 0) return 0;
-            int n = 0;
-            foreach (IntVec3 c in cells)
-            {
-                if (c.InBounds(map) && floorCoats[map.cellIndices.CellToIndex(c)] > 0) n++;
-            }
-            return n;
+            if (bookField == null) return 0;
+            return bookField.CountCoated(CellsPacked(cells));
+        }
+
+        private static IEnumerable<long> CellsPacked(IEnumerable<IntVec3> cells)
+        {
+            foreach (IntVec3 c in cells) yield return DeepfireLightBook<Thing, Color>.Pack(c.x, c.z);
         }
 
         public List<string> DescribeFloorLights()
@@ -160,7 +156,7 @@ namespace RimMandrake.LuminousPigment
             var list = new List<string>();
             foreach (KeyValuePair<object, LightEntry> kv in entries)
             {
-                if (!(kv.Key is ClusterKey k) || k.Kind != KindFloor) continue;
+                if (!(kv.Key is DeepfireClusterKey k) || k.Kind != KindFloor) continue;
                 CompGlower g = kv.Value.Proxy?.TryGetComp<CompGlower>();
                 list.Add(string.Format("{0},{1} coats={2} radius={3:0.##} color={4}",
                     kv.Value.Cell.x, kv.Value.Cell.z, k.Coats, g?.GlowRadius ?? 0f,
@@ -175,7 +171,7 @@ namespace RimMandrake.LuminousPigment
             var list = new List<IntVec3>();
             foreach (KeyValuePair<object, LightEntry> kv in entries)
             {
-                if (kv.Key is ClusterKey k && k.Kind == KindFloor && kv.Value.Proxy != null && !kv.Value.Proxy.Destroyed)
+                if (kv.Key is DeepfireClusterKey k && k.Kind == KindFloor && kv.Value.Proxy != null && !kv.Value.Proxy.Destroyed)
                     list.Add(kv.Value.Proxy.Position);
             }
             return list;
@@ -185,178 +181,8 @@ namespace RimMandrake.LuminousPigment
 
         private static bool IsClusterable(Thing t)
         {
-            return LuminousPigmentSettings.clusterBlock > 1
-                && t.def.category == ThingCategory.Building
-                && t.def.size.x == 1 && t.def.size.z == 1;
-        }
-
-        private void RegisterClusteredThing(Thing t)
-        {
-            IntVec3 cell = t.Position;
-            if (clusteredThings.TryGetValue(t, out IntVec3 old))
-            {
-                if (old != cell)
-                {
-                    RemoveFromBlockList(t, old);
-                    AddToBlockList(t, cell);
-                    RebuildBlockOf(old);
-                }
-            }
-            else
-            {
-                AddToBlockList(t, cell);
-            }
-            clusteredThings[t] = cell;
-            RebuildBlockOf(cell);
-        }
-
-        private bool DeregisterClusteredThing(Thing t)
-        {
-            if (!clusteredThings.TryGetValue(t, out IntVec3 cell)) return false;
-            clusteredThings.Remove(t);
-            RemoveFromBlockList(t, cell);
-            RebuildBlockOf(cell);
-            return true;
-        }
-
-        private void AddToBlockList(Thing t, IntVec3 cell)
-        {
-            int b = BlockIndex(cell);
-            if (!blockThings.TryGetValue(b, out List<Thing> l))
-            {
-                l = new List<Thing>();
-                blockThings[b] = l;
-            }
-            if (!l.Contains(t)) l.Add(t);
-        }
-
-        private void RemoveFromBlockList(Thing t, IntVec3 cell)
-        {
-            int b = BlockIndex(cell);
-            if (blockThings.TryGetValue(b, out List<Thing> l))
-            {
-                l.Remove(t);
-                if (l.Count == 0) blockThings.Remove(b);
-            }
-        }
-
-        // ---- block rebuild ----
-
-        private static int ClusterBlockSize => System.Math.Max(1, LuminousPigmentSettings.clusterBlock);
-
-        private int BlocksX => (map.Size.x + ClusterBlockSize - 1) / ClusterBlockSize;
-
-        private int BlockIndex(IntVec3 c)
-        {
-            int b = ClusterBlockSize;
-            return (c.z / b) * BlocksX + (c.x / b);
-        }
-
-        private void RebuildBlockOf(IntVec3 c)
-        {
-            if (!c.InBounds(map)) return;
-            RebuildBlock(BlockIndex(c));
-        }
-
-        private static readonly Dictionary<ClusterKey, ClusterGroup> tmpGroups = new Dictionary<ClusterKey, ClusterGroup>();
-
-        private void RebuildBlock(int block)
-        {
-            int size = ClusterBlockSize;
-            int bx = block % BlocksX;
-            int bz = block / BlocksX;
-            tmpGroups.Clear();
-
-            // floor cells
-            if (floorCoats != null && coatedFloorCells > 0)
-            {
-                for (int dz = 0; dz < size; dz++)
-                {
-                    for (int dx = 0; dx < size; dx++)
-                    {
-                        IntVec3 c = new IntVec3(bx * size + dx, 0, bz * size + dz);
-                        if (!c.InBounds(map)) continue;
-                        int coats = floorCoats[map.cellIndices.CellToIndex(c)];
-                        if (coats <= 0) continue;
-                        Color glow = DeepfireColorUtility.GlowColorFor(FloorBaseColor(c), coats);
-                        AddToGroup(block, KindFloor, coats, glow, c);
-                    }
-                }
-            }
-
-            // 1x1 coated buildings
-            if (blockThings.TryGetValue(block, out List<Thing> things))
-            {
-                for (int i = 0; i < things.Count; i++)
-                {
-                    Thing t = things[i];
-                    if (t == null || !t.Spawned || t.Map != map) continue;
-                    CompDeepfire comp = t.TryGetComp<CompDeepfire>();
-                    if (comp == null || comp.coats <= 0) continue;
-                    Color glow = DeepfireColorUtility.GlowColorFor(t.DrawColor, comp.coats);
-                    AddToGroup(block, KindBuilding, comp.coats, glow, t.Position);
-                }
-            }
-
-            var produced = new List<ClusterKey>(tmpGroups.Count);
-            foreach (KeyValuePair<ClusterKey, ClusterGroup> kv in tmpGroups)
-            {
-                ClusterGroup g = kv.Value;
-                float radius = DeepfireColorUtility.RadiusForCoats(kv.Key.Coats);
-                // ClusterRadiusBonus is not a spec §7 key -- internal tuning, stays a constant.
-                if (g.Cells.Count > 1) radius += DeepfirePaintDefaults.ClusterRadiusBonus;
-                SetLight(kv.Key, AnchorCell(g.Cells), g.GlowColor, radius);
-                produced.Add(kv.Key);
-            }
-            tmpGroups.Clear();
-
-            if (blockKeys.TryGetValue(block, out List<ClusterKey> previous))
-            {
-                for (int i = 0; i < previous.Count; i++)
-                {
-                    if (!produced.Contains(previous[i])) RemoveLight(previous[i]);
-                }
-            }
-            if (produced.Count > 0) blockKeys[block] = produced;
-            else blockKeys.Remove(block);
-        }
-
-        private static void AddToGroup(int block, byte kind, int coats, Color glow, IntVec3 c)
-        {
-            Color32 c32 = glow;
-            int packed = (c32.r << 24) | (c32.g << 16) | (c32.b << 8) | c32.a;
-            ClusterKey key = new ClusterKey(block, kind, coats, packed);
-            if (!tmpGroups.TryGetValue(key, out ClusterGroup g))
-            {
-                g = new ClusterGroup { GlowColor = glow };
-                tmpGroups[key] = g;
-            }
-            g.Cells.Add(c);
-        }
-
-        private static IntVec3 AnchorCell(List<IntVec3> cells)
-        {
-            if (cells.Count == 1) return cells[0];
-            float sx = 0f, sz = 0f;
-            for (int i = 0; i < cells.Count; i++)
-            {
-                sx += cells[i].x;
-                sz += cells[i].z;
-            }
-            sx /= cells.Count;
-            sz /= cells.Count;
-            IntVec3 best = cells[0];
-            float bestD = float.MaxValue;
-            for (int i = 0; i < cells.Count; i++)
-            {
-                float d = (cells[i].x - sx) * (cells[i].x - sx) + (cells[i].z - sz) * (cells[i].z - sz);
-                if (d < bestD)
-                {
-                    bestD = d;
-                    best = cells[i];
-                }
-            }
-            return best;
+            return DeepfireLightBook<Thing, Color>.Clusterable(LuminousPigmentSettings.clusterBlock,
+                t.def.category == ThingCategory.Building, t.def.size.x, t.def.size.z);
         }
 
         private int CountLights(byte kind)
@@ -364,68 +190,38 @@ namespace RimMandrake.LuminousPigment
             int n = 0;
             foreach (object key in entries.Keys)
             {
-                if (key is ClusterKey k && k.Kind == kind) n++;
+                if (key is DeepfireClusterKey k && k.Kind == kind) n++;
             }
             return n;
         }
 
         private void AfterFloorChanged(IntVec3 c)
         {
-            RebuildBlockOf(c);
             // Room.GetStat caches until statsAndRoleDirty; a coat change is
             // not a terrain change, so the room must be told (RimSage:
             // Verse/Room.Notify_TerrainChanged sets statsAndRoleDirty).
             c.GetRoom(map)?.Notify_TerrainChanged();
         }
 
-        private void EnsureGrid()
-        {
-            int n = map.cellIndices.NumGridCells;
-            if (floorCoats == null || floorCoats.Length != n)
-            {
-                floorCoats = new byte[n];
-                coatedFloorCells = 0;
-            }
-        }
-
         private void ClearClusterState()
         {
-            clusteredThings.Clear();
-            blockThings.Clear();
-            blockKeys.Clear();
+            bookField?.ClearClusterState();
         }
 
         // DEEPFIRE_MOD_SETTINGS_1, spec §7 clusterBlock: block indices are
-        // keyed off the block SIZE (BlocksX/BlockIndex), so a live setting
-        // change leaves every existing key stale. Rebuild every cluster from
-        // scratch -- the same "floor grid + every coated Thing" FinalizeInit
-        // already does on map load -- instead of trying to migrate the old
-        // block bookkeeping in place. Called from LuminousPigmentMod.
-        // ApplySettings() for every loaded map.
+        // keyed off the block SIZE, so a live setting change leaves every
+        // existing key stale. Rebuild every cluster from scratch -- the same
+        // "floor grid + every coated Thing" FinalizeInit already does on map
+        // load. Every coated building is re-routed (clustered at block size
+        // above 1, a proxy of its own at 1) so none ends dark or double-lit.
+        // Called from LuminousPigmentMod.ApplySettings() for every loaded map.
         public void RebuildAllClustering()
         {
-            var staleKeys = new List<object>();
-            foreach (KeyValuePair<object, LightEntry> kv in entries)
+            Book.RebuildAll(() =>
             {
-                if (kv.Key is ClusterKey) staleKeys.Add(kv.Key);
-            }
-            for (int i = 0; i < staleKeys.Count; i++) RemoveLight(staleKeys[i]);
-            ClearClusterState();
-
-            if (floorCoats != null && coatedFloorCells > 0)
-            {
-                var doneBlocks = new HashSet<int>();
-                for (int i = 0; i < floorCoats.Length; i++)
-                {
-                    if (floorCoats[i] == 0) continue;
-                    IntVec3 c = map.cellIndices.IndexToCell(i);
-                    int b = BlockIndex(c);
-                    if (doneBlocks.Add(b)) RebuildBlock(b);
-                }
-            }
-
-            RegisterCoatedIn(map.listerBuildings.allBuildingsColonist);
-            RegisterCoatedIn(map.listerBuildings.allBuildingsNonColonist);
+                RegisterCoatedIn(map.listerBuildings.allBuildingsColonist);
+                RegisterCoatedIn(map.listerBuildings.allBuildingsNonColonist);
+            });
         }
 
         private void RegisterCoatedIn(List<Building> buildings)
@@ -434,10 +230,9 @@ namespace RimMandrake.LuminousPigment
             for (int i = 0; i < buildings.Count; i++)
             {
                 Thing t = buildings[i];
-                if (!IsClusterable(t)) continue;
                 CompDeepfire comp = t.TryGetComp<CompDeepfire>();
                 if (comp == null || comp.coats <= 0) continue;
-                RegisterClusteredThing(t);
+                comp.RefreshLight();
             }
         }
 
@@ -446,35 +241,20 @@ namespace RimMandrake.LuminousPigment
         public override void ExposeData()
         {
             base.ExposeData();
-            DataExposeUtility.LookByteArray(ref floorCoats, "rmDeepfireFloorCoats");
+            byte[] grid = bookField?.FloorGrid;
+            DataExposeUtility.LookByteArray(ref grid, "rmDeepfireFloorCoats");
+            if (Scribe.mode == LoadSaveMode.LoadingVars && grid != null) Book.FloorGrid = grid;
         }
 
         public override void FinalizeInit()
         {
             base.FinalizeInit();
-            if (floorCoats != null && floorCoats.Length != map.cellIndices.NumGridCells)
+            if (bookField != null && bookField.FloorGrid != null && bookField.FloorGrid.Length != map.cellIndices.NumGridCells)
             {
                 Log.Warning("[LuminousPigment] Deepfire floor grid size does not match the map; coats dropped.");
-                floorCoats = null;
             }
-            EnsureGrid();
-
-            coatedFloorCells = 0;
-            var dirtyBlocks = new HashSet<int>();
-            for (int i = 0; i < floorCoats.Length; i++)
-            {
-                if (floorCoats[i] == 0) continue;
-                IntVec3 c = map.cellIndices.IndexToCell(i);
-                if (!IsCoatableFloor(map, c))
-                {
-                    floorCoats[i] = 0; // floor vanished while we were not listening
-                    continue;
-                }
-                if (floorCoats[i] > CompDeepfire.MaxCoats) floorCoats[i] = CompDeepfire.MaxCoats;
-                coatedFloorCells++;
-                dirtyBlocks.Add(BlockIndex(c));
-            }
-            foreach (int b in dirtyBlocks) RebuildBlock(b);
+            // floor that vanished while we were not listening loses its coats; the ceiling clamps a hand-edited grid.
+            Book.Finalize((x, z) => IsCoatableFloor(map, new IntVec3(x, 0, z)), CompDeepfire.MaxCoats);
         }
     }
 }

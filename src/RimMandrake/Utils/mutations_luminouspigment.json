@@ -1,0 +1,170 @@
+[
+ {
+  "name": "RebuildAll forgets to re-register the buildings (the pre-fix clusterBlock 1<->3 defect: 1x1 coated buildings go dark)",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "            registerThings();",
+  "new": "            "
+ },
+ {
+  "name": "clustering a thing leaves its own proxy lit (double light)",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "if (own.Remove(t)) removeOwn(t);\n                long cell = Pack(x, z);",
+  "new": "long cell = Pack(x, z);"
+ },
+ {
+  "name": "anchor is always the first cell",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "if (xs.Count == 1) return 0;",
+  "new": "return 0;"
+ },
+ {
+  "name": "cluster radius bonus applies to a single cell",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "if (g.Xs.Count > 1) radius += radiusBonus;",
+  "new": "if (g.Xs.Count >= 1) radius += radiusBonus;"
+ },
+ {
+  "name": "BlocksX rounds down",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "return (mapX + size - 1) / size;",
+  "new": "return mapX / size;"
+ },
+ {
+  "name": "clearing a floor coat does not decrement the coated count",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "            coated--;\n",
+  "new": "\n"
+ },
+ {
+  "name": "first-coat flag on the wrong coat",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "firstCoat = floor[i] == 0;",
+  "new": "firstCoat = floor[i] == 1;"
+ },
+ {
+  "name": "load does not clamp an over-ceiling grid",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "if (floor[i] > ceiling) floor[i] = (byte)ceiling;",
+  "new": ""
+ },
+ {
+  "name": "load keeps coats on a floor that vanished",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "if (!coatable(x, z)) { floor[i] = 0; continue; }",
+  "new": "if (!coatable(x, z)) { continue; }"
+ },
+ {
+  "name": "deregister leaves the own proxy",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "if (own.Remove(t)) { removeOwn(t); was = true; }",
+  "new": "own.Remove(t);"
+ },
+ {
+  "name": "moving a thing does not relight its old block",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireLightBook.cs",
+  "old": "RebuildBlock(BlockOf(ox, oz));",
+  "new": ""
+ },
+ {
+  "name": "coat cap takes the max",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "return Math.Min(ceiling, setting); }",
+  "new": "return Math.Max(ceiling, setting); }"
+ },
+ {
+  "name": "first-coat latch ignores bonusApplied",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "return coats == 0 && !bonusApplied;",
+  "new": "return coats == 0;"
+ },
+ {
+  "name": "GoodLevel prefers the comp even with zero coats",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "if (hasComp && coats > 0) return coats;",
+  "new": "if (hasComp) return coats;"
+ },
+ {
+  "name": "RoomScore divides walls and floors separately",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "(wallCells + floorCells) / perPoint",
+  "new": "wallCells / perPoint + floorCells / perPoint"
+ },
+ {
+  "name": "ScoreStage third bucket starts at 6",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "(score >= 5 ? 2 :",
+  "new": "(score >= 6 ? 2 :"
+ },
+ {
+  "name": "mat survives exactly the chill temperature",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "if (ambient < chillKill) return MatFate.DiedChill;",
+  "new": "if (ambient <= chillKill) return MatFate.DiedChill;"
+ },
+ {
+  "name": "anti-pinning starts one event late",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "if (priorEvents < after) return amount;",
+  "new": "if (priorEvents <= after) return amount;"
+ },
+ {
+  "name": "Ishko's own statue is a plus",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "g == ishko ? -statue : statue",
+  "new": "statue"
+ },
+ {
+  "name": "dodge inversion can raise the raw value",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "return Math.Min(current, x);\n                }\n            }\n            return current;",
+  "new": "return x;\n                }\n            }\n            return current;"
+ },
+ {
+  "name": "worn blend weights by 1, not by coats",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "weight += coats[i];",
+  "new": "weight += 1;"
+ },
+ {
+  "name": "dark test treats a radius under 1 as 0.5",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireRules.cs",
+  "old": "float t = 1f - 1f / Math.Max(ownRadius, 1f);",
+  "new": "float t = 1f - 1f / Math.Max(ownRadius, 0.5f);"
+ },
+ {
+  "name": "steer curve starts at 40%",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireCuisine.cs",
+  "old": "float c = 0.5f + 0.5f * t;",
+  "new": "float c = 0.4f + 0.6f * t;"
+ },
+ {
+  "name": "roll boundary falls to the next family",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireCuisine.cs",
+  "old": "if (r <= cum) return i;",
+  "new": "if (r < cum) return i;"
+ },
+ {
+  "name": "cook exactly at the minimum cannot steer",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireCuisine.cs",
+  "old": "if (cookSkill >= min && chance(SteerChance(min, cookSkill)))",
+  "new": "if (cookSkill > min && chance(SteerChance(min, cookSkill)))"
+ },
+ {
+  "name": "family cap is one too generous",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireCuisine.cs",
+  "old": "return distinctFamilies >= cap ? FamilyOutcome.CapBlocked",
+  "new": "return distinctFamilies > cap ? FamilyOutcome.CapBlocked"
+ },
+ {
+  "name": "vermilion uses the plain steer minimum",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireCuisine.cs",
+  "old": "int min = intendedIdx == vermilionIdx ? vermilionMin : steerMin;",
+  "new": "int min = steerMin;"
+ },
+ {
+  "name": "plain roll can land the vermilion",
+  "file": "src/RimMandrake/LuminousPigment/Source/Kernel/RM_DeepfireCuisine.cs",
+  "old": "if (!Enabled(enabled, i) || i == excludeIdx || i == vermilionIdx || weights[i] <= 0f) continue;\n                total += weights[i];",
+  "new": "if (!Enabled(enabled, i) || i == excludeIdx || weights[i] <= 0f) continue;\n                total += weights[i];"
+ }
+]

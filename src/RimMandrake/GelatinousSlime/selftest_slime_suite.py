@@ -92,6 +92,10 @@ def main():
         for c in comps:
             if got.get(c, "MISSING").startswith("PASS"):
                 bad.append("fault %s did not turn %s red (%s)" % (fault, c, got.get(c, "MISSING")))
+    # defs/patches vs C# (Approach B lint; the kernel fuzz is selftest_gelatinousslime_fuzz.py, which needs dotnet.exe)
+    lint = subprocess.run([sys.executable, os.path.join(ROOT, "src", "RimMandrake", "Utils", "lint_gelatinousslime_defs.py"), "--quiet"], capture_output=True, text=True)
+    if lint.returncode != 0 or " 0 ERROR" not in lint.stdout:
+        bad.append("def lint (lint_gelatinousslime_defs.py) has errors: " + (lint.stdout + lint.stderr)[-400:])
     print("selftest_slime_suite: %d components clean, %d faults, %d problem(s)" % (n, len(CASES), len(bad)))
     for b in bad:
         print("  FAIL " + b)

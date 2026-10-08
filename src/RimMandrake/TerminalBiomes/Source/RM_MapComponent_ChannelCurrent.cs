@@ -114,22 +114,17 @@ namespace RimMandrake.TerminalBiomes
     public class RM_MapComponent_ChannelCurrent : MapComponent
     {
         // ── Authored grids ──────────────────────────────────────────────
-        private byte[] flowDir;
-        private byte[] lane;
-        private byte[] bankBand;
         private List<IntVec3> sinkCells = new List<IntVec3>();
 
         // ── Live state ──────────────────────────────────────────────────
-        private bool surgeActive;
+        private ChannelField field;
         private List<Pawn> warnedPawns = new List<Pawn>();
 
         // Not Scribed — rebuilt from the grid/terrain scan (§1.5).
-        private readonly Dictionary<Thing, int> nextMoveTick = new Dictionary<Thing, int>();
+        private readonly ChannelBook<Thing> book = new ChannelBook<Thing>();
 
         private const int ScanIntervalTicks = 250; // MudSwallow's own registration cadence
         private const int ProcessIntervalTicks = 15; // fine enough to resolve a 45-tick CENTRE cadence
-        private const int CentreCadenceTicks = 45; // §1.3 default: one cell per ~45 ticks in CENTRE
-        private const int MarginCadenceTicks = 90; // §1.3 default: ~90 in MARGIN
         private const float SinkArrivalSearchRadius = 4f;
 
         private int scanCooldown;
@@ -159,147 +154,82 @@ namespace RimMandrake.TerminalBiomes
             undersurgeRollCooldown = Rand.Range(1, UndersurgeRollIntervalTicks);
         }
 
-        private void EnsureGrids()
+        private ChannelField Field
         {
-            int n = map.cellIndices.NumGridCells;
-            if (flowDir == null || flowDir.Length != n)
+            get
             {
-                flowDir = new byte[n];
-            }
-            if (lane == null || lane.Length != n)
-            {
-                lane = new byte[n];
-            }
-            if (bankBand == null || bankBand.Length != n)
-            {
-                bankBand = new byte[n];
+                if (field == null) field = new ChannelField(map.Size.x, map.Size.z);
+                return field;
             }
         }
 
-        // ════════════════════════════════════════════════════════════════
-        // Genstep authoring API — RM_GenStep_TwilightChannels calls these
-        // once, at map gen, and never again.
-        // ════════════════════════════════════════════════════════════════
+        private void EnsureGrids()
+        {
+            ChannelField f = Field;
+        }
+
+
         public void SetFlow(IntVec3 c, RM_FlowDir dir, RM_ChannelLane laneClass)
         {
-            EnsureGrids();
-            if (!c.InBounds(map))
-            {
-                return;
-            }
-            int idx = map.cellIndices.CellToIndex(c);
-            flowDir[idx] = (byte)dir;
-            lane[idx] = (byte)laneClass;
+            Field.SetFlow(c.x, c.z, (int)dir, (int)laneClass);
         }
+
 
         public void SetBankBand(IntVec3 c, RM_FlowDir towardChannel, int band)
         {
-            EnsureGrids();
-            if (!c.InBounds(map))
-            {
-                return;
-            }
-            int idx = map.cellIndices.CellToIndex(c);
-            if (lane[idx] == 0)
-            {
-                // Never overwrite a real channel cell's own flow with the
-                // band's "toward the channel" direction.
-                flowDir[idx] = (byte)towardChannel;
-            }
-            bankBand[idx] = (byte)Mathf.Clamp(band, 0, 2);
+            Field.SetBankBand(c.x, c.z, (int)towardChannel, band);
         }
+
 
         public void SetSinkCells(List<IntVec3> cells)
         {
             sinkCells = new List<IntVec3>(cells);
         }
 
-        // ════════════════════════════════════════════════════════════════
-        // Queries
-        // ════════════════════════════════════════════════════════════════
         public bool HasCurrent(IntVec3 c)
         {
-            if (lane == null || flowDir == null || bankBand == null || !c.InBounds(map))
-            {
-                return false;
-            }
-            int idx = map.cellIndices.CellToIndex(c);
-            if (lane[idx] != 0)
-            {
-                return true;
-            }
-            // §2.2 width-out: during the undersurge, the widened band reads
-            // as live current with no second grid — see class header.
-            return surgeActive && bankBand[idx] > 0 && flowDir[idx] != 0;
+            return field != null && field.HasCurrent(c.x, c.z);
         }
+
 
         public RM_ChannelLane LaneAt(IntVec3 c)
         {
-            if (lane == null || !c.InBounds(map))
-            {
-                return RM_ChannelLane.None;
-            }
-            int idx = map.cellIndices.CellToIndex(c);
-            RM_ChannelLane l = (RM_ChannelLane)lane[idx];
-            if (l != RM_ChannelLane.None)
-            {
-                return l;
-            }
-            if (surgeActive && bankBand[idx] > 0)
-            {
-                return RM_ChannelLane.Margin;
-            }
-            return RM_ChannelLane.None;
+            return field == null ? RM_ChannelLane.None : (RM_ChannelLane)field.LaneAt(c.x, c.z);
         }
+
 
         public RM_FlowDir FlowAt(IntVec3 c)
         {
-            if (flowDir == null || !c.InBounds(map))
-            {
-                return RM_FlowDir.None;
-            }
-            return (RM_FlowDir)flowDir[map.cellIndices.CellToIndex(c)];
+            return field == null ? RM_FlowDir.None : (RM_FlowDir)field.FlowAt(c.x, c.z);
         }
+
 
         public int BankBandAt(IntVec3 c)
         {
-            if (bankBand == null || !c.InBounds(map))
-            {
-                return 0;
-            }
-            return bankBand[map.cellIndices.CellToIndex(c)];
+            return field == null ? 0 : field.BankBandAt(c.x, c.z);
         }
 
-        public bool SurgeActive => surgeActive;
+
+        public bool SurgeActive => field != null && field.Surge;
 
         public static IntVec3 Offset(RM_FlowDir dir)
         {
-            switch (dir)
-            {
-                case RM_FlowDir.North: return new IntVec3(0, 0, 1);
-                case RM_FlowDir.NorthEast: return new IntVec3(1, 0, 1);
-                case RM_FlowDir.East: return new IntVec3(1, 0, 0);
-                case RM_FlowDir.SouthEast: return new IntVec3(1, 0, -1);
-                case RM_FlowDir.South: return new IntVec3(0, 0, -1);
-                case RM_FlowDir.SouthWest: return new IntVec3(-1, 0, -1);
-                case RM_FlowDir.West: return new IntVec3(-1, 0, 0);
-                case RM_FlowDir.NorthWest: return new IntVec3(-1, 0, 1);
-                default: return IntVec3.Invalid;
-            }
+            return RM_ChannelKernel.Offset((int)dir, out int dx, out int dz) ? new IntVec3(dx, 0, dz) : IntVec3.Invalid;
         }
+
 
         // ════════════════════════════════════════════════════════════════
         // Undersurge — called by RM_GameCondition_Undersurge's Init/End.
         // ════════════════════════════════════════════════════════════════
         public void BeginSurge()
         {
-            surgeActive = true;
+            Field.Surge = true;
             GrabPawnsOnWidenedBand();
         }
 
         public void EndSurge()
         {
-            surgeActive = false;
+            Field.Surge = false;
         }
 
         // §2 point 3, "the grab": a pawn standing on the widened strip when
@@ -309,7 +239,7 @@ namespace RimMandrake.TerminalBiomes
         // moment the spec describes rather than a quiet drift-in.
         private void GrabPawnsOnWidenedBand()
         {
-            if (bankBand == null)
+            if (field == null)
             {
                 return;
             }
@@ -322,23 +252,10 @@ namespace RimMandrake.TerminalBiomes
                     continue;
                 }
                 IntVec3 pos = p.Position;
-                if (BankBandAt(pos) <= 0)
+                // "two cells toward the bed", or one if two is blocked
+                if (RM_ChannelKernel.GrabTarget(field, pos.x, pos.z, (x, z) => new IntVec3(x, 0, z).Standable(map), out int tx, out int tz))
                 {
-                    continue;
-                }
-                RM_FlowDir dir = FlowAt(pos);
-                IntVec3 step = Offset(dir);
-                if (step == IntVec3.Invalid)
-                {
-                    continue;
-                }
-                IntVec3 target = pos + step + step; // "two cells toward the bed"
-                if (!target.InBounds(map) || !target.Standable(map))
-                {
-                    target = pos + step;
-                }
-                if (target.InBounds(map) && target.Standable(map))
-                {
+                    IntVec3 target = new IntVec3(tx, 0, tz);
                     Move(p, target);
                     if (HasCurrent(target))
                     {
@@ -408,36 +325,22 @@ namespace RimMandrake.TerminalBiomes
                     continue;
                 }
                 stillPresent.Add(t);
-                if (!nextMoveTick.ContainsKey(t))
+                if (!book.Contains(t))
                 {
                     RegisterOccupant(t, pos);
                 }
             }
 
-            if (nextMoveTick.Count == 0)
+            if (book.Count == 0)
             {
                 return;
             }
-            List<Thing> stale = null;
-            foreach (KeyValuePair<Thing, int> kv in nextMoveTick)
-            {
-                if (!stillPresent.Contains(kv.Key))
-                {
-                    (stale ?? (stale = new List<Thing>())).Add(kv.Key);
-                }
-            }
-            if (stale != null)
-            {
-                for (int i = 0; i < stale.Count; i++)
-                {
-                    nextMoveTick.Remove(stale[i]);
-                }
-            }
+            book.Prune(stillPresent);
         }
 
         private void RegisterOccupant(Thing t, IntVec3 pos)
         {
-            nextMoveTick[t] = Find.TickManager.TicksGame + CadenceFor(t, pos);
+            book.Register(t, Find.TickManager.TicksGame, CadenceFor(t, pos));
             if (t is Pawn p)
             {
                 MaybeWarnFirstEntry(p);
@@ -446,21 +349,21 @@ namespace RimMandrake.TerminalBiomes
 
         private void ProcessOccupants()
         {
-            if (nextMoveTick.Count == 0)
+            if (book.Count == 0)
             {
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            List<Thing> keys = new List<Thing>(nextMoveTick.Keys);
+            List<Thing> keys = book.Keys();
             for (int i = 0; i < keys.Count; i++)
             {
                 Thing t = keys[i];
                 if (t == null || t.Destroyed || !t.Spawned)
                 {
-                    nextMoveTick.Remove(t);
+                    book.Remove(t);
                     continue;
                 }
-                if (!nextMoveTick.TryGetValue(t, out int due) || now < due)
+                if (!book.TryGetDue(t, out int due) || now < due)
                 {
                     continue;
                 }
@@ -468,47 +371,33 @@ namespace RimMandrake.TerminalBiomes
             }
         }
 
+
         private void StepOne(Thing t)
         {
             IntVec3 pos = t.Position;
-            if (!HasCurrent(pos))
+            ChannelStep step = RM_ChannelKernel.Step(Field, pos.x, pos.z, (x, z) => new IntVec3(x, 0, z).Standable(map),
+                (x, z) => IsSinkCell(new IntVec3(x, 0, z)), out int nx, out int nz);
+            if (step == ChannelStep.Stop)
             {
-                nextMoveTick.Remove(t);
+                book.Remove(t);
                 return;
             }
-
-            RM_FlowDir dir = FlowAt(pos);
-            IntVec3 step = Offset(dir);
-            if (step == IntVec3.Invalid)
-            {
-                nextMoveTick.Remove(t);
-                return;
-            }
-
-            IntVec3 next = pos + step;
-            if (!next.InBounds(map) || !next.Standable(map))
-            {
-                nextMoveTick.Remove(t);
-                return;
-            }
-
-            if (IsSinkCell(next))
+            IntVec3 next = new IntVec3(nx, 0, nz);
+            if (step == ChannelStep.Sink)
             {
                 ArriveAtSink(t);
-                nextMoveTick.Remove(t);
+                book.Remove(t);
                 return;
             }
-
             Move(t, next);
-
             if (IsArrestedCell(next))
             {
-                nextMoveTick.Remove(t); // Q2 — the weir catches it; stop here
+                book.Remove(t); // Q2 — the weir catches it; stop here
                 return;
             }
-
-            nextMoveTick[t] = Find.TickManager.TicksGame + CadenceFor(t, next);
+            book.Register(t, Find.TickManager.TicksGame, CadenceFor(t, next));
         }
+
 
         private void Move(Thing t, IntVec3 next)
         {
@@ -529,38 +418,12 @@ namespace RimMandrake.TerminalBiomes
             }
         }
 
-        // §1.3: MARGIN pushes at half cadence and a pawn there may still
-        // path perpendicular to the flow; CENTRE is inescapable. Items
-        // drift at half the pawn rate. The harness caps carried speed at
-        // MARGIN cadence even in the centre. The undersurge doubles CENTRE
-        // cadence and promotes MARGIN to CENTRE behaviour (handled by
-        // LaneAt already reading Margin-as-current-Centre nowhere — see
-        // note below: the promotion is cadence-only, lane classification
-        // itself is untouched).
         private int CadenceFor(Thing t, IntVec3 cell)
         {
-            RM_ChannelLane l = LaneAt(cell);
             bool harnessCapped = t is Pawn hp && RM_Apparel_FloatHarness.IsWorn(hp);
-            bool centreBehaviour = l == RM_ChannelLane.Centre && !harnessCapped;
-            // §2.1 "MARGIN cells promote to CENTRE behaviour" during a surge.
-            if (surgeActive && l == RM_ChannelLane.Margin && !harnessCapped)
-            {
-                centreBehaviour = true;
-            }
-
-            int baseCadence = centreBehaviour ? CentreCadenceTicks : MarginCadenceTicks;
-            if (surgeActive && centreBehaviour)
-            {
-                baseCadence = Mathf.Max(1, baseCadence / 2); // §2.1 "CENTRE cadence doubles"
-            }
-            if (!(t is Pawn))
-            {
-                baseCadence *= 2; // §1.3 "items drift at half the pawn rate"
-            }
-
-            float strength = Mathf.Max(0.05f, RM_TerminalBiomesSettings.channelCurrentStrength);
-            return Mathf.Max(1, Mathf.RoundToInt(baseCadence / strength));
+            return RM_ChannelKernel.CadenceFor((int)LaneAt(cell), SurgeActive, harnessCapped, t is Pawn, RM_TerminalBiomesSettings.channelCurrentStrength);
         }
+
 
         // ════════════════════════════════════════════════════════════════
         // Exemptions and arrest
@@ -705,7 +568,7 @@ namespace RimMandrake.TerminalBiomes
         // ════════════════════════════════════════════════════════════════
         private void TickUndersurgeRoll()
         {
-            if (surgeActive)
+            if (SurgeActive)
             {
                 return; // one at a time
             }
@@ -744,8 +607,9 @@ namespace RimMandrake.TerminalBiomes
                 return anyChannelCellCached.Value;
             }
             bool found = false;
-            if (lane != null)
+            if (field != null)
             {
+                byte[] lane = field.Lane;
                 for (int i = 0; i < lane.Length; i++)
                 {
                     if (lane[i] != 0)
@@ -781,11 +645,15 @@ namespace RimMandrake.TerminalBiomes
         public override void ExposeData()
         {
             base.ExposeData();
-            DataExposeUtility.LookByteArray(ref flowDir, "channelFlowDir");
-            DataExposeUtility.LookByteArray(ref lane, "channelLane");
-            DataExposeUtility.LookByteArray(ref bankBand, "channelBankBand");
+            byte[] flowGrid = field?.Flow, laneGrid = field?.Lane, bandGrid = field?.Band;
+            DataExposeUtility.LookByteArray(ref flowGrid, "channelFlowDir");
+            DataExposeUtility.LookByteArray(ref laneGrid, "channelLane");
+            DataExposeUtility.LookByteArray(ref bandGrid, "channelBankBand");
+            if (Scribe.mode == LoadSaveMode.LoadingVars) Field.Adopt(flowGrid, laneGrid, bandGrid);
             Scribe_Collections.Look(ref sinkCells, "channelSinkCells", LookMode.Value);
-            Scribe_Values.Look(ref surgeActive, "channelSurgeActive", false);
+            bool surge = SurgeActive;
+            Scribe_Values.Look(ref surge, "channelSurgeActive", false);
+            if (Scribe.mode == LoadSaveMode.LoadingVars) Field.Surge = surge;
             Scribe_Collections.Look(ref warnedPawns, "channelWarnedPawns", LookMode.Reference);
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
@@ -793,19 +661,7 @@ namespace RimMandrake.TerminalBiomes
                 // §1.5: a save from before this mod (or a map-size mismatch)
                 // regenerates nothing — the current is simply off on that
                 // map, never a null-ref, never a re-roll of the bed.
-                int n = map.cellIndices.NumGridCells;
-                if (flowDir == null || flowDir.Length != n)
-                {
-                    flowDir = new byte[n];
-                }
-                if (lane == null || lane.Length != n)
-                {
-                    lane = new byte[n];
-                }
-                if (bankBand == null || bankBand.Length != n)
-                {
-                    bankBand = new byte[n];
-                }
+                EnsureGrids();
                 if (sinkCells == null)
                 {
                     sinkCells = new List<IntVec3>();

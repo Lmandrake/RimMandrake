@@ -55,26 +55,17 @@ namespace RimMandrake.GelatinousSlime
         // Vanilla's own severity cadence: HediffComp_SeverityModifierBase
         // checks every 200 ticks and scales by 200/60000. Matching it exactly
         // keeps this hediff calibrated against every vanilla one.
-        private const int CheckIntervalTicks = 200;
-        private const float PerDayToPerCheck = 200f / 60000f;
 
         // RULED: ~7 days from first touch to dissolution on the biome.
-        private const float GrowthPerDayOnSlime = 1f / 7f;
 
         // [INVENTED, spec §5d] The injected clock: "the concentrated slime
         // converts in ~3 days, not 7". Set by the injectable, saved with the
         // hediff, and it does not decay away — dry country still cures it.
-        private const float GrowthPerDayFastClock = 1f / 3f;
 
         // [INVENTED, spec §3] Stage 1 self-reverses off slime terrain; stages
         // 2-3 hold in ordinary country and need dry land or the antidote.
-        private const float SelfRevertPerDay = 0.5f;
-        private const float SelfRevertCeiling = 0.2f;
 
         // Stage thresholds, mirroring the HediffDef's own <stages>.
-        private const float SlickedAt = 0.2f;
-        private const float HalfAbsorbedAt = 0.5f;
-        private const float ReturningAt = 0.9f;
 
         // Saved state.
         private bool fastClock;
@@ -109,7 +100,7 @@ namespace RimMandrake.GelatinousSlime
             {
                 return;
             }
-            if (!pawn.IsHashIntervalTick(CheckIntervalTicks, delta))
+            if (!pawn.IsHashIntervalTick(RM_SlimeLadder.CheckIntervalTicks, delta))
             {
                 return;
             }
@@ -118,19 +109,22 @@ namespace RimMandrake.GelatinousSlime
             {
                 // Law 2, made positive. Done before anything else so it still
                 // happens on the tick the pawn dissolves.
-                if (parent.Severity >= HalfAbsorbedAt)
+                bool announceable = pawn.RaceProps.Humanlike && pawn.Faction == Faction.OfPlayer;
+                RM_SlimeLadder.Check(parent.Severity, SeverityChangePerDay(pawn), announceable, ref highestStageAnnounced,
+                    out bool endHostile, out bool dissolve, out float adjustment, out int announce);
+                if (endHostile)
                 {
                     EndAnyHostileMentalState(pawn);
                 }
 
-                if (parent.Severity >= 1f)
+                if (dissolve)
                 {
                     Dissolve(pawn);
                     return;
                 }
 
-                severityAdjustment += SeverityChangePerDay(pawn) * PerDayToPerCheck;
-                AnnounceIfStageRose(pawn);
+                severityAdjustment += adjustment;
+                if (announce >= 0) Announce(pawn, announce);
             }
             catch (Exception e)
             {
@@ -153,42 +147,12 @@ namespace RimMandrake.GelatinousSlime
 
             // §4 — dry country and brine leach the film, wherever the pawn is
             // and whatever clock it is on. This wins over everything.
-            if (biome != null)
-            {
-                DryingBiomeExtension drying = biome.GetModExtension<DryingBiomeExtension>();
-                if (drying != null)
-                {
-                    return -Mathf.Abs(drying.decayPerDay);
-                }
-            }
+            DryingBiomeExtension drying = biome != null ? biome.GetModExtension<DryingBiomeExtension>() : null;
 
-            // Settings: slimification off = nothing grows (wipe-off below still runs).
+            // Settings: slimification off = nothing grows (wipe-off still runs).
             // Clock length scales the shipped 7-day clock; 7 days = factor 1.
-            bool grows = SlimeSettings.slimificationEnabled;
-            float clock = 7f / Mathf.Max(0.5f, SlimeSettings.slimificationClockDays);
-
-            // On the body: it is reading you.
-            if (SlimeUtility.IsBeingRead(pawn))
-            {
-                if (!grows) return -SelfRevertPerDay;
-                return (fastClock ? GrowthPerDayFastClock : GrowthPerDayOnSlime) * clock;
-            }
-
-            // The injected clock runs anywhere — the concentrated dose is
-            // already inside the patient and does not need the ground. That
-            // is the whole point of §5d's race: carrying the injectable home
-            // to your people does not buy the patient time, only witnesses.
-            if (fastClock)
-            {
-                return grows ? GrowthPerDayFastClock * clock : -SelfRevertPerDay;
-            }
-
-            // Ordinary country, no dose: stage 1 wipes off, stages 2-3 hold.
-            if (parent.Severity < SelfRevertCeiling)
-            {
-                return -SelfRevertPerDay;
-            }
-            return 0f;
+            return RM_SlimeLadder.RatePerDay(drying != null, drying != null ? drying.decayPerDay : 0f, SlimeSettings.slimificationEnabled,
+                SlimeSettings.slimificationClockDays, SlimeUtility.IsBeingRead(pawn), fastClock, parent.Severity);
         }
 
         // ────────────────────────────────────────────────────────────────
@@ -229,7 +193,7 @@ namespace RimMandrake.GelatinousSlime
                 }
                 if (SlimeDefs.RawSlime != null)
                 {
-                    int count = Mathf.Clamp(Mathf.RoundToInt(bodySize * 25f), 5, 120);
+                    int count = RM_SlimeLadder.DissolveSlime(bodySize);
                     Thing slime = ThingMaker.MakeThing(SlimeDefs.RawSlime);
                     slime.stackCount = count;
                     GenPlace.TryPlaceThing(slime, pos, map, ThingPlaceMode.Near);
@@ -288,20 +252,8 @@ namespace RimMandrake.GelatinousSlime
         // highestStageAnnounced is saved, so nothing re-announces on reload or
         // when a severity wobbles across a boundary.
         // ────────────────────────────────────────────────────────────────
-        private void AnnounceIfStageRose(Pawn pawn)
+        private void Announce(Pawn pawn, int stage)
         {
-            if (!pawn.RaceProps.Humanlike || pawn.Faction != Faction.OfPlayer)
-            {
-                return;
-            }
-
-            int stage = StageIndex(parent.Severity);
-            if (stage <= highestStageAnnounced)
-            {
-                return;
-            }
-            highestStageAnnounced = stage;
-
             switch (stage)
             {
                 case 0:
@@ -342,10 +294,7 @@ namespace RimMandrake.GelatinousSlime
 
         internal static int StageIndex(float severity)
         {
-            if (severity >= ReturningAt) return 3;
-            if (severity >= HalfAbsorbedAt) return 2;
-            if (severity >= SlickedAt) return 1;
-            return 0;
+            return RM_SlimeLadder.StageIndex(severity);
         }
     }
 
@@ -406,25 +355,15 @@ namespace RimMandrake.GelatinousSlime
         {
             if (pawn == null || pawn.RaceProps == null)
             {
-                return true;
+                return RM_SlimeLadder.Resistant(true, false, false, false);
             }
-            if (!pawn.RaceProps.IsFlesh)
-            {
-                return true;
-            }
-            if (pawn.def.HasModExtension<SlimeResistantExtension>())
-            {
-                return true;
-            }
+            bool gene = false;
             if (ModsConfig.BiotechActive && pawn.genes != null)
             {
                 GeneDef resist = DefDatabase<GeneDef>.GetNamedSilentFail("RM_Gene_SlimeResistance");
-                if (resist != null && pawn.genes.HasActiveGene(resist))
-                {
-                    return true;
-                }
+                gene = resist != null && pawn.genes.HasActiveGene(resist);
             }
-            return false;
+            return RM_SlimeLadder.Resistant(false, pawn.RaceProps.IsFlesh, pawn.def.HasModExtension<SlimeResistantExtension>(), gene);
         }
 
         public static HediffComp_Slimification GetSlimification(Pawn pawn)

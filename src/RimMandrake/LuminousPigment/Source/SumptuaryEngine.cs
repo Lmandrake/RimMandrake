@@ -51,7 +51,7 @@ namespace RimMandrake.LuminousPigment
             {
                 score += GoodLevel(pawn.equipment.Primary);
             }
-            return UnityEngine.Mathf.Min(score, LuminousPigmentSettings.displayCap);
+            return RM_DeepfireRules.DisplayScore(score, LuminousPigmentSettings.displayCap);
         }
 
         // Deepfire by comp first (spec §4.1), then the generic extension.
@@ -59,9 +59,8 @@ namespace RimMandrake.LuminousPigment
         {
             if (t == null) return 0;
             CompDeepfire comp = t.TryGetComp<CompDeepfire>();
-            if (comp != null && comp.coats > 0) return comp.coats;
             StatusGoodExtension ext = t.def.GetModExtension<StatusGoodExtension>();
-            return ext?.statusLevel ?? 0;
+            return RM_DeepfireRules.GoodLevel(comp != null, comp?.coats ?? 0, ext != null, ext?.statusLevel ?? 0);
         }
 
         // Spec §4.1: "A room's display score = Σ coats of Deepfire-coated
@@ -86,7 +85,7 @@ namespace RimMandrake.LuminousPigment
             }
             MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(room.Map);
             int floorCells = mc == null || mc.CoatedFloorCellCount == 0 ? 0 : mc.CountCoatedFloorCells(room.Cells);
-            return furniture + (wallCells + floorCells) / DeepfireStatusDefaults.WallFloorCellsPerPoint;
+            return RM_DeepfireRules.RoomScore(furniture, wallCells, floorCells, DeepfireStatusDefaults.WallFloorCellsPerPoint);
         }
 
         // Royalty title seniority -> Ideology leader/moral-guide role ->
@@ -105,8 +104,7 @@ namespace RimMandrake.LuminousPigment
         // anything, so the wearer's own pleasure thought is suppressed too.
         public static bool RanklessColonyThoughtAllowed()
         {
-            if (LuminousPigmentSettings.ranklessColoniesEnjoyIt) return true;
-            return ModsConfig.RoyaltyActive || ModsConfig.IdeologyActive;
+            return RM_DeepfireRules.RanklessAllowed(LuminousPigmentSettings.ranklessColoniesEnjoyIt, ModsConfig.RoyaltyActive, ModsConfig.IdeologyActive);
         }
     }
 }

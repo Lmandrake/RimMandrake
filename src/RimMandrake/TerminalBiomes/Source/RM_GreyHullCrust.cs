@@ -32,15 +32,15 @@ namespace RimMandrake.TerminalBiomes
         public const string GreyBiome = "RM_GreySea";
         public const string SaltSnow = "RM_GreySaltSnow";
 
-        public const float RimeDays = 1f;
-        public const float FirstDoorDays = 2.5f;
-        public const float DoorIntervalDays = 1f;
-        public const float CrustStartDays = 5f;
-        public const float CrustFullDays = 15f; // a quadrum
+        public const float RimeDays = RM_CrustKernel.RimeDays;
+        public const float FirstDoorDays = RM_CrustKernel.FirstDoorDays;
+        public const float DoorIntervalDays = RM_CrustKernel.DoorIntervalDays;
+        public const float CrustStartDays = RM_CrustKernel.CrustStartDays;
+        public const float CrustFullDays = RM_CrustKernel.CrustFullDays; // a quadrum
         // Chipping pushes the clock back, so a colony that keeps up holds a
         // steady state instead of facing an ever-growing tax (§1.2: "every
         // stage is reversible by work at any point — no ratchet").
-        public const float ChipRewindDays = 0.25f;
+        public const float ChipRewindDays = RM_CrustKernel.ChipRewindDays;
 
         public static bool Active => RM_TerminalBiomesSettings.GreyHullCrustActive;
 
@@ -217,22 +217,16 @@ namespace RimMandrake.TerminalBiomes
             {
                 return;
             }
-            Step(engine, CheckInterval / 60000f * CurrentMultiplier(engine));
+            Step(engine, RM_CrustKernel.AddDays(CheckInterval, CurrentMultiplier(engine)));
         }
 
         public float CurrentMultiplier(Building_GravEngine engine)
         {
-            float m = RM_TerminalBiomesSettings.greyHullCrustRate;
-            if (map.weatherManager?.curWeather?.defName == RM_GreyCrust.SaltSnow)
-            {
-                m *= RM_TerminalBiomesSettings.greyHullCrustSaltSnowMultiplier;
-            }
-            if (IsBrineBerth(engine))
-            {
-                m *= RM_TerminalBiomesSettings.greyHullCrustBerthMultiplier;
-            }
-            return m;
+            return RM_CrustKernel.Multiplier(RM_TerminalBiomesSettings.greyHullCrustRate,
+                map.weatherManager?.curWeather?.defName == RM_GreyCrust.SaltSnow, RM_TerminalBiomesSettings.greyHullCrustSaltSnowMultiplier,
+                IsBrineBerth(engine), RM_TerminalBiomesSettings.greyHullCrustBerthMultiplier);
         }
+
 
         // §1.1: "proximity to a brine channel or a chimney field is a faster
         // neighbourhood." Within 5 cells of the hull's bounding box.
@@ -261,14 +255,12 @@ namespace RimMandrake.TerminalBiomes
             return false;
         }
 
-        // One clock step; public so the validation proof can drive it.
         public void Step(Building_GravEngine engine, float addDays)
         {
-            crustDays += addDays;
             List<IntVec3> hull = engine.ValidSubstructure.ToList();
-
-            // Rime: cosmetic bloom, no function lost.
-            if (crustDays >= RM_GreyCrust.RimeDays && RM_GreyCrust.RimeDef != null && Rand.Chance(0.5f))
+            RM_CrustKernel.Step(ref crustDays, ref nextDoorAt, addDays, RM_GreyCrust.RimeDef != null, RM_GreyCrust.CrustDef != null,
+                p => Rand.Chance(p), out bool rime, out int doors, out bool crust);
+            if (rime)
             {
                 IntVec3 c = hull.RandomElement();
                 if (c.Standable(map))
@@ -276,24 +268,16 @@ namespace RimMandrake.TerminalBiomes
                     FilthMaker.TryMakeFilth(c, map, RM_GreyCrust.RimeDef);
                 }
             }
-
-            // Salted seams: exterior doors, one at a time.
-            while (crustDays >= nextDoorAt)
+            for (int i = 0; i < doors; i++)
             {
-                nextDoorAt += RM_GreyCrust.DoorIntervalDays;
                 TrySaltOneDoor(engine);
             }
-
-            // Jacketing: crust things, ramping from day 5 to every check by day 15.
-            if (crustDays >= RM_GreyCrust.CrustStartDays && RM_GreyCrust.CrustDef != null)
+            if (crust)
             {
-                float ramp = Mathf.InverseLerp(RM_GreyCrust.CrustStartDays, RM_GreyCrust.CrustFullDays, crustDays);
-                if (Rand.Chance(Mathf.Lerp(0.1f, 1f, ramp)))
-                {
-                    TrySpawnCrust(engine, hull);
-                }
+                TrySpawnCrust(engine, hull);
             }
         }
+
 
         public bool TrySaltOneDoor(Building_GravEngine engine)
         {
@@ -317,7 +301,7 @@ namespace RimMandrake.TerminalBiomes
         public bool TrySpawnCrust(Building_GravEngine engine, List<IntVec3> hull)
         {
             int existing = CountCrust(engine);
-            if (existing >= Mathf.Max(1, hull.Count / 3))
+            if (existing >= RM_CrustKernel.CrustCap(hull.Count))
             {
                 return false;
             }
@@ -347,9 +331,9 @@ namespace RimMandrake.TerminalBiomes
 
         public void Rewind()
         {
-            crustDays = Mathf.Max(0f, crustDays - RM_GreyCrust.ChipRewindDays);
-            nextDoorAt = Mathf.Max(RM_GreyCrust.FirstDoorDays, nextDoorAt - RM_GreyCrust.ChipRewindDays);
+            RM_CrustKernel.Rewind(ref crustDays, ref nextDoorAt);
         }
+
     }
 
     // ── Doors: salted shut to everyone until chipped ──────────────────────

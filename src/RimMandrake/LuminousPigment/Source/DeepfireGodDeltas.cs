@@ -110,14 +110,8 @@ namespace RimMandrake.LuminousPigment
         // Every god +Like, the trio +Adore, Ishko -ishkoPenalty.
         public static Dictionary<string, float> CoatTable(float ishkoPenalty)
         {
-            var table = new Dictionary<string, float>();
-            foreach (string god in NinefoldDeltaBridge.GodNames)
-            {
-                if (god == Ishko) table[god] = -ishkoPenalty;
-                else if (System.Array.IndexOf(Trio, god) >= 0) table[god] = LuminousPigmentSettings.godDeltaAdore;
-                else table[god] = LuminousPigmentSettings.godDeltaLike;
-            }
-            return table;
+            return RM_DeepfireRules.CoatTable(NinefoldDeltaBridge.GodNames, Trio, Ishko, ishkoPenalty,
+                LuminousPigmentSettings.godDeltaAdore, LuminousPigmentSettings.godDeltaLike);
         }
 
         // Spec §5.2: "that god +Large; all other gods +Small; Ishko's own
@@ -125,26 +119,18 @@ namespace RimMandrake.LuminousPigment
         // god's idol (the §5 ruling: "Ishko dislikes it").
         public static Dictionary<string, float> StatueTable(string statueGod)
         {
-            var table = new Dictionary<string, float>();
-            foreach (string god in NinefoldDeltaBridge.GodNames)
-            {
-                if (god == statueGod)
-                    table[god] = god == Ishko ? -LuminousPigmentSettings.godDeltaStatue : LuminousPigmentSettings.godDeltaStatue;
-                else if (god == Ishko) table[god] = -LuminousPigmentSettings.godDeltaIshko;
-                else table[god] = LuminousPigmentSettings.godDeltaLike;
-            }
-            return table;
+            return RM_DeepfireRules.StatueTable(NinefoldDeltaBridge.GodNames, statueGod, Ishko, LuminousPigmentSettings.godDeltaStatue,
+                LuminousPigmentSettings.godDeltaIshko, LuminousPigmentSettings.godDeltaLike);
         }
 
         private static void Deliver(Dictionary<string, float> table, string defKey, string reason)
         {
             int prior = GameComponent_Deepfire.NoteGodCoatEvent(defKey);
-            bool diminished = prior >= LuminousPigmentSettings.godDeltaDiminishAfter;
             foreach (KeyValuePair<string, float> kv in table)
             {
                 float amount = kv.Value;
                 if (amount == 0f) continue;
-                if (diminished) amount = amount > 0f ? DiminishedMagnitude : -DiminishedMagnitude;
+                amount = RM_DeepfireRules.Diminish(amount, prior, LuminousPigmentSettings.godDeltaDiminishAfter, DiminishedMagnitude);
                 NinefoldDeltaBridge.ApplyDelta(kv.Key, amount, reason);
             }
         }

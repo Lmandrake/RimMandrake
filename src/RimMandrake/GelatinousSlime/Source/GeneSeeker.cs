@@ -519,9 +519,9 @@ namespace RimMandrake.GelatinousSlime
                     {
                         slim = patient.health.AddHediff(SlimeDefs.Slimification);
                     }
-                    if (slim != null && slim.Severity < InjectedStartSeverity)
+                    if (slim != null)
                     {
-                        slim.Severity = InjectedStartSeverity;
+                        slim.Severity = RM_SlimeLadder.InjectedStart(slim.Severity, InjectedStartSeverity);
                     }
                     HediffComp_Slimification sc = SlimeUtility.GetSlimification(patient);
                     if (sc != null)
@@ -538,16 +538,8 @@ namespace RimMandrake.GelatinousSlime
                 // mark from this injection) and "B25's Reek doubles it".
                 if (SlimeDefs.SlimeMarked != null)
                 {
-                    float markIncrement = 1f;
-                    if (comp.RiderGene == SlimeDefs.TheReek)
-                    {
-                        markIncrement = 2f;
-                    }
-                    if (SlimeDefs.PheromoneCharm != null && patient.genes != null
-                        && patient.genes.HasActiveGene(SlimeDefs.PheromoneCharm))
-                    {
-                        markIncrement = Mathf.Max(0f, markIncrement - 1f);
-                    }
+                    float markIncrement = RM_SlimeLadder.MarkIncrement(comp.RiderGene == SlimeDefs.TheReek,
+                        SlimeDefs.PheromoneCharm != null && patient.genes != null && patient.genes.HasActiveGene(SlimeDefs.PheromoneCharm));
                     if (markIncrement > 0f)
                     {
                         Hediff marked = patient.health.hediffSet.GetFirstHediffOfDef(SlimeDefs.SlimeMarked);

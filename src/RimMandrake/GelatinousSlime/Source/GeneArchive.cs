@@ -218,15 +218,7 @@ namespace RimMandrake.GelatinousSlime
             {
                 return ThoughtState.Inactive;
             }
-            if (marked.Severity >= 4f)
-            {
-                return ThoughtState.ActiveAtStage(2);
-            }
-            if (marked.Severity >= 2f)
-            {
-                return ThoughtState.ActiveAtStage(1);
-            }
-            return ThoughtState.ActiveAtStage(0);
+            return ThoughtState.ActiveAtStage(RM_SlimeLadder.MarkStage(marked.Severity));
         }
     }
 }

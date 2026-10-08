@@ -19,17 +19,6 @@ namespace RimMandrake.LuminousPigment
     // the dish still gives the taste thought, nothing else).
     public class IngestionOutcomeDoer_SteeredFamily : IngestionOutcomeDoer
     {
-        // Built live, not cached: steerMinSkill is a Mod Setting the player
-        // can change mid-game, and this only runs once per meal eaten.
-        private static SimpleCurve SteerChanceCurve(int minSkill)
-        {
-            return new SimpleCurve
-            {
-                new CurvePoint(minSkill, 0.5f),
-                new CurvePoint(20f, 1.0f),
-            };
-        }
-
         protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
         {
             if (!LuminousPigmentSettings.cuisineEnabled) return;
@@ -58,54 +47,26 @@ namespace RimMandrake.LuminousPigment
             return en == null || index < 0 || index >= en.Length || en[index];
         }
 
+        private static float[] weightsCache;
+
+        private static float[] FamilyWeights()
+        {
+            if (weightsCache == null)
+            {
+                weightsCache = new float[DeepfireFamilies.All.Count];
+                for (int i = 0; i < weightsCache.Length; i++) weightsCache[i] = DeepfireFamilies.All[i].baseWeight;
+            }
+            return weightsCache;
+        }
+
         private string ChooseFamily(CompSkillSteeredOutcome comp)
         {
             string intended = comp?.intendedFamily;
-            if (!string.IsNullOrEmpty(intended))
-            {
-                int idx = DeepfireFamilies.IndexOf(intended);
-                if (idx >= 0 && FamilyEnabled(idx))
-                {
-                    int minSkill = intended == DeepfireFamilies.VermilionKey
-                        ? LuminousPigmentSettings.vermilionMinSkill
-                        : LuminousPigmentSettings.steerMinSkill;
-                    if (comp.cookSkill >= minSkill)
-                    {
-                        float chance = Mathf.Clamp01(SteerChanceCurve(minSkill).Evaluate(comp.cookSkill));
-                        if (Rand.Chance(chance)) return intended;
-                    }
-                    // Miss: re-roll among every OTHER family, vermilion excluded.
-                    return WeightedRandom(excludeKey: intended, excludeVermilion: true);
-                }
-            }
-
-            // Plain dish, or a steered dish whose target is disabled/unresolvable.
-            return WeightedRandom(excludeKey: null, excludeVermilion: true);
-        }
-
-        private string WeightedRandom(string excludeKey, bool excludeVermilion)
-        {
-            List<DeepfireFamily> candidates = new List<DeepfireFamily>();
-            for (int i = 0; i < DeepfireFamilies.All.Count; i++)
-            {
-                DeepfireFamily f = DeepfireFamilies.All[i];
-                if (!FamilyEnabled(i)) continue;
-                if (f.key == excludeKey) continue;
-                if (excludeVermilion && f.key == DeepfireFamilies.VermilionKey) continue;
-                if (f.baseWeight <= 0f) continue;
-                candidates.Add(f);
-            }
-            if (candidates.Count == 0) return null;
-
-            float total = candidates.Sum(c => c.baseWeight);
-            float roll = Rand.Range(0f, total);
-            float cum = 0f;
-            foreach (DeepfireFamily f in candidates)
-            {
-                cum += f.baseWeight;
-                if (roll <= cum) return f.key;
-            }
-            return candidates[candidates.Count - 1].key;
+            int idx = string.IsNullOrEmpty(intended) ? -1 : DeepfireFamilies.IndexOf(intended);
+            int picked = RM_DeepfireCuisine.Choose(idx, comp?.cookSkill ?? 0, LuminousPigmentSettings.steerMinSkill,
+                LuminousPigmentSettings.vermilionMinSkill, DeepfireFamilies.IndexOf(DeepfireFamilies.VermilionKey), FamilyWeights(),
+                LuminousPigmentSettings.familyEnabled, chance => Rand.Chance(chance), total => Rand.Range(0f, total));
+            return picked < 0 ? null : DeepfireFamilies.All[picked].key;
         }
 
         private static void ApplyFamily(Pawn pawn, string key)
@@ -114,14 +75,14 @@ namespace RimMandrake.LuminousPigment
             if (hd == null) return;
 
             Hediff existing = pawn.health.hediffSet.hediffs.FirstOrDefault(h => h.def == hd);
-            if (existing != null)
+            int count = pawn.health.hediffSet.hediffs.Count(h => DeepfireFamilies.IsFamilyHediff(h.def));
+            FamilyOutcome outcome = RM_DeepfireCuisine.Apply(existing != null, count, LuminousPigmentSettings.maxFamiliesPerPawn);
+            if (outcome == FamilyOutcome.Bumped)
             {
-                existing.Severity = Mathf.Min(existing.Severity + 1f, hd.maxSeverity);
+                existing.Severity = RM_DeepfireCuisine.Bump(existing.Severity, hd.maxSeverity);
                 return;
             }
-
-            int count = pawn.health.hediffSet.hediffs.Count(h => DeepfireFamilies.IsFamilyHediff(h.def));
-            if (count >= LuminousPigmentSettings.maxFamiliesPerPawn) return; // "does nothing but taste" (spec §6.2).
+            if (outcome == FamilyOutcome.CapBlocked) return; // "does nothing but taste" (spec §6.2).
 
             Hediff made = HediffMaker.MakeHediff(hd, pawn);
             made.Severity = 0.5f;

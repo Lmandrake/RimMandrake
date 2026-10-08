@@ -101,19 +101,13 @@ namespace RimMandrake.LuminousPigment
         public void RegisterThingLight(Thing thing, Color color, float radius)
         {
             if (thing == null || !thing.Spawned || thing.Map != map) return;
-            if (IsClusterable(thing))
-            {
-                RegisterClusteredThing(thing);
-                return;
-            }
-            SetLight(thing, thing.Position, color, radius);
+            Book.RegisterThing(thing, thing.Position.x, thing.Position.z, IsClusterable(thing), color, radius);
         }
 
         public void DeregisterThingLight(Thing thing)
         {
             if (thing == null) return;
-            if (DeregisterClusteredThing(thing)) return;
-            RemoveLight(thing);
+            if (bookField != null) bookField.DeregisterThing(thing);
         }
 
         // ---- HediffComp_DeepfireGlow.cs's soft-bound contract (Cuisine) ----
