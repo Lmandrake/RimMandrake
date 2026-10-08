@@ -92,8 +92,9 @@ def static_checks():
     for needle in ("Dormant.", "Attuning.", "The oasis is made."):
         if needle not in comp:
             bad.append("inspect string %r is gone from RM_CompOasisMaker.cs: site_growth reads it" % needle)
+    kernel = open(os.path.join(HERE, "Source", "Kernel", "RM_OasisKernel.cs"), encoding="utf-8").read()   # the ladders live in the kernel
     for needle in ('"Sand", "Gravel", "Soil", "SoilRich"', '"WaterShallow"'):
-        if needle not in comp:
+        if needle not in kernel:
             bad.append("terrain ladder %s changed: site_growth reads WaterShallow" % needle)
     if "isNaturalRock" not in open(os.path.join(HERE, "Source", "RM_OasisPlacementScorer.cs"), encoding="utf-8").read():
         bad.append("the scorer no longer counts natural rock")
