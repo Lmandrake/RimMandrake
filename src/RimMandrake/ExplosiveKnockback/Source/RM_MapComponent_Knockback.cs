@@ -173,10 +173,8 @@ namespace RimMandrake.ExplosiveKnockback
     public class RM_MapComponent_Knockback : MapComponent
     {
         private readonly List<KnockbackRequest> queue = new List<KnockbackRequest>();
-        private readonly KbDedupe dedupe = new KbDedupe();
+        private readonly KbExplosionLedger ledger = new KbExplosionLedger();
         private readonly KbTickBudget itemBudget = new KbTickBudget();
-        private readonly Dictionary<int, int> launchedPerExplosion = new Dictionary<int, int>();
-        private int dedupeTick = -1;
         // stun-lock guard (design §4): pawn thingIDNumber -> landing tick / landing-stun end tick. Saved.
         private Dictionary<int, int> landedAt = new Dictionary<int, int>();
         private Dictionary<int, int> stunEnd = new Dictionary<int, int>();
@@ -248,14 +246,8 @@ namespace RimMandrake.ExplosiveKnockback
         public void Enqueue(KnockbackRequest r)
         {
             int now = Find.TickManager.TicksGame;
-            if (now - dedupeTick > 600)
-            {
-                // an explosion's wave lasts a few ticks; ids never repeat, so old keys are dead weight
-                dedupe.Clear();
-                launchedPerExplosion.Clear();
-                dedupeTick = now;
-            }
-            if (!dedupe.TryAdd(r.explosionId, r.thing.thingIDNumber))
+            // an explosion's wave lasts a few ticks; ids never repeat, so old keys are dead weight (dropped in generations, never mid-wave)
+            if (!ledger.TryAdd(r.explosionId, r.thing.thingIDNumber, now))
             {
                 return;
             }
@@ -319,7 +311,7 @@ namespace RimMandrake.ExplosiveKnockback
                     KbKind k = t is Pawn ? KbKind.Pawn : (t is Corpse ? KbKind.Corpse : KbKind.Item);
                     cands.Add(new KbCandidate { index = i, kind = k, distance = (g[i].takeoff - g[i].centre).LengthHorizontal });
                 }
-                launchedPerExplosion.TryGetValue(id, out int used);
+                int used = ledger.Launched(id, Find.TickManager.TicksGame);
                 int cap = Math.Max(0, RimMandrakeExplosiveKnockbackSettings.maxThrowsPerExplosion - used);
                 List<KbCandidate> kept = RM_KnockbackMath.Prioritise(cands, cap);
                 var keptSet = new HashSet<int>();
@@ -340,7 +332,7 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         if (Execute(g[c.index]))
                         {
-                            launchedPerExplosion[id] = (launchedPerExplosion.TryGetValue(id, out int n) ? n : 0) + 1;
+                            ledger.AddLaunched(id, Find.TickManager.TicksGame);
                         }
                     }
                     catch (Exception ex)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.ExplosiveKnockback;
 
 // Offline kernel tests K-01..K-12 (design §8.1). Compiles the PRODUCTION RM_KnockbackMath.cs.
@@ -48,8 +49,21 @@ internal static class Program
         }
     }
 
-    private static int Main()
+    private static int Main(string[] args)
     {
+        if (args.Any(a => a.StartsWith("--fuzz")))
+        {
+            double scale = 1;
+            int i = Array.IndexOf(args, "--fuzz-scale");
+            if (i >= 0) scale = double.Parse(args[i + 1], System.Globalization.CultureInfo.InvariantCulture);
+            int? one = null;
+            i = Array.IndexOf(args, "--fuzz-seed");
+            if (i >= 0) one = int.Parse(args[i + 1]);
+            string only = null;
+            i = Array.IndexOf(args, "--fuzz-only");
+            if (i >= 0) only = args[i + 1];
+            return KnockbackFuzz.Run(scale, one, only) ? 0 : 1;
+        }
         var s = new KbSettings();
 
         // K-01 calibration (owner Q7: mortar shell beside a human throws 3 cells)
@@ -276,10 +290,15 @@ internal static class Program
 
         // K-12 dedupe
         {
-            var d = new KbDedupe();
-            Check("K-12 first", d.TryAdd(5, 9));
-            Check("K-12 repeat", !d.TryAdd(5, 9));
-            Check("K-12 other explosion", d.TryAdd(6, 9));
+            var d = new KbExplosionLedger();
+            Check("K-12 first", d.TryAdd(5, 9, 100));
+            Check("K-12 repeat", !d.TryAdd(5, 9, 101));
+            Check("K-12 other explosion", d.TryAdd(6, 9, 101));
+            // a wave straddling a rotation still remembers its pairs and its launch count (the old wholesale clear forgot both)
+            d.AddLaunched(5, 650); d.AddLaunched(5, 651);
+            Check("K-12 repeat after one rotation", !d.TryAdd(5, 9, 100 + 600 + 1) && d.Launched(5, 100 + 600 + 5) == 2);
+            Check("K-12 launches still counted one generation on", d.Launched(5, 100 + 1300) == 2);
+            Check("K-12 forgotten after two", d.TryAdd(5, 9, 100 + 1300) && d.Launched(5, 2000) == 0);
         }
 
         // K-13 lookup order (design §2.1): projectile -> weapon -> DamageDef -> unpatched; whole config, explicit 0 wins

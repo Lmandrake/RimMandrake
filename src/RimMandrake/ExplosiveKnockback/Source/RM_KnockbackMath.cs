@@ -247,7 +247,7 @@ namespace RimMandrake.ExplosiveKnockback
         /// `cells` steps long (cell count is grid steps, not Euclidean — GPT #15). Excludes the start.</summary>
         public static List<(int x, int z)> Line(int sx, int sz, float dx, float dz, int cells)
         {
-            var path = new List<(int, int)>(cells);
+            var path = new List<(int, int)>(Math.Max(cells, 0));
             float m = Math.Max(Math.Abs(dx), Math.Abs(dz));
             if (cells <= 0 || m < 1e-6f)
             {
@@ -416,19 +416,68 @@ namespace RimMandrake.ExplosiveKnockback
         private static int KindRank(KbKind k) => k == KbKind.Pawn ? 0 : (k == KbKind.Corpse ? 1 : 2);
     }
 
-    /// <summary>Dedupe by (explosion, thing): a repeat callback for the same pair enqueues nothing (GPT #2).</summary>
-    public sealed class KbDedupe
+    /// <summary>
+    /// What one map remembers about recent explosions: which (explosion, thing) pairs were already queued (a repeat callback enqueues
+    /// nothing, GPT #2) and how many throws each explosion has launched (the per-explosion cap spans several ticks). Ids never repeat, so
+    /// old entries are dead weight; they are dropped in two generations a `window` apart instead of all at once, so an explosion whose
+    /// wave straddles a rotation still has its pairs and its launch count: an entry lives at least `window` and at most 2 x `window` ticks.
+    /// (The first version cleared everything every 600 ticks, which wiped a live explosion's cap and dedupe about 1% of the time.)
+    /// </summary>
+    public sealed class KbExplosionLedger
     {
-        private readonly HashSet<long> seen = new HashSet<long>();
+        public const int DefaultWindow = 600;
+        private HashSet<long> seenCur = new HashSet<long>(), seenPrev = new HashSet<long>();
+        private Dictionary<int, int> launchedCur = new Dictionary<int, int>(), launchedPrev = new Dictionary<int, int>();
+        private long curGen = long.MinValue;
+        private readonly int window;
 
-        public bool TryAdd(int explosionId, int thingId)
+        public KbExplosionLedger(int window = DefaultWindow) { this.window = Math.Max(1, window); }
+
+        // generations sit on a fixed grid of `window` ticks, so an entry made at tick t is certainly live until t + window and certainly
+        // gone from t + 2 x window, however sparse the calls are
+        private void Advance(int now)
         {
-            return seen.Add(((long)explosionId << 32) ^ (uint)thingId);
+            long gen = now >= 0 ? now / window : -((-(long)now + window - 1) / window);
+            if (curGen == long.MinValue) { curGen = gen; return; }
+            if (gen == curGen) return;
+            if (gen == curGen + 1)
+            {
+                seenPrev = seenCur; seenCur = new HashSet<long>();
+                launchedPrev = launchedCur; launchedCur = new Dictionary<int, int>();
+            }
+            else    // two or more generations on, or the clock went backwards: nothing remembered is live
+            {
+                seenCur.Clear(); seenPrev.Clear(); launchedCur.Clear(); launchedPrev.Clear();
+            }
+            curGen = gen;
         }
 
-        public void Clear() => seen.Clear();
+        /// <summary>True the first time this (explosion, thing) pair is seen inside the memory window.</summary>
+        public bool TryAdd(int explosionId, int thingId, int now)
+        {
+            Advance(now);
+            long key = ((long)explosionId << 32) ^ (uint)thingId;
+            if (seenPrev.Contains(key)) return false;
+            return seenCur.Add(key);
+        }
 
-        public int Count => seen.Count;
+        /// <summary>Throws launched for this explosion within the memory window (both generations).</summary>
+        public int Launched(int explosionId, int now)
+        {
+            Advance(now);
+            int cur, prev;
+            launchedCur.TryGetValue(explosionId, out cur);
+            launchedPrev.TryGetValue(explosionId, out prev);
+            return cur + prev;
+        }
+
+        public void AddLaunched(int explosionId, int now)
+        {
+            Advance(now);
+            int n;
+            launchedCur.TryGetValue(explosionId, out n);
+            launchedCur[explosionId] = n + 1;
+        }
     }
 
     /// <summary>The per-map-tick item cap: overflow is DROPPED, not deferred, so nothing accumulates.</summary>
