@@ -24,10 +24,10 @@ namespace RimMandrake.ProximityHatch
         public override void CompTick()
         {
             base.CompTick();
-            if (hatchFired || !parent.Spawned) return;
+            if (!RM_ProximityHatchKernel.TicksNow(hatchFired, parent.Spawned)) return;
 
-            if (--ticksUntilScan > 0) return;
-            ticksUntilScan = Mathf.Max(1, Mathf.RoundToInt(Props.scanIntervalTicks * RM_ProximityHatchSettings.scanIntervalMultiplier));
+            if (!RM_ProximityHatchKernel.CountdownStep(ref ticksUntilScan,
+                    RM_ProximityHatchKernel.ScanInterval(Props.scanIntervalTicks, RM_ProximityHatchSettings.scanIntervalMultiplier))) return;
             RunScan();
         }
 
@@ -36,41 +36,33 @@ namespace RimMandrake.ProximityHatch
         // shape as CompPitCoverTrigger.RunScan in this codebase.
         public void RunScan()
         {
-            if (hatchFired || !parent.Spawned) return;
-
             // Mod Settings master switch: off means proximity hatching never
             // fires at all - the egg falls back to CompHatcher's own vanilla
             // timer, same as an egg with no proximity comp. Coarse gate at
             // the top of the one method that does any work, so an all-off
-            // toggle degrades cleanly with no orphaned state.
-            if (!RM_ProximityHatchSettings.enabled) return;
-
+            // toggle degrades cleanly with no orphaned state. A comp with no
+            // vanilla hatch comp beside it, or no map, stays dormant.
             CompHatcher hatcher = parent.GetComp<CompHatcher>();
-            if (hatcher == null) return; // no vanilla hatch comp on this def - nothing to trigger, stay dormant
-
             Map map = parent.Map;
-            if (map == null) return;
+            if (!RM_ProximityHatchKernel.MayScan(hatchFired, parent.Spawned, RM_ProximityHatchSettings.enabled, hatcher != null, map != null)) return;
 
-            float radius = Mathf.Max(0.1f, Props.triggerRadius * RM_ProximityHatchSettings.radiusMultiplier);
+            float radius = RM_ProximityHatchKernel.Radius(Props.triggerRadius, RM_ProximityHatchSettings.radiusMultiplier);
 
-            Pawn nearest = null;
-            int nearestDistSq = int.MaxValue;
+            var candidates = new List<Pawn>();
+            var distances = new List<int>();
             foreach (Thing t in GenRadial.RadialDistinctThingsAround(parent.Position, map, radius, useCenter: true))
             {
                 if (t is Pawn p && p.Spawned && !p.Dead && p.RaceProps.IsFlesh)
                 {
-                    int distSq = (p.Position - parent.Position).LengthHorizontalSquared;
-                    if (distSq < nearestDistSq)
-                    {
-                        nearestDistSq = distSq;
-                        nearest = p;
-                    }
+                    candidates.Add(p);
+                    distances.Add((p.Position - parent.Position).LengthHorizontalSquared);
                 }
             }
 
-            if (nearest != null)
+            int pick = RM_ProximityHatchKernel.PickNearest(distances);
+            if (pick >= 0)
             {
-                Trigger(hatcher, nearest);
+                Trigger(hatcher, candidates[pick]);
             }
         }
 
@@ -105,7 +97,8 @@ namespace RimMandrake.ProximityHatch
             // internals or re-deriving the pawn some other way.
             foreach (Thing t in pos.GetThingList(map))
             {
-                if (t is Pawn hatchling && hatchling.kindDef == expectedKind && !preHatch.Contains(t))
+                Pawn hatchling = t as Pawn;
+                if (RM_ProximityHatchKernel.IsFreshHatchling(hatchling != null, hatchling != null && hatchling.kindDef == expectedKind, preHatch.Contains(t)))
                 {
                     // Mod Settings: off means the hatchling still hatches
                     // early (that's the master toggle above), but wakes up
