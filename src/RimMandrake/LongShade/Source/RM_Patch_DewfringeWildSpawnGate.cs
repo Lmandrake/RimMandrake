@@ -30,6 +30,10 @@ namespace RimMandrake.LongShade
     // strictly between those two bounds only exists in the falloff band
     // around a shade-caster, which IS the boundary/rim the design calls for
     // — full sun and full shade are both explicitly the area, not the line.
+    // 🔴 [StaticConstructorOnStartup] is what ARMS this patch. The patch is installed by the static constructor below, and a static class
+    // nothing references never has its static constructor run: without the attribute the dewfringe gate was never applied and the plant grew
+    // wherever fertility allowed (found by the L0 lint ls-armed, ALL_MODS_L0_TESTS_1). Every sibling patch class carries it.
+    [StaticConstructorOnStartup]
     public static class RM_Patch_DewfringeWildSpawnGate
     {
         private const string DewfringeDefName = "RM_Dewfringe";
@@ -40,9 +44,9 @@ namespace RimMandrake.LongShade
         // as a rim a few cells wide, not a one-tile hairline no player would
         // ever notice — still excludes both the open crossing (0f) and the
         // shaded patch interior (1f, or close to it).
-        private const float MinRimShade = 0.05f;
+        private const float MinRimShade = RM_LongShadeKernel.MinRimShade;
 
-        private const float MaxRimShade = 0.85f;
+        private const float MaxRimShade = RM_LongShadeKernel.MaxRimShade;
 
         static RM_Patch_DewfringeWildSpawnGate()
         {
@@ -137,7 +141,7 @@ namespace RimMandrake.LongShade
                     return false; // no grid on this map (e.g. mandrake.rm.creaturebehaviors not loaded) — no rim, dewfringe never grows rather than growing everywhere
                 }
                 float shade = grid.ShadeAt(c);
-                return shade > MinRimShade && shade < MaxRimShade;
+                return RM_LongShadeKernel.OnRim(shade);
             }
         }
     }

@@ -59,19 +59,8 @@ namespace RimMandrake.LongShade
 
         public bool Admits(Pawn pawn)
         {
-            if (races != null && races.Count > 0 && !races.Contains(pawn.def))
-            {
-                return false;
-            }
-            if (maxBodySize > 0f && pawn.BodySize > maxBodySize)
-            {
-                return false;
-            }
-            if (herdOnly && !pawn.RaceProps.herdAnimal)
-            {
-                return false;
-            }
-            return true;
+            return RM_LongShadeKernel.Admits(races != null && races.Count > 0, races != null && races.Contains(pawn.def),
+                maxBodySize, pawn.BodySize, herdOnly, pawn.RaceProps.herdAnimal);
         }
     }
 
@@ -126,8 +115,7 @@ namespace RimMandrake.LongShade
 
         private readonly List<IntVec3> commons = new List<IntVec3>();
         private readonly HashSet<IntVec3> commonsSet = new HashSet<IntVec3>();
-        private int commonsGridVersion = -1;
-        private int commonsSubstructureCount = -1;
+        private readonly RM_LongShadeKernel.CommonsKey commonsKey = new RM_LongShadeKernel.CommonsKey();
 
         public RM_MapComponent_ShipfallCommons(Map map) : base(map)
         {
@@ -171,6 +159,7 @@ namespace RimMandrake.LongShade
                 dispersedThisLaunch = false;
                 commons.Clear();
                 commonsSet.Clear();
+                commonsKey.Invalidate();      // an emptied list must never be served as "fresh" when the ship lands again
                 return;
             }
             int now = Find.TickManager.TicksGame;
@@ -196,14 +185,12 @@ namespace RimMandrake.LongShade
 
         private void AdvanceLadder(RM_ShipfallCommonsExtension ext, int now, Building_GravEngine engine)
         {
-            int open = 0;
+            var delays = new List<float>(ext.stages.Count);
             for (int i = 0; i < ext.stages.Count; i++)
             {
-                if (now - arrivedTick >= Mathf.RoundToInt(ext.stages[i].afterHours * GenDate.TicksPerHour))
-                {
-                    open = i + 1;
-                }
+                delays.Add(ext.stages[i].afterHours);
             }
+            int open = RM_LongShadeKernel.OpenStages(delays, now - arrivedTick, GenDate.TicksPerHour);
             while (stagesOpen < open)
             {
                 RM_ShipfallStage s = ext.stages[stagesOpen];
@@ -236,14 +223,8 @@ namespace RimMandrake.LongShade
             {
                 return null;
             }
-            for (int i = 0; i < stagesOpen && i < ext.stages.Count; i++)
-            {
-                if (ext.stages[i].Admits(pawn))
-                {
-                    return ext.stages[i];
-                }
-            }
-            return null;
+            int hit = RM_LongShadeKernel.FirstAdmitting(stagesOpen, ext.stages.Count, i => ext.stages[i].Admits(pawn));
+            return hit >= 0 ? ext.stages[hit] : null;
         }
 
         /// <summary>The shaded, standable cells round the hull (never on the
@@ -257,6 +238,7 @@ namespace RimMandrake.LongShade
             {
                 commons.Clear();
                 commonsSet.Clear();
+                commonsKey.Invalidate();
                 return commons;
             }
             HashSet<IntVec3> sub = engine.ValidSubstructure;
@@ -264,27 +246,25 @@ namespace RimMandrake.LongShade
             {
                 commons.Clear();
                 commonsSet.Clear();
+                commonsKey.Invalidate();
                 return commons;
             }
-            if (commonsGridVersion == grid.GridVersion && commonsSubstructureCount == sub.Count)
+            if (commonsKey.Fresh(grid.GridVersion, sub.Count, engine.Position.x, engine.Position.z))
             {
                 return commons;
             }
-            commonsGridVersion = grid.GridVersion;
-            commonsSubstructureCount = sub.Count;
+            commonsKey.Set(grid.GridVersion, sub.Count, engine.Position.x, engine.Position.z);
             commons.Clear();
             commonsSet.Clear();
-            CellRect rect = CellRect.FromCellList(sub).ExpandedBy(ext.radius).ClipInsideMap(map);
-            foreach (IntVec3 c in rect)
+            CellRect bounds = CellRect.FromCellList(sub);
+            foreach (KeyValuePair<int, int> xz in RM_LongShadeKernel.CommonsCells(bounds.minX, bounds.minZ, bounds.maxX, bounds.maxZ, ext.radius,
+                map.Size.x, map.Size.z,
+                (x, z) => sub.Contains(new IntVec3(x, 0, z)),
+                (x, z) => new IntVec3(x, 0, z).Standable(map),
+                (x, z) => grid.ShadeAt(new IntVec3(x, 0, z)),
+                ext.minShade))
             {
-                if (sub.Contains(c) || !c.Standable(map) || grid.ShadeAt(c) < ext.minShade)
-                {
-                    continue;
-                }
-                if (!NearSubstructure(c, sub, ext.radius))
-                {
-                    continue;
-                }
+                IntVec3 c = new IntVec3(xz.Key, 0, xz.Value);
                 commons.Add(c);
                 commonsSet.Add(c);
             }
@@ -295,22 +275,6 @@ namespace RimMandrake.LongShade
         {
             Commons();
             return commonsSet.Contains(c);
-        }
-
-        private static bool NearSubstructure(IntVec3 c, HashSet<IntVec3> sub, int radius)
-        {
-            int r2 = radius * radius;
-            for (int dz = -radius; dz <= radius; dz++)
-            {
-                for (int dx = -radius; dx <= radius; dx++)
-                {
-                    if (dx * dx + dz * dz <= r2 && sub.Contains(new IntVec3(c.x + dx, 0, c.z + dz)))
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
         }
 
         /// <summary>A colonist took the pilot's console: everything wild in

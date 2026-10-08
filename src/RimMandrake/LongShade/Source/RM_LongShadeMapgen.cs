@@ -243,9 +243,8 @@ namespace RimMandrake.LongShade
             // into shade (the ring's whole heat budget, spent on the way out).
             // Capped at the animals' own dash cap, so the herds can use the road too.
             int ringCost = RM_LongShadeMapgen.HumanRingCost(map, probe.HeatExtension, 0f);
-            float dashCells = Mathf.Min(ringCost / (float)RM_ShadePatchGraph.CardinalCost,
-                probe.HeatExtension.maxDashCells);
-            float spacing = step.spacingCells.ClampToRange(dashCells * step.spacingFactor);
+            float dashCells = RM_LongShadeKernel.DashCells(ringCost, RM_ShadePatchGraph.CardinalCost, probe.HeatExtension.maxDashCells);
+            float spacing = RM_LongShadeKernel.RoadSpacing(dashCells, step.spacingFactor, step.spacingCells.min, step.spacingCells.max);
             RM_LongShadeMapgen.Survey s = RM_LongShadeMapgen.Build(map, spacing);
             if (s == null || s.graph.PatchCount < 2)
             {
@@ -257,19 +256,7 @@ namespace RimMandrake.LongShade
             {
                 return; // the shade network is already whole: no gap to bridge
             }
-            int a = -1, b = -1;
-            for (int i = 0; i < islandCount; i++)
-            {
-                if (a < 0 || islandCells[i] > islandCells[a])
-                {
-                    b = a;
-                    a = i;
-                }
-                else if (b < 0 || islandCells[i] > islandCells[b])
-                {
-                    b = i;
-                }
-            }
+            RM_LongShadeKernel.TwoBiggest(islandCells, islandCount, out int a, out int b);
             List<int> rimA = RimsOf(g, island, a);
             List<int> rimB = RimsOf(g, island, b);
             if (!ClosestPair(g, rimA, rimB, out int ca, out int cb))
@@ -279,22 +266,17 @@ namespace RimMandrake.LongShade
             IntVec3 from = map.cellIndices.IndexToCell(ca);
             IntVec3 to = map.cellIndices.IndexToCell(cb);
             float gap = (to - from).LengthHorizontal;
-            if (gap < spacing * step.minGapSpacings || gap > step.maxGapCells)
+            int segments = RM_LongShadeKernel.RoadSegments(gap, spacing, step.minGapSpacings, step.maxGapCells, out float stride);
+            if (segments == 0)
             {
-                return;
+                return; // too short to need a road, or wider than the road may span
             }
-            int segments = Mathf.CeilToInt(gap / spacing);
             Vector3 dir = (to - from).ToVector3() / gap;
-            float stride = gap / segments;
             bool terminus = step.terminusStep != null && step.terminusMarker != null;
             int placed = 0;
-            for (int k = 1; k < segments; k++)
+            foreach (int k in RM_LongShadeKernel.RoadLinkIndices(segments, terminus))
             {
                 IntVec3 at = (from.ToVector3Shifted() + dir * (stride * k)).ToIntVec3();
-                if (terminus && k == segments - 1)
-                {
-                    break; // the last stop is the terminus, laid below
-                }
                 ThingDef def = fromList
                     ? step.wreckList.PickWreck()
                     : links[(k - 1 + Rand.Range(0, links.Count)) % links.Count];
@@ -343,47 +325,23 @@ namespace RimMandrake.LongShade
             }
         }
 
-        /// <summary>Groups patches joined by edges into islands.</summary>
+        /// <summary>Groups patches joined by edges into islands (RM_LongShadeKernel.Islands over the graph's adjacency).</summary>
         private static int[] Islands(RM_ShadePatchGraph g, out int count, out long[] cells)
         {
             int n = g.PatchCount;
-            int[] island = new int[n];
-            for (int i = 0; i < n; i++)
+            var adjacency = new List<IList<int>>(n);
+            var cellCounts = new List<long>(n);
+            for (int u = 0; u < n; u++)
             {
-                island[i] = -1;
-            }
-            List<long> size = new List<long>();
-            Stack<int> stack = new Stack<int>();
-            count = 0;
-            for (int s = 0; s < n; s++)
-            {
-                if (island[s] >= 0)
+                var to = new List<int>(g.patches[u].edges.Count);
+                for (int k = 0; k < g.patches[u].edges.Count; k++)
                 {
-                    continue;
+                    to.Add(g.patches[u].edges[k].to);
                 }
-                long total = 0;
-                island[s] = count;
-                stack.Push(s);
-                while (stack.Count > 0)
-                {
-                    int u = stack.Pop();
-                    total += g.patches[u].cellCount;
-                    List<RM_ShadePatchGraph.Edge> edges = g.patches[u].edges;
-                    for (int k = 0; k < edges.Count; k++)
-                    {
-                        int v = edges[k].to;
-                        if (island[v] < 0)
-                        {
-                            island[v] = count;
-                            stack.Push(v);
-                        }
-                    }
-                }
-                size.Add(total);
-                count++;
+                adjacency.Add(to);
+                cellCounts.Add(g.patches[u].cellCount);
             }
-            cells = size.ToArray();
-            return island;
+            return RM_LongShadeKernel.Islands(adjacency, cellCounts, out count, out cells);
         }
 
         private static List<int> RimsOf(RM_ShadePatchGraph g, int[] island, int which)
@@ -396,39 +354,12 @@ namespace RimMandrake.LongShade
                     all.AddRange(g.patches[p].rim);
                 }
             }
-            if (all.Count <= RimSample)
-            {
-                return all;
-            }
-            List<int> sample = new List<int>(RimSample);
-            float step = all.Count / (float)RimSample;
-            for (int i = 0; i < RimSample; i++)
-            {
-                sample.Add(all[(int)(i * step)]);
-            }
-            return sample;
+            return RM_LongShadeKernel.RimSample(all, RimSample);
         }
 
         private static bool ClosestPair(RM_ShadePatchGraph g, List<int> ra, List<int> rb, out int ca, out int cb)
         {
-            ca = cb = -1;
-            long best = long.MaxValue;
-            for (int i = 0; i < ra.Count; i++)
-            {
-                int ax = ra[i] % g.width, az = ra[i] / g.width;
-                for (int j = 0; j < rb.Count; j++)
-                {
-                    int dx = ax - rb[j] % g.width, dz = az - rb[j] / g.width;
-                    long d = (long)dx * dx + (long)dz * dz;
-                    if (d < best)
-                    {
-                        best = d;
-                        ca = ra[i];
-                        cb = rb[j];
-                    }
-                }
-            }
-            return ca >= 0;
+            return RM_LongShadeKernel.ClosestPair(ra, rb, g.width, out ca, out cb);
         }
     }
 
@@ -487,17 +418,7 @@ namespace RimMandrake.LongShade
             int bare = RM_LongShadeMapgen.HumanRingCost(map, ext, 0f);
             int geared = RM_LongShadeMapgen.HumanRingCost(map, ext, cover);
             int capCost = Mathf.RoundToInt(ext.ringMaxCells * RM_ShadePatchGraph.CardinalCost);
-            int lo, hi;
-            if (geared > bare)
-            {
-                lo = bare / 2 + 1;  // out and back is beyond a bare human
-                hi = geared / 2;    // but within a parasol-bearer's
-            }
-            else
-            {
-                lo = Mathf.RoundToInt(capCost * step.fallbackFarFraction);
-                hi = capCost;
-            }
+            RM_LongShadeKernel.GraveBand(bare, geared, capCost, step.fallbackFarFraction, out int lo, out int hi);
             RM_LongShadeMapgen.Survey s = RM_LongShadeMapgen.Build(map, ext.ringMaxCells);
             if (s == null || s.graph.PatchCount == 0)
             {
@@ -508,7 +429,7 @@ namespace RimMandrake.LongShade
             foreach (IntVec3 c in map.AllCells)
             {
                 int d = dist[map.cellIndices.CellToIndex(c)];
-                if (d != RM_ShadePatchGraph.Unreached && d >= lo && d <= hi && c.Standable(map) && !c.Roofed(map))
+                if (RM_LongShadeKernel.InGraveBand(d, RM_ShadePatchGraph.Unreached, lo, hi) && c.Standable(map) && !c.Roofed(map))
                 {
                     band.Add(c);
                 }
@@ -521,7 +442,7 @@ namespace RimMandrake.LongShade
                 for (int tries = 0; tries < 20; tries++)
                 {
                     IntVec3 c = band.RandomElement();
-                    if (used.TrueForAll(u => (u - c).LengthHorizontalSquared > 400f))
+                    if (used.TrueForAll(u => RM_LongShadeKernel.GravesFarEnough((u - c).LengthHorizontalSquared)))
                     {
                         at = c;
                         break;
