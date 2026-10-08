@@ -1516,6 +1516,25 @@ def ruled_elsewhere_for(row_names: set[str], entries: list[dict]) -> dict | None
     return max(hit, key=lambda e: e["at"] or "") if hit else None
 
 
+def _epoch(ts: str) -> float:
+    """ISO time (with Z, +hh:mm or +hhmm) -> epoch seconds; unparseable -> +inf (never 'new')."""
+    import datetime
+    t = (ts or "").replace("Z", "+00:00")
+    if re.search(r"[+-]\d{4}$", t):
+        t = t[:-2] + ":" + t[-2:]
+    try:
+        return datetime.datetime.fromisoformat(t).timestamp()
+    except ValueError:
+        return float("inf")
+
+
+def _first_seen(idx, sha: str) -> float:
+    """When the ledger first recorded this picture (earliest variant event); unknown -> -inf (never 'new')."""
+    ts = [_epoch(v.get("ts")) for v in idx.variants.get(sha, ()) if v.get("ts")]
+    ts = [t for t in ts if t != float("inf")]
+    return min(ts) if ts else float("-inf")
+
+
 def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None = None,
                    date: str | None = None, thumb_size: int = 160, sheet_only: bool = False,
                    allow_failing: str | None = None) -> dict:
@@ -1781,14 +1800,19 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         # a row the owner decided whose pictures changed since the snapshot he ruled on (a redo landed, a pick was
         # installed under new bytes, or the row was renamed and its decision carried over under `carriedFrom`)
         _od = ((old or {}).get("decisions") or {}).get(key) or {}
-        if _od.get("decidedAt") and ruled:
-            _rr = ((ruled.get("rows") or {}).get(_od.get("carriedFrom") or key) or {}).get("columns") or {}
-            _seen = {json.dumps(v, sort_keys=True) for v in _rr.values()}
-            _new = [c["letter"] for g in gitems for c in g["cols"] if json.dumps(c["faces"], sort_keys=True) not in _seen]
+        _when = _od.get("decidedAt") or _od.get("carriedRuledAt")
+        if _when:
+            # a set is new when none of its pictures was in the ledger before his ruling (first-recorded time; the
+            # snapshot id cannot tell, because a rebuild that only ADDS columns keeps the ruled snapshot's id)
+            _t0 = _epoch(_when)
+            _new = [c["letter"] for g in gitems for c in g["cols"]
+                    if c["faces"] and all(_first_seen(idx, s_) > _t0 for s_ in c["faces"].values() if s_)]
             if _new:
-                flags.append(f"NEW ART since your {_od['decidedAt'][:10]} ruling: column(s) {', '.join(sorted(set(_new)))}")
+                flags.append(f"NEW ART since your {_when[:10]} ruling: column(s) {', '.join(sorted(set(_new)))}")
         if _od.get("carriedFrom"):
-            flags.append(f"your ruling carried over from {_od['carriedFrom']} (renamed row)")
+            _ai = _od.get("agentInference") or {}
+            flags.append(f"your ruling carried over from {_od['carriedFrom']} (renamed row)"
+                         + (f" — pick shown is the in-game set, an agent inference: {_ai.get('basis', '')}" if _ai else ""))
         if no_art:
             flags.append("NO ART YET")
         if missing:
