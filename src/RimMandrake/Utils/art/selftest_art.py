@@ -328,6 +328,11 @@ def main():
     check(art_guard._authorized({"type": "live", "sha": None, "prev": spurple, "reason": "retire", "said": "remove it"},
                                 L.Index()) is None, "the guard accepts a retire on the owner's words")
 
+    # the flip-book player must not re-request a frame that has not loaded (a 404 storm hung the req-13 browser gate)
+    import art_sheet as _as
+    check("!im.complete || !im.naturalWidth) return" in _as.COMMON_JS + _as.BIOME_BODY,
+          "flip-book animation advances only after the current frame loaded")
+
     # selftest the CLI entry point end to end (subprocess, not import)
     out = subprocess.run([sys.executable, str(HERE / "art.py"), "status", "Things/Beast/Beast"],
                          capture_output=True, text=True, env=os.environ)
