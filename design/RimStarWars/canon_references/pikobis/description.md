@@ -9,7 +9,7 @@
 ## Sourced text (Wookieepedia)
 ### Canon — https://starwars.fandom.com/wiki/Pikobi
 
-The pikobis were a species of small, non-sentient, fast-moving reptavian that were native to Naboo and could also be found on many other planets.
+The pikobis were a species of small, non-sentient, fast-moving reptavian that were native to Naboo and could also be found on many other planets. The infobox gives grey skin (Episode I), carnivore diet, and jungle, sewer and swamp habitats; the page places them on Coruscant, Dagobah, Lothal and Onderon, and lists no length or height (https://starwars.fandom.com/wiki/Pikobi).
 
 **Biology and appearance** Pikobis were known to be quite an intelligent species, as after hatching from their egg, were already able to walk and swim. They were carnivores that ate tinier creatures in one gulp. They typically traveled in groups of five to six. When attacked, they could shed their tails which would regenerate. Occasionally, the new tail would be forked which would improve the pikobi's balance.
 ### Legends — https://starwars.fandom.com/wiki/Pikobi/Legends
@@ -29,7 +29,7 @@ Three images: one CANON (a low-res Episode I film still), two LEGENDS (a CG info
 - **Colour/pattern**: olive-khaki to tan-brown, with finely striated pale-cream striping along the neck, shoulders and thighs; yellowish cream belly and underside of throat; in the plate, mottled brown and cream. The tail turns blue-grey toward the tip. In the film still, the chest and neck are lighter green-cream with a blue-green tail and blue eyes.
 - **Feet**: long toes, slender, with sharp curved claws, large webbed feet are drawn in the plate (the foot is long, spread and flattened like a wading foot) but not clearly in the CG render.
 - **Pose**: in the plate, one stands upright and the other bends deep with the beak down at the water surface and the arms flung out for balance, tail up.
-- **Size**: about 1 m long from beak to tail tip, small, shown at about waist height of a Gungan only in the film still (a large Gungan or beast looms beside it); no explicit scale elsewhere, so treat it as roughly heron-sized.
+- **Size**: neither Wookieepedia page gives a length or height (https://starwars.fandom.com/wiki/Pikobi); the images only suggest a small animal, at about the waist height of a Gungan in the film still (a large Gungan or beast looms beside it). Exact dimensions are unconfirmed.
 
 ## Must show
 - [ ] Slender two-legged, long-necked wader with horizontal body and a very long thin whip-like tail

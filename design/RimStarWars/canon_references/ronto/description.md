@@ -18,12 +18,12 @@ Easily domesticated, rontos became the favored pack animal and mount of the
 Jawas, hauling cargo and Jawa passengers between Tatooine's trading posts and
 settlements (Mos Espa, Mos Eisley). They were loyal, gentle, and strong once
 tamed. Later galactic history: kept as menagerie beasts (e.g. by Grakkus the
-Hutt), bred/wrangled at Freetown after the fall of the Empire, and — much
+Hutt, *Star Wars* (2015) 10), bred/wrangled at Freetown (*Aftermath: Life Debt*) after the fall of the Empire, and — much
 later — farmed for meat used in "Ronto Wraps" sold at Black Spire Outpost on
 Batuu.
 
-**Production note (important, corrects an assumption in this task's brief):**
-per Wookieepedia's "Behind the scenes" section, the ronto was NOT in the
+**Production note:**
+per Wookieepedia's "Behind the scenes" section (https://starwars.fandom.com/wiki/Ronto), the ronto was not in the
 original 1977 theatrical cut of *A New Hope*. It was created for the 1997
 *Star Wars Trilogy Special Edition* re-release, designed by artist TyRuben
 Ellingson (who modeled concepts after elephants, rhinos, and dinosaurs).
@@ -31,14 +31,11 @@ Industrial Light & Magic built it by digitally modifying the Brachiosaurus
 model from *Jurassic Park*; ILM animators nicknamed it "Bronto" during
 production, and George Lucas dropped the "B" to get "Ronto." So the Mos
 Eisley street shot below is a 1997 Special-Edition VFX addition composited
-into the Tatooine scene, not a practical 1977 elephant-costume creature as
-the task brief assumed.
+into the Tatooine scene, not a practical 1977 creature.
 
 ## Visual brief
 All four candidate images agree closely and reinforce each other — there is
-no text/image conflict here, and no blue-grey coloration anywhere (that
-"AI invented the wrong color" cautionary example in this task's instructions
-evidently refers to a different creature, not this one).
+no text/image conflict here, and no blue-grey coloration in any of the four.
 
 - **Body plan**: long, gently S-curved sauropod-like neck rising to a
   triangular head; a distinct rhino/ceratopsian-style pointed nose horn or
@@ -70,9 +67,8 @@ evidently refers to a different creature, not this one).
   — a bridle/rein around the head and neck, and a cargo saddle/howdah
   strapped across the shoulders — matching the sourced role as a Jawa pack
   and mount animal.
-- No disagreement to flag beyond the production-history correction above:
-  every image's silhouette, ear-flap shape, horn, beak, and body proportions
-  are mutually consistent.
+- Every image's silhouette, ear-flap shape, horn, beak, and body proportions
+  is mutually consistent.
 
 ## Must show
 - [ ] Long, gently S-curved neck rising to a triangular head

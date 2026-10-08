@@ -5,15 +5,15 @@
 ## Sourced text (Wookieepedia)
 Porgs were a non-sentient species of sea-dwelling, beakless birds native to
 the island planet Ahch-To, where Luke Skywalker lived in exile before the
-events of *The Last Jedi* (2017). They first appeared on-screen in that film
-and have since recurred across *The Rise of Skywalker*, comics, and Disney
+events of *The Last Jedi* (2017). They were designed for that film; the
+wiki lists *The Force Awakens* as a retroactive first appearance
+(https://starwars.fandom.com/wiki/Porg). They have since recurred across *The Rise of Skywalker*, comics, and Disney
 kids' media (*Star Wars Resistance*, *Chewie and the Porgs*).
 
 Size: small — **18 to 26 cm** tall, **~0.5 kg (1 lb)**. Body plan: **stocky
 and round**, two short stubby wings, a **flat, beakless face**, two webbed
-feet, orange/tan legs. Sexually dimorphic — males slightly larger, with
-orange plumage around the eyes (females' eye-plumage color is less
-emphasized in sourcing). Eyes are large, with brown irises, black pupils,
+feet, orange/tan legs. Sexually dimorphic — males slightly larger, and only the males have
+orange plumage around the eyes (infobox: orange feathers, males). Eyes are large, with brown irises, black pupils,
 and stereoscopic/telescopic vision for catching fish. Plumage: dense,
 waterproof feathers, **white on the body and face**, **gray-to-brown on the
 wings and back**, giving natural camouflage; a soft fluffy underlayer makes
@@ -21,11 +21,11 @@ them much lighter than they look. Habitat: coastal cliffs, islands, and open
 sea on Ahch-To; diet is fish and crustaceans, caught via controlled dives.
 Behavior: hypercurious, nest-builders (hair/fiber/grass, decorated with
 shiny objects), drawn to shiny objects and human belongings, can wreak havoc
-if curiosity runs unchecked, capable of short flights, vocalize in burbles/
-squeaks/song. A group of porgs is called a "murder." Canon role: comic
-relief/wildlife dressing on Ahch-To and later stowaways aboard the
-*Millennium Falcon*; not combatants, not sentient, no known role beyond
-local fauna and merchandising icon.
+if curiosity runs unchecked, able to fly short distances (Rian Johnson, quoted on the wiki), young are called porglets and hatch as pairs, vocalize in burbles/
+squeaks/song. A group of porgs is called a "murder." Canon role: wildlife on Ahch-To
+that the Lanai and visitors hunt as tasty food (Chewbacca roasts two in
+*The Last Jedi*), and later stowaways aboard the *Millennium Falcon*; kept as
+pets and sold in the Creature Stall on Batuu; not combatants, not sentient.
 
 ## Visual brief
 All three candidate images agree closely with the sourced text and with
@@ -37,12 +37,11 @@ easy to doubt on a "bird" until you actually look), short furry-looking
 stub wings held close to the body, and thin orange legs with webbed feet
 tucked almost entirely under the round belly. Coloration matches text
 exactly: **white/cream face and underbelly, gray-to-brown mottled back and
-wing feathers, warm orange-tan cheek/eye patches**. The nest-cliff image
+wing feathers, warm orange-tan cheek/eye patches** (canon: orange eye plumage is male only). The nest-cliff image
 confirms the coastal/grassy-cliff-over-ocean habitat and shows the same
 color pattern from a side profile. The cliff pair image (with the discarded
 lightsaber) confirms the curious/shiny-object-seeking behavior described in
-the text and shows the stubby wings spread, functioning more like small
-flippers/arms than flight wings — consistent with "short flights only."
+the text and shows the stubby wings spread (the species is able to fly short distances).
 
 **The donor sprite disagrees with canon in two ways.** First, color: the
 donor sprite's back/wings are rendered in a **flat, fairly dark charcoal

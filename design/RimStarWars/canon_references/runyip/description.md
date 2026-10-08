@@ -12,6 +12,8 @@
 Runyips were a herbivorous species that foraged on the floors of Yavin 4's forests, where they were harassed by piranha beetles.
 
 **Biology and appearance** A species of squat quadrupeds, runyips hailed from Yavin 4, the fourth moon of the gas giant Yavin. The creatures had antlered heads with a flexible nose, and their front toes bore a claw. Their coats had a characteristic pattern of black or dark brown stripes on a whitish background.
+
+The canon infobox lists a "Tran Mariel runyip" subspecies (*Solo: A Star Wars Story The Official Guide*), and the page notes Poe Dameron sometimes wore a jacket of runyip leather (*The Complete Visual Dictionary, New Edition*). Runyips were first created for the Legends supplement *Galaxy Guide 2: Yavin and Bespin* (1989); canon first mentioned them in *Ultimate Star Wars* (2015) and first showed them in *Star Wars Battlefront II* (2017). The canon page gives no size, no antler shape and no tail description. (https://starwars.fandom.com/wiki/Runyip)
 ### Legends — https://starwars.fandom.com/wiki/Runyip/Legends
 
 Runyips were herbivores native to Tran Mariel. A species of similar appearance and grumpy temperament was native to the jungle moon of Yavin 4, and was named "runyip" as well.
@@ -23,7 +25,7 @@ Yavin 4 runyips were a different species. They had claws on their toes which the
 Natural predators of the Yavin 4 runyip include a number of species, including piranha beetles (in which its only escape is to dive underwater), as well as aquatic gundarks.
 
 ## Visual brief
-Four images: CANON (a Battlefront II concept/map illustration labelled RUNYIP, and a motion-blurred game still of one running through water), LEGENDS (a painted plate of the Yavin 4 runyip, and a black-and-white drawing of a DIFFERENT species, the Tran Mariel runyip). The Legends text itself says two unrelated species share the name; use the Yavin 4 (canon) animal.
+Four images: CANON (a *Star Wars Battlefront II* (2017) concept/map illustration labelled RUNYIP, and a motion-blurred game still of one running through water), LEGENDS (a painted plate of the Yavin 4 runyip, and a black-and-white drawing of a DIFFERENT species, the Tran Mariel runyip). The Legends text itself says two unrelated species share the name; use the Yavin 4 (canon) animal. (The canon page also indexes a "Tran Mariel runyip" subspecies via *Solo: A Star Wars Story The Official Guide*, which does not make the older Legends Tran Mariel art canon.)
 - **Silhouette**: a squat, heavy, rhino/tapir-like quadruped with a huge barrel body, a high rounded hump over the shoulders and a sagging belly, short thick legs with broad padded feet, and a hanging tail with a tuft at the end. The head is held low and nose-down while rooting, long, pig-like or tapir-like.
 - **Pattern/colour**: a whitish-cream coat with bold black-brown (dark brown in the plate) tiger- or zebra-like vertical stripes over the back, flanks and rear legs; the shoulder and neck are a solid darker patch; creamy belly and underside; legs below the knees are darkest. The motion-blur game still shows pale tan with dark banding at the rump and tail.
 - **Head**: a long, flexible, pig-like snout, a down-turned wrinkled snout with a thick lower lip and a pale muzzle; small eyes; two very long, tall, branching ANTLERS rise straight up from the back of the skull like a stag's, flat and palmate with a few short tines, as tall as the head and neck combined, pale brown in the plate (the text says shed annually).

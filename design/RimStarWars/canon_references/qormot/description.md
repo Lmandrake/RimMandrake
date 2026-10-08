@@ -3,14 +3,16 @@
 **defName**: `RSW_Qormot` — in-repo label "qormot"; no variants
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Qormot
+### Legends — https://starwars.fandom.com/wiki/Qormot (the page is a Legends article sourced to Creatures of the Galaxy (1994) and The Complete Star Wars Encyclopedia; no canon article exists)
+
+Infobox: 1 m at the shoulder and 1.2 m long, from Yeshocq (Creatures of the Galaxy).
 
 Qormots were omnivorous forest creatures from the planet Yeshocq's southern hemisphere. They were stocky quadrupeds with sharp claws and teeth. A qormot could easily be recognized from the single eye in the middle of its forehead, and the array of quills sticking out of its spine and flanks. These quills could actually be launched at opponents up to twelve meters away, though the effective range was limited to about five meters due to the poor depth perception of the qormot's single eye.
 
 Qormots were relatively docile during most of Yeshocq's thirteen-month year, only showing aggression if rival qormots or predators encroached on the territory of their small prides. When they were roused, however, they could be quite fierce. During the mating season in late autumn, their ferocity increased, making any creature who strayed into qormot territory a likely target. This included other qormots, as the females violently battled one another for access to choice breeding grounds.
 
 ## Visual brief
-Viewed 2026-10-04. The single image is canon (a black-and-white ink illustration, infobox): two
+Viewed 2026-10-04. The single image is from the Legends page (a black-and-white ink illustration, infobox): two
 adult qormots fighting in a forest and a small young one at lower right.
 - **LOUD DISAGREEMENT / unclear**: the prose says "stocky quadrupeds" with "a single eye in the
   middle of its forehead". The ink drawing shows creatures that can rear up on their hind legs
@@ -37,7 +39,7 @@ adult qormots fighting in a forest and a small young one at lower right.
 - [ ] Elongated tapering snout with a curved tip and a fanged mouth
 - [ ] Single eye in the middle of the forehead (prose only; not visible in the drawing -- verify with a better image)
 - [ ] Broad clawed hands and feet; bare, wrinkled, paler belly
-- [ ] Colour is OWED: no coloured image exists and the prose gives none
+- [ ] Colour is OWED: no coloured image was found in this library and the prose gives none
 
 ## Engine limits
 not yet assessed

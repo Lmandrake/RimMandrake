@@ -12,6 +12,8 @@
 Shaaks were a bulbous mammalian species of non-sentient herbivores that grazed on the grasslands of Naboo, and were bred on other planets as well.
 
 **Biology and appearance** Gentle and non-threatening (despite what their dark red eyes might suggest), shaaks were slow movers, although they were prone to bucking wildly if someone untrained in shaak-riding attempted to mount them. They had four legs, brown leathery skin, and bodies that were plump with blubber. They were known to barely be able to stand upright, because their legs were very weak in proportion to their bulbous bodies. Shaaks were unable to swim, due to their size, and therefore avoided the swamps of Naboo. If infected with the waterborne Blue Shadow Virus, shaaks would die instantly and turn a shade of purple, while members of most other species had 48 hours to live before the virus became fatal.
+
+The infobox gives a height of 1.80 m (Databank), brown skin and red eyes. Gungans farmed shaaks for meat and hide (*The Visual Encyclopedia*), they were sometimes used as pack animals, and the Gungan wrangler Peppi Bow herded them in *The Clone Wars*, "Blue Shadow Virus". They appear in *The Phantom Menace* and *Attack of the Clones*, where Anakin rides one. (https://starwars.fandom.com/wiki/Shaak)
 ### Legends — https://starwars.fandom.com/wiki/Shaak/Legends
 
 Shaaks were plump quadrupedal herd animals native to the grasslands of Naboo. Shaaks were often raised for their meat, and had large, rotund bodies. They had relatively weak legs, however, and were barely able to keep themselves upright.
@@ -34,7 +36,7 @@ Four images: CANON (Visual Encyclopedia CG render; a watercolour bestiary sketch
 - **Skin**: smooth with deep wrinkled folds around the neck and legs, bare hide, no fur, small round spots near the legs.
 - **Legs/feet**: thin tapering legs ending in small, flat three-toed splayed feet with tiny claws or nails, jointed at an odd backward angle.
 - **Cutaway (Legends)**: shows a huge internal cavity packed with several unborn young in separate chambers; not needed for the sprite. Wild shaaks are said (Legends text) to be less bulbous.
-- **Size**: huge: the body is several times the leg height; the plate shows pups at about one-fifth size.
+- **Size**: the canon infobox gives a height of 1.80 m (Databank; the Legends infobox gives 1.5 m). The body is several times the leg height; the plate shows pups at about one-fifth size.
 
 ## Must show
 - [ ] Giant egg-shaped body balanced on four short thin weak-looking legs
