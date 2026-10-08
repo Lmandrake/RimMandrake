@@ -377,3 +377,38 @@ git tag `art-snapshot-2026-10-04`. Sheet snapshots: `infrastructure/state/art/sh
   `infrastructure/githooks/pre-push` for every push. A texture PNG change must end an authorized `live` chain
   starting at the committed bytes. Its PreToolUse registration in `.claude/settings.json` is not made yet.
 - **Not built yet:** `art transform`, the deploy check, `art recover`/journal, and the per-biome desert sheets.
+
+## 8. `art enact` — a ruled sheet in one pass (2026-10-08)
+
+Owner, 2026-10-08: *"after a successful art review sheet, I often will say very clearly, delete these things, accept
+these things, regenerate these things, and cut this animal from the biome. And it seems to take half an hour to an
+hour … What is taking so long?"* Fix F5 of `Transient/art_pipeline_latency_2026-10-08.md`. Code:
+`src/RimMandrake/Utils/art/enact.py`, selftest `selftest_enact.py`.
+
+    art.py enact <decisions.json> [--apply] [--hold <subject>]... [--mark-done <row> --evidence <sha>] [--no-deploy]
+
+Dry run unless `--apply`. One pass, every step compared against current state, so a second run is a no-op:
+
+1. **Ingest** the rulings (§3). `via` is recorded repo-relative, and an event is skipped when the ledger already
+   holds the same decision by CONTENT (row, column, graphic, verdict, click time), whatever path spelled the file.
+   Ingest's own purge step is not used (it releases keeps).
+2. **Install** each pick through `art install`, authorised by the sheet's keep ruling. Per-graphic picks win over
+   the row pick. A picture already live anywhere (its slot or a graphic variant such as `RM_Fuzz_a`) is done. A
+   by-name render on a row with several graphics is a CONFLICT unless it is already live. Picks of donor art with
+   no slot of ours are TODOs.
+3. **Queue** every `redo` through `fill_queue.py` at priority 0, with his note verbatim. A row whose job exists
+   (note verbatim, or same target_def filed after his click) is reported, never re-filed. All-failed jobs are
+   listed as FAILED.
+4. **Purge** every ✕ with `release_keep=False`. A picture that is live, owner-kept, or the row's own pick/variant
+   is never purged: it is listed as a CONFLICT, one line each.
+5. **Cut** (`cut`, or `hold` with a note saying cut / not needed). The row is removed from THAT sheet's biome only:
+   inline rosters, plus patch rows found by each PatchOperation's own xpath, read as XML elements. Sheet names are
+   resolved through `carriedFrom` and the census `defNames`. Our defs, and the eggs/products only they use, are
+   deleted, and their textures retired, only when nothing else in `src/` names them. Donor defs keep their def;
+   only our roster line goes.
+6. **Notes** that are not redraws are TODO lines, never guessed. `--mark-done` records one as done by hand (an
+   `enact_done` event, written even on a dry run).
+7. **Deploy** only the touched mods (`--mod`, or `--compose biomes` for a folded biome). A plan that writes a DLL
+   while RimWorldWin64 runs is skipped.
+8. **Summary**: counts, CONFLICTS, TODOs. Art shows after the next game restart.
+

@@ -128,3 +128,5 @@ Ingest that sheet: stamp ruled (`art.py ingest`), install picks (`art install`),
 verbatim note, make the plainly mechanical def edits his notes ask for (scoped to that biome), file
 judgement calls on an item, commit and push. Precedent:
 `Transient/biome_ffar/abyss_close_progress_2026-10-05.md`. Then ask any open question as a card.
+**One command does the mechanical part:** `art.py enact <decisions.json> [--hold <subject>]` prints the plan
+(ingest, installs, redraws, purges, cuts, deploy, CONFLICTS, TODOs); `--apply` does it. Design §8.

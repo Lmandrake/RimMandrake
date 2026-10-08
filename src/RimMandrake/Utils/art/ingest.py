@@ -28,6 +28,37 @@ from pathlib import Path
 import artledger as L
 
 _PH: dict = {}
+MIRROR_ROOT = Path("/mnt/d/Luke/dev/RimMandrake")
+
+
+def rel_via(p) -> str:
+    """A decisions path as the ledger records it: repo-relative POSIX whenever it lies in this clone or the
+    read-only D: mirror (an absolute spelling once minted 231 duplicate events for one sitting)."""
+    pp = Path(p)
+    rp = (pp if pp.is_absolute() else Path.cwd() / pp).resolve()
+    for root in (L.REPO_ROOT.resolve(), MIRROR_ROOT):
+        try:
+            return rp.relative_to(root).as_posix()
+        except ValueError:
+            continue
+    return str(p)
+
+
+def content_key(ev: dict):
+    """What makes two ruling/rejected events THE SAME decision, whatever path spelled their decisions file:
+    the row, column, graphic, verdict and his click time. None = no content identity (fall back to the id)."""
+    t = ev.get("type")
+    tg = ev.get("target") or {}
+    if t == "ruling" and tg.get("row") and ev.get("at"):
+        return ("ruling", L.normalise_verdict(ev.get("verdict") or ""), tg.get("row"), tg.get("column"),
+                tg.get("graphic"), tg.get("variant_of"), ev.get("at"))
+    if t == "rejected" and ev.get("row") and ev.get("at"):
+        return ("rejected", ev.get("sha"), ev.get("row"), ev.get("column"), ev.get("at"))
+    return None
+
+
+def known_content(events) -> set:
+    return {k for k in (content_key(e) for e in events) if k}
 
 
 def placeholder_set(shas) -> str:
@@ -96,7 +127,9 @@ def rejected_events(ruling: dict, srow: dict) -> list[dict]:
 
 
 def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None = None,
-           defer_redo_jobs: bool = False) -> dict:
+           defer_redo_jobs: bool = False, purge: bool = True, skip_rows=()) -> dict:
+    """purge=False leaves every ✕ alone (art.py enact purges itself, never releasing a keep);
+    skip_rows: row keys not ingested at all (enact --hold)."""
     doc = json.loads(Path(decisions_path).read_text())
     redo_rows = [r for r, v in (doc.get("decisions") or {}).items()
                  if isinstance(v, dict) and v.get("at") and (v.get("decision") or "").strip() == "redo"]
@@ -139,10 +172,25 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                                           + ", ".join(f"{r}:{l}" for r, l in bad[:20])}
     idx = L.Index()
     w = L.Writer({e["id"] for e in idx.events})
-    via = str(decisions_path)
+    cks = known_content(idx.events)
+    via = rel_via(decisions_path)
+
+    def put(ev) -> bool:
+        """Append unless this id OR this content is already in the ledger. Dry-run counts without writing."""
+        ck = content_key(ev)
+        if ev["id"] in w.known or (ck and ck in cks):
+            return False
+        if ck:
+            cks.add(ck)
+        if dry_run:
+            w.known.add(ev["id"])
+            return True
+        return w.add(ev)
+
     out = {"ok": True, "rulings": 0, "purged": 0, "purge_refused": 0, "untouched": 0, "unresolved": []}
+    skip = set(skip_rows)
     for row, v in (doc.get("decisions") or {}).items():
-        if not isinstance(v, dict):
+        if not isinstance(v, dict) or row in skip:
             continue
         if not v.get("at"):
             out["untouched"] += 1
@@ -178,11 +226,11 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                       "verdict": L.normalise_verdict(dec), "raw_verdict": dec, "by": "owner", "said": note,
                       "note": note, "at": v.get("at"), "trust": "ruled", "via": via,
                       "subject_key": srow.get("subject_key", ""), "source_file": via}
-            if not dry_run and w.add(ev):
+            if put(ev):
                 out["rulings"] += 1
             if ev["verdict"] in ("redo", "reject"):
                 for rev in rejected_events(ev, srow):
-                    if not dry_run and w.add(rev):
+                    if put(rev):
                         out["rejected"] = out.get("rejected", 0) + 1
             # per-biome sheets: a row's extra graphics (swimming, flying …) carry their own pick
             for g, pl in sorted((v.get("picks") or {}).items()):
@@ -194,7 +242,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                            "target": {"shas": sorted({s for s in cols[pl].values() if s}), "column": pl,
                                       "row": row, "graphic": g}}
                     pev.pop("raw_verdict", None)
-                    if not dry_run and w.add(pev):
+                    if put(pev):
                         out["rulings"] += 1
         # kept variants: extra columns the owner marked as valid in-game variants of the pick
         if srow and decided:
@@ -210,12 +258,12 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                            "at": v.get("variantsAt") or v.get("at"), "trust": "ruled", "via": via,
                            "subject_key": srow.get("subject_key", ""), "source_file": via,
                            "evidence": "sidecar savedBy/writeCount" if plumbed else "reviewStatus ruled"}
-                    if not dry_run and w.add(vev):
+                    if put(vev):
                         out["rulings"] += 1
         if dec and decided and not (srow and dec):
             out["unresolved"].append(row)
         for sha in v.get("purge") or []:
-            if dry_run:
+            if dry_run or not purge:
                 continue
             w.flush()
             try:
@@ -226,7 +274,8 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                 out["purge_refused"] += 1
                 out.setdefault("refusals", []).append(f"{sha[:12]}: {e}")
             w = L.Writer()
-    w.flush()
+    if not dry_run:
+        w.flush()
     return out
 
 

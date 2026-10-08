@@ -14,6 +14,9 @@
     art.py purge     <sha> --owner-said "..." [--release-keep]   reject+purge (owner only)
     art.py ingest    <decisions.json>       owner sheet decisions -> ruling/purge events
     art.py index                            write the gitignored projection index.json
+    art.py enact     <decisions.json> [--apply] [--hold S]... [--mark-done ROW]... [--no-deploy]
+                                            a ruled sheet in ONE pass: ingest, install picks, queue redraws,
+                                            purge ✕ (never protected ones), cut rows, deploy touched mods (enact.py)
 
 Design: design/RimMandrake/art_ledger_design_2026-10-04.md. Library: artledger.py.
 """
@@ -239,6 +242,9 @@ def main(argv=None):
     p.add_argument("--dry-run", action="store_true")
     if argv is None:
         argv = sys.argv[1:]
+    if argv[:1] == ["enact"]:
+        import enact
+        return enact.main(argv[1:])
     if argv[:1] == ["guard"]:
         import art_guard
         return art_guard.main(argv[1:])
