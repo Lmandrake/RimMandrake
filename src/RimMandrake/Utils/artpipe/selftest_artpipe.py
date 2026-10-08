@@ -71,7 +71,7 @@ def ok(name: str, cond: bool, detail: str = "") -> None:
 # --------------------------------------------------------------------------
 
 def make_reference(path: Path, w: int = 64, h: int = 64) -> None:
-    """64x64 RGBA: transparent border, a solid opaque 32x32 red box centred —
+    """64x64 RGBA: transparent border, an opaque textured 32x32 red box centred —
     enough geometry for validate_sprite.py's checks to have something to
     compare against."""
     rgba = bytearray(w * h * 4)
@@ -80,7 +80,8 @@ def make_reference(path: Path, w: int = 64, h: int = 64) -> None:
         for x in range(w):
             i = (y * w + x) * 4
             if box <= x < box + 32 and box <= y < box + 32:
-                rgba[i:i + 4] = bytes((200, 30, 30, 255))
+                # textured, not one flat colour: a flat box is a geometric placeholder, which the daemon fails
+                rgba[i:i + 4] = bytes((200, (x * 7 + y * 13) % 120, 30, 255))
     pnglib.write_rgba(str(path), w, h, bytes(rgba))
 
 
@@ -1006,7 +1007,11 @@ def test_derivation_duplicate_gate_fails_exact_copy_passes_different_image():
 
         from PIL import Image as _Img
         different = tdp / "different.png"
-        _Img.new("RGBA", (64, 64), (20, 40, 220, 255)).save(different)
+        _d = _Img.new("RGBA", (64, 64), (20, 40, 220, 255))   # textured blue: a flat canvas would be a placeholder
+        for _y in range(64):
+            for _x in range(64):
+                _d.putpixel((_x, _y), (20, 40 + (_x * 11 + _y * 5) % 90, 220, 255))
+        _d.save(different)
         res_ok = artpiped._check_size_and_validate({}, job, None, different, common.DEFAULT_VALIDATOR,
                                                     derive_master_png=master)
         ok("derivation gate: a clearly different image PASSES the duplicate gate",
@@ -3392,11 +3397,21 @@ def test_legibility_gate_rejects_mud_passes_shipping_and_disables_cleanly():
                 imf = _Img.new("RGBA", (128, 128), (0, 0, 0, 0))
                 for x in range(128):
                     for y in range(128):
-                        imf.putpixel((x, y), (200, 180, 150, 255))
+                        imf.putpixel((x, y), (200, 140 + (x * 7 + y * 13) % 80, 150, 255))   # textured, not a flat placeholder
                 imf.save(flush)
                 jobf = {"canvas": {"width": 128, "height": 128}, "background": "transparent"}
                 resf = artpiped._check_size_and_validate({}, jobf, None, flush,
                                                           artpiped.LEGIBILITY_SCRIPT)
+                # owner rule 2026-10-07 22:33 PDT: a flat circle never reaches done/
+                circ = Path(td2) / "circle.png"
+                imc = _Img.new("RGBA", (128, 128), (0, 0, 0, 0))
+                from PIL import ImageDraw as _Draw
+                _Draw.Draw(imc).ellipse((14, 14, 114, 114), fill=(120, 80, 40, 255), outline=(10, 10, 10, 255), width=3)
+                imc.save(circ)
+                resc = artpiped._check_size_and_validate({}, jobf, None, circ, artpiped.LEGIBILITY_SCRIPT)
+                ok("a geometric placeholder render fails as placeholder_output",
+                   resc.get("status") == "failed" and resc.get("worker_status") == "placeholder_output",
+                   f"{resc.get('status')}/{resc.get('worker_status')}")
                 ok("borderline flow: edge-flush art fails as insufficient_margin "
                    "(or regen if it never reaches the stroke)",
                    resf.get("status") == "failed" and resf.get("worker_status")

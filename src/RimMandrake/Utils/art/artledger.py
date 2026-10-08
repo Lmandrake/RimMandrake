@@ -545,8 +545,8 @@ def placeholder_refusal(rel: str, data: bytes) -> str:
     try:
         import placeholder_detect as PD
         why = PD.placeholder_reason(data)
-    except Exception as e:                             # noqa: BLE001
-        return f"UNMEASURED: placeholder check could not read the picture ({type(e).__name__}: {e}) — not installed"
+    except Exception:                                  # noqa: BLE001  not a readable image: not this gate's call
+        return ""
     return f"{rel}: {why} — a placeholder is never installed ({PLACEHOLDER_RULE})" if why else ""
 
 

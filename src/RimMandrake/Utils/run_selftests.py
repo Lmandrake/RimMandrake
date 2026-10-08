@@ -99,6 +99,10 @@ SELFTEST_GLOB = "selftest*.py"
 # turn an exclusion into a permanent disappearance.
 NOT_STANDALONE: dict[str, str] = {}
 
+# Lints the suite must always carry: a rename or move that drops one out of discovery is a hard error.
+# selftest_placeholder_lint.py — no shipped def draws a geometric placeholder (owner rule 2026-10-07 22:33 PDT).
+REQUIRED = {"src/RimMandrake/Utils/art/selftest_placeholder_lint.py"}
+
 RIMLUA_PY = Path.home() / ".local/venvs/rimlua/bin/python"
 RIMLUA_FIX = ("python3 -m venv ~/.local/venvs/rimlua && "
               "~/.local/venvs/rimlua/bin/pip install lupa")
@@ -214,6 +218,11 @@ def main() -> int:
     if not tests:
         print(f"no {SELFTEST_GLOB} found under {', '.join(SEARCH_ROOTS)} — "
               "that itself is suspicious")
+        return 1
+
+    missing = REQUIRED - {p.resolve().as_posix()[len(str(REPO_ROOT.resolve())) + 1:] for p in tests}
+    if missing:
+        print("REQUIRED lint selftest(s) not discovered: " + ", ".join(sorted(missing)))
         return 1
 
     stale = set(NOT_STANDALONE) - {p.relative_to(REPO_ROOT).as_posix()
