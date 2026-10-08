@@ -1,4 +1,4 @@
-# Biome flora/fauna art census — 2026-10-05 08:58
+# Biome flora/fauna art census — 2026-10-07 19:26
 
 Item `BIOME_FLORAFAUNA_ART_REVIEW_1`. Generator: `src/RimMandrake/Utils/art/biome_census.py` (schema in its docstring). Machine-readable: `census.json` beside this file.
 
@@ -36,13 +36,15 @@ defs: `RM_BlueDesert` (20)
 
 ## 4. the Abyss (`RM_Abyss`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 27
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 25
 
-defs: `RM_Abyss` (27)
+defs: `RM_Abyss` (25)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 27 | 17 | 10 | 0 | 27 | 0 | 0 | 0 | 0 | 0 |
+| 25 | 15 | 10 | 0 | 25 | 0 | 1 | 0 | 0 | 0 |
+
+**Canon, no entry (Wookieepedia title):** `RM_GlowingGrass` → Grass
 
 ## 5. the Cauldron (`RM_Cauldron`)
 
@@ -52,9 +54,9 @@ defs: `RM_Cauldron` (46)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 46 | 29 | 17 | 0 | 46 | 6 | 2 | 0 | 3 | 0 |
+| 46 | 29 | 17 | 0 | 46 | 7 | 1 | 0 | 3 | 0 |
 
-**Canon, no entry (Wookieepedia title):** `RSW_Screecher` → Screecher, `Silooth` → Silooth/Legends
+**Canon, no entry (Wookieepedia title):** `RSW_Screecher` → Screecher
 
 ## 6. the Chill crater (`RM_ChillCrater`)
 
@@ -68,13 +70,13 @@ defs: `RM_ChillCrater` (0)
 
 ## 7. the Contagion (`RM_Contagion`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 35
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 34
 
-defs: `RM_Contagion` (35)
+defs: `RM_Contagion` (34)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 35 | 22 | 13 | 0 | 35 | 0 | 1 | 1 | 9 | 0 |
+| 34 | 21 | 13 | 0 | 34 | 0 | 1 | 1 | 9 | 0 |
 
 **Canon, no entry (Wookieepedia title):** `RM_Peeper` → Peeper
 
@@ -82,13 +84,13 @@ defs: `RM_Contagion` (35)
 
 ## 8. the Fever Wood (`RM_FeverWood`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 28, patch mandrake.rut.patches 10
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 34, patch mandrake.rut.patches 10
 
-defs: `RM_FeverWood` (38)
+defs: `RM_FeverWood` (44)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 38 | 16 | 22 | 0 | 38 | 8 | 0 | 0 | 1 | 0 |
+| 44 | 22 | 22 | 0 | 44 | 8 | 0 | 0 | 1 | 0 |
 
 ## 9. the Cracked Lands (`RM_FloodedCanyon`)
 
@@ -102,55 +104,55 @@ defs: `RM_FloodedCanyon` (25)
 
 ## 10. the Slime (`RM_GelatinousSlime`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 12
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 11
 
-defs: `RM_GelatinousSlime` (12)
+defs: `RM_GelatinousSlime` (11)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 12 | 8 | 4 | 0 | 12 | 0 | 0 | 0 | 1 | 0 |
+| 11 | 7 | 4 | 0 | 11 | 0 | 0 | 0 | 1 | 0 |
 
 ## 11. the Greentide (`RM_Greentide`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 39, patch mandrake.rut.patches 25
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 40, patch mandrake.rut.patches 25
 
-defs: `RM_Greentide` (64)
+defs: `RM_Greentide` (65)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 64 | 32 | 25 | 7 | 64 | 21 | 2 | 0 | 8 | 0 |
+| 65 | 33 | 25 | 7 | 65 | 21 | 2 | 0 | 8 | 0 |
 
 **Canon, no entry (Wookieepedia title):** `RM_Saava` → Saava, `Plant_Grass` → Grass
 
 ## 12. the Grey Sea (`RM_GreySea`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 45
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 44
 
-defs: `RM_GreySea` (45)
+defs: `RM_GreySea` (44)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 45 | 17 | 16 | 12 | 45 | 0 | 0 | 0 | 9 | 0 |
+| 44 | 16 | 17 | 11 | 44 | 0 | 0 | 0 | 9 | 0 |
 
 ## 13. the Lantern Deeps (`RM_LanternDeeps`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 31
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 26
 
-defs: `RM_LanternDeeps` (31)
+defs: `RM_LanternDeeps` (26)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 31 | 19 | 12 | 0 | 31 | 0 | 0 | 0 | 8 | 0 |
+| 26 | 15 | 11 | 0 | 26 | 0 | 0 | 0 | 0 | 0 |
 
 ## 14. the Leaning Scrub (`RM_LeaningScrub`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 38, patch mandrake.rut.patches 40
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 44, patch mandrake.rut.patches 39
 
-defs: `RM_LeaningScrub` (78)
+defs: `RM_LeaningScrub` (83)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 78 | 59 | 19 | 0 | 78 | 36 | 0 | 0 | 10 | 0 |
+| 83 | 58 | 25 | 0 | 83 | 36 | 0 | 0 | 10 | 0 |
 
 ## 15. the Miasma (`RM_Miasma`)
 
@@ -170,9 +172,7 @@ defs: `RM_NightsideIce` (4)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 4 | 4 | 0 | 0 | 4 | 1 | 1 | 0 | 0 | 0 |
-
-**Canon, no entry (Wookieepedia title):** `Tauntaun` → Tauntaun
+| 4 | 4 | 0 | 0 | 4 | 2 | 0 | 0 | 0 | 0 |
 
 ## 17. the Pyrelands (`RM_Pyrelands`)
 
@@ -190,13 +190,13 @@ defs: `RM_Pyrelands` (18)
 
 ## 18. the Rust Cathedral (`RM_RustCathedral`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 4, patch mandrake.rut.patches 1
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 3, patch mandrake.rut.patches 2
 
 defs: `RM_RustCathedral` (5)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 5 | 4 | 0 | 1 | 5 | 0 | 0 | 0 | 2 | 0 |
+| 5 | 4 | 0 | 1 | 5 | 1 | 0 | 0 | 2 | 0 |
 
 ## 19. sea floor (`RM_SeabedFloor`)
 
@@ -260,13 +260,13 @@ defs: `RM_SeabedUnavailable` (0)
 
 ## 25. the Chill (`RM_TheChill`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 29
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 28
 
-defs: `RM_TheChill` (29)
+defs: `RM_TheChill` (28)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 29 | 10 | 10 | 9 | 29 | 0 | 0 | 0 | 8 | 0 |
+| 28 | 10 | 9 | 9 | 28 | 0 | 0 | 0 | 8 | 0 |
 
 ## 26. the Forge (`RM_TheForge`)
 
@@ -276,61 +276,57 @@ defs: `RM_TheForge` (24)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 24 | 14 | 10 | 0 | 24 | 2 | 1 | 0 | 3 | 0 |
-
-**Canon, no entry (Wookieepedia title):** `Tibidee` → Tibidee
+| 24 | 14 | 10 | 0 | 24 | 3 | 0 | 0 | 3 | 0 |
 
 ## 27. the Rot (`RM_TheRot`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 54, patch mandrake.rut.patches 2
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 55, patch mandrake.rut.patches 2
 
-defs: `RM_TheRot` (56)
+defs: `RM_TheRot` (57)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 56 | 21 | 35 | 0 | 56 | 1 | 1 | 0 | 3 | 0 |
-
-**Canon, no entry (Wookieepedia title):** `Snoruuk` → Snoruuk/Legends
+| 57 | 22 | 35 | 0 | 57 | 2 | 0 | 0 | 3 | 0 |
 
 ## 28. the Scald (`RM_TheScald`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 21, patch mandrake.rut.patches 1
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 20
 
-defs: `RM_TheScald` (22)
+defs: `RM_TheScald` (20)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 22 | 12 | 1 | 9 | 22 | 1 | 0 | 0 | 10 | 0 |
+| 20 | 10 | 1 | 9 | 20 | 0 | 0 | 0 | 9 | 0 |
 
 ## 29. the Sump (`RM_TheSump`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 20, patch mandrake.rut.patches 1
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 18, patch mandrake.rut.patches 1
 
-defs: `RM_TheSump` (21)
+defs: `RM_TheSump` (19)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 21 | 11 | 10 | 0 | 21 | 1 | 0 | 0 | 0 | 0 |
+| 19 | 10 | 9 | 0 | 19 | 1 | 0 | 0 | 0 | 0 |
 
 ## 30. the Twilight Sea (`RM_TwilightSea`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 31, patch mandrake.rut.patches 2
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 32, patch mandrake.rut.patches 3
 
-defs: `RM_TwilightSea` (33)
+defs: `RM_TwilightSea` (35)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 33 | 18 | 3 | 12 | 33 | 2 | 0 | 0 | 12 | 0 |
+| 35 | 21 | 2 | 12 | 35 | 3 | 0 | 0 | 12 | 0 |
 
 ## 31. Warscar (`RM_Warscar`)
 
-file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 10, patch mandrake.rut.patches 8
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 12, patch mandrake.rut.patches 4
 
-defs: `RM_Warscar` (18)
+defs: `RM_Warscar` (16)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 18 | 16 | 2 | 0 | 18 | 1 | 0 | 0 | 4 | 0 |
+| 16 | 14 | 2 | 0 | 16 | 1 | 0 | 0 | 4 | 0 |
 
 ## 32. the Wastes (`RM_Wasteland`)
 
@@ -352,7 +348,7 @@ defs: `RM_Webwork` (23)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 23 | 6 | 17 | 0 | 23 | 0 | 0 | 0 | 0 | 0 |
+| 23 | 6 | 17 | 0 | 23 | 1 | 0 | 0 | 0 | 0 |
 
 ## 34. the Weeping Stones (`RM_WeepingStones`)
 
@@ -372,11 +368,11 @@ defs: `RM_WeepingStones` (51)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 902 | 530 | 308 | 64 | 902 | 162 | 12 | 4 | 116 | 0 |
+| 900 | 526 | 311 | 63 | 900 | 168 | 9 | 4 | 107 | 0 |
 
-Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 849.
+Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 839.
 
-**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 1, _canon_index_defnames 255, _artpipe_jobs_anooba 8, _ledger_variants 11455
+**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 1, _canon_index_defnames 266, _artpipe_jobs_anooba 9, _ledger_variants 12636
 
 
 **UNMEASURED:**

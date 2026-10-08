@@ -1007,7 +1007,10 @@ const FACE_ABBR = { south: 'S', east: 'E', north: 'N', west: 'W', single: '' };
 const faceAbbr = f => f in FACE_ABBR ? FACE_ABBR[f] : f.replace(/^(\d+)_(\w).*$/, (m, n, d) => n + d.toUpperCase());
 if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelectorAll('.bs-play[data-anim]').forEach(el => {
   const fr = el.dataset.anim.split('|'), i = ((+el.dataset.i || 0) + 1) % fr.length;
-  el.dataset.i = i; const im = el.querySelector('img'); if (im) im.src = fr[i];
+  /* advance only once the current frame has loaded: a frame that 404s (the gate's image-less scratch copy) must not
+     re-request every 66 ms, which kept headless Edge's virtual clock from ever settling (req 13 hang, 2026-10-07) */
+  const im = el.querySelector('img'); if (!im || !im.complete || !im.naturalWidth) return;
+  el.dataset.i = i; im.src = fr[i];
 }), 66);
 /* Variant default (owner, 2026-10-06): a row whose record has no `variants` key starts with EVERY set that is ours
    (not a donor original), not purged and not purgedLive marked as a variant; the owner turns off what is wrong.
@@ -1775,6 +1778,17 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             tier, tier_text = "canon", f"canon Star Wars creature (entry for the base species: {base})"
         canon_tag = (canon_state(key) or "no canon-library entry for this subject — judge on its own") if not canon else ""
         flags = []
+        # a row the owner decided whose pictures changed since the snapshot he ruled on (a redo landed, a pick was
+        # installed under new bytes, or the row was renamed and its decision carried over under `carriedFrom`)
+        _od = ((old or {}).get("decisions") or {}).get(key) or {}
+        if _od.get("decidedAt") and ruled:
+            _rr = ((ruled.get("rows") or {}).get(_od.get("carriedFrom") or key) or {}).get("columns") or {}
+            _seen = {json.dumps(v, sort_keys=True) for v in _rr.values()}
+            _new = [c["letter"] for g in gitems for c in g["cols"] if json.dumps(c["faces"], sort_keys=True) not in _seen]
+            if _new:
+                flags.append(f"NEW ART since your {_od['decidedAt'][:10]} ruling: column(s) {', '.join(sorted(set(_new)))}")
+        if _od.get("carriedFrom"):
+            flags.append(f"your ruling carried over from {_od['carriedFrom']} (renamed row)")
         if no_art:
             flags.append("NO ART YET")
         if missing:
