@@ -77,6 +77,8 @@ namespace RimMandrake.FloodedCanyon
         // back to soil at recede time (only if still ours — see header).
         // NON-EXCAVATED cells only: an excavated one is never written here.
         private readonly RM_FloodKernel.Ledger ledger = new RM_FloodKernel.Ledger();
+        private List<IntVec3> activeFloodCells, raisedFillCells;
+        private List<int> raisedFillPrior;
 
         // The excavated half of this cycle's footprint, and what each of
         // those cells held before the flood raised it. Two parallel lists
@@ -200,6 +202,7 @@ namespace RimMandrake.FloodedCanyon
                 HeraldLeadHours = RM_FloodedCanyonSettings.heraldLeadHours,
                 FloodPeriodDays = RM_FloodedCanyonSettings.floodPeriodDays,
             };
+            bool wasFlooding = st.Phase == FloodPhase.Flooding;
             FloodStep step = RM_FloodKernel.Tick(st, cfg, now, pendingSeed.IsValid,
                 st.Phase == FloodPhase.Dry && map.weatherManager.curWeather == RM_FloodedCanyonDefOf.RM_PeakstormLight,
                 Rand.Value, (lo, hi) => Rand.RangeInclusive(lo, hi), (lo, hi) => Rand.RangeInclusive(lo, hi));
@@ -223,6 +226,10 @@ namespace RimMandrake.FloodedCanyon
             if (step.StartFlood)
             {
                 StartFlood(now);
+            }
+            if (wasFlooding)
+            {
+                MaintainRoar();
             }
             if (step.Recede)
             {
@@ -516,8 +523,8 @@ namespace RimMandrake.FloodedCanyon
             st.ChimeStage = chimeStage; st.HeraldBeat = heraldBeat; st.PeakstormPulled = peakstormPulledThisCycle;
             Scribe_Values.Look(ref pendingSeed, "pendingSeed", IntVec3.Invalid);
             Scribe_Values.Look(ref roarCell, "roarCell", IntVec3.Invalid);
-            List<IntVec3> activeFloodCells = null, raisedFillCells = null;
-            List<int> raisedFillPrior = null;
+            // ExposeData runs once per load phase (LoadingVars, ResolveCrossRefs, PostLoadInit); the loaded lists must live in FIELDS so
+            // the LoadingVars read survives to PostLoadInit. Same labels as before the kernel extraction, so old saves load.
             if (Scribe.mode == LoadSaveMode.Saving)
             {
                 activeFloodCells = ledger.Active.ConvertAll(Cell);
@@ -529,12 +536,8 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Collections.Look(ref raisedFillPrior, "raisedFillPrior", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
-                ledger.Active.Clear();
-                ledger.RaisedCells.Clear();
-                ledger.RaisedPrior.Clear();
-                if (activeFloodCells != null) ledger.Active.AddRange(activeFloodCells.ConvertAll(KeyOf));
-                if (raisedFillCells != null) ledger.RaisedCells.AddRange(raisedFillCells.ConvertAll(KeyOf));
-                if (raisedFillPrior != null) ledger.RaisedPrior.AddRange(raisedFillPrior);
+                ledger.Restore(activeFloodCells?.ConvertAll(KeyOf), raisedFillCells?.ConvertAll(KeyOf), raisedFillPrior);
+                activeFloodCells = null; raisedFillCells = null; raisedFillPrior = null;
             }
         }
     }

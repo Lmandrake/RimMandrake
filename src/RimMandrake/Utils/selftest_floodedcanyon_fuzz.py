@@ -23,7 +23,31 @@ SELFTEST = os.path.join(REPO, "src", "RimMandrake", "FloodedCanyon", "Source", "
 CSPROJ = os.path.join(SELFTEST, "RimMandrakeFloodedCanyon.SelfTest.csproj")
 
 
+def source_guards():
+    """Component-level regressions the Verse-free kernel cannot see (text scan of the production component)."""
+    import re
+    src = open(os.path.join(REPO, "src", "RimMandrake", "FloodedCanyon", "Source", "RM_MapComponent_CanyonFlood.cs"), encoding="utf-8").read()
+    bad = []
+    # CANYON_FLOOD_ROAR_SILENT_1: MaintainRoar has a live caller in MapComponentTick
+    tick = src[src.index("public override void MapComponentTick()"):]
+    tick = tick[:tick.index("private static int HoursToTicks")]
+    if "MaintainRoar()" not in tick:
+        bad.append("CANYON_FLOOD_ROAR_SILENT_1: MapComponentTick never calls MaintainRoar()")
+    # FLOOD_LEDGER_LOAD_LOSS_1: scribed ledger lists are fields, never locals re-nulled each load phase
+    expose = src[src.index("public override void ExposeData()"):]
+    for name in ("activeFloodCells", "raisedFillCells", "raisedFillPrior"):
+        if re.search(r"List<\w+>\s+[^;]*\b" + name + r"\s*=\s*null", expose):
+            bad.append("FLOOD_LEDGER_LOAD_LOSS_1: " + name + " is a local in ExposeData (lost between load phases)")
+        if not re.search(r"private List<\w+>[^;]*\b" + name + r"\b", src[:src.index("public override void ExposeData()")]):
+            bad.append("FLOOD_LEDGER_LOAD_LOSS_1: " + name + " is not a field")
+    for b in bad:
+        print("SOURCE GUARD FAILED:", b)
+    return 1 if bad else 0
+
+
 def main(argv):
+    if source_guards():
+        return 1
     rc, rec = winbuild.stage_build(CSPROJ, stage_name="FloodedCanyonFuzzSelfTest",
                                    extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "FloodedCanyon", "Source", "Kernel"), os.path.join(REPO, "src", "RimMandrake", "FloodedCanyon", "Source")])
     if rc:
