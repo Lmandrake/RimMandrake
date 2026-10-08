@@ -20,10 +20,10 @@ namespace RimMandrake.NightsideIce
     // target = 1 - exp(-raw / heatDialScale); the dial eases halfway to the target every hour.
     public class RM_HeatDial : MapComponent
     {
-        public const int IntervalTicks = 2500;
-        public const float FireWeight = 20f;
-        public const float PowerWeight = 0.01f;
-        public const float RoomWeight = 0.002f;
+        public const int IntervalTicks = RM_NightsideIceKernel.IntervalTicks;
+        public const float FireWeight = RM_NightsideIceKernel.FireWeight;
+        public const float PowerWeight = RM_NightsideIceKernel.PowerWeight;
+        public const float RoomWeight = RM_NightsideIceKernel.RoomWeight;
 
         public float dial;
         public float lastRaw;
@@ -46,7 +46,7 @@ namespace RimMandrake.NightsideIce
 
         public override void MapComponentTick()
         {
-            if (Find.TickManager.TicksGame % IntervalTicks != 71)
+            if (!RM_NightsideIceKernel.DialDue(Find.TickManager.TicksGame))
             {
                 return;
             }
@@ -56,7 +56,7 @@ namespace RimMandrake.NightsideIce
                 return;
             }
             float target = Measure();
-            dial = Mathf.Clamp01(Mathf.Lerp(dial, target, 0.5f));
+            dial = RM_NightsideIceKernel.Ease(dial, target);
         }
 
         /// <summary>Re-reads every source and returns the target dial (also stores the parts).</summary>
@@ -84,7 +84,7 @@ namespace RimMandrake.NightsideIce
                 CompPowerTrader pt = b.TryGetComp<CompPowerTrader>();
                 if (pt != null && pt.PowerOn && pt.PowerOutput < 0f)
                 {
-                    power += -pt.PowerOutput * PowerWeight;
+                    power += RM_NightsideIceKernel.PowerHeat(pt.PowerOutput);
                 }
             }
 
@@ -93,7 +93,7 @@ namespace RimMandrake.NightsideIce
             {
                 if (fireList[i] is Fire f)
                 {
-                    fires += f.fireSize * FireWeight;
+                    fires += RM_NightsideIceKernel.FireHeat(f.fireSize);
                 }
             }
 
@@ -106,45 +106,43 @@ namespace RimMandrake.NightsideIce
                 {
                     continue;
                 }
-                float delta = r.Temperature - outdoor;
-                if (delta > 0f)
-                {
-                    rooms += delta * r.CellCount * RoomWeight;
-                }
+                rooms += RM_NightsideIceKernel.RoomHeat(r.Temperature, outdoor, r.CellCount);
             }
 
             lastRaw = heaters + fires + power + rooms;
-            float scale = Mathf.Max(1f, RM_NightsideIceSettings.heatDialScale);
-            return 1f - Mathf.Exp(-lastRaw / scale);
+            return RM_NightsideIceKernel.Target(lastRaw, RM_NightsideIceSettings.heatDialScale);
         }
 
         // NIGHTSIDEICE_SHIVVEN_BUILD_1: the source the shivven track. The hottest player-owned building
         // pushing heat now (the same test Measure counts), cached for SourceCacheTicks. Fires add to the
         // dial but are never the target: nothing strikes a fire in melee.
-        public const int SourceCacheTicks = 250;
+        public const int SourceCacheTicks = RM_NightsideIceKernel.SourceCacheTicks;
         private Thing hottestCached;
         private int hottestReadTick = -99999;
 
         public Thing HottestSource()
         {
             int now = Find.TickManager.TicksGame;
-            if (now - hottestReadTick < SourceCacheTicks && (hottestCached == null || IsWorkingHeater(hottestCached)))
+            if (RM_NightsideIceKernel.SourceCacheValid(now, hottestReadTick, hottestCached != null, IsWorkingHeater(hottestCached)))
             {
                 return hottestCached;
             }
             hottestReadTick = now;
             hottestCached = null;
-            float best = 0f;
             List<Building> colony = map.listerBuildings.allBuildingsColonist;
+            var heat = new List<float>(colony.Count);
+            var working = new List<bool>(colony.Count);
             for (int i = 0; i < colony.Count; i++)
             {
                 Building b = colony[i];
                 CompHeatPusher hp = b.TryGetComp<CompHeatPusher>();
-                if (hp != null && b.Faction == Faction.OfPlayer && hp.ShouldPushHeatNow && hp.Props.heatPerSecond > best)
-                {
-                    best = hp.Props.heatPerSecond;
-                    hottestCached = b;
-                }
+                heat.Add(hp != null ? hp.Props.heatPerSecond : 0f);
+                working.Add(hp != null && b.Faction == Faction.OfPlayer && hp.ShouldPushHeatNow);
+            }
+            int pick = RM_NightsideIceKernel.HottestIndex(heat, working);
+            if (pick >= 0)
+            {
+                hottestCached = colony[pick];
             }
             return hottestCached;
         }

@@ -12,7 +12,9 @@ namespace RimMandrake.NightsideIce
     //
     //   - RM_BreachLoop (MapComponent), hourly, Nightside Ice maps with the dial on: no crack open, dial
     //     at least BreachThreshold, not cooling down -> chance breachFrequencyScale x dial^2 / 24 per hour
-    //     (a full dial averages one breach a day, half a dial one in four days; zero dial never).
+    //     (the hourly chance alone would average one breach a day at a full dial and one in four days at half a dial,
+    //     but a crack starts a two-day cooldown, so measured (fuzz): a full dial opens one about every 71 hours, half a dial about
+    //     every 143; zero dial never).
     //   - The crack (RM_Building_BreachCrack) opens only on open ice: Ice terrain, standable, unroofed, no
     //     edifice, 3 to 12 cells from the nearest player building (the base's edge, never a floor, since a
     //     floor is not Ice: the hull rule). It is an ordinary attackable building: destroy it in time and
@@ -23,8 +25,8 @@ namespace RimMandrake.NightsideIce
     //     message and no countdown on the crack.
     public class RM_BreachLoop : MapComponent
     {
-        public const float BreachThreshold = 0.15f;
-        public const int CooldownTicks = 2 * GenDate.TicksPerDay;
+        public const float BreachThreshold = RM_NightsideIceKernel.BreachThreshold;
+        public const int CooldownTicks = RM_NightsideIceKernel.CooldownTicks;
 
         public bool firstTaught;
         public int cooldownUntil = -1;
@@ -51,7 +53,7 @@ namespace RimMandrake.NightsideIce
         public override void MapComponentTick()
         {
             // Five ticks after the dial's own hourly update (RM_HeatDial, offset 71).
-            if (Find.TickManager.TicksGame % RM_HeatDial.IntervalTicks != 76)
+            if (!RM_NightsideIceKernel.BreachDue(Find.TickManager.TicksGame))
             {
                 return;
             }
@@ -59,16 +61,13 @@ namespace RimMandrake.NightsideIce
             {
                 open = null;
             }
-            if (!Applies || open != null || Find.TickManager.TicksGame < cooldownUntil)
+            bool applies = Applies;
+            float d = applies ? RM_HeatDial.For(map).dial : 0f;
+            if (!RM_NightsideIceKernel.BreachRollMade(applies, open != null, Find.TickManager.TicksGame, cooldownUntil, d))
             {
                 return;
             }
-            float d = RM_HeatDial.For(map).dial;
-            if (d < BreachThreshold)
-            {
-                return;
-            }
-            float chance = Mathf.Clamp01(RM_NightsideIceSettings.breachFrequencyScale * d * d / 24f);
+            float chance = RM_NightsideIceKernel.BreachChance(RM_NightsideIceSettings.breachFrequencyScale, d);
             if (Rand.Chance(chance))
             {
                 TryOpen(d, out _);
@@ -92,10 +91,10 @@ namespace RimMandrake.NightsideIce
             }
             var crack = (RM_Building_BreachCrack)ThingMaker.MakeThing(def);
             bool teach = !firstTaught;
-            int hours = teach ? Mathf.Max(1, RM_NightsideIceSettings.breachFirstCountdownHours) : Rand.RangeInclusive(8, 16);
+            int hours = RM_NightsideIceKernel.BreakHours(teach, RM_NightsideIceSettings.breachFirstCountdownHours, teach ? 0 : Rand.RangeInclusive(8, 16));
             crack.breakTick = Find.TickManager.TicksGame + hours * GenDate.TicksPerHour;
             crack.taught = teach;
-            crack.shivvenCount = 2 + Mathf.RoundToInt(Mathf.Clamp01(dialValue) * 6f);
+            crack.shivvenCount = RM_NightsideIceKernel.ShivvenCount(dialValue);
             GenSpawn.Spawn(crack, cell, map);
             open = crack;
             firstTaught = true;
@@ -161,7 +160,7 @@ namespace RimMandrake.NightsideIce
                     nearest = d;
                 }
             }
-            return nearest >= 9f && nearest <= 144f;
+            return RM_NightsideIceKernel.InEdgeBand(nearest);
         }
 
         public override void ExposeData()
@@ -189,20 +188,17 @@ namespace RimMandrake.NightsideIce
                 return;
             }
             int left = breakTick - Find.TickManager.TicksGame;
-            if (taught && RM_NightsideIceSettings.breachWarnings)
+            bool breaks = RM_NightsideIceKernel.CrackLook(left, taught, RM_NightsideIceSettings.breachWarnings, ref warned6, ref warned1,
+                out bool say6, out bool say1);
+            if (say6)
             {
-                if (!warned6 && left <= 6 * GenDate.TicksPerHour)
-                {
-                    warned6 = true;
-                    Messages.Message("The crack in the ice will break open in about 6 hours.", this, MessageTypeDefOf.ThreatBig);
-                }
-                if (!warned1 && left <= GenDate.TicksPerHour)
-                {
-                    warned1 = true;
-                    Messages.Message("The crack in the ice is about to break open.", this, MessageTypeDefOf.ThreatBig);
-                }
+                Messages.Message("The crack in the ice will break open in about 6 hours.", this, MessageTypeDefOf.ThreatBig);
             }
-            if (left <= 0)
+            if (say1)
+            {
+                Messages.Message("The crack in the ice is about to break open.", this, MessageTypeDefOf.ThreatBig);
+            }
+            if (breaks)
             {
                 BreakOpen();
             }

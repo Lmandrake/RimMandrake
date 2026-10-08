@@ -31,7 +31,7 @@ namespace RimMandrake.NightsideIce
 
         // NIGHTSIDEICE_BREACH_CRACKS_1 -- the breach loop (RM_BreachCracks.cs)
         public static bool breachEnabled = true;              // cracks open at the base's edge when the dial is up
-        public static float breachFrequencyScale = 1f;        // 1: a full dial averages one breach a day
+        public static float breachFrequencyScale = 1f;        // 1: a full dial averages one breach about every three days (a two-day cooldown, then about a day of waiting)
         public static int breachFirstCountdownHours = 24;     // the first, taught crack's countdown
         public static bool breachWarnings = true;             // the 6 h / 1 h warnings and later cracks' message
 
@@ -108,7 +108,7 @@ namespace RimMandrake.NightsideIce
               + "cracks and more shivven; a zero dial means none. Off: no cracks.");
             if (breachEnabled)
             {
-                list.Label("How often: x" + breachFrequencyScale.ToString("0.00") + " (x1: a full dial averages one a day)");
+                list.Label("How often: x" + breachFrequencyScale.ToString("0.00") + " (x1: a full dial averages one about every three days)");
                 breachFrequencyScale = list.Slider(breachFrequencyScale, 0.1f, 4f);
                 list.Label("The first crack breaks open after " + breachFirstCountdownHours + " hours");
                 breachFirstCountdownHours = Mathf.RoundToInt(list.Slider(breachFirstCountdownHours, 2f, 72f));
