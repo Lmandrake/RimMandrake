@@ -16,3 +16,15 @@ Built at `e97afd219` (sha on origin may differ after landing; see final list). D
 - EmpirePursuit: `ionVolleyIntervalHours` got its slider (1-24 h) and keyed string. Lint 1 WARN -> 0.
 - Left alone (not obvious): TerminalBiomes crossBiome* + 3 twilight settings (their features are owed by other items), Wasteland `brineDepositsEnabled` (needs a GenStep).
 - run_selftests: my mods green; 5 failures are in peers' uncommitted in-flight mods (SeaShores, RaidRedesigner, TitanicCreatures build, ledger_lint on a dirty OWNER shard).
+
+## MODCHECK_ACCEPTANCE_MAPPING_TABLE_1
+
+Already built at `69378ce3b` (tables + `acceptance_map.py` + selftest reproducing the Greentide/PyrelandsMechanics run JSONs, unmapped never recorded). Selftest GREEN today; recorded implemented, all three L0 attested, item moved to closed/.
+
+## BRIDGE_KILL_HOSTILES_TOOL_1 + TILE_TEMP_CACHE_RESET_TOOL_1
+
+Built at `ac8b24b82`, NOT deployed (companion deploys only with the game closed: `build.py --gm --apply`). `jawa/kill_hostiles` (GenHostility, filters, dryRun, corpse cleanup, survivor control). `jawa/world_tile_cache_reset` (nulls the five Tile caches by reflection, refuses if any field fails to resolve, verifies null). `jawa/get_defs` renders System.Type values by name (fixes 'RuntimeType' for specialDesignatorClasses). world_cache_audit's "no cache-clearing tool" text corrected. selftest_tool_metadata 377 tools == source. A3 (skill doc) left for a curation session.
+
+## BRIDGE_LOCK_CROSS_CLONE_RACE_1
+
+Shared cross-clone lock file on D:\ (outside git) checked by `bridge take`, touched by the holder's events, cleared on release; `modset_builder --apply/--restore` refuses a window that does not hold the bridge (override `--not-my-bridge`). Ad-hoc kill scripts not gated (named in the item). selftest_cli 44/44, selftest_model 71/71, new selftest_bridge_gate 6/6.

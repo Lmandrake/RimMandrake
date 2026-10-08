@@ -71,11 +71,13 @@ copies of one field is the single failure this whole design is aimed at.
 
 Stdlib only, and no daemon. Everything is a file in git.
 """
+import calendar
 import copy
 import fcntl
 import json
 import os
 import re
+import sys
 import time
 
 # 🔴 EVERY PATH BELOW IS RESOLVED AT CALL TIME, NEVER BOUND AS A DEFAULT ARGUMENT.
@@ -900,6 +902,69 @@ def bridge_mirror_path():
     # instead of naming a rule. A bare filename in RIMFLOW_LEDGER is a legal thing
     # for a test or a one-off to set.
     return os.path.join(os.path.dirname(led) or ".", "BRIDGE") if led else BRIDGE_FILE
+
+
+# ── the CROSS-CLONE bridge lock (BRIDGE_LOCK_CROSS_CLONE_RACE_1) ──────────────────────
+# Each seat clone has its OWN ledger shard, and a take lives only in that clone until it is
+# pushed. On 2026-10-07 BENCH and FOUNDRY both held the bridge a minute apart and FOUNDRY killed
+# two BENCH loads, because neither take could see the other. This file sits OUTSIDE git, on the
+# drive both clones share, so a take is visible to the other clone the instant it is written.
+# It is a second witness, not a new source of truth: the ledger still records every take.
+# Disabled (None) under a redirected RIMFLOW_LEDGER, so a selftest never writes the real one,
+# and on a machine without the shared drive (the Mac), where there is no second clone to race.
+SHARED_BRIDGE_DEFAULT = "/mnt/d/Luke/dev/_rmscratch/BRIDGE_SHARED.json"
+
+
+def shared_bridge_path():
+    env = os.environ.get("RIMFLOW_SHARED_BRIDGE")
+    if env is not None:
+        return env or None          # set-but-empty switches it off
+    if os.environ.get("RIMFLOW_LEDGER"):
+        return None
+    d = os.path.dirname(SHARED_BRIDGE_DEFAULT)
+    return SHARED_BRIDGE_DEFAULT if os.path.isdir(d) else None
+
+
+def read_shared_bridge():
+    """-> dict {holder, since, touched, purpose, clone} or None. Unreadable reads as None (allow)."""
+    p = shared_bridge_path()
+    if not p:
+        return None
+    try:
+        with open(p, encoding="utf-8") as f:
+            d = json.load(f)
+        return d if isinstance(d, dict) and d.get("holder") else None
+    except (OSError, ValueError):
+        return None
+
+
+def write_shared_bridge(holder, purpose=None, since=None):
+    """Record (or with holder=None clear) the cross-clone holder. Best effort: a failure prints and allows."""
+    p = shared_bridge_path()
+    if not p:
+        return
+    body = {"holder": holder, "since": since or now(), "touched": now(), "purpose": purpose, "clone": ROOT} if holder else {"holder": None, "touched": now(), "clone": ROOT}
+    tmp = p + ".%d.tmp" % os.getpid()
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(body, f)
+        os.replace(tmp, p)
+    except OSError as e:
+        sys.stderr.write("rimflow: could not write the shared bridge lock %s: %s\n" % (p, e))
+
+
+def touch_shared_bridge(seat):
+    """A holder's every event keeps its cross-clone lock fresh, the way its ledger events keep it alive locally."""
+    d = read_shared_bridge()
+    if d and d.get("holder") == seat:
+        write_shared_bridge(seat, d.get("purpose"), d.get("since"))
+
+
+def shared_bridge_age_seconds(d):
+    try:
+        return max(0, int(time.time() - calendar.timegm(time.strptime(d["touched"], "%Y-%m-%dT%H:%M:%SZ"))))
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def bridge_body(holder, actor, purpose=None, since=None, note=None):
@@ -2175,3 +2240,47 @@ def check(ev, world=None, path=None):
     validate(stamped)
     _apply(stamped, 0, copy.deepcopy(world), True)
     return True
+
+
+# ── the gate a game-touching tool runs before it acts (BRIDGE_LOCK_CROSS_CLONE_RACE_1 part 2) ──
+def ambient_window_seat():
+    """BENCH or FOUNDRY when this process runs for a window (env, then the session role file), else None.
+    None means the owner (or a script outside any window) is running it, and the gate allows."""
+    for k in ("RIMFLOW_SEAT", "AGENT_SEAT"):
+        v = (os.environ.get(k) or "").strip().upper()
+        if v:
+            return v if v in ("BENCH", "FOUNDRY") else None
+    sid = os.environ.get("CLAUDE_SESSION_ID")
+    if sid:
+        try:
+            with open(os.path.join(ROOT, ".claude", "session_roles", sid), encoding="utf-8") as fh:
+                for w in fh.read().replace("-", " ").split():
+                    if w.upper() in ("BENCH", "FOUNDRY"):
+                        return w.upper()
+        except OSError:
+            pass
+    return None
+
+
+def bridge_gate(seat):
+    """-> None if `seat` may touch the game (it holds the bridge here and no other clone holds it live),
+    else the refusal text. seat None (the owner) always passes."""
+    if not seat:
+        return None
+    global EVENTS
+    if os.environ.get("RIMFLOW_LEDGER"):                 # same redirect the CLI's _bind_paths makes
+        EVENTS = os.environ["RIMFLOW_LEDGER"]
+    try:
+        holder = replay(read()).bridge_holder
+    except Exception as e:                               # an unreadable ledger must not wedge the owner's tools
+        return None if os.environ.get("RIMFLOW_GATE_LENIENT") else "could not read the ledger to check the bridge: %s" % e
+    shared = read_shared_bridge()
+    other = shared.get("holder") if shared else None
+    age = shared_bridge_age_seconds(shared) if shared else None
+    if other and other != seat and age is not None and age < BRIDGE_STALE_SECONDS:
+        return "the bridge is held by %s in another clone (%s, %d min ago); this would act on its game." % (
+            other, shared.get("clone") or "?", age // 60)
+    if holder != seat:
+        return "%s does not hold the bridge (holder: %s). Take it first: rimflow bridge take --for \"<what for>\"" % (
+            seat, holder or "nobody")
+    return None

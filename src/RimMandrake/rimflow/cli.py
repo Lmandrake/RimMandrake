@@ -332,6 +332,8 @@ def _emit(ev, world=None, quiet=False):
     # depends on the strip (see its `or`-not-`get`-default comment) so that a
     # present-but-null key can never reach the projection.
     ev = _write_one(ev)
+    if ev.get("event") != "bridge":
+        model.touch_shared_bridge(ev.get("seat"))
     if not quiet:
         print("%s %s%s" % (ev["event"], ev.get("id", ""),
                            "" if ev.get("id") else "(" + str(ev.get("state", "")) + ")"))
@@ -2064,6 +2066,13 @@ def _bridge_who(w, holder, since, purpose):
     """`bridge who` — the answer, re-derived, plus the mirror repaired on the way."""
     # Re-derived from the ledger, so this answer is true even when the mirror is not.
     model.write_bridge_file(holder, None, purpose, since)
+    shared = model.read_shared_bridge()
+    if shared and shared.get("holder") not in (None, holder):
+        age = model.shared_bridge_age_seconds(shared)
+        print("⚠️  the shared lock says %s holds it from another clone (%s, touched %s min ago%s); "
+              "this clone's ledger does not know yet."
+              % (shared["holder"], shared.get("clone") or "?", "?" if age is None else age // 60,
+                 ", STALE" if age is None or age >= model.BRIDGE_STALE_SECONDS else ""))
     if not holder:
         print("bridge FREE — take it:  rimflow bridge take --for \"<what for>\"")
         return 0
@@ -2116,6 +2125,7 @@ def _bridge_give(args, seat, w, holder):
                "override": "the OWNER cleared the bridge%s"
                            % (" off %s" % holder if holder else "")}, w, quiet=True)
         _mirror_from_ledger("OWNER", note="cleared by the owner")
+        model.write_shared_bridge(None)
         print("bridge FREE — the owner cleared it")
         return 0
     if to not in ("BENCH", "FOUNDRY"):
@@ -2127,6 +2137,7 @@ def _bridge_give(args, seat, w, holder):
         ev["purpose"] = args.purpose
     _emit(ev, w, quiet=True)
     _mirror_from_ledger("OWNER", note="handed over by the owner")
+    model.write_shared_bridge(to, args.purpose)
     print("bridge -> %s (the owner said so)" % to)
     return 0
 
@@ -2157,6 +2168,9 @@ def _bridge_release(seat, w, holder):
         ev["override"] = "released the bridge out from under %s" % holder
     _emit(ev, w, quiet=True)
     _mirror_from_ledger(seat)
+    sh = model.read_shared_bridge()
+    if sh is None or sh.get("holder") in (seat, holder):
+        model.write_shared_bridge(None)
     if crossed:
         print("bridge released by %s — it was held by %s, and that is on the event"
               % (seat, holder))
@@ -2231,6 +2245,22 @@ def _bridge_take(args, seat, w, holder, purpose):
     # matters: the loser of the original race now sees the winner's
     # already-recorded event here and backs off with a clear message, rather
     # than silently colliding.
+    # 🔴 BRIDGE_LOCK_CROSS_CLONE_RACE_1: the OTHER clone's take is not in this clone's ledger
+    # until it is pushed. The shared lock on the common drive is what it can see at once.
+    shared = model.read_shared_bridge()
+    if shared and shared.get("holder") not in (None, seat):
+        age = model.shared_bridge_age_seconds(shared)
+        alive = age is not None and age < model.BRIDGE_STALE_SECONDS
+        if alive and not args.force:
+            die("bridge is held by %s in another clone (%s), %d min ago%s.\n"
+                "  Its take is not in this clone's ledger yet; the shared lock %s says so.\n"
+                "  wait      — rimflow bridge who\n"
+                "  or take it — rimflow bridge take --force --for \"<what for>\""
+                % (shared["holder"], shared.get("clone") or "?", age // 60,
+                   ("; for: " + shared["purpose"]) if shared.get("purpose") else "",
+                   model.shared_bridge_path()))
+        if alive and args.force:
+            ev["override"] = "took the bridge with --force while %s held it in another clone" % shared["holder"]
     if not args.force:
         _, w2 = load()
         fresh_holder = w2.bridge_holder
@@ -2242,6 +2272,8 @@ def _bridge_take(args, seat, w, holder, purpose):
     _emit(ev, w, quiet=True)
     won = _mirror_from_ledger(
         seat, note=("taken from %s: %s" % (holder, why)) if why else None)
+    if won == seat:
+        model.write_shared_bridge(seat, args.purpose)
     if won != seat:
         # A take landed between our re-check above and our own append. Both events are
         # in the ledger, the later one holds, and the mirror now says so.

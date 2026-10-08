@@ -865,6 +865,26 @@ def write_config(pids, version_from):
         fh.write(buf.getvalue().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
 
 
+def bridge_ok(override):
+    """BRIDGE_LOCK_CROSS_CLONE_RACE_1: a tier swap from a window that does not hold the bridge
+    rewrote the other window's next load (2026-10-07). The owner (no window seat) always passes."""
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake"))
+    try:
+        from rimflow import model as rfmodel
+    except Exception as e:                       # the tool must still work without rimflow importable
+        print("  (bridge gate skipped: rimflow not importable: %s)" % e)
+        return True
+    seat = rfmodel.ambient_window_seat()
+    why = rfmodel.bridge_gate(seat)
+    if why is None:
+        return True
+    if override:
+        print("  BRIDGE GATE OVERRIDDEN by %s: %s -- reason given: %s" % (seat, why, override))
+        return True
+    print("\n  REFUSING TO WRITE ModsConfig.xml: %s\n  (override: --not-my-bridge \"<reason>\")" % why)
+    return False
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -872,6 +892,8 @@ def main():
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--restore", action="store_true")
+    ap.add_argument("--not-my-bridge", metavar="REASON",
+                    help="write anyway although this window does not hold the bridge (recorded on stdout)")
     a = ap.parse_args()
 
     installed = scan()
@@ -885,6 +907,9 @@ def main():
                      "  MISSING %s" % missing if missing else ""))
             print("           %s" % t["why"])
         return 0
+
+    if (a.apply or a.restore) and not bridge_ok(a.not_my_bridge):
+        return 1
 
     if a.restore:
         if game_running():
