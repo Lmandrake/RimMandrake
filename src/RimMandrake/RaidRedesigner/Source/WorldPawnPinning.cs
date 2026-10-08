@@ -34,12 +34,14 @@ namespace RimMandrake.RaidRedesigner
     // call PassToWorld(KeepForever) itself, exactly as Faction does.
     public static class WorldPawnPinning
     {
-        public static void PinForever(Pawn pawn)
+        /// <summary>Pins the pawn. Returns whether THIS call is what put them in the forcefully-kept set (false when they already were, or nothing could be pinned).</summary>
+        public static bool PinForever(Pawn pawn)
         {
-            if (pawn == null) return;
+            if (pawn == null) return false;
             WorldPawns worldPawns = Find.WorldPawns;
-            if (worldPawns == null) return;
+            if (worldPawns == null) return false;
 
+            bool keptBefore = worldPawns.ForcefullyKeptPawns.Contains(pawn);
             if (worldPawns.Contains(pawn))
             {
                 worldPawns.ForcefullyKeptPawns.Add(pawn);
@@ -54,6 +56,16 @@ namespace RimMandrake.RaidRedesigner
             // nothing to pin yet. The ExitMap postfix that owns this pawn's
             // eventual departure calls PinForever again once it has, in fact,
             // become a world pawn.
+            return !keptBefore && worldPawns.ForcefullyKeptPawns.Contains(pawn);
+        }
+
+        /// <summary>Releases a pin this mod placed (the roster forgot the pawn). The pawn is then an ordinary world pawn again.</summary>
+        public static void Unpin(Pawn pawn)
+        {
+            if (pawn == null) return;
+            WorldPawns worldPawns = Find.WorldPawns;
+            if (worldPawns == null) return;
+            worldPawns.ForcefullyKeptPawns.Remove(pawn);
         }
     }
 }

@@ -215,7 +215,7 @@ def main():
     mutate("GameComponent_OldFriends.cs", "if (!RaidRedesignerSettings.rosterTrackingEnabled) return null;", "", "master switch removed", "rosterTrackingEnabled")
     mutate("GameComponent_OldFriends.cs", "RaidRedesignerSettings.grudgeNotabilityMultiplier", "1f", "multiplier ignored", "grudgeNotabilityMultiplier")
     mutate("GameComponent_OldFriends.cs", "RaidRedesignerSettings.maxLivingEntries", "24", "cap setting ignored", "maxLivingEntries")
-    mutate("GameComponent_OldFriends.cs", "pin && RaidRedesignerSettings.pinEncounteredPawns", "pin", "pin setting ignored", "pinEncounteredPawns")
+    mutate("GameComponent_OldFriends.cs", "pin && !outcome.EvictedSelf && RaidRedesignerSettings.pinEncounteredPawns", "pin && !outcome.EvictedSelf", "pin setting ignored", "pinEncounteredPawns")
     mutate("OldFriendEntry.cs", 'Scribe_Values.Look(ref Grudge, "grudge", 0);', "", "Grudge dropped from ExposeData", "Grudge")
     mutate("Encounter.cs", 'Scribe_Values.Look(ref Summary, "summary");', "", "Summary dropped from ExposeData", "Summary")
     mutate("RM_RaidRedesigner.csproj", '<Compile Include="RaidRedesignerProof.cs" />', "", "proof left out of csproj", "csproj")

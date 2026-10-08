@@ -22,15 +22,7 @@ namespace RimMandrake.RaidRedesigner
         // and never depends on List ordering/insertion order.
         public static List<OldFriendEntry> SelectPruneVictims(List<OldFriendEntry> entries, int cap)
         {
-            var living = entries.Where(e => e != null && !e.Dead).ToList();
-            int overflow = living.Count - cap;
-            if (overflow <= 0) return new List<OldFriendEntry>();
-
-            return living
-                .OrderBy(e => e.Notability)
-                .ThenBy(e => e.LastSeenTick)
-                .Take(overflow)
-                .ToList();
+            return RM_RosterKernel.SelectPruneVictims(entries, cap);
         }
     }
 }

@@ -70,12 +70,12 @@ BOTH directions (trigger AND read-back) for the mod's entire actual
 mechanism, left honestly undone rather than faked with a component that
 would always report a hollow PASS.
 
-WHAT `RosterPruning`'s OWN OFFLINE SELFTEST ALREADY COVERS, and why this
-suite does not duplicate it: `SelfTest/Program.cs` is a SEPARATE, pure-C#
-console project (`RimMandrakeRaidRedesigner.SelfTest.csproj`, run via
-`dotnet run`, no RimWorld process, no bridge) that already exhaustively
-proves `RosterPruning.SelectPruneVictims`'s cap/prune/tie-break/dead-exclusion
-logic (5 cases). That is the walk doc's own step 2, a DIFFERENT invocation
+WHAT THE OFFLINE FUZZ ALREADY COVERS, and why this
+suite does not duplicate it: `Source/SelfTest` is a SEPARATE, pure-C#
+console project (`RimMandrakeRaidRedesigner.SelfTest.csproj`, run by
+`Utils/selftest_raidredesigner_fuzz.py`, no RimWorld process, no bridge) that fuzzes
+`Source/Kernel/RM_RosterKernel.cs` (cap/prune/tie-break/dead-exclusion, the RecordEncounter flow, the death sweep)
+against an independent model, with a mutation set (`Utils/mutate_raidredesigner_fuzz.py`). That is the walk doc's own step 2, a DIFFERENT invocation
 entirely from `modcheck run` -- this file cannot re-run it (no bridge
 Session involved) and does not attempt to re-implement the same assertions
 against a live game it has no way to populate.
@@ -183,7 +183,13 @@ RECORD_GATES = (    # (setting, method) -- the setting must be read inside the m
 
 def load_sources():
     d = os.path.join(HERE, "Source")
-    return dict((fn, open(os.path.join(d, fn), encoding="utf-8").read()) for fn in os.listdir(d) if fn.endswith(".cs"))
+    out = dict((fn, open(os.path.join(d, fn), encoding="utf-8").read()) for fn in os.listdir(d) if fn.endswith(".cs"))
+    kd = os.path.join(d, "Kernel")   # RM_RosterKernel.cs: the Verse-free roster flow the offline fuzz exercises
+    if os.path.isdir(kd):
+        for fn in os.listdir(kd):
+            if fn.endswith(".cs"):
+                out[fn] = open(os.path.join(kd, fn), encoding="utf-8").read()
+    return out
 
 
 def _body(src, name):
@@ -224,8 +230,12 @@ def static_findings(srcs):
         if b is None or "RaidRedesignerSettings.%s" % setting not in b:
             bad.append("GameComponent_OldFriends.%s no longer reads RaidRedesignerSettings.%s (the setting gates nothing)" % (meth, setting))
     rb = _body(comp, "RecordEncounter") or ""
-    if "isNewEntry) EnforceCap()" not in rb:
-        bad.append("RecordEncounter no longer enforces the cap after a new entry's own deltas")
+    if "RM_RosterKernel.Record(" not in rb:
+        bad.append("RecordEncounter no longer runs the roster flow through RM_RosterKernel.Record (the fuzzed kernel)")
+    kern = _nocomment(srcs.get("RM_RosterKernel.cs", ""))
+    rec = kern.split("Record<T>(", 1)[-1]
+    if "if (outcome.IsNew)" not in rec or rec.find("NextNotability(") > rec.find("SelectPruneVictims(entries, cap)") or "SelectPruneVictims(entries, cap)" not in rec:
+        bad.append("RM_RosterKernel.Record no longer enforces the cap after a new entry's own deltas")
     if "RosterPruning.SelectPruneVictims(" not in (_body(comp, "EnforceCap") or ""):
         bad.append("EnforceCap no longer asks RosterPruning.SelectPruneVictims")
     for fn, cls in (("OldFriendEntry.cs", "OldFriendEntry"), ("Encounter.cs", "Encounter")):
