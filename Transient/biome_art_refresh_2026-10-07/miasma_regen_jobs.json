@@ -1,0 +1,1030 @@
+[
+ {
+  "id": "miasma_canon_vornskyr_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Vornskyr",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow canon precisely.\" RimWorld creature sprite of the Star Wars canon vornskr, drawn to match the attached canon image precisely: a lean quadruped canine/reptile-hybrid predator with smooth hairless dark grey to near-black reptilian hide, tall pointed bat-like ears, a narrow snarling muzzle with prominent visible fangs, red eyes, four clawed digits per paw, and a long whip-thin tail ending in a distinct bushy black tuft. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Follow canon precisely.",
+  "drawsize": 3.0,
+  "canon": "vornskyr",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/vornskyr/wookieepedia_alienarchive.jpg"
+  ]
+ },
+ {
+  "id": "miasma_canon_laajuv_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_LaaJuv",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow canon precisely\" RimWorld creature sprite of the Star Wars canon laa (fantailed laa), a young one, drawn to match the attached canon image precisely: a deep rounded pot-bellied fish with a very large swept-back fan tail (upper lobe dark teal, lower lobe pale cream), teal/blue-green back with orange-red speckles, pale peach-cream belly, a long forward-pointing snout with thick pale red-tinted pucker lips, a large round eye, a big wing-like dark pectoral fin, and two long thin whip filaments, one trailing from the top of the head and one dangling from the chin ending in a small glowing orange bulb. One fish, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "follow canon precisely",
+  "drawsize": 0.96,
+  "canon": "laascalefish",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/laascalefish/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "miasma_canon_opeejuv_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_OpeeSeaKillerJuv",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow canon image precisely\" RimWorld creature sprite of the Star Wars canon opee sea killer, a young one, drawn to match the attached canon image precisely: a huge fish-like head with an enormous gaping mouth lined with double rows of long pale conical teeth and a purple-lilac mouth interior, wrinkled lumpy face with bulbous orange-red eyes set high, long thin whip antennae rising from the crown ending in dark blue-purple lure bulbs, a long segmented arched armour-plated back tapering to a point like a lobster tail, reddish-orange/coral-red skin and plates, broad fan-shaped pectoral fins and three pairs of thin jointed crab-like legs under the rear body, the pink-mauve tongue just showing at the mouth. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Follow canon image precisely",
+  "drawsize": 1.8,
+  "canon": "opeeseakiller",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/opeeseakiller/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "miasma_canon_yobshrimpjuv_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_YobshrimpJuv",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow purple canon precisely\" RimWorld creature sprite of the yobshrimp, a young one, drawn to match the attached PURPLE live-animal reference precisely: a small crustacean with a flat wedge-shaped lilac-purple carapace drawn out to a long sharp forward rostrum, dark violet mottling and small raised bumps, paler lilac belly, bright green stalked eyes, two long thin whip antennae trailing back, short bristly crab-like walking legs, and two very long jointed arms ending in huge thin scissor claws raised up and back over the body. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "follow purple canon precisely",
+  "drawsize": 0.8,
+  "canon": "paleyobshrimp",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/paleyobshrimp/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "miasma_canon_zakkeg_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Zakkeg",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"follow red canon precisely\" RimWorld creature sprite of the Star Wars canon zakkeg of Dxun, drawn to match the attached RED canon image precisely: a stegosaur-like reptilian quadruped built like a battle tank, rust-red/copper-brown thick knobbed bumpy armoured hide over the whole body, a jagged spiked ridge running along the spine from head to tail, a low-slung reptilian head with visible fangs and small yellow eyes, four heavy thick clawed legs and a tapered tail. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "follow red canon precisely",
+  "drawsize": 5.0,
+  "canon": "zakkeg",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/zakkeg/wookieepedia_kotor2_juvenile.png"
+  ]
+ },
+ {
+  "id": "miasma_canon_blarth_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Blarth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"There's no new art!\" RimWorld creature sprite of the Star Wars blarth, matching the attached canon image: a rotund, low-slung amphibian with a barrel body and short stubby legs, smooth wrinkled rubbery pale powder blue-grey hide with a lighter cream belly and soft peach highlights, small circular whorl dimples over back and flanks, a wide flat toad-like head with a very broad mouth, one or two curved lower tusks, small half-lidded eyes, a big flat pink tongue lolling out with drool, and a long tapering prehensile tail ending in tiny finger-like nubs. Standing pose. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "There's no new art!",
+  "drawsize": 1.0,
+  "canon": "blarth",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/blarth/wookieepedia_legends_1.webp"
+  ]
+ },
+ {
+  "id": "miasma_canon_blarth_v1_swim",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Blarth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"There's no new art!\" RimWorld creature SWIMMING sprite of the Star Wars blarth, the same individual as the accepted standing render: a rotund, low-slung amphibian with a barrel body and short stubby legs, smooth wrinkled rubbery pale powder blue-grey hide with a lighter cream belly and soft peach highlights, small circular whorl dimples over back and flanks, a wide flat toad-like head with a very broad mouth, one or two curved lower tusks, small half-lidded eyes, a big flat pink tongue lolling out with drool, and a long tapering prehensile tail ending in tiny finger-like nubs. Shown swimming, the body low and level as if half-submerged, limbs paddling or trailing, the outline clean against transparency (the water is drawn by the game). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "There's no new art!",
+  "drawsize": 1.0,
+  "canon": "blarth",
+  "derive_from": "miasma_canon_blarth_v1_east",
+  "target_texpath": "swanimals/Blarth/Blarth_Swimming"
+ },
+ {
+  "id": "miasma_canon_blixus_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Blixus",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"No new art!\" RimWorld creature sprite of the Star Wars blixus, matching the attached canon image: a low crab/trilobite-like animal under a smooth teal-blue armoured half-shell of overlapping flared plates, soft pinkish-tan underbelly, a wide lip-lined slit mouth low on the front with two small pincer claws beside it, two small amber eyes under the carapace brim, exactly six stiff blade-like blue-grey chitin legs angled down and forward, and exactly five very long ringed flesh-pink tentacles, each longer than the body, grey and thorn-spiked toward the tips and ending in a flat pink sucker-pad. Standing pose. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "No new art!",
+  "drawsize": 4.0,
+  "canon": "blixus",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/blixus/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "miasma_canon_blixus_v1_swim",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Blixus",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"No new art!\" RimWorld creature SWIMMING sprite of the Star Wars blixus, the same individual as the accepted standing render: a low crab/trilobite-like animal under a smooth teal-blue armoured half-shell of overlapping flared plates, soft pinkish-tan underbelly, a wide lip-lined slit mouth low on the front with two small pincer claws beside it, two small amber eyes under the carapace brim, exactly six stiff blade-like blue-grey chitin legs angled down and forward, and exactly five very long ringed flesh-pink tentacles, each longer than the body, grey and thorn-spiked toward the tips and ending in a flat pink sucker-pad. Shown swimming, the body low and level as if half-submerged, limbs paddling or trailing, the outline clean against transparency (the water is drawn by the game). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "No new art!",
+  "drawsize": 4.0,
+  "canon": "blixus",
+  "derive_from": "miasma_canon_blixus_v1_east",
+  "target_texpath": "swanimals/Blixus/Blixus_Swimming"
+ },
+ {
+  "id": "miasma_canon_marshhaunt_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_MarshHaunt",
+  "prompt": "RimWorld creature sprite of the Star Wars marshhaunt, matching the attached canon image: a hulking hunched headless-looking swamp beast far taller than a person, its skull sunk deep between the shoulders, peeling ragged dark grey-green to teal leathery skin mottled with blotches and trailing moss-like strands, a cluster of dark red berry-like bulbs/eyes heaped on top where the head should be, and huge dark-clawed forelimbs hanging low. Standing pose. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "drawsize": 2.0,
+  "canon": "marshhaunt",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/marshhaunt/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "miasma_canon_marshhaunt_v1_swim",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_MarshHaunt",
+  "prompt": "RimWorld creature SWIMMING sprite of the Star Wars marshhaunt, the same individual as the accepted standing render: a hulking hunched headless-looking swamp beast far taller than a person, its skull sunk deep between the shoulders, peeling ragged dark grey-green to teal leathery skin mottled with blotches and trailing moss-like strands, a cluster of dark red berry-like bulbs/eyes heaped on top where the head should be, and huge dark-clawed forelimbs hanging low. Shown swimming, the body low and level as if half-submerged, limbs paddling or trailing, the outline clean against transparency (the water is drawn by the game). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "drawsize": 2.0,
+  "canon": "marshhaunt",
+  "derive_from": "miasma_canon_marshhaunt_v1_east",
+  "target_texpath": "swanimals/MarshHaunt/MarshHaunt_Swimming"
+ },
+ {
+  "id": "miasma_canon_bogwing_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bogwing",
+  "prompt": "RimWorld creature sprite of the Star Wars bogwing, matching the attached canon image: a pterosaur-like light flier: tiny slim body, long thin neck, small bird-like head with a short pointed beak and one round yellow-orange eye, two huge narrow membrane wings each longer than the body with pointed tips, brown-mauve membrane with dark green leading-edge bones, a very long thin straight whip tail, spindly hind legs with large splayed 3-toed talons, teal/blue-green back and limbs over a pale grey-mauve belly, smooth scaleless skin. Perched/walking pose, wings folded high. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "drawsize": 1.4,
+  "canon": "bogwing",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/bogwing/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "miasma_canon_bogwing_flying_1_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bogwing",
+  "prompt": "RimWorld creature FLYING animation frame 1 of 4 (whole-body flip-book frame, not a wing layer) of the Star Wars bogwing, the same individual as the accepted standing render: a pterosaur-like light flier: tiny slim body, long thin neck, small bird-like head with a short pointed beak and one round yellow-orange eye, two huge narrow membrane wings each longer than the body with pointed tips, brown-mauve membrane with dark green leading-edge bones, a very long thin straight whip tail, spindly hind legs with large splayed 3-toed talons, teal/blue-green back and limbs over a pale grey-mauve belly, smooth scaleless skin. In flight, body level, legs tucked back, wings raised high in a V at the top of the upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "drawsize": 1.4,
+  "canon": "bogwing",
+  "derive_from": "miasma_canon_bogwing_v1_east",
+  "target_texpath": "swanimals/Bogwing/Bogwing_Flying_1"
+ },
+ {
+  "id": "miasma_canon_bogwing_flying_2_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bogwing",
+  "prompt": "RimWorld creature FLYING animation frame 2 of 4 (whole-body flip-book frame, not a wing layer) of the Star Wars bogwing, the same individual as the accepted standing render: a pterosaur-like light flier: tiny slim body, long thin neck, small bird-like head with a short pointed beak and one round yellow-orange eye, two huge narrow membrane wings each longer than the body with pointed tips, brown-mauve membrane with dark green leading-edge bones, a very long thin straight whip tail, spindly hind legs with large splayed 3-toed talons, teal/blue-green back and limbs over a pale grey-mauve belly, smooth scaleless skin. In flight, body level, legs tucked back, wings level and spread wide mid-downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "drawsize": 1.4,
+  "canon": "bogwing",
+  "derive_from": "miasma_canon_bogwing_v1_east",
+  "target_texpath": "swanimals/Bogwing/Bogwing_Flying_2"
+ },
+ {
+  "id": "miasma_canon_bogwing_flying_3_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bogwing",
+  "prompt": "RimWorld creature FLYING animation frame 3 of 4 (whole-body flip-book frame, not a wing layer) of the Star Wars bogwing, the same individual as the accepted standing render: a pterosaur-like light flier: tiny slim body, long thin neck, small bird-like head with a short pointed beak and one round yellow-orange eye, two huge narrow membrane wings each longer than the body with pointed tips, brown-mauve membrane with dark green leading-edge bones, a very long thin straight whip tail, spindly hind legs with large splayed 3-toed talons, teal/blue-green back and limbs over a pale grey-mauve belly, smooth scaleless skin. In flight, body level, legs tucked back, wings swept fully down at the bottom of the downstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "drawsize": 1.4,
+  "canon": "bogwing",
+  "derive_from": "miasma_canon_bogwing_v1_east",
+  "target_texpath": "swanimals/Bogwing/Bogwing_Flying_3"
+ },
+ {
+  "id": "miasma_canon_bogwing_flying_4_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Bogwing",
+  "prompt": "RimWorld creature FLYING animation frame 4 of 4 (whole-body flip-book frame, not a wing layer) of the Star Wars bogwing, the same individual as the accepted standing render: a pterosaur-like light flier: tiny slim body, long thin neck, small bird-like head with a short pointed beak and one round yellow-orange eye, two huge narrow membrane wings each longer than the body with pointed tips, brown-mauve membrane with dark green leading-edge bones, a very long thin straight whip tail, spindly hind legs with large splayed 3-toed talons, teal/blue-green back and limbs over a pale grey-mauve belly, smooth scaleless skin. In flight, body level, legs tucked back, wings level and rising mid-upstroke. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "drawsize": 1.4,
+  "canon": "bogwing",
+  "derive_from": "miasma_canon_bogwing_v1_east",
+  "target_texpath": "swanimals/Bogwing/Bogwing_Flying_4"
+ },
+ {
+  "id": "miasma_siezer_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Lockjaw",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename Siezer. Make it have a MASSIVE head half the size of its relatively reduced body. Do not make it an alligator, more like a toothy lock-jawed whale with flippers that pushes itself through the mud. Avoid crocodile or aligator! Make it alien. Try again. Ignore the special toxin/disease stuff.\" RimWorld creature sprite, the siezer: an alien mud-swimming beast whose MASSIVE head is half the size of its relatively reduced body, a toothy lock-jawed whale-like head with a heavy clamped jaw lined with interlocking teeth, a stubby tapering body and broad flippers it uses to shove itself through the mud, smooth mottled mud-dark hide. Alien and whale-like in build. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Rename Siezer. Make it have a MASSIVE head half the size of its relatively reduced body. Do not make it an alligator, more like a toothy lock-jawed whale with flippers that pushes itself through the mud. Avoid crocodile or aligator! Make it alien. Try again. Ignore the special toxin/disease stuff.",
+  "drawsize": 2.25
+ },
+ {
+  "id": "miasma_lastvine_calm_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Mantrap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Based on E, regenerate ALL art for this. A terrifying single-mouthed thing with fang-like thorns around its mouth, no arms, root-like lets pulling itself along hungrily. Needs both calm, closed-mouth, sessile-like imagery with head hung like a ripe pod... and then that same pod reared up horrifying into a huge gaping maw and actively writing tentacles. Totally rewrite description. Rename it as a Lastvine.\" RimWorld creature sprite, the lastvine, CALM state, design based on the attached chosen render (column E): a sessile-looking plant-beast at rest, its single closed mouth-pod hanging down heavy like a ripe pod, fang-like thorns folded shut around the sealed mouth, no arms, a mass of root-like legs gripping the ground. One creature, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Based on E, regenerate ALL art for this. A terrifying single-mouthed thing with fang-like thorns around its mouth, no arms, root-like lets pulling itself along hungrily. Needs both calm, closed-mouth, sessile-like imagery with head hung like a ripe pod... and then that same pod reared up horrifying into a huge gaping maw and actively writing tentacles. Totally rewrite description. Rename it as a Lastvine.",
+  "drawsize": 1.75,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/7d/7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap"
+ },
+ {
+  "id": "miasma_lastvine_reared_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Mantrap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Based on E, regenerate ALL art for this. A terrifying single-mouthed thing with fang-like thorns around its mouth, no arms, root-like lets pulling itself along hungrily. Needs both calm, closed-mouth, sessile-like imagery with head hung like a ripe pod... and then that same pod reared up horrifying into a huge gaping maw and actively writing tentacles. Totally rewrite description. Rename it as a Lastvine.\" RimWorld creature sprite, the lastvine, REARED attack state, the same creature as the calm pod form (design based on the attached chosen render, column E): the pod reared up high, split open into a huge gaping single maw ringed with fang-like thorns, actively writhing tentacles lashing around it, no arms, root-like legs pulling it along hungrily. Terrifying. One creature, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Based on E, regenerate ALL art for this. A terrifying single-mouthed thing with fang-like thorns around its mouth, no arms, root-like lets pulling itself along hungrily. Needs both calm, closed-mouth, sessile-like imagery with head hung like a ripe pod... and then that same pod reared up horrifying into a huge gaping maw and actively writing tentacles. Totally rewrite description. Rename it as a Lastvine.",
+  "drawsize": 1.75,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/7d/7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d.png"
+  ],
+  "target_texpath": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap_Reared"
+ },
+ {
+  "id": "miasma_hellslantern_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PodWorm",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename to Hell's Lantern. Venomous and slow. Redo description and art.\" RimWorld creature sprite, the hell's lantern: a slow, heavy, venomous swamp worm, its fat segmented body dragging low, a glowing lantern-like lure swelling at its head lit from within with sickly light, venom-wet hooked mouthparts and dripping glands along its flanks marking it as poisonous. One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Rename to Hell's Lantern. Venomous and slow. Redo description and art.",
+  "drawsize": 3.25
+ },
+ {
+  "id": "miasma_swarmling_green_v1_east",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_Swarmling",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like the bulbous butt, but make it sickly green please\" RimWorld creature sprite, the swarmling, EAST-facing: keep this render's shape exactly, including the big bulbous abdomen sac, and recolour the whole animal a sickly diseased green.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "I like the bulbous butt, but make it sickly green please",
+  "derive_from": "rot_swarmling_v2_east"
+ },
+ {
+  "id": "miasma_swarmling_green_v1_south",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_Swarmling",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like the bulbous butt, but make it sickly green please\" RimWorld creature sprite, the swarmling, SOUTH-facing: keep this render's shape exactly, including the big bulbous abdomen sac, and recolour the whole animal a sickly diseased green.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "I like the bulbous butt, but make it sickly green please",
+  "derive_from": "rot_swarmling_v2_south"
+ },
+ {
+  "id": "miasma_swarmling_green_v1_north",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_Swarmling",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like the bulbous butt, but make it sickly green please\" RimWorld creature sprite, the swarmling, NORTH-facing: keep this render's shape exactly, including the big bulbous abdomen sac, and recolour the whole animal a sickly diseased green.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "I like the bulbous butt, but make it sickly green please",
+  "derive_from": "rot_swarmling_v2_north"
+ },
+ {
+  "id": "miasma_aphreen_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Aphreen",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"less cartoon like\" RimWorld plant sprite seen from above at a slight angle, the aphreen: an upright bushy plant of narrow leaves in tight whorls, mature growth dusty green, every new growing tip flushed hot pink-red and covered in fine pale fur as if inflamed, the flush fading as each leaf matures. Naturalistic botanical rendering. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "less cartoon like",
+  "drawsize": 1.0
+ },
+ {
+  "id": "miasma_braskeen_closed_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Braskeen",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"less cartoonish\" RimWorld plant sprite seen from above, the braskeen (CLOSED state): a flat predatory whorl floating on the water surface, each arm's hinged blade pair snapped CLOSED, a caught scuttler's outline just visible between the interlocking teeth. Naturalistic, botanically believable. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "less cartoonish",
+  "drawsize": 0.85
+ },
+ {
+  "id": "miasma_braskeen_open_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Braskeen",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"less cartoonish\" RimWorld plant sprite seen from above, the braskeen (OPEN state): a flat predatory whorl floating on the water surface, each arm ending in a pair of hinged blades held OPEN, fringed with stiff interlocking teeth, blade interiors raw wet pink, waiting. Naturalistic, botanically believable. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "less cartoonish",
+  "drawsize": 0.85
+ },
+ {
+  "id": "miasma_ommolyn_v2a",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ommolyn",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Too plain, more alien swamp, add variants\" RimWorld plant sprite seen from above at a slight angle, the ommolyn (variant a of 3, vary the shape): an alien swamp lure-plant, a strange pale bloom on a short stalk over sprawling slick mud-surface leaves, its form unmistakably alien, hinting at something waiting below the mud. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Too plain, more alien swamp, add variants",
+  "drawsize": 0.6
+ },
+ {
+  "id": "miasma_velluric_v2a",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Velluric",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"too simple, try again, add variants\" RimWorld plant sprite seen from above a shallow channel, the velluric (variant a of 3, vary the shape): an alien aquatic bladder-plant, a pale flower on a thin stalk above the waterline over a visibly complex drifting mass of translucent bladders and trailing filaments just beneath the surface. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "too simple, try again, add variants",
+  "drawsize": 0.7
+ },
+ {
+  "id": "miasma_ommolyn_v2b",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ommolyn",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Too plain, more alien swamp, add variants\" RimWorld plant sprite seen from above at a slight angle, the ommolyn (variant b of 3, vary the shape): an alien swamp lure-plant, a strange pale bloom on a short stalk over sprawling slick mud-surface leaves, its form unmistakably alien, hinting at something waiting below the mud. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Too plain, more alien swamp, add variants",
+  "drawsize": 0.6
+ },
+ {
+  "id": "miasma_velluric_v2b",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Velluric",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"too simple, try again, add variants\" RimWorld plant sprite seen from above a shallow channel, the velluric (variant b of 3, vary the shape): an alien aquatic bladder-plant, a pale flower on a thin stalk above the waterline over a visibly complex drifting mass of translucent bladders and trailing filaments just beneath the surface. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "too simple, try again, add variants",
+  "drawsize": 0.7
+ },
+ {
+  "id": "miasma_ommolyn_v2c",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ommolyn",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Too plain, more alien swamp, add variants\" RimWorld plant sprite seen from above at a slight angle, the ommolyn (variant c of 3, vary the shape): an alien swamp lure-plant, a strange pale bloom on a short stalk over sprawling slick mud-surface leaves, its form unmistakably alien, hinting at something waiting below the mud. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "Too plain, more alien swamp, add variants",
+  "drawsize": 0.6
+ },
+ {
+  "id": "miasma_velluric_v2c",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Velluric",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"too simple, try again, add variants\" RimWorld plant sprite seen from above a shallow channel, the velluric (variant c of 3, vary the shape): an alien aquatic bladder-plant, a pale flower on a thin stalk above the waterline over a visibly complex drifting mass of translucent bladders and trailing filaments just beneath the surface. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "too simple, try again, add variants",
+  "drawsize": 0.7
+ },
+ {
+  "id": "miasma_nemreth_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nemreth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the nemreth: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 0.75,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c1/c1e742dd3a07e5f77ccf99b4342b4877231c912fdf98b7c456f390c275130752.png"
+  ]
+ },
+ {
+  "id": "miasma_nemreth_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nemreth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the nemreth: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 0.75,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c1/c1e742dd3a07e5f77ccf99b4342b4877231c912fdf98b7c456f390c275130752.png"
+  ]
+ },
+ {
+  "id": "miasma_nogtyl_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nogtyl",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the nogtyl: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 12.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/17/1748fcc745fd12a15f723c7c2dc5a8659f6dfcacdc3b8d30dd375d93be1c27c5.png"
+  ]
+ },
+ {
+  "id": "miasma_nogtyl_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nogtyl",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the nogtyl: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 12.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/17/1748fcc745fd12a15f723c7c2dc5a8659f6dfcacdc3b8d30dd375d93be1c27c5.png"
+  ]
+ },
+ {
+  "id": "miasma_nyssolet_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nyssolet",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the nyssolet: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 0.8,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9c/9c2924f943d9817edd70da9ecf49f9a6f0c15f54d41dd26f2e3b1f776932c85f.png"
+  ]
+ },
+ {
+  "id": "miasma_nyssolet_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nyssolet",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the nyssolet: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 0.8,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9c/9c2924f943d9817edd70da9ecf49f9a6f0c15f54d41dd26f2e3b1f776932c85f.png"
+  ]
+ },
+ {
+  "id": "miasma_pallasheen_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Pallasheen",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the pallasheen: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 0.55,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/15/1595abf4dd2db336b1ce15372a56b4f00b4d442b6982d86c5f3e95073ae16ec4.png"
+  ]
+ },
+ {
+  "id": "miasma_pallasheen_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Pallasheen",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the pallasheen: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 0.55,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/15/1595abf4dd2db336b1ce15372a56b4f00b4d442b6982d86c5f3e95073ae16ec4.png"
+  ]
+ },
+ {
+  "id": "miasma_sarrash_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sarrash",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the sarrash: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 1.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/50/5035b08b80c832c2a8ad47e08c5dc1e9ef204916e5bf8716da522e504b13579c.png"
+  ]
+ },
+ {
+  "id": "miasma_sarrash_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sarrash",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the sarrash: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 1.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/50/5035b08b80c832c2a8ad47e08c5dc1e9ef204916e5bf8716da522e504b13579c.png"
+  ]
+ },
+ {
+  "id": "miasma_thessamor_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Thessamor",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the thessamor: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/bc/bcd6bd18cc62178c9f5a4c187cc548df7d70588fb09748b9000c3037aa02eb32.png"
+  ]
+ },
+ {
+  "id": "miasma_thessamor_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Thessamor",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the thessamor: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/bc/bcd6bd18cc62178c9f5a4c187cc548df7d70588fb09748b9000c3037aa02eb32.png"
+  ]
+ },
+ {
+  "id": "miasma_thrannock_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Thrannock",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the thrannock: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 1.3,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/97/97de0b93e964739f9ede8d097b8ac087980d53343978c41049c97176c7de44f2.png"
+  ]
+ },
+ {
+  "id": "miasma_thrannock_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Thrannock",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the thrannock: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 1.3,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/97/97de0b93e964739f9ede8d097b8ac087980d53343978c41049c97176c7de44f2.png"
+  ]
+ },
+ {
+  "id": "miasma_ullavess_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ullavess",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the ullavess: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 1.1,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/85/8530f8328b6da9fa03da5914717031a096a403bdd7cc4406a313a494fc1763e3.png"
+  ]
+ },
+ {
+  "id": "miasma_ullavess_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ullavess",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the ullavess: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 1.1,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/85/8530f8328b6da9fa03da5914717031a096a403bdd7cc4406a313a494fc1763e3.png"
+  ]
+ },
+ {
+  "id": "miasma_vellamine_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vellamine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the vellamine: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 0.9,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/00/0044c8c1fba954a60e5c741eb4d4137538192478f256ca03f83bdd97827835c4.png"
+  ]
+ },
+ {
+  "id": "miasma_vellamine_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vellamine",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the vellamine: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 0.9,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/00/0044c8c1fba954a60e5c741eb4d4137538192478f256ca03f83bdd97827835c4.png"
+  ]
+ },
+ {
+  "id": "miasma_wessaline_varb_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Wessaline",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the wessaline: a NEW VARIANT (b) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 1.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d5/d5505dba9df706873bd75b8118512d256fc65704e4ba4fd79a92411a4fd15b65.png"
+  ]
+ },
+ {
+  "id": "miasma_wessaline_varc_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Wessaline",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"add variants\" RimWorld plant sprite, the wessaline: a NEW VARIANT (c) of the same species as the attached chosen render -- same species, palette, structure and scale, a different individual with its own shape and arrangement, so a field of them reads varied. One whole plant, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "biome_register": "miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust",
+  "owner_note": "add variants",
+  "drawsize": 1.0,
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d5/d5505dba9df706873bd75b8118512d256fc65704e4ba4fd79a92411a4fd15b65.png"
+  ]
+ }
+]
