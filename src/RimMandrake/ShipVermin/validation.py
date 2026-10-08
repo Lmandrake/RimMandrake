@@ -171,7 +171,7 @@ def static_checks():
             bad.append("settings field %s has no control in DoWindowContents" % n)
     proj = open(os.path.join(HERE, "Source", "RM_ShipVermin.csproj"), encoding="utf-8").read()
     for dp, _d, files in os.walk(os.path.join(HERE, "Source")):
-        if os.sep + "obj" in dp or os.sep + "bin" in dp:
+        if os.sep + "obj" in dp or os.sep + "bin" in dp or os.sep + "SelfTest" in dp:   # the offline fuzz project has its own csproj
             continue
         for fn in files:
             if fn.endswith(".cs"):
