@@ -4,7 +4,7 @@
 
 Owner, typed 2026-10-04, on the Long Shade mirror field (`design/Jawa/worldbuilding/biomes/longshade_shade_ideation_2026-09-29.md` N6 and W3): *"I like this. Should be its own RimMandrake mod. Solar Mirrors. Heliostats. Static mirrors. We should do a full design pass on this mod to make sure it's feasible in the current engine, both Claude and GPT. Then propose fun extensions to make it full and rich."* He chose the **full puzzle-map version** (W3), not the single set-piece (N6).
 
-This document is the design pass. Nothing is built. Item: `SOLAR_MIRRORS_MOD_DESIGN_1`.
+This document is the design pass. Item: `SOLAR_MIRRORS_MOD_DESIGN_1`. The mod is `src/RimMandrake/SolarMirrors/`; what is built per phase is the **Status** column of §6.1, and the remainder is `SOLAR_MIRRORS_BUILD_1`.
 
 ## 1. What exists
 
@@ -143,7 +143,7 @@ It is applied in `RebuildHeatLayers` (so the **path-cost grid and the shade-patc
 ### 3.4 The frozen array: the Long Shade puzzle-map (the W3 version he chose)
 
 - **Set-piece:** a mapgen step (in Solar Mirrors, gated on `RM_MirrorFieldExtension`) places an **ancient mirror field** of **4–6** `RM_AncientHeliostat`s: unpowered, seized, each with **3 marked aim detents** (cut from 6–10 × 4–6 per GPT, for a smaller, fully validated and readable state space; the difficulty setting can raise it) (old brass target-pins on the ground the player can see), plus 2–4 **sun-stones** at a sealed objective and around it.
-- **What the lock guards (ruled by option, §7 cards):** (a) a **sealed vault** whose door opens when all its sun-stones are lit, (b) a **shade road**: the right configuration carves a chain of shade patches across a sun gap that is otherwise impassable to a dashing colonist (the inverse use: mirrors kill the light that *other* mirrors throw by re-aiming them, so shade appears), (c) a **herd gate**: the configuration decides which way the giant herds migrate through the map: past the colony, through the colony, or into the canyon where the hunter waits.
+- **What the lock guards — ruled (a), the sealed vault (§7):** (a) a **sealed vault** whose door opens when all its sun-stones are lit, (b) a **shade road**: the right configuration carves a chain of shade patches across a sun gap that is otherwise impassable to a dashing colonist (the inverse use: mirrors kill the light that *other* mirrors throw by re-aiming them, so shade appears), (c) a **herd gate**: the configuration decides which way the giant herds migrate through the map: past the colony, through the colony, or into the canyon where the hunter waits.
 - **Repair is the cost per move.** Each ancient heliostat must be repaired (components + Construction) before it can be re-aimed, and every re-aim costs a job. The puzzle is therefore a resource and time puzzle, not a slider. A repaired one can be powered and becomes a real heliostat, which is the reward.
 - **Solvable, by construction.** The state space is small (6 mirrors × 3 detents = 729 configurations; exhaustive search with action-sequence checks is well under a second at mapgen). Mapgen **solves it before placing it**, and per GPT it validates **reachable action sequences**, not only a solved end state. Every ancient mirror's interaction cell must be reachable along a route a colonist can survive, given the shade the current configuration leaves, at each step. It keeps a layout only if (1) ≥ 1 reachable solution exists, (2) the start is unsolved, (3) the shortest solution needs ≥ 3 re-aims, (4) no chain exceeds 4, and (5) a reset path exists (re-aiming back is always possible). The sun-stones use **hysteresis**, and the vault's opening is **latched**, so a dust storm cannot shut it again. Escalating hints (missing input → first blocker → a useful next detent) appear in the inspect pane. Mapgen already has a `Survey` (`src/RimMandrake/LongShade/Source/RM_LongShadeMapgen.cs`) that builds the shade grid and patch graph on the generated map, so the solver uses the real grid rather than a model of it.
 - **Readable:** detents are visible ground objects. Selecting an ancient mirror ghosts **every detent's spot** at once, so the player can see the options before paying for a job. Sun-stones glow when lit. The vault's inspect pane lists its stones lit/unlit. No hidden state.
@@ -213,14 +213,14 @@ Each is an independent add-on to the v1 in §3. Costs: **S** ≤ 1 day / ≤ 200
 
 ### 6.1 Phases (each lands and is pushed on its own)
 
-| Phase | Work | Where | Size |
-|---|---|---|---|
-| P0 | **Hook in CreatureBehaviors:** `IRM_LightLayer` + `RegisterLightSource`, `mirrorLight[]` folded into `RebuildHeatLayers`, `ShadeAt`, `ExposureAt` in the §2.3 order; `RM_SunHeatMath.WithLight` (pure, selftested in `Source/SelfTest/Program.cs`) | `src/RimMandrake/CreatureBehaviors/Source/` | ~120 lines |
-| P1 | **Mod skeleton:** About.xml, csproj (`EnableDefaultCompileItems` explicit list if copying CreatureBehaviors' pattern), settings class, `RM_MapComponent_MirrorLight` (layer, 250-tick cadence, change hash, chain passes, throttle), `RM_CompMirror` (aim, efficiency, ExposeData), `RM_MirrorMath` (pure: Bresenham visitor, cosine efficiency, spot raster, blocker rule) with an offline selftest | `src/RimMandrake/SolarMirrors/` | ~600 lines C# |
-| P2 | **Defs:** `RM_SignalMirror`, `RM_StaticMirror`, `RM_Heliostat`, `RM_SunStone`, re-aim and clean JobDefs + drivers, research, placeholder art (artpipe check first: `artpipe_state.py find mirror heliostat`) | same | ~250 lines XML + ~150 C# |
-| P3 | **Render:** light `SectionLayer` (additive, fog-masked), central beam drawing from the map component, CellBoolDrawer aim preview; `GroundGlowAt` postfix + `Notify_GlowChanged` | same | ~350 lines |
-| P4 | **Ancient field:** `RM_MirrorFieldExtension`, mapgen step, solver, detents, sun-stones, vault/shade-road/herd-gate objective per the card ruling | same + one `<li>` in `RM_LongShade.xml` | ~700 lines |
-| P5 | Owner-watched sitting: legibility of the lit patch inside a shadow, beam look, the herd re-route | live, with him | — |
+| Phase | Work | Where | Size | Status (measured 2026-10-08) |
+|---|---|---|---|---|
+| P0 | **Hook in CreatureBehaviors:** `IRM_LightLayer` + `RegisterLightSource`, `mirrorLight[]` folded into `RebuildHeatLayers`, `ShadeAt`, `ExposureAt` in the §2.3 order; `RM_SunHeatMath.WithLight` (pure, selftested in `Source/SelfTest/Program.cs`) | `src/RimMandrake/CreatureBehaviors/Source/` | ~120 lines | Built (`99b61e39b`). |
+| P1 | **Mod skeleton:** About.xml, csproj (`EnableDefaultCompileItems` explicit list if copying CreatureBehaviors' pattern), settings class, `RM_MapComponent_MirrorLight` (layer, 250-tick cadence, change hash, chain passes, throttle), `RM_CompMirror` (aim, efficiency, ExposeData), `RM_MirrorMath` (pure: Bresenham visitor, cosine efficiency, spot raster, blocker rule) with an offline selftest | `src/RimMandrake/SolarMirrors/` | ~600 lines C# | Built (`7c05c83da`; Verse-free kernel + seeded fuzz + mutation set `df37296d5`). |
+| P2 | **Defs:** `RM_SignalMirror`, `RM_StaticMirror`, `RM_Heliostat`, `RM_SunStone`, re-aim and clean JobDefs + drivers, research, placeholder art (artpipe check first: `artpipe_state.py find mirror heliostat`) | same | ~250 lines XML + ~150 C# | Built except the clean job (dust); research uses vanilla Smithing/Electricity; art is placeholder. Remainder: `SOLAR_MIRRORS_BUILD_1`. |
+| P3 | **Render:** light `SectionLayer` (additive, fog-masked), central beam drawing from the map component, CellBoolDrawer aim preview; `GroundGlowAt` postfix + `Notify_GlowChanged` | same | ~350 lines | Built, with the spot drawn per lit cell from the map component (additive, fog-masked) rather than a `SectionLayer`, and the aim preview as field edges rather than a `CellBoolDrawer`. |
+| P4 | **Ancient field:** `RM_MirrorFieldExtension`, mapgen step, solver, detents, sun-stones, vault objective (ruled 2026-10-04) | same; reaches the Long Shade by a patch in this mod | ~700 lines | `SOLAR_MIRRORS_BUILD_1`. |
+| P5 | Owner-watched sitting: legibility of the lit patch inside a shadow, beam look, the herd re-route | live, with him | — | Owed (needs the owner). |
 
 **v1 total ≈ 2,100 lines plus defs and art; P0–P3 is a playable mod; P4 is the puzzle.**
 
@@ -231,7 +231,7 @@ Each is an independent add-on to the v1 in §3. Costs: **S** ≤ 1 day / ≤ 200
 1. Every SolarMirrors def is loaded with its comp and the extension resolves on `RM_LongShade` → `defs.present`
 2. A static mirror aimed at a shaded cell lowers `ShadeAt` and raises `ExposureAt` there; un-aimed, it restores them → `light.unshade` (needs a bridge `[Tool]` reading the shade grid at a cell: `RM_ShadeProbe`, filed if absent)
 3. A wall built on the beam line blocks it within 250 ticks → `light.blocked`
-4. A roof over the target takes the light; a roof along the path does not → `light.roof`
+4. A roof over the target takes the light, and so does a roof along the path (§2.2) → `light.roof`
 5. A mirror standing in shadow throws nothing; lit by a second mirror, it fires (chain) → `light.chain`
 6. Light reaches the glow grid: `GroundGlowAt` at a lit cell on a Long Shade map reads 1.0 vs 0.8 → `glow.postfix`
 7. Re-aiming bumps the shade grid's `GridVersion` and changes the patch-graph patch count → `herd.patchgraph`
@@ -244,4 +244,11 @@ Selftest offline first (`--mock`), then a minimal load round (the CreatureBehavi
 
 ## 7. Open questions (cards)
 
-`Transient/solar_mirrors_cards_2026-10-04.json` asks four questions on two cards: what the frozen field's lock opens (vault / shade road / herd gate / vary), whether static mirrors sweep under a moving sun, how visible the beam is, and which extension comes first. Everything else in this document is a proposal that stands unless he overrides it.
+All four were answered by the owner on 2026-10-04 (question cards; ledger note on `SOLAR_MIRRORS_MOD_DESIGN_1`):
+
+- **The frozen field's lock opens a sealed vault** holding loot and a repaired heliostat (not the shade road or the herd gate).
+- **Static mirrors sweep under a moving sun;** only a powered heliostat holds its target.
+- **The beam shows as a warm spot plus a faint shaft.**
+- **Extensions after the core, typed:** *"I like all four"* — E1 solar furnace, E4 blinding defence, E3 heliograph signals and E2 mirror greenhouse are all in scope.
+
+Everything else in this document is a proposal that stands unless he overrides it.
