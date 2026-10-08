@@ -250,5 +250,89 @@
   "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
   "old": "for (int code = 0; code < total; code++)",
   "new": "for (int code = 0; code < total - 1; code++)"
+ },
+ {
+  "name": "field: start picked against strict solutions, not held (D3)",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "IList<int> lower = r.holds.Count > 0 ? r.holds : r.solutions;\n            List<int> ok",
+  "new": "IList<int> lower = r.solutions;\n            List<int> ok"
+ },
+ {
+  "name": "field: minReAims measured to strict solutions, not held (D3)",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "IList<int> lower = r.holds.Count > 0 ? r.holds : r.solutions;\n            for (int k = 0; k < lower.Count",
+  "new": "IList<int> lower = r.solutions;\n            for (int k = 0; k < lower.Count"
+ },
+ {
+  "name": "field: held set records only lit configurations",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (level >= Held)\n                {\n                    r.holds.Add(code);",
+  "new": "if (level >= Lit)\n                {\n                    r.holds.Add(code);"
+ },
+ {
+  "name": "field: LevelOf promotes held to lit",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "level = Held;",
+  "new": "level = Lit;"
+ },
+ {
+  "name": "field: LevelOf ignores the hold threshold",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (l >= unlitBelow)",
+  "new": "if (l >= 0f)"
+ },
+ {
+  "name": "field: mirrors clamp lets 7 through",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "return setting < 4 ? 4 : setting > 6 ? 6 : setting;",
+  "new": "return setting < 4 ? 4 : setting > 7 ? 7 : setting;"
+ },
+ {
+  "name": "field: re-aims clamp floor 1",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "return setting < 2 ? 2 : setting > 4 ? 4 : setting;",
+  "new": "return setting < 1 ? 1 : setting > 4 ? 4 : setting;"
+ },
+ {
+  "name": "field: detents clamp floor 1",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "return extension < 2 ? 2 : extension;",
+  "new": "return extension < 1 ? 1 : extension;"
+ },
+ {
+  "name": "field: generator drops the intended solution",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "mine.Add(stoneTarget(stoneFor));",
+  "new": "{ }"
+ },
+ {
+  "name": "field: generator allows duplicate detents",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (!mine.Contains(cand[c]))",
+  "new": "if (true)"
+ },
+ {
+  "name": "field: generator compares the raw depth setting (D7)",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "Acceptable(r, want, RM_MirrorKernel.DepthCap(depthCap) - 1, out string why)",
+  "new": "Acceptable(r, want, depthCap, out string why)"
+ },
+ {
+  "name": "field: generator runs one attempt too many",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "for (int attempt = 0; attempt < attempts; attempt++)",
+  "new": "for (int attempt = 0; attempt <= attempts; attempt++)"
+ },
+ {
+  "name": "field: start may sit one job from a held configuration",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (dist >= Math.Max(1, want))\n                {\n                    ok.Add(code);",
+  "new": "if (dist >= Math.Max(1, want - 1))\n                {\n                    ok.Add(code);"
+ },
+ {
+  "name": "solar: relays stop at depth 1 (needs real chains, G2)",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "for (int depth = 0; depth < depthCap && queue.Count > 0; depth++)",
+  "new": "for (int depth = 0; depth < Math.Min(depthCap, 2) && queue.Count > 0; depth++)"
  }
 ]

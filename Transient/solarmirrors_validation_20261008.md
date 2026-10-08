@@ -1,0 +1,99 @@
+# Solar Mirrors — offline validation (FOUNDRY, 2026-10-08)
+
+Owner order: implement and run offline validation until no apparent bugs remain. Offline only (no bridge, game, deploy).
+Subject: `src/RimMandrake/SolarMirrors` at `6765c094e`, plus `jawa/shade_probe` and the Long Shade patch.
+
+## Pass 1 — full-file review
+
+Read in full: the 9 mod `.cs` files, both kernels, `JawaBenchShadeProbeTools.cs`, every def/patch XML, the fuzz and
+`validation.py`. Harmony targets checked against the decompiled 1.6 engine (RimSage): `GlowGrid.GroundGlowAt(IntVec3, bool
+ignoreCavePlants, bool ignoreSky)` with private `map` (VERIFIED), `Building_WorkTable.UsableForBillsAfterFueling()` (VERIFIED;
+an IBillGiver interface method, so WorkGiver_DoBill's call cannot be inlined), `Thing.AmbientTemperature` getter (VERIFIED),
+`CompProperties_Power.basePowerConsumption` private float (VERIFIED). Placeholder texPaths all resolve (vanilla
+SolarCollector/ElectricSmelter/Wall/Column/HorseshoesPin and Stillsand's RM_SunLance_Base, which ships inside the
+mandrake.rm.biomes dependency). `ParentName="Wall"` resolves (vanilla `Name="Wall"`). `MapGenerator.GenerateMap` read:
+biome `extraGenSteps` run, then `map.FinalizeInit()`, then `MapComponent.MapGenerated()`.
+
+Defects (class, then what was wrong):
+
+- **D1 MOD/save.** `RM_MapComponent_MirrorField` PostLoadInit did `mirrors.RemoveAll(null)` / `stones.RemoveAll(null)`. A
+  configuration code is positional (mirror i = digit i), so after a field mirror was destroyed and the game reloaded,
+  hints decoded with the wrong mirror count and named the wrong mirror/detent; a destroyed stone dropped from the list let
+  the vault open with fewer stones, but only after a reload.
+- **D2 MOD/puzzle bypass.** Field sun-stones are claimable and minifiable (RM_MirrorBase), and `CurrentlySolved` checked only
+  `Spawned && Lit`: claim, uninstall, reinstall every stone under one mirror, vault opens, no puzzle.
+- **D3 MOD/puzzle guarantee.** The solver counted a configuration solved only when every stone had light >= litAt, but the
+  stones keep `Lit` down to unlitBelow (hysteresis, design §3.4). A stone lit in one configuration stays lit in a
+  neighbouring one at 0.35-0.5, so the vault can latch in configurations the solver never counted, and the "nearest
+  solution >= N re-aims" guarantee (setting 2-4, default 3) did not hold.
+- **D4 MOD/mapgen.** The field is solved at GenStep 955; later steps (the Long Shade's sun graves at 960, the detent pins
+  this step spawns afterwards, anything wiping plants) can change shade or blockers, and nothing re-checked.
+- **D5 MOD/mapgen.** `Lay` and `SimulateLight` gated on `TrySun`, which multiplies the weather's SunFactor and, off a pinned
+  sun, the clock: whether a field could be laid depended on the initial weather/time.
+- **D6 HARNESS.** `jawa/shade_probe` appended a missing member once per mirror/receiver (200 copies of one miss).
+
+Validation gaps found by reading the fuzz (not mod defects):
+
+- **G1.** The field GENERATOR (candidate detents, intended solution, start pick, acceptance) lived in Verse code and was
+  never fuzzed; only the solver primitives were.
+- **G2.** Relay chains were barely exercised: "deep chains 3" across 5,500 pass/sequence cases.
+- **G3.** No mutation reached the generator, the settings clamps, or the hysteresis lower bound.
+
+Reviewed and found sound (no change): the beam walk, relay accounting, Publish/glow dirtying, receiver hysteresis, jobs
+and reservations, heliograph faction filter (same layer, non-hostile, humanlike), dazzle stat part, settings Scribe and
+all-off, DefOf, def XML (no MayRequire on an Operation, Conditional-guarded patch, no dangling refs).
+Minor, recorded not fixed: a failed field site leaves its cleared grass/filth cleared (trees are never cleared: TryPlan
+needs standable cells); the design's "every mirror's interaction cell reachable along a survivable route" is not built.
+
+## Validation strengthened
+
+- **Generator extracted and fuzzed (G1).** `RM_MirrorFieldKernel.Generate` is the whole mapgen layout search behind delegates
+  (candidates, apply, evaluate, rand); `RM_MirrorFieldBuilder.TryLayout` now calls it. Clamps moved to the kernel
+  (`FieldMirrors/FieldMinReAims/FieldDetents`) so the fuzz sweeps out-of-range settings too.
+- **`generate` family** (600 cases, `SelfTest/SolarMirrorsFieldFuzz.cs`): random sites (ancient-style 3x3 mirrors, stones,
+  walls, roofs, random sun) with the real kernel pass as the evaluator. Independent oracles: every configuration re-lit by
+  the fuzz's reference pass and classified by hand (strict/held); >= 1 strict solution; start neither solved nor held; every
+  held configuration >= want jobs from the start; minReAims/minStrict equal the reference distances; PickStart called
+  directly lands >= want from every held configuration; an exhaustive walk of every job order shorter than `want`, with the
+  stones' hysteresis played by hand, never latches the vault; same seed -> same layout; attempts and evaluations bounded;
+  clamps hold for every setting. Blind-checked: accepted 92, refused 473, held-only configurations 2,212, accepted with a
+  negative chain setting 9, out-of-range settings 317, oversized spaces 35, early-latch walks 92.
+- **`chain` family** (3,000 cases, G2): explicit relay chains vs the reference pass and invariants: 1,567 shots at depth >= 2
+  (the random families together reached 3 before).
+- **Red before green.** With the old solver behaviour put back (held set never recorded) the new oracles fail at once:
+  "held configuration 21 is 3 jobs from the start, want >= 4"; with every set/distance check disabled, the walk alone
+  fails: "the vault latches after 1 jobs, fewer than the generator promised" (seed 64). D3 is a real early-open, not a
+  theory.
+- **Mutations: 42 -> 56** (`Utils/mutations_solarmirrors_fuzz.json`): held lower bound in PickStart and in Rebase, held set,
+  LevelOf (2), each clamp (3), intended solution dropped, duplicate detents, raw depth setting (D7), attempt bound, start one
+  job too near, relays capped at depth 1 (needs the chain family).
+- **Static bars** (`validation.py`): every texPath resolves (own Textures, the mods folded into mandrake.rm.biomes per
+  `Biomes.compose.json`, or a recorded vanilla set checked in RimSage) with a sanity probe; ParentName resolves; no
+  `MayRequire` on a top-level Operation; guards for D1, D2, D3 (LevelOf), D4, D5, seal reference, G1 (Generate) and the
+  kernel clamps. Each new bar was seen RED on a planted edit and restored (the D4 regex was first blind: it matched the
+  method's own declaration; fixed to need the call).
+- Walk `design/validation_walks/RimMandrake/SolarMirrors.md`: three anti-guessing notes (D3 ruled out as harmless, D2, the
+  `MapGenerated` warning to watch for in a live log).
+
+## Fixes and rebuild
+
+- D1: lists never compacted (null slots kept); Hint/NextMove skip unspawned slots.
+- D2: `stoneCells` saved; a stone counts only on its mapgen cell (hint count uses the same test).
+- D3: kernel solves strict AND held sets (`EvaluateLevel`, `LevelOf`); start and minReAims use the held set, existence and
+  hints the strict set; mapgen's evaluator reports the level (`StonesLevel`).
+- D4: `RM_MapComponent_MirrorField.MapGenerated` re-solves the laid field with the same light after the whole map exists,
+  restores the start, updates solutions/minReAims and logs a warning if it lost every solution or its start came closer.
+- D5: `TrySun(..., ignoreWeather)`; mapgen and `SimulateLight` use the weather-free sun.
+- D6: probe `missingMembers` de-duplicated, order kept.
+- D7 (found by the new generator fuzz's settings sweep): mapgen passed the raw `maxChain` setting to the acceptance test, so
+  a hand-edited setting below 0 refused every field; `Generate` now clamps it the way the pass does.
+- Opened vault drops its destroyed seal reference.
+- `winbuild.py SolarMirrors`: 0 warnings, 0 errors; JawaBench companion `build.py --gm` builds (plan only, not deployed).
+
+## Pass 2 — looking for a new kind of problem
+
+(pending)
+
+## Only a live run can prove
+
+(pending)
