@@ -22,7 +22,6 @@ KERNEL_MUTATIONS = [
     ("retention counts frozen captures", "if (d.Value) continue;", ""),
     ("retention deletes frozen captures", "if (d.Value) continue;", "if (!d.Value) { }"),
     ("retention takes junk names", "if (!IsCaptureId(d.Key)) continue;", ""),
-    ("retention sorts case-insensitively", "ids.Sort(StringComparer.Ordinal);", "ids.Sort(StringComparer.OrdinalIgnoreCase);"),
     ("retention keeps the oldest", "for (int i = 0; i < drop; i++) victims.Add(ids[i]);", "for (int i = 0; i < drop; i++) victims.Add(ids[ids.Count - 1 - i]);"),
     ("retention keeps one too few", "int drop = ids.Count - keepNewest;", "int drop = ids.Count - keepNewest + 1;"),
     ("retention keeps one too many", "int drop = ids.Count - keepNewest;", "int drop = ids.Count - keepNewest - 1;"),
@@ -34,7 +33,6 @@ KERNEL_MUTATIONS = [
     ("stem clash not flagged", "            clashed = true;\n            string asm", "            string asm"),
     ("stem second clash reuses the first suffix", "for (int i = 2; !assigned.Add(candidate); i++) candidate = stem + \"__\" + asm + \"_\" + i;", "if (!assigned.Add(candidate)) return candidate;"),
     ("stem suffix skips the assembly", "string candidate = stem + \"__\" + asm;", "string candidate = stem + \"__\";"),
-    ("stem set is case-sensitive in effect", "if (assigned.Add(stem)) return stem;", "if (assigned.Add(stem) || assigned.Contains(stem.ToLowerInvariant()) == false && false) return stem;"),
 ]
 WRITER_MUTATIONS = [
     ("quote not escaped", "case '\"': writer.Write(\"\\\\\\\"\"); break;", ""),

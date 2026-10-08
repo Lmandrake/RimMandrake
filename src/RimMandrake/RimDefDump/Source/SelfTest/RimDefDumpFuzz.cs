@@ -174,6 +174,8 @@ namespace RimMandrake.RimDefDump.SelfTest
                         if (text.Contains("\\u")) Escaped++;
                         if (text.Contains("\\ud") || text.Contains("\\ude")) Surrogates++;
                         Check(text.All(c => c >= 0x20 || c == '\n') , "a raw control character escaped into the output");
+                        Check(text.All(c => !char.IsSurrogate(c)), "a raw surrogate reached the output (a UTF-8 file would turn it into '?')");
+                        if (indent) CheckIndent(text);
                         if (!indent) Check(text.IndexOf('\n') < 0, "compact output contains a raw newline");
                         Node back = new Reader(text).Document();
                         Compare(tree, back, "$");
@@ -182,6 +184,24 @@ namespace RimMandrake.RimDefDump.SelfTest
                 }
             }
             return fails;
+        }
+
+        // each line of an indented document sits at two spaces per open container (one less for a closing bracket)
+        private static void CheckIndent(string text)
+        {
+            int depth = 0; bool inStr = false, esc = false;
+            foreach (string line in text.Split('\n'))
+            {
+                int lead = line.Length - line.TrimStart(' ').Length;
+                string body = line.TrimStart(' ');
+                int want = depth - (body.StartsWith("}") || body.StartsWith("]") ? 1 : 0);
+                if (body.Length > 0 && !inStr) Check(lead == want * 2, "indent " + lead + " on a line at depth " + want + ": " + line);
+                foreach (char c in body)
+                {
+                    if (inStr) { if (esc) esc = false; else if (c == '\\') esc = true; else if (c == '"') inStr = false; continue; }
+                    if (c == '"') inStr = true; else if (c == '{' || c == '[') depth++; else if (c == '}' || c == ']') depth--;
+                }
+            }
         }
 
         // ═════════════ numbers ═════════════
@@ -199,6 +219,8 @@ namespace RimMandrake.RimDefDump.SelfTest
                 Check(W(j => j.Prop("a", 0.35f)) == "\"a\":0.35", "a float property must not widen: " + W(j => j.Prop("a", 0.35f)));
                 Check(W(j => j.Number(double.NaN)) == "null" && W(j => j.Number(double.PositiveInfinity)) == "null" && W(j => j.Number(float.NegativeInfinity)) == "null" && W(j => j.Number(float.NaN)) == "null", "NaN / infinity must be null");
                 Check(W(j => j.Number(ulong.MaxValue)) == "18446744073709551615" && W(j => j.Number(9007199254740993UL)) == "9007199254740993", "ulong must keep every digit (a double would lose them above 2^53)");
+                Check(W(j => j.Str("a\n\r\t\b\f\"\\")) == "\"a\\n\\r\\t\\b\\f\\\"\\\\\"", "short escapes: " + W(j => j.Str("a\n\r\t\b\f\"\\")));
+                Check(WS(ulong.MaxValue) == "18446744073709551615", "TryWriteSimple(ulong.MaxValue) must keep every digit");
                 Check(W(j => j.Number(long.MinValue)) == "-9223372036854775808", "long.MinValue");
                 Check(WS((ulong)9007199254740993UL) == "9007199254740993", "TryWriteSimple(ulong) goes through the exact path");
                 Check(WS(0.1f) == "0.1", "TryWriteSimple(float) goes through the float path");
@@ -240,21 +262,22 @@ namespace RimMandrake.RimDefDump.SelfTest
                     int k = r.Next(1, 14);
                     for (int i = 0; i < k; i++)
                     {
-                        string stem = stems[r.Next(stems.Length)]; bool clashed;
+                        string stem = stems[r.Next(stems.Length)]; bool clashed; string lastAsm = asms[r.Next(asms.Length)];
                         bool expectClash = got.Any(g => string.Equals(g, stem, StringComparison.OrdinalIgnoreCase));
-                        string res = RM_DumpKernel.ReserveStem(assigned, stem, asms[r.Next(asms.Length)], out clashed);
+                        string res = RM_DumpKernel.ReserveStem(assigned, stem, lastAsm, out clashed);
                         Steps++;
                         Check(clashed == expectClash, "clash flag " + clashed + " for " + stem + " after " + string.Join(",", got));
                         if (!clashed) Check(res == stem, "an unclaimed stem must be returned untouched (every existing reader of defs/ThingDef.json depends on it)");
-                        else { Clashes++; Check(res.StartsWith(stem + "__"), "a clash must keep the stem and add the assembly: " + res); }
+                        else { Clashes++; Check(res.StartsWith(stem + "__"), "a clash must keep the stem and add the assembly: " + res); Check(res.Contains("__" + RM_DumpKernel.SafeFileName(lastAsm)), "the clash suffix must name the assembly: " + res); }
                         Check(!got.Any(g => string.Equals(g, res, StringComparison.OrdinalIgnoreCase)), "stem " + res + " collides case-insensitively with an earlier file");
                         got.Add(res);
                     }
-                    foreach (string sfn in new[] { "A.B.C", "Foo`1", "Outer+Inner", "a b/c\\d:e*?\"<>|", "naïve", "" })
+                    foreach (string sfn in new[] { "A.B.C", "Foo`1", "Outer+Inner", "a b/c\\d:e*?\"<>|", "naïve", "", "T4-x_y.Z9" })
                     {
                         string safe = RM_DumpKernel.SafeFileName(sfn);
                         Check(safe.Length == sfn.Length, "SafeFileName changed the length of " + sfn);
                         Check(safe.All(c => char.IsLetterOrDigit(c) || c == '.' || c == '_' || c == '-'), "SafeFileName left an unsafe character in " + safe);
+                        Check(sfn.Where(c => char.IsLetterOrDigit(c) || c == '.' || c == '_' || c == '-').SequenceEqual(safe.Where((c, i) => char.IsLetterOrDigit(sfn[i]) || sfn[i] == '.' || sfn[i] == '_' || sfn[i] == '-')), "SafeFileName altered a safe character in " + sfn);
                         Check(!safe.Contains("/") && !safe.Contains("\\") && !safe.Contains(":") && !safe.Contains("+") && !safe.Contains("`"), "path or generic marker survived: " + safe);
                     }
                 }
@@ -272,7 +295,7 @@ namespace RimMandrake.RimDefDump.SelfTest
             try
             {
                 Cases++;
-                Check(RM_DumpKernel.IsCaptureId("2026-10-07T14-03-59Z") && !RM_DumpKernel.IsCaptureId("2026-10-07T14:03:59Z") && !RM_DumpKernel.IsCaptureId("2026-10-07T14-03-59") && !RM_DumpKernel.IsCaptureId(".writing") && !RM_DumpKernel.IsCaptureId(null) && !RM_DumpKernel.IsCaptureId("2026-10-07t14-03-59Z") && !RM_DumpKernel.IsCaptureId("2026-10-07T14-03-59ZZ") && !RM_DumpKernel.IsCaptureId("2026-1a-07T14-03-59Z") && !RM_DumpKernel.IsCaptureId(""), "capture id vocabulary");
+                Check(RM_DumpKernel.IsCaptureId("2026-10-07T14-03-59Z") && !RM_DumpKernel.IsCaptureId("2026-10-07T14:03:59Z") && !RM_DumpKernel.IsCaptureId("2026-10-07T14-03-59") && !RM_DumpKernel.IsCaptureId(".writing") && !RM_DumpKernel.IsCaptureId(null) && !RM_DumpKernel.IsCaptureId("2026-10-07t14-03-59Z") && !RM_DumpKernel.IsCaptureId("2026-10-07T14-03-59ZZ") && !RM_DumpKernel.IsCaptureId("2026-1a-07T14-03-59Z") && !RM_DumpKernel.IsCaptureId("") && !RM_DumpKernel.IsCaptureId("2026-10-07T14-03-59X") && !RM_DumpKernel.IsCaptureId("2026-10-07T14-03-59z"), "capture id vocabulary");
                 Steps++;
             }
             catch (Exception ex) { fails.Add("captures vocabulary: " + ex.Message); return fails; }
