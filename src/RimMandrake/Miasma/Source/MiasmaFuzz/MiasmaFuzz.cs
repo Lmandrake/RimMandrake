@@ -96,7 +96,7 @@ namespace RimMandrake.Miasma.Fuzz
             public List<Young> all = new List<Young>();
             public List<Young> registered = new List<Young>();     // reference: registration order
             public bool motherDead, setting = true;
-            public int promotions, nextId = 1, returned;
+            public int promotions, nextId = 1, returned, nulls;
             public bool wasDone, wasBetrayed, wasDirty;
         }
 
@@ -119,6 +119,7 @@ namespace RimMandrake.Miasma.Fuzz
                     L.Register(y);
                     L.Register(null);
                     Check(L.young.Count(x => x == y) == 1, "a young was registered twice");
+                    Check(L.young.Count(x => x == null) <= w.nulls, "Register(null) added a null");
                     break;
                 }
                 case 1: if (pick != null) pick.player = true; break;                         // it self-tames
@@ -152,15 +153,19 @@ namespace RimMandrake.Miasma.Fuzz
                 case 10: // save + load: Scribe copies the list by reference and the fields by value
                 {
                     var n = new RM_MiasmaKernel.CrecheLedger<Young>();
-                    n.young = new List<Young>(L.young); n.recordClean = L.recordClean; n.heir = L.heir; n.successionDone = L.successionDone; n.betrayed = L.betrayed; n.returnedCount = L.returnedCount;
+                    n.young = new List<Young>(L.young);
+                    // Scribe_Collections (reference mode) hands back a null for a young that was destroyed while off the map
+                    for (int i = 0; i < n.young.Count; i++)
+                        if (n.young[i] != null && n.young[i].destroyed && (a.b & 1) == 0) { w.registered.Remove(n.young[i]); n.young[i] = null; w.nulls++; Hit("creche.nulled"); }
+                    n.recordClean = L.recordClean; n.heir = L.heir; n.successionDone = L.successionDone; n.betrayed = L.betrayed; n.returnedCount = L.returnedCount;
                     w.ledger = n;
                     break;
                 }
             }
             L = w.ledger;
             // ---- invariants
-            Check(L.young.Distinct().Count() == L.young.Count && L.young.All(y => y != null), "the young list holds a duplicate or a null");
-            Check(L.young.SequenceEqual(w.registered), "the young list drifted from the registration order");
+            Check(L.young.Where(y => y != null).Distinct().Count() == L.young.Count(y => y != null) && L.young.Count(y => y == null) <= w.nulls, "the young list holds a duplicate or an unexplained null");
+            Check(L.young.Where(y => y != null).SequenceEqual(w.registered), "the young list drifted from the registration order");
             if (doneBefore) Check(L.successionDone, "a spent succession came back");
             if (!cleanBefore) Check(!L.recordClean, "a broken record healed");
             if (betrayedBefore) Check(L.betrayed && !L.recordClean && L.successionDone && L.heir == null, "a betrayal was undone or left an heir");
@@ -540,6 +545,50 @@ namespace RimMandrake.Miasma.Fuzz
                     if (s1 < 42f) bad("an eligible tile scored " + s1 + " under base + river bonus");
                 }
             }
+
+            // --- tightening found by the mutation proof (each line pins a defect the first fuzz let through)
+            Cases++;
+            try
+            {
+                Steps += 40;
+                if (RM_MiasmaKernel.Lerp(2f, 6f, -1f) != 2f || RM_MiasmaKernel.Lerp(2f, 6f, 2f) != 6f || RM_MiasmaKernel.Lerp(2f, 6f, 0.5f) != 4f) bad("Lerp must clamp t to 0..1");
+                for (float m = 0f; m <= 1f; m += 0.125f)
+                    for (float f = 0.0625f; f <= 1.25f; f += 0.1875f)
+                    {
+                        float want = m + (1f - m) * Math.Min(1f, f);
+                        if (Math.Abs(RM_MiasmaKernel.OutputFraction(f, m) - want) > 1e-5f) bad("output fraction at fullness " + f + " min " + m + " is " + RM_MiasmaKernel.OutputFraction(f, m) + ", want " + want);
+                    }
+                if (RM_MiasmaKernel.RotDownTicks(0.50001f, 60000) != 30001 || RM_MiasmaKernel.RotDownTicks(0.49999f, 60000) != 29999 || RM_MiasmaKernel.RotDownTicks(1f, 2500) != 2500) bad("rot-down length must round to nearest");
+                // the buyer books 60000..120000 ticks out and is tried on the day, not a tick before
+                {
+                    var offered = new List<int>(); var at = new Dictionary<int, int>(); int sends = 0;
+                    var held = new[] { 7 };
+                    RM_MiasmaKernel.BuyerPoll(offered, at, held, 1000, (lo, hi) => 60000, id => { sends++; return true; });
+                    if (sends != 0 || at[7] != 61000) bad("first sighting must book now+roll and send nothing");
+                    RM_MiasmaKernel.BuyerPoll(offered, at, held, 60999, (lo, hi) => 60000, id => { sends++; return true; });
+                    if (sends != 0) bad("a buyer was sent one tick before its day");
+                    RM_MiasmaKernel.BuyerPoll(offered, at, held, 61000, (lo, hi) => 60000, id => { sends++; return false; });
+                    if (sends != 1 || at[7] != 121000 || offered.Count != 0) bad("a failed send must rebook 60000 ticks out");
+                }
+                // a finished rot clears its target (the next bed tick must pick a new corpse, not keep rotting the old one)
+                {
+                    int target = 0, rot = 2500 - 250; bool done;
+                    RM_MiasmaKernel.RotStep(ref target, ref rot, true, -1, 2500, out done);
+                    if (!done || target != -1 || rot != 0) bad("a finished rot left target " + target + " / clock " + rot);
+                }
+                // a roll that lands exactly on a cumulative weight belongs to the row it closes
+                {
+                    var w = new float[] { 1f, 1f, 2f };
+                    if (RM_MiasmaKernel.FlotsamPick(w, 0.25f) != 0 || RM_MiasmaKernel.FlotsamPick(w, 0.5f) != 1 || RM_MiasmaKernel.FlotsamPick(w, 0.75f) != 2 || RM_MiasmaKernel.FlotsamPick(w, 0.4999f) != 1) bad("flotsam pick boundary rolls");
+                }
+                // a zero rainfall divisor must not divide by zero
+                {
+                    var rg = new RM_MiasmaKernel.BiomeRanges { tempMin = 20f, tempMax = 55f, rainMin = 1000f, rainMax = 4000f, elevMin = 0f, elevMax = 200f, baseScore = 30f, degreeWeight = 0.4f, rainfallDivisor = 0f, riverOrCoastBonus = 12f, spawnChance = 1f };
+                    float sc = RM_MiasmaKernel.BiomeScore(false, false, false, true, 1f, 30f, 2000f, 50f, rg, g => true);
+                    if (float.IsInfinity(sc) || float.IsNaN(sc) || Math.Abs(sc - (30f + 4f + 1000f + 12f)) > 1e-3f) bad("a zero rainfall divisor gave " + sc);
+                }
+            }
+            catch (Exception ex) { bad("tightening block threw " + ex.GetType().Name + ": " + ex.Message); }
             return fails;
         }
 
@@ -575,7 +624,7 @@ namespace RimMandrake.Miasma.Fuzz
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             if (only == null && !oneSeed.HasValue && scale >= 1)
             {
-                string[] mustSee = { "creche.betray", "creche.returned", "creche.heir", "creche.noheir", "tame.tamed", "tame.barred", "price.booked", "price.tried", "price.offered", "price.retry",
+                string[] mustSee = { "creche.nulled", "creche.betray", "creche.returned", "creche.heir", "creche.noheir", "tame.tamed", "tame.barred", "price.booked", "price.tried", "price.offered", "price.retry",
                     "decay.spent", "rot.done", "flotsam.seed", "flotsam.restock", "pick.ties", "pick.atBound" };
                 var missing = mustSee.Where(k => !Stats.ContainsKey(k)).ToList();
                 if (Stats.TryGetValue("price.staleBooking", out long stale)) Info.Add("buyer bookings outlive the young that left the player's hands (never cleared): seen in " + stale + " polls");
