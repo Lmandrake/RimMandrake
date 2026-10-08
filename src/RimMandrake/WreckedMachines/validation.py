@@ -173,7 +173,12 @@ def static_checks():
         if not re.search(r"\b%s\b" % f, ui):
             bad.append("%s has no control in DoWindowContents" % f)
         reader = ladder if f in RUNTIME_SETTINGS else apply
-        if "WreckedMachinesSettings.%s" % f not in reader:
+        # The three ratios are read through the normalised WreckedMachinesSettings.Ladder property, which is
+        # itself built from the raw fields (src, the settings class) - so a read of .Ladder is a read of each.
+        via_ladder = (f in ("wreckedRatio", "kludgedRatio", "refurbishedRatio")
+                      and re.search(r"Ladder\s*=>[^;]*\b%s\b" % f, src) is not None
+                      and "WreckedMachinesSettings.Ladder" in reader)
+        if "WreckedMachinesSettings.%s" % f not in reader and not via_ladder:
             bad.append("%s is never read (a dead setting)" % f)
     return bad
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Verse;
 
 namespace RimMandrake.CreatureBehaviors
@@ -34,9 +35,27 @@ namespace RimMandrake.CreatureBehaviors
         /// <summary>Flagged-invisible records held by that grid, right after the last print.</summary>
         public static int lastPoolInvisible;
 
+        // Per-walker tally (ThingID -> [prints, invisible prints]). The global counters above cannot say WHO laid a
+        // print, so any other pawn on the strip (wildlife, a visitor, a stray colonist) inflates a control arm or
+        // overwrites lastPrintInvisible; a suite that needs attribution reads PrintsBy(pawnId) instead.
+        private static readonly Dictionary<string, int[]> byPawn = new Dictionary<string, int[]>();
+
+        /// <summary>"prints|invisiblePrints|lastInvisible" laid by one pawn since session start (static_call arg: its ThingID).</summary>
+        public static string PrintsBy(string pawnId)
+        {
+            int[] v;
+            if (!byPawn.TryGetValue((pawnId ?? "").Trim(), out v)) return "0|0|false";
+            return v[0] + "|" + v[1] + "|" + (v[2] == 1 ? "true" : "false");
+        }
+
         internal static void Noted(RM_MapComponent_TrackGrid grid, Pawn pawn, IntVec3 c, bool invisible, string tex)
         {
             printsWritten++;
+            int[] mine;
+            if (!byPawn.TryGetValue(pawn.ThingID, out mine)) byPawn[pawn.ThingID] = mine = new int[3];
+            mine[0]++;
+            if (invisible) mine[1]++;
+            mine[2] = invisible ? 1 : 0;
             if (invisible) invisiblePrintsWritten++;
             lastPrintPawn = pawn.ThingID;
             lastPrintCell = c.x + "," + c.z;
