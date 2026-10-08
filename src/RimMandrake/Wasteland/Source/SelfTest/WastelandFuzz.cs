@@ -642,13 +642,14 @@ namespace RimMandrake.Wasteland.SelfTest
             Check(RM_DoseKernel.IndoorFactor(toxic, true) == toxic && RM_DoseKernel.IndoorFactor(toxic, false) < 0f, "IndoorFactor");
             Check(RM_DoseKernel.Applied(toxic, mult) == toxic * mult, "Applied");
             // gripper units
+            Check(RM_DoseKernel.UnitsToTake(true, 0.6f, 500, 500, 3f) == 5 && RM_DoseKernel.UnitsToTake(true, 0.3f, 500, 500, 3f) == 10 && RM_DoseKernel.UnitsToTake(true, 0.1f, 500, 500, 3f) == 30, "GRIPPER_THEFT_FLOOR_PRECISION_1: float quotient floor (3/0.6 -> 5, 3/0.3 -> 10, 3/0.1 -> 30)");
             for (int i = 0; i < 40; i++)
             {
                 float mass = new[] { 0f, 0.00005f, 0.0001f, 0.00011f, 0.02f, 0.5f, 1f, 7.5f, 60f }[r.Next(9)];
                 float cap = new[] { 0f, 0.5f, 5f, 35f, 1e6f, 3e9f }[r.Next(6)];
                 int stack = r.Next(0, 500), maxU = r.Next(0, 80); bool legal = r.Next(5) != 0;
                 int got = RM_DoseKernel.UnitsToTake(legal, mass, stack, maxU, cap); Steps++; MassCases++;
-                long byMass = mass <= 0.0001f ? long.MaxValue : (long)Math.Floor((double)cap / mass);
+                long byMass = mass <= 0.0001f ? long.MaxValue : (long)Math.Floor(cap / mass);
                 long want = !legal ? 0 : Math.Max(0L, Math.Min((long)stack, Math.Min((long)maxU, byMass)));
                 Check(got == want, $"UnitsToTake(legal {legal}, mass {mass}, stack {stack}, maxUnits {maxU}, cap {cap}) = {got}, spec {want}");
                 Check(got >= 0 && got <= stack && got <= maxU, "UnitsToTake outside [0, min(stack, maxUnits)]");
