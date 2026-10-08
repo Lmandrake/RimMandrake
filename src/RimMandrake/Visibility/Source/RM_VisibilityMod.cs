@@ -47,7 +47,7 @@ namespace RimMandrake.Visibility
         public static float ScaledThreatFactor(float visibility)
         {
             float curveFactor = GameComponent_ColonyVisibility.ThreatFactor(visibility);
-            return 1f + (curveFactor - 1f) * raidScalingStrength;
+            return RM_VisibilityKernel.ScaledThreatFactor(curveFactor, raidScalingStrength);
         }
 
         public void DoWindowContents(Rect inRect)

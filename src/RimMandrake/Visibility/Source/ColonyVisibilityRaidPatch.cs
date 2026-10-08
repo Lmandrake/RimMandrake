@@ -259,7 +259,7 @@ namespace RimMandrake.Visibility
 
             float factor = RM_VisibilitySettings.ScaledThreatFactor(visibility) * shkaarMultiplier;
             float before = parms.points;
-            parms.points = Mathf.Clamp(parms.points * factor, StorytellerUtility.GlobalPointsMin(), 10000f);
+            parms.points = RM_VisibilityKernel.ScalePoints(parms.points, factor, StorytellerUtility.GlobalPointsMin());
 
             if (Prefs.DevMode)
             {
