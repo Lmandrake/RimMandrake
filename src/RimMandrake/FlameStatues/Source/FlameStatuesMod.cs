@@ -81,7 +81,7 @@ namespace RimMandrake.FlameStatues
 
         static FlameStatuesStartup()
         {
-            float m = Mathf.Clamp(FlameStatuesSettings.consumptionMultiplier, 0.25f, 4f);
+            float m = RM_FlameKernel.ClampFuelMultiplier(FlameStatuesSettings.consumptionMultiplier);
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 if (d.GetCompProperties<RM_CompProperties_FlamePoints>() == null)
@@ -95,7 +95,7 @@ namespace RimMandrake.FlameStatues
                 }
                 if (!Mathf.Approximately(m, 1f))
                 {
-                    fuel.fuelConsumptionRate *= m;
+                    fuel.fuelConsumptionRate = RM_FlameKernel.ScaledFuelRate(fuel.fuelConsumptionRate, m);
                 }
                 Scaled.Add(d.defName);
             }
