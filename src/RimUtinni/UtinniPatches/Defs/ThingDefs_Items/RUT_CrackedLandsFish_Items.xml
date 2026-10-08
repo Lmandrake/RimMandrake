@@ -34,7 +34,8 @@
     <label>tubbik</label>
     <description>A Spender. A pea-sized gas-bladder animal that exists for the flood-weeks and nothing else: the first rise lifts a billion of them out of the clay, they feed, they breed, they die, and the carpet of them on the falling water is what the fliers commute in for. Between floods the water holds only stragglers. Cooked in a mass it is a paste; the Farmers call it flood-bread and are not joking.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_Hardwood</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until phfix_fish_RUT_Tubbik paints its own (Things/Item/Fish/RUT_Tubbik); was borrowing the RUT_Hardwood timber texture. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -57,7 +58,8 @@
     <label>zhurr</label>
     <description>A Sealed one. For the dry years it lies in a wax-lined cell under the cracked pan, banked to almost nothing — you have walked on thousands. Water wakes it; it rises through the softened clay into the canyon pools, feeds, breeds, and seals itself down again before the pan cracks. Its shed cell-lining is the crack-wax the Farmers trade. Landed, it is cool and dry and does not struggle, as if it has already decided to wait this out too.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_Greenwood</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until phfix_fish_RUT_Zhurr paints its own (Things/Item/Fish/RUT_Zhurr); was borrowing the RUT_Greenwood timber texture. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <comps>

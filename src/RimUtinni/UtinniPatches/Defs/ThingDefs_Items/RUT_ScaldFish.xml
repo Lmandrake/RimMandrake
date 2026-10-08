@@ -150,7 +150,8 @@
     <label>bladderboil</label>
     <description>A leathery golden sac the size of a head, riding the Scald's boil. When the water around it roars it gulps itself full and swells taut, floating high and hard where nothing else can live; when it drifts into a quiet margin pool it sighs out through its crater-mouths and slumps to a wrinkled bag, half-sunk, resting. Pilgrims call them kettles for the whistle they make letting go. They are entirely harmless, and the shore-folk net the resting ones.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_Greenwood</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until phfix_fish_RUT_BladderboilCatch paints its own (Things/Item/Fish/RUT_BladderboilCatch); was borrowing the RUT_Greenwood timber texture. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
