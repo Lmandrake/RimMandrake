@@ -84,14 +84,14 @@ research/Jawa/shield_mods_survey_2026-09-02.md.</description>
       <displayName>Odyssey</displayName>
     </li>
     <li>
-      <packageId>mandrake.rm.warscar</packageId>
-      <displayName>RimMandrake: Warscar</displayName>
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Biomes (composed; carries Warscar)</displayName>
       <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
 
   <loadAfter>
     <li>Ludeon.RimWorld.Odyssey</li>
-    <li>mandrake.rm.warscar</li>
+    <li>mandrake.rm.biomes</li>
   </loadAfter>
 </ModMetaData>

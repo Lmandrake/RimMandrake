@@ -1,0 +1,56 @@
+[
+ {
+  "item": "FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1",
+  "criterion": "A2",
+  "asked": 2,
+  "success": true,
+  "foundCount": 2,
+  "notFound": [],
+  "message": "2 of 2 def(s) resolved"
+ },
+ {
+  "item": "MOD_OPTIONS_RETROFIT_1",
+  "criterion": "A1",
+  "asked": 4,
+  "success": true,
+  "foundCount": 4,
+  "notFound": [],
+  "message": "4 of 4 def(s) resolved"
+ },
+ {
+  "item": "WRECKED_DISTILLATION_MODULE_1",
+  "criterion": "A1",
+  "asked": 3,
+  "success": true,
+  "foundCount": 3,
+  "notFound": [],
+  "message": "3 of 3 def(s) resolved"
+ },
+ {
+  "item": "WYYYSCHOKK_FANG_PENDANT_1",
+  "criterion": "A1",
+  "asked": 4,
+  "success": true,
+  "foundCount": 4,
+  "notFound": [],
+  "message": "4 of 4 def(s) resolved"
+ },
+ {
+  "item": "GRAVSHIP_ACOUSTIC_SCANNER_1",
+  "criterion": "A1",
+  "asked": 5,
+  "success": true,
+  "foundCount": 5,
+  "notFound": [],
+  "message": "5 of 5 def(s) resolved"
+ },
+ {
+  "item": "SHIELD_MODS_LEVERAGE_1",
+  "criterion": "A1",
+  "asked": 5,
+  "success": true,
+  "foundCount": 5,
+  "notFound": [],
+  "message": "5 of 5 def(s) resolved"
+ }
+]
