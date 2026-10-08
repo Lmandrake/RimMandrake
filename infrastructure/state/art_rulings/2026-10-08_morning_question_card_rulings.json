@@ -1,0 +1,7 @@
+{"decided": "decision taken by question card 2026-10-08", "sheet": "leaningscrub_sheet_2026-10-05", "said": "",
+ "rulings": [
+  {"n": 1, "subject": "RSW_Iriaz", "variants": ["H", "I"], "ruling": "REDRAW (pictures purged); queued artpipe jobs regen_ls3_iriaz_h_v1_* and regen_ls3_iriaz_i_v1_* at priority 0 from the pyrelands_iriaz_v2 prompt; return to his sheet for re-judging, not installed"},
+  {"n": 2, "subject": "RSW_Scurrier", "variant": "E", "ruling": "BOTH SEXES wear E: Scurrier_f_* and Scurrier_m_* (east/north/south) in SWBestiary"},
+  {"n": 3, "subjects": ["Plant_Brambles B", "RG_Plant_CreepStern B", "RG_Plant_CrimsonCushion B", "RG_Plant_Dervish C"], "ruling": "OVERRIDE PLANET-WIDE: his picked art written over every variant file of the donor folder (RG_Brambles A-B, RG_CreepStern A-C, RG_TundraScrubsRed A-E, RG_Dervish A-C) in UtinniPatches"},
+  {"n": 4, "subject": "RM_Vaalok", "ruling": "INSTALL the Vaalok's own north/east renders (they were the Aurrok's picture); Aurrok keeps its picture. Keep rulings appended to the art ledger with via 'question card 2026-10-08'"}
+ ]}
