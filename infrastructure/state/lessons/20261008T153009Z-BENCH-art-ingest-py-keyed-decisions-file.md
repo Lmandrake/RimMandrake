@@ -1,0 +1,1 @@
+art ingest.py keyed on the decisions-file PATH string: the same file passed as an absolute path re-ingested as new and wrote 231 duplicate art-ledger events (2026-10-08, LeaningScrub). Always pass the repo-relative path.
