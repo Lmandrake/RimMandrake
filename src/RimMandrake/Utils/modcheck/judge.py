@@ -28,6 +28,12 @@ needed.
 import json
 import os
 import subprocess
+import sys
+
+_UTILS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
+import harness_run  # noqa: E402  (Utils/harness_run.py: runs claude -p in rm-harness.slice)
 
 YES = "YES"
 NO = "NO"
@@ -154,8 +160,7 @@ def _run_claude(prompt, cwd=None):
            "--output-format", "json",
            "--allowed-tools", "Read"]
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True,
-                           timeout=CLAUDE_TIMEOUT_S, cwd=cwd)
+        r = harness_run.run(cmd, CLAUDE_TIMEOUT_S, cwd=cwd)  # rm-harness.slice, not the seat
     except FileNotFoundError:
         return False, ("`claude` not found on PATH -- the judge needs Claude "
                        "Code installed and logged in (owner ruling 2026-09-05)")
