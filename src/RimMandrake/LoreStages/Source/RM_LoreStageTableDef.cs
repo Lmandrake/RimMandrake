@@ -25,7 +25,7 @@ namespace RimMandrake.LoreStages
 
         public List<LoreStageTarget> targets = new List<LoreStageTarget>();
 
-        public string LadderId => ladderId.NullOrEmpty() ? defName : ladderId;
+        public string LadderId => RM_LoreStageKernel.LadderKey(ladderId, defName);
 
         public override IEnumerable<string> ConfigErrors()
         {
@@ -73,7 +73,10 @@ namespace RimMandrake.LoreStages
                     continue;
                 }
 
-                var seen = new HashSet<int>();
+                // null entries (<li IsNull="True"/>) are reported once and carry no stage or text, so they stay out of the rung rules
+                var rungStages = new List<int>(t.stages.Count);
+                var rungHasText = new List<bool>(t.stages.Count);
+                var rungs = new List<LoreStageText>(t.stages.Count);
                 foreach (LoreStageText s in t.stages)
                 {
                     if (s == null)
@@ -82,24 +85,28 @@ namespace RimMandrake.LoreStages
                         continue;
                     }
 
-                    if (!seen.Add(s.stage))
-                    {
-                        yield return $"target {i} ({t.defName}.{t.field}): duplicate stage {s.stage} — which one wins is load order, i.e. undefined";
-                    }
+                    rungs.Add(s);
+                    rungStages.Add(s.stage);
+                    rungHasText.Add(s.text != null);
+                }
 
-                    if (s.stage < 0)
+                foreach (KeyValuePair<int, RungProblem> problem in RM_LoreStageKernel.RungProblems(rungStages, rungHasText, maxStage))
+                {
+                    LoreStageText s = rungs[problem.Key];
+                    switch (problem.Value)
                     {
-                        yield return $"target {i} ({t.defName}.{t.field}): negative stage {s.stage}";
-                    }
-
-                    if (maxStage > 0 && s.stage > maxStage)
-                    {
-                        yield return $"target {i} ({t.defName}.{t.field}): stage {s.stage} is above maxStage {maxStage} and can never be reached";
-                    }
-
-                    if (s.text == null)
-                    {
-                        yield return $"target {i} ({t.defName}.{t.field}): stage {s.stage} has no text";
+                        case RungProblem.Duplicate:
+                            yield return $"target {i} ({t.defName}.{t.field}): duplicate stage {s.stage} — which one wins is load order, i.e. undefined";
+                            break;
+                        case RungProblem.Negative:
+                            yield return $"target {i} ({t.defName}.{t.field}): negative stage {s.stage}";
+                            break;
+                        case RungProblem.AboveMax:
+                            yield return $"target {i} ({t.defName}.{t.field}): stage {s.stage} is above maxStage {maxStage} and can never be reached";
+                            break;
+                        default:
+                            yield return $"target {i} ({t.defName}.{t.field}): stage {s.stage} has no text";
+                            break;
                     }
                 }
             }
