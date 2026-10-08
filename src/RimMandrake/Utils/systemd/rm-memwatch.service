@@ -1,0 +1,18 @@
+# Seat memory watchdog — phase 1 of SEAT_MEMORY_CLONES_DRIVES_1
+# (design/RimMandrake/memory_clones_drives_2026-10-08.md §3 item 6, §7 phase 1).
+# Reads memory.events/stat/pressure of claude-seats.slice, each seat scope and its tool
+# cgroup, and rm-harness.slice; records to ~/.local/state/rm-memwatch/, prints events to
+# the journal, toasts on oom_kill or seat shmem > 2 GB.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-memwatch.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-memwatch.timer
+# Remove:   systemctl --user disable --now rm-memwatch.timer
+#           rm ~/.config/systemd/user/rm-memwatch.{service,timer}; systemctl --user daemon-reload
+[Unit]
+Description=RimMandrake seat memory watchdog (memory.events / shmem)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/memwatch.py
+Nice=10
+MemoryMax=256M
+TimeoutStartSec=50s
