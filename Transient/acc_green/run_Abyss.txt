@@ -1,0 +1,31 @@
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Abyss_20261008T053520Z.html
+CHAIN etchcap_defs_resolve None {"name": "etchcap_defs_resolve", "situational": null, "modal_check": null}
+    {"name": "etchcap_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFou
+CHAIN gharrek_defs_resolve None {"name": "gharrek_defs_resolve", "situational": null, "modal_check": null}
+    {"name": "gharrek_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFou
+CHAIN durrgak_defs_resolve None {"name": "durrgak_defs_resolve", "situational": null, "modal_check": null}
+    {"name": "durrgak_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFou
+    {"name": "durrgak_signs_placed", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofSigns(Verse.Map)", "result": "den=1 cache=0
+CHAIN etchfall_defs_resolve None {"name": "etchfall_defs_resolve", "situational": null, "modal_check": null}
+    {"name": "etchfall_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFo
+CHAIN dark_defs_resolve None {"name": "dark_defs_resolve", "situational": null, "modal_check": null}
+    {"name": "dark_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound"
+CHAIN krizzak_defs_resolve None {"name": "krizzak_defs_resolve", "situational": null, "modal_check": null}
+    {"name": "krizzak_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFou
+    {"name": "krizzak_can_fly", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Krizzak in faction (none).", "spawnedCount": 1, "fai
+CHAIN freed_beasts None {"name": "freed_beasts", "situational": null, "modal_check": null}
+    {"name": "freed_beasts_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "n
+CHAIN predators_defs_resolve None {"name": "predators_defs_resolve", "situational": null, "modal_check": null}
+    {"name": "predators_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notF
+CHAIN lamp_crops_fold_lamp None {"name": "lamp_crops_fold_lamp", "situational": null, "modal_check": null}
+    {"name": "light_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound
+    {"name": "wickwood_state", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofWickwood()", "result": "overlight=4.5 wildInAbyss
+CHAIN gust_soundscape None {"name": "gust_soundscape", "situational": null, "modal_check": null}
+    {"name": "sound_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound
+CHAIN cryptid None {"name": "cryptid", "situational": null, "modal_check": null}
+    {"name": "cryptid_defs_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFou
+    {"name": "name_from_one_pack", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofName(Verse.Map)", "result": "NAME the Nhaleth
+    {"name": "exchange_never_watched", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofExchange(Verse.Map)", "result": "watched=
+    {"name": "clear_pocket_around_nothing", "toggle": null, "beyond_toggle": true, "verdict": "FAIL", "detail": "ExpectationFailed: no clear pocket opened: 'REFUSED: no open ground far from buildings and colonists'", "evidence": [{"call": "bridge_call jawa/static_
+ALL_GREEN False FINDINGS 1

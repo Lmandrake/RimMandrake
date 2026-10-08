@@ -1,0 +1,6 @@
+[warcasket-note] suit stats before/after: {"suit": [{"ComfyTemperatureMin": -48.8000031, "ComfyTemperatureMax": 53.8000031, "VacuumResistance": 0.0, "ToxicEnvironmentResistance": 0.0, "MoveSpeed": 4.79999971, "WorkSpeedGlobal": 1.0}, {"ComfyTemperatureMin": -188.799988, "ComfyTemperatureMax": 153.799988, "VacuumResistance": 0.85, "ToxicEnvironmentResistance": 0.9, "MoveSpeed": 2.99999976, "WorkSpeedGlobal": 0.75}], "junker": [{"ComfyTemperatureMin": -92.8, "ComfyTemperatureMax": 53.8000031, "VacuumResistance": 0.0, "ToxicEnvironmentResistance": 0.0, "MoveSpeed": 4.6, "WorkSpeedGlobal": 1.0}, {"ComfyTemperatureMin": -188.799988, "ComfyTemperatureMax": 153.799988, "VacuumResistance": 0.85, "ToxicEnvironmentResistance": 0.9, "MoveSpeed": 2.8, "WorkSpeedGlobal": 0.75}]}
+[warcasket-note] compound exposure, shipped settings, 6000 ticks: {"alive_a": 20, "failed_a": 12, "alive_b": 20, "failed_b": 0, "sev_a": [0.148, 0.14, 0.128, 0.14, 0.121, 0.135, 0.124, 0.12, 0.155, 0.133, 0.283, 0.147]}
+[warcasket-note] compoundFailureEnabled=False, 4000 ticks: {"alive": 20, "failed": 0}
+[warcasket-note] masterEnabled=False, 4000 ticks: {"alive": 5, "failed": 0}
+[warcasket-note] immersion severities: {"naked": 0.48, "suit": 0.04800001}
+[warcasket-note] terrainImmersionEnabled=False delta: {"before": 0.48, "after": 0.48}
