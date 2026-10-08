@@ -151,7 +151,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<!-- Alpha Animals AA_Cactipine -> RM_Chikka. Dropped: VEF.AnimalBehaviours.CompProperties_AnimalProduct (periodic medicinal-quill harvest, donor framework). -->
 		<defName>RM_Chikka</defName>
 		<label>chikka</label>
-		<description>A rat-sized, wedge-bodied thing that is wide behind and tapers to a blunt point, the point carrying a small, furious pair of eyes. Pale green quills stand over every inch of it like a porcupine's, and a few tiny feet shove it nose-first through the loose sand. Its quills are medicinal, and its meat reads as neither plant nor animal to most palates.</description>
+		<description>A rat-sized, rounded thing, broad as a ball behind and narrowing to a blunt face, with a small, furious pair of eyes at the front. Pale green quills stand over every inch of it, long and ridged along the back, like a porcupine's, and a few tiny feet shove it nose-first through the loose sand. Its quills are medicinal, and its meat reads as neither plant nor animal to most palates.</description>
 		<statBases>
 			<MoveSpeed>4.5</MoveSpeed>
 			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
@@ -437,7 +437,7 @@ parent runs (WORLD_REMAKE_FINAL_STEP_1 / this item's own sequencing section).
 		<!-- Alpha Animals AA_Wildpawn -> RM_Durrok. AA_ToxicBite->Bite. Dropped: VEF.AnimalBehaviours.CompProperties_AsexualReproduction (spore-clump reproduction), CompProperties_HighlyFlammable (burn hediff on fire), CompProperties_AnimalProduct (periodic raw-fungus harvest) - all donor framework. hasGenders=false kept so vanilla asexual reproduction still applies; the spore-cloud VISUAL/reproduction event itself is what was dropped, not the ability to breed. -->
 		<defName>RM_Durrok</defName>
 		<label>durrok</label>
-		<description>A fungal quadruped adapted to life outside the swamp, smaller and less dangerous than its wetland kin for lack of water and rot to grow on. Durroks release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
+		<description>A heavy, hump-backed quadruped buried under long, pale, matted hair that hangs to the ground like wet rope, with tufts of grey-green lichen growing in patches along its back and legs. Smaller and less dangerous than its wetland kin for lack of water and rot to grow on, it plods through the scrub like a drowned haystack. Durroks release clumps of spores every few weeks to reproduce; the resulting young are wholly independent from birth, with no bond to their parent. Risky to hunt, but the raw fungus beneath the hide is edible.</description>
 		<statBases>
 			<MoveSpeed>4</MoveSpeed>
 			<ComfyTemperatureMin>-15</ComfyTemperatureMin>

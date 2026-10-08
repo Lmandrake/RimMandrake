@@ -8,8 +8,8 @@ Source: `Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json` (own
 - [x] Venomvine regen queued (front of queue)
 - [x] Long Shade venomvine job folded / tint reported
 - [x] decisions read (rest of sheet)
-- [ ] install / purge
-- [ ] regen queued
+- [x] install / purge
+- [x] regen queued
 - [ ] names / descriptions / tiers / cuts
 - [ ] validate + selftests
 - [ ] commits
@@ -40,4 +40,25 @@ Decisions md5 9986b4a3… (writeCount 521, savedAt 2026-10-07T22:50:10-0700); co
 - Thicket 3, Twitcher 2, Dripping 2, Hollow 2, Crown 2 (anchored on his accepted picture as first canon_reference)
 
 ## Rest of sheet
-(pending)
+Owner rows: 22 from 2026-10-06 (enacted 10-05/06 per leaningscrub_close_progress_2026-10-05.md, leftovers below), 54 from 2026-10-08.
+
+### Install (`leaningscrub_install_plan.py` -> `leaningscrub_install_result.jsonl`, 3acc6123b)
+- 62 slots installed via ledger rulings: Anooba L (Anooba_f), Cannok C, Corinathoth D, FeralNerf C, Fuzzrunner B, Fuzzviper B, Grank E (east only; N/S queued),
+  Igitz E, KowakianMonkeyLizard C, Kreetle J, Lothcat D (east only; N/S queued), Massiff C, MossBeetle B, Pikobis D, Porg E, Pufferpig C, Qormot C,
+  Scurrier C (Scurrier_f), Strill C east + D north/south (the derived N/S of that east), Urusai C, Whisperbird F (east only; N/S + flight queued), Zellik B,
+  Grellbush B (replaces _a), arid grass B (UtinniPatches' own RG_DesertGrass override, DesertGrassA).
+- RM_Chikka C and RM_Vurra B: had Alpha Animals / Horrors donor textures; installed at Things/Pawn/Animal/RM_Chikka|RM_Vurra (SWBestiary), PawnKindDefs repointed.
+- Explicit variants: Pillowmoss B/C/D, Cruststar B/C/D (+ venomvine Crown/Dripping/Hollow above).
+- Already current (pick = live bytes): Bantha E, Eopie E/H, Iriaz C, Mudhorn B/C, Ronto B, Skalder B/D, Sketto B, Voorpak D, Vulptex C, Worrt B/D/E, TruffleMole B,
+  Anooba_m F, Igitz swim/j, Kreetle_j, Lothcat_m, Pikobis swim, Porg f/j, Scurrier_m. Cross-checked against tonight's Long Shade picks: same bytes for all 8 shared species.
+- Ingest refused 3 purges: Eopie S/E/N old bytes he KEPT as Eopie on the Long Shade sheet (picks agree; nothing to do).
+- NOT installed: pre-ticked default variants (Greentide method); donor ReGrowth plants Brambles B, CreepStern B, CrimsonCushion B, Dervish C (no owned slot — question).
+- Placeholder check: ingest's detector flagged none of his picks; every install passed the ledger's placeholder refusal.
+
+### Regen (`build_leaningscrub_regen_jobs.py` -> `leaningscrub_regen_jobs.json`): 48 jobs, priority 0, pending 341–388 of 477 (behind 0vv_* and earlier sheets)
+- Grank N/S (canon, precisely), Lothcat N/S (less cartoonish), Whisperbird N/S + 4 flight frames, Convor redo x2 (from D, less cute), Kybuck redo x2 (head bone plate),
+  Urusai canon redo x2 (from C), Zellik "more alien" x2 (from B), scrap-nest bird redo x2 (no canon entry: its own description). Sketto N/S already queued by Long Shade (same pick bytes).
+
+### Names / descriptions / tiers / cuts
+- RM_Durrok description rewritten to the picked image (RSW_Durrok has no separate def; same picture). RM_Chikka description reworded to match his pick C (round spiky ball).
+- RM_Zellik description unchanged (fits B). Skorra: in no biome roster, nothing to cut.
