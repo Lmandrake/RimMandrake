@@ -71,6 +71,9 @@ namespace RimMandrake.WreckedMachines
         // Shipped default: ON. Salvaged psychic emanators soothe nearby pawns.
         public static bool enableSalvagedEmanators = true;
 
+        /// <summary>The ratios the ladder uses: ordered and held inside the slider ranges, whatever the saved config says.</summary>
+        public static RM_WreckedMachinesKernel.Ladder Ladder => RM_WreckedMachinesKernel.Normalize(wreckedRatio, kludgedRatio, refurbishedRatio);
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -297,7 +300,7 @@ namespace RimMandrake.WreckedMachines
             if (RestorationResearch != null)
             {
                 RestorationResearch.baseCost =
-                    Mathf.Max(1f, BaseResearchCost * WreckedMachinesSettings.researchCostFactor);
+                    RM_WreckedMachinesKernel.ScaledResearch(BaseResearchCost, WreckedMachinesSettings.researchCostFactor);
             }
 
             RescaleCost(KludgedTier);
@@ -327,7 +330,7 @@ namespace RimMandrake.WreckedMachines
             var scaled = new List<ThingDefCountClass>();
             foreach (var entry in baseline)
             {
-                int count = Mathf.Max(1, Mathf.RoundToInt(entry.count * WreckedMachinesSettings.materialCostFactor));
+                int count = RM_WreckedMachinesKernel.ScaledCount(entry.count, WreckedMachinesSettings.materialCostFactor);
                 scaled.Add(new ThingDefCountClass(entry.thingDef, count));
             }
             def.costList = scaled;
