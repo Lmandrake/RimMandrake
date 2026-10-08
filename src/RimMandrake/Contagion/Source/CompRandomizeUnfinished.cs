@@ -90,9 +90,13 @@ namespace RimMandrake.Contagion
                 return;
             }
 
+            // External leaf parts only, never a vital source. LIVE 2026-10-08: an unfiltered
+            // roll put a 0.2-efficiency "useless jaw" on the BRAIN (Consciousness 0.2), so the
+            // Unfinished was born downed, can never be Awake, and every TryStartMentalState
+            // (Manhunter) without forceWake on it refused silently.
             List<BodyPartRecord> leafParts = pawn.health.hediffSet
                 .GetNotMissingParts()
-                .Where(p => p.parts.NullOrEmpty())
+                .Where(p => p.parts.NullOrEmpty() && IsLimbSite(p))
                 .InRandomOrder()
                 .ToList();
             List<HediffDef> pool = Props.limbPool.InRandomOrder().ToList();
@@ -102,6 +106,16 @@ namespace RimMandrake.Contagion
             {
                 pawn.health.AddHediff(pool[i], leafParts[i]);
             }
+        }
+
+        private static bool IsLimbSite(BodyPartRecord p)
+        {
+            if (p.depth != BodyPartDepth.Outside) return false;
+            List<BodyPartTagDef> tags = p.def?.tags;
+            if (tags == null) return true;
+            return !tags.Contains(BodyPartTagDefOf.ConsciousnessSource)
+                && !tags.Contains(BodyPartTagDefOf.BloodPumpingSource)
+                && !tags.Contains(BodyPartTagDefOf.BreathingSource);
         }
 
         private void RollMonstrous(Pawn pawn)

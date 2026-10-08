@@ -19,9 +19,11 @@
     confirmed via RimSage against the decompiled 1.6 source.
 
     CompRandomizeUnfinished.cs picks 1-3 of these per spawn and applies each
-    to a random un-missing LEAF body part (never a part with children, so
-    Hediff_AddedPart's own "replace this part, mark its children missing"
-    logic never amputates anything else).
+    to a random un-missing, EXTERNAL (depth Outside) LEAF body part that is not
+    a consciousness, blood-pumping or breathing source (never a part with
+    children, so Hediff_AddedPart's own "replace this part, mark its children
+    missing" logic never amputates anything else; never the brain, which made
+    a comatose Unfinished that could not turn manhunter).
   -->
 
   <HediffDef Name="RM_UnfinishedLimbBase" Abstract="True">

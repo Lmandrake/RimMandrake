@@ -859,10 +859,22 @@ def burn_forced(t):
 
         with _comp(t, "burn_doses_the_exposed_visitor", toggle="burnDamageFactor"):
             if _live(t):
-                _set(t, "burnDamageFactor", 1)
-                _wait(t, 800)
-                rows = _rows(t)
                 b = _STATE["burn"]
+                # LIVE 2026-10-08: the native spawned with the fixture walked ~115 cells away during the
+                # 3900 harmless ticks (PressureActive is false at burnDamageFactor 0, so nothing kept it
+                # near the roof patch), and the dive read found it at (54,174). The dive can only happen
+                # once damage is on, so the native it is judged on is spawned beside the patch HERE.
+                x, z = t.anchor
+                b["native_fixture"] = b["native"]
+                b["native"] = _spawn(t, UV_NATIVE, x, z + 4)
+                _set(t, "burnDamageFactor", 1)
+                track = []
+                for _ in range(4):                   # 4 x 200 = the same 800 ticks, sampling the dive
+                    _wait(t, 200)
+                    nrow = _rows(t).get(b["native"]) or {}
+                    track.append((nrow.get("x"), nrow.get("z")))
+                b["native_track"] = track
+                rows = _rows(t)
                 if "RM_BurnDose" not in _hdefs(rows.get(b["open"])):
                     _fail("an exposed visitor carries no RM_BurnDose after the Burn pressed on it "
                           "(hediffs: %s)" % sorted(_hdefs(rows.get(b["open"]))))
@@ -891,10 +903,15 @@ def burn_forced(t):
                 if nat is None or not _alive(nat):
                     _unmeasured(t, "the native died before its dive could be read")
                 x, z = t.anchor
-                inside = x + 6 <= nat.get("x", -1) < x + 14 and z - 4 <= nat.get("z", -1) < z + 4
-                if not inside:
-                    _fail("the UV-shy native is at (%s,%s), not under the roof patch %s"
-                          % (nat.get("x"), nat.get("z"), (x + 6, z - 4, 8, 8)))
+
+                def _under(px, pz):
+                    return px is not None and pz is not None and x + 6 <= px < x + 14 and z - 4 <= pz < z + 4
+                # It dives to the patch's nearest edge cell, then may wander out and be re-dived at the
+                # next 250-tick pass, so ANY sample under the patch is the dive (it spawned 6 cells out).
+                track = b.get("native_track") or []
+                if not (_under(nat.get("x"), nat.get("z")) or any(_under(px, pz) for px, pz in track)):
+                    _fail("the UV-shy native never reached the roof patch %s; positions %s, final (%s,%s)"
+                          % ((x + 6, z - 4, 8, 8), track, nat.get("x"), nat.get("z")))
 
         with _comp(t, "burn_off_means_no_harm", toggle="burnEnabled"):
             if _live(t):
@@ -1107,20 +1124,29 @@ def coalescence(t):
         with _comp(t, "coalescence_emits_manhunters_and_grows_on_its_own"):
             if _live(t):
                 _, before = _inspect(t, _STATE["coal"])
+                known = set(p["id"] for p in _things_pawns(t, UNFINISHED, None))
                 _jump(t, 7000)              # passive growth is 1 mass / 6000 ticks; emit every 3000 (stage 2)
                 _wait(t, 400)
                 stage, mass = _mass_stage(_inspect(t, _STATE["coal"])[1])
                 m0 = _mass_stage(before)[1]
                 if mass is None or mass <= m0:
                     _fail("no passive growth over 7000 ticks (passiveGrowthTicks 6000) (mass %s -> %s)" % (m0, mass))
-                x, z = _STATE["coal_xz"]
-                mad = []
-                for p in _things_pawns(t, UNFINISHED, _rs(_rect(t, 24))):
-                    d = t.bridge_call("jawa/pawn_get", pawn=p["id"])
-                    if "Manhunter" in json.dumps(d):
-                        mad.append(p["id"])
+                # LIVE 2026-10-08: jawa/pawn_get carries no mental-state field at all, so the old
+                # '"Manhunter" in json.dumps(pawn_get)' test could never pass; and a manhunter runs at
+                # the nearest human, out of a 24-cell rect. Read jawa/pawn_mental.currentState for
+                # every Unfinished on the WHOLE map that was not there before the jump.
+                new = [p for p in _things_pawns(t, UNFINISHED, None) if p["id"] not in known]
+                states = {}
+                for p in new:
+                    d = t.bridge_call("jawa/pawn_mental", pawn=p["id"], action="list", limit=1)
+                    states[p["id"]] = ((d or {}).get("currentState"), p.get("hostile"), p.get("downed"),
+                                       (p.get("x"), p.get("z")))
+                _note(t, "Unfinished new since the jump", states)
+                mad = [k for k, v in states.items() if v[0] in ("Manhunter", "ManhunterPermanent")]
+                if not new:
+                    _fail("no Unfinished emitted at all after 7000 ticks (stage %s; emit interval 3000)" % stage)
                 if not mad:
-                    _fail("no manhunter Unfinished emitted after 7000 ticks")
+                    _fail("%d Unfinished emitted after 7000 ticks but none is a manhunter: %s" % (len(new), states))
 
         with _comp(t, "burn_collapses_it_into_monstrous_samples"):
             if _live(t):
@@ -1158,8 +1184,11 @@ def _give(t, pawn, sample_id):
 
 
 def _inject(t, doer, host):
-    r = t.bridge_call("jawa/ordered_job", pawnId=doer, jobDef="RM_InjectGenomeSample",
-                      targetAId=host, waitTicks=600, timeoutSeconds=60)
+    # LIVE 2026-10-08: this 600-tick server-side wait is frame-bound and outran the runner's 30 s reply
+    # timeout ("timed out after 30.0s"), the same failure _patient already fixed for LayDown / do_bill_now.
+    with _patient(t):
+        r = t.bridge_call("jawa/ordered_job", pawnId=doer, jobDef="RM_InjectGenomeSample",
+                          targetAId=host, waitTicks=600, timeoutSeconds=180)
     if _live(t):
         if not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
             _fail("RM_InjectGenomeSample was not accepted and running: %r" % r)
