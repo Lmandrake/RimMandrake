@@ -1,0 +1,105 @@
+{"row": "Plant_Brambles", "col": "B", "facing": "single", "status": "old 2e40cd671e has no live slot at Things/Plant/RG_Brambles"}
+{"row": "RG_Plant_AridGrass", "col": "B", "mod": "src/RimUtinni/UtinniPatches", "rel": "Things/Plant/RG_DesertGrass/DesertGrassA.png", "sha": "6452b4dbf455", "ruling": "ea92ee7fad25ae78e79b", "status": "installed"}
+{"row": "RG_Plant_CreepStern", "col": "B", "facing": "single", "status": "old 36d9f9a3de has no live slot at Things/Plant/RG_CreepStern"}
+{"row": "RG_Plant_CrimsonCushion", "col": "B", "facing": "single", "status": "old e61cfbc7e8 has no live slot at Things/Plant/RG_TundraScrubsRed"}
+{"row": "RG_Plant_Dervish", "col": "C", "facing": "single", "status": "old 271b761939 has no live slot at Things/Plant/RG_Dervish"}
+{"row": "RM_Chikka", "col": "C", "facing": "east", "status": "old ff5eece78e has no live slot at Things/Pawn/Animal/AA_Cactipine/AA_Cactipine"}
+{"row": "RM_Chikka", "col": "C", "facing": "north", "status": "old f5b248ff23 has no live slot at Things/Pawn/Animal/AA_Cactipine/AA_Cactipine"}
+{"row": "RM_Chikka", "col": "C", "facing": "south", "status": "old b79e42041e has no live slot at Things/Pawn/Animal/AA_Cactipine/AA_Cactipine"}
+{"row": "RM_CrownVenomvine", "col": "B", "graphic": "Things/Plant/RM_CrownVenomvine", "status": "already live"}
+{"row": "RM_Cruststar", "col": "A", "graphic": "Things/Plant/RM_Cruststar", "status": "already live"}
+{"row": "RM_DrippingVenomvine", "col": "B", "graphic": "Things/Plant/RM_DrippingVenomvine", "status": "already live"}
+{"row": "RM_Fuzzrunner", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner_east.png", "sha": "2328eb361ccf", "ruling": "3e68b3ca40de71227127", "status": "installed"}
+{"row": "RM_Fuzzrunner", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner_north.png", "sha": "3be3e066f4c4", "ruling": "3e68b3ca40de71227127", "status": "installed"}
+{"row": "RM_Fuzzrunner", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Fuzzrunner/RM_Fuzzrunner_south.png", "sha": "90099fd69d82", "ruling": "3e68b3ca40de71227127", "status": "installed"}
+{"row": "RM_Fuzzviper", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_east.png", "sha": "d33428cad4eb", "ruling": "5853f99b272cc6243800", "status": "installed"}
+{"row": "RM_Fuzzviper", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_north.png", "sha": "cdae58e535b7", "ruling": "5853f99b272cc6243800", "status": "installed"}
+{"row": "RM_Fuzzviper", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Fuzzviper/RM_Fuzzviper_south.png", "sha": "5cf72a820119", "ruling": "5853f99b272cc6243800", "status": "installed"}
+{"row": "RM_Grellbush", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Plant/RM_Grellbush/RM_Grellbush_a.png", "sha": "aa5b70adeb74", "ruling": "66f65622c39c80d485ff", "status": "installed"}
+{"row": "RM_Grellspine", "col": "A", "graphic": "Things/Plant/RM_Grellspine", "status": "already live"}
+{"row": "RM_HollowVenomvine", "col": "A", "graphic": "Things/Plant/RM_HollowVenomvine", "status": "already live"}
+{"row": "RM_Pillowmoss", "col": "A", "graphic": "Things/Plant/RM_Pillowmoss", "status": "already live"}
+{"row": "RM_TruffleMole", "col": "B", "graphic": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole", "status": "already live"}
+{"row": "RM_Vurra", "col": "B", "facing": "east", "status": "old 8f0494aa12 has no live slot at Things/Pawn/Animal/Terrorworm/TerrorWorm"}
+{"row": "RM_Vurra", "col": "B", "facing": "north", "status": "old 92c388bd81 has no live slot at Things/Pawn/Animal/Terrorworm/TerrorWorm"}
+{"row": "RM_Vurra", "col": "B", "facing": "south", "status": "old 84712d97a0 has no live slot at Things/Pawn/Animal/Terrorworm/TerrorWorm"}
+{"row": "RM_Zellik", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Zellik/RM_Zellik_east.png", "sha": "a944771c07a4", "ruling": "cd34d2eed041a7915c6b", "status": "installed"}
+{"row": "RM_Zellik", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Zellik/RM_Zellik_north.png", "sha": "505b3833a72d", "ruling": "cd34d2eed041a7915c6b", "status": "installed"}
+{"row": "RM_Zellik", "col": "B", "mod": "src/RimMandrake/LeaningScrub", "rel": "Things/Pawn/Animal/RM_Zellik/RM_Zellik_south.png", "sha": "7fcc4640ef3b", "ruling": "cd34d2eed041a7915c6b", "status": "installed"}
+{"row": "RSW_Anooba", "col": "L", "mod": "src/RimStarWars/AnoobaArtOverride", "rel": "swanimals/Anooba/Anooba_f_east.png", "sha": "a616443d96fb", "ruling": "8d9d1304f682f8a666e6", "status": "installed"}
+{"row": "RSW_Anooba", "col": "L", "mod": "src/RimStarWars/AnoobaArtOverride", "rel": "swanimals/Anooba/Anooba_f_north.png", "sha": "4bad4bc4f761", "ruling": "8d9d1304f682f8a666e6", "status": "installed"}
+{"row": "RSW_Anooba", "col": "L", "mod": "src/RimStarWars/AnoobaArtOverride", "rel": "swanimals/Anooba/Anooba_f_south.png", "sha": "9d63a4733f0f", "ruling": "8d9d1304f682f8a666e6", "status": "installed"}
+{"row": "RSW_Anooba", "col": "F", "graphic": "swanimals/Anooba/Anooba_m", "status": "already live"}
+{"row": "RSW_Bantha", "col": "E", "graphic": "swanimals/Bantha/BanthaW", "status": "already live"}
+{"row": "RSW_Bantha", "col": "D", "graphic": "swanimals/Bantha/BanthaW_j", "status": "already live"}
+{"row": "RSW_Cannok", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Cannok/Cannok_east.png", "sha": "5e7d585cca75", "ruling": "ffe953cf95a03e1f90ec", "status": "installed"}
+{"row": "RSW_Cannok", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Cannok/Cannok_north.png", "sha": "872d60936a69", "ruling": "ffe953cf95a03e1f90ec", "status": "installed"}
+{"row": "RSW_Cannok", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Cannok/Cannok_south.png", "sha": "257188638d41", "ruling": "ffe953cf95a03e1f90ec", "status": "installed"}
+{"row": "RSW_Corinathoth", "col": "D", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Corinathoth/Corinathoth_east.png", "sha": "3e38592bf32a", "ruling": "85fdbfb641c341f4add5", "status": "installed"}
+{"row": "RSW_Corinathoth", "col": "D", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Corinathoth/Corinathoth_north.png", "sha": "131c065992e8", "ruling": "85fdbfb641c341f4add5", "status": "installed"}
+{"row": "RSW_Corinathoth", "col": "D", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Corinathoth/Corinathoth_south.png", "sha": "de4f586155a2", "ruling": "85fdbfb641c341f4add5", "status": "installed"}
+{"row": "RSW_Eopie", "col": "E", "graphic": "swanimals/Eopie/Eopie", "status": "already live"}
+{"row": "RSW_Eopie", "col": "H", "graphic": "swanimals/Eopie/Eopie_j", "status": "already live"}
+{"row": "RSW_FeralNerf", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/FeralNerf/FeralNerf_east.png", "sha": "0a20ff93042f", "ruling": "6c78729de09bf38a1594", "status": "installed"}
+{"row": "RSW_FeralNerf", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/FeralNerf/FeralNerf_north.png", "sha": "c6fee02abd34", "ruling": "6c78729de09bf38a1594", "status": "installed"}
+{"row": "RSW_FeralNerf", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/FeralNerf/FeralNerf_south.png", "sha": "1ebb66b07ec8", "ruling": "6c78729de09bf38a1594", "status": "installed"}
+{"row": "RSW_Grank", "col": "E", "mod": "src/RimStarWars/GrankArtOverride", "rel": "swanimals/Grank/Grank_east.png", "sha": "13a535039925", "ruling": "0dc609070c64acb0c38e", "status": "installed"}
+{"row": "RSW_Igitz", "col": "E", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Igitz/Igitz_east.png", "sha": "a99f2205e6ca", "ruling": "01dce41ff76b76c394dd", "status": "installed"}
+{"row": "RSW_Igitz", "col": "E", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Igitz/Igitz_north.png", "sha": "6da6493966ed", "ruling": "01dce41ff76b76c394dd", "status": "installed"}
+{"row": "RSW_Igitz", "col": "E", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Igitz/Igitz_south.png", "sha": "cc2e33246220", "ruling": "01dce41ff76b76c394dd", "status": "installed"}
+{"row": "RSW_Igitz", "col": "C", "graphic": "swanimals/Igitz/Igitz_Swimming", "status": "already live"}
+{"row": "RSW_Igitz", "col": "D", "graphic": "swanimals/Igitz/Igitz_j", "status": "already live"}
+{"row": "RSW_Iriaz", "col": "C", "graphic": "swanimals/Iriaz/Iriaz", "status": "already live"}
+{"row": "RSW_KowakianMonkeyLizard", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_east.png", "sha": "1c8cc7dd29f1", "ruling": "6523b10c1cb696d30090", "status": "installed"}
+{"row": "RSW_KowakianMonkeyLizard", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_north.png", "sha": "93e5e7c8351a", "ruling": "6523b10c1cb696d30090", "status": "installed"}
+{"row": "RSW_KowakianMonkeyLizard", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_south.png", "sha": "bcaa82cbbf5f", "ruling": "6523b10c1cb696d30090", "status": "installed"}
+{"row": "RSW_Kreetle", "col": "J", "mod": "src/RimStarWars/KreetleArtOverride", "rel": "swanimals/Kreetle/Kreetle_east.png", "sha": "4276ef985969", "ruling": "c210eb4a10c6a7d70108", "status": "installed"}
+{"row": "RSW_Kreetle", "col": "J", "mod": "src/RimStarWars/KreetleArtOverride", "rel": "swanimals/Kreetle/Kreetle_north.png", "sha": "96b0d7a35b52", "ruling": "c210eb4a10c6a7d70108", "status": "installed"}
+{"row": "RSW_Kreetle", "col": "J", "mod": "src/RimStarWars/KreetleArtOverride", "rel": "swanimals/Kreetle/Kreetle_south.png", "sha": "1db929490093", "ruling": "c210eb4a10c6a7d70108", "status": "installed"}
+{"row": "RSW_Kreetle", "col": "H", "graphic": "swanimals/Kreetle/Kreetle_j", "status": "already live"}
+{"row": "RSW_Lothcat", "col": "D", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Lothcat/Lothcat_f_east.png", "sha": "1d245186f819", "ruling": "69c245d7841bbb78d66a", "status": "installed"}
+{"row": "RSW_Lothcat", "col": "B", "graphic": "swanimals/Lothcat/Lothcat_m", "status": "already live"}
+{"row": "RSW_Massiff", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Massiff/Massiff_east.png", "sha": "5b31cad11900", "ruling": "b0478cf7340c3314d508", "status": "installed"}
+{"row": "RSW_Massiff", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Massiff/Massiff_north.png", "sha": "18b31e12206c", "ruling": "b0478cf7340c3314d508", "status": "installed"}
+{"row": "RSW_Massiff", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Massiff/Massiff_south.png", "sha": "3ce3b0fbe7de", "ruling": "b0478cf7340c3314d508", "status": "installed"}
+{"row": "RSW_MossBeetle", "col": "B", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle_east.png", "sha": "be5d5fc7530e", "ruling": "2d168a67468075349d3b", "status": "installed"}
+{"row": "RSW_MossBeetle", "col": "B", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle_north.png", "sha": "f33c82cab843", "ruling": "2d168a67468075349d3b", "status": "installed"}
+{"row": "RSW_MossBeetle", "col": "B", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle_south.png", "sha": "326e114b1f0b", "ruling": "2d168a67468075349d3b", "status": "installed"}
+{"row": "RSW_Mudhorn", "col": "B", "graphic": "swanimals/Mudhorn/Mudhorn", "status": "already live"}
+{"row": "RSW_Mudhorn", "col": "C", "graphic": "swanimals/Mudhorn/Mudhorn_j", "status": "already live"}
+{"row": "RSW_Pikobis", "col": "D", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Pikobis/Pikobis_east.png", "sha": "bdda442a56ec", "ruling": "f86edb3bb38f12fe1332", "status": "installed"}
+{"row": "RSW_Pikobis", "col": "D", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Pikobis/Pikobis_north.png", "sha": "3037b3a1a52f", "ruling": "f86edb3bb38f12fe1332", "status": "installed"}
+{"row": "RSW_Pikobis", "col": "D", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Pikobis/Pikobis_south.png", "sha": "c3f0e3ee523d", "ruling": "f86edb3bb38f12fe1332", "status": "installed"}
+{"row": "RSW_Pikobis", "col": "C", "graphic": "swanimals/Pikobis/Pikobis_Swimming", "status": "already live"}
+{"row": "RSW_Porg", "col": "E", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Porg/Porg_east.png", "sha": "e005e92666d7", "ruling": "829cb6e74218530e6d0b", "status": "installed"}
+{"row": "RSW_Porg", "col": "E", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Porg/Porg_north.png", "sha": "979cd192a328", "ruling": "829cb6e74218530e6d0b", "status": "installed"}
+{"row": "RSW_Porg", "col": "E", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Porg/Porg_south.png", "sha": "23331543a54c", "ruling": "829cb6e74218530e6d0b", "status": "installed"}
+{"row": "RSW_Porg", "col": "C", "graphic": "swanimals/Porg/Porg_f", "status": "already live"}
+{"row": "RSW_Porg", "col": "D", "graphic": "swanimals/Porg/Porg_j", "status": "already live"}
+{"row": "RSW_Pufferpig", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Pufferpig/Pufferpig_east.png", "sha": "c5397f967322", "ruling": "976c4d5409efa0adf414", "status": "installed"}
+{"row": "RSW_Pufferpig", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Pufferpig/Pufferpig_north.png", "sha": "ed6eda455aa1", "ruling": "976c4d5409efa0adf414", "status": "installed"}
+{"row": "RSW_Pufferpig", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Pufferpig/Pufferpig_south.png", "sha": "480c149d4138", "ruling": "976c4d5409efa0adf414", "status": "installed"}
+{"row": "RSW_Qormot", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Qormot/Qormot_east.png", "sha": "145cdcb69e59", "ruling": "580d29aedf9ad4e89f68", "status": "installed"}
+{"row": "RSW_Qormot", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Qormot/Qormot_north.png", "sha": "1b81b5987e80", "ruling": "580d29aedf9ad4e89f68", "status": "installed"}
+{"row": "RSW_Qormot", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Qormot/Qormot_south.png", "sha": "9a2ff586540f", "ruling": "580d29aedf9ad4e89f68", "status": "installed"}
+{"row": "RSW_Ronto", "col": "B", "graphic": "swanimals/Ronto/Ronto", "status": "already live"}
+{"row": "RSW_Scurrier", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Scurrier/Scurrier_f_east.png", "sha": "3bf8294dea4b", "ruling": "ae1acf10b4c0c42d386b", "status": "installed"}
+{"row": "RSW_Scurrier", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Scurrier/Scurrier_f_north.png", "sha": "27065f6cabf9", "ruling": "ae1acf10b4c0c42d386b", "status": "installed"}
+{"row": "RSW_Scurrier", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Scurrier/Scurrier_f_south.png", "sha": "11f20107cbd5", "ruling": "ae1acf10b4c0c42d386b", "status": "installed"}
+{"row": "RSW_Scurrier", "col": "E", "status": "variant (not a primary) -> follow-up"}
+{"row": "RSW_Scurrier", "col": "B", "graphic": "swanimals/Scurrier/Scurrier_m", "status": "already live"}
+{"row": "RSW_Skalder", "col": "B", "graphic": "swanimals/Skalder/Skalder", "status": "already live"}
+{"row": "RSW_Skalder", "col": "D", "graphic": "swanimals/Skalder/Skalder_Swimming", "status": "already live"}
+{"row": "RSW_Sketto", "col": "B", "graphic": "swanimals/Sketto/Sketto", "status": "already live"}
+{"row": "RSW_Strill", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Strill/Strill_east.png", "sha": "3a5042a34d73", "ruling": "75d3c390a96359933d96", "status": "installed"}
+{"row": "RSW_Strill", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Strill/Strill_north.png", "sha": "acd77d22ead9", "ruling": "12a698c6838205db579d", "status": "installed"}
+{"row": "RSW_Strill", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Strill/Strill_south.png", "sha": "e08a9f4fc51b", "ruling": "12a698c6838205db579d", "status": "installed"}
+{"row": "RSW_Urusai", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Urusai/Urusai_east.png", "sha": "504beaf157bf", "ruling": "17466979bfbffe43545b", "status": "installed"}
+{"row": "RSW_Urusai", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Urusai/Urusai_north.png", "sha": "5dc0bf818833", "ruling": "17466979bfbffe43545b", "status": "installed"}
+{"row": "RSW_Urusai", "col": "C", "mod": "src/RimStarWars/SWBestiary", "rel": "swanimals/Urusai/Urusai_south.png", "sha": "d039cd1862d9", "ruling": "17466979bfbffe43545b", "status": "installed"}
+{"row": "RSW_Voorpak", "col": "D", "graphic": "swanimals/Voorpak/Voorpak", "status": "already live"}
+{"row": "RSW_Vulptex", "col": "C", "graphic": "swanimals/Vulptex/Vulptex", "status": "already live"}
+{"row": "RSW_Whisperbird", "col": "F", "mod": "src/RimStarWars/WhisperbirdArtOverride", "rel": "swanimals/Whisperbird/Whisperbird_east.png", "sha": "6d3e36508719", "ruling": "33ac7ab685a98c16ed6b", "status": "installed"}
+{"row": "RSW_Worrt", "col": "B", "graphic": "swanimals/Worrt/Worrt", "status": "already live"}
+{"row": "RSW_Worrt", "col": "D", "graphic": "swanimals/Worrt/Worrt_Swimming", "status": "already live"}
+{"row": "RSW_Worrt", "col": "E", "graphic": "swanimals/Worrt/Worrt_j", "status": "already live"}
