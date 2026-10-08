@@ -1,0 +1,15 @@
+chains: ['track_grid']
+ensure_playing_map: playing
+[creaturebehaviors] 09:28:21 writer_patched PASS 
+[creaturebehaviors] 09:28:59 walker_lays_prints FAIL ExpectationFailed: gravel took 25 prints (control)
+[creaturebehaviors] 09:29:18 invisible_walker_recorded_flagged FAIL ExpectationFailed: last print not flagged invisible: 'False'
+[creaturebehaviors] 09:29:37 toggle_off_no_prints PASS 
+[creaturebehaviors] 09:29:37 stillsand_moving_sand_erases_print PASS 
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\CreatureBehaviors_20261008T162938Z.html
+CHAIN track_grid None {"name": "track_grid", "situational": null, "modal_check": null}
+    {"name": "writer_patched", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/harmony_patches", "result": {"success": true, "typeName": "Pawn_FilthTracker", "methodName": "Notify_EnteredNewCell", "me
+    {"name": "walker_lays_prints", "toggle": null, "beyond_toggle": true, "verdict": "FAIL", "detail": "ExpectationFailed: gravel took 25 prints (control)", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 98869, "tileValid": 
+    {"name": "invisible_walker_recorded_flagged", "toggle": null, "beyond_toggle": true, "verdict": "FAIL", "detail": "ExpectationFailed: last print not flagged invisible: 'False'", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "ti
+    {"name": "toggle_off_no_prints", "toggle": "tracksEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 98869, "tileValid": true, "mapId": 5, "sizeX": 250, "siz
+    {"name": "stillsand_moving_sand_erases_print", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 98869, "tileValid": true, "mapId": 5, "sizeX": 250, "s
+ALL_GREEN False FINDINGS 2

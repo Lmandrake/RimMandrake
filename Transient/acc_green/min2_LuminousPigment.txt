@@ -1,0 +1,170 @@
+ensure_playing_map: playing
+[deepfire-note] mod error lines already in the buffer: 0
+[deepfire] 08:10:59 log_baseline_recorded PASS 
+[deepfire-note] defs requested/found: {"requested": 59, "found": 59, "notFound": []}
+[deepfire] 08:11:00 all_defs_resolve PASS 
+[deepfire] 08:11:00 patches_applied PASS 
+[deepfire] 08:11:00 mechanics_wired_to_defs PASS 
+[deepfire] 08:11:11 mat_alive_control PASS 
+[deepfire] 08:11:18 mat_dies_on_clock PASS 
+[deepfire] 08:11:29 mat_dies_when_chilled PASS 
+[deepfire] 08:11:29 locked_before_sighting PASS 
+[deepfire] 08:11:30 unlocked_after_sighting UNMEASURED UNMEASURED: set_plants refused the crowncarpet cell: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Crowncarpet": 1}, "cellsSkippedByDensity": 0, "cellsOutOfBounds": 0, "growt
+[deepfire] 08:11:30 apply_reaches_defs PASS 
+[deepfire] 08:11:31 glowtank_toggle PASS 
+[deepfire] 08:11:31 press_unbuildable PASS 
+[deepfire] 08:11:31 cuisine_recipes_toggle PASS 
+[deepfire] 08:11:32 press_buildable_finishes_research UNMEASURED UNMEASURED: research_availability does not report whether the project is finished: {"success": true, "canStartNow": false, "prerequisitesCompleted": true, "playerHasAnyAppropriateResearchBench": false, "benchRequired": false, "techprintRequirementMet": true, "playerMechanitorRequirementMet": true, "
+[deepfire-note] glow: {"stackBefore": 0.0, "stackAfter": 0.5, "controlAfter": 0.0}
+[deepfire] 08:11:32 stack_glows PASS 
+[deepfire] 08:11:33 stack_glow_toggle PASS 
+[deepfire] 08:11:34 press_is_a_powered_bench PASS 
+[deepfire-note] powered batch: {"deepfire": 0, "leftoverIngredients": 7, "ticksWaited": 9000}
+[deepfire] 08:13:10 powered_press_refines UNMEASURED UNMEASURED: no deepfire after 9000 ticks with the bench forced on: no pawn took the bill (AI, work priorities or reachability), so the recipe itself was not exercised
+[deepfire] 08:13:10 unpowered_press_refuses UNMEASURED UNMEASURED: the powered control did not complete (deepfire=0), so an unpowered result would be vacuous
+[deepfire] 08:13:10 unseeded_tank_says_so PASS 
+[deepfire] 08:13:46 blackout_kills_seed PASS 
+[deepfire] 08:13:55 wall_coat_via_real_job PASS 
+[deepfire-note] glow rgb before/after Structure_Blue: {"before": [30, 30, 30], "after": [6, 17, 32]}
+[deepfire] 08:13:55 glow_colour_follows_paint PASS 
+[deepfire] 08:13:56 three_coats_then_refused PASS 
+[deepfire] 08:13:56 remove_coats_clears_glow PASS 
+[deepfire] 08:13:56 max_coats_setting PASS 
+[deepfire] 08:13:56 walls_paintable_toggle PASS 
+[deepfire] 08:13:56 furniture_paintable_toggle PASS 
+[deepfire] 08:13:56 apparel_paintable_toggle PASS 
+[deepfire] 08:13:57 weapons_paintable_toggle PASS 
+[deepfire] 08:14:16 painting_enabled_blocks_ai UNMEASURED UNMEASURED: control: with paintingEnabled=True no colonist coated a designated wall in 2000 ticks (the real AI path is known to be unreliable; the forced-job chain above is the proven route)
+[deepfire] 08:14:16 floor_baseline PASS 
+[deepfire] 08:14:16 floor_coat_lights_in_four_blocks PASS 
+[deepfire] 08:14:16 floor_tracks_vanilla_paint PASS 
+[deepfire] 08:14:16 floor_strip_clears_everything PASS 
+[deepfire] 08:14:16 floor_removed_takes_coat_with_it PASS 
+[deepfire] 08:14:16 art_quality_bumps_once PASS 
+[deepfire] 08:14:16 legendary_caps_but_still_charges PASS 
+[deepfire] 08:14:17 art_bump_toggle PASS 
+[deepfire] 08:14:17 wall_beauty_bonus_exact_and_not_doubled PASS 
+[deepfire] 08:14:17 coat_over_a_stockpile_displaces_nothing PASS 
+[deepfire] 08:14:17 emptied_cells_accept_storage PASS 
+[deepfire] 08:14:17 coated_wall_stands_beside_its_proxy PASS 
+[deepfire] 08:14:17 coated_walker_carries_a_light PASS 
+[deepfire] 08:14:23 light_follows_the_walker PASS 
+[deepfire] 08:14:23 stripping_the_garment_darkens_the_pawn FAIL ExpectationFailed: stripped walker still tracked or lit: {"action": "stripWalker", "found": true, "spawned": true, "ticks": 46590, "x": 153, "z": 108, "tracked": false, "proxyX": -1000, "proxyZ": -1000, "groundGlow": 0.5, "skyGlow": 0, "roofed": true, "glowingInDark": false, "wornLights": 0, "job": 
+[deepfire] 08:14:24 worn_light_toggle UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 08:14:24 dark_combat_trade_in_twenty_pairs UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 08:14:24 combat_penalty_toggle UNMEASURED upstream failed -- this chain's state is meaningless
+[deepfire] 08:14:36 styling_station_lacquers_a_parka PASS 
+[deepfire] 08:14:36 styling_lacquer_toggle UNMEASURED UNMEASURED: stylingStationLacquer gates only the dialog checkbox; the debug setup bypasses the UI, so a queued job is not a defect: {"action": "stylingSetup", "found": true, "queued": true, "coats": 0, "deepfireOnMap": 24, "job": "RM_LacquerWornItem", "queuedJobs": 0, "ticks": 47840}
+[deepfire] 08:14:36 titled_pawn_in_two_coats PASS 
+[deepfire] 08:14:36 status_toggle PASS 
+[deepfire] 08:14:36 commoner_in_two_coats_offends_the_titled PASS 
+[deepfire] 08:14:36 lit_bedroom_lifts_its_owner PASS 
+[deepfire] 08:14:36 public_room_impresses_a_visitor_once PASS 
+[deepfire] 08:14:36 first_coat_moves_every_god PASS 
+[deepfire] 08:14:36 second_coat_moves_no_god PASS 
+[deepfire] 08:14:36 worn_first_coat_is_harsher_on_ishko PASS 
+[deepfire] 08:14:36 a_gods_own_idol_moves_it_by_fifteen PASS 
+[deepfire] 08:14:36 sale_of_deepfire_moves_mobunloo PASS 
+[deepfire] 08:14:36 gods_react_toggle PASS 
+[deepfire] 08:14:36 fourteen_families_and_fifteen_recipes PASS 
+[deepfire] 08:14:37 shore_mats_setting_flips PASS 
+[deepfire] 08:14:37 floors_paintable_setting_flips PASS 
+[deepfire] 08:14:37 ishko_idol_setting_flips PASS 
+[deepfire] 08:14:37 hediff_glow_setting_flips PASS 
+[deepfire] 08:14:37 rankless_setting_flips PASS 
+[deepfire] 08:14:37 settings_fields_found PASS 
+[deepfire] 08:14:42 every_scalar_field_round_trips PASS 
+[deepfire] 08:14:42 no_error_lines_from_this_mod PASS 
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\LuminousPigment_20261008T151443Z.html
+CHAIN 00_log_baseline None {"name": "00_log_baseline", "situational": null, "modal_check": null}
+    {"name": "log_baseline_recorded", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/drain_log", "result": {"success": true, "message": "226 message(s) of 289 in the buffer.", "totalInBuffer": 289, 
+CHAIN defs_load None {"name": "defs_load", "situational": null, "modal_check": null}
+    {"name": "all_defs_resolve", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "25 of 25 def(s) resolved", "requested": 25, "foundCount": 25, "notF
+    {"name": "patches_applied", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound"
+    {"name": "mechanics_wired_to_defs", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_def", "result": {"success": true, "defName": "RM_Crowncarpet", "defType": "ThingDef", "label": "crowncarpet
+CHAIN mat_vitality None {"name": "mat_vitality", "situational": null, "modal_check": null}
+    {"name": "mat_alive_control", "toggle": "matLifeDays", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 74 thing(s) across 169 cell(s).", "cellsEx
+    {"name": "mat_dies_on_clock", "toggle": "matLifeDays", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(400) -> 400 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_ac91c208154a496bb3d0b0bad16c
+    {"name": "mat_dies_when_chilled", "toggle": "matChillKillTemp", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 29 thing(s) across 169 cell(s).",
+CHAIN research_gate None {"name": "research_gate", "situational": null, "modal_check": null}
+    {"name": "locked_before_sighting", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/research_finish_project", "result": {"success": true, "wasAlreadyFinished": true, "prerequisitesTouched": [], "r
+    {"name": "unlocked_after_sighting", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: set_plants refused the crowncarpet cell: {\"success\": false, \"message\": \"Planted 0, cleared 0, REJECTED 1.\", \"planted\": 0, \"clea
+CHAIN settings_apply None {"name": "settings_apply", "situational": null, "modal_check": null}
+    {"name": "apply_reaches_defs", "toggle": "deepfireMarketValue", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_def", "result": {"success": true, "defName": "RM_Deepfire", "defType": "ThingDef", "label": "de
+    {"name": "glowtank_toggle", "toggle": "glowTankEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 
+    {"name": "press_unbuildable", "toggle": "pressGate", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "
+    {"name": "cuisine_recipes_toggle", "toggle": "cuisineEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "2 of 2 def(s) resolved", "requested": 2, "foundCo
+    {"name": "press_buildable_finishes_research", "toggle": "pressGate", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: research_availability does not report whether the project is finished: {\"success\": true, \"canStartNow\": false, \"pr
+CHAIN item_glow None {"name": "item_glow", "situational": null, "modal_check": null}
+    {"name": "stack_glows", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 62, "z": 107, "w": 8, "h": 8}, "wallDef": "Wall", "floorDef": "
+    {"name": "stack_glow_toggle", "toggle": "deepfireStackGlows", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 1 thing(s) across 1 cell(s).", "cel
+CHAIN press_refine None {"name": "press_refine", "situational": null, "modal_check": null}
+    {"name": "press_is_a_powered_bench", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 62, "z": 122, "w": 8, "h": 8}, "wallDef": "Wall", 
+    {"name": "powered_press_refines", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: no deepfire after 9000 ticks with the bench forced on: no pawn took the bill (AI, work priorities or reachability), so the recipe itself w
+    {"name": "unpowered_press_refuses", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the powered control did not complete (deepfire=0), so an unpowered result would be vacuous", "evidence": [{"call": "bridge_call jawa/lis
+CHAIN glowtank None {"name": "glowtank", "situational": null, "modal_check": null}
+    {"name": "unseeded_tank_says_so", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 62, "z": 137, "w": 8, "h": 8}, "wallDef": "Wall", "fl
+    {"name": "blackout_kills_seed", "toggle": "tankPowerGraceHours", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction PlayerColony.
+CHAIN paint_pipeline None {"name": "paint_pipeline", "situational": null, "modal_check": null}
+    {"name": "wall_coat_via_real_job", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 92, "z": 122, "w": 8, "h": 8}, "wallDef": "Wall", "f
+    {"name": "glow_colour_follows_paint", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call deepfire/glow_at", "result": {"success": true, "groundGlow": 0.4235294, "visual": {"r": 30, "g": 30, "b": 30, "a":
+    {"name": "three_coats_then_refused", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call deepfire/add_coat", "result": {"success": true, "present": true, "coatsBefore": 1, "coatsAfter": 2, "operation": {"
+    {"name": "remove_coats_clears_glow", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call deepfire/remove_coats", "result": {"success": true, "present": true, "coatsBefore": 3, "coatsAfter": 0, "operation"
+    {"name": "max_coats_setting", "toggle": "maxCoats", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call deepfire/add_coat", "result": {"success": true, "present": true, "coatsBefore": 0, "coatsAfter": 1, "operation": {"O
+    {"name": "walls_paintable_toggle", "toggle": "wallsPaintable", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call deepfire/designate", "result": {"success": true, "alreadyDesignated": false, "operation": {"OperationId":
+    {"name": "furniture_paintable_toggle", "toggle": "furniturePaintable", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_batch", "result": {"success": true, "message": "Placed 1 thing(s) of 1 requested acros
+    {"name": "apparel_paintable_toggle", "toggle": "apparelPaintable", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_batch", "result": {"success": true, "message": "Placed 1 thing(s) of 1 requested across 1 
+    {"name": "weapons_paintable_toggle", "toggle": "weaponsPaintable", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_batch", "result": {"success": true, "message": "Placed 1 thing(s) of 1 requested across 1 
+    {"name": "painting_enabled_blocks_ai", "toggle": "paintingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: control: with paintingEnabled=True no colonist coated a designated wall in 2000 ticks (the real AI path is known to be u
+CHAIN floor_paint None {"name": "floor_paint", "situational": null, "modal_check": null}
+    {"name": "floor_baseline", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 92, "z": 77, "w": 8, "h": 8}, "wallDef": "Wall", "floorDef":
+    {"name": "floor_coat_lights_in_four_blocks", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Floor: coat 6x6 from cell"
+    {"name": "floor_tracks_vanilla_paint", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Floor: vanilla-paint 6x6 red fro
+    {"name": "floor_strip_clears_everything", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Floor: strip coats 6x6 from c
+    {"name": "floor_removed_takes_coat_with_it", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Floor: coat 6x6 from cell"
+CHAIN first_coat None {"name": "first_coat", "situational": null, "modal_check": null}
+    {"name": "art_quality_bumps_once", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 92, "z": 92, "w": 8, "h": 8}, "wallDef": "Wall", "fl
+    {"name": "legendary_caps_but_still_charges", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: FirstCoat: destroy thing a
+    {"name": "art_bump_toggle", "toggle": "artQualityBump", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: FirstCoat: spawn art Normal at 
+    {"name": "wall_beauty_bonus_exact_and_not_doubled", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: FirstCoat: spawn wa
+CHAIN proxy_storage None {"name": "proxy_storage", "situational": null, "modal_check": null}
+    {"name": "coat_over_a_stockpile_displaces_nothing", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 92, "z": 107, "w": 8, "h": 8}, "wal
+    {"name": "emptied_cells_accept_storage", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Proxy: clear placed items", "n
+    {"name": "coated_wall_stands_beside_its_proxy", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Floor: report 6x6 from 
+CHAIN worn_glow None {"name": "worn_glow", "situational": null, "modal_check": null}
+    {"name": "coated_walker_carries_a_light", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 4 thing(s) across 360 cell(s).", "cells
+    {"name": "light_follows_the_walker", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: WornGlow: walker walk 30 east", "n
+    {"name": "stripping_the_garment_darkens_the_pawn", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: stripped walker still tracked or lit: {\"action\": \"stripWalker\", \"found\": true, \"spawned\": true, \"ticks\": 46590
+    {"name": "worn_light_toggle", "toggle": "wornLightEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "
+    {"name": "dark_combat_trade_in_twenty_pairs", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [],
+    {"name": "combat_penalty_toggle", "toggle": "combatPenaltiesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "sho
+CHAIN styling_lacquer None {"name": "styling_lacquer", "situational": null, "modal_check": null}
+    {"name": "styling_station_lacquers_a_parka", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 3 thing(s) across 90 cell(s).", "cel
+    {"name": "styling_lacquer_toggle", "toggle": "stylingStationLacquer", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: stylingStationLacquer gates only the dialog checkbox; the debug setup bypasses the UI, so a queued job is not a defect
+CHAIN status None {"name": "status", "situational": null, "modal_check": null}
+    {"name": "titled_pawn_in_two_coats", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 122, "z": 92, "w": 8, "h": 8}, "wallDef": "Wall", 
+    {"name": "status_toggle", "toggle": "statusEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Status: report pair", "node": {"pa
+    {"name": "commoner_in_two_coats_offends_the_titled", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Status: dress comm
+    {"name": "lit_bedroom_lifts_its_owner", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Status: bed for titled at cell"
+    {"name": "public_room_impresses_a_visitor_once", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: Floor: coat 6x6 from c
+CHAIN gods None {"name": "gods", "situational": null, "modal_check": null}
+    {"name": "first_coat_moves_every_god", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/make_empty_room", "result": {"success": true, "rect": {"x": 122, "z": 77, "w": 8, "h": 8}, "wallDef": "Wall"
+    {"name": "second_coat_moves_no_god", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: GodDeltas: second coat on thing at
+    {"name": "worn_first_coat_is_harsher_on_ishko", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: GodDeltas: coat new par
+    {"name": "a_gods_own_idol_moves_it_by_fifteen", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: GodDeltas: coat idol of
+    {"name": "sale_of_deepfire_moves_mobunloo", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: GodDeltas: sold deepfire (s
+    {"name": "gods_react_toggle", "toggle": "godsReact", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call rimworld/execute_debug_action", "result": {"success": true, "path": "Actions\\T: GodDeltas: coat new wall at cell",
+CHAIN cuisine None {"name": "cuisine", "situational": null, "modal_check": null}
+    {"name": "fourteen_families_and_fifteen_recipes", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "14 of 14 def(s) resolved", "requested": 14, "f
+CHAIN toggle_flips None {"name": "toggle_flips", "situational": null, "modal_check": null}
+    {"name": "shore_mats_setting_flips", "toggle": "shoreMatsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "floors_paintable_setting_flips", "toggle": "floorsPaintable", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "ishko_idol_setting_flips", "toggle": "ishkoIdolPaintable", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "hediff_glow_setting_flips", "toggle": "hediffGlowEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "rankless_setting_flips", "toggle": "ranklessColoniesEnjoyIt", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN settings_roundtrip None {"name": "settings_roundtrip", "situational": null, "modal_check": null}
+    {"name": "settings_fields_found", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "every_scalar_field_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN no_new_errors None {"name": "no_new_errors", "situational": null, "modal_check": null}
+    {"name": "no_error_lines_from_this_mod", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/drain_log", "result": {"success": true, "message": "3 message(s) of 1000 in the buffer.", "totalInBuffer":
+ALL_GREEN False FINDINGS 1

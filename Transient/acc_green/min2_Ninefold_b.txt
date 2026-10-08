@@ -1,0 +1,9 @@
+chains: ['research_completed', 'building_repaired_and_deconstructed']
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Ninefold_20261008T152418Z.html
+CHAIN research_completed None {"name": "research_completed", "situational": null, "modal_check": null}
+    {"name": "research_completed_ledger", "toggle": "engineEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Ozzik satiation +15.0' field=None value=None (last matching line: None)", "evid
+CHAIN building_repaired_and_deconstructed None {"name": "building_repaired_and_deconstructed", "situational": null, "modal_check": null}
+    {"name": "building_repaired", "toggle": "firstContactLettersEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/damage", "result": {"success": true, "message": "Damaged 1 thing(s) with Blunt 40.", "damageD
+    {"name": "building_deconstructed", "toggle": null, "beyond_toggle": true, "verdict": "FAIL", "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Rekko satiation -15.0 (deconstructed' field=None value=None (last matching line: None)", "evid
+ALL_GREEN False FINDINGS 2

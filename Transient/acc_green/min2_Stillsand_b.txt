@@ -1,0 +1,80 @@
+chains: ['settings', 'zuurrik', 'water', 'muurrok', 'eruption']
+ensure_playing_map: playing
+settings reset to shipped defaults
+[stillsand] 09:11:21 defaults PASS 
+[stillsand] 09:11:21 yardangShapingEnabled_roundtrip PASS 
+[stillsand] 09:11:22 torEnabled_roundtrip PASS 
+[stillsand] 09:11:22 boneHarpEnabled_roundtrip PASS 
+[stillsand] 09:11:22 ledgerEnabled_roundtrip PASS 
+[stillsand] 09:11:22 ledgerIncidentWeighting_roundtrip PASS 
+[stillsand] 09:11:23 sieveEnabled_roundtrip PASS 
+[stillsand] 09:11:23 solarStillEnabled_roundtrip PASS 
+[stillsand] 09:11:23 wringingStillEnabled_roundtrip PASS 
+[stillsand] 09:11:23 sunLanceEnabled_roundtrip PASS 
+[stillsand] 09:11:24 geophoneEnabled_roundtrip PASS 
+[stillsand] 09:11:24 thumperEnabled_roundtrip PASS 
+[stillsand] 09:11:24 sandFishingWakeEnabled_roundtrip PASS 
+[stillsand] 09:11:24 driftSwimEnabled_roundtrip PASS 
+[stillsand] 09:11:25 listeningHissEnabled_roundtrip PASS 
+[stillsand] 09:11:25 listeningSingingEnabled_roundtrip PASS 
+[stillsand] 09:11:25 listeningWarningEnabled_roundtrip PASS 
+[stillsand] 09:11:25 listeningRumbleEnabled_roundtrip PASS 
+[stillsand] 09:11:26 abrasionEnabled_roundtrip PASS 
+[stillsand] 09:11:26 carryEnabled_roundtrip PASS 
+[stillsand] 09:11:26 staticEnabled_roundtrip PASS 
+[stillsand] 09:11:26 seedingEnabled_roundtrip PASS 
+[stillsand] 09:11:27 hornEnabled_roundtrip PASS 
+[stillsand] 09:11:27 denQuestEnabled_roundtrip PASS 
+[stillsand] 09:11:27 zuurrik_below_threshold_dormant UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 zuurrik_wakes_on_blood UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 zuurrik_strips_blood UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 zuurrik_toggle_off_no_wake UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 pour_blooms_on_sand UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 pour_toggle_off_no_bloom UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 pour_on_gravel_no_bloom UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 muurrok_emergence_fires UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 beam_burns_target UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 beam_toggle_off_blocked UNMEASURED upstream failed -- this chain's state is meaningless
+[stillsand] 09:11:27 eruption_tunnel_then_mound UNMEASURED upstream failed -- this chain's state is meaningless
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Stillsand_20261008T161128Z.html
+CHAIN settings None {"name": "settings", "situational": null, "modal_check": null}
+    {"name": "defaults", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "abrasionEnabled", "fieldKind": "static", "value": 
+    {"name": "yardangShapingEnabled_roundtrip", "toggle": "yardangShapingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "yardangS
+    {"name": "torEnabled_roundtrip", "toggle": "torEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "torEnabled", "fieldKind": "sta
+    {"name": "boneHarpEnabled_roundtrip", "toggle": "boneHarpEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "boneHarpEnabled", "f
+    {"name": "ledgerEnabled_roundtrip", "toggle": "ledgerEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "ledgerEnabled", "fieldKi
+    {"name": "ledgerIncidentWeighting_roundtrip", "toggle": "ledgerIncidentWeighting", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "ledg
+    {"name": "sieveEnabled_roundtrip", "toggle": "sieveEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "sieveEnabled", "fieldKind"
+    {"name": "solarStillEnabled_roundtrip", "toggle": "solarStillEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "solarStillEnable
+    {"name": "wringingStillEnabled_roundtrip", "toggle": "wringingStillEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "wringingSt
+    {"name": "sunLanceEnabled_roundtrip", "toggle": "sunLanceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "sunLanceEnabled", "f
+    {"name": "geophoneEnabled_roundtrip", "toggle": "geophoneEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "geophoneEnabled", "f
+    {"name": "thumperEnabled_roundtrip", "toggle": "thumperEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "thumperEnabled", "fiel
+    {"name": "sandFishingWakeEnabled_roundtrip", "toggle": "sandFishingWakeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "sandFi
+    {"name": "driftSwimEnabled_roundtrip", "toggle": "driftSwimEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "driftSwimEnabled",
+    {"name": "listeningHissEnabled_roundtrip", "toggle": "listeningHissEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "listeningH
+    {"name": "listeningSingingEnabled_roundtrip", "toggle": "listeningSingingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "list
+    {"name": "listeningWarningEnabled_roundtrip", "toggle": "listeningWarningEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "list
+    {"name": "listeningRumbleEnabled_roundtrip", "toggle": "listeningRumbleEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "listen
+    {"name": "abrasionEnabled_roundtrip", "toggle": "abrasionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "abrasionEnabled", "f
+    {"name": "carryEnabled_roundtrip", "toggle": "carryEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "carryEnabled", "fieldKind"
+    {"name": "staticEnabled_roundtrip", "toggle": "staticEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "staticEnabled", "fieldKi
+    {"name": "seedingEnabled_roundtrip", "toggle": "seedingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "seedingEnabled", "fiel
+    {"name": "hornEnabled_roundtrip", "toggle": "hornEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "hornEnabled", "fieldKind": "
+    {"name": "denQuestEnabled_roundtrip", "toggle": "denQuestEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "denQuestEnabled", "f
+CHAIN zuurrik None {"name": "zuurrik", "situational": null, "modal_check": null}
+    {"name": "zuurrik_below_threshold_dormant", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "
+    {"name": "zuurrik_wakes_on_blood", "toggle": "zuurrikEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": []
+    {"name": "zuurrik_strips_blood", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises":
+    {"name": "zuurrik_toggle_off_no_wake", "toggle": "zuurrikEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows"
+CHAIN water None {"name": "water", "situational": null, "modal_check": null}
+    {"name": "pour_blooms_on_sand", "toggle": "bloomOnPour", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "sur
+    {"name": "pour_toggle_off_no_bloom", "toggle": "bloomOnPour", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [],
+    {"name": "pour_on_gravel_no_bloom", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprise
+CHAIN muurrok None {"name": "muurrok", "situational": null, "modal_check": null}
+    {"name": "muurrok_emergence_fires", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprise
+    {"name": "beam_burns_target", "toggle": "mirrorBeamEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], 
+    {"name": "beam_toggle_off_blocked", "toggle": "mirrorBeamEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows"
+CHAIN eruption None {"name": "eruption", "situational": null, "modal_check": null}
+    {"name": "eruption_tunnel_then_mound", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surpr
+ALL_GREEN False FINDINGS 0

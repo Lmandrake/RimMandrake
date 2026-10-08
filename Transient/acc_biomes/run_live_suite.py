@@ -7,9 +7,21 @@ import runner
 mod = sys.argv[1]; dbg = "--debug" in sys.argv
 mod_dir = runner.find_mod_dir(mod)
 suite = runner.load_validation(mod_dir)
+for a in sys.argv:
+    if a.startswith("--chains="):
+        keep = set(a.split("=",1)[1].split(","))
+        suite.chains = [(n, f) for (n, f) in suite.chains if n in keep]
+        print("chains:", [n for n, _ in suite.chains])
 print("ensure_playing_map:", runner.ensure_playing_map())
 from rimdrive import Session
 with Session(lock=None) as s:
+    if "--reset-settings" in sys.argv:
+        G = suite.chains[0][1].__globals__
+        for cls, fields in (G.get("SETTINGS") or {}).items():
+            for f, v in fields.items():
+                r = s.call("jawa/mod_settings_field", typeName=cls, action="set", field=f, value=str(v))
+                if not (r or {}).get("success"): print("RESET FAIL", cls, f, str(r)[:120])
+        print("settings reset to shipped defaults")
     summary = runner.run_suite(suite, s, debug=dbg, mod=mod)
 sheet = runner.write_sheet(mod, summary)
 print("SHEET", sheet)

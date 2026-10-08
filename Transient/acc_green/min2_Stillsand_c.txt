@@ -1,0 +1,127 @@
+chains: ['site', 'defs', 'settings', 'zuurrik', 'water', 'muurrok', 'eruption']
+ensure_playing_map: playing
+[stillsand-note] site: {"tile": 98869, "latitude": 39.1331177, "size": [250, 250]}
+[stillsand] 09:12:03 site_stillsand_map PASS 
+[stillsand] 09:12:03 site_cave_logged UNMEASURED UNMEASURED: the in-game log buffer was near its cap before the regen: a new line cannot be told from an evicted one
+[stillsand-note] giant skeletons on the fresh map / cap: [2, 2]
+[stillsand] 09:12:03 skeleton_gen_within_cap PASS 
+[stillsand-note] shipped defs resolved: 131
+[stillsand] 09:12:03 defs_resolve PASS 
+[stillsand] 09:12:03 sand_sieve_defs PASS 
+[stillsand] 09:12:04 solar_still_defs PASS 
+[stillsand] 09:12:04 sun_lance_defs PASS 
+[stillsand] 09:12:04 geophone_defs PASS 
+[stillsand] 09:12:04 sand_swim_remainder PASS 
+[stillsand] 09:12:07 cave_tier_rows PASS 
+[stillsand] 09:12:07 cave_place_defs PASS 
+[stillsand] 09:12:07 custom_defs_resolve UNMEASURED UNMEASURED: get_defs resolved none of the custom def type names (the type name form is unproven): ['RM_PreciousCaveDef/RM_PreciousCave_GuzzkaLair', 'RM_PreciousCaveDef/RM_PreciousCave_LensGrotto', 'RM_PreciousCaveDef/RM_PreciousCave_SealedCache']
+[stillsand-note] biome extensions / extra gen steps: [["RM_SunHeatExtension", "RM_PinnedSunExtension", "DuneFieldExtension", "RM_SkeletonBiomeExtension", "RM_SandRemembersWaterExtension"], ["RM_WreckField_Stillsand", "RM_GiantSkeletons", "RM_PreciousCaveCarve", "RM_PreciousCaveContents"]]
+[stillsand] 09:12:07 biome_row PASS 
+[stillsand] 09:12:07 biome_roster PASS 
+[stillsand] 09:12:08 giants_skeleton_wired PASS 
+[stillsand] 09:12:08 water_egg_patched PASS 
+[stillsand] 09:12:08 eruption_biome_gate PASS 
+[stillsand] 09:12:11 defaults PASS 
+[stillsand] 09:12:11 yardangShapingEnabled_roundtrip PASS 
+[stillsand] 09:12:11 torEnabled_roundtrip PASS 
+[stillsand] 09:12:12 boneHarpEnabled_roundtrip PASS 
+[stillsand] 09:12:12 ledgerEnabled_roundtrip PASS 
+[stillsand] 09:12:12 ledgerIncidentWeighting_roundtrip PASS 
+[stillsand] 09:12:12 sieveEnabled_roundtrip PASS 
+[stillsand] 09:12:13 solarStillEnabled_roundtrip PASS 
+[stillsand] 09:12:13 wringingStillEnabled_roundtrip PASS 
+[stillsand] 09:12:13 sunLanceEnabled_roundtrip PASS 
+[stillsand] 09:12:13 geophoneEnabled_roundtrip PASS 
+[stillsand] 09:12:14 thumperEnabled_roundtrip PASS 
+[stillsand] 09:12:14 sandFishingWakeEnabled_roundtrip PASS 
+[stillsand] 09:12:14 driftSwimEnabled_roundtrip PASS 
+[stillsand] 09:12:14 listeningHissEnabled_roundtrip PASS 
+[stillsand] 09:12:15 listeningSingingEnabled_roundtrip PASS 
+[stillsand] 09:12:15 listeningWarningEnabled_roundtrip PASS 
+[stillsand] 09:12:15 listeningRumbleEnabled_roundtrip PASS 
+[stillsand] 09:12:15 abrasionEnabled_roundtrip PASS 
+[stillsand] 09:12:16 carryEnabled_roundtrip PASS 
+[stillsand] 09:12:16 staticEnabled_roundtrip PASS 
+[stillsand] 09:12:16 seedingEnabled_roundtrip PASS 
+[stillsand] 09:12:16 hornEnabled_roundtrip PASS 
+[stillsand] 09:12:17 denQuestEnabled_roundtrip PASS 
+[stillsand] 09:12:47 zuurrik_below_threshold_dormant PASS 
+[stillsand-note] zuurrik swarm after 1800 ticks: 3
+[stillsand] 09:13:18 zuurrik_wakes_on_blood PASS 
+[stillsand-note] blood cells at wake / 3000 ticks later: [9, 8]
+[stillsand] 09:14:08 zuurrik_strips_blood PASS 
+[stillsand-note] zuurrik after toggle off / after toggle back on: [0, 0]
+[stillsand] 09:15:09 zuurrik_toggle_off_no_wake UNMEASURED UNMEASURED: the swarm did not wake with the toggle back on either: the off arm proves nothing (see zuurrik_wakes_on_blood)
+[stillsand-note] after a pour on sand: eggs left / hourbloom: [0, 4]
+[stillsand] 09:15:47 pour_blooms_on_sand PASS 
+[stillsand-note] after a pour with bloomOnPour off: eggs left / hourbloom: [0, 0]
+[stillsand] 09:16:25 pour_toggle_off_no_bloom PASS 
+[stillsand-note] after a pour on gravel: eggs left / hourbloom: [0, 0]
+[stillsand] 09:17:03 pour_on_gravel_no_bloom PASS 
+[stillsand-note] muurrok letters / pawns before-after: [["A line of glare"], 0, 1]
+[stillsand] 09:17:48 muurrok_emergence_fires PASS 
+[stillsand-note] muffalo with Burn after 3 beam casts: []
+[stillsand] 09:18:04 beam_burns_target FAIL ExpectationFailed: a muurrok cast its mirror beam at 3 muffalo under Clear weather and none gained Burn (MUURROK_BEAM_NO_DAMAGE_1)
+[stillsand] 09:18:04 beam_toggle_off_blocked UNMEASURED UNMEASURED: the beam does not damage with its toggle on: the off arm would pass trivially
+[stillsand] 09:18:05 eruption_tunnel_then_mound FAIL ExpectationFailed: fire_incident RM_SandBusterEruption failed: {'success': False, 'message': 'RM_SandBusterEruption did NOT fire. canFireNow=False.', 'incident': 'RM_SandBusterEruption', 'category': 'ThreatBig', 'canFireNow': False, 'fired': False, 'windowsOpened': [], 'blockedByDialog': False, 'poi
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Stillsand_20261008T161806Z.html
+CHAIN site None {"name": "site", "situational": null, "modal_check": null}
+    {"name": "site_stillsand_map", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 98869, "tileValid": true, "mapId": 4, "sizeX": 250, "sizeZ": 250, "ce
+    {"name": "site_cave_logged", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the in-game log buffer was near its cap before the regen: a new line cannot be told from an evicted one", "evidence": [{"call": "UNMEASURED", "
+    {"name": "skeleton_gen_within_cap", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "RM_OommokSkeleton551412", "def": "RM_OommokSkeleto
+CHAIN defs None {"name": "defs", "situational": null, "modal_check": null}
+    {"name": "defs_resolve", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "100 of 100 def(s) resolved", "requested": 100, "foundCount": 100, "notF
+    {"name": "sand_sieve_defs", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "4 of 4 def(s) resolved", "requested": 4, "foundCount": 4, "notFound"
+    {"name": "solar_still_defs", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "5 of 5 def(s) resolved", "requested": 5, "foundCount": 5, "notFound
+    {"name": "sun_lance_defs", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "2 of 2 def(s) resolved", "requested": 2, "foundCount": 2, "notFound":
+    {"name": "geophone_defs", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound": 
+    {"name": "sand_swim_remainder", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFo
+    {"name": "cave_tier_rows", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "cave_place_defs", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "4 of 4 def(s) resolved", "requested": 4, "foundCount": 4, "notFound"
+    {"name": "custom_defs_resolve", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: get_defs resolved none of the custom def type names (the type name form is unproven): ['RM_PreciousCaveDef/RM_PreciousCave_GuzzkaLair', 'RM_
+    {"name": "biome_row", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound": [], 
+    {"name": "biome_roster", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/biome_probe", "result": {"success": true, "message": "1 biome(s) probed; searched for 21 name(s) \u2014 read `findResults`
+    {"name": "giants_skeleton_wired", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "4 of 4 def(s) resolved", "requested": 4, "foundCount": 4, "not
+    {"name": "water_egg_patched", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFoun
+    {"name": "eruption_biome_gate", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFo
+CHAIN settings None {"name": "settings", "situational": null, "modal_check": null}
+    {"name": "defaults", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "abrasionEnabled", "fieldKind": "static", "value": 
+    {"name": "yardangShapingEnabled_roundtrip", "toggle": "yardangShapingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "yardangS
+    {"name": "torEnabled_roundtrip", "toggle": "torEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "torEnabled", "fieldKind": "sta
+    {"name": "boneHarpEnabled_roundtrip", "toggle": "boneHarpEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "boneHarpEnabled", "f
+    {"name": "ledgerEnabled_roundtrip", "toggle": "ledgerEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "ledgerEnabled", "fieldKi
+    {"name": "ledgerIncidentWeighting_roundtrip", "toggle": "ledgerIncidentWeighting", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "ledg
+    {"name": "sieveEnabled_roundtrip", "toggle": "sieveEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "sieveEnabled", "fieldKind"
+    {"name": "solarStillEnabled_roundtrip", "toggle": "solarStillEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "solarStillEnable
+    {"name": "wringingStillEnabled_roundtrip", "toggle": "wringingStillEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "wringingSt
+    {"name": "sunLanceEnabled_roundtrip", "toggle": "sunLanceEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "sunLanceEnabled", "f
+    {"name": "geophoneEnabled_roundtrip", "toggle": "geophoneEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "geophoneEnabled", "f
+    {"name": "thumperEnabled_roundtrip", "toggle": "thumperEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "thumperEnabled", "fiel
+    {"name": "sandFishingWakeEnabled_roundtrip", "toggle": "sandFishingWakeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "sandFi
+    {"name": "driftSwimEnabled_roundtrip", "toggle": "driftSwimEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "driftSwimEnabled",
+    {"name": "listeningHissEnabled_roundtrip", "toggle": "listeningHissEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "listeningH
+    {"name": "listeningSingingEnabled_roundtrip", "toggle": "listeningSingingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "list
+    {"name": "listeningWarningEnabled_roundtrip", "toggle": "listeningWarningEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "list
+    {"name": "listeningRumbleEnabled_roundtrip", "toggle": "listeningRumbleEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "listen
+    {"name": "abrasionEnabled_roundtrip", "toggle": "abrasionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "abrasionEnabled", "f
+    {"name": "carryEnabled_roundtrip", "toggle": "carryEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "carryEnabled", "fieldKind"
+    {"name": "staticEnabled_roundtrip", "toggle": "staticEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "staticEnabled", "fieldKi
+    {"name": "seedingEnabled_roundtrip", "toggle": "seedingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "seedingEnabled", "fiel
+    {"name": "hornEnabled_roundtrip", "toggle": "hornEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "hornEnabled", "fieldKind": "
+    {"name": "denQuestEnabled_roundtrip", "toggle": "denQuestEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "denQuestEnabled", "f
+CHAIN zuurrik None {"name": "zuurrik", "situational": null, "modal_check": null}
+    {"name": "zuurrik_below_threshold_dormant", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_batch", "result": {"success": true, "message": "Placed 3 thing(s) of 3 requested across 3 of 3 op
+    {"name": "zuurrik_wakes_on_blood", "toggle": "zuurrikEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_batch", "result": {"success": true, "message": "Placed 12 thing(s) of 12 requested across 12 o
+    {"name": "zuurrik_strips_blood", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "17 pawn(s).", "pawns": [{"id": "RM_Loomma551419", "name": "Lo
+    {"name": "zuurrik_toggle_off_no_wake", "toggle": "zuurrikEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the swarm did not wake with the toggle back on either: the off arm proves nothing (see zuurrik_wakes_on_blood)", "evidenc
+CHAIN water None {"name": "water", "situational": null, "modal_check": null}
+    {"name": "pour_blooms_on_sand", "toggle": "bloomOnPour", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_terrain_batch", "result": {"success": true, "message": "Applied 1/1 op(s): 0 cell(s) changed, 484 alre
+    {"name": "pour_toggle_off_no_bloom", "toggle": "bloomOnPour", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "bloomOnPour", "fieldKind"
+    {"name": "pour_on_gravel_no_bloom", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_terrain_batch", "result": {"success": true, "message": "Applied 1/1 op(s): 484 cell(s) changed, 0 already c
+CHAIN muurrok None {"name": "muurrok", "situational": null, "modal_check": null}
+    {"name": "muurrok_emergence_fires", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/letter_list", "result": {"success": true, "count": 93, "letters": [{"label": {"RawText": "Ozzik the Shamed", "L
+    {"name": "beam_burns_target", "toggle": "mirrorBeamEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: a muurrok cast its mirror beam at 3 muffalo under Clear weather and none gained Burn (MUURROK_BEAM_NO_DAMAGE_1)", "evidence": 
+    {"name": "beam_toggle_off_blocked", "toggle": "mirrorBeamEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the beam does not damage with its toggle on: the off arm would pass trivially", "evidence": [{"call": "UNMEASURED", "resu
+CHAIN eruption None {"name": "eruption", "situational": null, "modal_check": null}
+    {"name": "eruption_tunnel_then_mound", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: fire_incident RM_SandBusterEruption failed: {'success': False, 'message': 'RM_SandBusterEruption did NOT fire. canFireNow=False.', '
+ALL_GREEN False FINDINGS 2

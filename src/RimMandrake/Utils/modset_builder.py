@@ -591,7 +591,7 @@ TIERS["acc_l1x"] = {
            "not carry (FallLineArrivals, EggReckoning, WreckedMachines, TrophyCraft, ShipShields, "
            "UnfinishedLine, AcousticScanner) plus ProximityHatch, GimmeSomeSlack (JawaBench get_defs "
            "TypeLoads without it) and the composed biomes mod.",
-    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rut.falllinearrivals",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rut.falllinearrivals",
              "mandrake.rut.eggreckoning", "mandrake.rm.wreckedmachines", "mandrake.rsw.trophycraft",
              "mandrake.rut.shipshields", "mandrake.rut.unfinishedline", "mandrake.rm.acousticscanner",
              "mandrake.rm.proximityhatch"],

@@ -1,0 +1,13 @@
+chains: ['swallow']
+ensure_playing_map: playing
+[gt] 09:27:36 site_ready_swallow PASS 
+[gt] 09:27:42 swallow_buries_on_churnmud_only PASS 
+[gt] 09:27:55 buried_cache_switch_off_keeps_items PASS 
+[gt] 09:28:15 dig_out_job_restores_the_buried_item PASS 
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Greentide_20261008T162816Z.html
+CHAIN swallow None {"name": "swallow", "situational": null, "modal_check": null}
+    {"name": "site_ready_swallow", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "clear_area(24)", "result": {"success": true, "message": "Destroyed 4 thing(s) across 576 cell(s); 6 pawn(s) left alone.", "cellsExamin
+    {"name": "swallow_buries_on_churnmud_only", "toggle": "buriedCacheEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(200) -> 200 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_3822d51
+    {"name": "buried_cache_switch_off_keeps_items", "toggle": "buriedCacheEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_batch", "result": {"success": true, "message": "Placed 5 thing(s) of 5 reques
+    {"name": "dig_out_job_restores_the_buried_item", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction PlayerColony."
+ALL_GREEN True FINDINGS 0

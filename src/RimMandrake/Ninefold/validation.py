@@ -95,6 +95,9 @@ suite.toggles = ["engineEnabled", "firstContactLettersEnabled",
                  "eventMagnitudeMultiplier", "moodWalkMultiplier"]
 
 RESEARCH_PROJECT = "Smithing"   # early vanilla tier-1 project -- see docstring caveat
+# MEASURED 2026-10-08: FinishProject on an already-finished project fires no delta (the Prefix/__state guard), so a
+# second run on the same game read FAIL. The chain now picks the first candidate still startable (unfinished).
+RESEARCH_CANDIDATES = ("Smithing", "Machining", "Brewing", "Batteries", "Stonecutting", "Pottery")
 WALL_DEF = "Wall"
 
 
@@ -114,7 +117,13 @@ def research_completed(t):
     t.clear_area(size=20)
     _devmode_on(t)
     with t.component("research_completed_ledger", toggle="engineEnabled"):
-        t.bridge_call("jawa/research_finish_project", project=RESEARCH_PROJECT,
+        proj = RESEARCH_PROJECT
+        for cand in RESEARCH_CANDIDATES:
+            av = t.bridge_call("jawa/research_availability", project=cand) or {}
+            if av.get("success") and av.get("canStartNow"):
+                proj = cand
+                break
+        t.bridge_call("jawa/research_finish_project", project=proj,
                       doCompletionLetter=False)
         t.expect_log_contains("[Ninefold] Ozzik satiation +15.0")
         t.expect_log_contains("[Ninefold] Ohm satiation +3.0")
@@ -176,6 +185,9 @@ def building_repaired_and_deconstructed(t):
         t.screenshot()
 
     with t.component("building_deconstructed", beyond_toggle=True):
+        # MEASURED 2026-10-08: an undesignated Deconstruct order fails TryMakePreToilReservations; designate first.
+        t.bridge_call("jawa/designate_batch", action="add", designation="Deconstruct",
+                      rect="%d,%d,1,1" % (x, z))
         t.bridge_call("jawa/ordered_job", pawnId=worker, jobDef="Deconstruct",
                       targetAX=x, targetAZ=z, waitTicks=0)
         t.wait_ticks(5000)

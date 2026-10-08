@@ -1,0 +1,6 @@
+chains: ['birth_outcome']
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Ninefold_20261008T153038Z.html
+CHAIN birth_outcome None {"name": "birth_outcome", "situational": null, "modal_check": null}
+    {"name": "birth_outcome_ledger", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_pregnancy", "result": {"success": true, "action": "start", "notes": ["pregnancy started with PregnantHuman, no
+ALL_GREEN True FINDINGS 0

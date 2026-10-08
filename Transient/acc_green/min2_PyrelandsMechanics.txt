@@ -1,0 +1,16 @@
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\PyrelandsMechanics_20261008T154155Z.html
+CHAIN mod_settings None {"name": "mod_settings", "situational": null, "modal_check": null}
+    {"name": "setting_arsonJusticeEnabled_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'arsonJusticeEnabled': 'false'})",
+    {"name": "setting_fireRiteEnabled_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'fireRiteEnabled': 'false'})", "result
+    {"name": "setting_flameHarvestEnabled_round_trips", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Utinni.PyrelandsMechanics.PyrelandsMechanicsSettings, {'flameHarvestEnabled': 'false'})",
+CHAIN incidents_answer None {"name": "incidents_answer", "situational": null, "modal_check": null}
+    {"name": "dry_run_RUT_FlameHarvest", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/fire_incident", "result": {"success": false, "message": "RUT_FlameHarvest canFireNow=False (dry run, nothing fi
+    {"name": "dry_run_RUT_FireRaid", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/fire_incident", "result": {"success": false, "message": "RUT_FireRaid canFireNow=False (dry run, nothing fired).", 
+CHAIN every_shipped_def_reads_back None {"name": "every_shipped_def_reads_back", "situational": null, "modal_check": null}
+    {"name": "every_shipped_def_is_loaded", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "3 of 3 def(s) resolved", "requested": 3, "foundCount": 3,
+    {"name": "shipped_scalar_fields_match_xml", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount"
+CHAIN unproven_bars None {"name": "unproven_bars", "situational": null, "modal_check": null}
+    {"name": "arson_debt_past_threshold_fires_fireraid", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: no bridge tool reads or writes the arson debt tally (WorldComponent state) and the dry-run fire_incident only proves RU
+    {"name": "flameharvest_needs_flameHarvestMinFires", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: no tool lists burning fires per map for a threshold sweep; the dry run proves CanFireNow does not throw but not that it 
+ALL_GREEN False FINDINGS 0

@@ -1,0 +1,9 @@
+chains: ['research_completed', 'building_repaired_and_deconstructed']
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Ninefold_20261008T152627Z.html
+CHAIN research_completed None {"name": "research_completed", "situational": null, "modal_check": null}
+    {"name": "research_completed_ledger", "toggle": "engineEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/research_availability", "result": {"success": true, "canStartNow": false, "prerequisitesCompleted"
+CHAIN building_repaired_and_deconstructed None {"name": "building_repaired_and_deconstructed", "situational": null, "modal_check": null}
+    {"name": "building_repaired", "toggle": "firstContactLettersEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/damage", "result": {"success": true, "message": "Damaged 1 thing(s) with Blunt 40.", "damageD
+    {"name": "building_deconstructed", "toggle": null, "beyond_toggle": true, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/designate_batch", "result": {"success": true, "action": "add", "designation": "Deconstruct", "added": 1, "removed
+ALL_GREEN True FINDINGS 0
