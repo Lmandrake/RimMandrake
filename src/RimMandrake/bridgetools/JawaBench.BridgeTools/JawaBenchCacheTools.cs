@@ -112,9 +112,8 @@ namespace JawaBench.BridgeTools
                 "tell 'cached and wrong' from 'never cached'; reading the public getters would " +
                 "populate the empty ones and destroy the measurement. EXPECTED USE: audit after " +
                 "a repaint and expect a non-zero staleHilliness; save, reload, audit again and " +
-                "expect ZERO. There is no cache-clearing tool because RimWorld has no reset " +
-                "method for these - a RELOAD is the only fix, and that is the finding, not a " +
-                "limitation of this tool. Temperature checking is OFF by default because " +
+                "expect ZERO. RimWorld has no reset method for these; a RELOAD clears them, and " +
+                "so does jawa/world_tile_cache_reset (nulls them by reflection on named tiles). Temperature checking is OFF by default because " +
                 "recomputing min/max per tile samples the year and is slow over a whole planet.",
             ResultDescription =
                 "success, tilesScanned, and per cache: cachedCount (populated), staleCount " +
@@ -334,8 +333,8 @@ namespace JawaBench.BridgeTools
                     note = !completed
                         ? "SCAN CANCELLED before every tile in `tiles`/the full sweep was checked - staleTotal/tilesScanned cover only the tiles reached, NOT the whole requested set. Treat this as inconclusive, not a pass."
                         : includeTemps
-                            ? "A non-zero staleTotal means a RELOAD is required; RimWorld has no reset for these caches."
-                            : "Temperature caches were NOT checked - pass includeTemps=true. A non-zero staleTotal means a RELOAD is required.",
+                            ? "A non-zero staleTotal means a RELOAD or jawa/world_tile_cache_reset is required; RimWorld has no reset for these caches."
+                            : "Temperature caches were NOT checked - pass includeTemps=true. A non-zero staleTotal means a RELOAD or jawa/world_tile_cache_reset is required.",
                     ticksGame = TicksGameSafe(),
                 };
             });
