@@ -65,3 +65,23 @@ A redraw comes back to the owner only after an agent re-runs `refresh_ruled_shee
 A single redraw currently passes through these hands: **owner** (rules) → **agent** (ingest, queue, often a one-off script) → **daemon** (queue, serialized) → **agent** (`art backfill` + refresh sheets, "at dawn") → **owner** (re-rules; 30% of the time this goes round again) → **agent** (install, commit) → **agent or nobody** (deploy) → **bridge holder** (decides to spend a restart) → **game** (15–35 min load). That is 5–7 hand-offs. At least 3 of them have no trigger at all: sheet refresh, deploy, and restart all wait on someone noticing.
 
 The repeated discovery happens in step 2 and in cuts. Every enactment re-derives texPath → owning mod → owner-kept protection → frozen-roster references by hand, which is why 73 Transient scripts appeared in 4 days. The ledger already holds most of that mapping (`art status <subject>`). An `art enact` verb that reads it would end the re-derivation.
+
+## 5. Fix applied (2026-10-08 10:29–10:46 PDT, `17d313cbc`)
+
+**F1, the lock.** It exists because ChatGPT refresh tokens are single-use and every worker home shares one lineage (`ARTPIPE_WORKER_AUTH_STALENESS_1`, closed): two homes refreshing at once means one wins and the rest die with *"refresh token was already used"*. That protection is kept. What changed is *when* the lock is taken. A stale home (`last_refresh` > 12 h) still takes it. When that job finishes cleanly **and its `last_refresh` did not move**, codex has shown it does not want to refresh this lineage, and the daemon records that probe. Later jobs on the same lineage then run in parallel for `STALE_PROBE_VALID_S` = 1 h. Three cases still take the lock every time: the first job after the probe window lapses, any home whose access token expires within 70 min (codex *will* refresh it), and any run that follows a probe whose output named a refresh-token failure (such a probe is never recorded). A real rotation still resyncs every sibling home before the lock is released. Cost: about one serialized job per hour.
+
+**F2, the order.** `claim_next` and `--dry-run` sort by **(priority, has `owner_note`, oldest `created`, filename)**. Lower priority still claims first and 0 is still the top. Among equal priority, a job carrying the owner's verbatim sheet note runs ahead of bulk work that carries none. A job with no `created` falls back to file mtime. The filename only breaks exact ties. `chill_item_hydrocarbonflesh_v1` (the owner's "ASAP", filed at 10) was moved to 0 by hand. It was claimed second and passed at 10:40.
+
+**Selftest.** `selftest_artpipe.py` has 3 new tests: a probe unit test, an end-to-end daemon run with `-N 3` on 45 h-stale homes, and an ordering test. The mock worker gained `sleep_s` and a timeline file. 519 checks, all pass. The new tests fail against the pre-fix `artpiped.py` (peak overlap 1, order alphabetical).
+
+**Restart.** `systemctl --user kill --kill-whom=main -s SIGINT` signalled only the daemon, not its codex children. A plain `restart` signals the whole cgroup. The daemon drained its 5 in-flight jobs (3 PASS, 1 `worker_error` after 2 attempts, 1 `failed_canon`, which are ordinary verdicts), exited with status 1 ("work remains"), and `Restart=on-failure` brought it back at 10:37:09. Nothing was lost or run twice. The codex logins were not refreshed.
+
+| | before (10-08 00–07 PDT) | after (10:37:09–10:45:46) |
+|---|---|---|
+| ok jobs | 24–33 per hour | **16 in 8.6 min ≈ 111 per hour**, 16/16 PASS, no auth errors |
+| codex runs at the same time | ~1 (mean busy 0.86 of 5) | **5** `codex_image.py` processes live at 10:46. Completions land in pairs seconds apart after the 10:39:30 probe |
+| time in slot for a ~100 s run | up to 900–990 s | 82–141 s |
+
+**Re-prioritisation: proposed, not applied.** 228 of the 243 pending jobs are at priority 0. 174 of them carry `owner_note`, so most of the 0s are genuinely ruled work, and the ordering above now handles them. These are the jobs still wrongly placed:
+- **`regen_ls3_iriaz_*` (6 jobs) is a ruled redraw with no `owner_note`**, so it now sorts behind every noted job at 0. The enactment that files a redraw should copy the ruling onto `owner_note`, or file the redraw at a lower number than the bulk work.
+- **Bulk work with no note sits at 0**: 31 `regen_gt_hawkbat_flying_*` derive children, 9 `webwork_*`, 3 `wsart_*`, 5 `wsfix_*`. Proposal: `fill_queue.py` callers file backfill at 50, keep 0–9 for owner rulings, and leave the default at 100. Re-filing the existing 48 jobs is a judgment for BENCH. It has not been done.
