@@ -8,3 +8,4 @@ Bridge: FOUNDRY. Game UP on tier acc_biomes (15 mods) launched 21:40 via Steam. 
 
 ## Skipped (needs a different tier)
 - 21:50 L1 done: 6 verifies recorded (2 pass->validated/done, 4 partial), 5 findings filed so far; L2 driver Transient/acc_biomes/run_live_suite.py runs modcheck suites on the live tier with no ModsConfig swap. Ran FloodedCanyon RustCathedral Stillsand Greentide.
+- 22:15 Wasteland re-run on a real RM_Wasteland map via retile.py: pass A2/A3 GPT, fail MECHANICS A3, finding WASTELAND_TOXIC_BUILDUP_NEVER_APPLIES_1

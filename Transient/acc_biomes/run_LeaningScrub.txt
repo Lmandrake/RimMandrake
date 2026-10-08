@@ -1,0 +1,199 @@
+[lscrub-note] shipped defs resolved: 70
+[lscrub] 22:13:27 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 22:13:27 biome_weather_table PASS 
+[lscrub] 22:13:27 biome_density_and_flora PASS 
+[lscrub] 22:13:27 biome_lean_extension PASS 
+[lscrub] 22:13:27 rules_armed PASS 
+[lscrub] 22:13:27 thicket_smotherable PASS 
+[lscrub] 22:13:27 vissler_arm_is_rotting_meat PASS 
+[lscrub-note] refuel with dead venomvine: {"stackBefore": 20, "stackAfter": 18, "campfire": ["Fuel: 20 / 20 (2 days)"]}
+[lscrub] 22:14:43 dead_venomvine_fuels_fire PASS 
+[lscrub] 22:14:44 defaults PASS 
+[lscrub] 22:14:44 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 22:14:44 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 22:14:44 leanEnabled_roundtrip PASS 
+[lscrub] 22:14:44 leanScentEnabled_roundtrip PASS 
+[lscrub] 22:14:44 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 14, "lost": []}
+[lscrub] 22:14:45 fauna_spawns PASS 
+[lscrub] 22:14:45 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 18, "lost": []}
+[lscrub] 22:14:45 flora_spawns PASS 
+[lscrub-note] Stall: path lengths (cells) and sampled jobs over 1500 ticks: {"RM_Thornhold91281": {"alive": 13, "samples": 13, "path": 0.0, "jobs": [null, "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"]}, "RM_Shirrel91282": {"alive": 13, "samples": 13, "path": 13.899494936611665, "jobs": [null, "GotoWander", "Wait_Wander", "Wait_Wander", "GotoWander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "GotoWander", "Wait_Wander", "Wait_Wander", "Wait_Wander"]}}
+[lscrub] 22:14:55 stall_freezes_small PASS 
+[lscrub-note] Stall, stallFreezeEnabled OFF: path: {"RM_Thornhold91281": {"alive": 7, "samples": 7, "path": 8.84161925296378, "jobs": ["Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander"]}}
+[lscrub] 22:15:03 stall_toggle_off_wanders PASS 
+[lscrub-note] Stall, modEnabled OFF: path: {"RM_Thornhold91281": {"alive": 7, "samples": 7, "path": 16.234076132278147, "jobs": ["GotoWander", "Wait_Wander", "GotoWander", "Wait_Wander", "GotoWander", "Wait_MaintainPosture", "Wait_Wander"]}}
+[lscrub] 22:15:12 stall_master_off_wanders PASS 
+[lscrub] 22:15:12 gale_site_ready PASS 
+[lscrub] 22:15:15 gale_deafens_outdoors PASS 
+[lscrub] 22:15:15 gale_spares_roofed PASS 
+[lscrub] 22:15:19 gale_deafen_toggle_off PASS 
+[lscrub-note] turbine output W (on, off, on): [4485.0, 3450.0, 4485.0]
+[lscrub] 22:15:41 gale_turbine_surge PASS 
+[lscrub] 22:16:09 gale_turbine_breakdown PASS 
+[lscrub] 22:16:09 lash_site_ready PASS 
+[lscrub-note] lash OFF: colonist hediffs after 300 ticks: []
+[lscrub] 22:16:11 lash_toggle_off_quiet PASS 
+[lscrub-note] lash: hediffs before / after strike / after the hour's first 600 ticks: [0, 3, 3]
+[lscrub] 22:16:14 lash_strikes_once PASS 
+[lscrub] 22:16:15 smother_site_ready PASS 
+[lscrub] 22:16:54 smother_claims_stands PASS 
+[lscrub-note] _wait: Ultrafast did not advance the clock (stuck at 685957); stepping instead: 9000
+[lscrub-note] feature OFF, claim due: stands alive / inspect: [[1, 1], ["Mature.", "Smothered: dead through, ready to fall."]]
+[lscrub] 22:18:06 smother_off_holds_claims PASS 
+[lscrub-note] feature back ON: stands alive / dead venomvine: [[0, 0], 50]
+[lscrub] 22:18:19 smother_matures_to_dead_wood PASS 
+[lscrub-note] dripping harvest: venom items / stand standing / inspect: [0, 1, ["Ready to harvest."]]
+[lscrub] 22:18:40 dripping_survives_harvest UNMEASURED UNMEASURED: no venom was harvested in 1200 ticks (job not done): cannot judge whether the stand survives
+[lscrub] 22:18:40 crown_site_ready PASS 
+[lscrub-note] crown trial OFF: dustflutter distances to the stand / sampled jobs: [[16.492422502470642, 17.0, 18.439088914585774], {"RM_Dustflutter91958": ["Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"], "RM_Dustflutter91959": ["Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"], "RM_Dustflutter91960": ["Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander", "Wait_Wander"]}]
+[lscrub] 22:18:47 crown_toggle_off_stays_away PASS 
+[lscrub-note] crown trial ON: dustflutter distances to the stand / sampled jobs: [[1.4142135623730951, 2.23606797749979, 1.4142135623730951], {"RM_Dustflutter91968": ["Goto", "GotoWander", "Goto", "Wait_Wander", "Wait_Wander", "Wait_Wander"], "RM_Dustflutter91969": ["Goto", "GotoWander", "Goto", "Goto", "Wait_Wander", "Wait_Wander"], "RM_Dustflutter91970": ["Goto", "GotoWander", "Goto", "Goto", "Wait_Wander", "Wait_Wander"]}]
+[lscrub] 22:18:54 crown_mob_gathers PASS 
+[lscrub-note] bloom trial OFF: Flee seen per species / vissler arms shed: [{"RM_Crustweevil": true, "RM_Fuzzrunner": true, "RM_Dustflutter": true, "RM_Vissler": true}, 0]
+[lscrub] 22:18:58 bloom_toggle_off_quiet FAIL ExpectationFailed: runwayBloomEnabled OFF but the bloom still fired: Flee {'RM_Crustweevil': True, 'RM_Fuzzrunner': True, 'RM_Dustflutter': True, 'RM_Vissler': True}, arms 0
+[lscrub] 22:18:58 bloom_answers_a_walker UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 22:18:58 bloom_sway_and_exit_hole UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] fire stamp proof (on): "UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)"
+[lscrub] 22:18:58 stamp_answers_a_blaze UNMEASURED UNMEASURED: fire stamp proof did not answer PASS/FAIL: UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)
+[lscrub-note] fire stamp proof (off): "UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)"
+[lscrub] 22:18:58 stamp_toggle_off_ignores_fire UNMEASURED UNMEASURED: fire stamp proof did not answer PASS/FAIL: UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWBestiary absent?)
+[lscrub-note] rearing proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_ea7899de31c646c48303d0d0d20fcf36', 'Status': 'Completed', 'Success': True, 'DurationMs': 10}, 'state': {'programState': 'P"
+[lscrub] 22:18:58 rearing_acts UNMEASURED UNMEASURED: rearing proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_ea7899de31c646c48303d0
+[lscrub-note] rearing proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_5fe3b9a0fd594834b7fc62a2f4cc2a3a', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Pl"
+[lscrub] 22:18:58 rearing_toggle_off UNMEASURED UNMEASURED: rearing proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_5fe3b9a0fd594834b7fc62
+[lscrub-note] walking proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_77b114a76ca7420caa329118ec9732c1', 'Status': 'Completed', 'Success': True, 'DurationMs': 10}, 'state': {'programState': 'P"
+[lscrub] 22:18:58 walking_acts UNMEASURED UNMEASURED: walking proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_77b114a76ca7420caa3291
+[lscrub-note] walking proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_6bc4f417be0b460fb6ce9a8ddf7db86f', 'Status': 'Completed', 'Success': True, 'DurationMs': 11}, 'state': {'programState': 'P"
+[lscrub] 22:18:58 walking_toggle_off UNMEASURED UNMEASURED: walking proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_6bc4f417be0b460fb6ce9a
+[lscrub-note] hoard proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_ec9563c89a1f414a81c706577e84e819', 'Status': 'Completed', 'Success': True, 'DurationMs': 10}, 'state': {'programState': 'P"
+[lscrub] 22:18:58 hoard_acts UNMEASURED UNMEASURED: hoard proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_ec9563c89a1f414a81c706
+[lscrub-note] hoard proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_fd544d68834a4727a8ad232fde8ef6c1', 'Status': 'Completed', 'Success': True, 'DurationMs': 11}, 'state': {'programState': 'P"
+[lscrub] 22:18:58 hoard_toggle_off UNMEASURED UNMEASURED: hoard proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_fd544d68834a4727a8ad23
+[lscrub-note] quench proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_b1ca8da069bd4272b3a2abb0ba082ccf', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Pl"
+[lscrub] 22:18:58 quench_acts UNMEASURED UNMEASURED: quench proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_b1ca8da069bd4272b3a2ab
+[lscrub-note] quench proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_63af46373fef4b8a8e4bb18362751835', 'Status': 'Completed', 'Success': True, 'DurationMs': 10}, 'state': {'programState': 'P"
+[lscrub] 22:18:58 quench_toggle_off UNMEASURED UNMEASURED: quench proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_63af46373fef4b8a8e4bb1
+[lscrub-note] sworn proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_72869a93f3c041e59ba6bd5edd6aefe2', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Pl"
+[lscrub] 22:18:58 sworn_acts UNMEASURED UNMEASURED: sworn proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_72869a93f3c041e59ba6bd
+[lscrub-note] sworn proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_b6dd841f9fd34b5ea408ca6f5e536fe7', 'Status': 'Completed', 'Success': True, 'DurationMs': 10}, 'state': {'programState': 'P"
+[lscrub] 22:18:58 sworn_toggle_off UNMEASURED UNMEASURED: sworn proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_b6dd841f9fd34b5ea408ca
+[lscrub-note] shedding proof (on): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_931b1f6020d946c996f607db04e5b58e', 'Status': 'Completed', 'Success': True, 'DurationMs': 9}, 'state': {'programState': 'Pl"
+[lscrub] 22:18:58 shedding_acts UNMEASURED UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_931b1f6020d946c996f607
+[lscrub-note] shedding proof (off): "{'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_d1f5fd64b5aa47a89520f0fdbbbdb66b', 'Status': 'Completed', 'Success': True, 'DurationMs': 10}, 'state': {'programState': 'P"
+[lscrub] 22:18:58 shedding_toggle_off UNMEASURED UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': ['System.String ProofForm(System.String)']}, 'operation': {'OperationId': 'op_d1f5fd64b5aa47a89520f0
+[lscrub] 22:18:59 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: ["RM_Barkwarden92176", "RM_Barkwarden92177", "RM_Barkwarden92178"]
+[lscrub] 22:18:59 guardians_roost_on_spawn PASS 
+[lscrub-note] sweetline label / inspect: ["Barrumo (sweetline tree)", ["Ready to harvest.", "Loose sweetline felt falls in 2.9 days.", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 22:18:59 station_named_and_timed PASS 
+[lscrub] 22:18:59 station_toggle_off_plain PASS 
+[lscrub-note] sweetline wool beside the tree before / after a 5.5-day jump; tree inspect after: [0, 5, ["Ready to harvest.", "Loose sweetline felt falls in 5 days.", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 22:19:09 station_sheds_wool PASS 
+[lscrub-note] scratch proof with scratching OFF: "REFUSED: scratching is off"
+[lscrub] 22:19:09 scratch_toggle_off_refused PASS 
+[lscrub-note] sheep wool at the trunk before / after one rub; tree inspect: [0, 36, ["Ready to harvest.", "Loose sweetline felt falls in 5 days.", "Felted into the bark: 2 (harvestable).", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 22:19:15 scratch_drops_coat PASS 
+[lscrub-note] sweetline visits before / after a 13-day jump, visitors OFF: [0, 0]
+[lscrub] 22:19:25 visitors_toggle_off_quiet PASS 
+[lscrub-note] sweetline visits recorded / tokens before-after, visitors ON: [1, 0, 1]
+[lscrub] 22:19:35 visitors_come_and_leave_marks PASS 
+[lscrub-note] felt armchair comfort delta, setting OFF: "DELTA 0.00"
+[lscrub] 22:19:35 felt_comfort_toggle_off_plain PASS 
+[lscrub-note] felt armchair comfort delta: "DELTA 0.10"
+[lscrub] 22:19:35 felt_furniture_comfort PASS 
+[lscrub-note] map step at chance 0: "PLANTED 0"
+[lscrub] 22:19:35 map_step_chance_zero_plants_none PASS 
+[lscrub-note] map step at chance 1: "PLANTED 1"
+[lscrub] 22:19:35 map_step_plants_one_or_two PASS 
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 610}
+[lscrub] 22:19:35 log_clean PASS 
+ensure_playing_map: playing
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\LeaningScrub_20261008T051935Z.html
+CHAIN defs None {"name": "defs", "situational": null, "modal_check": null}
+    {"name": "defs_resolve", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "70 of 70 def(s) resolved", "requested": 70, "foundCount": 70, "notFound
+    {"name": "biome_weather_table", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFo
+    {"name": "biome_density_and_flora", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+    {"name": "biome_lean_extension", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
+CHAIN patches None {"name": "patches", "situational": null, "modal_check": null}
+    {"name": "rules_armed", "toggle": "modEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/harmony_patches", "result": {"success": true, "typeName": "JobGiver_Wander", "methodName": "TryGiveJob", "methodCou
+    {"name": "thicket_smotherable", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_def", "result": {"success": true, "defName": "RM_VenomvineThicket", "defType": "ThingDef", "label": "venomvine 
+    {"name": "vissler_arm_is_rotting_meat", "toggle": "visslerArmFoodEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_def", "result": {"success": true, "defName": "RM_VisslerArm", "defType": "ThingDef",
+    {"name": "dead_venomvine_fuels_fire", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_ScrubWindFog", "after": "Clear", "lockInForce": true,
+CHAIN settings None {"name": "settings", "situational": null, "modal_check": null}
+    {"name": "defaults", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "crownMobEnabled", "fieldKind": "static", "value": 
+    {"name": "venomvinePassabilityEnabled_roundtrip", "toggle": "venomvinePassabilityEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field
+    {"name": "galeRaidWeightingEnabled_roundtrip", "toggle": "galeRaidWeightingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "ga
+    {"name": "leanEnabled_roundtrip", "toggle": "leanEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "leanEnabled", "fieldKind": "
+    {"name": "leanScentEnabled_roundtrip", "toggle": "leanScentEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "leanScentEnabled",
+    {"name": "leanFireEnabled_roundtrip", "toggle": "leanFireEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "get", "field": "leanFireEnabled", "f
+CHAIN fauna None {"name": "fauna", "situational": null, "modal_check": null}
+    {"name": "fauna_spawns", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Barkwarden in faction (none).", "spawnedCount": 1, "fa
+    {"name": "dustflutter_can_fly", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "14 pawn(s), 52 outside the rect.", "pawns": [{"id": "RM_Barkwa
+CHAIN flora None {"name": "flora", "situational": null, "modal_check": null}
+    {"name": "flora_spawns", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_plants", "result": {"success": true, "message": "Planted 1, cleared 0.", "planted": 1, "cleared": 0, "rejected": 0, "r
+CHAIN stall None {"name": "stall", "situational": null, "modal_check": null}
+    {"name": "stall_freezes_small", "toggle": "stallFreezeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "Clear", "after": "RM_Stall", "lockInForce": tr
+    {"name": "stall_toggle_off_wanders", "toggle": "stallFreezeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "stallFreezeEnabled
+    {"name": "stall_master_off_wanders", "toggle": "modEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "modEnabled", "fieldKind": 
+CHAIN gale None {"name": "gale", "situational": null, "modal_check": null}
+    {"name": "gale_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "Clear", "after": "RM_Gale", "lockInForce": true, "gamePaused": tru
+    {"name": "gale_deafens_outdoors", "toggle": "galeDeafenEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(600) -> 600 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_0410d34516154e8189
+    {"name": "gale_spares_roofed", "toggle": "galeDeafenEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "49 pawn(s).", "pawns": [{"id": "RM_Zellik90993",
+    {"name": "gale_deafen_toggle_off", "toggle": "galeDeafenEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_health", "result": {"success": true, "action": "remove", "didWhat": "removed RM_GaleDeafened
+    {"name": "gale_turbine_surge", "toggle": "galeTurbineSurgeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_batch", "result": {"success": true, "message": "Placed 1 thing(s) of 1 requested across 1
+    {"name": "gale_turbine_breakdown", "toggle": "galeTurbineSurgeEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 17958 examin
+CHAIN lash None {"name": "lash", "situational": null, "modal_check": null}
+    {"name": "lash_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_plants", "result": {"success": true, "message": "Planted 1, cleared 0.", "planted": 1, "cleared": 0, "rejected": 0,
+    {"name": "lash_toggle_off_quiet", "toggle": "twitcherLashEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "38 pawn(s).", "pawns": [{"id": "RM_Surrik90
+    {"name": "lash_strikes_once", "toggle": "twitcherLashEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 17895 examined.", "ma
+CHAIN smother None {"name": "smother", "situational": null, "modal_check": null}
+    {"name": "smother_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_plants", "result": {"success": true, "message": "Planted 1, cleared 0.", "planted": 1, "cleared": 0, "rejected":
+    {"name": "smother_claims_stands", "toggle": "smotherCraftEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/ordered_job", "result": {"success": true, "accepted": true, "interruptibleBefore": true, "reques
+    {"name": "smother_off_holds_claims", "toggle": "smotherCraftEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "smotherCraftEnabl
+    {"name": "smother_matures_to_dead_wood", "toggle": "smotherCraftEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "smotherCraftE
+CHAIN dripping None {"name": "dripping", "situational": null, "modal_check": null}
+    {"name": "dripping_survives_harvest", "toggle": "drippingRegrowEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: no venom was harvested in 1200 ticks (job not done): cannot judge whether the stand survives", "evidence": [{"call"
+CHAIN crown None {"name": "crown", "situational": null, "modal_check": null}
+    {"name": "crown_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "Clear", "after": "RM_Stall", "lockInForce": true, "gamePaused": t
+    {"name": "crown_toggle_off_stays_away", "toggle": "crownMobEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "crownMobEnabled", 
+    {"name": "crown_mob_gathers", "toggle": "crownMobEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 RM_Dustflutter in faction (none).", "sp
+CHAIN bloom None {"name": "bloom", "situational": null, "modal_check": null}
+    {"name": "bloom_toggle_off_quiet", "toggle": "runwayBloomEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: runwayBloomEnabled OFF but the bloom still fired: Flee {'RM_Crustweevil': True, 'RM_Fuzzrunner': True, 'RM_Dustflutter':
+    {"name": "bloom_answers_a_walker", "toggle": "runwayBloomEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows"
+    {"name": "bloom_sway_and_exit_hole", "toggle": "runwayBloomEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "show
+CHAIN stamp None {"name": "stamp", "situational": null, "modal_check": null}
+    {"name": "stamp_answers_a_blaze", "toggle": "fireStampEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: fire stamp proof did not answer PASS/FAIL: UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPatches/SWB
+    {"name": "stamp_toggle_off_ignores_fire", "toggle": "fireStampEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: fire stamp proof did not answer PASS/FAIL: UNMEASURED: no loaded creature carries RM_FireStamperExtension (UtinniPat
+CHAIN forms None {"name": "forms", "situational": null, "modal_check": null}
+    {"name": "rearing_acts", "toggle": "rearingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: rearing proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'availab
+    {"name": "rearing_toggle_off", "toggle": "rearingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: rearing proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'a
+    {"name": "walking_acts", "toggle": "walkingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: walking proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'availab
+    {"name": "walking_toggle_off", "toggle": "walkingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: walking proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'a
+    {"name": "hoard_acts", "toggle": "hoardEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: hoard proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available': [
+    {"name": "hoard_toggle_off", "toggle": "hoardEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: hoard proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'availab
+    {"name": "quench_acts", "toggle": "quenchEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: quench proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'available'
+    {"name": "quench_toggle_off", "toggle": "quenchEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: quench proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'avai
+    {"name": "sworn_acts", "toggle": "swornSparesMarkedEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: sworn proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'a
+    {"name": "sworn_toggle_off", "toggle": "swornSparesMarkedEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: sworn proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details
+    {"name": "shedding_acts", "toggle": "sheddingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': {'avai
+    {"name": "shedding_toggle_off", "toggle": "sheddingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: shedding proof did not answer PASS/FAIL: {'success': False, 'message': 'No public static ProofForm with 2 params.', 'details': 
+CHAIN sweetline None {"name": "sweetline", "situational": null, "modal_check": null}
+    {"name": "sweetline_site_ready", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notF
+    {"name": "guardians_roost_on_spawn", "toggle": "sweetlineGuardiansEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "3 pawn(s), 22 outside the rect.", 
+    {"name": "station_named_and_timed", "toggle": "sweetlineStationsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 16299 exam
+    {"name": "station_toggle_off_plain", "toggle": "sweetlineStationsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "sweetlineSta
+    {"name": "station_sheds_wool", "toggle": "sweetlineStationsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [], "scanned": 16299, "countReturned": 0, 
+    {"name": "scratch_toggle_off_refused", "toggle": "sweetlineScratchingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Sheep in faction Pl
+    {"name": "scratch_drops_coat", "toggle": "sweetlineScratchingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [], "scanned": 16282, "countReturned": 0
+    {"name": "visitors_toggle_off_quiet", "toggle": "sweetlineVisitorsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 16285 ex
+    {"name": "visitors_come_and_leave_marks", "toggle": "sweetlineVisitorsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [], "scanned": 16281, "countRet
+    {"name": "felt_comfort_toggle_off_plain", "toggle": "sweetlineFeltComfortEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/mod_settings_field", "result": {"success": true, "action": "set", "field": "swee
+    {"name": "felt_furniture_comfort", "toggle": "sweetlineFeltComfortEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofComfortDelta(Ve
+    {"name": "map_step_chance_zero_plants_none", "toggle": "sweetlineStationsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofMapStep(
+    {"name": "map_step_plants_one_or_two", "toggle": "sweetlineStationsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/static_call", "result": {"success": true, "method": "System.String ProofMapStep(Verse.
+CHAIN log None {"name": "log", "situational": null, "modal_check": null}
+    {"name": "log_clean", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/drain_log", "result": {"success": true, "message": "1 message(s) of 610 in the buffer.", "totalInBuffer": 610, "messages": [{
+ALL_GREEN False FINDINGS 1
