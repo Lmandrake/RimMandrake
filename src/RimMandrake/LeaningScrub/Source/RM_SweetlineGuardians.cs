@@ -45,8 +45,8 @@ namespace RimMandrake.LeaningScrub
 
     public static class RM_SweetlineGuardianRules
     {
-        public const float StirringAt = 0.3f;
-        public const float RestlessAt = 0.6f;
+        public const float StirringAt = RM_GuardianKernel.StirringAt;
+        public const float RestlessAt = RM_GuardianKernel.RestlessAt;
 
         public static bool On =>
             RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineStationsEnabled)
@@ -60,19 +60,7 @@ namespace RimMandrake.LeaningScrub
 
         public static int StageOf(float meter)
         {
-            if (meter >= 1f)
-            {
-                return 3;
-            }
-            if (meter >= RestlessAt)
-            {
-                return 2;
-            }
-            if (meter >= StirringAt)
-            {
-                return 1;
-            }
-            return 0;
+            return RM_GuardianKernel.StageOf(meter);
         }
 
         public static string StageLabel(int stage)
@@ -171,7 +159,7 @@ namespace RimMandrake.LeaningScrub
                 {
                     targetCount = Props.count.RandomInRange;
                 }
-                return Mathf.Min(targetCount, Mathf.Max(0, RM_LeaningScrubSettings.sweetlineGuardianMaxPerTree));
+                return RM_GuardianKernel.Complement(targetCount, RM_LeaningScrubSettings.sweetlineGuardianMaxPerTree);
             }
         }
 
@@ -194,7 +182,7 @@ namespace RimMandrake.LeaningScrub
 
         private void ScheduleRefill()
         {
-            nextRefillTick = Find.TickManager.TicksGame + (int)(Props.respawnDays.RandomInRange * GenDate.TicksPerDay);
+            nextRefillTick = RM_GuardianKernel.RefillTick(Find.TickManager.TicksGame, Props.respawnDays.RandomInRange);
         }
 
         public int LiveCount()
@@ -280,14 +268,12 @@ namespace RimMandrake.LeaningScrub
             int now = Find.TickManager.TicksGame;
 
             // Forgiveness: drain while nobody is raging. 2000 ticks per Long tick.
-            if (!AnyRaging() && disturbance > 0f)
+            if (disturbance > 0f)
             {
-                float perDay = 1f / Mathf.Max(0.5f, RM_LeaningScrubSettings.sweetlineForgivenessDays);
-                disturbance = Mathf.Max(0f, disturbance - perDay * (2000f / GenDate.TicksPerDay));
-                stage = Mathf.Min(stage, RM_SweetlineGuardianRules.StageOf(disturbance));
+                RM_GuardianKernel.Forgive(disturbance, stage, RM_LeaningScrubSettings.sweetlineForgivenessDays, AnyRaging(), out disturbance, out stage);
             }
 
-            if (watchful && !AnyRaging() && disturbance < RM_SweetlineGuardianRules.StirringAt)
+            if (RM_GuardianKernel.ShouldReroost(watchful, AnyRaging(), disturbance))
             {
                 Reroost();
             }
@@ -299,7 +285,7 @@ namespace RimMandrake.LeaningScrub
             else if (now >= nextRefillTick)
             {
                 ScheduleRefill();
-                if (guardians.Count < Complement && !OtherRoostTooClose())
+                if (RM_GuardianKernel.RefillSpawns(guardians.Count, Complement, OtherRoostTooClose()))
                 {
                     SpawnOne(true);
                 }
@@ -312,7 +298,7 @@ namespace RimMandrake.LeaningScrub
         {
             foreach (Thing t in parent.Map.listerThings.ThingsOfDef(parent.def))
             {
-                if (t != parent && t.Position.InHorDistOf(parent.Position, Props.watchRadius) && t.thingIDNumber < parent.thingIDNumber)
+                if (t != parent && RM_GuardianKernel.YieldsToOther(t.Position.x - parent.Position.x, t.Position.z - parent.Position.z, Props.watchRadius, t.thingIDNumber, parent.thingIDNumber))
                 {
                     return true;
                 }
@@ -377,7 +363,8 @@ namespace RimMandrake.LeaningScrub
 
         public void AddDisturbance(float amount, Pawn by)
         {
-            if (amount <= 0f || !parent.Spawned || !RM_SweetlineGuardianRules.On || LiveCount() == 0)
+            if (!RM_GuardianKernel.Add(disturbance, stage, amount, parent.Spawned, RM_SweetlineGuardianRules.On, parent.Spawned && RM_SweetlineGuardianRules.On && amount > 0f ? LiveCount() : 0,
+                    out float newMeter, out int newStage, out int announce, out bool drop))
             {
                 return;
             }
@@ -385,14 +372,13 @@ namespace RimMandrake.LeaningScrub
             {
                 lastHarmer = by;
             }
-            disturbance = Mathf.Min(1f, disturbance + amount);
-            int newStage = RM_SweetlineGuardianRules.StageOf(disturbance);
-            if (newStage > stage)
+            disturbance = newMeter;
+            stage = newStage;
+            if (announce > 0)
             {
-                stage = newStage;
-                Announce(newStage, by);
+                Announce(announce, by);
             }
-            if (disturbance >= 1f)
+            if (drop)
             {
                 TryDrop(by);
             }

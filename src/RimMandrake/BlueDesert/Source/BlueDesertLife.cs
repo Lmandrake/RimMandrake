@@ -91,23 +91,18 @@ namespace RimMandrake.BlueDesert
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
-            if (!RM_BlueDesertSettings.masterEnabled || !RM_BlueDesertSettings.nativeDetonationsEnabled)
-            {
-                return;
-            }
             Pawn pawn = Pawn;
-            if (pawn == null || pawn.Dead || pawn.health == null)
+            if (pawn == null || pawn.health == null)
             {
                 return;
             }
             BodyPartRecord hitPart = dinfo.HitPart;
-            if (hitPart == null || hitPart.def == null || hitPart.def.defName != Props.partDefName)
+            bool matches = hitPart != null && hitPart.def != null && hitPart.def.defName == Props.partDefName;
+            // wounded there, not destroyed -- an ordinary injury
+            if (!RM_BlueKernel.PartKills(RM_BlueDesertSettings.masterEnabled && RM_BlueDesertSettings.nativeDetonationsEnabled, !pawn.Dead, matches,
+                    matches && pawn.health.hediffSet.PartIsMissing(hitPart)))
             {
                 return;
-            }
-            if (!pawn.health.hediffSet.PartIsMissing(hitPart))
-            {
-                return; // wounded there, not destroyed -- an ordinary injury
             }
             pawn.Kill(dinfo);
         }
@@ -168,31 +163,17 @@ namespace RimMandrake.BlueDesert
 
         public override void CompTickLong()
         {
-            if (!RM_BlueDesertSettings.masterEnabled || !RM_BlueDesertSettings.floraChainReactionsEnabled)
+            bool enabled = RM_BlueDesertSettings.masterEnabled && RM_BlueDesertSettings.floraChainReactionsEnabled;
+            bool hasMap = parent.Map != null;
+            int action = RM_BlueKernel.ChargeStep(ref warmTicksInARow, enabled, hasMap,
+                enabled && hasMap && parent.AmbientTemperature > RM_BlueDesertSettings.warmDetonationThresholdC);
+            if (action == 2)
             {
-                warmTicksInARow = 0;
-                return;
+                parent.Kill(new DamageInfo(DamageDefOf.Flame, 99999f));
             }
-            if (parent.Map == null)
+            else if (action == 1)
             {
-                return;
-            }
-            float threshold = RM_BlueDesertSettings.warmDetonationThresholdC;
-            if (parent.AmbientTemperature > threshold)
-            {
-                warmTicksInARow++;
-                if (warmTicksInARow >= 2)
-                {
-                    parent.Kill(new DamageInfo(DamageDefOf.Flame, 99999f));
-                }
-                else
-                {
-                    PlayCrackCue();
-                }
-            }
-            else
-            {
-                warmTicksInARow = 0;
+                PlayCrackCue();
             }
         }
 

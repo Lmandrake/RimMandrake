@@ -197,37 +197,10 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref greatboleServantsEnabled, "greatboleServantsEnabled", false);
         }
 
-        /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own — that is native, not "cross").</summary>
+        /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own - that is native, not "cross").</summary>
         public static bool AppliesToBiome(BiomeDef biome)
         {
-            if (!crossBiomeEnabled || biome == null || biome.defName == "RM_Greentide")
-            {
-                return false;
-            }
-            if (crossBiomeEverywhere)
-            {
-                return true;
-            }
-            return ParseBiomeList().Contains(biome.defName);
-        }
-
-        private static List<string> ParseBiomeList()
-        {
-            var result = new List<string>();
-            if (crossBiomeBiomeList.NullOrEmpty())
-            {
-                return result;
-            }
-            string[] parts = crossBiomeBiomeList.Split(',', ';');
-            for (int i = 0; i < parts.Length; i++)
-            {
-                string trimmed = parts[i].Trim();
-                if (trimmed.Length > 0)
-                {
-                    result.Add(trimmed);
-                }
-            }
-            return result;
+            return RM_RulesKernel.AppliesToBiome(crossBiomeEnabled, biome?.defName, "RM_Greentide", crossBiomeEverywhere, crossBiomeBiomeList);
         }
 
         public void DoWindowContents(Rect inRect)

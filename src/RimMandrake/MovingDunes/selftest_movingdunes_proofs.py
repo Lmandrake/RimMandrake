@@ -137,11 +137,11 @@ def main():
     check("gate_findings clean on shipped source", V.gate_findings(srcs) == [], V.gate_findings(srcs))
     for fn, old, new, tag in (
             ("MapComponent_DuneField.cs", "if (!MovingDunesSettings.plantChokeEnabled)", "if (false)", "plantChokeEnabled"),
-            ("MapComponent_DuneField.cs", "if (!MovingDunesSettings.burialEnabled)", "if (false)", "burialEnabled"),
+            ("MapComponent_DuneField.cs", "bool burialOn = MovingDunesSettings.burialEnabled;", "bool burialOn = true;", "burialEnabled"),
             ("MapComponent_DuneField.cs", "if (!MovingDunesSettings.duneEngineEnabled)", "if (false)", "duneEngineEnabled"),
             ("Patch_ClearSandYield.cs", "MovingDunesSettings.clearYieldEnabled", "true", "clearYieldEnabled"),
             ("MapComponent_DuneField.cs", "WindLockApplies(MovingDunesSettings.windLockEnabled, ext)", "WindLockApplies(true, ext)", "windLockEnabled"),
-            ("MapComponent_DuneField.cs", "influxDebt += InfluxDebtDelta(", "influxDebt += 0f * InfluxDebtDeltaX(", "InfluxDebtDelta")):
+            ("Kernel/RM_DuneKernel.cs", "debt += InfluxDebtDelta(", "debt += 0f * InfluxDebtDeltaX(", "InfluxDebtDelta")):
         mut = dict(srcs)
         check("source break (%s) is findable in the shipped text" % tag, old in mut[fn], old)
         mut[fn] = mut[fn].replace(old, new)   # every occurrence: a gate is gone only when ALL reads are

@@ -175,10 +175,9 @@ namespace RimMandrake.BlueDesert
         public void Init(IncidentDef incidentDef, RM_AblationSalvageExtension ext)
         {
             incident = incidentDef;
-            float pace = Mathf.Max(0.1f, RM_BlueDesertSettings.ablationPaceFactor);
-            int now = Find.TickManager.TicksGame;
-            silhouetteTick = now + Mathf.RoundToInt(ext.hoursToSilhouette.RandomInRange * 2500f * pace);
-            exposureTick = silhouetteTick + Mathf.RoundToInt(ext.hoursToExposure.RandomInRange * 2500f * pace);
+            float pace = RM_BlueDesertSettings.ablationPaceFactor;
+            silhouetteTick = RM_BlueKernel.SilhouetteTick(Find.TickManager.TicksGame, ext.hoursToSilhouette.RandomInRange, pace);
+            exposureTick = RM_BlueKernel.ExposureTick(silhouetteTick, ext.hoursToExposure.RandomInRange, pace);
         }
 
         public override string Label => stage == 0 ? base.Label : "dark shape under the ice";
@@ -216,7 +215,8 @@ namespace RimMandrake.BlueDesert
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            if (stage == 0 && now >= silhouetteTick)
+            RM_BlueKernel.AblationStage(stage, now, silhouetteTick, exposureTick, out bool call, out bool expose);
+            if (call)
             {
                 stage = 1;
                 Map.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Things);
@@ -231,7 +231,7 @@ namespace RimMandrake.BlueDesert
             {
                 KeepScavengersCircling();
             }
-            if (stage == 1 && now >= exposureTick)
+            if (expose)
             {
                 Expose(ext);
             }
@@ -336,9 +336,18 @@ namespace RimMandrake.BlueDesert
                 }
             }
             string text = ext.letterText ?? "";
-            if (!ext.corpses.NullOrEmpty()
-                && ext.corpses.TryRandomElementByWeight(o => o?.kind != null ? Mathf.Max(0f, o.weight) : 0f,
-                    out RM_AblationCorpseOption pick) && pick?.kind != null)
+            RM_AblationCorpseOption pick = null;
+            if (!ext.corpses.NullOrEmpty())
+            {
+                float[] weights = new float[ext.corpses.Count];
+                for (int i = 0; i < weights.Length; i++)
+                {
+                    weights[i] = ext.corpses[i]?.kind != null ? ext.corpses[i].weight : 0f;
+                }
+                int index = RM_BlueKernel.PickWeighted(weights, weights.Length, Rand.Value);
+                pick = index >= 0 ? ext.corpses[index] : null;
+            }
+            if (pick?.kind != null)
             {
                 IntVec3 cell = CellFinder.StandableCellNear(spot, map, 3f);
                 if (!cell.IsValid)

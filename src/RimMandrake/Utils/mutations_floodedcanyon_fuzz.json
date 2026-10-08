@@ -1,0 +1,182 @@
+[
+ {
+  "name": "flood: a flood under way when the cycle is switched off never recedes (the original defect)",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (s.Phase == FloodPhase.Flooding)\n                {\n                    step.Recede = true;",
+  "new": "if (false)\n                {\n                    step.Recede = true;"
+ },
+ {
+  "name": "flood: schedule loses its 2500-tick floor",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "s.NextFloodTick = now + Math.Max(2500, period + jitter);",
+  "new": "s.NextFloodTick = now + period + jitter;"
+ },
+ {
+  "name": "flood: peakstorm pulls a flood that is already near",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (s.NextFloodTick - now <= 60000) return;",
+  "new": "if (s.NextFloodTick - now <= 6000) return;"
+ },
+ {
+  "name": "flood: peakstorm pull ignores the warning lead",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "pulled = Math.Max(pulled, now + minTicks);",
+  "new": ""
+ },
+ {
+  "name": "flood: peakstorm can push the flood later",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (pulled < s.NextFloodTick) s.NextFloodTick = pulled;",
+  "new": "s.NextFloodTick = pulled;"
+ },
+ {
+  "name": "flood: peakstorm pulls every time",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "s.PeakstormPulled = true;\n            if (!(chanceRoll",
+  "new": " if (!(chanceRoll"
+ },
+ {
+  "name": "flood: herald beats come late",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "float frac = 1f - (s.HeraldBeat - 1) / 3f;",
+  "new": "float frac = 1f - (s.HeraldBeat) / 3f;"
+ },
+ {
+  "name": "flood: the third chime rings too early",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "{ 1f, 0.5f, 0.15f }",
+  "new": "{ 1f, 0.5f, 0.75f }"
+ },
+ {
+  "name": "flood: the flood starts early",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (now >= s.NextFloodTick)\n                    {\n                        step.StartFlood = true;",
+  "new": "if (now >= s.NextFloodTick - 100)\n                    {\n                        step.StartFlood = true;"
+ },
+ {
+  "name": "flood: the flood recedes early",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (now >= s.FloodEndTick)\n                    {\n                        step.Recede = true;",
+  "new": "if (now >= s.FloodEndTick - 100)\n                    {\n                        step.Recede = true;"
+ },
+ {
+  "name": "flood: herald entry forgets to choose a seed",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "step.ChooseSeed = true;\n                        s.HeraldBeat = 1;",
+  "new": "s.HeraldBeat = 1;"
+ },
+ {
+  "name": "flood: a pending seed is re-chosen on entering Warned",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (!seedPending) step.ChooseSeed = true;",
+  "new": "step.ChooseSeed = true;"
+ },
+ {
+  "name": "flood: staged chimes restart at stage 0",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "s.ChimeStage = 1;\n            s.Phase = FloodPhase.Warned;",
+  "new": "s.ChimeStage = 0;\n            s.Phase = FloodPhase.Warned;"
+ },
+ {
+  "name": "cells: the flood overshoots its target",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "while (frontier.Count > 0 && result.Count < target)",
+  "new": "while (frontier.Count > 0 && result.Count <= target)"
+ },
+ {
+  "name": "cells: ineligible cells are flooded",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (!eligible(c[0], c[1])) continue;",
+  "new": ""
+ },
+ {
+  "name": "cells: a raised cell loses its prior fill",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "RaisedPrior.Add(prior);",
+  "new": "RaisedPrior.Add(0);"
+ },
+ {
+  "name": "cells: an excavated cell the driver refused is flooded anyway",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "RaisedPrior.Add(prior); }\n                        continue;",
+  "new": "RaisedPrior.Add(prior); }"
+ },
+ {
+  "name": "cells: soil laid on ground that is no longer flood terrain",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (inBounds(c) && stillFloodTerrain(c)) toSoil(c);",
+  "new": "if (inBounds(c)) toSoil(c);"
+ },
+ {
+  "name": "cells: the first chime is at the NEAR corner",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (di > db) best = i;",
+  "new": "if (di < db) best = i;"
+ },
+ {
+  "name": "cells: target cells unclamped above",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_FloodKernel.cs",
+  "old": "Math.Min(400, mapArea / 20)",
+  "new": "Math.Min(4000, mapArea / 20)"
+ },
+ {
+  "name": "refuge: a player animal shelters if it is trained OR an animal",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_RefugeKernel.cs",
+  "old": "if (playerFaction) return animal && trained;",
+  "new": "if (playerFaction) return animal || trained;"
+ },
+ {
+  "name": "refuge: a seeker on a ledge is re-held every sweep",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_RefugeKernel.cs",
+  "old": "if (onLedge) return alreadyWaiting ? Action.Skip : Action.Hold;",
+  "new": "if (onLedge) return Action.Hold;"
+ },
+ {
+  "name": "refuge: the reach probe bound is quadrupled",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_RefugeKernel.cs",
+  "old": "public const int MaxReachProbes = 12;",
+  "new": "public const int MaxReachProbes = 48;"
+ },
+ {
+  "name": "pan: digs in a check too late",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_PanKernel.cs",
+  "old": "s.DryAccumTicks >= dryHoursToDigIn * 2500f",
+  "new": "s.DryAccumTicks > dryHoursToDigIn * 2500f"
+ },
+ {
+  "name": "pan: water does not reset the dry clock",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_PanKernel.cs",
+  "old": "if (waterNear || flooding) { s.DryAccumTicks = 0; return Do.Nothing; }",
+  "new": "if (waterNear || flooding) { return Do.Nothing; }"
+ },
+ {
+  "name": "pan: wakes with the wake setting off",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_PanKernel.cs",
+  "old": "if (waterNear && wakeSetting)",
+  "new": "if (waterNear)"
+ },
+ {
+  "name": "rules: irqit cohort twice as big",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_CanyonRulesKernel.cs",
+  "old": "wettedCount / CellsPerIrqit",
+  "new": "wettedCount / 4"
+ },
+ {
+  "name": "rules: the seeded biome roll is spent when the gate is open",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_CanyonRulesKernel.cs",
+  "old": "if (gate < 1f && !seededGatePass()) return 0f;",
+  "new": "if (!seededGatePass()) return 0f;"
+ },
+ {
+  "name": "rules: fossil depth explored one cell too far",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_CanyonRulesKernel.cs",
+  "old": "if (d >= DeepMinDepth + 2) continue;",
+  "new": "if (d >= DeepMinDepth + 3) continue;"
+ },
+ {
+  "name": "rules: seam bands shifted",
+  "file": "src/RimMandrake/FloodedCanyon/Source/Kernel/RM_CanyonRulesKernel.cs",
+  "old": "roll < 0.26f ? 1 : 2",
+  "new": "roll < 0.30f ? 1 : 2"
+ }
+]

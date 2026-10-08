@@ -28,26 +28,25 @@ namespace RimMandrake.MovingDunes
     public class MapComponent_DuneField : MapComponent
     {
         /// <summary>Batch cadence. 240 batches per in-game day.</summary>
-        public const int BatchIntervalTicks = 250;
-        private const int BatchesPerDay = GenDate.TicksPerDay / BatchIntervalTicks;
+        public const int BatchIntervalTicks = RM_DuneKernel.BatchIntervalTicks;
+        private const int BatchesPerDay = RM_DuneKernel.BatchesPerDay;
 
         /// <summary>Depth boundaries at which <c>WeatherBuildupUtility</c> changes
         /// movement category — every crossing costs a
         /// <c>RecalculatePerceivedPathCostAt</c>. Deposition is nudged clear of them
         /// (design §6.2: a front resting exactly on a boundary re-paths the colony
         /// forever as it jitters back and forth).</summary>
-        private static readonly float[] CategoryBoundaries = { 0.03f, 0.25f, 0.5f, 0.75f };
-        private const float BoundaryHysteresis = 0.012f;
+        private const float BoundaryHysteresis = RM_DuneKernel.BoundaryHysteresis;
 
         /// <summary>A cell this much deeper than its neighbour, within
         /// <c>shadowRange</c> upwind, shelters that neighbour from erosion.</summary>
-        private const float ShadowDepthMargin = 0.15f;
+
 
         /// <summary>How much lower a downwind cell must be to catch a slab early.</summary>
-        private const float LowCellMargin = 0.02f;
+
 
         /// <summary>Windward band, in cells, that influx is sprinkled across.</summary>
-        private const int InfluxBandWidth = 6;
+
 
         // ------------------------------------------------------------- saved state
 
@@ -65,19 +64,6 @@ namespace RimMandrake.MovingDunes
         private readonly List<Thing> tmpThings = new List<Thing>();
         private readonly List<Thing> tmpBury = new List<Thing>();
 
-        /// <summary>The 8 compass directions, index 0 = north, clockwise.</summary>
-        private static readonly IntVec3[] WindVectors =
-        {
-            new IntVec3(0, 0, 1),   // N
-            new IntVec3(1, 0, 1),   // NE
-            new IntVec3(1, 0, 0),   // E
-            new IntVec3(1, 0, -1),  // SE
-            new IntVec3(0, 0, -1),  // S
-            new IntVec3(-1, 0, -1), // SW
-            new IntVec3(-1, 0, 0),  // W
-            new IntVec3(-1, 0, 1),  // NW
-        };
-
         private static readonly string[] WindNames =
         { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
 
@@ -88,7 +74,7 @@ namespace RimMandrake.MovingDunes
         public RM_DuneMaterialDef Material { get { return material; } }
 
         /// <summary>Unit vector the wind blows TOWARDS.</summary>
-        public IntVec3 WindVector { get { return WindVectors[windDir & 7]; } }
+        public IntVec3 WindVector { get { return new IntVec3(RM_DuneKernel.WindDx[windDir & 7], 0, RM_DuneKernel.WindDz[windDir & 7]); } }
 
         public string WindName { get { return WindNames[windDir & 7]; } }
 
@@ -248,23 +234,17 @@ namespace RimMandrake.MovingDunes
         /// hook reads the shipped decision (setting AND a biome that locks) for every combination.</summary>
         public static bool WindLockApplies(bool settingOn, DuneFieldExtension ext)
         {
-            return settingOn && ext != null && ext.lockBearingToSubstellar;
+            return RM_DuneKernel.WindLockApplies(settingOn, ext != null, ext != null && ext.lockBearingToSubstellar);
         }
 
         private void ScheduleNextWindShift()
         {
-            float days = Rand.Range(0.5f, 1.5f) * Mathf.Max(0.05f, material.windShiftMeanDays);
-            nextWindShiftTick = Find.TickManager.TicksGame + Mathf.RoundToInt(days * GenDate.TicksPerDay);
+            nextWindShiftTick = RM_DuneKernel.NextWindShiftTick(Find.TickManager.TicksGame, Rand.Range(0.5f, 1.5f), material.windShiftMeanDays);
         }
 
         private void ShiftWind()
         {
-            int step = Rand.Chance(material.windShiftBigChance) ? 2 : 1;
-            if (Rand.Bool)
-            {
-                step = -step;
-            }
-            windDir = (windDir + step + 8) & 7;
+            windDir = RM_DuneKernel.ShiftWind(windDir, Rand.Chance(material.windShiftBigChance), Rand.Bool);
             ScheduleNextWindShift();
         }
 
@@ -276,21 +256,12 @@ namespace RimMandrake.MovingDunes
         /// </summary>
         private void StormFactors(out float transport, out float influx)
         {
-            transport = 1f;
-            influx = 1f;
             WeatherDef weather = map.weatherManager.curWeather;
             DuneWeatherExtension ext = weather != null
                 ? weather.GetModExtension<DuneWeatherExtension>() : null;
-            bool storming = map.weatherManager.SandRate > 0.001f
-                            || (ext != null && ext.forceStormTransport);
-            if (!storming)
-            {
-                return;
-            }
-            transport = ext != null && ext.transportFactor >= 0f
-                ? ext.transportFactor : material.stormTransportFactor;
-            influx = ext != null && ext.influxFactor >= 0f
-                ? ext.influxFactor : material.weatherInfluxFactor;
+            RM_DuneKernel.StormFactors(map.weatherManager.SandRate, ext != null, ext != null ? ext.transportFactor : -1f,
+                ext != null ? ext.influxFactor : -1f, ext != null && ext.forceStormTransport, material.stormTransportFactor,
+                material.weatherInfluxFactor, out transport, out influx);
         }
 
         // -------------------------------------------------------------- transport
@@ -299,11 +270,35 @@ namespace RimMandrake.MovingDunes
         /// carries the drift-speed slider). Pure, so the proof hook reads the shipped scaling.</summary>
         public static int TransportAttempts(RM_DuneMaterialDef m, int numCells, float stormFactor)
         {
-            return Mathf.RoundToInt(m.AttemptsPerBatch(numCells) * Mathf.Max(0.01f, stormFactor));
+            return RM_DuneKernel.TransportAttempts(m.AttemptsPerBatch(numCells), stormFactor);
+        }
+
+        private static readonly TransportParamsCache ParamsCache = new TransportParamsCache();
+
+        private sealed class TransportParamsCache
+        {
+            private RM_DuneMaterialDef of;
+            private TransportParams cached;
+            public TransportParams For(RM_DuneMaterialDef m)
+            {
+                if (of != m)
+                {
+                    of = m;
+                    cached = new TransportParams
+                    {
+                        SlabSize = m.slabSize,
+                        ErodeMinDepth = m.erodeMinDepth,
+                        ShadowRange = m.shadowRange,
+                        HopMin = m.hopRange.min,
+                        HopMax = m.hopRange.max,
+                    };
+                }
+                return cached;
+            }
         }
 
         /// <summary>Runs one batch of slab attempts. Returns the total depth that left
-        /// the map over the leeward edge — the sink half of source/sink.</summary>
+        /// the map over the leeward edge - the sink half of source/sink.</summary>
         private float RunTransportBatch(float stormFactor)
         {
             float windSpeed = map.windManager.WindSpeed;
@@ -312,149 +307,25 @@ namespace RimMandrake.MovingDunes
                 return 0f; // calm: nothing moves, and the batch costs one float compare
             }
 
-            SandGrid grid = map.sandGrid;
             IntVec3 wind = WindVector;
             int attempts = TransportAttempts(material, map.cellIndices.NumGridCells, stormFactor);
-            float q = material.slabSize;
-            float lost = 0f;
-
-            for (int i = 0; i < attempts; i++)
-            {
-                IntVec3 c = CellFinder.RandomCell(map);
-                float here = grid.GetDepth(c);
-                if (here < material.erodeMinDepth)
-                {
-                    continue;
-                }
-                if (map.roofGrid.Roofed(c))
-                {
-                    continue; // roofed cells are out of the wind entirely
-                }
-                if (IsWindShadowed(c, wind, here, grid))
-                {
-                    continue;
-                }
-
-                float slab = Mathf.Min(q, here);
-                int hop = material.hopRange.RandomInRange;
-                IntVec3 landing = IntVec3.Invalid;
-                IntVec3 prev = c;
-                bool offMap = false;
-
-                for (int s = 1; s <= hop; s++)
-                {
-                    IntVec3 n = c + wind * s;
-                    if (!n.InBounds(map))
-                    {
-                        offMap = true;
-                        break;
-                    }
-                    if (map.roofGrid.Roofed(n))
-                    {
-                        landing = prev; // banks at the lip of a roof
-                        break;
-                    }
-                    Building edifice = n.GetEdifice(map);
-                    if (edifice != null && !SandGrid.CanCoexistWithSand(edifice.def))
-                    {
-                        landing = prev; // the snowdrift-behind-a-fence tail, for free
-                        break;
-                    }
-                    if (grid.GetDepth(n) < here - LowCellMargin)
-                    {
-                        landing = n;   // deposition prefers low: pits and lanes refill
-                        break;
-                    }
-                    prev = n;
-                }
-
-                SetDepthHysteretic(grid, c, here - slab);
-
-                if (offMap)
-                {
-                    lost += slab;
-                    continue;
-                }
-                if (!landing.IsValid)
-                {
-                    landing = prev;
-                }
-                if (landing == c)
-                {
-                    // Erode-and-replace-in-place is a no-op that still costs a mesh
-                    // dirty; put the slab back and move on.
-                    SetDepthHysteretic(grid, c, here);
-                    continue;
-                }
-                Deposit(grid, landing, slab);
-            }
-
-            return lost;
+            Batch batch = RM_DuneKernel.RunTransport(new MapDuneField(map), wind.x, wind.z, attempts, ParamsCache.For(material), BoundaryHysteresis,
+                (lo, hi) => Rand.Range(lo, hi), (lo, hi) => Rand.RangeInclusive(lo, hi),
+                (x, z, before, after) => OnDeposit(new IntVec3(x, 0, z), before, after));
+            return batch.Lost;
         }
 
-        /// <summary>A cell is sheltered if something upwind of it, within
-        /// <c>shadowRange</c>, blocks or out-tops the wind.</summary>
-        private bool IsWindShadowed(IntVec3 c, IntVec3 wind, float here, SandGrid grid)
+        private void OnDeposit(IntVec3 cell, float before, float after)
         {
-            for (int s = 1; s <= material.shadowRange; s++)
-            {
-                IntVec3 up = c - wind * s;
-                if (!up.InBounds(map))
-                {
-                    return false; // open desert upwind
-                }
-                Building edifice = up.GetEdifice(map);
-                if (edifice != null && !SandGrid.CanCoexistWithSand(edifice.def))
-                {
-                    return true;
-                }
-                if (grid.GetDepth(up) > here + ShadowDepthMargin)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void Deposit(SandGrid grid, IntVec3 cell, float slab)
-        {
-            float before = grid.GetDepth(cell);
-            SetDepthHysteretic(grid, cell, before + slab);
-            float after = grid.GetDepth(cell);
-
             if (material.depositFilthDef != null && Rand.Chance(material.depositFilthChance))
             {
                 FilthMaker.TryMakeFilth(cell, map, material.depositFilthDef);
             }
 
-            if (after >= material.burialDepth && before < material.burialDepth)
+            if (RM_CacheKernel.CrossedBurial(before, after, material.burialDepth))
             {
                 TryBuryAt(cell);
             }
-        }
-
-        /// <summary>
-        /// Writes a depth, nudged clear of the movement-category boundaries. Design §6.2:
-        /// a dune front resting exactly on a boundary re-paths the whole colony every
-        /// time it jitters across, so the engine never leaves a cell there.
-        /// </summary>
-        private void SetDepthHysteretic(SandGrid grid, IntVec3 cell, float target)
-        {
-            target = Mathf.Clamp(target, 0f, SandGrid.MaxDepth);
-            if (target > 0f)
-            {
-                for (int i = 0; i < CategoryBoundaries.Length; i++)
-                {
-                    float b = CategoryBoundaries[i];
-                    if (Mathf.Abs(target - b) < BoundaryHysteresis)
-                    {
-                        target = target >= b ? b + BoundaryHysteresis : b - BoundaryHysteresis;
-                        break;
-                    }
-                }
-                target = Mathf.Clamp(target, 0f, SandGrid.MaxDepth);
-            }
-            grid.SetDepth(cell, target);
         }
 
         // --------------------------------------------------------- source / sink
@@ -484,98 +355,27 @@ namespace RimMandrake.MovingDunes
         /// already shaped lostDepth), the flat per-day baseline by weather AND the slider, once each.</summary>
         public static float InfluxDebtDelta(RM_DuneMaterialDef m, float lostDepth, float weather, float driftMult)
         {
-            return lostDepth * m.influxLossRatio * weather
-                 + m.influxPerDay / BatchesPerDay * weather * driftMult;
+            return RM_DuneKernel.InfluxDebtDelta(lostDepth, m.influxLossRatio, m.influxPerDay, weather, driftMult);
         }
 
         private void RunInflux(float lostDepth, float stormFactor, float driftMult)
         {
-            int cells = map.cellIndices.NumGridCells;
-            float cap = material.maxTotalMassFraction * cells * SandGrid.MaxDepth;
-            SandGrid grid = map.sandGrid;
-            if (grid.TotalDepth >= cap)
-            {
-                influxDebt = 0f;
-                return;
-            }
-
-            float weather = Mathf.Max(0f, stormFactor);
-            influxDebt += InfluxDebtDelta(material, lostDepth, weather, driftMult);
-            if (influxDebt <= 0f)
-            {
-                return;
-            }
-
-            float q = material.slabSize;
             IntVec3 wind = WindVector;
-            int placed = 0;
-            int budget = Mathf.CeilToInt(influxDebt / q);
-            // Bounded work per batch: a huge debt spends down over several batches rather
-            // than stalling one tick. 4x the batch's own K is generous and still cheap.
-            int maxPlacements = Mathf.Max(16, material.AttemptsPerBatch(cells) * 4);
-            int tries = 0;
-            int maxTries = maxPlacements * 4;
-
-            while (placed < budget && placed < maxPlacements && tries < maxTries
-                   && grid.TotalDepth < cap)
-            {
-                tries++;
-                IntVec3 c = RandomWindwardCell(wind);
-                if (!c.InBounds(map) || map.roofGrid.Roofed(c))
-                {
-                    continue;
-                }
-                float before = grid.GetDepth(c);
-                if (before >= SandGrid.MaxDepth - 0.001f)
-                {
-                    continue;
-                }
-                SetDepthHysteretic(grid, c, before + q);
-                if (grid.GetDepth(c) <= before)
-                {
-                    continue; // cell refused the sand (water, wall) — do not spend the debt
-                }
-                placed++;
-                influxDebt -= q;
-            }
-
-            if (influxDebt < 0f)
-            {
-                influxDebt = 0f;
-            }
-        }
-
-        /// <summary>A random cell in the band along the edge(s) the wind comes FROM.</summary>
-        private IntVec3 RandomWindwardCell(IntVec3 wind)
-        {
-            int sizeX = map.Size.x;
-            int sizeZ = map.Size.z;
-            int band = Mathf.Min(InfluxBandWidth, Mathf.Min(sizeX, sizeZ) / 2);
-            if (band < 1)
-            {
-                band = 1;
-            }
-
-            int x = wind.x > 0 ? Rand.Range(0, band)
-                  : wind.x < 0 ? Rand.Range(sizeX - band, sizeX)
-                  : Rand.Range(0, sizeX);
-            int z = wind.z > 0 ? Rand.Range(0, band)
-                  : wind.z < 0 ? Rand.Range(sizeZ - band, sizeZ)
-                  : Rand.Range(0, sizeZ);
-            return new IntVec3(Mathf.Clamp(x, 0, sizeX - 1), 0, Mathf.Clamp(z, 0, sizeZ - 1));
+            RM_DuneKernel.RunInflux(new MapDuneField(map), ref influxDebt, lostDepth, stormFactor, driftMult, ParamsCache.For(material), material.influxLossRatio,
+                material.influxPerDay, material.maxTotalMassFraction, material.AttemptsPerBatch(map.cellIndices.NumGridCells), wind.x, wind.z,
+                BoundaryHysteresis, (lo, hi) => Rand.Range(lo, hi));
         }
 
         // ------------------------------------------------------------------ burial
 
         private void TryBuryAt(IntVec3 cell)
         {
-            if (!MovingDunesSettings.burialEnabled)
+            // mod option: buried caches disabled; at the cap: no NEW cache cells, existing ones still merge
+            bool burialOn = MovingDunesSettings.burialEnabled;
+            if (!RM_CacheKernel.BuryAllowed(burialOn, DuneBurialUtility.CacheAt(cell, map) != null,
+                    burialOn ? CacheCount() : 0, material.maxCachesPerMap))
             {
-                return; // mod option: buried caches disabled
-            }
-            if (DuneBurialUtility.CacheAt(cell, map) == null && CacheCount() >= material.maxCachesPerMap)
-            {
-                return; // at the cap: no NEW cache cells, existing ones still merge
+                return;
             }
 
             tmpThings.Clear();
@@ -625,14 +425,13 @@ namespace RimMandrake.MovingDunes
         /// </summary>
         public static int ChokeSamples(RM_DuneMaterialDef m, int numCells, float stormFactor)
         {
-            return Mathf.RoundToInt(m.AttemptsPerBatch(numCells) * m.plantChokeSampleFraction
-                                    * Mathf.Max(0.01f, stormFactor));
+            return RM_DuneKernel.ChokeSamples(m.AttemptsPerBatch(numCells), m.plantChokeSampleFraction, stormFactor);
         }
 
         /// <summary>Damage per visit, sized so a fully-buried plant dies in plantChokeDays.</summary>
         public static int ChokeDamage(float maxHitPoints, float chokeDays, float visitsPerDay)
         {
-            return Mathf.Max(1, Mathf.RoundToInt(maxHitPoints / (chokeDays * visitsPerDay)));
+            return RM_DuneKernel.ChokeDamage(maxHitPoints, chokeDays, visitsPerDay);
         }
 
         /// <summary>Batches per in-game day, for the proof hook's visit-rate arithmetic.</summary>
@@ -656,7 +455,7 @@ namespace RimMandrake.MovingDunes
             }
 
             // Expected visits to any one cell per in-game day, from this very sample rate.
-            float visitsPerDay = (float)samples * BatchesPerDay / cells;
+            float visitsPerDay = RM_DuneKernel.VisitsPerDay(samples, cells);
             if (visitsPerDay <= 0f)
             {
                 return;

@@ -113,36 +113,26 @@ namespace RimMandrake.BlueDesert
                 return;
             }
             List<Pawn> singers = new List<Pawn>();
+            List<Pawn> intruders = new List<Pawn>();
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn p = pawns[i];
                 if (p.def == ossivelDef && !p.Dead && !p.Downed && !(p.CurJob != null && p.CurJob.def == JobDefOf.LayDown))
                     singers.Add(p);
+                if (!(p.def == ossivelDef || p.Dead || p.BodySize <= IntruderBodySize))
+                    intruders.Add(p);
             }
-            SingerCount = singers.Count;
-            bool intruder = false;
-            for (int i = 0; i < pawns.Count && !intruder; i++)
-            {
-                Pawn p = pawns[i];
-                if (p.def == ossivelDef || p.Dead || p.BodySize <= IntruderBodySize) continue;
-                for (int j = 0; j < singers.Count; j++)
-                {
-                    if (p.Position.InHorDistOf(singers[j].Position, SilenceRadius))
-                    {
-                        intruder = true;
-                        break;
-                    }
-                }
-            }
-            if (intruder) silencedUntilTick = now + SilenceHoldTicks;
-            ChoirSilenced = SingerCount >= MinSingers && now < silencedUntilTick;
-            ChoirSinging = SingerCount >= MinSingers && !ChoirSilenced;
+            RM_BlueKernel.ChoirResult choirResult = RM_BlueKernel.Choir(true, now, silencedUntilTick, MinSingers, SilenceRadius, SilenceHoldTicks,
+                singers.Count, singers.ConvertAll(s => s.Position.x).ToArray(), singers.ConvertAll(s => s.Position.z).ToArray(),
+                intruders.Count, intruders.ConvertAll(p => p.Position.x).ToArray(), intruders.ConvertAll(p => p.Position.z).ToArray());
+            SingerCount = choirResult.Singers;
+            silencedUntilTick = choirResult.SilencedUntil;
+            ChoirSilenced = choirResult.Silenced;
+            ChoirSinging = choirResult.Singing;
             if (ChoirSinging)
             {
-                IntVec3 sum = IntVec3.Zero;
-                foreach (Pawn s in singers) sum += s.Position;
-                choirTarget = new IntVec3(sum.x / singers.Count, 0, sum.z / singers.Count);
+                choirTarget = new IntVec3(choirResult.CentreX, 0, choirResult.CentreZ);
             }
         }
 
@@ -154,22 +144,14 @@ namespace RimMandrake.BlueDesert
             VirrSinging = false;
             if (!VirrGate || virrDef == null || map.windManager.WindSpeed < VirrMinWind) return;
             IntVec3 ear = map == Find.CurrentMap ? Find.CameraDriver.MapPosition : map.Center;
-            Plant best = null;
-            float bestDist = VirrListenRadius * VirrListenRadius;
             List<Thing> virrs = map.listerThings.ThingsOfDef(virrDef);
-            for (int i = 0; i < virrs.Count; i++)
-            {
-                float d = (virrs[i].Position - ear).LengthHorizontalSquared;
-                if (d <= bestDist)
-                {
-                    bestDist = d;
-                    best = virrs[i] as Plant;
-                }
-            }
+            int nearest = RM_BlueKernel.NearestVirr(virrs.Count, virrs.ConvertAll(t => t.Position.x).ToArray(), virrs.ConvertAll(t => t.Position.z).ToArray(),
+                ear.x, ear.z, VirrListenRadius);
+            Plant best = nearest >= 0 ? virrs[nearest] as Plant : null;
             if (best == null) return;
             VirrSinging = true;
             // "the pitch climbs as the charge inside ripens": growth is the ripening.
-            VirrPitch = Mathf.Lerp(VirrPitchMin, VirrPitchMax, Mathf.Clamp01(best.Growth));
+            VirrPitch = RM_BlueKernel.VirrPitch(VirrPitchMin, VirrPitchMax, best.Growth);
             virrTarget = best.Position;
         }
 

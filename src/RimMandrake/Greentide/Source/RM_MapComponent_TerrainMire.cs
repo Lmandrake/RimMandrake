@@ -46,42 +46,26 @@ namespace RimMandrake.Greentide
 			TerrainDef terrain = pawn.Position.GetTerrain(map);
 			RM_MireExtension ext = terrain?.GetModExtension<RM_MireExtension>();
 			Hediff existing = pawn.health.hediffSet.GetFirstHediffOfDef(RM_DefOf.RM_Mired);
-
-			if (ext != null && !ext.IsImmune(pawn))
+			bool onMire = ext != null && !ext.IsImmune(pawn);
+			if (!onMire && existing == null)
 			{
-				if (existing == null)
-				{
-					existing = HediffMaker.MakeHediff(RM_DefOf.RM_Mired, pawn);
-					pawn.health.AddHediff(existing);
-				}
-				// MOD_OPTIONS_RETROFIT_1: mireSeverityMultiplier scales the whole XML-authored
-				// per-terrain rate uniformly (never the terrain's own field) so the ruled
-				// v1 default (1.0x, i.e. exactly the shipped numbers above) is unchanged.
-				float severityRate = ext.mireSeverityPerTick * RM_GreentideSettings.mireSeverityMultiplier;
-				bool stuck = existing.Severity >= ext.stuckThreshold;
-				if (stuck && Rand.Chance(ext.selfStruggleChancePerCheck * 0.1f))
-				{
-					// Even stuck pawns make token, glacial progress alone —
-					// RM_WorkGiver_FreeMired is the real way out, not the only way.
-					existing.Severity = System.Math.Max(0f, existing.Severity - severityRate);
-				}
-				else if (!stuck && Rand.Chance(ext.selfStruggleChancePerCheck))
-				{
-					existing.Severity = System.Math.Max(0f, existing.Severity - severityRate * 0.5f);
-				}
-				else
-				{
-					existing.Severity = System.Math.Min(1f, existing.Severity + severityRate);
-				}
+				return;
 			}
-			else if (existing != null)
+			if (onMire && existing == null)
 			{
-				float decay = ext?.mireDecayPerTick ?? 0.02f;
-				existing.Severity -= decay;
-				if (existing.Severity <= 0f)
-				{
-					pawn.health.RemoveHediff(existing);
-				}
+				existing = HediffMaker.MakeHediff(RM_DefOf.RM_Mired, pawn);
+				pawn.health.AddHediff(existing);
+			}
+			// MOD_OPTIONS_RETROFIT_1: mireSeverityMultiplier scales the whole XML-authored per-terrain rate uniformly (never the
+			// terrain's own field) so the ruled v1 default (1.0x) is unchanged. A stuck pawn makes token, glacial progress alone -
+			// RM_WorkGiver_FreeMired is the real way out, not the only way.
+			RM_MireKernel.Outcome o = RM_MireKernel.Step(onMire, true, existing.Severity, ext?.mireSeverityPerTick ?? 0f,
+				RM_GreentideSettings.mireSeverityMultiplier, ext?.selfStruggleChancePerCheck ?? 0f, ext?.stuckThreshold ?? 1f,
+				ext?.mireDecayPerTick ?? 0.02f, ext != null, p => Rand.Chance(p), out float severity);
+			existing.Severity = severity;
+			if (o == RM_MireKernel.Outcome.Remove)
+			{
+				pawn.health.RemoveHediff(existing);
 			}
 		}
 	}

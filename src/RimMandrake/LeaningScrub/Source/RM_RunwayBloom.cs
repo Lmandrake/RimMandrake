@@ -73,29 +73,12 @@ namespace RimMandrake.LeaningScrub
         // TUNED: a person, or an animal at least the size of a large dog.
         private const float MinDisturberBodySize = 1.0f;
         // TUNED: a bloom answers within a dozen cells of the disturbance.
-        private const float BloomRadius = 12f;
         // TUNED: no second bloom within 15 cells for half an in-game hour, so
         // one walker sets off a wave rather than a strobe.
-        private const float CooldownRadius = 15f;
-        private const int CooldownTicks = 1250;
-
-        private struct Pending
-        {
-            public int tick;
-            public Pawn pawn;
-            public IntVec3 from;
-        }
-
-        private struct Recent
-        {
-            public int tick;
-            public IntVec3 cell;
-        }
 
         // Transient: a pending answer lost to a save/load simply never fires,
         // which is indistinguishable from the animal not noticing.
-        private readonly List<Pending> pending = new List<Pending>();
-        private readonly List<Recent> recent = new List<Recent>();
+        private readonly RM_CoatKernel.BloomState<Pawn> bloom = new RM_CoatKernel.BloomState<Pawn>();
         private readonly List<Pawn> tmpPawns = new List<Pawn>();
         // Swayers: pawn -> tick the sway ends. Transient, like pending.
         private readonly Dictionary<Pawn, int> swaying = new Dictionary<Pawn, int>();
@@ -112,7 +95,7 @@ namespace RimMandrake.LeaningScrub
         {
             if (!RM_WindCalendar.On(RM_LeaningScrubSettings.runwayBloomEnabled))
             {
-                pending.Clear();
+                bloom.Clear();
                 swaying.Clear();
                 return;
             }
@@ -123,7 +106,7 @@ namespace RimMandrake.LeaningScrub
             {
                 return;
             }
-            recent.RemoveAll(r => now - r.tick > CooldownTicks);
+            bloom.DropOldRecent(now);
             tmpPawns.Clear();
             tmpPawns.AddRange(map.mapPawns.AllPawnsSpawned);
             for (int i = 0; i < tmpPawns.Count; i++)
@@ -157,47 +140,29 @@ namespace RimMandrake.LeaningScrub
 
         private bool OnCooldown(IntVec3 c)
         {
-            float sq = CooldownRadius * CooldownRadius;
-            for (int i = 0; i < recent.Count; i++)
-            {
-                if ((recent[i].cell - c).LengthHorizontalSquared <= sq)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return bloom.OnCooldown(c.x, c.z);
         }
 
         private void Bloom(IntVec3 center, int now)
         {
-            recent.Add(new Recent { tick = now, cell = center });
-            float sq = BloomRadius * BloomRadius;
+            bloom.Remember(center.x, center.z, now);
             IReadOnlyList<Pawn> all = map.mapPawns.AllPawnsSpawned;
             for (int i = 0; i < all.Count; i++)
             {
                 Pawn a = all[i];
                 RM_RunwayBloomExtension ext = a.def.GetModExtension<RM_RunwayBloomExtension>();
                 if (ext == null || a.Faction != null || a.Downed || a.Dead
-                    || (a.Position - center).LengthHorizontalSquared > sq)
+                    || !RM_CoatKernel.InBloomRadius(a.Position.x, a.Position.z, center.x, center.z))
                 {
                     continue;
                 }
-                pending.Add(new Pending { tick = now + Mathf.Max(0, ext.delayTicks), pawn = a, from = center });
+                bloom.Queue(RM_CoatKernel.AnswerTick(now, ext.delayTicks), a, center.x, center.z);
             }
         }
 
         private void RunPending(int now)
         {
-            for (int i = pending.Count - 1; i >= 0; i--)
-            {
-                Pending p = pending[i];
-                if (p.tick > now)
-                {
-                    continue;
-                }
-                pending.RemoveAt(i);
-                Answer(p.pawn, p.from);
-            }
+            bloom.RunPending(now, (pawn, fx, fz) => Answer(pawn, new IntVec3(fx, 0, fz)));
         }
 
         private void Answer(Pawn a, IntVec3 from)
@@ -304,7 +269,7 @@ namespace RimMandrake.LeaningScrub
             }
             int now = Find.TickManager.TicksGame;
             comp.Bloom(first.Position, now);
-            int answered = comp.pending.Count;
+            int answered = comp.bloom.PendingTick.Count;
             comp.RunPending(now + 1000);
             int holesAfter = hole == null ? 0 : map.listerThings.ThingsOfDef(hole).Count;
             return "SWAYING " + comp.swaying.Count + " HOLES +" + (holesAfter - holesBefore) + " ANSWERED " + answered;

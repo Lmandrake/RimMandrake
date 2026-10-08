@@ -64,13 +64,13 @@ namespace RimMandrake.LeaningScrub
             {
                 if (headingDegrees < 0f)
                 {
-                    headingDegrees = Rand.Range(0f, 360f);
+                    headingDegrees = RM_LeanKernel.LockHeading(headingDegrees, Rand.Range(0f, 360f));
                     cachedDir = Vector2.zero;
                 }
                 if (cachedDir == Vector2.zero)
                 {
-                    float r = headingDegrees * Mathf.Deg2Rad;
-                    cachedDir = new Vector2(Mathf.Cos(r), Mathf.Sin(r));
+                    RM_LeanKernel.Direction(headingDegrees, out float dirX, out float dirZ);
+                    cachedDir = new Vector2(dirX, dirZ);
                 }
                 return cachedDir;
             }
@@ -99,22 +99,15 @@ namespace RimMandrake.LeaningScrub
         // Cosine between "from → to" and the downwind heading: 1 = straight downwind.
         public float Alignment(IntVec3 from, IntVec3 to)
         {
-            Vector2 d = new Vector2(to.x - from.x, to.z - from.z);
-            if (d.sqrMagnitude < 0.01f)
-            {
-                return 0f;
-            }
-            return Vector2.Dot(d.normalized, Downwind);
+            Vector2 dir = Downwind;
+            return RM_LeanKernel.Alignment(to.x - from.x, to.z - from.z, dir.x, dir.y);
         }
     }
 
     [StaticConstructorOnStartup]
     public static class RM_TheLeanPatches
     {
-        private const float ScentAlignment = 0.7f; // within ~45 degrees of straight downwind
         private const int FleeDistance = 24;
-
-        private static readonly List<IntVec3> tmpDownwind = new List<IntVec3>(8);
 
         static RM_TheLeanPatches()
         {
@@ -159,24 +152,32 @@ namespace RimMandrake.LeaningScrub
             }
             float range = RM_LeaningScrubSettings.leanScentRange;
             IReadOnlyList<Pawn> people = pawn.Map.mapPawns.AllHumanlikeSpawned;
-            for (int i = 0; i < people.Count; i++)
+            int n = people.Count;
+            int[] dx = new int[n], dz = new int[n];
+            bool[] gone = new bool[n];
+            for (int i = 0; i < n; i++)
             {
                 Pawn h = people[i];
-                if (h.Dead || h.Downed || !h.Position.InHorDistOf(pawn.Position, range))
-                {
-                    continue;
-                }
                 // Scent runs from the person toward the animal along the wind.
-                if (lean.Alignment(h.Position, pawn.Position) < ScentAlignment)
+                dx[i] = pawn.Position.x - h.Position.x;
+                dz[i] = pawn.Position.z - h.Position.z;
+                gone[i] = h.Dead || h.Downed;
+            }
+            Vector2 wind = lean.Downwind;
+            Job found = null;
+            RM_LeanKernel.FirstScentThreat(n, dx, dz, gone, range, wind.x, wind.y, i =>
+            {
+                Job flee = FleeUtility.FleeJob(pawn, people[i], FleeDistance);
+                if (flee == null)
                 {
-                    continue;
+                    return false;
                 }
-                Job flee = FleeUtility.FleeJob(pawn, h, FleeDistance);
-                if (flee != null)
-                {
-                    __result = flee;
-                    return;
-                }
+                found = flee;
+                return true;
+            });
+            if (found != null)
+            {
+                __result = found;
             }
         }
 
@@ -188,26 +189,18 @@ namespace RimMandrake.LeaningScrub
             }
             Map map = __instance.Map;
             RM_MapComponent_Lean lean = RM_MapComponent_Lean.For(map);
-            if (lean == null || !Rand.Chance(RM_LeaningScrubSettings.leanFireBias))
+            if (lean == null)
             {
                 return true;
             }
             IntVec3 pos = __instance.Position;
-            tmpDownwind.Clear();
-            for (int i = 1; i <= 8; i++)
-            {
-                IntVec3 c = pos + GenRadial.ManualRadialPattern[i];
-                if (lean.Alignment(pos, c) > 0.3f)
-                {
-                    tmpDownwind.Add(c);
-                }
-            }
-            if (tmpDownwind.Count == 0)
+            Vector2 wind = lean.Downwind;
+            int pick = RM_LeanKernel.FireSpreadPick(true, RM_LeaningScrubSettings.leanFireBias, Rand.Value, wind.x, wind.y, Rand.Value);
+            if (pick < 0)
             {
                 return true;
             }
-            IntVec3 target = tmpDownwind.RandomElement();
-            tmpDownwind.Clear();
+            IntVec3 target = new IntVec3(pos.x + RM_LeanKernel.NeighbourDx[pick], 0, pos.z + RM_LeanKernel.NeighbourDz[pick]);
             if (target.InBounds(map) && Rand.Chance(FireUtility.ChanceToStartFireIn(target, map)))
             {
                 FireUtility.TryStartFireIn(target, map, 0.1f, __instance.instigator);

@@ -56,7 +56,6 @@ namespace RimMandrake.FloodedCanyon
         // TUNED: one irqit per 8 wetted cells, capped by the setting — enough
         // to read as a carpet on a default flood (40–400 cells) without a
         // pawn-count spike. The "millions" are the art's job, not the tick's.
-        private const int CellsPerIrqit = 8;
 
         // TUNED: up to two migrant groups per recede, one per distinct
         // flight-capable kind, so the sky reads as a commute, not a raid.
@@ -65,7 +64,6 @@ namespace RimMandrake.FloodedCanyon
         // TUNED: after the leave order, keep re-issuing it for one day; a
         // migrant that still cannot fly out (roofed, downed) is left to the
         // vanilla wild-animal AI rather than forced.
-        private const int MigrantLeaveRetryTicks = 60000;
 
         // TUNED: 1–3 components + 1–3 slag chunks per flood — "loot tables need
         // discipline or the flood becomes a slot machine" (review §H).
@@ -79,7 +77,7 @@ namespace RimMandrake.FloodedCanyon
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            int dryTicks = UnityEngine.Mathf.Max(2500, UnityEngine.Mathf.RoundToInt(RM_FloodedCanyonSettings.soakDecayDays * 60000f));
+            int dryTicks = RM_CanyonRulesKernel.DryTicks(RM_FloodedCanyonSettings.soakDecayDays);
 
             if (RM_FloodedCanyonSettings.recedeFeastEnabled)
             {
@@ -91,7 +89,7 @@ namespace RimMandrake.FloodedCanyon
             }
             if (RM_FloodedCanyonSettings.floodlineSalvageEnabled)
             {
-                SpawnSalvage(wetted, now + UnityEngine.Mathf.Max(2500, UnityEngine.Mathf.RoundToInt(RM_FloodedCanyonSettings.salvageDecayDays * 60000f)));
+                SpawnSalvage(wetted, now + RM_CanyonRulesKernel.SalvageTicks(RM_FloodedCanyonSettings.salvageDecayDays));
             }
         }
 
@@ -104,7 +102,7 @@ namespace RimMandrake.FloodedCanyon
         private void SpawnCohort(List<IntVec3> wetted, int dieTick)
         {
             PawnKindDef kind = RM_FloodedCanyonDefOf.RM_Irqit;
-            int want = UnityEngine.Mathf.Min(RM_FloodedCanyonSettings.irqitCohortMax, wetted.Count / CellsPerIrqit);
+            int want = RM_CanyonRulesKernel.CohortWant(RM_FloodedCanyonSettings.irqitCohortMax, wetted.Count);
             if (kind == null || want <= 0)
             {
                 return;
@@ -166,7 +164,7 @@ namespace RimMandrake.FloodedCanyon
                 }
             }
             migrantLeaveTick = leaveTick;
-            migrantLeaveGiveUpTick = leaveTick + MigrantLeaveRetryTicks;
+            migrantLeaveGiveUpTick = leaveTick + RM_CanyonRulesKernel.MigrantLeaveRetryTicks;
         }
 
         private void SpawnSalvage(List<IntVec3> wetted, int expireTick)
@@ -205,7 +203,7 @@ namespace RimMandrake.FloodedCanyon
                 return;
             }
 
-            if (cohortDieTick >= 0 && now >= cohortDieTick)
+            if (RM_CanyonRulesKernel.Due(cohortDieTick, now))
             {
                 int died = 0;
                 for (int i = 0; i < cohort.Count; i++)
@@ -226,7 +224,7 @@ namespace RimMandrake.FloodedCanyon
                 }
             }
 
-            if (migrantLeaveTick >= 0 && now >= migrantLeaveTick && now % 2500 == 0)
+            if (RM_CanyonRulesKernel.MigrantPassRuns(migrantLeaveTick, now))
             {
                 // By the dry every skyfaller landed long ago, so an unspawned
                 // migrant has already flown out (or died) — drop it.
@@ -243,7 +241,7 @@ namespace RimMandrake.FloodedCanyon
                         p.jobs.StartJob(JobMaker.MakeJob(JobDefOf.ExitMapFlying), JobCondition.InterruptForced);
                     }
                 }
-                if (migrants.Count == 0 || now >= migrantLeaveGiveUpTick)
+                if (RM_CanyonRulesKernel.MigrantsDone(migrants.Count, now, migrantLeaveGiveUpTick))
                 {
                     migrants.Clear();
                     migrantLeaveTick = -1;
@@ -251,7 +249,7 @@ namespace RimMandrake.FloodedCanyon
                 }
             }
 
-            if (salvageExpireTick >= 0 && now >= salvageExpireTick)
+            if (RM_CanyonRulesKernel.Due(salvageExpireTick, now))
             {
                 int taken = 0;
                 int n = System.Math.Min(salvage.Count, salvageCells.Count);
@@ -261,7 +259,7 @@ namespace RimMandrake.FloodedCanyon
                     // Only what still lies forbidden exactly where the mud
                     // exposed it — anything a pawn touched, claimed or moved
                     // is the player's now.
-                    if (t != null && t.Spawned && t.Map == map && t.Position == salvageCells[i] && t.IsForbidden(Faction.OfPlayer))
+                    if (t != null && RM_CanyonRulesKernel.SalvageTaken(t.Spawned, t.Map == map, t.Position == salvageCells[i], t.IsForbidden(Faction.OfPlayer)))
                     {
                         t.Destroy(DestroyMode.Vanish);
                         taken++;

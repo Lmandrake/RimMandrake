@@ -48,7 +48,7 @@ namespace RimMandrake.BlueDesert
             bool on = RM_BlueDesertSettings.masterEnabled && RM_BlueDesertSettings.ruledWeathersEnabled;
             foreach (KeyValuePair<WeatherCommonalityRecord, float> kv in authored)
             {
-                kv.Key.commonality = on ? kv.Value : 0f;
+                kv.Key.commonality = RM_BlueKernel.WeatherCommonality(on, kv.Value);
             }
         }
     }

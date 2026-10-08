@@ -75,7 +75,7 @@ namespace RimMandrake.LeaningScrub
 
         public float Growth => parent is Plant plant ? plant.Growth : 1f;
 
-        public bool Armed => Growth >= Props.minGrowth;
+        public bool Armed => RM_FormsKernel.ThornsHurt(Growth, Props.minGrowth, false, true);
 
         public bool Spares(Pawn p)
         {
@@ -128,11 +128,11 @@ namespace RimMandrake.LeaningScrub
 
         public RM_CompProperties_Rearing Props => (RM_CompProperties_Rearing)props;
 
-        public bool Reared => Find.TickManager.TicksGame < rearedUntilTick;
+        public bool Reared => RM_FormsKernel.Reared(Find.TickManager.TicksGame, rearedUntilTick);
 
         public void Rear(int ticks)
         {
-            rearedUntilTick = Mathf.Max(rearedUntilTick, Find.TickManager.TicksGame + ticks);
+            rearedUntilTick = RM_FormsKernel.Rear(rearedUntilTick, Find.TickManager.TicksGame, ticks);
         }
 
         public override void PostExposeData()
@@ -208,15 +208,14 @@ namespace RimMandrake.LeaningScrub
 
         public RM_CompProperties_Quench Props => (RM_CompProperties_Quench)props;
 
-        public bool Ready => Find.TickManager.TicksGame >= readyTick;
+        public bool Ready => RM_FormsKernel.QuenchReadyNow(Find.TickManager.TicksGame, readyTick);
 
         public float Growth => parent is Plant plant ? plant.Growth : 1f;
 
         public void Burst(Map map)
         {
             IntVec3 pos = parent.Position;
-            readyTick = Find.TickManager.TicksGame
-                + Mathf.RoundToInt(Mathf.Max(0.1f, RM_LeaningScrubSettings.quenchRecoveryDays) * GenDate.TicksPerDay);
+            readyTick = RM_FormsKernel.QuenchReady(Find.TickManager.TicksGame, RM_LeaningScrubSettings.quenchRecoveryDays);
             // Values read off vanilla FirefoamPopper's CompProperties_Explosive.
             GenExplosion.DoExplosion(pos, map, Props.burstRadius, DamageDefOf.Extinguish, parent,
                 postExplosionSpawnThingDef: ThingDefOf.Filth_FireFoam, postExplosionSpawnChance: 1f,
@@ -317,7 +316,11 @@ namespace RimMandrake.LeaningScrub
                 return;
             }
             IntVec3 root = parent.Position;
-            for (int i = 0; i < 9 && held.Count < Props.maxHeld; i++)
+            // Candidates in the order the cells and each cell's list are walked: the stand's cell and its eight neighbours,
+            // each list from the back.
+            List<Thing> items = new List<Thing>();
+            List<IntVec3> where = new List<IntVec3>();
+            for (int i = 0; i < 9; i++)
             {
                 IntVec3 c = root + GenAdj.AdjacentCellsAndInside[i];
                 if (!c.InBounds(map))
@@ -325,39 +328,64 @@ namespace RimMandrake.LeaningScrub
                     continue;
                 }
                 List<Thing> list = c.GetThingList(map);
-                for (int j = list.Count - 1; j >= 0 && held.Count < Props.maxHeld; j--)
+                for (int j = list.Count - 1; j >= 0; j--)
                 {
                     Thing t = list[j];
                     if (t.def.category != ThingCategory.Item || !t.def.EverHaulable)
                     {
                         continue;
                     }
-                    if (t is Corpse && !keepDeadGear)
+                    items.Add(t);
+                    where.Add(c);
+                }
+            }
+            int[] ids = new int[items.Count];
+            bool[] corpse = new bool[items.Count];
+            Dictionary<int, int> seenById = new Dictionary<int, int>();
+            Dictionary<int, Thing> thingById = new Dictionary<int, Thing>();
+            for (int k = 0; k < items.Count; k++)
+            {
+                ids[k] = items[k].thingIDNumber;
+                corpse[k] = items[k] is Corpse;
+                thingById[ids[k]] = items[k];
+                if (firstSeen.TryGetValue(items[k], out int s))
+                {
+                    seenById[ids[k]] = s;
+                }
+            }
+            Dictionary<int, IntVec3> cellById = new Dictionary<int, IntVec3>();
+            for (int k = 0; k < items.Count; k++)
+            {
+                cellById[ids[k]] = where[k];
+            }
+            RM_FormsKernel.HoardSweep(seenById, items.Count, ids, corpse, now, growInTicks, held.Count, Props.maxHeld, keepDeadGear, true, id =>
+            {
+                Thing t = thingById[id];
+                int before = held.Count;
+                if (t is Corpse corpseThing)
+                {
+                    TakeGear(corpseThing);
+                }
+                else
+                {
+                    t.DeSpawn();
+                    if (!held.TryAdd(t))
                     {
-                        continue;
+                        GenPlace.TryPlaceThing(t, cellById[id], map, ThingPlaceMode.Near);
                     }
-                    if (!firstSeen.TryGetValue(t, out int seen))
-                    {
-                        firstSeen[t] = now;
-                        continue;
-                    }
-                    if (now - seen < growInTicks)
-                    {
-                        continue;
-                    }
-                    firstSeen.Remove(t);
-                    if (t is Corpse corpse)
-                    {
-                        TakeGear(corpse);
-                    }
-                    else
-                    {
-                        t.DeSpawn();
-                        if (!held.TryAdd(t))
-                        {
-                            GenPlace.TryPlaceThing(t, c, map, ThingPlaceMode.Near);
-                        }
-                    }
+                }
+                return held.Count - before;
+            });
+            // Write the kernel's clocks back: an item it dropped from the book was grown in, one it added was first seen now.
+            for (int k = 0; k < items.Count; k++)
+            {
+                if (seenById.TryGetValue(ids[k], out int s))
+                {
+                    firstSeen[items[k]] = s;
+                }
+                else
+                {
+                    firstSeen.Remove(items[k]);
                 }
             }
             Prune();
@@ -596,10 +624,10 @@ namespace RimMandrake.LeaningScrub
                 IntVec3 c = p.Position;
                 Plant plant = c.GetPlant(map);
                 RM_CompMarkedThorns thorns = plant?.GetComp<RM_CompMarkedThorns>();
-                if (thorns != null && thorns.Armed && !thorns.Spares(p) && Due(nextThornTick, p, now))
+                if (thorns != null && RM_FormsKernel.ThornsHurt(thorns.Growth, thorns.Props.minGrowth, thorns.Spares(p), Due(nextThornTick, p, now)))
                 {
                     RM_CompProperties_MarkedThorns pr = thorns.Props;
-                    nextThornTick[p] = now + Mathf.Max(1, pr.contactIntervalTicks);
+                    nextThornTick[p] = RM_FormsKernel.NextScratch(now, pr.contactIntervalTicks);
                     Scratch(p, pr.damageDef, pr.damageAmount, pr.armorPenetration, pr.bodyHeight, plant);
                     continue;
                 }
@@ -622,7 +650,7 @@ namespace RimMandrake.LeaningScrub
                     }
                     if (Due(nextLitterTick, p, now))
                     {
-                        nextLitterTick[p] = now + Mathf.Max(1, lit.contactIntervalTicks);
+                        nextLitterTick[p] = RM_FormsKernel.NextScratch(now, lit.contactIntervalTicks);
                         Scratch(p, lit.damageDef, lit.damageAmount, lit.armorPenetration, BodyPartHeight.Bottom, t);
                     }
                     break;
@@ -638,7 +666,7 @@ namespace RimMandrake.LeaningScrub
 
         private static bool Due(Dictionary<Pawn, int> clocks, Pawn p, int now)
         {
-            return !clocks.TryGetValue(p, out int next) || now >= next;
+            return RM_FormsKernel.Due(clocks.TryGetValue(p, out int next), next, now);
         }
 
         private void PruneClocks(Dictionary<Pawn, int> clocks, int now)
@@ -646,7 +674,7 @@ namespace RimMandrake.LeaningScrub
             tmpGone.Clear();
             foreach (KeyValuePair<Pawn, int> kv in clocks)
             {
-                if (kv.Key == null || kv.Key.Dead || !kv.Key.Spawned || kv.Key.Map != map || now - kv.Value > 2500)
+                if (kv.Key == null || RM_FormsKernel.ClockStale(kv.Key.Dead || !kv.Key.Spawned || kv.Key.Map != map, now, kv.Value))
                 {
                     tmpGone.Add(kv.Key);
                 }
@@ -709,7 +737,6 @@ namespace RimMandrake.LeaningScrub
             {
                 return;
             }
-            int ticks = Mathf.RoundToInt(Mathf.Max(0.05f, RM_LeaningScrubSettings.rearingHours) * GenDate.TicksPerHour);
             bool stall = RM_WindCalendar.IsStall(map);
             bool gale = RM_WindCalendar.IsGale(map);
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
@@ -727,9 +754,9 @@ namespace RimMandrake.LeaningScrub
                     continue;
                 }
                 bool wasReared = rear.Reared;
-                if (p.BodySize >= rear.Props.minBodySize)
+                if (RM_FormsKernel.RearsFor(p.BodySize, rear.Props.minBodySize, plant.Growth, rear.Props.minGrowth))
                 {
-                    rear.Rear(stall ? Mathf.RoundToInt(ticks * rear.Props.stallFactor) : ticks);
+                    rear.Rear(RM_FormsKernel.RearTicks(RM_LeaningScrubSettings.rearingHours, stall, rear.Props.stallFactor));
                     if (!wasReared && !gale && ShouldAlert(p) && now - lastRearMessageTick >= RearMessageGap)
                     {
                         lastRearMessageTick = now;
@@ -773,10 +800,9 @@ namespace RimMandrake.LeaningScrub
                 {
                     continue;
                 }
-                float r2 = q.Props.triggerRadius * q.Props.triggerRadius;
                 for (int i = 0; i < fires.Count; i++)
                 {
-                    if ((fires[i].Position - q.parent.Position).LengthHorizontalSquared <= r2)
+                    if (RM_FormsKernel.FireInReach(fires[i].Position.x - q.parent.Position.x, fires[i].Position.z - q.parent.Position.z, q.Props.triggerRadius))
                     {
                         tmpQuench.Add(q);
                         break;
@@ -832,16 +858,6 @@ namespace RimMandrake.LeaningScrub
             Shed(dir);
         }
 
-        private static IntVec3 Step(IntVec3 from, Vector2 dir, float k)
-        {
-            return new IntVec3(from.x + Mathf.RoundToInt(dir.x * k), 0, from.z + Mathf.RoundToInt(dir.y * k));
-        }
-
-        private bool IsWalking(IntVec3 c)
-        {
-            return c.InBounds(map) && c.GetPlant(map)?.GetComp<RM_CompWalking>() != null;
-        }
-
         public void Walk(Vector2 dir)
         {
             if (walking.Count == 0 || !RM_WindCalendar.On(RM_LeaningScrubSettings.walkingEnabled))
@@ -849,87 +865,54 @@ namespace RimMandrake.LeaningScrub
                 return;
             }
             int cap = Mathf.Max(0, RM_LeaningScrubSettings.walkingMaxCellsPerMap);
-            List<RM_CompWalking> cells = new List<RM_CompWalking>(walking);
-            // Group into stands (8-connected); a smothered cell anywhere stops its stand.
-            HashSet<IntVec3> seen = new HashSet<IntVec3>();
-            Dictionary<IntVec3, RM_CompWalking> byCell = new Dictionary<IntVec3, RM_CompWalking>();
-            for (int i = 0; i < cells.Count; i++)
+            // Only spawned walking cells take part, in registry order.
+            List<RM_CompWalking> cells = new List<RM_CompWalking>();
+            foreach (RM_CompWalking w in walking)
             {
-                if (cells[i].parent.Spawned)
+                if (w.parent.Spawned)
                 {
-                    byCell[cells[i].parent.Position] = cells[i];
+                    cells.Add(w);
                 }
             }
-            int total = byCell.Count;
-            List<Thing> tailKills = new List<Thing>();
-            foreach (IntVec3 start in byCell.Keys)
+            int n = cells.Count;
+            int[] xs = new int[n], zs = new int[n], maxStep = new int[n];
+            float[] growth = new float[n], tailDie = new float[n];
+            bool[] isPlant = new bool[n], smothered = new bool[n];
+            for (int i = 0; i < n; i++)
             {
-                if (seen.Contains(start))
-                {
-                    continue;
-                }
-                List<RM_CompWalking> stand = new List<RM_CompWalking>();
-                bool smothered = false;
-                Queue<IntVec3> open = new Queue<IntVec3>();
-                open.Enqueue(start);
-                seen.Add(start);
-                while (open.Count > 0)
-                {
-                    IntVec3 c = open.Dequeue();
-                    RM_CompWalking w = byCell[c];
-                    stand.Add(w);
-                    RM_CompSmotherable sm = w.parent.TryGetComp<RM_CompSmotherable>();
-                    if (sm != null && sm.Smothered)
-                    {
-                        smothered = true;
-                    }
-                    for (int k = 0; k < 8; k++)
-                    {
-                        IntVec3 n = c + GenAdj.AdjacentCells[k];
-                        if (byCell.ContainsKey(n) && seen.Add(n))
-                        {
-                            open.Enqueue(n);
-                        }
-                    }
-                }
-                if (smothered)
-                {
-                    continue;
-                }
-                for (int s = 0; s < stand.Count; s++)
-                {
-                    RM_CompWalking w = stand[s];
-                    Plant plant = w.parent as Plant;
-                    if (plant == null || plant.Growth < 0.5f)
-                    {
-                        continue;
-                    }
-                    IntVec3 pos = plant.Position;
-                    // Leading edge: nothing of the stand directly downwind.
-                    if (total < cap && !IsWalking(Step(pos, dir, 1f)))
-                    {
-                        int k = Rand.RangeInclusive(1, Mathf.Max(1, w.Props.maxStep));
-                        IntVec3 dest = Step(pos, dir, k);
-                        if (dest.InBounds(map) && dest.GetPlant(map) == null && dest.GetEdifice(map) == null
-                            && plant.def.CanEverPlantAt(dest, map))
-                        {
-                            Plant runner = (Plant)ThingMaker.MakeThing(plant.def);
-                            runner.Growth = w.Props.runnerGrowth;
-                            GenSpawn.Spawn(runner, dest, map);
-                            total++;
-                        }
-                    }
-                    // Tail: nothing of the stand directly upwind, fully grown.
-                    if (plant.Growth >= 0.999f && stand.Count > 1 && !IsWalking(Step(pos, dir, -1f))
-                        && Rand.Chance(w.Props.tailDieChance))
-                    {
-                        tailKills.Add(plant);
-                    }
-                }
+                RM_CompWalking w = cells[i];
+                xs[i] = w.parent.Position.x;
+                zs[i] = w.parent.Position.z;
+                maxStep[i] = w.Props.maxStep;
+                tailDie[i] = w.Props.tailDieChance;
+                Plant plant = w.parent as Plant;
+                isPlant[i] = plant != null;
+                growth[i] = plant != null ? plant.Growth : 0f;
+                RM_CompSmotherable sm = w.parent.TryGetComp<RM_CompSmotherable>();
+                smothered[i] = sm != null && sm.Smothered;
             }
-            for (int i = 0; i < tailKills.Count; i++)
+            RM_FormsKernel.WalkResult result = new RM_FormsKernel.WalkResult();
+            RM_FormsKernel.Walk(n, xs, zs, growth, isPlant, smothered, maxStep, tailDie, dir.x, dir.y, cap,
+                (from, x, z) =>
+                {
+                    IntVec3 dest = new IntVec3(x, 0, z);
+                    return dest.InBounds(map) && dest.GetPlant(map) == null && dest.GetEdifice(map) == null
+                        && ((Plant)cells[from].parent).def.CanEverPlantAt(dest, map);
+                },
+                (lo, hi) => Rand.RangeInclusive(lo, hi),
+                p => Rand.Chance(p),
+                result);
+            for (int s = 0; s < result.SpawnX.Count; s++)
             {
-                Thing t = tailKills[i];
+                RM_CompWalking w = cells[result.SpawnFrom[s]];
+                IntVec3 dest = new IntVec3(result.SpawnX[s], 0, result.SpawnZ[s]);
+                Plant runner = (Plant)ThingMaker.MakeThing(w.parent.def);
+                runner.Growth = w.Props.runnerGrowth;
+                GenSpawn.Spawn(runner, dest, map);
+            }
+            for (int i = 0; i < result.Kills.Count; i++)
+            {
+                Thing t = cells[result.Kills[i]].parent;
                 if (!t.Spawned)
                 {
                     continue;
@@ -953,8 +936,8 @@ namespace RimMandrake.LeaningScrub
                 return;
             }
             int length = Mathf.Max(1, RM_LeaningScrubSettings.sheddingLength);
-            Vector2 side = new Vector2(-dir.y, dir.x);
             List<RM_CompShedding> stands = new List<RM_CompShedding>(shedding);
+            List<int> cx = new List<int>(), cz = new List<int>();
             for (int i = 0; i < stands.Count; i++)
             {
                 RM_CompShedding s = stands[i];
@@ -964,21 +947,15 @@ namespace RimMandrake.LeaningScrub
                     continue;
                 }
                 IntVec3 root = plant.Position;
-                for (int d = 1; d <= length; d++)
+                cx.Clear();
+                cz.Clear();
+                RM_LeanKernel.ShedCells(root.x, root.z, dir.x, dir.y, length, s.Props.cellChance, () => Rand.Value, cx, cz);
+                for (int k = 0; k < cx.Count; k++)
                 {
-                    int half = d / 3;    // the V widens a cell either side every three cells out
-                    for (int w = -half; w <= half; w++)
+                    IntVec3 c = new IntVec3(cx[k], 0, cz[k]);
+                    if (c.InBounds(map) && c.Walkable(map))
                     {
-                        if (!Rand.Chance(s.Props.cellChance))
-                        {
-                            continue;
-                        }
-                        IntVec3 c = new IntVec3(root.x + Mathf.RoundToInt(dir.x * d + side.x * w), 0,
-                            root.z + Mathf.RoundToInt(dir.y * d + side.y * w));
-                        if (c.InBounds(map) && c.Walkable(map))
-                        {
-                            FilthMaker.TryMakeFilth(c, map, s.Props.litterDef);
-                        }
+                        FilthMaker.TryMakeFilth(c, map, s.Props.litterDef);
                     }
                 }
             }

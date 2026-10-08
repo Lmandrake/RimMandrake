@@ -1,0 +1,158 @@
+[
+ {
+  "name": "transport: sand lost off the leeward edge is not counted",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "b.Lost += slab; b.OffMap++;",
+  "new": "b.OffMap++;"
+ },
+ {
+  "name": "transport: off-map loss counted double",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "b.Lost += slab; b.OffMap++;",
+  "new": "b.Lost += slab * 2f; b.OffMap++;"
+ },
+ {
+  "name": "transport: a slab is deposited twice its size",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "SetDepthHysteretic(f, lx, lz, before + slab, hysteresis);",
+  "new": "SetDepthHysteretic(f, lx, lz, before + slab * 2f, hysteresis);"
+ },
+ {
+  "name": "transport: erosion takes only half a slab",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "SetDepthHysteretic(f, cx, cz, here - slab, hysteresis);",
+  "new": "SetDepthHysteretic(f, cx, cz, here - slab * 0.5f, hysteresis);"
+ },
+ {
+  "name": "transport: an in-place slab is not put back (sand erased)",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "SetDepthHysteretic(f, cx, cz, here, hysteresis);",
+  "new": "f.GetDepth(cx, cz);"
+ },
+ {
+  "name": "transport: walls do not shelter",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "if (f.BlocksSand(ux, uz)) return true;",
+  "new": ""
+ },
+ {
+  "name": "transport: roofed cells erode",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "if (f.Roofed(cx, cz)) continue;",
+  "new": "if (false) continue;"
+ },
+ {
+  "name": "transport: deposition does not prefer low cells",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "public const float LowCellMargin = 0.02f;",
+  "new": "public const float LowCellMargin = -5f;"
+ },
+ {
+  "name": "transport: boundary nudge pulls toward the boundary",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "target = target >= b ? b + hysteresis : b - hysteresis;",
+  "new": "target = target >= b ? b - hysteresis : b + hysteresis;"
+ },
+ {
+  "name": "influx: mass cap doubled",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "float cap = maxTotalMassFraction * cells * f.MaxDepth;",
+  "new": "float cap = maxTotalMassFraction * cells * f.MaxDepth * 2f;"
+ },
+ {
+  "name": "influx: sand placed on the leeward side",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "x = wx > 0 ? rangeExcl(0, band)",
+  "new": "x = wx > 0 ? rangeExcl(w - band, w)"
+ },
+ {
+  "name": "influx: each slab spends twice its debt",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "debt -= q;",
+  "new": "debt -= q * 2f;"
+ },
+ {
+  "name": "influx: a refused cell still spends the debt",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "if (f.GetDepth(x, z) <= before) continue;   // the cell refused the sand: do not spend the debt",
+  "new": ""
+ },
+ {
+  "name": "influx: the drift slider also scales the loss term (the squared-slider bug)",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "return lostDepth * lossRatio * weather + perDay",
+  "new": "return lostDepth * lossRatio * weather * driftMult + perDay"
+ },
+ {
+  "name": "wind: shift wraps on four points",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "return (windDir + step + 8) & 7;",
+  "new": "return (windDir + step + 8) & 3;"
+ },
+ {
+  "name": "wind: lock ignores the biome flag",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "return settingOn && hasExt && locks;",
+  "new": "return settingOn && hasExt;"
+ },
+ {
+  "name": "wind: a dead calm counts as a storm",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "bool storming = sandRate > 0.001f",
+  "new": "bool storming = sandRate >= 0.001f"
+ },
+ {
+  "name": "scale: attempts can reach zero",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "return Math.Max(1, (int)Math.Round(attemptsPerCellPerDay * numCells / 240f));",
+  "new": "return Math.Max(0, (int)Math.Round(attemptsPerCellPerDay * numCells / 240f));"
+ },
+ {
+  "name": "scale: choke damage can be zero",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_DuneKernel.cs",
+  "old": "return Math.Max(1, (int)Math.Round(maxHitPoints / (chokeDays * visitsPerDay)));",
+  "new": "return Math.Max(0, (int)Math.Round(maxHitPoints / (chokeDays * visitsPerDay)));"
+ },
+ {
+  "name": "bearing: wind blows the wrong way",
+  "file": "src/RimMandrake/MovingDunes/Source/DuneWindBearing.cs",
+  "old": "double b = towardSun ? sunBearingDeg : sunBearingDeg + 180.0;",
+  "new": "double b = towardSun ? sunBearingDeg + 180.0 : sunBearingDeg;"
+ },
+ {
+  "name": "bearing: longitude term loses the latitude scale",
+  "file": "src/RimMandrake/MovingDunes/Source/DuneWindBearing.cs",
+  "old": "double y = Math.Sin(dLon) * Math.Cos(lat2);",
+  "new": "double y = Math.Sin(dLon);"
+ },
+ {
+  "name": "cache: every deposit above the burial depth buries again",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_CacheKernel.cs",
+  "old": "return after >= burialDepth && before < burialDepth;",
+  "new": "return after >= burialDepth;"
+ },
+ {
+  "name": "cache: the cap blocks merging into an existing cache",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_CacheKernel.cs",
+  "old": "if (!cacheAlreadyAtCell && cacheCount >= maxCaches) return false;",
+  "new": "if (cacheCount >= maxCaches) return false;"
+ },
+ {
+  "name": "cache: the younger burial wins an absorb",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_CacheKernel.cs",
+  "old": "otherTick < myTick",
+  "new": "otherTick > myTick"
+ },
+ {
+  "name": "cache: reveal one hair too deep",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_CacheKernel.cs",
+  "old": "depth <= (hasMaterial",
+  "new": "depth < (hasMaterial"
+ },
+ {
+  "name": "cache: unhaulable things are buried",
+  "file": "src/RimMandrake/MovingDunes/Source/Kernel/RM_CacheKernel.cs",
+  "old": "if (!isItem || !haulable) return false;",
+  "new": "if (!isItem) return false;"
+ }
+]

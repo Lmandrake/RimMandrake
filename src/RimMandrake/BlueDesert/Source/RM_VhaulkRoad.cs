@@ -109,8 +109,7 @@ namespace RimMandrake.BlueDesert
                 return;
             }
             departing = false;
-            float factor = Mathf.Max(0.1f, RM_BlueDesertSettings.vhaulkStayDaysFactor);
-            departTick = Find.TickManager.TicksGame + Mathf.RoundToInt(Props.stayDays.RandomInRange * factor * 60000f);
+            departTick = RM_BlueKernel.DepartTick(Find.TickManager.TicksGame, Props.stayDays.RandomInRange, RM_BlueDesertSettings.vhaulkStayDaysFactor);
             // A vhaulk placed at map generation is scenery, not an arrival.
             bool arrival = pawn.Faction == null && Find.TickManager.TicksGame - map.generationTick > 2500;
             if (arrival && RM_BlueDesertSettings.masterEnabled && !Props.arrivalLetterText.NullOrEmpty())
@@ -151,19 +150,16 @@ namespace RimMandrake.BlueDesert
                     Props.boomSound.PlayOneShot(new TargetInfo(pawn.Position, map));
                 }
             }
-            if (DepartOn && departTick >= 0 && Find.TickManager.TicksGame >= departTick
-                && parent.IsHashIntervalTick(250))
+            // A flee, a fight or a meal can replace the walk-off job; when that happens, send it on its way again.
+            int depart = RM_BlueKernel.DepartAction(DepartOn, departTick, Find.TickManager.TicksGame, parent.IsHashIntervalTick(250), departing,
+                pawn.CurJob != null && pawn.CurJob.exitMapOnArrival);
+            if (depart == 1)
             {
-                // A flee, a fight or a meal can replace the walk-off job;
-                // when that happens, send it on its way again.
-                if (departing && (pawn.CurJob == null || !pawn.CurJob.exitMapOnArrival))
-                {
-                    departing = false;
-                }
-                if (!departing)
-                {
-                    TryStartDeparture(pawn);
-                }
+                departing = false;
+            }
+            if (depart != 0)
+            {
+                TryStartDeparture(pawn);
             }
         }
 
@@ -174,20 +170,12 @@ namespace RimMandrake.BlueDesert
             {
                 return;
             }
-            float days = Props.roadDays.RandomInRange * Mathf.Max(0.1f, RM_BlueDesertSettings.vhaulkRoadDaysFactor);
-            int removeAt = Find.TickManager.TicksGame + Mathf.RoundToInt(days * 60000f);
+            int removeAt = RM_BlueKernel.RoadRemoveTick(Find.TickManager.TicksGame, Props.roadDays.RandomInRange, RM_BlueDesertSettings.vhaulkRoadDaysFactor);
             foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, Props.roadRadius, true))
             {
-                if (!c.InBounds(map) || map.terrainGrid.TempTerrainAt(c) != null)
-                {
-                    continue; // already road (its first expiry stands), flood, lava...
-                }
-                TerrainDef under = map.terrainGrid.TerrainAt(c);
-                if (Props.roadOnTerrains != null && !Props.roadOnTerrains.Contains(under))
-                {
-                    continue;
-                }
-                if (c.GetEdifice(map) != null)
+                // already road (its first expiry stands), flood, lava...
+                if (!c.InBounds(map) || !RM_BlueKernel.RoadCell(true, map.terrainGrid.TempTerrainAt(c) != null, Props.roadOnTerrains == null,
+                        Props.roadOnTerrains != null && Props.roadOnTerrains.Contains(map.terrainGrid.TerrainAt(c)), c.GetEdifice(map) != null))
                 {
                     continue;
                 }
@@ -205,12 +193,12 @@ namespace RimMandrake.BlueDesert
                     continue;
                 }
                 Plant plant = c.GetPlant(map);
-                if (plant == null || plant.def.plant == null || plant.def.plant.IsTree
-                    || plant.Growth <= Props.cropToGrowth)
+                if (plant == null || plant.def.plant == null
+                    || RM_BlueKernel.CropGrowth(plant.Growth, Props.cropToGrowth, plant.def.plant.IsTree) == plant.Growth)
                 {
                     continue;
                 }
-                plant.Growth = Props.cropToGrowth;
+                plant.Growth = RM_BlueKernel.CropGrowth(plant.Growth, Props.cropToGrowth, plant.def.plant.IsTree);
                 map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Things);
             }
         }

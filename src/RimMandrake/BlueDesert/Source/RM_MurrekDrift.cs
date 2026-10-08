@@ -258,35 +258,23 @@ namespace RimMandrake.BlueDesert
         private void LieBuriedCheck()
         {
             RM_MurrekReseedExtension props = Props;
-            if (props == null || !RM_MurrekDrift.Enabled)
-            {
-                EndJobWith(JobCondition.Incompletable);
-                return;
-            }
             Map map = pawn.Map;
-            if (map?.sandGrid == null || map.sandGrid.GetDepth(pawn.Position) < props.flushDepth)
+            bool noProps = props == null || !RM_MurrekDrift.Enabled;
+            bool noGrid = map?.sandGrid == null;
+            Pawn prey = (noProps || noGrid) ? null : FindAmbushPrey(map, props.ambushRadius);
+            int verdict = RM_MurrekKernel.LieBuried(noProps, noGrid, noGrid || noProps ? 0f : map.sandGrid.GetDepth(pawn.Position), noProps ? 0f : props.flushDepth,
+                Find.TickManager.TicksGame, buriedSinceTick, noProps ? 0 : props.maxBuriedTicks,
+                pawn.needs?.food != null && pawn.needs.food.CurCategory >= HungerCategory.UrgentlyHungry,
+                pawn.needs?.rest != null && pawn.needs.rest.CurCategory >= RestCategory.VeryTired, prey != null);
+            if (verdict == 1)
             {
-                // Dug out, or the drift wore away: it surfaces.
                 EndJobWith(JobCondition.Incompletable);
-                return;
             }
-            if (Find.TickManager.TicksGame - buriedSinceTick > props.maxBuriedTicks)
+            else if (verdict == 2)
             {
                 EndJobWith(JobCondition.Succeeded);
-                return;
             }
-            if (pawn.needs?.food != null && pawn.needs.food.CurCategory >= HungerCategory.UrgentlyHungry)
-            {
-                EndJobWith(JobCondition.Succeeded);
-                return;
-            }
-            if (pawn.needs?.rest != null && pawn.needs.rest.CurCategory >= RestCategory.VeryTired)
-            {
-                EndJobWith(JobCondition.Succeeded);
-                return;
-            }
-            Pawn prey = FindAmbushPrey(map, props.ambushRadius);
-            if (prey != null)
+            else if (verdict == 3)
             {
                 RM_MurrekDrift.Unbury(pawn, props);
                 Job hunt = JobMaker.MakeJob(JobDefOf.PredatorHunt, prey);
@@ -382,60 +370,30 @@ namespace RimMandrake.BlueDesert
                 return;
             }
 
-            List<IntVec3> taken = new List<IntVec3>();
             List<Pawn> murrek = map.mapPawns.AllPawnsSpawned
                 .Where(p => p.kindDef == props.murrekKind || p.def == props.murrekKind.race)
                 .ToList();
-
-            // Buried murrek already hold their cells.
-            foreach (Pawn m in murrek)
+            int n = murrek.Count;
+            int[] mx = new int[n], mz = new int[n], bx = new int[n], bz = new int[n];
+            bool[] eligible = new bool[n], hasBurrow = new bool[n];
+            for (int i = 0; i < n; i++)
             {
+                Pawn m = murrek[i];
+                mx[i] = m.Position.x;
+                mz[i] = m.Position.z;
                 if (m.CurJobDef == props.burrowJob)
                 {
-                    taken.Add(m.CurJob.targetA.Cell);
+                    hasBurrow[i] = true;
+                    bx[i] = m.CurJob.targetA.Cell.x;
+                    bz[i] = m.CurJob.targetA.Cell.z;
                 }
-            }
-
-            // 1. Existing idle wild murrek re-bury in the nearest fresh drift.
-            foreach (Pawn m in murrek)
-            {
-                if (m.Faction != null || m.Downed || m.InMentalState || m.CurJobDef == props.burrowJob
+                eligible[i] = !(m.Faction != null || m.Downed || m.InMentalState || m.CurJobDef == props.burrowJob
                     || m.CurJobDef == JobDefOf.PredatorHunt || m.CurJobDef == JobDefOf.Ingest
                     || m.CurJobDef == JobDefOf.LayDown)
-                {
-                    continue;
-                }
-                if (m.needs?.food != null && m.needs.food.CurCategory >= HungerCategory.UrgentlyHungry)
-                {
-                    continue;
-                }
-                float maxSq = props.burrowSearchRadius * props.burrowSearchRadius;
-                IntVec3 from = m.Position;
-                IEnumerable<IntVec3> near = drifts
-                    .Where(c => (c - from).LengthHorizontalSquared <= maxSq && Clear(c, taken, props.minSpacing))
-                    .OrderBy(c => (c - from).LengthHorizontalSquared)
-                    .Take(12);
-                foreach (IntVec3 c in near)
-                {
-                    if (!m.CanReach(c, PathEndMode.OnCell, Danger.Some))
-                    {
-                        continue;
-                    }
-                    taken.Add(c);
-                    m.jobs.StartJob(JobMaker.MakeJob(props.burrowJob, c), JobCondition.InterruptForced);
-                    break;
-                }
+                    && !(m.needs?.food != null && m.needs.food.CurCategory >= HungerCategory.UrgentlyHungry);
             }
 
-            // 2. Top-up: seed new murrek already buried, away from the colony,
-            //    only while the biome's own animal density has room.
             int toSpawn = props.newPerStorm.RandomInRange;
-            int room = props.maxMurrekOnMap - murrek.Count;
-            toSpawn = Mathf.Min(toSpawn, room);
-            if (toSpawn <= 0 || map.wildAnimalSpawner.AnimalEcosystemFull)
-            {
-                return;
-            }
             float clearSq = props.spawnClearanceFromColony * props.spawnClearanceFromColony;
             List<Pawn> colonists = map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer);
             Area_Home home = map.areaManager.Home;
@@ -445,36 +403,24 @@ namespace RimMandrake.BlueDesert
                     && !colonists.Any(p => (p.Position - c).LengthHorizontalSquared < clearSq))
                 .InRandomOrder()
                 .ToList();
-            foreach (IntVec3 c in spawnable)
+
+            RM_MurrekKernel.Plan plan = RM_MurrekKernel.Make(drifts.Count, drifts.Select(c => c.x).ToArray(), drifts.Select(c => c.z).ToArray(),
+                n, mx, mz, eligible, hasBurrow, bx, bz, props.burrowSearchRadius, props.minSpacing, toSpawn, props.maxMurrekOnMap,
+                map.wildAnimalSpawner.AnimalEcosystemFull, spawnable.Count, spawnable.Select(c => c.x).ToArray(), spawnable.Select(c => c.z).ToArray(),
+                (mi, x, z) => murrek[mi].CanReach(new IntVec3(x, 0, z), PathEndMode.OnCell, Danger.Some));
+
+            foreach (int[] burrow in plan.Burrows)
             {
-                if (toSpawn <= 0)
-                {
-                    break;
-                }
-                if (!Clear(c, taken, props.minSpacing))
-                {
-                    continue;
-                }
+                murrek[burrow[0]].jobs.StartJob(JobMaker.MakeJob(props.burrowJob, new IntVec3(burrow[1], 0, burrow[2])), JobCondition.InterruptForced);
+            }
+            foreach (int[] spot in plan.Spawns)
+            {
+                IntVec3 c = new IntVec3(spot[0], 0, spot[1]);
                 Pawn m = PawnGenerator.GeneratePawn(props.murrekKind, null);
                 GenSpawn.Spawn(m, c, map);
                 RM_MurrekDrift.Bury(m, props);
                 m.jobs.StartJob(JobMaker.MakeJob(props.burrowJob, c), JobCondition.InterruptForced);
-                taken.Add(c);
-                toSpawn--;
             }
-        }
-
-        private static bool Clear(IntVec3 c, List<IntVec3> taken, float spacing)
-        {
-            float sq = spacing * spacing;
-            for (int i = 0; i < taken.Count; i++)
-            {
-                if ((taken[i] - c).LengthHorizontalSquared < sq)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 }

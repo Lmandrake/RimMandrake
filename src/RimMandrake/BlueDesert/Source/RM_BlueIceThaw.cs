@@ -143,23 +143,27 @@ namespace RimMandrake.BlueDesert
             {
                 return;
             }
-            blocksSinceRoll++;
-            if (blocksSinceRoll < Mathf.Max(1, props.blocksPerRoll))
+            if (!RM_BlueKernel.ThawCounts(ref blocksSinceRoll, props.blocksPerRoll))
             {
                 return;
             }
-            blocksSinceRoll = 0;
             if (!Rand.Chance(props.debrisChance) || props.debris.NullOrEmpty())
             {
                 return;
             }
-            if (!props.debris.TryRandomElementByWeight(o => o?.thing != null ? Mathf.Max(0f, o.weight) : 0f,
-                    out RM_ThawDebrisOption pick) || pick?.thing == null)
+            float[] weights = new float[props.debris.Count];
+            for (int i = 0; i < weights.Length; i++)
+            {
+                weights[i] = props.debris[i]?.thing != null ? props.debris[i].weight : 0f;
+            }
+            int index = RM_BlueKernel.PickWeighted(weights, weights.Length, Rand.Value);
+            RM_ThawDebrisOption pick = index >= 0 ? props.debris[index] : null;
+            if (pick?.thing == null)
             {
                 return;
             }
             Thing thing = ThingMaker.MakeThing(pick.thing, GenStuff.DefaultStuffFor(pick.thing));
-            thing.stackCount = Mathf.Clamp(pick.count.RandomInRange, 1, Mathf.Max(1, pick.thing.stackLimit));
+            thing.stackCount = RM_BlueKernel.ThawStack(pick.count.RandomInRange, pick.thing.stackLimit);
             if (GenPlace.TryPlaceThing(thing, cell, map, ThingPlaceMode.Near))
             {
                 Messages.Message(

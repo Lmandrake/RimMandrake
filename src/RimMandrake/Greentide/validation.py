@@ -78,6 +78,7 @@ def shipped_defs():
 # the threshold state machine parsed from the C#, mirrored, and driven over fraction sequences.
 
 _LADDER_CS = os.path.join("Source", "RM_CompGreatboleHarvestLadder.cs")
+_LADDER_KERNEL = os.path.join("Source", "Kernel", "RM_LadderKernel.cs")   # the state machine itself (comp + kernel are read together)
 _SETTINGS_CS = os.path.join("Source", "RM_GreentideMod.cs")
 _S = "RM_GreentideSettings."
 
@@ -85,7 +86,7 @@ _S = "RM_GreentideSettings."
 def ladder_parse(mod_dir=None):
     """{threshold defaults, catastrophe toggle, hysteresis} parsed from the two C# files, plus the source with whitespace squeezed."""
     mod_dir = mod_dir or HERE
-    cs = re.sub(r"\s+", " ", open(os.path.join(mod_dir, _LADDER_CS), encoding="utf-8").read())
+    cs = re.sub(r"\s+", " ", open(os.path.join(mod_dir, _LADDER_CS), encoding="utf-8").read() + "\n" + open(os.path.join(mod_dir, _LADDER_KERNEL), encoding="utf-8").read())
     st = open(os.path.join(mod_dir, _SETTINGS_CS), encoding="utf-8").read()
     d = dict((m.group(1), float(m.group(2))) for m in re.finditer(r"public static float (greatbole\w+Threshold) = ([0-9.]+)f;", st))
     d["catastropheEnabled"] = bool(re.search(r"public static bool greatboleCatastropheEnabled = true;", st))
@@ -104,16 +105,17 @@ def ladder_findings(p):
         out.append("shipped thresholds %s are not the ruled 0.40 / 0.60 / 0.70" % (t,))
     if not t[0] < t[1] < t[2]:
         out.append("shipped thresholds are not ordered shaking < healing < catastrophe")
-    for need in ("if (catastropheDone || !parent.Spawned) { return; }",
-                 "if (!shakingArmed && fraction >= %sgreatboleShakingThreshold) { shakingArmed = true; GreatShaking(map); }" % _S,
-                 "else if (shakingArmed && fraction < %sgreatboleShakingThreshold - h) { shakingArmed = false; }" % _S,
-                 "if (!healingAnnounced && fraction >= %sgreatboleHealingThreshold) { healingAnnounced = true; AnnounceViolentHealing(); }" % _S,
-                 "else if (healingAnnounced && fraction < %sgreatboleHealingThreshold - h) { healingAnnounced = false; }" % _S,
-                 "if (%sgreatboleCatastropheEnabled && fraction >= %sgreatboleCatastropheThreshold) { Catastrophe(map, marker, regrowth); }" % (_S, _S)):
+    for need in ("if (ladder.CatastropheDone || !parent.Spawned) { return; }",
+                 "RM_LadderKernel.Poll(ladder, fraction, %sgreatboleShakingThreshold, %sgreatboleHealingThreshold, %sgreatboleCatastropheThreshold, %sgreatboleCatastropheEnabled, Props.hysteresis)" % (_S, _S, _S, _S),
+                 "if (!s.ShakingArmed && fraction >= shakeThr) { s.ShakingArmed = true; e |= Events.Shaking; }",
+                 "else if (s.ShakingArmed && fraction < shakeThr - hysteresis) s.ShakingArmed = false;",
+                 "if (!s.HealingAnnounced && fraction >= healThr) { s.HealingAnnounced = true; e |= Events.Healing; }",
+                 "else if (s.HealingAnnounced && fraction < healThr - hysteresis) s.HealingAnnounced = false;",
+                 "if (catEnabled && fraction >= catThr) { s.CatastropheDone = true; e |= Events.Catastrophe; }"):
         if need not in cs:
             out.append("ladder source lost: %s" % need[:90])
-    if not re.search(r"private void Catastrophe\([^)]*\) \{ catastropheDone = true;", cs):
-        out.append("Catastrophe no longer sets catastropheDone first: it could fire every poll")
+    if "s.CatastropheDone = true; e |= Events.Catastrophe;" not in cs:
+        out.append("Poll no longer sets CatastropheDone with the catastrophe event: it could fire every poll")
     # slider ranges contain the defaults (a default the slider cannot reach is lost after one drag)
     for name, lo, hi in re.findall(r"(greatbole\w+Threshold) = list\.Slider\(\1, ([0-9.]+)f, ([0-9.]+)f\)", st):
         if not float(lo) <= p[name] <= float(hi):

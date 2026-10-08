@@ -104,21 +104,16 @@ namespace RimMandrake.Greentide
             {
                 return;
             }
-            bool wild = pawn.Faction == null;
-            if (!RM_GreentideSettings.vurrakAmbushEnabled || !wild || pawn.Dead || pawn.Downed
-                || pawn.InMentalState || pawn.jobs == null)
+            bool disguised = Disguised;
+            RM_VurrakKernel.Gate gate = RM_VurrakKernel.Decide(RM_GreentideSettings.vurrakAmbushEnabled, pawn.Faction == null, pawn.Dead, pawn.Downed,
+                pawn.InMentalState, pawn.jobs == null, disguised, disguised && pawn.CurJobDef == JobDefOf.Wait, disguised && IsBank(pawn.Position, pawn.Map));
+            if (gate == RM_VurrakKernel.Gate.Unhide)
             {
-                Unhide(pawn);
+                Unhide(pawn); // switched off, tamed, down, or it got up on its own (hunger, rest): no reveal event
                 return;
             }
-
-            if (Disguised)
+            if (gate == RM_VurrakKernel.Gate.CheckContact)
             {
-                if (pawn.CurJobDef != JobDefOf.Wait || !IsBank(pawn.Position, pawn.Map))
-                {
-                    Unhide(pawn); // it got up on its own (hunger, rest): no reveal event
-                    return;
-                }
                 CheckContact(pawn);
                 return;
             }
@@ -127,12 +122,9 @@ namespace RimMandrake.Greentide
             {
                 return;
             }
-            if (Find.TickManager.TicksGame < revealedUntilTick)
-            {
-                return;
-            }
             JobDef cur = pawn.CurJobDef;
-            if (cur == null || cur == JobDefOf.GotoWander || cur == JobDefOf.Wait_Wander || cur == JobDefOf.Wait)
+            bool idle = cur == null || cur == JobDefOf.GotoWander || cur == JobDefOf.Wait_Wander || cur == JobDefOf.Wait;
+            if (RM_VurrakKernel.LiesDown(Find.TickManager.TicksGame, revealedUntilTick, idle))
             {
                 LieDown(pawn);
             }
@@ -142,32 +134,31 @@ namespace RimMandrake.Greentide
         public string CheckContact(Pawn pawn)
         {
             List<Thing> things = pawn.Map.thingGrid.ThingsListAtFast(pawn.Position);
-            Pawn heavy = null;
-            Pawn light = null;
-            float threshold = RM_GreentideSettings.vurrakTriggerBodySize;
+            var others = new List<Pawn>();
+            var sizes = new List<float>();
+            var excluded = new List<bool>();
             for (int i = 0; i < things.Count; i++)
             {
-                if (!(things[i] is Pawn c) || c == pawn || c.Dead || c.def == pawn.def || c.Flying)
+                if (!(things[i] is Pawn c))
                 {
                     continue;
                 }
-                if (c.BodySize >= threshold)
-                {
-                    heavy = c;
-                    break;
-                }
-                light = light ?? c;
+                others.Add(c);
+                sizes.Add(c.BodySize);
+                excluded.Add(c == pawn || c.Dead || c.def == pawn.def || c.Flying);
             }
-            if (heavy != null)
+            RM_VurrakKernel.Contact verdict = RM_VurrakKernel.Verdict(others.Count, sizes.ToArray(), excluded.ToArray(),
+                RM_GreentideSettings.vurrakTriggerBodySize, out int who);
+            if (verdict == RM_VurrakKernel.Contact.Struck)
             {
-                Reveal(heavy, struck: true);
-                Strike(pawn, heavy);
-                return "STRUCK " + heavy.ThingID;
+                Reveal(others[who], struck: true);
+                Strike(pawn, others[who]);
+                return "STRUCK " + others[who].ThingID;
             }
-            if (light != null)
+            if (verdict == RM_VurrakKernel.Contact.Revealed)
             {
-                Reveal(light, struck: false);
-                return "REVEALED " + light.ThingID;
+                Reveal(others[who], struck: false);
+                return "REVEALED " + others[who].ThingID;
             }
             return "QUIET";
         }
@@ -176,7 +167,7 @@ namespace RimMandrake.Greentide
         {
             Pawn pawn = Self;
             Unhide(pawn);
-            revealedUntilTick = Find.TickManager.TicksGame + Props.revealHoldTicks;
+            revealedUntilTick = RM_VurrakKernel.RevealUntil(Find.TickManager.TicksGame, Props.revealHoldTicks);
             if (pawn.Spawned && Props.revealSound != null)
             {
                 Props.revealSound.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
@@ -329,16 +320,17 @@ namespace RimMandrake.Greentide
         public static void NoteReveal(Pawn vurrak, Pawn by, bool struck)
         {
             RM_GameComponent_Vurrak gc = Current.Game?.GetComponent<RM_GameComponent_Vurrak>();
-            if (gc == null || gc.firstRevealSeen || vurrak?.Map == null)
+            if (gc == null || vurrak?.Map == null)
             {
                 return;
             }
-            if (vurrak.Map.mapPawns.FreeColonistsSpawnedCount == 0)
+            // nobody of ours there to see it: the first reveal is still to come
+            bool pause = RM_VurrakKernel.FirstReveal(gc.firstRevealSeen, vurrak.Map.mapPawns.FreeColonistsSpawnedCount, RM_GreentideSettings.vurrakFirstRevealPause, out bool markSeen);
+            if (markSeen)
             {
-                return; // nobody of ours there to see it: the first reveal is still to come
+                gc.firstRevealSeen = true;
             }
-            gc.firstRevealSeen = true;
-            if (!RM_GreentideSettings.vurrakFirstRevealPause)
+            if (!pause)
             {
                 return;
             }

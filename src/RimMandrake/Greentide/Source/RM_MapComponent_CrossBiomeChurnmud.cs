@@ -68,7 +68,7 @@ namespace RimMandrake.Greentide
 				return; // silent-fail precedent (SlimeDefs, RM_DefOf callers) — never a hard error over a missing def
 			}
 
-			float coverage = Mathf.Clamp01(RM_GreentideSettings.crossBiomeCoverage);
+			float coverage = RM_RulesKernel.Coverage(RM_GreentideSettings.crossBiomeCoverage);
 			if (coverage <= 0f)
 			{
 				return;
@@ -77,11 +77,8 @@ namespace RimMandrake.Greentide
 			int converted = 0;
 			foreach (IntVec3 cell in map.AllCells)
 			{
-				if (map.terrainGrid.TerrainAt(cell) != TerrainDefOf.Mud)
-				{
-					continue;
-				}
-				if (coverage < 1f && Rand.Value > coverage)
+				bool isMud = map.terrainGrid.TerrainAt(cell) == TerrainDefOf.Mud;
+				if (!isMud || !RM_RulesKernel.ConvertsMud(true, coverage, coverage < 1f ? Rand.Value : 0f))
 				{
 					continue;
 				}

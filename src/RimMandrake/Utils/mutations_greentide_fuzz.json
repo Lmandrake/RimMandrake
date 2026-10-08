@@ -1,0 +1,146 @@
+[
+ {
+  "name": "swallow: buried one tick late",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
+  "old": "if (now - first >= swallowTicks[i])",
+  "new": "if (now - first > swallowTicks[i])"
+ },
+ {
+  "name": "swallow: clocks of items that left the mire kept",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
+  "old": "if (FirstSeen.Count > 0)",
+  "new": "if (false)"
+ },
+ {
+  "name": "swallow: different stuff merged into one cache",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
+  "old": " && Equals(c.Stuff, stuff)) { c.Count",
+  "new": ") { c.Count"
+ },
+ {
+  "name": "swallow: dig-out ignores the stack limit (the original defect)",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
+  "old": "int limit = Math.Max(1, stackLimitOf(c.Def));",
+  "new": "int limit = int.MaxValue;"
+ },
+ {
+  "name": "swallow: dig-out reports nothing left (designation cleared over buried caches - the original defect)",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
+  "old": "            return left;\n        }\n\n        public static bool HasBuriedAt",
+  "new": "            return 0;\n        }\n\n        public static bool HasBuriedAt"
+ },
+ {
+  "name": "swallow: a chunk that did not land is forgotten",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
+  "old": "if (!place(c, chunk)) break;",
+  "new": "place(c, chunk);"
+ },
+ {
+  "name": "swallow: dig effort cap raised",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_SwallowKernel.cs",
+  "old": "Math.Min(6000, 300 + age / 10)",
+  "new": "Math.Min(9000, 300 + age / 10)"
+ },
+ {
+  "name": "mire: stuck pawns struggle as often as free ones",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_MireKernel.cs",
+  "old": "chance(struggle * 0.1f)",
+  "new": "chance(struggle)"
+ },
+ {
+  "name": "mire: severity not capped at 1",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_MireKernel.cs",
+  "old": "else newSeverity = Math.Min(1f, severity + rate);",
+  "new": "else newSeverity = severity + rate;"
+ },
+ {
+  "name": "mire: a spent hediff is never removed",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_MireKernel.cs",
+  "old": "if (newSeverity <= 0f) return Outcome.Remove;",
+  "new": "if (newSeverity <= -1f) return Outcome.Remove;"
+ },
+ {
+  "name": "ladder: no dead-zone",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_LadderKernel.cs",
+  "old": "fraction < shakeThr - hysteresis",
+  "new": "fraction < shakeThr"
+ },
+ {
+  "name": "ladder: the catastrophe can fire again",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_LadderKernel.cs",
+  "old": "s.CatastropheDone = true; e |= Events.Catastrophe;",
+  "new": "e |= Events.Catastrophe;"
+ },
+ {
+  "name": "ladder: healing announced only above its threshold",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_LadderKernel.cs",
+  "old": "fraction >= healThr) { s.HealingAnnounced",
+  "new": "fraction > healThr) { s.HealingAnnounced"
+ },
+ {
+  "name": "vurrak: a body exactly at the threshold only reveals",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_VurrakKernel.cs",
+  "old": "if (bodySize[i] >= threshold)",
+  "new": "if (bodySize[i] > threshold)"
+ },
+ {
+  "name": "vurrak: a pawn without jobs keeps the disguise",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_VurrakKernel.cs",
+  "old": "|| inMentalState || noJobs) return",
+  "new": "|| inMentalState) return"
+ },
+ {
+  "name": "vurrak: the first reveal counts with nobody there",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_VurrakKernel.cs",
+  "old": "if (alreadySeen || colonistsOnMap == 0) return false;",
+  "new": "if (alreadySeen) return false;"
+ },
+ {
+  "name": "rules: rainfall ceiling inclusive",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs",
+  "old": "rainfall >= rMax",
+  "new": "rainfall > rMax"
+ },
+ {
+  "name": "rules: the native biome counts as cross-biome",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs",
+  "old": "biomeDef == nativeBiome) return false;",
+  "new": "false) return false;"
+ },
+ {
+  "name": "rules: mud coverage off",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs",
+  "old": "roll > coverage)",
+  "new": "roll > coverage + 0.01f)"
+ },
+ {
+  "name": "rules: Roil row never restored",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs",
+  "old": "if (HaveStash && !HasRecord) HasRecord = true;",
+  "new": ""
+ },
+ {
+  "name": "rules: thurrock pace unclamped",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs",
+  "old": "float p = Math.Max(0.05f, pace);",
+  "new": "float p = pace;"
+ },
+ {
+  "name": "rules: healing frenzy dose scaled",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs",
+  "old": "if (severity > 0f) applied = severity * multiplier;",
+  "new": "applied = severity * multiplier;"
+ },
+ {
+  "name": "rules: a marked pawn earns the mark again",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs",
+  "old": "&& !pawnDeadOrNoHealth && !alreadyMarked;",
+  "new": "&& !pawnDeadOrNoHealth;"
+ },
+ {
+  "name": "rules: seedlings grow without water",
+  "file": "src/RimMandrake/Greentide/Source/Kernel/RM_RulesKernel.cs",
+  "old": "if (!hasWater) return 0f;",
+  "new": ""
+ }
+]

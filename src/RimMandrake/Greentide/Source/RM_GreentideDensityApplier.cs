@@ -64,26 +64,31 @@ namespace RimMandrake.Greentide
             {
                 biome.biomeMapConditions = new System.Collections.Generic.List<GameConditionDef>();
             }
-            if (RM_GreentideSettings.roilEnabled)
+            // Mirror the biome into the kernel's three facts, apply the rule, and write the answer back.
+            var state = new RM_RulesKernel.RoilBiome
             {
-                if (!biome.biomeMapConditions.Contains(roilLock))
-                {
-                    biome.biomeMapConditions.Add(roilLock);
-                }
-                if (roilWeatherRecord != null && !biome.baseWeatherCommonalities.Contains(roilWeatherRecord))
-                {
-                    biome.baseWeatherCommonalities.Add(roilWeatherRecord);
-                }
+                HasLock = biome.biomeMapConditions.Contains(roilLock),
+                HasRecord = biome.baseWeatherCommonalities.Exists(r => r.weather == roilWeather),
+                HaveStash = roilWeatherRecord != null,
+            };
+            state.Apply(RM_GreentideSettings.roilEnabled);
+            if (state.HasLock && !biome.biomeMapConditions.Contains(roilLock))
+            {
+                biome.biomeMapConditions.Add(roilLock);
             }
-            else
+            if (!state.HasLock)
             {
                 biome.biomeMapConditions.Remove(roilLock);
-                WeatherCommonalityRecord rec = biome.baseWeatherCommonalities.Find(r => r.weather == roilWeather);
-                if (rec != null)
-                {
-                    roilWeatherRecord = rec;
-                    biome.baseWeatherCommonalities.Remove(rec);
-                }
+            }
+            WeatherCommonalityRecord rec = biome.baseWeatherCommonalities.Find(r => r.weather == roilWeather);
+            if (state.HasRecord && rec == null && roilWeatherRecord != null)
+            {
+                biome.baseWeatherCommonalities.Add(roilWeatherRecord);
+            }
+            else if (!state.HasRecord && rec != null)
+            {
+                roilWeatherRecord = rec;
+                biome.baseWeatherCommonalities.Remove(rec);
             }
         }
 

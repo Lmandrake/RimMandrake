@@ -174,21 +174,18 @@ namespace RimMandrake.LeaningScrub
             {
                 return;
             }
-            int amount = GenMath.RoundRandom(coat.Props.woolAmount * Fullness(coat));
-            float share = Mathf.Clamp01(RM_LeaningScrubSettings.sweetlineFeltShare);
-            int ground = GenMath.RoundRandom(amount * (1f - share));
             ThingDef woolDef = coat.Props.woolDef;
-            int left = ground;
-            while (left > 0)
+            List<int> stacks = new List<int>();
+            RM_CoatKernel.Rub(coat.Props.woolAmount, Fullness(coat), RM_LeaningScrubSettings.sweetlineFeltShare, Rand.Value, Rand.Value,
+                woolDef.stackLimit, out int amount, out int ground, out float felted, stacks);
+            for (int i = 0; i < stacks.Count; i++)
             {
-                int n = Mathf.Clamp(left, 1, woolDef.stackLimit);
-                left -= n;
                 Thing wool = ThingMaker.MakeThing(woolDef);
-                wool.stackCount = n;
+                wool.stackCount = stacks[i];
                 GenPlace.TryPlaceThing(wool, tree.Position, tree.Map, ThingPlaceMode.Near);
             }
             SetFullness(coat, 0f);
-            tree.TryGetComp<RM_CompSweetlineStation>()?.Notify_Scratched(pawn, amount * share);
+            tree.TryGetComp<RM_CompSweetlineStation>()?.Notify_Scratched(pawn, felted);
         }
 
         /// <summary>

@@ -712,7 +712,9 @@ def _ledge_refuge_findings():
     elig = flood.split("private bool Eligible(")[1].split("private void DamagePawnsInCells")[0] if "private bool Eligible(" in flood else ""
     if "IsRefugeCell" not in elig:
         bad.append("ledge refuge: Eligible does not exclude refuge cells (a non-edifice ledge would flood)")
-    if flood.count("Refuge?.Sweep()") < 3:
+    kernel = src("Kernel/RM_FloodKernel.cs")
+    # the sweeps are requested by the Verse-free phase machine (herald entry, warned entry, the interval) and carried out here
+    if kernel.count("step.SweepRefuge = true") < 3 or "if (step.SweepRefuge)" not in flood or "Refuge?.Sweep()" not in flood:
         bad.append("ledge refuge: the flood clock does not sweep at herald entry, warned entry and on the interval")
     if "NearestAnchorTo" not in flood.split("private IntVec3 ChimeCell(")[1].split("private IntVec3 FarCornerFrom")[0]:
         bad.append("ledge refuge: ChimeCell does not snap to chime-line anchors")
@@ -746,7 +748,7 @@ def static_checks():
     for dp, _, files in os.walk(os.path.join(HERE, "Source")):
         for f in files:
             rel = os.path.relpath(os.path.join(dp, f), os.path.join(HERE, "Source")).replace("\\", "/")
-            if f.endswith(".cs") and "/obj/" not in "/" + rel and rel not in listed:
+            if f.endswith(".cs") and "/obj/" not in "/" + rel and not rel.startswith("SelfTest/") and rel not in listed:
                 bad.append("%s is not in the csproj (EnableDefaultCompileItems false: compiles into nothing)" % rel)
     defs = shipped_defs()
     if len(defs) < 1:

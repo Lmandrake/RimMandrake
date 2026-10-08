@@ -48,17 +48,10 @@ namespace RimMandrake.Greentide
             {
                 return;
             }
-            bool felled = mode == DestroyMode.KillFinalizeLeavingsOnly
-                || (mode == DestroyMode.Vanish && RM_TreeFallUtility.FellingNow == parent);
-            if (!felled)
-            {
-                return;
-            }
-            if (previousMap.Biome == null || previousMap.Biome.defName != RM_StellockLace.GreentideBiome)
-            {
-                return;
-            }
-            if (!Rand.Chance(RM_GreentideSettings.stellockBranchChance))
+            bool felled = RM_RulesKernel.Felled(mode == DestroyMode.KillFinalizeLeavingsOnly,
+                mode == DestroyMode.Vanish && RM_TreeFallUtility.FellingNow == parent);
+            if (!RM_RulesKernel.DropsBranch(true, true, felled, previousMap.Biome != null && previousMap.Biome.defName == RM_StellockLace.GreentideBiome,
+                    RM_GreentideSettings.stellockBranchChance, Rand.Value))
             {
                 return;
             }
@@ -74,7 +67,7 @@ namespace RimMandrake.Greentide
         public override void CompPostMake()
         {
             base.CompPostMake();
-            int ticks = (int)(RM_GreentideSettings.stellockLaceHours * GenDate.TicksPerHour);
+            int ticks = RM_RulesKernel.StellockTicks(RM_GreentideSettings.stellockLaceHours);
             if (ticks > 0)
             {
                 SetDuration(ticks);

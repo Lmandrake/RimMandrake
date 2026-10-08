@@ -81,9 +81,8 @@ namespace RimMandrake.BlueDesert
 
         public override void Notify_PawnDied(DamageInfo? dinfo, Hediff culprit = null)
         {
-            bool detonate = DetonationsOn && (empTriggered
-                || !RM_BlueDesertSettings.vhaulkHeatGateEnabled
-                || IsHeatKill(dinfo, culprit));
+            bool detonate = RM_BlueKernel.Detonates(DetonationsOn, empTriggered, RM_BlueDesertSettings.vhaulkHeatGateEnabled,
+                IsHeatKill(dinfo, culprit));
             empTriggered = false;
             if (detonate)
             {
@@ -95,12 +94,8 @@ namespace RimMandrake.BlueDesert
         public override void Notify_PawnPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.Notify_PawnPostApplyDamage(dinfo, totalDamageDealt);
-            if (!DetonationsOn || !RM_BlueDesertSettings.vhaulkEmpTrapEnabled)
-            {
-                return;
-            }
             Pawn pawn = Pawn;
-            if (pawn == null || pawn.Dead || pawn.Destroyed || !IsEmp(dinfo.Def))
+            if (pawn == null || !RM_BlueKernel.EmpTrap(DetonationsOn, RM_BlueDesertSettings.vhaulkEmpTrapEnabled, pawn.Dead, pawn.Destroyed, IsEmp(dinfo.Def)))
             {
                 return;
             }
@@ -111,26 +106,14 @@ namespace RimMandrake.BlueDesert
         private bool IsEmp(DamageDef def)
         {
             List<DamageDef> emp = GatedProps.empDamageDefs;
-            if (emp.NullOrEmpty())
-            {
-                return def == DamageDefOf.EMP;
-            }
-            return emp.Contains(def);
+            return RM_BlueKernel.IsEmp(emp.NullOrEmpty(), def == DamageDefOf.EMP, !emp.NullOrEmpty() && emp.Contains(def));
         }
 
         private bool IsHeatKill(DamageInfo? dinfo, Hediff culprit)
         {
-            if (dinfo.HasValue && dinfo.Value.Def != null
-                && GatedProps.heatDamageDefs != null && GatedProps.heatDamageDefs.Contains(dinfo.Value.Def))
-            {
-                return true;
-            }
-            if (culprit != null && GatedProps.heatCulpritHediffs != null
-                && GatedProps.heatCulpritHediffs.Contains(culprit.def))
-            {
-                return true;
-            }
-            return false;
+            return RM_BlueKernel.IsHeatKill(dinfo.HasValue && dinfo.Value.Def != null,
+                dinfo.HasValue && dinfo.Value.Def != null && GatedProps.heatDamageDefs != null && GatedProps.heatDamageDefs.Contains(dinfo.Value.Def),
+                culprit != null, culprit != null && GatedProps.heatCulpritHediffs != null && GatedProps.heatCulpritHediffs.Contains(culprit.def));
         }
 
         private void Explode()

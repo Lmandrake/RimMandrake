@@ -36,34 +36,15 @@ namespace RimMandrake.Greentide
 
 		public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
 		{
-			if (tile == null || tile.WaterCovered)
+			if (tile == null)
 			{
 				return -100f;
 			}
 
 			RM_GreentideBiomeRanges r = biome.GetModExtension<RM_GreentideBiomeRanges>() ?? FallbackRanges;
-
-			if (tile.temperature < r.temperature.min || tile.temperature > r.temperature.max)
-			{
-				return 0f;
-			}
-			if (tile.rainfall < r.rainfall.min || tile.rainfall >= r.rainfall.max)
-			{
-				return 0f;
-			}
-			if (tile.elevation < r.elevation.min || tile.elevation > r.elevation.max)
-			{
-				return 0f;
-			}
-			if (tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable)
-			{
-				return 0f;
-			}
-
-			float divisor = (r.rainfallDivisor > 0.0001f) ? r.rainfallDivisor : 1f;
-			return r.baseScore
-				 + (tile.temperature - r.temperature.min) * r.degreeWeight
-				 + (tile.rainfall - r.rainfall.min) / divisor;
+			return RM_RulesKernel.BiomeScore(tile.WaterCovered, tile.temperature, tile.rainfall, tile.elevation, tile.hilliness == Hilliness.Mountainous || tile.hilliness == Hilliness.Impassable,
+				r.temperature.min, r.temperature.max, r.rainfall.min, r.rainfall.max, r.elevation.min, r.elevation.max,
+				r.baseScore, r.degreeWeight, r.rainfallDivisor);
 		}
 	}
 }

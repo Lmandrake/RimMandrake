@@ -54,21 +54,20 @@ namespace RimMandrake.LeaningScrub
 
         public RM_CompProperties_Lash Props => (RM_CompProperties_Lash)props;
 
-        public bool Poised => Find.TickManager.TicksGame >= readyTick;
+        public bool Poised => RM_FormsKernel.Poised(Find.TickManager.TicksGame, readyTick);
 
         private float Growth => parent is Plant plant ? plant.Growth : 1f;
 
         public bool TryStrike(Pawn victim)
         {
-            if (!Poised || Growth < Props.minGrowth || Props.damageDef == null)
+            if (!RM_FormsKernel.LashStrikes(Find.TickManager.TicksGame, readyTick, Growth, Props.minGrowth, Props.damageDef != null))
             {
                 return false;
             }
             float amount = Props.damageAmount * RM_LeaningScrubSettings.twitcherLashDamageFactor;
             DamageInfo dinfo = new DamageInfo(Props.damageDef, amount, Props.armorPenetration,
                 (victim.Position - parent.Position).AngleFlat, parent);
-            int recovery = Mathf.RoundToInt(Props.recoveryTicks * RM_LeaningScrubSettings.twitcherLashRecoveryFactor);
-            readyTick = Find.TickManager.TicksGame + Mathf.Max(60, recovery);
+            readyTick = RM_FormsKernel.LashReady(Find.TickManager.TicksGame, Props.recoveryTicks, RM_LeaningScrubSettings.twitcherLashRecoveryFactor);
             victim.TakeDamage(dinfo);
             return true;
         }

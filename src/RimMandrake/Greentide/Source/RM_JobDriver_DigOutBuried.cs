@@ -36,7 +36,7 @@ namespace RimMandrake.Greentide
 				{
 					RM_MapComponent_MudSwallow comp = Map.GetComponent<RM_MapComponent_MudSwallow>();
 					int age = comp?.BuriedDurationAt(job.targetA.Cell) ?? 0;
-					cachedWorkAmount = Mathf.Clamp(300 + age / 10, 300, 6000);
+					cachedWorkAmount = RM_SwallowKernel.WorkAmount(age);
 				}
 				return cachedWorkAmount;
 			}

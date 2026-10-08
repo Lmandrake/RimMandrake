@@ -61,6 +61,9 @@
     <Compile Include="Patch_ClearSandYield.cs" />
     <!-- MOVINGDUNES_COVERAGE_GAPS_1: live proof hooks for the north-star script (jawa/static_call) -->
     <Compile Include="MovingDunesProof.cs" />
+    <Compile Include="MapDuneField.cs" />
+    <Compile Include="Kernel\RM_DuneKernel.cs" />
+    <Compile Include="Kernel\RM_CacheKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

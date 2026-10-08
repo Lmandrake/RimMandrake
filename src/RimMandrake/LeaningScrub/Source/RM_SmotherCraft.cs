@@ -39,11 +39,11 @@ namespace RimMandrake.LeaningScrub
 
         public RM_CompProperties_Smotherable Props => (RM_CompProperties_Smotherable)props;
 
-        public bool Smothered => smotherStartTick >= 0;
+        public bool Smothered => RM_SmotherKernel.Smothered(smotherStartTick);
 
-        public static int ClaimTicks => Mathf.RoundToInt(Mathf.Max(0.1f, RM_LeaningScrubSettings.smotherDays) * GenDate.TicksPerDay);
+        public static int ClaimTicks => RM_SmotherKernel.ClaimTicks(RM_LeaningScrubSettings.smotherDays);
 
-        public int TicksRemaining => Smothered ? smotherStartTick + ClaimTicks - Find.TickManager.TicksGame : -1;
+        public int TicksRemaining => RM_SmotherKernel.TicksRemaining(smotherStartTick, ClaimTicks, Find.TickManager.TicksGame);
 
         public void StartSmother()
         {
@@ -51,7 +51,7 @@ namespace RimMandrake.LeaningScrub
             {
                 return;
             }
-            smotherStartTick = Find.TickManager.TicksGame;
+            smotherStartTick = RM_SmotherKernel.Start(smotherStartTick, Find.TickManager.TicksGame);
             parent.Map?.GetComponent<RM_MapComponent_SmotherClaims>()?.Register(this);
         }
 
@@ -93,8 +93,6 @@ namespace RimMandrake.LeaningScrub
 
     public class RM_MapComponent_SmotherClaims : MapComponent
     {
-        private const int CheckInterval = 2500;
-
         private readonly HashSet<RM_CompSmotherable> claims = new HashSet<RM_CompSmotherable>();
         private readonly List<RM_CompSmotherable> tmpDue = new List<RM_CompSmotherable>();
 
@@ -114,20 +112,16 @@ namespace RimMandrake.LeaningScrub
 
         public override void MapComponentTick()
         {
-            if (claims.Count == 0 || Find.TickManager.TicksGame % CheckInterval != 0)
-            {
-                return;
-            }
             // A claim already on the ground keeps its clock with the feature off;
             // it simply does not mature until the feature is back on.
-            if (!RM_WindCalendar.On(RM_LeaningScrubSettings.smotherCraftEnabled))
+            if (!RM_SmotherKernel.PassRuns(claims.Count, Find.TickManager.TicksGame, RM_WindCalendar.On(RM_LeaningScrubSettings.smotherCraftEnabled)))
             {
                 return;
             }
             tmpDue.Clear();
             foreach (RM_CompSmotherable c in claims)
             {
-                if (c.parent.Spawned && c.TicksRemaining <= 0)
+                if (RM_SmotherKernel.Due(c.parent.Spawned, c.TicksRemaining))
                 {
                     tmpDue.Add(c);
                 }
@@ -144,17 +138,17 @@ namespace RimMandrake.LeaningScrub
             Thing plant = comp.parent;
             IntVec3 pos = plant.Position;
             float growth = plant is Plant p ? p.Growth : 1f;
-            int count = Mathf.Max(1, Mathf.RoundToInt(comp.Props.yieldCount * Mathf.Max(0.3f, growth)
-                * RM_LeaningScrubSettings.smotherYieldFactor));
+            int count = RM_SmotherKernel.YieldCount(comp.Props.yieldCount, growth, RM_LeaningScrubSettings.smotherYieldFactor);
 
             plant.Destroy(DestroyMode.Vanish); // PostDeSpawn deregisters
 
             ThingDef wood = RM_LeaningScrubDefOf.RM_DeadVenomvine;
-            while (count > 0)
+            List<int> sizes = new List<int>();
+            RM_SmotherKernel.Stacks(count, wood.stackLimit, sizes);
+            for (int i = 0; i < sizes.Count; i++)
             {
                 Thing stack = ThingMaker.MakeThing(wood);
-                stack.stackCount = Mathf.Min(count, wood.stackLimit);
-                count -= stack.stackCount;
+                stack.stackCount = sizes[i];
                 GenPlace.TryPlaceThing(stack, pos, map, ThingPlaceMode.Near);
             }
             Messages.Message("A smothered venomvine stand has died back to dead wood.",

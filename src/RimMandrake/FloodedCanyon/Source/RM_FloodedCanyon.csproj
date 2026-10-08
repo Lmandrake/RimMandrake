@@ -63,6 +63,10 @@
     <Compile Include="RM_CrackedLandsFlora.cs" />
     <Compile Include="RM_LedgeRefuge.cs" />
     <Compile Include="Debug\RM_FloodedCanyonDebugActions.cs" />
+    <Compile Include="Kernel\RM_FloodKernel.cs" />
+    <Compile Include="Kernel\RM_RefugeKernel.cs" />
+    <Compile Include="Kernel\RM_PanKernel.cs" />
+    <Compile Include="Kernel\RM_CanyonRulesKernel.cs" />
   </ItemGroup>
 
   <ItemGroup>

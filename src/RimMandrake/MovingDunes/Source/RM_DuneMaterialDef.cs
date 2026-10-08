@@ -176,7 +176,7 @@ namespace RimMandrake.MovingDunes
         /// <summary>Transport attempts per 250-tick batch on a map of this many cells.</summary>
         public int AttemptsPerBatch(int numCells)
         {
-            return Mathf.Max(1, Mathf.RoundToInt(attemptsPerCellPerDay * numCells / 240f));
+            return RM_DuneKernel.AttemptsPerBatch(attemptsPerCellPerDay, numCells);
         }
 
         public override IEnumerable<string> ConfigErrors()
