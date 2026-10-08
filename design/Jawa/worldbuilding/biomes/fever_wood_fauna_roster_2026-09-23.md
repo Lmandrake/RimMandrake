@@ -90,7 +90,7 @@ did not wall.
 
 | # | defName | label | silhouette FORM | what it looks like | job | band |
 |---|---|---|---|---|---|---|
-| 5 | `RM_Brathek` | brathek | **long segmented cylinder, head plate wider than the body** | A heavy ringed grub the length of a forearm, pale and wet, with a dark rasping head-plate broader than the rest of it so the tunnel it cuts is always wider than the animal. Seen head-on in a gallery mouth, or as a moving bulge under bark. | ⭐ It **earns the sheet's own borer guild** rather than decorating caves it never made. And it is a **living excavation tool** — a colony that keeps brathek can cut trunk rooms nothing else on the planet can. | wood-borer |
+| 5 | `RM_Brathek` | brathek | **fat ringed larva on rows of gripper pegs, mouth a ring of rasping plates** (owner, Feverwood sheet 2026-10-08: *"a wood-boring larva that rasps into trees … not a drill head"*) | A fat, ringed larva as long as a forearm, pale and wet, carried on rows of short gripper pegs that clamp into bark while it works; the front end is a ring of hard rasping plates that grind into living wood a mouthful at a time. Seen half-buried in a gallery mouth, pegs braced on the rim, or as a moving bulge under bark. | ⭐ It **earns the sheet's own borer guild** rather than decorating caves it never made. And it is a **living excavation tool** — a colony that keeps brathek can cut trunk rooms nothing else on the planet can. | wood-borer |
 
 ⚠️ **Accepted cost, named at the card:** a creature that alters your walls without asking is a
 security problem. ⇒ 🔴 **The digging must be slow and VISIBLE** — a player must be able to watch
@@ -115,7 +115,7 @@ reason anything is dry."*
 | # | defName | label | silhouette FORM | what it looks like | job | band |
 |---|---|---|---|---|---|---|
 | 6 | `RM_Lommerel` | lommerel | **low broad body slung UNDER the branch it feeds on** | A soft-bodied grazer that hangs beneath a bough rather than standing on it, gripping with short hooked limbs, its back permanently silted and mossy from the crown's own debris. Reads upside-down, which nothing else in the crown does. | **The crown's grazer** — the herd that eats `RM_Verrow`'s gourds and the bough-soil's cover, and the reason the small predators have anything to wait for. Meat and hide at crown level, reachable from a boughway. | crown-grazer |
-| 7 | `RM_Silloch` | silloch | **a still, flattened wedge pressed into bark, legs folded under** | Almost nothing to see: a flat mottled wedge the colour of wet bark, folded utterly motionless against a trunk, with only a pair of forward limbs held cocked. It does not stalk. It waits, sometimes for days, and then it is simply attached to something. | 🔑 **The crown's patient predator** — and the sheet's ban on native chase predators is exactly why it must be an ambusher. It is the reason `RM_Maulith`'s ribbon curtains are dangerous, since concealment is the biome's only ambush mechanism. | wait-ambush |
+| 7 | `RM_Silloch` | silloch | **a still, flattened wedge pressed into bark, legs folded under** | A flat, mottled wedge the colour and grain of wet bark, pressed so tightly to a trunk the eye slides off it; legs folded away, two hooked forelimbs held cocked. It does not hunt: it goes still on a path small things use, sometimes for days, then strikes once and holds on. (Description regenerated, Feverwood sheet 2026-10-08.) | 🔑 **The crown's patient predator** — and the sheet's ban on native chase predators is exactly why it must be an ambusher. It is the reason `RM_Maulith`'s ribbon curtains are dangerous, since concealment is the biome's only ambush mechanism. | wait-ambush |
 
 🔑 **Together they make the crown an ecology rather than a larder.** The grazer is drawn by the
 crown's fruit; the ambusher is drawn by the grazer; and a player harvesting the crown is walking
@@ -147,10 +147,10 @@ on the fire hawk and reversed.
 
 | # | defName | label | silhouette FORM | what is ALIEN about it | role | band |
 |---|---|---|---|---|---|---|
-| 8 | `RM_Chellow` | chellow | **squat, round, with a wide membranous throat-fan** | No feathers on the head at all — bare wrinkled skin and a translucent throat-fan it inflates to call, veined and lit from behind | ⭐ **Tameable** — a private chorus you cultivate near the base | crown-flier |
+| 8 | `RM_Chellow` | chellow | **squat, round, with a wide membranous throat-fan** | No feathers on the head at all — bare wrinkled skin, **no beak**: the mouth is a lipless flap of skin it vibrates to whistle (owner, Feverwood sheet 2026-10-08), over a translucent throat-fan it inflates to carry the call, veined and lit from behind | ⭐ **Tameable** — a private chorus you cultivate near the base | crown-flier |
 | 9 | `RM_Murrelith` | murrelith | **long-tailed, with flat ribbon plumes instead of a fan** | Its tail "feathers" are **flat translucent ribbons**, not vaned quills — they hang and twist rather than spread, and they are what is worth money | **Plumage** — a real trade good. 🔑 The temptation is set directly against the alarm: selling feathers means shooting your own early-warning system | crown-flier |
 | 10 | `RM_Thavrik` | thavrik | **heavy-bodied, short-winged, with hairy pelt-like covering** | Covered in coarse **hair rather than feathers** except on the flight surfaces, so it reads as a furred thing that flies | **Nests** — eggs and nest material high in the crown, guarded by the adults. A reason to climb | crown-flier |
-| 11 | `RM_Skellick` | skellick | **small, long-limbed, with asymmetric crumpled plumes** | Plumes that look **damaged on purpose** — crumpled, unequal, sticking out at wrong angles; the untidiest silhouette in the crown | ⭐ **Thief** — it steals items. Gated `MayRequire="mandrake.rm.property"` | crown-flier |
+| 11 | `RM_Skellick` | skellick | **small, long-limbed, with asymmetric crumpled plumes** | Plumes that look **damaged on purpose** — crumpled, unequal, sticking out at wrong angles; the untidiest silhouette in the crown | ⭐ **Thief** — it steals items (owner, 2026-10-08: *"This creature is a thief."*; the description now leads with it). Gated `MayRequire="mandrake.rm.property"` | crown-flier |
 
 ✅ **The Property mod is OURS, verified on disk:** packageId `mandrake.rm.property` at
 `src/RimMandrake/RimProperty/` with its own `Assemblies/`. ⇒ The stealing behaviour is a clean
@@ -165,6 +165,17 @@ they never substitute for a row above.
 
 ---
 
+## Rulings — Feverwood art sheet, 2026-10-08
+
+From `Transient/biome_ffar/feverwood_sheet_2026-10-05.decisions.json` (rows with an `at` stamp):
+**cut from the Fever Wood roster** (scoped to this biome only, defs kept): `RM_Lommerel`,
+`RM_Thavrik` (and, from the RM cast proposal, `RM_Nemmel`, `RM_Gorrameth`, plus the tree
+`RM_Skethral`) — *"no longer needed"* / *"cut no longer needed"*. Descriptions rewritten: brathek
+(rasping larva on gripper pegs, no drill head), silloch (regenerated), grolth (from its in-game
+art), skellick (a thief), chellow (beakless, whistling skin-flap mouth). `VFEI2_Megathrips`
+renamed **kasselith** with a new description (`FeverWood_Rename.xml`; name invented — he asked
+for a rename without naming it).
+
 ## 6. The legibility matrix — the acceptance test
 
 Every form must be nameable from a top-down sprite at display size. A duplicated row is a
@@ -177,10 +188,10 @@ most.
 | smooth amber bead, no limbs | vaulm | a drop of resin |
 | flat and wide, ringed with open spiracles | ollareth | a vent, or a grille |
 | taut grey sac, visibly inflating | drommath | something about to burst |
-| long cylinder, head plate wider than the body | brathek | a drill bit |
+| fat ringed larva braced on gripper pegs, rasping mouth-ring | brathek | a grub chewing into a log |
 | broad body slung UNDER the branch | lommerel | **upside-down — the only row that is** |
 | flat wedge folded motionless on bark | silloch | **bark, which is the point** |
-| bare head, inflated membranous throat-fan | chellow | a lamp with a bellows |
+| bare beakless head, whistling skin-flap mouth, inflated throat-fan | chellow | a lamp with a bellows |
 | flat translucent ribbon tail-plumes | murrelith | torn cloth |
 | hairy pelt, short wings | thavrik | a furred thing that should not fly |
 | crumpled asymmetric plumes | skellick | something that has been in a fight |

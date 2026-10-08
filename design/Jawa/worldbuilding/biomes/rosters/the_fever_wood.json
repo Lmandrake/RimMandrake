@@ -155,7 +155,8 @@
       "band": "wood-borer",
       "commonality": 0.5,
       "def": "VFEI2_Megathrips",
-      "law": "§4 borers eating cave-systems into living wood; small patient predator allowed by §4"
+      "law": "§4 borers eating cave-systems into living wood; small patient predator allowed by §4; Feverwood sheet 2026-10-08 (owner): \"Redo name and description.\" — renamed kasselith (invented), description rewritten in FeverWood_Rename.xml",
+      "label": "kasselith"
     },
     {
       "action": "keep",

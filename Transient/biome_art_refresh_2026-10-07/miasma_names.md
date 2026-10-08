@@ -29,7 +29,12 @@ Other sheets scanned for 2026-10-08 rows: none besides Miasma (Feverwood added l
 - selftests 332/333; only failure bridgetools/selftest_tool_metadata.py (stale bridge DLL, unrelated).
 
 ## Commits
-(pending)
+- af2b54fe2 Miasma pass (pushed)
 
-## Feverwood
-(pending)
+## Feverwood (Transient/biome_ffar/feverwood_sheet_2026-10-05.decisions.json, 38 owner rows)
+- VFEI2_Megathrips: megathrips -> kasselith (invented; FeverWood_Rename.xml, validate 0 errors, 1 match each)
+- Descriptions rewritten: RM_Brathek (rasping larva, gripper pegs, no drill head), RM_Silloch (regenerated),
+  RM_Grolth (from its in-game art), RM_Skellick (a thief), RM_Chellow (beakless whistling skin-flap mouth)
+- Cut from RM_FeverWood only: RM_Thavrik, RM_Lommerel, RM_Nemmel, RM_Gorrameth (wildAnimals), RM_Skethral (wildPlants)
+- Design: fever_wood_fauna_roster_2026-09-23.md, fever_wood_rm_cast_proposal_2026-09-24.md, rosters/the_fever_wood.json
+- selftests 329/333: failures are HugeThings/TitanicCreatures (another helper in flight) + stale bridge DLL; none touch these files

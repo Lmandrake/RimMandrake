@@ -205,7 +205,7 @@
          rows from the twin ride WildAnimals_FeverWood.xml (Utinni patch)
          instead — Q11a. -->
     <wildAnimals>
-      <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- megathrips - wood-borer, keep -->
+      <VFEI2_Megathrips MayRequire="oskarpotocki.vfe.insectoid2">0.5</VFEI2_Megathrips>  <!-- kasselith (renamed from megathrips, Feverwood sheet 2026-10-08) - wood-borer, keep -->
 
       <!-- FEVERWOOD_SAP_SUCKER_GUILD_1: the sap-drinker guild, four species,
            one rule ("clamped to bark, drinks sap, does not flee"), four
@@ -226,17 +226,14 @@
            row the owner explicitly wants cultivated near a base. -->
       <RM_Chellow>0.5</RM_Chellow>  <!-- chellow - tameable, the chorus you can keep -->
       <RM_Murrelith>0.35</RM_Murrelith>  <!-- murrelith - plumage worth money -->
-      <RM_Thavrik>0.3</RM_Thavrik>  <!-- thavrik - nests worth raiding -->
       <RM_Skellick>0.25</RM_Skellick>  <!-- skellick - steals your things -->
 
       <!-- FEVERWOOD_RM_CAST_COMPLETION_1: ratified cast, commonalities as
            ruled in that item's §1 table (defs: RM_FeverWoodCast.xml). -->
-      <RM_Lommerel>0.4</RM_Lommerel>  <!-- lommerel - the crown's grazer, slung under the boughs -->
-      <RM_Nemmel>0.4</RM_Nemmel>  <!-- nemmel - the floor's one honest meal -->
       <RM_Grolth>0.05</RM_Grolth>  <!-- grolth - carrion-dissolver, waits, never chases -->
-      <RM_Gorrameth>0.02</RM_Gorrameth>  <!-- gorrameth - the terribly lost, drinks at the mirrors -->
       <RM_Brathek>0.5</RM_Brathek>  <!-- brathek - the wood-borer that keeps digging -->
       <RM_Silloch>0.3</RM_Silloch>  <!-- silloch - the crown's wait-ambusher, reads as bark -->
+      <!-- Feverwood art sheet 2026-10-08 (owner): RM_Thavrik, RM_Lommerel, RM_Nemmel, RM_Gorrameth CUT from this roster ("no longer needed" / "cut no longer needed"); scoped to the Fever Wood only, defs kept. -->
     </wildAnimals>
     <coastalWildAnimals />
     <!-- FEVERWOOD_FLORA_ROSTER_1: the 3 AB_* donor placeholder rows
@@ -263,7 +260,6 @@
       <!-- the giants (towers) — rare, huge-canvas flavour, matches the
            1~2 boles per map RM_LivingBoleBiomeExtension already spawns -->
       <RM_Thulvane>0.05</RM_Thulvane>  <!-- thulvane - colossal fused column -->
-      <RM_Skethral>0.07</RM_Skethral>  <!-- skethral - arch-thrower, grows the roads -->
       <RM_Varnoth>0.03</RM_Varnoth>  <!-- varnoth - stilt-tripod in the pool -->
 
       <!-- the crown (on bough-soil, fertilityMin 1.0) -->
@@ -286,6 +282,7 @@
       <RM_Skimmel>0.4</RM_Skimmel>  <!-- skimmel - hides the sink-mud -->
       <RM_Wanlith>0.4</RM_Wanlith>  <!-- wanlith - the pale one -->
       <RM_Tullick>0.25</RM_Tullick>  <!-- tullick - the tuber -->
+      <!-- Feverwood art sheet 2026-10-08 (owner): RM_Skethral CUT from this roster ("cut no longer needed"); scoped to the Fever Wood only, def kept. -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>
