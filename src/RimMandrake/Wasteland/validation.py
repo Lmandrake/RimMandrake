@@ -504,6 +504,39 @@ def _teardown(t):
         print("[wl] teardown failed: %s" % ex, file=sys.stderr, flush=True)
 
 
+class _patient(object):
+    """Raise the bridge client's per-reply socket timeout (the runner's 30 s) for a slow job order, then restore it.
+    LIVE 2026-10-08: ordered_job with waitTicks=60 took ~17 s per call here and the gripper steal / brineleech
+    Ingest orders outran 30 s ('timed out after 30.0s waiting for the bridge'). Same shape as Contagion's _patient.
+    A mock session without a real socket is left alone."""
+    def __init__(self, t, secs=240.0):
+        self.rb = getattr(getattr(t, "session", None), "_rb", None)
+        self.secs, self.old = secs, None
+
+    def __enter__(self):
+        if self.rb is not None and hasattr(self.rb, "timeout"):
+            self.old = self.rb.timeout
+            self.rb.timeout = self.secs
+            sock = getattr(self.rb, "sock", None)
+            if sock is not None:
+                sock.settimeout(self.secs)
+        return self
+
+    def __exit__(self, *a):
+        if self.old is not None:
+            self.rb.timeout = self.old
+            sock = getattr(self.rb, "sock", None)
+            if sock is not None:
+                sock.settimeout(self.old)
+        return False
+
+
+def _order(t, **kw):
+    """jawa/ordered_job under _patient: the order waits waitTicks server-side and routinely outruns 30 s."""
+    with _patient(t):
+        return t.bridge_call("jawa/ordered_job", **kw)
+
+
 def _spawn(t, kind, x, z, faction="none"):
     r = t.bridge_call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=1)
     if not _live(t):
@@ -589,10 +622,13 @@ def _room_temp(t, x, z):
     return float(rooms[0]["temperature"])
 
 
-def _make_room(t, x, z):
-    """A sealed roofed ROOMxROOM room on natural floor; returns its interior rect (x+1, z+1, 5, 5)."""
+def _make_room(t, x, z, sealed=False):
+    """A roofed ROOMxROOM room on natural floor; returns its interior rect (x+1, z+1, 5, 5).
+    sealed=True walls the door cell too (make_empty_room places doorDef there, so doorDef="Wall"): LIVE 2026-10-08
+    the player-faction door let the sloghogs wander out of their polluted room (spawned at 162,169 inside, read at
+    170,169 outside -> 'off feed ground') and a colonist out of the smolderback's room, so every in-room read failed."""
     r = t.bridge_call("jawa/make_empty_room", rect=_rs((x, z, ROOM, ROOM)), wallDef="Wall", stuffDef="WoodLog",
-                      doorDef="Door", floorDef="Soil", roofDef="RoofConstructed")
+                      doorDef=("Wall" if sealed else "Door"), floorDef="Soil", roofDef="RoofConstructed")
     if _live(t):
         _ok(r, "make_empty_room")
         if (r.get("cellsWalled") or 0) < 4 * (ROOM - 1):
@@ -1111,8 +1147,8 @@ def smolderback_room(t):
         with _comp(t, "site_ready_smolderback"):
             _reset_pad(t)
             x, z = t.anchor
-            ia = _make_room(t, x - 10, z - 3)
-            ib = _make_room(t, x + 4, z - 3)
+            ia = _make_room(t, x - 10, z - 3, sealed=True)
+            ib = _make_room(t, x + 4, z - 3, sealed=True)
             box["ia"], box["ib"] = ia, ib
             box["sb"] = _spawn(t, "RM_Smolderback", ia[0] + 2, ia[1] + 2, "none")
             box["ca"] = _spawn(t, "Colonist", ia[0] + 3, ia[1] + 3, "player")
@@ -1198,8 +1234,8 @@ def processor_animals(t):
         with _comp(t, "site_ready_processors"):
             _reset_pad(t)
             x, z = t.anchor
-            ip = _make_room(t, x - 10, z - 3)
-            ic = _make_room(t, x + 4, z - 3)
+            ip = _make_room(t, x - 10, z - 3, sealed=True)
+            ic = _make_room(t, x + 4, z - 3, sealed=True)
             n, ever = _pollution(t, _rs(ip), True)
             _pollution(t, _rs(ic), False)
             if _live(t) and (ever == 0 or n == 0):
@@ -1242,7 +1278,7 @@ def processor_animals(t):
                                   targetFullness=1.0, gatherNow=True, doer=box.get("h"))
                 if _live(t):
                     _ok(r, "animal_resource_force(%s)" % label)
-                    gt = r.get("gatheredThing") or {}
+                    gt = r.get("gathered") or r.get("gatheredThing") or {}   # the tool's key is "gathered" (LIVE 2026-10-08)
                     if gt.get("resourcePlacedOnMap") is None:
                         _unmeasured(t, "animal_resource_force could not resolve the resource def: %r" % gt)
                     after = len(_things(t, product, whole))
@@ -1289,7 +1325,7 @@ def gripper(t):
             gold = _things(t, "Gold", _pad_rect(t))
             if _live(t) and not gold:
                 _fail("precondition: no Gold stack on the pad")
-            r = t.bridge_call("jawa/ordered_job", pawnId=box.get("g1"), jobDef="RM_GripperSteal",
+            r = _order(t, pawnId=box.get("g1"), jobDef="RM_GripperSteal",
                               targetAId=(gold[0].get("id") if gold else None), count=5, waitTicks=60, timeoutSeconds=60)
             if _live(t) and not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
                 _unmeasured(t, "ordered_job did not start RM_GripperSteal on the animal: %r" % r)
@@ -1332,7 +1368,7 @@ def gripper(t):
             gold = _things(t, "Gold", "%d,%d,3,3" % (box["x"] + 3, box["z"] - 7))
             if _live(t) and not gold:
                 _fail("precondition: the second Gold stack is missing")
-            r = t.bridge_call("jawa/ordered_job", pawnId=g, jobDef="RM_GripperSteal",
+            r = _order(t, pawnId=g, jobDef="RM_GripperSteal",
                               targetAId=(gold[0].get("id") if gold else None), count=5, waitTicks=60, timeoutSeconds=60)
             if _live(t) and (r or {}).get("success") is False:
                 _unmeasured(t, "ordered_job refused to order the tamed gripper: %r" % r)
@@ -1365,6 +1401,10 @@ def flora_harvest(t):
             box["handler"] = _spawn(t, "Colonist", x - 10, z, "player")
             if _live(t):
                 _settle(t, box["handler"])
+            # JobDriver_PlantWork rolls Rand.Value > PlantHarvestYield per harvest when harvestFailable (RimSage 1.6):
+            # a random colonist's low Plants skill failed 2 of 4 single-plant harvests LIVE 2026-10-08 (Pusberry,
+            # Wartshrub; VaultRoot and Boilbulb yielded). Plants 20 takes the roll out of the verdict.
+            t.bridge_call("jawa/set_pawn_skill", pawn=box.get("handler"), skill="Plants", level=20)
             box["plants"] = {}
             for i, (plant, product) in enumerate(FLORA_PRODUCTS):
                 t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (plant, x + 2 * i, z + 4), growth=1.0)
@@ -1377,7 +1417,7 @@ def flora_harvest(t):
                     if _things(t, product, _pad_rect(t)):
                         _fail("precondition: %s already lying on the pad" % product)
             for plant, product in FLORA_PRODUCTS:
-                t.bridge_call("jawa/ordered_job", pawnId=box.get("handler"), jobDef="Harvest",
+                _order(t, pawnId=box.get("handler"), jobDef="Harvest",
                               targetAId=box["plants"].get(plant), queue=True, waitTicks=60)
             t.wait_ticks(4000)
 
@@ -1446,7 +1486,7 @@ def brine_deposits(t):
             food = _things(t, "RM_Drazz", "%d,%d,3,3" % (x, z + 7))
             if _live(t) and not food:
                 _fail("precondition: no RM_Drazz on the floor")
-            r = t.bridge_call("jawa/ordered_job", pawnId=who, jobDef="Ingest",
+            r = _order(t, pawnId=who, jobDef="Ingest",
                               targetAId=(food[0].get("id") if food else None), count=1, waitTicks=60, timeoutSeconds=60)
             if _live(t) and not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
                 _unmeasured(t, "ordered_job did not start Ingest on RM_Drazz: %r" % r)
@@ -1991,13 +2031,17 @@ def rite_of_tipping(t):
             # with an ON control first (earliestDay 8 / minRefireDays can refuse it on their own).
             # Both CanFireNow and CanRun memoise per tick, so a tick separates the two asks.
             t.wait_ticks(2)
-            on = t.bridge_call("jawa/fire_incident", incidentDef="RM_RiteOfTipping", dryRun=True)
+            # forced=True: skip earliestDay 8 / minRefireDays 30 (a fresh test map is day ~1, LIVE 2026-10-08 the ON
+            # control read canFireNow=False for that alone) and ask only CanFireNowSub -> CanRun -> TestRunInt.
+            # Needs the JawaBench build carrying fire_incident's `forced` parameter.
+            on = t.bridge_call("jawa/fire_incident", incidentDef="RM_RiteOfTipping", dryRun=True, forced=True)
             if _live(t) and not (on or {}).get("canFireNow"):
-                _unmeasured(t, "RM_RiteOfTipping cannot fire even with tippingEnabled=true, so an OFF refusal "
-                               "proves nothing: %s" % str(on)[:300])
+                _unmeasured(t, "RM_RiteOfTipping cannot fire even forced with tippingEnabled=true, so an OFF refusal "
+                               "proves nothing (if the reply has no 'forced' key the deployed JawaBench predates the "
+                               "parameter: build.py --gm --apply at a shutdown): %s" % str(on)[:300])
             _set(t, tippingEnabled=False)
             t.wait_ticks(2)
-            r = t.bridge_call("jawa/fire_incident", incidentDef="RM_RiteOfTipping", dryRun=True)
+            r = t.bridge_call("jawa/fire_incident", incidentDef="RM_RiteOfTipping", dryRun=True, forced=True)
             if _live(t) and (r or {}).get("canFireNow"):
                 _fail("RM_RiteOfTipping can still offer the contract with tippingEnabled=false (TestRunInt must refuse): %s"
                       % str(r)[:300])

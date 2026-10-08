@@ -4316,7 +4316,13 @@ namespace JawaBench.BridgeTools
             string faction = null,
             [ToolParameter(Description =
                 "Ask whether it can fire, and do NOT fire it.", DefaultValue = false)]
-            bool dryRun = false)
+            bool dryRun = false,
+            [ToolParameter(Description =
+                "IncidentParms.forced: skip the storyteller gates (earliestDay, minRefireDays, biome, " +
+                "points) and ask only the worker's own CanFireNowSub -- for a GiveQuest incident that is " +
+                "QuestScriptDef.CanRun -> the quest root's TestRun. Lets a fresh test map ask a mod's own " +
+                "gate on day 1.", DefaultValue = false)]
+            bool forced = false)
         {
             if (string.IsNullOrWhiteSpace(incidentDef)) return Fail("incidentDef is required.");
 
@@ -4336,6 +4342,7 @@ namespace JawaBench.BridgeTools
 
                 var parms = StorytellerUtility.DefaultParmsNow(idef.category, map);
                 if (points > 0f) parms.points = points;
+                parms.forced = forced;
                 if (!string.IsNullOrWhiteSpace(faction))
                 {
                     var fac = Find.FactionManager.AllFactions.FirstOrDefault(
@@ -4367,6 +4374,7 @@ namespace JawaBench.BridgeTools
                     incident = idef.defName,
                     category = idef.category?.defName,
                     canFireNow = canFire,
+                    forced = forced,
                     fired,
                     windowsOpened,
                     blockedByDialog,
