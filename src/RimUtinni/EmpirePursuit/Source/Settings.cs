@@ -77,6 +77,8 @@ namespace RuthlessPursuingMechanoids
                 {
                     list.Label("RUT_Ladder_IonLockout".Translate(ionLockoutHours.ToString("0")));
                     ionLockoutHours = Mathf.Round(list.Slider(ionLockoutHours, 1f, 23f));
+                    list.Label("RUT_Ladder_IonVolleyInterval".Translate(ionVolleyIntervalHours.ToString("0")));
+                    ionVolleyIntervalHours = Mathf.Round(list.Slider(ionVolleyIntervalHours, 1f, 24f));
                 }
                 list.CheckboxLabeled("RUT_Ladder_Bombardment".Translate(), ref bombardmentEnabled, "RUT_Ladder_BombardmentDesc".Translate());
                 list.CheckboxLabeled("RUT_Ladder_Endless".Translate(), ref endlessAfterTop);

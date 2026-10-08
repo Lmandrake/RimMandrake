@@ -5,6 +5,25 @@ using Verse;
 
 namespace RimMandrake.Scarlands
 {
+    // DEAD_OR_INERT_SETTINGS (2026-10-08): the rarity slider was a label with no reader. RM_Warscar keeps the
+    // vanilla BiomeWorker_Scarlands (shared with the vanilla twin), so the slider acts here, on RM_Warscar only:
+    // 0 never; below 1 a tile-seeded chance keeps the score; above 1 the score is multiplied (wins more ties against
+    // biomes scoring the same tile). PROVISIONAL numbers: the multiplier form is a guess, the 0 and 1 ends are exact.
+    [HarmonyPatch(typeof(BiomeWorker_Scarlands), nameof(BiomeWorker_Scarlands.GetScore))]
+    public static class RM_WarscarPatches_Rarity
+    {
+        private const int GateSeedSalt = 0x57415253; // "WARS"
+
+        public static void Postfix(ref float __result, BiomeDef biome, RimWorld.Planet.PlanetTile planetTile)
+        {
+            if (biome == null || biome.defName != "RM_Warscar" || __result <= 0f) return;
+            float rarity = RM_WarscarSettings.biomeRarityFactor;
+            if (rarity <= 0.001f) { __result = -100f; return; }
+            if (rarity < 1f) { if (!Rand.ChanceSeeded(rarity, planetTile.tileId ^ GateSeedSalt)) __result = 0f; return; }
+            __result *= rarity;
+        }
+    }
+
     // WARSCAR_FREE_TIER_BODY_1: the tetchik "spawn-cell validator".
     // WildAnimalSpawner weights kinds by CommonalityOfAnimalNow(kind, loc) for
     // a random loc, so zeroing a kind there unless glower is near loc means a

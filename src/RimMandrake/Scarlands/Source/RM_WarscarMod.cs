@@ -8,18 +8,11 @@ using Verse;
 namespace RimMandrake.Scarlands
 {
     // ════════════════════════════════════════════════════════════════════
-    // SCARLANDS_STANDALONE_MOD_1 — Mod Settings for Warscar.
-    //
-    // This biome ships no bespoke mechanic of its own: its two duplicated
-    // flora defs (RM_Glower/RM_ScorchedStars) are plain harvestable plants
-    // with no comp yet (the frozen twin's own radiation-dose harvest loop is
-    // still owed to SCARLANDS_MECHANICS_2), and the frozen twin's own
-    // scaria-mark/pre-sprung-dressing mechanics deliberately did NOT move
-    // into this mod (this item's own `## spec`: "don't invent extra scope").
-    // So this screen ships only the standard worldgen-rarity slider every
-    // biome-worker mod ships, plus the honestly-disclosed reserved
-    // cross-biome section (MOD_OPTIONS_RETROFIT_1 doctrine), same shape as
-    // RM_Miasma/RM_RustCathedral's own screens.
+    // SCARLANDS_STANDALONE_MOD_1 — Mod Settings for Warscar: the worldgen-rarity
+    // slider (applied by RM_WarscarPatches_Rarity), one switch per mechanic, and the
+    // cross-biome opt-in (DEAD_OR_INERT_SETTINGS wiring 2026-10-08, same shape as
+    // RM_TheRotSettings): wreck-lichen seeding and the settling-dust calm run on an
+    // opted-in non-Warscar map, the lichen scaled by the intensity slider.
     //
     // STATIC FIELD, read from worldgen with no Mod instance handy.
     // ════════════════════════════════════════════════════════════════════
@@ -28,8 +21,7 @@ namespace RimMandrake.Scarlands
         // Worldgen insertion. 0 = the biome never generates on a new planet.
         public static float biomeRarityFactor = 1f;
 
-        // MOD_OPTIONS_RETROFIT_1: reserved fields for letting this biome's
-        // (currently nonexistent) mechanics run on other biomes too.
+        // MOD_OPTIONS_RETROFIT_1: let the map-level mechanics (wreck-lichen, the settling calm) run on other biomes.
         // Persisted and exposed here honestly as NOT YET WIRED to any
         // mechanic — there is no mechanic in this mod for it to gate yet.
         // WARSCAR_TURRETS_TRACK_1 toggles.
@@ -140,6 +132,26 @@ namespace RimMandrake.Scarlands
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
         public static float crossBiomeCoverage = 1f;
+        private static string biomeListBuffer;
+
+        public static bool IsWarscar(BiomeDef biome) { return biome != null && biome.defName == "RM_Warscar"; }
+
+        /// <summary>True if the cross-biome opt-in applies to this biome (never to the Warscar itself: that is native).</summary>
+        public static bool AppliesToBiome(BiomeDef biome)
+        {
+            if (!RM_WarscarSettings.crossBiomeEnabled || biome == null || IsWarscar(biome)) return false;
+            if (RM_WarscarSettings.crossBiomeEverywhere) return true;
+            if (RM_WarscarSettings.crossBiomeBiomeList.NullOrEmpty()) return false;
+            foreach (string part in RM_WarscarSettings.crossBiomeBiomeList.Split(',', ';'))
+                if (part.Trim() == biome.defName) return true;
+            return false;
+        }
+
+        /// <summary>The Warscar's map mechanics run here: the biome itself, or an opted-in cross-biome map.</summary>
+        public static bool Governs(BiomeDef biome) { return IsWarscar(biome) || AppliesToBiome(biome); }
+
+        /// <summary>1 on the Warscar; the intensity slider on a cross-biome map; 0 elsewhere.</summary>
+        public static float Coverage(BiomeDef biome) { return IsWarscar(biome) ? 1f : (AppliesToBiome(biome) ? RM_WarscarSettings.crossBiomeCoverage : 0f); }
 
         public override void ExposeData()
         {
@@ -442,11 +454,23 @@ namespace RimMandrake.Scarlands
                 "Places wreck-lichen on open cells next to ruins and wreck. Worldgen-affecting.");
             list.GapLine();
 
-            list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");
-            bool crossBiomeEnabledLocal = crossBiomeEnabled;
-            list.CheckboxLabeled("Allow this mod's mechanics on other biomes", ref crossBiomeEnabledLocal,
-                "Reserved for a future pass. No mechanic in this mod currently reads this switch.");
-            crossBiomeEnabled = crossBiomeEnabledLocal;
+            list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING for wreck-lichen)");
+            list.Label("Runs the Warscar's map mechanics on a NON-Warscar map: wreck-lichen beside ruins and wreck, "
+                       + "and the settling dust after a calm. Rings, panels and the cast stay Warscar-only.");
+            list.CheckboxLabeled("Enable outside the Warscar", ref crossBiomeEnabled, "Master switch for the section below.");
+            if (crossBiomeEnabled)
+            {
+                list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere, "Apply to any non-Warscar biome. Off: only the biomes named below.");
+                if (!crossBiomeEverywhere)
+                {
+                    if (biomeListBuffer == null) biomeListBuffer = crossBiomeBiomeList;
+                    list.Label("  Biome defNames, comma-separated (e.g. TemperateForest, AridShrubland):");
+                    biomeListBuffer = list.TextEntry(biomeListBuffer);
+                    crossBiomeBiomeList = biomeListBuffer;
+                }
+                list.Label("  Wreck-lichen intensity on those maps: " + (crossBiomeCoverage * 100f).ToString("0") + "%");
+                crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
+            }
 
             viewHeight = list.CurHeight + 24f;
             list.End();
