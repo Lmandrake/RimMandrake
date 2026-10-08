@@ -136,5 +136,119 @@
   "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
   "old": "float ax = -(float)Math.Sin(h);\n            float az = eq * ch;",
   "new": "float ax = (float)Math.Sin(h);\n            float az = eq * ch;"
+ },
+ {
+  "name": "solar: aperture never lets a beam inside",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "inside = true;\n                return null;",
+  "new": "inside = false;\n                return null;"
+ },
+ {
+  "name": "solar: roofs block even past glass",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (!inside && w.Roofed(x, z))",
+  "new": "if (w.Roofed(x, z))"
+ },
+ {
+  "name": "solar: target cell forgets the walk passed glass",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "bool inside = walk.inside;",
+  "new": "bool inside = false;"
+ },
+ {
+  "name": "solar: dust grows without a storm",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (!storm || perDay <= 0f || ticks <= 0)",
+  "new": "if (perDay <= 0f || ticks <= 0)"
+ },
+ {
+  "name": "solar: dust factor ignores maxLoss",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "Clamp(1f - Clamp(dust, 0f, 1f) * Clamp(maxLoss, 0f, 1f), 0f, 1f)",
+  "new": "Clamp(1f - Clamp(dust, 0f, 1f), 0f, 1f)"
+ },
+ {
+  "name": "solar: concentration ignores its cap",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "float total = Math.Min(light, Math.Max(1f, cap)) * perUnitC;",
+  "new": "float total = light * perUnitC;"
+ },
+ {
+  "name": "solar: concentration passes the biome's max",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (total > maxOffsetC)\n",
+  "new": "if (total > maxOffsetC * 2f)\n"
+ },
+ {
+  "name": "solar: concentration double-counts plain sun",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "float extra = total - Math.Max(0f, appliedC);",
+  "new": "float extra = total;"
+ },
+ {
+  "name": "solar: room heat per tick not per second",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "return light * perLightPerSecond * intervalTicks / 60f;",
+  "new": "return light * perLightPerSecond * intervalTicks / 6f;"
+ },
+ {
+  "name": "solar: dazzle threshold lowered",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "if (l < 0.5f || maxPenalty <= 0f)",
+  "new": "if (l < 0.25f || maxPenalty <= 0f)"
+ },
+ {
+  "name": "solar: heliograph ignores daylight",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorKernel.cs",
+  "old": "return Math.Max(0f, rangeTiles) * Clamp(daylight, 0f, 1f);",
+  "new": "return Math.Max(0f, rangeTiles);"
+ },
+ {
+  "name": "field: Hamming inverted",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (a % d != b % d)",
+  "new": "if (a % d == b % d)"
+ },
+ {
+  "name": "field: Rebase keeps the farthest solution",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (r.minReAims < 0 || h < r.minReAims)",
+  "new": "if (r.minReAims < 0 || h > r.minReAims)"
+ },
+ {
+  "name": "field: acceptance ignores the chain cap",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "else if (r.bestDepth > depthCap)",
+  "new": "else if (r.bestDepth > depthCap + 1)"
+ },
+ {
+  "name": "field: PickStart takes a start one turn too near",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (dist >= Math.Max(1, want))",
+  "new": "if (dist >= want - 1)"
+ },
+ {
+  "name": "field: hint names the wrong detent",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "detent = want;",
+  "new": "detent = (want + 1) % d;"
+ },
+ {
+  "name": "field: hint level escalates late",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (reAimsDone >= 2 * step)",
+  "new": "if (reAimsDone > 2 * step)"
+ },
+ {
+  "name": "field: oversized space not refused",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "if (c > MaxConfigurations)",
+  "new": "if (c > MaxConfigurations * 4)"
+ },
+ {
+  "name": "field: solver skips the last configuration",
+  "file": "src/RimMandrake/SolarMirrors/Source/Kernel/RM_MirrorFieldKernel.cs",
+  "old": "for (int code = 0; code < total; code++)",
+  "new": "for (int code = 0; code < total - 1; code++)"
  }
 ]

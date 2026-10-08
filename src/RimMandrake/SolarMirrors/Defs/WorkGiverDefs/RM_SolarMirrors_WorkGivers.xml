@@ -15,4 +15,31 @@
     </requiredCapacities>
   </WorkGiverDef>
 
+  <!-- SOLAR_MIRRORS_BUILD_1. priorityInType PROVISIONAL. -->
+  <WorkGiverDef>
+    <defName>RM_CleanMirror</defName>
+    <label>clean mirrors</label>
+    <giverClass>RimMandrake.SolarMirrors.RM_WorkGiver_CleanMirror</giverClass>
+    <workType>Cleaning</workType>
+    <priorityInType>5</priorityInType>
+    <verb>clean</verb>
+    <gerund>cleaning</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_RepairAncientMirror</defName>
+    <label>free ancient mirrors</label>
+    <giverClass>RimMandrake.SolarMirrors.RM_WorkGiver_RepairAncientMirror</giverClass>
+    <workType>Construction</workType>
+    <priorityInType>44</priorityInType>
+    <verb>free</verb>
+    <gerund>freeing</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
 </Defs>

@@ -3,14 +3,17 @@ RimMandrake mod depending on mandrake.rm.biomes (CreatureBehaviors' shade grid i
 
 SOLAR_MIRRORS_MOD_DESIGN_1 (design/RimMandrake/solar_mirrors_mod_design_2026-10-04.md): the core (light
 layer, signal/static mirrors, heliostat, re-aim job, relays, glow, render) plus E1 (solar furnace),
-E4 (blinding defence) and a sun-stone receiver. Design §6.2 lists the must-be-true lines; their chains
-are below. Run:
+E4 (blinding defence) and a sun-stone receiver; SOLAR_MIRRORS_BUILD_1 added the §3.4 ancient mirror field
+(Long Shade puzzle: solver, detents, repair, latched vault), §3.2 dust + cleaning, §2.6 concentration heat,
+E2 glazed aperture + room heat, E3 heliograph, E4 dazzle, and the full §3.5 settings. Design §6.2 lists the
+must-be-true lines; the walk is design/validation_walks/RimMandrake/SolarMirrors.md. Run:
 
     python.exe src/RimMandrake/Utils/modcheck/cli.py run SolarMirrors
 
 Offline: `python3 src/RimMandrake/SolarMirrors/validation.py` runs static_checks() only.
-Not proven anywhere yet: every live line (no bridge [Tool] reads the shade grid or the mirror layer at
-a cell; `RM_ShadeProbe` is owed, design §6.2 line 2), and legibility (owner-watched, design §2.8).
+Not proven anywhere yet: every live line. The probe they need exists now (`jawa/shade_probe`, the design's
+RM_ShadeProbe, in the JawaBench companion: built, not yet deployed); lines that also need a staged scene stay
+UNMEASURED below. Legibility is owner-watched (design §2.8).
 """
 import math
 import os
@@ -28,9 +31,17 @@ SHADE_GRID_CS = os.path.join(HERE, "..", "CreatureBehaviors", "Source", "RM_MapC
 CB_DLL = os.path.join(HERE, "..", "CreatureBehaviors", "Assemblies", "RimMandrake.CreatureBehaviors.dll")
 GLARE_HEDIFF_XML = os.path.join(HERE, "..", "CreatureBehaviors", "Defs", "HediffDefs", "RM_GlareBlind_Hediffs.xml")
 NS = "RimMandrake.SolarMirrors."
-MIRRORS = ("RM_SignalMirror", "RM_StaticMirror", "RM_Heliostat")
+MIRRORS = ("RM_SignalMirror", "RM_StaticMirror", "RM_Heliostat", "RM_AncientHeliostat")
 RECEIVERS = ("RM_SunStone", "RM_SolarFurnace")
-ALL_DEFS = ["ThingDef/%s" % d for d in MIRRORS + RECEIVERS] + ["JobDef/RM_ReAimMirror", "WorkGiverDef/RM_ReAimMirror"]
+FIELD_PARTS = ("RM_MirrorDetent", "RM_SunVaultWall", "RM_SunVaultSeal", "RM_GlazedAperture")
+JOBS = ("RM_ReAimMirror", "RM_CleanMirror", "RM_RepairAncientMirror", "RM_FlashHeliograph")
+WORKGIVERS = ("RM_ReAimMirror", "RM_CleanMirror", "RM_RepairAncientMirror")
+ALL_DEFS = (["ThingDef/%s" % d for d in MIRRORS + RECEIVERS + FIELD_PARTS] + ["JobDef/%s" % j for j in JOBS]
+            + ["WorkGiverDef/%s" % w for w in WORKGIVERS] + ["GenStepDef/RM_GenStep_AncientMirrorField"])
+PATCH_LONGSHADE = os.path.join(HERE, "Patches", "RM_SolarMirrors_LongShade.xml")
+# Settings that are effects (all-off must turn each one off, design §3.5 "all-off leaves inert decorative buildings").
+EFFECT_TOGGLES = ("shadeEffect", "glowEffect", "blindingDefence", "solarFurnace", "ancientFields", "dustEnabled",
+                  "concentrationHeat", "roomHeat", "heliograph", "dazzle")
 NEEDLES = ("mandrake.rm.solarmirrors", "RimMandrake.SolarMirrors", "RM_CompMirror", "RM_MirrorLight",
            "RM_SolarFurnace", "RM_Heliostat", "RM_StaticMirror", "RM_SignalMirror", "RM_SunStone",
            # The CreatureBehaviors light hook: a TypeLoad/MissingMethod naming it means the shipped
@@ -41,7 +52,9 @@ SHADE_THRESHOLD = 0.8  # RM_MapComponent_ShadeGrid.ShadeCastingFillPercentThresh
 suite = Suite("SolarMirrors")
 suite.toggles = ["shadeEffect", "glowEffect", "beamRender", "staticSweep", "blindingDefence",
                  "blindSeverityPerDay", "solarFurnace", "reflectivityMultiplier", "reAimWorkMultiplier",
-                 "passIntervalTicks", "maxChain"]
+                 "passIntervalTicks", "maxChain", "ancientFields", "puzzleMinReAims", "puzzleMirrors", "dustEnabled",
+                 "dustPerDay", "heliostatPower", "concentrationHeat", "concentrationCap", "roomHeat", "roomHeatPerLight",
+                 "heliograph", "heliographRange", "dazzle", "dazzleMaxPenalty"]
 
 
 # ── live chains (design §6.2) ────────────────────────────────────────────
@@ -71,14 +84,49 @@ def defs(t):
                 raise ExpectationFailed("defs missing: %r" % r.get("notFound"))
 
 
-# Lines that need a probe this repo does not have yet. Each stays UNMEASURED, never PASS.
+def _probe(t, cells=None):
+    r = t.bridge_call("jawa/shade_probe", **({"cells": cells} if cells else {}))
+    if not isinstance(r, dict) or r.get("success") is not True:
+        raise ExpectationFailed("UNMEASURED: jawa/shade_probe did not answer (companion not deployed?): %r" % (r,))
+    return r
+
+
+@suite.chain("probe")
+def probe(t):
+    with t.component("answers", beyond_toggle=True):
+        if t._guard():
+            r = _probe(t)
+            pres = r.get("present") or {}
+            if not (isinstance(pres, dict) and pres.get("shadeGrid") and pres.get("mirrorLight") and pres.get("mirrorField")):
+                raise ExpectationFailed("UNMEASURED: a component is absent on this map: %r" % (pres,))
+            if r.get("missingMembers"):
+                raise ExpectationFailed("the probe could not read %r (renamed members?)" % r.get("missingMembers"))
+
+
+@suite.chain("field")
+def field(t):
+    # Design §3.4: on a Long Shade map made with the setting on, mapgen kept a SOLVED layout.
+    with t.component("solvable", toggle="ancientFields"):
+        if t._guard():
+            f = (_probe(t).get("field") or {})
+            if not f.get("hasField"):
+                raise ExpectationFailed("UNMEASURED: the current map has no ancient field (%s)" % f.get("solverReport"))
+            if not (f.get("solutionCount") or 0) >= 1:
+                raise ExpectationFailed("field kept with no solution: %s" % f.get("solverReport"))
+            if (f.get("minReAims") or 0) < 2:
+                raise ExpectationFailed("field start is %r re-aims from a solution, want >= 2" % f.get("minReAims"))
+            if f.get("currentlySolved") and not f.get("latched"):
+                raise ExpectationFailed("all stones lit but the vault did not latch")
+
+
+# Lines that need a staged scene (and the probe above). Each stays UNMEASURED, never PASS.
 LIVE_OWED = [
     ("hook", "registered", "shadeEffect",
      "on a map with a lit mirror, RM_MapComponent_ShadeGrid.LightAt(cell) > 0 at the spot (the grid pulled the "
-     "light through IRM_LightLayer.AddLight). Needs RM_ShadeProbe"),
+     "light through IRM_LightLayer.AddLight). jawa/shade_probe reads it; needs a staged lit mirror"),
     ("light", "unshade", "shadeEffect",
      "aim a static mirror at a shaded cell: ShadeAt falls and ExposureAt rises there; un-aim restores both. "
-     "Needs RM_ShadeProbe (a [Tool] reading ShadeAt/ExposureAt/LightAt at a cell)"),
+     "jawa/shade_probe reads ShadeAt/ExposureAt/LightAt at a cell; needs a staged mirror"),
     ("light", "blocked", None, "build a wall on the beam line; the spot's light is 0 within one pass (250 ticks)"),
     ("light", "roof", None, "a roof over the target, and a roof on the path, each take the light (design §2.2 rule)"),
     ("light", "chain", "maxChain", "a mirror in shadow throws nothing; lit by a second mirror it fires (relay)"),
@@ -88,6 +136,17 @@ LIVE_OWED = [
     ("heliostat", "power_freeze", None, "cut a heliostat's power under a moving sun: its spot starts to drift"),
     ("furnace", "gated", "solarFurnace", "a furnace takes no bill with one mirror on it and works with two"),
     ("blind", "hostile_gain", "blindingDefence", "a hostile humanlike in a beam gains RM_GlareBlind; goggles stop it"),
+    # SOLAR_MIRRORS_BUILD_1
+    ("field", "latch", "ancientFields", "light every sun-stone of a field: the seal is gone within 250 ticks and stays gone after a dust storm"),
+    ("field", "repair", "ancientFields", "a seized ancient mirror refuses pins; 'Free the bearings' consumes one component and then pins work"),
+    ("dust", "storm", "dustEnabled", "a dusty weather raises an unroofed mirror's Dust and lowers its delivered light"),
+    ("dust", "clean", "dustEnabled", "a mirror past the clean threshold gets a Cleaning job that resets Dust to 0"),
+    ("glazed", "room", "roomHeat", "a beam through RM_GlazedAperture lights a roofed cell and the room's temperature rises"),
+    ("furnace", "room_heat", "roomHeat", "a lit solar furnace inside a closed room warms the room"),
+    ("helio", "comms", "heliograph", "by day a colonist at a sunlit signal mirror opens comms with a friendly faction in range"),
+    ("helio", "night", "heliograph", "at night the float menu says why it cannot flash, and offers no faction"),
+    ("dazzle", "accuracy", "dazzle", "a hostile shooter in a beam shows the dazzle factor in ShootingAccuracyPawn's explanation"),
+    ("concentration", "heat", "concentrationHeat", "a pawn where two beams overlap feels hotter than in one beam, never past maxHeatOffsetC"),
 ]
 
 
@@ -194,6 +253,74 @@ def _hook_checks(bad):
             bad.append("%s patches the shade grid's internals; use the public light hook" % f)
 
 
+def _build_checks(bad, things):
+    """SOLAR_MIRRORS_BUILD_1's parts, each of which could vanish silently."""
+    anc = things.get("RM_AncientHeliostat")
+    if anc is not None:
+        p = [li for li in anc.findall("comps/li") if li.get("Class") == NS + "RM_CompProperties_Mirror"]
+        if not p or p[0].findtext("ancient") != "true":
+            bad.append("RM_AncientHeliostat is not an ancient mirror (ancient=true): it would be freely aimable")
+        dc = anc.find("designationCategory")
+        if dc is None or dc.get("IsNull") != "True":
+            bad.append("RM_AncientHeliostat must not be buildable (designationCategory IsNull)")
+        if anc.findtext("building/claimable") != "false":
+            bad.append("RM_AncientHeliostat is claimable (the puzzle could be deconstructed for parts)")
+    for dn in FIELD_PARTS:
+        if dn not in things:
+            bad.append("ThingDef %s missing" % dn)
+    ap = things.get("RM_GlazedAperture")
+    if ap is not None and not any(li.get("Class") == NS + "RM_MirrorApertureExtension" for li in ap.findall("modExtensions/li")):
+        bad.append("RM_GlazedAperture lacks RM_MirrorApertureExtension: beams would stop at it like a wall")
+    sm = things.get("RM_SignalMirror")
+    if sm is not None and not any(li.get("Class") == NS + "RM_CompProperties_Heliograph" for li in sm.findall("comps/li")):
+        bad.append("RM_SignalMirror lacks the heliograph comp (design §5 E3)")
+    seal = things.get("RM_SunVaultSeal")
+    if seal is not None and not any((li.findtext("compClass") or "") == NS + "RM_CompSunVaultSeal" for li in seal.findall("comps/li")):
+        bad.append("RM_SunVaultSeal lacks RM_CompSunVaultSeal: the puzzle would have no readout")
+    # The field reaches the Long Shade only through this patch: it must add BOTH the extension and the step.
+    if not os.path.isfile(PATCH_LONGSHADE):
+        bad.append("no Long Shade patch: no biome asks for an ancient field")
+    else:
+        txt = open(PATCH_LONGSHADE, encoding="utf-8").read()
+        for need in ('BiomeDef[defName="RM_LongShade"]', NS + "RM_MirrorFieldExtension", "<li>RM_GenStep_AncientMirrorField</li>",
+                     "PatchOperationConditional"):
+            if need not in txt:
+                bad.append("Long Shade patch lacks %s" % need)
+    gs = None
+    for path in _def_files():
+        for e in ET.parse(path).getroot():
+            if e.tag == "GenStepDef" and e.findtext("defName") == "RM_GenStep_AncientMirrorField":
+                gs = e
+    if gs is None:
+        bad.append("GenStepDef RM_GenStep_AncientMirrorField missing")
+    else:
+        step = gs.find("genStep")
+        for f in ("mirrorDef", "stoneDef", "detentDef", "sealDef", "wallDef", "rewardDef"):
+            v = step.findtext(f) if step is not None else None
+            if not v or (v.startswith("RM_") and v not in things):
+                bad.append("genStep %s = %r does not name a def of this mod" % (f, v))
+        if step is not None and step.findtext("rewardDef") != "RM_Heliostat":
+            bad.append("the vault's prize is not a heliostat (owner ruling 2026-10-04: loot and a repaired heliostat)")
+    dust = [e for p in _def_files() for e in ET.parse(p).getroot() if e.tag.endswith("RM_MirrorDustWeathersDef")]
+    if len(dust) != 1 or dust[0].findtext("defName") != "RM_MirrorDust" or not dust[0].findall("weathers/li"):
+        bad.append("exactly one RM_MirrorDustWeathersDef named RM_MirrorDust with weathers is required (the code looks it up by name)")
+    elif not 0 < float(dust[0].findtext("maxLoss")) < 1:
+        bad.append("dust maxLoss must be in (0,1): a fully dusty mirror must still pass some light, and dust must cost something")
+    mod = open(os.path.join(SRC, "RM_SolarMirrorsMod.cs"), encoding="utf-8").read()
+    m = re.search(r"public static void AllOff\(\)\s*\{(.*?)\n        \}", mod, re.S)
+    if not m:
+        bad.append("RM_SolarMirrorsSettings.AllOff() missing")
+    else:
+        for tog in EFFECT_TOGGLES:
+            if not re.search(r"\b%s = false;" % tog, m.group(1)):
+                bad.append("AllOff() leaves %s on: all-off would not be inert" % tog)
+        if "beamRender = 0;" not in m.group(1):
+            bad.append("AllOff() leaves beams drawn")
+    for f in ("RM_MirrorField.cs", "RM_MirrorWork.cs", os.path.join("Kernel", "RM_MirrorFieldKernel.cs")):
+        if not os.path.isfile(os.path.join(SRC, f)):
+            bad.append("%s missing" % f)
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -284,6 +411,7 @@ def static_checks():
             bad.append("furnace has a power comp: it must run on light alone")
 
     _hook_checks(bad)
+    _build_checks(bad, things)
     if "<defName>RM_GlareBlind</defName>" not in open(GLARE_HEDIFF_XML, encoding="utf-8").read():
         bad.append("RM_GlareBlind hediff gone: the blinding defence would silently do nothing")
 
@@ -293,6 +421,9 @@ def static_checks():
     for f in os.listdir(SRC):
         if f.endswith(".cs") and ('Compile Include="%s"' % f) not in proj:
             bad.append("%s is not in the csproj (compiles into nothing)" % f)
+    for f in os.listdir(os.path.join(SRC, "Kernel")):
+        if f.endswith(".cs") and ('Compile Include="Kernel\\%s"' % f) not in proj:
+            bad.append("Kernel/%s is not in the csproj (compiles into nothing)" % f)
     mod = open(os.path.join(SRC, "RM_SolarMirrorsMod.cs"), encoding="utf-8").read()
     for f in suite.toggles:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), mod):

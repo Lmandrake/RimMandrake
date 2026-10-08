@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SolarMirrors_GenSteps.xml    SOLAR_MIRRORS_MOD_DESIGN_1 §3.4, built under SOLAR_MIRRORS_BUILD_1
+
+  The ancient mirror field. Named only in the extraGenSteps of a biome that also carries
+  RimMandrake.SolarMirrors.RM_MirrorFieldExtension; the Long Shade gets both from
+  Patches/RM_SolarMirrors_LongShade.xml. The step also checks the extension and the "Ancient mirror fields"
+  setting (affects map generation), so it does nothing anywhere else.
+
+  Order 955: after Plants (900), so big plants' shadows count when the solver reads the shade grid; with the
+  Long Shade's crawler road (950) and before its sun graves (960) and Animals (1200).
+
+  The prize is the owner's ruling (2026-10-04): loot and a repaired heliostat. Every number is PROVISIONAL.
+-->
+<Defs>
+
+  <GenStepDef>
+    <defName>RM_GenStep_AncientMirrorField</defName>
+    <order>955</order>
+    <genStep Class="RimMandrake.SolarMirrors.RM_GenStep_AncientMirrorField">
+      <mirrorDef>RM_AncientHeliostat</mirrorDef>
+      <stoneDef>RM_SunStone</stoneDef>
+      <stoneStuff>BlocksSandstone</stoneStuff>
+      <detentDef>RM_MirrorDetent</detentDef>
+      <sealDef>RM_SunVaultSeal</sealDef>
+      <wallDef>RM_SunVaultWall</wallDef>
+      <wallStuff>BlocksSandstone</wallStuff>
+      <rewardDef>RM_Heliostat</rewardDef>
+      <ringRadius>9~15</ringRadius>          <!-- PROVISIONAL -->
+      <siteAttempts>40</siteAttempts>
+      <layoutAttempts>30</layoutAttempts>
+      <loot>                                  <!-- PROVISIONAL -->
+        <Silver>250~500</Silver>
+        <Gold>20~50</Gold>
+        <ComponentIndustrial>4~8</ComponentIndustrial>
+        <Plasteel>20~40</Plasteel>
+      </loot>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

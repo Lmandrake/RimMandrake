@@ -9,4 +9,25 @@
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
 
+  <!-- SOLAR_MIRRORS_BUILD_1: §3.2 dust, §3.4 freeing an ancient mirror, §5 E3 heliograph. -->
+  <JobDef>
+    <defName>RM_CleanMirror</defName>
+    <driverClass>RimMandrake.SolarMirrors.RM_JobDriver_CleanMirror</driverClass>
+    <reportString>cleaning TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_RepairAncientMirror</defName>
+    <driverClass>RimMandrake.SolarMirrors.RM_JobDriver_RepairAncientMirror</driverClass>
+    <reportString>freeing the bearings of TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_FlashHeliograph</defName>
+    <driverClass>RimMandrake.SolarMirrors.RM_JobDriver_FlashHeliograph</driverClass>
+    <reportString>flashing a heliograph from TargetA.</reportString>
+  </JobDef>
+
 </Defs>

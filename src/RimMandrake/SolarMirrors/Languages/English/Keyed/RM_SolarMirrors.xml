@@ -65,4 +65,61 @@
   <RM_SolarMirrors_Receiver_Unlit>Unlit ({0}; lights at {1})</RM_SolarMirrors_Receiver_Unlit>
   <RM_SolarMirrors_Furnace_Working>Hot enough to work</RM_SolarMirrors_Furnace_Working>
   <RM_SolarMirrors_Furnace_Idle>Too little focused light to work</RM_SolarMirrors_Furnace_Idle>
+
+  <!-- SOLAR_MIRRORS_BUILD_1 -->
+  <RM_SolarMirrors_Setting_AllOff>Turn every effect off</RM_SolarMirrors_Setting_AllOff>
+  <RM_SolarMirrors_Setting_Dazzle>Mirrors spoil enemies' aim</RM_SolarMirrors_Setting_Dazzle>
+  <RM_SolarMirrors_Setting_Dazzle_Tip>Hostile people standing in a strong patch of mirror light shoot less accurately, unless goggles or a gene protect their eyes. Off: mirror light never affects anyone's aim.</RM_SolarMirrors_Setting_Dazzle_Tip>
+  <RM_SolarMirrors_Setting_DazzleMax>Aim lost in full light: {0}</RM_SolarMirrors_Setting_DazzleMax>
+  <RM_SolarMirrors_Dazzle_Explain>Dazzled by mirror light</RM_SolarMirrors_Dazzle_Explain>
+  <RM_SolarMirrors_Setting_Concentration>Focused light burns hotter</RM_SolarMirrors_Setting_Concentration>
+  <RM_SolarMirrors_Setting_Concentration_Tip>Where several mirrors overlap, the light is stronger than plain sun, and anyone standing in it feels hotter (the same sun heat as always, never past the biome's limit). Off: overlapping mirrors feel no hotter than one.</RM_SolarMirrors_Setting_Concentration_Tip>
+  <RM_SolarMirrors_Setting_ConcentrationCap>Light counted at most: {0} times the sun</RM_SolarMirrors_Setting_ConcentrationCap>
+  <RM_SolarMirrors_Setting_RoomHeat>Mirror light warms rooms</RM_SolarMirrors_Setting_RoomHeat>
+  <RM_SolarMirrors_Setting_RoomHeat_Tip>Mirror light that reaches inside an enclosed room (through a glazed aperture, or onto a solar furnace indoors) warms the room, like a heater. Outdoors it never changes the air temperature. Off: mirror light never heats a room.</RM_SolarMirrors_Setting_RoomHeat_Tip>
+  <RM_SolarMirrors_Setting_RoomHeatRate>Heat per lit cell: {0}</RM_SolarMirrors_Setting_RoomHeatRate>
+  <RM_SolarMirrors_Setting_Helio>Signal mirrors work as heliographs</RM_SolarMirrors_Setting_Helio>
+  <RM_SolarMirrors_Setting_Helio_Tip>By day, a colonist at a signal mirror standing in the sun can flash a friendly settlement within reach and open talks with it, as from a comms console. Reach shrinks as the light fades. Off: no heliograph.</RM_SolarMirrors_Setting_Helio_Tip>
+  <RM_SolarMirrors_Setting_HelioRange>Heliograph reach in full daylight: {0} world tiles</RM_SolarMirrors_Setting_HelioRange>
+  <RM_SolarMirrors_Section_Field>Ancient mirror fields</RM_SolarMirrors_Section_Field>
+  <RM_SolarMirrors_Setting_Fields>Ancient mirror fields where the biome has them (affects map generation)</RM_SolarMirrors_Setting_Fields>
+  <RM_SolarMirrors_Setting_Fields_Tip>Maps of a biome that asks for one (the Long Shade) get a field of seized ancient heliostats and a sealed vault that opens when every sun-stone before it is lit. Every field is checked to be solvable before it is placed. Only affects maps made after the change. Off: no fields are generated.</RM_SolarMirrors_Setting_Fields_Tip>
+  <RM_SolarMirrors_Setting_PuzzleReAims>Turns needed at least: {0}</RM_SolarMirrors_Setting_PuzzleReAims>
+  <RM_SolarMirrors_Setting_PuzzleReAims_Tip>The fewest mirror turns that can solve a new field. More turns is a harder puzzle. Only affects maps made after the change.</RM_SolarMirrors_Setting_PuzzleReAims_Tip>
+  <RM_SolarMirrors_Setting_PuzzleMirrors>Ancient mirrors in a field: {0}</RM_SolarMirrors_Setting_PuzzleMirrors>
+  <RM_SolarMirrors_Setting_PuzzleMirrors_Tip>How many ancient heliostats a new field has. Each turns between three brass pins. Only affects maps made after the change.</RM_SolarMirrors_Setting_PuzzleMirrors_Tip>
+  <RM_SolarMirrors_Section_Care>Upkeep</RM_SolarMirrors_Section_Care>
+  <RM_SolarMirrors_Setting_Dust>Dust storms dirty mirrors</RM_SolarMirrors_Setting_Dust>
+  <RM_SolarMirrors_Setting_Dust_Tip>Sand, grit and ash storms dull mirrors standing in the open until a colonist cleans them (Cleaning work). Off: mirrors never get dirty.</RM_SolarMirrors_Setting_Dust_Tip>
+  <RM_SolarMirrors_Setting_DustRate>Dust per day of storm: {0}</RM_SolarMirrors_Setting_DustRate>
+  <RM_SolarMirrors_Setting_Power>Heliostat power use: {0} W</RM_SolarMirrors_Setting_Power>
+  <RM_SolarMirrors_Setting_Power_Tip>Power a heliostat draws while it follows the sun.</RM_SolarMirrors_Setting_Power_Tip>
+
+  <RM_SolarMirrors_Repair>Free the bearings</RM_SolarMirrors_Repair>
+  <RM_SolarMirrors_Repair_Desc>Have a colonist (Construction) free this ancient mirror's seized bearings, using one component. Until then it cannot be turned.</RM_SolarMirrors_Repair_Desc>
+  <RM_SolarMirrors_Repair_NoComponent>No reachable component</RM_SolarMirrors_Repair_NoComponent>
+  <RM_SolarMirrors_Detent>Turn to pin {0}</RM_SolarMirrors_Detent>
+  <RM_SolarMirrors_Detent_Desc>Have a colonist turn this mirror to brass pin {0} (at {1}). Select the mirror to see where every pin sends its light.</RM_SolarMirrors_Detent_Desc>
+  <RM_SolarMirrors_Detent_Current>It already faces this pin.</RM_SolarMirrors_Detent_Current>
+  <RM_SolarMirrors_Detent_Pending>A colonist is already due to turn it here.</RM_SolarMirrors_Detent_Pending>
+  <RM_SolarMirrors_Inspect_Seized>Seized: its bearings must be freed before it can turn</RM_SolarMirrors_Inspect_Seized>
+  <RM_SolarMirrors_Inspect_Freed>Bearings free</RM_SolarMirrors_Inspect_Freed>
+  <RM_SolarMirrors_Inspect_Detent>Facing pin {0} of {1}</RM_SolarMirrors_Inspect_Detent>
+  <RM_SolarMirrors_Inspect_Dust>Dusty: {0} (loses {1} of its light)</RM_SolarMirrors_Inspect_Dust>
+
+  <RM_SolarMirrors_Helio_Off>heliographs are off in Mod Settings</RM_SolarMirrors_Helio_Off>
+  <RM_SolarMirrors_Helio_NoSun>no sun to flash with</RM_SolarMirrors_Helio_NoSun>
+  <RM_SolarMirrors_Helio_Shadow>the mirror stands in shadow</RM_SolarMirrors_Helio_Shadow>
+  <RM_SolarMirrors_Helio_NoSocial>incapable of social work</RM_SolarMirrors_Helio_NoSocial>
+  <RM_SolarMirrors_Helio_NoneInRange>no friendly settlement within {0} tiles</RM_SolarMirrors_Helio_NoneInRange>
+  <RM_SolarMirrors_Helio_Cannot>Cannot flash a heliograph: {0}</RM_SolarMirrors_Helio_Cannot>
+  <RM_SolarMirrors_Helio_Flash>Flash a heliograph to {0}</RM_SolarMirrors_Helio_Flash>
+
+  <RM_SolarMirrors_VaultOpen_Label>Sun vault opened</RM_SolarMirrors_VaultOpen_Label>
+  <RM_SolarMirrors_VaultOpen_Text>Every sun-stone before the ancient vault is lit, and its seal has given way. Whatever the vanished people kept inside is there to take.</RM_SolarMirrors_VaultOpen_Text>
+  <RM_SolarMirrors_Hint_Open>The vault stands open.</RM_SolarMirrors_Hint_Open>
+  <RM_SolarMirrors_Hint_Lit>Sun-stones lit: {0} of {1}</RM_SolarMirrors_Hint_Lit>
+  <RM_SolarMirrors_Hint_Dark>The stone at {0} is still dark; one of the ancient mirrors has a pin on it.</RM_SolarMirrors_Hint_Dark>
+  <RM_SolarMirrors_Hint_DarkRelay>The stone at {0} is still dark, and no mirror has a pin on it: its light must come by way of another mirror.</RM_SolarMirrors_Hint_DarkRelay>
+  <RM_SolarMirrors_Hint_Next>Try turning the ancient mirror at {0} to pin {1}.</RM_SolarMirrors_Hint_Next>
 </LanguageData>

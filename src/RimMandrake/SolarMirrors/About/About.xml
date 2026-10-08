@@ -34,10 +34,15 @@ Buildings:
   - Static mirror (2x2, any metal; silver and gold reflect best). Aimed by a colonist. It does not track the sun, so where the sun moves its patch of light slowly sweeps.
   - Heliostat (3x3, powered). Aimed instantly and holds its target as the sun moves. Without power it freezes where it is and becomes a static mirror.
   - Sun-stone (1x1). Reads lit or unlit.
-  - Solar furnace. Smelts with no fuel and no power, but only while concentrated light (two or more mirrors) falls on it.
-  - Blinding defence: hostile people standing in a beam slowly go glare-blind, unless goggles or a gene protect them.
+  - Solar furnace. Smelts with no fuel and no power, but only while concentrated light (two or more mirrors) falls on it. Indoors it warms its room.
+  - Glazed aperture. A glass wall that mirror light passes through, on under the roof into the room behind it: a mirror-lit, mirror-warmed greenhouse.
+  - Heliograph. By day a colonist at a sunlit signal mirror can flash a friendly settlement within reach and open talks with it.
 
-Every effect has its own switch in Mod Settings. Mirror light is our own grid on top of the shade grid; it never adds a new kind of heat.
+Defence: hostile people standing in a beam slowly go glare-blind and shoot worse, unless goggles or a gene protect them.
+Heat: where several beams overlap the light is stronger than the sun, and it feels hotter there, never past the biome's limit.
+Upkeep: sand, grit and ash storms dull mirrors in the open until a colonist cleans them.
 
-Not yet built: the Long Shade ancient mirror-field puzzle, heliograph signals, the mirror greenhouse, dust on mirrors.</description>
+Ancient mirror fields: on the Long Shade, where the sun never moves, a map can hold a field of seized ancient heliostats before a sealed vault. Free their bearings, turn each between its old brass pins, and light every sun-stone to open the vault. Every field is checked to be solvable before it is placed.
+
+Every effect has its own switch in Mod Settings (with an "all off" button that leaves inert decorative buildings). Mirror light is our own grid on top of the shade grid; it never adds a new kind of heat.</description>
 </ModMetaData>
