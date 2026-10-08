@@ -48,8 +48,7 @@ namespace RimMandrake.Graffiti
 
         private static bool SpreeEligible(ModExtension_Graffiti ext)
         {
-            return ext.form == GraffitiForm.Scrawl || ext.form == GraffitiForm.Tag ||
-                   ext.form == GraffitiForm.ThrowUp || ext.form == GraffitiForm.Glyph;
+            return RM_GraffitiKernel.SpreeForm(ext.form);
         }
 
         private static bool DesignatorEligible(ModExtension_Graffiti ext)
@@ -68,28 +67,16 @@ namespace RimMandrake.Graffiti
         {
             List<ThingDef> defs = new List<ThingDef>();
             List<float> weights = new List<float>();
-            float total = 0f;
             foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 ModExtension_Graffiti ext = d.GetModExtension<ModExtension_Graffiti>();
                 if (ext == null || !filter(ext)) continue;
-                if (!MemeGateAllows(ext, placer)) continue;
-                if (!SkillGateAllows(ext, placer)) continue;
-                if (!HostilityGateAllows(ext, placer)) continue;
-                if (ext.poolWeight <= 0f) continue;
+                if (!RM_GraffitiKernel.InPool(MemeGateAllows(ext, placer), SkillGateAllows(ext, placer), HostilityGateAllows(ext, placer), ext.poolWeight)) continue;
                 defs.Add(d);
                 weights.Add(ext.poolWeight);
-                total += ext.poolWeight;
             }
-            if (defs.Count == 0 || total <= 0f) return null;
-            float roll = Rand.Range(0f, total);
-            float cursor = 0f;
-            for (int i = 0; i < defs.Count; i++)
-            {
-                cursor += weights[i];
-                if (roll <= cursor) return defs[i];
-            }
-            return defs[defs.Count - 1];
+            int index = RM_GraffitiKernel.PickIndex(weights, defs.Count == 0 ? 0f : Rand.Range(0f, RM_GraffitiKernel.Total(weights)));
+            return index < 0 ? null : defs[index];
         }
 
         // Tier C gate: a meme-affinity mark is only in the pool for a
@@ -98,14 +85,17 @@ namespace RimMandrake.Graffiti
         // tier-A/B sigils).
         private static bool MemeGateAllows(ModExtension_Graffiti ext, Pawn placer)
         {
-            if (ext.requiresAnyMeme.NullOrEmpty()) return true;
+            bool hasReq = !ext.requiresAnyMeme.NullOrEmpty();
             Ideo ideo = placer?.Ideo;
-            if (ideo == null) return false;
-            foreach (MemeDef meme in ext.requiresAnyMeme)
+            bool holds = false;
+            if (hasReq && ideo != null)
             {
-                if (ideo.HasMeme(meme)) return true;
+                foreach (MemeDef meme in ext.requiresAnyMeme)
+                {
+                    if (ideo.HasMeme(meme)) { holds = true; break; }
+                }
             }
-            return false;
+            return RM_GraffitiKernel.MemeGate(hasReq, ideo != null, holds);
         }
 
         // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, design §1.2's
@@ -118,10 +108,8 @@ namespace RimMandrake.Graffiti
         // ThrowUp from an artist."
         private static bool SkillGateAllows(ModExtension_Graffiti ext, Pawn placer)
         {
-            if (ext.minArtistic <= 0) return true;
-            SkillRecord skill = placer?.skills?.GetSkill(SkillDefOf.Artistic);
-            if (skill == null) return false;
-            return skill.Level >= ext.minArtistic;
+            SkillRecord skill = ext.minArtistic > 0 ? placer?.skills?.GetSkill(SkillDefOf.Artistic) : null;
+            return RM_GraffitiKernel.SkillGate(ext.minArtistic, skill != null, skill != null ? skill.Level : 0);
         }
 
         // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 wave 2, wiring design §2.2's
@@ -131,15 +119,13 @@ namespace RimMandrake.Graffiti
         // or a game with no Empire faction never has this gate close.
         private static bool HostilityGateAllows(ModExtension_Graffiti ext, Pawn placer)
         {
-            if (string.IsNullOrEmpty(ext.requiresHostileToFactionDef)) return true;
+            bool named = !string.IsNullOrEmpty(ext.requiresHostileToFactionDef);
+            if (!named) return true;
             FactionDef targetDef = DefDatabase<FactionDef>.GetNamedSilentFail(ext.requiresHostileToFactionDef);
-            if (targetDef == null) return true;
-            Faction targetFaction = Find.FactionManager?.FirstFactionOfDef(targetDef);
-            if (targetFaction == null) return true;
+            Faction targetFaction = targetDef == null ? null : Find.FactionManager?.FirstFactionOfDef(targetDef);
             Faction placerFaction = placer?.Faction;
-            if (placerFaction == null) return false;
-            if (placerFaction == targetFaction) return false;
-            return placerFaction.HostileTo(targetFaction);
+            return RM_GraffitiKernel.HostilityGate(true, targetDef != null, targetFaction != null, placerFaction != null,
+                placerFaction != null && placerFaction == targetFaction, placerFaction != null && targetFaction != null && placerFaction.HostileTo(targetFaction));
         }
     }
 }

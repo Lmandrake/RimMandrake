@@ -44,6 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Kernel\RM_GraffitiKernel.cs" />
     <Compile Include="GraffitiCategory.cs" />
     <Compile Include="GraffitiForm.cs" />
     <Compile Include="ModExtension_Graffiti.cs" />

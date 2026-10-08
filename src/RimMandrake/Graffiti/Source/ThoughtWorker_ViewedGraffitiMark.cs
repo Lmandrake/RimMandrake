@@ -27,11 +27,7 @@ namespace RimMandrake.Graffiti
 
         protected override ThoughtState CurrentStateInternal(Pawn p)
         {
-            if (!RM_GraffitiSettings.viewerReactionEnabled) return false;
-            if (p.Map == null || !p.Spawned)
-            {
-                return false;
-            }
+            if (!RM_GraffitiKernel.ThoughtActive(RM_GraffitiSettings.viewerReactionEnabled, p.Map != null, p.Spawned, true)) return false;
             return NearbyMatchingMark(p) != null;
         }
 
@@ -51,7 +47,7 @@ namespace RimMandrake.Graffiti
                 // mark painted on an exterior/edge wall isn't silently
                 // invisible to this check.
                 Room cellRoom = cell.GetRoom(p.Map);
-                if (room != null && cellRoom != null && room != cellRoom)
+                if (!RM_GraffitiKernel.SameRoomOrUnknown(room != null, cellRoom != null, room == cellRoom))
                 {
                     continue;
                 }
@@ -91,7 +87,7 @@ namespace RimMandrake.Graffiti
                     // dependency on the RSW-tier Jawa xenotype check
                     // (JawaRules.IsJawa) a RUT content pack could still layer
                     // on top later.
-                    if (ext.visibility == GraffitiVisibility.ClanOnly && p.Faction != Faction.OfPlayer)
+                    if (RM_GraffitiKernel.ClanOnlyBlocks(ext.visibility == GraffitiVisibility.ClanOnly, p.Faction == Faction.OfPlayer))
                     {
                         continue;
                     }
@@ -111,31 +107,22 @@ namespace RimMandrake.Graffiti
         // field is checked.
         private static ThoughtDef ResolveReactionThought(ModExtension_Graffiti ext, Filth_Mark mark, Pawn viewer)
         {
-            if (mark != null)
+            bool prov = mark != null;
+            RM_ReactionSlot slot = RM_GraffitiKernel.ReactionSlot(prov,
+                ext.onViewSubject != null, prov && mark.subject == viewer,
+                ext.onViewOwnFaction != null, prov && mark.makerFaction != null && mark.makerFaction == viewer.Faction,
+                ext.onViewSameIdeo != null, prov && mark.makerIdeo != null && mark.makerIdeo == viewer.Ideo,
+                ext.onViewHostileMaker != null, prov && mark.makerFaction != null && viewer.Faction != null && mark.makerFaction.HostileTo(viewer.Faction),
+                ext.onViewOtherIdeo != null, prov && mark.makerIdeo != null && mark.makerIdeo != viewer.Ideo);
+            switch (slot)
             {
-                if (ext.onViewSubject != null && mark.subject == viewer)
-                {
-                    return ext.onViewSubject;
-                }
-                if (ext.onViewOwnFaction != null && mark.makerFaction != null && mark.makerFaction == viewer.Faction)
-                {
-                    return ext.onViewOwnFaction;
-                }
-                if (ext.onViewSameIdeo != null && mark.makerIdeo != null && mark.makerIdeo == viewer.Ideo)
-                {
-                    return ext.onViewSameIdeo;
-                }
-                if (ext.onViewHostileMaker != null && mark.makerFaction != null && viewer.Faction != null &&
-                    mark.makerFaction.HostileTo(viewer.Faction))
-                {
-                    return ext.onViewHostileMaker;
-                }
-                if (ext.onViewOtherIdeo != null && mark.makerIdeo != null && mark.makerIdeo != viewer.Ideo)
-                {
-                    return ext.onViewOtherIdeo;
-                }
+                case RM_ReactionSlot.Subject: return ext.onViewSubject;
+                case RM_ReactionSlot.OwnFaction: return ext.onViewOwnFaction;
+                case RM_ReactionSlot.SameIdeo: return ext.onViewSameIdeo;
+                case RM_ReactionSlot.HostileMaker: return ext.onViewHostileMaker;
+                case RM_ReactionSlot.OtherIdeo: return ext.onViewOtherIdeo;
+                default: return ext.viewerReactionThought;
             }
-            return ext.viewerReactionThought;
         }
     }
 }

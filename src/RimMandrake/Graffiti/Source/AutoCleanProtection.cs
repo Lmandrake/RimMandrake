@@ -30,33 +30,20 @@ namespace RimMandrake.Graffiti
 
         public static bool Prefix(Pawn pawn, Thing t, bool forced, ref bool __result)
         {
-            if (forced || !RM_GraffitiSettings.autoCleanProtectionEnabled)
-            {
-                return true; // the player's own explicit override - always allowed
-            }
-            if (!(t is Filth_Mark mark))
+            Filth_Mark mark = t as Filth_Mark;
+            ModExtension_Graffiti ext = mark?.def.GetModExtension<ModExtension_Graffiti>();
+            // design §2.3/§4 fork F6, verbatim: "own-faction AND Devotional marks protected" - two independent conditions,
+            // either one is enough. Own-faction: this mark's maker was one of ours. Devotional: the mark's own category,
+            // regardless of maker (a god's mark deserves the protection even if a visitor placed it via a future RUT placer).
+            // A forced clean is the player's own explicit override - always allowed.
+            if (!RM_GraffitiKernel.ProtectsFromAutoClean(forced, RM_GraffitiSettings.autoCleanProtectionEnabled, mark != null, ext != null,
+                ext != null && ext.protectedFromAutoClean, mark != null && mark.makerFaction != null && mark.makerFaction == Faction.OfPlayer,
+                ext != null && ext.category == GraffitiCategory.Devotional))
             {
                 return true;
             }
-            ModExtension_Graffiti ext = mark.def.GetModExtension<ModExtension_Graffiti>();
-            if (ext == null)
-            {
-                return true;
-            }
-            // design §2.3/§4 fork F6, verbatim: "own-faction AND Devotional
-            // marks protected" - two independent conditions, either one is
-            // enough. Own-faction: this mark's maker was one of ours.
-            // Devotional: the mark's own category, regardless of maker
-            // (a god's mark deserves the protection even if a visitor
-            // placed it via a future RUT placer).
-            bool ownFaction = mark.makerFaction != null && mark.makerFaction == Faction.OfPlayer;
-            bool devotional = ext.category == GraffitiCategory.Devotional;
-            if (ext.protectedFromAutoClean || ownFaction || devotional)
-            {
-                __result = false;
-                return false;
-            }
-            return true;
+            __result = false;
+            return false;
         }
     }
 }

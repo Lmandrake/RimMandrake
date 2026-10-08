@@ -65,6 +65,9 @@ namespace RimMandrake.Graffiti
         // original algorithm would have rejected outright.
         private static Building FindLuredBuilding(BreachingGrid grid, Map map, Thing fallback)
         {
+            var buildings = new List<Building>();
+            var distSq = new List<long>();
+            var ties = new List<int>();
             foreach (Thing markThing in map.listerThings.AllThings)
             {
                 ModExtension_Graffiti ext = markThing.def.GetModExtension<ModExtension_Graffiti>();
@@ -75,10 +78,15 @@ namespace RimMandrake.Graffiti
                 Building candidate = FindEligibleBuildingNear(grid, map, markThing.Position);
                 if (candidate != null)
                 {
-                    return candidate;
+                    IntVec3 d = candidate.Position - fallback.Position;
+                    buildings.Add(candidate);
+                    distSq.Add((long)d.x * d.x + (long)d.z * d.z);
+                    ties.Add(candidate.thingIDNumber);
                 }
             }
-            return null;
+            // the nearest luring building to the plain pick, not whichever mark the thing list happens to yield first
+            int best = RM_GraffitiKernel.ChooseLure(distSq, ties);
+            return best < 0 ? null : buildings[best];
         }
 
         private static Building FindEligibleBuildingNear(BreachingGrid grid, Map map, IntVec3 markCell)
