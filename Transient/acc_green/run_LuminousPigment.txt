@@ -1,0 +1,35 @@
+[deepfire-note] mod error lines already in the buffer: 0
+[deepfire] 22:55:04 log_baseline_recorded PASS 
+[deepfire-note] defs requested/found: {"requested": 59, "found": 59, "notFound": []}
+[deepfire] 22:55:04 all_defs_resolve PASS 
+[deepfire] 22:55:04 patches_applied PASS 
+[deepfire] 22:55:04 mechanics_wired_to_defs PASS 
+[deepfire] 22:55:16 mat_alive_control PASS 
+[deepfire] 22:55:24 mat_dies_on_clock PASS 
+[deepfire] 22:55:35 mat_dies_when_chilled PASS 
+[deepfire] 22:55:35 locked_before_sighting PASS 
+[deepfire] 22:55:35 unlocked_after_sighting UNMEASURED UNMEASURED: set_plants refused the crowncarpet cell: {"success": false, "message": "Planted 0, cleared 0, REJECTED 1.", "planted": 0, "cleared": 0, "rejected": 1, "rejectionReasons": {"terrain or conditions cannot support RM_Crowncarpet": 1}, "cellsSkippedByDensity": 0, "cellsOutOfBounds": 0, "growt
+[deepfire] 22:55:36 apply_reaches_defs PASS 
+[deepfire] 22:55:36 glowtank_toggle PASS 
+[deepfire] 22:55:37 press_unbuildable PASS 
+[deepfire] 22:55:37 cuisine_recipes_toggle PASS 
+[deepfire] 22:55:37 press_buildable_finishes_research UNMEASURED UNMEASURED: research_availability does not report whether the project is finished: {"success": true, "canStartNow": false, "prerequisitesCompleted": true, "playerHasAnyAppropriateResearchBench": false, "benchRequired": false, "techprintRequirementMet": true, "playerMechanitorRequirementMet": true, "
+[deepfire-note] glow: {"stackBefore": 0.0, "stackAfter": 0.5, "controlAfter": 0.0}
+[deepfire] 22:55:38 stack_glows PASS 
+[deepfire] 22:55:39 stack_glow_toggle PASS 
+[deepfire] 22:55:41 press_is_a_powered_bench PASS 
+[deepfire-note] powered batch: {"deepfire": 0, "leftoverIngredients": 7, "ticksWaited": 9000}
+[deepfire] 22:58:20 powered_press_refines UNMEASURED UNMEASURED: no deepfire after 9000 ticks with the bench forced on: no pawn took the bill (AI, work priorities or reachability), so the recipe itself was not exercised
+[deepfire] 22:58:20 unpowered_press_refuses UNMEASURED UNMEASURED: the powered control did not complete (deepfire=0), so an unpowered result would be vacuous
+[deepfire] 22:58:20 unseeded_tank_says_so PASS 
+[deepfire] 22:59:18 blackout_kills_seed PASS 
+[deepfire] 22:59:38 wall_coat_via_real_job PASS 
+[deepfire-note] glow rgb before/after Structure_Blue: {"before": [30, 30, 30], "after": [6, 17, 32]}
+[deepfire] 22:59:38 glow_colour_follows_paint PASS 
+[deepfire] 22:59:38 three_coats_then_refused PASS 
+[deepfire] 22:59:39 remove_coats_clears_glow PASS 
+[deepfire] 22:59:39 max_coats_setting PASS 
+[deepfire] 22:59:39 walls_paintable_toggle PASS 
+[deepfire] 22:59:40 furniture_paintable_toggle PASS 
+[deepfire] 22:59:40 apparel_paintable_toggle PASS 
+[deepfire] 22:59:40 weapons_paintable_toggle PASS 
