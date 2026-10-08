@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RM_Gristle: the gristle, the Greentide's burrowing floor-predator. Ported to the RimMandrake tier from
+     RSW_Diggerpede (owner, by question card 2026-10-07 22:20 PDT, after his Greentide sheet rename
+     "Rename the Gristle, make it realistic"). Numbers, tools and race fields are the port's verbatim; the
+     Star Wars-tier dependencies are swapped for vanilla: lifestages AnimalBaby/Juvenile/Adult (were the
+     RSW_Digger* stages, near-identical factors), Megascarab voice (was the RSW truffle-mole set), no leather
+     (was RSW_MediumChitin; insect flesh). Comfy temperatures are the values AnimalTolerances_Ashkarr.xml
+     pinned on RSW_Diggerpede (-25/75.8). Art is a byte copy of the in-game diggerpede art until the
+     realistic regen (regen_gt_gristle_v2) is reviewed. RSW_Diggerpede stays only for the frozen
+     RUT_Greentide twin. -->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gristle</defName>
+    <label>gristle</label>
+    <description>A long, flat-plated burrower the length of a man, every segment carrying a pair of short digging legs and the head armoured in a heavy, shovel-edged shield. A gristle travels under the soil faster than most things can run above it, and hunts by feel: it rises under whatever it hears walking, seizes it in hooked mandibles and drags it down. Its body is mostly tough, rubbery muscle over a chitin frame, which is how it got its name. Unlike most many-legged things it bears its young alive.</description>
+    <statBases>
+      <MoveSpeed>5.2</MoveSpeed>
+      <MarketValue>350</MarketValue>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>75.8</ComfyTemperatureMax>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+      <Wildness>0.20</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li>
+              <def>Stun</def>
+              <amount>20</amount>
+            </li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3.5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <predator>true</predator>
+      <herdAnimal>false</herdAnimal>
+      <body>BeetleLike</body>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>2.25</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>None</trainability>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <roamMtbDays>2</roamMtbDays>
+      <lifeExpectancy>6</lifeExpectancy>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(1.5, 1)</li>
+          <li>(2, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gristle</defName>
+    <label>gristle</label>
+    <race>RM_Gristle</race>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>gristle spawn</label>
+        <labelPlural>gristle spawn</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristle/RM_Gristle</texPath>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristle/Dessicated_RM_Gristle_east</texPath>
+          <drawSize>0.55</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristle/RM_Gristle</texPath>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristle/Dessicated_RM_Gristle_east</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristle/RM_Gristle</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gristle/Dessicated_RM_Gristle_east</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

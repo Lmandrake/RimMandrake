@@ -170,6 +170,7 @@
       <RM_Yammeth>1.0</RM_Yammeth>
       <RM_CanopySwinger>0.3</RM_CanopySwinger>
       <RM_Thurrock>0.08</RM_Thurrock>
+      <RM_Gristle>0.4</RM_Gristle>  <!-- ported from RSW_Diggerpede (owner card 2026-10-07); same 0.4 the patch layer gave it -->
     </wildAnimals>
     <!-- GREENTIDE_JUNGLE_TREE_ROSTER_1 (2026-09-26): replaces the two
          rejected temperate-forest trees and the generic bush with the

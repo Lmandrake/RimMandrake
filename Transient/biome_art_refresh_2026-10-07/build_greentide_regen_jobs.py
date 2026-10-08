@@ -275,7 +275,7 @@ row("gristle_v2", "RSW_Diggerpede",
     "shovel-edged shield with hooked mandibles, a body of tough rubbery muscle over a chitin frame. Make it "
     "REALISTIC: believable arthropod anatomy, segmented plates, real chitin texture. One animal, whole body, "
     "centred.", 256, canon_reference=[img("RSW_Diggerpede", "A", "east")],
-    target_texpath="swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede")
+    target_texpath="Things/Pawn/Animal/RM_Gristle/RM_Gristle")  # filed target_def rewritten to RM_Gristle after the tier port
 
 row("saluksis_v2", "VFEI2_Swarmling",
     "RimWorld creature sprite, the saluksis (formerly the swarmling), design based on the attached render "
