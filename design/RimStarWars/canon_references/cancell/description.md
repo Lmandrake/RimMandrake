@@ -14,17 +14,18 @@ them; can-cells are drawn to the buzzing engine sound of Wookiee jet
 catamarans and congregate at their landing pads. Some Batuu residents keep
 native can-cells as pets. In *The Clone Wars* film, Anakin Skywalker and
 Ahsoka Tano ride one on Teth to escape Asajj Ventress and reach the
-*Twilight*. Luke Skywalker's line about "bulls-eyeing womp rats in my T-16"
-back home on Tatooine is the more famous pop-culture reference point the
-owner named, though can-cell's sourced habitat list above (per Wookieepedia)
-does not include Tatooine by name — its screen appearances are Kashyyyk and
-Teth.
+*Twilight*. Length (>3 m) is
+from *The Visual Encyclopedia*, not a wingspan or height. Also named as
+present on Taul and in *Bombad Jedi* (Rodia), *Mercy Mission* (Aleen) and
+*Innocents of Ryloth* (carcass). The separate Legends page
+(https://starwars.fandom.com/wiki/Can-cell/Legends) gives 3.35 m, red-brown
+skin, green eyes. Source: https://starwars.fandom.com/wiki/Can-cell
 
 ## Visual brief
 Three images, and they diverge in fidelity/style but agree on the core
 dragonfly-like body plan:
 - **The movie-accurate CGI render (Teth, *Clone Wars* film)** is the clearest
-  and most authoritative: an elongated **red/maroon segmented insectoid
+  selected visual reference (both films are canon; this is clarity, not rank): an elongated **red/maroon segmented insectoid
   body**, large **bright green compound eyes** (exact match to the "eyecolor:
   Green" field), **dark blue-black jointed legs**, yellow-tipped antennae/
   mandible fringe, and two pairs of long, thin, translucent dragonfly wings
@@ -34,13 +35,14 @@ dragonfly-like body plan:
   over misty mountains — confirms the elongated dragonfly-like flying
   silhouette and large wingspan relative to body, but no usable color detail
   at this resolution.
-- **The "TGTB" game/render image** shows a different visual treatment: a
-  **brown/tan feathered-looking body** with a rounded **teal/turquoise
-  crest** on the head and long clawed legs, gliding on what appear to be
-  tether lines — bird-like rather than insectoid, and the color palette
-  (brown+teal) does not match the sourced "red and blue" skin at all. This
-  looks like a lower-fidelity or reimagined asset; treat the Teth CGI render
-  as the authoritative canon look and the TGTB image as the outlier.
+- **The "TGTB" image** (File:Can-Cell-TGTB.png, the canon page's own infobox
+  image; "TGTB" abbreviates *Star Wars: Galaxy's Edge: Traveler's Guide to
+  Batuu*, which the page cites for quad wings, large eyes and Batuu pet
+  can-cells) shows a **brown/tan feathered-looking body** with a rounded
+  **teal/turquoise crest** on the head and long clawed legs, gliding on what
+  appear to be tether lines — bird-like in my reading; its palette does not
+  match the film's "red and blue". Treat the Teth CGI render as the colour
+  reference; this image is the Batuu-context depiction.
 
 **The current donor sprite** (`donor_current_sprite.png`) shows an
 insect/dragonfly-like creature with a long segmented body, a pair of large

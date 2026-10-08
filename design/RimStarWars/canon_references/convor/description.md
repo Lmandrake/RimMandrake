@@ -12,18 +12,23 @@ Body plan: two eyes, two wings, a beak, and a distinctive **prehensile tail**
 or brown**, described as short and plump-bodied despite being excellent
 fliers. Eyes are black. Convorees closely resemble Kiros birds from the
 planet Kiros, distinguished mainly by color — Kiros birds have purple/blue
-feathers instead of gold/brown. Diet is carnivorous per the in-universe
-Databank entry, though the biology section also describes them feeding on
-insects and small rodents. In the wild (Wasskah jungles) convorees hunt in
-pairs, lifting predators like momongs into the air and dropping them.
+feathers instead of gold/brown. Diet is carnivorous (Databank), feeding mostly on insects and small rodents —
+the two statements agree. In the Wasskah jungles convorees work in pairs to
+fend off predators such as momongs, lifting them into the air and dropping
+them from the treetops (defence, per *Absolutely Everything You Need to
+Know*). Popular as pets across the galaxy.
 
 Canon role: convorees carry a strong Force association, especially with
 Ahsoka Tano. The convor **Morai** had a spiritual bond with the Daughter (a
 Force entity on Mortis) and, after the Daughter's death, became a recurring
-companion/spirit-guide figure to Ahsoka across *The Clone Wars*, *Rebels*,
-and *Tales of the Jedi*. Togruta mythology treats convorees as reincarnated
-ancestor-spirits; Togrutan funerals traditionally present a convor hatchling
-to the bereaved. The species is named (in-world coincidence, per Dave Filoni)
+companion/spirit-guide figure to Ahsoka (*The Clone Wars* "Victory and Death",
+*Rebels* "The Mystery of Chopper Base" / "Twilight of the Apprentice" /
+"A World Between Worlds", live-action *Ahsoka*; per the Morai page: female,
+0.2 m, green and white feathers, green eyes — an individual, not the
+species). Togruta mythology treats convorees as reincarnated ancestor-spirits;
+Togrutan funerals often culminate in presenting a convor hatchling to the
+bereaved (*Dawn of Rebellion*). Beliefs are beliefs: the page does not make
+every convor supernatural. https://starwars.fandom.com/wiki/Morai The species is named (in-world coincidence, per Dave Filoni)
 after his wife E. Anne Convery.
 
 ## Visual brief
@@ -31,9 +36,8 @@ The two candidate images agree closely and match the Wookieepedia text: a
 round-headed, big-eyed owl with a short hooked beak, dense brown/cream/gold
 mottled plumage, and — the standout diagnostic feature — a long, ringed,
 **prehensile tail** used for grasping rather than a standard fan-shaped bird
-tail. The infobox render shows warm brown/tan/cream feather tones with large
-amber-gold eyes and black pupils; the CAM-disguise still (a stylized Rebels
-short) confirms the same silhouette — plump round body, oversized eyes, and
+tail. The infobox render shows warm brown/tan/cream feather tones (eye colour is image-dependent: the page infobox says black, and Morai's are green); the CAM-disguise still (from the *Galaxy of
+Creatures* animated series) confirms the same silhouette — plump round body, oversized eyes, and
 a long curling tail — on both the real convor and the droid mimicking it.
 
 **The current donor sprite (`donor_current_sprite.png`) is a good match**,

@@ -290,3 +290,36 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 ### hawkbat
 - Must show: prefix "Legends Field Guide adult"; add "tiny-toothed hooked beak, spiky membrane growths" (Legends text); the owner-ruled hooks note stays. Reason: canon page has only "beak with sharp contours". Source: https://starwars.fandom.com/wiki/Hawk-bat/Legends
 - Must show: forehead horn is image-only (no wiki text); make optional.
+
+## Batch 02
+### boma
+- Must show "Moderate-length tail": page text says "long tails"; proposed: change to "Tail present; page says long, chosen image shows moderate" or drop length. Source: https://starwars.fandom.com/wiki/Boma
+### borcatu
+- Must show "Smooth mottled hide, not overlapping pointed pangolin-style scales" and "not scaled pangolin-grey": Legends text says scales / scaly thick hide. Propose relabel as owner-ruled adaptation (ruling says mix #1 and #2), or drop the anti-scale clause. Source: https://starwars.fandom.com/wiki/Borcatu/Legends
+- Add must-show: dark mottled skin camouflage; digging claws; powerful jaws; ~0.2-0.5 m long (small). Source: same.
+### brainworm
+- Must show "Small: about a forearm long, finger-thick": canon infobox says 1 m (Legends ~0.5 m). Propose: "Small, 1 m long per canon infobox (Legends 0.5 m); thickness from image only". Source: https://starwars.fandom.com/wiki/Brain_worm
+### cancell
+- Must show: page says "quad wings and large eyes" and lengths >3 m; consider adding "~3 m long body (large)". Source: https://starwars.fandom.com/wiki/Can-cell
+### cannok
+- Add must-show: four broad three-toed feet with spatulate claws; short stubby tail; bony dorsal ridge bearing thin fleshy spines; upward-facing jaw with needle teeth projecting from lower jaw. Source: https://starwars.fandom.com/wiki/Cannok
+- Reword last must-show: "Two eyes on short stalks, independently moving; far eye may be hidden in profile". Source: same.
+- "Pale/whitish belly" and "spiked tail tip" are image observations, not in page text; mark image-dependent.
+### chak_root
+- Must show lines (3-4 stubby root legs, tall carrot-like fronds) rest on one Legends-page image only; the Legends text supports only "red plant, marshland". Propose label "image-derived, Legends-derived design". Source: https://starwars.fandom.com/wiki/Chak-root/Legends
+### clodhopper
+- Must show "Juveniles are smaller... lacking adult red head": page states no juvenile colouring; propose mark image-only/optional. Source: https://starwars.fandom.com/wiki/Clodhopper
+- Must show "Sturdy clawed forelimbs": page supports "powerful forelegs to forage and hop"; keep, but note "claws" is image-derived.
+### coloclawfish
+- Add must-show: giant scale, canon length 40 m (131 ft); this is an engine/def scale point (consider Engine limits note on body size vs RimWorld cell scale). Source: https://starwars.fandom.com/wiki/Colo_claw_fish
+- Must show "Mandible-like jaw appendages ... not required in canon art": canon prose lists "a set of mandibles"; propose making it required. Source: same.
+- Must show "yellow slit-pupil eye": page gives yellow only; pupil shape image-dependent (Legends: stalked eyes).
+- Add: serpentine, spine-studded body (canon text). Source: same.
+### convor
+- Must show "Large amber-gold eyes with black pupils": infobox gives black eyes; Morai green. Propose "eyes: image-dependent (infobox black)". Source: https://starwars.fandom.com/wiki/Convor
+- Must show "Dense brown/cream/gold mottled plumage": page gives gold, brown and green plumage; Morai green and white. Propose adding green. Source: same + https://starwars.fandom.com/wiki/Morai
+- "Ringed" tail banding is image-only; page says prehensile tail.
+### corinathoth
+- Must show "Bony head frill with multiple horns": text supports "multihorned" only; frill is image-only. Propose "multiple horns (text); frill (image-only)". Source: https://starwars.fandom.com/wiki/Corinathoth/Legends
+- Must show "Visibly smaller young present": page gives no young; propose drop or mark optional. Source: same.
+- Add must-show: gigantic/massive, slow-moving quadruped, short tail, orange hide with brown spots (Legends). Source: same.

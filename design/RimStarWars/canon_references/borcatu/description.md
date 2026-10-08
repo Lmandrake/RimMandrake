@@ -3,22 +3,30 @@
 **defName**: `RSW_Borcatu` (vendored in SWBestiary, texture folder `Borcatu`)
 
 ## Sourced text (Wookieepedia)
-Extremely thin canon: "Borcatus were a type of creatures that was found in the
-galaxy" is the entire body-text sentence on the page — no coloration, size,
-diet, or habitat fields are filled in at all (the species infobox itself is
-absent; the page only carries a `{{Top|ncc}}`/`{{Noncanon|canon=1}}` banner).
-The species originates in the 1994 Legends reference book *Creatures of the
-Galaxy*, and later reappeared as a placeable Toy Box creature in *Disney
-Infinity 3.0* (2015). No habitat, diet, or behavior is described anywhere on
-the page — this is one of the thinnest entries in the SW bestiary, carried
-almost entirely by its two pieces of art.
+Two separate pages. The **Disney Infinity 3.0** page (https://starwars.fandom.com/wiki/Borcatu)
+carries a `{{Top|ncc}}`/`{{Noncanon}}` banner (non-canon, not canon) and says
+only "a type of creatures that was found in the galaxy"; it notes the species
+debuted in the 1994 Legends book *Creatures of the Galaxy* and reappeared as
+a placeable Toy Box creature in *Disney Infinity 3.0* (2015).
+
+The **Legends** page (https://starwars.fandom.com/wiki/Borcatu/Legends,
+source *Creatures of the Galaxy*, 1994) holds the biology: non-sentient,
+**0.2 - 0.5 m long**, skin colour "Variable", distinctions "digging claws,
+scales, powerful jaws", origin **Escabar** (original habitat the deserts of
+**Serhan**, in its northeast), diet scavenger and cannibal, habitats burrows,
+deserts, forests, slums. "Small, bad-tempered scavengers" that spread from
+c. 150 BBY by stowing away on starships; "a scaly, thick hide which may have
+evolved to help resist sandstorms", sharp teeth and claws used to burrow or
+defend, vicious, fighting and cannibalizing each other when short of food.
+Hard to exterminate: "mottled, dark skin made effective camouflage", pups
+only a few centimeters long, very efficient metabolism, capital ships could
+host dozens unnoticed.
 
 ## Visual brief
 **The two candidate images disagree sharply, and this is the important finding
 for this creature** — same species, two incompatible body plans:
 
-- The **1994 *Creatures of the Galaxy* illustration** (the original,
-  higher-canon-weight source) shows a **pangolin/armadillo-like creature**:
+- The **1994 *Creatures of the Galaxy* illustration** (the original Legends source) shows a **pangolin/armadillo-like creature**:
   a body covered in large, overlapping, pointed scales (a pinecone/artichoke
   texture), a long tapering snout with visible whiskers, small stubby
   clawed legs, and a short spiked tail. Grayscale line art, no color given.
@@ -30,9 +38,10 @@ for this creature** — same species, two incompatible body plans:
   hide instead.
 
 These are not two angles of the same design — the scaled pangolin-esque body
-and the smooth-hided mottled quadruped cannot both be "the" borcatu. Given the
-page's near-total absence of descriptive text, there is no tiebreaker in
-canon prose either.
+and the smooth-hided mottled quadruped cannot both be "the" borcatu. The Legends
+page does say scales ("digging claws, scales, powerful jaws"; "scaly, thick
+hide"), so the 1994 art is the one the prose supports; the Disney Infinity
+figure is a non-canon design.
 
 **The current donor sprite** (`donor_current_sprite.png`) is mottled
 reddish-brown with a spiky tail, pointed ears, and clawed feet — it tracks

@@ -16,8 +16,7 @@ off-world is strictly forbidden by law after a colony at Corva was wiped out
 by clodhoppers accidentally shipped with Naboo grain — an ecological-disaster
 cautionary tale. (The behind-the-scenes note flags that the *Secrets of
 Naboo* sourcebook itself describes them as "insects" despite the infobox
-class listing them as avians — a minor internal canon inconsistency, not a
-render decision to worry about.)
+class listing them as avians — an internal inconsistency in the Legends sources. The page also contradicts itself on diet: lead says omnivorous, infobox says herbivorous, and "voracious herbivores" appears in the text. Sources: *Secrets of Naboo*, *The Wildlife of Star Wars: A Field Guide*, *The Gungan Frontier*; the page does not say which source supplies which trait.)
 
 ## Visual brief
 The one candidate image (a *Wildlife of Star Wars* field-guide-style
@@ -43,7 +42,7 @@ head plumage. Two differences worth flagging: the donor's **eye reads plain
 dark/black**, not the blue-toned eye patch the reference art and the sourced
 "blue" eyecolor both call for, and the donor's head is not as strongly
 saturated red as the adult reference — closer to the reference's more muted
-juveniles. A regen should push the head toward a more vivid red and add the
+juveniles. The blue "eyecolor" infobox field is not tied to a patch by the page; the patch reading is my image interpretation. A regen should push the head toward a more vivid red and add the
 blue-toned eye patch.
 
 ## Must show
@@ -71,7 +70,7 @@ none known
 - `wookieepedia_fieldguide.jpg` — *Wildlife of Star Wars: A Field Guide*
   style illustration: two vivid red-headed adults with grey-blue eye patches
   and pale beaks foraging on a red/cream spiny plant, with smaller
-  brown/olive juveniles nearby. Strongest and only available canon reference;
+  brown/olive juveniles nearby. Strongest and only available reference (Legends, not current canon);
   matches the sourced brown/red skin and blue eye fields closely.
 
 ## ruling

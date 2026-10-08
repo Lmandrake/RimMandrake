@@ -15,7 +15,7 @@ upward-facing jaw connected low on the skull and thin needle-like teeth
 jutting from the lower jaw over the upper lip, and **4 tridactyl (three-toed)
 feet** ending in tough spatulate claws. Squat, bloated body; short stubby
 tail; a thick bony ridge down the back from which thin fleshy spines
-protrude. Habitat: grasslands and jungles. Diet: omnivorous — notoriously
+protrude. Bites and head-butts; slightly high-stepped gait, stopping to look around by wiggling its eyestalks. Habitat: grasslands and jungles. Diet: omnivorous — notoriously
 eats anything that fits in its mouth. Hunts in packs of three or more,
 unafraid of fire, emits only a husky grunt. Several were later relocated to
 Telos IV for ecosystem restoration, where their population exploded and
@@ -83,7 +83,7 @@ none known
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary
   mod, east-facing base variant): olive-tan mottled quadruped, spiked dorsal
   fringe, wide fanged mouth, pebbled belly — a good match except for a single
-  flat eye where canon shows two stalked eyes.
+  flat eye where the Legends text describes two stalked eyes.
 - `wookieepedia_conceptart_kotor2.jpg` — official KOTOR2 concept art (gray
   background): squat wrinkled olive-tan body, fan of long thin quills off
   the skull/back, single large deep eye socket, wide toothy mouth, thick
@@ -93,7 +93,7 @@ none known
   pale/white belly, two eyes on visible stalks, spiked dorsal ridge
   continuing onto a spiked tail, wide fanged mouth, four thick clawed legs.
 - `wookieepedia_totj_comic.jpg` — cropped panel from *Tales of the Jedi* 1
-  (the species' 1994 comic-book debut): close-up of a tan toothy head with
+  (the species' October 1993 comic-book debut; release date per https://starwars.fandom.com/wiki/Tales_of_the_Jedi_1): close-up of a tan toothy head with
   the same dorsal spine fringe and needle teeth, alongside an unrelated
   creature's tongue/tentacle in the foreground.
 

@@ -12,11 +12,15 @@
 Brain worms were a species of parasitic worm from the planet Geonosis which were capable of entering the body of a host and taking control of it and had the potential to control entire societies. During the Clone Wars between the Galactic Republic and the Confederacy of Independent Systems, the Geonosian Queen Karina the Great used brain worms to control a host of undead Geonosians.
 
 After Republic forces defeated Karina and her minions, a brain worm managed to infect the clone trooper Scythe and used him to infect a number of other clones in Tango Company as well as the Jedi Padawan Barriss Offee onboard the Republic medical frigate TB-73. Jedi Padawan Ahsoka Tano was able to prevent the infection from spreading further by using extremely low temperatures to combat the worms, saving Offee and most of the troopers.
+Canon infobox: **length 1 m** (3 ft 3 in, *Join the Battle!*), skin colour greenish yellow, distinction host control. Canon page also states: the worms steer hosts "through the biologically archived memory of the Geonosian queens", even after the host dies; they accurately imitate their host to stay undetected; one in Barriss Offee protruded from her mouth when exposed to coolant; they are "extremely vulnerable to cold temperatures"; Scythe was infected by a "freshly-hatched" worm. The nose entry route and yellow eggs are on the Legends page only (the canon page shows only the "Snorting worms" image).
+
 ### Legends — https://starwars.fandom.com/wiki/Brain_worm/Legends
 
 Brain worms were worm-like parasites from Geonosis that had the capability of controlling minds. They hatched from yellow eggs, and were known to be used by the Geonosian Queen Karina the Great during the Clone Wars on her Geonosian minions. The worms would sometimes enter the host via the nose, and were able to control dead Geonosians.
 
 **Biology** The brain worms tend to control the nervous system of their hosts through the biologically archived memory of the Geonosian queens that used them for certain purposes. Even when the enthraller was dead they could continue to control living beings independently, being able to act as extensions of deceased Geonosian queens. Further, infection granted their hosts the ability to speak Geonosian. The brainwashing trance of the brain worms was so powerful that it could control the corpses of different beings turning them into lifeless zombies, like when the self-proclaimed queen of Geonosis Karina the Great created an army of zombie Geonosians during the Clone Wars to serve her in her room. Brain worms reacted negatively to cold temperatures.
+
+Legends infobox length: approximately 0.5 m.
 
 ## Visual brief
 Both images are CANON (The Clone Wars, infobox render and the "snorting worms" frame).
