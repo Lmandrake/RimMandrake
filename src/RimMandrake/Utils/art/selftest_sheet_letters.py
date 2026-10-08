@@ -108,6 +108,30 @@ def main():
               "default variants = ours, not donor original, not purged, not purgedLive; stored with variantsDefault")
         check(out["r2"]["variants"] == [] and "variantsDefault" not in out["r2"], "an explicit empty variants list is not overwritten")
         check(out["r3"]["variants"] == ["A"], "an explicit variants list is not overwritten")
+        # owner rule 2026-10-07 22:33 PDT: a geometric placeholder set is never a default, kept or explicit variant
+        it["graphics"][0]["cols"][0]["noSelect"] = True
+        prog = ("const window={};const LETTER_ORDER='ABCDEFG';" + js +
+                "const it=" + json.dumps(it) + ";const o={};"
+                "const r1={};window.artEnsureVariants(it,r1);o.r1=r1;"
+                "const r3={variants:['A','D']};window.artEnsureVariants(it,r3);o.r3=r3;console.log(JSON.stringify(o))")
+        out = json.loads(subprocess.run([node, "-e", prog], capture_output=True, text=True, check=True).stdout)
+        check(out["r1"]["variants"] == ["C", "D"], "a placeholder set (noSelect) is never a DEFAULT variant")
+        check(out["r3"]["variants"] == ["D"], "a placeholder letter is stripped from an explicit variants list on save")
+    for frag in ("if (c.noSelect) return", "placeholder — not selectable", "artNoSelect(it).has(letter)",
+                 "artNoSelect(it_).has(key)"):
+        check(frag in src, f"sheet JS guards placeholders: {frag!r}")
+    # the Python side: a circle set is noSelect; a set mixing a circle with real art is not
+    from PIL import Image, ImageDraw
+    import io
+    im = Image.new("RGBA", (128, 128), (0, 0, 0, 0))
+    ImageDraw.Draw(im).ellipse((14, 14, 114, 114), fill=(120, 80, 40, 255), outline=(10, 10, 10, 255), width=3)
+    bio = io.BytesIO(); im.save(bio, "PNG")
+    circ = bio.getvalue()
+    S._GEO_CACHE.clear()
+    S._GEO_CACHE.update({"circ": S.PD.placeholder_reason(circ) or "", "real": ""})
+    check(bool(S.geo_placeholder({"south": "circ"})), "geo_placeholder flags a set that is all circle")
+    check(not S.geo_placeholder({"south": "circ", "east": "real"}), "a set with one real picture is not a placeholder")
+    check(not S.geo_placeholder({}), "an empty set is not judged")
 
     print(f"\n{'ALL PASS' if not FAILS else str(len(FAILS)) + ' FAIL'}")
     return 1 if FAILS else 0

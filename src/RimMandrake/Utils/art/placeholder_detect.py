@@ -11,7 +11,7 @@ A row's live art is PLACEHOLDER when either holds:
              texture is shared by 2+ distinct subjects, or sits under a vanilla-plant / vanilla-item folder.
 
     python3 src/RimMandrake/Utils/art/placeholder_detect.py sweep [--census PATH] [--out JSON]
-    python3 src/RimMandrake/Utils/art/placeholder_detect.py file <png>...
+    python3 src/RimMandrake/Utils/art/placeholder_detect.py file <png>...     GEOMETRIC verdict per file (exit 1 if any)
     python3 src/RimMandrake/Utils/art/placeholder_detect.py selftest
 
 Library: classify_row(row, kind, shared) -> {"verdict": PLACEHOLDER|REAL|NONE|UNMEASURED, "reasons": [...]}.
@@ -62,6 +62,78 @@ def pixel_metrics(path):
 
 def is_flat(m) -> bool:
     return m["n"] >= FLAT_MIN_PIXELS and m["ncol"] <= FLAT_MAX_COLOURS and m["smooth"] >= FLAT_MIN_SMOOTH
+
+
+# ---- GEOMETRIC placeholder (owner, 2026-10-07 22:33 PDT: "make sure that at no time can geometric placeholder art
+# ever remain a viable Variant or selection"). Stricter than FLAT: few hard colours AND one dominant colour AND a
+# silhouette that IS a circle/ellipse/rectangle (optionally with a uniform outline). Calibrated 2026-10-07 over every
+# PNG under src/**/Textures (8,434 files): the 21 FeverWood/Webwork circles read dom 0.859 / 2 colours / ellipse-IoU
+# 1.00; solid-square stand-ins read dom 1.0 / rect-fill 1.0; the 50 other hits were all visibly flat shapes; low-colour
+# real sprites (AloeVera 17-69 colours dom<=0.30, JadePlant 29-54, ScorchedStars 24-27 smooth<=0.895) never trip.
+GEO_MAX_COLOURS = 8          # 5-bit-quantised distinct colours over opaque pixels
+GEO_MIN_DOMINANT = 0.55      # share of opaque pixels in the single most common colour
+GEO_MIN_SMOOTH = 0.90        # neighbouring opaque pixels equal within 6/765
+GEO_MIN_ELLIPSE_IOU = 0.95   # silhouette vs its moment-matched ellipse
+GEO_MIN_RECT_FILL = 0.95     # silhouette area / bounding box area
+
+
+def _rgba(src):
+    import io
+    import numpy as np
+    from PIL import Image
+    if isinstance(src, (bytes, bytearray)):
+        src = io.BytesIO(src)
+    return np.asarray(Image.open(src).convert("RGBA")).astype(int)
+
+
+def geometry_metrics(src) -> dict:
+    """src: path, bytes or file object. Returns n, ncol, dominant, smooth, ellipse_iou, rect_fill."""
+    import numpy as np
+    a = _rgba(src)
+    m = a[..., 3] > 128
+    n = int(m.sum())
+    if n == 0:
+        return {"n": 0, "ncol": 0, "dominant": 1.0, "smooth": 1.0, "ellipse_iou": 0.0, "rect_fill": 0.0}
+    q = a[..., :3][m] >> 3
+    _, cnt = np.unique(q[:, 0] * 1024 + q[:, 1] * 32 + q[:, 2], return_counts=True)
+    g = a[..., :3].sum(-1)
+    d = np.concatenate([np.abs(g[:, 1:] - g[:, :-1])[m[:, 1:] & m[:, :-1]], np.abs(g[1:] - g[:-1])[m[1:] & m[:-1]]])
+    ys, xs = np.nonzero(m)
+    cy, cx = ys.mean(), xs.mean()
+    ell_iou = 0.0
+    if n >= 3:
+        ev, evec = np.linalg.eigh(np.cov(np.vstack([ys - cy, xs - cx])))
+        hh, ww = m.shape
+        yy, xx = np.mgrid[:hh, :ww]
+        dd = np.stack([yy - cy, xx - cx], -1) @ evec
+        ell = (dd[..., 0] ** 2 / (4 * ev[0] + 1e-9) + dd[..., 1] ** 2 / (4 * ev[1] + 1e-9)) <= 1
+        ell_iou = float((ell & m).sum() / max(1, (ell | m).sum()))
+    box = (ys.max() - ys.min() + 1) * (xs.max() - xs.min() + 1)
+    return {"n": n, "ncol": int(len(cnt)), "dominant": round(float(cnt.max() / n), 3),
+            "smooth": round(float((d <= 6).mean()) if len(d) else 1.0, 3),
+            "ellipse_iou": round(ell_iou, 3), "rect_fill": round(float(n / box), 3)}
+
+
+def placeholder_reason(src):
+    """None for real art; otherwise a one-line reason naming the shape. src: path, bytes or file object.
+    Unreadable input raises (callers must treat that as UNMEASURED, never as real)."""
+    g = geometry_metrics(src)
+    if g["n"] < FLAT_MIN_PIXELS:
+        return None
+    if g["ncol"] > GEO_MAX_COLOURS or g["dominant"] < GEO_MIN_DOMINANT or g["smooth"] < GEO_MIN_SMOOTH:
+        return None
+    if g["ellipse_iou"] >= GEO_MIN_ELLIPSE_IOU:
+        shape = "circle/ellipse"
+    elif g["rect_fill"] >= GEO_MIN_RECT_FILL:
+        shape = "rectangle"
+    else:
+        return None
+    return (f"geometric placeholder: flat {shape}, {g['ncol']} colours, dominant {g['dominant']:.0%}, "
+            f"ellipse-IoU {g['ellipse_iou']}, rect-fill {g['rect_fill']}")
+
+
+def is_placeholder(src) -> bool:
+    return placeholder_reason(src) is not None
 
 
 def find_png(mod: str | None, res: str):
@@ -129,6 +201,8 @@ def classify_row(row: dict, shared: dict) -> dict:
         met = pixel_metrics(p) if p else None
         if met and is_flat(met):
             why.append(f"FLAT: {met['ncol']} colours, smooth {met['smooth']}")
+        elif p and is_placeholder(p):
+            why.append("GEOMETRIC: " + placeholder_reason(p))
         per.append("PLACEHOLDER" if why else ("REAL" if met else "UNMEASURED"))
         reasons += [f"{res}: {w}" for w in why] or ([f"{res}: {met}"] if met else [f"{res}: file not found"])
     if all(v == "PLACEHOLDER" for v in per):
@@ -170,10 +244,12 @@ def main(argv=None) -> int:
         return 2
     cmd = argv[0]
     if cmd == "file":
+        bad = 0
         for p in argv[1:]:
-            m = pixel_metrics(p)
-            print(p, m, "FLAT" if is_flat(m) else "real")
-        return 0
+            r = placeholder_reason(p)
+            bad += bool(r)
+            print(("PLACEHOLDER " if r else "real        ") + str(p) + (f"  [{r}]" if r else ""))
+        return 1 if bad else 0
     if cmd == "calibrate":
         import numpy as np
         res = sweep()
