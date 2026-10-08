@@ -51,32 +51,35 @@ namespace RimMandrake.SeaShores
             already = 0;
             foreach (Tile tile in layer.Tiles)
             {
-                if (tile?.PrimaryBiome == null || !tile.PrimaryBiome.canBuildBase)
+                bool buildable = tile?.PrimaryBiome != null && tile.PrimaryBiome.canBuildBase;
+                if (!buildable)
                 {
                     continue;
                 }
-                if (RM_SeaShoreUtility.PrimarySeaFor(tile.tile) == null)
+                bool facesSea = RM_SeaShoreUtility.PrimarySeaFor(tile.tile) != null;
+                bool vanillaCoast = facesSea && tile.Mutators.Contains(TileMutatorDefOf.Coast);
+                RM_SeaKernel.HealAction action = RM_SeaKernel.Heal(true, facesSea, vanillaCoast,
+                    vanillaCoast && RM_Patch_TryAddMutator.HasVanillaOceanNeighbour(tile.tile, layer), facesSea && HasCoastMutator(tile));
+                switch (action)
                 {
-                    continue;
-                }
-                bool staleVanillaCoast = tile.Mutators.Contains(TileMutatorDefOf.Coast)
-                    && !RM_Patch_TryAddMutator.HasVanillaOceanNeighbour(tile.tile, layer);
-                if (HasCoastMutator(tile) && !staleVanillaCoast)
-                {
-                    already++;
-                    continue;
-                }
-                if (apply)
-                {
-                    tile.AddMutator(RM_SeaShoresDefOf.RM_SeaCoast);
-                }
-                if (staleVanillaCoast)
-                {
-                    replaced++;
-                }
-                else
-                {
-                    healed++;
+                    case RM_SeaKernel.HealAction.Already:
+                        already++;
+                        break;
+                    case RM_SeaKernel.HealAction.Heal:
+                    case RM_SeaKernel.HealAction.Replace:
+                        if (apply)
+                        {
+                            tile.AddMutator(RM_SeaShoresDefOf.RM_SeaCoast);
+                        }
+                        if (action == RM_SeaKernel.HealAction.Replace)
+                        {
+                            replaced++;
+                        }
+                        else
+                        {
+                            healed++;
+                        }
+                        break;
                 }
             }
         }

@@ -121,7 +121,7 @@ def main():
     mutate(H, "!RM_SeaShoresSettings.Cur.seasCountAsCoast", "false", "coast switch ignored", "[seasCountAsCoast]")
     mutate("RM_SeaShoreUtility.cs", "!RM_SeaShoresSettings.Cur.seaCatchTables", "false", "FishBiomeFor switch ignored", "[seaCatchTables]")
     mutate(H, "if (!RM_SeaShoresSettings.Cur.seaCatchTables || __instance?.map == null)", "if (__instance?.map == null)", "SetFishTypes switch ignored", "[seaCatchTables]")
-    mutate("RM_TileMutatorWorker_SeaCoast.cs", "!RM_SeaShoresSettings.Cur.generateSeaShores", "false", "shore switch ignored", "[generateSeaShores]")
+    mutate("RM_TileMutatorWorker_SeaCoast.cs", "RM_SeaShoresSettings.Cur.generateSeaShores,", "false,", "shore switch ignored", "[generateSeaShores]")
     mutate("RM_WorldComponent_SeaShoreHealer.cs", "!RM_SeaShoresSettings.Cur.healFrozenWorldOnLoad", "false", "heal switch ignored", "[healFrozenWorldOnLoad]")
     mutate(H, "nameof(World.CoastDirectionAt)", "nameof(World.CoastAngleAt)", "coast hook retargeted", "[wiring]")
     mutate(H, "ci.opcode = OpCodes.Ldarg_1;", "ci.opcode = OpCodes.Ldarg_0;", "transpiler cell push dropped", "[wiring]")

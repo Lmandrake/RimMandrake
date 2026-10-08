@@ -29,12 +29,8 @@ namespace RimMandrake.SeaShores
         {
             get
             {
-                if (!RM_SeaShoresSettings.Cur.generateSeaShores)
-                {
-                    return true;
-                }
                 RM_SeaShoreExtension ext = Ext;
-                return ext != null && !ext.generateShore;
+                return RM_SeaKernel.ShoreSuppressed(RM_SeaShoresSettings.Cur.generateSeaShores, ext != null, ext != null && ext.generateShore);
             }
         }
 
