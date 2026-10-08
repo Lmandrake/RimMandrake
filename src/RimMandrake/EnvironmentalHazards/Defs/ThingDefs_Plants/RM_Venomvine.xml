@@ -41,22 +41,13 @@
   PLANT_GROWTH_SPEC.md's planetary x4 growth postfix applies on top of
   growDays 8 — the 8 is authored against that, not instead of it.
 
-  Art: searched infrastructure/artpipe/{done,_artsrc,registry.jsonl,
-  art_status.json} for vine/thorn/venom/bramble/briar on 2026-09-20 (re-run
-  this pass, per CLAUDE.md "Check for existing regenerated art before queuing
-  more"). Every hit is a DONOR plant regenerated for another biome's roster
-  under ART_REGEN_FLORA_WAVE1_QUEUE_1 — ripthorn_v1, tropicalchokevine_v1,
-  firevine*, brambles_v1, twistingthorn*, crystaltipbrambles_* — and none of
-  them is ours or this plant. Job rmvenomvine_v1 filed this pass; the texPath
-  below is where that render lands.
-
-  LANDED 2026-09-26 (COLLECTION_GRAPHIC_ON_FLAT_PNG_1): rmvenomvine_v1
-  (facts PASS) was never wired; this texPath had NO file at all, firing
-  "Collection cannot init: No textures found" for both this def AND
-  RM_VenomvineThicket below (same texPath, on purpose — see that def's own
-  header). Wired as `RM_Venomvine/RM_Venomvine_a.png` — `Graphic_Random`
-  reads texPath as a FOLDER (Verse/Graphic_Collection.cs), so the render
-  had to land inside a folder of this name, not beside it.
+  Art: `Things/Plant/RM_Venomvine/` (Graphic_Random reads texPath as a FOLDER).
+  rmvenomvine_v1 (wired 2026-09-26) was NOT a venomvine: the artpipe output is
+  byte-identical to RM_PillarArmB_east (sha 9e0e6c1d33b1), a white pillar. It was
+  replaced 2026-10-08 by a real venomvine render (interim: the low-tangle
+  leaningscrub_venomvinethicket_c render) through the art ledger; the owner's
+  redo ("REDO THE VENOM VINE!! Totally wrong art.") is queued as 0vv_desert_venomvine_v1-4.
+  The render is painted in its own rust-umber, so the def carries no tint.
 -->
 <Defs>
 
@@ -85,10 +76,8 @@
     <graphicData>
       <texPath>Things/Plant/RM_Venomvine</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <!-- Dark rust-umber, thorn tips lighter. NO GREEN: desert.md SS9 gives
-           the biome only two greens, the pale ultracactus and the dew-line
-           halo, and this is neither. -->
-      <color>(112, 68, 48)</color>
+      <!-- NO GREEN (desert.md SS9): the render is painted dark rust-umber
+           itself; a <color> here would multiply it toward black. -->
     </graphicData>
     <selectable>true</selectable>
     <!-- A tree is 42. At 60 the pathfinder threads the gaps in a sparse
@@ -153,13 +142,10 @@
     numbers on it, the art, the fire resistance, Nutrition 0) is written the
     same in both; everything that differs is what this def exists for.
 
-    Art: deliberately the SAME texPath as RM_Venomvine. The artpipe job
-    rmvenomvine_v1's own style_notes were written to double as "its
-    shrubland sibling" (checked 2026-09-21 per CLAUDE.md "Check for existing
-    regenerated art before queuing more") — so this def is what that note
-    was anticipating and NO new art job is owed for it. If the two forms are
-    ever to read differently on screen, that is a future art decision, not a
-    missing asset.
+    Art: its own folder, `Things/Plant/RM_VenomvineThicket/`, holding the
+    owner's kept thicket render (RM_VenomvineThicket_v2, his 2026-10-06 pick C on
+    the Leaning Scrub sheet, note "variations": variations queued as
+    0vv_thicket_venomvine_v1-3). Painted near-black itself, so no tint.
 
     PLANT_GROWTH_SPEC.md's planetary x4 growth postfix applies on top of
     growDays 12 — the 12 is authored against that, not instead of it.
@@ -182,11 +168,8 @@
       <Beauty>-4</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <texPath>Things/Plant/RM_VenomvineThicket</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <!-- §9: "venomvine as near-black islands" — the same rust-umber as the
-           desert form, taken down toward black for the shrubland palette. -->
-      <color>(78, 47, 33)</color>
     </graphicData>
     <selectable>true</selectable>
     <!-- Above the desert form's 60. This is the cost EVERY pawn pays for the

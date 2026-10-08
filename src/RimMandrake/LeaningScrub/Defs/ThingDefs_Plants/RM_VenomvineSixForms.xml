@@ -16,10 +16,12 @@
 
   Numbers are PROVISIONAL (invented for this build, none ruled).
 
-  Art: NO render exists for any of the six (artpipe_state.py find, 2026-10-06). Each texPath
-  borrows the thicket's render (Things/Plant/RM_Venomvine, shipped by the
-  environmentalhazards dependency) as a PLACEHOLDER so nothing draws magenta. Six plant
-  renders are owed, plus a reared state (Rearing) and a spent state (Quench), per the briefs.
+  Art: each form has its own Graphic_Random folder, Things/Plant/RM_<Form>Venomvine/.
+  Until 2026-10-08 all six pointed at Things/Plant/RM_Venomvine, whose only file was a
+  white pillar-arm render (never a venomvine). Each folder now holds the owner's kept
+  thicket render as an INTERIM picture; each form's own render (4 variants), plus a
+  reared state (Rearing) and a spent state (Quench), is queued as 0vv_* artpipe jobs.
+  The reared/spent states are not wired: no C# swaps the graphic yet.
 -->
 <Defs>
 
@@ -36,7 +38,7 @@
       <Beauty>-4</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <texPath>Things/Plant/RM_RearingVenomvine</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -104,7 +106,7 @@
       <Beauty>-4</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <texPath>Things/Plant/RM_WalkingVenomvine</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -173,7 +175,7 @@
       <Beauty>-4</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <texPath>Things/Plant/RM_HoardVenomvine</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -238,7 +240,7 @@
       <Beauty>-4</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <texPath>Things/Plant/RM_QuenchVenomvine</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -306,7 +308,7 @@
       <Beauty>-2</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <texPath>Things/Plant/RM_SwornVenomvine</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -376,7 +378,7 @@
       <Beauty>-5</Beauty>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/RM_Venomvine</texPath>
+      <texPath>Things/Plant/RM_SheddingVenomvine</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
