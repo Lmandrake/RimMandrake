@@ -1,0 +1,78 @@
+[
+ {
+  "id": "RM_Skivvik",
+  "rimflow_item_id": "SHIPVERMIN_FREE_TIER_BEASTS_1",
+  "prompt": "RimWorld game animal sprite: a skivvik: a flat, rubbery hull-leech about the size of a hand, a pale grey-green leathery oval body with a round sucker-ring mouth ringed in small teeth on the underside and two thin translucent wing-flaps along its sides used for steering. A faintly glowing warm orange dot where it senses heat. Soot-grey insulation fibres cling to its skin. Wing-flaps spread flat and relaxed. One creature, centered, full body.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; genuinely transparent alpha background; our own original franchise-free design, a ship-borne vermin of wrecks and parked hulls; bake NO cast shadow onto the ground; north facing is a true rear view seen from directly behind: no face visible. ShipVermin free-tier cast (SHIPVERMIN_FREE_TIER_BEASTS_1); currently drawn with vanilla placeholder textures; no art existed anywhere (artpipe_state find, 2026-10-08). Wiring target: src/RimMandrake/ShipVermin/Textures/Things/Pawn/Animal/RM_Skivvik/RM_Skivvik_{east,south,north}.png (Graphic_Multi, def RM_Skivvik).",
+  "priority": 60,
+  "background": "transparent",
+  "target_def": "RM_Skivvik",
+  "target_texpath": "Things/Pawn/Animal/RM_Skivvik/RM_Skivvik",
+  "install_to": "src/RimMandrake/ShipVermin/Textures/Things/Pawn/Animal/RM_Skivvik/RM_Skivvik_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_Rattagh",
+  "rimflow_item_id": "SHIPVERMIN_FREE_TIER_BEASTS_1",
+  "prompt": "RimWorld game animal sprite: a rattagh: a heavy, bristle-backed rodent about the size of a small cat, stocky with a thick body, coarse dark brown-grey bristles standing along the spine, short sturdy limbs, small black eyes, a blunt whiskered snout and a long scaly tail. Dirty with grease and rust dust from ship crawlspaces. Calm, wary and foraging. One creature, centered, full body.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; genuinely transparent alpha background; our own original franchise-free design, a ship-borne vermin of wrecks and parked hulls; bake NO cast shadow onto the ground; north facing is a true rear view seen from directly behind: no face visible. ShipVermin free-tier cast (SHIPVERMIN_FREE_TIER_BEASTS_1); currently drawn with vanilla placeholder textures; no art existed anywhere (artpipe_state find, 2026-10-08). Wiring target: src/RimMandrake/ShipVermin/Textures/Things/Pawn/Animal/RM_Rattagh/RM_Rattagh_{east,south,north}.png (Graphic_Multi, def RM_Rattagh).",
+  "priority": 60,
+  "background": "transparent",
+  "target_def": "RM_Rattagh",
+  "target_texpath": "Things/Pawn/Animal/RM_Rattagh/RM_Rattagh",
+  "install_to": "src/RimMandrake/ShipVermin/Textures/Things/Pawn/Animal/RM_Rattagh/RM_Rattagh_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_Gorrud",
+  "rimflow_item_id": "SHIPVERMIN_FREE_TIER_BEASTS_1",
+  "prompt": "RimWorld game animal sprite: a gorrud: a long-jawed, dog-sized predatory rodent, lean and low-slung with a narrow elongated skull and a long jaw of yellow chisel incisors, sleek dark slate-grey fur with pale scarred patches, thick muscular hindquarters, bare pink-grey tail, small night-adapted pale eyes. Moves with its head low, a stalking hunter of cargo holds. One creature, centered, full body.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; genuinely transparent alpha background; our own original franchise-free design, a ship-borne vermin of wrecks and parked hulls; bake NO cast shadow onto the ground; north facing is a true rear view seen from directly behind: no face visible. ShipVermin free-tier cast (SHIPVERMIN_FREE_TIER_BEASTS_1); currently drawn with vanilla placeholder textures; no art existed anywhere (artpipe_state find, 2026-10-08). Wiring target: src/RimMandrake/ShipVermin/Textures/Things/Pawn/Animal/RM_Gorrud/RM_Gorrud_{east,south,north}.png (Graphic_Multi, def RM_Gorrud).",
+  "priority": 60,
+  "background": "transparent",
+  "target_def": "RM_Gorrud",
+  "target_texpath": "Things/Pawn/Animal/RM_Gorrud/RM_Gorrud",
+  "install_to": "src/RimMandrake/ShipVermin/Textures/Things/Pawn/Animal/RM_Gorrud/RM_Gorrud_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_Fethrik",
+  "rimflow_item_id": "SHIPVERMIN_FREE_TIER_BEASTS_1",
+  "prompt": "RimWorld game animal sprite: a fethrik: a large, hard-shelled mite the size of a big dog, broad domed shell in oily dark amber and black chitin with a wet fuel sheen, eight short jointed legs, a small pointed head with two stubby palps, and two swollen translucent amber fuel sacs showing under the rear edge of the shell. Chemfuel residue glistens on the legs. Restless and alert. One creature, centered, full body.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; genuinely transparent alpha background; our own original franchise-free design, a ship-borne vermin of wrecks and parked hulls; bake NO cast shadow onto the ground; north facing is a true rear view seen from directly behind: no face visible. ShipVermin free-tier cast (SHIPVERMIN_FREE_TIER_BEASTS_1); currently drawn with vanilla placeholder textures; no art existed anywhere (artpipe_state find, 2026-10-08). Wiring target: src/RimMandrake/ShipVermin/Textures/Things/Pawn/Animal/RM_Fethrik/RM_Fethrik_{east,south,north}.png (Graphic_Multi, def RM_Fethrik).",
+  "priority": 60,
+  "background": "transparent",
+  "target_def": "RM_Fethrik",
+  "target_texpath": "Things/Pawn/Animal/RM_Fethrik/RM_Fethrik",
+  "install_to": "src/RimMandrake/ShipVermin/Textures/Things/Pawn/Animal/RM_Fethrik/RM_Fethrik_{facing}.png",
+  "biome_neutral": true
+ }
+]
