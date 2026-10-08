@@ -1,0 +1,18 @@
+# Shared object store sampler — SEAT_MEMORY_CLONES_DRIVES_1 (design/RimMandrake/objstore_trial_2026-10-08.md).
+# Refreshes /home/mandrake/rm/store.git from mirror.git and appends one record to
+# ~/.local/state/rm-objstore/samples.jsonl: store size, borrowers (store / seat clone / other),
+# a cheap per-borrower object check plus one sampled `git fsck --connectivity-only`, disk free.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-objstore.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-objstore.timer
+# Remove:   systemctl --user disable --now rm-objstore.timer
+#           rm ~/.config/systemd/user/rm-objstore.{service,timer}; systemctl --user daemon-reload
+[Unit]
+Description=RimMandrake shared object store sampler
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/scratch_clone.py sample
+Nice=10
+IOSchedulingClass=idle
+MemoryMax=1G
+TimeoutStartSec=15min

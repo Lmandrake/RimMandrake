@@ -27,7 +27,7 @@ REASON = (
     "six seat deaths (2026-10-01..10-07) came from exactly this.\n"
     "To push work: `./publish -m \"subject\" <paths>` (Utils/publish.py builds the commit in a\n"
     "private index, no checkout needed). If a full copy is genuinely needed, clone onto ext4:\n"
-    "  /home/mandrake/rm/scratch/<SEAT>/<name>\n"
+    "  python3 src/RimMandrake/Utils/scratch_clone.py clone \"<purpose>\"   -> /home/mandrake/rm/scratch/<SEAT>/<name>\n"
     "Small scratch files in /tmp are fine. Doc: design/RimMandrake/memory_clones_drives_2026-10-08.md"
 )
 GIT_OPT_VAL = {"-C", "-c", "--git-dir", "--work-tree", "--namespace"}

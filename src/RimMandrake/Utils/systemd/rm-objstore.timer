@@ -1,0 +1,11 @@
+# Hourly — see rm-objstore.service.
+[Unit]
+Description=RimMandrake shared object store sampler, hourly
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
