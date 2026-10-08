@@ -28,18 +28,23 @@ namespace RimMandrake.GravshipLanding
         /// The postfix calls it with the whole map; GravshipLandingProof with a staged rect.</summary>
         public static int RevealIfArrival(Map map, bool arrival, CellRect area)
         {
-            if (!ModsConfig.OdysseyActive || !arrival) return -1;
-            if (!GravshipLandingSettings.revealOutdoorsBeforeLanding) return -1;
-            int roots = 0;
-            foreach (IntVec3 c in area)
+            if (!RM_LandingKernel.Enabled(ModsConfig.OdysseyActive, arrival, GravshipLandingSettings.revealOutdoorsBeforeLanding)) return -1;
+            return RM_LandingKernel.Reveal(new MapWorld(map), area.minX, area.minZ, area.Width, area.Height);
+        }
+
+        private sealed class MapWorld : IRevealWorld
+        {
+            private readonly Map map;
+            public MapWorld(Map map) { this.map = map; }
+            public bool InBounds(int x, int z) { return new IntVec3(x, 0, z).InBounds(map); }
+            public bool IsFogged(int x, int z) { return map.fogGrid.IsFogged(new IntVec3(x, 0, z)); }
+            public bool IsRoofed(int x, int z) { return new IntVec3(x, 0, z).Roofed(map); }
+            public bool BlocksFog(int x, int z)
             {
-                if (!c.InBounds(map) || !map.fogGrid.IsFogged(c) || c.Roofed(map)) continue;
-                Building edifice = c.GetEdifice(map);
-                if (edifice != null && edifice.def.MakeFog) continue;
-                FloodFillerFog.FloodUnfog(c, map);
-                roots++;
+                Building edifice = new IntVec3(x, 0, z).GetEdifice(map);
+                return edifice != null && edifice.def.MakeFog;
             }
-            return roots;
+            public void FloodUnfog(int x, int z) { FloodFillerFog.FloodUnfog(new IntVec3(x, 0, z), map); }
         }
 
         private static int CountFogged(Map map)
