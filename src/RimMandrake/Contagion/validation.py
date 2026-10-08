@@ -916,10 +916,13 @@ def burn_forced(t):
         with _comp(t, "burn_off_means_no_harm", toggle="burnEnabled"):
             if _live(t):
                 x, z = t.anchor
-                fresh = t.spawn_pawn("Colonist", hostile=False)
-                t.bridge_call("jawa/set_draft", pawnId=fresh, drafted=True)
-                t.bridge_call("jawa/order_pawn", pawnId=fresh, x=x - 12, z=z - 10, waitTicks=200)
+                # LIVE 2026-10-08: the visitor used to be spawned and walked 200 ticks under the forced Burn
+                # BEFORE the toggle went off, so a pressure pass dosed it with burnEnabled still ON (severity
+                # 0.0117, under one 0.02 pass). The toggle goes off FIRST; the visitor never sees burnEnabled on.
                 with _setting(t, "burnEnabled", False):
+                    fresh = t.spawn_pawn("Colonist", hostile=False)
+                    t.bridge_call("jawa/set_draft", pawnId=fresh, drafted=True)
+                    t.bridge_call("jawa/order_pawn", pawnId=fresh, x=x - 12, z=z - 10, waitTicks=200)
                     _wait(t, 800)
                     if not _has_cond(t, BURN_COND):
                         _fail("the forced Burn vanished when burnEnabled went off: the device must "
@@ -1109,9 +1112,18 @@ def coalescence(t):
             if _live(t):
                 x, z = _STATE["coal_xz"]
                 kids = [_spawn(t, UNFINISHED, x + 3, z + i - 3) for i in range(6)]
-                _wait(t, 600)
-                rows = _rows(t)
-                left = [k for k in kids if _alive(rows.get(k))]
+                # LIVE 2026-10-08: a fixed 600-tick wait read mass 5 with 2 of 6 still alive, both parked INSIDE
+                # the absorb ring at (x+2, z-2) and (x+2, z+2). Absorb runs once per 250-tick pass: one pass
+                # orders the walk, a LATER pass eats whoever has arrived, and an Unfinished (impaired Moving,
+                # Walk urgency) can miss a pass. Poll pass by pass until the six are gone. The cap keeps the
+                # whole arm under passiveGrowthTicks (6000), so passive growth cannot stand in for absorption.
+                left = list(kids)
+                for _ in range(10):
+                    _wait(t, 250)
+                    rows = _rows(t)
+                    left = [k for k in kids if _alive(rows.get(k))]
+                    if not left:
+                        break
                 stage, mass = _mass_stage(_inspect(t, _STATE["coal"])[1])
                 _note(t, "after absorbing 6", {"left": len(left), "stage": stage, "mass": mass})
                 if mass is None:
