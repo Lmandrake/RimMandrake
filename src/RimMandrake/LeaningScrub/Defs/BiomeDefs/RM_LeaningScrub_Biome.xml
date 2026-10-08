@@ -28,7 +28,7 @@
     wildAnimals: every RSW_/SW_/donor-Star-Wars-name entry stays OUT (per
     §7 Q11, "RimMandrake should not name star wars ever") and rides
     src/RimUtinni/UtinniPatches/Patches/WildAnimals_LeaningScrub.xml
-    instead. Only the 5 non-Star-Wars rows the frozen def already carries
+    instead. Only 4 non-Star-Wars donor rows from the frozen def
     are inline here (Q9: non-Star-Wars donor fauna is acceptable inline).
 
     wildPlants: the frozen def's own RUT_-prefixed plant defs (RUT_Fuzz,
@@ -164,7 +164,6 @@
     <wildAnimals>
       <Terrorworm MayRequire="mlie.horrors">0.7</Terrorworm>  <!-- terrorworm - non-Star-Wars donor, Q9 -->
       <AA_Cactipine MayRequire="sarg.alphaanimals">0.25</AA_Cactipine>  <!-- cactipine - non-Star-Wars donor, Q9 -->
-      <AA_Needlepost MayRequire="sarg.alphaanimals">0.1</AA_Needlepost>  <!-- needlepost - non-Star-Wars donor, Q9 -->
       <AA_Wildpawn MayRequire="sarg.alphaanimals">0.1</AA_Wildpawn>  <!-- wildpawn - non-Star-Wars donor, Q9 -->
       <AA_Wildpod MayRequire="sarg.alphaanimals">0.025</AA_Wildpod>  <!-- wildpod - non-Star-Wars donor, Q9 -->
       <!-- LEANINGSCRUB_RULED_CONTENT_1: the ruled cast (RM_LeaningScrubFauna.xml) -->
