@@ -76,7 +76,8 @@
     <label>hurrok</label>
     <description>A Patient one. A ridged, rubbery, arm-long thing that wedges itself into the seep-cracks where the hidden water is and lies there, year-round, filtering. The shade-line's browsers step over it. It is armored where it faces the canyon and soft where it faces the rock, and it does not come out — you catch one by catching the crack it lives in. Chewy. The name is the sound it makes when pulled.</description>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until phfix_RUT_Hurrok_a/_b paints its own (Things/Item/Fish/RUT_Hurrok); was borrowing Things/Plant/SnakePlant/SnakePlantA. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -101,7 +102,8 @@
     <label>vhessa</label>
     <description>A Patient one, and the reason the canyon water has no truce. A pale slot-canyon squid that hangs in the roofed water with its arms laid flat along the rock wall like roots, invisible, and takes what comes down to drink. It has no need to hurry. Landed, it is mostly arm, and the arms keep working for a while. The Farmers say you have not caught one — it has let go of the wall to see what you are.</description>
     <graphicData>
-      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until phfix_RUT_Vhessa_a/_b paints its own (Things/Item/Fish/RUT_Vhessa); was borrowing Things/Plant/JadePlant/JadePlantA. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>

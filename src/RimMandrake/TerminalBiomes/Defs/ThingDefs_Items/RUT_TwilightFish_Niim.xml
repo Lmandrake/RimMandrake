@@ -181,7 +181,7 @@
     <label>hollu</label>
     <description>A bell that forms on the underside of the waveglass, up in the ceiling gardens, and lets go — falling slowly down the whole height of the column, pulsing, stinging what it passes, to lie on the floor and be eaten by nuudal. A big garden sheds them all night. Divers learn the fall pattern of their skylight the way farmers learn rain. Netted mid-fall it is a sting and a bell of salt water; cooked, it is a delicacy in exactly one dock.</description>
     <graphicData>
-      <texPath>Things/Plant/JadePlant/JadePlantB</texPath>
+      <texPath>Things/Item/Fish/RM_HolluCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>

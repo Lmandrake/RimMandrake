@@ -58,7 +58,7 @@
     <label>skarrin</label>
     <description>A silver arc netted mid-air when the pool is fed — the one catch you make above the water. A missed net is a bite.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <texPath>Things/Item/Fish/RM_SkarrinCatch</texPath>
       <color>(200, 200, 210)</color>
     </graphicData>
     <statBases>
@@ -79,7 +79,7 @@
     <label>karrek</label>
     <description>A basket-trapped handful of finger-length armored fish, chitin combs still snapping. Never a line, never bare hands.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <texPath>Things/Item/Fish/RM_KarrekCatch</texPath>
       <color>(120, 90, 60)</color>
     </graphicData>
     <statBases>
@@ -100,7 +100,7 @@
     <label>vizhik</label>
     <description>Picked off wet stone after an escape, gloved — not caught in the pool, caught traveling.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <texPath>Things/Item/Fish/RM_VizhikCatch</texPath>
       <color>(190, 195, 170)</color>
     </graphicData>
     <statBases>
@@ -121,7 +121,7 @@
     <label>loomu</label>
     <description>It came to the feed whistle. That IS the catch method, and everyone hates it.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <texPath>Things/Item/Fish/RM_LoomuCatch</texPath>
       <color>(150, 150, 158)</color>
     </graphicData>
     <statBases>
@@ -142,7 +142,7 @@
     <label>huldu</label>
     <description>Picked up. It holds on. The easiest catch on the farm, and the one that leaves the handler uneasy.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <texPath>Things/Item/Fish/RM_HulduCatch</texPath>
       <color>(170, 110, 70)</color>
     </graphicData>
     <statBases>
@@ -163,7 +163,7 @@
     <label>ivvol</label>
     <description>Lifted from the floor at night, when the eye-ridge closes. By day it sees the net coming, every time.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <texPath>Things/Item/Fish/RM_IvvolCatch</texPath>
       <color>(120, 115, 100)</color>
     </graphicData>
     <statBases>

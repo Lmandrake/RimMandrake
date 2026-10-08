@@ -41,7 +41,8 @@
     <label>mee scalefish</label>
     <description>A silver-blue schooling scalefish with a single line of bioluminescent dots along the flank, netted whole. The bulk protein of every river that has them.</description>
     <graphicData>
-      <texPath>Things/Pawn/Animal/SeaBeasts/Mee/Mee_south</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until phfix_RSW_MeeCatch_a/_b paints its own (Things/Item/Fish/RSW_MeeCatch); was borrowing Things/Pawn/Animal/SeaBeasts/Mee/Mee_south. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
@@ -51,7 +52,8 @@
     <label>faa scalefish</label>
     <description>The gold-olive scalefish — "faynaa" to the Gungans — netted whole. Fast, small-mouthed and predatory in the water; middling eating out of it.</description>
     <graphicData>
-      <texPath>Things/Pawn/Animal/SeaBeasts/Faa/Faa_south</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until phfix_RSW_FaaCatch_a/_b paints its own (Things/Item/Fish/RSW_FaaCatch); was borrowing Things/Pawn/Animal/SeaBeasts/Faa/Faa_south. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
@@ -61,7 +63,8 @@
     <label>laa scalefish</label>
     <description>The big ornate scalefish, striped and streamer-finned, netted whole. Prized on every table that can get one; hard to net for the same reason it is hard to eat.</description>
     <graphicData>
-      <texPath>Things/Pawn/Animal/SeaBeasts/Laa/Laa_south</texPath>
+      <!-- TEMPORARY: vanilla small-meat sprite until phfix_RSW_LaaCatch_a/_b paints its own (Things/Item/Fish/RSW_LaaCatch); was borrowing Things/Pawn/Animal/SeaBeasts/Laa/Laa_south. -->
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>

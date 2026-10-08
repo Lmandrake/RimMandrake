@@ -177,7 +177,7 @@
     <label>tuun</label>
     <description>A small, quick, bark-mottled octopus that climbs the root causeways out of the water to reach the fruit-fall, and has been seen on the lower boughs. It steals -- lines, bait, small bright things, a fisher's whole catch left on the bank. Rare on the hook because it is usually the one holding the hook. Good eating, if you can find it.</description>
     <graphicData>
-      <texPath>Things/Plant/JadePlant/JadePlantA</texPath>
+      <texPath>Things/Item/Fish/RM_Tuun</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
