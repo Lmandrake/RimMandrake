@@ -4,12 +4,20 @@
 
 
 ## Sourced text (Wookieepedia)
-### Canon — https://starwars.fandom.com/wiki/Shiro-trap
+### Legends — https://starwars.fandom.com/wiki/Shiro-trap
 
-The Shiro-trap, native to Naboo, was not a separate creature, but a symbiotic pairing of a Tooke trap plant and a Shiro. The plant disguised the animal, while the Shiro provided the plant a form of locomotion. They were known for their appetite for Tooke.
+The Shiro-trap, native to Naboo, was not a separate creature, but a symbiotic pairing of a Tooke trap plant and a Shiro. The plant disguised the animal, while the Shiro provided the plant a form of locomotion. They were known for their appetite for Tooke. (The page is Legends-only: sources are *The Gungan Frontier*, *Wildlife of Star Wars: A Field Guide*, *Complete Star Wars Encyclopedia*; there is no canon Shiro-trap page.)
+
+### Legends — https://starwars.fandom.com/wiki/Shiro/Legends (the carrier)
+
+Shiros were hard-shelled, benign, slow-moving non-sentient reptiles native to the Gungan Swamps of Naboo. Their main defense was to retract head, legs and tail into a spiny shell. They fed on mintri, zaela, grahn vine, chak-root and occasional mud-dwelling crustaceans and mollusks, and were popular with Gungan cooks. They rolled in mud and collected dirt and seeds between their shell ridges; Tooke-trap plants grew in these soil pockets (the "shiro-trap"), camouflaging the shiro from larger predators, especially the saw-toothed grank, in exchange for locomotion.
+
+### Canon note — https://starwars.fandom.com/wiki/Shiro
+
+Canon has only the Shiro (Disney Infinity 3.0): a turtle-like species of Naboo with green skin. No canon Shiro-trap.
 
 ## Visual brief
-Two canon pencil-and-watercolour concept pieces. Both show the same idea, a **leafy plant growing on the back of a low armoured animal**, but they disagree on the details. Text: a symbiosis of a Tooke trap plant (the camouflage and the mouth) and a Shiro (the animal that carries it); no size is sourced.
+Two pencil-and-watercolour concept pieces (images are from the Legends-only Shiro-trap page). Both show the same idea, a **leafy plant growing on the back of a low armoured animal**, but they disagree on the details. Text (the Shiro carrier is a turtle-like, spiny-shelled reptile, so the green "caterpillar" reading of `canon_2` is an artistic impression, not sourced anatomy): a symbiosis of a Tooke trap plant (the camouflage and the mouth) and a Shiro (the animal that carries it); no size is sourced.
 - **The animal (Shiro) body, `canon_1`:** a squat tortoise/armadillo-like creature, **brown and ochre with a ridged, banded back-shell** and thick stumpy, clawed, scaly legs; a blunt snout and a long thin forward-reaching arm/neck at the front.
 - **The animal (Shiro) body, `canon_2`:** instead a **low, long, olive-green, segmented, caterpillar- or slug-like carapace**, hump-backed, with ridges, small stub legs, a pointed hooked snout and a tiny red eye, spiky comb-like scutes at the front. The two pieces disagree: brown tortoise-shell versus green segmented caterpillar.
 - **The plant (Tooke trap), common to both:** a **rosette of broad, leathery leaves that looks like a bromeliad or agave**, centred on the animal's back. Leaves are **grey-green to ochre, striped or blotched with orange-red/pink and yellow centres** (strong, saturated warm markings on the leaf blades).

@@ -47,3 +47,45 @@ Verified against Wookieepedia, NOT applied (owner art law). Each: entry, propose
 
 ### bolotaur
 - Must show last bullet ("Body colour within tan/golden-brown-to-olive-green range"): reword as "one documented palette per def (two depictions, no text colour)". Source: https://starwars.fandom.com/wiki/Bolotaur
+
+## Batch 10
+# Proposals batch 10 (Must show / Engine limits)
+
+### shirotrap
+- Must show bullet 1: drop "or green segmented carapace"; carrier is a turtle-like spiny-shelled reptile (retracts head/legs/tail). Reason: Shiro/Legends calls it hard-shelled reptile, canon Shiro is turtle-like. Source: https://starwars.fandom.com/wiki/Shiro/Legends
+- Add note that the references are Legends (not canon) in the Must show header context. Source: https://starwars.fandom.com/wiki/Shiro-trap
+
+### shyrack
+- Must show: label colours (tan/pink body, blue-violet limbs, purple membrane) as depiction-specific to the one painting; keep eyeless head, wings, talons as sourced (eyeless is in prose: "eyeless beasts"). Source: https://starwars.fandom.com/wiki/Shyrack/Legends
+
+### silooth
+- Must show bullet 1: append "(Dark Side Sourcebook says eight; JATM/Book of Sith art and the wiki's choice are six)". Source: https://starwars.fandom.com/wiki/Silooth/Legends
+- Must show bullet 6 "No wings, no fur, no tail": wiki prose does not state absence of wings; treat as depiction-based only. Source: same.
+
+### sith_wyrm
+- Engine limits / Must show: mark purple colouration, spine row and snout feeler as depiction-specific (wiki gives no anatomy text). Owner ruling covers four eyes etc., so no change proposed to ruled items. Source: https://starwars.fandom.com/wiki/Sith_wyrm
+
+### skalders
+- Must show bullet 1: reword "armoured, layered, ridged mantle" to "large hump at the base of the neck with thick folded hide (layered look is the CG depiction)". Reason: wiki text says hump and thick hide only. Source: https://starwars.fandom.com/wiki/Skalder/Legends
+- Must show bullet 5: add "about 3.5 m tall (wiki)". Source: https://starwars.fandom.com/wiki/Skalder
+
+### sketto
+- Must show bullets 3 and 5: mark tail tuft/fan and the two long upper fangs as Legends-painting details (text says only "mouth full of fangs", prehensile tail). Source: https://starwars.fandom.com/wiki/Sketto
+- Add note: living colour unsettled (stuffed specimen vs Legends painting). Source: same.
+
+### snoruuk
+- Must show last bullet: change "Colour is free (canon gives none)" to "Red cap is canon-supported (Snoruuk mushroom, red); stalk colour unsourced". Source: https://starwars.fandom.com/wiki/Snoruuk_mushroom
+- Must show bullet 3: label ring of 5-30 as Legends behaviour. Source: https://starwars.fandom.com/wiki/Snoruuk/Legends
+
+### strill
+- Must show last bullet ("not required until a better image exists"): Legends prose and infobox state six legs, folded skin that forms gliding membranes, fur (gold or gray-tan). Propose splitting: "Legends anatomy: six legs, flank membranes, gold/gray-tan fur; art shows four limbs, so owner to choose". Source: https://starwars.fandom.com/wiki/Strill/Legends
+- Engine limits: six legs cannot be drawn on a standard quadruped rig (rig-limit candidate). Source: same.
+
+### tauntaun
+- Must show bullet 3: "big nostrils" -> note a Legends-only second smaller pair (four nostrils); optional. Source: https://starwars.fandom.com/wiki/Tauntaun/Legends
+- Must show bullet 7: tail is "well-muscled" (Legends, one metre); keep "long thin pointed" as render-derived. Source: same.
+
+### teemuss
+- Must show bullet 3: "a hooked dark lower tusk" -> "two lower-jaw tusks" (Legends prose: two tusks on the lower jaw); horn nubs optional. Source: https://starwars.fandom.com/wiki/Tee-muss/Legends
+- Must show bullet 5: "Two broad cream-coloured hooved toes" -> mark provisional; Legends says odd-toed. Source: same.
+- Must show bullet 2: mane/mottling are render-derived, not in text.

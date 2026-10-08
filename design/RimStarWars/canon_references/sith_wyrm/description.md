@@ -5,7 +5,7 @@
 ## Sourced text (Wookieepedia)
 ### LEGENDS only — https://starwars.fandom.com/wiki/Sith_wyrm (links point at `/Legends` pages; no canon-continuity article found)
 
-The Sith wyrm was a massive, non-sentient creature that lived in large subterranean lairs on Yavin 4 (originally from Florn). It began as an infant exogorth that attached itself to Naga Sadow's battleship in 5000 BBY; Sadow could not tame it and used Sith alchemy to make it a guardian of the Temple of Fire. The Massassi worshiped it as a god until Exar Kun killed it about a thousand years later, using a Sith amulet. Later Jedi hunted other Sith wyrms in the Great Hunt, so it was not the only one. The article gives **no size, colour or anatomy text**; appearance comes only from the images.
+The Sith wyrm was a massive, non-sentient creature that lived in large subterranean lairs on Yavin 4 (originally from Florn). It began as an infant exogorth that attached itself to Naga Sadow's battleship in 5000 BBY; Sadow could not tame it and used Sith alchemy to make it a guardian of the Temple of Fire. The Massassi worshiped it as a god until Exar Kun killed it about a thousand years later, using a Sith amulet. Later Jedi hunted other Sith wyrms in the Great Hunt, so it was not the only one. Appearances: *Tales of the Jedi: Dark Lords of the Sith* 4 (first, the living guardian) and 5 (its corpse). The name "war wyrm" does not appear on the wiki page; it is this mod's label. The article gives **no size, colour or anatomy text**; appearance comes only from the images.
 
 ## Visual brief
 Viewed both images.
