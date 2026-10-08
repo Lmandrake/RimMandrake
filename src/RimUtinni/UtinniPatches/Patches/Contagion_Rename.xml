@@ -165,18 +165,18 @@
     </match>
   </Operation>
 
-  <!-- ============== AA_BloodShrimp -> zhirrik ============== -->
+  <!-- ============== AA_BloodShrimp -> zrrik (renamed from zhirrik by the owner, Greentide sheet 2026-10-08) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_BloodShrimp"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_BloodShrimp"]/label</xpath>
-          <value><label>zhirrik</label></value>
+          <value><label>zrrik</label></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_BloodShrimp"]/description</xpath>
-          <value><description>A small, fast predator of the shallow pools, quicker than its larger kin though it lacks their regeneration — unless it feeds. A zhirrik bite drains blood, and the blood it drinks knits its own wounds shut. It is the reason nobody drinks from the red pools unwatched.</description></value>
+          <value><description>A small, fast, red-shelled and stalk-eyed predator of the shallow pools, quicker than its larger kin though it lacks their steady regeneration. It has an odd one of its own instead: every stab of a zrrik's mouthparts drinks blood, and the blood it drinks knits its own wounds shut while it fights, so a wounded zrrik that keeps biting keeps healing. It is the reason nobody drinks from the red pools unwatched.</description></value>
         </li>
       </operations>
     </match>
@@ -185,7 +185,7 @@
     <xpath>/Defs/PawnKindDef[defName="AA_BloodShrimp"]</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef[defName="AA_BloodShrimp"]/label</xpath>
-      <value><label>zhirrik</label></value>
+      <value><label>zrrik</label></value>
     </match>
   </Operation>
 

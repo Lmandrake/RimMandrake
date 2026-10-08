@@ -95,7 +95,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Thurrock</defName>
     <label>thurrock</label>
-    <description>A towering, slab-shouldered browser that stands higher than the lower canopy, hide a wet copper-teal sheened with pale mineral bloom, legs caked to the knee in churnmud. A short, muscular lip strips the crowns of the trees it leans over, and it leans with its whole weight: where a herd has passed, trunks lie across the causeways and the sun comes down through new holes in the canopy. You hear them long before you see them, crash after crash along a treeline, and when the crashing stops the herd has stopped too. They cannot be tamed and they do not carry anything for anyone. Provoked, a thurrock shoulders a wall the way it shoulders a tree.</description>
+    <description>A browser the size of a house, humped high over the shoulders and set on four columnar legs caked to the knee in churnmud. Its hide is a wet copper and teal, crusted pale with mineral bloom along the back, and torn leaves ride in its folds wherever it has pushed through the crowns. A short, curling trunk-lip strips a tree bare in a few pulls. Thurrock browse by leaning their whole weight into the trees they feed on, and where a herd has passed, trunks lie across the causeways and light comes down through new holes in the canopy. You hear them long before you see them. They cannot be tamed, and a provoked thurrock shoulders a wall the way it shoulders a tree.</description>
     <statBases>
       <MoveSpeed>3.6</MoveSpeed><!-- PROVISIONAL -->
       <MarketValue>900</MarketValue><!-- PROVISIONAL -->

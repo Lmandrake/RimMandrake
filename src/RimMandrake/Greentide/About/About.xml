@@ -59,7 +59,7 @@ Ships the four v1 mechanics the owner ruled MUST ship together, not deferred
      biome ambience sustainers (Find.SoundRoot.sustainerManager /
      AmbientSoundManager.Notify_SwitchedMap — the one route RimSage confirmed
      for a live sustainer, since Sustainer/AmbientSoundManager expose no partial
-     volume-ramp API). Carried by the dhollock (RM_Dhollock).
+     volume-ramp API). Carried by the dhollollo (RM_Dhollock).
 
 The spine (GREENTIDE_BASE_PORT_BUILD_1, moved down from the campaign tier, RUT_ to RM_): the Roil
 (RM_RoilWeather forced by the permanent RM_RoilLock), wet-bulb overwhelm (RM_GreentideWetBulbLock,
@@ -129,8 +129,8 @@ or given a commonality/band: roster placement is owed to this biome's own
 review sitting, not this item. Art is queued, not yet generated.
 
 GREENTIDE_FREE_ROSTER_OWNED_1 (2026-10-03) gave the biome its own animal list, no vanilla rows: krannock,
-sulleth (grazer), dhollock (river ambusher), yammeth (flier), canopy swinger (working name) and the yearning
-fruit. The sytheclaw row is guarded on mandrake.rm.pyrelands and is deliberately multi-homed.
+sulleth (grazer), dhollollo (river ambusher), yammeth (flier), ookala (canopy climber) and the yearning
+fruit.
 
 Live proof is OWED at publish time — see the item's own verify record.</description>
 </ModMetaData>

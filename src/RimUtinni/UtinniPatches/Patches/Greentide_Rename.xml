@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Greentide_Rename.xml       RimUtinni Patches — new file 2026-10-08
+
+       Owner's Greentide art sheet ruling (Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json,
+       row VFEI2_Swarmling, 2026-10-08: "redo description. Rename it to Saluksis, make it yet more alien").
+       The name is his. Donor ThingDef + PawnKindDef pair on the PatchOperationConditional gate pattern
+       of FeverWood_Rename.xml / Miasma_Rename.xml. LABEL/DESCRIPTION ONLY; no defName, stat or art
+       field is touched. The label is a def-wide rename, so it reads the same in every biome that casts it. -->
+
+  <!-- ============== VFEI2_Swarmling -> saluksis ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="VFEI2_Swarmling"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEI2_Swarmling"]/label</xpath>
+          <value><label>saluksis</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFEI2_Swarmling"]/description</xpath>
+          <value><description>Soft, pale, hand-sized things with no face to speak of: a swollen milky sac carried on a fringe of thin legs, a ring of feeding pores where a head should be, and a faint pulse showing through the skin. Saluksis drift across the jungle floor in loose crowds, eating rot and sprouts, slow and easy to kill. They are not finished animals. Each one is the young of a hive insect, and in time it seals itself into a cocoon and splits open as an adult. Nothing about a saluksis tells you which kind will come out.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="VFEI2_Swarmling"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="VFEI2_Swarmling"]/label</xpath>
+      <value><label>saluksis</label></value>
+    </match>
+  </Operation>
+
+</Patch>

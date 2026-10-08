@@ -5,8 +5,8 @@
 <Defs>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_CanopySwinger</defName>
-    <label>canopy swinger</label>
-    <description>A lean, long-limbed climber that never touches the ground if it can help it, crossing the gaps between the Greentide's giants hand over hand along vine and branch. When the canopy runs out, or something faster is behind it, it simply lets go, trusting the river below to break the fall better than whatever is chasing it.</description>
+    <label>ookala</label>
+    <description>A drawn-out, narrow-bodied climber, twice as long as it is tall, its limbs jointed one time more than they need to be so that each reach folds out like a tape. An ookala hangs in the gaps between the Greentide's giants by its hooked hands and the grip of its long tail, swaying with the canopy until it is hard to tell from a vine. It never touches the ground if it can help it; when the branches run out, or something faster is behind it, it lets go and trusts the river below to break the fall.</description>
     <statBases>
       <MoveSpeed>5.5</MoveSpeed>
       <MarketValue>90</MarketValue>
@@ -64,7 +64,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_CanopySwinger</defName>
-    <label>canopy swinger</label>
+    <label>ookala</label>
     <race>RM_CanopySwinger</race>
     <combatPower>25</combatPower>
     <ecoSystemWeight>0.8</ecoSystemWeight>
