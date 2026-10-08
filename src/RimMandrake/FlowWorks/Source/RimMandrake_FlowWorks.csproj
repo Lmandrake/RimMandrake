@@ -233,6 +233,8 @@
        One ItemGroup per mechanic so parallel builders append without touching each other's lines. -->
   <ItemGroup>
     <Compile Include="Machinery\Logistics\RM_SluiceGateSettings.cs" />
+    <Compile Include="Machinery\Logistics\RM_SluiceGate.cs" />
+    <Compile Include="Machinery\Logistics\RM_SluiceGateMath.cs" />
   </ItemGroup>
 
   <!-- Bottled blood: Machinery\Logistics\. Blood-draw-only files go in this group.
