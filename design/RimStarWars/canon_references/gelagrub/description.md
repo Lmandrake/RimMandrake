@@ -8,6 +8,8 @@
 Gelagrubs, also known as Felucian ground beetles, were a species of insect that were found in the forests of the planet Felucia in the Outer Rim Territories.
 
 **Biology and appearance** Majestic and highly squishy, Gelagrubs were the largest species of bug in the galaxy. They had five pairs of legs for movement and their eyes were positioned on their head to spot aerial attacks. The creatures had dark green skin with blue splotches that enabled them to blend into their environment.
+
+Infobox (canon): length 4 meters (*Star Wars: The Visual Encyclopedia*); at least five pairs of short legs (*Revenge of the Sith*); used as mounts by clone troopers during the Clone Wars (*Revenge of the Sith*) — https://starwars.fandom.com/wiki/Gelagrub
 ### Legends — https://starwars.fandom.com/wiki/Gelagrub/Legends
 
 Gelagrubs, also known as Felucian ground beetles, were large insectine creatures that lived on the planet Felucia.

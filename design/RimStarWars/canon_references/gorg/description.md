@@ -12,7 +12,10 @@
 
 Gorgs, also known as chubas, was a general term used for several species of amphibians used as food by many different sentient species. They were available for seven wupiupi in the markets of Mos Espa on the planet Tatooine, During the Naboo Crisis, the Gungan Jar Jar Binks attempted to use his long tongue to grab one from a stall for free. The Hutt crime lord Jabba Desilijic often ate gorgs, swallowing one live at the Boonta Eve Classic podrace and thirty-six years later in his palace. Kadas'sa'Nikto were also known to eat gorgs live.
 
+Canon infobox: origin Tatooine; non-sentient amphibian; named subspecies Castilon gorg (*Resistance*: "The Recruit") and Iridium Mountain gorg (*Tales from Vandor*). The Castilon gorg (origin Castilon, carnivorous, often eating large insects; skin blue/gray/orange by source, eyes blue) includes Bitey, the gray, turquoise-eyed pet of Flix and Orka who bit people's fingers, 0.2 m — https://starwars.fandom.com/wiki/Castilon_gorg , https://starwars.fandom.com/wiki/Bitey . Jabba swallowed a gorg live in *Return of the Jedi* (https://starwars.fandom.com/wiki/Gorg).
+
 ### Legends — https://starwars.fandom.com/wiki/Gorg/Legends
+(Legends continuity only: the infobox size, the long-tailed/three-eyed/four-eyed varieties and the husbandry below, including edible eggs, are not canon.)
 
 Gorgs, known as chubas in Huttese, were small precocious amphibians that could be found on several planets, from the swamps of Naboo  to the deserts of Tatooine (the latter being their original native planet). They were popularly favored as food by many humanoid species (including on Tatooine), either dried, fricasseed, or roasted in manak leaves. In Huttese, "hot chubas" were called "hotsa chuba."
 
@@ -25,7 +28,7 @@ Natural predators included worrts, which the gorgs themselves were somewhat simi
 Gorgs were also known to be mutated by bio-engineers. One such mutation resulted in the successful growth of a chubafly: a colorful gorg but with wings that made it capable of flying.
 
 ## Visual brief
-🔑 **Gorg is a SPECIES WITH SEVERAL LEGITIMATE LOOKS, not one look** (owner, 2026-10-04: there
+🔑 **Gorg is an UMBRELLA TERM covering several amphibian species, each with its own legitimate look** (owner, 2026-10-04: there
 are many kinds, all equally considered gorg). The canon page calls "gorg" "a general term used
 for several species of amphibians"; Legends names "long-tailed, three-eyed, and four-eyed
 varieties". Every variant below is a valid gorg; none is the "real" one. Shared by all: a

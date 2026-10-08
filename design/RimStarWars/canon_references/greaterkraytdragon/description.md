@@ -10,13 +10,15 @@ krayt dragon); a rare subset of greater krayt dragons keep growing into the
 "leviathan krayt dragon" form, a sixteen-limbed, venom-spitting giant.
 
 **Body plan** (per Wookieepedia's "Biology and appearance" section, sourced to
-the *Jedi Temple Challenge* companion book and *Ultimate Star Wars*): a long
+the *Star Wars: Jedi Temple Challenge* Episode 1 (listed by the wiki as a non-canon appearance) and *Ultimate Star Wars*): a long
 neck, a long whip-like tail, two horns, sharp teeth, and five pairs of legs
 (ten legs total) — it literally "swims" through shifting sand dunes using
 those ten legs. It is non-sentient, carnivorous, and hunts large prey
 (banthas, dewbacks, rontos, even sarlaccs), ambushing from beneath the sand.
 Its body produces a highly acidic venom used both to pre-digest food and,
 when threatened, as a projectile spit weapon.
+
+**Greater vs leviathan (do not mix)**: the greater krayt dragon page gives TEN legs (five pairs), two horns and a long whip-like tail. The Mandalorian animal is the LEVIATHAN form (https://starwars.fandom.com/wiki/Leviathan_krayt_dragon): sixteen limbs (eight pairs) ending in five clawed digits, a spiny tail, a large head protected by bony armor, length 184 m, height 28.68 m, width 45.6 m (infobox; *Mandalorian Visual Guide* / *Encyclopedia: Comprehensive Guide*); its spit is a greenish-yellow acidic fluid (https://starwars.fandom.com/wiki/Krayt_dragon_venom, *Visual Encyclopedia*) that also pre-digests its food. Only very few greater dragons grow into leviathans. The owner ruling below (7-8 pairs) matches the leviathan.
 
 **Coloration/armor**: notably, neither the "Greater krayt dragon" nor the
 general "Krayt dragon" Wookieepedia infobox fills in a skincolor field at all
@@ -37,9 +39,9 @@ The species' first live-action, on-screen appearance as a living creature is
 *The Mandalorian* Season 2 premiere, "Chapter 9: The Marshal" (2020): a
 massive leviathan-stage greater krayt dragon terrorizes the town of Mos Pelgo
 and nearby Tusken Raiders; Din Djarin and Cobb Vanth team up (with Tusken
-help) to kill it by having Djarin ride inside a bantha carcass rigged with
-explosives, detonating them from within the dragon's gut and jetpacking out
-through its mouth. Its cry/call is loud enough to be recognized and feared by
+help) to kill it by having Djarin ride a live bantha rigged with
+explosives, with Djarin holding the live bantha's reins as the dragon swallows both of them, then jetpacking out
+through its mouth to detonate the explosives. Its cry/call is loud enough to be recognized and feared by
 Tusken Raiders — this is also referenced earlier in Star Wars lore (Obi-Wan
 Kenobi mimics a krayt dragon's cry to scare off Tuskens threatening Luke in
 *A New Hope*, established in the general "Krayt dragon" article, not unique

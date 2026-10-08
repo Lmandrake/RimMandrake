@@ -4,7 +4,7 @@
 
 ## Sourced text (Wookieepedia — Legends is the substantial article; the
 current-canon "Gizka" page is a one-line stub)
-Gizka were small reptiles found across the galaxy, on planets including
+(All detail below is Legends continuity; current canon only names the gizka.) Gizka were small reptiles found across the galaxy, on planets including
 Lehon and Manaan, though their true homeworld is unconfirmed — speculated
 to be Lehon, spreading via the wreckage of crashed starships during the era
 of the Infinite Empire. Infobox: green skin color, omnivorous diet, and
@@ -14,15 +14,15 @@ every world they reached, commonly infesting starship wiring and
 insulation and squeezing into openings to nest inside bulkheads. Gizka meat
 had a "universal flavor" prized as a delicacy (gizka steak); some
 carnivorous species such as Trandoshans reportedly thought everything
-tasted like gizka. Every attempt at domesticating them failed, since they
+tasted like gizka. They preferred grains and leaves but could eat nearly anything, including wiring and insulation. Every attempt at domesticating them failed, since they
 always escaped or chewed through vital electronics looking for food. Their
 best-known appearance is the *Star Wars: Knights of the Old Republic*
-(2003) "Trouble with Gizka" side content aboard the *Ebon Hawk*, where a
+(2003, Legends) "Trouble with Gizka" side content aboard the *Ebon Hawk*, where a
 cargo mishandling incident leaves the player fighting a rapidly-multiplying
-gizka infestation cleared with "Gizka poison" pellets — a deliberate homage
+gizka infestation cleared with "Gizka poison" pellets (or by paying Nubassa on Manaan to remove them) — a deliberate homage
 to the *Star Trek: TOS* episode "The Trouble with Tribbles." First
 mentioned in current Disney canon only much later, in the 2017 novel
-*Aftermath: Empire's End*.
+*Aftermath: Empire's End*. (A "Six-Card Gizka Limit" game also shares the name in canon; Disney Infinity 3.0 gizka are non-canon.) Canon page: https://starwars.fandom.com/wiki/Gizka ; diet, pest behaviour, domestication, quest resolutions: https://starwars.fandom.com/wiki/Gizka/Legends
 
 ## Visual brief
 Judged against the owner's two supplied reference images

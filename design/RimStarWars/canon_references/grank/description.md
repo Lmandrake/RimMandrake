@@ -4,11 +4,11 @@
 
 ## Sourced text (Wookieepedia)
 `Grank` is a redirect to **`Saw-toothed grank`** — there is no separate
-"Grank" article; Legends canon only has this one animal by the name (no
+"Grank" article; Legends continuity only has this one animal by the name (no
 disambiguation with a character was needed; the only other "Grank"-adjacent
 hits on the wiki are this species and nothing else).
 
-The **saw-toothed grank** ({{Top|leg}} tag — this is **Legends canon**, not
+The **saw-toothed grank** ({{Top|leg}} tag — this is **Legends continuity**, not
 current canon) was a non-sentient carnivore native to the **Gungan Swamps of
 Naboo**, sourced entirely to *The Wildlife of Star Wars: A Field Guide*
 (2001). Key facts from the article body:
@@ -28,8 +28,8 @@ Naboo**, sourced entirely to *The Wildlife of Star Wars: A Field Guide*
   saw-toothed granks were also kept as pets/zoo animals on Coruscant, where
   escapees ranged the Coruscant Underworld scavenging garbage (alongside
   escaped anoobas and veermoks).
-- **Appearances**: *Episode I Adventures 9: Rescue in the Core*; the LucasArts
-  game *The Starfighter Trap* (a "grank" enemy/creature ID); and *Star Wars
+- **Appearances**: *Episode I Adventures 9: Rescue in the Core*; the story
+  "The Starfighter Trap" in *Star Wars Gamer* 1 (a "grank" creature ID); and *Star Wars
   Episode I: The Gungan Frontier* (first appearance).
 - **No coloration, height, length, mass, eye color, or skin/hair color is
   given anywhere in the article text** — every relevant infobox field
@@ -60,7 +60,7 @@ one strong consistent illustration tradition rather than triangulated proof):
   yellow/cream creature nearby): confirms the same **reddish-brown/maroon
   dorsal coloring fading to tan-grey underneath**, the same twin nose-horns,
   and shows the mouth **open**, revealing a genuinely saw-like double row of
-  jagged white teeth — the strongest single confirmation of the "saw-toothed"
+  jagged white teeth — the strongest single view of the "saw-toothed"
   name. Also shows faint **darker mottled spotting** on the flank of the
   adult, consistent with a reptilian/scaled hide rather than a furred one
   (matching "Reptomammal"). Both the adult and the smaller juvenile share
@@ -68,12 +68,12 @@ one strong consistent illustration tradition rather than triangulated proof):
 - `steam_workshop_roster_grid.jpg` (Steam Workshop preview screenshot from
   the donor mod's current 1.6 listing, id `3497316713` — a 12-creature
   roster grid; Grank is the bottom-right tile, clearly labeled "GRANK"): the
-  mod's own flat-vector icon art, independently drawn by the mod author,
+  mod's own flat-vector icon art, drawn by the mod author (no evidence it is independent of the same Field Guide art),
   **also lands on a maroon/wine-red back with a tan/cream belly, snout
   underside, and open mouth showing white fangs**, a long thin down-curving
   tail, and a small ear/horn nub — i.e. the mod author converged on
   essentially the same reddish-brown-over-tan palette as the two Wookieepedia
-  illustrations, independently of them.
+  illustrations, (not independent evidence of canon anatomy).
 
 **No disagreement found between text and images** (the text is simply silent
 on color, so there is nothing to contradict), **and no disagreement between

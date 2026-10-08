@@ -17,16 +17,16 @@ Two separate Wookieepedia pages exist for "Hawk-bat" and they diverge sharply
   (via its infobox image) in *Star Wars: Hyperspace Lounge* material.
 - **Legends** (`Hawk-bat/Legends`, pageid 11574): far richer. Hawk-bats were
   predatory **reptavians** (part-reptile, part-bird/bat) native to urbanized
-  worlds, especially **Coruscant** — one of the few native Coruscanti species
+  worlds, especially **Coruscant** and Taris — one of the few native Coruscanti species
   to survive the planet's urbanization, alongside the thrantcill. About 1
-  meter tall with an average **1.5-meter wingspan**; leathery wings on a
+  meter tall (Essential Guide to Alien Species) with an average **1.5-meter wingspan**; leathery wings on a
   thin membrane stretched over wing-bones, the membrane **studded with
   spiky growths**. A hooked beak lined with tiny teeth shreds prey; **ruby
   eyes** with an extremely wide vision spectrum (UV, infrared, and beyond)
   plus echolocation for spotting camouflaged prey. Skin color is explicitly
   two-staged: hatchlings are **green**, and on reaching maturity a hawk-bat
   sheds its green skin (and eats the shed skin) to reveal **purplish
-  yellow-gray** adult coloring. They hunt in coordinated flocks — a lone
+  yellow-gray** adult coloring. They are protected by law on Coruscant for eating silica parasites, hate cold and roost on warm vents and power cables, and hunt in coordinated flocks — a lone
   hawk-bat is vulnerable, but a disturbed flock retaliates as one — favoring
   granite slugs and shadowmoth larvae, scooping prey off vertical walls.
   Eggs are camouflaged brown-and-green to look like rocks; mothers guard
@@ -78,8 +78,7 @@ against the fourth:
   in another) even though the text says ruby.
 - `donor_mod_workshop_icon.jpg` — cropped from the donor mod's own Steam
   Workshop screenshot (full grid screenshot showing "HAWK-BAT" labeled next
-  to Gornt/Gorak/Iriaz — see Source URLs). **This is the strongest
-  confirmation available**: the mod's own stylized icon uses the same
+  to Gornt/Gorak/Iriaz — see Source URLs). **This only shows the donor mod used the same Legends design (it is not independent evidence of canon anatomy)**: the mod's own stylized icon uses the same
   **violet-purple-topped, cream/pale-yellow-bottomed wing membrane**,
   small head with a slight brow horn, and long tail as the Legends Field
   Guide art — i.e. whoever built this RimWorld mod referenced the classic
@@ -87,8 +86,7 @@ against the fourth:
 
 **Net read: render the Legends version** — a purple-topped, cream-to-pale-gold-
 bellied, membrane-winged reptavian bat with a small forehead horn, hooked
-beak, and long tail, consistent across three independent sources (Field
-Guide art ×2 and the donor mod's own icon). The current-canon Hyperspace
+beak, and long tail, consistent across Field Guide art ×2 and the donor mod's own icon (the donor icon is not independent of the Field Guide art). The current-canon Hyperspace
 Lounge image is real but is the outlier and should not be used as the color
 target — flagging it here rather than quietly dropping it, per this
 library's own rule about disagreement.
