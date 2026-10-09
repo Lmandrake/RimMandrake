@@ -30,6 +30,7 @@
     <Compile Include="..\RM_ShadePatchGraph.cs" />
     <Compile Include="..\RM_WildLeaveMath.cs" />
     <Compile Include="..\RM_SalvageWinchRules.cs" />
+    <Compile Include="..\RM_VerminFoodMath.cs" />
     <Compile Include="PatchGraphFuzz.cs" />
     <Compile Include="CreatureBehaviorsFuzz.cs" />
     <Compile Include="Program.cs" />

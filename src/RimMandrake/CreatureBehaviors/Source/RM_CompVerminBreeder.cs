@@ -126,9 +126,20 @@ namespace RimMandrake.CreatureBehaviors
 		/// </summary>
 		private bool FoodExistsNearby()
 		{
+			return NearbyFood(true, out _).Count > 0;
+		}
+
+		/// <summary>
+		/// Spawned stacks of the breeding food within the search radius, nearest first. VERMIN_EAT_BREEDING_FOOD_1: with
+		/// verminBreedingEatsFood on, a stack the breeder cannot walk to (behind a closed-off door or wall) does not count; the
+		/// reachability test is capped to the eight nearest stacks so the scan stays bounded. With it off, the old rule: any
+		/// stack in range counts. <paramref name="firstOnly"/> stops at the first usable stack (the famine check needs one).
+		/// </summary>
+		private List<Thing> NearbyFood(bool firstOnly, out bool anyInRange)
+		{
 			Map map = parent.Map;
 			float radiusSq = Props.foodSearchRadius * Props.foodSearchRadius;
-
+			var inRange = new List<Thing>();
 			for (int d = 0; d < Props.breedFoodThingDefNames.Count; d++)
 			{
 				ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(Props.breedFoodThingDefNames[d]);
@@ -146,12 +157,54 @@ namespace RimMandrake.CreatureBehaviors
 					}
 					if ((t.Position - parent.Position).LengthHorizontalSquared <= radiusSq)
 					{
-						return true;
+						inRange.Add(t);
 					}
 				}
 			}
+			anyInRange = inRange.Count > 0;
+			if (!RM_CreatureBehaviorsSettings.verminBreedingEatsFood)
+			{
+				return inRange;
+			}
+			IntVec3 here = parent.Position;
+			inRange.Sort((a, b) => (a.Position - here).LengthHorizontalSquared.CompareTo((b.Position - here).LengthHorizontalSquared));
+			var usable = new List<Thing>();
+			TraverseParms parms = TraverseParms.For(Parent);
+			for (int i = 0; i < inRange.Count && i < 8; i++)
+			{
+				if (map.reachability.CanReach(here, inRange[i], PathEndMode.Touch, parms))
+				{
+					usable.Add(inRange[i]);
+					if (firstOnly)
+					{
+						break;
+					}
+				}
+			}
+			return usable;
+		}
 
-			return false;
+		/// <summary>The litter eats: takes up to verminLitterFoodUnits from the nearest reachable stacks (VERMIN_EAT_BREEDING_FOOD_1).</summary>
+		private void ConsumeLitterFood()
+		{
+			if (!RM_CreatureBehaviorsSettings.verminBreedingEatsFood || Props.breedFoodThingDefNames.NullOrEmpty())
+			{
+				return;
+			}
+			List<Thing> stacks = NearbyFood(false, out _);
+			var counts = new List<int>();
+			for (int i = 0; i < stacks.Count; i++)
+			{
+				counts.Add(stacks[i].stackCount);
+			}
+			int[] take = RM_VerminFoodMath.Plan(counts, RM_CreatureBehaviorsSettings.verminLitterFoodUnits);
+			for (int i = 0; i < stacks.Count; i++)
+			{
+				if (take[i] > 0 && !stacks[i].Destroyed)
+				{
+					stacks[i].SplitOff(take[i]).Destroy();
+				}
+			}
 		}
 
 		private void CalculateNextSpawnTick()
@@ -178,6 +231,7 @@ namespace RimMandrake.CreatureBehaviors
 			PawnGenerationRequest request = new PawnGenerationRequest(Parent.kindDef, Parent.Faction, fixedBiologicalAge: 0.4f, fixedChronologicalAge: 0.4f);
 			Pawn child = PawnGenerator.GeneratePawn(request);
 			GenSpawn.Spawn(child, spawnCell, map);
+			ConsumeLitterFood();
 		}
 
 		public override void PostExposeData()
