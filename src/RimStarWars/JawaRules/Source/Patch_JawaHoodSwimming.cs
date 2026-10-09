@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.StarWars.JawaRules
@@ -85,6 +87,70 @@ namespace RimMandrake.StarWars.JawaRules
             {
                 reentry = false;
             }
+        }
+    }
+
+    // SWIM_HOOD_CANDRAW_PROOF_1: jawa/static_call proof read (type=RimMandrake.StarWars.JawaRules.JawaHoodProof
+    // method=ProofHood args=""). Finds the worn guy762_JawaHood render node on the first SWIMMING hooded pawn on the current
+    // map (else the first hooded pawn, swimming=false) and asks the real, patched PawnRenderNodeWorker_Apparel_Head.CanDrawNow
+    // under the flags vanilla leaves a swimmer (Clothes, Headgear, NeverAimWeapon cleared). Pure read: nothing drawn or changed.
+    public static class JawaHoodProof
+    {
+        public static string ProofHood(string unused)
+        {
+            try
+            {
+                Map map = Find.CurrentMap;
+                if (map == null) return "ERROR no current map";
+                int hooded = 0, swimmingHooded = 0;
+                Pawn pick = null; PawnRenderNode pickNode = null;
+                IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+                for (int i = 0; i < pawns.Count; i++)
+                {
+                    Pawn p = pawns[i];
+                    PawnRenderNode node = FindHood(p?.Drawer?.renderer?.renderTree?.rootNode);
+                    if (node == null) continue;
+                    hooded++;
+                    bool sw = p.Swimming;
+                    if (sw) swimmingHooded++;
+                    if (pick == null || (sw && !pick.Swimming)) { pick = p; pickNode = node; }
+                }
+                if (pick == null) return "hooded=0 swimmingHooded=0 note=no spawned pawn wears guy762_JawaHood (ERROR for the criterion: nothing to measure)";
+                bool swimming = pick.Swimming;
+                PawnDrawParms parms = new PawnDrawParms();
+                parms.pawn = pick;
+                parms.facing = pick.Rotation;
+                parms.flags = PawnRenderFlags.Clothes | PawnRenderFlags.Headgear;
+                if (swimming)
+                {
+                    // what PawnRenderer.ParallelGetPreRenderResults leaves a swimmer (0xFFFFFF1F)
+                    parms.flags &= ~(PawnRenderFlags.Clothes | PawnRenderFlags.Headgear | PawnRenderFlags.NeverAimWeapon);
+                    parms.swimming = true;
+                }
+                bool canDraw = pickNode.Worker.CanDrawNow(pickNode, parms);
+                return "hooded=" + hooded + " swimmingHooded=" + swimmingHooded + " pawn=" + pick.LabelShortCap
+                    + " swimming=" + swimming + " canDraw=" + canDraw + " flags=" + (int)parms.flags
+                    + " toggle=" + RSW_JawaRulesSettings.swimHoodEnabled;
+            }
+            catch (Exception e)
+            {
+                return "ERROR " + e.GetType().Name + ": " + e.Message;
+            }
+        }
+
+        private static PawnRenderNode FindHood(PawnRenderNode n)
+        {
+            if (n == null) return null;
+            if (n is PawnRenderNode_Apparel a && a.apparel?.def != null && JawaHoodRender.IsKeptHood(a.apparel.def)) return n;
+            if (n.children != null)
+            {
+                for (int i = 0; i < n.children.Length; i++)
+                {
+                    PawnRenderNode r = FindHood(n.children[i]);
+                    if (r != null) return r;
+                }
+            }
+            return null;
         }
     }
 }
