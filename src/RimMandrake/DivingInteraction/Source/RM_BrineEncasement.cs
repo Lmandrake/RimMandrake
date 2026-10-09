@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.DivingInteraction
@@ -85,6 +86,22 @@ namespace RimMandrake.DivingInteraction
         public void GetChildHolders(List<IThingHolder> outChildren)
         {
             ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+        }
+
+        /// <summary>DI-4: hours until the held pawn smothers at the jacket's rate (ignores the hediff's own slow decay, so a little pessimistic).</summary>
+        public float SmotherHoursLeft
+        {
+            get
+            {
+                float sev = 0f;
+                if (ContainedThing is Pawn p && p.health != null)
+                {
+                    HediffDef d = DefDatabase<HediffDef>.GetNamedSilentFail("RM_Smothered");
+                    Hediff h = d == null ? null : p.health.hediffSet.GetFirstHediffOfDef(d);
+                    if (h != null) sev = h.Severity;
+                }
+                return Mathf.Max(0f, (1f - sev) / SmotherSeverityPerRareTick) * 250f / 2500f;
+            }
         }
 
         public bool HasAnyContents => innerContainer != null && innerContainer.Count > 0;
@@ -221,7 +238,7 @@ namespace RimMandrake.DivingInteraction
             s += "Encased: " + ContainedThing.LabelShortCap;
             if (ContainedThing is Pawn p && !p.Dead)
             {
-                s += " (held " + (heldTicks / 2500) + "h — mine it out)";
+                s += " (held " + (heldTicks / 2500) + "h, about " + Mathf.CeilToInt(SmotherHoursLeft) + "h before smothering — mine it out)";
             }
             return s;
         }

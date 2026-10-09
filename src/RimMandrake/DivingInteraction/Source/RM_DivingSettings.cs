@@ -110,6 +110,8 @@ namespace RimMandrake.DivingInteraction
         // charger building becomes inert decoration — off never strands a
         // colonist on a dead battery mid-dive.
         public static bool chillHeatedSuitEnabled = true;
+        // DANGER_CLOCK_ALERTS_1 (DI-4): alerts for a low heated suit outside and a colonist encased in brine.
+        public static bool dangerClockAlertsEnabled = true;
 
         // CHILL_GARDEN_DEFENSE_1, 2026-09-28. The garden's tiered immune
         // system: harvesting/killing floor life/directed heat draws an
@@ -232,6 +234,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillAirPumpCellsPerPump, "chillAirPumpCellsPerPump", 60);
             Scribe_Values.Look(ref chillBoilShroudEnabled, "chillBoilShroudEnabled", true);
             Scribe_Values.Look(ref chillHeatedSuitEnabled, "chillHeatedSuitEnabled", true);
+            Scribe_Values.Look(ref dangerClockAlertsEnabled, "dangerClockAlertsEnabled", true);
             Scribe_Values.Look(ref chillGardenDefenseEnabled, "chillGardenDefenseEnabled", true);
             Scribe_Values.Look(ref chillThermalFootprintsEnabled, "chillThermalFootprintsEnabled", true);
             Scribe_Values.Look(ref chillDrownedAuroraEnabled, "chillDrownedAuroraEnabled", true);
@@ -425,6 +428,9 @@ namespace RimMandrake.DivingInteraction
                   + "freezing it fights are unaffected either way.");
 
                 list.Gap();
+                list.CheckboxLabeled("Danger-clock alerts (low suit, brine-encased colonist)", ref dangerClockAlertsEnabled,
+                    "On: an alert while a heated suit is low or empty outside on the Chill seabed, and one while "
+                  + "a colonist is encased in brine, with the hours left before they smother. Off: no alerts.");
                 list.CheckboxLabeled("The Chill: heated suit battery drains", ref chillHeatedSuitEnabled,
                     "Shipped default: ON. The heated dive suit's battery drains while worn "
                   + "outdoors on the Chill's seabed, and recharges near a powered suit charging "
