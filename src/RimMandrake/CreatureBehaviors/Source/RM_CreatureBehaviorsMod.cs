@@ -360,6 +360,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool filterFeedingEnabled = true;
         public static float filterFeedNutritionMultiplier = 1f;
         public static bool dungSeedingEnabled = true;
+        public static bool dungHatchRespectsWildlifeCap = true;
         public static float dungSeedingMultiplier = 1f;
         public static bool parentalEnrageEnabled = true;
         public static bool directedAssaultBehaviorEnabled = true;
@@ -371,6 +372,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool speciesSpacingEnabled = true;
         public static float speciesSpacingCookDamageMultiplier = 1f;
         public static bool reactionSourceSpawnEnabled = true;
+        public static bool alarmOriginRespondsFirst = true;
         public static float reactionSourceBudgetMultiplier = 1f;
         public static bool reactionDetectionEnabled = true;
         public static bool reactionSuppressionEnabled = true;
@@ -489,6 +491,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref filterFeedingEnabled, "filterFeedingEnabled", true);
             Scribe_Values.Look(ref filterFeedNutritionMultiplier, "filterFeedNutritionMultiplier", 1f);
             Scribe_Values.Look(ref dungSeedingEnabled, "dungSeedingEnabled", true);
+            Scribe_Values.Look(ref dungHatchRespectsWildlifeCap, "dungHatchRespectsWildlifeCap", true);
             Scribe_Values.Look(ref dungSeedingMultiplier, "dungSeedingMultiplier", 1f);
             Scribe_Values.Look(ref parentalEnrageEnabled, "parentalEnrageEnabled", true);
             Scribe_Values.Look(ref directedAssaultBehaviorEnabled, "directedAssaultBehaviorEnabled", true);
@@ -500,6 +503,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref speciesSpacingEnabled, "speciesSpacingEnabled", true);
             Scribe_Values.Look(ref speciesSpacingCookDamageMultiplier, "speciesSpacingCookDamageMultiplier", 1f);
             Scribe_Values.Look(ref reactionSourceSpawnEnabled, "reactionSourceSpawnEnabled", true);
+            Scribe_Values.Look(ref alarmOriginRespondsFirst, "alarmOriginRespondsFirst", true);
             Scribe_Values.Look(ref reactionSourceBudgetMultiplier, "reactionSourceBudgetMultiplier", 1f);
             Scribe_Values.Look(ref reactionDetectionEnabled, "reactionDetectionEnabled", true);
             Scribe_Values.Look(ref reactionSuppressionEnabled, "reactionSuppressionEnabled", true);
@@ -721,6 +725,10 @@ namespace RimMandrake.CreatureBehaviors
               + "nothing behind and nothing grows from it.");
             list.Label("Dung seeding strength: " + dungSeedingMultiplier.ToString("0.00") + "x");
             dungSeedingMultiplier = list.Slider(dungSeedingMultiplier, 0f, 3f);
+            list.CheckboxLabeled("Dung-hatched young obey the wildlife limit", ref dungHatchRespectsWildlifeCap,
+                "On: a small creature only hatches from dung while the map is below its normal wildlife "
+              + "limit, the same as ordinary wild spawning (CB-4), so a dung trail cannot fill the map. "
+              + "Off: the old behaviour, a chance roll alone.");
             list.GapLine();
 
             list.CheckboxLabeled("Giants defend their young", ref parentalEnrageEnabled,
@@ -770,6 +778,9 @@ namespace RimMandrake.CreatureBehaviors
               + "budget spent.");
             list.Label("Reaction spawn budget: " + reactionSourceBudgetMultiplier.ToString("0.00") + "x");
             reactionSourceBudgetMultiplier = list.Slider(reactionSourceBudgetMultiplier, 0f, 3f);
+            list.CheckboxLabeled("Disturbed creature answers its own alarm first", ref alarmOriginRespondsFirst,
+                "On: the creature that was actually disturbed takes its share of the alarm budget before "
+              + "the neighbours it wakes, so a big colony cannot use it all up (CB-1). Off: the old order.");
             list.CheckboxLabeled("Hive sentries notice intruders", ref reactionDetectionEnabled,
                 "On: a reaction source built to watch (an ant hive's sentries) rings its alarm when it "
               + "SEES an intruder nearby — a colonist, a tamed animal, a raider — and the hive rallies "

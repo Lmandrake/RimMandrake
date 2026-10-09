@@ -7,3 +7,7 @@ Filed from `design/RimMandrake/gpt_reviews/DESIGN_PASS_2026-10-08.md` (remaining
 | CB-2 | A herd defends its own young only. Tame adults defend tame calves, wild adults defend wild ones, and a tame adult never turns on its own colonists. One intrusion rouses one defender per nursery, not one per calf. | Faction match in FindGuardian; shared per-intruder cooldown. | S | low | CreatureBehaviors (consumers: RSW_ShrublandGiant and other ParentalEnrage users) | `RM_CompParentalEnrage.cs:350-398` FindGuardian matches def/adult/distance/true-parent only, no faction test; exemptSameFaction (l.183, 309) filters the intruder, not the guardian |
 
 Every invented number is PROVISIONAL. Every feature gets a Mod Settings toggle; names follow the three-tier scheme.
+
+## verify
+
+- Already shipped at c46d8afb1: FindGuardian faction match plus one defender per intruder per nursery (RM_CompParentalEnrage.cs).
