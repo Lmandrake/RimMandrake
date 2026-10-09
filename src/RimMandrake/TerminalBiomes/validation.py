@@ -498,6 +498,16 @@ if Suite is not None:
             raise ExpectationFailed("mod_settings_field get %s failed: %r" % (field, g))
         return g.get("value")
 
+    _SNAP = {}
+
+    def _snapshot(t):
+        """Record every settings field's PRIOR value once, before the first write of the run (the owner's values,
+        not the shipped defaults) -- restore and the final check use these."""
+        if t.session is None or _SNAP:
+            return
+        for f in SD:
+            _SNAP[f] = _get(t, f)
+
     def _ok(r, what):
         if not isinstance(r, dict) or r.get("success") is False:
             _fail("%s failed: %r" % (what, r))
@@ -551,19 +561,21 @@ if Suite is not None:
         def chain(t):
             with _comp(t, "%s_round_trips" % field, toggle=field if typ == "bool" else None, beyond_toggle=typ != "bool"):
                 try:
+                    _snapshot(t)
                     try:
                         _put(t, field, _alt(typ, default))
                     except ExpectationFailed as e:
                         if typ.startswith("enum:") and t.session is not None:
                             _unmeasured(t, "the bridge setter could not take an enum member name (%s); unproven shape" % str(e)[:200])
                         raise
-                    _put(t, field, default)
+                    _put(t, field, _SNAP.get(field, default))
                 finally:
                     if t.session is not None:
                         try:
-                            _put(t, field, default)
+                            _put(t, field, _SNAP.get(field, default))
                         except Exception as e:
                             print("[tb] RESTORE FAILED %s: %s" % (field, e), file=sys.stderr, flush=True)
+                            t.restore_failed = getattr(t, "restore_failed", []) + [field]
         chain.__doc__ = "Write alt, read back, write default, read back (numeric compare) for %s." % field
         return chain
 
@@ -826,12 +838,16 @@ if Suite is not None:
 
     @suite.chain("settings_restored")
     def settings_restored(t):
-        """LAST: every field is back at its shipped (parsed) default; a leaked arm would corrupt the next run."""
-        with _comp(t, "all_settings_at_shipped_defaults", beyond_toggle=True):
+        """LAST: every field is back at the value it held BEFORE the run (snapshot), not the shipped default; a leaked
+        arm would corrupt the next run and a failed restore is a failure, not a printed line."""
+        with _comp(t, "all_settings_restored_to_prior_values", beyond_toggle=True):
             if _live(t):
-                bad = [(f, _get(t, f), _sv(d)) for f, (ty, d) in SD.items() if not _same(_get(t, f), _sv(d))]
+                want = {f: _SNAP.get(f, _sv(d)) for f, (ty, d) in SD.items()}
+                bad = [(f, _get(t, f), want[f]) for f in SD if not _same(_get(t, f), want[f])]
                 if bad:
-                    _fail("settings left off their shipped default by an earlier arm: %s" % bad)
+                    _fail("settings left off their pre-run value by an earlier arm: %s" % bad)
+                if getattr(t, "restore_failed", None):
+                    _fail("restore failed for: %s" % t.restore_failed)
 else:
     suite = None
 
