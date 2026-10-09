@@ -33,6 +33,10 @@ namespace RimMandrake.Abyss
         // ABYSS_KRIZZAK_BUILD_1: wild krizzaks dim glow plants and lit lamps they settle on. Off = they just fly. Safe mid-game.
         public static bool krizzakLightEatingEnabled = true;
 
+        // DEEPFIRE_WORLD_LIGHT_1 (owner card 2026-10-08, typed: "Deliberately cannot"): the Dark never shrinks deepfire
+        // light — the one light it cannot take, and the reason to haul pigment down. Off = deepfire dims like any lamp.
+        public static bool darkSparesDeepfire = true;
+
         // ABYSS_DONOR_BEASTS_FREED_1: the summ regenerates and burns in daylight; the drokattak hackles before it lunges.
         public static bool summRegenerates = true;
         public static bool summUVSensitive = true;
@@ -95,6 +99,7 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
             Scribe_Values.Look(ref durrgakMapSignsEnabled, "durrgakMapSignsEnabled", true, true);
             Scribe_Values.Look(ref krizzakLightEatingEnabled, "krizzakLightEatingEnabled", true, true);
+            Scribe_Values.Look(ref darkSparesDeepfire, "darkSparesDeepfire", true, true);
             Scribe_Values.Look(ref summRegenerates, "summRegenerates", true, true);
             Scribe_Values.Look(ref summUVSensitive, "summUVSensitive", true, true);
             Scribe_Values.Look(ref drokattakHackleEnabled, "drokattakHackleEnabled", true, true);
@@ -138,6 +143,8 @@ namespace RimMandrake.Abyss
 
             list.CheckboxLabeled("Wild krizzaks eat light", ref krizzakLightEatingEnabled,
                 "On: wild krizzaks settle on glow plants and lit lamps and shrink their light until they leave. Off: they only fly about. Light recovers on its own. Safe mid-game.");
+            list.CheckboxLabeled("The Dark cannot swallow deepfire", ref darkSparesDeepfire,
+                "On: deepfire light (painted floors, glowing pawns, the glow tank) keeps its full reach in the Dark while every other lamp shrinks. Off: the Dark shrinks deepfire like any lamp. Needs Luminous Pigment. Safe mid-game.");
 
             list.CheckboxLabeled("Summs regenerate", ref summRegenerates,
                 "On: a summ slowly heals its wounds on its own. Off: it heals like any animal. Safe mid-game.");
