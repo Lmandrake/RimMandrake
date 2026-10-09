@@ -178,6 +178,13 @@ def run():
         check(a_after.get("unrelated_field") == "should-survive-untouched",
               "an unrelated top-level key on the roster survives a write untouched")
 
+        # ══════════════════════════════════════════ test 5: propagated notes read from the art ledger
+        notes = av.load_propagated_notes()
+        check(isinstance(notes, dict) and len(notes) > 0,
+              "load_propagated_notes() reads non-empty notes from the art ledger (sanity probe)")
+        check(all(isinstance(k, str) and ":" in k for k in notes),
+              "every propagated-note key is a typed row key")
+
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 

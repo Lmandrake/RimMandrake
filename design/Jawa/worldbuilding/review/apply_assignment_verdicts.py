@@ -90,7 +90,6 @@ DEFAULT_DECISIONS = [
 # owner's vocabulary there ("ocular only", "Pyrelands") is not machine-parseable
 # (113 blocking errors when tried against the old resolver).
 DEFAULT_MAPPING = os.path.join(REVIEW, "round2", "move_mapping_v2.md")
-DECISIONS_PROPAGATED = os.path.join(REVIEW, "round2", "decisions_propagated.json")
 
 NON_MOVE_TARGETS = {"OUT", "OPEN", "RESERVE", "RESERVED"}
 INJECTION_SHEETS = {"fall_line", "wreck_fields", "the_lantern_deeps"}  # matches
@@ -620,21 +619,24 @@ def parse_move_mapping(path: str) -> list[dict]:
     return rows
 
 
-def load_propagated_notes(path: str) -> dict:
-    """rowkey -> full (untruncated) note, from decisions_propagated.json, when that
-    file exists — the mapping table's own note is truncated to 15 words; the fuller
-    text (e.g. Wampa/Tauntaun's 'VISITOR-DYING, never native' ruling) is worth
-    carrying into the law field when available. Best-effort: never blocks a run."""
-    if not os.path.isfile(path):
-        return {}
+def load_propagated_notes() -> dict:
+    """rowkey -> full (untruncated) note, from the art ledger's imported
+    decisions_propagated.json rulings (source_file match; last event wins). The
+    mapping table's own note is truncated to 15 words; the fuller text (e.g.
+    Wampa/Tauntaun's 'VISITOR-DYING, never native' ruling) is carried into the law
+    field. Best-effort: never blocks a run."""
     try:
-        doc = json.load(open(path, encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
+        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                        "..", "..", "..", "..", "src", "RimMandrake", "Utils", "art"))
+        import artledger
+        events = artledger.read_events()
+    except Exception:
         return {}
-    decisions = doc.get("decisions")
-    if not isinstance(decisions, dict):
-        return {}
-    return {k: v.get("note", "") for k, v in decisions.items() if isinstance(v, dict) and v.get("note")}
+    out = {}
+    for e in events:
+        if "decisions_propagated" in str(e.get("source_file", "")) and e.get("row_key") and e.get("note"):
+            out[e["row_key"]] = e["note"]
+    return out
 
 
 def resolve_mapping_target(target_raw: str):
@@ -749,7 +751,7 @@ def build_mapping_plan(rows: list[dict], stem_index: dict, propagated: dict) -> 
 
 def run_mapping_mode(mapping_path: str, apply: bool) -> int:
     rows = parse_move_mapping(mapping_path)
-    propagated = load_propagated_notes(DECISIONS_PROPAGATED)
+    propagated = load_propagated_notes()
     stem_index = load_roster_index_by_stem()
     plan = build_mapping_plan(rows, stem_index, propagated)
 
