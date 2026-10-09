@@ -49,7 +49,7 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("LuminousPigment")
 suite.toggles = [
-    "shoreMatsEnabled", "matLifeDays", "matChillKillTemp",
+    "shoreMatsEnabled", "matDiscoveryByEyeOrHand", "matLifeDays", "matChillKillTemp",
     "pressGate", "deepfireMarketValue", "deepfireStackGlows", "deepfireNightVisibility",
     "glowTankEnabled", "tankPowerGraceHours", "tankNeedsWater",
     "paintingEnabled", "maxCoats", "floorsPaintable", "wallsPaintable", "furniturePaintable",
@@ -1618,6 +1618,7 @@ def toggle_flips(t):
     gate the Designator's own accept path, which the bridge bypasses; hediffGlowEnabled needs a cooked dish;
     deepfireNightVisibility needs a dark sky on a home map and the Visibility mod (DEEPFIRE_WORLD_LIGHT_1, owed live)."""
     _flip(t, "shore_mats_setting_flips", "shoreMatsEnabled")
+    _flip(t, "mat_discovery_setting_flips", "matDiscoveryByEyeOrHand")   # MAT_DISCOVERY_SIGHT_RULE_1, behaviour owed live
     _flip(t, "floors_paintable_setting_flips", "floorsPaintable")
     _flip(t, "ishko_idol_setting_flips", "ishkoIdolPaintable")
     _flip(t, "hediff_glow_setting_flips", "hediffGlowEnabled")

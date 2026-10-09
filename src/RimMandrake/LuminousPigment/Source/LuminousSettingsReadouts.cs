@@ -19,7 +19,7 @@ namespace RimMandrake.LuminousPigment
         // Field names per settings heading; a field not listed belongs to no resettable section.
         public static readonly Dictionary<string, string[]> Sections = new Dictionary<string, string[]>
         {
-            { "Chain", new[] { "shoreMatsEnabled", "shoreMatChance", "matLifeDays", "matChillKillTemp" } },
+            { "Chain", new[] { "shoreMatsEnabled", "matDiscoveryByEyeOrHand", "shoreMatChance", "matLifeDays", "matChillKillTemp" } },
             { "Press", new[] { "pressGate", "pressResearchCost", "pressYield", "pressWorkAmount", "pressPower" } },
             { "Deepfire", new[] { "deepfireMarketValue", "deepfireStackGlows", "deepfireNightVisibility", "deepfireVisibilityPerLight" } },
             { "GlowTank", new[] { "glowTankEnabled", "tankGrowDays", "tankYield", "tankPower", "tankPowerGraceHours", "tankNeedsWater", "tankWaterUnitsPerDay" } },

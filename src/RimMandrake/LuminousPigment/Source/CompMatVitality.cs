@@ -62,6 +62,28 @@ namespace RimMandrake.LuminousPigment
             return "alive: " + hoursLeft.ToString() + "h left";
         }
 
+        // MAT_DISCOVERY_SIGHT_RULE_1 PROVISIONAL (auto-decided 2026-10-09): fresh mat that a colonist has just
+        // harvested (it spawns beside them) or that lies on the player's home map counts as the sighting, so a mat
+        // cut before the plant's long-tick check ever ran still unlocks the research.
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            if (respawningAfterLoad || dead || !LuminousPigmentSettings.matDiscoveryByEyeOrHand) return;
+            GameComponent_Deepfire gc = GameComponent_Deepfire.Instance;
+            if (gc == null || gc.matSeen) return;
+            Map map = parent.Map;
+            if (map == null) return;
+            bool byHand = map.IsPlayerHome;
+            if (!byHand)
+            {
+                foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+                {
+                    if (p.Position.InHorDistOf(parent.Position, 3f)) { byHand = true; break; }
+                }
+            }
+            if (byHand) CompMatDiscovery.MarkSeen(parent);
+        }
+
         public override void CompTickRare()
         {
             base.CompTickRare();

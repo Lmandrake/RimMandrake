@@ -141,6 +141,26 @@ namespace RimMandrake.LuminousPigment
         // the whole cost on its own. Multi-stack queueing (vanilla
         // WorkGiver_PaintBuilding's own shape) is a nice-to-have, not
         // required by any step-5 proof row.
+        public const int StackShareMaxPawns = 10;
+
+        /// <summary>PIGMENT_JOB_PAYMENT_ALLOCATION_1: pay `cost` from what the pawn carries, only if it carries at least
+        /// that much deepfire. Any surplus is dropped beside the pawn, never destroyed.</summary>
+        public static bool TryPayCarried(Pawn pawn, int cost)
+        {
+            Thing carried = pawn.carryTracker.CarriedThing;
+            if (carried == null || carried.def.defName != "RM_Deepfire" || carried.stackCount < cost) return false;
+            if (carried.stackCount > cost)
+            {
+                carried.SplitOff(cost).Destroy();
+                pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out Thing _);
+            }
+            else
+            {
+                carried.Destroy();
+            }
+            return true;
+        }
+
         public static Thing FindNearbyDeepfire(Pawn pawn, int minCount, bool forced)
         {
             ThingDef deepfireDef = ThingDef.Named("RM_Deepfire");
@@ -154,7 +174,9 @@ namespace RimMandrake.LuminousPigment
                 Thing th = list[i];
                 if (th.stackCount < minCount) continue;
                 if (th.IsForbidden(pawn)) continue;
-                if (!pawn.CanReserveAndReach(th, PathEndMode.ClosestTouch, Danger.Some, 1, -1, null, forced)) continue;
+                // PIGMENT_JOB_PAYMENT_ALLOCATION_1: reserve-aware by COUNT, so queued jobs share a stack only while it
+                // still holds enough for each of them (was: any unreserved stack, whole-stack semantics).
+                if (!pawn.CanReserveAndReach(th, PathEndMode.ClosestTouch, Danger.Some, StackShareMaxPawns, minCount, null, forced)) continue;
 
                 int d = (th.Position - pawn.Position).LengthHorizontalSquared;
                 if (d < bestDist)
