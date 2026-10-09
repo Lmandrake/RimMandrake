@@ -115,6 +115,8 @@ def main() -> int:
     check(rep["pass"], "locked set passes check", rep)
     check(rep.get("plate_free_identical") == 1.0, "plate pixels outside wings identical in every frame", rep)
     check(rep["locked_share"] >= FL.FLOORS["east"], f"locked share {rep['locked_share']} >= east floor", rep)
+    check(FL.FLOORS["south"] == 0.25 and FL.FLOORS["north"] == 0.25 and FL.FLOORS["east"] == 0.45,
+          "floors: S/N 0.25 (owner card 2026-10-09), east 0.45 unchanged", FL.FLOORS)
     wing_union = np.logical_or.reduce([w[..., 3] > 0 for w in wings])
     for (y, x) in ((128, 120), (126, 160), (131, 100)):
         if not wing_union[y, x]:

@@ -29,8 +29,10 @@ Three verbs (each exits 0 = pass, 1 = a gate failed, 2 = bad input):
   check    --dir DIR --prefix Sketto_Flying_ --facing east [--plate P] [--min-share X]
            The acceptance metric (design §3/§6) on any finished flip-book. LOCKED SHARE = pixels opaque
            (alpha > 128) in every frame and within RGB L1 ≤ 40 of frame 1 in every frame, divided by the
-           mean opaque area of one frame. Floors (donor Sketto -> design §6): east 0.45, south 0.38,
-           north 0.38. With --plate it also requires plate pixels that are never under a wing to be
+           mean opaque area of one frame. Floors (donor Sketto -> design §6): east 0.45, south 0.25,
+           north 0.25 (lowered from the donor's 0.38: Sketto's wings are ~2/3 of a front/back frame, so the
+           ceiling is 0.338 S / 0.318 N and plate A + rule C measure 0.279 S / 0.260 N).
+           With --plate it also requires plate pixels that are never under a wing to be
            byte-identical in every frame (1.0 means the lock ran). It also checks: 256-px square RGBA,
            ≥ 6 px margin, the last frame copies its ping-pong partner, and no other neighbours are
            identical.
@@ -54,7 +56,7 @@ WING_L1 = 60          # design §4 D: a wing pixel differs from the plate by L1 
 WING_FAR = 4          # option C: an outside-plate wing must reach more than this many px from the body
 WING_DEPTH = 12       # option C: wing pixels inside the plate count only within this many px of that wing
 MIN_COVER = 0.92      # design §4 C: re-posed bodies are rejected below this
-FLOORS = {"east": 0.45, "west": 0.45, "south": 0.38, "north": 0.38}   # design §6.3
+FLOORS = {"east": 0.45, "west": 0.45, "south": 0.25, "north": 0.25}   # design §6.3; S/N lowered 0.38 -> 0.25 (owner card 2026-10-09)
 MARGIN = 6
 
 
@@ -187,7 +189,7 @@ def check(frames: list[np.ndarray], facing: str, plate: np.ndarray | None = None
     if (h, w) != (256, 256):
         fails.append(f"canvas {w}x{h}, want 256x256")
     share = locked_share(frames)
-    floor = FLOORS.get(facing, 0.38) if min_share is None else min_share
+    floor = FLOORS.get(facing, 0.25) if min_share is None else min_share
     r.update(locked_share=round(share, 4), floor=floor)
     if share < floor:
         fails.append(f"locked share {share:.3f} < floor {floor}")
