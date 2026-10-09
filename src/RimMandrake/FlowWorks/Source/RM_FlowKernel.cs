@@ -52,6 +52,11 @@ namespace RimMandrake.FlowWorks
 		public int flowPerPulse = 1;
 		public bool edgeSinksEnabled;
 		public bool viscosityEnabled;
+		/// <summary>THICK_LIQUID_CREEP_1: a cell that RECEIVED liquid this pulse may not donate it on in the same pulse
+		/// when the fluid is viscous (ViscosityStride &gt; 1), so a thick fill front moves one cell per moving pulse
+		/// instead of racing down the whole channel. Water (stride 1) is untouched. Off by default; the adapter sets it.</summary>
+		public bool creepEnabled;
+		private long[] receivedStamp;
 		public int maxComponentCells = 6000;
 		/// <summary>FLOWWORKS_SLUICE_TWO_DOORS_1 (owner 2026-10-06: "sealed sluice gates (standard) and the ones made of
 		/// metal grates that always allow liquid"): true for a cell under a SHUT sluice. Liquid neither enters nor
@@ -251,6 +256,10 @@ namespace RimMandrake.FlowWorks
 						world.Claim(r, world.DonorFluid(donor, IsSource(donor)));
 					}
 					fill[r] += 1;
+					if (creepEnabled)
+					{
+						(receivedStamp ??= new long[width * height])[r] = pulseCount + 1;
+					}
 					moved++;
 				}
 			}
@@ -414,6 +423,11 @@ namespace RimMandrake.FlowWorks
 				if (viscosityEnabled && !RM_StockMath.FluidMovesThisPulse(pulseCount, world.TicksPerTile(donorFluid)))
 				{
 					continue;
+				}
+				if (creepEnabled && !source && receivedStamp != null && receivedStamp[n] == pulseCount + 1
+					&& RM_StockMath.ViscosityStride(world.TicksPerTile(donorFluid)) > 1)
+				{
+					continue; // THICK_LIQUID_CREEP_1: filled this pulse, so it cannot pass a thick liquid on until the next
 				}
 				if (depthR <= dn && fn < dn)
 				{

@@ -1540,6 +1540,12 @@ namespace RimMandrake.FlowWorks.SelfTest
             KernelCase("Kernel_limitless_source_fills_its_component", () => FlowKernelFuzz.FillsFromLimitless(2000, 202));
             Console.WriteLine($"kernel total: {FlowKernelFuzz.Cases} scenes, {FlowKernelFuzz.Pulses} pulses, {kernelClock.Elapsed.TotalSeconds:F2} s");
             // Owner rulings 2026-10-06 (design/RimMandrake/flowworks_offline_kernel_B.md): regression guards.
+            Case("THICK_LIQUID_CREEP_1_front_speed_down_a_40_cell_channel", () =>
+            {
+                string r = FlowKernelFuzz.FrontSpeed();
+                Console.WriteLine("      " + r);
+                Assert(r.StartsWith("OK"), r);
+            });
             Case("Ruling1_touching_water_and_tar_stay_separate", () =>
             {
                 string r = FlowKernelFuzz.TouchingFluidsStaySeparate();
