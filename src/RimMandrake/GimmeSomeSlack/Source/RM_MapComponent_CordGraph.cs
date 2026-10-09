@@ -245,14 +245,54 @@ namespace RimMandrake.GimmeSomeSlack
             try { ComputeMaterials(next, styled); }
             catch (Exception ex) { matIdx = new Dictionary<LaidPiece, int>(); legacyPieces = new HashSet<LaidPiece>(); mixPieces = new HashSet<LaidPiece>(); Log.ErrorOnce("[GimmeSomeSlack] run styles: " + ex, 0x4d43_5346); }
             // dirty every section whose owned set changed (not just the regenerating one)
+            // CORD_STATIC_DYNAMIC_HANDOFF_1: the compared signature is the one recorded when the section was last
+            // dirtied for print, and it carries each strand's static/dynamic eligibility (sway, shader sway + pin roof,
+            // ripple) — so a roof landing in ANOTHER section, which leaves the piece set unchanged, still reprints the
+            // owner section, and the per-frame and printed paths never both draw (or both skip) a strand.
             if (Current.ProgramState == ProgramState.Playing)
             {
                 var keys = new HashSet<IntVec2>(nextBy.Keys);
                 keys.UnionWith(prevBy.Keys);
+                keys.UnionWith(printedSig.Keys);
                 foreach (IntVec2 s in keys)
-                    if (Sig(prevBy, s, prevSeeds, prevMat) != Sig(nextBy, s, netSeeds, matIdx)) DirtySection(s);
+                {
+                    string cur = Sig(nextBy, s, netSeeds, matIdx) + Elig(nextBy, s);
+                    if (!printedSig.TryGetValue(s, out string was))
+                        was = Sig(prevBy, s, prevSeeds, prevMat) + Elig(prevBy, s);
+                    if (was != cur) DirtySection(s);
+                    if (cur.Length == 0) printedSig.Remove(s); else printedSig[s] = cur;
+                }
             }
         }
+
+        private readonly Dictionary<IntVec2, string> printedSig = new Dictionary<IntVec2, string>();
+
+        /// <summary>Per-strand static/dynamic eligibility bits of a section, in print order.</summary>
+        private string Elig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s)
+        {
+            if (!d.TryGetValue(s, out List<LaidPiece> l)) return "";
+            bool anySway = SwayOn, ripple = GimmeSomeSlackSettings.floorRipple;
+            if (!anySway && !ripple) return "";
+            var sb = new System.Text.StringBuilder(" e");
+            foreach (LaidPiece p in l)
+                foreach (CordStrand st in p.Strands)
+                {
+                    if (st.Pts == null || st.Pts.Count < 2) { sb.Append('-'); continue; }
+                    int bits = 0;
+                    if (st.Lifted && SwaysNow(map, st)) bits |= 1;
+                    if (ShaderSwayPrints(st)) { bits |= 2; if (PinRoofed(map, st)) bits |= 4; }
+                    if (RipplesNow(map, st)) bits |= 8;
+                    sb.Append((char)('a' + bits));
+                }
+            return sb.ToString();
+        }
+
+        /// <summary>CORD_STATIC_DYNAMIC_HANDOFF_1: the global inputs of that eligibility (vanilla's plant-sway option,
+        /// our sway / ripple settings, the effective sway route). A transition reprints every section that changes.</summary>
+        private string swayModeKey;
+        private string SwayModeKey() =>
+            (Prefs.PlantWindSway ? "P" : "p") + (SwayOn ? "S" : "s") + (GimmeSomeSlackSettings.floorRipple ? "R" : "r") +
+            (SwayOn && EffectiveSwayMode(out _) == SwayMode.Shader ? "H" : "c");
 
         /// <summary>
         /// MapDrawer.RegenerateEverythingNow (map load / FinalizeInit) creates its Section objects one by one
@@ -319,6 +359,38 @@ namespace RimMandrake.GimmeSomeSlack
         public bool? EndLive(Cell c) => liveEnds.TryGetValue(c, out bool v) ? v : (bool?)null;
 
         private static int MaxSparkingEnds => Mathf.Clamp(GimmeSomeSlackSettings.maxSparkingEnds, 1, 200);
+
+        // SPARK_EFFECT_BUDGET_REWORK_1: ONE endpoint set per frame, shared by the glow, the floor sparks and the downed-
+        // wire bursts, so wall + floor ends together never exceed the setting; ends on screen are admitted first, so an
+        // off-screen run cannot starve the ones the player is looking at.
+        private readonly List<CordEnd> sparkSet = new List<CordEnd>();
+        private readonly List<CordEnd> sparkOff = new List<CordEnd>();
+        private int sparkSetFrame = -1;
+        private int sparkSetBuilds = -1;
+
+        private List<CordEnd> SparkEnds()
+        {
+            if (sparkSetFrame == Time.frameCount && sparkSetBuilds == Builds) return sparkSet;
+            sparkSetFrame = Time.frameCount;
+            sparkSetBuilds = Builds;
+            sparkSet.Clear();
+            sparkOff.Clear();
+            int cap = MaxSparkingEnds;
+            bool haveView = Find.CurrentMap == map && Find.CameraDriver != null;
+            CellRect view = haveView ? Find.CameraDriver.CurrentViewRect.ExpandedBy(2) : CellRect.Empty;
+            foreach (LaidPiece p in pieces)
+                foreach (CordEnd e in p.Ends)
+                {
+                    if (!liveEnds.TryGetValue(e.NetCell, out bool live) || !live) continue;
+                    if (haveView && view.Contains(new IntVec3((int)e.Tip.X, 0, (int)e.Tip.Z)))
+                    {
+                        if (sparkSet.Count < cap) sparkSet.Add(e);
+                    }
+                    else if (sparkOff.Count < cap) sparkOff.Add(e);
+                }
+            for (int i = 0; i < sparkOff.Count && sparkSet.Count < cap; i++) sparkSet.Add(sparkOff[i]);
+            return sparkSet;
+        }
         public static int LastGlowDraws;
 
         /// <summary>Sparks/glow allowed right now (break readout on, intensity, the overlay-only option).</summary>
@@ -337,12 +409,8 @@ namespace RimMandrake.GimmeSomeSlack
             if (SectionLayer_RM_MessyCords.CutsceneHides) return;
             float t = Time.realtimeSinceStartup;
             float y = AltitudeLayer.MoteLow.AltitudeFor();
-            int n = 0;
-            foreach (LaidPiece p in pieces)
-                foreach (CordEnd e in p.Ends)
+            foreach (CordEnd e in SparkEnds())
                 {
-                    if (!liveEnds.TryGetValue(e.NetCell, out bool live) || !live) continue;
-                    if (++n > MaxSparkingEnds) return;
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
                     float f = Mathf.PerlinNoise(t * 9f, (h & 0xff) * 0.37f);
                     float size = (0.38f + 0.42f * f * f) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
@@ -357,15 +425,11 @@ namespace RimMandrake.GimmeSomeSlack
 
         private void Sparks(int tick)
         {
-            int n = 0;
             float k = GimmeSomeSlackSettings.sparkIntensity;
-            foreach (LaidPiece p in pieces)
-                foreach (CordEnd e in p.Ends)
+            foreach (CordEnd e in SparkEnds())
                 {
-                    if (!liveEnds.TryGetValue(e.NetCell, out bool live) || !live) continue;
-                    // the drip schedule owns wall ends; skipped BEFORE counting so they never starve floor ends (GPT review #7)
+                    // the drip schedule owns wall ends (they are in the shared budget already)
                     if (e.Wall && GimmeSomeSlackSettings.downedWire) continue;
-                    if (++n > MaxSparkingEnds) return;
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
                     int period = Mathf.Max(12, Mathf.RoundToInt((e.Wall ? 50 : 80) / k));
                     if ((tick + (h & 0x7fff)) % period != 0) continue;
@@ -626,13 +690,17 @@ namespace RimMandrake.GimmeSomeSlack
         private void DownedWires(float now)
         {
             bool paused = Find.TickManager.Paused;
-            int n = 0;
-            foreach (LaidPiece p in pieces)
-                foreach (CordEnd e in p.Ends)
+            if (downed.Count > 0)
+            {
+                deadScratch.Clear();
+                foreach (Cell c in downed.Keys)
+                    if (!liveEnds.TryGetValue(c, out bool live) || !live) deadScratch.Add(c);
+                foreach (Cell c in deadScratch) { downed.Remove(c); thrownOf.Remove(c); sparkCredit.Remove(c); }
+            }
+            float k = GimmeSomeSlackSettings.sparkIntensity;
+            foreach (CordEnd e in SparkEnds())
                 {
                     if (!e.Wall) continue;
-                    if (!liveEnds.TryGetValue(e.NetCell, out bool live) || !live) { downed.Remove(e.NetCell); continue; }
-                    if (++n > MaxSparkingEnds) return;
                     if (!downed.TryGetValue(e.NetCell, out DownedWireSchedule dw))
                         downed[e.NetCell] = dw = new DownedWireSchedule(CordRng.Hash("downed", e.NetCell.X, e.NetCell.Z, map.uniqueID), now);
                     if (dw.Due(now))
@@ -647,19 +715,36 @@ namespace RimMandrake.GimmeSomeSlack
                     if (paused) continue;
                     thrownOf.TryGetValue(e.NetCell, out int done);
                     int due = dw.SparksDue(now);
+                    // the schedule's sparks are scaled by the intensity setting with fractional credit carried between
+                    // events: 0.5x throws every other scheduled spark, 2x two per scheduled spark
+                    sparkCredit.TryGetValue(e.NetCell, out float credit);
                     for (; done < due; done++)
                     {
-                        var loc = new Vector3((float)e.Tip.X + Rand.Range(-0.06f, 0.06f), AltitudeLayer.MoteOverhead.AltitudeFor(), (float)e.Tip.Z);
-                        if (!loc.ShouldSpawnMotesAt(map)) continue;
-                        FleckCreationData d = FleckMaker.GetDataStatic(loc, map, FleckDefOf.MicroSparks, Rand.Range(0.7f, 1.1f));
-                        d.rotationRate = Rand.Range(-12f, 12f);
-                        d.velocityAngle = Rand.Range(160f, 200f);           // screen-down: the sparks fall down the face
-                        d.velocitySpeed = Rand.Range(0.5f, 1.3f);
-                        map.flecks.CreateFleck(d);
-                        SparksThrown++;
+                        credit += k;
+                        while (credit >= 1f)
+                        {
+                            credit -= 1f;
+                            ThrowDownedSpark(e);
+                        }
                     }
+                    sparkCredit[e.NetCell] = credit;
                     thrownOf[e.NetCell] = done;
                 }
+        }
+
+        private readonly List<Cell> deadScratch = new List<Cell>();
+        private readonly Dictionary<Cell, float> sparkCredit = new Dictionary<Cell, float>();
+
+        private void ThrowDownedSpark(CordEnd e)
+        {
+            var loc = new Vector3((float)e.Tip.X + Rand.Range(-0.06f, 0.06f), AltitudeLayer.MoteOverhead.AltitudeFor(), (float)e.Tip.Z);
+            if (!loc.ShouldSpawnMotesAt(map)) return;
+            FleckCreationData d = FleckMaker.GetDataStatic(loc, map, FleckDefOf.MicroSparks, Rand.Range(0.7f, 1.1f));
+            d.rotationRate = Rand.Range(-12f, 12f);
+            d.velocityAngle = Rand.Range(160f, 200f);           // screen-down: the sparks fall down the face
+            d.velocitySpeed = Rand.Range(0.5f, 1.3f);
+            map.flecks.CreateFleck(d);
+            SparksThrown++;
         }
         private readonly Dictionary<Cell, int> thrownOf = new Dictionary<Cell, int>();
 
@@ -722,6 +807,12 @@ namespace RimMandrake.GimmeSomeSlack
         {
             // GPT review #1: when this frame already rebuilt, the dirty event may have landed AFTER that rebuild, so the
             // flag is kept (deferred to the next frame) rather than cleared and lost
+            if (GimmeSomeSlackSettings.enabled)
+            {
+                string mk = SwayModeKey();
+                if (swayModeKey != null && mk != swayModeKey && builtFrame != Time.frameCount) StaleOffscreen = true;
+                swayModeKey = mk;
+            }
             if (StaleOffscreen && builtFrame != Time.frameCount && GimmeSomeSlackSettings.enabled)
             {
                 StaleOffscreen = false;
