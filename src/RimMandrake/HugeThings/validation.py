@@ -260,19 +260,33 @@ def _build_suite():
             t.session.call("jawa/static_call", type="RimMandrake.HugeThings.MapComponent_HugeFootprints", method="RefreshAllMaps")
         return r if isinstance(r, dict) else {}
 
+    # HUGETHINGS_TEST_HONESTY_1 (C3.7): a run must hand the player's settings back as it found them, never as DEFAULTS. Each
+    # field is snapshotted (raw get) before its first write and that value is restored in the caller's finally.
+    _saved = {}
+
     def _put(t, field, value):
         if t.session is None:
             return
+        if (id(t), field) not in _saved:
+            old = _raw(t, "get", field).get("value")
+            if old is None:
+                raise ExpectationFailed("could not read %s before changing it; refusing to overwrite the player's setting" % field)
+            _saved[(id(t), field)] = old
         if not _raw(t, "set", field, value).get("success"):
             raise ExpectationFailed("could not set %s=%s" % (field, value))
 
     def _restore(t, field):
-        if t.session is not None:
-            try:
-                t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field,
-                               value=str(DEFAULTS[field]))
-            except Exception as ex:
-                print("[titanic] RESTORE FAILED %s: %s" % (field, ex), file=sys.stderr, flush=True)
+        if t.session is None:
+            return
+        old = _saved.pop((id(t), field), None)
+        if old is None:
+            print("[titanic] RESTORE SKIPPED %s: no snapshot (never changed)" % field, file=sys.stderr, flush=True)
+            return
+        try:
+            if not _raw(t, "set", field, old).get("success"):
+                print("[titanic] RESTORE FAILED %s -> %s" % (field, old), file=sys.stderr, flush=True)
+        except Exception as ex:
+            print("[titanic] RESTORE FAILED %s: %s" % (field, ex), file=sys.stderr, flush=True)
 
     def _same(ty, a, b):
         if ty == "bool":
@@ -380,14 +394,14 @@ def _build_suite():
                     raise ExpectationFailed("%d blockers south of the plant: its own cell would be unreachable" % south)
         with t.component("toggle_off_clears_the_trunk", toggle="plantTrunkEnabled"):
             if _live(t):
-                _raw(t, "set", "plantTrunkEnabled", "False")
+                _put(t, "plantTrunkEnabled", False)
                 try:
                     t.wait_ticks(REFRESH_TICKS + 60)
                     n = _count(t, BLOCKER, around_r)
                     if n:
                         raise ExpectationFailed("plantTrunkEnabled off, yet %d blockers remain after a refresh" % n)
                 finally:
-                    _raw(t, "set", "plantTrunkEnabled", "True")
+                    _restore(t, "plantTrunkEnabled")
                 t.wait_ticks(REFRESH_TICKS + 60)
         with t.component("cutting_the_plant_removes_the_trunk", toggle="plantTrunkEnabled"):
             if _live(t):

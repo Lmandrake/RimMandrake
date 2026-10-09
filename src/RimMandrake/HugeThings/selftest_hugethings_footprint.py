@@ -22,6 +22,10 @@ import struct
 import sys
 import xml.etree.ElementTree as ET
 
+# HUGETHINGS_TEST_HONESTY_1 (C3.9): every check here is a bare assert, which `python -O` strips; refuse rather than pass blind.
+if not __debug__:
+    sys.exit("REFUSED: selftest_hugethings_footprint.py uses assert; run it without -O (python -O would pass every check unchecked)")
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import measure_huge_plant_masks as tool  # noqa: E402
