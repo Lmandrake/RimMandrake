@@ -143,7 +143,7 @@ namespace RimMandrake.Utinni.WasteRun
 
         protected override bool TestRunInt(Slate slate)
         {
-            Faction f = Lookup();
+            Faction f = Lookup(slate);
             if (f == null) return false;
             slate.Set(storeAs.GetValue(slate), f);
             return true;
@@ -151,13 +151,13 @@ namespace RimMandrake.Utinni.WasteRun
 
         protected override void RunInt()
         {
-            Faction f = Lookup();
+            Faction f = Lookup(QuestGen.slate);
             if (f != null) QuestGen.slate.Set(storeAs.GetValue(QuestGen.slate), f);
         }
 
-        private Faction Lookup()
+        private Faction Lookup(Slate slate)
         {
-            string name = factionDefName.GetValue(QuestGen.slate);
+            string name = factionDefName.GetValue(slate);
             foreach (Faction f in Find.FactionManager.AllFactionsListForReading)
             {
                 if (f.def.defName == name && !f.defeated) return f;
