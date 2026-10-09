@@ -127,20 +127,29 @@ def package_id(mod: str) -> str:
 
 # ─────────────────────────────────────────────────────────────── canon ──
 
-def _canon_dirname(name: str) -> str:
-    return re.sub(r"[^a-z0-9_]", "", re.sub(r"^(rsw|rut|rm|aa|a)_", "", name.strip().lower()).replace(" ", ""))
+_WORLD = None
+
+
+def _world():
+    global _WORLD
+    if _WORLD is None:
+        _WORLD = S.World()
+    return _WORLD
 
 
 def canon_entry(*names: str) -> dict:
     """The canon-library entry for the first of NAMES that has one ({} if none). Default on every
-    sheet (owner rule 2026-10-04): reference images + Must show are shown on each row."""
+    sheet (owner rule 2026-10-04): reference images + Must show are shown on each row.
+    ART_SUBJECT_RESOLVER_1: a NAME that is literally an entry dir is taken as is; any other (a defName, an alias
+    word) goes through subject.resolve_canon, exact matches only (base species stays canon_base's job)."""
     d = None
     for n in names:
-        for cand in (n.lower(), _canon_dirname(n), _canon_dirname(n).replace("_", "")):
-            if cand and (CANON / cand).is_dir():
-                d = CANON / cand
-                break
-        if d:
+        if n and (CANON / n.lower()).is_dir():
+            d = CANON / n.lower()
+            break
+        r = S.resolve_canon(n, _world()) if n else None
+        if r and r["match"] == "exact" and r["slug"] and (CANON / r["slug"]).is_dir():
+            d = CANON / r["slug"]
             break
     if d is None:
         return {}
