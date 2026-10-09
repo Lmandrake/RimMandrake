@@ -185,6 +185,8 @@ NOT_STANDALONE: dict[str, str] = {}
 # Lints the suite must always carry: a rename or move that drops one out of discovery is a hard error.
 # selftest_placeholder_lint.py — no shipped def draws a geometric placeholder (owner rule 2026-10-07 22:33 PDT).
 REQUIRED = {"src/RimMandrake/Utils/art/selftest_placeholder_lint.py"}
+if os.environ.get("RM_SELFTEST_REPO_ROOT"):
+    REQUIRED = set()   # a fixture repo (selftest_run_selftests_evidence.py) carries no shipped lints
 
 RIMLUA_PY = Path.home() / ".local/venvs/rimlua/bin/python"
 RIMLUA_FIX = ("python3 -m venv ~/.local/venvs/rimlua && "
