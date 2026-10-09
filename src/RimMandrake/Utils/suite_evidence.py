@@ -61,7 +61,7 @@ def _allowed_outside(tmp_roots):
 
 def eligible(path: Path, head: str) -> str:
     """'' if not eligible, else the reason it is."""
-    if ELIGIBLE_TAG in head:
+    if any(ln.strip() == ELIGIBLE_TAG for ln in head.splitlines()):   # a whole comment line, not a quoted string
         return "declared eligible"
     try:
         text = path.read_text(encoding="utf-8", errors="replace")
