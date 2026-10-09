@@ -73,10 +73,12 @@ def fixture(tmp: Path) -> S.World:
     ap = tmp / "artpipe"
     for fam in ("desert_swaca_wraid_east", "chill_plant_eldspar_east", "desertportb_plant_bloddle_south",
                 "bluedesert_fuzz_east", "desert_lashgrass_north", "wraidhound_east", "fixjob_east", "coll_east",
-                "origjob_east"):
+                "origjob_east", "sharedtex_east"):
         (ap / "_artsrc" / fam).mkdir(parents=True)
     (ap / "done").mkdir()
     (ap / "done" / "fixjob_east.json").write_text(json.dumps({"id": "fixjob_east", "target_def": "RM_Fuzzrunner"}))
+    (ap / "done" / "sharedtex_east.json").write_text(json.dumps(
+        {"id": "sharedtex_east", "target_def": "RM_Fuzzrunner", "target_texpath": "Things/Plant/RM_Lashgrass"}))
     (ap / "done" / "origjob_east.json").write_text(json.dumps({"id": "origjob_east", "target_original": ["Wraid"]}))
     (ap / "collected.jsonl").write_text(json.dumps(
         {"job_id": "coll_east", "dest": "src/RimMandrake/X/Textures/Things/Plant/RM_Lashgrass_east.png"}) + "\n")
@@ -123,6 +125,8 @@ def fixture_tests(w: S.World):
     check(a["columns"][0]["confidence"] == "bound", "art: bound columns come first", a["columns"][:1])
 
     a = S.resolve_art("RM_Lashgrass", w)
+    check(not any(c.get("job") == "sharedtex_east" for c in a["columns"]),
+          "art: a job aimed at Lashgrass's texPath but whose target_def is another def is NOT Lashgrass's", a["columns"])
     refs = {x["ref"]: x["confidence"] for x in a["columns"]}
     check("chill_plant_eldspar" not in refs and "desertportb_plant_bloddle" not in refs,
           "art: no 'Plant' folder-word alias (B0)", refs)

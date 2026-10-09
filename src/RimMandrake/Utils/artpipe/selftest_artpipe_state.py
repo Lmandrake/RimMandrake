@@ -105,10 +105,13 @@ def test_find_legacy(tmp: Path):
             AS.main(["--state", str(st), "find", "nemreth", "korrum", *extra])
         return buf.getvalue()
     out = run("--legacy", str(old))
-    check("find sees the state dir (sanity probe)", "korrum: 1 hit" in out)
+    check("find sees the state dir (sanity probe)", "korrum: 1 raw text hit" in out)
     check("find sees a legacy _artsrc dir and done/ job by name",
-          "nemreth: 2 hit" in out and "LEGACY" in out and "miasma_nemreth/" in out)
-    check("--no-legacy skips it", "nemreth: 0 hit" in run("--no-legacy"))
+          "nemreth: 2 raw text hit" in out and "LEGACY" in out and "miasma_nemreth/" in out)
+    check("--no-legacy skips it", "nemreth: 0 raw text hit" in run("--no-legacy"))
+    check("find resolves the term through subject.py, with the evidence of each hit",
+          "korrum: resolves to korrum" in out and "name-matched" in out and "job id token 'korrum'" in out)
+    check("--no-resolve gives the raw hits only", "resolves to" not in run("--no-legacy", "--no-resolve"))
     check("a missing legacy root is said, not silently empty",
           "MISSING" in run("--legacy", str(tmp / "absent")))
 

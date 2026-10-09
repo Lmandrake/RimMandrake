@@ -70,6 +70,35 @@ def cmd_where(args) -> int:
 
 # ---------------------------------------------------------------- find
 
+def _resolver(root: Path):
+    """(subject module, World over THIS state dir), or None when the resolver cannot load (said, not silent)."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "art"))
+        import subject as S
+        return S, S.World(artpipe_root=root)
+    except Exception as e:                       # noqa: BLE001 — a find must still print its raw hits
+        print(f"resolver unavailable ({e.__class__.__name__}: {e}) — raw text hits only")
+        return None
+
+
+def _print_resolved(resolver, term: str, limit: int) -> None:
+    """ART_SUBJECT_RESOLVER_1: what subject.py says the term IS and which finished art/canon belongs to it,
+    each hit with its confidence. The raw substring scan below it is the older, noisier view."""
+    S, w = resolver
+    a, c = S.resolve_art(term, w), S.resolve_canon(term, w)
+    nb = sum(1 for x in a["columns"] if x["confidence"] == "bound")
+    print(f"{term}: resolves to {a['subject']}"
+          + (f" (originals {', '.join(a['originals'])})" if a["originals"] else "")
+          + f" — {nb} bound, {len(a['columns']) - nb} name-matched; canon "
+          + (f"{c['slug']} [{c['match']}, {c['confidence']}]" if c["slug"] else "none"))
+    for x in a["columns"][:limit]:
+        print(f"  {x['confidence']:12} {x['kind']:6} {x['ref'][:44]:44} {x['evidence']}")
+    if len(a["columns"]) > limit:
+        print(f"  … {len(a['columns']) - limit} more resolved")
+    if not a["columns"]:
+        print(f"  none — {S.describe_none(a['searched'])}")
+
+
 def cmd_find(args) -> int:
     root = state_dir.require(args.state)
     terms = [t.lower() for t in args.terms]
@@ -133,8 +162,12 @@ def cmd_find(args) -> int:
                         hits[t].append(f"LEGACY {lroot}/{d}/{f.name}" + ("/" if f.is_dir() else ""))
     print(f"searched {scanned} entries under {root}"
           + "".join(f" + legacy {r}" for r in legacy_scanned))
+    resolver = None if args.no_resolve else _resolver(root)
+    for t in args.terms:
+        if resolver is not None:
+            _print_resolved(resolver, t, args.limit)
     for t in terms:
-        print(f"{t}: {len(hits[t])} hit(s)")
+        print(f"{t}: {len(hits[t])} raw text hit(s) (substring of names/bodies; may include false hits)")
         for h in hits[t][: args.limit]:
             print(f"  {h}")
         if len(hits[t]) > args.limit:
@@ -347,6 +380,7 @@ def main(argv=None) -> int:
     f.add_argument("--legacy", type=Path, action="append",
                    help="pre-migration artpipe root to also search by name (default: LEGACY_ROOTS)")
     f.add_argument("--no-legacy", action="store_true")
+    f.add_argument("--no-resolve", action="store_true", help="skip the subject.py resolution; raw substring hits only")
     c = sub.add_parser("collect")
     c.add_argument("job_id", nargs="?")
     c.add_argument("--to", help="repo-relative destination under src/")
