@@ -21,6 +21,8 @@ These creatures also had thick hides to protect them from the acid geysers found
 Verified additions: height **3.5 metres** is stated on both pages (canon infobox, from *Absolutely Everything You Need to Know*; Legends infobox, from the *Clone Wars Character Encyclopedia*) -- https://starwars.fandom.com/wiki/Skalder. Canon distinction is "thick skin"; Legends infobox skin colour is gray and its diet is grass; Legends has the clones hunching down behind the hump on the neck for protection (https://starwars.fandom.com/wiki/Skalder/Legends). A blaster hit "didn't appear to have been much affected" -- thick skin, not stated immunity. Canon appearances: "The Gungan General" (first), "Bound for Rescue", and the audiobook *Pirate's Price*.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Skalder` and `Skalder/Legends` page images, "Images of skalders" — every file is *The Clone Wars* — and the StarWars.com databank, which has no skalder image).** The images below are animated/stylised (The Clone Wars); render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
 Two images: the CANON infobox render (a Clone Wars CG skalder being ridden by a clone trooper) and a frame of a herd running from a geyser (the Legends caption; both are the same Clone Wars design). They agree.
 - **Silhouette**: a stout, rounded, rhino-hippo-like pachyderm with a huge, thick, plate-like armoured hump or shell-like mantle that drapes from behind the head over the back, shoulders and neck like a heavy cloak or a turtle shell with skirt-like layered overlapping ridged plates; the head pokes out under it.
 - **Colour/pattern**: grey-green to slate and olive-grey hide, with pale bluish-grey vertical stripes along the flanks and bands on the legs and cheeks; the mantle is darker green-grey with horizontal ridges, and has pale stripes; in the desert frame it looks tan-olive, dusty.
@@ -35,6 +37,7 @@ Two images: the CANON infobox render (a Clone Wars CG skalder being ridden by a 
 - [ ] Blunt dome head, short snout, small round eye, and two long ivory tusks from the lower jaw curving forward
 - [ ] Short pillar legs with broad three-clawed feet
 - [ ] Large enough to ride (back at about head height or above)
+- [ ] Realistic rendering: natural thick wrinkled pachyderm hide and horny plated mantle, natural desert lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -44,8 +47,8 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Skalder/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Skalder`; wiki caption: infobox image. File: `Skalder-TCWCE.png` — https://static.wikia.nocookie.net/starwars/images/5/53/Skalder-TCWCE.png/revision/latest?cb=20220914010550
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Skalder/Legends`; wiki caption: Skalders running from a erupting acid geyser. File: `Skalder.jpg` — https://static.wikia.nocookie.net/starwars/images/6/65/Skalder.jpg/revision/latest?cb=20110918012229
+- `wookieepedia_canon_1.webp` — CANON page `Skalder`; wiki caption: infobox image (The Clone Wars CG render, ANIMATED). File: `Skalder-TCWCE.png` — https://static.wikia.nocookie.net/starwars/images/5/53/Skalder-TCWCE.png/revision/latest?cb=20220914010550
+- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Skalder/Legends`; wiki caption: Skalders running from a erupting acid geyser (The Clone Wars "The Gungan General" frame, ANIMATED). File: `Skalder.jpg` — https://static.wikia.nocookie.net/starwars/images/6/65/Skalder.jpg/revision/latest?cb=20110918012229
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

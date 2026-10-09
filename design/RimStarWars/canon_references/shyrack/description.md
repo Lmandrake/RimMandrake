@@ -18,24 +18,22 @@ Shyracks were creatures that were likely to be encountered in caves (*Adventures
 Legends extras: appearances include *Knights of the Old Republic*, *KOTOR II*, *The Old Republic* (codex source for the 63-year summer emergence and bluish droppings), and Shyracks are "natural rivals" of the Tuk'ata (https://starwars.fandom.com/wiki/Shyrack/Legends).
 
 ## Visual brief
-Viewed 2026-10-04. Both images are LEGENDS (the only canon page is a one-line cave mention with no image). Image 1 is a painting
-(infobox) of one shyrack diving; image 2 is a tiny low-resolution (about 300x123) game still of a
-swarm -- usable only for silhouette.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `wookieepedia_legends_2.webp` (a tiny 300x123 *Knights of the Old Republic II* game render of a swarm). No live-action or photoreal shyrack exists (searched: `Shyrack`, `Shyrack/Legends`, "Images of shyracks"; the realistic-labelled Korriban files are *Old Republic* trailer scenes with no shyrack). The one remaining image, `wookieepedia_legends_1.webp`, is a realistic painting from the *Jedi Academy Training Manual*: a single shyrack diving — **the target**. The only canon page is a one-line cave mention with no image.
 - **Silhouette**: a bat/pterosaur-like flier, with a heavy pot-bellied body hanging below two big
   wings, folded hind legs and a thin pointed tail. Hunched and ungainly rather than sleek,
   matching "ungainly and slow-moving".
 - **Wings**: large leathery bat-type wings with dark brown-black bone struts and thin purple-pink
-  membrane (image 1); in the swarm still the wings are long with bony ribs and read grey.
+  membrane.
 - **Head (loud)**: there are NO EYES -- confirmed: the head is a blunt, wrinkled, domed lump of
   pinkish-tan skin with deep brow folds, a tiny snout and a mouth with sharp teeth; it looks
   almost like a pinched face or a fist. Nothing on the front reads as an eye.
 - **Limbs**: no forelegs separate from wings; long thin hind legs hang down ending in large hooked
-  curved dark claws/talons (image 1 shows both feet clutching forward). Tail: thin, sinuous,
+  curved dark claws/talons (both feet clutch forward). Tail: thin, sinuous,
   pinkish, curving up behind.
-- **Colour**: tan to pinkish-flesh body with blue-violet limbs and purple wing membrane
-  (image 1); the Legends text mentions bluish droppings. Palette comes from one painting; no second
+- **Colour**: tan to pinkish-flesh body with blue-violet limbs and purple wing membrane;
+  the Legends text mentions bluish droppings. Palette comes from one painting; no second
   coloured source.
-- **Size cues**: text says "large"; no measurement is sourced (the 300x123 swarm still cannot give a size).
+- **Size cues**: text says "large"; no measurement is sourced.
 - **Prose vs images**: prose says "bat-like avian" with razor teeth; the images show bat-like
   leathery wings, no feathers.
 
@@ -45,6 +43,7 @@ swarm -- usable only for silhouette.
 - [ ] Long thin hind legs with large hooked dark talons
 - [ ] Thin sinuous tail
 - [ ] Tan/pinkish-flesh body with blue-violet limbs
+- [ ] Realistic rendering: natural wrinkled skin and translucent leathery wing membrane, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -53,8 +52,7 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Shyrack/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Shyrack/Legends`; wiki caption: infobox image. File: `Shyrack JATM.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1d/Shyrack_JATM.jpg/revision/latest?cb=20090601234658
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Shyrack/Legends`; wiki caption: A shyrack swarm. File: `Shyrackswarm.jpg` — https://static.wikia.nocookie.net/starwars/images/2/22/Shyrackswarm.jpg/revision/latest?cb=20060826150708
+- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Shyrack/Legends`; wiki caption: infobox image (*Jedi Academy Training Manual*, realistic painting). File: `Shyrack JATM.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1d/Shyrack_JATM.jpg/revision/latest?cb=20090601234658
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
