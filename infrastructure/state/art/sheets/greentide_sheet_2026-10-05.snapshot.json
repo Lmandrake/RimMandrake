@@ -1,6 +1,6 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-08T22:29:31-0700",
+ "built": "2026-10-08T22:56:19-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 19 mods \u2014 a test list): 614 active",
@@ -61,7 +61,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 regrowth.botr.core",
-    "B": "shipped, not loaded \u2014 RegrowthGrassArtOverride",
+    "B": "render sheet_redo_Plant_Grass_v1",
     "C": "render regen_gt_grass_varb_v1",
     "D": "render regen_gt_grass_varc_v1",
     "E": "render regen_gt_grass_ownstyle_v1"
@@ -115,7 +115,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 regrowth.botr.core",
-    "B": "shipped, not loaded \u2014 RegrowthGrassArtOverride",
+    "B": "render sheet_redo_Plant_Grass_v1",
     "C": "render gapall_Plant_TallGrass_v1",
     "D": "render regen_gt_grass_varb_v1",
     "E": "render regen_gt_grass_varc_v1",
@@ -2151,24 +2151,19 @@
      "east": "83aebfc2d39de2d015073c1487c9aa113d2676aa3743a64ee1a358ca78259b1f",
      "north": "c14b47e2fc083f4c77ff11548487c93b84db9e73bfceb72963a99d431c9c23a4",
      "south": "f8800811a6b1c40baf3ef2cb13f8d987731134db2ca745c1fd33632f6dd0c25f"
-    },
-    "H": {
-     "north": "91ebf8eb6db310366b20d7992605f9eabb1bb20cab32ad3fd184cf57a650fd1c"
     }
    },
    "graphic_of": {
     "A": "swanimals/Mott/Mott_f",
     "B": "swanimals/Mott/Mott_m",
     "C": "swanimals/Mott/Mott_m_Swimming",
-    "G": "swanimals/Mott/Mott_m",
-    "H": "_byname"
+    "G": "swanimals/Mott/Mott_m"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "history SWBestiary 2026-09-17",
     "C": "IN GAME \u2014 SWBestiary",
-    "G": "IN GAME \u2014 SWBestiary",
-    "H": "render regen_gt_canon_mott_m_swim_v1"
+    "G": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Mott/Mott_f",
    "reserved": [
@@ -2302,6 +2297,20 @@
     },
     "O": {
      "east": "5c42e3dd6f38da825cd0f8f4c71f071a95cafda7449047e87699aa587be5f5fa"
+    },
+    "P": {
+     "1_east": "ab34e6db0e984248d6b7925d8dcf3d507bc33e0ff1af0be97e6db4cec0565d09",
+     "1_north": "5a528f5d96f21be3ba80890057523da3c72a316b1c7891c85169b2a7676fba85",
+     "1_south": "7731466a138016177521e5dc2f572b0e3b585725e0abc6b2f8f94afca95e4b53",
+     "2_east": "0dc08f40ca3ce0d17ed8ee4144ab95ef51ab6e35293a2fb6eb151ea32b198ab2",
+     "2_north": "84fd92a3335ca7ed481adc7fc14c1ed30787a90ff35063fb5c5f6117df8f57c0",
+     "2_south": "f51a97b2d178a68416b29efc1f2fde21d8de9582c8ab9aa5c32f24ac407d56b2",
+     "3_east": "40f826cab8d5cf874ad4c0a7687733dc281449997f5450939d17b221163b25e1",
+     "3_north": "bb6a60221f0a2aeb6c1dd2580bce7067de590d65ac65941cf9c490168234c9df",
+     "3_south": "c25bd3d9f03a5ee439f00e8f1a055397a00fab065419925fe3ad15fbf9b4336c",
+     "4_east": "ab34e6db0e984248d6b7925d8dcf3d507bc33e0ff1af0be97e6db4cec0565d09",
+     "4_north": "5a528f5d96f21be3ba80890057523da3c72a316b1c7891c85169b2a7676fba85",
+     "4_south": "7731466a138016177521e5dc2f572b0e3b585725e0abc6b2f8f94afca95e4b53"
     }
    },
    "graphic_of": {
@@ -2316,7 +2325,8 @@
     "L": "_byname",
     "M": "_byname",
     "N": "_byname",
-    "O": "_byname"
+    "O": "_byname",
+    "P": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 PekoPekoArtOverride",
@@ -2330,7 +2340,8 @@
     "L": "render regen_gt_pekopeko_flying_f_2_v1 \u2014 failed canon check",
     "M": "render regen_gt_pekopeko_flying_f_3_v1",
     "N": "render regen_gt_pekopeko_flying_f_4_v1",
-    "O": "render regen_gt_pekopeko_flying_m_1_v1"
+    "O": "render regen_gt_pekopeko_flying_m_1_v1",
+    "P": "IN GAME \u2014 PekoPeko_f_Flying_"
    },
    "res": "swanimals/PekoPeko/PekoPeko_f",
    "reserved": [
@@ -2348,7 +2359,8 @@
     "L",
     "M",
     "N",
-    "O"
+    "O",
+    "P"
    ],
    "subject_key": "pekopeko"
   },
@@ -2638,5 +2650,5 @@
   }
  },
  "sheetId": "greentide_sheet_2026-10-05",
- "snapshotId": "c851146951346a64"
+ "snapshotId": "7789f85961122bb4"
 }
