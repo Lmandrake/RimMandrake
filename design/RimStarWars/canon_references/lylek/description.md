@@ -24,10 +24,8 @@ Few creatures were able to survive on the stifling, arid surface of Ryloth; the 
 In addition to their viciousness and strength, the lyleks' tail tentacle was also tipped with a poisonous barb. The poison itself was not deadly, but it was disabling enough to prevent most creatures from escaping.
 
 ## Visual brief
-Viewed 2026-10-04. Image 1 is canon (a small colour illustration on a parchment map page, captioned
-"the most fearsome of all beasts on Ryloth"); images 2, 3 and 4 are LEGENDS (a detailed painting,
-a comic panel, and a nest-site map tile). Image 4 is a top-down terrain tile (red rock, pale bone-
-coloured nest) with no creature in it -- UNUSABLE for appearance.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the small stylised map-page illustration (canon, `Lylek-SWGA.jpg`), the comic panel (`Lylek RS11BT3.png`) and the creature-less nest map tile (`Lylek nest.png`). The one image kept, `legends_1` (`Lylek.jpg`), is a detailed realistic painting of the same design the canon plate shows; it is the target. No live-action lylek exists. The comic's bright yellow-green and the map plate's flat mid-green are dropped: use the painting's olive/moss green.
 - **Silhouette**: a tall, spidery, many-limbed insectoid that stands high on long stilt legs. A
   compact flattened torso slung between four to six spear-like walking legs (four long stiff
   stilts in the painting, angled out like tripod stakes), with a raised front body and two pincer-
@@ -42,10 +40,10 @@ coloured nest) with no creature in it -- UNUSABLE for appearance.
   they are much longer than the body (Legends text: poisonous barb tip, not visible).
 - **Carapace**: ridged, spiky, leaf-like plates stacked over the back, shoulders and legs, all
   jagged; underbelly paler, softer and scaly.
-- **Colour**: green throughout -- olive/moss green (Legends painting), brighter yellow-green (comic),
-  mid dark green (canon plate); pale grey-cream underside and joints; tentacles darker brown-black.
+- **Colour**: olive/moss green with darker shading in the recesses of the plates; pale grey-cream
+  underside and joints; tentacles darker brown-black above, pale beneath.
   Eyes small and red.
-- **Size cues**: comic shows it towering over armed adult humans and flinging them; "tall beasts".
+- **Size cues**: the text calls them "tall beasts"; the deleted comic showed one towering over armed adult humans.
 - **Prose vs images**: matches -- spiked carapace, pincers, tentacles. The queen/hive are not shown
   in any image.
 
@@ -55,6 +53,7 @@ coloured nest) with no creature in it -- UNUSABLE for appearance.
 - [ ] Small spiked wedge head with a toothed round maw and small red eyes
 - [ ] Two spiked pincer-arms held up beside the head (they read as extra heads)
 - [ ] Two long thin dark whip-like tentacles with pale undersides looping out from the shoulders, longer than the body
+- [ ] Realistic rendering: natural chitin plate texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -64,10 +63,7 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Lylek/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Lylek`; wiki caption: infobox image. File: `Lylek-SWGA.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b5/Lylek-SWGA.jpg/revision/latest?cb=20170214090658
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Lylek/Legends`; wiki caption: infobox image. File: `Lylek.jpg` — https://static.wikia.nocookie.net/starwars/images/0/00/Lylek.jpg/revision/latest?cb=20071029025647
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Lylek/Legends`; wiki caption: A seemingly deadly battle with a virtual reality lylek. File: `Lylek RS11BT3.png` — https://static.wikia.nocookie.net/starwars/images/8/88/Lylek_RS11BT3.png/revision/latest?cb=20150619214843
-- `wookieepedia_legends_3.webp` — LEGENDS page (non-canon continuity) `Lylek/Legends`; wiki caption: A lylek nesting site. File: `Lylek nest.png` — https://static.wikia.nocookie.net/starwars/images/d/d4/Lylek_nest.png/revision/latest?cb=20130214134136
+- `wookieepedia_legends_1.webp` — LEGENDS, realistic painting (infobox image). File: `Lylek.jpg` — https://static.wikia.nocookie.net/starwars/images/0/00/Lylek.jpg/revision/latest?cb=20071029025647
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

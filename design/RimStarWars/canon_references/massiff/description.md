@@ -18,21 +18,19 @@ Massiffs were reptilian creatures found on Geonosis and Tatooine. The species' o
 **Biology and appearance** Massiffs were reptiles that had coarse skin, large jaws, toothy mouths, big dark eyes and a line of hard spikes along their backs.
 
 ## Visual brief
-Four images that disagree on the head shape and the stance. The canon page's own two images are not consistent with each other.
-- **`canon_1` (infobox, Outlaws 3D render, large clean view):** a heavy reptile-dog built like a **crocodilian on long, thick, digitigrade legs**: **long, narrow, gharial-like snout** with a row of thin curved teeth and a pink mouth/tongue, one big round dark-blue eye set on the side high on the skull, scaly grey-blue head and neck fading into **orange-tan/rust body** with black patches. **A tall crest of thin, long, backward-raked black spines along the neck and back**, plus rows of rounded dark bony studs along the flanks. Rough, plated hide, not furry. Big three-clawed feet with long dark talons; the hindquarters carry the weight like a big theropod, forelimbs shorter. The thick tail is not clearly shown.
-- **`canon_2` (screen frame, The Mandalorian book/series, pack in a canyon):** a pack of **hyena/dog-like, lean, low animals** seen small and far away. Short broad head with a wide open jaw, a spiky crest/ruff at the back of the head and along the spine, a pale throat/chest, dark-brown mottled hide with armoured plates. Digitigrade legs and a stalking stance, head carried low.
-- **`legends_1` (Attack of the Clones frame, a canon film shown on the Legends page; the canon page cites the film for brown-and-grey skin and black eyes):** a squat, thick-bodied, **hump-backed** quadruped, dark brown, with **thick plated armour across the shoulders and back** (knobbly bone plates with yellow-brown mottling), **a ridge of tall, thin, pale spines** along the spine, short snout, a **round yellow eye** with dark pupil, small head hanging low between the shoulders. This is the most "squat quadruped" of the four and matches the prose.
-- **`legends_2` (painted, arena fight):** two massiffs locked in a fight: **green-grey, lizard/crocodile-like**, wide gaping jaws full of conical teeth, red tongue and mouth interior, a crest of dark spikes on the back of the head and neck, scarred skin. Looks more like a big monitor lizard.
-- **Disagreement:** the text says "squat quadruped, canine and reptilian, about one metre high, humped back, brown and grey or grey-green plates, large black or yellow eyes". `canon_1` is much taller, long-snouted and rust-orange; the movie frame (`legends_1`) and the canyon pack (`canon_2`) are squat and brown. **Trust `legends_1` and `canon_2` for body proportion (squat, humped, brown, short snout) and `canon_1` for the spine crest, scale pattern and teeth detail.** Do not give it a gharial snout without the owner's ruling.
-- **Common to all four:** a row of tall thin spines running from the back of the skull along the spine, armoured plates on the back, wide toothy jaws, round eyes, hard reptile hide in browns and grey-greens.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the inked-and-coloured arena illustration of two green-grey fighting massiffs (`Massiff TotG.jpg`). Added two LIVE-ACTION stills: `canon_3` (The Mandalorian Chapter 9, Din Djarin with a massiff at close range) and `canon_4` (The Book of Boba Fett Chapter 2, Tusken children with tame massiffs, several animals side by side). With `canon_2` (Mandalorian canyon pack) and `legends_1` (Attack of the Clones), the target is the live-action puppet/CG creature; `canon_1` (Star Wars Outlaws photoreal render) is the secondary reference.
+- **Live-action look (the target, `canon_3`, `canon_4`, `canon_2`, `legends_1` agree):** a lean, low, **dog- or hyena-sized reptile** on digitigrade legs, head carried low, about knee-to-waist high to a human (Tusken children sit level with it). **Dull grey-brown to taupe, mottled armoured hide** of overlapping rough plates and knobbly scutes along the back and shoulders; paler, smoother throat and chest. A **crest of dark, thin, backward-raked spines** from the back of the skull down the neck and spine (tallest at the neck). **Short, broad, blunt head** with a wide mouth full of small pointed teeth and a pink tongue, a large round dark eye (yellow with a dark pupil in AotC), small nostrils at the snout tip. Long clawed toes.
+- **Where they disagree, LOUDLY:** the Outlaws render (`canon_1`) gives it a **long, narrow, gharial-like snout**, a taller build and an **orange-tan/rust body** with black patches. Every live-action image shows a **short blunt snout** and **grey-brown** colour. Do not use the gharial snout or the rust colour; take only the spine crest, plate pattern and teeth detail from `canon_1`.
+- **Text agrees with live-action:** "squat quadruped, canine and reptilian, about one metre high, humped back, brown and grey or grey-green plates, large black or yellow eyes".
 
 ## Must show
-- [ ] Row of tall, thin, backward-raked spines running from the back of the head down the spine (age shown by spine size)
-- [ ] Hump-backed, squat, heavy quadruped with a head carried low
-- [ ] Armoured, plated reptile hide (not fur), brown with grey and grey-green plates
-- [ ] Wide jaws that open very wide, filled with long conical teeth
-- [ ] Large round eye, black or yellow
-- [ ] Short, thick limbs with big dark curved claws
+- [ ] Lean, low, dog-sized reptilian quadruped on digitigrade legs, humped back, head carried low, about knee-to-waist high to a human
+- [ ] Crest of dark, thin, backward-raked spines from the back of the head down the neck and spine
+- [ ] Rough armoured plated hide in mottled grey-brown/taupe, paler throat and chest (not fur, not rust-orange)
+- [ ] Short, broad, blunt head with a wide mouth of small pointed teeth and a large round dark or yellow eye (no gharial snout)
+- [ ] Long toes with big dark curved claws
+- [ ] Realistic rendering: natural scaly, plated reptile hide texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -42,10 +40,11 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Massiff/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Massiff`; wiki caption: infobox image. File: `Massiff-Outlaws.png` — https://static.wikia.nocookie.net/starwars/images/b/ba/Massiff-Outlaws.png/revision/latest?cb=20250126054829
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Massiff/Legends`; wiki caption: infobox image. File: `Massiff-AOTC.png` — https://static.wikia.nocookie.net/starwars/images/c/c4/Massiff-AOTC.png/revision/latest?cb=20180205042951
-- `wookieepedia_canon_2.webp` — CANON page `Massiff`; wiki caption: A pack of massiffs on Tatooine. File: `MassiffPack-TMc9TM.png` — https://static.wikia.nocookie.net/starwars/images/3/3f/MassiffPack-TMc9TM.png/revision/latest?cb=20201031185337
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Massiff/Legends`; wiki caption: A pair of fighting massiffs.. File: `Massiff TotG.jpg` — https://static.wikia.nocookie.net/starwars/images/e/ed/Massiff_TotG.jpg/revision/latest?cb=20081010131914
+- `wookieepedia_canon_1.webp` — CANON, Star Wars Outlaws photoreal game render (long snout and rust colour NOT the target); file `Massiff-Outlaws.png` — https://static.wikia.nocookie.net/starwars/images/b/ba/Massiff-Outlaws.png/revision/latest?cb=20250126054829
+- `wookieepedia_canon_2.webp` — LIVE-ACTION, The Mandalorian Chapter 9, a pack of massiffs in a Tatooine canyon (small, far); file `MassiffPack-TMc9TM.png` — https://static.wikia.nocookie.net/starwars/images/3/3f/MassiffPack-TMc9TM.png/revision/latest?cb=20201031185337
+- `wookieepedia_canon_3.webp` — LIVE-ACTION, The Mandalorian Chapter 9, Din Djarin with a massiff, close view of head, crest and hide; file `MandoMassiff-TMc9TM.png` — https://static.wikia.nocookie.net/starwars/images/f/f7/MandoMassiff-TMc9TM.png/revision/latest?cb=20201031185519
+- `wookieepedia_canon_4.webp` — LIVE-ACTION, The Book of Boba Fett Chapter 2, Tusken children with tame massiffs (full bodies, scale); file `TuskenKidsMassiffs-BoBFCh2.png` — https://static.wikia.nocookie.net/starwars/images/a/aa/TuskenKidsMassiffs-BoBFCh2.png/revision/latest?cb=20220130235335
+- `wookieepedia_legends_1.webp` — LIVE-ACTION, Attack of the Clones frame (Tusken camp, dark); file `Massiff-AOTC.png` — https://static.wikia.nocookie.net/starwars/images/c/c4/Massiff-AOTC.png/revision/latest?cb=20180205042951
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

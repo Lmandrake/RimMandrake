@@ -16,6 +16,10 @@ A marsh haunt was a Force-using red-eyed creature.
 Marsh haunts would occasionally leave their swampy homes to scavenge and acquire small prey in civilized areas. While non-sentient, they worked in loose packs of two to eight creatures to ambush prey, with some of them using their Force powers to scare potential prey toward the rest.
 
 ## Visual brief
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Marsh haunt` page images, `Category:Images of creatures of the Tion Hegemony`, title search; the creature has exactly one image anywhere).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Nothing removed (it is the only image). Read it for form only: the inked comic-book linework and flat teal colouring are the artist's style, not the animal's skin — render real wet, peeling, moss-hung hide.
+
 Only ONE image: a LEGENDS illustration by Joe Corroney from the Power of the Jedi Sourcebook (`Ursemadu.jpg`, Ur-Sema Du and Kai Justiss fighting a marsh haunt; https://starwars.fandom.com/wiki/File:Ursemadu.jpg). It is a single, partial view, and the creature is mostly out of frame, so details of legs and lower body are UNSEEN.
 - **Form**: a huge, hulking, blotchy mass looming over two humanoid Jedi (who are chest-deep in swamp water). It is far taller than a person; a rounded, hunched, headless-looking bulk with the 'head' sunk into the shoulders (agrees with the prose).
 - **Skin**: dark teal-green to black-green, leathery, ragged and peeling, with pale blue-grey highlights, mottled with darker blotches and trailing strands that look like moss or hanging vines, so it camouflages into the swamp.
@@ -27,6 +31,7 @@ Only ONE image: a LEGENDS illustration by Joe Corroney from the Power of the Jed
 - [ ] Peeling, ragged dark grey-green to teal leathery skin mottled with blotches and moss-like trailing strands
 - [ ] A cluster of red berry-like bulbs/eyes at the top where the head should be
 - [ ] Huge dark-clawed forelimbs that hang low
+- [ ] Realistic rendering: natural wet, leathery, moss-hung hide texture and swamp lighting, no outlines, no comic ink shading
 
 ## Engine limits
 not yet assessed
