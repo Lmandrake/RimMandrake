@@ -405,7 +405,10 @@ class Index:
         keeps = [r for r in self.rulings_by_sha.get(sha, [])
                  if r.get("verdict") == "keep" and r.get("by") == "owner"
                  and r.get("trust") in TRUST_PROTECTS]
-        released = {r.get("releases") for r in self.rulings if r.get("releases")}
+        # a release is per PICTURE: purging one facing of a kept column must not unprotect its siblings (it did:
+        # 20 kept pictures, 7 of them live, lost their keep that way before 2026-10-09)
+        released = {r.get("releases") for r in self.rulings if r.get("releases")
+                    and (r.get("target") or {}).get("sha") in (None, sha)}
         return [k for k in keeps if k["id"] not in released]
 
     def is_purged(self, sha: str) -> bool:

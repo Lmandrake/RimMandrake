@@ -109,6 +109,15 @@ def main():
         R2 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
         check(R2["purged"] == 1 and not L.store_has(s2) and not L.Index().protected(s2),
               "a keep the same row of the same file already wrote is released and the ✕ purged")
+        # a release is per picture: purging one facing of a kept column leaves its sibling facings kept
+        s3, s4 = L.store_put_bytes(T.noise_png(301)), L.store_put_bytes(T.noise_png(302))
+        with open(evf, "a") as fh:
+            fh.write(json.dumps({"type": "ruling", "id": "twokeep", "target": {"shas": [s3, s4], "row": "RM_Two",
+                                 "column": "B"}, "verdict": "keep", "by": "owner", "trust": "ruled", "at": at,
+                                 "via": "y.decisions.json"}) + "\n")
+        L.purge(s3, owner_said="fixture ✕ on one facing", release_keep=True)
+        check(L.Index().protected(s4) and not L.Index().protected(s3),
+              "purging one facing releases the keep for THAT picture only; its sibling stays owner-kept")
         R3 = E.enact(F["decisions"], apply=True, no_deploy=True, redo_jobs_out=F["root"] / "jobs.json")
         check(R3["purged"] == 0 and R3["plan"]["purged_already"] == 4, "second --apply is a no-op (4 already purged)")
     finally:
