@@ -60,6 +60,7 @@
     <Compile Include="RM_CompTentacleEye.cs" />
     <Compile Include="RM_TentacleLoot.cs" />
     <Compile Include="RM_MapComponent_TentacleWatch.cs" />
+    <Compile Include="RM_FeverWoodProof.cs" />
     <Compile Include="RM_CompProperties_CapturedSpecimen.cs" />
     <Compile Include="RM_CompCapturedSpecimen.cs" />
     <Compile Include="RM_CompProperties_EscapedCaptive.cs" />
