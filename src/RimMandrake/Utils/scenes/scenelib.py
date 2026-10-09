@@ -73,7 +73,7 @@ def _tile_objs(tile):
 
 _restore = {}
 
-def biome_map(tile, biome, size=100, layer=None, keeper=(50, 50), surface_biome=None):
+def biome_map(tile, biome, size=100, layer=None, keeper=(50, 50), surface_biome=None, parent=None):
     """Generate a map of `biome` on `tile` (any free tile), make it current, and return mapId.
     Pass layer='RM_SeabedLayer' for a sea-floor map. Free it with drop_map(id, tile).
     MEASURED 2026-10-09, two traps: (1) the generated Settlement has NO faction, so after the map is culled its
@@ -88,6 +88,7 @@ def biome_map(tile, biome, size=100, layer=None, keeper=(50, 50), surface_biome=
         need(call("jawa/world_tile_set", tiles=str(tile), biome=surface_biome), "world_tile_set"); call("jawa/world_commit")
     kw = dict(tile=tile, biome=biome, sizeX=size, sizeZ=size)
     if layer: kw["layer"] = layer
+    if parent: kw["suggestedMapParent"] = parent   # e.g. RM_SeabedSite on a floor tile, so RM_SeabedSiteParent picks the sea's own generator
     r = need(call("jawa/world_tile_map_generate", **kw), "world_tile_map_generate")
     mid = r["mapId"]
     ids = [str(o["id"]) for o in _tile_objs(tile) if o.get("isSettlement")]
