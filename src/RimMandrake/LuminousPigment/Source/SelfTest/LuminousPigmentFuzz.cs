@@ -474,7 +474,7 @@ namespace RimMandrake.LuminousPigment.SelfTest
                     {
                         float d = RM_DeepfireRules.Diminish(amt, prior, after, 1f);
                         if (prior < after) Check(d == amt, "an early first-coat event was shrunk");
-                        else { Check(Math.Abs(d) == 1f && Math.Sign(d) == Math.Sign(amt), "a late event was not shrunk to +-1 keeping its sign"); DiminishedEvents++; }
+                        else { Check(Math.Abs(d) == Math.Min(Math.Abs(amt), 1f) && Math.Sign(d) == Math.Sign(amt), "a late event was not clamped to min(|amt|,1) keeping its sign"); DiminishedEvents++; }
                     }
                     if (prior < after) undim[def] = undim.TryGetValue(def, out int u) ? u + 1 : 1;
                 }

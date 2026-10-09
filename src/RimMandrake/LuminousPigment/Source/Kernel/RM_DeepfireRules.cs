@@ -134,11 +134,13 @@ namespace RimMandrake.LuminousPigment
             }
             return t;
         }
-        // After `after` first-coat events on one def, every delta shrinks to +-magnitude, sign kept.
+        // After `after` first-coat events on one def, every delta shrinks to at most +-magnitude, sign kept; a delta already smaller is never enlarged and 0 stays 0.
         public static float Diminish(float amount, int priorEvents, int after, float magnitude)
         {
             if (priorEvents < after) return amount;
-            return amount > 0f ? magnitude : -magnitude;
+            if (amount == 0f) return 0f;
+            float m = Math.Min(Math.Abs(amount), magnitude);
+            return amount > 0f ? m : -m;
         }
 
         // ---- melee dodge (RM_StatPart_GlowingTarget) ----
