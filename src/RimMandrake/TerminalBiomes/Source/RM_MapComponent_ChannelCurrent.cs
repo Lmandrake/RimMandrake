@@ -297,6 +297,10 @@ namespace RimMandrake.TerminalBiomes
             if (--processCooldown <= 0)
             {
                 processCooldown = ProcessIntervalTicks;
+                if (RM_TerminalBiomesSettings.channelCurrentExactPace)
+                {
+                    RegisterWadingPawns();
+                }
                 ProcessOccupants();
             }
 
@@ -347,6 +351,37 @@ namespace RimMandrake.TerminalBiomes
             book.Prune(stillPresent);
         }
 
+        /// <summary>CHANNEL_CURRENT_CADENCE_FIDELITY_1: pawns move themselves, so they are checked for entry on the
+        /// processing cadence (a grid read per pawn); items only move when carried or dropped and stay on the
+        /// 250-tick scan. Same exemptions as ScanForOccupants.</summary>
+        private void RegisterWadingPawns()
+        {
+            IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+            List<Pawn> entering = null;
+            for (int i = 0; i < pawns.Count; i++)
+            {
+                Pawn p = pawns[i];
+                if (p == null || p.Dead || book.Contains(p))
+                {
+                    continue;
+                }
+                IntVec3 pos = p.Position;
+                if (!HasCurrent(pos) || IsArrestedCell(pos) || IsSinkCell(pos) || IsExempt(p))
+                {
+                    continue;
+                }
+                (entering ??= new List<Pawn>()).Add(p);
+            }
+            if (entering == null)
+            {
+                return;
+            }
+            for (int i = 0; i < entering.Count; i++)
+            {
+                RegisterOccupant(entering[i], entering[i].Position);
+            }
+        }
+
         private void RegisterOccupant(Thing t, IntVec3 pos)
         {
             book.Register(t, Find.TickManager.TicksGame, CadenceFor(t, pos));
@@ -376,12 +411,12 @@ namespace RimMandrake.TerminalBiomes
                 {
                     continue;
                 }
-                StepOne(t);
+                StepOne(t, due);
             }
         }
 
 
-        private void StepOne(Thing t)
+        private void StepOne(Thing t, int due)
         {
             IntVec3 pos = t.Position;
             if (IsExempt(t) || IsArrestedCell(pos) || IsSinkCell(pos))
@@ -409,7 +444,13 @@ namespace RimMandrake.TerminalBiomes
                 book.Remove(t); // Q2 — the weir catches it; stop here
                 return;
             }
-            book.Register(t, Find.TickManager.TicksGame, CadenceFor(t, next));
+            // CHANNEL_CURRENT_CADENCE_FIDELITY_1: re-arm from when the step was DUE, so a 22-tick cadence stays 22 and
+            // not the next 15-tick processing tick (30). Clamped: an occupant more than one cadence late (a lag spike,
+            // a long pause in processing) re-arms from now instead of bursting through the missed steps.
+            int now = Find.TickManager.TicksGame;
+            int cadence = CadenceFor(t, next);
+            int from = RM_TerminalBiomesSettings.channelCurrentExactPace && now - due < cadence ? due : now;
+            book.Register(t, from, cadence);
         }
 
 

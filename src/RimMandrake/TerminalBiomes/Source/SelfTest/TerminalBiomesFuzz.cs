@@ -155,7 +155,7 @@ namespace RimMandrake.TerminalBiomes.SelfTest
                             break;
                         case 1:
                             {
-                                var waning = book.Wells.Where(w => w.stage == WellStage.Waning).OrderBy(w => w.TicksRemaining).ToList();
+                                var waning = cadence == 0 ? new List<W>() : book.Wells.Where(w => w.stage == WellStage.Waning).OrderBy(w => w.TicksRemaining).ToList();   // frozen: the gardener closes nothing
                                 int wc = book.Wells.Count, pc = book.Pending.Count; int opened0 = opened;
                                 int dueAfter = book.Pending.Count == 0 ? 0 : 1 + book.Pending.Skip(1).Count(t => t <= now);   // pending[0] is pulled to now; any other already-due entry opens with it
                                 book.GardenerAdvance(now);
@@ -176,7 +176,7 @@ namespace RimMandrake.TerminalBiomes.SelfTest
                             {
                                 var before = book.Wells.ToDictionary(w => w.id, w => w.ageTicks);
                                 book.LidDarkEnded(now);
-                                foreach (var w in book.Wells) if (before.TryGetValue(w.id, out int b0)) Check(w.ageTicks >= b0 && w.ageTicks < b0 + 15000, "lid-dark aged a well by an amount outside [0, 15000)");
+                                foreach (var w in book.Wells) if (before.TryGetValue(w.id, out int b0)) Check(cadence == 0 ? w.ageTicks == b0 : w.ageTicks >= b0 && w.ageTicks < b0 + 15000, cadence == 0 ? "lid-dark aged a frozen well" : "lid-dark aged a well by an amount outside [0, 15000)");
                                 break;
                             }
                         case 3: sitesOk = a.a % 3 != 0; break;
@@ -220,12 +220,12 @@ namespace RimMandrake.TerminalBiomes.SelfTest
                 if (s == WellStage.Waning) { Check(f <= 1f && f >= 0.2f, "waning factor range"); }
             }
             Check(RM_WellKernel.GlowFactor(WellStage.Opening, 30000, life) == 1f && RM_WellKernel.GlowFactor(WellStage.Opening, 0, life) == 0f, "opening ramp ends");
-            // waning steps once per half day, 1.0 -> 0.8 -> 0.6 -> 0.4
+            // TWILIGHT_WELL_LIGHT_STATE_1: waning steps once per quarter of the 1.5-day window, 1.0 -> 0.8 -> 0.6 -> 0.4
             int ws = life - 90000;
-            Check(Near(RM_WellKernel.GlowFactor(WellStage.Waning, ws, life), 1f, 1e-5f) && Near(RM_WellKernel.GlowFactor(WellStage.Waning, ws + 30000, life), 0.8f, 1e-5f)
-                && Near(RM_WellKernel.GlowFactor(WellStage.Waning, ws + 60000, life), 0.6f, 1e-5f) && Near(RM_WellKernel.GlowFactor(WellStage.Waning, life - 1, life), 0.6f, 1e-5f), "waning steps are 20% per half-day, three steps");
-            // the fourth step (0.4 / full cool colour) would be reached only at age == lifespan, when the well is already closed
-            Check(Near(RM_WellKernel.ColourT(WellStage.Waning, life - 1, life), 2f / 3f, 1e-5f) && RM_WellKernel.WaningStep(life, life) == 3, "the colour reaches two thirds of the way to cool-dead before the well closes");
+            Check(Near(RM_WellKernel.GlowFactor(WellStage.Waning, ws, life), 1f, 1e-5f) && Near(RM_WellKernel.GlowFactor(WellStage.Waning, ws + 22500, life), 0.8f, 1e-5f)
+                && Near(RM_WellKernel.GlowFactor(WellStage.Waning, ws + 45000, life), 0.6f, 1e-5f) && Near(RM_WellKernel.GlowFactor(WellStage.Waning, life - 1, life), 0.4f, 1e-5f), "waning steps are 20% per quarter-window, four steps");
+            // the last step (0.4 / full cool colour) is reached while the well is still open
+            Check(Near(RM_WellKernel.ColourT(WellStage.Waning, life - 1, life), 1f, 1e-5f) && RM_WellKernel.WaningStep(life - 1, life) == 3, "the colour reaches cool-dead before the well closes");
             Check(RM_WellKernel.Radius(1f) == 6f && RM_WellKernel.Radius(0f) == 0.5f, "Radius");
             return null;
         }

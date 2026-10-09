@@ -148,6 +148,10 @@ namespace RimMandrake.TerminalBiomes
 
         // ── TWILIGHT_CHANNEL_CURRENT_1 (§1.6, the owed set) ─────────────
         public static bool channelCurrentEnabled = true;
+        // CHANNEL_CURRENT_CADENCE_FIDELITY_1: steps keep their authored cadence (re-armed from when they were due, not
+        // from the 15-tick processing tick) and a pawn walking onto the current is caught within 15 ticks, not up to
+        // 250. PROVISIONAL (auto-decided 2026-10-09, CHANNEL_CURRENT_CADENCE_FIDELITY_1). Off: the old quantised pace.
+        public static bool channelCurrentExactPace = true;
         public static float channelCurrentStrength = 1f;
         public static RM_SinkOutcome channelSinkOutcome = RM_SinkOutcome.Recoverable;
         public static bool channelFirstEntryWarning = true;
@@ -262,6 +266,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref twilightDeckAccumulationEnabled, "twilightDeckAccumulationEnabled", true);
             Scribe_Values.Look(ref twilightDeckAccumulationRate, "twilightDeckAccumulationRate", 1.0f);
             Scribe_Values.Look(ref channelCurrentEnabled, "channelCurrentEnabled", true);
+            Scribe_Values.Look(ref channelCurrentExactPace, "channelCurrentExactPace", true);
             Scribe_Values.Look(ref channelCurrentStrength, "channelCurrentStrength", 1f);
             Scribe_Values.Look(ref channelSinkOutcome, "channelSinkOutcome", RM_SinkOutcome.Recoverable);
             Scribe_Values.Look(ref channelFirstEntryWarning, "channelFirstEntryWarning", true);
@@ -461,6 +466,10 @@ namespace RimMandrake.TerminalBiomes
             {
                 list.Label("  Current strength: " + channelCurrentStrength.ToString("0.0") + "x");
                 channelCurrentStrength = list.Slider(channelCurrentStrength, 0.25f, 3f);
+                list.CheckboxLabeled("  Exact current pace", ref channelCurrentExactPace,
+                    "On: the current carries at its true speed (items at half a walking pawn's pace in the margin) "
+                  + "and grabs a pawn the moment it wades in. Off: the older, slightly slower stepped pace, and a "
+                  + "pawn can sometimes wade a short way before the current notices it.");
                 list.CheckboxLabeled("  First-entry warning", ref channelFirstEntryWarning,
                     "A one-time message and mood-free alert the first time each colonist steps "
                   + "onto the bed.");

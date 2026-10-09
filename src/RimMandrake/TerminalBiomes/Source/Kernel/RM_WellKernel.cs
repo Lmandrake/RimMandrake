@@ -25,7 +25,10 @@ namespace RimMandrake.TerminalBiomes
         public const int OpeningTicks = TicksPerDay / 2;
         public const int WaningTicks = (int)(TicksPerDay * 1.5f);
         public const float WaningStepFraction = 0.2f;
-        public const int WaningStepTicks = TicksPerDay / 2;
+        // TWILIGHT_WELL_LIGHT_STATE_1: four steps (0..3) spread across the 1.5-day waning window, so a well reaches
+        // its last step (0.4 radius, fully cool-dead colour) before it closes. With half-day steps step 3 fell exactly
+        // at close and was never seen. PROVISIONAL (auto-decided 2026-10-09, TWILIGHT_WELL_LIGHT_STATE_1): equal quarters.
+        public const int WaningStepTicks = WaningTicks / 4;
         public const float BaseRadius = 6f;
 
         public static int TargetWellCount(int mapSizeX) { return Math.Min(6, Math.Max(3, 3 + mapSizeX / 125)); }
@@ -42,7 +45,7 @@ namespace RimMandrake.TerminalBiomes
             return WellStage.Standing;
         }
 
-        // 0..3: how many half-days into the waning window.
+        // 0..3: how many quarters into the waning window.
         public static int WaningStep(int ageTicks, int lifespanTicks)
         {
             int into = WaningTicks - (lifespanTicks - ageTicks);
@@ -50,7 +53,7 @@ namespace RimMandrake.TerminalBiomes
             return s < 0 ? 0 : (s > 3 ? 3 : s);
         }
 
-        // Glow radius factor: ramps up while opening, full while standing, steps down 20% per half-day while waning (never under 0.2).
+        // Glow radius factor: ramps up while opening, full while standing, steps down 20% per waning quarter (never under 0.2).
         public static float GlowFactor(WellStage stage, int ageTicks, int lifespanTicks)
         {
             switch (stage)
@@ -149,11 +152,15 @@ namespace RimMandrake.TerminalBiomes
         // The gardener's pass: close the well nearest its end, else bring the first pending opening forward to now.
         public void GardenerAdvance(int now)
         {
+            // TWILIGHT_WELL_LIGHT_STATE_1: on the frozen cadence wells never age, so the gardener closes nothing; it
+            // may still bring a pending opening forward (pending openings run while frozen too).
+            // PROVISIONAL (auto-decided 2026-10-09, TWILIGHT_WELL_LIGHT_STATE_1).
+            bool frozen = cadence() == 0;
             // No empty-ledger early-out: an all-dark map is exactly when bringing a pending opening forward matters.
             T candidate = null;
             foreach (T w in Wells)
                 if (w.stage == WellStage.Waning && (candidate == null || w.TicksRemaining < candidate.TicksRemaining)) candidate = w;
-            if (candidate != null)
+            if (candidate != null && !frozen)
             {
                 candidate.ageTicks = candidate.lifespanTicks;
                 Age(candidate, 0, now);
@@ -169,6 +176,7 @@ namespace RimMandrake.TerminalBiomes
         // The lid-dark lifting heals wells unevenly: a little extra age each.
         public void LidDarkEnded(int now)
         {
+            if (cadence() == 0) return; // frozen: wells never age (TWILIGHT_WELL_LIGHT_STATE_1)
             foreach (T w in new List<T>(Wells)) Age(w, randBelow(RM_WellKernel.TicksPerDay / 4), now);
         }
     }
