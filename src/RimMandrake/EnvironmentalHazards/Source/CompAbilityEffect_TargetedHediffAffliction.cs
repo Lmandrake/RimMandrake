@@ -32,7 +32,7 @@ namespace RimMandrake.EnvironmentalHazards
 
             CompProperties_AbilityTargetedHediffAffliction p = Props;
 
-            if (!HazardTargeting.Affects(pawn, p.affects, p.immuneThingDefs, p.immunePawnKinds))
+            if (!HazardTargeting.Affects(pawn, p.affects, p.immuneThingDefs, p.immunePawnKinds, p.nativeTag))
             {
                 return;
             }

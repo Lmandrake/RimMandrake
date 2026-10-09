@@ -36,16 +36,13 @@
   gate) — so a roof is the free, always-available answer, and the spec's
   protection table lists it first on purpose.
 
-  🔴 immuneThingDefs are the Scald's own natives. This is the STEAM half of
-  native immunity; the WATER half is a different mechanism entirely
+  🔴 nativeTag Scald is the STEAM half of native immunity (HAZARD_NATIVE_TAG_1): a
+  race carrying RM_HazardNativeExtension with hazardTags Scald is skipped by
+  HazardTargeting.Affects. The WATER half is a different mechanism entirely
   (RM_OrganicScaldNative, the HediffGiverSetDef that drops
   HediffGiver_Terrain, on each race). Both are needed; neither substitutes
-  for the other. Any future Scald native must be added to BOTH — the race
+  for the other. Any future Scald native must carry BOTH, the race
   file's own header carries the water half's version of this rule.
-  ⚠️ The list below names only the two races that existed before
-  2026-09-26; the seven added by SEA_FISHABLES_ALIVE_IN_DEPTHS_1
-  (RM_ScaldFloorFauna.xml) are here too, because a creature made of the
-  boil should not be scalded by its own sky.
 
   MayRequire is load-bearing: the comp class and its properties type both
   live in mandrake.rm.environmentalhazards, and an unresolvable comp class
@@ -130,18 +127,7 @@
         <protectionStat>ArmorRating_Heat</protectionStat>
         <minDriveFactor>0.08</minDriveFactor>
         <affects>Flesh</affects>
-        <immuneThingDefs>
-          <li>RM_Noohm</li>
-          <li>RM_Shulla</li>
-          <li>RM_Eesh</li>
-          <li>RM_Doss</li>
-          <li>RM_Muddal</li>
-          <li>RM_Thuum</li>
-          <li>RM_Karrash</li>
-          <li>RM_Ekkel</li>
-          <li>RM_Bladderboil</li>
-          <li>RM_ScaldWalker</li>
-        </immuneThingDefs>
+        <nativeTag>Scald</nativeTag>
       </li>
     </comps>
   </HediffDef>

@@ -51,18 +51,7 @@
         <carrierHediffSeverity>0.0001</carrierHediffSeverity>
         <damageIntervalTicks>2500</damageIntervalTicks>
         <affects>Flesh</affects>
-        <immuneThingDefs>
-          <li>RM_Noohm</li>
-          <li>RM_Shulla</li>
-          <li>RM_Eesh</li>
-          <li>RM_Doss</li>
-          <li>RM_Muddal</li>
-          <li>RM_Thuum</li>
-          <li>RM_Karrash</li>
-          <li>RM_Ekkel</li>
-          <li>RM_Bladderboil</li>
-          <li>RM_ScaldWalker</li>
-        </immuneThingDefs>
+        <nativeTag>Scald</nativeTag>
       </li>
       <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
         <gateKey>Scald.S7</gateKey>

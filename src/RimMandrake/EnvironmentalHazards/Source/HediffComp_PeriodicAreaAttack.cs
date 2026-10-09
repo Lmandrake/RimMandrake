@@ -214,7 +214,7 @@ namespace RimMandrake.EnvironmentalHazards
         {
             if (t is Pawn pawn)
             {
-                if (!HazardTargeting.Affects(pawn, Props.affects, Props.immuneThingDefs, Props.immunePawnKinds))
+                if (!HazardTargeting.Affects(pawn, Props.affects, Props.immuneThingDefs, Props.immunePawnKinds, Props.nativeTag))
                 {
                     return 0f;
                 }

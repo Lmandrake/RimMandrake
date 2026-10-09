@@ -95,6 +95,9 @@ namespace RimMandrake.EnvironmentalHazards
         /// exactly: every other consumer of this class is unchanged.</summary>
         public List<ThingDef> immuneThingDefs;
 
+        /// <summary>HAZARD_NATIVE_TAG_1: a pawn whose race carries RM_HazardNativeExtension listing this tag is not affected (replaces hand-kept immuneThingDefs lists). Null: no tag gate.</summary>
+        public string nativeTag;
+
         public List<PawnKindDef> immunePawnKinds;
 
         /// <summary>Which pawns the vortex can hit at all. Defaults to

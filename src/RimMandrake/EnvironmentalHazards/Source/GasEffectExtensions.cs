@@ -68,6 +68,9 @@ namespace RimMandrake.EnvironmentalHazards
         // declare its own natives immune without a code change.
         public List<ThingDef> immuneThingDefs;
 
+        /// <summary>HAZARD_NATIVE_TAG_1: a pawn whose race carries RM_HazardNativeExtension listing this tag is not affected (replaces hand-kept immuneThingDefs lists). Null: no tag gate.</summary>
+        public string nativeTag;
+
         // PawnKindDefs this gas cannot touch — the finer-grained escape
         // hatch for "this one creature is immune, its race is not".
         public List<PawnKindDef> immunePawnKinds;
@@ -126,6 +129,9 @@ namespace RimMandrake.EnvironmentalHazards
         // Plant defs this gas leaves alone — always include the replacement
         // defs themselves or the gas will churn them forever.
         public List<ThingDef> immuneThingDefs;
+
+        /// <summary>HAZARD_NATIVE_TAG_1: a pawn whose race carries RM_HazardNativeExtension listing this tag is not affected (replaces hand-kept immuneThingDefs lists). Null: no tag gate.</summary>
+        public string nativeTag;
 
         public override IEnumerable<string> ConfigErrors()
         {

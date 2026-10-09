@@ -61,6 +61,9 @@ namespace RimMandrake.EnvironmentalHazards
 
         public PawnTargetKind affects = PawnTargetKind.Flesh;
         public List<ThingDef> immuneThingDefs;
+
+        /// <summary>HAZARD_NATIVE_TAG_1: a pawn whose race carries RM_HazardNativeExtension listing this tag is not affected (replaces hand-kept immuneThingDefs lists). Null: no tag gate.</summary>
+        public string nativeTag;
         public List<PawnKindDef> immunePawnKinds;
 
         public HediffCompProperties_EnvironmentalExposure()
@@ -121,7 +124,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return 0f;
             }
 
-            if (!HazardTargeting.Affects(pawn, props.affects, props.immuneThingDefs, props.immunePawnKinds))
+            if (!HazardTargeting.Affects(pawn, props.affects, props.immuneThingDefs, props.immunePawnKinds, props.nativeTag))
             {
                 return 0f;
             }

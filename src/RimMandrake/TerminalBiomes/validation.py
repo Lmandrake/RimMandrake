@@ -159,6 +159,48 @@ SEAS = ("RM_TheScald", "RM_GreySea", "RM_TwilightSea", "RM_TheChill")
 CATCH_BODY_ALIAS = {"RM_Saal": "RM_Noohm"}
 
 
+def scald_native_tag_checks(defs_dir=None):
+    """HAZARD_NATIVE_TAG_1: every species on the Scald roster carries RM_HazardNativeExtension with hazardTags Scald,
+    and the three Scald hazards read nativeTag Scald instead of a hand-kept immuneThingDefs list."""
+    defs_dir = defs_dir or os.path.join(HERE, "Defs")
+    bad, roster, tagged, hazards = [], set(), set(), {}
+    for dp, _, fns in os.walk(defs_dir):
+        for fn in fns:
+            if not fn.endswith(".xml"):
+                continue
+            path = os.path.join(dp, fn)
+            root = ET.parse(path).getroot()
+            for d in root:
+                name = d.findtext("defName")
+                if d.tag == "BiomeDef" and name == "RM_TheScald":
+                    wa = d.find("wildAnimals")
+                    roster = {c.tag for c in (wa if wa is not None else [])}
+                if d.tag == "ThingDef":
+                    for li in d.findall("modExtensions/li"):
+                        if li.get("Class", "").endswith("RM_HazardNativeExtension") and any(
+                                (x.text or "").strip() == "Scald" for x in li.findall("hazardTags/li")):
+                            tagged.add(name)
+            text = open(path, encoding="utf-8").read()
+            for hz in ("RUT_ScaldExposure.xml", "RUT_ScaldSteamCarrier.xml", "RM_SteamDevil.xml"):
+                if fn == hz:
+                    hazards[hz] = text
+    if len(roster) < 8:
+        bad.append("sanity probe: only %d Scald roster rows parsed" % len(roster))
+    for n in sorted(roster):
+        if n not in tagged:
+            bad.append("Scald roster species %s lacks RM_HazardNativeExtension hazardTags Scald" % n)
+    for hz in ("RUT_ScaldExposure.xml", "RUT_ScaldSteamCarrier.xml", "RM_SteamDevil.xml"):
+        text = hazards.get(hz)
+        if text is None:
+            bad.append("%s not found" % hz)
+            continue
+        if "<nativeTag>Scald</nativeTag>" not in text:
+            bad.append("%s does not read nativeTag Scald" % hz)
+        if "<immuneThingDefs>" in text:
+            bad.append("%s still carries a hand-kept immuneThingDefs list" % hz)
+    return bad
+
+
 def sea_catch_alive_checks(defs_dir=None):
     """SEA_FISHABLES_ALIVE_IN_DEPTHS_1 (owner 2026-09-26: "All the fishables should also be alive and moving
     around in the depths (this is true for ALL seas)."): every fishTypes row of the four seas names a catch
@@ -579,6 +621,11 @@ if Suite is not None:
         with _comp(t, "every_sea_catch_has_a_living_floor_body", beyond_toggle=True):
             _static(sea_catch_alive_checks())
 
+    @suite.chain("scald_native_tag")
+    def scald_native_tag(t):
+        with _comp(t, "every_scald_species_carries_the_native_tag", beyond_toggle=True):
+            _static(scald_native_tag_checks())
+
     @suite.chain("settings_wiring")
     def settings_wiring(t):
         with _comp(t, "every_field_scribed_exposed_and_compiled", beyond_toggle=True):
@@ -791,7 +838,7 @@ else:
 
 if __name__ == "__main__":
     problems = (static_checks() + roster_checks() + catch_checks() + saal_name_checks() + ekkel_lore_checks()
-                + wax_checks() + settings_checks() + sea_catch_alive_checks())
+                + wax_checks() + settings_checks() + sea_catch_alive_checks() + scald_native_tag_checks())
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)
