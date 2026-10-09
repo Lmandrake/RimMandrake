@@ -8,7 +8,7 @@ Files: RM_ShadeHop.cs, RM_MapComponent_TentacleWatch.cs, RM_HorizonWarning.cs, R
 - RM_MapComponent_TentacleWatch.cs: no findings (one Grant roll = one Thing, so unplaced = rolls - placed.Count is exact).
 - RM_HorizonWarning.cs: fix (landed) — plume defNames/bearings could load as null strings; normalised to "" in PostLoadInit.
 - RM_MapComponent_Aerial.cs: low alloc fix — DrawLocalDrops reuses scratch lists, hoists ExpandedBy; Deregister drops lastTerminals entry.
-- RM_ExcavationWalls.cs: low alloc fix — ScorchHalo/ScorchFloor/SootFace grids and arrays are per-layer scratch.
+- RM_ExcavationWalls.cs: low alloc fix — ScorchHalo arrays and grid are per-layer scratch (ScorchFloor/SootFace allocs left: scorched dug cells only).
 
 ## Status
 Landed: 693927dea (source + DLLs for FlowWorks, GimmeSomeSlack, Stillsand), d003947b1 (six clean records). All six files CLEAN at the landed content.
