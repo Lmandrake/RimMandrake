@@ -362,9 +362,9 @@ UtinniPatches/Patches/RUT_VentKiln_RecipeWiring.xml             # BENCH: held wi
 # => LIFT each when its own sprite lands under UtinniPatches/Textures/ — def
 #    and art deploy together in one --apply, same pattern as the holds above.
 UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml   # art wired f94585748 (2026-09-29): LIFT condition met, lift with a load round
-UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml    # art wired f94585748 (2026-09-29): LIFT condition met, lift with a load round (loot: SALVAGE_WRECKAGE_EVERYWHERE_1)
+# LIFTED 2026-10-09 belt deploy sitting (art present, SALVAGE_WRECKAGE_EVERYWHERE_1 A1): UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundrySalvageCache.xml  # was: art wired f94585748 (2026-09-29): LIFT condition met, lift with a load round (loot: SALVAGE_WRECKAGE_EVERYWHERE_1)
 UtinniPatches/Defs/MapGeneration/RUT_FoundryTowerScatter.xml          # LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_FoundryTowerEntrance.xml (its RM_SetPieceElement_SpawnMarker.markerDef dangled a cross-ref while the entrance deployed without it)
-UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_SalvageCache.xml    # LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_FoundrySalvageCache.xml (its RM_SetPieceElement_SpawnMarker.markerDef dangled a cross-ref while the cache deployed without it)
+# LIFTED 2026-10-09 with the cache: UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor_SalvageCache.xml  # was: LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: held with RUT_FoundrySalvageCache.xml (its RM_SetPieceElement_SpawnMarker.markerDef dangled a cross-ref while the cache deployed without it)
 
 # --- LanternDeeps: donor-free parity build waits for the shutdown window ---
 # CAVERNS_PARITY_BUILD_1 (BENCH, 2026-09-18): the new defs reference GenStep
