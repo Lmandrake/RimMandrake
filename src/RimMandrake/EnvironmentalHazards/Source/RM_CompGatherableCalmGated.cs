@@ -103,7 +103,7 @@ namespace RimMandrake.EnvironmentalHazards
         {
             base.CompTick(); // accrues fullness only while Active — frozen while scared, per §4 "dries up"
 
-            if (Find.TickManager.TicksGame % FearScanIntervalTicks != 0)
+            if ((Find.TickManager.TicksGame + parent.thingIDNumber) % FearScanIntervalTicks != 0) // per-animal offset (EH-7)
             {
                 return;
             }

@@ -15,3 +15,4 @@
 - SS-1 -> STILLSAND_LOOKUP_CACHE_1 filed rc=0
 - SS-2 -> ZUURRIK_OFF_FINISH_SWARM_1 filed rc=0
 - TB-4 -> HAZARD_CLOCK_INSPECT_LINES_1 filed rc=0
+- EH-7, SC-4, SS-1, SS-2 built (Scarlands, EnvironmentalHazards, Stillsand)

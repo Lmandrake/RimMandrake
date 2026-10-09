@@ -168,16 +168,27 @@ namespace RimMandrake.Stillsand
 
     public static class RM_LoudDraws
     {
+        private static List<ThingDef> loudDefs;
+
         /// <summary>The first spawned thing on the map whose def carries RM_LoudDrawExtension, or null.</summary>
         public static Thing First(Map map)
         {
-            List<ThingDef> defs = DefDatabase<ThingDef>.AllDefsListForReading;
+            if (loudDefs == null)
+            {
+                // Resolved once: the def set is fixed after load (belt SS-1).
+                loudDefs = new List<ThingDef>();
+                List<ThingDef> all = DefDatabase<ThingDef>.AllDefsListForReading;
+                for (int i = 0; i < all.Count; i++)
+                {
+                    if (all[i].GetModExtension<RM_LoudDrawExtension>() != null)
+                    {
+                        loudDefs.Add(all[i]);
+                    }
+                }
+            }
+            List<ThingDef> defs = loudDefs;
             for (int i = 0; i < defs.Count; i++)
             {
-                if (defs[i].GetModExtension<RM_LoudDrawExtension>() == null)
-                {
-                    continue;
-                }
                 List<Thing> things = map.listerThings.ThingsOfDef(defs[i]);
                 for (int j = 0; j < things.Count; j++)
                 {

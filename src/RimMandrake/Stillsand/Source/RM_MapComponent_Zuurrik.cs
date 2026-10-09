@@ -81,7 +81,14 @@ namespace RimMandrake.Stillsand
 
         public override void MapComponentTick()
         {
-            if (Find.TickManager.TicksGame % PollIntervalTicks != 0 || !Active)
+            if (Find.TickManager.TicksGame % PollIntervalTicks != 0)
+            {
+                return;
+            }
+            bool active = Active;
+            // Switching the zuurrik off stops NEW wakes but lets an awake swarm still bury itself (SS-2).
+            bool inBiome = map.Biome != null && map.Biome.defName == "RM_Stillsand";
+            if (!active && !(inBiome && swarm.Count > 0))
             {
                 return;
             }
@@ -89,7 +96,10 @@ namespace RimMandrake.Stillsand
             if (swarm.Count == 0)
             {
                 quietPolls = 0;
-                TryWake();
+                if (active)
+                {
+                    TryWake();
+                }
             }
             else
             {

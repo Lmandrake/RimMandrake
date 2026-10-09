@@ -24,7 +24,7 @@ namespace RimMandrake.Stillsand
     // writes) is at or above driftSwimDepth is swim ground too, unless an impassable edifice stands on it.
     public static class RM_DriftSwim
     {
-        private static MethodInfo registryGet;
+        private static Func<Map, bool> registryGet;
         private static bool lookupTried;
 
         public static bool DuneFieldActive(Map map)
@@ -33,9 +33,10 @@ namespace RimMandrake.Stillsand
             {
                 lookupTried = true;
                 Type reg = GenTypes.GetTypeInAnyAssembly("RimMandrake.MovingDunes.DuneFieldRegistry");
-                registryGet = reg?.GetMethod("IsActive", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Map) }, null);
+                MethodInfo mi = reg?.GetMethod("IsActive", BindingFlags.Public | BindingFlags.Static, null, new[] { typeof(Map) }, null);
+                registryGet = mi == null ? null : (Func<Map, bool>)Delegate.CreateDelegate(typeof(Func<Map, bool>), mi);
             }
-            return registryGet != null && (bool)registryGet.Invoke(null, new object[] { map });
+            return registryGet != null && registryGet(map);
         }
 
         public static bool IsDriftSwimCell(IntVec3 c, Map map)
