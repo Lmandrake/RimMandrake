@@ -158,11 +158,12 @@ Against `wookieepedia_g0t0_infobox.jpg`:
   "IT-series **utility** droid" — a different model.
 
 ## Must show
-- [ ] Black spherical body, not grey
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the infobox render and the sourced text ("spherical, black droids"), as described in the visual brief.*
+- [ ] CHASSIS: a small floating sphere, with a fine ribbed equatorial band dividing an upper dome from a lower hemisphere; no limbs
 - [ ] Single red photoreceptor lens in a recessed circular dish, dead centre
-- [ ] Thin hooked whip antenna
-- [ ] Boxy sensor/emitter pod on a stalk near the top
-- [ ] Fine ribbed equatorial band dividing an upper dome from a lower hemisphere
+- [ ] Thin hooked whip antenna, and a boxy sensor/emitter pod on a stalk near the top
+- [ ] FINISH / COLOUR LAYOUT: black spherical body, not grey; the red lens the one bright colour
+- [ ] NEGATIVE: not a grey ball (judge the sprite tinted, the raw PNG is grey); not the IT-O interrogation droid (whose design copied G0-T0); not a legged or wheeled droid
 
 ## Engine limits
 none known

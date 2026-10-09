@@ -151,13 +151,14 @@ this repo** — they live in the deployed mod folder under
 canon against the sprite the player sees.
 
 ## Must show
-- [ ] Female: bone-white to pale pearl-grey skin, hornless (hair optional — Merrin has ash-grey hair)
-- [ ] Male: orange, golden-yellow, or (rarely) deep red skin, with black striping and a ring of short conical pale bone-tan horns encircling the crown (not two forward-facing devil horns)
-- [ ] Male natural striping runs across the face, scalp, chest, shoulders and arms, not just the face
-- [ ] Female markings read as soft, smudged grey/dark tattoo shading in contrast to pale skin, not bold ink line-work (though bolder-marked females are also attested)
-- [ ] Nightsister red is cloth — strips of red/rust fabric wound over chalk-white to bone-grey skin, never a skin pigment
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the sourced text (b)/(c), the live-action Maul and Great Mothers images and the Nightbrother archer, as described in the visual brief.*
+- [ ] BODY PLAN: ordinary near-human humanoid build and proportions; males bald with a RING of short conical horns encircling the crown from high on the brow round the sides to behind the ears (not two forward-facing devil horns); females hornless, hair optional (Merrin has short ash-grey hair)
+- [ ] COLOUR LAYOUT (male): orange, golden-yellow or (rarely) deep red skin, with dark/black natural striping running over the face, scalp, chest, shoulders and arms (not just the face); horns pale bone/ivory-tan with darker bases
+- [ ] COLOUR LAYOUT (female): bone-white to pale pearl-grey skin with soft, smudged grey/dark tattoo shading around the eyes, forehead and mouth, read in contrast to the pale skin, not bold ink line-work (though bolder-marked females are also attested)
+- [ ] Nightsister red is cloth: strips of red/rust fabric, hoods and robes wound over chalk-white to bone-grey skin, never a skin pigment
 - [ ] Horns present only on males; females are hornless
-- [ ] Realistic rendering: real skin texture under the pigment and tattoos, natural lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: real skin texture under the pigment and tattoos, natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human with a tint (a male must show the horn ring and body striping; a female must show the pale skin and soft tattoos); not a red-skinned woman (red on a female is cloth); not Mother Talzin (no elongated skull, no ornament horns, no green-grey pallor)
 
 ## Engine limits
 none known — no species-specific shader or mask constraint is recorded for this head in the entry or brief (no `donor_current_sprite.png` exists in-repo to check against).

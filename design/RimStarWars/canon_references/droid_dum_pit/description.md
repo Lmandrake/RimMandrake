@@ -137,13 +137,14 @@ balanced on two sticks**, with two hairlines above it.
   nothing in this repo depicts the droid-pyramid behaviour.
 
 ## Must show
-- [ ] Wide flared cone-shaped head, much wider than the body beneath it
-- [ ] One large black photoreceptor centred under the brim
-- [ ] Two long thin whip antennae rising from the crown
-- [ ] Rust-brown/copper weathered plating tint
-- [ ] Long thin arms hanging clear of the body, ending in three-fingered claws
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the photoreal *Phantom Menace*-model pair render and the visual-dictionary stack photo, as described in the visual brief.*
+- [ ] CHASSIS: a spindly skeletal biped about a metre tall, whose head is a wide flat flared cone (a conical hat or arrowhead) much wider than the body beneath it; a small boxy chest, narrow segmented waist; almost no mass anywhere except the head
+- [ ] One large black photoreceptor under the front of the brim (on a short stalk neck), and two long thin whip antennae rising from the crown
+- [ ] Long thin arms hanging clear of the body, ending in three-fingered claws that hang past the hips
 - [ ] Long legs with prominent ball knee-joints and broad flat splayed feet
-- [ ] Realistic rendering: chipped, weathered painted metal worn to bare steel at edges, real lighting, no outlines, no cartoon shading
+- [ ] FINISH / COLOUR LAYOUT: rust-brown/copper (brick/oxide-red) weathered plating tint over head and body, scuffed to bare metal at edges (colour schemes vary per unit, e.g. cream with brown-orange panels); the black eye the one high-contrast feature
+- [ ] Realistic rendering: chipped, weathered painted metal worn to bare steel at edges, real lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a mushroom (a cone on a stump with no arms or legs showing); not chunky rounded animated blocks; not a cute round dome with the eye fused into it
 
 ## Engine limits
 none known

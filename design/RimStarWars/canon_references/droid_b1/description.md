@@ -139,11 +139,11 @@ grey" and with the reference photograph.
   reskin-scale work on an existing correct silhouette.
 
 ## Must show
-- [ ] Long narrow head projecting forward past the shoulders
-- [ ] Narrow shoulders with thin arms held close to the body
-- [ ] Tan/bone-khaki base plating
-- [ ] Hunched, forward-leaning stance with the head tilted down
-- [ ] Security markings dark red, command markings yellow, on shoulder and chest
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the infobox side render and the five-stage unfold image, as described in the visual brief, and the sourced marking convention.*
+- [ ] CHASSIS: a tall, thin, spindly humanoid droid: narrow shoulders barely wider than its own head, thin arms held close to the body, a thin box torso and visibly thin waist, height carried in the legs; exposed hinge joints at knees and elbows
+- [ ] Long narrow animal-skull-like head on a thin neck, projecting forward past the shoulders and tilted down, in a hunched, forward-leaning stance
+- [ ] FINISH / COLOUR LAYOUT: tan/bone-khaki base plating over the whole body; any rank markings sit on the shoulders and chest: security markings dark red, command markings yellow
+- [ ] NEGATIVE: not a B2 super battle droid (no head sunk into a huge armoured shoulder yoke, no arms as thick as a torso); not an upright human-postured robot with a round head
 
 ## Engine limits
 none known

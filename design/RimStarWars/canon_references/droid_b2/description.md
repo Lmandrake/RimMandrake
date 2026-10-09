@@ -110,11 +110,12 @@ red sensor/chest light. Palette matches canon "dull silver".
   sentry variants, nor for the cortosis C-B3.
 
 ## Must show
-- [ ] Grey ("dull silver") plating overall
-- [ ] Enormous armoured shoulder pauldrons wider than the torso
-- [ ] No head visible as a separate shape — head sunk directly into the shoulder yoke with no neck
-- [ ] Thick arms, forearm diameter comparable to a B1's whole torso
-- [ ] Red sensor dot on the shoulder
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the infobox front render and the sourced text, as described in the visual brief.*
+- [ ] CHASSIS: an upright biped as tall as a B1, with a boxer's upper body: enormous armoured shoulder pauldrons (shoulders roughly twice the torso width), a single broad armoured chest carapace over a dark exposed ribbed midsection, exposed piston/joint rings at the hips, and long comparatively slim legs
+- [ ] No head visible as a separate shape: a small smooth dome sunk directly into the shoulder yoke with no neck
+- [ ] Thick arms, forearm diameter comparable to a B1's whole torso, with a wrist blaster on the forearm
+- [ ] FINISH / COLOUR LAYOUT: grey ("dull silver") plating overall, darker at the exposed ribbed midsection; a red sensor dot on the shoulder, the one spot of colour
+- [ ] NEGATIVE: not a B1 (no long head protruding past the shoulders, no narrow frame); not a short stubby dwarf (the squat look comes from shoulder mass and the absent neck, not from height)
 
 ## Engine limits
 none known

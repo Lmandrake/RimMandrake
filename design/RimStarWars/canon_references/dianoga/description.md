@@ -53,10 +53,12 @@ thin tentacles beneath a small eyestalk, in deep purple/maroon tones, with a
 visible toothed central mouth.
 
 ## Must show
-- [ ] Single dark reddish eyestalk (a small stalked eye) atop a bulbous head/body mass
-- [ ] Large circular mouth ringed with sharp teeth at the center where limbs converge
-- [ ] Several long, thin, tapering tentacles radiating/hanging downward — not four legs and a tail
-- [ ] Deep maroon/purple-brown base coloring with a wrinkled, ridged skin texture
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Battlefront infobox render and Sullust refinery still as described in the visual brief, the sourced text, and the `## ruling` below (owner ruling 2026-09-14: "Mixture of #2 dominant with some hints of #1 is needed on how to Rimworld-ify it.").*
+- [ ] BODY PLAN: a hanging cephalopod: a bulbous head/body mass with several long, thin, tapering suckered tentacles (seven in the sourced text) radiating/hanging downward from where they converge; no legs, no tail
+- [ ] A single small stalked eye on a thin eyestalk rising from atop the body mass
+- [ ] A large circular mouth ringed with sharp teeth at the center where the tentacles converge
+- [ ] COLOUR LAYOUT: deep maroon/purple-brown base coloring over body and tentacles, with a wrinkled, ridged skin texture; the eye dark reddish (purple is the colour association, confirmed by the owner 2026-09-23)
+- [ ] NEGATIVE: not a four-legged, tailed creature with an eyestalk (the current donor); not an octopus with a beaked face and paired eyes; not a giant red barbed-tentacle dianoga (that form is Legends and vanishingly rare)
 
 ## Engine limits
 none known

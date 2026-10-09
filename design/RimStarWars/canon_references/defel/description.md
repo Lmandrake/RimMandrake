@@ -177,15 +177,13 @@ tufted erect ears, the visor — is **unrepresented**. It is not weak evidence a
 appearance so much as evidence that the appearance has not been attempted.
 
 ## Must show
-Honest framing: the species' whole art inventory on disk is four tiny fangs, so this
-checklist is testable only against the reference images, not against any existing sprite.
-- [ ] Wraith state: a featureless near-black void with no visible fur strands, muscle or shading — light does not roll off it
-- [ ] Wraith state: two glowing red (or orange-red) eyes and a mouth of bared, sharp, pale fangs are the only clearly resolved features
-- [ ] Seen-properly state: coarse shaggy grey-brown to brown fur, long and lank around the face, with a bare fleshy wrinkled snout and crooked fangs
-- [ ] Two tall, pointed, erect ears tufted at the tips — present in every reference image in both states
-- [ ] Long arms reaching to or below the knee, ending in large hooked, cream/bone-coloured claws
-- [ ] Stooped, hunched, forward-leaning posture with the head carried low, never upright and human
-- [ ] Realistic rendering: real coarse fur and wet fleshy snout texture under natural light, no outlines, no cartoon or ink shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon text, the Arleil Schous infobox still, the Schous mask photograph and the Galaxy Guide / UAA anatomy, as described in the visual brief. Honest framing: the species' whole art inventory on disk is four tiny fangs, so this checklist is testable only against the reference images, not against any existing sprite.*
+- [ ] BODY PLAN: a lean, gaunt biped in a stooped, hunched, forward-leaning posture with the head carried low, never upright and human; long arms reaching to or below the knee; a broad shaggy canine/bat head topped by two tall, pointed, erect ears tufted at the tips (present in every reference image in both states)
+- [ ] COLOUR LAYOUT (wraith state): a featureless near-black void with no visible fur strands, muscle or shading (light does not roll off it), at most a faint warm rim-light along one edge; the only clearly resolved features are two glowing red eyes and a mouth of bared, sharp, pale fangs
+- [ ] COLOUR LAYOUT (seen-properly state): coarse shaggy grey-brown to brown fur over the whole body, long and lank around the face and hanging below the jaw; a bare fleshy wrinkled pinkish-brown snout with crooked fangs; small red eyes sunk in the fur
+- [ ] Large hooked, cream/bone-coloured claws on hands and feet, disproportionately long
+- [ ] Realistic rendering: real coarse fur and wet fleshy snout texture under natural light, no outlines, no cartoon or ink shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not "dark grey fur" or black fur with visible strands in the wraith state (the interior has no detail); not an upright human-postured humanoid with a dog nose and pointed ears; not a stocky, wide-bodied figure; not a teal/blue-black tint
 
 ## Engine limits
 none known — the entry records that no head, body, fur, ear, or claw art exists in the repo

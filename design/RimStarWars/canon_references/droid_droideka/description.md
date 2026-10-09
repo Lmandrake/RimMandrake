@@ -148,12 +148,14 @@ tread surface. Nothing about the deployed sprite can be reused for the ball.
   deployed sprite.
 
 ## Must show
-- [ ] Deployed (upright) form only — arched dorsal shell, spherical lower body, three splayed clawed legs
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the infobox deployed render, the *Phantom Menace* film still and (for the variant only) the Sharpshooter render, as described in the visual brief.*
+- [ ] CHASSIS: deployed (upright) form only: a tall vertical droid with a big smooth arched dorsal shell arcing forward over a small head, a segmented spine, a spherical lower body/belly, and three long, thin, splayed legs with hooked claw feet; height sits in the legs and shell, not a torso
+- [ ] Two thin double-jointed arms held out to the sides, each ending in paired cannon barrels
 - [ ] Three red photoreceptors on the head/stalk assembly
-- [ ] Two arm-mounted cannons held out to the sides
-- [ ] Dark grimy gunmetal limbs and spine with an oxblood-bronze belly sphere and maroon-edged plates, not white/light grey
+- [ ] FINISH / COLOUR LAYOUT: dark grimy gunmetal/blackened-steel limbs and spine, with an oxblood-bronze belly sphere and maroon-edged hip and shoulder plates (the bronze is only in the belly ball and plate edges); not white/light grey
 - [ ] Sharpshooter variant: flat crescent back-shield, two large red photoreceptors on a horizontal bar, single long sniper barrel, pale green-grey body with yellow trim
-- [ ] Realistic rendering: grimy weathered metal with real specular and film lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: grimy weathered metal with real specular and film lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not the white/light-grey OuterRim palette; not orange-brown comic shells; not a two-legged or humanoid droid; not mistaken for the rolled ball form (a featureless wheel, separate art)
 
 ## Engine limits
 none known
