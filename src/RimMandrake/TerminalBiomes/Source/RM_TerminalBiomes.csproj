@@ -100,6 +100,7 @@
     <Compile Include="RM_GreyHullCrust.cs" />
     <!-- GREYSEA_LAMP_RESPONSE_BUILD_1 -->
     <Compile Include="RM_GreyLampResponse.cs" />
+    <Compile Include="RM_HazardClockInspect.cs" />
     <!-- Verse-free kernels (also compiled by SelfTest/RimMandrakeTerminalBiomes.SelfTest.csproj). -->
     <Compile Include="Kernel\RM_WellKernel.cs" />
     <Compile Include="Kernel\RM_SunSphereKernel.cs" />

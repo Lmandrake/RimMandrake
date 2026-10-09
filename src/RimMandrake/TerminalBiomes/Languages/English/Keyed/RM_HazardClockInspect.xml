@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RM_HazardClockInspect.xml  TerminalBiomes · HAZARD_CLOCK_INSPECT_LINES_1 (RM_HazardClockInspect.cs) -->
+<LanguageData>
+  <RM_HazardClockLamp>Burning steadily for {0}</RM_HazardClockLamp>
+  <RM_HazardClockWellOpening>The well is opening</RM_HazardClockWellOpening>
+  <RM_HazardClockWellStanding>The well stands; about {0} left</RM_HazardClockWellStanding>
+  <RM_HazardClockWellWaning>The well is waning; about {0} left</RM_HazardClockWellWaning>
+  <RM_HazardClockCrust>Crust still on the deck: {0} cell(s)</RM_HazardClockCrust>
+</LanguageData>

@@ -103,6 +103,27 @@ namespace RimMandrake.TerminalBiomes
             return map?.GetComponent<RM_MapComponent_WellLedger>();
         }
 
+        /// <summary>HAZARD_CLOCK_INSPECT_LINES_1: the stage and time left of the well a skylight thing belongs to.</summary>
+        public bool TryGetWellOf(Thing skylight, out WellStage stage, out int ticksRemaining)
+        {
+            stage = WellStage.Closed;
+            ticksRemaining = 0;
+            if (skylight == null)
+            {
+                return false;
+            }
+            foreach (WellRecord w in wells)
+            {
+                if (w.skylightThing == skylight)
+                {
+                    stage = w.stage;
+                    ticksRemaining = w.TicksRemaining;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool IsActiveHere()
         {
             return RM_TerminalBiomesSettings.TwilightWellDriftActive
