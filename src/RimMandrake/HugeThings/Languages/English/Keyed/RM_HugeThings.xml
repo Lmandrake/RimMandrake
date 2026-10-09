@@ -22,6 +22,8 @@
   <RM_HugeThings_PawnHitboxScale>  Hitbox size: {0}x</RM_HugeThings_PawnHitboxScale>
   <RM_HugeThings_LargePawnsFootprint>Multi-cell footprint from Large Pawns (restart)</RM_HugeThings_LargePawnsFootprint>
   <RM_HugeThings_LargePawnsFootprint_Desc>When Large Pawns is loaded, its size ladder is set to the tiers below so a titan occupies 2x2, 3x3 or 4x4 cells. Off: Large Pawns keeps its own settings. Without Large Pawns every titan is one cell either way.</RM_HugeThings_LargePawnsFootprint_Desc>
+  <RM_HugeThings_LargePawnsClearingOff>  Turn off Large Pawns' own wall-breaking (restart)</RM_HugeThings_LargePawnsClearingOff>
+  <RM_HugeThings_LargePawnsClearingOff_Desc>Large Pawns lets a big manhunter, berserker or fighting pawn take a job to break walls in its path. With this on, those three switches are turned off so only this mod's curated crush table decides what a titan destroys. Off: Large Pawns keeps its own setting.</RM_HugeThings_LargePawnsClearingOff_Desc>
   <RM_HugeThings_TierCustom>Custom size tiers (restart)</RM_HugeThings_TierCustom>
   <RM_HugeThings_TierCustom_Desc>A creature is a titan by its body size: T1 heavy, T2 colossal, T3 titanic. Off: the shipped tiers (4 / 8 / 20). Which races carry the wake is decided at startup, so a race newly crossing T1 needs a restart.</RM_HugeThings_TierCustom_Desc>
   <RM_HugeThings_TierT1>  T1 from body size {0}</RM_HugeThings_TierT1>

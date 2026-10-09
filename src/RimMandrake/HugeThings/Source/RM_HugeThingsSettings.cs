@@ -26,6 +26,8 @@ namespace RimMandrake.HugeThings
         public static bool pawnHitboxEnabled = true;
         public static float pawnHitboxScale = 1f;
         public static bool largePawnsFootprintEnabled = true;
+        // LARGEPAWNS_BRIDGE_HARDENING_1 (B3.15, owed by TITANIC_CREATURES_MOD_1 card #3): Large Pawns' own wall-break off.
+        public static bool largePawnsClearingOff = true;
         public static bool tierThresholdsCustom = false;
         public static float tierT1MinBodySize = 4f;
         public static float tierT2MinBodySize = 8f;
@@ -75,6 +77,7 @@ namespace RimMandrake.HugeThings
             Scribe_Values.Look(ref pawnHitboxEnabled, "pawnHitboxEnabled", true);
             Scribe_Values.Look(ref pawnHitboxScale, "pawnHitboxScale", 1f);
             Scribe_Values.Look(ref largePawnsFootprintEnabled, "largePawnsFootprintEnabled", true);
+            Scribe_Values.Look(ref largePawnsClearingOff, "largePawnsClearingOff", true);
             Scribe_Values.Look(ref tierThresholdsCustom, "tierThresholdsCustom", false);
             Scribe_Values.Look(ref tierT1MinBodySize, "tierT1MinBodySize", 4f);
             Scribe_Values.Look(ref tierT2MinBodySize, "tierT2MinBodySize", 8f);
@@ -173,6 +176,8 @@ namespace RimMandrake.HugeThings
                     pawnHitboxScale = list.Slider(pawnHitboxScale, 0.5f, MaxTrunkScale);
                 }
                 list.CheckboxLabeled("RM_HugeThings_LargePawnsFootprint".Translate(), ref largePawnsFootprintEnabled, "RM_HugeThings_LargePawnsFootprint_Desc".Translate());
+                if (largePawnsFootprintEnabled)
+                    list.CheckboxLabeled("RM_HugeThings_LargePawnsClearingOff".Translate(), ref largePawnsClearingOff, "RM_HugeThings_LargePawnsClearingOff_Desc".Translate());
                 list.CheckboxLabeled("RM_HugeThings_TierCustom".Translate(), ref tierThresholdsCustom, "RM_HugeThings_TierCustom_Desc".Translate());
                 if (tierThresholdsCustom)
                 {
