@@ -30,16 +30,15 @@ namespace RimMandrake.Webwork
 	/// small chance of SPAWNING an emergent Shokk to get you." Attach via
 	/// RM_CompProperties_EmergentSpawnOnDestroy to any Thing whose
 	/// destruction represents a harvest (a creep-web node, a gutter, …) —
-	/// on a DestroyMode.Vanish (the harvest case; never fires on Kill/Refund/
-	/// etc.) it rolls the configured chance and spawns a hostile ollathrix
+	/// on a DestroyMode.Vanish or Deconstruct (the harvest cases; never fires
+	/// on Kill/Refund/etc.) it rolls the configured chance and spawns a hostile ollathrix
 	/// (or whatever PawnKindDef the attaching def names) at the spot,
 	/// manhunter-forced.
 	///
-	/// Not wired to any recipe by this mod: the creep-web harvest that will
-	/// attach this comp belongs to SHOKKWEAVE_SOLE_SOURCE_1 (unbuilt as of
-	/// this move) — see that item's own note on why the two harvest nodes
-	/// shipped so far (RM_Webwork_Anchor/_Web/_Gutter, combat-destroyed via
-	/// DestroyMode.KillFinalize) cannot use this comp as-is.
+	/// Attached to the creep-web nodes RM_Webwork_Anchor/_Web/_Gutter
+	/// (SHOKKWEAVE_SOLE_SOURCE_1): a colonist cutting one with the vanilla
+	/// Deconstruct job destroys it with DestroyMode.Deconstruct, which counts
+	/// as a harvest here; combat destruction (KillFinalize) never fires it.
 	/// </summary>
 	public class RM_CompEmergentSpawnOnDestroy : ThingComp
 	{
@@ -48,7 +47,7 @@ namespace RimMandrake.Webwork
 		public override void PostDestroy(DestroyMode mode, Map previousMap)
 		{
 			base.PostDestroy(mode, previousMap);
-			if (!RM_EmergentKernel.Fires(RM_WebworkSettings.emergentSpawnEnabled, previousMap != null, mode == DestroyMode.Vanish,
+			if (!RM_EmergentKernel.Fires(RM_WebworkSettings.emergentSpawnEnabled, previousMap != null, mode == DestroyMode.Vanish || mode == DestroyMode.Deconstruct,
 				Props.spawnChance, RM_WebworkSettings.emergentSpawnChanceMultiplier, Rand.Value))
 			{
 				return;

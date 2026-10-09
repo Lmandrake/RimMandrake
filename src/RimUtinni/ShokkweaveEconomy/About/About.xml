@@ -25,8 +25,9 @@
 
   Out of scope here (see the item and spec): live trader-generation proof and
   the quest-reward roll pass (both need a quicktest map). The border creep-web
-  structures (RM_Webwork_Anchor/_Web/_Gutter) and their small killedLeavings yield
-  moved into mandrake.rm.webwork (WEBWORK_BASE_PORT_BUILD_1).
+  structures (RM_Webwork_Anchor/_Web/_Gutter), their small killedLeavings yield and
+  the colonist cut (Deconstruct for silk, with the emergent-ollathrix chance) live in
+  mandrake.rm.webwork (WEBWORK_BASE_PORT_BUILD_1, SHOKKWEAVE_SOLE_SOURCE_1).
 
   WEBWORK_EGG_BLACKMARKET_BUILD_1: the Hutt Cartel egg black market.
   RUT_Caravan_HuttCartel_EggMarket (a rare Cartel caravan variant, appended to

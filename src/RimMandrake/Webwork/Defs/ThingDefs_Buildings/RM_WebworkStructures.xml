@@ -11,11 +11,14 @@
   adhesive (Flickable + RM_CompProperties_AdhesiveSlick -> RM_Webwork_Slick).
 
   Placement is RM_MapComponent_FrontCreep's job (RM_FrontCreepExtension on the
-  RM_Webwork BiomeDef). Destroying a node yields thrixweave (Hyperweave, renamed
-  in Patches/RM_Thrixweave_Rename.xml): web-cutting is one of the sole-source
-  routes. The emergent-spawn half (RM_CompProperties_EmergentSpawnOnDestroy) is
-  not attached: it fires only on DestroyMode.Vanish, and combat destruction
-  never produces that; a dedicated harvest job is still owed.
+  RM_Webwork BiomeDef). Breaking a node by force yields thrixweave (Hyperweave,
+  renamed in Patches/RM_Thrixweave_Rename.xml) through killedLeavings.
+  SHOKKWEAVE_SOLE_SOURCE_1, the border creep-web harvest: the anchor line and
+  sheet web are alwaysDeconstructible (claimable false, so the route is the
+  setting's alone), a colonist cuts them with the vanilla Deconstruct job, and
+  RM_CompHarvestYield drops the same silk on DestroyMode.Deconstruct. All three
+  carry RM_CompProperties_EmergentSpawnOnDestroy (base 3%), which counts a
+  Deconstruct as a harvest and never fires on a combat kill.
 
   Art: placeholder flat-fills (art/Structures/gen_webwork_structures_placeholder.py);
   real art is queued in artpipe. HP/fillPercent/pathCost/yields are invented
@@ -52,15 +55,26 @@
     <tickerType>Never</tickerType>
     <statBases>
       <MaxHitPoints>40</MaxHitPoints>
+      <!-- SHOKKWEAVE_SOLE_SOURCE_1: the Deconstruct (cut) work. Invented first value. -->
+      <WorkToBuild>300</WorkToBuild>
       <Flammability>1.4</Flammability>
     </statBases>
     <killedLeavings>
       <Hyperweave>3</Hyperweave>
     </killedLeavings>
+    <building>
+      <claimable>false</claimable>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+    </building>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_ChewableExtension" />
     </modExtensions>
     <comps>
+      <li Class="RimMandrake.Webwork.RM_CompProperties_HarvestYield">
+        <yield>Hyperweave</yield>
+        <count>3</count>
+      </li>
+      <li Class="RimMandrake.Webwork.RM_CompProperties_EmergentSpawnOnDestroy" />
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
     </comps>
   </ThingDef>
@@ -86,12 +100,23 @@
     <tickerType>Normal</tickerType> <!-- RM_CompAdhesiveSlick ticks on CompTick, self-throttled -->
     <statBases>
       <MaxHitPoints>30</MaxHitPoints>
+      <!-- SHOKKWEAVE_SOLE_SOURCE_1: the Deconstruct (cut) work. Invented first value. -->
+      <WorkToBuild>200</WorkToBuild>
       <Flammability>1.6</Flammability>
     </statBases>
     <killedLeavings>
       <Hyperweave>2</Hyperweave>
     </killedLeavings>
+    <building>
+      <claimable>false</claimable>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+    </building>
     <comps>
+      <li Class="RimMandrake.Webwork.RM_CompProperties_HarvestYield">
+        <yield>Hyperweave</yield>
+        <count>2</count>
+      </li>
+      <li Class="RimMandrake.Webwork.RM_CompProperties_EmergentSpawnOnDestroy" />
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
       <!-- WEBWORK_WEB_STRUCTURES_1 — the deferred "commandable adhesive
            slick/locked" mechanism (kit spec §3), v1: this sheet web is the
@@ -148,6 +173,8 @@
         <specimen>RM_GutterJunction</specimen>
         <tripSenseWeb>true</tripSenseWeb>
       </li>
+      <!-- SHOKKWEAVE_SOLE_SOURCE_1: cutting a gutter out is a harvest too, with the same teeth. -->
+      <li Class="RimMandrake.Webwork.RM_CompProperties_EmergentSpawnOnDestroy" />
     </comps>
   </ThingDef>
 

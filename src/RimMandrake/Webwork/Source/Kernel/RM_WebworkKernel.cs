@@ -226,7 +226,7 @@ namespace RimMandrake.Webwork
     /// <summary>The emergent ollathrix spawn gate and the startup scaling the Webwork applies to defs.</summary>
     public static class RM_EmergentKernel
     {
-        /// <summary>Fires only on a Vanish destruction on a real map, with the setting on and the (multiplied) chance rolled.</summary>
+        /// <summary>Fires only on a harvest destruction (Vanish or Deconstruct; the caller decides) on a real map, with the setting on and the (multiplied) chance rolled.</summary>
         public static bool Fires(bool enabled, bool hadMap, bool isVanish, float baseChance, float multiplier, float u)
         {
             if (!enabled) return false;

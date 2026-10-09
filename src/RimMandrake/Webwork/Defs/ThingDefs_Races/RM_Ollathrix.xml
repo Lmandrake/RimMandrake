@@ -48,8 +48,8 @@
   The emergent-spawn comp (RM_CompEmergentSpawnOnDestroy, re-tokened from
   RSW_CompEmergentSpawnOnDestroy, now in this mod's own assembly) is a
   general-purpose ThingComp for harvest-type Things, not attached to the
-  race itself — it stays unwired pending SHOKKWEAVE_SOLE_SOURCE_1's own
-  creep-web harvest job, unchanged by this move.
+  race itself: the creep-web nodes in RM_WebworkStructures.xml carry it
+  (SHOKKWEAVE_SOLE_SOURCE_1's colonist cut, vanilla Deconstruct).
 
   Deliberately NOT built here (owned by other items, per the design doc's
   own §1a/§5 table — do not duplicate):

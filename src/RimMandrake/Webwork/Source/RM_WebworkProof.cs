@@ -148,5 +148,99 @@ namespace RimMandrake.Webwork
                 RM_WebworkSettings.emergentSpawnChanceMultiplier = wasMult;
             }
         }
+        /// <summary>SHOKKWEAVE_SOLE_SOURCE_1. "enabled|defName|mult": with webHarvestEnabled = enabled (applied to the defs
+        /// as at startup) and emergentSpawnChanceMultiplier = mult, spawns defName (RM_Webwork_Anchor by default) on the
+        /// current map, asks the vanilla Deconstruct designator and, once designated, WorkGiver_Deconstruct for a free
+        /// colonist, then destroys it with DestroyMode.Deconstruct (what JobDriver_Deconstruct does on completion).
+        /// "HARVEST designatable B | workgiver B | yield N | weaveNear A->B | spawned N".</summary>
+        public static string ProofHarvest(string args)
+        {
+            Map map = Map;
+            if (map == null) return "REFUSED: no current map";
+            string[] a = (args ?? "").Split('|');
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+            bool enabled = !(a.Length > 0 && a[0].Trim().ToLowerInvariant() == "false");
+            string defName = a.Length > 1 && a[1].Trim().Length > 0 ? a[1].Trim() : "RM_Webwork_Anchor";
+            float mult = a.Length > 2 && float.TryParse(a[2], System.Globalization.NumberStyles.Float, inv, out float mm) ? mm : 0f;
+            ThingDef node = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
+            ThingDef weave = DefDatabase<ThingDef>.GetNamedSilentFail("Hyperweave");
+            if (node == null || weave == null) return "REFUSED: def missing (" + defName + " / Hyperweave)";
+            if (!CellFinder.TryFindRandomCellNear(map.Center, map, 30, x => x.Standable(map) && x.GetFirstBuilding(map) == null
+                    && GenRadial.RadialCellsAround(x, 3f, true).All(c => c.InBounds(map) && c.GetFirstItem(map) == null), out IntVec3 cell))
+                return "REFUSED: no cell";
+            bool wasOn = RM_WebworkSettings.webHarvestEnabled;
+            float wasMult = RM_WebworkSettings.emergentSpawnChanceMultiplier;
+            bool wasSpawn = RM_WebworkSettings.emergentSpawnEnabled;
+            Thing t = null;
+            try
+            {
+                RM_WebworkSettings.webHarvestEnabled = enabled;
+                RM_WebworkStartupGate.ApplyWebHarvest();
+                RM_WebworkSettings.emergentSpawnEnabled = true;
+                RM_WebworkSettings.emergentSpawnChanceMultiplier = mult;
+                foreach (Pawn p in map.mapPawns.AllPawnsSpawned.Where(p => p.def.defName == "RM_Ollathrix").ToList()) p.Destroy();
+                t = GenSpawn.Spawn(ThingMaker.MakeThing(node), cell, map);
+                bool designatable = new Designator_Deconstruct().CanDesignateThing(t).Accepted;
+                bool workgiver = false;
+                if (designatable)
+                {
+                    map.designationManager.AddDesignation(new Designation(t, DesignationDefOf.Deconstruct));
+                    Pawn colonist = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+                    workgiver = colonist != null && new WorkGiver_Deconstruct().HasJobOnThing(colonist, t, forced: true);
+                }
+                int before = WeaveNear(map, weave, cell);
+                t.Destroy(DestroyMode.Deconstruct);
+                int after = WeaveNear(map, weave, cell);
+                int spawned = map.mapPawns.AllPawnsSpawned.Count(p => p.def.defName == "RM_Ollathrix");
+                foreach (Pawn p in map.mapPawns.AllPawnsSpawned.Where(p => p.def.defName == "RM_Ollathrix").ToList()) p.Destroy();
+                foreach (Thing w in map.listerThings.ThingsOfDef(weave).Where(w => (w.Position - cell).LengthHorizontal <= 3f).ToList()) w.Destroy();
+                return "HARVEST designatable " + designatable + " | workgiver " + workgiver + " | yield " + RM_CompHarvestYield.lastYieldSpawned
+                    + " | weaveNear " + before + "->" + after + " | spawned " + spawned;
+            }
+            finally
+            {
+                if (t != null && t.Spawned) t.Destroy();
+                RM_WebworkSettings.webHarvestEnabled = wasOn;
+                RM_WebworkStartupGate.ApplyWebHarvest();
+                RM_WebworkSettings.emergentSpawnChanceMultiplier = wasMult;
+                RM_WebworkSettings.emergentSpawnEnabled = wasSpawn;
+            }
+        }
+
+        private static int WeaveNear(Map map, ThingDef weave, IntVec3 at) =>
+            map.listerThings.ThingsOfDef(weave).Where(w => (w.Position - at).LengthHorizontal <= 3f).Sum(w => w.stackCount);
+
+        /// <summary>The real colonist route, for a ticked test: "defName" spawns the node two cells from the first free
+        /// colonist and designates it for Deconstruct. Step ticks, then read ProofHarvestRead with the returned cell.
+        /// "DESIGNATED x,z | designatable B".</summary>
+        public static string ProofHarvestDesignate(string args)
+        {
+            Map map = Map;
+            if (map == null) return "REFUSED: no current map";
+            string defName = (args ?? "").Trim().Length > 0 ? args.Trim() : "RM_Webwork_Anchor";
+            ThingDef node = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
+            Pawn colonist = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (node == null || colonist == null) return "REFUSED: no " + (node == null ? defName : "free colonist");
+            if (!CellFinder.TryFindRandomCellNear(colonist.Position, map, 4, x => x.Standable(map) && x.GetFirstBuilding(map) == null
+                    && x.GetFirstItem(map) == null && x != colonist.Position, out IntVec3 cell))
+                return "REFUSED: no cell";
+            Thing t = GenSpawn.Spawn(ThingMaker.MakeThing(node), cell, map);
+            bool ok = new Designator_Deconstruct().CanDesignateThing(t).Accepted;
+            if (ok) map.designationManager.AddDesignation(new Designation(t, DesignationDefOf.Deconstruct));
+            return "DESIGNATED " + cell.x + "," + cell.z + " | designatable " + ok + " | colonist " + colonist.LabelShort;
+        }
+
+        /// <summary>"x,z": "READ nodePresent B | weaveNear N | lastYield N".</summary>
+        public static string ProofHarvestRead(string args)
+        {
+            Map map = Map;
+            if (map == null) return "REFUSED: no current map";
+            string[] a = (args ?? "").Split(',');
+            if (a.Length < 2 || !int.TryParse(a[0], out int x) || !int.TryParse(a[1], out int z)) return "REFUSED: args x,z";
+            IntVec3 cell = new IntVec3(x, 0, z);
+            ThingDef weave = DefDatabase<ThingDef>.GetNamedSilentFail("Hyperweave");
+            bool present = cell.InBounds(map) && cell.GetThingList(map).Any(t => t.def.defName.StartsWith("RM_Webwork_"));
+            return "READ nodePresent " + present + " | weaveNear " + WeaveNear(map, weave, cell) + " | lastYield " + RM_CompHarvestYield.lastYieldSpawned;
+        }
     }
 }

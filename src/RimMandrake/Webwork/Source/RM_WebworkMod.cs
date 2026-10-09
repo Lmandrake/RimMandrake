@@ -40,6 +40,9 @@ namespace RimMandrake.Webwork
 		public static float frontCreepIntervalMultiplier = 1f;
 		public static bool thrixweaveTraderStripEnabled = true;
 
+		// SHOKKWEAVE_SOLE_SOURCE_1: colonists may cut creep-web nodes (vanilla Deconstruct) for thrixweave.
+		public static bool webHarvestEnabled = true;
+
 		// WEBWORK_DEAD_GIANT_BUILD_1: the urraveth remains (RM_UrravethRemains.cs). Numbers PROVISIONAL.
 		public static bool urravethEnabled = true;
 		public static float urravethSiteChance = 0.25f;
@@ -58,6 +61,7 @@ namespace RimMandrake.Webwork
 			Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
 			Scribe_Values.Look(ref frontCreepIntervalMultiplier, "frontCreepIntervalMultiplier", 1f);
 			Scribe_Values.Look(ref thrixweaveTraderStripEnabled, "thrixweaveTraderStripEnabled", true);
+			Scribe_Values.Look(ref webHarvestEnabled, "webHarvestEnabled", true);
 			Scribe_Values.Look(ref urravethEnabled, "urravethEnabled", true);
 			Scribe_Values.Look(ref urravethSiteChance, "urravethSiteChance", 0.25f);
 			Scribe_Values.Look(ref urravethThrixweavePerPiece, "urravethThrixweavePerPiece", 8);
@@ -125,6 +129,11 @@ namespace RimMandrake.Webwork
 				"On: no trader stocks thrixweave (Hyperweave, renamed), it leaves the standard quest-reward "
 			  + "pool, and tailored gear is half as likely to be made of it - the Webwork is its only source. "
 			  + "Off: it trades like vanilla Hyperweave. The rename always applies. Applies at startup.");
+			list.CheckboxLabeled("Colonists can cut web for thrixweave", ref webHarvestEnabled,
+				"On: anchor lines and sheet webs (in the Webwork and on maps its front creeps onto) can be marked with "
+			  + "the Deconstruct tool; a colonist cuts them for thrixweave (3 per anchor line, 2 per sheet web), and "
+			  + "any cut can wake the emergent ollathrix spawn above. Off: those two can only be broken by force (which "
+			  + "still drops their silk). Gutters stay cuttable either way. Applies at startup.");
 
 			list.Gap();
 			list.Label("The dead giant (urraveth remains)");
