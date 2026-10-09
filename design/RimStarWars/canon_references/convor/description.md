@@ -32,28 +32,19 @@ every convor supernatural. https://starwars.fandom.com/wiki/Morai The species is
 after his wife E. Anne Convery.
 
 ## Visual brief
-The two candidate images agree closely and match the Wookieepedia text: a
-round-headed, big-eyed owl with a short hooked beak, dense brown/cream/gold
-mottled plumage, and — the standout diagnostic feature — a long, ringed,
-**prehensile tail** used for grasping rather than a standard fan-shaped bird
-tail. The infobox render shows warm brown/tan/cream feather tones (eye colour is image-dependent: the page infobox says black, and Morai's are green); the CAM-disguise still (from the *Galaxy of
-Creatures* animated series) confirms the same silhouette — plump round body, oversized eyes, and
-a long curling tail — on both the real convor and the droid mimicking it.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The flat *Galaxy of Creatures* cartoon still (`wookieepedia_cam_disguise.jpg`) was deleted. The only live-action convor found is **Morai**, the convor that follows Ahsoka, in the live-action *Ahsoka* series — StarWars.com databank still `starwarscom_morai_ahsoka.jpg` (searched: `Images of convorees`, `Images of Morai`, wiki file search, StarWars.com databank `morai` and `convor`; the wiki holds no live-action Morai file). It is a wide shot and the bird is small in frame. The Card Trader infobox render `wookieepedia_convoree_infobox.png` is a stylised animation-era illustration, KEPT only because it is the one image that shows the prehensile tail and plumage up close — use it for anatomy, not for its big cartoon eyes.
 
-**The current donor sprite (`donor_current_sprite.png`) is a good match**,
-unusually so for this batch: it already shows a brown/cream mottled
-owl-shaped bird at rest with a visible long ringed prehensile tail curled
-beside the body and a short beak. Any regen should keep this silhouette and
-tail treatment; the main opportunity is richer plumage detail (mottling,
-gold accents) and slightly larger, more luminous eyes to match the reference
-art's "regal" character.
+What the live-action Morai shows: a **real-looking barn-owl-like bird** — upright, slim-to-plump owl standing on a rock, a pale heart-shaped white facial disc, pale cream-white breast, soft pale grey-buff back and wings with faint tawny shoulders, long wing tips folded down past the body. It reads as a real owl, not a big-eyed toy.
+🔴 **Live-action and animated versions DISAGREE:** the animated/illustrated convor is a round, plump ball with huge glowing amber eyes and brown/gold mottling; live-action Morai is a natural, proportionate barn-owl with normal-sized dark eyes in a pale facial disc. Follow the realistic proportions (normal owl head-to-body ratio, normal eyes); plumage may range brown/cream/gold (text: gold, green or brown) — Morai herself is the pale form. The prehensile tail is not visible in the live-action still; keep it from the text and the infobox.
+
+**The current donor sprite (`donor_current_sprite.png`)** shows a brown/cream mottled owl with a visible long ringed prehensile tail — keep the tail; push the proportions and plumage toward a real owl.
 
 ## Must show
-- [ ] Round-headed owl silhouette with a short hooked beak
-- [ ] Dense brown/cream/gold mottled plumage
-- [ ] Large amber-gold eyes with black pupils
+- [ ] Real owl proportions: rounded head with a flat facial disc and short hooked beak, normal-sized eyes — not oversized cartoon eyes
+- [ ] Dense, soft owl plumage in brown/cream/gold (or the pale cream-white Morai form), finely mottled
 - [ ] Long, ringed, prehensile tail used for grasping — not a standard fan-shaped bird tail
-- [ ] Plump, short-bodied build despite being an excellent flier
+- [ ] Compact owl body with long folded wing tips
+- [ ] Realistic rendering: natural feather texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -64,20 +55,14 @@ none known
   2026-09-13)
 - https://static.wikia.nocookie.net/starwars/images/7/76/Convoree-SWCT.png
   (Star Wars: Card Trader infobox render)
-- https://static.wikia.nocookie.net/starwars/images/a/a7/CAMandConvor-GoC.png
-  (*Galaxy of Creatures* short — CAM droid disguised as a convor, next to a
-  real one)
+- https://www.starwars.com/databank/morai (StarWars.com databank, og:image of live-action Morai in *Ahsoka*)
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary
   mod, east-facing base/default variant, non-flying, non-corpse), brown/cream
   owl shape with visible prehensile tail
-- `wookieepedia_convoree_infobox.png` — Card Trader infobox art, full
-  front-facing portrait, brown/gold/cream mottled plumage, large amber eyes,
-  ringed prehensile tail visible curled at the feet
-- `wookieepedia_cam_disguise.jpg` — *Galaxy of Creatures* still, a real convor
-  beside a droid disguised as one, confirms silhouette and tail from a side
-  angle
+- `starwarscom_morai_ahsoka.jpg` — live-action *Ahsoka* still of Morai perched on a rock (StarWars.com databank image) — https://lumiere-a.akamaihd.net/v1/images/morai-main-sc_15e1cf49.jpeg
+- `wookieepedia_convoree_infobox.png` — Star Wars: Card Trader infobox art (stylised animation-era illustration; anatomy only): front-facing portrait, brown/gold/cream mottled plumage, oversized amber eyes, ringed prehensile tail curled at the feet; file `Convoree-SWCT.png` — https://static.wikia.nocookie.net/starwars/images/7/76/Convoree-SWCT.png
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

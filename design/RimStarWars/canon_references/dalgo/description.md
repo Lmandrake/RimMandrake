@@ -26,15 +26,10 @@ lower tusks, and a forked tongue used to scent-track danger in the thick
 jungle air.
 
 ## Visual brief
-Both candidate images (Star Wars Encyclopedia art and a *Stay on Target* (Legends sourcebook) piece — note: shown mounted with tack despite the Onderon-jungle origin,
-consistent with its use as a domesticated battle mount) agree closely and
-match the text: a tall, long-legged reptilian runner with a raptor/theropod
-build, not a low-slung lizard. The head has a pronounced sail-like dorsal
-crest running from the crown down the neck, a long snout with visible sharp
-teeth (including the lower tusks), and the hide is a warm **rust-orange**
-with a paler cream/tan underside and belly, exactly matching the "orange
-skin" infobox field. Both images show the animal saddled and reined as a
-mount, legs long and thin, built for speed rather than bulk.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The Clone Wars season five / Encyclopedia render (`wookieepedia_encyclopedia_art.png`, toon-shaded rearing dalgo with rider) was deleted. No live-action or photoreal dalgo exists (searched: `Images of dalgos`, `Dalgo` and `Dalgo/Legends` page images — only these two pieces); the reference is the painted *Stay on Target* sourcebook art `wookieepedia_sot_art.png`, which this entry's ruling already picked. Render it more realistically than the painting: real reptile skin, real muscle.
+
+What `wookieepedia_sot_art.png` shows: a tall, long-legged, **horse-like four-legged reptilian runner** — deep muscular chest, long thin legs ending in rounded hoof-like pads, a long upright neck. The head carries a large **ridged, fan-like crest** sweeping back from the crown, a long snout. The hide is a smooth warm **rust-orange** with darker reddish shading and a paler tan underside; the tail ends in a wide, curling, blade/fin-like tip. Shown saddled and bridled as a mount.
+🔴 The earlier brief called it a "raptor/theropod" stance; the image shows a **four-legged, horse-like** stance, not a biped.
 
 **The current donor sprite (`donor_current_sprite.png`) disagrees on body
 proportions**: it keeps the correct orange/rust coloring and a small
@@ -47,11 +42,12 @@ onto long thin legs, lengthen the snout, and keep the orange-with-cream-
 underside palette and dorsal crest.
 
 ## Must show
-- [ ] Tall, long-legged reptilian runner build (raptor/theropod stance), not a low-slung lizard
-- [ ] Sail-like dorsal crest running from the crown of the head down the neck
-- [ ] Long snout with visible sharp teeth, including the two lower tusks
-- [ ] Rust-orange hide with a paler cream/tan underside and belly
-- [ ] Wide, blade-like tail tip
+- [ ] Tall, long-legged, horse-like four-legged reptilian runner build, not a low-slung lizard and not a biped
+- [ ] Large ridged fan-like crest sweeping back from the crown of the head
+- [ ] Long snout (text: sharp teeth and two lower tusks)
+- [ ] Smooth rust-orange hide with darker reddish shading and a paler tan underside
+- [ ] Wide, curling, blade/fin-like tail tip
+- [ ] Realistic rendering: natural smooth reptile-skin texture and muscle under real lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -73,9 +69,6 @@ none known
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary
   mod, east-facing base variant), low stocky orange quadruped with small
   head-crest
-- `wookieepedia_encyclopedia_art.png` — *Star Wars Encyclopedia* art, saddled
-  dalgo rearing on hind legs, shows head crest, snout, teeth, tusks, and
-  orange/cream coloring clearly
 - `wookieepedia_sot_art.png` — *Stay on Target* (Legends sourcebook) art, standing saddled
   dalgo on rocky ground, shows the full long-legged runner silhouette and
   blade-like tail tip
