@@ -58,9 +58,10 @@ From the full-body reference render:
   shin greaves**, and a **broad-bladed axe** carried in one hand. The
   Hutt-palace-guard look is what "Gamorrean" means visually to most players.
 - **Five thick digits with hard nails** on the hands, confirming the text.
-- The **infobox image** and the **animated Clone Wars** image agree on all of the
-  above and on the pale-ventral/green-dorsal split; the animated piece pushes the
-  green cooler and greyer, so the honest range is olive-green to grey-green.
+- The **infobox image** and the painted *Scum and Villainy* plate
+  (`wookieepedia_animated_clonewars.jpg` — misnamed: it is a realistic painted sourcebook
+  illustration, not animation) agree on all of the above and on the pale-ventral/green-dorsal
+  split; the painting pushes the green slightly cooler and adds dark tribal skin markings, so the honest range is olive-green to grey-green.
 
 **donor_current_sprite.png is weak evidence — but the shipped composite is better
 than this file suggests, and that was verified rather than assumed.** The copied
@@ -106,10 +107,10 @@ none known
   the full pauldron/jerkin/fur-kilt/greaves/axe dress.
 - `wookieepedia_infobox.jpg` — the Wookieepedia infobox image; independent
   agreement on head shape, tusks and palette from a different source.
-- `wookieepedia_animated_clonewars.jpg` — a Clone Wars-era animated Gamorrean.
-  Stylized, so treat line and exact hue as the artist's; its value is confirming
-  the green-dorsal/pale-ventral split survives a different medium, at a cooler,
-  greyer green.
+- `wookieepedia_animated_clonewars.jpg` — **misnamed**: a realistic painted head-and-shoulders
+  plate of a Gamorrean prisoner from the FFG *Scum and Villainy* sourcebook (File:Gamorrean
+  prisoner SaV.png), not Clone Wars animation. Best close look at the tusks, snout ring,
+  small ears and warty skin.
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -32,8 +32,11 @@ often meant they were remotely ashamed."* The notable member is **Zuckuss**, a b
 hunter and one of the first traditional findsmen to leave Gand.
 
 ## Visual brief
-Two very different views of the same individual (Zuckuss), and together they settle the
-species — including the thing the iconic image hides.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+No image was deleted outright: the *Bounty Hunters* 15 comic panel of maskless Zuckuss is the ONLY image of a Gand body with no mask at all, so it is KEPT as animated/negative reference for anatomy only (not a style target). Added two realistic sources: the live-action *Empire Strikes Back* still of Zuckuss beside 4-LOM (`wookieepedia_zuckuss_esb_live_action.jpg`) and the realistic *New Essential Guide to Alien Species* / *Allies and Adversaries* painting (`wookieepedia_gand_negas_legends.jpg`).
+
+The masked and unmasked views together settle the species — including the thing the iconic
+image hides.
 
 - 🔴 **The famous Gand silhouette is a MASK, not a face.** `wookieepedia_zuckuss_sideshow.png`
   (the infobox image) is a full-body figure in a long brown leather coat with a
@@ -41,8 +44,16 @@ species — including the thing the iconic image hides.
   cylindrical breathing apparatus over the mouth**. Nothing of the head is visible. If
   a reference chain starts at the infobox, the species gets built as "guy in a gas
   mask."
+- **`wookieepedia_zuckuss_esb_live_action.jpg`** (live-action *ESB*, Zuckuss at right on the
+  Executor bridge): the costume in real light — a **tarnished brass-ochre domed respirator-helmet**
+  with large insect-like eye lenses and hoses, a heavy weathered brown leather coat, gloved hands.
+- **`wookieepedia_gand_negas_legends.jpg`** (realistic painting): a crouching Gand in a tan
+  robe — the **head is bare ochre-brown chitin with deep wrinkled folds over the crown**, two
+  large domed lateral eyes, and **a respirator covering only the mouth area**, plus thick blunt
+  gloved hands and a stocky squat body. The realistic confirmation that the head under the
+  mask is a wrinkled tan chitin dome.
 - **The head underneath is a smooth chitinous insect skull.** `wookieepedia_masklesszuckuss_bountyhunters15.png`
-  shows it bare: **an elongated, backward-sweeping cranium with heavy folded/wrinkled
+  (comic, anatomy only) shows it bare: **an elongated, backward-sweeping cranium with heavy folded/wrinkled
   plating**, no hair, no nose, no external ears.
 - **Two enormous domed compound eyes set on the SIDES of the head**, occupying much of
   the skull's width — pale, glassy, faceted, and canonically **silver**. They are the
@@ -78,6 +89,7 @@ rather than **domed and proud of the skull**. The respirator is a separate gene
 - [ ] Body surface reads as segmented and seamed with visible plate joints, not skin
 - [ ] Stocky, barrel-chested build with short, thick limbs
 - [ ] Warm tan/ochre/khaki-brown colouring — not dark green or slate red
+- [ ] Realistic rendering: hard wrinkled chitin with real specular sheen under natural light, no outlines, no comic shading
 
 ## Engine limits
 none known — the donor head is a greyscale mask correctly runtime-tinted by the skin
@@ -144,7 +156,9 @@ gene, per the entry.
   **bare ochre chitin head exposed and only a small ribbed mouth-respirator**. Settles
   the domed lateral compound eye, the folded cranial plating, the tan/ochre palette, the
   thick blunt hands and the stocky barrel-chested proportions all at once.
-- `wookieepedia_masklesszuckuss_bountyhunters15.png` — the *Bounty Hunters* 15 comic
+- `wookieepedia_zuckuss_esb_live_action.jpg` — live-action *The Empire Strikes Back* still, Zuckuss (right) beside 4-LOM on the Executor: brass-ochre respirator helmet, weathered leather coat; file `4LOMZuckus.jpg` — https://static.wikia.nocookie.net/starwars/images/6/68/4LOMZuckus.jpg/revision/latest?cb=20061103194029
+- `wookieepedia_gand_negas_legends.jpg` — realistic painting, *The Complete Star Wars Encyclopedia* / *Allies and Adversaries* (Legends): bare wrinkled ochre chitin head, lateral domed eyes, mouth-only respirator, stocky crouching body; file `GandAlienNEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/9/9a/GandAlienNEGAS.jpg/revision/latest?cb=20061205190815
+- `wookieepedia_masklesszuckuss_bountyhunters15.png` — **COMIC, kept as animated/negative reference for anatomy only.** The *Bounty Hunters* 15 comic
   panel of **Zuckuss with no mask at all**: the clearest view of the elongated
   swept-back skull, the huge glassy side-mounted compound eyes, the faceted mandibled
   central face, and the seamed plate-like torso. Comic art with heavy rendering, so

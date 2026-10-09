@@ -36,30 +36,19 @@ seasons; outsiders present there was a violation of the **Rime Feeorin**, the sp
 ancient code. **Feeorin names are mostly simple, no more than 4 or 5 letters.**
 
 ## Visual brief
-One canon image (*Darth Maul* (2017) 1), and it is worth more than the prose:
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+No live-action Feeorin exists. Added three realistic Legends depictions: a painted head study from the *Knights of the Old Republic Campaign Guide* (`wookieepedia_feeorin_kotorcg_legends.jpg`), Raven Mimura's *Ultimate Alien Anthology* painting (`wookieepedia_feeorin_uaa_legends.png`), and the near-photoreal game CGI gladiator Tarko-se from *The Force Unleashed II* (`wookieepedia_feeorin_tfu2_tarkose.png`). The only canon image, the *Darth Maul* (2017) 1 comic panel, is KEPT ONLY as animated/negative reference for the canon tendril count — it is not a style target.
 
-- **A dense mass of thick, ropy tendrils erupting from the back and sides of the skull
-  and hanging past the chest**, some to the waist. There are many — a dozen or more,
-  not two or three — and they read as heavy, muscular and slightly flattened, exactly
-  the Nautolan arrangement the Legends text names. **This is the species, visually.**
-- **The tendrils are a distinctly different, paler, yellower green than the body.**
-  A two-tone head/tendril split, not a uniform colour. Additional short thin tendrils
-  frame the lower face.
-- **The cranium is bald, smooth and swept-back**, with the tendril roots forming a
-  raised collar around the back of the head; no hair anywhere.
-- **The face is heavily ridged**: strong brow, deep vertical and diagonal creases down
-  the cheeks, a heavy squared jaw, small deep-set eyes. Grim and craggy rather than
-  smooth-alien.
-- **Big, broad-shouldered, thick-limbed, visibly powerful build** — a defined muscular
-  torso under a wrapped sleeveless tunic, sashes, and heavy tall boots. Consistent with
-  the gladiator/champion citation and with "grew stronger with age."
-- 🔴 **The body is turquoise-cyan, and the def's `Skin_Purple` appears nowhere in
-  canon.** The image is a cool blue-green (a "blue" cite in practice reading as
-  turquoise); the other sourced colour is green. **The sourced texture is MOTTLED**, so
-  a flat single tone is wrong even when the hue is right.
-- Comic art with heavy inking and flat spot colour — treat line weight and exact
-  saturation as the artist's; treat the tendril mass, the ridged face, the bulk and the
-  blue-green family as authoritative.
+**`wookieepedia_feeorin_kotorcg_legends.jpg` — the realistic reference of record for the head** (painted bust):
+- **Skin is a cool slate blue-grey-teal**, smooth and leathery with fine wrinkling.
+- **The face is heavily ridged and craggy**: a heavy furrowed brow ridge, deep vertical and diagonal creases from the eyes down the cheeks, a broad flat nose ridge, a wide downturned mouth and a heavy jaw, with **short thick fleshy barbels/tendrils hanging from the chin and jaw**. Small, deep-set amber eyes.
+- 🔴 **Two thick, smooth head-tails** (lekku-like) sweep back from the crown and hang over the shoulders, banded with gold rings — **two, not a dozen.**
+
+**`wookieepedia_feeorin_tfu2_tarkose.png`** (game CGI, *The Force Unleashed II*, Tarko-se roaring): **olive/yellow-green leathery skin**, the same ridged brow and creased face, **thick head-tails and jaw tendrils**, an enormous open mouth, a massive armoured gladiator's build.
+
+**`wookieepedia_feeorin_uaa_legends.png`** (realistic painting, full body): 🔴 **mauve-grey to lilac-purple skin**, a ridged bald head with **several thick head-tails** falling to the shoulders and short chin tendrils, a heavy broad-shouldered body in a red jumpsuit with a blaster rifle.
+
+🔴 **The realistic and animated versions disagree on the tendrils and the colour.** The canon comic (`wookieepedia_feeorin_2017darthmaul1.png`) draws **a dozen or more ropy tendrils** in a paler yellow-green over a **turquoise-cyan** body. The realistic Legends depictions draw **two to a few thick head-tails plus short jaw barbels**, on **slate blue-grey, olive-green or mauve-purple** skin. Constant across all four: bald ridged skull, heavily creased craggy face, heavy jaw, head-tails from the back of the skull, and a big, powerful build. 🔴 **Purple IS attested** (UAA painting), so the def's `Skin_Purple` is not baseless after all — it is the Legends painting's colour.
 
 🔴 **`donor_current_sprite.png` is essentially empty.** It is a 4 KB, almost entirely
 transparent canvas carrying **two small black curved eye marks and nothing else** — no
@@ -68,12 +57,12 @@ file is not it, and the species' one defining feature (the tendril mass) has no 
 here at all. Do not treat this as evidence about anything except that art is owed.
 
 ## Must show
-- [ ] A dense mass of thick, ropy tendrils (a dozen or more) erupting from the back/sides of the skull, hanging past the chest — the Nautolan-style arrangement
-- [ ] Tendrils are a distinctly paler, yellower green than the body — a two-tone head/tendril split, not one uniform colour
-- [ ] Bald, smooth, swept-back cranium, with tendril roots forming a raised collar around the back of the head
-- [ ] Heavily ridged face: strong brow, deep vertical/diagonal cheek creases, a heavy squared jaw, small deep-set eyes
-- [ ] Turquoise-cyan mottled body colour, not a flat single tone
-- [ ] Big, broad-shouldered, thick-limbed, visibly powerful/muscular build
+- [ ] Thick head-tails sweeping back from the crown of a bald skull and hanging over the shoulders (two to several in the realistic depictions; a dozen in the canon comic)
+- [ ] Short thick fleshy barbels/tendrils hanging from the chin and jaw
+- [ ] Heavily ridged, craggy face: heavy furrowed brow, deep vertical/diagonal cheek creases, heavy jaw, small deep-set eyes
+- [ ] Leathery skin in the blue-grey/teal to olive-green range (mauve-purple also attested)
+- [ ] Big, broad-shouldered, thick-limbed, visibly powerful build
+- [ ] Realistic rendering: leathery wrinkled skin under natural lighting, no outlines, no comic shading
 
 ## Engine limits
 none known — the entry records no shader or mask constraint for this head; the current
@@ -90,7 +79,7 @@ gap rather than a rendering constraint.
 - 🔴 **`Eyes_Red` and `Outland_Eye_Orange` are unsourced.** The only canon eye colour
   is **yellow**, which `Outland_Eye_Yellow` correctly provides — the other two should
   be justified or dropped.
-- 🔴 **`Skin_Purple` is unsourced, and GREEN — one of only two canon colours — is
+- 🔴 **`Skin_Purple` is unsourced in the text (though the UAA painting is mauve-purple), and GREEN — one of only two canon colours — is
   missing.** The list is `Skin_Blue`, `Skin_Purple`, `RSW_Skin_Turquoise`. Green
   (*Rebels Magazine* 31) has no gene; jet-black and white (Legends outliers) have none
   either; and **no gene expresses the sourced mottling**.
@@ -132,13 +121,11 @@ gap rather than a rendering constraint.
   wanted, since the single canon image cannot show variation.
 
 ## Candidate images
-- `wookieepedia_feeorin_2017darthmaul1.png` — **the reference of record, and the only
-  canon image on disk.** A full-body Feeorin from *Darth Maul* (2017) 1: turquoise-cyan
-  skin, a heavy mass of paler green head tendrils falling past the chest, a deeply
-  ridged craggy face with a heavy jaw, a powerful build in a wrapped sleeveless tunic,
-  sashes and tall boots. Comic panel with a background, so it is not a clean plate.
-- `donor_current_sprite.png` — **negative reference only.** An essentially blank 4 KB
-  canvas with two eye marks; see the visual brief.
+- `wookieepedia_feeorin_kotorcg_legends.jpg` — **realistic reference of record for the head.** Painted bust, *Knights of the Old Republic Campaign Guide* (Legends): slate blue-grey skin, ridged craggy face, chin barbels, two banded head-tails; file `Feeorin KotORCG.jpg` — https://static.wikia.nocookie.net/starwars/images/5/54/Feeorin_KotORCG.jpg/revision/latest?cb=20081230050606
+- `wookieepedia_feeorin_tfu2_tarkose.png` — near-photoreal game CGI, *The Force Unleashed II*, the gladiator Tarko-se: olive-green, head-tails, massive build; file `Feeorin gladiator.png` — https://static.wikia.nocookie.net/starwars/images/3/3b/Feeorin_gladiator.png/revision/latest?cb=20131122094546
+- `wookieepedia_feeorin_uaa_legends.png` — realistic painting by Raven Mimura, *Ultimate Alien Anthology* (Legends), full body: mauve-purple skin, several head-tails, heavy build; file `Feeorin-UAA.png` — https://static.wikia.nocookie.net/starwars/images/9/98/Feeorin-UAA.png/revision/latest?cb=20250228013340
+- `wookieepedia_feeorin_2017darthmaul1.png` — **COMIC, kept as animated/negative reference only** for the canon tendril count: full-body Feeorin from *Darth Maul* (2017) 1, turquoise-cyan skin, a dozen-plus paler green tendrils; file `Feeorin-2017DarthMaul1.png`.
+- `donor_current_sprite.png` — **negative reference only.** An essentially blank 4 KB canvas with two eye marks; see the visual brief.
 
 ## ruling
 (empty — owner has not reviewed this race yet)
