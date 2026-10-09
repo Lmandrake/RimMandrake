@@ -4835,3 +4835,4 @@
 {"seat":"FOUNDRY","event":"close","id":"STILLSAND_NATIVE_CRASH_LIVECHECK_1","sha":"3cc82af7b","reason":"run-1 verify PASS L1","ts":"2026-10-09T20:01:10Z","tsn":1791576070477649883}
 {"seat":"FOUNDRY","event":"drop","id":"LONGSHADE_JAWATOW_LIVECHECK_1","reason":"superseded by LONGSHADE_JAWATOW_RECHECK_1 (FAIL was dead MayRequire, fixed cd03da899)","ts":"2026-10-09T20:01:11Z","tsn":1791576071337341290}
 {"seat":"FOUNDRY","event":"drop","id":"GELATINOUSSLIME_JOININGWATER_LIVECHECK_1","reason":"superseded by GELATINOUSSLIME_JOININGWATER_RECHECK_1, which passed","ts":"2026-10-09T20:01:12Z","tsn":1791576072397584312}
+{"seat":"FOUNDRY","event":"close","id":"MUDSWALLOW_PARENTHOLDER_GUARD_1","sha":"c78842824","reason":"ledger shows passing L2 verify run (decay sweep)","ts":"2026-10-09T20:01:37Z","tsn":1791576097024366763}
