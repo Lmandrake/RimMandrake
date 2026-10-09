@@ -286,6 +286,29 @@ namespace RimMandrake.FeverWood
 
         public List<Pawn> Living => victims.Where(p => p != null && !p.Dead && !p.Destroyed).ToList();
 
+        // KURRETH_LOSS_FINALIZE_1: "recovered" means out of the kurreth's hands for real -- unbound, standing on a
+        // map, and in nobody's kidnap tracker -- not merely "no bound hediff" (a victim still held off-map has none).
+        private static bool Recovered(Pawn p)
+        {
+            if (!RM_FeverWoodSettings.kurrethLossFinalize)
+            {
+                return !RM_KurrethColumnUtility.IsBound(p);
+            }
+            return !RM_KurrethColumnUtility.IsBound(p) && p.SpawnedOrAnyParentSpawned && !HeldByKidnappers(p);
+        }
+
+        private static bool HeldByKidnappers(Pawn p)
+        {
+            foreach (Faction f in Find.FactionManager.AllFactionsListForReading)
+            {
+                if (f.kidnapped != null && f.kidnapped.KidnappedPawnsListForReading.Contains(p))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>RM_SitePartWorker_KurrethColumnCamp.PostMapGenerate: the held animals and their guards.</summary>
         public int SpawnCamp(Map map)
         {
@@ -348,7 +371,7 @@ namespace RimMandrake.FeverWood
                 case Phase.Camp:
                     if (site == null || !site.HasMap)
                     {
-                        if (Living.Any(RM_KurrethColumnUtility.IsBound))
+                        if (Living.Any(p => !Recovered(p)))
                         {
                             Lose("The camp is behind you, and the kurreth went on with what they had. " + StillBoundLabel()
                                  + " will not be seen again.");
@@ -395,7 +418,7 @@ namespace RimMandrake.FeverWood
                 Lose("None of the stolen animals lived.");
                 return;
             }
-            if (living.All(p => !RM_KurrethColumnUtility.IsBound(p)))
+            if (living.All(Recovered))
             {
                 phase = Phase.Done;
                 Find.SignalManager.SendSignal(new Signal(outSignalRecovered));
@@ -443,6 +466,26 @@ namespace RimMandrake.FeverWood
         private void Lose(string text)
         {
             phase = Phase.Done;
+            // KURRETH_LOSS_FINALIZE_1 PROVISIONAL (auto-decided 2026-10-09): every victim not recovered is finalized
+            // the same way the hive deadline already does it -- taken out of any kidnap tracker and destroyed -- so a
+            // "will not be seen again" letter is true in every phase. The letter below is the readable sign.
+            if (RM_FeverWoodSettings.kurrethLossFinalize)
+            {
+                foreach (Pawn p in Living.Where(v => !Recovered(v)).ToList())
+                {
+                    foreach (Faction f in Find.FactionManager.AllFactionsListForReading)
+                    {
+                        if (f.kidnapped != null && f.kidnapped.KidnappedPawnsListForReading.Contains(p))
+                        {
+                            f.kidnapped.RemoveKidnappedPawn(p);
+                        }
+                    }
+                    if (!p.Destroyed)
+                    {
+                        p.Destroy();
+                    }
+                }
+            }
             Find.LetterStack.ReceiveLetter("Lost to the kurreth", text, LetterDefOf.NegativeEvent);
             Find.SignalManager.SendSignal(new Signal(outSignalLost));
         }
