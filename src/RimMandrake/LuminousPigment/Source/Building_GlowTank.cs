@@ -34,6 +34,8 @@ namespace RimMandrake.LuminousPigment
         private int unpoweredTicks;
         private int waterReserveTicks;
         private string lastWaterDrawn;
+        // The culture is established once the first sow has taken (the seed unit is consumed then); a blackout clears it.
+        private bool established;
 
         private static int TicksPerUnit => RM_GlowTankWater.TicksPerUnit(LuminousPigmentSettings.tankWaterUnitsPerDay);
 
@@ -57,18 +59,19 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref unpoweredTicks, "rmGlowTankUnpoweredTicks", 0);
             Scribe_Values.Look(ref waterReserveTicks, "rmGlowTankWaterReserveTicks", 0);
             Scribe_Values.Look(ref lastWaterDrawn, "rmGlowTankLastWater");
+            Scribe_Values.Look(ref established, "rmGlowTankEstablished", false);
         }
 
         public new bool CanAcceptSowNow()
         {
-            if (seedComp == null || !seedComp.HasFuel) return false;
+            if (!established && (seedComp == null || !seedComp.HasFuel)) return false;
             return base.CanAcceptSowNow();
         }
 
         public override string GetInspectString()
         {
             string text = base.GetInspectString();
-            if (seedComp != null && !seedComp.HasFuel)
+            if (!established && seedComp != null && !seedComp.HasFuel)
             {
                 text = Append(text, "Needs a seed culture: haul one unit of fresh crowncarpet here.");
             }
@@ -120,10 +123,26 @@ namespace RimMandrake.LuminousPigment
             }
         }
 
+        /// <summary>First successful sow: a plant stands in the tank, so the seed unit is spent and the culture lives on its own.</summary>
+        private void TryEstablish()
+        {
+            if (established || seedComp == null || !seedComp.HasFuel) return;
+            foreach (IntVec3 cell in this.OccupiedRect())
+            {
+                if (cell.GetPlant(Map) != null)
+                {
+                    seedComp.ConsumeFuel(seedComp.Fuel);
+                    established = true;
+                    return;
+                }
+            }
+        }
+
         public override void TickRare()
         {
             base.TickRare();
             TickWater();
+            TryEstablish();
 
             if (powerComp == null) return;
             if (powerComp.PowerOn)
@@ -139,6 +158,7 @@ namespace RimMandrake.LuminousPigment
 
             // Blackout past the grace window: the culture and any crop die.
             unpoweredTicks = 0;
+            established = false;
             if (seedComp != null && seedComp.HasFuel)
             {
                 seedComp.ConsumeFuel(seedComp.Fuel);
