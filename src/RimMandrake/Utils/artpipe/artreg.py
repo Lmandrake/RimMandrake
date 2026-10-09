@@ -45,6 +45,10 @@ so nothing will ever resolve it). It is accepted ONLY while the target's
 current state is `queued`; the target's derived state becomes the terminal
 `withdrawn` (counted separately, never as queued), and a later `queued` event
 for the same target re-opens it normally. CLI: `withdraw --target T --notes N`.
+
+The `verdict`/`committed`/`deployed` WRITERS were removed 2026-10-09 (0 callers,
+0 events ever; the art ledger replaced them). Replay still understands those
+event kinds so an old registry reads correctly.
 """
 from __future__ import annotations
 
@@ -244,58 +248,6 @@ def record_sheeted(target: str, sheet: str, by: str = "unknown") -> dict:
     return _append({"event": "sheeted", "target": target, "sheet": sheet, "by": by})
 
 
-def record_verdict(target: str, result: str, notes: str = "",
-                    as_target: str | None = None, job_id: str | None = None,
-                    by: str = "unknown") -> list[dict]:
-    """Returns the list of events actually written — 1 for accepted/rejected,
-    3 for repurposed (design §1: closes `as_target`, re-registers `target`)."""
-    if result not in ("accepted", "rejected", "repurposed"):
-        raise RegError("result must be accepted|rejected|repurposed")
-    if result == "repurposed" and not as_target:
-        raise RegError("verdict repurposed needs --as-target")
-    if result != "repurposed" and as_target:
-        raise RegError("--as-target only makes sense with result=repurposed")
-
-    with _locked():
-        written = []
-        ev = {"event": "verdict", "target": target, "result": result, "notes": notes,
-              "by": by}
-        if job_id:
-            ev["job_id"] = job_id
-        if as_target:
-            ev["as_target"] = as_target
-        written.append(_append(ev))
-
-        if result == "rejected":
-            events = read_events()
-            n = sum(1 for e in events
-                    if e.get("event") == "verdict" and e.get("target") == target
-                    and e.get("result") == "rejected")
-            if n >= PARK_AFTER_REJECTIONS:
-                print(f"artreg: PARKED — {target!r} has been rejected {n} times "
-                      f"(cap {PARK_AFTER_REJECTIONS}); needs a different approach, "
-                      f"see `status --parked`", file=sys.stderr)
-
-        if result == "repurposed":
-            source_note = f"repurpose of {job_id}" if job_id else "repurpose (job id not given)"
-            written.append(_append({
-                "event": "verdict", "target": as_target, "result": "accepted",
-                "notes": (f"accepted via repurpose from job {job_id!r}, originally "
-                          f"intended for {target!r}" if job_id else
-                          f"accepted via repurpose, originally intended for {target!r}"),
-                "by": by,
-            }))
-            written.append(_append({
-                "event": "registered", "target": target, "source": source_note, "by": by,
-            }))
-        return written
-
-
-def record_committed(target: str, repo_path: str, sha: str, by: str = "unknown") -> dict:
-    return _append({"event": "committed", "target": target, "repo_path": repo_path,
-                     "sha": sha, "by": by})
-
-
 def record_withdrawn(target: str, notes: str, by: str = "unknown",
                       path: Path | None = None) -> dict:
     """Retire a stale `queued` target. Refuses loudly unless the target's
@@ -308,10 +260,6 @@ def record_withdrawn(target: str, notes: str, by: str = "unknown",
             raise RegError(f"cannot withdraw {target!r}: state is {state!r}, not 'queued'")
         return _append({"event": "withdrawn", "target": target, "notes": notes,
                          "by": by}, path)
-
-
-def record_deployed(target: str, by: str = "unknown") -> dict:
-    return _append({"event": "deployed", "target": target, "by": by})
 
 
 # --------------------------------------------------------------------------
@@ -937,21 +885,6 @@ def main(argv=None) -> int:
     p.add_argument("--target", required=True)
     p.add_argument("--sheet", required=True)
 
-    p = sub.add_parser("verdict"); _add_common(p)
-    p.add_argument("--target", required=True)
-    p.add_argument("--result", required=True, choices=("accepted", "rejected", "repurposed"))
-    p.add_argument("--notes", default="")
-    p.add_argument("--as-target")
-    p.add_argument("--job-id")
-
-    p = sub.add_parser("committed"); _add_common(p)
-    p.add_argument("--target", required=True)
-    p.add_argument("--repo-path", required=True)
-    p.add_argument("--sha", required=True)
-
-    p = sub.add_parser("deployed"); _add_common(p)
-    p.add_argument("--target", required=True)
-
     p = sub.add_parser("withdraw"); _add_common(p)
     p.add_argument("--target", required=True)
     p.add_argument("--notes", required=True)
@@ -994,17 +927,6 @@ def main(argv=None) -> int:
             print(json.dumps(ev))
         elif args.cmd == "sheeted":
             ev = record_sheeted(args.target, args.sheet, by=args.by)
-            print(json.dumps(ev))
-        elif args.cmd == "verdict":
-            evs = record_verdict(args.target, args.result, notes=args.notes,
-                                  as_target=args.as_target, job_id=args.job_id, by=args.by)
-            for e in evs:
-                print(json.dumps(e))
-        elif args.cmd == "committed":
-            ev = record_committed(args.target, args.repo_path, args.sha, by=args.by)
-            print(json.dumps(ev))
-        elif args.cmd == "deployed":
-            ev = record_deployed(args.target, by=args.by)
             print(json.dumps(ev))
         elif args.cmd == "withdraw":
             ev = record_withdrawn(args.target, args.notes, by=args.by)
