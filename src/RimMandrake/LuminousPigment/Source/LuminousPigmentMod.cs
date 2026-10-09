@@ -608,8 +608,16 @@ namespace RimMandrake.LuminousPigment
         // compliant gate.
         private static void ApplyCuisineRecipeVisibility()
         {
-            ApplyCuisineRecipeVisibilityTo(ThingDef.Named("ElectricStove"));
-            ApplyCuisineRecipeVisibilityTo(ThingDef.Named("FueledStove"));
+            // LP-1: every bench that cooks fine meals (vanilla stoves, the Stillsand solar oven, any mod's),
+            // found by the CookMealFine recipe it carries, not a hand-kept pair of names.
+            RecipeDef fine = DefDatabase<RecipeDef>.GetNamedSilentFail("CookMealFine");
+            if (fine == null) return;
+            List<ThingDef> all = DefDatabase<ThingDef>.AllDefsListForReading;
+            for (int i = 0; i < all.Count; i++)
+            {
+                ThingDef bench = all[i];
+                if (bench.recipes != null && bench.recipes.Contains(fine)) ApplyCuisineRecipeVisibilityTo(bench);
+            }
         }
 
         private static void ApplyCuisineRecipeVisibilityTo(ThingDef stove)
