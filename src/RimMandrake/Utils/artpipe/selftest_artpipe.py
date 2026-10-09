@@ -1788,6 +1788,60 @@ def test_codex_one_retry_rescues_transient_failure():
            counter.read_text() if counter.is_file() else "no counter file")
 
 
+def test_no_image_failure_is_classified_retryable():
+    """ARTPIPE_NO_IMAGE_RETRY: the classifier itself. Only a completed run
+    with no PNG and codex_image.py's own 'no image produced' line is the
+    retryable no-image class; a timeout, a clean exit or a run that left an
+    image behind is not."""
+    f = artpiped._is_no_image_failure
+    err = "ERROR no image produced after 8s (exit 0).\n--- last codex output ---\n{...}"
+    ok("no-image class: exit 1 + marker + no PNG", f(1, False, err, False))
+    ok("no-image class: not on a timeout", not f(124, True, err, False))
+    ok("no-image class: not on exit 0", not f(0, False, err, False))
+    ok("no-image class: not when an image exists", not f(1, False, err, True))
+    ok("no-image class: not on a generic tool error",
+       not f(1, False, "codex: internal error — the sandbox setup step failed", False))
+    ok("no-image: the firm line names the image tool and forbids text",
+       "$imagegen" in artpiped.NO_IMAGE_RETRY_LINE and "Do not reply in text" in artpiped.NO_IMAGE_RETRY_LINE)
+    ok("no-image: every prompt carries the no-preamble line",
+       artpiped.NO_PREAMBLE_LINE in artpiped.build_job_prompt(
+           {"id": "x", "prompt": "a rock", "canvas": {"width": 64, "height": 64}}))
+
+
+def test_no_image_gets_two_firm_retries_end_to_end():
+    """A job whose worker answers in prose twice and draws on the third,
+    firm-prompted attempt passes; the manifest records 3 attempts, 2 no-image
+    retries and the firm prompt. A job that never draws stops at exactly 3."""
+    with tempfile.TemporaryDirectory() as td:
+        q = Queue(Path(td))
+        make_job(q.pending, "proseok", q.reference)
+        make_job(q.pending, "prosefail", q.reference)
+        proc = q.run({"proseok": {"behavior": "no_image_prose", "ok_on": 3},
+                      "prosefail": {"behavior": "no_image_prose"}},
+                     "--once", "--workers", "1")
+        ok("no-image e2e: daemon ran", proc.returncode in (0, 1), proc.stdout + proc.stderr)
+        ok("no-image e2e: the third, firm attempt rescues the job",
+           (q.done / "proseok.json").is_file(), proc.stdout)
+        man = q.done / "proseok.manifest.json"
+        m = json.loads(man.read_text()) if man.is_file() else {}
+        ok("no-image e2e: daemon_attempts is 3", m.get("daemon_attempts") == 3, str(m)[:400])
+        ok("no-image e2e: no_image_retries is 2", m.get("no_image_retries") == 2, str(m)[:400])
+        ok("no-image e2e: firm_retry_prompt recorded", m.get("firm_retry_prompt") is True)
+        ok("no-image e2e: attempt_log has 3 rows",
+           len(m.get("attempt_log") or []) == 3, str(m.get("attempt_log")))
+        prompts = (q.artsrc / "proseok" / ".proseok.prompts").read_text().splitlines()
+        ok("no-image e2e: attempt 1 had no firm line, attempts 2-3 did",
+           len(prompts) == 3 and "You must call the image tool" not in prompts[0]
+           and all("You must call the image tool" in p for p in prompts[1:]), str(len(prompts)))
+        fm = q.failed / "prosefail.manifest.json"
+        f = json.loads(fm.read_text()) if fm.is_file() else {}
+        ok("no-image e2e: a never-drawing job fails as worker_error after 3 attempts",
+           f.get("worker_status") == "worker_error" and f.get("daemon_attempts") == 3, str(f)[:400])
+        counter = q.artsrc / "prosefail" / ".prosefail.invocations"
+        ok("no-image e2e: never a fourth invocation",
+           counter.is_file() and counter.read_text().strip() == "3")
+
+
 def test_codex_retry_never_applied_to_rate_limited():
     """The other half: a throttle refusal must go straight to the hard
     stop, never spend the one retry on it."""
@@ -4065,6 +4119,8 @@ def main() -> int:
         test_stale_refresh_guard_clean_probe_releases_concurrency,
         test_n_workers_run_concurrently_with_stale_logins,
         test_queue_order_is_priority_then_ruled_then_age,
+        test_no_image_failure_is_classified_retryable,
+        test_no_image_gets_two_firm_retries_end_to_end,
     ):
         print(f"--- {fn.__name__} ---")
         try:

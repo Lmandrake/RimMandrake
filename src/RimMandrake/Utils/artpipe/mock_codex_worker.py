@@ -356,6 +356,32 @@ def main(argv=None) -> int:
         print(f"OK {out}")
         return 0
 
+    if behavior == "no_image_prose":
+        # The real 2026-10-09 failure: the model answers in text, --output-schema
+        # coerces it into a "fail" manifest, codex exits 0 with no image and
+        # codex_image.py exits 1. Every prompt seen is logged so a test can prove
+        # the firm retry line arrived. Succeeds on invocation `ok_on` (default:
+        # never), and only when that prompt carries the firm line.
+        with open(out.parent / f".{out.stem}.prompts", "a") as fh:
+            fh.write(json.dumps(args.prompt) + "\n")
+        ok_on = int(ctrl.get("ok_on", 0) or 0)
+        if invocation_n == ok_on and "You must call the image tool" in args.prompt:
+            if reference is not None:
+                w, h = mutate_reference(reference, out)
+            else:
+                w, h = 64, 64
+                pnglib.write_rgba(str(out), w, h, bytes(4 * w * h))
+            write_manifest("ok", f"mock: drew on invocation {invocation_n}",
+                            width=w, height=h, has_alpha=True, corners_transparent=True,
+                            background_used="transparent")
+            print(f"OK {out}")
+            return 0
+        write_manifest("fail", "Cannot proceed because final response schema was "
+                               "accidentally invoked before generating the requested image.")
+        print("ERROR no image produced after 8s (exit 0).\n--- last codex output ---\n"
+              + args.prompt[-300:], file=sys.stderr)
+        return 1
+
     if behavior == "fail_then_ok":
         if invocation_n == 1:
             print("codex: transient tool error, try again", file=sys.stderr)
