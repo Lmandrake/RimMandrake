@@ -48,7 +48,7 @@ namespace RimMandrake.Utinni.WasteRun
             try
             {
                 WasteDestination d;
-                if (!System.Enum.TryParse(dest, out d)) return "ERROR unknown destination '" + dest + "'";
+                if (!System.Enum.TryParse(dest, out d) || !System.Enum.IsDefined(typeof(WasteDestination), d)) return "ERROR unknown destination '" + dest + "'";
                 Quest q = WasteRunDisposal.ActiveRun(true);
                 if (q == null) return "ERROR no Ongoing waste-run quest (accept it first)";
                 string before = q.State.ToString();
