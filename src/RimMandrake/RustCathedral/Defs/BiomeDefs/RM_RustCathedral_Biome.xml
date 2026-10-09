@@ -73,7 +73,7 @@
       </li>
       <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
            own description, always-true list and shipped mechanics, flagged for the owner's review
-           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Rust Cathedral</letterLabel>
         <letterText>The walls are the treasure here, and the maze is built on purpose. The machines that garrison it guard their ground and do not hunt; give them room and they give you yours. The hum is everywhere, and it changes as you work: listen to it, because it is reacting to you. Take from the sacred walls and the place turns against you. Dig too deep and very bad things happen. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
