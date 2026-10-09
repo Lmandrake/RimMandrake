@@ -62,7 +62,7 @@ namespace RimMandrake.TerminalBiomes
             {
                 return;
             }
-            if (map.Biome == null || map.Biome.defName != RM_GreyCrust.GreyBiome)
+            if (!RM_GreyCrust.IsGreyMap(map))
             {
                 return;
             }
@@ -398,7 +398,7 @@ namespace RimMandrake.TerminalBiomes
             {
                 return "no map";
             }
-            if (map.Biome?.defName != RM_GreyCrust.GreyBiome)
+            if (!RM_GreyCrust.IsGreyMap(map))
             {
                 return "not a Grey Sea map: " + map.Biome?.defName;
             }

@@ -30,6 +30,11 @@ namespace RimMandrake.TerminalBiomes
     public static class RM_GreyCrust
     {
         public const string GreyBiome = "RM_GreySea";
+        public const string GreyFloorBiome = "RM_SeabedFloor_GreySea";
+        public static bool IsGreyMap(Map map)
+        {
+            return map != null && map.Biome != null && (map.Biome.defName == GreyBiome || map.Biome.defName == GreyFloorBiome);
+        }
         public const string SaltSnow = "RM_GreySaltSnow";
 
         public const float RimeDays = RM_CrustKernel.RimeDays;
@@ -228,7 +233,7 @@ namespace RimMandrake.TerminalBiomes
 
         public override void MapComponentTick()
         {
-            if (map.Biome == null || map.Biome.defName != RM_GreyCrust.GreyBiome)
+            if (!RM_GreyCrust.IsGreyMap(map))
             {
                 return;
             }
@@ -431,7 +436,7 @@ namespace RimMandrake.TerminalBiomes
             {
                 return false;
             }
-            return engine.Map.Biome != null && engine.Map.Biome.defName == RM_GreyCrust.GreyBiome;
+            return RM_GreyCrust.IsGreyMap(engine.Map);
         }
 
         // Returns "crustRemoved=.. doorsFreed=.. damaged=.. hpLost=..". Also the state-read proof hook.

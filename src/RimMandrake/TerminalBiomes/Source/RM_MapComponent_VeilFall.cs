@@ -57,7 +57,7 @@ namespace RimMandrake.TerminalBiomes
             // Cheapest possible early-out: string compare against the map's
             // OWN biome, no scan of anything. RM_TwilightSea only —
             // TERMINAL_SEAS_FLOOR_DRESSING_1's own biome, not any land tile.
-            if (map.Biome == null || map.Biome.defName != "RM_TwilightSea")
+            if (map.Biome == null || !(map.Biome.defName == "RM_TwilightSea" || map.Biome.defName == "RM_SeabedFloor_TwilightSea"))
             {
                 return;
             }

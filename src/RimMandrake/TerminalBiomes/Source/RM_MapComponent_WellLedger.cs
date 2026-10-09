@@ -128,7 +128,7 @@ namespace RimMandrake.TerminalBiomes
         {
             return RM_TerminalBiomesSettings.TwilightWellDriftActive
                 && map.Biome != null
-                && map.Biome.defName == "RM_TwilightSea";
+                && (map.Biome.defName == "RM_TwilightSea" || map.Biome.defName == "RM_SeabedFloor_TwilightSea");
         }
 
         public override void ExposeData()
