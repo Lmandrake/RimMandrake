@@ -65,6 +65,14 @@ is **not** by itself a sign of contamination — it is the specific *image file*
 is tainted.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Added `wookieepedia_ackbar_closeup_rotj.jpg` (live-action *Return of the Jedi* close-up of Admiral Ackbar's mask). The
+*Clone Wars* hand shot `wookieepedia_mon_cal_hand_holes.png` is **kept as animated reference for the palm anatomy
+only** — no live-action image shows the palm suction cups; render that hand realistically, not in the show's style.
+The live-action close-up shows the head as it really reads: **glossy, wet-looking, deeply wrinkled and pitted salmon-to-
+russet hide**, a **large golden-amber eye with a dark pupil** on a lateral bulge, folded lips over a pale chin, fine
+dark mottling across the dome. Prefer it over the animated shot for every head detail.
+
 
 🔴 **The def's own description — "large high-domed heads with goggle-like eyes
 sticking out either side" — is accurate as far as it goes, but the images show the
@@ -103,12 +111,9 @@ limbs. Also visible here: **heavily wrinkled, ridged, muscular skin texture**;
 on the female**, exactly as the text says. **Two contrasting colours in a defined
 arrangement — this is the pattern a single flat skin gene cannot produce.**
 
-**`wookieepedia_mon_cal_hand_holes.png`** is the detail shot and it settles the hand
-completely: **five claw-tipped fingers with one opposable thumb, two long middle
+**`wookieepedia_mon_cal_hand_holes.png`** (animated, *The Clone Wars*) is the only palm detail and it settles the hand: **five claw-tipped fingers with one opposable thumb, two long middle
 fingers and two much shorter outer fingers, webbing between them, and THREE distinct
-round suction-cup holes in the palm.** It also gives the best close view of the head
-— the lateral protruding eye with its huge dark pupil and pale sclera, the nostril
-slits, the down-turned mouth, and **a barbel projecting from the chin**.
+round suction-cup holes in the palm.** Its head is animated — take eye, nostrils, mouth and the **chin barbel** from the live-action images instead.
 
 **`wookieepedia_moncal_white_calamari.jpg`** is included as the far end of the colour
 range (the canon "white" entry) — useful for proving hue really does vary this
@@ -135,8 +140,8 @@ two lateral eye bulges**, which is the core silhouette. What is wrong:
 - [ ] Eyes sit on the sides of the head on distinct lateral bulges — large, round, goggle-like, with a big dark pupil and visible pale sclera, not front-set and not tiny dots
 - [ ] Skin is mottled/striped rather than flat — either darker red-brown mottling over a salmon/orange-red base, or a two-tone teal countershading mask around the eyes/dome/limbs
 - [ ] A wide, thin, down-turned mouth sits beneath a pale cream/yellow pendulous chin-and-throat sac
-- [ ] Barbels hang from the chin
-- [ ] Small paired nostril slits sit on a short vertical ridge between the eyes
+- [ ] Barbels hang from the chin; small paired nostril slits on a short ridge between the eyes
+- [ ] Realistic rendering: glossy, wet, deeply wrinkled and pitted hide like the live-action masks, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 - **A single flat skin-colour gene cannot produce the mottled/striped pattern or the two-tone
@@ -211,9 +216,11 @@ two lateral eye bulges**, which is the core silhouette. What is wrong:
   female underwater in reddish-brown with bold **teal countershading**. The proof
   that skin is a two-tone pattern rather than a flat colour, plus the best view of
   **flipper feet**, skin texture, and the female's more prominent chest.
-- `wookieepedia_mon_cal_hand_holes.png` — the hand detail shot. Settles the **three
-  palm suction-cup holes** and the 1-thumb / 2-long / 2-short clawed finger
-  arrangement, and gives the best close-up of eye, nostril slits, mouth and barbel.
+- `wookieepedia_ackbar_closeup_rotj.jpg` — live-action *Return of the Jedi* close-up of Ackbar: glossy wrinkled russet
+  hide, golden lateral eye, folded lips, mottled dome. File `Ackbar HS.jpg` —
+  https://static.wikia.nocookie.net/starwars/images/f/fb/Ackbar_HS.jpg/revision/20240107063824
+- `wookieepedia_mon_cal_hand_holes.png` — **animated (The Clone Wars), palm anatomy only.** Settles the **three
+  palm suction-cup holes** and the 1-thumb / 2-long / 2-short clawed finger arrangement. Not a rendering-style target.
 - `wookieepedia_moncal_white_calamari.jpg` — the canon "white" skin entry. Shows how
   far hue travels while the dome/eye/chin arrangement stays fixed.
 - `donor_current_sprite.png` — the repo's greyscale `RSW_MonCalamariHead` mask. Gets
