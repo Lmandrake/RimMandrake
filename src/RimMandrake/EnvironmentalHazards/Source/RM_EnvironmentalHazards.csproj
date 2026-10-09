@@ -215,6 +215,7 @@
     <Compile Include="RM_ExplosiveGrowthSuppressionBridge.cs" />
     <Compile Include="RM_Patch_HazardApparelScoring.cs" />
     <Compile Include="RM_DefAliases.cs" />
+    <Compile Include="RM_SurfaceHome.cs" />
     <Compile Include="RM_MapComponent_SumpLivingMap.cs" />
   </ItemGroup>
 

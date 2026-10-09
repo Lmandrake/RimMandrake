@@ -1,0 +1,639 @@
+{
+ "chains": [
+  {
+   "name": "current",
+   "components": [
+    {
+     "name": "defs_core",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "TerrainDef/RM_FordStones",
+          "found": true,
+          "defName": "RM_FordStones",
+          "defType": "TerrainDef",
+          "label": "ford stones",
+          "modName": "RimMandrake: FlowWorks",
+          "packageId": "mandrake.rm.flowworks",
+          "fields": {
+           "texturePath": "Terrain/Surfaces/Flagstone",
+           "edgeType": "FadeRough",
+           "customShader": null,
+           "customShaderParameters": null,
+           "waterDepthShader": null,
+           "waterDepthShaderParameters": null,
+           "renderPrecedence": 390,
+           "affordances": [
+            "Light"
+           ],
+           "layerable": true,
+           "scatterType": null,
+           "takeFootprints": false,
+           "natural": false,
+           "takeSplashes": false,
+           "avoidWander": false,
+           "changeable": true,
+           "smoothedTerrain": null,
+           "gravshipReplacementTerrain": null,
+           "holdSnowOrSand": true,
+           "isPaintable": false,
+           "extinguishesFire": false,
+           "colorDef": null,
+           "driesTo": null,
+           "tags": [
+            "Floor"
+           ],
+           "burnedDef": null,
+           "tools": null,
+           "extraDeteriorationFactor": 0.0,
+           "destroyOnBombDamageThreshold": -1.0,
+           "destroyBuildingsOnDestroyed": false,
+           "traversedThought": null,
+           "extraDraftedPerceivedPathCost": 0,
+           "extraNonDraftedPerceivedPathCost": 0,
+           "destroyEffect": null,
+           "destroyEffectWater": null,
+           "autoRebuildable": false,
+           "categoryType": "Misc",
+           "meltSnowRadius": 0.0,
+           "heatPerTick": 0.0,
+           "igniteRadius": 0.0,
+           "ignitePawnsIntervalTicks": 0.0,
+           "burnDamage": 0,
+           "burnIntervalTicks": 0.0,
+           "supportsRock": true,
+           "toxicBuildupFactor": 0.0,
+           "dontRender": false,
+           "exposesToVacuum": false,
+           "canFreeze": false,
+           "dangerous": false,
+           "preventCraters": false,
+           "canEverTerraform": true,
+           "waterBodyType": "None",
+           "cropIcon": true,
+           "glowRadius": 0.0,
+           "throwFleckChance": 0.0,
+           "fleckData": null,
+           "isFoundation": false,
+           "bridge": false,
+           "bridgePropsPath": null,
+           "spaceBridgePropsPath": null,
+           "temporary": false,
+           "tempTerrain": null,
+           "floodTerrain": null,
+           "canBePolluted": true,
+           "pollutedTexturePath": null,
+           "pollutionOverlayTexturePath": null,
+           "pollutionShaderType": null,
+           "generatedFilth": null,
+           "filthAcceptanceMask": "Any",
+           "spaceEdgeGraphicData": null,
+           "waterDepthMaterial": null,
+           "statBases": [
+            "StatModifier",
+            "StatModifier"
+           ],
+           "passability": "Standable",
+           "pathCost": 10,
+           "pathCostIgnoreRepeat": true,
+           "fertility": 0.0,
+           "costList": [
+            "ThingDefCountClass"
+           ],
+           "costStuffCount": 0,
+           "stuffCategories": null,
+           "stuffCategorySummary": null,
+           "costListForDifficulty": null,
+           "drawStyleCategory": "Floors",
+           "clearBuildingArea": true,
+           "resourcesFractionWhenDeconstructed": 0.5,
+           "blocksAltitudes": null,
+           "dominantStyleCategory": null,
+           "forcePassableByFlyingPawns": false,
+           "forceMoveItemsBeforeConstruction": false,
+           "isAltar": false,
+           "useStuffTerrainAffordance": false,
+           "terrainAffordanceNeeded": "RM_Fordable",
+           "buildingPrerequisites": null,
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": null,
+           "minMonolithLevel": 0,
+           "constructionSkillPrerequisite": 0,
+           "artisticSkillPrerequisite": 0,
+           "minTechLevelToBuild": "Undefined",
+           "maxTechLevelToBuild": "Undefined",
+           "requireInspectedGravEngine": false,
+           "altitudeLayer": "Item",
+           "repairEffect": null,
+           "constructEffect": "ConstructDirt",
+           "colorPerStuff": null,
+           "canGenerateDefaultDesignator": true,
+           "ideoBuilding": false,
+           "specialDisplayRadius": 0.0,
+           "placeWorkers": null,
+           "designationCategory": "Structure",
+           "designatorDropdown": null,
+           "designationHotKey": null,
+           "uiOrder": 2999.0,
+           "uiIconPath": null,
+           "uiIconPathsStuff": null,
+           "uiIconForStackCount": -1,
+           "blueprintDef": "Blueprint_RM_FordStones",
+           "installBlueprintDef": null,
+           "frameDef": "Frame_RM_FordStones",
+           "uiIconMaterial": null,
+           "stuffUiIcons": null,
+           "uiIconAngle": 0.0,
+           "defName": "RM_FordStones",
+           "label": "ford stones",
+           "description": "Big flat stones set across shallow moving water. The current cannot carry anyone standing on or right beside them, so a ford is the cheap, safe way across a river's shallows. Useless in deep water - build a bridge there.",
+           "descriptionHyperlinks": null,
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": null,
+           "shortHash": 20376,
+           "index": 114,
+           "fileName": "RM_FordStones.xml",
+           "defNameHash": 1883469379,
+           "generated": false,
+           "debugRandomId": 29240
+          }
+         }
+        ],
+        "ticksGame": 16700,
+        "operation": {
+         "OperationId": "op_1248780d9cb34f77979abd9e01fb0a36",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:34:08.261944+00:00",
+         "CompletedAtUtc": "2026-10-06T07:34:08.3111655+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grid_from_river",
+     "toggle": "surfaceCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofGrid(System.String)",
+        "result": "GRID current=1787 fast=0 edge=1787 size=1.00 flood=False",
+        "ticksGame": 16700,
+        "operation": {
+         "OperationId": "op_8265d69102974b749e3a8143a79db4b5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:34:08.3619362+00:00",
+         "CompletedAtUtc": "2026-10-06T07:34:08.4106472+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shoves",
+     "toggle": "surfaceCurrentEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: UNMEASURED: static_call ProofShove did not answer: {'success': False, 'message': 'No public static ProofShove with 2 params.', 'details': {'available': ['System.String ProofShove(System.String)']}, 'operation': {'OperationId': 'op_77cd54f1461a4fa4bc80adb7140b0b78', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-06T07:34:08.4619607+00:00', 'CompletedAtUtc': '2026-10-06T07:34:08.5104957+00:00', 'DurationMs': 48, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofShove with 2 params.",
+        "details": {
+         "available": [
+          "System.String ProofShove(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_77cd54f1461a4fa4bc80adb7140b0b78",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:34:08.4619607+00:00",
+         "CompletedAtUtc": "2026-10-06T07:34:08.5104957+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ford_exempt",
+     "toggle": "fordsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "exemptions",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "swept",
+   "components": [
+    {
+     "name": "returns_home",
+     "toggle": "washOffMapEdge",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSwept(System.String)",
+        "result": "SWEPT pending=0",
+        "ticksGame": 16700,
+        "operation": {
+         "OperationId": "op_e2ffb4d13f9a486e90dacc3af5c331fa",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:34:13.5781087+00:00",
+         "CompletedAtUtc": "2026-10-06T07:34:13.6271431+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "works",
+   "components": [
+    {
+     "name": "place_weir_bank_edge",
+     "toggle": "bankWorksEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirPlace(System.String)",
+        "result": "PLACE edge=True dry=False wet=False",
+        "ticksGame": 16700,
+        "operation": {
+         "OperationId": "op_6ad0e71ee8174986967f9cb8fd56d23a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:34:19.3786005+00:00",
+         "CompletedAtUtc": "2026-10-06T07:34:19.4270007+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "weir_arrest_and_pool",
+     "toggle": "bankWorksEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: weir did not arrest or calm upstream: {'cells': '0', 'dropped': '0', 'arrestedWet': 'True', 'at': '(79,'}",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWeirPool(System.String)",
+        "result": "POOL cells=0 dropped=0 arrestedWet=True at=(79, 0, 0)",
+        "ticksGame": 16700,
+        "operation": {
+         "OperationId": "op_8469691e9b8f4c16a77e0f8d97395099",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:34:19.4782321+00:00",
+         "CompletedAtUtc": "2026-10-06T07:34:19.5278375+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "weir_fish_draws_stock",
+     "toggle": "weirCatchesFish",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breach_wash",
+     "toggle": "breachWashesCatch",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "silt_richen_and_revert",
+     "toggle": "siltRichening",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ferry_rope",
+     "toggle": "ferryEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "levee_engine_fact",
+     "toggle": "stakeLineLevee",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "levee_holds_and_gap_leaks",
+     "toggle": "stakeLineLevee",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breach_cascade_order",
+     "toggle": "breachEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ferry_rope_undrafted",
+     "toggle": "ferryRopeGuidesColonists",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001827E207ED0>",
+  "<suite.Component object at 0x000001827E308160>"
+ ],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 18.4,
+ "chains_run": [
+  "current",
+  "swept",
+  "works"
+ ]
+}

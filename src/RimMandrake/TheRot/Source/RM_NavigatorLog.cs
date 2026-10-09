@@ -78,7 +78,7 @@ namespace RimMandrake.TheRot
             QuestScriptDef script = DefDatabase<QuestScriptDef>.GetNamedSilentFail("RM_NavigatorSalvageSite");
             if (script == null) return null;
             Slate slate = new Slate();
-            Map home = map ?? Find.AnyPlayerHomeMap;
+            Map home = map ?? RimMandrake.EnvironmentalHazards.RM_SurfaceHome.AnyPlayerSurfaceHomeMap;
             if (home != null)
             {
                 slate.Set("map", home);

@@ -234,7 +234,7 @@ namespace RimMandrake.FeverWood
             {
                 return;
             }
-            Map home = Find.AnyPlayerHomeMap;
+            Map home = RimMandrake.EnvironmentalHazards.RM_SurfaceHome.AnyPlayerSurfaceHomeMap;
             string date = home != null
                 ? GenDate.DateFullStringAt(GenTicks.TicksAbs, Find.WorldGrid.LongLatOf(home.Tile))
                 : "the last few days";

@@ -1,0 +1,1148 @@
+{
+ "chains": [
+  {
+   "name": "flow_doors",
+   "components": [
+    {
+     "name": "doors_pass_liquid_closed",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(2500) [watched] -> 2500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2500,
+        "requested": 2500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 130,
+         "z": 160
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 3.0,
+        "excavatedCellCount": 36,
+        "ticksGame": 133203,
+        "operation": {
+         "OperationId": "op_6e3180877d2c4e768def4653ec1498c4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:03:05.2658998+00:00",
+         "CompletedAtUtc": "2026-10-06T09:03:05.3144689+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLiquid(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_Sluice open=False | depth 2 fill 1",
+        "ticksGame": 133203,
+        "operation": {
+         "OperationId": "op_51ef7dc568794564af54dd6434fb82e8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:03:05.3652985+00:00",
+         "CompletedAtUtc": "2026-10-06T09:03:05.4143634+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLiquid(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_SecurityGrateDoor open=False | depth 2 fill 1",
+        "ticksGame": 133203,
+        "operation": {
+         "OperationId": "op_b4d1adff6ba64e12901f678eb634ff92",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:03:05.4645236+00:00",
+         "CompletedAtUtc": "2026-10-06T09:03:05.5137321+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sluice_holds_small_only",
+     "toggle": "sluiceLetsBigThroughEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: sluice let a hare through: DOOR RM_Sluice stuff WoodLog | Human91092 OPEN held=False w=1 | Muffalo91098 OPEN held=False w=2 | Hare91099 OPEN held=False w=1",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOpen(Verse.Map, Verse.IntVec3)",
+        "result": "DOOR RM_Sluice stuff WoodLog | Human91092 OPEN held=False w=1 | Muffalo91098 OPEN held=False w=2 | Hare91099 OPEN held=False w=1",
+        "ticksGame": 133203,
+        "operation": {
+         "OperationId": "op_0b5c1f7329554f08bfae19e1c9a7200b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:03:07.4644733+00:00",
+         "CompletedAtUtc": "2026-10-06T09:03:07.5137471+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sluice_rule_off_holds",
+     "toggle": "sluiceLetsBigThroughEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grate_holds_prisoner",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sealed_from_pit",
+     "toggle": "flowDoorsSealedFromPitEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sealed_rule_off",
+     "toggle": "flowDoorsSealedFromPitEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 2500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "pit_fill_effects",
+   "components": [
+    {
+     "name": "pit_fluid_effects_per_cell",
+     "toggle": "pitDrowningEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: water pit: drowning only, got {}",
+     "evidence": [
+      {
+       "call": "wait_ticks(1000) [watched] -> 1000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1000,
+        "requested": 1000
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "FILLFX 0 | ",
+        "ticksGame": 134203,
+        "operation": {
+         "OperationId": "op_370616d0fb0c42aca903e9f9ba91be57",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:03:33.6142129+00:00",
+         "CompletedAtUtc": "2026-10-06T09:03:33.6643346+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "oil_pit_burns_occupant",
+     "toggle": "canalFireEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "fed": 0,
+    "ticks_spent": 1000,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "toggle_tank_loop",
+   "components": [
+    {
+     "name": "tank_loop_on",
+     "toggle": "tankLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: tank did not draw down the adjacent cell",
+     "evidence": [
+      {
+       "call": "wait_ticks(2500) [watched] -> 2500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2500,
+        "requested": 2500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 155,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 3.0,
+        "excavatedCellCount": 31,
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_5f9043a6716c4f2185e66e78b62663a2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:27.4390422+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:27.4882038+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "tank_loop_off",
+     "toggle": "tankLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 2500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "pit_prison_room",
+   "components": [
+    {
+     "name": "pit_is_its_own_room",
+     "toggle": "superdeepRoomsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=True pitRoom=True proper=True edge=False prison=False roomsOn=True pitId=705 lipId=657",
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_0870125c55c64cc9a32cb48d486e3b25",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:34.0400377+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:34.0882448+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rooms_off_pit_joins_lip",
+     "toggle": "superdeepRoomsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'superdeepRoomsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_2ed7231c97384e76815e7e58e427fbda",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:34.238586+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:34.5408944+00:00",
+         "DurationMs": 302,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=False pitRoom=False proper=False edge=True prison=False roomsOn=False pitId=783 lipId=783",
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_996114eb619d40d6a9367c603b6d9de4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:34.5925239+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:34.6171459+00:00",
+         "DurationMs": 24,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'superdeepRoomsEnabled': True})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_cd40149dfa564a80b33507a471151b48",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:34.7686344+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:35.0687613+00:00",
+         "DurationMs": 300,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "prisoner_bed_makes_prison_cell",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/build_batch",
+       "result": {
+        "success": true,
+        "placed": 1,
+        "survived": 1,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "1 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+         {
+          "def": "Bed",
+          "stuff": "WoodLog",
+          "x": 84,
+          "z": 159,
+          "rot": 0,
+          "faction": "PlayerColony",
+          "hitPoints": 91,
+          "maxHitPoints": 91,
+          "quality": "Normal",
+          "destroyed": false
+         }
+        ],
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_28d3537d5d144036b91869dca31a52db",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/build-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:35.0978127+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:35.1469856+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Bed91189",
+          "def": "Bed",
+          "label": "Wooden bed (normal)",
+          "x": 84,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 91,
+          "maxHitPoints": 91,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "stuff": "WoodLog",
+          "quality": "Normal"
+         }
+        ],
+        "scanned": 11868,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "Bed": 1
+        },
+        "ticksGame": 136703,
+        "message": "1 of 1 matching thing(s) returned, 11868 examined.",
+        "operation": {
+         "OperationId": "op_7732d3ee89cc4fd3a6f139aa58a26fe0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:35.1981176+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:35.2473944+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_bed_owner_type",
+       "result": {
+        "success": true,
+        "mode": "set",
+        "thingId": "Bed91189",
+        "label": "Wooden bed (normal)",
+        "def": "Bed",
+        "ownerTypeBefore": "Colonist",
+        "ownerTypeAfter": "Prisoner",
+        "forPrisonersAfter": true,
+        "medicalBefore": false,
+        "medicalAfter": false,
+        "changed": [
+         "ownerType"
+        ],
+        "alreadyInRequestedState": false,
+        "ownersBefore": 0,
+        "ownersAfter": 0,
+        "faction": "NorthstarBland",
+        "roomIsPrisonCell": false,
+        "roomTouchesMapEdge": false,
+        "prisonerIntakeBlockers": [],
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_c6828bd1775842c79d57c238ac1400ce",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-bed-owner-type",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:35.2992347+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:35.3473835+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_8b93f49cd4414b1e98b61d748bfb2e98",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:35.3976559+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:35.6933556+00:00",
+         "DurationMs": 295,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True pitId=993 lipId=980",
+        "ticksGame": 136703,
+        "operation": {
+         "OperationId": "op_d83f7a31eb1842b2b8b95a5c01fd8fc9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:35.7245071+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:35.77469+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "capture_down_from_the_lip",
+     "toggle": "captureDownEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: capture-down not allowed on a held hostile in a prison pit: VERDICT NotHeld held=False prisoner=False cell=83,160",
+     "evidence": [
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT NotHeld held=False prisoner=False cell=83,160",
+        "ticksGame": 136763,
+        "operation": {
+         "OperationId": "op_aea64342083945a982e4e8c6abfb5018",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:38.5922914+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:38.6414253+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_274fb7fcbad143a8bac8f668b8ade6c1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-draft",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:38.6913852+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:38.7414619+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": false,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "Wait_Combat",
+        "requestedJobDef": "RM_CaptureDown",
+        "afterJobDef": "Wait_Combat",
+        "nowRunningRequested": false,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": "Job was accepted (enqueued) but curJob after 60 tick(s) is 'Wait_Combat', not 'RM_CaptureDown' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+        "operation": {
+         "OperationId": "op_9ac16f9526d94f128841f56f9018cc9d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:04:38.7910967+00:00",
+         "CompletedAtUtc": "2026-10-06T09:04:55.9410522+00:00",
+         "DurationMs": 17149,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(900) [watched] -> 900 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 900,
+        "requested": 900
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT NotHeld held=False prisoner=False cell=70,160",
+        "ticksGame": 137663,
+        "operation": {
+         "OperationId": "op_c0def6b1e38f40ea95caca6b2ca90d6a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:05:13.4743479+00:00",
+         "CompletedAtUtc": "2026-10-06T09:05:13.5254307+00:00",
+         "DurationMs": 51,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "5 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human88722",
+          "name": "Reid",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 84,
+          "z": 128,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human88725",
+          "name": "Wolfie",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 85,
+          "z": 140,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human88728",
+          "name": "Conrad",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 88,
+          "z": 132,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human91190",
+          "name": "Bepe",
+          "kind": "Pirate",
+          "kindDef": "Pirate",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Neanderthal",
+          "xenotypeLabel": "neanderthal",
+          "uniqueXenotype": false,
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Selgi Coalition",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 70,
+          "z": 160,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human91198",
+          "name": "Kagamin",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 75,
+          "z": 160,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         }
+        ],
+        "returned": 5,
+        "truncated": 0,
+        "totalOnMap": 5,
+        "ticksGame": 137663,
+        "operation": {
+         "OperationId": "op_b6e156fcefed496c8961e58f1a4a44dc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:05:13.5754577+00:00",
+         "CompletedAtUtc": "2026-10-06T09:05:13.6240028+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "capture_down_off",
+     "toggle": "captureDownEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warden_served_from_lip",
+     "toggle": "wardenFromLipEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warden_lip_off",
+     "toggle": "wardenFromLipEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 3,
+    "fed": 0,
+    "ticks_spent": 960,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000025C9467BD90>",
+  "<suite.Component object at 0x0000025C9475C160>",
+  "<suite.Component object at 0x0000025C9469F150>",
+  "<suite.Component object at 0x0000025C9477A970>"
+ ],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 183.7,
+ "chains_run": [
+  "flow_doors",
+  "pit_fill_effects",
+  "toggle_tank_loop",
+  "pit_prison_room"
+ ]
+}

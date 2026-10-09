@@ -1,0 +1,1215 @@
+{
+ "chains": [
+  {
+   "name": "pit_cover_fall",
+   "components": [
+    {
+     "name": "heavy_springs_woven_cover",
+     "toggle": "trapTriggerEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 9 thing(s) of 9 requested across 9 of 9 op(s).",
+        "opsRequested": 9,
+        "spawned": 9,
+        "failed": 0,
+        "thingsRequested": 9,
+        "thingsPlaced": 9,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_PitCover_WovenScrap": 9
+        },
+        "errors": [],
+        "ticksGame": 145343,
+        "operation": {
+         "OperationId": "op_3112b66f6e2b4cea8217ba16389a9a97",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:21.4013245+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:21.4498845+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human91523",
+          "name": "Vexac\u00f3ro",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 84,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 145343,
+        "operation": {
+         "OperationId": "op_ddf4f7ed5c0e44ffa6262939b314bf8e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:21.5016532+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:21.5497206+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 11852,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {},
+        "ticksGame": 145843,
+        "message": "NOTHING MATCHED. 11852 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_174bc0b3f1b74721975bbe9787297b1e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:31.4169906+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:31.4665425+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1347,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 145843,
+        "operation": {
+         "OperationId": "op_e21091bc75d7420085fdea0d7de07216",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:31.5191138+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:31.5660959+00:00",
+         "DurationMs": 46,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1347,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 145843,
+        "operation": {
+         "OperationId": "op_f913501e79704fdeb02fcd8d26cb7c81",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:31.6173591+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:31.6664345+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1347,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 145843,
+        "operation": {
+         "OperationId": "op_8821cae85c814a7fbf7c35181cc80db3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:31.7173673+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:31.7669221+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1347,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [
+         {
+          "id": "Human91523",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Selgi Coalition",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 145843,
+        "operation": {
+         "OperationId": "op_45cf166dfcba41b1b8bb5a67b18503b7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:31.8169771+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:31.8665428+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "light_does_not_spring_reinforced",
+     "toggle": "trapTriggerEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: pawn on an intact cover reads as held",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 9 thing(s) of 9 requested across 9 of 9 op(s).",
+        "opsRequested": 9,
+        "spawned": 9,
+        "failed": 0,
+        "thingsRequested": 9,
+        "thingsPlaced": 9,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_PitCover_ReinforcedFrame": 9
+        },
+        "errors": [],
+        "ticksGame": 145843,
+        "operation": {
+         "OperationId": "op_12ee76d905ff46079aae0a75bb1a2196",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:31.9182936+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:31.966339+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human91552",
+          "name": "Irocam",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 93,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 145843,
+        "operation": {
+         "OperationId": "op_739b010cc6e34f3480e56e4d697b203c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:32.0172124+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:32.0665763+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_PitCover_ReinforcedFrame91543",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 92,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91544",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 92,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91545",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 92,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91546",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 93,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91547",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 93,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91548",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 93,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91549",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 94,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91550",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 94,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91551",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 94,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 11862,
+        "countReturned": 9,
+        "countMatched": 9,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {
+         "RM_PitCover_ReinforcedFrame": 9
+        },
+        "ticksGame": 146343,
+        "message": "9 of 9 matching thing(s) returned, 11862 examined.",
+        "operation": {
+         "OperationId": "op_f0e2388b50bd4555b835085a71ee82ff",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:41.9185068+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:41.9665957+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 92,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_970ebd6cf0aa455dafffc561b59301bf",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.0170406+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.0666144+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 92,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_2ab77a9b6ae34acc8171ad4198db3958",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.117221+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.1670353+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 92,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_c47bfd50313947afb397079ddc7e153a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.2172609+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.2665509+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 93,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_37bcd50630e84fe683a1e4f35164d8f8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.318728+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.3667887+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 93,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_627f0dd5bff048abb613daf46c8c1d90",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.4173714+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.4664942+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 93,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_f1adc055812840d58bceb2e30b3b6b03",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.517627+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.5665268+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 94,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_e4ba4dd3045944d495c8c696ed0f520b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.6177518+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.6669621+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 94,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_e462607aa5874b0db14d92da15bddd83",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.7186262+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.7662966+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 94,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1356,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 5,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7",
+         "Human91523@84,160 t=145344 fall=5.6"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 146343,
+        "operation": {
+         "OperationId": "op_6f7e5387e0694daebd4241ee72927d0c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:11:42.8172718+00:00",
+         "CompletedAtUtc": "2026-10-06T09:11:42.8666938+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "fed": 0,
+    "ticks_spent": 1000,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000027F39887C50>"
+ ],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 30.8,
+ "chains_run": [
+  "pit_cover_fall"
+ ]
+}

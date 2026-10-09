@@ -1,0 +1,3365 @@
+{
+ "chains": [
+  {
+   "name": "pit_cover_fall",
+   "components": [
+    {
+     "name": "heavy_springs_woven_cover",
+     "toggle": "trapTriggerEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 9 thing(s) of 9 requested across 9 of 9 op(s).",
+        "opsRequested": 9,
+        "spawned": 9,
+        "failed": 0,
+        "thingsRequested": 9,
+        "thingsPlaced": 9,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_PitCover_WovenScrap": 9
+        },
+        "errors": [],
+        "ticksGame": 137663,
+        "operation": {
+         "OperationId": "op_82f58e9b18fe4ba8a3451d0328d02e22",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:19.6912876+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:19.7398872+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human91231",
+          "name": "Zaboaro",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 84,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 137663,
+        "operation": {
+         "OperationId": "op_fd6829cd92484f7bab7d50c7e63f668a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:19.7912398+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:19.8407245+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 11881,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 6,
+        "perDef": {},
+        "ticksGame": 138163,
+        "message": "NOTHING MATCHED. 11881 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_de285b66b3d241bf84120155e544c06b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:29.7068908+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:29.7571386+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1010,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_76da47e82cea42b39d781dadb411668f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:29.808156+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:29.8566069+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1010,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_244e4d13b741454f82757d66c065890e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:29.9079981+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:29.9572416+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1010,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_6fb1e2f6b56e433f8220d8d3b02d0200",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:30.0073547+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:30.0563233+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1010,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_8e576e487fd54ee7857ee5f609e65a6e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:30.1073643+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:30.1572067+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1010,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_1f4cc53d154c470697fd16650fb84d60",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:30.2084342+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:30.256921+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 84,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1010,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_93c60e33a1964715b2495ef00ffed87e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:30.3081254+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:30.3567476+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 85,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1010,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [
+         {
+          "id": "Human91231",
+          "def": "Human",
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "faction": "Selgi Coalition",
+          "bodySize": 1.0,
+          "requiredWidth": 1,
+          "captured": true,
+          "jumper": false,
+          "held": true,
+          "lipCells": 16,
+          "lipReachable": 0,
+          "canReachMapEdge": false
+         }
+        ],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_bae4e1dbcf4b483ea33232c79688adcc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:30.4073365+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:30.4569196+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "light_does_not_spring_reinforced",
+     "toggle": "trapTriggerEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: pawn on an intact cover reads as held",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 9 thing(s) of 9 requested across 9 of 9 op(s).",
+        "opsRequested": 9,
+        "spawned": 9,
+        "failed": 0,
+        "thingsRequested": 9,
+        "thingsPlaced": 9,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_PitCover_ReinforcedFrame": 9
+        },
+        "errors": [],
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_fa2470ad1a3e40859047d1587e872488",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:30.5073387+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:30.5571224+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human91259",
+          "name": "Red",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 93,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 138163,
+        "operation": {
+         "OperationId": "op_b5cdb034fa4d40e7927ae9f30f4db475",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:30.6081535+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:30.6563379+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_PitCover_ReinforcedFrame91250",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 92,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91251",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 92,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91252",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 92,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91253",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 93,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91254",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 93,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91255",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 93,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91256",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 94,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91257",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 94,
+          "z": 160,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         },
+         {
+          "id": "RM_PitCover_ReinforcedFrame91258",
+          "def": "RM_PitCover_ReinforcedFrame",
+          "label": "Reinforced pit cover",
+          "x": 94,
+          "z": 161,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 160,
+          "maxHitPoints": 160,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 11890,
+        "countReturned": 9,
+        "countMatched": 9,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_PitCover_ReinforcedFrame": 9
+        },
+        "ticksGame": 138663,
+        "message": "9 of 9 matching thing(s) returned, 11890 examined.",
+        "operation": {
+         "OperationId": "op_044e38ec9bb54e628440fde9979bf782",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:40.5068901+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:40.5565632+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 92,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_581d8fab7a1b4c639bd9e34491fb77c2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:40.6083783+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:40.6571549+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 92,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_2cfdfa08051b470eaf905846fe5d99e8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:40.7081063+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:40.7565243+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 92,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_d04eb40f8e0642809246786f69271271",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:40.8071647+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:40.8566385+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 93,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_7f79fec40848450f848f8f9aafcb3389",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:40.907976+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:40.9572136+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 93,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_bb7d52669feb4a62b0d2630df4de13f6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:41.0085569+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:41.0569766+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 93,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_66dd3b676c0140abb3db5a3e2e5d35c6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:41.1079527+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:41.1570211+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 94,
+         "z": 159
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_8e9f6b75eae848799e2b037f3a36f216",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:41.2074285+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:41.2566189+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 94,
+         "z": 160
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_fbbbc8a2b2e54455a4b64602c3c4d43c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:41.3073408+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:41.3570271+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_pit_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 94,
+         "z": 161
+        },
+        "mapId": 3,
+        "depthRaw": 4,
+        "fillRaw": 0,
+        "isSuperdeep": true,
+        "pitWidth": 3,
+        "hasLadder": false,
+        "hasSpikes": null,
+        "room": {
+         "id": 1019,
+         "role": "Room",
+         "isPrisonCell": false,
+         "cellCount": 9,
+         "touchesMapEdge": false
+        },
+        "pawns": [],
+        "legacyHolders": [],
+        "descentCount": 4,
+        "recentDescents": [
+         "Human89433@83,159 t=49862 fall=4.7",
+         "Human89512@83,159 t=53160 fall=4.9",
+         "Human89621@84,160 t=60314 fall=5.3",
+         "Human91231@84,160 t=137664 fall=5.7"
+        ],
+        "settings": {
+         "superdeepCaptureEnabled": true,
+         "ladderRequiredToExitEnabled": true,
+         "superdeepCapturesOwnFaction": false,
+         "pitWidthBodySizeMultiplier": 1.0
+        },
+        "ticksGame": 138663,
+        "operation": {
+         "OperationId": "op_00ce92a3328440e99a0552008fcebb7b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-pit-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:06:41.4083957+00:00",
+         "CompletedAtUtc": "2026-10-06T09:06:41.4561697+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "fed": 0,
+    "ticks_spent": 1000,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "flow_doors",
+   "components": [
+    {
+     "name": "doors_pass_liquid_closed",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_injured_unexpectedly: colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T020612\\FlowWorksExtensions__flow_doors__colonist_injured_unexpectedly__t139263__001.json]",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_injured_unexpectedly: colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown",
+      "hits": [
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T020612\\FlowWorksExtensions__flow_doors__colonist_injured_unexpectedly__t139263__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T020612\\FlowWorksExtensions__flow_doors__colonist_injured_unexpectedly__t139263__001.png"
+      ]
+     }
+    },
+    {
+     "name": "sluice_holds_small_only",
+     "toggle": "sluiceLetsBigThroughEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surpr",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sluice_rule_off_holds",
+     "toggle": "sluiceLetsBigThroughEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surpr",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "grate_holds_prisoner",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surpr",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sealed_from_pit",
+     "toggle": "flowDoorsSealedFromPitEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surpr",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sealed_rule_off",
+     "toggle": "flowDoorsSealedFromPitEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surpr",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 600,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T020612\\FlowWorksExtensions__flow_doors__colonist_injured_unexpectedly__t139263__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T020612\\FlowWorksExtensions__flow_doors__colonist_injured_unexpectedly__t139263__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 139263,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Conrad gained 1 new hediff(s) (RM_PitExposure); cause_hint=unknown"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "toggle_pit_depth_draw",
+   "components": [
+    {
+     "name": "pit_depth_draw_on",
+     "toggle": "pitDepthDrawOffsetEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human91315",
+          "name": "Jet",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 84,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 139263,
+        "operation": {
+         "OperationId": "op_ca356c99d32049e4a14e3b81610157fa",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:07.4656706+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:07.5143868+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_311f817e5bba416cb0099781f700eb44",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-draft",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:07.5656677+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:07.6147045+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(250) [watched] -> 250 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 250,
+        "requested": 250
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPawnSink(System.String)",
+        "result": "SINK id=Human91315 cell=84,160 depth=4 fill=0 fluid=none sink=1.2 drawDz=-1.2 moving=False wallOverHead=1.2 enabled=True",
+        "ticksGame": 139513,
+        "operation": {
+         "OperationId": "op_02f8cddd112c455490ab3fb8c5f43cfe",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:13.3484852+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:13.3982095+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pit_depth_draw_off",
+     "toggle": "pitDepthDrawOffsetEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'pitDepthDrawOffsetEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human91326",
+          "name": "Furr",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 84,
+          "z": 159,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 139513,
+        "operation": {
+         "OperationId": "op_1db2298beb1f4258826dcbc9f63c57ab",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:13.5497623+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:13.5980613+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_7c7e920aafce48a68ec911dbe3592743",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-draft",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:13.6491616+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:13.6981312+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(250) [watched] -> 250 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 250,
+        "requested": 250
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPawnSink(System.String)",
+        "result": "SINK id=Human91326 cell=84,159 depth=4 fill=0 fluid=none sink=1.2 drawDz=0 moving=False wallOverHead=1.2 enabled=False",
+        "ticksGame": 139763,
+        "operation": {
+         "OperationId": "op_34922ec740bb46b6b25a3c1a0b10f270",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:19.4818203+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:19.5325482+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 3,
+    "fed": 0,
+    "ticks_spent": 500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "pit_fill_effects",
+   "components": [
+    {
+     "name": "pit_fluid_effects_per_cell",
+     "toggle": "pitDrowningEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(1000) [watched] -> 1000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1000,
+        "requested": 1000
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "FILLFX 3 | Human91339@81,160 D=4 F=4 fluid=RM_Fluid_Water swimmer=False drown=0.347 tox=0.000 burning=False | Human91346@85,160 D=4 F=4 fluid=RM_Fluid_Poison swimmer=False drown=0.347 tox=0.039 burning=False | Human91353@89,160 D=4 F=4 fluid=RM_Fluid_Oil swimmer=False drown=0.347 tox=0.000 burning=False",
+        "ticksGame": 140763,
+        "operation": {
+         "OperationId": "op_cc1582918f9b439ba70d65c3707ab639",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:46.4319075+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:46.4808261+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "oil_pit_burns_occupant",
+     "toggle": "canalFireEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (89, 0, 160) | FIRE burning 13 | front pending 0 | burned levels 0",
+        "ticksGame": 140763,
+        "operation": {
+         "OperationId": "op_8f85e1a466674db3b1f1e09c0d51f89e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:46.5322546+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:46.5813222+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "FILLFX 3 | Human91339@81,160 D=4 F=4 fluid=RM_Fluid_Water swimmer=False drown=0.507 tox=0.000 burning=False | Human91346@85,160 D=4 F=4 fluid=RM_Fluid_Poison swimmer=False drown=0.507 tox=0.058 burning=False | Human91353@89,160 D=4 F=4 fluid=RM_Fluid_Oil swimmer=False drown=0.507 tox=0.000 burning=True",
+        "ticksGame": 141263,
+        "operation": {
+         "OperationId": "op_9b3136b46ecb433dba336bfa05a77a0d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:56.4315612+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:56.4806907+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human91353",
+          "thingIdNumber": 91353,
+          "name": "Guaascam Quail",
+          "nameShort": "Quail",
+          "title": "framer",
+          "kindDef": "Pirate",
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Selgi Coalition",
+          "gender": "Male",
+          "ageBiologicalYears": 43,
+          "ageChronologicalYears": 43,
+          "developmentalStage": "Adult",
+          "xenotype": "Neanderthal",
+          "ideo": "Neo-Bhairavaism",
+          "childhood": "Scavenger22",
+          "adulthood": "Framer37",
+          "headType": "Male_HeavyJawNormal",
+          "bodyType": "Fat",
+          "hair": "ShaveTopBraid",
+          "beard": "SideWhiskers",
+          "position": {
+           "x": 89,
+           "z": 160
+          },
+          "traits": [
+           {
+            "def": "Industriousness",
+            "degree": 2,
+            "label": "Industrious",
+            "forced": false
+           },
+           {
+            "def": "Greedy",
+            "degree": 0,
+            "label": "Greedy",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 4,
+            "levelEffective": 0,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 11,
+            "levelEffective": 11,
+            "passion": "Major",
+            "xpSinceLastLevel": -1.60000014,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 4,
+            "levelEffective": 0,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "Bite",
+            "part": "Foot",
+            "severity": 3.0
+           },
+           {
+            "def": "RM_PitExposure",
+            "part": null,
+            "severity": 0.572000146
+           },
+           {
+            "def": "RM_PitDrowning",
+            "part": null,
+            "severity": 0.5066667
+           },
+           {
+            "def": "Burn",
+            "part": "Torso",
+            "severity": 2.17
+           },
+           {
+            "def": "Burn",
+            "part": "Ear",
+            "severity": 1.5
+           },
+           {
+            "def": "Burn",
+            "part": "Jaw",
+            "severity": 1.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.490400016,
+            "pct": 0.490400016
+           },
+           {
+            "need": "Food",
+            "level": 0.768000066,
+            "pct": 0.768000066
+           },
+           {
+            "need": "Rest",
+            "level": 0.9053781,
+            "pct": 0.9053781
+           }
+          ]
+         }
+        ],
+        "ticksGame": 141263,
+        "operation": {
+         "OperationId": "op_52d19c29bd034cd5827e48c0d8e8d1d0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:07:56.5316684+00:00",
+         "CompletedAtUtc": "2026-10-06T09:07:56.5812334+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 1560,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "toggle_tank_loop",
+   "components": [
+    {
+     "name": "tank_loop_on",
+     "toggle": "tankLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: tank did not draw down the adjacent cell",
+     "evidence": [
+      {
+       "call": "wait_ticks(2500) [watched] -> 2500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2500,
+        "requested": 2500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 155,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 3.0,
+        "excavatedCellCount": 31,
+        "ticksGame": 143823,
+        "operation": {
+         "OperationId": "op_10042ac151c6495d9e1b9d2049a72a43",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:08:53.3311682+00:00",
+         "CompletedAtUtc": "2026-10-06T09:08:53.3803724+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "tank_loop_off",
+     "toggle": "tankLoopEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 2500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "fluid_identity_recorded",
+   "components": [
+    {
+     "name": "wet_cells_and_bodies_carry_a_fluid",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: a wet cell or a body has no recorded fluid: FLUIDID wet 2374 | recorded 27 | unrecorded 2347 | fluids [RM_Fluid_Water,RM_Fluid_Tar,RM_Fluid_Poison,RM_Fluid_Oil] | bodies [1:RM_Fluid_Water,2:RM_Fluid_Water,3:RM_Fluid_Water,4:RM_Fluid_Water,5:RM_Fluid_Water]",
+     "evidence": [
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCensus()",
+        "result": "FLUIDID wet 2374 | recorded 27 | unrecorded 2347 | fluids [RM_Fluid_Water,RM_Fluid_Tar,RM_Fluid_Poison,RM_Fluid_Oil] | bodies [1:RM_Fluid_Water,2:RM_Fluid_Water,3:RM_Fluid_Water,4:RM_Fluid_Water,5:RM_Fluid_Water]",
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_8fde63dbcddd43599253d30e0c141878",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:08.3815791+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:08.4304076+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "pit_prison_room",
+   "components": [
+    {
+     "name": "pit_is_its_own_room",
+     "toggle": "superdeepRoomsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=True pitRoom=True proper=True edge=False prison=False roomsOn=True pitId=1042 lipId=980",
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_05f0ffdd876e4d0cbb6d54c05233c5fe",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:14.9143817+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:14.9636406+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rooms_off_pit_joins_lip",
+     "toggle": "superdeepRoomsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'superdeepRoomsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_7c869558d9de41f9998e06d3b36dcb8f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:15.1146852+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:15.4253509+00:00",
+         "DurationMs": 310,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=False pitRoom=False proper=False edge=True prison=False roomsOn=False pitId=1120 lipId=1120",
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_3c397c68b9864108ac41c8f48911efdd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:15.464043+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:15.5125816+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_06b72d3ed54541f6824a9b30032271d8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:15.6132246+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:15.9109694+00:00",
+         "DurationMs": 297,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "prisoner_bed_makes_prison_cell",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/build_batch",
+       "result": {
+        "success": true,
+        "placed": 1,
+        "survived": 1,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "1 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+         {
+          "def": "Bed",
+          "stuff": "WoodLog",
+          "x": 84,
+          "z": 159,
+          "rot": 0,
+          "faction": "PlayerColony",
+          "hitPoints": 91,
+          "maxHitPoints": 91,
+          "quality": "Normal",
+          "destroyed": false
+         }
+        ],
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_f3c2ed1056c64919ae56a48646c72f86",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/build-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:15.9386269+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:15.9874763+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Bed91479",
+          "def": "Bed",
+          "label": "Wooden bed (normal)",
+          "x": 84,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 91,
+          "maxHitPoints": 91,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "stuff": "WoodLog",
+          "quality": "Normal"
+         }
+        ],
+        "scanned": 11852,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 4,
+        "perDef": {
+         "Bed": 1
+        },
+        "ticksGame": 144323,
+        "message": "1 of 1 matching thing(s) returned, 11852 examined.",
+        "operation": {
+         "OperationId": "op_eb1b5574fa414d4284e7173112f26cd0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:16.0380541+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:16.0875834+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_bed_owner_type",
+       "result": {
+        "success": true,
+        "mode": "set",
+        "thingId": "Bed91479",
+        "label": "Wooden bed (normal)",
+        "def": "Bed",
+        "ownerTypeBefore": "Colonist",
+        "ownerTypeAfter": "Prisoner",
+        "forPrisonersAfter": true,
+        "medicalBefore": false,
+        "medicalAfter": false,
+        "changed": [
+         "ownerType"
+        ],
+        "alreadyInRequestedState": false,
+        "ownersBefore": 0,
+        "ownersAfter": 0,
+        "faction": "NorthstarBland",
+        "roomIsPrisonCell": false,
+        "roomTouchesMapEdge": false,
+        "prisonerIntakeBlockers": [],
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_279fec92469f411e8fc04e0b6ec616b7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-bed-owner-type",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:16.1382078+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:16.1935195+00:00",
+         "DurationMs": 55,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_eb933e9ef8cf407b967e3c04628ca596",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:16.2385872+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:16.5839675+00:00",
+         "DurationMs": 345,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True pitId=1330 lipId=1317",
+        "ticksGame": 144323,
+        "operation": {
+         "OperationId": "op_9f80fe863334437a8ddfedb55627d84f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:16.6350231+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:16.6845885+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "capture_down_from_the_lip",
+     "toggle": "captureDownEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT Allowed held=True prisoner=False cell=83,160",
+        "ticksGame": 144383,
+        "operation": {
+         "OperationId": "op_1fd2f5c83d6349d5b992af31e4bc8dd1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:19.5521125+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:19.6006666+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_a863f5166c61444a8959836207bf5973",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-draft",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:19.6517333+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:19.701294+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "Wait_Combat",
+        "requestedJobDef": "RM_CaptureDown",
+        "afterJobDef": "RM_CaptureDown",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": null,
+        "operation": {
+         "OperationId": "op_69536352c7f449029c986dda8bfa5d3d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:19.7524517+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:36.7838793+00:00",
+         "DurationMs": 17031,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(900) [watched] -> 900 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 900,
+        "requested": 900
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT AlreadyPrisoner held=True prisoner=True cell=83,160",
+        "ticksGame": 145283,
+        "operation": {
+         "OperationId": "op_9a0fc034f5bc4ceb882278eaec4c4a8d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:54.4180041+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:54.4678742+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "6 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human88722",
+          "name": "Reid",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 82,
+          "z": 128,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human88725",
+          "name": "Wolfie",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 84,
+          "z": 128,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human88728",
+          "name": "Conrad",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 86,
+          "z": 128,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human91198",
+          "name": "Kagamin",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 82,
+          "z": 160,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human91487",
+          "name": "Zey",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 82,
+          "z": 160,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human91480",
+          "name": "Iroma",
+          "kind": "Pirate",
+          "kindDef": "Pirate",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Neanderthal",
+          "xenotypeLabel": "neanderthal",
+          "uniqueXenotype": false,
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Selgi Coalition",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 83,
+          "z": 160,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         }
+        ],
+        "returned": 6,
+        "truncated": 0,
+        "totalOnMap": 6,
+        "ticksGame": 145283,
+        "operation": {
+         "OperationId": "op_f97a205d7ae544eb807f50cefe5d709b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:54.5180757+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:54.5669425+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "capture_down_off",
+     "toggle": "captureDownEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human91505",
+          "name": "Banzo",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 85,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 145283,
+        "operation": {
+         "OperationId": "op_1ff862cb6a2345c6b2c075b7f7780439",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:54.6181184+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:54.6677635+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": true,
+        "action": "clear",
+        "displaced": [],
+        "notes": [
+         "equipment destroyed",
+         "apparel destroyed",
+         "inventory destroyed"
+        ],
+        "pawn": {
+         "thingId": "Human91505",
+         "thingIdNumber": 91505,
+         "name": "White Banzo",
+         "nameShort": "Banzo",
+         "title": "brave",
+         "kindDef": "Pirate",
+         "faction": "TribeRoughNeanderthal",
+         "factionName": "Selgi Coalition",
+         "gender": "Female",
+         "ageBiologicalYears": 24,
+         "ageChronologicalYears": 24,
+         "developmentalStage": "Adult",
+         "xenotype": "Neanderthal",
+         "ideo": "Neo-Bhairavaism",
+         "childhood": "FireKeeper44",
+         "adulthood": "Brave88",
+         "headType": "Female_HeavyJawNormal",
+         "bodyType": "Fat",
+         "hair": "ShaveTopBraid",
+         "beard": "NoBeard",
+         "position": {
+          "x": 85,
+          "z": 160
+         },
+         "traits": [
+          {
+           "def": "Cannibal",
+           "degree": 0,
+           "label": "Cannibal",
+           "forced": false
+          },
+          {
+           "def": "Industriousness",
+           "degree": 2,
+           "label": "Industrious",
+           "forced": false
+          }
+         ],
+         "skills": [
+          {
+           "skill": "Shooting",
+           "levelRaw": 6,
+           "levelEffective": 2,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Melee",
+           "levelRaw": 11,
+           "levelEffective": 11,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Construction",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Mining",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Cooking",
+           "levelRaw": 4,
+           "levelEffective": 4,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Plants",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Animals",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Crafting",
+           "levelRaw": 4,
+           "levelEffective": 4,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Artistic",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Medicine",
+           "levelRaw": 3,
+           "levelEffective": 3,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Social",
+           "levelRaw": 1,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Intellectual",
+           "levelRaw": 4,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          }
+         ],
+         "apparel": [],
+         "equipment": [],
+         "hediffs": [
+          {
+           "def": "Scratch",
+           "part": "Leg",
+           "severity": 3.0
+          }
+         ],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Food",
+           "level": 0.8,
+           "pct": 0.8
+          },
+          {
+           "need": "Rest",
+           "level": 0.956914,
+           "pct": 0.956914
+          }
+         ]
+        },
+        "ticksGame": 145283,
+        "operation": {
+         "OperationId": "op_136304ab7c514cbaac347d4e39f5279e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-gear",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:54.7196441+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:54.7676907+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'captureDownEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT SettingOff held=True prisoner=False cell=85,160",
+        "ticksGame": 145343,
+        "operation": {
+         "OperationId": "op_310030217a0640e1aee5f9e3d588a70e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:57.4352154+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:57.4839106+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warden_served_from_lip",
+     "toggle": "wardenFromLipEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLip(System.String)",
+        "result": "LIP serve=True kind=Interact lip=82,160 lipSuperdeep=False dist=2",
+        "ticksGame": 145343,
+        "operation": {
+         "OperationId": "op_ae65786960dd412bba97088b53dbfc82",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:57.584854+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:57.6340597+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warden_lip_off",
+     "toggle": "wardenFromLipEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'wardenFromLipEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLip(System.String)",
+        "result": "LIP serve=False kind=None",
+        "ticksGame": 145343,
+        "operation": {
+         "OperationId": "op_dac4cfb74eb44a68b72afe5c8039e95c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T09:09:57.7845047+00:00",
+         "CompletedAtUtc": "2026-10-06T09:09:57.8338666+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 1020,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x00000197FD1D4050>",
+  "<suite.Component object at 0x00000197FD143D90>",
+  "<suite.Component object at 0x00000197FD1807A0>"
+ ],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 228.4,
+ "chains_run": [
+  "pit_cover_fall",
+  "flow_doors",
+  "toggle_pit_depth_draw",
+  "pit_fill_effects",
+  "toggle_tank_loop",
+  "fluid_identity_recorded",
+  "pit_prison_room"
+ ]
+}
