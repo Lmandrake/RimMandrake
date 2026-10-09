@@ -35,11 +35,12 @@ Image 2 (LEGENDS, infobox sketch of several yobshrimp, from The Wildlife of Star
   Single-source evidence: one artist's sheet, so treat details as moderately confident.
 
 ## Must show
-- [ ] Small flat wedge-shaped carapace tapering to a sharp pointed forward snout/rostrum
-- [ ] Two very long jointed arms ending in huge thin scissor claws, raised up and back over the body
-- [ ] Short bristly walking legs under the body, crab-like stance
-- [ ] Purple/lilac mottled shell with paler belly and bright green stalked eyes
-- [ ] Two long thin whip antennae trailing back behind the head
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the one live-animal image, the Legends field-guide sketch (a provisional design; the canon image is a cooked food dish and is not used).*
+- [ ] BODY PLAN: a small, low crab/crayfish-like crustacean: a flat, wedge-shaped carapace tapering to a sharp forward rostrum like a spear-point; eight short, bristly, segmented walking legs under the body in a crab-like stance
+- [ ] COLOUR LAYOUT: purple/lilac shell with dark violet mottling and small raised speckles, paler lilac belly; bright green eyes and green feeler bulbs the only non-purple accents
+- [ ] Two very long jointed arms ending in huge thin scissor claws (claws about as long as the whole body), raised up and back over the body
+- [ ] Face: a bright green round-pupilled eye, a pair of small green bead-tipped feelers on short stalks, and two long thin whip antennae trailing back behind the head, many times the body length
+- [ ] NEGATIVE: not a cooked, peeled pink shrimp (the canon food photo is not the living animal), not a plain prawn (the claws are huge and raised, the snout a sharp rostrum)
 
 ## Engine limits
 not yet assessed

@@ -71,11 +71,12 @@ donor sprite only as a confirmation of palette/silhouette translation into game 
 not as the canon anchor — the Bestiary painting is.
 
 ## Must show
-- [ ] Flat, oval/lily-pad-shaped body held at the water's surface, olive-to-yellow-green with scattered purple/magenta round spots
-- [ ] A cluster of long, thin, pink (sometimes magenta-red) tendrils sprouting from the head/nape — the single most distinctive silhouette feature
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the 2024 Bestiary painting (anchor), the Galaxy's Edge prop and the two Legends illustrations.*
+- [ ] BODY PLAN: a small, flat, oval/lily-pad-shaped body held at the water's surface; a large flat disc/leaf-shaped head; six paddle-like clawed legs (three pairs) below the flat top; a long, low-hanging fluked (fish-tail-shaped) tail trailing behind
+- [ ] COLOUR LAYOUT: olive-to-yellow-green overall with scattered purple/magenta round spots (spots also occasionally on the tail); pink (sometimes magenta-red) head tendrils the brightest element; legs pale, semi-translucent green-gray with violet/purple claw tips
+- [ ] A cluster of long, thin, pink tendrils sprouting from the head/nape — the single most distinctive silhouette feature
 - [ ] A small dark purple beak and light brown/amber eyes on the flat head
-- [ ] Pale, semi-translucent green-gray paddle-like clawed legs (three pairs) visible below the flat top, claws tipped violet/purple
-- [ ] A long, fluked (fish-tail-shaped) tail trailing behind, same green base with occasional purple spotting
+- [ ] NEGATIVE: not a generic brown rodent (no plain brown coat, no rounded upright body), not a submerged swimmer — it floats flat atop the water like a lily pad
 
 ## Engine limits
 none known

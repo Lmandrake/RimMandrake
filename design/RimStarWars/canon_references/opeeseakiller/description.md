@@ -29,13 +29,14 @@ Four images (3D renders of the TPM creature plus a film frame); all agree closel
 - **Size:** 20 m long per the text; the film frame shows it dwarfing a submersible.
 
 ## Must show
-- [ ] Huge fish-like head with an enormous gaping mouth and double rows of long pale conical teeth
-- [ ] Long, segmented, arched armour-plated back tapering to a point, like a lobster tail
-- [ ] Reddish-orange/coral-red skin and plates with a purple-lilac mouth interior
-- [ ] Long, thin, whip-like antennae from the top of the head with dark blue-purple lure tips
-- [ ] Three pairs of thin jointed crab-like legs under the rear body plus a pair of broad fan-shaped pectoral fins
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images and the canon/Legends text.*
+- [ ] BODY PLAN: a stocky, torpedo-shaped crustacean-fish hybrid: a huge fish-like head at the front whose mouth takes up most of the front, behind it a long, segmented, arched armour-plated back (overlapping ridged plates) tapering to a pointed rear like a lobster tail; three pairs of thin jointed crab-like legs hanging under the rear body, each ending in a flat paddle or blunt claw; a pair of broad, finely ribbed fan-shaped pectoral fins behind the head
+- [ ] COLOUR LAYOUT: reddish-orange/coral-red skin and plates overall, paler blue-grey on the plate edges and underside; mouth interior purple-lilac; antenna lure tips dark blue-purple
+- [ ] Enormous, rounded gaping mouth edged by thick wrinkled lips, with double rows of long pale cream conical teeth
+- [ ] Long, thin, whip-like antennae (one to three) from stubs on the top of the head, orange-tan at the base, with dark blue-purple lure tips
 - [ ] Long, smooth, pink-mauve prehensile tongue that can extend far out of the mouth
-- [ ] Bulbous orange-red eyes high on the wrinkled, lumpy face
+- [ ] Bulbous orange-red (to amber-yellow) eyes set high on each side of the wrinkled, lumpy face
+- [ ] NEGATIVE: not a plain fish or shark (no smooth scaled body, the back is segmented armour plates), not a lobster or crab with claws at the front (the front is a giant fish mouth; the legs are thin and under the rear)
 
 ## Engine limits
 not yet assessed

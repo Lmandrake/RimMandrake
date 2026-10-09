@@ -106,12 +106,15 @@ the bug, not the species. (One mitigation: the Kubaz head base carries no
 the colour.)
 
 ## Must show
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both live-action puppet images (owner ruling 2026-10-08 in the visual brief) and the canon text.*
+- [ ] BODY PLAN: a squat, neckless biped whose head is a broad rounded dome continuous with the body; a single huge rounded belly mass that the arms rest on, with no waist; short thick arms; seated or hunched-forward posture
+- [ ] COLOUR LAYOUT: mid-value blue all over (greyed blue to brighter cornflower blue), with faint darker mottling/freckling over the crown, shoulders and belly; the eyes solid black, the darkest element; nails pale
 - [ ] Enormous, narrow, tapering, PENDULOUS ears hanging from high on the skull down past the shoulders to roughly elbow level, drooping forward — not round elephant fans
-- [ ] A single huge rounded belly mass that the arms rest on, with no waist
 - [ ] Large, round, glossy, solid BLACK eyes with no visible sclera, iris, brow or lid, set wide and high on the skull
 - [ ] Short-to-medium thick trunk tapering and hanging straight down to about mid-chest, with no visible mouth from the front
 - [ ] Small, blunt hands with separate, clearly articulated short fingers and pale nails — dexterous, not trotters
-- [ ] Bare, hairless, soft wrinkled skin with no fur, rendered realistically like the live-action puppets — natural lighting, no outlines, no cartoon shading
+- [ ] Bare, hairless, soft wrinkled skin with no fur, rendered realistically like the live-action puppets — natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a Kubaz (no narrow skull, no thin bristly snout, no small slitted eyes), not a pig or a fan-eared elephant, no extra limbs (the Legends multi-limbed Ortolan is not canon), no tiny pin eyes
 
 ## Engine limits
 none known — the donor sprite's Kubaz head base does not carry `useSkinShader: false`, so the blue skin genes tint it correctly; only the head shape is wrong (missing/wrong art), not the colour pipeline.

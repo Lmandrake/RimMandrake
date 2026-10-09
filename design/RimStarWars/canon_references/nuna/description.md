@@ -57,12 +57,13 @@ is a genuine match to canon, which is not true of every creature audited so
 far in this library.
 
 ## Must show
-- [ ] Heavy domed/ridged shell-like back rising to a peak
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both realistic renders and the `## ruling` below (owner ruling 2026-10-08 in the visual brief).*
+- [ ] BODY PLAN: a small, squat, hunched two-legged animal, wider than tall seen head-on; a heavy domed/ridged shell-like back rising to a peak; thick, bent hind legs ending in clawed, toed feet, doing the visible structural work of standing, drawn with a suggestion of thick bird-like legs (owner ruling 2026-09-14: "E3 is canon. May need suggestion of thick bird-like legs to avoid making it look like a frog.")
+- [ ] COLOUR LAYOUT: mottled olive-to-dark-green pebbled/warty skin over the whole body; bulging pink or amber eyes the brightest element of the head
 - [ ] Wide, froglike head with a broad flat mouth and bulging pink or amber eyes
 - [ ] Floppy skin flaps hanging at the sides of the head (jowls/wattle, not ears)
-- [ ] Thick, bent hind legs ending in clawed, toed feet, doing the visible structural work of standing
-- [ ] Mottled olive-to-dark-green pebbled/warty skin — no feather texture, beak or wings anywhere
-- [ ] Realistic rendering: natural wet pebbled amphibian skin texture and lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural wet pebbled amphibian skin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a turkey or other bird (no beak, no wings, no feathered body — canon allows some blue/red feathers, never a feather coat), not a plain frog (legs read thick and standing, per the 2026-09-14 ruling), not a rounded legless blob
 
 ## Engine limits
 none known

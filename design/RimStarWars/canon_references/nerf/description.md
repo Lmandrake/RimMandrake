@@ -35,12 +35,13 @@ In the wild, nerfs were common prey for predators such as manka cats and taopari
 - **Behaviour (canon, https://starwars.fandom.com/wiki/Nerf)**: frightened nerfs shed and expel filthy mucus through nose and mouth; juveniles crave salt; bloodflies pester the Lothal Academy herd. Acidic black spit, male aggression toward young and keen night vision appear only on the Legends page.
 
 ## Must show
-- [ ] Bison-like stocky body with humped shoulders and a low-carried head
-- [ ] Long coarse shaggy brown fur forming a heavy mane over shoulders and neck; short strong legs with dark hooves
-- [ ] One pair of curved horns (dark grey in canon) sweeping out and up from the sides of the head
-- [ ] Broad dark grey muzzle/nose pad, small eyes under shaggy fur
-- [ ] Thin hairless rope-like tail
-- [ ] Realistic rendering: natural shaggy fur and hide texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three painted plates the visual brief describes (owner ruling 2026-10-08 in the visual brief) and the canon text.*
+- [ ] BODY PLAN: heavy, stocky, bison-like four-legged ungulate; shoulders humped and higher than the rump; big shaggy head carried low; short strong legs ending in dark hooves; thin hairless rope-like tail with a small tuft at the tip
+- [ ] COLOUR LAYOUT: brown all over — long coarse curly/shaggy fur forming a heavy mane over shoulders, neck and head (deep chocolate to red-brown), hindquarters may be shorter-haired and lighter tan-brown; hooves and muzzle the darkest elements
+- [ ] Horns: one pair of curved horns (dark grey in canon) sweeping out from the sides of the head then up/forward
+- [ ] Face: broad dark grey-black muzzle/nose pad, small dark eyes set under the shaggy forelock
+- [ ] Realistic rendering: natural shaggy fur and hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a deer or elk (no antlers, despite the Legends word "antlered"), not a sheep or goat (no slim legs, no woolly white coat), not the pale cream/orange/blue SWTOR variant
 
 ## Engine limits
 not yet assessed

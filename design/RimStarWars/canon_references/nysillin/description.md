@@ -14,10 +14,11 @@ Viewed `wookieepedia_canon_1.webp` (Clone Wars frame): a dense field of upright 
 - Prose says only "red herb"; the image shows bud-like spotted pods on tall stalks. Trust the image.
 
 ## Must show
-- [ ] Red-pink teardrop pods with dark spots, on thin upright stalks
-- [ ] Sparse small dark-green leaves low on the stem
-- [ ] Grown in dense rows as a crop
-- [ ] Realistic rendering: natural waxy plant tissue, real botanical texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): plant form, colour layout and a negative, each checkable on a 256px sprite. Grounded in the one Clone Wars frame the visual brief describes, rendered realistically per the owner ruling 2026-10-08 in the visual brief.*
+- [ ] PLANT FORM: thin, slender, upright stalks, each topped with a single closed teardrop bud/pod; a few sparse small leaves low on the stem only; grown in dense rows as a crop
+- [ ] COLOUR LAYOUT: pods red-pink/salmon-red with dark brown-red spots — the red is in the pods; stalks and the sparse low leaves dark green
+- [ ] Realistic rendering: natural waxy plant tissue, real botanical texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an open-petalled flower or a leafy red-leaved herb (pods are closed, leaves are few and green), not the cartoon's flat shading or exaggerated proportions
 
 ## Engine limits
 none known

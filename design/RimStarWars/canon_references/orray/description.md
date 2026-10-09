@@ -38,11 +38,12 @@ No image shows a metal tail cap in clear detail, so that detail is text-only, un
 visually in this candidate set.
 
 ## Must show
-- [ ] Heavy-bodied, low-slung quadruped stance with a long, alligator-like snout
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two film stills (hue anchor) and the infobox render (body plan).*
+- [ ] BODY PLAN: a heavy-bodied, low-slung, stout quadruped (about 2 m tall, 3 m long) on four stubby, powerful legs with clawed toes; a long, alligator-like snout; a long tail on wild specimens, a short metal-capped stump on domesticated/arena ones
+- [ ] COLOUR LAYOUT: sandy tan-brown to olive/grey-brown mottled coloration over the whole body — no bright colours, no contrasting markings
 - [ ] Small eyes set high on the head
 - [ ] Thick, wrinkled/tuberculate reptilian hide — leathery/pebbled, not hard-scaled plates
-- [ ] Stubby, powerful legs with clawed toes
-- [ ] Sandy tan-brown to olive-grey mottled coloration — no bright colours
+- [ ] NEGATIVE: not a horse or tall-legged mount (legs are stubby, the body low-slung), not a crocodile with hard plate-scales, no bright colours
 
 ## Engine limits
 none known

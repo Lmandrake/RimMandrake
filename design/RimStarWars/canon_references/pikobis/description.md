@@ -32,11 +32,12 @@ Three images: one CANON (a low-res Episode I film still), two LEGENDS (a CG info
 - **Size**: neither Wookieepedia page gives a length or height (https://starwars.fandom.com/wiki/Pikobi); the images only suggest a small animal, at about the waist height of a Gungan in the film still (a large Gungan or beast looms beside it). Exact dimensions are unconfirmed.
 
 ## Must show
-- [ ] Slender two-legged, long-necked wader with horizontal body and a very long thin whip-like tail
-- [ ] Long thin down-curved pointed beak, small round head with a large pale eye
-- [ ] Olive-tan skin with fine cream striations on neck, shoulders and thighs, cream underside; tail blue-grey toward the tip
-- [ ] Short thin forelimbs with clawed fingers held to the chest
-- [ ] Long spindly legs, long-toed feet with sharp claws (wading feet in the plate)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three images (the Episode I still, the Legends CG render and the field-guide plate).*
+- [ ] BODY PLAN: a slim, small, two-legged reptilian wader (compsognathus/ornithomimid shape) with a horizontal body, a long thin neck, a small round head, and a very long, thin, whip-like tapering tail held out stiffly behind for balance; long spindly legs; short thin forelimbs with clawed fingers held tucked to the chest
+- [ ] COLOUR LAYOUT: olive-khaki to tan-brown body with fine pale-cream striations along the neck, shoulders and thighs; yellowish-cream belly and throat underside; tail turning blue-grey toward the tip; beak tan-orange
+- [ ] Long, thin, slightly down-curved pointed beak like an ibis or curlew; a large pale grey-blue eye on the small round head
+- [ ] Long-toed feet with sharp curved claws (spread, flattened wading feet in the plate)
+- [ ] NEGATIVE: not a bird (no feathers, no wings), not a heavy-bodied lizard or dinosaur (no stocky body, no big head, no short legs), not a short-beaked or short-tailed animal
 
 ## Engine limits
 not yet assessed

@@ -178,13 +178,14 @@ a live-action close-up):
   "wide" silhouette of the robed figures is entirely garment.
 
 ## Must show
-- [ ] Tall, narrow, vertically-elongated skull that tapers downward from a domed brow to a small chin — NOT a horned/mitred cone shape (that shape is a hat, worn over the head, and varies per individual)
-- [ ] Smooth, soft, mottled grey-green skin, heavily creased (long vertical cheek creases, crow's-feet, brow furrows) — never scaled
-- [ ] Large, wide-set, deep-set red-orange eyes with a horizontally-split pupil (a dark horizontal bar across the iris)
-- [ ] Noseless face — no nose bridge, at most small dark nostril holes low on the centre line
-- [ ] Small, thin-lipped, downturned mouth with several short vertical ridges on the chin/jaw below it
-- [ ] Long, thin, bony hands with five pointed fingers and prominent knuckles, often held clasped or steepled in a stooped, cringing posture
-- [ ] Realistic rendering: soft creased latex-like skin and natural lighting as in the live-action films, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the sourced text and the live-action images the visual brief describes (owner ruling 2026-10-08 in the visual brief).*
+- [ ] BODY PLAN: tall, lanky, narrow-shouldered humanoid with a long thin torso, stooped and shoulders rounded forward; head a tall, narrow, vertically-elongated hairless skull that tapers DOWNWARD from a domed brow through hollow cheeks to a small chin, no ears visible, thin neck — NOT a horned/mitred cone shape (that shape is a hat, worn over the head, and varies per individual)
+- [ ] COLOUR LAYOUT: smooth, soft, mottled grey-green skin with irregular darker patches on face and hands, heavily creased (long vertical cheek creases, crow's-feet, brow furrows) — never scaled; the large eyes are the only high-contrast element in the face
+- [ ] Eyes: large, wide-set, deep-set in dark sockets, red-orange, with a horizontally-split pupil (a dark horizontal bar across the iris)
+- [ ] Face: noseless — no nose bridge, at most small dark nostril holes low on the centre line; small, thin-lipped, downturned mouth with several short vertical ridges on the chin/jaw below it
+- [ ] Hands: long, thin, bony, with five pointed fingers and prominent knuckles, often held clasped or steepled in a stooped, cringing posture
+- [ ] Realistic rendering: soft creased latex-like skin and natural lighting as in the live-action films, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human with a green tint (no nose, no visible ears, no hair, no scales); the tall horned/pronged headdress is clothing, never the skull
 
 ## Engine limits
 none known
