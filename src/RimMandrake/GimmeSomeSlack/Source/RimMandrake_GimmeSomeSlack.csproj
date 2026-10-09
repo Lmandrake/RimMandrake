@@ -63,6 +63,7 @@
   <!-- aerial power lines, lane B / L5 (design phase2 section 2): AerialMath.cs is Verse-free and ALSO compiled by SelfTest -->
   <ItemGroup>
     <Compile Include="Aerial\AerialMath.cs" />
+    <Compile Include="Aerial\TapLedger.cs" />
     <Compile Include="Aerial\AerialDefOf.cs" />
     <Compile Include="Aerial\AerialSettings.cs" />
     <Compile Include="Aerial\AerialMaterials.cs" />

@@ -127,27 +127,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     /// <summary>Per-net energy the taps took THIS tick (watt-days), read by the CurrentEnergyGainRate postfix.</summary>
     public static class TapRegistry
     {
-        private struct Entry { public int tick; public float wd; }
-        private static readonly Dictionary<PowerNet, Entry> debits = new Dictionary<PowerNet, Entry>();
+        private static readonly TapLedger<PowerNet> ledger = new TapLedger<PowerNet>();
         [ThreadStatic] internal static int bypass;
-        public static int Count => debits.Count;
+        public static int Count => ledger.Count;
 
-        public static void Debit(PowerNet net, float wd)
-        {
-            int now = Find.TickManager.TicksGame;
-            debits.TryGetValue(net, out Entry e);
-            if (e.tick != now) { e.tick = now; e.wd = 0f; }
-            e.wd += wd;
-            debits[net] = e;
-            if (debits.Count > 64) Prune(now);
-        }
+        public static void Debit(PowerNet net, float wd) => ledger.Debit(net, wd, Find.TickManager.TicksGame);
 
         /// <summary>A1: energy the taps already debited from this net during the CURRENT tick (0 before the first tap ticks).</summary>
-        public static float TakenThisTick(PowerNet net)
-        {
-            if (net == null || !debits.TryGetValue(net, out Entry e)) return 0f;
-            return e.tick == Find.TickManager.TicksGame ? e.wd : 0f;
-        }
+        public static float TakenThisTick(PowerNet net) => ledger.TakenThisTick(net, Find.TickManager.TicksGame);
 
         /// <summary>Energy owed by this net: the debit the taps wrote at the current TicksGame. Engine order (decompiled
         /// 1.6 TickManager.DoSingleTick): MapPreTick -> PowerNetsTick runs BEFORE ticksGameInt++ and the thing ticks, so a
@@ -155,17 +142,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// (e.tick >= now - 1) paid the last debit a second time when a tap stopped (GPT review 2026-10-08 #19).</summary>
         public static float Owed(PowerNet net)
         {
-            if (bypass > 0 || debits.Count == 0 || !debits.TryGetValue(net, out Entry e)) return 0f;
-            int now = Find.TickManager.TicksGame;
-            return e.tick == now ? e.wd : 0f;
+            if (bypass > 0) return 0f;
+            return ledger.Owed(net, Find.TickManager.TicksGame);
         }
 
-        private static void Prune(int now)
-        {
-            foreach (PowerNet n in debits.Where(kv => kv.Value.tick < now - 2).Select(kv => kv.Key).ToList()) debits.Remove(n);
-        }
-
-        public static void Clear() => debits.Clear();
+        public static void Clear() => ledger.Clear();
     }
 
     /// <summary>Event hook for later theft consequences (alerts, goodwill, raids): NOT designed yet (owner ruling pending).
