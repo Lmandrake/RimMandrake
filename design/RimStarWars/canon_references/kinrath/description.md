@@ -56,17 +56,13 @@ spoon-bodied spider with a signature flower organ and a tight eye cluster
 neither prior design had.
 
 ## Visual brief
-Four real candidate images were pulled and they split cleanly along the two
-design lineages above — read them as two related but distinct visual
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Kinrath` and `Kinrath/Legends` page images, `Category:Images of kinrath`; every file is Clone Wars / Bad Batch animation or KOTOR game render).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** This entry's own `## ruling` (2026-09-14) picked the Clone Wars netcaster clip and the netcaster design ("Same as 2 and 3"), so those images and that design are KEPT as ruled; render them as real chitin and real arthropod anatomy. The low-res KOTOR gameplay screenshot was deleted (the clean `Viperkinrath.png` render shows the same Legends design).
+
+The remaining images split along the two design lineages above — read them as two related but distinct visual
 targets, not one:
 
-- `kotor_screenshot_hivekinrath_dantooine.jpg` — actual in-game KOTOR
-  screenshot: a kinrath rearing up at the player in dim grassland/forest
-  lighting. Confirms the body plan from text: four very long, thin,
-  multi-jointed legs, a long extended neck/head reaching forward (this is
-  the poisonous face-appendage attacking, not a separate head), overall
-  olive-brown coloring under the scene's warm dark lighting. Matches the
-  "long-necked mantis-like" read.
 - `wookieepedia_legends_infobox_viperkinrath.png` — the Legends species
   infobox image (a rendered 3D model, likely from a later KOTOR-related
   game asset). Shows the same body plan cleanly and in neutral lighting:
@@ -114,6 +110,7 @@ mantis-like neck-appendage (KOTOR/Legends) — neither has a cross marking.
 - [ ] If depicting the KOTOR/Legends design: a long, upward-curving segmented neck ending in a small mantis-like head, with no flower organ and no eye cluster
 - [ ] Four long, thin, multi-jointed legs (true of both design lineages)
 - [ ] Not confused with Wyyyschokk — no blue-grey body and no abdomen cross marking
+- [ ] Realistic rendering: natural chitin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -123,8 +120,6 @@ none known
   onto "Netcaster," wikitext pulled 2026-09-13 via MediaWiki API)
 - https://starwars.fandom.com/wiki/Kinrath/Legends (Legends/KOTOR page,
   wikitext pulled 2026-09-13 via MediaWiki API)
-- https://static.wikia.nocookie.net/starwars/images/9/9a/Kinrath_kotor.jpg
-  (in-game KOTOR screenshot, hive kinrath on Dantooine)
 - https://static.wikia.nocookie.net/starwars/images/8/8f/Viperkinrath.png
   (Legends species infobox render)
 - https://static.wikia.nocookie.net/starwars/images/4/4f/Netcaster-Tribe.png
@@ -146,10 +141,6 @@ none known
   pass** — see rule below.
 
 ## Candidate images
-- `kotor_screenshot_hivekinrath_dantooine.jpg` (33 KB) — actual KOTOR
-  gameplay screenshot, hive kinrath attacking the player on Dantooine:
-  confirms long-necked, four-legged body plan and warm olive-brown
-  coloring under dim lighting.
 - `wookieepedia_legends_infobox_viperkinrath.png` (251 KB) — clean-lit
   Legends species render: yellow-tan base with rust/brown mottling,
   upward-curved mantis-like neck and head, four long jointed legs. Best
