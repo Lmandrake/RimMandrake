@@ -12,8 +12,11 @@
 //   symmetry     integer translation moves the footprint with the root; a mirrored mask with the opposite flip is identical
 //   ledger       overlap: realized = union of claims in any order; idempotent re-set; removing one owner keeps the rest
 //   planner      never closes pawn/item/protected cells, never cuts a cell off from open ground or a root from access;
-//                order-independent; idempotent (checked against an independent whole-board flood)
-//   cache        signature cache == fresh computation as each field changes alone
+//                order-independent; idempotent (checked against an independent flood over the planning window)
+//   cache        signature cache == fresh computation as each field changes alone, selection kept with blocking off,
+//                and it recomputes exactly when the signature changed
+//   hitbox       huge-pawn click box: never smaller than the footprint, covers the drawn box, vanilla when it adds nothing
+//   boundary (also) exact-equality and +-Eps-outside fixtures pin the inclusive edge rule
 //   damage       one forwarded hit per (tick, source, owner)
 //   items        pushed items: count conserved, none lost, none lands in a footprint or over capacity; pawn cells never close
 //   root         a plant whose every variant touches the ground only in its own cell is made impassable there
@@ -231,6 +234,7 @@ namespace RimMandrake.HugeThings.SelfTest
         /// centre or edge, then nudged both ways; the kernel must agree with the oracle on every unambiguous cell.</summary>
         internal static string CaseBoundary(int seed)
         {
+            ExactBoundaryFixtures();
             Plant p = MakePlant(seed, false);
             var r = new Random(seed ^ 0xb0b);
             // side = drawX * visual; aim the quad's top edge (qz + side) at a half-integer
@@ -246,6 +250,65 @@ namespace RimMandrake.HugeThings.SelfTest
                 sb.Add(got.Count.ToString());
             }
             return string.Join(",", sb);
+        }
+
+        /// <summary>HUGETHINGS_TEST_HONESTY_1 (C2.6): the random nudges sit inside the oracle's ambiguity band, so they never test the
+        /// edge rule. These do: a 4x4 full-picture plant at (0,0), visual 4, puts the west and east column centres EXACTLY on the
+        /// picture and blocking-quad edges (-1.5 and 2.5, exact in float), which the kernel keeps (inclusive rule); jitter of
+        /// +-1.5 Eps moves those edges just outside the band, where the oracle judges them too.</summary>
+        internal static void ExactBoundaryFixtures()
+        {
+            var m = new HugeMask { MeasuredSize = 4f };
+            for (int dx = -2; dx <= 2; dx++) for (int dz = 0; dz <= 4; dz++) m.Contact.Add(K.Key(dx, dz));
+            HugeQuad q = K.Quad(0, 0, 1f, 4f, 0f, 0f);
+            Check(q.MinX == -1.5f && q.MinZ == 0f && q.Size == 4f, "exact fixture quad moved: " + q.MinX + "," + q.MinZ + "," + q.Size);
+            var exact = new HashSet<long>(K.ContactCells(0, 0, q, 1f, false, m));
+            Check(exact.Contains(K.Key(-2, 1)) && exact.Contains(K.Key(2, 1)),
+                  "a cell centre exactly on the picture/quad edge was dropped (the inclusive edge rule flipped)");
+            Check(!exact.Contains(K.Key(0, 0)), "exact fixture blocked the root");
+            Check(!exact.Contains(K.Key(-3, 1)) && !exact.Contains(K.Key(3, 1)), "exact fixture blocked a cell wholly outside the picture");
+            float off = (float)(1.5 * Eps);
+            foreach (float j in new[] { off, -off })
+            {
+                var p = new Plant { RootX = 0, RootZ = 0, DrawX = 1f, VMin = 4f, VMax = 4f, Growth = 1f, Jx = j, Jz = 0f, Scale = 1f, Flip = false, Mask = m };
+                HugeQuad qj = K.Quad(0, 0, 1f, 4f, j, 0f);
+                List<long> got = K.ContactCells(0, 0, qj, 1f, false, m);
+                CheckOracle(p, 4f, got, "boundary-eps " + j);
+                var g = new HashSet<long>(got);
+                // west column centre -1.5 vs left edge -1.5 + j: inside when j < 0, outside when j > 0; east column mirrors it
+                Check(g.Contains(K.Key(-2, 1)) == (j < 0), "west edge cell at jitter " + j + " judged wrongly");
+                Check(g.Contains(K.Key(2, 1)) == (j > 0), "east edge cell at jitter " + j + " judged wrongly");
+            }
+        }
+
+        /// <summary>HUGETHINGS_TEST_HONESTY_1 (C2.5d): the huge-pawn click box (kernel PawnHitbox) against an independent restatement:
+        /// side = max(1, round-half-up(drawn x fraction x multiplier)); a box no bigger than the footprint is the footprint
+        /// (and "vanilla" only for a one-cell footprint); otherwise the union of the footprint and the box centred on the draw
+        /// cell (even sides lean east/north).</summary>
+        internal static string CaseHitbox(int seed)
+        {
+            var r = new Random(seed);
+            float dx = R(r, 0.2f, 14f), dy = R(r, 0.2f, 14f), frac = R(r, 0.3f, 1f), mult = R(r, 0.5f, 1.5f);
+            int fs = r.Next(1, 5), fx = r.Next(-30, 30), fz = r.Next(-30, 30);
+            var foot = new CellBox(fx, fz, fx + fs - 1, fz + fs - 1);
+            int cx = fx + r.Next(0, fs), cz = fz + r.Next(0, fs);
+            bool bigger = K.PawnHitbox(dx, dy, frac, mult, foot, cx, cz, out CellBox box);
+            int w = Math.Max(1, (int)Math.Floor(dx * frac * mult + 0.5)), h = Math.Max(1, (int)Math.Floor(dy * frac * mult + 0.5));
+            CellBox want;
+            bool wantBigger;
+            if (w <= fs && h <= fs) { want = foot; wantBigger = fs > 1; }
+            else
+            {
+                int minX = cx - (w - 1) / 2, minZ = cz - (h - 1) / 2;
+                var c = new CellBox(minX, minZ, minX + w - 1, minZ + h - 1);
+                want = new CellBox(Math.Min(c.MinX, foot.MinX), Math.Min(c.MinZ, foot.MinZ), Math.Max(c.MaxX, foot.MaxX), Math.Max(c.MaxZ, foot.MaxZ));
+                wantBigger = true;
+            }
+            Check(bigger == wantBigger, "PawnHitbox says bigger=" + bigger + ", spec " + wantBigger);
+            Check(box.MinX == want.MinX && box.MinZ == want.MinZ && box.MaxX == want.MaxX && box.MaxZ == want.MaxZ,
+                  $"PawnHitbox box {box.MinX},{box.MinZ}..{box.MaxX},{box.MaxZ} != spec {want.MinX},{want.MinZ}..{want.MaxX},{want.MaxZ}");
+            Check(box.MinX <= foot.MinX && box.MinZ <= foot.MinZ && box.MaxX >= foot.MaxX && box.MaxZ >= foot.MaxZ, "hitbox smaller than the footprint");
+            return box.MinX + "," + box.MinZ + "," + box.MaxX + "," + box.MaxZ;
         }
 
         /// <summary>Translation and double mirroring at the geometry level: moving the root by an integer moves every
@@ -460,15 +523,20 @@ namespace RimMandrake.HugeThings.SelfTest
                                                JitterX = p.Jx, JitterZ = p.Jz, BlockScale = p.Scale, Flip = p.Flip, Measured = true,
                                                Blocking = true, Selecting = true, OldEnough = true };
             var masks = new Dictionary<int, HugeMask> { { 1, p.Mask }, { 2, MakeMask(r, p.Mask.MeasuredSize, true) } };
+            // HUGETHINGS_TEST_HONESTY_1 (C2.5c): blocking off still has a selection (CompHugeFootprint.SelectRect: no blocked cells,
+            // the picture and the root), so the oracle keeps it rather than collapsing to "-".
+            int computes = 0;
             string Fresh(FootprintSignature s)
             {
-                if (!s.Blocking || !s.OldEnough) return "-";
                 HugeQuad q = K.Quad(s.RootX, s.RootZ, s.DrawX, s.Visual, s.JitterX, s.JitterZ);
                 HugeMask m = masks[s.MaskId];
-                List<long> b = K.ContactCells(s.RootX, s.RootZ, q, s.BlockScale, s.Flip, m);
+                List<long> b = (!s.Blocking || !s.OldEnough) ? new List<long>() : K.ContactCells(s.RootX, s.RootZ, q, s.BlockScale, s.Flip, m);
                 CellBox sel = K.SelectBox(s.RootX, s.RootZ, K.PictureBox(q, m, s.Flip), b);
                 return Fmt(b) + "|" + sel.MinX + "," + sel.MinZ + "," + sel.MaxX + "," + sel.MaxZ + (s.Selecting ? "S" : "") + (s.Measured ? "M" : "");
             }
+            FootprintSignature lastSig = sig;
+            cache.Get(sig, x => { computes++; return Fresh(x); });
+            Check(computes == 1, "first Get did not compute");
             for (int step = 0; step < 40; step++)
             {
                 switch (r.Next(13))
@@ -487,7 +555,14 @@ namespace RimMandrake.HugeThings.SelfTest
                     case 11: sig.Selecting = !sig.Selecting; break;
                     default: sig.OldEnough = !sig.OldEnough; break;
                 }
-                Check(cache.Get(sig, Fresh) == Fresh(sig), "cache disagrees with a fresh computation after step " + step);
+                int before = computes;
+                bool changed = !sig.Equals(lastSig);
+                string got = cache.Get(sig, x => { computes++; return Fresh(x); });
+                Check(got == Fresh(sig), "cache disagrees with a fresh computation after step " + step);
+                Check(computes - before == (changed ? 1 : 0), "cache recomputed " + (computes - before) + " times for a " + (changed ? "changed" : "unchanged") + " signature at step " + step);
+                cache.Get(sig, x => { computes++; return Fresh(x); });
+                Check(computes - before == (changed ? 1 : 0), "cache recomputed on a repeat Get with the same signature");
+                lastSig = sig;
             }
             return "";
         }
@@ -601,11 +676,12 @@ namespace RimMandrake.HugeThings.SelfTest
 
         private static bool Family(string name, int n, int? one, Func<int, string> run)
         {
-            int fails = 0;
+            int fails = 0, ran = 0;
             for (int i = 0; i < n; i++)
             {
                 int seed = one ?? (i * 7919 + name.Length * 104729);
                 Cases++;
+                ran++;
                 try
                 {
                     run(seed);
@@ -616,8 +692,9 @@ namespace RimMandrake.HugeThings.SelfTest
                 }
                 if (one.HasValue) break;
             }
-            Console.WriteLine((fails == 0 ? "PASS " : "FAIL ") + name + ": " + (one.HasValue ? 1 : n) + " cases, " + fails + " failed");
-            return fails == 0;
+            // HUGETHINGS_TEST_HONESTY_1 (C3.8): print what actually ran; a family that ran nothing fails.
+            Console.WriteLine((fails == 0 && ran > 0 ? "PASS " : "FAIL ") + name + ": " + ran + " cases, " + fails + " failed");
+            return fails == 0 && ran > 0;
         }
 
         public static bool Run(double scale, int? one, string only)
@@ -634,6 +711,7 @@ namespace RimMandrake.HugeThings.SelfTest
             if (only == null || only == "root") ok &= Family("root", N(2000), one, CaseRoot);
             if (only == null || only == "cache") ok &= Family("cache", N(2000), one, CaseCache);
             if (only == null || only == "damage") ok &= Family("damage", N(2000), one, CaseDamage);
+            if (only == null || only == "hitbox") ok &= Family("hitbox", N(3000), one, CaseHitbox);
             if (only == null || only == "determinism")
             {
                 ok &= Family("determinism", N(500), one, s =>

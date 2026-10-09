@@ -153,11 +153,12 @@ namespace RimMandrake.HugeThings.SelfTest
 
         private static bool Family(string name, int n, int? one, Func<int, string> run)
         {
-            int fails = 0;
+            int fails = 0, ran = 0;
             for (int i = 0; i < n; i++)
             {
                 int seed = one ?? (i * 6151 + name.Length * 92821);
                 Cases++;
+                ran++;
                 try
                 {
                     run(seed);
@@ -168,8 +169,9 @@ namespace RimMandrake.HugeThings.SelfTest
                 }
                 if (one.HasValue) break;
             }
-            Console.WriteLine((fails == 0 ? "PASS " : "FAIL ") + name + ": " + (one.HasValue ? 1 : n) + " cases, " + fails + " failed");
-            return fails == 0;
+            // HUGETHINGS_TEST_HONESTY_1 (C3.8): print what actually ran; a family that ran nothing fails.
+            Console.WriteLine((fails == 0 && ran > 0 ? "PASS " : "FAIL ") + name + ": " + ran + " cases, " + fails + " failed");
+            return fails == 0 && ran > 0;
         }
 
         public static readonly string[] Families = { "smash", "smashstep", "gates", "titandeterminism" };
