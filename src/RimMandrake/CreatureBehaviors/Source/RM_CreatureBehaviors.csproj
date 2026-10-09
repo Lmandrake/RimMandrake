@@ -90,6 +90,7 @@
     <Compile Include="RM_CompGrappler.cs" />
     <Compile Include="RM_CompTetherPull.cs" />
     <Compile Include="RM_Building_TractionLance.cs" />
+    <Compile Include="RM_PawnJobProof.cs" />
     <Compile Include="RM_CompResearchSpecimens.cs" />
     <Compile Include="RM_HydrocarbonBloodExtension.cs" />
     <Compile Include="RM_CompProperties_FluidSacs.cs" />
