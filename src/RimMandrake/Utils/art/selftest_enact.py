@@ -234,6 +234,22 @@ def main():
         check(I.stale_letter_rows(d_new, ruled, now) == {}, "...clicked after the rebuild: fine")
         check(I.stale_letter_rows({"decisions": {"R": {"decision": "A", "at": "2026-10-09T16:00:00Z"}}}, ruled, now) == {},
               "a letter the ruled snapshot had is left to letter_mismatches")
+        # refinement: exempt only when the click-time snapshot resolves the letter to the SAME shas per facing
+        import datetime as _dt
+        _b = lambda t: _dt.datetime.fromisoformat(t)
+        vs_same = [(_b("2026-10-09T08:00:00-07:00"), {"rows": {"R": {"columns": {"A": {"east": "1"}, "F": {"east": "2"}}}}})]
+        vs_diff = [(_b("2026-10-09T08:00:00-07:00"), {"rows": {"R": {"columns": {"A": {"east": "1"}, "F": {"east": "9"}}}}})]
+        check(I.stale_letter_rows(d_old, ruled, now, versions=vs_same) == {}, "same shas at click time: exempt")
+        check(I.stale_letter_rows(d_old, ruled, now, versions=lambda: vs_same) == {}, "...versions may be a callable")
+        check(I.stale_letter_rows(d_old, ruled, now, versions=vs_diff) == {"R": ["F"]}, "changed sha at click time: still stale")
+        check(I.stale_letter_rows(d_old, ruled, now, versions=[]) == {"R": ["F"]}, "no click-time snapshot known: still stale")
+        vs_late = [(_b("2026-10-09T09:30:00-07:00"), vs_same[0][1])]
+        check(I.stale_letter_rows(d_old, ruled, now, versions=vs_late) == {"R": ["F"]}, "snapshot built after the click is not click-time: stale")
+        now_r = {"built": "2026-10-09T10:00:00-0700", "rows": {"R2": {"columns": {"F": {"east": "2"}}}}}
+        ruled_r = {"rows": {"R2": {"columns": {"A": {"east": "1"}}}}}
+        d_car = {"decisions": {"R2": {"decision": "F", "carriedFrom": "R", "at": "2026-10-09T16:00:00.000Z"}}}
+        check(I.stale_letter_rows(d_car, ruled_r, now_r, versions=vs_same) == {}, "renamed carried row, same shas under the old name: exempt")
+        check(I.stale_letter_rows(d_car, ruled_r, now_r, versions=vs_diff) == {"R2": ["F"]}, "renamed carried row, changed sha: stale")
         P_st = E.build_plan(F["decisions"], ["vine"], stale={"RM_Foo": ["B"]})
         check(not P_st["install"] and any(c.startswith("RM_Foo: letter(s) B") for c in P_st["conflicts"]), "a stale row is a CONFLICT and does nothing")
         # clear_followed: a sidecar save landing between read and replace is merged over, never lost
