@@ -121,12 +121,14 @@ all** on `RSW_RimMandrakeKaminoan`, though the Kaminoan canon infobox lists it a
 species' sole distinction.
 
 ## Must show
-- [ ] Skin is a very pale, desaturated chalky white with a cool lavender-to-bluish cast — not grey, not green
-- [ ] Gaunt face: hollow cheeks, high hard cheekbones, long narrow jaw, prominent brow, no eyebrows
-- [ ] Eyes very pale, near-colourless grey-white irises with small dark pupils, deep-set in soft smoky lavender-grey sockets — never a blank solid-white eye
-- [ ] Bald high dome is the image-attested look; hair is a text-sourced option, not forced either way
-- [ ] Tall, slender near-human build; voluminous high-collared shadow cloak framing the head
-- [ ] Realistic rendering: natural pale skin and makeup texture under even light, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Sly Moore live-action still, the canon senator infobox, the Legends painting and the `## ruling` below (skin follows the ruling, not the brief's lavender reading).*
+- [ ] BODY PLAN: a tall, slender, long-limbed, narrow-shouldered near-human with long slim hands; bald high dome is the image-attested look, hair is a text-sourced option, not forced either way
+- [ ] COLOUR LAYOUT: greyish skin with a faint blue tone, grey dominant (owner ruling 2026-09-20: "Umbaran too, greyish skin with a faint blue tone." — not lavender-violet, not green); lips pale and close to skin tone; soft smoky grey shadowing around the eye sockets, not a hard-edged domino band
+- [ ] Gaunt face: hollow cheeks, high hard cheekbones, long narrow jaw, prominent brow, no eyebrows, no facial hair
+- [ ] Eyes very pale, near-colourless grey-white irises with small dark pupils, deep-set — never a blank solid-white eye
+- [ ] Voluminous high-collared shadow cloak whose raised collar frames the head
+- [ ] Realistic rendering: natural pale skin and makeup texture under even light, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain pale human (no full cheeks, no eyebrows, no coloured irises), not lavender/violet-skinned, not a blank-eyed ghoul
 
 ## Engine limits
 none known — every finding in this entry (forced baldness, grey rather than violet skin, solid-white rather than structured eyes) is attributed to a specific gene choice (`Hair_BaldOnly`, `Skin_LightGray`, `Outland_Eye_White`) on a species built entirely from generic genes, not to a rendering-pipeline constraint.

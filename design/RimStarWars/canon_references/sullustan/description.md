@@ -106,12 +106,14 @@ type and one facial variant — no male/female or age variation, and no visor, t
 or goatee variants for the Legends details.
 
 ## Must show
-- [ ] Two enormous pendulous jowl "dewflap" lobes hanging from below the eyes down past the jawline, meeting under the chin — the head is widest at the jowls, low down, giving an inverted-teardrop silhouette
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images (the canon infobox Nien Nunb above all) and the canon/Legends text.*
+- [ ] BODY PLAN: a short, stocky humanoid, thick-necked and wide-shouldered; a broad, high, domed cranium tapering to the rear; the head is widest at the jowls, low down, giving an inverted-teardrop silhouette
+- [ ] COLOUR LAYOUT: skin reads grey, grey-pink, or grey-blue over the whole head (pink around the eye sockets allowed) — never human brown; eyes solid black, the darkest element
+- [ ] Two enormous pendulous jowl "dewflap" lobes hanging from below the eyes down past the jawline, meeting under the chin, framing a small pursed mouth
 - [ ] Large, round, glossy, solid-black eyes with no visible white or iris, occupying much of the upper face
 - [ ] Large, round ears set low and wide, projecting sideways from the skull at about mouth level — not high on the skull
-- [ ] Broad, high, domed cranium tapering to the rear, with no visible nose or nasal bridge
-- [ ] Completely bald head
-- [ ] Skin reads grey, grey-pink, or grey-blue — never human brown
+- [ ] No visible nose or nasal bridge; completely bald head
+- [ ] NEGATIVE: not a human with a tint (no nose, no human-sized eyes with whites, no flat cheeks, no high small ears), not brown-skinned, not a round-headed mouse face without the hanging jowls
 
 ## Engine limits
 none known

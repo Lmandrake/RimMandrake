@@ -49,14 +49,13 @@ front) agree on the animal; `donor_current_sprite.png` (128x128) does NOT.
   Nightside Ice.
 
 ## Must show
-- [ ] Upright bipedal posture on two long legs, with a long vertical neck, narrow chest and pale rounded belly
-- [ ] Two short folded forearms with clawed hands held against the chest
-- [ ] Head with flat pig-like snout and big nostrils, small dark deep-set eyes, two pointed ears
-- [ ] Two thick ridged horns curling back, around and forward beside the face like a ram's
-- [ ] Shaggy off-white to pale grey fur on head, neck and body; scaly grey skin on the feet
-- [ ] Big broad splayed three-toed feet with long pale claws
-- [ ] A long thin pointed tail held low for balance
-- [ ] Not a goat, deer, horse or camel: no hooves, no quadruped stance, no single central horn
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Encyclopedia render and the Legion box art (the donor sprite is a negative reference for shape).*
+- [ ] BODY PLAN: an upright biped on two long powerful legs, with a long vertical neck carrying the head high, a narrow chest and a pale rounded belly, two short folded forearms with clawed hands held against the chest, and a long thin pointed tail held low for balance
+- [ ] COLOUR LAYOUT: shaggy off-white to pale grey fur over head, neck and body (slate grey also canon-attested), belly the palest; horns brown-grey; bare scaly grey skin on the feet
+- [ ] Head: a long narrow face with a flat pig-like snout and big nostrils, small dark deep-set eyes and two large pointed ears
+- [ ] Horns: two thick ridged horns curling back, around and forward beside the face like a ram's
+- [ ] Feet: big broad splayed three-toed feet with long pale claws
+- [ ] NEGATIVE: not a goat, deer, horse or camel (no hooves, no quadruped stance, no single central horn); not the donor's stubby front-facing blob with a tall spiralled cone horn
 
 ## Engine limits
 none known. (Rider and saddle in the box art are not part of the animal. Smell and burrowing are not drawable.) Biped body plan is a shape question for the sprite only; the race def's body type is not asked about here.

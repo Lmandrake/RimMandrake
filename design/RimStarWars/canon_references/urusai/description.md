@@ -34,12 +34,13 @@ Four images from the Wildlife/Wonders-of-Star-Wars-style sheets (watercolour and
 - **Size:** 2 m wingspan, 43 kg (Legends text); no scale object in the images.
 
 ## Must show
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two Legends sheets (the clear views) and the canon text; the canon crops agree but hide most anatomy.*
+- [ ] BODY PLAN: a thin, tubular, hairless body rising upright from a tail that spreads into a flat, fan-shaped, spiked paddle with a white underside; a bulging egg-shaped belly; short stubby clawed hands on small arms at the chest; a small head held up on a short neck
 - [ ] Four broad, leathery, scalloped wings (two larger rear, two smaller front) with talon-like claws along the outer edges
-- [ ] Wings white or pale blue with large dark blue concentric eye-spot rings and yellow rims
-- [ ] Tail that spreads into a flat, fan-shaped, spiked paddle with a white underside
-- [ ] Small jowly blue head with a short beak and red eyes
-- [ ] Smooth bare skin, bulging pale-blue belly with darker blue dots
-- [ ] Overall yellow, blue and white palette
+- [ ] COLOUR LAYOUT: overall yellow, blue and white palette — yellow on the tail fan and wing rims; wings white or pale blue with large dark blue concentric eye-spot rings and yellow rims; bulging pale-blue belly with darker blue dots and a pale cream throat; white undersides
+- [ ] Small jowly blue head with a short curved beak and red eyes
+- [ ] Smooth bare skin, no feathers, no fur
+- [ ] NEGATIVE: not a bird (no feathers, no two-legged stance, no long beak), not a bat or mynock (not two plain dark wings), not the non-canon Disney Infinity render (blue and tan, two wings, two legs)
 
 ## Engine limits
 not yet assessed

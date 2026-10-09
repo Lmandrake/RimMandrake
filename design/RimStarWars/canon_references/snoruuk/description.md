@@ -30,12 +30,13 @@ Snoruuk mushrooms were a species of **red** mushroom native to Gamorr and edible
   legs the canon does not show.
 
 ## Must show
-- [ ] A mushroom: domed cap with a scalloped, gilled underside rim on a thick stalk
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the ink drawing, the donor sprite and the canon text (red mushroom).*
+- [ ] BODY PLAN: a mushroom: a domed cap with a scalloped, gill-fringed underside rim on a thick stalk with a flared foot; no face, no limbs, no eyes
+- [ ] COLOUR LAYOUT: colour is free beyond canon's "red" mushroom; the donor's red cap with darker spots, grey underside and tan stalk is acceptable
 - [ ] Round blister-like spots over both cap and stalk
 - [ ] Shown as one of a group of several (a ring of 5 to 30), not a lone plant, where the format allows
-- [ ] No face, no limbs, no eyes
-- [ ] Colour is free (canon gives none); the donor's red cap with tan stalk is acceptable
-- [ ] Realistic rendering: natural fungal flesh, matte cap texture and soft natural lighting, no ink outlines, no cartoon shading
+- [ ] Realistic rendering: natural fungal flesh, matte cap texture and soft natural lighting, no ink outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an animal with a mushroom hat (no eyes, legs, mouth or face), not a cartoon toadstool with flat ink shading
 
 ## Engine limits
 none known. (Ring formation and tap-herding are behaviour. Rooting in winter is a state, not a sprite.)

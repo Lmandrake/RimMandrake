@@ -162,13 +162,15 @@ defining trait — that it is *feline* — is not represented on disk, and
   belongs in `gen_races_mod.py`, not the XML.
 
 ## Must show
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the realistic TFUCG bust (reference of record), the Muuurgh cover painting, the full-body anatomy illustration and the canon/Legends text.*
+- [ ] BODY PLAN: a tall, heavy, top-heavy, wide-shouldered, forward-hunched feline humanoid with a thick neck and long arms; digitigrade hind limbs with a raised heel, ending in a broad multi-toed foot with long curved claws; large hands with long curved claws
+- [ ] COLOUR LAYOUT: fur is striped (tabby banding across crown, cheeks, shoulders and chest), not a flat solid colour — grey-white with dark banding is the best-attested pattern; whiskers white
 - [ ] Short, broad, forward-projecting feline muzzle with a small triangular leathery nose and long white whiskers sweeping out from its sides
 - [ ] Upright, high-set, pointed ears with interior/tip tufts
 - [ ] Green or amber-yellow eyes with visible vertical slit pupils, set forward and close under a heavy brow
 - [ ] A heavy ruff/mane of longer fur around the neck, cheeks and chest, present on both sexes
-- [ ] Fur is striped (tabby banding), not a flat solid colour — grey-white with dark banding is the best-attested pattern
-- [ ] Digitigrade hind limbs with a raised heel, ending in a broad multi-toed foot with long curved claws
-- [ ] Realistic rendering: natural dense fur texture and lighting, no outlines, no cartoon or comic shading
+- [ ] Realistic rendering: natural dense fur texture and lighting, no outlines, no cartoon or comic shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human face with fur on it (no flat human face, no human nose, no round pupils, no low round ears), not a flat solid-coloured cat
 
 ## Engine limits
 none known — the entry attributes the current render (a vanilla furred-human head with no muzzle, whiskers, slit pupils or mane) to the def's gene choices (`RSW_Furskin_shortfur` pointing at base-game furred-human `HeadTypeDef`s, and a fur-colour gene wired to the wrong channel) rather than to a pipeline constraint; a proper feline head already exists in the mod (Cathar) and is simply not used here.
