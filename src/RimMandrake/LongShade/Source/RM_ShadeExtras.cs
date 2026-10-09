@@ -297,4 +297,80 @@ namespace RimMandrake.LongShade
             return true;
         }
     }
+
+    // ───────────────────────────── harrok (W2) ─────────────────────────────
+    /// <summary>The harrok stands still in the open as a pole; whatever rests in the strip its shadow lays is under its mouth.</summary>
+    public class CompProperties_RM_HarrokAmbush : CompProperties
+    {
+        public float shadowLengthCells = 6f;   // PROVISIONAL
+        public float shadowHalfWidth = 0.9f;   // PROVISIONAL
+        public float maxPreyBodySize = 1.5f;   // PROVISIONAL
+        public int cooldownTicks = 900;        // PROVISIONAL
+        public FloatRange strikeDamageRange = new FloatRange(12f, 20f);
+        public int lieStillTicks = 2500;
+        public CompProperties_RM_HarrokAmbush() { compClass = typeof(RM_CompHarrokAmbush); }
+    }
+
+    public class RM_CompHarrokAmbush : ThingComp
+    {
+        private int lastStrike = -999999;
+        private CompProperties_RM_HarrokAmbush Props => (CompProperties_RM_HarrokAmbush)props;
+
+        public override void CompTick()
+        {
+            Pawn pawn = parent as Pawn;
+            if (pawn == null || !pawn.Spawned || pawn.Dead || pawn.Faction != null) return;
+            if (!RM_LongShadeSettings.modEnabled || !RM_LongShadeSettings.harrokEnabled) return;
+            if (pawn.IsHashIntervalTick(60)) Scan(pawn);
+        }
+
+        private void Scan(Pawn pawn)
+        {
+            Map map = pawn.Map;
+            RM_MapComponent_ShadeGrid grid = RM_MapComponent_ShadeGrid.For(map);
+            if (grid == null) return;
+            Vector2 dir = grid.SunShadowDirection;
+            if (dir.sqrMagnitude < 0.0001f) return;
+            dir.Normalize();
+            // stand still like a pole: an idle wander becomes a long wait
+            JobDef cur = pawn.CurJob?.def;
+            if (cur == JobDefOf.GotoWander || cur == JobDefOf.Wait_Wander)
+            {
+                Job wait = JobMaker.MakeJob(JobDefOf.Wait);
+                wait.expiryInterval = Props.lieStillTicks;
+                wait.checkOverrideOnExpire = true;
+                pawn.jobs.StartJob(wait, JobCondition.InterruptForced, resumeCurJobAfterwards: false);
+            }
+            int now = Find.TickManager.TicksGame;
+            int reach = Mathf.CeilToInt(Props.shadowLengthCells + Props.shadowHalfWidth);
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(pawn.Position, reach, true))
+            {
+                if (!c.InBounds(map)) continue;
+                if (!RM_LongShadeKernel.InShadowStrip(c.x - pawn.Position.x, c.z - pawn.Position.z, dir.x, dir.y,
+                        Props.shadowLengthCells, Props.shadowHalfWidth)) continue;
+                List<Thing> things = c.GetThingList(map);
+                for (int i = 0; i < things.Count; i++)
+                {
+                    Pawn prey = things[i] as Pawn;
+                    if (prey == null || prey == pawn || prey.Dead) continue;
+                    bool resting = !prey.pather.MovingNow || prey.Downed;
+                    if (!RM_LongShadeKernel.HarrokCanStrike(resting, prey.BodySize, Props.maxPreyBodySize, now, lastStrike, Props.cooldownTicks)) continue;
+                    lastStrike = now;
+                    float amount = Props.strikeDamageRange.RandomInRange;
+                    prey.TakeDamage(new DamageInfo(DamageDefOf.Stab, amount, 0.2f, -1f, pawn));
+                    if (prey.Faction == Faction.OfPlayer)
+                    {
+                        Messages.Message("A harrok's shadow fell across " + prey.LabelShort + ", and the harrok struck.", prey, MessageTypeDefOf.NegativeEvent);
+                    }
+                    return;
+                }
+            }
+        }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref lastStrike, "rmHarrokLastStrike", -999999);
+        }
+    }
 }

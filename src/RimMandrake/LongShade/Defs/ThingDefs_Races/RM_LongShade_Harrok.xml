@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LongShade_Harrok.xml                 LONGSHADE_HARROK_STILT_1 (ideation W2; owner admitted 2026-10-08)
+
+  The harrok: a lean, very tall, stilt-legged thing that stands motionless in the open and IS its own shade.
+  It is a real moving shade caster (RM_CompProperties_ShadowCaster castShadeHeight), so the sliver it throws
+  along the pinned sun reads as shade to every shade-seeker; anything that rests in that sliver is under its
+  mouth (RM_CompHarrokAmbush, Source/RM_ShadeExtras.cs). The mirrak is the FAKE shadow, the harrok the REAL one.
+  Ban 3 safe: predator=false and slow, it never moves to hunt; it waits.
+
+  ART OWED: placeholder is the mirrak's sprite, stretched tall and tinted. Every number PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Harrok</defName>
+    <label>harrok</label>
+    <description>A pole with a mouth. The harrok stands on four long, thin legs in the open sun, hardly breathing, its narrow body held a full man's height above the sand. It does not hunt. It stands at the edge of a patch of shade so that its own long shadow lies across the rim, and the animals that come to rest in that thin cool strip are lying under it. It is the one shadow on this ground that is real and has a mouth.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <MarketValue>300</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>100</ComfyTemperatureMax>
+      <ArmorRating_Heat>0.5</ArmorRating_Heat>
+      <FilthRate>1</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities><li>Stab</li></capacities>
+        <power>14</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster" MayRequire="mandrake.rm.biomes">
+        <commensalFollowRadius>2</commensalFollowRadius>
+        <castShadeHeight>1.4</castShadeHeight>
+        <castShadeRadius>0</castShadeRadius>
+        <castShadeDepth>0.9</castShadeDepth>
+      </li>
+      <li Class="RimMandrake.LongShade.CompProperties_RM_HarrokAmbush" />
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>1.0</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <lifeExpectancy>25</lifeExpectancy>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Harrok</defName>
+    <label>harrok</label>
+    <race>RM_Harrok</race>
+    <combatPower>85</combatPower>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <drawSize>1.2</drawSize>
+          <color>(120, 100, 80)</color>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <drawSize>1.8</drawSize>
+          <color>(120, 100, 80)</color>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <drawSize>2.6</drawSize>
+          <color>(120, 100, 80)</color>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

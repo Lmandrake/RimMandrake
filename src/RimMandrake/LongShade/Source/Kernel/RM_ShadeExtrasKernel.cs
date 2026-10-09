@@ -50,5 +50,23 @@ namespace RimMandrake.LongShade
         {
             return stillOverheated && ticksSinceStart < maxTicks;
         }
+
+        // ================================================================= harrok (W2)
+        /// <summary>
+        /// Is the offset (dx, dz) from the harrok inside the strip its shadow lays along the unit sun vector (dirX, dirZ)?
+        /// Along-distance must be within (0, length] and sideways distance within halfWidth.
+        /// </summary>
+        public static bool InShadowStrip(float dx, float dz, float dirX, float dirZ, float length, float halfWidth)
+        {
+            float along = dx * dirX + dz * dirZ;
+            float side = Math.Abs(dx * -dirZ + dz * dirX);
+            return along > 0f && along <= length && side <= halfWidth;
+        }
+
+        /// <summary>A harrok strikes a resting thing in its shadow only if the thing is small enough and its cooldown has run out.</summary>
+        public static bool HarrokCanStrike(bool preyResting, float preyBodySize, float maxBodySize, int now, int lastStrike, int cooldownTicks)
+        {
+            return preyResting && preyBodySize <= maxBodySize && now - lastStrike >= cooldownTicks;
+        }
     }
 }

@@ -484,6 +484,16 @@ namespace RimMandrake.LongShade.SelfTest
                     var shades = new List<float>(); int expect = 0; float cut = (float)r.NextDouble();
                     for (int k = 0, m = r.Next(0, 30); k < m; k++) { float v = (float)r.NextDouble(); shades.Add(v); if (v >= cut) expect++; }
                     Check(RM_LongShadeKernel.ShelterCount(shades, cut) == expect, "ShelterCount disagrees with a plain count");
+                    // harrok strip: a point built from (along, side) must land in the strip exactly when its coordinates say so
+                    double ang = r.NextDouble() * Math.PI * 2; float dX = (float)Math.Cos(ang), dZ = (float)Math.Sin(ang);
+                    float len = (float)(1 + r.NextDouble() * 9), hw = (float)(0.2 + r.NextDouble() * 2), al = (float)(r.NextDouble() * 14 - 2), sd = (float)(r.NextDouble() * 6 - 3);
+                    bool inside = RM_LongShadeKernel.InShadowStrip(al * dX + sd * -dZ, al * dZ + sd * dX, dX, dZ, len, hw);
+                    if (Math.Abs(al) > 0.01f && Math.Abs(al - len) > 0.01f && Math.Abs(Math.Abs(sd) - hw) > 0.01f) Check(inside == (al > 0f && al <= len && Math.Abs(sd) <= hw), "InShadowStrip disagrees with its (along, side) frame");
+                    Check(!RM_LongShadeKernel.InShadowStrip(-dX, -dZ, dX, dZ, len, hw), "a point up-sun of the harrok is in its shadow");
+                    int lastS = r.Next(0, 5000), nowS = lastS + r.Next(0, 3000), cd = r.Next(100, 2000);
+                    Check(RM_LongShadeKernel.HarrokCanStrike(true, 1f, 1.2f, nowS, lastS, cd) == (nowS - lastS >= cd), "harrok cooldown wrong");
+                    Check(!RM_LongShadeKernel.HarrokCanStrike(false, 1f, 1.2f, nowS + 99999, lastS, cd), "harrok strikes prey that is moving");
+                    Check(!RM_LongShadeKernel.HarrokCanStrike(true, 5f, 1.2f, nowS + 99999, lastS, cd), "harrok strikes prey above its body-size cap");
                 }
                 catch (Exception e) { fails.Add("extras seed " + s + ": " + e.Message); }
             }

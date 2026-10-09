@@ -318,6 +318,22 @@ def extras_problems():
         bad.append("stampede CanFireNowSub no longer gates on stampedeEnabled")
     if "StampedeReady(" not in wk or "RM_LongShadeKernel.StampedeContinues(" not in src:
         bad.append("stampede lost its kernel tests (herd readiness / release when cooled)")
+    # harrok: a real moving shade caster with an ambush comp, gated, in the roster
+    hk = _def(_xml("ThingDefs_Races", "RM_LongShade_Harrok.xml"), "ThingDef", "RM_Harrok")
+    if hk is None:
+        bad.append("ThingDef RM_Harrok missing")
+    else:
+        cls = [e.get("Class", "") for e in hk.iter("li")]
+        if "RimMandrake.CreatureBehaviors.RM_CompProperties_ShadowCaster" not in cls or not float(hk.findtext(".//castShadeHeight") or 0) > 0:
+            bad.append("harrok is not its own shade (RM_CompProperties_ShadowCaster with castShadeHeight > 0)")
+        if "RimMandrake.LongShade.CompProperties_RM_HarrokAmbush" not in cls:
+            bad.append("harrok lost its ambush comp")
+        if hk.findtext("race/predator") != "false":
+            bad.append("harrok must stay predator=false (ban 3: it never moves to hunt)")
+    if "harrokEnabled" not in src.split("class RM_CompHarrokAmbush", 1)[1].split("PostExposeData", 1)[0]:
+        bad.append("harrok ambush no longer gated on harrokEnabled")
+    if "RM_Harrok" not in [e.tag for e in _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME).find("wildAnimals")]:
+        bad.append("harrok is not in the biome roster")
     # empty patch warning REUSES the clean-patch tell: exactly one tell comp, no second inspect line for it
     if len(re.findall(r"class \w*CleanPatchTell\w*\s*:\s*ThingComp", _cs("RM_LongShadeMiddenMapgen.cs") + src)) != 1:
         bad.append("empty-patch warning must reuse the one clean-patch tell comp (LONGSHADE_EMPTY_PATCH_WARNING_1)")
