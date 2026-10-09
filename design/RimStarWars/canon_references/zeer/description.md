@@ -46,10 +46,11 @@ Mods folder), so there is no `donor_current_sprite.png` candidate for this
 entry.
 
 ## Must show
-- [ ] Long thin neck with a small head atop it (giraffe-like silhouette)
-- [ ] Long thin legs and a long thin tail, in giraffe-like proportion — not stocky
-- [ ] Tawny/tan base coat with dark rust-brown crosswise, tiger-style banding/striping on the neck, shoulders and legs — not giraffe-style blotches
-- [ ] A pair of pale, thin, curved horns swept back from the top of the head — not a single thick ridged horn
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text and both images as described in the visual brief.*
+- [ ] BODY PLAN: a tall, giraffe-like quadruped (about 4.6 m tall): a long thin neck with a small head atop it, long thin legs and a long thin tail, in giraffe-like proportion — not stocky
+- [ ] COLOUR LAYOUT: tawny/tan base coat with dark rust-brown crosswise, tiger-style bands across the neck, shoulders and legs; horns pale, the lightest element
+- [ ] A pair of pale, thin, curved horns rising from the top of the head and swept/hooked backward — not a single thick ridged horn
+- [ ] NEGATIVE: not a giraffe (no blotchy patch pattern, no short ossicones — the coat is crosswise bands and the horns are curved and swept back); not a stocky or short-necked grazer
 
 ## Engine limits
 none known — no donor mod screenshot or sprite could be obtained at all (the donor mod is not present anywhere on this machine's disk), so there is nothing on disk to test against a rendering-pipeline constraint.

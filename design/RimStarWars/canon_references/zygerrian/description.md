@@ -168,12 +168,14 @@ black-outlined triangular cat ears. Against the references:
   the obesity variation, and "sallow complexion" as distinct from a flat light skin.
 
 ## Must show
-- [ ] Skin is a single pale "Light" tone (pale pink-mauve through tan/grey-brown) — never red
-- [ ] Ears are enormous, broad, tall, upright, cupped forward, with visible internal cartilage ridging, rising well above the crown and roughly as tall as the face — not small triangular cat ears
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon and Legends text, the two realistic paintings (look of record) and the two anatomy-only CGI images, as described in the visual brief.*
+- [ ] BODY PLAN: lean, wiry humanoid of ordinary proportions (about 1.7 m); feline head with strong angular features, heavy furrowed brow, and enormous ears — broad, tall, upright, cupped forward, with visible internal cartilage ridging, rising well above the crown and roughly as tall as the face — not small triangular cat ears
+- [ ] COLOUR LAYOUT: bare skin is a single pale "Light" tone (pale pink-mauve through tan/grey-brown) — never red; furred individuals carry brown (to grey, red or black) fur over face and skull, thicker as cheek ruffs and a mane at the back; ear interiors darker; pale blue or yellow eyes
 - [ ] Each ear carries a dark grey-black horn spur on its leading edge
 - [ ] Three bony grey spurs project downward from the chin (male-only; females have smooth cheeks)
 - [ ] Long fangs jut from the jaw and claws extend from the hands
-- [ ] Realistic rendering: natural fur and skin texture and lighting as in the paintings, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural fur and skin texture and lighting as in the paintings, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not red-skinned; not a Cathar or generic cat-person (no small triangle cat ears, no missing ear-horns); not a human with cat ears added
 
 ## Engine limits
 none known — every finding recorded here (red rather than "Light" skin, an undersized cat-ear attachment, missing ear-horns, missing fangs and claws) is attributed to specific gene/def choices, not to a rendering-pipeline constraint.

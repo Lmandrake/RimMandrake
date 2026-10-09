@@ -179,12 +179,14 @@ difference is checkable.
     and it avoids the invented body-size genes that mar the Kaleesh and Mimbanese defs.
 
 ## Must show
-- [ ] Crown of short, blunt, cream-ivory horns (stumped cones, not tall spikes) arcing across the brow and around the head, distinctly paler than the surrounding skin
-- [ ] Otherwise entirely human face structure (human nose, mouth, ears, eye placement) on pale tan/sallow yellow-ochre skin
-- [ ] Fine, hairline-weight dark tattoo lines on the chin and lower cheeks in a symmetric pattern — not bold blocks
-- [ ] Horns read as rigid, bone-coloured cranial projections rooted directly in the skull (real cranial projections, not skin growths or attachments)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Eeth Koth and Zabrak infobox images, the skeleton X-ray and the Maul contrast image, as described in the visual brief.*
+- [ ] BODY PLAN: ordinary human build and height; an otherwise entirely human face (human nose, mouth, ears, eye placement) under a crown of short, blunt horns (stumped cones, not tall spikes) arcing across the brow and round the sides of the head, the temple horns projecting laterally
+- [ ] COLOUR LAYOUT: pale tan / sallow yellow-ochre skin; horns cream-ivory, distinctly paler than the surrounding skin; fine dark tattoo lines on the chin and lower cheeks
+- [ ] Horns read as rigid, bone-coloured cranial projections rooted directly in the skull (not skin growths or attachments)
+- [ ] Tattoos are fine, hairline-weight lines in a symmetric pattern on the chin and lower cheeks — not bold blocks
 - [ ] Hair may be long, straight and black (as on the canonical male Eeth Koth) OR bald — not forced bald on every male
-- [ ] Realistic rendering: natural skin, bone-horn and hair texture and lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural skin, bone-horn and hair texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a Dathomirian / Darth Maul (no crimson-red skin, no bold black tattoo blocks, no tall sharp dark horns, no yellow-orange eyes); not a plain human (the horn crown must read)
 
 ## Engine limits
 none known — every finding recorded for this def (forced male baldness, grey as the only hair colour, no second-heart gene) is a gene/def choice, not a rendering-pipeline constraint; the existing `RSW_Headbone_zabrak` horn gene and `RSW_FacialRidges_iridonian` tattoo gene are both recorded as well-matched art.
