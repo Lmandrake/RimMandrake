@@ -48,5 +48,35 @@ namespace RimMandrake.CreatureBehaviors
 		{
 			compClass = typeof(RM_CompVerminBreeder);
 		}
-	}
+	
+		public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+		{
+			foreach (string err in base.ConfigErrors(parentDef))
+			{
+				yield return err;
+			}
+
+			// CREATURE_BEHAVIORS_CONFIGERRORS_1: the comp resolves these by
+			// string with GetNamedSilentFail, so a typo silently turns
+			// "breed while there is fruit" into "never breed". Report only.
+			string owner = parentDef != null ? parentDef.defName : "?";
+			if (!breedFoodThingDefNames.NullOrEmpty())
+			{
+				for (int i = 0; i < breedFoodThingDefNames.Count; i++)
+				{
+					string n = breedFoodThingDefNames[i];
+					if (n.NullOrEmpty() || DefDatabase<ThingDef>.GetNamedSilentFail(n) == null)
+					{
+						yield return "RM_CompProperties_VerminBreeder on " + owner
+						             + ": breedFoodThingDefNames entry '" + n + "' names no ThingDef.";
+					}
+				}
+			}
+			if (famineMentalState != null && breedFoodThingDefNames.NullOrEmpty())
+			{
+				yield return "RM_CompProperties_VerminBreeder on " + owner
+				             + ": famineMentalState is set but breedFoodThingDefNames is empty, so famine can never be detected.";
+			}
+		}
+}
 }

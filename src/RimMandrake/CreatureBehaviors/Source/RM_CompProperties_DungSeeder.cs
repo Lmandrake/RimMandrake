@@ -78,5 +78,32 @@ namespace RimMandrake.CreatureBehaviors
 		{
 			compClass = typeof(RM_CompDungSeeder);
 		}
-	}
+	
+		public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+		{
+			foreach (string err in base.ConfigErrors(parentDef))
+			{
+				yield return err;
+			}
+
+			// CREATURE_BEHAVIORS_CONFIGERRORS_1: report only.
+			string owner = parentDef != null ? parentDef.defName : "?";
+			if (intervalTicksRange.min <= 0)
+			{
+				yield return "RM_CompProperties_DungSeeder on " + owner + " intervalTicksRange.min must be > 0.";
+			}
+			if (seedRadius <= 0f)
+			{
+				yield return "RM_CompProperties_DungSeeder on " + owner + " seedRadius must be > 0.";
+			}
+			if (seedPlants != null && seedPlants.Contains(null))
+			{
+				yield return "RM_CompProperties_DungSeeder on " + owner + " seedPlants has an unresolved (null) entry.";
+			}
+			if (seedWildlife != null && seedWildlife.Contains(null))
+			{
+				yield return "RM_CompProperties_DungSeeder on " + owner + " seedWildlife has an unresolved (null) entry.";
+			}
+		}
+}
 }

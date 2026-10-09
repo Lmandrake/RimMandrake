@@ -160,5 +160,30 @@ namespace RimMandrake.CreatureBehaviors
 		public List<string> guardedThingDefNames;
 
 		public bool GuardsThings => !guardedThingDefNames.NullOrEmpty();
-	}
+	
+		public override IEnumerable<string> ConfigErrors()
+		{
+			foreach (string err in base.ConfigErrors())
+			{
+				yield return err;
+			}
+
+			// CREATURE_BEHAVIORS_CONFIGERRORS_1: report only.
+			if (guardedThingDefNames != null)
+			{
+				for (int i = 0; i < guardedThingDefNames.Count; i++)
+				{
+					string n = guardedThingDefNames[i];
+					if (n.NullOrEmpty() || DefDatabase<ThingDef>.GetNamedSilentFail(n) == null)
+					{
+						yield return "RM_ParentalEnrageExtension: guardedThingDefNames entry '" + n + "' names no ThingDef.";
+					}
+				}
+			}
+			if (enrageState == null)
+			{
+				yield return "RM_ParentalEnrageExtension has no enrageState, so it never rages.";
+			}
+		}
+}
 }
