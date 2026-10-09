@@ -37,3 +37,7 @@ Run each criterion at its stated level and record it with `rimflow verify CHILL_
 - L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
 - L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
 Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.
+
+## Ruling 2026-10-09 (decision taken by question card)
+
+Keep 300 W while pumping and 60 cells per pump. Accepted; still PROVISIONAL (numbers can be retuned later).

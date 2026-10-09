@@ -31,3 +31,7 @@ vault, vault dungeon. **The vaults exist; an "Assailant seal" does not.**
 ## criteria
 
 - Live: a vault map with the seal; a chunk dissolves it; ordinary explosives do not.
+
+## Ruling 2026-10-09 (decision taken by question card)
+
+The seal is a **flesh plug across the Slough vault's (V5) inner door**: a new building def with its own art, placed by the vault layout, dissolved only by a slime chunk (ordinary explosives do nothing). Build is filed as `GELATINOUSSLIME_VAULT_SEAL_PLUG_1` (def + art + vault placement).
