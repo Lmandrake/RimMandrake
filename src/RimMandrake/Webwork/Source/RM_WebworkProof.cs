@@ -157,7 +157,7 @@ namespace RimMandrake.Webwork
         {
             Map map = Map;
             if (map == null) return "REFUSED: no current map";
-            string[] a = (args ?? "").Split('|');
+            string[] a = (args ?? "").Split(new[] { '|', ';' });
             var inv = System.Globalization.CultureInfo.InvariantCulture;
             bool enabled = !(a.Length > 0 && a[0].Trim().ToLowerInvariant() == "false");
             string defName = a.Length > 1 && a[1].Trim().Length > 0 ? a[1].Trim() : "RM_Webwork_Anchor";

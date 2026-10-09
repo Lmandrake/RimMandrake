@@ -524,17 +524,17 @@ def _build_suite():
             # SHOKKWEAVE_SOLE_SOURCE_1: designator + WorkGiver accept the node, a Deconstruct drops the silk, and a
             # sure chance (multiplier 34 on base 0.03) spawns the emergent ollathrix. The ticked colonist walk is
             # ProofHarvestDesignate/ProofHarvestRead (bridge item), not this chain.
-            text = _wp(t, "ProofHarvest", "true|RM_Webwork_Anchor|34")
+            text = _wp(t, "ProofHarvest", "true;RM_Webwork_Anchor;34")
             if _live(t):
                 if not text.startswith("HARVEST"):
                     _unmeasured(t, "ProofHarvest gave no answer: %r" % text[:160]); return
                 if not ("designatable True" in text and "workgiver True" in text and "yield 3" in text
                         and "weaveNear 0->3" in text and "spawned 1" in text):
                     raise ExpectationFailed("cutting an anchor line did not designate/yield 3/spawn: %s" % text)
-            text = _wp(t, "ProofHarvest", "true|RM_Webwork_Web|0")
+            text = _wp(t, "ProofHarvest", "true;RM_Webwork_Web;0")
             if _live(t) and not ("yield 2" in text and "spawned 0" in text):
                 raise ExpectationFailed("cutting a sheet web did not yield 2 (or spawned at multiplier 0): %s" % text)
-            off = _wp(t, "ProofHarvest", "false|RM_Webwork_Anchor|0")
+            off = _wp(t, "ProofHarvest", "false;RM_Webwork_Anchor;0")
             if _live(t) and not ("designatable False" in off and "yield 0" in off):
                 raise ExpectationFailed("webHarvestEnabled off still lets a colonist cut web for silk: %s" % off)
         with t.component("webwork_competes_for_tiles", toggle="generateOnWorldgen"):
