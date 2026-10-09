@@ -1,5 +1,6 @@
 using RimWorld;
 using Verse;
+using RimMandrake.Shared;
 
 namespace RimMandrake.LuminousPigment
 {
@@ -47,6 +48,7 @@ namespace RimMandrake.LuminousPigment
             base.SpawnSetup(map, respawningAfterLoad);
             seedComp = GetComp<CompRefuelable>();
             powerComp = GetComp<CompPowerTrader>();
+            LightLedger.Tag(GetComp<CompGlower>(), "deepfire");   // DEEPFIRE_WORLD_LIGHT_1: its glow is deepfire light
         }
 
         public override void ExposeData()

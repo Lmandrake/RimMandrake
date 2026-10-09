@@ -20,12 +20,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.dirname(HERE)                                   # src/RimMandrake
 SHARED = os.path.join(SRC, "_Shared", "LightLedger")
 WRITE = re.compile(r"\bGlowRadius\s*=(?!=)")
-# Writers not yet migrated (LIGHT_LEDGER_ONE_1 lands one commit per writer). Shrinks to empty; a file
-# listed here that no longer writes directly is itself a failure, so the list cannot rot.
-NOT_YET_MIGRATED = {
-    "LuminousPigment/Source/MapComponent_DeepfireLights.cs",
-    "LuminousPigment/Source/MapComponent_DeepfireLights.Worn.cs",
-}
 
 
 def lint():
@@ -48,11 +42,6 @@ def lint():
                     else:
                         bad.append("%s:%d: %s" % (rel, i, line.strip()))
     ok = True
-    still = {b.split(":", 1)[0] for b in bad}
-    bad = [b for b in bad if b.split(":", 1)[0] not in NOT_YET_MIGRATED]
-    for gone in sorted(NOT_YET_MIGRATED - still):
-        print("FAIL %s is listed NOT_YET_MIGRATED but no longer writes directly - remove it from the list" % gone)
-        ok = False
     if ledger_hits == 0:
         print("FAIL sanity probe: the ledger's own GlowRadius write was not found - the lint sees nothing")
         ok = False
@@ -67,8 +56,8 @@ def lint():
             if need not in text:
                 print("FAIL %s uses LightLedger but its .csproj does not link %s" % (mod, need))
                 ok = False
-    print("lightledger lint: %d ledger write(s) seen, %d unlisted direct write(s), %d file(s) awaiting migration, consumers: %s"
-          % (ledger_hits, len(bad), len(still & NOT_YET_MIGRATED), ", ".join(sorted(consumers)) or "none"))
+    print("lightledger lint: %d ledger write(s) seen, %d direct write(s) elsewhere, consumers: %s"
+          % (ledger_hits, len(bad), ", ".join(sorted(consumers)) or "none"))
     return ok
 
 
