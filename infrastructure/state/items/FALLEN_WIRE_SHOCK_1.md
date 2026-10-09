@@ -28,3 +28,12 @@ GimmeSomeSlack, `Source/Aerial/RM_FallenWireShock.cs`, driven from `RM_MapCompon
 - A4 L2: live, a dead (unpowered) fallen wire does nothing to a pawn standing on it
 - A5 L2: live, a live end lying in a chemfuel puddle starts a fire within a few sweeps; with FlowWorks, one lying in canal oil lights the oil
 - H1 L4: the owner judges the knockback, knock-out length and ignition chance in a sitting (PROVISIONAL until then)
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify FALLEN_WIRE_SHOCK_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+- L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
+- L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

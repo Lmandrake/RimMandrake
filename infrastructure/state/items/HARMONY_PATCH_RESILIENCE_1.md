@@ -38,3 +38,10 @@ file in the csproj, swap the call, put `[PatchFeature]` on each class, wrap Expo
 - O1 L0: selftest_lint_harmony_targets passes (each verdict both ways, the FlowWorks sanity probe, and the NO_FEATURE mutation); lint_harmony_targets over src/ exits 0; FlowWorks C# selftest green; winbuild OK
 - A1 L1: on the live list Player.log carries `[RimMandrake.FlowWorks] Harmony: patched 30, missing 0`, with no FlowWorks Harmony error
 - A2 L1: a test build with one patch target deliberately renamed logs exactly that feature as switched off, every other FlowWorks patch still applies, its settings box cannot be ticked, and settings saved in that session keep the player's own value
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify HARMONY_PATCH_RESILIENCE_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

@@ -29,3 +29,12 @@ cooler. No one wants a room heater in that biome..."* Answers the open question 
 - A3 L2: live, a powered fuelled blower built into the wall of an enclosed room, front facing out, lowers that room toward its target and never raises it; the room outside its front is not heated
 - A4 L2: live, changing the strength and power settings changes the cooling rate and the power draw shown on the power net
 - H1 L4: the owner judges strength 14 and draw 250 W in a sitting (PROVISIONAL until then)
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify BLOWER_ROOM_COOLER_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+- L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
+- L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

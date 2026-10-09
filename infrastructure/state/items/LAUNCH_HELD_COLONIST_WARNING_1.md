@@ -24,3 +24,11 @@ before the launch).
 - A2 L1: on a load, Player.log has no "[RM EnvironmentalHazards] launch held-colonist warning" error (the patch armed)
 - A3 L2: live, a colonist sealed in a brine jacket (or swallowed by a Hwelgrue) is named in the gravship launch confirmation with what holds them; with nobody held, the dialog is vanilla
 - A4 L2: live, with the setting off the dialog is vanilla
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify LAUNCH_HELD_COLONIST_WARNING_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+- L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.
