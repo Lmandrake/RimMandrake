@@ -65,7 +65,7 @@ namespace RimMandrake.Graffiti
         // directly, so every placer (spree, joy, designator, raid-exit)
         // shares one going-over + provenance implementation.
         //
-        // Going-over (design §1.6 / fork F7, "going-over in v1"): a rival
+        // Going-over (design §1.6 / fork F4, ruled 2026-10-09: "going-over in v1"): a rival
         // mark already at the cell is destroyed first, never thickened
         // alongside the new one - two different marks papering over each
         // other, not one filth pile growing. "Rival" = any other

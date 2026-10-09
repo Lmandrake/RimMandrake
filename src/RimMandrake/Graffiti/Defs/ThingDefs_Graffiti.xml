@@ -156,13 +156,14 @@
       <Beauty>-6</Beauty>
       <Cleanliness>-3</Cleanliness>
     </statBases>
-    <!-- design/RM_GRAFFITI_SCOPE_WIDENING.md §2.2 (fork F10 recommendation
-         stands, "the shipped glyphs get mechanics"): WarningGlyph is this
-         engine's one generic taunt-funnel example - breachLure reads
+    <!-- design/RM_GRAFFITI_SCOPE_WIDENING.md §2.2 (fork F10, ruled
+         2026-10-09): the three shipped marks are the Glyph-form / Code-category
+         default members, and WarningGlyph is this engine's one generic
+         taunt-funnel example - breachLure reads
          through BreachBiasHook.cs with zero new content. -->
     <modExtensions>
       <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
-        <category>Taunt</category>
+        <category>Code</category>
         <form>Glyph</form>
         <poolWeight>1</poolWeight>
         <designatorEligible>true</designatorEligible>
@@ -174,7 +175,7 @@
   <!-- ════════════════════════════════════════════════════════════════
        GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 — the punk-urban register (design
        §2.2). Form axis alongside GraffitiCategory; asemic letterforms only
-       (fork F5 recommendation stands - no in-world lettering, no
+       (fork F5, ruled 2026-10-09 - no in-world lettering, no
        localisation/franchise problem). Art queued via fill_queue.py, not
        yet generated - see the item's own note on what's owed.
        ════════════════════════════════════════════════════════════════ -->

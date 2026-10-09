@@ -61,6 +61,26 @@ namespace RimMandrake.Graffiti
             return ext.raidExitEligible;
         }
 
+        // GRAFFITI_DESIGNATOR_MARK_CHOICE_1: a mark the player ordered by
+        // name is still painted only by a hand the pool would allow it to -
+        // the same meme, skill and hostility gates, never a bypass. A false
+        // here sends the job back to PickForDesignator.
+        public static bool PainterMayPaint(ThingDef markDef, Pawn painter)
+        {
+            ModExtension_Graffiti ext = markDef?.GetModExtension<ModExtension_Graffiti>();
+            if (ext == null || !ext.designatorEligible) return false;
+            return RM_GraffitiKernel.InPool(MemeGateAllows(ext, painter), SkillGateAllows(ext, painter), HostilityGateAllows(ext, painter), ext.poolWeight);
+        }
+
+        public static IEnumerable<ThingDef> AllDesignatorEligible()
+        {
+            foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                ModExtension_Graffiti ext = d.GetModExtension<ModExtension_Graffiti>();
+                if (ext != null && ext.designatorEligible) yield return d;
+            }
+        }
+
         private delegate bool EligibleFilter(ModExtension_Graffiti ext);
 
         private static ThingDef WeightedPick(EligibleFilter filter, Pawn placer)

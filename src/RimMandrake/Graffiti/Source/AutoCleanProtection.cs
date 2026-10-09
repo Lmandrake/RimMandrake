@@ -4,8 +4,8 @@ using Verse;
 
 namespace RimMandrake.Graffiti
 {
-    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 7 / fork F6 (recommendation
-    // stands): "Scrub semantics: own-faction and Devotional marks protected
+    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 7 / fork F7 (ruled
+    // 2026-10-09): "Scrub semantics: own-faction and Devotional marks protected
     // from home-area auto-clean, a scrub designator overrides." Same
     // Harmony shape as BreachBiasHook.cs (a postfix there; this is a
     // prefix, since we want to SKIP the vanilla check entirely rather than
@@ -32,7 +32,7 @@ namespace RimMandrake.Graffiti
         {
             Filth_Mark mark = t as Filth_Mark;
             ModExtension_Graffiti ext = mark?.def.GetModExtension<ModExtension_Graffiti>();
-            // design §2.3/§4 fork F6, verbatim: "own-faction AND Devotional marks protected" - two independent conditions,
+            // design §2.3/§4 fork F7, verbatim: "own-faction AND Devotional marks protected" - two independent conditions,
             // either one is enough. Own-faction: this mark's maker was one of ours. Devotional: the mark's own category,
             // regardless of maker (a god's mark deserves the protection even if a visitor placed it via a future RUT placer).
             // A forced clean is the player's own explicit override - always allowed.
