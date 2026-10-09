@@ -4826,3 +4826,12 @@
 {"seat":"FOUNDRY","event":"verify","id":"LEANINGSCRUB_LURE_VINE_1","result":"pass","config":"acc_20261009c","evidence":"Transient/belt_sleeper_probe_20261009b.py","sha":"a6af3395762d","level":"L1","criterion":"A2","ts":"2026-10-09T19:58:13Z","tsn":1791575893620855438}
 {"seat":"FOUNDRY","event":"verify","id":"KINETIC_BLAST_WEAPONS_1","result":"partial","config":"acc_20261009c","evidence":"Transient/belt_bridge_log_20261009b.md","sha":"1865274938b6","level":"L1","criterion":"KA.load","ts":"2026-10-09T19:58:56Z","tsn":1791575936034001630}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-09T19:59:02Z","tsn":1791575942586773166}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"belt acceptance 2","ts":"2026-10-09T19:59:28Z","tsn":1791575968391608223}
+{"seat":"FOUNDRY","event":"close","id":"GPT_FULL_REVIEW_TOP10_1","sha":"ad7a73581","reason":"all 10 reviews+VERDICTS.md+digest present in design/RimMandrake/gpt_reviews (decay sweep)","ts":"2026-10-09T20:01:05Z","tsn":1791576065761268159}
+{"seat":"FOUNDRY","event":"close","id":"LONGSHADE_PATCH_LIVECHECK_1","sha":"efe67213a","reason":"run-1 verify PASS L2, marker reads 'Unnaturally clean.'","ts":"2026-10-09T20:01:07Z","tsn":1791576067007459221}
+{"seat":"FOUNDRY","event":"close","id":"DUNES_TINT_RENDER_RECHECK_1","sha":"bbc284a6d","reason":"run-1 verify PASS L1","ts":"2026-10-09T20:01:07Z","tsn":1791576067859254462}
+{"seat":"FOUNDRY","event":"close","id":"GELATINOUSSLIME_JOININGWATER_RECHECK_1","sha":"af95c91e6","reason":"run-1 verify PASS L1","ts":"2026-10-09T20:01:08Z","tsn":1791576068726448079}
+{"seat":"FOUNDRY","event":"close","id":"LEANINGSCRUB_WEEPER_RECHECK_1","sha":"bbc284a6d","reason":"run-1 verify PASS L1","ts":"2026-10-09T20:01:09Z","tsn":1791576069620097939}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_NATIVE_CRASH_LIVECHECK_1","sha":"3cc82af7b","reason":"run-1 verify PASS L1","ts":"2026-10-09T20:01:10Z","tsn":1791576070477649883}
+{"seat":"FOUNDRY","event":"drop","id":"LONGSHADE_JAWATOW_LIVECHECK_1","reason":"superseded by LONGSHADE_JAWATOW_RECHECK_1 (FAIL was dead MayRequire, fixed cd03da899)","ts":"2026-10-09T20:01:11Z","tsn":1791576071337341290}
+{"seat":"FOUNDRY","event":"drop","id":"GELATINOUSSLIME_JOININGWATER_LIVECHECK_1","reason":"superseded by GELATINOUSSLIME_JOININGWATER_RECHECK_1, which passed","ts":"2026-10-09T20:01:12Z","tsn":1791576072397584312}
