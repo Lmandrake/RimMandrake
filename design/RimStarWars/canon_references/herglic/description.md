@@ -80,87 +80,34 @@ but drop **pale blue**, **pale pink** and the **white-striped** variant that Leg
 records.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+No live-action or photoreal Herglic exists (searched: Herglic and Herglic/Legends page images, "Images of Herglics" — every file is comic, RPG line art or painted RPG illustration). The three flat-coloured comic/line-art images (`qensog_comic`, `weapon_of_a_jedi`, `alien_encounters_fullbody`) were removed. The target is now the **realistic painted** Legends illustrations: `wookieepedia_legends_essential_atlas_painted.jpg` (Chris Trevas, head and shoulders), `wookieepedia_legends_ultimate_alien_anthology_painted.jpg` (full figure beside a Gran, Gungans and an H'nemthe — gives scale), `wookieepedia_legends_galaxy_of_intrigue_bodyguard.jpg` (full figure, hunched) and `wookieepedia_legends_infobox.jpg` (full figure).
 
-🔴 **The prose word is "black". Every image shows the Herglic is an ORCA — and one of them
-shows the marking pattern explicitly.** This is the single most important finding in this
-entry: "black skin" read alone produces a black hulk, and that is wrong for at least one
-canonical individual and understates all of them.
+🔴 **Where the painted look disagrees with the deleted comics:** the comics gave a flat slate-lavender / blue-purple skin. **The painted images give glossy, wet-looking near-black to charcoal skin with strong specular highlights** (Trevas, Ultimate Alien Anthology, infobox); only the Galaxy of Intrigue bodyguard is deep plum-purple. Read "black skin" as **glossy charcoal-black with a whale's wet sheen**, with dark purple as an allowed variant — never matte, never a pale lavender cartoon fill.
 
 **Head — the whole species reads from it:**
-- **The head is a whale's head worn as a face.** A single smooth, bulbous, forward-swept
-  dome, widest at the crown, tapering to a **blunt rostrum**; there is **no neck and no
-  chin** (canon text, and every image agrees), so the skull sits straight on the
-  shoulders.
-- **The mouth is a single wide lipless line running most of the head's width**, curving up
-  at the corners into a permanent faint smile — a cetacean mouth-line, not lips. In the
-  Legends line art (`wookieepedia_legends_alien_encounters_fullbody.jpg`) the lower jaw
-  reads as a separate rounded pouch beneath it.
-- **Eyes are small, set very wide and low on the sides of the head, near the mouth-line
-  corners** — the "tiny eyes in large head" of the canon infobox. They are the *only*
-  facial features besides the mouth. In `wookieepedia_canon_qensog_comic.jpg` they are
-  small dark almonds; in `wookieepedia_canon_weapon_of_a_jedi.jpg` they are yellow with
-  narrow pupils under heavy angled brow creases. **Neither image shows a nose** — there
-  are at most a pair of small paired nostril slits.
-- ⚠️ **No image in this set shows the blowhole**, which is canon text and would sit on the
-  **top of the cranium** — an above-view (RimWorld's `_north`) detail. Treat the blowhole
-  as textually canon and visually unconfirmed.
-- **Marking pattern — trust the image.** `wookieepedia_legends_narloch_white_stripes.jpg`
-  is an unambiguous **killer-whale pattern**: glossy black cranium and back, a hard-edged
-  **white eye-patch above and behind each eye**, and a **white throat/lower jaw and belly**
-  that runs down under the mouth. The prose calls this "white stripes down the sides of
-  their head and arms"; the picture calls it orca countershading. **A Herglic that is
-  uniformly one colour is the failure mode.**
-- Colour, from the images rather than the word "black": Qensog is **slate grey-lavender**;
-  the *Weapon of a Jedi* Herglic is **desaturated blue-purple**, not black. Both sit
-  comfortably inside the Legends range pale-blue-to-black, and **neither is ink black.**
+- **A whale's head worn as a face.** One smooth bulbous dome, widest at the crown, sweeping forward into a **blunt rounded rostrum**; **no neck, no chin** — the skull sits straight on huge shoulders (every image agrees).
+- **Mouth: a single wide lipless line** across most of the head's width, the lower lip a heavy rounded pouch beneath it (clearest in the Trevas painting).
+- **Eyes small, set low and wide**, near the mouth-line corners, under heavy brow ridges; small nostril pits on the rostrum (Trevas). No external ears.
+- ⚠️ **No image shows the blowhole** (canon text: top of the cranium). Textually canon, visually unconfirmed.
+- **Markings:** `wookieepedia_legends_narloch_white_stripes.jpg` (graphite illustration, kept for this alone) shows **orca countershading** — black cranium and back, a hard-edged white eye-patch above and behind each eye, white throat and lower jaw. The painted images are uniformly dark. So: **uniform glossy dark is the norm; the orca pattern is a canon variant.**
 
 **Body:**
-- **Extremely wide, barrel-chested and short-limbed relative to width** — the mass is in
-  the shoulders and gut, not in height. Legends says 1.7–2.2 m, i.e. *human-tall*: the
-  Herglic is **not a giant, it is a very broad person.** A RimWorld `Body_Hulk` gets the
-  width right by accident and the height wrong if scaled up.
-- **Shoulders are enormous and rounded, with no clavicle shelf** — consistent with the
-  canon "cartilaginous shoulders."
-- **Arms are thick and taper to broad paddle-like hands.** Digit count differs by image:
-  the Legends line art gives a clawed three/four-digit hand, the comic a mitten-like
-  paddle. **Digit count is unsettled — do not assert five.**
-- **Legs are short, thick and column-like; the feet are broad and flat with no visible
-  toes** (`wookieepedia_canon_weapon_of_a_jedi.jpg`, barefoot). Skin reads **smooth and
-  slick with specular sheen**, hairless everywhere.
+- **Enormously wide and heavy, barrel-chested, hunched forward** with the head carried low in front of the shoulders (Ultimate Alien Anthology and Galaxy of Intrigue). Legends gives 1.7–2.2 m — in the Anthology group it stands about a head taller than a Gungan but is several times as wide: **a very broad person, not a giant.**
+- **Shoulders are huge rounded masses with no clavicle shelf** (canon "cartilaginous shoulders"); **arms thick, tapering to broad paddle hands with short blunt claw-tipped digits** (Galaxy of Intrigue shows clawed fingertips). Digit count is unsettled — do not assert five.
+- **Legs short, thick and column-like; feet broad, flat, toeless** (infobox). Skin smooth, hairless, slick.
 
-**Body vs. clothing** — both full-body images show a **dressed** Herglic and the clothing
-is easy to mistake for anatomy:
-- *Weapon of a Jedi*: the pale bands at the forearms and waist are **cloth wraps**, the
-  green caps on the shoulders are **shoulder pads**, the olive trousers and the large
-  beaded **necklace** are worn. The bare, unclothed anatomy is: torso, upper arms, hands,
-  head, feet.
-- Qensog wears a **green flight suit with a harness and chest plate** — the plated look on
-  his cranium is skin, but the panelling below the jaw is the suit.
-- Narloch wears a **white sleeveless tunic, black belt and dark trousers** with a pendant;
-  the **white on his throat is skin**, and the white tunic sits right beneath it. Do not
-  let the tunic absorb the throat marking, or vice versa.
+**Clothing is easy to mistake for anatomy:** the painted figures wear sashes and wraps (infobox: olive sash), boots or shin guards (Galaxy of Intrigue: rust-red boots and bracers; Anthology: dark wraps, belt), an apron and goggles (Trevas). Bare anatomy is head, shoulders, arms and hands.
 
-**`donor_current_sprite.png` is `.../Heads/Herglic/Herglic_south.png` (512×512, RGBA) — a
-greyscale tint mask,** which is correct and expected for a RimWorld humanlike head (the
-game tints it from the pawn's skin-colour gene, so the absence of colour is not a defect
-and the colour findings above belong on a gene). What it gets right: a large domed
-neckless head with a low overhanging brow lobe, two angled eyes set low, two nostril dots.
-What is **missing**: **there is no mouth at all** — the wide lipless mouth-line is the
-species' most-cited feature and it is simply absent; there is no blowhole (`_north` would
-be the place); and the eyes are set high-central rather than wide and low. 🔴 **And a
-single-channel tint mask cannot produce the orca eye-patch/white-throat pattern at all** —
-countershading needs either a second render node or a baked variant head, so if the owner
-wants the Narloch pattern it is not a colour change, it is new art. `Herglic_east.png` and
-`Herglic_north.png` exist; there is **no Herglic body art on disk**, so a Herglic is a head
-on a standard RimWorld body, and the "extremely wide" proportion is unrepresented.
+**`donor_current_sprite.png` is `.../Heads/Herglic/Herglic_south.png` (512×512, RGBA) — a greyscale tint mask,** correct for a RimWorld humanlike head (colour comes from the skin-colour gene). It gets right a large domed neckless head with a low brow lobe, two angled eyes set low and two nostril dots. **Missing: there is no mouth at all** — the wide lipless mouth-line is the species' most-cited feature; no blowhole (`_north`); eyes set high-central rather than wide and low. 🔴 A single-channel tint mask cannot produce the orca countershading, and it cannot produce the glossy specular sheen either — that needs baked shading in the head art. There is **no Herglic body art on disk**, so the "extremely wide" proportion is unrepresented.
 
 ## Must show
-- [ ] Head is a single smooth, bulbous, forward-swept dome with no neck and no chin
-- [ ] Wide lipless mouth-line spanning most of the head's width, curving up at the corners
-- [ ] Small eyes set low and wide near the mouth-line corners, with no other facial features besides the mouth
-- [ ] Skin colour reads slate-grey, blue-purple or pale — not uniform ink black
-- [ ] Body is extremely wide and barrel-chested relative to its height (human-scale height, not a giant)
-- [ ] If depicting a marked individual (e.g. Narloch), orca-style white eye-patch and white throat/belly against dark skin — not a flat single colour
+- [ ] Head is a single smooth bulbous forward-swept dome with a blunt rostrum, no neck and no chin
+- [ ] Wide lipless mouth-line spanning most of the head's width over a heavy rounded lower-lip pouch
+- [ ] Small eyes set low and wide under heavy brows, near the mouth-line corners
+- [ ] Glossy wet-looking charcoal-to-black skin (dark purple allowed) with specular highlights — not matte, not pale lavender
+- [ ] Body enormously wide, barrel-chested and hunched, head carried low before huge rounded shoulders; human-scale height
+- [ ] Realistic rendering: smooth wet whale-like skin texture and natural lighting, no outlines, no cartoon flat colour
 
 ## Engine limits
 - A single-channel tint mask (the current head sprite's approach) cannot express the orca
@@ -175,12 +122,6 @@ on a standard RimWorld body, and the "extremely wide" proportion is unrepresente
 - https://starwars.fandom.com/wiki/Herglic/Legends — Legends article, via
   `…&page=Herglic/Legends&…` (14,756 chars, 2026-09-15). **Source of the only height
   figure and of the white-stripe, pale-blue and pale-pink variants.**
-- https://static.wikia.nocookie.net/starwars/images/7/70/Qensog2-2015StarWars61.jpg
-  (File:Qensog2-2015StarWars61.jpg, canon infobox image → `wookieepedia_canon_qensog_comic.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/a/a5/Herglic-TheWeaponOfAJedi1.jpg
-  (→ `wookieepedia_canon_weapon_of_a_jedi.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/d/db/Herglic-AE.png
-  (File:Herglic-AE.png, `Alien Encounters` → `wookieepedia_legends_alien_encounters_fullbody.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/2/27/Narloch1.jpg
   (File:Narloch1.jpg → `wookieepedia_legends_narloch_white_stripes.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/f/fa/Herglic.jpg
@@ -189,23 +130,11 @@ on a standard RimWorld body, and the "extremely wide" proportion is unrepresente
   that was attempted.
 
 ## Candidate images
-- `wookieepedia_canon_weapon_of_a_jedi.jpg` — **the reference of record for body and
-  colour.** Full-figure canon comic Herglic, head to bare feet: barrel torso, huge rounded
-  shoulders, short thick legs, paddle hands, yellow narrow-pupilled eyes, wide up-curved
-  mouth-line, **desaturated blue-purple skin rather than black.** Clothing (wraps, shoulder
-  pads, trousers, necklace) is separated in the visual brief above.
-- `wookieepedia_legends_narloch_white_stripes.jpg` — **the reference of record for
-  markings.** Narloch, half-figure: unmistakable orca countershading (black cranium, white
-  eye-patch, white throat). This is the image that contradicts "black skin."
-- `wookieepedia_canon_qensog_comic.jpg` — canon infobox image. Best read of the head in
-  three-quarter view: neckless slate-lavender skull, small dark eyes set wide, wide lipless
-  mouth. Waist-up only, and he is in a flight suit.
-- `wookieepedia_legends_alien_encounters_fullbody.jpg` — Legends `Alien Encounters` line
-  art, full figure, **black-and-white, so it carries no colour information at all** — use
-  it for silhouette and proportion only (the extreme width, the pouched lower jaw, the
-  clawed hand). Its clothing is heavy: sash, boots, gloves, belt pouch.
-- `wookieepedia_legends_infobox.jpg` — the Legends infobox image, low resolution
-  (465×550) and the weakest of the set; kept for completeness.
+- `wookieepedia_legends_essential_atlas_painted.jpg` — **reference of record for the head.** Legends, *The Essential Atlas*, painted by Chris Trevas: glossy black whale head, blunt rostrum, wide lipless mouth over a lip pouch, small low eyes, nostril pits; wears goggles and an apron. File `Herglic TEA Trevas.jpg` — https://static.wikia.nocookie.net/starwars/images/d/de/Herglic_TEA_Trevas.jpg/revision/latest?cb=20130528160255
+- `wookieepedia_legends_ultimate_alien_anthology_painted.jpg` — **reference of record for body and scale.** Legends, *Ultimate Alien Anthology*, painted by Jeremy Jarvis: full-figure black Herglic beside a Gran, two Gungans and an H'nemthe. File `Herglic with aliens.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a7/Herglic_with_aliens.jpg/revision/latest?cb=20071029034954
+- `wookieepedia_legends_galaxy_of_intrigue_bodyguard.jpg` — Legends, *Galaxy of Intrigue*, painted by Lee Phung: hunched full figure, deep plum-purple skin (the colour variant), clawed paddle hands, rust boots and bracers. File `HerglicBodyguard-GOI.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a3/HerglicBodyguard-GOI.jpg/revision/latest?cb=20100304172817
+- `wookieepedia_legends_infobox.jpg` — Legends infobox painting (*Alien Anthology*), full figure: glossy charcoal skin, hunched, flat toeless feet, olive sash. Low resolution (465×550). File `Herglic.jpg` — https://static.wikia.nocookie.net/starwars/images/f/fa/Herglic.jpg/revision/latest
+- `wookieepedia_legends_narloch_white_stripes.jpg` — Legends graphite illustration (West End Games), half figure — **kept only for the orca countershading pattern**, which no painted image shows. Not a rendering-style target. File `Narloch1.jpg` — https://static.wikia.nocookie.net/starwars/images/2/27/Narloch1.jpg/revision/latest
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -41,6 +41,11 @@ when they emerged, they were described as having the mind of an infant. The
 literary collective term for Hutts was **a bulge of Hutts**.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The comic council panel (`wookieepedia_hutt_council_comic.jpg`) was removed. The adult references are now all realistic: `wookieepedia_adult_jabba.jpg` (photoreal full-body render), `wookieepedia_jabba_palace_rotj.png` (Return of the Jedi live-action puppet, full body with tail, beside Bib Fortuna), `wookieepedia_jabba_puppet_face.png` (puppet face close-up) and `wookieepedia_rotta_adult_mandalorian_and_grogu.png` (a second adult Hutt, Rotta, live-action CGI from *The Mandalorian and Grogu*). The Clone Wars Huttlet (`wookieepedia_huttlet.jpg`) is **kept only as animated reference for juvenile proportions** — no realistic juvenile Hutt exists; render one realistically anyway.
+
+🔴 **Where the live-action look refines the old brief:** the real Jabba puppet is **warmer and browner** than "olive/grey-green" suggests — dorsal surfaces are **olive-brown to dark khaki**, the face and belly **orange-tan to reddish-brown** (strongly reddish in the face close-up), and the whole hide is **deeply furrowed and glistening**, with heavy horizontal fold lines across the brow and the belly. Rotta (live-action) is **grey-olive and much more uniform**, with only a slightly paler belly — so the dorsal/ventral two-tone is strong in Jabba and weak in Rotta. Preserve the wet, furrowed, heavy-folded hide in every case; let hue vary from olive-brown to grey-olive.
+
 🔴 **The infobox's eleven-colour skin menu badly misrepresents the canonical
 Hutt, which is TWO-TONE with a specific arrangement.** The adult reference image
 (Jabba, full body, transparent background) shows:
@@ -76,14 +81,11 @@ Head and face, from the same image:
   species has no legs at all. Any RimWorld representation is going to be a
   compromise here, and the compromise should be documented rather than hidden.
 
-The **Huttlet** image is the other end of the life cycle and confirms the
-half-metre juvenile: same two-tone scheme but much greener overall, proportionally
-enormous head and eyes, tiny arms, short blunt tail. **A Huttlet is not a small
-Jabba — the proportions genuinely differ.** The **comic council** image shows
-several adult Hutts together and confirms the two-tone scheme recurs across
-individuals with the hue varying (greener, browner, greyer) while the dorsal/
-ventral *arrangement* stays constant. That arrangement, not the hue, is the thing
-to preserve.
+The **Huttlet** image (animated, *The Clone Wars*) is the other end of the life cycle and confirms the
+half-metre juvenile: much greener overall, proportionally enormous head and eyes, tiny arms, short blunt tail.
+**A Huttlet is not a small Jabba — the proportions genuinely differ.** Jabba and Rotta together show that the
+hue varies between individuals (olive-brown, grey-olive) while the body plan, the furrowed wet hide and the
+paler underside stay constant.
 
 **donor_current_sprite.png is weak evidence, but not for the reason it looks.** It
 is `SWX/Pawn/HeadType/hutt/Male_FatHead_south.png` — a **greyscale mask**, which
@@ -101,12 +103,12 @@ overlay with no south variant and no tail at all. **The legless, tail-propelled
 body plan — the species' single most defining feature — is not represented.**
 
 ## Must show
-- [ ] Two-tone skin: dorsal/back/limb surfaces mottled dark olive/grey-green, ventral/belly/chest/underjaw pale peach/salmon-tan — not a single flat colour
-- [ ] The dorsal/ventral transition is a wide speckled/mottled band, not a hard edge
-- [ ] Skin reads wet — specular highlights and fine crazed wrinkle networks, especially on the belly and head
-- [ ] Enormously wide, thin-lipped, down-turned mouth spanning the full width of the head
-- [ ] Small amber/yellow eyes with horizontal slit pupils under heavy shelf-like brow ridges
-- [ ] No neck — heavy jowl/chin folds stack directly under the jaw, continuous with the belly folds
+- [ ] Legless body: the torso rears upright on a long, tapering, flattened tail that lies along the ground
+- [ ] Hide deeply furrowed and glistening wet, with heavy horizontal folds across brow, jowls and belly
+- [ ] Darker dorsal surfaces (olive-brown to grey-olive) over a paler tan/orange-brown belly and face, blended not hard-edged
+- [ ] Enormously wide, thin-lipped, down-turned mouth spanning the full width of the head; no neck, jowls run into the belly
+- [ ] Small orange/amber eyes with horizontal slit pupils under heavy shelf-like brow ridges
+- [ ] Realistic rendering: live-action puppet skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — the head-mask colour findings above belong on the skin-colour gene, not on the
@@ -120,26 +122,15 @@ a rendering constraint.
   73,505 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/c/cc/Jabba-USCVV.png (File:Jabba-USCVV.png, the infobox "Adult" option → wookieepedia_adult_jabba.jpg)
 - https://static.wikia.nocookie.net/starwars/images/b/b8/Rotta-SWCT.png (File:Rotta-SWCT.png, the infobox "Huttlet" option → wookieepedia_huttlet.jpg)
-- https://static.wikia.nocookie.net/starwars/images/3/3a/EnterTheHutts-2021THR4.png (File:EnterTheHutts-2021THR4.png → wookieepedia_hutt_council_comic.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/jabba-the-hutt (official
   Databank; a species-level Databank page was not attempted).
 
 ## Candidate images
-- `wookieepedia_adult_jabba.jpg` — **the reference of record.** The infobox "Adult"
-  image (File:Jabba-USCVV.png): a full-body adult Hutt on a transparent
-  background, high-fidelity render. Settles the two-tone dorsal-green/ventral-tan
-  scheme, the wet skin, the wide down-turned mouth, the small amber slit-pupilled
-  eyes under brow shelves, the three-digit stubby arms and the flattened
-  propulsive tail.
-- `wookieepedia_huttlet.jpg` — the infobox "Huttlet" image: a juvenile Hutt,
-  confirming the sub-half-metre life stage and showing that juvenile proportions
-  (huge head, huge eyes, short blunt tail) differ from the adult rather than
-  merely scaling down.
-- `wookieepedia_hutt_council_comic.jpg` — a comic panel with several adult Hutts
-  together. Stylized, so treat line and palette as the artist's; its value is
-  showing the **dorsal/ventral arrangement recurring across individuals** while
-  the hue shifts, which is what makes the arrangement (not the hue) the canonical
-  fact.
+- `wookieepedia_adult_jabba.jpg` — **reference of record for the body plan.** Infobox "Adult" image, file `Jabba-USCVV.png`: photoreal full-body Jabba on a transparent background — two-tone hide, wide mouth, three-digit stubby arms, flattened tail. https://static.wikia.nocookie.net/starwars/images/c/cc/Jabba-USCVV.png
+- `wookieepedia_jabba_palace_rotj.png` — *Return of the Jedi* live-action puppet, full body on his dais with the tail laid out, Bib Fortuna beside for scale; file `BibFortunaJabba-CGSWG.png` — https://static.wikia.nocookie.net/starwars/images/5/55/BibFortunaJabba-CGSWG.png/revision/latest?cb=20250127035911
+- `wookieepedia_jabba_puppet_face.png` — the Jabba puppet's face close-up (*The Moviemaking Magic of Star Wars: Creatures & Aliens*): furrowed reddish-brown wet hide, slit-pupilled orange eyes, brow shelf, nostril slits; file `Jabba MMSWCA.png` — https://static.wikia.nocookie.net/starwars/images/f/fe/Jabba_MMSWCA.png/revision/latest?cb=20231031040818
+- `wookieepedia_rotta_adult_mandalorian_and_grogu.png` — Rotta as an adult, live-action CGI, *The Mandalorian and Grogu*: a second individual, grey-olive and more uniform in hue; file `Rotta-MG-Profile.png` — https://static.wikia.nocookie.net/starwars/images/1/1b/Rotta-MG-Profile.png/revision/latest?cb=20260512153846
+- `wookieepedia_huttlet.jpg` — **animated (The Clone Wars), juvenile proportions only.** Infobox "Huttlet" image, file `Rotta-SWCT.png`: huge head and eyes, tiny arms, short blunt tail. Not a rendering-style target. https://static.wikia.nocookie.net/starwars/images/b/b8/Rotta-SWCT.png
 
 ## ruling
 (empty — owner has not reviewed this race yet)
