@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DONOR_CODE_BURST_REBUILD_1. Replaces the Alpha Animals compiled death actions (AlphaBehavioursAndEvents.*, a DLL that
+     vanishes with the donor) with our own DeathActionWorker_ScaledExplosion / _SummonFlashstorm. Applies only if the donor
+     is loaded; the same deathAction blocks are what a later port def carries. Mod Settings toggles: "Scaled death
+     explosions", "Death flashstorm". PROVISIONAL: radii/damage/filth chance are estimates (donor DLL not decompiled);
+     tune on a live look. -->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Alpha Animals</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+    <li Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaSmall"]/race/deathAction</xpath>
+      <value>
+        <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+          <flatRadius>1.9</flatRadius>
+          <damageDef>AcidBurn</damageDef>
+          <damageAmount>10</damageAmount>
+          <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+          <postExplosionFilthChance>0.4</postExplosionFilthChance>
+        </deathAction>
+      </value>
+    </li>
+    <li Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaLarge"]/race/deathAction</xpath>
+      <value>
+        <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+          <flatRadius>3.5</flatRadius>
+          <damageDef>AcidBurn</damageDef>
+          <damageAmount>16</damageAmount>
+          <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+          <postExplosionFilthChance>0.5</postExplosionFilthChance>
+        </deathAction>
+      </value>
+    </li>
+    <li Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AA_GreenGoo"]/race/deathAction</xpath>
+      <value>
+        <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+          <flatRadius>1.9</flatRadius>
+          <damageDef>AcidBurn</damageDef>
+          <damageAmount>8</damageAmount>
+          <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+          <postExplosionFilthChance>0.4</postExplosionFilthChance>
+        </deathAction>
+      </value>
+    </li>
+    <li Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AA_RedGoo"]/race/deathAction</xpath>
+      <value>
+        <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+          <flatRadius>2.5</flatRadius>
+          <damageDef>AcidBurn</damageDef>
+          <damageAmount>12</damageAmount>
+          <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+          <postExplosionFilthChance>0.5</postExplosionFilthChance>
+        </deathAction>
+      </value>
+    </li>
+    <li Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AA_RedSpore"]/race/deathAction</xpath>
+      <value>
+        <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+          <flatRadius>2.5</flatRadius>
+          <damageDef>AcidBurn</damageDef>
+          <damageAmount>12</damageAmount>
+          <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+          <postExplosionFilthChance>0.3</postExplosionFilthChance>
+        </deathAction>
+      </value>
+    </li>
+    <li Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/race/deathAction</xpath>
+      <value>
+        <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion">
+          <flatRadius>1.5</flatRadius>
+          <damageDef>AcidBurn</damageDef>
+          <damageAmount>8</damageAmount>
+          <postExplosionFilth>Filth_SpentAcid</postExplosionFilth>
+          <postExplosionFilthChance>0.3</postExplosionFilthChance>
+        </deathAction>
+      </value>
+    </li>
+    <li Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AA_Thunderbeast"]/race/deathAction</xpath>
+      <value>
+        <deathAction Class="RimMandrake.EnvironmentalHazards.DeathActionProperties_SummonFlashstorm">
+          <areaRadius>8~14</areaRadius>
+          <durationTicks>2500~4500</durationTicks>
+        </deathAction>
+      </value>
+    </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

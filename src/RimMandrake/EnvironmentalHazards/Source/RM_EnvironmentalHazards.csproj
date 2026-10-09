@@ -71,6 +71,7 @@
     <Compile Include="GameCondition_ArmLatentHazard.cs" />
     <Compile Include="DeathActionProperties_ScaledExplosion.cs" />
     <Compile Include="DeathActionWorker_ScaledExplosion.cs" />
+    <Compile Include="DeathActionWorker_SummonFlashstorm.cs" />
     <Compile Include="CompProperties_AbilityTargetedHediffAffliction.cs" />
     <Compile Include="CompAbilityEffect_TargetedHediffAffliction.cs" />
     <Compile Include="RM_MapComponent_GradientAxis.cs" />

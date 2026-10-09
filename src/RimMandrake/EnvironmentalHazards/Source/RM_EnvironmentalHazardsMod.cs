@@ -375,6 +375,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool latentHazardArmingEnabled = true;
         public static bool environmentalDamageEnabled = true;
         public static bool scaledExplosionsEnabled = true;
+        public static bool deathFlashstormEnabled = true;
         public static bool targetedHediffAbilityEnabled = true;
         public static bool biomeGlowMultiplierEnabled = true;
         public static float hazardDamageMultiplier = 1f;
@@ -474,6 +475,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref latentHazardArmingEnabled, "latentHazardArmingEnabled", true);
             Scribe_Values.Look(ref environmentalDamageEnabled, "environmentalDamageEnabled", true);
             Scribe_Values.Look(ref scaledExplosionsEnabled, "scaledExplosionsEnabled", true);
+            Scribe_Values.Look(ref deathFlashstormEnabled, "deathFlashstormEnabled", true);
             Scribe_Values.Look(ref targetedHediffAbilityEnabled, "targetedHediffAbilityEnabled", true);
             Scribe_Values.Look(ref biomeGlowMultiplierEnabled, "biomeGlowMultiplierEnabled", true);
             Scribe_Values.Look(ref hazardDamageMultiplier, "hazardDamageMultiplier", 1f);
@@ -596,6 +598,8 @@ namespace RimMandrake.EnvironmentalHazards
               + "killing plants. Its temperature and weather-forcing are unaffected.");
             list.CheckboxLabeled("Scaled death explosions", ref scaledExplosionsEnabled,
                 "A creature built to explode on death just dies instead.");
+            list.CheckboxLabeled("Death flashstorm", ref deathFlashstormEnabled,
+                "A creature built to summon a lightning storm on death just dies instead.");
             list.CheckboxLabeled("Targeted affliction ability effect", ref targetedHediffAbilityEnabled,
                 "An ability built on this effect does nothing when cast.");
             list.CheckboxLabeled("Biome darkness multiplier", ref biomeGlowMultiplierEnabled,
