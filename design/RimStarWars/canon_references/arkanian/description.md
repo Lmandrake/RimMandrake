@@ -72,12 +72,13 @@ eyes are baked into the head texture or supplied by the `Outland_Eye_White` rend
 node, because if they are baked they will override the correct gene.
 
 ## Must show
-- [ ] Ordinary human head, build and facial proportions — no head appendages, ridges, or
-  snout
-- [ ] Hair pure white, worn as ordinary hair, not a mane or fur
-- [ ] Eyes pale and pupil-less — no visible iris/pupil structure
-- [ ] Skin tone spans tan to pale across individuals, not fixed to a single hue
-- [ ] Darkened, sunken eye orbits with a reddish-shadowed rim
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_arkanians_doh.png` as the visual brief reads it and the infobox text.*
+- [ ] BODY PLAN: ordinary human build, head and facial proportions; no head appendages, ridges, unusual ears or snout; passes as human in silhouette
+- [ ] COLOUR LAYOUT: skin within the human tan-to-pale range (very pale cool white-grey to warm mid-tan), not fixed to a single hue and never blue, green or grey-alien; hair pure white; eyes pale white, the lightest element of the face
+- [ ] Hair pure white worn as ordinary hair (long and loose or short and swept back), not a mane, crest or fur
+- [ ] Eyes pale and pupil-less: no visible iris/pupil structure, never solid black
+- [ ] Darkened, sunken eye orbits with a reddish-shadowed rim (shown on the female in the reference)
+- [ ] NEGATIVE: not an alien-sculpted head; not a plain human with dark eyes (the donor's solid-black eyes are the failure to avoid)
 
 ## Engine limits
 none known

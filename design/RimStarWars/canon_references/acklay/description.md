@@ -53,14 +53,13 @@ says green; nothing supports blue-teal. Flagging for owner ruling — canon
 color should very likely be corrected to green on any regen.
 
 ## Must show
-- [ ] Green skin (mottled olive/sage-green to yellow-green), not blue-teal
-- [ ] Paler cream/yellow underside
-- [ ] Long, upward-curving neck ending in a crested, elongated, toothy head
-- [ ] Six thin, sharp, multi-jointed legs radiating from a small central body
-- [ ] Two of the six legs raised and functioning as grappling arms with hooked claws
-- [ ] Skin/hide reads as textured or ridged, not armored shell plates
-
-- [ ] Realistic rendering: natural wrinkled, ridged leathery hide texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the infobox text, images #2 and #4 as the visual brief reads them, and the `## ruling` below.*
+- [ ] BODY PLAN: a small central body raised on six thin, sharp, multi-jointed legs radiating outward (spider-crab plan); the front two legs raised as grappling arms ending in broad, flat, scythe-like hooked claws, the other four walking/spearing legs; a long upward-curving neck ending in a crested, elongated, toothy head (pose and silhouette like `acklay_wookieepedia_2.jpg`, owner ruling 2026-09-14: "let's regenerate to something more like #2")
+- [ ] COLOUR LAYOUT: green all over the upper body, neck and head (dusty sage-to-olive, mottled toward yellow-green); a paler grey-green to cream throat and underside
+- [ ] Hide reads as hard studded/ridged, wrinkled leathery skin, not separate armoured shell plates (owner 2026-09-14: "It would just be nice to get more of that surface texture on it")
+- [ ] Open mouth full of razor-sharp teeth on the elongated head
+- [ ] Realistic rendering: natural wrinkled, ridged leathery hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not blue-teal (the donor's invented colour); not a spider or mantis (no segmented abdomen, no eight legs, no insect head), not a plated crab shell
 
 ## Engine limits
 none known

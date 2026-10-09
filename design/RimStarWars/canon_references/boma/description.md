@@ -39,13 +39,14 @@ predatory-boma reading (image 1 and the infobox skincolor) well, and does
 not attempt the large ridden variant.
 
 ## Must show
-- [ ] Squat, monstrous body with a wide face bearing 2 horns and 2 tusks
-- [ ] Thick, wrinkled, scaled hide reading green
-- [ ] Short, powerful, clawed legs
-- [ ] Low, bulldog/toad-like stance
-- [ ] Moderate-length tail
-
-- [ ] Realistic rendering: natural thick wrinkled reptile-hide texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `boma_wookieepedia_1.jpg` (owner ruling 2026-09-13 picked it) as the visual brief reads it, and the infobox text.*
+- [ ] BODY PLAN: a squat, monstrous, low four-legged reptilian predator in a bulldog/toad-like crouch: a broad heavy head sunk into the shoulders with almost no neck; very short, massively muscled legs; a thick, moderately long tail curled up behind
+- [ ] Wide face bearing 2 short horns at the sides of the head and 2 pale curved tusks jutting from the lower jaw; a wide snarling mouth full of small teeth
+- [ ] COLOUR LAYOUT: olive-green over back, head, legs and tail; paler tan-yellow throat; tusks and claws pale, the lightest elements
+- [ ] Thick, deeply wrinkled, folded, scaled hide
+- [ ] Long pale curved claws on the short legs
+- [ ] Realistic rendering: natural thick wrinkled reptile-hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a dog or bulldog (no fur, no floppy ears); not a lizard or crocodile (no long low snout, no sprawling slim body); not the blue-grey comic mount
 
 ## Engine limits
 none known

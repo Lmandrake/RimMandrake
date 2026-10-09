@@ -81,14 +81,13 @@ distinction, this is the highest-value correction available. There are also no e
 markings and no mottling texture.
 
 ## Must show
-- [ ] Long, forward-projecting, downward-tapering snout hanging below the jawline with
-  a blunt, slightly hooked, fleshy tip
-- [ ] Eyes set on the sides of two separate raised bulges near the top of the head, not
-  front-facing on a flat face
-- [ ] Two long, thin, pendulous tendrils hanging from the underside of the snout
-- [ ] Crown always bald; any hair grows only from the sides and back of the head
-- [ ] Skin reads mottled and blotched, not a flat single tone
-- [ ] Palette is grey-cream/bone, grey-brown, or pink-tan — never orange
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of all three images (Cai Threnalli, Slowen-Lo, Brasmon Kee).*
+- [ ] BODY PLAN: ordinary humanoid build and five-fingered hands; the head is the whole read: a smooth elongated dome skull with no visible brow and no external ears, carrying a long, forward-projecting, downward-tapering snout that hangs below the jawline and ends in a blunt, slightly hooked, fleshy tip (tapir/shoebill silhouette, not a human face)
+- [ ] Eyes: small, dark, set on the SIDES of two separate raised bulges near the top of the head, not front-facing on a flat face
+- [ ] Two long, thin, pendulous tendrils hanging from the underside of the snout, roughly level with its tip (slender whiskers, not a beard or moustache)
+- [ ] Crown always bald; any hair is a long droopy fringe from the sides and back of the head only
+- [ ] COLOUR LAYOUT: skin grey-cream/bone, grey-brown, or pink-tan, mottled and blotched with fine darker speckling over the base tone (not a flat single tone); wrinkles concentrated around the eye pods and snout base
+- [ ] NEGATIVE: not a human with a tint (no front-set eyes, no ears, no short muzzle stopping at the jaw); never orange
 
 ## Engine limits
 none known

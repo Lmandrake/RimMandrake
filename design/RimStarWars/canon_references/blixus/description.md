@@ -26,14 +26,14 @@ Blixus were large non-sentient carnivorous cephalopods from an unknown planet of
 - Size: canon dimensions are 6.48 m high and 13.33 m long (Databank, https://starwars.fandom.com/wiki/Blixus); the images give no scale reference, and the "compact" low body reading above describes only the central body, not the whole animal. Canon lists yellow eyes and red as well as teal skin; the "amber" eyes above are an image reading.
 
 ## Must show
-- [ ] Low armoured half-shell carapace over the back (teal-blue, overlapping flared plates), soft pink underbelly exposed below it
-- [ ] Exactly six stiff, blade/pick-like chitin legs, angled down and forward
-- [ ] Exactly five very long, ringed, flesh-pink tentacles, each longer than the body
-- [ ] Tentacles grey and thorn-spiked toward the tips, ending in a flat pink sucker-pad
-- [ ] Wide lip-lined slit mouth low on the front of the underbelly, with small pincer claws beside it
-- [ ] Two small amber eyes tucked under the carapace brim
-
-- [ ] Realistic rendering: natural wet chitin and ringed soft-flesh texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_canon_1.webp` as the visual brief reads it and the canon text (five tentacles, six legs, half-shell).*
+- [ ] BODY PLAN: a low, compact crab/trilobite-like body under a half-shell carapace of overlapping flared plates that sweeps back past the body; exactly six stiff, blade/pick-like chitin legs angled down and forward; exactly five very long tentacles trailing and looping from the front/upper body, each longer than the body
+- [ ] COLOUR LAYOUT: carapace teal-blue on top (pale veining on the head plate); soft pinkish-tan flesh of the underbelly exposed below it; legs blue-grey with rusty-orange joints; tentacles flesh-pink, turning grey toward the tips
+- [ ] Tentacles finely ringed like an earthworm, thorn-spiked toward the tips, ending in a flat pink paddle-pad ringed with dark suckers
+- [ ] Wide lip-lined slit mouth low on the front of the underbelly, with two small pincer claws beside it
+- [ ] Two small amber/yellow eyes tucked under the carapace brim
+- [ ] Realistic rendering: natural wet chitin and ringed soft-flesh texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a squid or octopus (has a shell and six rigid legs), not a plain crab (five long tentacles); not the red-orange/yellow Legends comic palette
 
 ## Engine limits
 not yet assessed

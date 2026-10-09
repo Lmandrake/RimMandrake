@@ -167,17 +167,15 @@ correct low-and-wide placement, and **pale midface folds** below the eyes. Three
   glassy read that the canon text specifically calls out ("black, **glassy** eyes").
 
 ## Must show
-- [ ] Huge, hairless, bulbous cranium swelling up and backward past the face (a heavy,
-  back-weighted teardrop, not a sphere or tall forehead)
-- [ ] Distinct vertical crease/furrow down the centre of the crown
-- [ ] Two very large, round, glossy, lidless black eyes set low and wide beneath the
-  cranial bulge
-- [ ] No nose — two vertical fleshy wrinkled folds run down the midface between the eyes
-  and the mouth
-- [ ] Small, thin-lipped, closed mouth with no fangs or visible teeth
-- [ ] No visible ears; skin reads pale (cream, bone, pale pink, or pale tan) — never dark
-  or brown
-- [ ] Realistic rendering: soft pale waxy skin with fine creasing and glossy wet-looking eyes under natural light, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images as the visual brief reads them (Databank cantina still = live-action reference of record).*
+- [ ] BODY PLAN: humanoid (torso, two arms, two legs) with a head taking a disproportionate share of the silhouette: a huge, hairless, bulbous cranium swelling up and BACKWARD past the face (a heavy back-weighted teardrop, not a sphere or a tall forehead); body build not fixed (slight in most references, a heavy brute is also canon)
+- [ ] Distinct vertical crease/furrow down the centre of the crown, with soft lumpy lobes either side
+- [ ] Two very large, round, glossy, lidless black eyes set low and wide beneath the cranial bulge, with a specular highlight; no brow, no visible ears
+- [ ] No nose: two vertical fleshy wrinkled folds run down the midface from between the eyes to the mouth; a small, thin-lipped, closed mouth with no fangs or visible teeth
+- [ ] COLOUR LAYOUT: skin one pale tone over cranium, face and hands (cream, bone, pale pink or pale tan), never dark or brown; the black eyes are the only dark element of the head
+- [ ] Long, slender, pale fingers with broad flattened pads
+- [ ] Realistic rendering: soft pale waxy skin with fine creasing and glossy wet-looking eyes under natural light, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a human with a big forehead (no nose, no ears, no eyelids); not a toothy maw like the donor's red fanged mouth; not a sideways-wide heart-shaped skull
 
 ## Engine limits
 none known

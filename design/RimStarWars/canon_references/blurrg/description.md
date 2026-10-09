@@ -43,13 +43,14 @@ render**: a regen that shows no arms at all is wrong on canon. The queued jobs' 
 is 1.0; the def's adult drawSize is 2.4.
 
 ## Must show
-- [ ] Bipedal: one huge rounded head-and-body mass with almost no neck, on two thick short elephant-like hind legs with broad flat feet
-- [ ] Two SHORT thin forelimbs hanging under the jaw, ending in hooked claws (not absent, not full-size arms)
-- [ ] Thick tapering tail carried low behind as a counterbalance
-- [ ] Enormous wide mouth with purplish lips and ragged rows of long, uneven, outward-jutting yellowed fangs
-- [ ] Nearly uniform dark slate-grey, heavily wrinkled elephant-like hide — no light mottled patches, no pale belly
-- [ ] Mount-sized bulk, clearly bigger than a person (ridden in canon)
-- [ ] Realistic rendering: natural thick wrinkled hide texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three Mandalorian live-action/CGI images as the visual brief reads them, and the canon text for the arms.*
+- [ ] BODY PLAN: bipedal: one huge rounded mass in which head and torso merge with almost no neck (the giant head IS the front of the body), on two thick, short, elephant-like hind legs with broad flat feet; a thick tapering tail carried low behind as a counterbalance; mount-sized bulk, clearly bigger than a person (ridden in canon)
+- [ ] Two SHORT thin forelimbs hanging from the chest under the jaw, ending in hooked claws (not absent, not full-size arms)
+- [ ] COLOUR LAYOUT: nearly uniform dark slate-grey to charcoal over the whole body, heavily wrinkled and folded elephant/rhino-like hide with deep fold lines down the back; no light mottled patches, no pale belly
+- [ ] Enormous wide mouth with purplish-grey lips and ragged rows of long, uneven, outward-jutting yellowed fangs; pink tongue
+- [ ] Small dark eyes set high on the sides of the head under a heavy brow ridge
+- [ ] Realistic rendering: natural thick wrinkled hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a T-rex or raptor (no long neck, no separate slim head, no slim legs); not quadrupedal; not the mottled blue/green Clone Wars cartoon
 
 ## Engine limits
 none known
