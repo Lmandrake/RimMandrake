@@ -1,7 +1,8 @@
 # Canon metal fabrication — what the factory ship can forge (2026-10-09)
 
-Analysis only; no defs changed. Companion to `design/RimMandrake/canon_materials_design_2026-10-09.md`
-(the material frame) and `design/RimMandrake/mineral_abundance_registry_design_2026-10-03.md` (amounts).
+Canon research; no defs changed. The owner ruled on it 2026-10-09; the rulings and the resulting routes live in
+`design/RimMandrake/canon_materials_design_2026-10-09.md` (§0, §3), which is the single source of truth. Companion
+also to and `design/RimMandrake/mineral_abundance_registry_design_2026-10-03.md` (amounts).
 
 Owner's request, typed 2026-10-09: *"look at how the factory ship is likely able to forge some of this stuff.
 Look up the canon requirements for making some of those metals, for example (other ores that might be added
@@ -21,27 +22,26 @@ cites.
 
 ## Summary
 
-| material | canon inputs | canon process / facility | factory-ship verdict | new ores needed |
+| material | canon inputs | canon process / facility | ruled route (design §3) | new ores |
 |---|---|---|---|---|
-| durasteel | **zersium** ore (Canon). Legends: iron, carbon, carvanium, lommite, meleenium, neutronium, zersium | Legends: metallurgical plants, durasteel foundries, fusion smelters | **(b)**: re-smelt durasteel salvage. Already ruled; no change | none |
-| plasteel | none named in Canon. Legends: "acrylic polymers and metal alloys" | none in Canon | **(b)**: re-smelt plasteel salvage only. Three live craft routes contradict the ruling (§2) | none |
+| durasteel | **zersium** ore (Canon). Legends: iron, carbon, carvanium, lommite, meleenium, neutronium, zersium | Legends: metallurgical plants, durasteel foundries, fusion smelters | salvage re-melt; steel + zersium on the ship smelter or early alloy forge (TO CONFIRM) | zersium (source TO CONFIRM) |
+| plasteel | none named in Canon. Legends: "acrylic polymers and metal alloys" | none in Canon | salvage re-melt; trade; late alloy-forge recipe. Other craft routes removed | none |
 | plastoid | none named | none named | **(c)** from chemfuel, as built. A plastic, not a metal | none (oil/biofuel) |
 | duranium | none named in either | Legends: "very high melting point, making it difficult to shape" | **(a)**: salvage and rare trade; repair with it, never re-forge it | none |
-| doonium | Canon: an ore, mined on planets **and asteroid fields** | Canon: an Imperial mine plus refinery (Ryloth) | **(a)**, as ruled. Canon would allow (c) from asteroid ore: question Q3 | (optional) doonium ore on asteroids |
-| beskar | Canon: found only on Mandalorian worlds | Canon: the Armorer's cryo-furnace, magnetic tongs, gravity hammer; a guarded Mandalorian secret | **(a)**. Reforging is canon but belongs to Mandalorian smiths, so (d) at most: Q4 | none |
+| doonium | Canon: an ore, mined on planets **and asteroid fields** | Canon: an Imperial mine plus refinery (Ryloth) | salvage, rare trade, asteroid ore smelted aboard with glower crust | doonium ore (asteroids) |
+| beskar | Canon: found only on Mandalorian worlds | Canon: the Armorer's cryo-furnace, magnetic tongs, gravity hammer; a guarded Mandalorian secret | used as found; smelting destroys it; only a Mandalorian armorer (Blackstar quest) reforges | none |
 | cortosis | Canon: a metal found on Dinzo, Mokivj, Bal'demnic | Canon: useless raw ("soft and frangible"); must be woven into a protective matrix | **(a)** | none |
-| transparisteel | **lommite** ore (Canon) | Canon: lommite processing plants (Eriadu). Legends: press-formed into sheets | **(a)**, as ruled. Lommite fits a desert, but the process is a city-scale plant: Q5 | (optional) lommite |
-| phrik | **phrikite** ore (Legends); Canon names no ore but mines phrik **on Tatooine** | Legends: refined and purified at the mine; alloyed with tydirium | **(a)**, as ruled. The strongest canon case for a local ore: Q6 | (optional) phrikite |
-| bronzium | none named | none named | **(b)**: re-smelt bronzium slag, as built | none |
+| transparisteel | **lommite** ore (Canon) | Canon: lommite processing plants (Eriadu). Legends: press-formed into sheets | sifted from extreme-desert fine sand; replaces all glass; also traded | none (fine sand, built) |
+| phrik | **phrikite** ore (Legends); Canon names no ore but mines phrik **on Tatooine** | Legends: refined and purified at the mine; alloyed with tydirium | trade and a rare desert phrikite deposit smelted aboard | phrikite (desert) |
+| bronzium | none named | none named | dropped from the game | none |
 | quadanium | none named | Legends: SoroSuub Quadanium Refinery (Sullust) | folded into durasteel (no def) | none |
 | alusteel | none named | none named | folded into durasteel (no def) | none |
 | ferrocarbon | Legends-only: iron + carbon | none named | is steel in all but name (no def) | none |
 
 **Bottom line.** Canon gives the sandcrawler a **reactor that melts scrap** and calls it a **mobile mining and
-smelting facility**. That supports (b) for metals that are ordinary alloys (durasteel, plasteel, bronzium):
-melt the salvage, recast the plate. It does not support making the exotic ones from ore. Duranium, beskar
-and cortosis are best left **import/salvage only**, and so are doonium, transparisteel and phrik unless the
-owner wants one of the three optional ores in §5. No new ore is *required* by anything in this doc.
+smelting facility**. That supports re-melting ordinary alloys (durasteel, plasteel) aboard and smelting simple
+ores (doonium, phrikite). Duranium and cortosis stay salvage and trade; beskar is reforged only by a Mandalorian
+smith. The routes the owner chose from this research are in the design doc, §3.
 
 ## 1. What the factory ship can do in game today
 
@@ -61,24 +61,23 @@ a raw-extraction pod.
 **Buildable in the live mod set (622 active) that touch these materials** — measured from `src/` RecipeDefs
 and VFE Factory's `1.6/Defs/ProcessDefs/ProcessDefs_AlloyForge.xml` (workshop 3686924415):
 
-| route | building | inputs → output | against the rulings |
+| route | building | inputs → output | under the ruled design |
 |---|---|---|---|
-| `VFEFactory_AlloyPlasteel` | VFE Automated Alloy Forge (5×5) | Steel + Chemfuel + Gold → 5 Plasteel | **contradicts** "plasteel never craftable" |
-| `Make_PlasteelGF` | `GravForge` (ours, ported, `src/RimUtinni/ResearchRetag/Defs/ThingDefs_Buildings/RUT_Ported_GravForge.xml`) | 50 Steel + 50 Chemfuel + 3.5 Silver → Plasteel | **contradicts** the same |
-| `kotor_Plasteel_recipe` (+10×) | `kotor_PlasmaFurnace` (Armoury) | 5 Plastoid + 5 Steel → Plasteel | **contradicts** the same |
-| `kotor_IngotDurasteel_recipe` (+10×) | `kotor_PlasmaFurnace` | 5 Steel + 2 Uranium → durasteel | **contradicts** "no alloy recipe" |
-| `KotORRecipe_PlasteelFromSlag` / `…DurasteelFromSlag` / `…BronziumFromSlag` | `ElectricSmelter`, `kotor_PlasmaFurnace` | one salvage slag chunk → the metal | consistent: this is (b) |
-| `kotor_IngotBeskar_recipe` (+10×) | `kotor_PlasmaFurnace` | 3 raw beskar → beskar ingot | consistent only while raw beskar is salvage-only (registry: it is) |
+| `VFEFactory_AlloyPlasteel` | VFE Automated Alloy Forge (5×5) | Steel + Chemfuel + Gold → 5 Plasteel | kept: the late alloy-forge plasteel recipe |
+| `Make_PlasteelGF` | `GravForge` (ours, ported, `src/RimUtinni/ResearchRetag/Defs/ThingDefs_Buildings/RUT_Ported_GravForge.xml`) | 50 Steel + 50 Chemfuel + 3.5 Silver → Plasteel | removed |
+| `kotor_Plasteel_recipe` (+10×) | `kotor_PlasmaFurnace` (Armoury) | 5 Plastoid + 5 Steel → Plasteel | removed |
+| `kotor_IngotDurasteel_recipe` (+10×) | `kotor_PlasmaFurnace` | 5 Steel + 2 Uranium → durasteel | removed (steel + zersium replaces it) |
+| `KotORRecipe_PlasteelFromSlag` / `…DurasteelFromSlag` / `…BronziumFromSlag` | `ElectricSmelter`, `kotor_PlasmaFurnace` | one salvage slag chunk → the metal | kept (salvage re-melt); bronzium's removed |
+| `kotor_IngotBeskar_recipe` (+10×) | `kotor_PlasmaFurnace` | 3 raw beskar → beskar ingot | removed: the colony never reforges beskar |
 | `KOTOR_Plastoid_recipe` (+10×) | `ElectricSmelter`, `kotor_PlasmaFurnace` | 20 Chemfuel → plastoid | consistent (design channel F) |
 
 Not traced here: Rimefeller's `UncuredPlasteel` (listed in the registry's donor oddities) may be a fourth
 plasteel route; and whether the VFE Automated Smelter accepts `KotORChunk_*` slag (UNMEASURED: its
 `ProcessDefs_AutomatedSmelter.xml` was not read).
 
-`canon_materials_design_2026-10-09.md` §3.3 and §5 duty 2 already say "remove every crafting route" for
-plasteel; this table is the list of routes that duty has to cover. The plasma-furnace durasteel recipe falls
-under §3.2 ("stops being produced"). The deck plan's phase 5 line "Fabricate: plasteel" is the one design
-text that still says otherwise (Q2).
+Under the ruled design (§3.3, §3.4 there), the alloy forge's plasteel recipe is kept as a late unlock and the
+GravForge and plasma-furnace plasteel routes and the steel + uranium durasteel recipe are removed; bronzium is
+dropped with its slag recipe.
 
 ## 2. Canon Jawa / sandcrawler fabrication capability
 
@@ -108,7 +107,7 @@ character; creating a rare alloy from raw ore is not, except where the ore and p
 
 ## 3. Per material
 
-### Durasteel — verdict (b)
+### Durasteel
 - **Canon** (Durasteel): "a type of metal alloy", "more resistant than standard steel"; "Zersium was an ore
   critical to the making of durasteel" (*Aftermath: Life Debt*). **Zersium** (Canon): the bedrock of Nag
   Ubdur, strip-mined by the Empire (*Aftermath: Life Debt*); the only canon locale.
@@ -119,25 +118,24 @@ character; creating a rare alloy from raw ore is not, except where the ore and p
   by adding 5% extra carvanium. Fusion smelter (Legends): makes molten durasteel.
 - **Factory ship:** making new durasteel needs zersium plus a foundry recipe of five exotic elements, which
   the owner already ruled out. Re-smelting durasteel salvage (slag, ship chunks) is what a scrap-melting
-  sandcrawler does, and is what `canon_materials_design` §3.2 already decides. **(b), no change to the ruling.**
+  sandcrawler does, and is what `canon_materials_design` §3.2 now also proposes steel + zersium aboard.
 
-### Plasteel — verdict (b)
+### Plasteel
 - **Canon** (Plasteel): "a hard material"; no ingredients or process named anywhere on the page; uses as in
   `canon_materials_design` §2a (B1 droids — *Queen's Peril*; masks, greaves, M3 blast shields).
 - **Legends** (Plasteel/Legends): acrylic polymers combined with metal alloys; construction droids extrude
   plasteel girders. Neither names an ore.
 - **Factory ship:** canon gives no recipe to build, so a recipe would be invented, not sourced. Re-forming
-  plasteel salvage chunks is (b) and is already built (`KotORRecipe_PlasteelFromSlag`). **(b), consistent
-  with the ruling**; the three crafting routes in §1 are what the ruling still has to remove.
+  plasteel salvage chunks is already built (`KotORRecipe_PlasteelFromSlag`).
 
-### Plastoid — verdict (c), no ore
+### Plastoid
 - **Canon** (Plastoid): armour material; stormtrooper "plastoid composite … impervious to chemical warfare"
   (*Thrawn: Alliances* et al.). **Legends:** "plasarmor"; plastoid tubing reinforces Mos Eisley walls.
   No inputs named in either.
 - **Factory ship:** a plastic; making it from chemfuel at a smelter is the built route and the design's
   channel F. No world source needed beyond oil/biofuel.
 
-### Duranium — verdict (a)
+### Duranium
 - **Canon** (Duranium): "a tough alloy used in military-grade plating … stronger than titanium but less
   resilient than impervium" (*Star Wars: Galactic Defense*); Grievous's armour, MagnaGuard frames. No source
   world, no inputs.
@@ -146,7 +144,7 @@ character; creating a rare alloy from raw ore is not, except where the ore and p
 - **Factory ship:** nothing to forge it from, and Legends says it resists reshaping. Salvage and rare trade,
   used as found for frames and repairs, exactly as ruled.
 
-### Doonium — verdict (a), (c) possible
+### Doonium
 - **Canon** (Doonium): "a heavy metal … used primarily for starship construction … found and mined on
   numerous planets and asteroid fields", naming Batonn, Umbara, Samovar, Lothal and the **Socorro asteroid
   belts** (*Catalyst*, *Thrawn*); Ryloth (*The Bad Batch*). Essential with dolovite in shielding the Death
@@ -155,11 +153,10 @@ character; creating a rare alloy from raw ore is not, except where the ore and p
 - **Legends:** Imperial hull plating; Thrugii Asteroid Belt (Socorro), Dor, Atraken.
 - **Factory ship:** doonium is an ore in canon, and asteroid fields are a named home, so Odyssey asteroid maps
   are a canon-true place for it. Smelting a heavy-metal ore is within a mining sandcrawler's job; the canon
-  refinery is an Imperial installation, though, and the owner ruled doonium "made offworld". **(a) as ruled;
-  (c) from asteroid ore is canon-supported if he wants it (Q3).** Dolovite (Canon: Mustafar, Samovar, Burnin
+  refinery is an Imperial installation, though, and the owner ruled doonium "made offworld".  Dolovite (Canon: Mustafar, Samovar, Burnin
   Konn, all lava worlds) is the canon partner for reactor shielding; it needs no def until a consumer exists.
 
-### Beskar — verdict (a)
+### Beskar
 - **Canon** (Beskar): "Beskar was found only on Mandalorian worlds" (*The Star Wars Book*); Concordia and
   Mandalore. The Armorer "used a cryo-furnace, magnetic tongs, and a gravity hammer" to forge it (*The
   Mandalorian* Chapter 3); "the Mandalorian method for forging beskar was a closely guarded secret" (Databank,
@@ -168,10 +165,9 @@ character; creating a rare alloy from raw ore is not, except where the ore and p
 - **Legends:** only source Mandalore and Concordia; carbon added in the foundry; techniques guarded by
   metalsmiths "who would sooner die than reveal their secrets".
 - **Factory ship:** no ore on our world, and the skill is not the Jawas'. The canon Jawa relationship to
-  beskar is trading a found suit (Chapter 9). **(a).** A Mandalorian armorer the clan recruits would be the
-  only canon way to reforge it (d, Q4).
+  beskar is trading a found suit (Chapter 9). 
 
-### Cortosis — verdict (a)
+### Cortosis
 - **Canon** (Cortosis): found on Dinzo (an Imperial secret mine — *Rebels Magazine*), Mokivj (*Thrawn:
   Alliances*), Bal'demnic (*The Acolyte*). Thrawn: "soft and frangible, useless for building into armor …
   they've found a method for weaving the cortosis into a network within a protective matrix".
@@ -180,17 +176,16 @@ character; creating a rare alloy from raw ore is not, except where the ore and p
 - **Factory ship:** raw cortosis is useless and the weave is specialist tech. **(a)**; the registry's
   "not mined" ruling matches canon.
 
-### Transparisteel — verdict (a), (d) possible
+### Transparisteel
 - **Canon** (Transparisteel): windows and canopies; "A major component of transparisteel was lommite ore"
   (*Rise of the Rebels*). **Lommite** (Canon): shipped from Eriadu; mined on Didyma V; "scattered deposits were
   found on the surface of the desert planetoid Arvala-7" (*The Mandalorian Visual Guide*). **Lommite
   processing plants** (Canon): in Eriadu City (*Tarkin*).
 - **Legends:** "press-formed into thin, transparent sheets"; Lommite/Legends: Dorvalla, Elom, Ord Thoden;
   also a durasteel constituent.
-- **Factory ship:** the ore suits a desert surface, but canon processing is a city's plant. **(a) as ruled;
-  (d) a later-game press/kiln unlock plus surface lommite is the canon-true path if wanted (Q5).**
+- **Factory ship:** the ore suits a desert surface, but canon processing is a city's plant. 
 
-### Phrik — verdict (a), (c) possible
+### Phrik
 - **Canon** (Phrik): "a rare and robust alloy … mined on Gromas … and Tatooine"; "mined at the Mos Algo mine on
   the desert planet Tatooine" (*Star Wars Outlaws*); Baktoid electrostaffs; weaker than cortosis.
 - **Legends:** Phrikite (Legends-only): "the source ore for the metal phrik", primary source Gromas 16;
@@ -198,16 +193,14 @@ character; creating a rare alloy from raw ore is not, except where the ore and p
   phrik mining. Phrik metal mine (Legends-only): Tatooine, Jundland Wastes, ore "refined and purified" on site
   with its own furnace.
 - **Factory ship:** the one exotic metal canon places on a desert world, smelted at the mine. A deep
-  phrikite deposit in a desert biome, smelted aboard, is the least-stretched (c) in this doc. Owner ruled phrik
-  trade-only, so **(a) stands; (c) is Q6.**
+  phrikite deposit in a desert biome, smelted aboard, is the least-stretched forge route in this doc.
 
-### Bronzium — verdict (b)
+### Bronzium
 - **Canon** (Bronzium): "a bronze-colored alloy" for statues, finishes, lightsabers, armour (*Tarkin*, *The
   Rise of Skywalker: Visual Dictionary*). **Legends:** droid finishes (C-3PO, droidekas); Wookiee bowcasters.
   No inputs named.
-- **Factory ship:** re-smelting bronzium slag is built and fits. Inventing an ore would be unsourced.
-  **(b).** Note: `canon_materials_design` §3.1 lists bronzium as "F alloy, T" while the registry says
-  "salvage + trade"; nothing in the game makes it except slag.
+- **Factory ship:** only slag makes it; inventing an ore would be unsourced.
+
 
 ### Quadanium, alusteel, ferrocarbon — folded, no def
 - **Quadanium steel** (Canon): Death Star hull plates, TIE wing frames, *Supremacy* armour (*Tarkin*, *TIE
@@ -216,29 +209,11 @@ character; creating a rare alloy from raw ore is not, except where the ore and p
   carbon, Coruscant foundations. None names inputs a sandcrawler could use, and all duplicate durasteel or
   steel. Keep them folded, as decided.
 
-## 4. New ores the world or asteroids would need
+## 4. Ores
 
-**Required: none.** Every verdict above is (a) or (b) or uses chemfuel.
-
-**Optional, only if the owner opens a question below** (each is canon-sourced; biome names are the
-registry's columns):
-
-| ore | canon source | where it would fit | unlocks |
-|---|---|---|---|
-| doonium ore | Doonium (Canon): asteroid fields, Socorro asteroid belts (*Thrawn*, *Catalyst*) | Odyssey asteroid maps only, deep or vein; not on the planet | doonium smelted aboard (Q3) |
-| phrikite | Phrik (Canon): Mos Algo mine, Tatooine (*Star Wars Outlaws*); Phrikite (Legends) | a desert biome's deep deposit: `RUT_ExtremeDesert`, `RM_Stillsand` or `RM_BlueDesert` | phrik smelted aboard (Q6) |
-| lommite | Lommite (Canon): surface deposits on desert Arvala-7 (*The Mandalorian Visual Guide*) | surface scatter in `RUT_Desert` / `RUT_ExtremeDesert` | transparisteel, only with a later facility (Q5) |
-| dolovite | Dolovite (Canon): Mustafar, Samovar, Burnin Konn | a volcanic biome: `RM_Pyrelands` or `RM_TheForge` | nothing yet; reactor shielding if doonium ever has a consumer |
-
-Not proposed: **zersium** (canon's only locale is Nag Ubdur; adding it would reverse the durasteel ruling for
-no gain over salvage), carvanium, meleenium, neutronium, tydirium (Legends-only inputs).
-
-## 5. Owner questions
-
-- Q1. Durasteel and plasteel: keep "salvage and trade only" with re-smelting of salvage chunks allowed (canon's scrap-melting sandcrawler)? Options: yes, as ruled / no re-smelting either.
-- Q2. The deck plan's phase 5 "Fabricate: plasteel" and the alloy forge's plasteel recipe contradict today's ruling: remove plasteel from the alloy forge (and the grav forge and plasma furnace)? Options: remove all three / keep the alloy forge's as a late unlock (revises the ruling).
-- Q3. Doonium: canon mines it in asteroid fields. Options: stay salvage/rare trade, as ruled / add doonium ore to Odyssey asteroid maps, smelted aboard (revises "made offworld").
-- Q4. Beskar: canon reforging belongs to Mandalorian smiths. Options: salvage only / a recruited Mandalorian armorer unlocks reforging existing beskar.
-- Q5. Transparisteel: canon needs lommite plus a processing plant. Options: trade only, as ruled / desert surface lommite plus a later-game press unlock.
-- Q6. Phrik: canon mines it on desert Tatooine. Options: trade only, as ruled / a rare desert phrikite deposit, smelted aboard.
-- Q7. Bronzium: the design says "alloy, craftable" but canon names no inputs and only slag makes it. Options: salvage/slag and trade only / invent a bronzium alloy recipe.
+The ores the rulings add (doonium on asteroid maps, phrikite in a desert, zersium with its source still to
+confirm) and their routes are in the design doc, §3.2 and §3.5. Canon homes: doonium — asteroid fields, the
+Socorro belts (*Thrawn*, *Catalyst*); phrik — the Mos Algo mine, Tatooine (*Star Wars Outlaws*), phrikite ore
+(Legends); zersium — the bedrock of Nag Ubdur (*Aftermath: Life Debt*). Dolovite (Mustafar, Samovar, Burnin
+Konn) needs no def until a consumer exists. Not added: lommite (the desert's fine sand is the transparisteel
+feedstock), carvanium, meleenium, neutronium, tydirium (Legends-only inputs).

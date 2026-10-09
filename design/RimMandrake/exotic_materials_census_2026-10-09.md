@@ -1,11 +1,11 @@
 # Exotic materials census — 2026-10-09
 
-Analysis only: no def was changed. Every proposal below is a one-line option for the owner, not a ruling.
+Analysis only: no def was changed. The owner ruled on the top proposals 2026-10-09; those rulings live in
+`design/RimMandrake/canon_materials_design_2026-10-09.md` §3.9–§3.10. The rest below are options, not rulings.
 Frame: `design/RimMandrake/canon_materials_design_2026-10-09.md` (plasteel **Shape**, durasteel **Hold**,
 plastoid **Seal**, duranium **Brace**, doonium **Contain**, beskar **Protect**, cortosis **Disrupt**, phrik
 **Parry**, transparisteel **Observe**, stygium **Conceal**, coaxium **Extend**, kyber **Focus**, tibanna
-**Charge**, bronzium **Decorate**; plasteel/durasteel salvage+trade only; phrik, transparisteel, stygium,
-coaxium trade-only). The "like X but more Y" lines map our materials onto those verbs **without** giving a
+**Charge**; bronzium dropped; sources per that doc's §3.1). The "like X but more Y" lines map our materials onto those verbs **without** giving a
 local material any reserved canon job.
 
 Data: `design/RimMandrake/exotic_materials_census_2026-10-09.csv` (one row per material, 36 columns).
@@ -79,11 +79,11 @@ crashed-ship salvage. That leaves **244 non-food materials**, which are the subj
 
 ### Top proposals
 
-**Unify (five):**
+**Unify (five) — approved 2026-10-09; built in `MATERIAL_MERGES_CLEANUP_1`:**
 1. **Chitin ladder, three copies:** `RM_*Chitin` (Lantern Deeps), `RM_Rot*Chitin` (the Rot) and `RSW_*Chitin`
    (Bestiary) carry identical stats for brittle, tough, toxic, fragile, gray and crystal chitin (6 twin
-   groups). Under ruling Q13 (duplicate, then regenerate one copy into a variant), either regenerate each
-   second copy now or fold the RSW copies onto the RM ones.
+   groups). They fold into one
+   ladder.
 2. **RM_/RUT_ item twins:** `RUT_GlowerCrust`, `RUT_CathedralRoachShell`, `RUT_BrinePlate`, `RUT_SeepStone`,
    `RUT_SaltCameo`, `RUT_Hardwood` and `RUT_SweetlineWool` repeat an `RM_` item. Three of the RUT copies
    are orphans, and one more is seen only in C#. Fold each pair into one def and point both producers at
@@ -99,19 +99,19 @@ crashed-ship salvage. That leaves **244 non-food materials**, which are the subj
    are the same canon gas. Make one def, with beldon herds as the source and the pipe network as the
    consumer.
 
-**Differentiate (five):**
+**Differentiate (five) — roles as ruled 2026-10-09:**
 1. `RM_CloakLacquer` (chotrix hide film that bends light) is **like stygium but crude and organic**:
    personal camouflage cloaks only, never ship cloaking, so stygium stays trade-only.
 2. `RUT_Mindstone` (Lantern Deeps, value 900, used to cut mindstone matrices for droid heads) is **like kyber
    but for machines**: the local Focus crystal for droid minds, where kyber is the Focus for the Force.
 3. `RM_GlowerCrust` (Warscar radiotrophic varnish, already the cost of `RM_GlowerPlate` and
-   `RM_GlowerShieldPanel`) is **like doonium but crude**: radiation and heat shielding for small things, while reactor and ship cores
-   stay doonium.
-4. The glass family (`RM_SunGlass`, `RM_Biosilica`, `RM_GlassPearl`, `RM_WaveglassShard`, `RM_Lanternstone`)
-   is **like transparisteel but brittle**: windows, lenses and lamps that are not blaster-proof, so
-   transparisteel keeps the armoured canopy and observation dome.
-5. `RSW_Leather_KraytDragon` (value 20; the highest blunt and joint-highest sharp of any hide) is **like beskar but organic**: the
-   planet's heirloom armour hide, from a quest-scale kill only and never farmed.
+   `RM_GlowerShieldPanel`) is an **ingredient of doonium** (smelted with asteroid doonium ore), which gives it
+   trade value; it keeps its built uses.
+4. The manufactured glass (`RM_SunGlass`, `RM_LensGlass`, glass bottles and the lenses ground from them) **is
+   transparisteel**: sifted from the extreme desert's fine sand, the game's only glass. Natural glasses keep
+   their own defs.
+5. `RSW_Leather_KraytDragon` (value 20; the highest blunt and joint-highest sharp of any hide) is an
+   **ordinary top leather**, not beskar-class.
 
 **Orphans: 38 non-food materials** have no consumer the instrument can see (plus 1 food item and 11 out of
 scope). The list is in §Orphans.
@@ -131,7 +131,7 @@ testudine and zakkeg 15 / 2.0 / 2.0. The bottom is brittle and fragile chitin at
 **Unify**
 - The chitin ladder exists three times (Lantern Deeps `RM_`, Rot `RM_Rot`, Bestiary `RSW_`): brittle,
   tough, toxic, fragile, gray and crystal are stat-identical across copies. Regenerate each second copy
-  into a variant under Q13, or fold the copies together.
+  into one ladder (ruled 2026-10-09).
 - Fragile and brittle chitin (1.0 / 0.45 / 0.50 vs 1.0 / 0.40 / 0.40) are one rung, named twice inside each
   tier. Keep one.
 - `RM_GloomcastHide` and `RSW_Leather_Horax` are stat-identical (Q13 duplicate not yet regenerated).
@@ -145,7 +145,7 @@ testudine and zakkeg 15 / 2.0 / 2.0. The bottom is brittle and fragile chitin at
 - `RM_CathedralRoachShell` and `RUT_CathedralRoachShell` are the same text, and both are orphans.
 
 **Differentiate**
-- `RSW_Leather_KraytDragon`: like **beskar** but organic. The apex heirloom hide, from a rare kill.
+- `RSW_Leather_KraytDragon`: the top ordinary leather (ruled 2026-10-09); not beskar-class.
 - `RM_Vexxith` (Cauldron; Metallic stuff; fire cannot warm it; acid beads off): like **durasteel** but
   acid- and heat-proof. Vat linings, acid-rain roofing, hazard doors; not hull plating.
 - `RUT_CrackWax` (already the cost of `RM_CrackWaxSuit`), `RM_Leather_TarCured` (waterproof) and
@@ -253,8 +253,8 @@ cobalt glass), `RM_FE_Fulgurite`, `RUT_AuroraGlass` (Propane Lake), `RM_Floatsto
   lens route per use.
 
 **Differentiate**
-- The whole family is like **transparisteel** but brittle: windows, lenses and lamps that are not
-  blaster-proof. Transparisteel keeps armoured canopies and domes.
+- The manufactured glass (sun glass, lens glass, bottles, lenses) becomes transparisteel (ruled 2026-10-09,
+  `GLASS_TO_TRANSPARISTEEL_1`); the natural glasses below keep their own defs.
 - `RM_Floatstone`: like **duranium** but light. Light frames and keel braces for small craft; large frames
   stay duranium.
 - `RM_FexxilShard` (orphan) and `RUT_AuroraGlass` (trade only) are coloured glasses. Give them a stained
@@ -296,8 +296,8 @@ lamp bulbs, `RM_SootBrick`, `KOTOR_Tibanna`, `RUT_TibannaGas`, `KOTOR_RawRhydoni
 - `RM_TarGas`: like **tibanna** but dirty. Lamp and heating gas only, never blaster charge.
 - `RM_HydrocarbonFlesh` and `RM_ColdWax`: like **coaxium** but low-grade. Volatile local fuels that must
   stay cold, if the coaxium cold-hazard mechanic is built; coaxium keeps range.
-- `RM_GlowerCrust`: like **rhydonium** as a dirty fuel, plus the doonium-like shielding above. It already
-  has both uses; keep both.
+- `RM_GlowerCrust`: like **rhydonium** as a dirty fuel, and an ingredient of doonium (above), which
+  is owed, not built.
 
 **Orphans (2):** `RM_SootBrick`, `RUT_GlowerCrust`. `RM_ColdWax` and `RM_SeepOil` are code-only (a C#
 consumer is assumed).
