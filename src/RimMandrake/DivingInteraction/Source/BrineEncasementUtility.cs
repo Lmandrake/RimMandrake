@@ -48,14 +48,14 @@ namespace RimMandrake.DivingInteraction
             {
                 return false;
             }
-            edifice?.Destroy();
-
             if (!jacket.TryEncase(p))
             {
                 // Never spawned, so there is nothing to Destroy — dropping
                 // the reference is the correct cleanup for an unspawned Thing.
+                // The edifice is still standing: it is only cleared once the pawn is safely held.
                 return false;
             }
+            edifice?.Destroy();
             GenSpawn.Spawn(jacket, cell, map);
 
             if (wasPlayers)

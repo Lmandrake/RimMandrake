@@ -41,6 +41,7 @@ namespace RimMandrake.CreatureBehaviors
     {
         private const float SprintFactor = 0.75f; // Pawn_PathFollower.CostToMoveIntoCell
         private const float JogFactor = 1f;
+        private static readonly Pawn[] EmptyPawns = new Pawn[0];
 
         private static readonly List<Candidate> candidates = new List<Candidate>();
 
@@ -171,7 +172,7 @@ namespace RimMandrake.CreatureBehaviors
                     candidates.Add(new Candidate { from = from, to = dbeside, weight = weight });
                 }
             }
-            IReadOnlyList<Pawn> lures = RM_CreatureBehaviorsSettings.falseShadeAmbushEnabled ? fs.Lures : (IReadOnlyList<Pawn>)new Pawn[0];
+            IReadOnlyList<Pawn> lures = RM_CreatureBehaviorsSettings.falseShadeAmbushEnabled ? fs.Lures : (IReadOnlyList<Pawn>)EmptyPawns;
             for (int i = 0; i < lures.Count; i++)
             {
                 Pawn lure = lures[i];

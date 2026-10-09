@@ -135,8 +135,10 @@ namespace RimMandrake.Stillsand
             return false;
         }
 
-        public static bool TryFirePrefix(FiringIncident fi, bool queued, ref bool __result)
+        public static bool TryFirePrefix(FiringIncident fi, bool queued, ref bool __result, out IntVec3 __state)
         {
+            // the entry cell as the queue handed it over: a worker may rewrite parms.spawnCenter while it runs
+            __state = fi?.parms != null ? fi.parms.spawnCenter : IntVec3.Invalid;
             if (queued || !RM_SkeletonSettings.horizonWarningsEnabled || fi?.def?.Worker == null || fi.parms == null)
             {
                 return true;
@@ -167,14 +169,14 @@ namespace RimMandrake.Stillsand
 
         /// <summary>DUST_SETTLED_LETTER_1: a queued fire that went through means the announced group really arrived, so
         /// its plume ends now (not at a fixed tick) and no "turned back" letter is owed.</summary>
-        public static void TryFirePostfix(FiringIncident fi, bool queued, bool __result)
+        public static void TryFirePostfix(FiringIncident fi, bool queued, bool __result, IntVec3 __state)
         {
             if (!queued || !__result || fi?.parms == null || fi.def == null || !(fi.parms.target is Map map)
-                || !fi.parms.spawnCenter.IsValid)
+                || !__state.IsValid)
             {
                 return;
             }
-            RM_MapComponent_HorizonPlume.For(map)?.Notify_Arrived(fi.def.defName, fi.parms.spawnCenter);
+            RM_MapComponent_HorizonPlume.For(map)?.Notify_Arrived(fi.def.defName, __state);
         }
 
         /// <summary>Which incidents the horizon shows. Public for the selftest's

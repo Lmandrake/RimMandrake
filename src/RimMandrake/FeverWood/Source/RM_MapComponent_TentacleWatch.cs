@@ -190,12 +190,14 @@ namespace RimMandrake.FeverWood
             for (int i = 0; i < due.Count; i++)
             {
                 List<Thing> placed = RM_DeepGift.Grant(map, due[i].Key, due[i].Value);
-                if (placed == null || placed.Count == 0)
+                int unplaced = due[i].Value - (placed?.Count ?? 0);
+                if (unplaced > 0)
                 {
-                    // FV-2: a failed placement is retried in about an hour, never silently lost
+                    // FV-2: rolls that found no room (all of them, or the remainder of a partial grant) are retried in
+                    // about an hour, never silently lost
                     pendingGiftTicks.Add(Find.TickManager.TicksGame + 2500);
                     pendingGiftCells.Add(due[i].Key);
-                    pendingGiftRolls.Add(due[i].Value);
+                    pendingGiftRolls.Add(unplaced);
                 }
             }
         }
@@ -229,7 +231,8 @@ namespace RimMandrake.FeverWood
                 {
                     continue;
                 }
-                IntVec3 cell = i == 0 ? seed : RandomNearbyPoolCell(seed, pools);
+                // the seed may already carry a limb or a bridge: GenSpawn would wipe it, so take a free pool cell instead
+                IntVec3 cell = i == 0 && seed.GetEdifice(map) == null ? seed : RandomNearbyPoolCell(seed, pools);
                 if (!cell.IsValid || (i > 0 && cell == seed))
                 {
                     continue; // no free pool cell: a 1x1 impassable limb spawned on another would wipe it
@@ -277,8 +280,12 @@ namespace RimMandrake.FeverWood
             ThingDef bloomDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Sekkulaath_Bloom");
             if (bloomDef != null)
             {
-                Thing bloom = ThingMaker.MakeThing(bloomDef);
-                GenSpawn.Spawn(bloom, seed, map);
+                IntVec3 bloomCell = seed.GetEdifice(map) == null ? seed : RandomNearbyPoolCell(seed, pools);
+                if (bloomCell.IsValid)
+                {
+                    Thing bloom = ThingMaker.MakeThing(bloomDef);
+                    GenSpawn.Spawn(bloom, bloomCell, map);
+                }
             }
 
             encounterPressure = RM_PoolKernel.PressureAfter(encounterPressure, AmbientKind.Great);
