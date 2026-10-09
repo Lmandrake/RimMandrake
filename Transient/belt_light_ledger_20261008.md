@@ -27,3 +27,4 @@ Helper `src/RimMandrake/_Shared/LightLedger/` (ledger + kernel), kernel selftest
 - (c) LuminousPigment: hourly, dark sky (<0.3 PROVISIONAL) on a home map, +0.05 visibility per lit deepfire light (PROVISIONAL), max 2/hour, via soft lookup of `GameComponent_ColonyVisibility.Adjust`. Toggle `deepfireNightVisibility` + slider.
 - (d) Scarlands lacquer cloak: denied while `LightLedger.CarriesLitLight(wearer)`. Toggle `lacquerDeniedWhileGlowing` (on).
 Full selftest suite: 254 pass, 1 fail (art placeholder lint, passes alone — not this work).
+- Ledger: both items `implemented` (owe L1 live criteria, bridge); notes on SUN_SPHERE_GRAZE_PERSIST_1 and TWILIGHT_WELL_LIGHT_STATE_1.
