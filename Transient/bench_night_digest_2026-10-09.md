@@ -30,6 +30,8 @@ Everything below is committed and pushed. Nothing is deployed. Every change wait
 10. **The sheet script had a stale-letter hole, now closed (ab6bed31a).** The audit of tonight's ingests found every ruling and install correct. It did find 28 spurious `rejected` events on 10 redo rows, and those now block 7 pictures from mechanical re-install. Decide: should the art ledger get a `retract` event type? `D:\Luke\dev\RimMandrake\Transient\stale_letter_ingest_audit_2026-10-09.md`
 11. **Venomvine sitting run-sheet** is ready for next session. Seven forms share one texture: `D:\Luke\dev\RimMandrake\Transient\venomvine_sitting_runsheet_2026-10-09.md`
 
+- **Weather-stones own art is done and awaits your pick** (Condenser water, Karrek paste, Seep stone): `D:\Luke\dev\_artpipe\_artsrc\wsart_RM_CondenserWater\wsart_RM_CondenserWater.png` and the two siblings.
+
 ## Done overnight
 - **Species abilities:** your card rulings are applied. 31 genes were removed across 14 races (87888849a).
 - **Surnames:** 41 species namers now use their surname lists, with a selftest (ee3b0049d).
