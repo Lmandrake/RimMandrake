@@ -736,6 +736,29 @@ def copy_strings(strhits, stridx):
     return n
 
 
+def wire_surnames(bytype):
+    """A donor namer ships a surname list (keyword LastName<X>, path .../Last) and
+    then draws `lastGenerated` from the FIRST-name list [Name<X>], so a pawn gets
+    two given names. Point lastGenerated at the surname keyword. Packs with no
+    LastName keyword (Gand, Chiss) and packs already wired are left alone.
+    Returns the number of packs changed."""
+    n = 0
+    for e in bytype.get("RulePackDef", []):
+        kws = {k.text for k in e.findall("rulePack/rulesRaw/li/keyword")}
+        changed = False
+        for li in e.findall("rulePack/rulesStrings/li"):
+            t = li.text or ""
+            if not t.startswith("lastGenerated->"):
+                continue
+            for kw in kws:
+                if kw.startswith("LastName") and ("Name" + kw[8:]) in kws:
+                    new = t.replace("[Name" + kw[8:] + "]", "[" + kw + "]")
+                    if new != t:
+                        li.text, changed = new, True
+        n += changed
+    return n
+
+
 def apply_overrides(bytype, texhits):
     """Edits we own that used to be PatchOperations against a donor def. Now
     that the def IS ours the patch has nowhere to apply, so the change is made
@@ -745,6 +768,7 @@ def apply_overrides(bytype, texhits):
     with the glow sprite; the third is the copied donor gene, whose flat art
     would make one roll in three look painted on rather than lit.
     """
+    wire_surnames(bytype)
     for e in bytype.get("GeneDef", []):
         if e.findtext("defName") != PREFIX + "Eyes_HugeYellow":
             continue
