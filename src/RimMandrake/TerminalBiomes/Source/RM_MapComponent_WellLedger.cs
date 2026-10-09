@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 
 namespace RimMandrake.TerminalBiomes
 {
@@ -63,6 +64,10 @@ namespace RimMandrake.TerminalBiomes
         }
 
         private List<WellRecord> wells = new List<WellRecord>();
+        // A lid-dark day in progress (§1.4): every open well held near dark. Scribed.
+        private bool lidDark;
+        private const string LidDarkOwner = "tb.liddark";
+        private const float LidDarkRadius = 0.1f;
         private int nextWellId = 1;
         private bool initialized;
 
@@ -112,8 +117,19 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref nextWellId, "nextWellId", 1);
             Scribe_Values.Look(ref initialized, "initialized");
             Scribe_Collections.Look(ref pendingOpenTicks, "pendingOpenTicks", LookMode.Value);
+            Scribe_Values.Look(ref lidDark, "rmLidDark");
             if (wells == null) wells = new List<WellRecord>();
             if (pendingOpenTicks == null) pendingOpenTicks = new List<int>();
+        }
+
+        // The light ledger is not saved (nor is vanilla's GlowRadius): put every open well's light back.
+        public override void FinalizeInit()
+        {
+            base.FinalizeInit();
+            foreach (WellRecord w in wells)
+            {
+                ApplyVisualState(w);
+            }
         }
 
         public override void MapComponentTick()
@@ -239,13 +255,13 @@ namespace RimMandrake.TerminalBiomes
             ColorInt color = well.stage == WellStage.Waning
                 ? ColorIntLerp(GoldGlow, CoolDeadGlow, RM_WellKernel.ColourT(well.stage, well.ageTicks, well.lifespanTicks))
                 : GoldGlow;
-            float newRadius = RM_WellKernel.Radius(factor);
             glower.GlowColor = color;
-            if (!Mathf.Approximately(newRadius, glower.GlowRadius))
-            {
-                glower.GlowRadius = newRadius;
-                glower.ForceRegister(map);
-            }
+            // LIGHT_LEDGER_ONE_1 / TWILIGHT_WELL_LIGHT_STATE_1: the waning radius is the light's BASE and
+            // lid-dark is a separate cap, so a waning step no longer erases lid-dark (and vice versa), a
+            // well that opens during lid-dark opens dark, and FinalizeInit re-asserts both after a load.
+            LightLedger.SetBase(glower, RM_WellKernel.Radius(factor));
+            if (lidDark) LightLedger.SetCap(glower, LidDarkOwner, LidDarkRadius);
+            else LightLedger.ClearCap(glower, LidDarkOwner);
         }
 
         private static ColorInt ColorIntLerp(ColorInt a, ColorInt b, float t)
@@ -317,21 +333,10 @@ namespace RimMandrake.TerminalBiomes
             {
                 return;
             }
+            lidDark = dark;
             foreach (WellRecord w in wells)
             {
-                if (w.skylightThing == null || !w.skylightThing.Spawned) continue;
-                CompGlower glower = w.skylightThing.TryGetComp<CompGlower>();
-                if (glower == null) continue;
-                if (dark)
-                {
-                    glower.GlowRadius = 0.1f;
-                }
-                else
-                {
-                    ApplyVisualState(w);
-                    continue;
-                }
-                glower.ForceRegister(map);
+                ApplyVisualState(w);
             }
         }
 
