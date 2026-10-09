@@ -39,11 +39,13 @@ and Legends agree closely, so this is a stable design.
   disagreement on colour.
 
 ## Must show
-- [ ] Tall flat diamond/angelfish body, rounded front, deeply forked tail with two long wispy streamers
-- [ ] Golden-yellow body with 3-4 broad dark brown diagonal bars and hexagonal scale texture
-- [ ] One very long thin dark needle spine running back along the centreline, longer than the body
-- [ ] Blunt vertical face, tiny downturned mouth, red-ringed yellow eye, thin blue-cream whisker filaments across the cheek
-- [ ] Blue-tipped tail streamers (canon)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images (canon_1 and legends_1 carry the anatomy).*
+- [ ] BODY PLAN: a side-flattened fish seen in profile whose body is a tall rounded wedge, deepest just behind the blunt near-vertical face and narrowing back into a deep crescent fork; the two fork lobes are long thin swept-back points (as long as the body is deep), giving an arrowhead/angelfish outline
+- [ ] One very long thin dark needle spine running straight back along the body's midline from behind the eye, extending past the tail fork
+- [ ] COLOUR LAYOUT: golden-yellow ground with 3-4 broad dark brown bars running DIAGONALLY (top-front to bottom-rear) across the flank; tips of the two tail lobes blue (canon) or dark; face paler cream-yellow
+- [ ] Blunt face with a small downturned thick-lipped mouth at the bottom front, a large round red-ringed yellow eye high on the head, and thin whisker filaments across the cheek
+- [ ] Small school fish: reads as palm-sized, not a predator
+- [ ] NEGATIVE: not a torpedo/eel/trout shape, no rounded fan tail, no horizontal stripes, no plain unbarred yellow body, no big toothy predator jaw
 
 ## Engine limits
 not yet assessed

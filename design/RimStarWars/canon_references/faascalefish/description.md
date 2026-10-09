@@ -41,16 +41,17 @@ The species' thin frames allowed faa to inhabit thin crevices in underwater rock
   the canon render only.
 
 ## Must show
-- [ ] Huge deep head and forward-heavy body tapering to a thin stalk tail ending in a large fan/paddle tail with radiating ribs
-- [ ] Large downturned, thick-lipped mouth set low on the head with small sharp teeth
-- [ ] Very large concentric-ringed eye raised high on the head
-- [ ] Graduated orange body (paler cream-peach belly and tail) with vertical blue-violet stripes and blue speckle
-- [ ] Small pectoral fins low on the cheek; low crest along the top of the head
-- [ ] Blue spikes on the brow and chin (canon render only; optional if sprite is too small)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images.*
+- [ ] BODY PLAN: about two-thirds of the fish is one huge deep round head; behind it the body pinches abruptly into a long THIN stalk (narrower than the eye) that ends in a single large fan-shaped tail; overall outline like a tadpole or a frying pan with a fan on the handle
+- [ ] Very large concentric-ringed eye on a raised bulge high on the side of the head, the biggest feature after the mouth
+- [ ] Big downturned, thick-lipped sulking mouth set low at the front with small needle teeth; heavy underslung chin
+- [ ] COLOUR LAYOUT: orange concentrated on the top of the head and back, fading to pale cream-peach on the cheeks, belly, stalk and tail fan; thin vertical blue-violet stripes and blue speckle on the upper head behind the eye only
+- [ ] Small round pectoral fin low on the cheek; low crest along the top of the head; tail fan pale with radiating ribs
 - [ ] Realistic rendering: wet fish skin with fine scales and natural lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not an ordinary fish with an even body tapering to a forked tail; no long streamlined body, no stripes running the length of the body, no fork in the tail
 
 ## Engine limits
-not yet assessed
+- Orange-to-cream gradient with blue stripes confined to the head is a per-region layout: needs art, not a tint value.
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Faa (canon; wikitext pulled via the API 2026-10-04)
