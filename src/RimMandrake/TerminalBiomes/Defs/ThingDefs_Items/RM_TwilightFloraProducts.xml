@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TwilightFloraProducts.xml        TerminalBiomes · TWILIGHTSEA_FLORA_PASS_1
+  The one new item the Twilight understorey owes: RM_TollhornCore, the cut
+  coral core. Ruled 2026-09-27 (flora pass, Ruled 4): a plain trade good, no
+  mechanic; its meaning to the Compact's well-keeper is description only.
+  PLACEHOLDER ART: Things/Mote/BeamGlow tinted rose-grey (same borrowed icon
+  the other Twilight items use); real art job filed (tsflora_RM_TollhornCore_v1).
+-->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_TollhornCore</defName>
+    <label>tollhorn core</label>
+    <description>A cut cylinder of soft horn-coral, banded like tree rings: a gold-veined band for every week of standing light above it, a blank one for every dark season. A core sample of the sky. The Compact's well-keeper buys them dearly, and has never once sold one.</description>
+    <graphicData>
+      <texPath>Things/Mote/BeamGlow</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.7</drawSize>
+      <color>(205,165,165,255)</color>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>45</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>4</Beauty>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+</Defs>

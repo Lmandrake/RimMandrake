@@ -82,7 +82,7 @@
          (`RM_MoldMatRoof`) is RETIRED, not renamed — TWILIGHT_PANE_STRIKE_1,
          2026-09-27: the ceiling organism is a shed-panel event/item
          (RM_VeilFallIncoming/RM_VeilPane), never a floor plant. -->
-    <plantDensity>0.2</plantDensity>
+    <plantDensity>0.5</plantDensity>
     <wildPlants>
       <!-- RM_SaltBladeTwilight moved to the Grey Sea (owner, Twilight Sea sheet 2026-10-07). -->
       <!-- TWILIGHT_LIGHT_ECONOMY_1 §3.1: the two cultivated-light inputs,
@@ -90,6 +90,17 @@
            (RM_TwilightLightPlants.xml). -->
       <RM_HoolimbrePlant>0.15</RM_HoolimbrePlant>
       <RM_NoothelmPlant>0.05</RM_NoothelmPlant>
+      <!-- TWILIGHTSEA_FLORA_PASS_1 (2026-10-08): the understorey, Route A rows
+           (RM_TwilightUnderstorey.xml). plantDensity 0.2 -> 0.5, ruled lusher
+           2026-09-27. Route B species (Tithemoss, Tollhorn, Gleamfloss, Farwick)
+           are deliberately NOT here: they need the dressing genstep. Weircomb is
+           terrain-gated on RM_BankSilt (dead letter until that terrain exists). -->
+      <RM_Almslight>0.8</RM_Almslight>
+      <RM_Weircomb>0.7</RM_Weircomb>
+      <RM_Murkspindle>0.6</RM_Murkspindle>
+      <RM_Gloamurn>0.5</RM_Gloamurn>
+      <RM_Glimmerhusk>0.35</RM_Glimmerhusk>
+      <RM_Hushcoral>0.3</RM_Hushcoral>
     </wildPlants>
 
     <wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
