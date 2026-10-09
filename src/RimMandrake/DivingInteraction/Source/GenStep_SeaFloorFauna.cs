@@ -32,6 +32,10 @@ namespace RimMandrake.DivingInteraction
         {
             // SEABED_FLOOR_GENERATORS_1: on the seabed layer map.Biome is the floor biome (no cast);
             // the cast lives on the sea above, which SeaBiomeOf returns for both paths.
+            if (!RM_DivingSettings.masterEnabled)
+            {
+                return; // DIVING_SETTINGS_CONTRACT_1: master off seeds nothing
+            }
             BiomeDef biome = RM_SeaFloorIdentity.SeaBiomeOf(map) ?? map.Biome;
             if (biome == null)
             {
@@ -130,6 +134,23 @@ namespace RimMandrake.DivingInteraction
                     canGeneratePawnRelations: false);
                 GenSpawn.Spawn(PawnGenerator.GeneratePawn(request), cell, map);
             }
+        }
+    }
+
+    // SEABED_FAUNA_SINGLE_SEEDER_1. Stands in for vanilla's Animals step on the RM_SeabedLayer floor generators.
+    // A floor biome's animalDensity is the sea's x30 (RM_SeabedFloorLife), so vanilla Animals on top of
+    // RM_SeaFloorFauna made the start population ignore chillDiveAnimalCount. PROVISIONAL (auto-decided
+    // 2026-10-09, SEABED_FAUNA_SINGLE_SEEDER_1): RM_SeaFloorFauna is the one initial seeder; ongoing refill
+    // stays vanilla's WildAnimalSpawner. Off (seabedSingleSeederEnabled false): vanilla Animals runs too.
+    public class GenStep_SeabedVanillaAnimalsGated : GenStep_Animals
+    {
+        public override void Generate(Map map, GenStepParams parms)
+        {
+            if (RM_DivingSettings.seabedSingleSeederEnabled)
+            {
+                return;
+            }
+            base.Generate(map, parms);
         }
     }
 }

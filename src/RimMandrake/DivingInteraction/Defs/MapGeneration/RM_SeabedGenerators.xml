@@ -40,7 +40,7 @@
       <li>RM_ScaldReturnGallery</li>
       <li>RM_WreckField_ScaldFloor</li>
       <li>RM_SeaFloorFauna</li>
-      <li>Animals</li>
+      <li>RM_SeabedAnimalsGated</li>
       <li>Plants</li>
       <li>RockChunks</li>
       <li>Fog</li>
@@ -67,7 +67,7 @@
       <li>RM_WreckField_GreyFloor</li>
       <li>RM_GreySeaWalkCheck</li>
       <li>RM_SeaFloorFauna</li>
-      <li>Animals</li>
+      <li>RM_SeabedAnimalsGated</li>
       <li>Plants</li>
       <li>RockChunks</li>
       <li>Fog</li>
@@ -84,7 +84,7 @@
       <li>RM_SeaFloorTerrain</li>
       <li>RM_WreckField_TwilightFloor</li>
       <li>RM_SeaFloorFauna</li>
-      <li>Animals</li>
+      <li>RM_SeabedAnimalsGated</li>
       <li>Plants</li>
       <li>RockChunks</li>
       <li>Fog</li>
@@ -112,7 +112,7 @@
       <li>RM_SeaFloorFauna</li>
       <li>RM_ChillReturnComb</li>
       <li>RM_ChillRimeTerraces</li>
-      <li>Animals</li>
+      <li>RM_SeabedAnimalsGated</li>
       <li>Plants</li>
       <li>RockChunks</li>
       <li>Fog</li>

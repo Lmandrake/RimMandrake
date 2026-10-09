@@ -60,9 +60,9 @@ namespace RimMandrake.DivingInteraction
 
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (!RM_ChillFireGate.IsChillSeabedMap(map))
+            if (!RM_DivingSettings.masterEnabled || !RM_ChillFireGate.IsChillSeabedMap(map))
             {
-                return;
+                return; // DIVING_SETTINGS_CONTRACT_1: master off lays no terraces
             }
 
             TerrainDef baseFloor = DefDatabase<TerrainDef>.GetNamed("RM_ChillIceBedrock");
