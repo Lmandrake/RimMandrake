@@ -15,38 +15,21 @@ K'lor'slugs were dangerous vermiforms native to the swamps of Noe'ha'on. They we
 **Biology and Appearance** K'lor'slugs were large worm-like creatures that possessed a serpentine body propelled by many dangerously-edged legs. The mouth was a gaping circular maw filled with concentric rings of teeth.
 
 ## Visual brief
-Viewed 2026-10-04. Image 1 is canon (a comic panel: a k'lor'slug crushing Jango-era Mandalorian
-armour); images 2-4 are LEGENDS (a painted plate, a concept painting, an SWTOR kitchen render).
-The images split into TWO very different looks -- the canon and Legends versions do not match.
-- **Canon (image 1)**: ORANGE-RED (not pink -- the prose says pink; trust the image, with the
-  caveat that comic colouring varies) tubular, segmented, centipede/caterpillar body, thick and
-  ringed, studded with small blunt bumps/spikes. The front rears up and holds 4+ pairs of
-  thick multi-jointed limbs with big pale-tan curved claws like a mantis/lobster. The head is
-  a round blunt mouth-disc: a circular maw ringed with large pale conical teeth and wrinkled lips,
-  with a pair of small dark eyes above it. Back half stays low on stubby clawed legs.
-- **Legends concept (image 3)**: a dark RED-and-purple armoured thing with the same plan: segmented
-  ringed body, a hunched front raised up with the toothed circular maw hidden among spiky ridges,
-  and 8-10 long curved glassy blue-violet CLAWS (translucent, glossy, sword-like) along the sides. A
-  long banded tail ends in a bulb with small spikes.
-- **Legends SWTOR (image 4)**: the same red-banded, many-clawed body lying dead and long (longer
-  than a counter), segmented back plates, 6-8 long steel-blue claws along each side, a tapering
-  tail with ringed segmentation -- the clearest picture of the whole body plan.
-- **Image 2 (Legends plate)**: shows a pale bony angler-fish-like creature on a beach and a huge
-  armoured segmented crustacean limb in the foreground -- caption says k'lor'slug faces a Kirithin;
-  it is NOT obvious which is the k'lor'slug (the armoured brown segmented body with clawed limb
-  appears to be it); treat as ambiguous, low-confidence evidence.
-- **Size cues**: the canon panel shows it wrapping around a grown humanoid (body about humanoid
-  height when reared); the SWTOR render lies longer than a kitchen counter, roughly 2-3 m.
-- **Prose vs images**: "pink, tubular beasts, suction cup-like mouths and sharp teeth, clawed
-  multilimbed" -- tubular, clawed and multilimbed and toothed circular mouth are confirmed;
-  pink is not (orange-red in canon art, deep red in Legends).
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the canon Marvel comic panel (`FettKlorslug-StolenHope.png`, orange cartoon slug crushing Jango Fett) and the stylised SWTOR kitchen render (`KlorslugsKitchen-SWTOR.png`). Added the LIVE-ACTION source: the k'lor'slug is one of the stop-motion holographic dejarik pieces in *A New Hope* (`canon_2` is the full Millennium Falcon dejarik still; `canon_2_crop` enlarges the k'lor'slug, second from left). Kept: the realistic SWTOR concept painting (`legends_1`) and the Alien Anthology painting (`legends_2`). Canon also has a living k'lor'slug in *The Mandalorian and Grogu* (the Pits on Shakari), but no clear still of it was found.
+- **Live-action (the target)**: a **PINK to dusky rose-magenta**, thick, tubular, ringed/segmented worm body that rears up in a tall arch, its surface wrinkled and creased across every ring like a real earthworm or sea cucumber; a clawed limb at the base. This matches the canon prose ("pink, tubular beasts"), which the deleted comic had contradicted with orange.
+- **Body plan (concept painting, agrees with the prose)**: segmented ringed body with a hunched, raised front; a round toothed suction-cup maw at the blunt front end, ringed with sharp teeth; 8-10 long curved glossy claws along the sides (glassy blue-violet in the Legends painting); a long banded tail tapering to a small spiked bulb.
+- **Colour disagreement, LOUDLY**: live-action ANH and the prose say PINK; the Legends painting is deep red with purple claws; the deleted comic was orange. Use pink-to-rose as the base.
+- **Size**: canon databank height 1.98 m when reared.
+- `legends_2` (Alien Anthology) shows a k'lor'slug facing a Kirithin; it is not obvious which creature is the k'lor'slug (probably the armoured brown segmented body with a clawed limb in the foreground). Low-confidence evidence.
 
 ## Must show
-- [ ] Long thick tubular segmented worm/centipede body with a ringed banded back
-- [ ] Round circular maw with concentric/ringed sharp teeth at a blunt front end
-- [ ] Many thick limbs ending in large curved claws (pale tan in canon art, glassy blue-violet in Legends)
-- [ ] Orange-red body (canon art) with small blunt bumps/spikes on the segments
-- [ ] Rears up in front on its claw limbs, back end low with a tapering tail
+- [ ] Long thick tubular segmented worm body, ringed and creased like a real earthworm, rearing up in an arch
+- [ ] Pink to dusky rose skin (live-action and prose), not orange
+- [ ] Round suction-cup maw ringed with sharp teeth at the blunt front end
+- [ ] Many limbs ending in large curved claws
+- [ ] About 2 m tall when reared, tapering tail behind
+- [ ] Realistic rendering: natural wet, wrinkled skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -56,10 +39,10 @@ not yet assessed
 - https://starwars.fandom.com/wiki/K%27lor%27slug/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `K'lor'slug`; wiki caption: infobox image. File: `FettKlorslug-StolenHope.png` — https://static.wikia.nocookie.net/starwars/images/1/12/FettKlorslug-StolenHope.png/revision/latest?cb=20231225112141
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `K'lor'slug/Legends`; wiki caption: infobox image. File: `Klorslug-SWTOR.jpg` — https://static.wikia.nocookie.net/starwars/images/2/22/Klorslug-SWTOR.jpg/revision/latest?cb=20081023005258
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `K'lor'slug/Legends`; wiki caption: A k'lor'slug faces off against a Kirithin. File: `KirithinKlorslug-AlienAnthology.jpg` — https://static.wikia.nocookie.net/starwars/images/6/6a/KirithinKlorslug-AlienAnthology.jpg/revision/latest?cb=20071123162629
-- `wookieepedia_legends_3.webp` — LEGENDS page (non-canon continuity) `K'lor'slug/Legends`; wiki caption: K'lor'slugs prepared for eating in a kitchen. File: `KlorslugsKitchen-SWTOR.png` — https://static.wikia.nocookie.net/starwars/images/8/80/KlorslugsKitchen-SWTOR.png/revision/latest?cb=20240328182222
+- `wookieepedia_canon_2.webp` — LIVE-ACTION, *A New Hope* stop-motion dejarik still (full board; the k'lor'slug is the pink arched worm second from left); file `Dejarik.png` — https://static.wikia.nocookie.net/starwars/images/1/1b/Dejarik.png/revision/latest?cb=20150401020059
+- `wookieepedia_canon_2_crop.webp` — crop of `canon_2`, enlarged 2x, the k'lor'slug piece alone (same file and URL)
+- `wookieepedia_legends_1.webp` — LEGENDS, SWTOR realistic concept painting; file `Klorslug-SWTOR.jpg` — https://static.wikia.nocookie.net/starwars/images/2/22/Klorslug-SWTOR.jpg/revision/latest?cb=20081023005258
+- `wookieepedia_legends_2.webp` — LEGENDS, painting from Alien Anthology, a k'lor'slug faces a Kirithin (ambiguous); file `KirithinKlorslug-AlienAnthology.jpg` — https://static.wikia.nocookie.net/starwars/images/6/6a/KirithinKlorslug-AlienAnthology.jpg/revision/latest?cb=20071123162629
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
