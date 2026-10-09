@@ -1,0 +1,14 @@
+state {"status": "game_loaded", "ticksGame": 1, "mapCount": 1, "selectedPawns": [], "operation": {"OperationId": "op_d7fd56b219a140b3aaaf082d219d144c", "Status": "Completed", "Success": true, "DurationMs": 
+GOO | {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "notFound": [], "malformed": [], "fieldsAsked": ["race.deathAction"], "defs": [{"requested": "ThingDef/AA_GreenGoo", "found": true, "defName": "AA_GreenGoo", "defType": "ThingDef", "label": "wuum", "modName": "Alpha Animals", "packageId": "sarg.alphaanimals", "fields": {"race.deathAction": "(no such field)"}}], "ticksGame": 1, "operation": {"OperationId": "op_76076fc83eda41839d3bcd4c79e1622e", "Status": "Completed", "Success": true, "DurationMs": 44}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 1}}
+WEBDES | {"success": true, "method": "System.String ProofHarvestDesignate(System.String)", "result": "DESIGNATED 111,137 | designatable True | colonist Darby", "ticksGame": 1, "operation": {"OperationId": "op_ace091e11e2348d38fb593962ebfaf11", "Status": "Completed", "Success": true, "DurationMs": 55}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 1}}
+WEBREAD | {"success": true, "method": "System.String ProofHarvestRead(System.String)", "result": "READ nodePresent False | weaveNear 3 | lastYield 3", "ticksGame": 2023, "operation": {"OperationId": "op_770c7ab86e3e4fe28f8a0f73429a199c", "Status": "Completed", "Success": true, "DurationMs": 49}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 2023}}
+WEBREAD2 | {"success": true, "method": "System.String ProofHarvestRead(System.String)", "result": "READ nodePresent False | weaveNear 3 | lastYield 3", "ticksGame": 3525, "operation": {"OperationId": "op_fff431aa6ea2420b89258e02e806c06b", "Status": "Completed", "Success": true, "DurationMs": 48}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 3525}}
+JOB0 RM_Chorn | "job=FollowClose target=RM_Gloomcast50297 dist=7"
+JOB0 RM_Gennok | "job=FollowClose target=RM_Gloomcast50297 dist=4"
+JOB0 RM_Tebbra | "job=GotoWander target=(65, 0, 49)"
+JOB1 RM_Chorn | "job=FollowClose target=RM_Gloomcast50297 dist=11"
+JOB1 RM_Gennok | "job=Wait_Wander target=null"
+JOB1 RM_Tebbra | "job=Wait_Wander target=null"
+JOB2 RM_Chorn | "job=FollowClose target=RM_Gloomcast50297 dist=1"
+JOB2 RM_Gennok | "job=Wait_Wander target=null"
+JOB2 RM_Tebbra | "job=FollowClose target=RM_Gloomcast50297 dist=1"

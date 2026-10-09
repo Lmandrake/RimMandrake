@@ -1,0 +1,16 @@
+DMG AA_GreenGoo | {"success": true, "message": "Damaged 1 thing(s) with Bomb 2000.", "damageDef": "Bomb", "harmsHealth": true, "targetsHit": 1, "colonistsSkipped": 0, "bodyPartNotOnTarget": 0, "results": [{"id": "AA_GreenGoo54867", "def": "AA_GreenGoo", "isPawn": true, "bodyPartTargeted": true, "hitPointsBefore": -1, "hitPointsAfter": 0, "destroyed": true, "totalDamageDealt": 50.0, "hediffsBefore": 0, "hediffsAfter": 3, "downed": false, "dead": true, "stunTicksLeft": 0}], "targets": [{"id": "AA_GreenGoo54867", "def": "AA_GreenGoo", "isPawn": true, "bodyPartTargeted": true, "hitPointsBefore": -1, "hitPointsAfter": 0, "destroyed": true, "totalDamageDealt": 50.0, "hediffsBefore": 0, "hediffsAfter": 3, "downed": false, "dead": true, "stunTicksLeft": 0}], "resultCount": 1, "verdictFields": ["downed", "dead", "destroyed"], "ticksGame": 5153, "operation": {"OperationId": "op_b774993be7284551a21843f12f5b08cb", "S
+THINGS AA_GreenGoo ['AB_Bryolux', 'Corpse_AA_GreenGoo', 'Filth_SpentAcid']
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\belt_deploy_checks3_20261009.py", line 15, in <module>
+    show("CONDS "+kind, S.call("jawa/list_game_conditions") if True else None)
+                        ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src/RimMandrake/Utils\scenes\scenelib.py", line 27, in call
+    r = rbc().call(tool, params, check=False) or {}
+        ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\scenes\..\rimbridge_client.py", line 549, in call
+    return self._request("tools/call", {"name": tool, "arguments": params or {}})
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\scenes\..\rimbridge_client.py", line 430, in _request
+    raise RimBridgeError("%s failed: %s" % (
+        method, err.get("message") if isinstance(err, dict) else err))
+rimbridge_client.RimBridgeError: tools/call failed: Tool 'jawa/list_game_conditions' not found
