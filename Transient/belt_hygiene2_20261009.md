@@ -3,3 +3,21 @@
 - started
 - tasks: CB-7=CREATURE_BEHAVIOR_LAST_OUTCOME_1 FL-3=EXCAVATION_LOAD_SANITY_REPAIR_1 FL-5=FLOWWORKS_SETTINGS_SCOPE_RESET_1 GS-6=TAP_CONSERVATION_SELFTEST_1 TB-4=HAZARD_CLOCK_INSPECT_LINES_1
 - FL-3 coded (RM_ExcavationSanityMath + selftest case passing), FL-5 coded (reset btns + scope notes); building FlowWorks
+- FL-3 FL-5 landed 86fc29d967d14345f72cd660e29f48b32eb7b913 implemented
+- FL-3 FL-5 landed 86fc29d967d14345f72cd660e29f48b32eb7b913 implemented
+- TB-4 landed 022f1d9e3c462a04e3897de85a8db221ace91ff0 implemented
+- GS-6 landed 5824cab50ab7ae23f2c46eafc27c8a6e48e7dd5a implemented
+- CB-7 landed 61a5b6b76da88645e6f72e689f43b7944a9beb01 implemented. Task 1 done. Starting task 2 triage
+- triage: TB-5/X-3 covered by LIGHT_LEDGER_ONE_1 (skip); TB-1 fix-now half already in src (ScaldWalker in 3 immune lists), tag half unfiled; filing: kit, CB-5 adopt, EH-3 adopt, CB-6, EH-4, FL-6, LP-5, LP-9, SC-5, SS-5, TB-1/X-4
+- X-12 -> SETTINGS_SCREEN_KIT_1 filed rc=0
+- CB-5 -> CREATURE_BEHAVIORS_SETTINGS_SCREEN_1 filed rc=0
+- EH-3 -> ENVHAZARDS_SETTINGS_SCREEN_1 filed rc=0
+- CB-6 -> CREATURE_BEHAVIORS_CONFIGERRORS_1 filed rc=0
+- EH-4 -> ENVHAZARDS_HAZARD_CLOCK_READOUTS_1 filed rc=0
+- FL-6/X-14 -> LIQUID_UNIT_CONTRACT_ROUNDTRIP_1 filed rc=0
+- LP-5 -> LUMINOUS_PIGMENT_SETTINGS_READOUTS_1 filed rc=0
+- LP-9 -> DEEPFIRE_HEALTH_CHECK_1 filed rc=0
+- SC-5 -> SCARLANDS_RELOAD_MIDSTATE_1 filed rc=0
+- SS-5 -> DUNE_MOVED_EVENT_1 filed rc=0
+- TB-1/X-4 -> HAZARD_NATIVE_TAG_1 filed rc=0
+- items copied to infrastructure/state/items; tasks 1+2 done
