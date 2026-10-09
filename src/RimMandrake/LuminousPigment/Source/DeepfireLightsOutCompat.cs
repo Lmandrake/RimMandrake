@@ -55,15 +55,15 @@ namespace RimMandrake.LuminousPigment
             MethodInfo canBeLight = AccessTools.Method(lights, "CanBeLight", new[] { typeof(ThingWithComps) });
             if (canBeLight != null && canBeLight.ReturnType == typeof(bool))
             {
-                harmony.Patch(canBeLight, prefix: new HarmonyMethod(typeof(DeepfireLightsOutCompat), nameof(CanBeLightPrefix)));
-                CanBeLightPatched = true;
+                try { harmony.Patch(canBeLight, prefix: new HarmonyMethod(typeof(DeepfireLightsOutCompat), nameof(CanBeLightPrefix))); CanBeLightPatched = true; }
+                catch (Exception e) { Log.Warning("[RimMandrake.LuminousPigment] LightsOut compat patch failed: " + e.Message); }
             }
 
             MethodInfo canConsume = AccessTools.Method(resources, "CanConsumeResources", new[] { typeof(ThingWithComps) });
             if (canConsume != null && canConsume.ReturnType == typeof(bool?))
             {
-                harmony.Patch(canConsume, postfix: new HarmonyMethod(typeof(DeepfireLightsOutCompat), nameof(CanConsumePostfix)));
-                CanConsumePatched = true;
+                try { harmony.Patch(canConsume, postfix: new HarmonyMethod(typeof(DeepfireLightsOutCompat), nameof(CanConsumePostfix))); CanConsumePatched = true; }
+                catch (Exception e) { Log.Warning("[RimMandrake.LuminousPigment] LightsOut compat patch failed: " + e.Message); }
             }
 
             if (!CanBeLightPatched || !CanConsumePatched)

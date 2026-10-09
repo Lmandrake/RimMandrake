@@ -22,7 +22,7 @@ namespace RimMandrake.ExplosiveGrowth
                 return;
             }
 
-            new Harmony("mandrake.rm.explosivegrowth").PatchAll();
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.explosivegrowth"), typeof(RM_ExplosiveGrowthRegistry).Assembly, "RimMandrake.ExplosiveGrowth");
 
             string selfTest = RM_ChargeSelfTest.Run();
             if (selfTest.Contains("FAIL")) Log.Error("[RM ExplosiveGrowth] " + selfTest);

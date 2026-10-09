@@ -40,6 +40,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RSW_GizkaSettings.cs" />
     <Compile Include="RSW_GizkaPopulation.cs" />
     <Compile Include="RSW_GizkaStowawayManager.cs" />

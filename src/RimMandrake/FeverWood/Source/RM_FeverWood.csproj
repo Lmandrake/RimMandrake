@@ -48,6 +48,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_BiomeWorker_FeverWood.cs" />
     <Compile Include="RM_FeverWoodMod.cs" />
     <Compile Include="RM_HiveSealing.cs" />
