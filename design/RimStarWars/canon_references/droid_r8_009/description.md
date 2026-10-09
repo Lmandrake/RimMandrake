@@ -83,6 +83,10 @@ world. What is absent here is genuinely absent from the source, not unread.
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `R-8009 utility droid` page images — its sole image is the *Knights of the Old Republic* (2003) in-game model `Utility1.jpg`; no other depiction exists).** The images below are animated/stylised; render this droid realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Read the low-poly painted texture as real sun-faded, scratched ochre paint over steel, with real dust from a desert world.
+
 **The silhouette is a strong match.** Canon (`wookieepedia_r8009_infobox.jpg`, an in-game
 KotOR render on desert ground) is a **squat legless-looking tub**: a **tapered barrel body**,
 wider at the top, capped by a **low domed lid** with **two thin whip antennae** rising from
@@ -139,6 +143,7 @@ a behavioural trait with no appearance.
 - [ ] Large dark barrel-lens photoreceptor assembly with a small iridescent light beside it
 - [ ] Two wide truncated-cone feet splayed out to the sides
 - [ ] Warm ochre/rust-orange body colour, not pale sandy yellow
+- [ ] Realistic rendering: sun-faded scratched paint over steel with real dust and daylight, no outlines, no low-poly game shading
 
 ## Engine limits
 none known
