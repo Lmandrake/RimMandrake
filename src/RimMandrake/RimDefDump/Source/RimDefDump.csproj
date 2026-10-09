@@ -41,6 +41,7 @@
     <Compile Include="DefDumper.cs" />
     <Compile Include="DefReflector.cs" />
     <Compile Include="JsonWriter.cs" />
+    <Compile Include="RM_SettingsOpenSmoke.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +60,14 @@
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
