@@ -181,6 +181,8 @@ namespace RimMandrake.FlowWorks
         public static bool pitLipOcclusionEnabled = true;          // the near lip hides a sunk pawn's lower body
         public static bool pitSinkClampEnabled = false;            // OFF (owner 2026-10-07, try without): hold the sink so the drawn centre stays north of the near lip; on a south-row pit cell this caps every pawn at 0.5
         public static float pitLipOcclusion = 0.85f;               // how much it hides (1 = fully)
+        public static bool pitLipOccupantCutEnabled = true;        // FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the near bank so the occupant stays visible
+        public static float pitLipOccupantCutWidth = 1f;           // PROVISIONAL: window width in cells (1 = the occupied cell)
         public static bool liquidSurfaceMotionEnabled = true;      // ripples / gloss / sheen on filled cuts
         public static bool liquidWakesEnabled = true;              // V wakes behind anything wading
         public static bool liquidLooksEnabled = true;              // per-liquid engine surface look (off: plain XML look)
@@ -385,6 +387,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref pitLipOcclusionEnabled, "pitLipOcclusionEnabled", true);
             Scribe_Values.Look(ref pitSinkClampEnabled, "pitSinkClampEnabled", false);
             Scribe_Values.Look(ref pitLipOcclusion, "pitLipOcclusion", 0.85f);
+            Scribe_Values.Look(ref pitLipOccupantCutEnabled, "pitLipOccupantCutEnabled", true);
+            Scribe_Values.Look(ref pitLipOccupantCutWidth, "pitLipOccupantCutWidth", 1f);
             Scribe_Values.Look(ref liquidSurfaceMotionEnabled, "liquidSurfaceMotionEnabled", true);
             Scribe_Values.Look(ref liquidWakesEnabled, "liquidWakesEnabled", true);
             Scribe_Values.Look(ref liquidLooksEnabled, "liquidLooksEnabled", true);
@@ -706,7 +710,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Pits, ladders and shooting");
-            DrawSectionReset(list, new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled" });
+            DrawSectionReset(list, new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled" });
             Text.Font = GameFont.Small;
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -881,6 +885,14 @@ namespace RimMandrake.FlowWorks
                 {
                     list.Label("How much it hides: " + pitLipOcclusion.ToStringPercent() + "  (100% = completely; less leaves a faint outline)");
                     pitLipOcclusion = list.Slider(pitLipOcclusion, 0.5f, 1f);
+                    list.CheckboxLabeled("Keep whoever is in the cut visible", ref pitLipOccupantCutEnabled,
+                        "Cuts a window through the near edge's cover where someone stands, at every depth, so they can always be found. "
+                      + "The cover still hides their sides. Drawing only. Off: the cover hides them as above.");
+                    if (pitLipOccupantCutEnabled)
+                    {
+                        list.Label("Window width: " + pitLipOccupantCutWidth.ToString("0.0") + " cells");
+                        pitLipOccupantCutWidth = list.Slider(pitLipOccupantCutWidth, 0.5f, 2.5f);
+                    }
                 }
             }
             list.CheckboxLabeled("Extra sheen on liquids that have one", ref liquidSurfaceMotionEnabled,

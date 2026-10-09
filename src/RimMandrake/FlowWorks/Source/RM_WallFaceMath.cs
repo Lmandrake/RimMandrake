@@ -132,6 +132,24 @@ namespace RimMandrake.FlowWorks
 			return right > otherLeft && left < otherRight && b > otherBottom && a < otherTop;
 		}
 
+		/// <summary>FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1 (owner ruling by question card 2026-10-09). A cover piece [left,right] is cut so
+		/// the span [cutLeft,cutRight] (the occupant's window through the near bank) stays uncovered. Returns how many pieces
+		/// remain (0..2): piece 1 is [l1,r1], piece 2 [l2,r2]. A cut that does not touch the piece returns it whole.</summary>
+		public static int CutCoverSpan(float left, float right, float cutLeft, float cutRight,
+			out float l1, out float r1, out float l2, out float r2)
+		{
+			l1 = r1 = l2 = r2 = 0f;
+			if (cutRight <= left || cutLeft >= right) { l1 = left; r1 = right; return right > left ? 1 : 0; }
+			int n = 0;
+			if (cutLeft > left + 0.001f) { l1 = left; r1 = cutLeft; n = 1; }
+			if (cutRight < right - 0.001f)
+			{
+				if (n == 0) { l1 = cutRight; r1 = right; } else { l2 = cutRight; r2 = right; }
+				n++;
+			}
+			return n;
+		}
+
 		// ── scorch (principle 5) ────────────────────────────────────────────
 
 		/// <summary>Remaining scorch strength 0..1 after <paramref name="ageTicks"/>; <paramref name="fadeDays"/> 0 =

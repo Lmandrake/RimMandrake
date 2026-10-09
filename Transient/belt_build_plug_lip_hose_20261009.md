@@ -8,7 +8,10 @@ and when laid (hose L+10) min bend = 1.26 >= 1.14. Fix: design_spec.hose_max_len
 HoseSelfTest.MatrixScenes (laid bar + can-fail). Corner/water scenes not reproduced offline; rerun H0-H8 when game is up.
 
 ## FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1
-(pending)
+RM_PitLipOcclusion now splits each cover piece around a window at the occupant (RM_WallFaceMath.CutCoverSpan; setting
+pitLipOccupantCutEnabled + pitLipOccupantCutWidth=1.0 PROVISIONAL, in Mod Settings + section reset). Selftest case
+LipOcclusion_occupant_cut (134/134); DLL rebuilt. Unoccupied pits untouched (no pawn = no cover drawn). Screenshot proof owed (L2).
+VISUAL_PRINCIPLES A2 amended.
 
 ## GELATINOUSSLIME_VAULT_SEAL_PLUG_1
 (pending)
