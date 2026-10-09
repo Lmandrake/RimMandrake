@@ -39,6 +39,18 @@ def scan(root: Path, repo: Path = state_dir.REPO_ROOT) -> dict:
             old = repo / "infrastructure" / "artpipe" / "_artsrc" / m / f"{m}.png"
             if old.is_file():
                 cands.append(str(old))
+            # The worker's own reported `out` — a pre-2026-10-02 job names the
+            # retired D:\Luke\dev\Rimworld\infrastructure\artpipe tree, which the
+            # `old` path above (relative to THIS clone) never reaches.
+            try:
+                wout = (json.loads((root / "done" / f"{m}.manifest.json").read_text())
+                        .get("worker_self_report") or {}).get("out")
+            except (OSError, ValueError, AttributeError):
+                wout = None
+            if isinstance(wout, str) and len(wout) > 2 and wout[1] == ":":
+                wp = Path("/mnt") / wout[0].lower() / wout[3:].replace("\\", "/")
+                if wp.is_file() and str(wp) not in cands:
+                    cands.append(str(wp))
             cands += [str(c) for c in list((repo / "src").glob(f"**/Textures/**/{m}*.png"))[:5]]
             rows.append((m, sorted(users), cands))
     return {"masters": len(masters), "present": present, "orphans": rows}

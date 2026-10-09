@@ -173,6 +173,39 @@ WORKER_SUBPROCESS_GRACE_S = 30  # on top of --timeout, so our own kill never
 # throttle refusal, which goes straight to the hard stop instead.
 MAX_CODEX_ATTEMPTS = 2
 
+# ARTPIPE_NO_IMAGE_RETRY (2026-10-09): codex exec runs under --output-schema,
+# which forces EVERY assistant text message into the manifest JSON. When the
+# model sends any text before calling image_gen (a preamble or progress line),
+# that message is coerced into a "fail" manifest and the turn ends with no
+# image: codex exits 0, codex_image.py prints "ERROR no image produced" and
+# exits 1. MEASURED on 2026-10-09: 117 of 267 parked worker_error manifests
+# say so in their own note ("final response schema was accidentally invoked
+# before generating"), and the job usually passes on a rerun. This class gets
+# up to 2 retries (3 attempts), and every retry carries the firmer line below.
+MAX_NO_IMAGE_ATTEMPTS = 3
+NO_IMAGE_MARKER = "no image produced"
+NO_IMAGE_RETRY_LINE = (
+    "RETRY: the previous attempt ended with no image because it replied in "
+    "text before generating. You must call the image tool ($imagegen / "
+    "image_gen) as your very first action. Do not reply in text. Send no "
+    "preamble, plan or progress message: your only message is the final JSON "
+    "manifest, sent after the PNG file is saved.")
+# Added to EVERY codex prompt: the cause above is a message sent before the
+# tool call, so the base prompt says plainly that no such message may be sent.
+NO_PREAMBLE_LINE = (
+    "Call $imagegen before you send any message. Send no preamble or progress "
+    "text: every message you send is read as your final JSON manifest and ends "
+    "the run.")
+
+
+def _is_no_image_failure(code, timed_out: bool, text: str, image_present: bool) -> bool:
+    """True for the retryable no-image class: the worker ran to completion
+    (no timeout) but produced no PNG, and codex_image.py said so in its own
+    words. A timeout, a throttle (checked separately, first) or a failure
+    that left an image behind is not this class."""
+    return (not timed_out and not image_present and code not in (None, 0)
+            and NO_IMAGE_MARKER in (text or "").lower())
+
 # gemini_image.py's own docstring: "Nano Banana Pro (gemini-3-pro-image) —
 # best identity-across-angles". $/image from the owner's contrast-batch
 # pricing (GEMINI_WORKER_BACKEND_1). An unrecognised model falls back to
@@ -1640,6 +1673,7 @@ def build_job_prompt(job: dict) -> str:
                 for f in ("north", "south", "east", "west")}
         parts.append(facing_direction.get(str(job["facing"]).lower(),
                                           f"Facing: {job['facing']}."))
+    parts.append(NO_PREAMBLE_LINE)
     return " ".join(parts)
 
 
@@ -2236,6 +2270,9 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
         timed_out = False
         elapsed_total = 0.0
         last_attempt_elapsed = 0.0
+        attempt_log: list[dict] = []
+        no_image_retries = 0
+        firm_prompt_used = False
         # ARTPIPE_WORKER_AUTH_STALENESS_1: serialize against any other slot
         # whose home is ALSO due for a refresh right now — cheap (one
         # auth.json read, no lock) when this home is fresh.
@@ -2280,10 +2317,24 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
                     refresh_guard.auth_failed = True  # never a clean probe
                 failed = (code != 0) or timed_out
                 rate_limited_now = failed and _looks_rate_limited(combined_with_note, prompt)
-                if not failed or rate_limited_now or attempts >= MAX_CODEX_ATTEMPTS:
+                no_image_now = (failed and not rate_limited_now
+                                and _is_no_image_failure(code, timed_out, combined,
+                                                         out_png.is_file()))
+                attempt_log.append({"attempt": attempts, "exit": code,
+                                    "timed_out": timed_out, "no_image": no_image_now,
+                                    "firm_prompt": firm_prompt_used,
+                                    "elapsed_s": round(elapsed, 1)})
+                cap = MAX_NO_IMAGE_ATTEMPTS if no_image_now else MAX_CODEX_ATTEMPTS
+                if not failed or rate_limited_now or attempts >= cap:
                     break
                 # Retryable: a genuine tool error or timeout, NOT a throttle
-                # refusal — row 1 spec allows exactly one retry.
+                # refusal — row 1 spec allows exactly one retry; the no-image
+                # class (ARTPIPE_NO_IMAGE_RETRY) gets two, with a firmer prompt.
+                if no_image_now:
+                    no_image_retries += 1
+                    if not firm_prompt_used:
+                        prompt = prompt + " " + NO_IMAGE_RETRY_LINE
+                        firm_prompt_used = True
     finally:
         # Acquisition-to-release is ALL inside this try — a mkdir/read
         # failure, a malformed job, or any other exception in between still
@@ -2316,6 +2367,8 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
               "attempt_elapsed_s": last_attempt_elapsed, "mode": subcmd,
               "timed_out": timed_out, "meter_before": meter_before,
               "meter_after": meter_after, "daemon_attempts": attempts,
+              "attempt_log": attempt_log, "no_image_retries": no_image_retries,
+              "firm_retry_prompt": firm_prompt_used,
               "worker_self_report": worker_self_report,
               # Symmetric with process_gemini_job's own worker_stdout_tail/
               # worker_stderr_tail (CODEX_WORKER_SANDBOX_WRITE_1): every
@@ -2357,7 +2410,10 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
                        note=(f"worker exited {code}, image_present={image_present} — "
                              f"a failed/timed-out run is never trusted regardless"
                              + (" (timed out)" if timed_out else "")
-                             + (f", {attempts} attempt(s)" if attempts > 1 else "")))
+                             + (f", {attempts} attempt(s)" if attempts > 1 else "")
+                             + (f", no image: {no_image_retries} retr"
+                                f"{'y' if no_image_retries == 1 else 'ies'} with the firm "
+                                f"image-tool line" if no_image_retries else "")))
         return result
 
     if not image_present:
@@ -2922,7 +2978,8 @@ def default_reconcile_min_age(timeout_edit: int, gemini_timeout: int = DEFAULT_G
     reconcile() as a false orphan. Taking the max of both configured
     values is what makes raising EITHER timeout safe.
     """
-    codex_worst_case = (timeout_edit + WORKER_SUBPROCESS_GRACE_S) * MAX_CODEX_ATTEMPTS \
+    codex_worst_case = (timeout_edit + WORKER_SUBPROCESS_GRACE_S) \
+        * max(MAX_CODEX_ATTEMPTS, MAX_NO_IMAGE_ATTEMPTS) \
         + VALIDATOR_TIMEOUT_S
     gemini_worst_case = gemini_timeout + VALIDATOR_TIMEOUT_S
     return max(codex_worst_case, gemini_worst_case) * 1.5
