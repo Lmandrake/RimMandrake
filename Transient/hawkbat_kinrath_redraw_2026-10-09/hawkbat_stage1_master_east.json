@@ -1,0 +1,23 @@
+[
+ {
+  "id": "hawkbat_fly_master_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_Flying_1",
+  "canon": "hawkbat",
+  "canon_reference": [
+   "design/RimStarWars/canon_references/hawkbat/wookieepedia_legends_infobox.jpg"
+  ],
+  "facings": [
+   "east"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "background": "transparent",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
+  "prompt": "Flight master, frame 1 of a stable-body flying flip-book: the Star Wars hawk-bat IN FLIGHT seen from the side, head pointing RIGHT, following the attached purple-and-tan canon illustration very closely. It is a bat-like reptavian, NOT a bird and NOT a dragon: no feathers, no crest, no tuft, no separate lizard body on standing legs. Anatomy from the canon art: a small smooth reptilian head on a thin curved neck; one large green eye; two small swept-back green horn-stalks on the forehead curling slightly forward at the tips; a short pale hooked beak tip with tiny teeth. The WINGS ARE THE BODY: one continuous leathery membrane starts at the base of the neck and runs back along both flanks, the body slung between the two wings, each wing a long narrow kite-shaped membrane tapering to a long trailing point that serves as its tail; no finger spars, no fan of bones, no scalloped bat-finger edges. The membrane is creased by dense fine TRANSVERSE ribs and wrinkles across its length, with a wavy, notched trailing edge. Colouring exactly as canon: a broad violet-purple stripe runs down the centre of each wing along the arm bone, crossed by pale tan-cream ladder bars, the purple fading out to warm pale gold-tan toward the edges; the underside and belly cream to pale gold; a row of small gold-tan spots along the leading edge; neck and head pale gold-tan with purple on the crown. Hooks: a curved dark claw-hook at the tip of each wing, and small hooked foot-claws on the trailing edge part-way down each wing. Pose: body held level along a horizontal line as if gliding, neck extended forward and in line, both wings raised high at the top of the upstroke, the near wing in front of the body and the far wing behind it, rooted at one fixed shoulder point, the long trailing wing-points streaming straight back behind the body, not curled. Render it as a real animal: leathery, slightly translucent-looking membrane with visible veins (painted, fully opaque alpha, no semi-transparent haze), real finely wrinkled skin, natural light. Whole animal inside the canvas with margin. No ground, no shadow, no outline, no blur, no motion streaks."
+ }
+]

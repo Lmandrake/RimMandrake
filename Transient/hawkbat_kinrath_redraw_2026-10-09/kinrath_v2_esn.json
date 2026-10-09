@@ -1,0 +1,63 @@
+[
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Kinrath",
+  "target_texpath": "swanimals/Kinrath/Kinrath",
+  "canon": "kinrath",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "background": "transparent",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon art closley, looks closest to a mantis shape. Study the donor art for geometry info.",
+  "id": "kinrath_netcaster_v2",
+  "facings": [
+   "east"
+  ],
+  "canon_reference": [
+   "design/RimStarWars/canon_references/kinrath/unfinished_tcw_netcasters_conceptclip.png",
+   "design/RimStarWars/canon_references/kinrath/wookieepedia_currentcanon_netcaster_infobox.png",
+   "design/RimStarWars/canon_references/kinrath/wookieepedia_currentcanon_netcaster_rear.png"
+  ],
+  "prompt": "The Star Wars kinrath in its netcaster design (owner-ruled), side view, head facing RIGHT, following the attached canon closely: it is shaped most like a praying mantis crossed with a long-legged spider. GEOMETRY (from the donor sprite, follow exactly): a compact, thick, upright segmented thorax-neck column, tilted slightly forward, rising from a low rounded rear abdomen; directly on top a short, blunt, box-shaped head about as wide as the column (no long S-curved snake neck, no sleek snake head); the head is roughly 15% of the animal's height, the torso column roughly 45%. SIX limbs: two raptorial mantis forelimbs on the upper thorax, the upper arm angled forward and up, the forearm folded down and back into a hooked, spined mantis claw (the near one in front of the chest, the far one just visible behind it); and four long, thin, multi-jointed walking legs hinged at the lower thorax, two splayed to the rear and two to the front, each with a long upper segment angled UP to a high knee well above the body line, then a long lower segment angled DOWN to a pointed dark-tipped foot: a wide, low, spider-like crouch with the body slung between the knees, the leg span almost the full canvas width. FACE (canon netcaster): six round glossy black eyes in a tight cluster on the front of the blunt head, small mandibles below, and beneath them a small six-petaled orange-red flower organ. BODY: spoon-shaped, narrow at the top and wider toward the rear, the abdomen crossed by dark brown horizontal bands. COLOUR (canon): warm yellow-gold to tan-brown chitin, rust-orange patches at the joints, darker brown abdomen bands; no blue anywhere. Render it as a real arthropod: glossy segmented chitin with natural wear and fine texture, natural light, real anatomy, not the animation's flat shading. Whole animal inside the canvas with margin. No ground, no shadow, no outline."
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Kinrath",
+  "target_texpath": "swanimals/Kinrath/Kinrath",
+  "canon": "kinrath",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "background": "transparent",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon art closley, looks closest to a mantis shape. Study the donor art for geometry info.",
+  "id": "kinrath_netcaster_v2",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "kinrath_netcaster_v2_east",
+  "prompt": "Front view, face toward the viewer: blunt box head at the top centre showing the six-eye cluster, mandibles and the small orange-red flower organ; the two raptorial mantis forelimbs folded together vertically down the front of the chest in a praying pose; the darker banded abdomen just visible below; the four long walking legs splayed out in a wide symmetric M, two per side, knees high above the body line, pointed feet planted wide apart."
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Kinrath",
+  "target_texpath": "swanimals/Kinrath/Kinrath",
+  "canon": "kinrath",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 2.5,
+  "background": "transparent",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "follow canon art closley, looks closest to a mantis shape. Study the donor art for geometry info.",
+  "id": "kinrath_netcaster_v2",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "kinrath_netcaster_v2_east",
+  "prompt": "Rear view, seen from behind, no face or eyes visible: back of the blunt head at the top centre, the upright thorax column showing chevron segment ridges, the spoon-shaped body widening toward the rear with dark brown horizontal abdomen bands; the four long walking legs splayed out in a wide symmetric M, two per side, knees high above the body line; the tips of the folded raptorial forelimbs barely visible at the sides of the chest."
+ }
+]
