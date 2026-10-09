@@ -104,6 +104,14 @@ in every image. The skin-colour set (`Outland_Skin_DeepGreen`, `Skin_Green`,
 canonical green-to-grey range; **only beige is missing.**
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the *Clone Wars* Royal Guard (`wookieepedia_royal_guard.jpg`). Added two live-action frames:
+`wookieepedia_lufa_danak_tpm.png` (*The Phantom Menace* Senate pod — face, collar, a bare hand) and
+`wookieepedia_uniformed_pair_lostfound.png` (*The Acolyte* "Lost / Found" — two Neimoidians standing in fitted
+uniforms, not robes, which shows the narrow upright body the robes hide). Every image is now live-action or a
+live-action costume. ⚠️ The **grey** skin variant and the armoured Royal Guard are now text-only (the grey came from the
+deleted animation); live action shows **mottled grey-green to olive-green** throughout.
+
 
 🔴 **THE MOST IMPORTANT THING ABOUT NEIMOIDIAN REFERENCE IMAGES: the tall horned/mitred
 shape everyone remembers is a HAT. It is not the skull.** A text-only prompt for
@@ -156,7 +164,7 @@ a live-action close-up):
 | Breathing mask with round filters (the left figure in the encyclopedia group) | | ✅ **worn apparatus**, not a face |
 | Floor-length layered robes, ribbed/quilted texture, wide draped sleeves | | ✅ garment — this is where the "wide" silhouette comes from |
 | Long bony five-pointed-finger hands | ✅ | |
-| Crested helmet, pauldrons, gauntlets, chest plate (Royal Guard) | | ✅ **armour** |
+| Fitted high-collared uniform tunic with sash (Acolyte pair) | | ✅ garment |
 
 - `wookieepedia_rune_haako_fullbody.jpg`: the brown-black **wing-shaped headdress with two
   upswept prongs and two down-curving side flaps** is a hat; the olive under-robe and the
@@ -165,10 +173,9 @@ a live-action close-up):
 - `wookieepedia_officer_lostfound_liveaction.jpg`: same shape of hat in navy, with a
   **ribbed blue turtleneck collar and gold cords** below it. 🔴 The gold cords are jewellery
   and the collar is knitwear — neither is anatomy.
-- `wookieepedia_royal_guard.jpg`: the **grey crested helmet with a spine, the pauldrons, the
-  gauntlets and the plated chest** are all armour. The **grey** face beneath is skin, and it
-  confirms the grey end of the canonical colour range plus the vertical jaw ridges. This is
-  also the image that disproves "all Neimoidians are cowards."
+- `wookieepedia_uniformed_pair_lostfound.png`: the tall pointed caps and the green fitted tunics with red sashes are
+  clothing; the **narrow, upright, ordinary-proportioned humanoid body and the long green hands** are anatomy — the
+  "wide" silhouette of the robed figures is entirely garment.
 
 ## Must show
 - [ ] Tall, narrow, vertically-elongated skull that tapers downward from a domed brow to a small chin — NOT a horned/mitred cone shape (that shape is a hat, worn over the head, and varies per individual)
@@ -177,6 +184,7 @@ a live-action close-up):
 - [ ] Noseless face — no nose bridge, at most small dark nostril holes low on the centre line
 - [ ] Small, thin-lipped, downturned mouth with several short vertical ridges on the chin/jaw below it
 - [ ] Long, thin, bony hands with five pointed fingers and prominent knuckles, often held clasped or steepled in a stooped, cringing posture
+- [ ] Realistic rendering: soft creased latex-like skin and natural lighting as in the live-action films, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -202,8 +210,10 @@ or the chin ridges.
 - https://static.wikia.nocookie.net/starwars/images/5/5f/NeimoidianOfficer-LostFound.png
   (File:NeimoidianOfficer-LostFound.png, from *The Acolyte* "Lost / Found" →
   `wookieepedia_officer_lostfound_liveaction.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/c/cd/Neimoidian_Guard.png
-  (File:Neimoidian_Guard.png → `wookieepedia_royal_guard.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/6/6c/Lufa_Danak.png/revision/latest?cb=20170413231343
+  (File:Lufa Danak.png → `wookieepedia_lufa_danak_tpm.png`)
+- https://static.wikia.nocookie.net/starwars/images/5/53/Fillik-Neimoidians-LostFound.png/revision/20250604130625
+  (File:Fillik-Neimoidians-LostFound.png → `wookieepedia_uniformed_pair_lostfound.png`)
 - NOT fetched this pass: `https://www.starwars.com/databank/neimoidian` is cited by the
   article as the source for the "Humanoid" class, but was not fetched directly.
 
@@ -221,10 +231,10 @@ or the chin ridges.
   itself as *"a typical Neimoidian."* Settles overall proportion and the stooped, hands-in
   posture. ⚠️ **Almost the entire figure is robe** — useful for silhouette-with-clothes, near
   useless for anatomy below the neck.
-- `wookieepedia_royal_guard.jpg` — a Neimoidian Royal Guard in armour: the **grey** skin
-  variant, the vertical jaw ridges, and canonical proof that the species has real soldiers.
-  Stylised (*The Clone Wars* animation), and heavily helmeted, so treat line quality as the
-  medium's.
+- `wookieepedia_lufa_danak_tpm.png` — live-action *The Phantom Menace*: Senator Lufa Danak seated — green mottled face,
+  red split-pupil eyes, ribbed collar, a bare bony hand on the pod rail.
+- `wookieepedia_uniformed_pair_lostfound.png` — live-action *The Acolyte* "Lost / Found": two Neimoidians standing in
+  fitted uniforms — body proportions without robes, long green hands.
 
 ## ruling
 (empty — owner has not reviewed this race yet)
