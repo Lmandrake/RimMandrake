@@ -1060,7 +1060,7 @@
   <ThingDef ParentName="RM_SiltLamprey">
     <defName>RM_SiltLampreyJuv</defName>
     <label>gillclamper</label>
-    <description>The young of the silt lamprey, raised in the Miasma's warm stranding pools before the open sea takes it. A gillclamper is a finger-thick, eel-slick body behind a sucker of hooked rasps, which it fixes into the gill-slits of other young fish and feeds from while they swim. It has not yet grown the adult's full round maw; for now it latches on, clamps tight, and lets its host do the travelling.</description>
+    <description>The young of the silt lamprey, raised in the Miasma's warm stranding pools before the open sea takes it. A gillclamper is a slick, near-black eel the length of a forearm, finned along its back and belly, ending in a round sucker-mouth ringed with rows of hooked teeth. It fastens that mouth into the gill-slits of other young fish and feeds from them while they swim, clamping tight and letting its host do the travelling until it is big enough to hunt in the swarm.</description>
     <race>
       <lifeStageAges Inherit="False">
         <li>

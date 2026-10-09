@@ -31,7 +31,8 @@ Without --apply it is a DRY RUN: the full plan is printed and nothing changes. S
               Donor defs are never touched (their roster row is ours; anything more needs a patch: TODO).
   6 TODO      a note on a row that is not a redo and has no queued job is NOT guessed at: it is a TODO line,
               until `--mark-done <row> [--evidence <sha>]` records it as done (an `enact_done` ledger event;
-              written even on a dry run, because it records work already done by hand).
+              written even on a dry run, because it records work already done by hand). Evidence starting
+              "OWNER:" records the rest of the note as a question for him: it is listed as a CONFLICT.
   7 DEPLOY    only the touched mods (`deploy_custom_mods.py --apply --mod <m>`, or `--compose biomes` for a
               folded biome mod). A plan that would write a DLL while RimWorldWin64 runs is skipped and said so.
   8 SUMMARY   counts per action, CONFLICTS, TODOs; art is visible after the next game restart.
@@ -492,7 +493,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
     jobs = load_jobs() if jobs is None else jobs
     census = census_rows_for(biome)
     src = L.src_root()
-    done_marks = {(e.get("sheet"), e.get("row"), e.get("note")) for e in idx.events if e.get("type") == "enact_done"}
+    done_ev = {(e.get("sheet"), e.get("row"), e.get("note")): e.get("evidence") or "" for e in idx.events
+               if e.get("type") == "enact_done"}
+    done_marks = set(done_ev)
     P = {"decisions": decisions, "sheet": sheet, "biome": biome, "held": [], "install": [], "installed_already": [],
          "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0}
@@ -530,6 +533,10 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         continue
                     protect_here.add(sha)
                     rel = rel_for(g, facing)
+                    if idx.is_purged(sha):      # he picked it, and (on this or another sheet) purged it: his call
+                        P["conflicts"].append(f"{row}: pick {letter} {facing} {sha[:12]} was purged by you — it cannot "
+                                              f"be installed")
+                        continue
                     anywhere = idx.live_anywhere(sha)
                     if anywhere:
                         # already shipping — at its own slot or as a graphic variant (RM_Fuzz_a, LongtailGorgV_I):
@@ -540,6 +547,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     if not slots:
                         if str(lab).startswith("IN GAME"):
                             P["in_game_not_ours"] += 1
+                        elif (sheet, row, note) in done_marks:
+                            pass        # --mark-done: the row was carried out by hand (the pick was a reference)
                         else:
                             P["todo"].append(f"{row}: pick {letter} {rel} has no slot in any of our mods "
                                              f"(donor art? needs an override texture or a def texPath)")
@@ -586,6 +595,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     P["queued_already"].append(f"{row}: {len(match)} job(s) {'/'.join(states)}")
             elif dec == "redo":
                 P["queue"].append({"row": row, "names": names, "note": note, "srow": srow, "v": v})
+            elif (sheet, row, note) in done_marks and done_ev[(sheet, row, note)].startswith("OWNER:"):
+                # --mark-done --evidence "OWNER: <question>": what could be done is done; the rest is his call
+                P["conflicts"].append(f"{row}: {done_ev[(sheet, row, note)][6:].strip()}")
             elif (sheet, row, note) in done_marks:
                 P["done"].append(f"{row}: {note[:70]}")
             else:
@@ -652,6 +664,11 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
         qa, dn = mine(P["queued_already"], row), mine(P["done"], row)
         inst, pur = mine(P["install"], row), mine(P["purge"], row)
         cut = [c for c in P["cuts"] if c["row"] == row]
+        noslot = [t for t in todo if "has no slot in any of our mods" in t]
+        todo = [t for t in todo if t not in noslot]
+        conf = conf + [t.replace(" (donor art? needs an override texture or a def texPath)",
+                                 " — your pick is donor art no mod of ours ships; showing it means re-pointing that def")
+                       for t in noslot]
         if todo or q or inst or pur or any(c["plan"]["sites"] or c["plan"]["deleted"] for c in cut):
             st = "not_acted"
             detail = "; ".join([t.split(": ", 1)[1].split(" (art or def edit?")[0] for t in todo]
