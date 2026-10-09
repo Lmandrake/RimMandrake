@@ -1,0 +1,59 @@
+[
+ {
+  "id": "miasma_swarmling_green_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_Swarmling",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "background": "transparent",
+  "priority": 0,
+  "facings": [
+   "east"
+  ],
+  "reference": "/home/mandrake/rm/bench/src/RimUtinni/SwarmlingArtOverride/Textures/Things/Pawn/Animal/Swarmling/Swarmling_east.png",
+  "target_original": [],
+  "owner_note": "I like the bulbous butt, but make it sickly green please",
+  "biome_register": "miasma",
+  "style_notes": "Biome register: miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background. Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "RimWorld creature sprite, the swarmling, EAST-facing. Owner's note, verbatim, overrides everything below: \"I like the bulbous butt, but make it sickly green please\" Keep the attached render's shape, pose, and facing exactly, including the big bulbous abdomen sac, and recolour the whole animal a sickly diseased green."
+ },
+ {
+  "id": "miasma_swarmling_green_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_Swarmling",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "background": "transparent",
+  "priority": 0,
+  "facings": [
+   "south"
+  ],
+  "reference": "/home/mandrake/rm/bench/src/RimUtinni/SwarmlingArtOverride/Textures/Things/Pawn/Animal/Swarmling/Swarmling_south.png",
+  "target_original": [],
+  "owner_note": "I like the bulbous butt, but make it sickly green please",
+  "biome_register": "miasma",
+  "style_notes": "Biome register: miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background. Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "RimWorld creature sprite, the swarmling, SOUTH-facing. Owner's note, verbatim, overrides everything below: \"I like the bulbous butt, but make it sickly green please\" Keep the attached render's shape, pose, and facing exactly, including the big bulbous abdomen sac, and recolour the whole animal a sickly diseased green."
+ },
+ {
+  "id": "miasma_swarmling_green_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "VFEI2_Swarmling",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0,
+  "background": "transparent",
+  "priority": 0,
+  "facings": [
+   "north"
+  ],
+  "reference": "/home/mandrake/rm/bench/src/RimUtinni/SwarmlingArtOverride/Textures/Things/Pawn/Animal/Swarmling/Swarmling_north.png",
+  "target_original": [],
+  "owner_note": "I like the bulbous butt, but make it sickly green please",
+  "biome_register": "miasma",
+  "style_notes": "Biome register: miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background. Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "RimWorld creature sprite, the swarmling, NORTH-facing. Owner's note, verbatim, overrides everything below: \"I like the bulbous butt, but make it sickly green please\" Keep the attached render's shape, pose, and facing exactly, including the big bulbous abdomen sac, and recolour the whole animal a sickly diseased green."
+ }
+]

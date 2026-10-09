@@ -1,0 +1,68 @@
+[
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "canon": "sketto",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.25,
+  "background": "transparent",
+  "priority": 0,
+  "owner_note": "Please follow canon closely and regenerate N and S. Yes, now do North and South. (2026-10-08) help out the sketto ... can be made into a flyer with a stable body.",
+  "id": "sketto_fly_plate_v2",
+  "facings": [
+   "east"
+  ],
+  "derive_from": "sketto_fly_master_v3_east",
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
+  "canon_na": [
+   2
+  ],
+  "canon_na_reason": "wings removed on purpose: this is the wingless body plate composited under every flight frame",
+  "prompt": "Remove all four wings completely from the attached sketto, including their roots, and leave EVERYTHING ELSE pixel-for-pixel unchanged: same position on the canvas, same pose, same head, fangs, tucked legs, straight tail and fin-tuft, same colours and painted texture, same scale. Where a wing covered the body, paint in the body that would be underneath, matching the surrounding skin. Do not move, re-pose, re-light or restyle anything. LEGS: the four legs must read as four THIN, SPINDLY, CLAWED legs, each no thicker than a twig, each ending in a small curved claw, folded tight and close up under the belly like a tucked insect's legs, with sliver-thin gaps showing between them. Not thick folds, not curls, not fat limb stumps, not a lump or bundle of flesh. Transparent background."
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "canon": "sketto",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.25,
+  "background": "transparent",
+  "priority": 0,
+  "owner_note": "Please follow canon closely and regenerate N and S. Yes, now do North and South. (2026-10-08) help out the sketto ... can be made into a flyer with a stable body.",
+  "id": "sketto_fly_plate_v2",
+  "facings": [
+   "south"
+  ],
+  "derive_from": "sketto_fly_master_v3_south",
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
+  "canon_na": [
+   2
+  ],
+  "canon_na_reason": "wings removed on purpose: this is the wingless body plate composited under every flight frame",
+  "prompt": "Remove all four wings completely from the attached sketto, including their roots, and leave EVERYTHING ELSE pixel-for-pixel unchanged: same position on the canvas, same pose, same head, fangs, tucked legs, straight tail and fin-tuft, same colours and painted texture, same scale. Where a wing covered the body, paint in the body that would be underneath, matching the surrounding skin. Do not move, re-pose, re-light or restyle anything. LEGS: the four legs must read as four THIN, SPINDLY, CLAWED legs, each no thicker than a twig, each ending in a small curved claw, folded tight and close up under the belly like a tucked insect's legs, with sliver-thin gaps showing between them. Not thick folds, not curls, not fat limb stumps, not a lump or bundle of flesh. Transparent background."
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Sketto",
+  "canon": "sketto",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.25,
+  "background": "transparent",
+  "priority": 0,
+  "owner_note": "Please follow canon closely and regenerate N and S. Yes, now do North and South. (2026-10-08) help out the sketto ... can be made into a flyer with a stable body.",
+  "id": "sketto_fly_plate_v2",
+  "facings": [
+   "north"
+  ],
+  "derive_from": "sketto_fly_master_v3_north",
+  "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
+  "canon_na": [
+   2
+  ],
+  "canon_na_reason": "wings removed on purpose: this is the wingless body plate composited under every flight frame",
+  "prompt": "Remove all four wings completely from the attached sketto, including their roots, and leave EVERYTHING ELSE pixel-for-pixel unchanged: same position on the canvas, same pose, same head, fangs, tucked legs, straight tail and fin-tuft, same colours and painted texture, same scale. Where a wing covered the body, paint in the body that would be underneath, matching the surrounding skin. Do not move, re-pose, re-light or restyle anything. LEGS: the four legs must read as four THIN, SPINDLY, CLAWED legs, each no thicker than a twig, each ending in a small curved claw, folded tight and close up under the belly like a tucked insect's legs, with sliver-thin gaps showing between them. Not thick folds, not curls, not fat limb stumps, not a lump or bundle of flesh. Transparent background."
+ }
+]
