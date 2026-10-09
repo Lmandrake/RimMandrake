@@ -35,47 +35,21 @@ Two separate Wookieepedia entries exist and they read differently:
 blue, peacock/macaw-derived bird, not a drab or reptilian-brown one.**
 
 ## Visual brief
-This is a second text-vs-image mismatch case, same shape as the Wyyyschokk
-one this library exists to catch — most of the easily-found candidate images
-do NOT show the blue coloring the text insists on, and only one candidate
-actually confirms it:
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `swg_toxic_pekopeko_mount.jpg` (a low-detail *Star Wars Galaxies* UI screenshot of the red mutant "Toxic peko-peko" mount). No live-action peko-peko exists on Wookieepedia (searched: "Images of peko-pekos"; its realistic-labelled files are Padmé film scenes with no bird in frame; the rest are Gungan Frontier game frames). The three remaining images are realistic painted/rendered art and agree on the look.
 
-- `wookieepedia_battlefront2_painting.jpg` — **the one candidate that
-  matches the sourced text.** The in-universe Theed palace painting (current
-  canon, *Battlefront II*) shows the peko-peko perched on Padmé's arm with
-  unmistakable **peacock-blue wing and tail plumage**, a small yellow/gold
-  head crest, long trailing tail feathers with pale gold edging, and a
-  raptor-like curved beak. This is the strongest single confirmation of the
-  "peacock + macaw" description and should be treated as the visual anchor.
-- `wookieepedia_fieldguide.jpg` — an unlit gray 3D model/render (body plan
-  only: long S-curved neck, elongated toothy-looking beak/skull, folded
-  wings, long tail) — confirms silhouette and beak shape but carries **no
-  color information at all**; do not read "gray" as canon.
-- `wookieepedia_infobox.jpg` — the Legends page's infobox image (`Peko-peko.jpg`; its original publication is not stated on the wiki), a small flat cartoon in tan/khaki/gold
-  with a bony reptilian-looking head; it is not a canon colour source and visibly
-  UNDERSELLS the blue plumage the text describes — exactly the failure mode
-  this library exists to catch. Keep it only as a cautionary example, not a
-  reference to render from.
-- `swg_toxic_pekopeko_mount.jpg` — in-game screenshot from *Star Wars
-  Galaxies* of the mutated "Toxic peko-peko" mount: reddish/rust-orange
-  plumage on a winged reptavian body. Per the source text this is an
-  explicitly MUTATED variant (bred by an outlaw for toxin/aggression), so its
-  red-orange color is not representative of a baseline peko-peko — it is
-  useful for body plan (wings, clawed feet, elongated beak) but the color
-  should be disregarded for a baseline render.
+- `wookieepedia_fieldguide.jpg` — **the owner-ruled target ("Follow #3 closely").** Terryl Whitlatch's realistic naturalist plate from *The Wildlife of Star Wars: A Field Guide*: the bird perched on a branch, wings spread, **peacock/slate-blue wing and tail plumage** with pale edging, very long trailing tail feathers fringed in gold/olive, a yellow throat patch, a long curved neck and a long hooked, crested beak/skull with a dark crest at the back of the head.
+- `wookieepedia_battlefront2_painting.jpg` — the in-universe Theed palace painting (*Battlefront II*, canon), realistic oil-painting style: the same bird on Padmé's arm, peacock-blue wings, long trailing tail with pale gold edging, a small yellow/gold head, raptor-like curved beak. Confirms the colour.
+- `wookieepedia_infobox.jpg` — the Legends infobox `Peko-peko.jpg` (Databank original): an untextured grey 3D model, side view. Body plan only — long S-curved neck, elongated beak/skull with a knob crest, long wings, long tail. Carries **no colour**; do not read "grey" as canon.
 
-**Net read: render blue** (`wookieepedia_battlefront2_painting.jpg` is the
-target), peacock/macaw-style plumage, long trailing tail feathers, clawed
-wings, a strong hooked/nut-cracking beak. The gray model gives the cleanest
-body-plan silhouette. The tan icon and the red mutant screenshot are both
-off-canon for color and should not be used as color references.
+**Net read: render blue**, as a real bird with real feather structure: peacock/macaw-style plumage, very long trailing tail feathers, clawed wings, a strong hooked nut-cracking beak. The red-orange Toxic mutant is not part of the target.
 
 ## Must show
-- [ ] Peacock-blue wing and tail plumage — not drab, tan, or reddish-orange
-- [ ] Small yellow/gold head crest
-- [ ] Long trailing tail feathers with pale gold edging
-- [ ] Long, S-curved neck and an elongated, toothy-looking beak/skull
+- [ ] Peacock/slate-blue wing and tail plumage — not drab, tan, grey or reddish-orange
+- [ ] Yellow/gold patch at the head or throat
+- [ ] Very long trailing tail feathers with pale gold edging
+- [ ] Long S-curved neck and an elongated hooked beak/skull with a crest at the back of the head
 - [ ] Clawed wings, foldable close to the body
+- [ ] Realistic rendering: natural layered feather texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -87,9 +61,8 @@ none known
   pulled 2026-09-13)
 - https://starwars.fandom.com/wiki/Toxic_peko-peko (mutated SWG variant)
 - https://static.wikia.nocookie.net/starwars/images/2/22/Amidala_painting-BF2.jpg (Battlefront II in-universe painting, current canon)
-- https://static.wikia.nocookie.net/starwars/images/c/c5/Pekopeko-woswfg.jpg ("Wildlife of Star Wars: A Field Guide" model render)
-- https://static.wikia.nocookie.net/starwars/images/8/8d/Peko-peko.jpg (Wookieepedia infobox icon)
-- https://static.wikia.nocookie.net/swg/images/a/a2/Toxic_Peko-Peko_Mount.jpg (Star Wars Galaxies in-game mount screenshot)
+- https://static.wikia.nocookie.net/starwars/images/c/c5/Pekopeko-woswfg.jpg ("Wildlife of Star Wars: A Field Guide" painted plate)
+- https://static.wikia.nocookie.net/starwars/images/8/8d/Peko-peko.jpg (Wookieepedia Legends infobox, grey 3D model render)
 - Donor mod `mlie.starwarsanimalcollection` (Steam Workshop, current 1.6
   release id 3497316713 and legacy id 2903582351) — attempted to pull a
   preview screenshot or loose texture via the mod's public GitHub mirror
@@ -100,22 +73,10 @@ none known
   **No donor-mod sprite obtained this pass** — see rule below.
 
 ## Candidate images
-- `wookieepedia_battlefront2_painting.jpg` — Theed palace painting of Padmé
-  holding a peko-peko (*Battlefront II*, current canon): blue peacock-style
-  plumage, gold head crest, trailing tail feathers. **Best color reference.**
-- `wookieepedia_fieldguide.jpg` — unlit gray 3D model render from "The
-  Wildlife of Star Wars: A Field Guide": body plan / silhouette only, no
-  color signal.
-- `wookieepedia_infobox.jpg` — small flat wiki icon, tan/khaki/gold coloring;
-  undersells the canon blue plumage, kept as a cautionary example.
-- `swg_toxic_pekopeko_mount.jpg` — *Star Wars Galaxies* in-game screenshot of
-  the mutated "Toxic peko-peko" mount: reddish-orange plumage (off-canon
-  color, mutant variant only, useful for body plan/wings).
-- **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — the
-  mod is not present on this machine, its current release packs art in
-  AssetBundles rather than loose textures, and no labeled workshop preview
-  screenshot was found this pass. Revisit if the mod is ever installed
-  locally or a labeled preview surfaces.
+- `wookieepedia_fieldguide.jpg` — *The Wildlife of Star Wars: A Field Guide* (Terryl Whitlatch), realistic naturalist painting; file `Pekopeko-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c5/Pekopeko-woswfg.jpg — **owner-ruled target.**
+- `wookieepedia_battlefront2_painting.jpg` — *Battlefront II* in-universe Theed painting of Padmé holding a peko-peko (canon), realistic painting; file `Amidala_painting-BF2.jpg` — https://static.wikia.nocookie.net/starwars/images/2/22/Amidala_painting-BF2.jpg
+- `wookieepedia_infobox.jpg` — Legends infobox, Databank original untextured grey 3D model render (body plan only); file `Peko-peko.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8d/Peko-peko.jpg
+- **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — its current release packs art in AssetBundles rather than loose textures, and no labeled workshop preview screenshot was found.
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_fieldguide.jpg`

@@ -25,21 +25,22 @@ Male nerfs were generally larger and more aggressive than their female counterpa
 In the wild, nerfs were common prey for predators such as manka cats and taoparis. They were often hunted by sentient beings such as the Gungans. Nerfs had unusually keen night-vision, helping them to spot nocturnal predators with ease.
 
 ## Visual brief
-Four images: CANON (an Alien Archive illustration and a comic panel of nerfs crowded aboard the Millennium Falcon), LEGENDS (a painted plate with a herder, and a game render of a different-coloured variant). The core look is the same: a shaggy bison-like bovine.
-- **Silhouette**: a heavy, stocky ungulate, shoulders humped and higher than the rump, a big shaggy head carried low, short strong legs ending in dark hoof/pad feet, a thin hairless rope-like tail (naked, ringed, with a small hair tuft at the tip in the painting).
-- **Coat**: coarse, long, thick, curly/shaggy brown fur covering the body and forming a heavy mane over the shoulders and neck. Canon Alien Archive: deep chocolate brown, whole body shaggy. Comic: sandy-tan to gold-brown. Legends painting: dark chocolate-brown with a plum tint; the game render is pale cream with orange and blue-tinged mane (a breed or colour variant; not typical).
-- **Horns**: curved horns, dark grey in canon, tan to bone in Legends; the canon illustration shows a pair sweeping out then up; the canon infobox also lists "four curving horns" (cited to Star Wars (2015) 17; https://starwars.fandom.com/wiki/Nerf) and the Legends text says four curved horns, but the images show two (the comic shows two sweeping up and sometimes a second smaller pair behind, in some heads: two long curved ones and two short ones on the upper left animal, so four is plausible, but two large ones read as the standard).
-- **Face**: broad dark grey-black wide muzzle/nose pad, small dark eyes set under the fur, blunt teeth, long pink tongue (text), droopy lower lip.
-- **Size**: large for a livestock animal, 1.3 m (the canon infobox height, cited to Star Wars Encyclopedia: The Comprehensive Guide to the Star Wars Galaxy; https://starwars.fandom.com/wiki/Nerf; the Legends text says 1.3 m at the shoulder), roughly chest-high on a person in the Falcon panel; the Legends plate shows a herder dwarfed by the animal.
-- **Disagreement**: the Legends text says 'antlered'; the images show ram- or bison-style curved horns, not antlers.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The nerf has no live-action, puppet or photoreal-CGI depiction anywhere on Wookieepedia (searched: canon + Legends pages, "Images of nerfs", the Alderaan image categories). So the target is the realistic PAINTED art: the Alien Archive plate (`canon_1`), the New Essential Guide plate (`legends_1`) and the Alien Anthology painting of a herd with a herder (`wookieepedia_alienanthology.jpg`). Removed: the Marvel comic panel of nerfs in the Falcon (`canon_2`) and the stylised SWTOR game render of a pale cream/orange/blue variant (`legends_2`) — that colour variant is no longer part of the target.
+- **Silhouette**: heavy, stocky bison-like ungulate, shoulders humped and higher than the rump, big shaggy head carried low, short strong legs ending in dark hooves, thin hairless rope-like tail with a small tuft at the tip (NEGAS plate).
+- **Coat**: coarse, long, thick, curly/shaggy fur forming a heavy mane over shoulders, neck and head. Alien Archive: deep chocolate brown all over. NEGAS: dark chocolate brown with a plum tint. Alien Anthology: rich red-brown mane over a shorter-haired tan-brown hindquarters, like a real bison. Brown in every realistic source.
+- **Horns**: one pair of curved horns sweeping out then up/forward from the sides of the head, dark grey in canon, tan/bone in the NEGAS plate. The canon infobox and Legends text say "four curving horns"; the images show two large ones as the standard.
+- **Face**: broad dark grey-black muzzle/nose pad, small dark eyes set under the forelock, droopy lower lip.
+- **Size**: 1.3 m at the shoulder (canon infobox, Star Wars Encyclopedia; Legends text agrees); chest-to-shoulder high on the Alien Anthology herder.
+- **Disagreement**: the Legends text says 'antlered'; every image shows bison-style curved horns, not antlers.
 - **Behaviour (canon, https://starwars.fandom.com/wiki/Nerf)**: frightened nerfs shed and expel filthy mucus through nose and mouth; juveniles crave salt; bloodflies pester the Lothal Academy herd. Acidic black spit, male aggression toward young and keen night vision appear only on the Legends page.
 
 ## Must show
 - [ ] Bison-like stocky body with humped shoulders and a low-carried head
-- [ ] Long coarse shaggy curly brown fur (mane over shoulders), short strong legs with dark hoof feet
-- [ ] Curved horns (dark grey in canon) sweeping out and up
+- [ ] Long coarse shaggy brown fur forming a heavy mane over shoulders and neck; short strong legs with dark hooves
+- [ ] One pair of curved horns (dark grey in canon) sweeping out and up from the sides of the head
 - [ ] Broad dark grey muzzle/nose pad, small eyes under shaggy fur
 - [ ] Thin hairless rope-like tail
+- [ ] Realistic rendering: natural shaggy fur and hide texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -49,10 +50,9 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Nerf/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Nerf`; wiki caption: infobox image. File: `Nerf-Alien Archive.png` — https://static.wikia.nocookie.net/starwars/images/b/b9/Nerf-Alien_Archive.png/revision/latest?cb=20240331104509
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Nerf/Legends`; wiki caption: infobox image. File: `NerfNEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/7/7a/NerfNEGAS.jpg/revision/latest?cb=20061129200558
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Nerf/Legends`; wiki caption: A common Nerf living in the plains of Alderaan. File: `Nerf.png` — https://static.wikia.nocookie.net/starwars/images/5/5f/Nerf.png/revision/latest?cb=20150818132451
-- `wookieepedia_canon_2.webp` — CANON page `Nerf`; wiki caption: Nerfs aboard the Millennium Falcon. File: `HanAndLukeWithNerfs-2015StarWars17.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b9/HanAndLukeWithNerfs-2015StarWars17.jpg/revision/latest?cb=20160908232027
+- `wookieepedia_canon_1.webp` — CANON, Star Wars: Alien Archive painted plate (realistic illustration); file `Nerf-Alien Archive.png` — https://static.wikia.nocookie.net/starwars/images/b/b9/Nerf-Alien_Archive.png/revision/latest?cb=20240331104509
+- `wookieepedia_legends_1.webp` — LEGENDS, The New Essential Guide to Alien Species painted plate with a herder; file `NerfNEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/7/7a/NerfNEGAS.jpg/revision/latest?cb=20061129200558
+- `wookieepedia_alienanthology.jpg` — LEGENDS, Alien Anthology painting of a nerf herd with a herder (realistic illustration); file `Nerf-aa.jpg` — https://static.wikia.nocookie.net/starwars/images/d/d3/Nerf-aa.jpg/revision/latest?cb=20070118140755
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

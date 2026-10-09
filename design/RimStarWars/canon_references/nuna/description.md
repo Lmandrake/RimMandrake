@@ -21,18 +21,19 @@ Bad Batch*, *The Mandalorian*, and *The Book of Boba Fett*, almost always
 as scenery or food rather than a creature shown up close.
 
 ## Visual brief
-The three candidate images (all official render/promotional art of the
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `wookieepedia_classic_render.jpg` — it was not a nuna at all but a stylised game render of a hooded Jawa (filename collision on `Nuna.png`). The two remaining images are realistic CGI of the Phantom Menace-era design: `wookieepedia_infobox.jpg` (detailed 3/4 render, the owner-ruled canon image) and `wookieepedia_walkintime.jpg` (front-on realistic CGI promo, StarWars.com). No live-action/puppet nuna exists on Wookieepedia (searched: Nuna page, "Images of nunas"; the realistic-labelled files there are food photos and dinner scenes).
+
+The two candidate images (official realistic renders of the
 animal itself, not food shots) are internally consistent with each other but
 **disagree sharply with the "bird" / "swamp turkey" framing in the text**.
-None of the three shows anything resembling feathers, a beak, wings, or a
+Neither shows anything resembling feathers, a beak, wings, or a
 turkey-like silhouette (canon text nonetheless says nunas could grow blue and red feathers, so absence of feathers in these renders is not a species-wide prohibition). What they actually show is a squat, hunched,
 **toad- or turtle-like amphibian/reptile**: a heavy domed/ridged shell-like
 back rising into a peak, a wide froglike head with a broad flat mouth and
 bulging pink or amber eyes, floppy skin flaps hanging at the sides of the
 head (read as loose jowls/wattle, not ears), thick bent hind legs ending in
 clawed toed feet, and mottled olive-to-dark-green pebbled/warty skin — no
-visible feather texture anywhere, on any of the three images, across two
-different render styles and two different eras of official art. The
+visible feather texture anywhere, on either image. The
 front-on view (`wookieepedia_walkintime.jpg`) confirms the body is wider
 than tall when viewed head-on, with the two hind legs doing all the
 visible structural work, consistent with the "biped" description, but the
@@ -61,6 +62,7 @@ far in this library.
 - [ ] Floppy skin flaps hanging at the sides of the head (jowls/wattle, not ears)
 - [ ] Thick, bent hind legs ending in clawed, toed feet, doing the visible structural work of standing
 - [ ] Mottled olive-to-dark-green pebbled/warty skin — no feather texture, beak or wings anywhere
+- [ ] Realistic rendering: natural wet pebbled amphibian skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -70,7 +72,6 @@ none known
   via `starwars.fandom.com/api.php?action=parse&page=Nuna&prop=wikitext`,
   2026-09-13, since the direct page fetch was Cloudflare-blocked)
 - https://static.wikia.nocookie.net/starwars/images/4/4d/Nuna-SWCT.png (current Wookieepedia infobox art, credited on-wiki to *Star Wars: Card Trader*)
-- https://static.wikia.nocookie.net/starwars/images/a/aa/Nuna.png (older full-body render used historically on the article/Databank)
 - https://static.wikia.nocookie.net/starwars/images/8/80/Nuna-WIT.png (front-facing render)
 
 ## Candidate images
@@ -83,9 +84,6 @@ none known
 - `wookieepedia_infobox.jpg` — current Wookieepedia infobox render
   (`Nuna-SWCT.png`), 3/4 side view, hunched toad/turtle body, domed ridged
   back, wide froglike mouth, pink eyes, floppy head flaps, clawed hind feet
-- `wookieepedia_classic_render.jpg` — older full-body render (`Nuna.png`),
-  same creature design from a different angle/lighting, confirms the body
-  plan is consistent across separate official art assets
 - `wookieepedia_walkintime.jpg` — front-on render (`Nuna-WIT.png`), shows
   the creature facing the camera: wide stance, two visible clawed hind
   legs, mouth/jowl detail, confirms width-forward silhouette
