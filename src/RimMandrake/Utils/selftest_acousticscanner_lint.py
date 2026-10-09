@@ -12,7 +12,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import lint_acousticscanner_defs as L  # noqa: E402
-import selftest_modpack_lint as H  # noqa: E402
+import modpack_lint_harness as H  # noqa: E402
 
 M = "Source/RM_AcousticScannerMod.cs"
 K = "Source/Kernel/RM_AcousticKernel.cs"

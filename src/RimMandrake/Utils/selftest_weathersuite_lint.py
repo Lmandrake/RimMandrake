@@ -12,7 +12,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import selftest_modpack_lint as H  # noqa: E402
+import modpack_lint_harness as H  # noqa: E402
 
 I = "Defs/IncidentDefs/IncidentDefs_DarkAurora.xml"
 C = "Defs/GameConditionDefs/GameConditionDefs_DarkAurora.xml"
