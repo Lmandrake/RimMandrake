@@ -75,6 +75,14 @@ namespace RimMandrake.DivingInteraction
         // either way, on or off.
         public static bool chillFireBanEnabled = true;
 
+        // DESIGN_PASS DI-2 / CHILL_AIR_PUMP_1: Odyssey's oxygen pump pumps air down into its sealed room on the
+        // Chill seabed, the owner-named exception to the fire ban. Off: the pump does nothing special down
+        // there. PROVISIONAL numbers: 300 W while pumping; one pump serves a room of up to 60 cells, and pumps
+        // in one room pool their capacity.
+        public static bool chillAirPumpEnabled = true;
+        public static float chillAirPumpWatts = 300f;
+        public static int chillAirPumpCellsPerPump = 60;
+
         // CHILL_THERMAL_ENGINE_1, 2026-09-27/28. The boil shroud: liquid-
         // adjacent bubble/boil flecks near a warm hull and a smaller shimmer
         // around any warm thing (pawn, powered device) standing outdoors on
@@ -214,6 +222,9 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref greyElderDischargeEnabled, "greyElderDischargeEnabled", true);
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
             Scribe_Values.Look(ref chillFireBanEnabled, "chillFireBanEnabled", true);
+            Scribe_Values.Look(ref chillAirPumpEnabled, "chillAirPumpEnabled", true);
+            Scribe_Values.Look(ref chillAirPumpWatts, "chillAirPumpWatts", 300f);
+            Scribe_Values.Look(ref chillAirPumpCellsPerPump, "chillAirPumpCellsPerPump", 60);
             Scribe_Values.Look(ref chillBoilShroudEnabled, "chillBoilShroudEnabled", true);
             Scribe_Values.Look(ref chillHeatedSuitEnabled, "chillHeatedSuitEnabled", true);
             Scribe_Values.Look(ref chillGardenDefenseEnabled, "chillGardenDefenseEnabled", true);
@@ -378,6 +389,21 @@ namespace RimMandrake.DivingInteraction
                   + "plant that carries its own oxidizer (built under a separate item) is exempt. "
                   + "Off: fire behaves normally down there, for testing or a different ruleset. "
                   + "Every other map is unaffected either way.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: oxygen pumps carry air down", ref chillAirPumpEnabled,
+                    "Shipped default: ON. On the Chill's seabed, a powered oxygen pump (Odyssey) fills its "
+                  + "sealed room with air, so stoves, fuelled heaters and torches in that room can burn. "
+                  + "The room must be enclosed and roofed; pumps in one room pool their capacity, and the "
+                  + "room stays lit until every pump in it stops. Air costs power. Off: the pump does "
+                  + "nothing special down there and the fire ban holds everywhere.");
+                if (chillAirPumpEnabled)
+                {
+                    list.Label("Power drawn while pumping (W): " + chillAirPumpWatts.ToString("0"));
+                    chillAirPumpWatts = list.Slider(chillAirPumpWatts, 50f, 1000f);
+                    list.Label("Room cells one pump can fill: " + chillAirPumpCellsPerPump);
+                    chillAirPumpCellsPerPump = (int)list.Slider(chillAirPumpCellsPerPump, 10f, 400f);
+                }
 
                 list.Gap();
                 list.CheckboxLabeled("The Chill: boil shroud visuals", ref chillBoilShroudEnabled,

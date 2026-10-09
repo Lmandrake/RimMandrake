@@ -370,6 +370,50 @@ namespace RimMandrake.DivingInteraction.SelfTest
             return fails;
         }
 
+        // ════════════════ oxygen (DESIGN_PASS DI-2): the pumped-air ledger never lets one pump cancel another ════════════════
+        private static List<string> Oxygen(int n, int seed)
+        {
+            var fails = new List<string>();
+            for (int k = 0; k < n && fails.Count < 5; k++)
+            {
+                Cases++;
+                var r = new Random(seed * 7919 + k);
+                var led = new RM_OxygenLedgerKernel();
+                var model = new Dictionary<int, HashSet<int>>();
+                int steps = r.Next(1, 60);
+                try
+                {
+                    for (int st = 0; st < steps; st++)
+                    {
+                        Steps++;
+                        int prov = r.Next(0, 5);
+                        if (r.Next(3) == 0) { led.Clear(prov); model.Remove(prov); }
+                        else
+                        {
+                            var cells = new List<int>(); int m = r.Next(0, 12);
+                            for (int i = 0; i < m; i++) cells.Add(r.Next(0, 20));
+                            led.Set(prov, cells);
+                            if (cells.Count == 0) model.Remove(prov); else model[prov] = new HashSet<int>(cells);
+                        }
+                        for (int c = 0; c < 20; c++)
+                        {
+                            int want = model.Values.Count(h => h.Contains(c));
+                            Check(led.CoverCount(c) == want, $"cell {c} count {led.CoverCount(c)} != spec {want}");
+                            Check(led.Covered(c) == (want > 0), $"cell {c} covered {led.Covered(c)} with {want} providers");
+                        }
+                        Check(led.ProviderCount == model.Count, $"providers {led.ProviderCount} != spec {model.Count}");
+                    }
+                }
+                catch (Exception e) { fails.Add($"oxygen seed {k}: {e.Message}"); }
+            }
+            Cases++; Steps++;
+            if (!RM_OxygenLedgerKernel.RoomServed(true, 60, 1, 60) || RM_OxygenLedgerKernel.RoomServed(true, 61, 1, 60) || !RM_OxygenLedgerKernel.RoomServed(true, 120, 2, 60)
+                || RM_OxygenLedgerKernel.RoomServed(false, 10, 3, 60) || RM_OxygenLedgerKernel.RoomServed(true, 10, 0, 60) || !RM_OxygenLedgerKernel.RoomServed(true, 99999, 1, 0)
+                || RM_OxygenLedgerKernel.RoomServed(true, 0, 1, 60) || !RM_OxygenLedgerKernel.RoomServed(true, int.MaxValue, 2, int.MaxValue))
+                fails.Add("oxygen units: RoomServed boundaries (capacity pooled, unsealed/no pump/empty never served, 0 = no limit, no overflow)");
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -381,6 +425,7 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 ("garden", () => Garden(N(4000), S(1))),
                 ("elder", () => Elder(N(4000), S(1))),
                 ("units", () => Units(N(2000), S(1))),
+                ("oxygen", () => Oxygen(N(3000), S(1))),
             };
             foreach (var f in fam)
             {

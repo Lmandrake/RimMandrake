@@ -48,4 +48,10 @@
   <RM_AuroraCollectorHarvesting>Aurora surge active — harvesting at {0} of peak output.</RM_AuroraCollectorHarvesting>
   <RM_AuroraCollectorIdle>No surge — dormant, drawing nothing.</RM_AuroraCollectorIdle>
 
+  <!-- DESIGN_PASS DI-2 / CHILL_AIR_PUMP_1: the oxygen pump on the Chill seabed. {0} = room cells, {1} = cells per pump. -->
+  <RM_ChillAirPump_Serving>Pumping air into this room ({0} cells): fire can burn here.</RM_ChillAirPump_Serving>
+  <RM_ChillAirPump_TooLarge>Room too large to fill ({0} cells; each pump fills {1}). Add pumps or wall it smaller.</RM_ChillAirPump_TooLarge>
+  <RM_ChillAirPump_NotSealed>Not a sealed room: the air bleeds away into the cold. Enclose and roof it.</RM_ChillAirPump_NotSealed>
+  <RM_ChillAirPump_Idle>Not pumping: no air down here, no fire.</RM_ChillAirPump_Idle>
+
 </LanguageData>
