@@ -25,49 +25,25 @@ https://starwars.fandom.com/wiki/Bright-Eyes), so tan/green/olive is not the who
 red/black/scarlet/dark-brown eyes, semi-sentient, omnivorous.
 
 ## Visual brief
-**The three canon sources disagree sharply on body plan, and none of them
-match our current donor/vendored sprite closely.**
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
-- `wookieepedia_huntforziro.jpg` (Clone Wars, "Hunt for Ziro", Nal Hutta): a
-  thick, segmented, armor-plated body with NO visible limbs, a bony/skeletal
-  jawless-looking skull with prominent fangs, and rows of glowing
-  yellow-green bioluminescent spots down the body. Olive/dark-khaki color.
-  Reads as an eel/worm-like ambush predator, not a "snake with legs."
-- `wookieepedia_visualencyclopedia.jpg` (*Star Wars: Galactic Atlas* illustration, labeled "DRAGONSNAKE" on a map): a lean, green, spotted
-  quadruped with small clawed forelimbs and hindlimbs, a long tapering tail,
-  and an elongated toothy crocodilian head with a pronounced brow ridge —
-  this is the source closest in body plan to a "dragon" and closest to our
-  donor sprite (both have four small limbs), but the color is bright green
-  with pale spots, not our sprite's tan/khaki.
-- `wookieepedia_mandalorianandgrogu.jpg` (*The Mandalorian and Grogu*, Nal
-  Hutta pit): a massive, pale bone-white/gray, LIMBLESS eel-like serpent —
-  multiple huge coils breach the water, with a skull-like elongated head and
-  a mouth full of long fangs dripping venom. No legs are visible anywhere on
-  the body. This is the newest, most "current canon" screen appearance and it
-  contradicts the quadruped read from the encyclopedia illustration.
-- `donor_current_sprite.png` (our own in-game sprite,
-  `Dragonsnake_Swimming_south.png`): a lean tan/khaki quadruped with small
-  clawed limbs, dark spotted markings, and an alligator-like toothy skull
-  head — body-plan-wise it agrees with the visual-encyclopedia illustration
-  (four legs) but its muted tan coloring matches none of the three canon
-  images, which run olive-with-glowing-spots, bright green, or bone-pale.
+⚠️ **RULING-CONFLICT, kept deliberately:** the owner's 2026-09-14 ruling below takes "#2 for coloration and glowing-seeming spots" — #2 in that sheet's order (donor, huntforziro, visualencyclopedia, mandalorianandgrogu) is the animated Clone Wars `wookieepedia_huntforziro.jpg` — and "seriousness of #3", the flat Galactic Atlas illustration `wookieepedia_visualencyclopedia.jpg`. Both stay because he named them; no cartoon image was removed. Take only colour/spots and attitude from them, never their shading.
 
-**Net read**: canon dragonsnakes are consistently serpentine/reptilian with a
-elongated toothy skull, but disagree on whether they have visible legs at all
-(illustration: yes: small quadruped legs / both screen appearances: no
-visible limbs, pure coiling serpent) and on color (olive-glowing, bright
-green, bone-pale, vs. our tan). This is a real candidate-image disagreement
-for the owner to rule on — likely resolution is either "keep our quadruped
-body plan but recolor" or "cut the legs to match the two screen
-appearances."
+Realistic sources added/kept:
+- `wookieepedia_concept_jfo.jpg` — *Jedi: Fallen Order* (Respawn) painted photoreal concept sheet, four variants with a stormtrooper for scale. This is the best realistic match for the owner's ruled look: a long, low, crocodile-like QUADRUPED with short splayed clawed limbs, a narrow toothy gharial-crocodile snout with fangs projecting outside the jaw, a dorsal row of short spines, a very long tapering eel-like tail (some variants with a fin or spined fan at the tip), dark olive-to-slate scaly hide with moss/algae patches, a pale ridged ventral belly, and — in the third variant — scattered bioluminescent yellow-green spots plus a glowing throat sac. Length several times a human.
+- `wookieepedia_mandalorianandgrogu.jpg` — *The Mandalorian and Grogu* (live-action film, realistic CGI): a gigantic pale bone-white LIMBLESS serpent with an eyeless skull-like head and long venom-dripping fangs. Realistic, but disagrees loudly with everything else on colour and limbs.
+
+**Where they disagree:** the realistic concept art and the ruled images agree on dark olive with glowing green spots and a toothy crocodilian head; the film creature is pale and limbless. The owner's ruling picks the olive/glowing-spot look; render it with the concept sheet's realistic wet scaly hide, not the animated flat colour.
+
+- `donor_current_sprite.png` (our own sprite): tan/khaki quadruped with small clawed limbs, dark spots, gator-like head — body plan agrees with the concept sheet, colour does not.
 
 ## Must show
-Honest framing: the three canon images disagree sharply on body plan (limbless eel-like
-serpent in two, a small-legged quadruped in the third) and on color — only what all three
-agree on is listed as testable.
-- [ ] Elongated, toothy, skull-like/crocodilian head with prominent, visible fangs
-- [ ] Long serpentine/reptilian body plan
+- [ ] Long, low crocodilian quadruped body with short splayed clawed limbs and a very long tapering eel-like tail
+- [ ] Narrow toothy crocodile/gharial snout with fangs projecting outside the jaw
+- [ ] Dark olive-to-slate scaly hide with scattered glowing yellow-green bioluminescent spots
+- [ ] Dorsal row of short spines and a pale ridged belly
 - [ ] Shown as an aquatic ambush predator, partially submerged in murky swamp water
+- [ ] Realistic rendering: wet scaly reptile hide and natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -81,17 +57,11 @@ none known
 - `src/RimStarWars/SWBestiary/Textures/swanimals/Dragonsnake/Dragonsnake_Swimming_south.png` (our own donor/current sprite)
 
 ## Candidate images
-- `donor_current_sprite.png` — our own current in-game sprite (south-swimming
-  pose), tan/khaki quadruped, small clawed limbs, dark spots, gator-like head.
-- `wookieepedia_huntforziro.jpg` — Clone Wars "Hunt for Ziro" screencap:
-  limbless, segmented, olive body with glowing yellow-green spots, bony
-  skull-like head, no legs visible.
-- `wookieepedia_visualencyclopedia.jpg` — illustrated map/bestiary art
-  labeled "DRAGONSNAKE": bright green spotted quadruped with small clawed
-  legs, long tail, crocodilian head.
-- `wookieepedia_mandalorianandgrogu.jpg` — *The Mandalorian and Grogu*
-  screencap: massive pale bone-white limbless serpent, multiple coils,
-  skull-like head with venom-dripping fangs.
+- `donor_current_sprite.png` — our own current in-game sprite (south-swimming pose), tan/khaki quadruped, small clawed limbs, dark spots, gator-like head.
+- `wookieepedia_huntforziro.jpg` — ANIMATED (The Clone Wars "Hunt for Ziro"); kept because the owner's ruling takes its colour and glowing spots; file `Dragonsnake-HFZ.jpg` — https://static.wikia.nocookie.net/starwars/images/6/67/Dragonsnake-HFZ.jpg
+- `wookieepedia_visualencyclopedia.jpg` — flat ILLUSTRATION (*Star Wars: Galactic Atlas*); kept because the owner's ruling cites its "seriousness"; file `Dragonsnake-SWGA.jpg` — https://static.wikia.nocookie.net/starwars/images/c/cc/Dragonsnake-SWGA.jpg
+- `wookieepedia_concept_jfo.jpg` — REALISTIC painted concept art, *Jedi: Fallen Order*, four quadruped variants with glowing spots; file `DragonsnakeConcept-JFO.jpg` — https://static.wikia.nocookie.net/starwars/images/d/df/DragonsnakeConcept-JFO.jpg/revision/latest?cb=20230603191742
+- `wookieepedia_mandalorianandgrogu.jpg` — LIVE-ACTION film (realistic CGI), *The Mandalorian and Grogu*: pale limbless serpent; file `DinDjarinDragonsnakeFaceoff-TMaG.png` — https://static.wikia.nocookie.net/starwars/images/5/52/DinDjarinDragonsnakeFaceoff-TMaG.png
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_huntforziro.jpg`
