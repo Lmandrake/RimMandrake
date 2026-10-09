@@ -81,21 +81,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <texPath>Things/Pawn/Animal/RM_Harrok/RM_Harrok</texPath>
           <drawSize>1.2</drawSize>
           <color>(120, 100, 80)</color>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <texPath>Things/Pawn/Animal/RM_Harrok/RM_Harrok</texPath>
           <drawSize>1.8</drawSize>
           <color>(120, 100, 80)</color>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Mirrak/RM_Mirrak</texPath>
+          <texPath>Things/Pawn/Animal/RM_Harrok/RM_Harrok</texPath>
           <drawSize>2.6</drawSize>
           <color>(120, 100, 80)</color>
         </bodyGraphicData>

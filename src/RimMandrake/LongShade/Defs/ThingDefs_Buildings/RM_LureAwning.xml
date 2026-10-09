@@ -8,7 +8,7 @@
     <label>lure awning</label>
     <description>Hides stretched on four poles, set where there is no shade at all. Game that has been running in the sun finds it and stops. A hunter's trick: put it one dash from a herd's route and wait with a rifle. It shades its footprint only, and a dakkra may take the tenancy before the game does.</description>
     <graphicData>
-      <texPath>Things/Building/RM_ShadeGear/RM_ShadeTent</texPath>
+      <texPath>Things/Building/RM_LureAwning</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
       <color>(176, 140, 96)</color>
