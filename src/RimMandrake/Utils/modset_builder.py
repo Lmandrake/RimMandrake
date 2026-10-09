@@ -662,6 +662,14 @@ TIERS["acc_20261009c"] = {
     "dlc": True,
 }
 
+TIERS["acc_20261009d"] = {
+    "why": "FOUNDRY belt deploy sitting 2026-10-09: acc_20261009c plus the RUT structure injections (vault flesh seal, VAULT_SEAL_PLUG_1), "
+           "so the morning's builds (throat cask, casked Junkers, pit-lip cut, Answering rite, death bursts, creep-web harvest) get live-checked.",
+    "want": list(TIERS["acc_20261009c"]["want"]) + ["mandrake.rut.injections", "mandrake.rut.wasterun", "mandrake.rm.warcasket",
+                                                   "mandrake.rut.rites", "mandrake.rm.graffiti", "mandrake.rm.flowworks"],
+    "dlc": True,
+}
+
 TIERS["watchers_live"] = {
     "why": "FOUNDRY live checks 2026-10-08: the Watchers kit (WATCHER_CREATURES_MOD_1) with its one shipped member, the piinnok, "
            "from the composed biomes mod.",
