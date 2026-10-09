@@ -37,8 +37,32 @@ def need(r, what):
     if not ok(r): raise RuntimeError("%s failed: %s" % (what, json.dumps(r, default=str)[:300]))
     return r
 
-def step(n):
-    return call("rimworld/step_game_ticks", ticks=n, timeoutMs=300000)
+def ticks():
+    return call("jawa/time_clock").get("ticksGame", 0)
+
+def run(n, speed=4):
+    """Advance ~n game ticks. MEASURED 2026-10-09: step_game_ticks ran ~5-14 ticks/s on the 19-mod tier,
+    play_for at speed 4 (Ultrafast) ~400/s, so use this. Pauses again at the end."""
+    t0 = ticks(); call("jawa/set_game_speed", speed=speed)
+    try:
+        while ticks() - t0 < n:
+            call("rimworld/play_for", durationMs=max(200, min(8000, int((n - (ticks() - t0)) / 0.4))), speed=speed)
+    finally:
+        call("jawa/set_game_speed", speed=0)
+    return ticks() - t0
+
+step = run   # old name
+
+import contextlib
+@contextlib.contextmanager
+def setting(typeName, **kv):
+    """Set mod-settings fields for the body (raw, no ApplySettings) and always restore them."""
+    old = {f: call("jawa/mod_settings_field", typeName=typeName, action="get", field=f).get("value") for f in kv}
+    try:
+        for f, v in kv.items(): need(call("jawa/mod_settings_field", typeName=typeName, action="set", field=f, value=str(v)), "set " + f)
+        yield
+    finally:
+        for f, v in old.items(): call("jawa/mod_settings_field", typeName=typeName, action="set", field=f, value=str(v))
 
 def rect(x, z, w, h): return "%d,%d,%d,%d" % (x, z, w, h)
 def cell(x, z): return "%d,%d" % (x, z)
@@ -74,9 +98,13 @@ class Scene:
         x, z = self.abs(dx, dz)
         r = need(call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=count), "spawn_pawn " + kind)
         self.pawns.append(r)
-        return r
+        return (r.get("pawns") or [{}])[0].get("id")
     def colonist(self, dx, dz):
-        return self.pawn("Colonist", dx, dz, faction="PlayerColony")
+        """A fed, rested, undrafted player colonist; returns its id."""
+        pid = self.pawn("Colonist", dx, dz, faction="player")
+        call("jawa/set_draft", pawnId=pid, drafted=False)
+        for n in ("Food", "Rest"): call("jawa/pawn_need", pawn=pid, action="need", need=n, level=1.0)
+        return pid
 
     # ---- act
     def hediff(self, pawn, hediff, severity=0.5):
@@ -89,6 +117,22 @@ class Scene:
     def kill(self, tid):
         return call("jawa/damage", damageDef="Bullet", amount=5000, thingId=tid, allowColonists=True)
     def kill_hostiles(self): return call("jawa/kill_hostiles")
+
+    def power_on(self, tid, on=True):
+        return call("jawa/power_net", thing=tid, forcePowerOn=bool(on))
+    def order(self, pid, jobDef, a=None, b=None, count=None, wait=60):
+        kw = dict(pawnId=pid, jobDef=jobDef, waitTicks=wait)
+        if a: kw["targetAId"] = a
+        if b: kw["targetBId"] = b
+        if count: kw["count"] = count
+        return call("jawa/ordered_job", **kw)
+    def find(self, defName):
+        """First thing of defName in the rect, or {}."""
+        r = call("jawa/list_things", defName=defName, rect=self.rect, includePawns=True)
+        return ((r.get("things") if isinstance(r, dict) else None) or [{}])[0]
+    def inspect(self, tid):
+        r = call("jawa/inspect_string", thingIds=tid)
+        return json.dumps(r.get("things") or r, default=str)
 
     # ---- read
     def glow(self, dx, dz):
