@@ -59,15 +59,16 @@ blubber** rather than fur. **No Force sensitivity, no combat trait, and no intel
 claim of any kind appears in the article.**
 
 ## Visual brief
-
-The two references agree closely, and both are strong: one is a **live-action
-screencap** (*The Book of Boba Fett*, so the current on-screen creature design) and one
-a comic panel showing **two** Ortolans together.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The comic panel of Max Rebo and Azool Phantelle (`wookieepedia_azool_and_max.jpg`) was removed and replaced with
+`wookieepedia_max_rebo_rotj_puppet.jpg` (the *Return of the Jedi* Max Rebo puppet, full body at his organ). Both
+references are now practical live-action creature effects and they agree closely.
 
 - **Colour: mid-value blue, slightly desaturated and greyed, with faint darker
-  mottling/freckling over the crown, shoulders and belly.** The comic shows the hue
-  varying between individuals — one clear blue, one **blue-green/teal** — so a small
-  hue spread is canonical, but nothing near a full colour menu.
+  mottling/freckling over the crown, shoulders and belly.** The *Return of the Jedi* puppet is a
+  **brighter cornflower blue** than the greyer *Book of Boba Fett* version, and its hide is visibly **soft,
+  wrinkled and velvety**, so a small hue spread is canonical, but nothing near a full colour menu. (The deleted comic
+  also showed a blue-green/teal individual; no live-action image confirms teal.)
 - 🔑 **Silhouette is dominated by TWO features: the ears and the belly.** The **ears
   are enormous, narrow, tapering and PENDULOUS**, hanging from high on the skull down
   past the shoulders to roughly elbow level, and drooping forward. They are **not**
@@ -110,7 +111,7 @@ the colour.)
 - [ ] Large, round, glossy, solid BLACK eyes with no visible sclera, iris, brow or lid, set wide and high on the skull
 - [ ] Short-to-medium thick trunk tapering and hanging straight down to about mid-chest, with no visible mouth from the front
 - [ ] Small, blunt hands with separate, clearly articulated short fingers and pale nails — dexterous, not trotters
-- [ ] Bare, hairless, slightly rubbery skin with no fur anywhere
+- [ ] Bare, hairless, soft wrinkled skin with no fur, rendered realistically like the live-action puppets — natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — the donor sprite's Kubaz head base does not carry `useSkinShader: false`, so the blue skin genes tint it correctly; only the head shape is wrong (missing/wrong art), not the colour pipeline.
@@ -152,7 +153,7 @@ none known — the donor sprite's Kubaz head base does not carry `useSkinShader:
   homeworld**, and the blubber exists to fight the cold); `Body_Fat`; `Ears_Floppy`
   (sourced **large floppy ears**, and the images show them as the dominant silhouette
   feature); `Skin_Blue` + `Outland_Skin_PaleAzure` (sourced blue, with the mild
-  individual hue spread the comic shows); `RSW_Eyes_Big` (matches the images);
+  individual hue spread the two live-action puppets show); `RSW_Eyes_Big` (matches the images);
   `Hair_BaldOnly` + `Beard_NoBeardOnly` (correct — no hair anywhere);
   `StrongStomach` + `RobustDigestion` (defensible from *"consumed large amounts of
   food"*); **no lifespan gene** — correct, since the sourced **71+ years** is close to a
@@ -168,9 +169,8 @@ none known — the donor sprite's Kubaz head base does not carry `useSkinShader:
 - https://static.wikia.nocookie.net/starwars/images/3/3f/MaxRebo-BoBFCh2.png
   (File:MaxRebo-BoBFCh2.png, the canon infobox image, *The Book of Boba Fett* "Chapter
   2: The Tribes of Tatooine" → `wookieepedia_max_rebo_bobf.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/7/7e/Azool_and_Max.png
-  (File:Azool and Max.png, wiki caption *"Maximilian Rebo and Azool Phantelle, two
-  Ortolans"* → `wookieepedia_azool_and_max.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/e/ef/Max_Rebo_Playing.jpg/revision/20221114060039
+  (File:Max Rebo Playing.jpg → `wookieepedia_max_rebo_rotj_puppet.jpg`)
 - `https://www.starwars.com/databank/` — **not fetched this pass.** The article cites a
   Databank entry for *Garsa's Sanctuary*, not for the species; no species-level Databank
   page was attempted.
@@ -191,11 +191,10 @@ none known — the donor sprite's Kubaz head base does not carry `useSkinShader:
   short thick arms, and the small blunt hands with **separate articulated fingers and
   pale nails**. Practical creature effect rather than an artist's interpretation, so
   this is the strongest possible evidence.
-- `wookieepedia_azool_and_max.jpg` — a comic panel with **two** Ortolans together
-  (Max Rebo and Azool Phantelle). Stylised line and flat colour, so read the palette as
-  the colourist's — but its value is confirming that the **ear/trunk/belly arrangement
-  recurs across individuals** while the hue shifts (one blue, one blue-green/teal), and
-  it shows the hands **gripping** an object, corroborating real dexterity.
+- `wookieepedia_max_rebo_rotj_puppet.jpg` — live-action *Return of the Jedi* puppet of Max Rebo, full body seated at
+  his organ: brighter blue velvety wrinkled hide, the long trunk, pendulous ears, belly mass, short legs and splayed
+  toes, articulated fingers. File `Max Rebo Playing.jpg` —
+  https://static.wikia.nocookie.net/starwars/images/e/ef/Max_Rebo_Playing.jpg/revision/20221114060039
 - `donor_current_sprite.png` — 🔴 **negative reference.** Not Ortolan art; it is the
   **Kubaz** head (`.../HeadType/kubaz/Male_Kubaz_south.png`) that the def's
   `RSW_Head_kubaz` gene forces. Kept to document the defect. **No Ortolan texture exists

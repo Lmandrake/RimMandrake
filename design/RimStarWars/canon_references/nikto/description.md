@@ -33,6 +33,12 @@ inability to blush are the only two physiological facts stated, and both belong 
 the green subspecies specifically, not to the species as a whole.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The *Clone Wars* animated guard (`wookieepedia_guard_animated.jpg`) was removed and replaced with
+`wookieepedia_nikto_profile_liveaction.jpg` (a live-action Nikto in profile, *The Book of Boba Fett*), so every reference
+is now live-action. ⚠️ The green-subspecies datapoint came only from the animation; no live-action green Nikto is in the
+entry.
+
 🔴 **The infobox's four-word distinction list ("scaled skin, symmetrical horns,
 head spikes, movable facial features") drastically undersells the head, and it also
 misleads on colour. The images are far more specific.** From the live-action
@@ -64,10 +70,8 @@ reference (a Kintan Strider, i.e. a Nikto):
   scaled midriff panel. The **live-action gang** image shows the same register
   across a whole group: scavenger-biker leathers. **A Nikto reads as a person in
   hard-worn leathers with an armour-plated, horned head.**
-- The **animated guard** image agrees on the plated crown and the up-curving cheek
-  horns while pushing the hue greener and the shapes more graphic — useful as
-  independent confirmation of structure across media, and as a green-subspecies
-  datapoint.
+- The **live-action profile** shows the carapace in side view: the plates run back over the whole crown like a
+  close-fitting segmented helmet, the face projects forward under it, and the skin is the same **warm putty-tan**.
 
 ## Must show
 - [ ] Cranium covered in a plated carapace — large, hard, overlapping tessellated plate segments, helmet-like, distinct from the softer skin below
@@ -75,6 +79,7 @@ reference (a Kintan Strider, i.e. a Nikto):
 - [ ] Flat, deeply-creased face with radiating furrows from the eyes and mouth
 - [ ] Small, dark, deep-set eyes and a wide, down-turned mouth with a heavy protruding lower lip/chin pad
 - [ ] Skin reads as pale putty-tan/pinkish-tan for a "red" Nikto, not a saturated red
+- [ ] Realistic rendering: hard plate and creased-skin textures like the live-action prosthetics, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -105,7 +110,7 @@ definitive.
   `https://starwars.fandom.com/api.php?action=parse&page=Nikto&format=json&prop=wikitext`,
   26,755 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/4/48/KintanStriderSpeedBiker-Villains2024.png (File:KintanStriderSpeedBiker-Villains2024.png, the infobox image → wookieepedia_infobox_kintan_strider.jpg)
-- https://static.wikia.nocookie.net/starwars/images/0/0f/NiktoGuard-TCWCEJtB.png (File:NiktoGuard-TCWCEJtB.png → wookieepedia_guard_animated.jpg)
+- https://static.wikia.nocookie.net/starwars/images/0/0b/Fixer-makes-a-friend.jpg/revision/20220308024332 (File:Fixer-makes-a-friend.jpg → wookieepedia_nikto_profile_liveaction.jpg)
 - https://static.wikia.nocookie.net/starwars/images/7/70/KintanStriders-BoBFCh4.png (File:KintanStriders-BoBFCh4.png → wookieepedia_gang_liveaction.jpg)
 - NOT fetched this pass: the per-subspecies articles
   https://starwars.fandom.com/wiki/Kajain%27sa%27Nikto,
@@ -124,9 +129,9 @@ definitive.
 - `wookieepedia_gang_liveaction.jpg` — a group of live-action Nikto. Confirms the
   head structure recurs across individuals and shows the species as a crowd, useful
   for the Cartel/Junker gang read.
-- `wookieepedia_guard_animated.jpg` — an animated Nikto guard. Stylized, so treat
-  line and hue as the artist's; its value is independent structural confirmation
-  (plated crown, up-curving horns) in a different medium and at a greener hue.
+- `wookieepedia_nikto_profile_liveaction.jpg` — live-action *The Book of Boba Fett* (Chapter 2) frame of a Nikto
+  grappling a human, in profile: side view of the plated crown, forward-projecting face, workwear. File
+  `Fixer-makes-a-friend.jpg` — https://static.wikia.nocookie.net/starwars/images/0/0b/Fixer-makes-a-friend.jpg/revision/20220308024332
 - ⚠️ **Missing: any image of the Esral'sa'Nikto (mountain) subspecies**, whose face
   is hornless with fan-like fins. Anyone continuing this entry should fetch one
   before treating the horned face as the whole species.
