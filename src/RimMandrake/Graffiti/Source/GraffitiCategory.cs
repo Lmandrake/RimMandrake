@@ -4,7 +4,7 @@ namespace RimMandrake.Graffiti
     // None for marks the family axis doesn't apply to (tier-A/C ideoligion
     // sigils and meme glyphs - see GraffitiPool/ModExtension_Graffiti's
     // requiresAnyMeme). Renamed 2026-09-24 per
-    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1's fork F9 (recommendation stands,
+    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1's fork F8 (ruled 2026-10-09 by question card,
     // "rename Sacred->Devotional, Cant->Code"): Sacred -> Devotional (the
     // wider word covers both the nine campaign god-marks AND the tier-A/B/C
     // ideoligion-affinity marks this item adds); Cant -> Code (the

@@ -51,6 +51,7 @@
     <Compile Include="RMGraffitiDefOf.cs" />
     <Compile Include="GraffitiJobUtility.cs" />
     <Compile Include="GraffitiPool.cs" />
+    <Compile Include="MapComponent_GraffitiOrders.cs" />
     <Compile Include="Filth_Mark.cs" />
     <Compile Include="JobDriver_PaintGraffiti.cs" />
     <Compile Include="JoyGiver_PaintGraffiti.cs" />
@@ -80,6 +81,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="0Harmony">

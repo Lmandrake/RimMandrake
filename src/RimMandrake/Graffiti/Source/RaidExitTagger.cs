@@ -6,8 +6,8 @@ using Verse;
 
 namespace RimMandrake.Graffiti
 {
-    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 4 (placers) / fork F2
-    // (recommendation stands, "raid tagging on exit only" - not on arrival,
+    // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 4 (placers) / fork F3
+    // (ruled 2026-10-09, "raid tagging on exit only" - not on arrival,
     // not mid-raid): a departing hostile pawn leaves its gang's mark near
     // where it stood, tinted by its own faction/ideo via Filth_Mark's
     // ordinary provenance stamp.

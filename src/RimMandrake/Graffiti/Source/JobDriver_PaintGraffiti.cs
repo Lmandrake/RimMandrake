@@ -84,11 +84,23 @@ namespace RimMandrake.Graffiti
                         // has a designation at its cell, so this is a no-op
                         // for the ordinary path.
                         bool designated = Map.designationManager.DesignationAt(cell, RMGraffitiDefOf.RM_PaintGraffitiHere) != null;
-                        ThingDef markDef = designated ? GraffitiPool.PickForDesignator(pawn) : GraffitiPool.PickForSpree(pawn);
+                        // GRAFFITI_DESIGNATOR_MARK_CHOICE_1: a mark the
+                        // player chose for this cell wins, if this painter's
+                        // hand is allowed it (the pool's own gates).
+                        MapComponent_GraffitiOrders orders = designated ? MapComponent_GraffitiOrders.For(Map) : null;
+                        ThingDef ordered = orders?.OrderAt(cell);
+                        ThingDef markDef = !designated ? GraffitiPool.PickForSpree(pawn)
+                            : (ordered != null && GraffitiPool.PainterMayPaint(ordered, pawn) ? ordered : GraffitiPool.PickForDesignator(pawn));
                         Filth_Mark.MakeMark(cell, Map, markDef, pawn);
                         if (designated)
                         {
                             Map.designationManager.TryRemoveDesignation(cell, RMGraffitiDefOf.RM_PaintGraffitiHere);
+                            orders?.Clear(cell);
+                            // A designated job is one mark, not a spree: without
+                            // this the toil kept ticking, the next interval read
+                            // the cell as undesignated and painted a spree-pool
+                            // mark over the ordered one (going-over).
+                            EndJobWith(JobCondition.Succeeded);
                         }
                     }
                 }

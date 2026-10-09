@@ -140,7 +140,7 @@ namespace RimMandrake.Graffiti
         // every family except a taunt mark built to funnel a breach.
         public bool breachLure;
 
-        // §2.3 / fork F6 (recommendation stands): "protect own+Devotional
+        // §2.3 / fork F7 (ruled 2026-10-09): "protect own+Devotional
         // from auto-clean". AutoCleanProtection.cs's Harmony prefix on
         // WorkGiver_CleanFilth.HasJobOnThing reads this OR checks
         // category==Devotional - true for either means the home-area

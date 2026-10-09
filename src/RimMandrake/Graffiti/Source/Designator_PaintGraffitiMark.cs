@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -7,13 +9,16 @@ namespace RimMandrake.Graffiti
     // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 mechanism 4's Designator placer
     // (design §2.2's "Designator" placer column). Marks a wall cell for
     // graffiti the way vanilla marks a cell for mining or planting - a
-    // DesignationDef the pawn later fulfils. Which specific mark gets
-    // painted there is left to GraffitiPool.PickForDesignator (weighted,
-    // designatorEligible-only) rather than a float-menu of every mark -
-    // v2 territory (design's own note under §2.2), not required for the
-    // designation mechanism itself to be real and useful.
+    // DesignationDef the pawn later fulfils. Fork F6 (ruled 2026-10-09,
+    // "full designator + bill - choose mark, choose wall";
+    // GRAFFITI_DESIGNATOR_MARK_CHOICE_1): clicking the gizmo opens a float
+    // menu of every designatorEligible mark plus "any", the same shape as
+    // vanilla Designator_Build's stuff menu. The choice is stored per cell in
+    // MapComponent_GraffitiOrders; "any" (null) leaves the pick to
+    // GraffitiPool.PickForDesignator at paint time.
     public class Designator_PaintGraffitiMark : Designator_Cells
     {
+        private ThingDef chosenMark;
         public Designator_PaintGraffitiMark()
         {
             // Plain string literals, matching this mod's existing
@@ -53,9 +58,36 @@ namespace RimMandrake.Graffiti
             return true;
         }
 
+        public override void ProcessInput(Event ev)
+        {
+            if (!CheckCanInteract())
+            {
+                return;
+            }
+            List<FloatMenuOption> options = new List<FloatMenuOption>
+            {
+                new FloatMenuOption("Any mark (painter's pick)", delegate
+                {
+                    chosenMark = null;
+                    base.ProcessInput(ev);
+                })
+            };
+            foreach (ThingDef d in GraffitiPool.AllDesignatorEligible().OrderBy(d => d.label))
+            {
+                ThingDef local = d;
+                options.Add(new FloatMenuOption(local.LabelCap, delegate
+                {
+                    chosenMark = local;
+                    base.ProcessInput(ev);
+                }, local));
+            }
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
         public override void DesignateSingleCell(IntVec3 c)
         {
             Map.designationManager.AddDesignation(new Designation(c, RMGraffitiDefOf.RM_PaintGraffitiHere));
+            MapComponent_GraffitiOrders.For(Map)?.SetOrder(c, chosenMark);
         }
     }
 }
