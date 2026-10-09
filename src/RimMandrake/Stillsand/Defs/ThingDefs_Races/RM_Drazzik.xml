@@ -187,6 +187,9 @@
         <!-- LONGSHADE_SHEET_STRUCTURAL_RULINGS_1, owner 2026-10-04: "Needs a beneath-sand-waiting image (swimming)."
          swimmingGraphicData is drawn on sand while still by RM_SandBuriedGraphicExtension (CreatureBehaviors, RM_SandBuriedGraphic.cs);
          the player sees it because RM_DrumLureSubmersion is now visibleToPlayer (pawns still cannot see or target it). -->
+        <!-- SITTING 2 2026-10-09: the beneath-sand art Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_Swimming does not exist yet; a swimmingGraphicData whose texture is missing made
+         PawnRenderNode_AnimalPart_Body.GetSwimmingGraphic throw an NRE every frame the moment a drazzik spawned (100 per 4 s, then a native crash). The three stages now borrow the body texture
+         until the swimming image is delivered; swap the texPath back then. -->
     <lifeStages>
       <li>
         <label>drazzik cub</label>
@@ -195,7 +198,7 @@
           <drawSize>1.2</drawSize>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_Swimming</texPath>
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik</texPath>
           <drawSize>1.2</drawSize>
         </swimmingGraphicData>
       </li>
@@ -210,7 +213,7 @@
           </shadowData>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_Swimming</texPath>
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik</texPath>
           <drawSize>1.85</drawSize>
         </swimmingGraphicData>
       </li>
@@ -224,7 +227,7 @@
           </shadowData>
         </bodyGraphicData>
         <swimmingGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik_Swimming</texPath>
+          <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik</texPath>
           <drawSize>2.5</drawSize>
         </swimmingGraphicData>
       </li>
