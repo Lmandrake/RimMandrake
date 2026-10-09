@@ -28,12 +28,10 @@ section), *Star Wars Galaxies*, and several novels (later used only as an
 insult, "kreetle," in Legacy-era books).
 
 ## Visual brief
-Unlike the Peko-peko/Wyyyschokk cases, text and images **agree well** here —
-all four candidates show the same basic body plan and there is no dramatic
-"generic vs canon" contradiction. The one real disagreement is shell color:
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The low-poly *Star Wars Galaxies* render (`swg_kreetle.jpg`, olive/khaki shell) was deleted. The owner-ruled infobox plate (`wookieepedia_infobox.jpg`, a naturalistic watercolour from *The Wildlife of Star Wars*) is the realistic target; the two small *Republic Commando* screenshots stay as corroboration of colour only (dated game renders, not a rendering model). No live-action kreetle exists. Text and images agree on the body plan:
 
-- `wookieepedia_infobox.jpg` — the official species-page illustration (art
-  from *The Art of Star Wars Episode I*/Jedi Power Battles era). Shows a
+- `wookieepedia_infobox.jpg` — the official species-page illustration (naturalistic watercolour plate, *The Wildlife of Star Wars: A Field Guide*). Shows a
   low, domed, **segmented reddish-maroon ribbed carapace** (like a
   pillbug/woodlouse or hermit-crab shell), a tan/gold mottled head with
   dark reddish spots, prominent dark curved mandibles/tusks at the front,
@@ -50,17 +48,9 @@ all four candidates show the same basic body plan and there is no dramatic
   ribbed shell**, yellow eyes, stubby legs — consistent with the Kashyyyk
   screenshot, reinforcing reddish-brown/maroon as the in-game standard
   color rather than a one-off render choice.
-- `swg_kreetle.jpg` — *Star Wars Galaxies* in-game creature: same domed,
-  ribbed-shell, many-legged body plan and pink eye-glints, but the shell
-  renders as **olive/khaki-brown** rather than reddish-maroon — noticeably
-  more green-brown than the other three sources. This is a genuine
-  cross-image disagreement, not a text/image one: body plan agrees
-  everywhere and eyes read yellow or as pink glints (render highlights, not necessarily iris colour), but SWG's coloring skews duller/greener while the
-  *Republic Commando*-era art and screenshots both skew red.
 
 **Net read**: a low, domed, segmented/ribbed shell (pillbug or hermit-crab
-silhouette) in reddish-brown-to-maroon (SWG's more olive/khaki version is a
-secondary, less-corroborated variant), a mottled tan/spotted head, dark
+silhouette) in reddish-brown-to-maroon, a mottled tan/spotted head, dark
 mandibles/tusks, bright yellow eyes, and many short jointed legs along the
 sides (five pairs per the text; three pairs as actually modeled in
 *Republic Commando*). This is a small, floor-hugging arthropod — treat it as
@@ -68,11 +58,12 @@ a scavenger/pest-scale creature, not anything human-sized.
 
 ## Must show
 - [ ] Low, domed, segmented/ribbed shell (pillbug or hermit-crab silhouette)
-- [ ] Shell colour reddish-brown to maroon (the better-corroborated read; olive/khaki-brown is a secondary, less-corroborated variant)
+- [ ] Shell colour reddish-brown to maroon
 - [ ] Mottled tan/gold head with dark reddish spots
 - [ ] Dark, curved mandibles/tusks at the front
 - [ ] Bright yellow eyes
 - [ ] Many short jointed legs along the sides of the body
+- [ ] Realistic rendering: natural glossy chitin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -83,7 +74,6 @@ none known
 - https://static.wikia.nocookie.net/starwars/images/2/23/Kreetle.jpg (species-page infobox illustration)
 - https://static.wikia.nocookie.net/starwars/images/3/35/KasBug.jpg ("A kreetle found on Kashyyyk," *Republic Commando*)
 - https://static.wikia.nocookie.net/starwars/images/c/c4/GeonosianBug.jpg ("A kreetle found on Geonosis," *Republic Commando*)
-- https://static.wikia.nocookie.net/starwars/images/6/66/KreetleSWG.jpg ("A Kreetle, as seen in Star Wars Galaxies")
 - Donor mod `mlie.starwarsanimalcollection` (Steam Workshop, current 1.6
   release id 3497316713, legacy id 2903582351) — the mod's listing and
   description confirm Kreetle is one of its 200+ included creatures, but no
@@ -106,9 +96,6 @@ none known
 - `wookieepedia_geonosis.jpg` — small *Republic Commando* in-game
   screenshot: same reddish-maroon ribbed shell and body plan, corroborates
   the Kashyyyk screenshot.
-- `swg_kreetle.jpg` — *Star Wars Galaxies* in-game creature render: same
-  body plan but shell reads olive/khaki-brown rather than reddish-maroon —
-  the one real color disagreement among the candidates.
 - **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — not
   installed locally, ships in AssetBundles in its current release, and no
   labeled workshop preview screenshot was found this pass. Revisit if the
