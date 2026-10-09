@@ -78,9 +78,15 @@ namespace RimMandrake.EnvironmentalHazards
     {
         public CompProperties_DryFieldEmitter Props => (CompProperties_DryFieldEmitter)props;
 
-        public override void CompTickRare()
+        // The blower is tickerType Normal (power, fuel and heat pusher need it), and a Normal building
+        // never calls CompTickRare, so this runs from CompTick on the rare cadence (TICKER_NEVER_FIRES_FIX_1).
+        public override void CompTick()
         {
-            base.CompTickRare();
+            base.CompTick();
+            if (!parent.IsHashIntervalTick(GenTicks.TickRareInterval))
+            {
+                return;
+            }
 
             if (!RM_EnvironmentalHazardsSettings.dryAirBlowerEnabled)
             {

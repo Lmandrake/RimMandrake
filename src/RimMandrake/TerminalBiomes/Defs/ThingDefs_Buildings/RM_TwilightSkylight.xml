@@ -55,7 +55,7 @@
     <destroyable>false</destroyable>
     <useHitPoints>false</useHitPoints>
     <saveCompressible>false</saveCompressible>
-    <tickerType>Never</tickerType>
+    <tickerType>Normal</tickerType> <!-- RM_Comp_WarblingGlow ticks on CompTick, self-throttled -->
     <statBases>
       <Flammability>0</Flammability>
       <Beauty>6</Beauty>
