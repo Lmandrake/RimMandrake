@@ -311,6 +311,14 @@ namespace RimMandrake.TerminalBiomes
             if (wilting)
             {
                 float amount = Mathf.Max(1f, parent.MaxHitPoints * (2000f / 60000f) / Props.daysToDie);
+                // Never lethal from here: this runs inside Plant.TickLong's base call, and Plant.TickLong goes on to
+                // read base.Map (null once destroyed) -> NRE in PlantUtility.GrowthSeasonNow. The killing blow is
+                // dealt on the next map tick by RM_MapComponent_DeferredPlantKill.
+                if (amount >= parent.HitPoints)
+                {
+                    parent.Map.GetComponent<RM_MapComponent_DeferredPlantKill>()?.Enqueue(parent);
+                    return;
+                }
                 parent.TakeDamage(new DamageInfo(DamageDefOf.Rotting, amount));
             }
         }
@@ -318,6 +326,36 @@ namespace RimMandrake.TerminalBiomes
         public override string CompInspectStringExtra()
         {
             return wilting ? "Wilting in the light." : null;
+        }
+    }
+
+    /// <summary>Deals a plant comp's killing blow outside Plant.TickLong (see RM_CompWiltAboveGlow). Not saved: an
+    /// entry lost to a save simply re-queues on the plant's next long tick.</summary>
+    public class RM_MapComponent_DeferredPlantKill : MapComponent
+    {
+        private readonly List<Thing> pending = new List<Thing>();
+
+        public RM_MapComponent_DeferredPlantKill(Map map) : base(map)
+        {
+        }
+
+        public void Enqueue(Thing t)
+        {
+            if (t != null && !pending.Contains(t)) pending.Add(t);
+        }
+
+        public override void MapComponentTick()
+        {
+            if (pending.Count == 0) return;
+            for (int i = 0; i < pending.Count; i++)
+            {
+                Thing t = pending[i];
+                if (t != null && t.Spawned && !t.Destroyed && t.Map == map)
+                {
+                    t.TakeDamage(new DamageInfo(DamageDefOf.Rotting, t.HitPoints));
+                }
+            }
+            pending.Clear();
         }
     }
 }
