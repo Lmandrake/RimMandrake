@@ -12,7 +12,7 @@ LP = "RimMandrake.LuminousPigment.LuminousPigmentSettings"
 def glow_tank_fed(*liquids):
     """GLOW_TANK_LIQUID_FEED_1 A2 (salt tank drawn down, crop seeded; setting off removes the line) and A3 (fresh, brine do not)."""
     for liquid in (liquids or ("SaltWater", "FreshWater", "Brine")):
-        with S.Scene("glow_tank_" + liquid, 100, 100, 14, 8) as sc:
+        with S.Scene("glow_tank_" + liquid, 40, 40, 14, 8) as sc:
             pid = sc.colonist(1, 1)
             sc.put("RM_GlowTank", 4, 3); sc.put("RM_LiquidTank", 6, 3)
             sc.put("RM_CrowncarpetFresh", 1, 2); sc.put("RM_Bottle_%s" % liquid, 2, 2)
@@ -59,7 +59,7 @@ def abyss_dark():
 
 def tank_control():
     """Control for abyss_dark: the same powered, seeded GlowTank with NO Dark (the Rot map); does its radius move by itself?"""
-    with S.Scene("tank_control", 100, 100, 12, 10) as sc:
+    with S.Scene("tank_control", 40, 40, 12, 10) as sc:
         sc.room(); sc.grid(); sc.put("RM_GlowTank", 5, 5)
         pid = sc.colonist(8, 8); sc.fuel(pid, n=75, ticks=1500)
         sc.put("RM_CrowncarpetFresh", 2, 8); tk = sc.find("RM_GlowTank"); sc.order(pid, "Refuel", a=tk["id"], b=sc.find("RM_CrowncarpetFresh")["id"], count=1); S.run(1200)
@@ -125,7 +125,7 @@ def greentide_heat(hours=6):
 
 def sealed_suit(stuff="Cloth"):
     """WETBULB_FOLD_INTO_HEAT_1 A4: the sealed suit raises ComfyTemperatureMax by about 1.4x the stuff's heat insulation."""
-    with S.Scene("sealed_suit", 100, 100, 10, 10) as sc:
+    with S.Scene("sealed_suit", 40, 40, 10, 10) as sc:
         pid = sc.colonist(3, 3)
         def comfy(): return [s for s in S.call("jawa/pawn_stats", pawn=pid, stats="ComfyTemperatureMax,Insulation_Heat").get("stats", [])]
         before = comfy()
