@@ -1,0 +1,199 @@
+{
+ "force": {
+  "success": true,
+  "message": "7 of 7 def(s) resolved",
+  "requested": 7,
+  "foundCount": 7,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+   "label",
+   "description",
+   "letterText"
+  ],
+  "defs": [
+   {
+    "requested": "IncidentDef/PsychicDrone",
+    "found": true,
+    "defName": "PsychicDrone",
+    "defType": "IncidentDef",
+    "label": "psychic drone",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "label": "psychic drone"
+    }
+   },
+   {
+    "requested": "IncidentDef/PsychicSoothe",
+    "found": true,
+    "defName": "PsychicSoothe",
+    "defType": "IncidentDef",
+    "label": "psychic soothe",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "label": "psychic soothe"
+    }
+   },
+   {
+    "requested": "GameConditionDef/PsychicDrone",
+    "found": true,
+    "defName": "PsychicDrone",
+    "defType": "GameConditionDef",
+    "label": "psychic drone",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "letterText": "Every {0} colonist feels a wave of anxiety and anger!\n\nSome distant engine of hatred is stirring. It is projecting a psychic drone onto this site through an orbital amplifier, tuned to only affect {0}s. For a few days, some people's mood will be quite a bit worse.\n\nThe drone level is {1}.",
+     "label": "psychic drone",
+     "description": "A distant archotech is emitting psychic signals through an orbital amplifier, driving people towards insanity."
+    }
+   },
+   {
+    "requested": "GameConditionDef/PsychicSoothe",
+    "found": true,
+    "defName": "PsychicSoothe",
+    "defType": "GameConditionDef",
+    "label": "psychic soothe",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "letterText": "Every {0} colonist smiles with contentment!\n\nSome distant engine of happiness is stirring. It is projecting a psychic drone onto this site through an orbital amplifier, tuned to only affect {0}s. For a few days, some people's mood will be quite a bit better.",
+     "label": "psychic soothe",
+     "description": "A distant archotech is emitting psychic signals through an orbital amplifier, calming people and stabilizing their minds."
+    }
+   },
+   {
+    "requested": "GameConditionDef/PsychicDroner",
+    "found": true,
+    "defName": "PsychicDroner",
+    "defType": "GameConditionDef",
+    "label": "psychic droner",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "letterText": "A psychic droner machine has begun affecting this region.",
+     "label": "psychic droner",
+     "description": "A psychic droner tuned to the {0} gender is driving {0}s mad."
+    }
+   },
+   {
+    "requested": "GameConditionDef/PsychicSuppression",
+    "found": true,
+    "defName": "PsychicSuppression",
+    "defType": "GameConditionDef",
+    "label": "psychic suppression",
+    "modName": "Royalty",
+    "packageId": "ludeon.rimworld.royalty",
+    "fields": {
+     "letterText": "A psychic suppressor field has begun reducing the consciousness of {0}s across the whole region. The effect is modulated by an individual's psychic sensitivity.",
+     "label": "psychic suppression",
+     "description": "A psychic suppression field is affecting {0}s and reducing their consciousness. The effect is modulated by an individual's psychic sensitivity."
+    }
+   },
+   {
+    "requested": "IncidentDef/PsychicEmanatorShipPartCrash",
+    "found": true,
+    "defName": "PsychicEmanatorShipPartCrash",
+    "defType": "IncidentDef",
+    "label": "ship part crash (psychic)",
+    "modName": "Core",
+    "packageId": "ludeon.rimworld",
+    "fields": {
+     "letterText": "A large piece of an ancient ship has crashed nearby.\n\nYour colonists can feel it in the back of their mind, exhorting unspeakable acts. It must have an onboard machine persona with psychic projection ability. And this persona is not friendly.\n\nDestroy it as soon as possible. But beware - it will probably defend itself.",
+     "label": "ship part crash (psychic)"
+    }
+   }
+  ],
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_75ef66875efe4187b357420d96749cef",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 39
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ },
+ "tilts_full": {
+  "success": true,
+  "foundCount": 20,
+  "notFound": []
+ },
+ "cache": {
+  "success": true,
+  "message": "0 of 1 def(s) resolved; 1 not found",
+  "requested": 1,
+  "foundCount": 0,
+  "notFound": [
+   "ThingDef/RUT_FoundrySalvageCache"
+  ],
+  "malformed": [],
+  "fieldsAsked": [
+   "defName"
+  ],
+  "defs": [
+   {
+    "requested": "ThingDef/RUT_FoundrySalvageCache",
+    "found": false,
+    "defType": "ThingDef",
+    "defName": "RUT_FoundrySalvageCache"
+   }
+  ],
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_2d4ffbb1e0404be8b9bf1ad9780fb8c6",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 49
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ },
+ "launch": {
+  "success": true,
+  "typeName": "GravshipUtility",
+  "methodName": "PreLaunchConfirmation",
+  "methodCount": 1,
+  "methods": [
+   {
+    "method": "PreLaunchConfirmation",
+    "declaringType": "RimWorld.GravshipUtility",
+    "prefixCount": 0,
+    "postfixCount": 1,
+    "transpilerCount": 0,
+    "finalizerCount": 0,
+    "prefixes": [],
+    "postfixes": [
+     {
+      "owner": "mandrake.rm.environmentalhazards",
+      "priority": 400,
+      "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_LaunchHeldColonistWarning.PreLaunchConfirmation_Postfix",
+      "patchAssembly": "RimMandrake.EnvironmentalHazards"
+     }
+    ],
+    "transpilers": [],
+    "finalizers": []
+   }
+  ],
+  "ticksGame": -1,
+  "operation": {
+   "OperationId": "op_3393e183ee63422ba103053db2c791aa",
+   "Status": "Completed",
+   "Success": true,
+   "DurationMs": 17
+  },
+  "state": {
+   "programState": "Entry",
+   "hasCurrentGame": false
+  }
+ },
+ "ek_errs": [],
+ "gss_errs": [],
+ "n_drain": 291
+}
