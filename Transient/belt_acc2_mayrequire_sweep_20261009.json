@@ -1,0 +1,126 @@
+{
+ "src/RimUtinni/Rites/Defs/RUT_JoiningWater.xml": [
+  [
+   "mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology",
+   "mandrake.rm.biomes,Ludeon.RimWorld.Ideology"
+  ],
+  [
+   "mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology",
+   "mandrake.rm.biomes,Ludeon.RimWorld.Ideology"
+  ],
+  [
+   "mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology",
+   "mandrake.rm.biomes,Ludeon.RimWorld.Ideology"
+  ],
+  [
+   "mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology",
+   "mandrake.rm.biomes,Ludeon.RimWorld.Ideology"
+  ],
+  [
+   "mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology",
+   "mandrake.rm.biomes,Ludeon.RimWorld.Ideology"
+  ],
+  [
+   "mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology",
+   "mandrake.rm.biomes,Ludeon.RimWorld.Ideology"
+  ]
+ ],
+ "src/RimMandrake/Watchers/Defs/ThingDefs_Races/RM_Watcher.xml": [
+  [
+   "mandrake.rm.rustcathedral",
+   "mandrake.rm.biomes"
+  ]
+ ],
+ "src/RimMandrake/RustCathedral/Defs/ThingDefs_Races/RM_CoolantEel.xml": [
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ]
+ ],
+ "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_ScaldWalker.xml": [
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ]
+ ],
+ "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_ScaldFloorFauna.xml": [
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ]
+ ],
+ "src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Races/RM_ScaldFauna.xml": [
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ]
+ ],
+ "src/RimMandrake/LongShade/About/About.xml": [
+  [
+   "mandrake.rm.stillsand",
+   "mandrake.rm.biomes"
+  ]
+ ],
+ "src/RimMandrake/Contagion/About/About.xml": [
+  [
+   "mandrake.rm.therot",
+   "mandrake.rm.biomes"
+  ]
+ ],
+ "src/RimMandrake/FlowWorks/Defs/Machinery/RM_LiquidWorksScatter.xml": [
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.environmentalhazards",
+   "mandrake.rm.biomes"
+  ]
+ ],
+ "src/RimMandrake/Stillsand/Defs/WeatherDefs/RM_DuneGale.xml": [
+  [
+   "mandrake.rm.movingdunes,mandrake.rm.biomes",
+   "mandrake.rm.biomes,mandrake.rm.biomes"
+  ],
+  [
+   "mandrake.rm.movingdunes,mandrake.rm.biomes",
+   "mandrake.rm.biomes,mandrake.rm.biomes"
+  ]
+ ]
+}
