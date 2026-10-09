@@ -557,7 +557,17 @@
     "RM_Durrgak": {
       "at": "2026-10-05T14:14:51.052Z",
       "decision": "A",
-      "note": "This is really cool and eerie. Rename to a Sorter. Trainable. Tamable. Cleans.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:14:51.052Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This is really cool and eerie. Rename to a Sorter. Trainable. Tamable. Cleans.",
+          "when": "2026-10-09T07:19:42-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Etchcap": {

@@ -1,9 +1,9 @@
 {
  "biome": "RM_Webwork",
- "built": "2026-10-08T21:00:59-0700",
+ "built": "2026-10-09T07:46:01-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "Plant_TookeTrap_Wild": {
    "columns": {
@@ -137,6 +137,9 @@
     "E": {
      "north": "d187e03ae2b1b5bf5f3b3d91ab5c6f225d48b35599eae4493bc12824ddea06a0",
      "south": "80bc56e6ef5697f55ccc2db43e61a17efb4fbec36df26471c2fb9869d283d759"
+    },
+    "F": {
+     "east": "24a2620354c66fc27fe285a973d6072b4fdbe262307078b02a77ecb1633ab1ac"
     }
    },
    "graphic_of": {
@@ -144,14 +147,16 @@
     "B": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
     "C": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
     "D": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
-    "E": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet"
+    "E": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
+    "F": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet"
    },
    "labels": {
     "A": "history Webwork 2026-09-25",
     "B": "render RM_Cravvet_v2",
     "C": "IN GAME \u2014 Webwork",
     "D": "render ",
-    "E": "render RM_Cravvet_v2"
+    "E": "render RM_Cravvet_v2",
+    "F": "render regen_wb_cravvet_east_v4"
    },
    "res": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
    "reserved": [
@@ -159,7 +164,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "cravvet"
   },

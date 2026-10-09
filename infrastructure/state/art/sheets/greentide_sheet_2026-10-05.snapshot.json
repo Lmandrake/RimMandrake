@@ -1,9 +1,9 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-09T05:06:39-0700",
+ "built": "2026-10-09T07:34:00-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_BloodShrimp": {
    "columns": {
@@ -1916,13 +1916,15 @@
      "north": "21c94c73d670a8a3ce0d43edfd708d02d250fa79a6b71c4934da34e99ef6cfc6",
      "south": "db7b3fea91f21772b513c86bbb2e6a0ce0467d0808c9290019417b3a5ecd8419"
     },
-    "T": {
-     "east": "014d8397294ef5d511d4d2255804abd7c6f68fc56d9ae94990984511379853b4"
-    },
     "U": {
      "east": "63c4a42c32acc26bf583d4abdd3e0dd07a546e3da82afcf8cef7301e52a556ac",
      "north": "e4c13fcda780eefea9c004e7eb7993ea0a42e87c10b07f2af67b2566c36188e0",
      "south": "b5d3470f8e79a3e1636a9f5355efa4c4fcabd8fec73d268e0006c21ef744199a"
+    },
+    "V": {
+     "east": "014d8397294ef5d511d4d2255804abd7c6f68fc56d9ae94990984511379853b4",
+     "north": "c52972da31de37dc938dcbb7c132833c08d16718a95f25447473c1c629622f04",
+     "south": "ae105504f2fb47f269be3eb677628be740592d564fe4ea11b67c993b3baddadc"
     }
    },
    "graphic_of": {
@@ -1943,8 +1945,8 @@
     "Q": "swanimals/Hawkbat/Hawkbat",
     "R": "swanimals/Hawkbat/Hawkbat",
     "S": "swanimals/Hawkbat/Hawkbat",
-    "T": "swanimals/Hawkbat/Hawkbat",
-    "U": "swanimals/Hawkbat/Hawkbat"
+    "U": "swanimals/Hawkbat/Hawkbat",
+    "V": "swanimals/Hawkbat/Hawkbat"
    },
    "labels": {
     "A": "history HawkbatArtOverride 2026-09-20",
@@ -1964,8 +1966,8 @@
     "Q": "render regen_gt_hawkbat_flying_j_2_v1",
     "R": "render regen_gt_hawkbat_flying_j_3_v1",
     "S": "render regen_gt_hawkbat_flying_j_4_v1",
-    "T": "render hawkbat_fly_master_v1",
-    "U": "render regen_gt_hawkbat_flying_j_2_v1"
+    "U": "render regen_gt_hawkbat_flying_j_2_v1",
+    "V": "render hawkbat_fly_master_v1"
    },
    "res": "swanimals/Hawkbat/Hawkbat",
    "reserved": [
@@ -1989,7 +1991,8 @@
     "R",
     "S",
     "T",
-    "U"
+    "U",
+    "V"
    ],
    "subject_key": "hawkbat"
   },
@@ -2336,7 +2339,7 @@
     "O": {
      "east": "5c42e3dd6f38da825cd0f8f4c71f071a95cafda7449047e87699aa587be5f5fa"
     },
-    "Q": {
+    "R": {
      "1_east": "ab34e6db0e984248d6b7925d8dcf3d507bc33e0ff1af0be97e6db4cec0565d09",
      "1_north": "5a528f5d96f21be3ba80890057523da3c72a316b1c7891c85169b2a7676fba85",
      "1_south": "7731466a138016177521e5dc2f572b0e3b585725e0abc6b2f8f94afca95e4b53",
@@ -2364,7 +2367,7 @@
     "M": "_byname",
     "N": "_byname",
     "O": "_byname",
-    "Q": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
+    "R": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 PekoPekoArtOverride",
@@ -2379,7 +2382,7 @@
     "M": "render regen_gt_pekopeko_flying_f_3_v1",
     "N": "render regen_gt_pekopeko_flying_f_4_v1 \u2014 failed canon check",
     "O": "render regen_gt_pekopeko_flying_m_1_v1",
-    "Q": "IN GAME \u2014 PekoPeko_f_Flying_"
+    "R": "IN GAME \u2014 PekoPeko_f_Flying_"
    },
    "res": "swanimals/PekoPeko/PekoPeko_f",
    "reserved": [
@@ -2399,7 +2402,8 @@
     "N",
     "O",
     "P",
-    "Q"
+    "Q",
+    "R"
    ],
    "subject_key": "pekopeko"
   },
@@ -2704,5 +2708,5 @@
   }
  },
  "sheetId": "greentide_sheet_2026-10-05",
- "snapshotId": "fe3e85daabe73e36"
+ "snapshotId": "016fce83d830a33e"
 }

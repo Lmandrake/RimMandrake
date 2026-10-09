@@ -37,7 +37,17 @@
     "RM_DuneCrawler": {
       "at": "2026-10-05T05:36:40.069Z",
       "decision": "A",
-      "note": "Make this 1/3 size",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T05:36:40.069Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Make this 1/3 size",
+          "when": "2026-10-09T07:20:16-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Duumma": {
@@ -103,7 +113,17 @@
       "at": "2026-10-05T05:23:08.568Z",
       "decidedAt": "2026-10-05T05:23:05.879Z",
       "decision": "hold",
-      "note": "duplicate, remove",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T05:23:08.568Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "duplicate, remove",
+          "when": "2026-10-09T07:20:16-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_KneelOllim": {
@@ -140,7 +160,17 @@
     "RM_Liikka": {
       "at": "2026-10-05T05:04:54.843Z",
       "decision": "A",
-      "note": "Rename to Likka Likka",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T05:04:54.843Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename to Likka Likka",
+          "when": "2026-10-09T07:20:16-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Loomma": {
@@ -265,7 +295,17 @@
     "RM_Vozzik": {
       "at": "2026-10-05T05:28:45.675Z",
       "decision": "A",
-      "note": "This should go into the Warscar.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T05:28:45.675Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This should go into the Warscar.",
+          "when": "2026-10-09T07:20:16-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Drazzik": {

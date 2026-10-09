@@ -168,7 +168,17 @@
         "via": "decision taken by question card"
       },
       "decision": "D",
-      "note": "see related notes above",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:09:50.044Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "see related notes above",
+          "when": "2026-10-09T07:22:44-0700"
+        }
+      ],
       "prefill": "A",
       "prefillDecision": "A",
       "variants": [
@@ -213,7 +223,17 @@
         "via": "decision taken by question card"
       },
       "decision": "D",
-      "note": "see related notes above",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:09:48.473Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "see related notes above",
+          "when": "2026-10-09T07:22:44-0700"
+        }
+      ],
       "prefill": "A",
       "prefillDecision": "A",
       "variants": [
@@ -303,7 +323,17 @@
         "via": "decision taken by question card"
       },
       "decision": "D",
-      "note": "see related notes above",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:09:46.719Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "see related notes above",
+          "when": "2026-10-09T07:22:44-0700"
+        }
+      ],
       "prefill": "A",
       "prefillDecision": "A",
       "variants": [
@@ -317,7 +347,17 @@
       "at": "2026-10-07T14:02:10.588Z",
       "decidedAt": "2026-10-07T14:01:42.990Z",
       "decision": "B",
-      "note": "Old art (a) can be kept for fishing elsewhere, but (B) belongs here now.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:02:10.588Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Old art (a) can be kept for fishing elsewhere, but (B) belongs here now.",
+          "when": "2026-10-09T07:22:44-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -341,7 +381,17 @@
         "via": "decision taken by question card"
       },
       "decision": "D",
-      "note": "see notes above",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:10:15.926Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "see notes above",
+          "when": "2026-10-09T07:22:44-0700"
+        }
+      ],
       "prefill": "A",
       "prefillDecision": "A",
       "variants": [
@@ -530,7 +580,17 @@
       "at": "2026-10-07T14:08:41.604Z",
       "decidedAt": "2026-10-07T14:07:55.164Z",
       "decision": "B",
-      "note": "This sounds like something from the Grey sea, not twilight. Move it there, and change the description to be less solitary since there are many other things on the Grey sea floor.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:08:41.604Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This sounds like something from the Grey sea, not twilight. Move it there, and change the description to be less solitary since there are many other things on the Grey sea floor.",
+          "when": "2026-10-09T07:22:44-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },

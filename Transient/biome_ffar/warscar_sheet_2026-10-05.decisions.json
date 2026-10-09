@@ -7,7 +7,17 @@
       "at": "2026-10-06T05:26:56.383Z",
       "decidedAt": "2026-10-06T05:23:51.904Z",
       "decision": "B",
-      "note": "Rename to Bileworm",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:26:56.383Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename to Bileworm",
+          "when": "2026-10-09T07:22:55-0700"
+        }
+      ],
       "prefill": "A"
     },
     "AA_SpinedGow": {
@@ -232,7 +242,17 @@
       "at": "2026-10-06T05:27:49.312Z",
       "decidedAt": "2026-10-06T05:27:19.382Z",
       "decision": "B",
-      "note": "Redo description",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:27:49.312Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo description",
+          "when": "2026-10-09T07:22:55-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },

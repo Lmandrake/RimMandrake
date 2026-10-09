@@ -1,9 +1,9 @@
 {
  "biome": "RM_TwilightSea",
- "built": "2026-10-09T05:09:23-0700",
+ "built": "2026-10-09T07:44:13-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_Aerofleet": {
    "columns": {
@@ -1237,25 +1237,27 @@
      "north": "ad5a492d522696b33ad6b835927950caef492bcfca27a034c918cdd9eaebaab2",
      "south": "b88730a579e337665d5b637f11f92d707872f1d3c5c2513c89b1d98f7bdaf2f7"
     },
-    "C": {
-     "north": "6d1ece0c7f05758ff9202dd8ef1d4945cac360647b3419e74aaa89c842344b5c"
+    "D": {
+     "north": "6d1ece0c7f05758ff9202dd8ef1d4945cac360647b3419e74aaa89c842344b5c",
+     "south": "b46641aba2549193ecb39ab8f1b181c10560e3de4201667e843b6dbdda9aeba2"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
     "B": "_byname",
-    "C": "_byname"
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render twilightsea_mee_canon_redo_v1",
-    "C": "render twilightsea_mee_canon_redo_v2 \u2014 failed canon check"
+    "D": "render twilightsea_mee_canon_redo_v2"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "mee"
   },
@@ -1299,5 +1301,5 @@
   }
  },
  "sheetId": "twilightsea_sheet_2026-10-05",
- "snapshotId": "1d6770954fb50d59"
+ "snapshotId": "c2e4c86859ccad75"
 }

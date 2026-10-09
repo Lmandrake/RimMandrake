@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-07T23:15:05-0700",
+ "built": "2026-10-09T07:42:41-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_Bladderboil": {
    "columns": {
@@ -44,6 +44,12 @@
      "east": "8e86a4eef544283b3fa34549da167486ac9323d0738e2e2f95408c2ddc2990c4",
      "north": "8e0be4af1d3c5d2acec661811a88314974eeeca7711ca2bb5057023ead38e9d9",
      "south": "27336113a0293ccf2a53e9232ebbe73240b65bdb1ac621656a5b0eeae32504db"
+    },
+    "F": {
+     "single": "f7215eb84d9ebfe3bf0a05dc08fe0c5f158308733c7f22699b53a6e6229b2bb5"
+    },
+    "G": {
+     "single": "b2e72fe2387f11fa8f5567cc9b770fb9bb6ea0c9182a9cb7bf41c93a78555296"
     }
    },
    "graphic_of": {
@@ -51,14 +57,18 @@
     "B": "Things/Item/Resource/RM_BladderboilCatch",
     "C": "Things/Item/Resource/RM_BladderboilCatch",
     "D": "Things/Item/Resource/RM_BladderboilCatch",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "Things/Item/Resource/RM_BladderboilCatch",
+    "G": "Things/Item/Resource/RM_BladderboilCatch"
    },
    "labels": {
     "A": "our deployed art (render scald2_bladderboilcatch_a) \u2014 RimMandrake: Baroque Biomes",
     "B": "render scald2_bladderboilcatch_b",
     "C": "render scald2_bladderboilcatch_c",
     "D": "render scald_bladderboilcatch_v1",
-    "E": "render scaldfloor_bladderboil"
+    "E": "render scaldfloor_bladderboil",
+    "F": "render phfix_RUT_BladderboilCatch_b",
+    "G": "render phfix_RUT_BladderboilCatch_a"
    },
    "res": "Things/Item/Resource/RM_BladderboilCatch",
    "reserved": [
@@ -66,7 +76,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "bladderboilcatch"
   },

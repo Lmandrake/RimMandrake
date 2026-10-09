@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-09T05:03:56-0700",
+ "built": "2026-10-09T07:29:57-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 68 mods \u2014 a test list): 614 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -105,7 +105,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
-    "C": "render stillsand_s2_RM_Duumma_surfaced \u2014 failed canon check"
+    "C": "render stillsand_s2_RM_Duumma_surfaced"
    },
    "res": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
    "reserved": [
@@ -1000,11 +1000,6 @@
     "L": {
      "east": "5336ed954b9d0bde5145fab2e4e0331c01214fbc39d31f4d68d50f94c3d8ef4c",
      "south": "f0a167b6ad5f2ee0b6dba6a7d7c0683ec9282ce61fd17906f4b52d842a1acf2f"
-    },
-    "M": {
-     "east": "ff14b5b4dfc1555fbc4cfc192850ca8ffc937ff35a684d32e5f2ecb1ee08af16",
-     "north": "96b0d7a35b521b922dfd6ac4f29d5b27c7f4250b0b3ee5c853eb9bf90b362ef6",
-     "south": "1db929490093e68e4670815c344d155c3af8616fb500b6708774f99ea54e2fe5"
     }
    },
    "graphic_of": {
@@ -1012,16 +1007,14 @@
     "I": "swanimals/Kreetle/Kreetle",
     "J": "swanimals/Kreetle/Kreetle",
     "K": "swanimals/Kreetle/Kreetle",
-    "L": "swanimals/Kreetle/Kreetle",
-    "M": "swanimals/Kreetle/Kreetle"
+    "L": "swanimals/Kreetle/Kreetle"
    },
    "labels": {
     "F": "IN GAME \u2014 SWBestiary",
     "I": "render leaningscrub_kreetle_v1",
     "J": "render leaningscrub_kreetle_v1 \u2014 failed canon check",
-    "K": "render stillsand_s2_RSW_Kreetle_v2",
-    "L": "history KreetleArtOverride 2026-09-20",
-    "M": "IN GAME \u2014 KreetleArtOverride"
+    "K": "IN GAME \u2014 KreetleArtOverride",
+    "L": "history KreetleArtOverride 2026-09-20"
    },
    "res": "swanimals/Kreetle/Kreetle",
    "reserved": [
@@ -1254,5 +1247,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "4f4a567575af28cf"
+ "snapshotId": "c77ab51e3f5b4318"
 }
