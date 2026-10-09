@@ -33,6 +33,10 @@ brief describes:
     not brown or black.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Zakkeg and Zakkeg/Legends, catimages "Images of zakkegs"; only KOTOR II and SWTOR stylised game models exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
 Two candidate images, both game-rendered 3D models rather than illustration,
 and they show a body-plan match but a color disagreement worth flagging:
 
@@ -71,6 +75,7 @@ Liana Kor Databank entry.
 - [ ] Low-slung reptilian head with visible fangs/teeth and small eyes
 - [ ] Four heavy, thick, clawed legs on a stocky body ("battle tank" scale)
 - [ ] Rust-red/copper-brown as the primary colour anchor (a darker brown-black variant is attested but unconfirmed as a separate life stage)
+- [ ] Realistic rendering: natural knobbly armoured hide under natural daylight, no low-poly or stylised-game shading
 
 ## Engine limits
 none known — no donor-mod sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.
