@@ -24,9 +24,10 @@
       the deep variant" would spawn nothing. That tag is shared by every sea
       floor, but these defs are only in the Scald's wildPlants.
 
-  OWED (not built here): thurlsponge's wreck colonisation (the design's
-  "colonise the wrecks") needs a scatter step; the two-state/behaviour details
-  of the design are description-only. No C# comps were required by this set.
+  Thurlsponge's wreck colonisation ("colonise the wrecks") is a map-gen step,
+  RM_GenStep_ScaldThurlspongeWrecks (Source/RM_ScaldThurlspongeWrecks.cs),
+  ringing each shallow-band RUT_ScaldWreck*. The other behaviour details of the
+  design are description-only. No plant comps were required by this set.
 
   Numbers the design left open, chosen minimally (the knobs): temperatures
   0..90 like RM_Crowncarpet (the Scald floor is 55 C), optimal 20..80; Beauty
@@ -153,7 +154,7 @@
     </plant>
   </ThingDef>
 
-  <!-- 4. RM_THURLSPONGE - filtration. Deep floor. Steel 5-8 (ruled), high harvestWork. Wreck colonisation OWED. -->
+  <!-- 4. RM_THURLSPONGE - filtration. Deep floor. Steel 5-8 (ruled), high harvestWork. Wreck colonisation: RM_GenStep_ScaldThurlspongeWrecks. -->
   <ThingDef ParentName="RM_ScaldFloorFloraBase">
     <defName>RM_Thurlsponge</defName>
     <label>thurlsponge</label>

@@ -91,6 +91,8 @@ namespace RimMandrake.TerminalBiomes
         public static bool scaldS5SailWalkerEnabled = true;
         public static bool scaldS7SteamExposureEnabled = true;
         public static bool scaldS1bVentFlashEnabled = true;
+        // SCALD_UNDERWATER_FLORA_1: thurlsponge colonising the shallow-band wrecks at map generation.
+        public static bool scaldThurlspongeWrecksEnabled = true;
 
         // Effective state: a sub-toggle only counts while the mod and the
         // Scald are both on. Everything that gates reads these, never the
@@ -99,6 +101,7 @@ namespace RimMandrake.TerminalBiomes
         public static bool ScaldS1SteamSkyActive => ScaldActive && scaldS1SteamSkyEnabled;
         public static bool ScaldS2SteamCatchActive => ScaldActive && scaldS2SteamCatchEnabled;
         public static bool ScaldS4VentFieldsActive => ScaldActive && scaldS4VentFieldsEnabled;
+        public static bool ScaldThurlspongeWrecksActive => ScaldActive && scaldThurlspongeWrecksEnabled;
         public static bool ScaldS5SailWalkerActive => ScaldActive && scaldS5SailWalkerEnabled;
         public static bool ScaldS7SteamExposureActive => ScaldActive && scaldS7SteamExposureEnabled;
         // S1b rides S1: a flash in a sky that is not the boil's breath makes no sense.
@@ -249,6 +252,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref scaldS5SailWalkerEnabled, "scaldS5SailWalkerEnabled", true);
             Scribe_Values.Look(ref scaldS7SteamExposureEnabled, "scaldS7SteamExposureEnabled", true);
             Scribe_Values.Look(ref scaldS1bVentFlashEnabled, "scaldS1bVentFlashEnabled", true);
+            Scribe_Values.Look(ref scaldThurlspongeWrecksEnabled, "scaldThurlspongeWrecksEnabled", true);
             Scribe_Values.Look(ref suulkEnabled, "suulkEnabled", true);
             Scribe_Values.Look(ref suulkFrequencyMultiplier, "suulkFrequencyMultiplier", 1f);
             Scribe_Values.Look(ref vauliskEnabled, "vauliskEnabled", true);
@@ -358,6 +362,9 @@ namespace RimMandrake.TerminalBiomes
               + "nobody accumulates scald exposure and any exposure already carried heals off. "
               + "The water still burns to wade in either way — that is S8's own switch, in the "
               + "Environmental Hazards Kit's settings.");
+            list.CheckboxLabeled("Thurlsponge colonises wrecks", ref scaldThurlspongeWrecksEnabled,
+                "Each salvage wreck in the shallows is ringed with thurlsponge (harvestable for Steel) "
+              + "when the map is made. Off: thurlsponge grows only on the open floor. Affects map generation.");
             list.GapLine();
 
             list.Label("THE TWILIGHT SEA'S DANGER PASS (TWILIGHT_DANGER_LIGHTWEB_1)");
