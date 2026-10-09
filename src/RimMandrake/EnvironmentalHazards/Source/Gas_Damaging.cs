@@ -94,6 +94,11 @@ namespace RimMandrake.EnvironmentalHazards
 
             IntVec3 cell = Position;
 
+            if (ext.stoppedByAerosolScreen && RM_EnvironmentalHazardsSettings.screenStopsSporesEnabled && RM_GasScreenBridge.IsScreened(cell, map))
+            {
+                return; // SCREEN_STOPS_SPORES_1: inside a Scarlands aerosol screen's dome the cloud does nothing
+            }
+
             if (ext.onlyUnroofed && cell.Roofed(map))
             {
                 return;

@@ -56,6 +56,7 @@
     <Compile Include="CompActiveGasEmitter.cs" />
     <Compile Include="GasEffectExtensions.cs" />
     <Compile Include="Gas_Damaging.cs" />
+    <Compile Include="RM_GasScreenBridge.cs" />
     <Compile Include="Gas_Transmuting.cs" />
     <Compile Include="HediffCompProperties_PeriodicAreaAttack.cs" />
     <Compile Include="HediffComp_PeriodicAreaAttack.cs" />
