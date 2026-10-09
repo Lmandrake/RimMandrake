@@ -130,7 +130,10 @@ namespace RimMandrake.EnvironmentalHazards
             // Map-level signal: a raid this hostile is already alarming
             // the whole map's story danger, not just this pawn's own
             // neighborhood.
-            if (map.dangerWatcher != null && map.dangerWatcher.DangerRating == StoryDanger.High)
+            // PROVISIONAL (auto-decided 2026-10-09, THORNBUG_FEAR_SCOPE_1): card 3's local radius wins, so the
+            // map-wide gate only applies when thornbugFearLocalOnly is switched off.
+            if (!RM_EnvironmentalHazardsSettings.thornbugFearLocalOnly
+                && map.dangerWatcher != null && map.dangerWatcher.DangerRating == StoryDanger.High)
             {
                 return true;
             }

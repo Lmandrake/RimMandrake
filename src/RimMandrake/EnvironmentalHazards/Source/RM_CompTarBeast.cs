@@ -31,6 +31,7 @@ namespace RimMandrake.EnvironmentalHazards
     {
         private IntVec3 lastCell = IntVec3.Invalid;
         private bool paceApplied;
+        private bool huntPending;
 
         public CompProperties_TarBeast Props => (CompProperties_TarBeast)props;
         private Pawn Beast => (Pawn)parent;
@@ -50,11 +51,22 @@ namespace RimMandrake.EnvironmentalHazards
                 // The bulge's PawnSpawnOnWakeup put it in a defend-point Lord whose duty would override the think tree.
                 pawn.GetLord()?.Notify_PawnLost(pawn, PawnLostCondition.ForcedToJoinOtherLord);
                 // SUMP_SOLVENT_WAKE_BUILD_1: woken by a solvent pour -> hunts every pawn on the map, for good.
-                if (RM_MapComponent_TarSolventWake.TryConsume(pawn.Map, pawn.Position, out bool hunt) && hunt && pawn.mindState != null)
+                // TAR_BEAST_SETTINGS_CONSISTENCY_1: the wake record is consumed once, so a refused mental state is
+                // remembered and retried below instead of being lost.
+                if (RM_MapComponent_TarSolventWake.TryConsume(pawn.Map, pawn.Position, out bool hunt) && hunt)
                 {
-                    pawn.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.ManhunterPermanent,
-                        reason: "tar woken by solvent", forceWake: true, transitionSilently: true);
+                    huntPending = true;
+                    TryStartHunt(pawn);
                 }
+            }
+            else if (huntPending && pawn.IsHashIntervalTick(60))
+            {
+                TryStartHunt(pawn);
+            }
+            // TAR_BEAST_SETTINGS_CONSISTENCY_1: a changed pace setting reaches beasts already awake.
+            if (pawn.IsHashIntervalTick(250))
+            {
+                ApplyPace(pawn);
             }
 
             IntVec3 pos = pawn.Position;
@@ -77,15 +89,36 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
+        private void TryStartHunt(Pawn pawn)
+        {
+            if (pawn.MentalStateDef == MentalStateDefOf.ManhunterPermanent)
+            {
+                huntPending = false;
+                return;
+            }
+            if (pawn.mindState?.mentalStateHandler != null
+                && pawn.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.ManhunterPermanent,
+                    reason: "tar woken by solvent", forceWake: true, transitionSilently: true))
+            {
+                huntPending = false;
+            }
+        }
+
+        // The pace slider is read through three hediff stages (slow / normal / fast presets), refreshed every 250
+        // ticks so a changed setting reaches beasts already awake.
         private void ApplyPace(Pawn pawn)
         {
             if (Props.paceHediff == null || pawn.health == null)
             {
                 return;
             }
-            Hediff h = pawn.health.hediffSet.GetFirstHediffOfDef(Props.paceHediff) ?? pawn.health.AddHediff(Props.paceHediff);
             float pace = RM_EnvironmentalHazardsSettings.tarBeastPace;
-            h.Severity = pace < 0.75f ? 0.5f : (pace > 1.5f ? 2.5f : 1.5f);
+            float want = pace < 0.75f ? 0.5f : (pace > 1.5f ? 2.5f : 1.5f);
+            Hediff h = pawn.health.hediffSet.GetFirstHediffOfDef(Props.paceHediff) ?? pawn.health.AddHediff(Props.paceHediff);
+            if (h.Severity != want)
+            {
+                h.Severity = want;
+            }
         }
 
         // Pawns in the way are staggered, never bitten.
@@ -116,12 +149,27 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 return false;
             }
-            if (eater.Satiated || eater.StructuresEaten >= RM_EnvironmentalHazardsSettings.tarBeastMaxBuildings)
+            if (eater.Satiated) // Satiated reads tarBeastMaxBuildings for a tar beast: one effective limit
             {
                 return true;
             }
-            // A solvent-woken beast that has nobody left to hunt sinks back down.
-            return pawn.MentalStateDef == MentalStateDefOf.ManhunterPermanent && pawn.Map.mapPawns.FreeColonistsSpawnedCount == 0;
+            // A solvent-woken beast that has nobody left to hunt sinks back down. It hunts every pawn on the map,
+            // so "nobody" means no other living, standing pawn that is not an animal (colonists, raiders, visitors).
+            return pawn.MentalStateDef == MentalStateDefOf.ManhunterPermanent && !AnyoneToHunt(pawn);
+        }
+
+        private static bool AnyoneToHunt(Pawn beast)
+        {
+            IReadOnlyList<Pawn> all = beast.Map.mapPawns.AllPawnsSpawned;
+            for (int i = 0; i < all.Count; i++)
+            {
+                Pawn p = all[i];
+                if (p != beast && !p.Dead && !p.Downed && !p.AnimalOrWildMan())
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // Back into the deepest tar as a dormant bulge, far from the colony; says so.
@@ -180,6 +228,7 @@ namespace RimMandrake.EnvironmentalHazards
             base.PostExposeData();
             Scribe_Values.Look(ref lastCell, "tarBeastLastCell", IntVec3.Invalid);
             Scribe_Values.Look(ref paceApplied, "tarBeastPaceApplied", false);
+            Scribe_Values.Look(ref huntPending, "tarBeastHuntPending", false);
         }
     }
 
@@ -196,7 +245,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return null;
             }
             RM_CompStationEater eater = pawn.TryGetComp<RM_CompStationEater>();
-            if (eater == null || eater.Satiated || eater.StructuresEaten >= RM_EnvironmentalHazardsSettings.tarBeastMaxBuildings)
+            if (eater == null || eater.Satiated)
             {
                 return null;
             }

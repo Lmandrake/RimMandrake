@@ -104,7 +104,13 @@ namespace RimMandrake.EnvironmentalHazards
                 {
                     return false;
                 }
-                if (structuresEaten >= props.maxStructuresEaten)
+                // TAR_BEAST_SETTINGS_CONSISTENCY_1 PROVISIONAL (auto-decided 2026-10-09): a tar beast has ONE
+                // effective building limit, the tarBeastMaxBuildings setting, which can raise as well as lower the
+                // def's maxStructuresEaten. Every other station eater keeps its def value.
+                int limit = parent is Pawn && parent.TryGetComp<RM_CompTarBeast>() != null
+                    ? UnityEngine.Mathf.RoundToInt(RM_EnvironmentalHazardsSettings.tarBeastMaxBuildings)
+                    : props.maxStructuresEaten;
+                if (structuresEaten >= limit)
                 {
                     return true;
                 }

@@ -464,6 +464,12 @@ namespace RimMandrake.EnvironmentalHazards
         // first-guess delays in RM_MapComponent_SumpLivingMap; owner ruling 2026-10-03, tuned live later).
         public static bool sumpLivingMapEnabled = true;
         public static float sumpLivingMapPace = 1f;
+        // WARDEN_MOTHER_LAND_RECOVERY_1 PROVISIONAL (auto-decided 2026-10-09): a water-locked pawn on land is sent back to water instead of being frozen there.
+        public static bool waterLockedRecoveryWalk = true;
+        // ENV_WEATHER_GATE_SCOPE_1 PROVISIONAL (auto-decided 2026-10-09): a gated-off condition returns neutral values for every override.
+        public static bool weatherGateCoversWholeCondition = true;
+        // THORNBUG_FEAR_SCOPE_1 PROVISIONAL (auto-decided 2026-10-09): owner card 3's local radius wins over the map-wide danger gate.
+        public static bool thornbugFearLocalOnly = true;
 
         public override void ExposeData()
         {
@@ -549,6 +555,9 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref hazardApparelAIAwarenessEnabled, "hazardApparelAIAwarenessEnabled", true);
             Scribe_Values.Look(ref sumpLivingMapEnabled, "sumpLivingMapEnabled", true);
             Scribe_Values.Look(ref sumpLivingMapPace, "sumpLivingMapPace", 1f);
+            Scribe_Values.Look(ref waterLockedRecoveryWalk, "waterLockedRecoveryWalk", true);
+            Scribe_Values.Look(ref weatherGateCoversWholeCondition, "weatherGateCoversWholeCondition", true);
+            Scribe_Values.Look(ref thornbugFearLocalOnly, "thornbugFearLocalOnly", true);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -573,7 +582,7 @@ namespace RimMandrake.EnvironmentalHazards
             // Bumped 4920->4990 for setting #51a (waterAgitationDensity slider).
             // Bumped 4990->5050 for setting #57 (hazardApparelAIAwarenessEnabled).
             // Bumped 5050->5170 for setting #58 (sumpLivingMapEnabled + pace slider).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, Mathf.Max(5170f, inRect.height));
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, Mathf.Max(5350f, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
@@ -813,7 +822,8 @@ namespace RimMandrake.EnvironmentalHazards
             sumpLivingMapPace = list.Slider(sumpLivingMapPace, 0.25f, 4f);
             list.GapLine();
 
-            list.Label("Tar beast speed: " + tarBeastPace.ToString("0.0") + "x");
+            list.Label("Tar beast speed: " + tarBeastPace.ToString("0.0") + "x (three presets: under 0.75 slow, over 1.5 fast, "
+                     + "else normal; reaches beasts already awake within a few seconds)");
             tarBeastPace = list.Slider(tarBeastPace, 0.5f, 2f);
             list.Label("Tar beast sinks after swallowing: " + tarBeastMaxBuildings.ToString("0") + " buildings");
             tarBeastMaxBuildings = list.Slider(tarBeastMaxBuildings, 1f, 30f);
@@ -868,6 +878,12 @@ namespace RimMandrake.EnvironmentalHazards
                      + "fires or how thick the coat lands, only how wide.");
             tarBelchRadius = list.Slider(tarBelchRadius, 3f, 20f);
 
+            list.CheckboxLabeled("Thornbugs fear only nearby hostiles", ref thornbugFearLocalOnly,
+                "On: a calm-gated herd animal (the thornbug) is scared only by hostiles within its fear radius, so a sheltered herd on the far side of a raid stays calm. Off: any high-danger raid anywhere on the map scares every herd.");
+            list.CheckboxLabeled("A biome's weather toggle turns off its whole weather", ref weatherGateCoversWholeCondition,
+                "On: when a biome mod's own setting switches off one of its hazardous weather conditions, the forced weather, temperature swing, animal/plant density change, outdoor-recreation block and power cut all stop too, not just the damage. Off: only the damage and cell effects stop; the sky and temperature keep being forced.");
+            list.CheckboxLabeled("Water-bound creatures walk back to water", ref waterLockedRecoveryWalk,
+                "On: a water-bound creature (the warden mother) found on dry ground walks to the nearest reachable water, and a walk that is headed for water anyway is left alone. Off: she is simply stopped dead on the spot, as before.");
             list.End();
             Widgets.EndScrollView();
         }
