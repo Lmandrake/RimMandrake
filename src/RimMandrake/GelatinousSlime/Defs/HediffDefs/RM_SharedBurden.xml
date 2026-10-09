@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GELATINOUSSLIME_JOINING_WATER_STANDALONE_1. The weak echo of a permanent hurt, taken by everyone in the ring who was not the donor.
+     Temporary (fades about two weeks after a full dose). Numbers PROVISIONAL. -->
+<Defs>
+  <HediffDef>
+    <defName>RM_SharedBurden</defName>
+    <label>shared burden</label>
+    <description>A small piece of someone else's lasting hurt, taken in the Joining Water and carried for a while. It aches, faintly, and it will pass.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>true</isBad>
+    <initialSeverity>0.1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.07</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>faint</label>
+        <painOffset>0.02</painOffset>
+      </li>
+      <li>
+        <label>aching</label>
+        <minSeverity>0.4</minSeverity>
+        <painOffset>0.06</painOffset>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>

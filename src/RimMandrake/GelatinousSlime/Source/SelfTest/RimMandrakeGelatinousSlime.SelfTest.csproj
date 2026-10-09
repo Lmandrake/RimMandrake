@@ -25,6 +25,7 @@
     <Compile Include="..\Kernel\RM_SlimeLadder.cs" />
     <Compile Include="..\Kernel\RM_TitanKernel.cs" />
     <Compile Include="..\Kernel\RM_SlimeWorld.cs" />
+    <Compile Include="..\Kernel\RM_JoiningWaterKernel.cs" />
     <Compile Include="GelatinousSlimeFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GELATINOUSSLIME_JOINING_WATER_STANDALONE_1 registration; same shape and same reasoning as RM_SlimeFarmRuins_MapGenPatch.xml
+     (GenStep_SlimeHandRing returns at once on any biome but the Slime). -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
+    <value>
+      <li>RM_SlimeHandRing</li>
+    </value>
+  </Operation>
+</Patch>

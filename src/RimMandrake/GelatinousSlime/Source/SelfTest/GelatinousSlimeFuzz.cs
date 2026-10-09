@@ -503,6 +503,29 @@ namespace RimMandrake.GelatinousSlime.SelfTest
 
         private static List<string> World(int n, int baseSeed) { return Family("world", n, baseSeed, RunWorld); }
 
+        // ════════════════════════ water (Joining Water) ════════════════════════
+        private static string RunWater(int seed)
+        {
+            var r = new Random(seed * 7907 + 5);
+            int n = r.Next(0, 8);
+            var totals = new List<float>();
+            for (int i = 0; i < n; i++) totals.Add(r.Next(3) == 0 ? 0f : (float)(r.NextDouble() * 3));
+            int d = RM_JoiningWaterKernel.PickDonor(totals);
+            if (d >= 0) { Check(totals[d] > 0f, "donor carries nothing"); for (int i = 0; i < n; i++) Check(totals[i] <= totals[d], "donor is not the heaviest"); for (int i = 0; i < d; i++) Check(totals[i] < totals[d], "a tie went past the first"); }
+            else for (int i = 0; i < n; i++) Check(totals[i] <= 0f, "no donor chosen while someone carries a hurt");
+            float sev = (float)(r.NextDouble() * 2), fr = (float)(r.NextDouble() * 1.4 - 0.2), wk = (float)(r.NextDouble() * 1.4 - 0.2); int rc = r.Next(0, 7);
+            RM_JoiningWaterKernel.Split(sev, fr, rc, wk, out float taken, out float per);
+            Check(taken >= 0f && taken <= sev + 1e-5f, "taken " + taken + " outside 0.." + sev);
+            Check(per >= 0f && per * rc <= taken + 1e-4f, "recipients carry " + per * rc + " of " + taken + " (severity must be shared, never created)");
+            if (rc == 0) Check(per == 0f, "a share with nobody to take it");
+            float q0 = RM_JoiningWaterKernel.ShareFraction(-1, 0.1f, 0.2f, 0.3f, 0.4f), q1 = RM_JoiningWaterKernel.ShareFraction(0, 0.1f, 0.2f, 0.3f, 0.4f),
+                q2 = RM_JoiningWaterKernel.ShareFraction(2, 0.1f, 0.2f, 0.3f, 0.4f), q3 = RM_JoiningWaterKernel.ShareFraction(3, 0.1f, 0.2f, 0.3f, 0.4f);
+            Check(q0 == 0.1f && q1 == 0.2f && q2 == 0.3f && q3 == 0.4f, "ShareFraction maps the wrong outcome");
+            return null;
+        }
+
+        private static List<string> Water(int n, int baseSeed) { return Family("water", n, baseSeed, RunWater); }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -514,6 +537,7 @@ namespace RimMandrake.GelatinousSlime.SelfTest
                 ("ladder", () => { var f = Ladder(N(3000), S(1)); f.AddRange(LadderProps(N(1000), S(1))); return f; }),
                 ("titan", () => { var f = Titan(N(3000), S(1)); f.AddRange(TitanProps(N(1000), S(1))); return f; }),
                 ("world", () => World(N(2000), S(1))),
+                ("water", () => Water(N(3000), S(1))),
             };
             foreach (var f in fam)
             {

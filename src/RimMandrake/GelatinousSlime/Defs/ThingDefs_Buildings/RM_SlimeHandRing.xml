@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GELATINOUSSLIME_JOINING_WATER_STANDALONE_1. The found site of the Joining Water: a ring of hand-prints pressed into hardened slime.
+     Placed once per Slime map by GenStep_SlimeHandRing. ART OWED: placeholder is vanilla slag chunks, tinted slime green. -->
+<Defs>
+  <ThingDef>
+    <defName>RM_SlimeHandRing</defName>
+    <label>ring of hand-prints</label>
+    <description>Hands pressed into hardened slime, a ring of them, palms outward, each print a little different. Whoever made it stood here, each holding a handful of the stuff, and let go of nothing.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Item/Chunk/ChunkSlag</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(110, 150, 80)</color>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <useHitPoints>false</useHitPoints>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <destroyable>false</destroyable>
+    <statBases>
+      <Beauty>2</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+</Defs>

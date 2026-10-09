@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GELATINOUSSLIME_JOINING_WATER_STANDALONE_1. Order 753: after the farm ruins (752). Self-gates on the Slime biome and
+     SlimeSettings.joiningWaterEnabled (worldgen-affecting). Registered by Patches/RM_SlimeHandRing_MapGenPatch.xml. -->
+<Defs>
+  <GenStepDef>
+    <defName>RM_SlimeHandRing</defName>
+    <order>753</order>
+    <genStep Class="RimMandrake.GelatinousSlime.GenStep_SlimeHandRing">
+      <ringDef>RM_SlimeHandRing</ringDef>
+    </genStep>
+  </GenStepDef>
+</Defs>
