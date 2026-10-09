@@ -53,6 +53,41 @@ namespace RimMandrake.FlowWorks
 
 		private static readonly Dictionary<TerrainDef, Original> originals = new Dictionary<TerrainDef, Original>();
 
+		// LIQUID_LOOK_MATERIAL_OWNERSHIP_1: every material a look writes to is its OWN copy, tracked here and destroyed
+		// on revert or re-apply. GraphicDatabase/MaterialPool cache by (texture, shader, colour, queue), so mutating the
+		// cached MatSingle reached any other graphic sharing that key, and each re-apply leaked a waterDepth copy.
+		private static readonly Dictionary<TerrainDef, List<Material>> ownedMats = new Dictionary<TerrainDef, List<Material>>();
+		private static readonly FieldInfo SingleMatField = AccessTools.Field(typeof(Graphic_Single), "mat");
+		private static readonly MethodInfo CloneMethod = AccessTools.Method(typeof(object), "MemberwiseClone");
+
+		private static Material Own(TerrainDef t, Material source)
+		{
+			Material m = new Material(source);
+			if (!ownedMats.TryGetValue(t, out List<Material> list))
+			{
+				list = new List<Material>();
+				ownedMats[t] = list;
+			}
+			list.Add(m);
+			return m;
+		}
+
+		private static void ReleaseOwned(TerrainDef t)
+		{
+			if (!ownedMats.TryGetValue(t, out List<Material> list))
+			{
+				return;
+			}
+			foreach (Material m in list)
+			{
+				if (m != null)
+				{
+					UnityEngine.Object.Destroy(m);
+				}
+			}
+			ownedMats.Remove(t);
+		}
+
 		static RM_LiquidLooks()
 		{
 			try
@@ -234,8 +269,18 @@ namespace RimMandrake.FlowWorks
 				tex = t.texturePath;
 			}
 			Color col = TierColor(o.graphic.Color, look.tint, look.depthDarken, tier);
-			Graphic g = GraphicDatabase.Get<Graphic_Terrain>(tex, shader, Vector2.one, col, 2000 + t.renderPrecedence);
-			Material m = g.MatSingle;
+			Graphic shared = GraphicDatabase.Get<Graphic_Terrain>(tex, shader, Vector2.one, col, 2000 + t.renderPrecedence);
+			// The previous apply's materials are replaced below; the terrain still points at them until then, and the
+			// caller regenerates the map meshes after, so destroying them here is safe (Destroy is end-of-frame).
+			ReleaseOwned(t);
+			Graphic g = shared;
+			Material m = shared.MatSingle;
+			if (SingleMatField != null && CloneMethod != null && shared is Graphic_Single)
+			{
+				g = (Graphic)CloneMethod.Invoke(shared, null);
+				m = Own(t, shared.MatSingle);
+				SingleMatField.SetValue(g, m);
+			}
 			m.SetTexture(ShaderPropertyIDs.AlphaAddTex, TexGame.AlphaAddTex);
 			if (white)
 			{
@@ -263,7 +308,7 @@ namespace RimMandrake.FlowWorks
 			}
 			else if (o.waterDepthMaterial != null && (look.rippleDensity >= 0f || look.rippleIntensity >= 0f))
 			{
-				Material wd = new Material(o.waterDepthMaterial);
+				Material wd = Own(t, o.waterDepthMaterial);
 				SetIf(wd, "_WaterRippleDensity", look.rippleDensity);
 				SetIf(wd, "_WaterDepthIntensity", look.rippleIntensity);
 				t.waterDepthMaterial = wd;
@@ -307,6 +352,7 @@ namespace RimMandrake.FlowWorks
 			t.fleckData = o.fleckData;
 			t.takeSplashes = o.takeSplashes;
 			originals.Remove(t);
+			ReleaseOwned(t);
 		}
 
 		private static void SetIf(Material m, string prop, float v)
