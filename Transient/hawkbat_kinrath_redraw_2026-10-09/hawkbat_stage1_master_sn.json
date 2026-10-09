@@ -1,0 +1,40 @@
+[
+ {
+  "id": "hawkbat_fly_master_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_Flying_1",
+  "canon": "hawkbat",
+  "facings": [
+   "south"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "background": "transparent",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
+  "derive_from": "hawkbat_fly_master_v1_east",
+  "prompt": "Front view, seen head-on, the animal flying TOWARD the viewer, face toward the viewer: head toward the BOTTOM of the canvas with the green horn-stalks, large eye and pale hooked beak tip readable, the two long trailing wing-points streaming UP the canvas behind it, both wings raised high and spread symmetrically out to both sides at the top of the upstroke, purple-and-tan canon colouring and transverse rib wrinkles exactly as in the attached master. Same animal, same anatomy, same wing shape and same rendering style as the attached master; do not restyle. Painted fully opaque alpha, whole animal inside the canvas with margin, no ground, no shadow, no outline, no blur."
+ },
+ {
+  "id": "hawkbat_fly_master_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_Flying_1",
+  "canon": "hawkbat",
+  "facings": [
+   "north"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "background": "transparent",
+  "priority": 0,
+  "biome_register": "greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark",
+  "owner_note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
+  "derive_from": "hawkbat_fly_master_v1_east",
+  "prompt": "Rear view, seen from behind, no face or eye visible: head toward the TOP of the canvas, neck and back visible, the two long trailing wing-points streaming DOWN the canvas, both wings raised high and spread symmetrically out to both sides at the top of the upstroke, purple-and-tan canon colouring and transverse rib wrinkles exactly as in the attached master. Same animal, same anatomy, same wing shape and same rendering style as the attached master; do not restyle. Painted fully opaque alpha, whole animal inside the canvas with margin, no ground, no shadow, no outline, no blur."
+ }
+]
