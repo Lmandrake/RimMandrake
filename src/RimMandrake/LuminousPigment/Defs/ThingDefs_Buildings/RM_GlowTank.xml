@@ -14,13 +14,12 @@
   Settings, default 6h) kills the crop and the seed culture
   (Source/Building_GlowTank.cs).
 
-  The FlowWorks ocean-water requirement (spec §2.5: needs salt or boiling
-  water when FlowWorks is loaded) is NOT built in this pass — it needs a
-  reflection accessor into FlowWorks' liquid-terrain lookup that the spec
-  itself flags UNMEASURED, plus how a carried liquid becomes a haulable
-  thing (also UNMEASURED there). The tank runs on power + a seed alone here,
-  with or without FlowWorks present; the water gate is filed as follow-on
-  work under DEEPFIRE_PAINT_STATUS_CUISINE_1's note.
+  Ocean water (spec §2.5; DESIGN_PASS LP-2 / GLOW_TANK_LIQUID_FEED_1): with FlowWorks loaded and the
+  "Tank needs ocean water" setting on, the tank drinks RM_Liquid_SaltWater or RM_Liquid_BoilingWater from a
+  FlowWorks liquid tank adjacent to it or on a hose run touching it (Source/FlowWorksWaterBridge.cs, by
+  reflection). Dry, its crop's growth pauses; nothing dies of thirst. PROVISIONAL rate: 4 units per day.
+  Without FlowWorks the tank runs on power + a seed alone. The spec's other route (an orthogonally adjacent
+  ocean-liquid terrain cell) is not built.
   ============================================================================
 -->
 <Defs>

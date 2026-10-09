@@ -11,9 +11,13 @@ namespace RimMandrake.LuminousPigment
     // Settings) kills the crop AND the seed culture -- a blackout costs a
     // mat, not just a crop (ruling).
     //
-    // The FlowWorks ocean-water requirement is NOT implemented here (see
-    // About.xml / the def's own header) -- the tank runs on power + seed
-    // alone in this build.
+    // Ocean water (spec §2.5, DESIGN_PASS LP-2 / GLOW_TANK_LIQUID_FEED_1):
+    // with FlowWorks loaded and tankNeedsWater on, the tank drinks salt or
+    // boiling water from a FlowWorks liquid tank on its net (an adjacent
+    // tank, or one on a hose run touching it) through FlowWorksWaterBridge.
+    // It keeps a small reserve (RM_GlowTankWater); dry, the crop's growth
+    // pauses (Patch_Plant_GrowthRate_GlowTank) and the inspect string says
+    // so. Nothing dies of thirst. Without FlowWorks: power + seed alone.
     // IPlantToGrowSettable re-declared deliberately: Building_PlantGrower's
     // own CanAcceptSowNow() is a plain (non-virtual) implicit interface
     // implementation, RimSage-verified (RimWorld/Building_PlantGrower.cs:115,
@@ -27,6 +31,16 @@ namespace RimMandrake.LuminousPigment
         private CompRefuelable seedComp;
         private CompPowerTrader powerComp;
         private int unpoweredTicks;
+        private int waterReserveTicks;
+        private string lastWaterDrawn;
+
+        private static int TicksPerUnit => RM_GlowTankWater.TicksPerUnit(LuminousPigmentSettings.tankWaterUnitsPerDay);
+
+        private static bool WaterGateActive =>
+            RM_GlowTankWater.GateActive(LuminousPigmentSettings.tankNeedsWater, FlowWorksWaterBridge.Present);
+
+        /// <summary>True while the water gate applies and the reserve is empty: growth is paused.</summary>
+        public bool Parched => RM_GlowTankWater.Parched(WaterGateActive, TicksPerUnit, waterReserveTicks);
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
@@ -39,6 +53,8 @@ namespace RimMandrake.LuminousPigment
         {
             base.ExposeData();
             Scribe_Values.Look(ref unpoweredTicks, "rmGlowTankUnpoweredTicks", 0);
+            Scribe_Values.Look(ref waterReserveTicks, "rmGlowTankWaterReserveTicks", 0);
+            Scribe_Values.Look(ref lastWaterDrawn, "rmGlowTankLastWater");
         }
 
         public new bool CanAcceptSowNow()
@@ -49,26 +65,63 @@ namespace RimMandrake.LuminousPigment
 
         public override string GetInspectString()
         {
-            string baseString = base.GetInspectString();
+            string text = base.GetInspectString();
             if (seedComp != null && !seedComp.HasFuel)
             {
-                string note = "Needs a seed culture: haul one unit of fresh crowncarpet here.";
-                return string.IsNullOrEmpty(baseString) ? note : baseString + "\n" + note;
+                text = Append(text, "Needs a seed culture: haul one unit of fresh crowncarpet here.");
             }
-            return baseString;
+            if (LuminousPigmentSettings.tankNeedsWater && TicksPerUnit > 0)
+            {
+                text = Append(text, WaterLine());
+            }
+            return text;
         }
 
-        // 🔴 Must be TickRare, not Tick: RM_GlowTank.xml declares
-        // <tickerType>Rare</tickerType>, and the engine only calls a Thing's
-        // Tick() when its tickerType is Normal (every other Tick()-overriding
-        // building in this codebase pairs it with tickerType Normal --
-        // RSW_BactaTank's own comment: "demands tickerType Normal for
-        // per-tick consumption"; FlowWorks' Pit_Cell/Pit_OpenPits the same).
-        // A plain override void Tick() here would simply never run, and the
-        // blackout-kills-crop mechanism below would be dead code.
+        private static string Append(string text, string line)
+        {
+            return string.IsNullOrEmpty(text) ? line : text + "\n" + line;
+        }
+
+        private string WaterLine()
+        {
+            if (!FlowWorksWaterBridge.Present)
+            {
+                return "Ocean water: not needed (FlowWorks not loaded).";
+            }
+            if (Parched)
+            {
+                return "Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank (adjacent, or on a hose run).";
+            }
+            string kind = lastWaterDrawn == RM_GlowTankWater.BoilingWater ? " (boiling water)"
+                : lastWaterDrawn == RM_GlowTankWater.SaltWater ? " (salt water)" : "";
+            return "Ocean water: " + (waterReserveTicks / 2500f).ToString("0.0") + " h in reserve" + kind + ".";
+        }
+
+        /// <summary>LP-2: drink while running, top up from the net at the refill mark.</summary>
+        private void TickWater()
+        {
+            if (!WaterGateActive) return;
+            int perUnit = TicksPerUnit;
+            if (perUnit <= 0) return;
+            if (powerComp == null || powerComp.PowerOn)
+            {
+                waterReserveTicks = RM_GlowTankWater.Drain(waterReserveTicks, GenTicks.TickRareInterval);
+            }
+            if (RM_GlowTankWater.WantsDraw(waterReserveTicks, perUnit))
+            {
+                string drawn = FlowWorksWaterBridge.TryDrawOceanUnit(this);
+                if (drawn != null)
+                {
+                    waterReserveTicks = RM_GlowTankWater.Refill(waterReserveTicks, perUnit);
+                    lastWaterDrawn = drawn;
+                }
+            }
+        }
+
         public override void TickRare()
         {
             base.TickRare();
+            TickWater();
 
             if (powerComp == null) return;
             if (powerComp.PowerOn)

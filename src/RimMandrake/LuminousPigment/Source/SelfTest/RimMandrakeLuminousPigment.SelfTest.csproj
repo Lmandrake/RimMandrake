@@ -25,6 +25,7 @@
     <Compile Include="..\Kernel\RM_DeepfireLightBook.cs" />
     <Compile Include="..\Kernel\RM_DeepfireRules.cs" />
     <Compile Include="..\Kernel\RM_DeepfireCuisine.cs" />
+    <Compile Include="..\Kernel\RM_GlowTankWater.cs" />
     <Compile Include="LuminousPigmentFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
