@@ -26,12 +26,30 @@ namespace RimMandrake.TerminalBiomes
         }
     }
 
-    public class RM_Comp_CageCropSnapshot : ThingComp
+    // CAGE_CROP_SNAPSHOT_FIDELITY_1: the snapshot used to destroy the plants and grow fresh ones from (def, growth),
+    // losing health and age, at world-space offsets that land wrong when the cage is reinstalled rotated; and it was
+    // a struct under LookMode.Deep. Now the PLANTS THEMSELVES are despawned into a ThingOwner the cage carries (so
+    // everything about them survives, including through a save made while minified) with each one's cell stored
+    // cage-local (rotation-normalised), and are spawned back at the same cage-local cell under the new rotation.
+    public class RM_CageCropRecord : IExposable
     {
-        private struct PlantSnapshot : IExposable
+        public int thingId;     // the held plant's thingIDNumber
+        public IntVec3 local;   // its cell relative to the cage, rotated back to Rot4.North
+
+        public void ExposeData()
+        {
+            Scribe_Values.Look(ref thingId, "thingId");
+            Scribe_Values.Look(ref local, "local");
+        }
+    }
+
+    public class RM_Comp_CageCropSnapshot : ThingComp, IThingHolder
+    {
+        // Saves from before CAGE_CROP_SNAPSHOT_FIDELITY_1: (def, offset, growth), respawned fresh as before.
+        private class LegacySnapshot : IExposable
         {
             public ThingDef def;
-            public IntVec3 offset; // relative to the cage's own position
+            public IntVec3 offset;
             public float growth;
 
             public void ExposeData()
@@ -42,48 +60,78 @@ namespace RimMandrake.TerminalBiomes
             }
         }
 
-        private List<PlantSnapshot> snapshot = new List<PlantSnapshot>();
+        private ThingOwner<Thing> held;
+        private List<RM_CageCropRecord> records = new List<RM_CageCropRecord>();
+        private List<LegacySnapshot> legacy = new List<LegacySnapshot>();
+
+        public ThingOwner GetDirectlyHeldThings()
+        {
+            return held ?? (held = new ThingOwner<Thing>(this));
+        }
+
+        public void GetChildHolders(List<IThingHolder> outChildren)
+        {
+            ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
+        }
 
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Collections.Look(ref snapshot, "cageCropSnapshot", LookMode.Deep);
-            if (snapshot == null)
+            Scribe_Deep.Look(ref held, "cageCropsHeld", this);
+            Scribe_Collections.Look(ref records, "cageCropRecords", LookMode.Deep);
+            if (Scribe.mode == LoadSaveMode.Saving)
             {
-                snapshot = new List<PlantSnapshot>();
+                if (legacy.Count > 0) Scribe_Collections.Look(ref legacy, "cageCropSnapshot", LookMode.Deep);
+            }
+            else
+            {
+                Scribe_Collections.Look(ref legacy, "cageCropSnapshot", LookMode.Deep);
+            }
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                if (held == null) held = new ThingOwner<Thing>(this);
+                if (records == null) records = new List<RM_CageCropRecord>();
+                if (legacy == null) legacy = new List<LegacySnapshot>();
             }
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            // respawningAfterLoad is FALSE both for a brand-new build and
-            // for a post-minify reinstall — the two are told apart by
-            // whether a snapshot was actually captured on the way out.
-            if (!respawningAfterLoad && snapshot.Count > 0)
+            // respawningAfterLoad is FALSE both for a brand-new build and for a post-minify reinstall — the two
+            // are told apart by whether anything was actually captured on the way out.
+            if (!respawningAfterLoad)
             {
-                RespawnSnapshot();
+                RespawnHeld();
+                RespawnLegacy();
             }
         }
 
         public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
         {
-            // MinifyUtility.MakeMinified (the uninstall/pack-up path this
-            // comp exists for) despawns with DestroyMode.Vanish. An actual
-            // deconstruct/kill/destroy passes its own mode (Deconstruct,
-            // Kill, KillFinalize, ...) — capturing then would destroy the
-            // crops with nothing left alive to ever respawn them from the
-            // snapshot, since the building itself is gone for good.
+            // MinifyUtility.MakeMinified (the uninstall/pack-up path this comp exists for) despawns with
+            // DestroyMode.Vanish. An actual deconstruct/kill/destroy passes its own mode — capturing then would
+            // carry crops away inside a building that is gone for good.
             if (mode == DestroyMode.Vanish)
             {
-                CaptureSnapshot(map);
+                Capture(map);
             }
             base.PostDeSpawn(map, mode);
         }
 
-        private void CaptureSnapshot(Map map)
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
-            snapshot.Clear();
+            base.PostDestroy(mode, previousMap);
+            held?.ClearAndDestroyContents(); // the cage itself is gone (destroyed while minified): so are its crops
+        }
+
+        private static IntVec3 ToLocal(IntVec3 offset, Rot4 rot)
+        {
+            return offset.RotatedBy(new Rot4((4 - rot.AsInt) % 4));
+        }
+
+        private void Capture(Map map)
+        {
             if (map == null)
             {
                 return;
@@ -95,40 +143,59 @@ namespace RimMandrake.TerminalBiomes
                 {
                     continue;
                 }
-                snapshot.Add(new PlantSnapshot
+                plant.DeSpawn(DestroyMode.Vanish);
+                if (!GetDirectlyHeldThings().TryAdd(plant, canMergeWithExistingStacks: false))
                 {
-                    def = plant.def,
-                    offset = cell - parent.Position,
-                    growth = plant.Growth,
-                });
-                plant.Destroy(DestroyMode.Vanish);
+                    GenSpawn.Spawn(plant, cell, map); // could not hold it: leave it growing where it was
+                    continue;
+                }
+                records.Add(new RM_CageCropRecord { thingId = plant.thingIDNumber, local = ToLocal(cell - parent.Position, parent.Rotation) });
             }
         }
 
-        private void RespawnSnapshot()
+        private void RespawnHeld()
         {
             Map map = parent.Map;
-            if (map == null)
+            if (map == null || held == null || held.Count == 0)
             {
+                records.Clear();
                 return;
             }
-            foreach (PlantSnapshot s in snapshot)
+            foreach (Thing t in new List<Thing>(held))
             {
-                IntVec3 cell = parent.Position + s.offset;
-                if (!cell.InBounds(map) || s.def == null)
+                RM_CageCropRecord rec = records.Find(r => r.thingId == t.thingIDNumber);
+                IntVec3 cell = rec != null ? parent.Position + rec.local.RotatedBy(parent.Rotation) : IntVec3.Invalid;
+                held.Remove(t);
+                if (!cell.IsValid || !cell.InBounds(map) || cell.GetPlant(map) != null)
                 {
+                    t.Destroy(DestroyMode.Vanish); // never overwrite something that grew there while the cage was away
                     continue;
                 }
-                Plant existing = cell.GetPlant(map);
-                if (existing != null)
+                GenSpawn.Spawn(t, cell, map);
+            }
+            records.Clear();
+        }
+
+        private void RespawnLegacy()
+        {
+            Map map = parent.Map;
+            if (map == null || legacy.Count == 0)
+            {
+                legacy.Clear();
+                return;
+            }
+            foreach (LegacySnapshot s in legacy)
+            {
+                IntVec3 cell = parent.Position + s.offset;
+                if (!cell.InBounds(map) || s.def == null || cell.GetPlant(map) != null)
                 {
-                    continue; // never overwrite something that grew there while the cage was away
+                    continue;
                 }
                 Plant plant = (Plant)ThingMaker.MakeThing(s.def);
                 plant.Growth = s.growth;
                 GenSpawn.Spawn(plant, cell, map);
             }
-            snapshot.Clear();
+            legacy.Clear();
         }
     }
 }

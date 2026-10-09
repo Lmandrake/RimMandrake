@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -63,6 +65,43 @@ namespace RimMandrake.TerminalBiomes
         private bool revealed;
 
         public RM_CompProperties_VaeuliskLure Props => (RM_CompProperties_VaeuliskLure)props;
+
+        // VAULISK_LURE_REVEAL_TRIGGER_1: live lures per map, for the quick proximity check and the job-start trigger.
+        internal static readonly Dictionary<Map, HashSet<RM_Comp_VaeuliskLure>> Live = new Dictionary<Map, HashSet<RM_Comp_VaeuliskLure>>();
+
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            if (!Live.TryGetValue(parent.Map, out var set))
+            {
+                Live[parent.Map] = set = new HashSet<RM_Comp_VaeuliskLure>();
+            }
+            set.Add(this);
+        }
+
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            if (map != null && Live.TryGetValue(map, out var set))
+            {
+                set.Remove(this);
+                if (set.Count == 0) Live.Remove(map);
+            }
+        }
+
+        /// <summary>The quick check (RM_MapComponent_VauliskWatch) and the job-start trigger land here.</summary>
+        public void TryRevealNow(Pawn discoverer)
+        {
+            if (revealed || !parent.Spawned || !RM_TerminalBiomesSettings.VauliskActive)
+            {
+                return;
+            }
+            Pawn d = discoverer ?? FindApproachingPawn(Props.revealRadius);
+            if (d != null)
+            {
+                Reveal(Props, d);
+            }
+        }
 
         public override void CompTickLong()
         {
@@ -162,6 +201,86 @@ namespace RimMandrake.TerminalBiomes
         {
             base.PostExposeData();
             Scribe_Values.Look(ref revealed, "revealed", false);
+        }
+    }
+
+    /// <summary>VAULISK_LURE_REVEAL_TRIGGER_1: the long-tick check alone (every 2000 ticks) let a pawn walk past, and a
+    /// harvest started on the lure was never seen. This checks proximity every QuickIntervalTicks and reveals on any
+    /// job a pawn starts that targets the lure (harvest, cut, haul...), deferred one tick so the job tracker is not
+    /// mid-StartJob when the plant is destroyed. Off with vauliskQuickReveal: only the long-tick check runs.</summary>
+    public class RM_MapComponent_VauliskWatch : MapComponent
+    {
+        // PROVISIONAL (auto-decided 2026-10-09, VAULISK_LURE_REVEAL_TRIGGER_1): a proximity check once a second.
+        public const int QuickIntervalTicks = 60;
+
+        internal static readonly List<KeyValuePair<RM_Comp_VaeuliskLure, Pawn>> PendingJobReveals = new List<KeyValuePair<RM_Comp_VaeuliskLure, Pawn>>();
+
+        public RM_MapComponent_VauliskWatch(Map map) : base(map)
+        {
+            // A map object from a previous game in this session is never removed explicitly: drop dead keys here.
+            var dead = new List<Map>();
+            foreach (Map m in RM_Comp_VaeuliskLure.Live.Keys) if (m == null || m.Disposed || Find.Maps == null || !Find.Maps.Contains(m)) dead.Add(m);
+            foreach (Map m in dead) RM_Comp_VaeuliskLure.Live.Remove(m);
+        }
+
+        public override void MapRemoved()
+        {
+            base.MapRemoved();
+            RM_Comp_VaeuliskLure.Live.Remove(map);
+        }
+
+        public override void MapComponentTick()
+        {
+            if (!RM_TerminalBiomesSettings.vauliskQuickReveal)
+            {
+                return;
+            }
+            if (PendingJobReveals.Count > 0)
+            {
+                for (int i = PendingJobReveals.Count - 1; i >= 0; i--)
+                {
+                    var kv = PendingJobReveals[i];
+                    if (kv.Key?.parent?.Map == map)
+                    {
+                        PendingJobReveals.RemoveAt(i);
+                        kv.Key.TryRevealNow(kv.Value != null && kv.Value.Spawned ? kv.Value : null);
+                    }
+                    else if (kv.Key?.parent == null || !kv.Key.parent.Spawned)
+                    {
+                        PendingJobReveals.RemoveAt(i);
+                    }
+                }
+            }
+            if (!map.IsHashIntervalTick(QuickIntervalTicks)
+                || !RM_Comp_VaeuliskLure.Live.TryGetValue(map, out var set) || set.Count == 0)
+            {
+                return;
+            }
+            foreach (RM_Comp_VaeuliskLure lure in new List<RM_Comp_VaeuliskLure>(set))
+            {
+                lure.TryRevealNow(null);
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Pawn_JobTracker), nameof(Pawn_JobTracker.StartJob))]
+    public static class RM_Patch_VauliskJobStart
+    {
+        public static void Postfix(Job newJob, Pawn ___pawn)
+        {
+            if (newJob == null || ___pawn == null || !RM_TerminalBiomesSettings.vauliskQuickReveal)
+            {
+                return;
+            }
+            if (!(newJob.targetA.Thing is Plant plant) || !plant.Spawned)
+            {
+                return;
+            }
+            RM_Comp_VaeuliskLure lure = plant.GetComp<RM_Comp_VaeuliskLure>();
+            if (lure != null)
+            {
+                RM_MapComponent_VauliskWatch.PendingJobReveals.Add(new KeyValuePair<RM_Comp_VaeuliskLure, Pawn>(lure, ___pawn));
+            }
         }
     }
 }
